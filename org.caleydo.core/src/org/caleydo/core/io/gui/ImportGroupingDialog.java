@@ -67,10 +67,16 @@ public class ImportGroupingDialog extends AImportDialog {
 		}
 
 		ArrayList<Integer> selectedColumns = new ArrayList<Integer>();
-		for (int columnIndex = 1; columnIndex < previewTable.getColumnCount(); columnIndex++) {
-			if (selectedColumnButtons.get(columnIndex - 1).getSelection()
-					&& (groupingParseSpecification.getColumnOfRowIds() != columnIndex - 1)) {
-				selectedColumns.add(columnIndex - 1);
+		for (int columnIndex = 0; columnIndex < totalNumberOfColumns; columnIndex++) {
+			
+			if (groupingParseSpecification.getColumnOfRowIds() != columnIndex) {
+				if (columnIndex + 1 < previewTable.getColumnCount()) {
+					if (selectedColumnButtons.get(columnIndex).getSelection()) {
+						selectedColumns.add(columnIndex);
+					}
+				} else {
+					selectedColumns.add(columnIndex);
+				}
 			}
 		}
 		groupingParseSpecification.setColumns(selectedColumns);
@@ -156,11 +162,11 @@ public class ImportGroupingDialog extends AImportDialog {
 		linesToSkipGroup.setLayout(new GridLayout(1, false));
 		linesToSkipGroup
 				.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-		numHeaderLinesSpinner = new Spinner(linesToSkipGroup, SWT.BORDER);
-		numHeaderLinesSpinner.setMinimum(0);
-		numHeaderLinesSpinner.setMaximum(Integer.MAX_VALUE);
-		numHeaderLinesSpinner.setIncrement(1);
-		numHeaderLinesSpinner.addModifyListener(new ModifyListener() {
+		numHeaderRowsSpinner = new Spinner(linesToSkipGroup, SWT.BORDER);
+		numHeaderRowsSpinner.setMinimum(0);
+		numHeaderRowsSpinner.setMaximum(Integer.MAX_VALUE);
+		numHeaderRowsSpinner.setIncrement(1);
+		numHeaderRowsSpinner.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				updateTableColors();
@@ -245,6 +251,13 @@ public class ImportGroupingDialog extends AImportDialog {
 	@Override
 	protected boolean allowsColumnIDs() {
 		return false;
+	}
+
+
+	@Override
+	protected void previewTableUpdated() {
+		columnOfRowIDSpinner.setMaximum(totalNumberOfColumns);
+		numHeaderRowsSpinner.setMaximum(totalNumberOfRows);
 	}
 
 }

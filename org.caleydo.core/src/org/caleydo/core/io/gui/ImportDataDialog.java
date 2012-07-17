@@ -43,7 +43,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -51,7 +50,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
@@ -61,7 +59,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -289,18 +286,18 @@ public class ImportDataDialog extends AImportDialog {
 		Group startParseAtLineGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		startParseAtLineGroup.setText("Number of header rows");
 		startParseAtLineGroup.setLayout(new GridLayout(1, false));
-		
-		numHeaderLinesSpinner = new Spinner(startParseAtLineGroup, SWT.BORDER);
-		numHeaderLinesSpinner.setMinimum(0);
-		numHeaderLinesSpinner.setMaximum(Integer.MAX_VALUE);
-		numHeaderLinesSpinner.setIncrement(1);
-		numHeaderLinesSpinner.addModifyListener(new ModifyListener() {
+
+		numHeaderRowsSpinner = new Spinner(startParseAtLineGroup, SWT.BORDER);
+		numHeaderRowsSpinner.setMinimum(0);
+		numHeaderRowsSpinner.setMaximum(Integer.MAX_VALUE);
+		numHeaderRowsSpinner.setIncrement(1);
+		numHeaderRowsSpinner.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				updateTableColors();
 			}
 		});
-		
+
 		Group rowOfColumnIDGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		rowOfColumnIDGroup.setText("Row with column IDs");
 		rowOfColumnIDGroup.setLayout(new GridLayout(1, false));
@@ -315,7 +312,7 @@ public class ImportDataDialog extends AImportDialog {
 				updateTableColors();
 			}
 		});
-		
+
 		Group columnOfRowIDGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		columnOfRowIDGroup.setText("Column with row IDs");
 		columnOfRowIDGroup.setLayout(new GridLayout(1, false));
@@ -637,45 +634,40 @@ public class ImportDataDialog extends AImportDialog {
 
 		// the columnIndex here is the columnIndex of the previewTable. This is
 		// different by one from the index in the source csv.
-		for (int columnIndex = 1; columnIndex < previewTable.getColumnCount(); columnIndex++) {
+		for (int columnIndex = 0; columnIndex < totalNumberOfColumns; columnIndex++) {
 
-			if (selectedColumnButtons.get(columnIndex - 1).getSelection()
-					&& (dataSetDescription.getColumnOfRowIds() != columnIndex - 1)) {
+			if (dataSetDescription.getColumnOfRowIds() != columnIndex) {
+				if (columnIndex + 1 < previewTable.getColumnCount()) {
+					if (selectedColumnButtons.get(columnIndex).getSelection()) {
 
-				// in uncertainty mode each second column is flagged with
-				// "CERTAINTY"
-				// if (buttonUncertaintyDataProvided.getSelection()
-				// && (columnIndex % 2 != 0)) {
-				// inputPattern.add(new ColumnDescription(columnIndex - 1,
-				// "CERTAINTY",
-				// ColumnDescription.CONTINUOUS));
-				// continue;
-				// }
+						// in uncertainty mode each second column is flagged
+						// with
+						// "CERTAINTY"
+						// if (buttonUncertaintyDataProvided.getSelection()
+						// && (columnIndex % 2 != 0)) {
+						// inputPattern.add(new ColumnDescription(columnIndex -
+						// 1,
+						// "CERTAINTY",
+						// ColumnDescription.CONTINUOUS));
+						// continue;
+						// }
 
-				// here we try to guess the datatype
-				// TODO: move this to the preview window where it can be
-				// modified by the user
-				String dataType = "FLOAT";
-				try {
-					int testSize = previewTable.getItemCount()
-							- dataSetDescription.getNumberOfHeaderLines() - 1;
-					for (int rowCount = dataSetDescription.getNumberOfHeaderLines() + 1; rowCount < testSize; rowCount++) {
-						if (rowCount != dataSetDescription.getRowOfColumnIDs() + 1) {
-							String testString = previewTable.getItem(rowCount).getText(
-									columnIndex);
-							if (!testString.isEmpty())
-								Float.parseFloat(testString);
-						}
+						// here we try to guess the datatype
+						// TODO: move this to the preview window where it can be
+						// modified by the user
+
+						// fixme this does not work for categorical data
+						inputPattern.add(createColumnDescription(columnIndex));
+
+						String labelText = dataMatrix[0][columnIndex];
+						dimensionLabels.add(labelText);
 					}
-				} catch (NumberFormatException nfe) {
-					dataType = "STRING";
-				}
-				// fixme this does not work for categorical data
-				inputPattern.add(new ColumnDescription(columnIndex - 1, dataType,
-						ColumnDescription.CONTINUOUS));
+				} else {
+					inputPattern.add(createColumnDescription(columnIndex));
 
-				String labelText = previewTable.getColumn(columnIndex).getText();
-				dimensionLabels.add(labelText);
+					String labelText = dataMatrix[0][columnIndex];
+					dimensionLabels.add(labelText);
+				}
 			}
 		}
 
@@ -683,6 +675,31 @@ public class ImportDataDialog extends AImportDialog {
 		dataSetDescription.setDataSourcePath(fileNameTextField.getText());
 		// dataSetDescripton.setColumnLabels(dimidMappingManagerensionLabels);
 
+	}
+
+	/**
+	 * Creates a {@link ColumnDescription} for the specified column.
+	 * 
+	 * @param columnIndex
+	 *            Index of the column in the file.
+	 * @return The ColumnDescription.
+	 */
+	private ColumnDescription createColumnDescription(int columnIndex) {
+		String dataType = "FLOAT";
+		try {
+			int testSize = previewTable.getItemCount() - 1;
+			for (int rowIndex = dataSetDescription.getNumberOfHeaderLines(); rowIndex < testSize; rowIndex++) {
+				if (rowIndex != dataSetDescription.getRowOfColumnIDs()) {
+					String testString = dataMatrix[rowIndex][columnIndex];
+					if (!testString.isEmpty())
+						Float.parseFloat(testString);
+				}
+			}
+		} catch (NumberFormatException nfe) {
+			dataType = "STRING";
+		}
+
+		return new ColumnDescription(columnIndex, dataType, ColumnDescription.CONTINUOUS);
 	}
 
 	public DataSetDescription getLoadDataParameters() {
@@ -747,6 +764,13 @@ public class ImportDataDialog extends AImportDialog {
 	@Override
 	protected boolean allowsColumnIDs() {
 		return true;
+	}
+
+	@Override
+	protected void previewTableUpdated() {
+		columnOfRowIDSpinner.setMaximum(totalNumberOfColumns);
+		rowOfColumnIDSpinner.setMaximum(totalNumberOfRows);
+		numHeaderRowsSpinner.setMaximum(totalNumberOfRows);
 	}
 
 }

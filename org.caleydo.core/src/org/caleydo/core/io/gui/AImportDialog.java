@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.EDataType;
-import org.caleydo.core.gui.util.LabelEditorDialog;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
@@ -53,6 +52,11 @@ public abstract class AImportDialog extends Dialog {
 	 * Maximum number of previewed rows in {@link #previewTable}.
 	 */
 	protected static int MAX_PREVIEW_TABLE_ROWS = 50;
+
+	/**
+	 * Maximum number of previewed columns in {@link #previewTable}.
+	 */
+	protected static int MAX_PREVIEW_TABLE_COLUMNS = 10;
 
 	/**
 	 * The maximum number of ids that are tested in order to determine the
@@ -136,13 +140,29 @@ public abstract class AImportDialog extends Dialog {
 	 * Spinner used to define the index of the row from where on data is
 	 * contained.
 	 */
-	protected Spinner numHeaderLinesSpinner;
+	protected Spinner numHeaderRowsSpinner;
 
 	/**
 	 * Spinner used to define the index of the column from where on data is
 	 * contained.
 	 */
 	protected Spinner dataStartColumnSpinner;
+
+	/**
+	 * Matrix that stores the data for {@link #MAX_PREVIEW_TABLE_ROWS} rows and
+	 * all columns of the data file.
+	 */
+	protected String[][] dataMatrix = new String[MAX_PREVIEW_TABLE_ROWS][];
+
+	/**
+	 * The total number of columns of the input file.
+	 */
+	protected int totalNumberOfColumns;
+
+	/**
+	 * The total number of rows of the input file.
+	 */
+	protected int totalNumberOfRows;
 
 	/**
 	 * @param parent
@@ -346,6 +366,10 @@ public abstract class AImportDialog extends Dialog {
 			tmpColumn.dispose();
 		}
 
+		for (int i = 0; i < dataMatrix.length; i++) {
+			dataMatrix[i] = null;
+		}
+
 		final TableEditor editor = new TableEditor(previewTable);
 		editor.horizontalAlignment = SWT.LEFT;
 		editor.grabHorizontal = true;
@@ -370,6 +394,7 @@ public abstract class AImportDialog extends Dialog {
 			TableColumn column;
 			// TableItem item;
 			// int colIndex = 0;
+			totalNumberOfColumns = 0;
 
 			// Read labels
 			if ((line = file.readLine()) != null) {
@@ -381,9 +406,13 @@ public abstract class AImportDialog extends Dialog {
 				while (tokenizer.hasMoreTokens()) {
 					nextToken = tokenizer.nextToken();
 
-					final TableColumn dataColumn = new TableColumn(previewTable, SWT.NONE);
-					dataColumn.setWidth(100);
-					dataColumn.setText(nextToken);
+					if (totalNumberOfColumns < MAX_PREVIEW_TABLE_COLUMNS) {
+						final TableColumn dataColumn = new TableColumn(previewTable,
+								SWT.NONE);
+						dataColumn.setWidth(100);
+						dataColumn.setText(nextToken);
+					}
+					totalNumberOfColumns++;
 
 					// dataColumn.addSelectionListener(new SelectionAdapter() {
 					// @Override
@@ -403,19 +432,23 @@ public abstract class AImportDialog extends Dialog {
 
 			}
 
-			createUseColumnRow();
-			readDataRow(line, delimiter, 0);
+			totalNumberOfRows = 0;
 
-			int rowCount = 1;
+			createUseColumnRow();
+			readDataRow(line, delimiter, totalNumberOfRows);
+			totalNumberOfRows++;
 
 			// Read raw data
-			while ((line = file.readLine()) != null && rowCount < MAX_PREVIEW_TABLE_ROWS) {
-				readDataRow(line, delimiter, rowCount);
-				rowCount++;
+			while ((line = file.readLine()) != null
+					&& totalNumberOfRows < MAX_PREVIEW_TABLE_ROWS) {
+				readDataRow(line, delimiter, totalNumberOfRows);
+				totalNumberOfRows++;
 			}
 
 			// check for experiment cluster info in the rest of the file
 			while ((line = file.readLine()) != null) {
+
+				totalNumberOfRows++;
 
 				tokenizer = new StringTokenizer(line, delimiter, true);
 
@@ -435,29 +468,40 @@ public abstract class AImportDialog extends Dialog {
 		updateTableColors();
 
 		parentComposite.pack();
+
+		previewTableUpdated();
 	}
 
-	private void readDataRow(String line, String delimiter, int rowCount) {
+	private void readDataRow(String line, String delimiter, int rowIndex) {
 		// last flag triggers return of delimiter itself
 		StringTokenizer tokenizer = new StringTokenizer(line, delimiter, true);
 		TableItem item = new TableItem(previewTable, SWT.NONE);
-		item.setText("Row " + (rowCount + 1)); // +1 to be intuitive for
+		item.setText("Row " + (rowIndex + 1)); // +1 to be intuitive for
 		// a non programmer :)
 		int colIndex = 0;
 		boolean isCellFilled = false;
+
+		String[] dataRow = new String[totalNumberOfColumns];
+		dataMatrix[rowIndex] = dataRow;
 
 		while (tokenizer.hasMoreTokens()) {
 			String nextToken = tokenizer.nextToken();
 
 			// Check for empty cells
 			if (nextToken.equals(delimiter) && !isCellFilled) {
-				item.setText(colIndex + 1, "");
+				dataRow[colIndex] = "";
+				if (colIndex + 1 < previewTable.getColumnCount()) {
+					item.setText(colIndex + 1, dataRow[colIndex]);
+				}
 				colIndex++;
 			} else if (nextToken.equals(delimiter) && isCellFilled) {
 				isCellFilled = false; // reset
 			} else {
 				isCellFilled = true;
-				item.setText(colIndex + 1, nextToken);
+				dataRow[colIndex] = nextToken;
+				if (colIndex + 1 < previewTable.getColumnCount()) {
+					item.setText(colIndex + 1, dataRow[colIndex]);
+				}
 				colIndex++;
 			}
 		}
@@ -615,7 +659,7 @@ public abstract class AImportDialog extends Dialog {
 					Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 			selectedColumnButtons.get(oldIDColumnIndex - 1).setVisible(true);
 
-			int numHeaderLines = Integer.parseInt(numHeaderLinesSpinner.getText());
+			int numHeaderLines = Integer.parseInt(numHeaderRowsSpinner.getText());
 			if (numHeaderLines < previewTable.getItemCount()) {
 				matrixDefinition.setNumberOfHeaderLines(numHeaderLines);
 				for (int i = 1; i < numHeaderLines + 1; i++) {
@@ -661,5 +705,10 @@ public abstract class AImportDialog extends Dialog {
 	 *         specification of column IDs.
 	 */
 	protected abstract boolean allowsColumnIDs();
+
+	/**
+	 * Method that is called after the {@link #previewTable} was updated.
+	 */
+	protected abstract void previewTableUpdated();
 
 }
