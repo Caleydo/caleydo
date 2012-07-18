@@ -55,6 +55,9 @@ public class GroupingParser extends ATextParser {
 
 	public ArrayList<PerspectiveInitializationData> parseGrouping(IDType targetIDType) {
 
+		swtGuiManager.setProgressBarText("Loading groupings for " + targetIDType);
+		float progressBarFactor = 100f / numberOfLinesInFile;
+
 		IDSpecification idSpecification = groupingSpecifications.getRowIDSpecification();
 		IDType sourceIDType = IDType.getIDType(idSpecification.getIdType());
 
@@ -137,6 +140,7 @@ public class GroupingParser extends ATextParser {
 				listOfGroupLists.add(currentGroupList);
 				listOfGroupNames.add(headerCells[columnNumber]);
 			}
+			int lineCounter = 0;
 			// the actual parsing
 			while (true) {
 				String line = null;
@@ -155,7 +159,8 @@ public class GroupingParser extends ATextParser {
 				String[] columns = line.split(groupingSpecifications.getDelimiter());
 				String originalID = columns[groupingSpecifications.getColumnOfRowIds()];
 
-				originalID = convertID(originalID, idSpecification);
+				originalID = convertID(originalID,
+						idSpecification.getIdTypeParsingRules());
 
 				Integer mappedID = idMappingManager.getID(sourceIDType, targetIDType,
 						originalID);
@@ -184,7 +189,11 @@ public class GroupingParser extends ATextParser {
 					group.add(mappedID);
 					groupListCounter++;
 				}
-				// lineCounter++;
+				lineCounter++;
+				if (lineCounter % 100 == 0) {
+					swtGuiManager
+							.setProgressBarPercentage((int) (progressBarFactor * lineCounter));
+				}
 			}
 			reader.close();
 

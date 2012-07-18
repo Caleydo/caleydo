@@ -109,28 +109,42 @@ public class DataLoader {
 			recordIDCategory = recordIDType;
 
 		ATableBasedDataDomain dataDomain;
-		if (columnIDSpecification.isIDTypeGene() || rowIDSpecification.isIDTypeGene()) {
-			// we use the default provided by the data domain
-			// dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
-			// .createDataDomain(GeneticDataDomain.DATA_DOMAIN_TYPE);
-			// TODO: check for plug-in?
+
+		DataDomainConfiguration dataDomainConfiguration = new DataDomainConfiguration();
+		dataDomainConfiguration.setRecordIDCategory(recordIDCategory);
+
+		dataDomainConfiguration.setHumanReadableRecordIDType(recordIDType);
+		dataDomainConfiguration.setRecordDenominationPlural(recordIDType + "s");
+		dataDomainConfiguration.setRecordDenominationSingular(recordIDType);
+
+		dataDomainConfiguration.setDimensionIDCategory(dimensionIDCategory);
+		dataDomainConfiguration.setHumanReadableDimensionIDType(dimensionIDType);
+		dataDomainConfiguration.setDimensionDenominationSingular(dimensionIDType);
+		dataDomainConfiguration.setDimensionDenominationPlural(dimensionIDType + "s");
+
+		if ((rowIDSpecification.isIDTypeGene() && !dataSetDescription.isTransposeMatrix())
+				|| (columnIDSpecification.isIDTypeGene() && dataSetDescription
+						.isTransposeMatrix())) {
+			dataDomainConfiguration.setPrimaryRecordMappingType("DAVID");
+			dataDomainConfiguration.setPrimaryDimensionMappingType(dimensionIDType
+					+ "_INT");
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
-					.createDataDomain("org.caleydo.datadomain.genetic");
+					.createDataDomain("org.caleydo.datadomain.genetic",
+							dataDomainConfiguration);
+		} else if ((columnIDSpecification.isIDTypeGene() && !dataSetDescription
+				.isTransposeMatrix())
+				|| (rowIDSpecification.isIDTypeGene() && dataSetDescription
+						.isTransposeMatrix())) {
+
+			dataDomainConfiguration.setPrimaryDimensionMappingType("DAVID");
+			dataDomainConfiguration.setPrimaryRecordMappingType(recordIDType + "_INT");
+			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
+					.createDataDomain("org.caleydo.datadomain.genetic",
+							dataDomainConfiguration);
 
 		} else {
-
-			DataDomainConfiguration dataDomainConfiguration = new DataDomainConfiguration();
-			dataDomainConfiguration.setRecordIDCategory(recordIDCategory);
 			dataDomainConfiguration.setPrimaryRecordMappingType(recordIDType + "_INT");
-			dataDomainConfiguration.setHumanReadableRecordIDType(recordIDType
-					.toUpperCase());
-			dataDomainConfiguration.setRecordDenominationPlural(recordIDType + "s");
-			dataDomainConfiguration.setRecordDenominationSingular(recordIDType);
-
-			dataDomainConfiguration.setDimensionIDCategory(dimensionIDCategory);
-			dataDomainConfiguration.setHumanReadableDimensionIDType(dimensionIDType);
-			dataDomainConfiguration.setDimensionDenominationSingular(dimensionIDType);
-			dataDomainConfiguration.setDimensionDenominationPlural(dimensionIDType + "s");
+			dataDomainConfiguration.setPrimaryDimensionMappingType(dimensionIDType);
 
 			// TODO: check for plug-in?
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()

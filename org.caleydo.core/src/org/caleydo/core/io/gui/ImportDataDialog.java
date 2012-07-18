@@ -33,6 +33,7 @@ import org.caleydo.core.io.DataLoader;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.MatrixDefinition;
 import org.caleydo.core.view.RCPViewInitializationData;
 import org.caleydo.core.view.RCPViewManager;
@@ -667,7 +668,9 @@ public class ImportDataDialog extends AImportDialog {
 		rowIDSpecification.setIdCategory(rowIDType.getIDCategory().toString());
 		if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
 			// for REFSEQ_MRNA we ignore the .1, etc.
-			rowIDSpecification.setSubStringExpression("\\.");
+			IDTypeParsingRules parsingRules = new IDTypeParsingRules();
+			parsingRules.setSubStringExpression("\\.");
+			rowIDSpecification.setIdTypeParsingRules(parsingRules);
 		}
 
 		IDSpecification columnIDSpecification = new IDSpecification();

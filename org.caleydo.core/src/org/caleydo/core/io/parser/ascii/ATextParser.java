@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -25,6 +25,7 @@ import java.io.LineNumberReader;
 
 import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -108,7 +109,8 @@ public abstract class ATextParser {
 	 */
 	protected final int calculateNumberOfLinesInFile() {
 		try {
-			LineNumberReader lnr = new LineNumberReader(GeneralManager.get().getResourceLoader().getResource(fileName));
+			LineNumberReader lnr = new LineNumberReader(GeneralManager.get()
+					.getResourceLoader().getResource(fileName));
 			lnr.skip(Long.MAX_VALUE);
 			numberOfLinesInFile = lnr.getLineNumber();
 			lnr.close();
@@ -127,7 +129,8 @@ public abstract class ATextParser {
 			Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
 					"Start loading file " + fileName + "..."));
 
-			BufferedReader reader = GeneralManager.get().getResourceLoader().getResource(fileName);
+			BufferedReader reader = GeneralManager.get().getResourceLoader()
+					.getResource(fileName);
 
 			this.parseFile(reader);
 
@@ -147,24 +150,21 @@ public abstract class ATextParser {
 		return true;
 	}
 
-	protected void parseFile(BufferedReader reader) throws IOException
-	{}
-	
-	public static String convertID(String sourceID, IDSpecification idSpecification )
-	{
-		if(idSpecification == null)
+	protected void parseFile(BufferedReader reader) throws IOException {
+	}
+
+	public static String convertID(String sourceID, IDTypeParsingRules idTypeParsingRules) {
+		if (idTypeParsingRules == null)
 			return sourceID;
-		if (idSpecification.getReplacingExpression() != null) {
-			sourceID = sourceID.replaceAll(
-					idSpecification.getReplacingExpression(),
-					idSpecification.getReplacementString());
+		if (idTypeParsingRules.getReplacingExpression() != null) {
+			sourceID = sourceID.replaceAll(idTypeParsingRules.getReplacingExpression(),
+					idTypeParsingRules.getReplacementString());
 		}
-		if (idSpecification.getSubStringExpression() != null) {
-			String[] splitID = sourceID.split(idSpecification
-					.getSubStringExpression());
+		if (idTypeParsingRules.getSubStringExpression() != null) {
+			String[] splitID = sourceID
+					.split(idTypeParsingRules.getSubStringExpression());
 			for (String result : splitID) {
-				if (!result.isEmpty())
-				{
+				if (!result.isEmpty()) {
 					sourceID = result;
 					break;
 				}

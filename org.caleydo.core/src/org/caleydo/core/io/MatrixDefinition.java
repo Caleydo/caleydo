@@ -91,8 +91,8 @@ public class MatrixDefinition {
 	private IDSpecification columnIDSpecification = null;
 
 	/**
-	 * Defines in which columns the IDs for the rows are found. By default it is
-	 * assumed that this is in row 0 (the first row).
+	 * Defines in which columns the IDs for the rows are found. Counting starts at 0. By default it is
+	 * assumed that this is in column 0 (the first row).
 	 */
 	protected Integer columnOfRowIds = 0;
 

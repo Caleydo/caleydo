@@ -9,6 +9,7 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.MatrixDefinition;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -68,7 +69,7 @@ public class ImportGroupingDialog extends AImportDialog {
 
 		ArrayList<Integer> selectedColumns = new ArrayList<Integer>();
 		for (int columnIndex = 0; columnIndex < totalNumberOfColumns; columnIndex++) {
-			
+
 			if (groupingParseSpecification.getColumnOfRowIds() != columnIndex) {
 				if (columnIndex + 1 < previewTable.getColumnCount()) {
 					if (selectedColumnButtons.get(columnIndex).getSelection()) {
@@ -88,7 +89,9 @@ public class ImportGroupingDialog extends AImportDialog {
 		rowIDSpecification.setIdCategory(rowIDType.getIDCategory().toString());
 		if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
 			// for REFSEQ_MRNA we ignore the .1, etc.
-			rowIDSpecification.setSubStringExpression("\\.");
+			IDTypeParsingRules parsingRules = new IDTypeParsingRules();
+			parsingRules.setSubStringExpression("\\.");
+			rowIDSpecification.setIdTypeParsingRules(parsingRules);
 		}
 		groupingParseSpecification.setRowIDSpecification(rowIDSpecification);
 		groupingParseSpecification.setContainsColumnIDs(false);
@@ -252,7 +255,6 @@ public class ImportGroupingDialog extends AImportDialog {
 	protected boolean allowsColumnIDs() {
 		return false;
 	}
-
 
 	@Override
 	protected void previewTableCreatedFromFile() {

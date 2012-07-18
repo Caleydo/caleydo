@@ -23,6 +23,7 @@ import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ParsingRule;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 
@@ -70,7 +71,7 @@ public class HCCConfigurationGenerator extends DataSetDescriptionSerializer {
 		sampleIDSpecification.setIdType("SAMPLE");
 
 		dataSetDescriptionCollection.add(setUpMRNAData());
-//		dataSetDescriptionCollection.add(setUpSequencedMRNAData());
+		// dataSetDescriptionCollection.add(setUpSequencedMRNAData());
 
 	}
 
@@ -92,7 +93,9 @@ public class HCCConfigurationGenerator extends DataSetDescriptionSerializer {
 		IDSpecification geneIDSpecification = new IDSpecification();
 		geneIDSpecification.setIDTypeGene(true);
 		geneIDSpecification.setIdType("REFSEQ_MRNA");
-		geneIDSpecification.setSubStringExpression("\\.");
+		IDTypeParsingRules idParsingRule = new IDTypeParsingRules();
+		idParsingRule.setSubStringExpression("\\.");
+		geneIDSpecification.setIdTypeParsingRules(idParsingRule);
 		mrnaData.setRowIDSpecification(geneIDSpecification);
 		mrnaData.setColumnIDSpecification(sampleIDSpecification);
 
@@ -105,5 +108,4 @@ public class HCCConfigurationGenerator extends DataSetDescriptionSerializer {
 		return mrnaData;
 	}
 
-	
 }

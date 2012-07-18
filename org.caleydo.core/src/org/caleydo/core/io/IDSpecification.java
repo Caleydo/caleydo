@@ -78,7 +78,7 @@ import org.caleydo.core.id.IDType;
  * @author Alexander Lex
  * 
  */
-public class IDSpecification extends IDTypeParsingRules {
+public class IDSpecification {
 
 	/**
 	 * <p>
@@ -135,6 +135,9 @@ public class IDSpecification extends IDTypeParsingRules {
 	 */
 	private boolean isIDTypeGene = false;
 
+	/** Advanced parsing rules for IDs. Defaults to null */
+	private IDTypeParsingRules idTypeParsingRules = null;
+
 	/**
 	 * 
 	 */
@@ -188,6 +191,8 @@ public class IDSpecification extends IDTypeParsingRules {
 	 */
 	public void setIDTypeGene(boolean isIDTypeGene) {
 		this.isIDTypeGene = isIDTypeGene;
+		if (isIDTypeGene)
+			this.idCategory = "GENE";
 	}
 
 	/**
@@ -195,6 +200,21 @@ public class IDSpecification extends IDTypeParsingRules {
 	 */
 	public boolean isIDTypeGene() {
 		return isIDTypeGene;
+	}
+
+	/**
+	 * @param idTypeParsingRules
+	 *            setter, see {@link #idTypeParsingRules}
+	 */
+	public void setIdTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
+		this.idTypeParsingRules = idTypeParsingRules;
+	}
+
+	/**
+	 * @return the idTypeParsingRules, see {@link #idTypeParsingRules}
+	 */
+	public IDTypeParsingRules getIdTypeParsingRules() {
+		return idTypeParsingRules;
 	}
 
 }

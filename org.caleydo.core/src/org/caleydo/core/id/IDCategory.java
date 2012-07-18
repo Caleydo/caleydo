@@ -172,7 +172,7 @@ public class IDCategory {
 		if (this.primaryMappingType != null) {
 			if (!this.primaryMappingType.equals(primaryMappingType))
 				throw new IllegalStateException(
-						"Primary mapping type was already set to "
+						"Primary mapping type of "+ categoryName + " was already set to "
 								+ this.primaryMappingType + ". Cannot set to "
 								+ primaryMappingType);
 			return;

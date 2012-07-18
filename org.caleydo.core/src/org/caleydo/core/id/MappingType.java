@@ -113,6 +113,6 @@ public class MappingType
 
 	@Override
 	public String toString() {
-		return fromIDType + "_2_" + toIDType;
+		return fromIDType + " to " + toIDType;
 	}
 }

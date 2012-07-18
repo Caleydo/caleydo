@@ -149,12 +149,10 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 
 	/** Only for serialization */
 	public ADataPerspective() {
-		System.out.println("Create Default");
 	}
 
 	public ADataPerspective(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		System.out.println("Create with datadomain");
 		init();
 	}
 

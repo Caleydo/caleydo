@@ -29,11 +29,15 @@ import org.caleydo.core.data.collection.dimension.NominalColumn;
 import org.caleydo.core.data.collection.dimension.NumericalColumn;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.MappingType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -174,8 +178,8 @@ public class TabularDataParser extends ATextParser {
 
 			if (headers != null) {
 				String idString = headers[parsingDetail.getColumn()];
-				idString = convertID(idString,
-						dataSetDescription.getColumnIDSpecification());
+				idString = convertID(idString, dataSetDescription
+						.getColumnIDSpecification().getIdTypeParsingRules());
 				columnIDMap.put(columnID, idString);
 			} else {
 				columnIDMap.put(columnID, "Column " + columnCount++);
@@ -192,12 +196,12 @@ public class TabularDataParser extends ATextParser {
 		initializeDataContainers();
 
 		// Init progress bar
-		swtGuiManager.setProgressBarText("Loading dataset: " + dataSetDescription.getDataSetName());
-
-		String line;
-
+		swtGuiManager.setProgressBarText("Loading data for: "
+				+ dataSetDescription.getDataSetName());
 		float progressBarFactor = 100f / numberOfLinesInFile;
 
+
+			
 		for (int countHeaderLines = 0; countHeaderLines < dataSetDescription
 				.getNumberOfHeaderLines(); countHeaderLines++) {
 			reader.readLine();
@@ -211,10 +215,43 @@ public class TabularDataParser extends ATextParser {
 				+ dataSetDescription.getDataSetName() + " at path " + fileName
 				+ "\n at the following locations: \n";
 		boolean parsingErrorOccured = false;
+
+		// ------------- ID parsing stuff ------------------------------
+		IDSpecification rowIDSpecification = dataSetDescription.getRowIDSpecification();
+		IDCategory rowIDCategory = IDCategory.getIDCategory(rowIDSpecification
+				.getIdCategory());
+		IDType fromIDType = IDType.getIDType(rowIDSpecification.getIdType());
+
+		IDType toIDType;
+		if (dataDomain.isColumnDimension())
+			toIDType = dataDomain.getRecordIDType();
+		else
+			toIDType = dataDomain.getDimensionIDType();
+
+		IDMappingManager rowIDMappingManager = IDMappingManagerRegistry.get()
+				.getIDMappingManager(rowIDCategory);
+		int columnOfRowIDs = dataSetDescription.getColumnOfRowIds();
+
+		MappingType mappingType = rowIDMappingManager.createMap(fromIDType, toIDType,
+				false);
+
+		IDTypeParsingRules parsingRules = null;
+		if (rowIDSpecification.getIdTypeParsingRules() != null)
+			parsingRules = rowIDSpecification.getIdTypeParsingRules();
+		else if (toIDType.getIdTypeParsingRules() != null)
+			parsingRules = toIDType.getIdTypeParsingRules();
+
+		String line;		
 		while ((line = reader.readLine()) != null) {
 			// && lineInFile <= stopParsingAtLine) {
 
 			String splitLine[] = line.split(dataSetDescription.getDelimiter());
+
+			// id mapping
+			String id = splitLine[columnOfRowIDs];
+			convertID(id, parsingRules);
+			rowIDMappingManager.getMap(mappingType).put(id,
+					lineCounter - parsingStartLine);
 
 			for (int count = 0; count < parsingPattern.size(); count++) {
 				ColumnDescription column = parsingPattern.get(count);
@@ -255,7 +292,7 @@ public class TabularDataParser extends ATextParser {
 			}
 			lineCounter++;
 		}
-
+		rowIDMappingManager.createReverseMap(mappingType);
 		if (parsingErrorOccured) {
 			Logger.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID,
 					numberParsingErrorMessage));

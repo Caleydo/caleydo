@@ -20,6 +20,7 @@
 package org.caleydo.data.importer;
 
 import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.parser.ascii.TabularDataParser;
 
 /**
@@ -36,12 +37,12 @@ public class RegExTester {
 	{
 		String inputString = "NM_153384.1;NM_153385.1;NM_153386.1";
 
-		IDSpecification idSpecification = new IDSpecification();
+		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
 		// idSpecification.setReplacementExpression(replacingExpression,
 		// replacementString)
-		idSpecification.setSubStringExpression("\\.");
+		idTypeParsingRules.setSubStringExpression("\\.");
 
-		String outputString = TabularDataParser.convertID(inputString, idSpecification);
+		String outputString = TabularDataParser.convertID(inputString, idTypeParsingRules);
 
 		System.out.println("Output: " + outputString);
 

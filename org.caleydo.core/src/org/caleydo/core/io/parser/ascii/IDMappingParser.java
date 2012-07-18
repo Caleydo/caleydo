@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -62,18 +62,10 @@ public class IDMappingParser extends ATextParser {
 
 	protected final IDMappingManager idMappingManager;
 
-	/**
-	 * Factor with that the line index must be multiplied to get a normalized
-	 * (0-100) progress percentage value.
-	 */
-	protected float progressBarFactor = 0;
-
 	/** Defines the token separator. TAB is default. */
-	protected String tokenSeperator = TAB;
+	protected String tokenSeparator = TAB;
 
 	protected SWTGUIManager swtGuiManager;
-
-	protected IDSpecification idSpecification;
 
 	/**
 	 * Constructor.
@@ -86,12 +78,6 @@ public class IDMappingParser extends ATextParser {
 		swtGuiManager = GeneralManager.get().getSWTGUIManager();
 		this.idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
 				idCategory);
-
-		setTokenSeperator(SEMICOLON);
-
-		// FIXME that should be set from somewhere else
-		// if (mappingType.getFromIDType().getTypeName().contains("REFSEQ"))
-		// stringConverter = new RefSeqStringConverter();
 	}
 
 	/**
@@ -100,108 +86,77 @@ public class IDMappingParser extends ATextParser {
 	 * @param tokenSeparator
 	 */
 	public final void setTokenSeperator(final String tokenSeparator) {
-		if (tokenSeparator.equals("\\t")) {
-			tokenSeperator = "\t";
-		} else {
-			tokenSeperator = tokenSeparator;
-		}
-	}
 
-	/**
-	 * @param idSpecification
-	 *            setter, see {@link #idSpecification}
-	 */
-	public void setIdSpecification(IDSpecification idSpecification) {
-		this.idSpecification = idSpecification;
+		this.tokenSeparator = tokenSeparator;
+
 	}
 
 	@Override
 	protected void parseFile(BufferedReader reader) throws IOException {
 
+		swtGuiManager.setProgressBarText("Loading ID mapping for " + mappingType);
 		String line;
 
-		int currentLine = 0;
+		int lineCounter = 0;
+		calculateNumberOfLinesInFile();
 
-		progressBarFactor = 100f / stopParsingAtLine;
+		float progressBarFactor = 100f / numberOfLinesInFile;
 
-		while ((line = reader.readLine()) != null && currentLine <= stopParsingAtLine) {
+		while ((line = reader.readLine()) != null && lineCounter <= stopParsingAtLine) {
 			/**
 			 * Start parsing if current line lineInFile is larger than
 			 * parsingStartLine ..
 			 */
-			if (currentLine >= parsingStartLine) {
-
-				boolean maintainLoop = true;
-				StringTokenizer textTokens = new StringTokenizer(line, tokenSeperator);
-
-				// Expect two Integer values in one row!
-				try {
-
-					// Read all tokens
-					while (textTokens.hasMoreTokens() && maintainLoop) {
-						String token = textTokens.nextToken();
-						// Special case for creating dynamic IDs for rows
-						if (idSpecification != null) {
-							token = convertID(token, idSpecification);
-						}
-						if (mappingType.getToIDType().isInternalType()) {
-					
-							idMappingManager.getMap(mappingType).put(token,
-									currentLine - parsingStartLine);
-
-							break;
-						} else {
-							try {
-								if (mappingType.getFromIDType().getColumnType() == EDataType.INT) {
-									if (mappingType.getToIDType().getColumnType() == EDataType.INT) {
-										idMappingManager.getMap(mappingType).put(
-												Integer.valueOf(token),
-												Integer.valueOf(textTokens.nextToken()));
-									} else if (mappingType.getToIDType().getColumnType() == EDataType.STRING) {
-										idMappingManager.getMap(mappingType).put(
-												Integer.valueOf(token),
-												textTokens.nextToken());
-									} else
-										throw new IllegalStateException(
-												"Unsupported data type!");
-								} else if (mappingType.getFromIDType().getColumnType() == EDataType.STRING) {
-									if (mappingType.getToIDType().getColumnType() == EDataType.INT) {
-										idMappingManager.getMap(mappingType).put(token,
-												Integer.valueOf(textTokens.nextToken()));
-									} else if (mappingType.getToIDType().getColumnType() == EDataType.STRING) {
-										idMappingManager.getMap(mappingType).put(token,
-												textTokens.nextToken());
-									} else
-										throw new IllegalStateException(
-												"Unsupported data type!");
-								} else
-									throw new IllegalStateException(
-											"Unsupported data type!");
-							} catch (NumberFormatException nfe) {
-								Logger.log(new Status(Status.ERROR, this.toString(),
-										"Caught NFE: could not parse: " + mappingType,
-										nfe));
-							}
-						}
-						break;
-					}
-				} catch (NoSuchElementException nsee) {
-					// no ABORT was table. since no more tokens are in
-					// ParserTokenHandler skip rest of line..
-					maintainLoop = false;
-
-					// reset return value to indicate error
-					stopParsingAtLine = -1;
-				}
+			if (lineCounter <= parsingStartLine) {
+				lineCounter++;
+				continue;
 			}
 
-			currentLine++;
+			String[] textTokens = line.split(tokenSeparator);
+
+			try {
+
+				String fromID = convertID(textTokens[0], mappingType.getFromIDType()
+						.getIdTypeParsingRules());
+				String toID = convertID(textTokens[1], mappingType.getToIDType()
+						.getIdTypeParsingRules());
+				if (mappingType.getFromIDType().getColumnType() == EDataType.INT) {
+					if (mappingType.getToIDType().getColumnType() == EDataType.INT) {
+						idMappingManager.getMap(mappingType).put(Integer.valueOf(fromID),
+								Integer.valueOf(toID));
+					} else if (mappingType.getToIDType().getColumnType() == EDataType.STRING) {
+						idMappingManager.getMap(mappingType).put(Integer.valueOf(fromID),
+								toID);
+					} else
+						throw new IllegalStateException("Unsupported data type!");
+				} else if (mappingType.getFromIDType().getColumnType() == EDataType.STRING) {
+					if (mappingType.getToIDType().getColumnType() == EDataType.INT) {
+						idMappingManager.getMap(mappingType).put(fromID,
+								Integer.valueOf(toID));
+					} else if (mappingType.getToIDType().getColumnType() == EDataType.STRING) {
+						idMappingManager.getMap(mappingType).put(fromID, toID);
+					} else
+						throw new IllegalStateException("Unsupported data type!");
+				} else
+					throw new IllegalStateException("Unsupported data type!");
+			} catch (NumberFormatException nfe) {
+				Logger.log(new Status(Status.ERROR, this.toString(),
+						"Caught NFE: could not parse: " + mappingType, nfe));
+
+			} catch (ArrayIndexOutOfBoundsException boundEx) {
+				Logger.log(new Status(
+						Status.ERROR,
+						this.toString(),
+						"Caught Out of bounds exception: could not parse: " + mappingType,
+						boundEx));
+			}
 
 			// Update progress bar only on each 100th line
-			if (currentLine % 1000 == 0) {
+			if (lineCounter % 100 == 0) {
 				swtGuiManager
-						.setProgressBarPercentage((int) (progressBarFactor * currentLine));
+						.setProgressBarPercentage((int) (progressBarFactor * lineCounter));
 			}
+			lineCounter++;
 		}
 	}
 }

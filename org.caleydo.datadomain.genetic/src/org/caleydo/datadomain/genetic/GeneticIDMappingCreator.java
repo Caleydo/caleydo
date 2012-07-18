@@ -66,7 +66,7 @@ public class GeneticIDMappingCreator {
 				+ GeneralManager.get().getBasicInfo().getOrganism()
 				+ "_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt", 0, -1,
 				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("REFSEQ_MRNA"),
-				"\t", geneIDCategory, true, true, true,
+				";", geneIDCategory, true, true, true,
 				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("DAVID"));
 
 		// ==== SAMPLES ======

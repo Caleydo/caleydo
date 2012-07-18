@@ -23,11 +23,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -184,8 +185,22 @@ public class ProjectLoader {
 
 				HashMap<String, RecordPerspective> recordPerspectives = new HashMap<String, RecordPerspective>();
 
-				for (String recordPerspectiveID : ((ATableBasedDataDomain) dataDomain)
-						.getRecordPerspectiveIDs()) {
+				GeneralManager
+						.get()
+						.getSWTGUIManager()
+						.setProgressBarText(
+								"Loading groupings for : " + dataDomain.getLabel());
+
+				Set<String> recordPerspectiveIDs = ((ATableBasedDataDomain) dataDomain)
+						.getRecordPerspectiveIDs();
+				Set<String> dimensionPerspectiveIDs = ((ATableBasedDataDomain) dataDomain)
+						.getDimensionPerspectiveIDs();
+
+				int nrPerspectives = recordPerspectiveIDs.size()
+						+ dimensionPerspectiveIDs.size();
+				float progressBarFactor = 100f / nrPerspectives;
+				int perspectiveCount = 0;
+				for (String recordPerspectiveID : recordPerspectiveIDs) {
 
 					RecordPerspective recordPerspective = (RecordPerspective) unmarshaller
 							.unmarshal(GeneralManager
@@ -205,14 +220,19 @@ public class ProjectLoader {
 					if (tree != null)
 						recordPerspective.setTree(tree);
 
+					GeneralManager
+							.get()
+							.getSWTGUIManager()
+							.setProgressBarPercentage(
+									(int) (progressBarFactor * perspectiveCount));
+					perspectiveCount++;
 				}
 
 				dataInitializationData.setRecordPerspectiveMap(recordPerspectives);
 
 				HashMap<String, DimensionPerspective> dimensionPerspectives = new HashMap<String, DimensionPerspective>();
 
-				for (String dimensionPerspectiveID : ((ATableBasedDataDomain) dataDomain)
-						.getDimensionPerspectiveIDs()) {
+				for (String dimensionPerspectiveID : dimensionPerspectiveIDs) {
 
 					DimensionPerspective dimensionPerspective = (DimensionPerspective) unmarshaller
 							.unmarshal(GeneralManager
@@ -232,15 +252,19 @@ public class ProjectLoader {
 							+ "_tree.xml",
 							((ATableBasedDataDomain) dataDomain).getDimensionIDType());
 					dimensionPerspective.setTree(tree);
+					GeneralManager
+							.get()
+							.getSWTGUIManager()
+							.setProgressBarPercentage(
+									(int) (progressBarFactor * perspectiveCount));
+					perspectiveCount++;
 
 				}
 
-			
-					dataInitializationData
-							.setDimensionPerspectiveMap(dimensionPerspectives);
+				dataInitializationData.setDimensionPerspectiveMap(dimensionPerspectives);
 
 				serializationData.addDataDomainSerializationData(dataInitializationData);
-				
+
 			}
 		}
 

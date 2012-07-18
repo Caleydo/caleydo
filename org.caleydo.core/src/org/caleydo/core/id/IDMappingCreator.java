@@ -34,10 +34,9 @@ public class IDMappingCreator {
 
 	protected String fileName;
 
-	private IDSpecification idSpecification;
-
 	/**
-	 * Creates an ID mapping for the id types specified by parsing the supplied file. 
+	 * Creates an ID mapping for the id types specified by parsing the supplied
+	 * file.
 	 * 
 	 * @param fileName
 	 * @param startParsingAtLine
@@ -47,13 +46,13 @@ public class IDMappingCreator {
 	 * @param idCategory
 	 * @param isMultiMap
 	 * @param createReverseMap
-	 * @param resolveCodeMappingUsingCodeToId_LUT Boolean indicates if one
-	 *            column of the mapping needs to be resolved. Resolving means
-	 *            replacing codes by internal IDs.
+	 * @param resolveCodeMappingUsingCodeToId_LUT
+	 *            Boolean indicates if one column of the mapping needs to be
+	 *            resolved. Resolving means replacing codes by internal IDs.
 	 */
-	public void createMapping(String fileName, int startParsingAtLine, int stopParsingAtLine,
-			IDType fromIDType, IDType toIDType, String delimiter, IDCategory idCategory,
-			boolean isMultiMap, boolean createReverseMap,
+	public void createMapping(String fileName, int startParsingAtLine,
+			int stopParsingAtLine, IDType fromIDType, IDType toIDType, String delimiter,
+			IDCategory idCategory, boolean isMultiMap, boolean createReverseMap,
 			boolean resolveCodeMappingUsingCodeToId_LUT, IDType codeResolvedFromIDType,
 			IDType codeResolvedToIDType) {
 
@@ -73,7 +72,8 @@ public class IDMappingCreator {
 			throw new IllegalStateException("ID Category was null");
 		IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
 				.getIDMappingManager(idCategory);
-		MappingType mappingType = idMappingManager.createMap(fromIDType, toIDType, isMultiMap);
+		MappingType mappingType = idMappingManager.createMap(fromIDType, toIDType,
+				isMultiMap);
 
 		if (resolveCodeMappingUsingCodeToId_LUT) {
 
@@ -83,7 +83,6 @@ public class IDMappingCreator {
 
 		if (!fileName.equals("already_loaded")) {
 			idMappingParser = new IDMappingParser(idCategory, fileName, mappingType);
-			idMappingParser.setIdSpecification(idSpecification);
 			idMappingParser.setTokenSeperator(delimiter);
 			idMappingParser.setStartParsingStopParsingAtLine(startParsingAtLine,
 					stopParsingAtLine);
@@ -93,12 +92,5 @@ public class IDMappingCreator {
 		if (createReverseMap) {
 			idMappingManager.createReverseMap(mappingType);
 		}
-	}
-
-	/**
-	 * @param idSpecification setter, see {@link #idSpecification}
-	 */
-	public void setIdSpecification(IDSpecification idSpecification) {
-		this.idSpecification = idSpecification;
 	}
 }

@@ -23,6 +23,7 @@ import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ParsingRule;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 
@@ -110,10 +111,12 @@ public class GeneDataTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 	protected void setUpDataSetDescriptions() {
 
 		sampleIDSpecification = new IDSpecification();
-		sampleIDSpecification.setIdCategory("SAMPLE");
-		sampleIDSpecification.setIdType("SAMPLE");
-		sampleIDSpecification.setReplacementExpression("\\.", "-");
-		sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		sampleIDSpecification.setIdCategory("TCGA_SAMPLE");
+		sampleIDSpecification.setIdType("TCGA_SAMPLE");
+		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
+		idTypeParsingRules.setReplacementExpression("\\.", "-");
+		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
 
 		dataSetDescriptionCollection.add(setUpMRNAData());
 		dataSetDescriptionCollection.add(setUpCopyNumberData());

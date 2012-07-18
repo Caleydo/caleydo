@@ -153,19 +153,16 @@ public class DataTableUtils {
 
 		// --------- load dynamic mapping ---------------
 
-		IDType rowTargetIDType;
-		if (dataDomain.isColumnDimension())
-			rowTargetIDType = dataDomain.getRecordIDType();
-		else
-			rowTargetIDType = dataDomain.getDimensionIDType();
+//		IDType rowTargetIDType;
+		
 
-		IDMappingCreator idMappingCreator = new IDMappingCreator();
-		idMappingCreator.setIdSpecification(dataSetDescription.getRowIDSpecification());
-		idMappingCreator.createMapping(dataSetDescription.getDataSourcePath(),
-				dataSetDescription.getNumberOfHeaderLines(), -1,
-				IDType.getIDType(dataSetDescription.getRowIDSpecification().getIdType()),
-				rowTargetIDType, "\t", rowTargetIDType.getIDCategory(), false, true, false,
-				null, null);
+//		IDMappingCreator idMappingCreator = new IDMappingCreator();
+//		idMappingCreator.setIdSpecification(dataSetDescription.getRowIDSpecification());
+//		idMappingCreator.createMapping(dataSetDescription.getDataSourcePath(),
+//				dataSetDescription.getNumberOfHeaderLines(), -1,
+//				IDType.getIDType(dataSetDescription.getRowIDSpecification().getIdType()),
+//				rowTargetIDType, "\t", rowTargetIDType.getIDCategory(), false, true, false,
+//				null, null);
 
 		// --------- data loading ---------------
 

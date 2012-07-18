@@ -25,6 +25,7 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescriptionCollection;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
@@ -111,9 +112,12 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 	@Override
 	protected void setUpDataSetDescriptions() {
 		sampleIDSpecification = new IDSpecification();
-		sampleIDSpecification.setIdType("SAMPLE");
-		sampleIDSpecification.setReplacementExpression("\\.", "-");
-		sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		sampleIDSpecification.setIdCategory("TCGA_SAMPLE");
+		sampleIDSpecification.setIdType("TCGA_SAMPLE");
+		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
+		idTypeParsingRules.setReplacementExpression("\\.", "-");
+		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
 
 		dataSetDescriptionCollection = new DataSetDescriptionCollection();
 
@@ -229,9 +233,9 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		methylationData.addParsingRule(parsingRule);
 		methylationData.setTransposeMatrix(true);
 
-		IDSpecification methylationIDSpecification = new IDSpecification();
-		methylationIDSpecification.setIdType("methylation");
-		methylationData.setRowIDSpecification(methylationIDSpecification);
+//		IDSpecification methylationIDSpecification = new IDSpecification();
+//		methylationIDSpecification.setIdType("methylation");
+//		methylationData.setRowIDSpecification(methylationIDSpecification);
 		methylationData.setColumnIDSpecification(sampleIDSpecification);
 
 		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(
