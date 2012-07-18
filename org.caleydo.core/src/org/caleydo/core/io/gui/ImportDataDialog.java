@@ -273,6 +273,45 @@ public class ImportDataDialog extends AImportDialog {
 		createIDCategoryGroup(idComposite, "Column ID category", true);
 		createIDTypeGroup(idComposite, true);
 
+		Button createIDCategoryButton = new Button(parentComposite, SWT.PUSH);
+		createIDCategoryButton.setText("Create ID category");
+		createIDCategoryButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				CreateIDCategoryDialog dialog = new CreateIDCategoryDialog(new Shell());
+				int status = dialog.open();
+
+				if (status == Dialog.OK) {
+					registeredIDCategories = new ArrayList<IDCategory>();
+					registeredIDCategories.addAll(IDCategory
+							.getAllRegisteredIDCategories());
+					fillIDCategoryCombo(rowIDCategoryCombo);
+					fillIDCategoryCombo(columnIDCategoryCombo);
+				}
+
+				super.widgetSelected(e);
+			}
+		});
+
+		Button createIDTypeButton = new Button(parentComposite, SWT.PUSH);
+		createIDTypeButton.setText("Create ID type");
+		createIDTypeButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				CreateIDTypeDialog dialog = new CreateIDTypeDialog(new Shell());
+				int status = dialog.open();
+
+				if (status == Dialog.OK) {
+					fillIDTypeCombo(rowIDCategory, rowIDTypes, rowIDCombo);
+					fillIDTypeCombo(columnIDCategory, columnIDTypes, columnIDCombo);
+				}
+
+				super.widgetSelected(e);
+			}
+		});
+
 		Group dataSetLabelGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		dataSetLabelGroup.setText("Data set name");
 		dataSetLabelGroup.setLayout(new GridLayout(1, false));
@@ -436,20 +475,7 @@ public class ImportDataDialog extends AImportDialog {
 		}
 
 		// int index = 0;
-		for (IDCategory idCategory : registeredIDCategories) {
-
-			idCategoryCombo.add(idCategory.getCategoryName());
-
-			// if (index == 0) {
-			// if (isColumnCategory) {
-			// columnIDCategory = idCategory;
-			// } else {
-			// rowIDCategory = idCategory;
-			// }
-			//
-			// }
-			// index++;
-		}
+		fillIDCategoryCombo(idCategoryCombo);
 
 		// idCategoryCombo.setEnabled(false);
 		// idCategoryCombo.deselect(0);
@@ -468,6 +494,32 @@ public class ImportDataDialog extends AImportDialog {
 
 			}
 		});
+	}
+
+	private void fillIDCategoryCombo(Combo idCategoryCombo) {
+
+		String previousSelection = null;
+		if (idCategoryCombo.getSelectionIndex() != -1) {
+			previousSelection = idCategoryCombo.getItem(idCategoryCombo
+					.getSelectionIndex());
+		}
+
+		idCategoryCombo.removeAll();
+		for (IDCategory idCategory : registeredIDCategories) {
+			idCategoryCombo.add(idCategory.getCategoryName());
+		}
+
+		int selectionIndex = -1;
+		if (previousSelection != null) {
+			selectionIndex = idCategoryCombo.indexOf(previousSelection);
+		}
+		if (selectionIndex == -1) {
+			idCategoryCombo.setText("<Please select>");
+			idCategoryCombo.clearSelection();
+		} else {
+			idCategoryCombo.setText(idCategoryCombo.getItem(selectionIndex));
+			idCategoryCombo.select(selectionIndex);
+		}
 	}
 
 	private void createFilterGroup() {

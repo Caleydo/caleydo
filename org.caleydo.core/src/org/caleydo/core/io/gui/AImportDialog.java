@@ -286,22 +286,35 @@ public abstract class AImportDialog extends Dialog {
 
 		ArrayList<IDType> tempIDTypes = idCategory.getIdTypes();
 
+		String previousSelection = null;
+		if (idTypeCombo.getSelectionIndex() != -1) {
+			previousSelection = idTypeCombo.getItem(idTypeCombo.getSelectionIndex());
+		}
+		idTypeCombo.removeAll();
+
 		idTypes.clear();
 		for (IDType idType : tempIDTypes) {
 			if (!idType.isInternalType())
 				idTypes.add(idType);
 		}
 
-		String[] idTypesAsString = new String[idTypes.size()];
-		int index = 0;
 		for (IDType idType : idTypes) {
-			idTypesAsString[index] = idType.getTypeName();
-			index++;
+			idTypeCombo.add( idType.getTypeName());
 		}
-
-		idTypeCombo.setItems(idTypesAsString);
+		
+		int selectionIndex = -1;
+		if (previousSelection != null) {
+			selectionIndex = idTypeCombo.indexOf(previousSelection);
+		}
+		if (selectionIndex == -1) {
+			idTypeCombo.setText("<Please select>");
+			idTypeCombo.clearSelection();
+		} else {
+			idTypeCombo.setText(idTypeCombo.getItem(selectionIndex));
+			idTypeCombo.select(selectionIndex);
+		}
+				
 		idTypeCombo.setEnabled(true);
-		idTypeCombo.setText("<Please select>");
 		// idTypeCombo.select(0);
 
 	}
