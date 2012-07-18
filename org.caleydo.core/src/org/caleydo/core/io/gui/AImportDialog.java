@@ -299,9 +299,9 @@ public abstract class AImportDialog extends Dialog {
 		}
 
 		for (IDType idType : idTypes) {
-			idTypeCombo.add( idType.getTypeName());
+			idTypeCombo.add(idType.getTypeName());
 		}
-		
+
 		int selectionIndex = -1;
 		if (previousSelection != null) {
 			selectionIndex = idTypeCombo.indexOf(previousSelection);
@@ -313,7 +313,7 @@ public abstract class AImportDialog extends Dialog {
 			idTypeCombo.setText(idTypeCombo.getItem(selectionIndex));
 			idTypeCombo.select(selectionIndex);
 		}
-				
+
 		idTypeCombo.setEnabled(true);
 		// idTypeCombo.select(0);
 
@@ -419,7 +419,7 @@ public abstract class AImportDialog extends Dialog {
 		for (int i = 0; i < dataMatrix.length; i++) {
 			String[] dataRow = dataMatrix[i];
 			TableItem item = new TableItem(previewTable, SWT.NONE);
-			item.setText(0, "Row " + i + 1);
+			item.setText(0, "" + i + 1);
 			for (int j = 0; j < numTableColumns - 1; j++) {
 				item.setText(j + 1, dataRow[j]);
 			}
@@ -567,7 +567,7 @@ public abstract class AImportDialog extends Dialog {
 		// last flag triggers return of delimiter itself
 		StringTokenizer tokenizer = new StringTokenizer(line, delimiter, true);
 		TableItem item = new TableItem(previewTable, SWT.NONE);
-		item.setText("Row " + (rowIndex + 1)); // +1 to be intuitive for
+		item.setText("" + (rowIndex + 1)); // +1 to be intuitive for
 		// a non programmer :)
 		int colIndex = 0;
 		boolean isCellFilled = false;
@@ -617,6 +617,7 @@ public abstract class AImportDialog extends Dialog {
 			skipButton = new Button(previewTable, SWT.CHECK | SWT.CENTER);
 			skipButton.setSelection(true);
 			skipButton.setData("column", colIndex);
+			skipButton.setText("" + colIndex);
 			skipButton.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -742,50 +743,51 @@ public abstract class AImportDialog extends Dialog {
 	 * (id, header, data).
 	 */
 	protected void updateTableColors() {
-		try {
-			int oldNumHeaderLines = matrixDefinition.getNumberOfHeaderLines();
-			for (int i = 1; i < oldNumHeaderLines + 1; i++) {
-				colorTableRow(i, Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
-			}
 
-			if (allowsColumnIDs()) {
-				int oldIDRowIndex = matrixDefinition.getRowOfColumnIDs() + 1;
-				if (oldNumHeaderLines <= oldIDRowIndex)
-					colorTableRow(oldIDRowIndex,
-							Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
-			}
+//		colorTableRow(0, Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY));
+//		colorTableColumn(0, Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY));
 
-			int oldIDColumnIndex = matrixDefinition.getColumnOfRowIds() + 1;
-			colorTableColumn(oldIDColumnIndex,
-					Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
-			selectedColumnButtons.get(oldIDColumnIndex - 1).setVisible(true);
-
-			int numHeaderLines = Integer.parseInt(numHeaderRowsSpinner.getText());
-			if (numHeaderLines < previewTable.getItemCount()) {
-				matrixDefinition.setNumberOfHeaderLines(numHeaderLines);
-				for (int i = 1; i < numHeaderLines + 1; i++) {
-					colorTableRow(i, Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-				}
-			}
-
-			if (allowsColumnIDs()) {
-				int idRowIndex = Integer.parseInt(rowOfColumnIDSpinner.getText());
-				if (idRowIndex < previewTable.getItemCount()) {
-					matrixDefinition.setRowOfColumnIDs(idRowIndex - 1);
-					colorTableRow(idRowIndex,
-							Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
-				}
-			}
-			int idColumnIndex = Integer.parseInt(columnOfRowIDSpinner.getText());
-			if (idColumnIndex < previewTable.getColumnCount()) {
-				matrixDefinition.setColumnOfRowIds(idColumnIndex - 1);
-				colorTableColumn(idColumnIndex,
-						Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
-				selectedColumnButtons.get(idColumnIndex - 1).setVisible(false);
-			}
-		} catch (NumberFormatException exc) {
-
+		int oldNumHeaderLines = matrixDefinition.getNumberOfHeaderLines();
+		for (int i = 1; i < oldNumHeaderLines + 1; i++) {
+			colorTableRow(i, Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		}
+
+		if (allowsColumnIDs()) {
+			int oldIDRowIndex = matrixDefinition.getRowOfColumnIDs() + 1;
+			if (oldNumHeaderLines <= oldIDRowIndex)
+				colorTableRow(oldIDRowIndex,
+						Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+		}
+
+		int oldIDColumnIndex = matrixDefinition.getColumnOfRowIds() + 1;
+		colorTableColumn(oldIDColumnIndex,
+				Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+		selectedColumnButtons.get(oldIDColumnIndex - 1).setVisible(true);
+
+		int numHeaderLines = numHeaderRowsSpinner.getSelection();
+		if (numHeaderLines < previewTable.getItemCount()) {
+			matrixDefinition.setNumberOfHeaderLines(numHeaderLines);
+			for (int i = 1; i < numHeaderLines + 1; i++) {
+				colorTableRow(i, Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+			}
+		}
+
+		if (allowsColumnIDs()) {
+			int idRowIndex = rowOfColumnIDSpinner.getSelection();
+			if (idRowIndex < previewTable.getItemCount()) {
+				matrixDefinition.setRowOfColumnIDs(idRowIndex - 1);
+				colorTableRow(idRowIndex,
+						Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
+			}
+		}
+		int idColumnIndex = columnOfRowIDSpinner.getSelection();
+		if (idColumnIndex < previewTable.getColumnCount()) {
+			matrixDefinition.setColumnOfRowIds(idColumnIndex - 1);
+			colorTableColumn(idColumnIndex,
+					Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
+			selectedColumnButtons.get(idColumnIndex - 1).setVisible(false);
+		}
+
 	}
 
 	private void colorTableRow(int rowIndex, Color color) {

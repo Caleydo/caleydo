@@ -126,7 +126,7 @@ public class ImportDataDialog extends AImportDialog {
 	protected Control createDialogArea(Composite parent) {
 
 		dataSetDescription.setDelimiter("\t");
-		dataSetDescription.setNumberOfHeaderLines(0);
+		dataSetDescription.setNumberOfHeaderLines(1);
 		dataSetDescription.setRowOfColumnIDs(0);
 		dataSetDescription.setColumnOfRowIds(0);
 		registeredIDCategories = new ArrayList<IDCategory>();
@@ -327,13 +327,25 @@ public class ImportDataDialog extends AImportDialog {
 		startParseAtLineGroup.setLayout(new GridLayout(1, false));
 
 		numHeaderRowsSpinner = new Spinner(startParseAtLineGroup, SWT.BORDER);
-		numHeaderRowsSpinner.setMinimum(0);
+		numHeaderRowsSpinner.setMinimum(1);
 		numHeaderRowsSpinner.setMaximum(Integer.MAX_VALUE);
 		numHeaderRowsSpinner.setIncrement(1);
 		numHeaderRowsSpinner.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				updateTableColors();
+				try{
+					
+					int numHeaderRows = numHeaderRowsSpinner.getSelection();
+					int idRowIndex = rowOfColumnIDSpinner.getSelection();
+					if(idRowIndex > numHeaderRows) {
+						rowOfColumnIDSpinner.setSelection(numHeaderRows);
+					}
+					updateTableColors();
+					
+				}catch(NumberFormatException exc) {
+					
+				}
+				
 			}
 		});
 
@@ -348,6 +360,11 @@ public class ImportDataDialog extends AImportDialog {
 		rowOfColumnIDSpinner.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
+				int numHeaderRows = numHeaderRowsSpinner.getSelection();
+				int idRowIndex = rowOfColumnIDSpinner.getSelection();
+				if(idRowIndex > numHeaderRows) {
+					numHeaderRowsSpinner.setSelection(idRowIndex);
+				}
 				updateTableColors();
 			}
 		});
