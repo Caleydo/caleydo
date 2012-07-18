@@ -37,6 +37,7 @@ public class IDMappingCreator {
 	private IDSpecification idSpecification;
 
 	/**
+	 * Creates an ID mapping for the id types specified by parsing the supplied file. 
 	 * 
 	 * @param fileName
 	 * @param startParsingAtLine

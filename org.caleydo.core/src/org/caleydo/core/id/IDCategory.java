@@ -141,7 +141,7 @@ public class IDCategory {
 	 */
 	private ArrayList<IDType> idTypes = new ArrayList<IDType>();
 
-	/** Private constructor, created through the static insances */
+	/** Private constructor, created through the static instances */
 	private IDCategory(String categoryName) {
 		this.categoryName = categoryName;
 	}

@@ -7,6 +7,7 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingCreator;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
@@ -20,8 +21,7 @@ public class GeneticIDMappingCreator {
 	public static void createIDTypesAndMapping() {
 
 		IDCategory geneIDCategory = IDCategory.registerCategory(EGeneIDTypes.GENE.name());
-		IDCategory sampleIDCategory = IDCategory.registerCategory("SAMPLE");
-		
+
 		IDType.registerType(EGeneIDTypes.DAVID.name(), geneIDCategory,
 				EGeneIDTypes.DAVID.getColumnType());
 		IDType.registerType(EGeneIDTypes.GENE_NAME.name(), geneIDCategory,
@@ -44,14 +44,6 @@ public class GeneticIDMappingCreator {
 
 		String fileName = "data/genome/mapping/david/"
 				+ GeneralManager.get().getBasicInfo().getOrganism();
-
-		IDType sampleIntIDType = IDType.registerType("SAMPLE_INT", sampleIDCategory,
-				EDataType.INT);
-		sampleIntIDType.setInternalType(true);
-
-		IDType sampleID = IDType.registerType("SAMPLE", sampleIDCategory,
-				EDataType.STRING);
-		sampleIDCategory.setHumanReadableIDType(sampleID);
 
 		IDMappingCreator idMappingCreator = new IDMappingCreator();
 
@@ -76,5 +68,29 @@ public class GeneticIDMappingCreator {
 				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("REFSEQ_MRNA"),
 				"\t", geneIDCategory, true, true, true,
 				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("DAVID"));
+
+		// ==== SAMPLES ======
+
+		IDCategory sampleIDCategory = IDCategory.registerCategory("SAMPLE");
+
+		IDType sampleIntIDType = IDType.registerType("SAMPLE_INT", sampleIDCategory,
+				EDataType.INT);
+		sampleIntIDType.setInternalType(true);
+		IDType sampleID = IDType.registerType("SAMPLE", sampleIDCategory,
+				EDataType.STRING);
+		sampleIDCategory.setHumanReadableIDType(sampleID);
+
+		IDCategory tcgaSampleIDCategory = IDCategory.registerCategory("TCGA_SAMPLE");
+
+		IDType tcgaSampleIntIDType = IDType.registerType("TCGA_SAMPLE_INT",
+				tcgaSampleIDCategory, EDataType.INT);
+		tcgaSampleIntIDType.setInternalType(true);
+		IDType tcgaSample = IDType.registerType("TCGA_SAMPLE", tcgaSampleIDCategory,
+				EDataType.STRING);
+		IDTypeParsingRules tcgaIDTypeParsingRules = new IDTypeParsingRules();
+		tcgaIDTypeParsingRules.setReplacementExpression("\\.", "-");
+		tcgaIDTypeParsingRules.setSubStringExpression("TCGA\\-|\\-...\\-");
+		tcgaSample.setIdTypeParsingRules(tcgaIDTypeParsingRules);
+		sampleIDCategory.setHumanReadableIDType(tcgaSample);
 	}
 }

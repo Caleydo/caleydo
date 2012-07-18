@@ -279,7 +279,7 @@ public class GLKaplanMeier extends ATableBasedView {
 			colorIndex = colorIndex % 10;
 
 			int lineWidth = 1;
-			if ((recordGroupSelectionManager.getElements(SelectionType.SELECTION).size() == 1 && (Integer) recordGroupSelectionManager
+			if ((recordGroupSelectionManager.getNumberOfElements(SelectionType.SELECTION) == 1 && (Integer) recordGroupSelectionManager
 					.getElements(SelectionType.SELECTION).toArray()[0] == group.getID())
 					|| (group.getID() == mouseOverGroupID)) {
 				lineWidth = 2;

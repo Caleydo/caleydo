@@ -186,7 +186,7 @@ public class IDMappingManager {
 	public <KeyType, ValueType> void createCodeResolvedMap(MappingType mappingType,
 		IDType codeResolvedFromType, IDType codeResolvedToType) {
 
-		Map codeResolvedMap = null;
+		Map  codeResolvedMap = null;
 
 		IDType originKeyType = mappingType.getFromIDType();
 		IDType originValueType = mappingType.getToIDType();
