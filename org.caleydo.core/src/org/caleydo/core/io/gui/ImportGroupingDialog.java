@@ -144,7 +144,7 @@ public class ImportGroupingDialog extends AImportDialog {
 				fileNameTextField.setText(inputFileName);
 
 				groupingParseSpecification.setDataSourcePath(inputFileName);
-				createDataPreviewTable();
+				createDataPreviewTableFromFile();
 			}
 		});
 
@@ -199,7 +199,7 @@ public class ImportGroupingDialog extends AImportDialog {
 		gridData.widthHint = 800;
 		previewTable.setLayoutData(gridData);
 		//
-
+		createTableInfo(parentComposite);
 	}
 
 	@Override
@@ -255,9 +255,11 @@ public class ImportGroupingDialog extends AImportDialog {
 
 
 	@Override
-	protected void previewTableUpdated() {
+	protected void previewTableCreatedFromFile() {
 		columnOfRowIDSpinner.setMaximum(totalNumberOfColumns);
 		numHeaderRowsSpinner.setMaximum(totalNumberOfRows);
+		showAllColumnsButton.setSelection(false);
+		showAllColumnsButton.setEnabled(true);
 	}
 
 }

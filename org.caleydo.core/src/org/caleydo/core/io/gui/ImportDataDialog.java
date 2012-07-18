@@ -250,7 +250,7 @@ public class ImportDataDialog extends AImportDialog {
 				columnIDCategoryCombo.setEnabled(true);
 				rowIDCategoryCombo.setEnabled(true);
 
-				createDataPreviewTable();
+				createDataPreviewTableFromFile();
 			}
 		});
 
@@ -342,6 +342,8 @@ public class ImportDataDialog extends AImportDialog {
 		gridData.widthHint = 800;
 		previewTable.setLayoutData(gridData);
 
+		createTableInfo(parentComposite);
+
 		// Check if an external file name is given to the action
 		if (!inputFileName.isEmpty()) {
 			fileNameTextField.setText(inputFileName);
@@ -349,7 +351,7 @@ public class ImportDataDialog extends AImportDialog {
 			mathFilterMode = "Log10";
 			// mathFilterCombo.select(1);
 
-			createDataPreviewTable();
+			createDataPreviewTableFromFile();
 		}
 	}
 
@@ -767,10 +769,12 @@ public class ImportDataDialog extends AImportDialog {
 	}
 
 	@Override
-	protected void previewTableUpdated() {
+	protected void previewTableCreatedFromFile() {
 		columnOfRowIDSpinner.setMaximum(totalNumberOfColumns);
 		rowOfColumnIDSpinner.setMaximum(totalNumberOfRows);
 		numHeaderRowsSpinner.setMaximum(totalNumberOfRows);
+		showAllColumnsButton.setSelection(false);
+		showAllColumnsButton.setEnabled(true);
 	}
 
 }

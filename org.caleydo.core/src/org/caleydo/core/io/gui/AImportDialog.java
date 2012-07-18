@@ -26,12 +26,14 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
@@ -122,6 +124,11 @@ public abstract class AImportDialog extends Dialog {
 	protected ArrayList<Button> selectedColumnButtons = new ArrayList<Button>();
 
 	/**
+	 * Table editors that are associated with {@link #selectedColumnButtons}.
+	 */
+	protected ArrayList<TableEditor> tableEditors = new ArrayList<TableEditor>();
+
+	/**
 	 * {@link MatrixDefinition} of the dataset that shall be loaded.
 	 */
 	protected MatrixDefinition matrixDefinition;
@@ -163,6 +170,24 @@ public abstract class AImportDialog extends Dialog {
 	 * The total number of rows of the input file.
 	 */
 	protected int totalNumberOfRows;
+
+	/**
+	 * Button to specify whether all columns of the data file should be shown in
+	 * the {@link #previewTable}.
+	 */
+	protected Button showAllColumnsButton;
+
+	/**
+	 * Determines whether all columns of the data file shall be shown in the
+	 * {@link #previewTable}.
+	 */
+	protected boolean showAllColumns = false;
+
+	/**
+	 * Shows the total number columns in the data file and the number of
+	 * displayed columns of the {@link #previewTable}.
+	 */
+	protected Label tableInfoLabel;
 
 	/**
 	 * @param parent
@@ -326,7 +351,7 @@ public abstract class AImportDialog extends Dialog {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				matrixDefinition.setDelimiter(customizedDelimiterTextField.getText());
-				createDataPreviewTable();
+				createDataPreviewTableFromFile();
 				// composite.pack();
 			}
 
@@ -340,11 +365,11 @@ public abstract class AImportDialog extends Dialog {
 				if (selectedButton != delimiterButtons[5]) {
 					customizedDelimiterTextField.setEnabled(false);
 					matrixDefinition.setDelimiter((String) selectedButton.getData());
-					createDataPreviewTable();
+					createDataPreviewTableFromFile();
 				} else {
 					customizedDelimiterTextField.setEnabled(true);
 					matrixDefinition.setDelimiter(" ");
-					createDataPreviewTable();
+					createDataPreviewTableFromFile();
 				}
 			}
 		};
@@ -355,7 +380,82 @@ public abstract class AImportDialog extends Dialog {
 
 	}
 
-	protected void createDataPreviewTable() {
+	/**
+	 * Creates the {@link #previewTable} according to the {@link #dataMatrix}.
+	 */
+	protected void createDataPreviewTableFromDataMatrix() {
+
+		if (dataMatrix[0] == null)
+			return;
+
+		previewTable.removeAll();
+		for (TableColumn tmpColumn : previewTable.getColumns()) {
+			tmpColumn.dispose();
+		}
+
+		int numTableColumns = showAllColumns ? dataMatrix[0].length + 1 : Math.min(
+				dataMatrix[0].length + 1, MAX_PREVIEW_TABLE_COLUMNS + 1);
+
+		for (int i = 0; i < numTableColumns; i++) {
+			TableColumn column = new TableColumn(previewTable, SWT.NONE);
+			column.setWidth(100);
+		}
+
+		createUseColumnRow();
+
+		for (int i = 0; i < dataMatrix.length; i++) {
+			String[] dataRow = dataMatrix[i];
+			TableItem item = new TableItem(previewTable, SWT.NONE);
+			item.setText(0, "Row " + i + 1);
+			for (int j = 0; j < numTableColumns - 1; j++) {
+				item.setText(j + 1, dataRow[j]);
+			}
+		}
+
+		determineRowIDType();
+		updateTableColors();
+		updateTableInfoLabel();
+
+	}
+
+	/**
+	 * Creates a composite that contains the {@link #tableInfoLabel} and the
+	 * {@link #showAllColumnsButton}.
+	 * 
+	 * @param parent
+	 */
+	protected void createTableInfo(Composite parent) {
+		Composite tableInfoComposite = new Composite(parent, SWT.NONE);
+		tableInfoComposite.setLayout(new GridLayout(4, false));
+
+		tableInfoLabel = new Label(tableInfoComposite, SWT.NONE);
+
+		Label separator = new Label(tableInfoComposite, SWT.SEPARATOR | SWT.VERTICAL);
+		GridData separatorGridData = new GridData(SWT.CENTER, SWT.CENTER, false, false);
+		separatorGridData.heightHint = 16;
+		separator.setLayoutData(separatorGridData);
+		showAllColumnsButton = new Button(tableInfoComposite, SWT.CHECK);
+		showAllColumnsButton.setSelection(false);
+		showAllColumnsButton.setEnabled(false);
+		showAllColumnsButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				showAllColumns = showAllColumnsButton.getSelection();
+				createDataPreviewTableFromDataMatrix();
+			}
+
+		});
+
+		Label showAllColumnsLabel = new Label(tableInfoComposite, SWT.NONE);
+		showAllColumnsLabel.setText("Show all columns");
+	}
+
+	/**
+	 * Creates the {@link #previewTable} according to the data file. The
+	 * {@link #dataMatrix} is also created in this method.
+	 */
+	protected void createDataPreviewTableFromFile() {
 
 		String delimiter = matrixDefinition.getDelimiter();
 
@@ -370,9 +470,9 @@ public abstract class AImportDialog extends Dialog {
 			dataMatrix[i] = null;
 		}
 
-		final TableEditor editor = new TableEditor(previewTable);
-		editor.horizontalAlignment = SWT.LEFT;
-		editor.grabHorizontal = true;
+		// final TableEditor editor = new TableEditor(previewTable);
+		// editor.horizontalAlignment = SWT.LEFT;
+		// editor.grabHorizontal = true;
 
 		// Read preview table
 		BufferedReader file;
@@ -381,14 +481,6 @@ public abstract class AImportDialog extends Dialog {
 					.getResource(matrixDefinition.getDataSourcePath());
 
 			String line = "";
-
-			// Ignore unwanted header files of file
-			// for (int iIgnoreLineIndex = 0; iIgnoreLineIndex <
-			// matrixDefinition
-			// .getNumberOfHeaderLines() - 1; iIgnoreLineIndex++) {
-			// file.readLine();
-			// }
-
 			String nextToken = "";
 			StringTokenizer tokenizer;
 			TableColumn column;
@@ -413,21 +505,6 @@ public abstract class AImportDialog extends Dialog {
 						dataColumn.setText(nextToken);
 					}
 					totalNumberOfColumns++;
-
-					// dataColumn.addSelectionListener(new SelectionAdapter() {
-					// @Override
-					// public void widgetSelected(SelectionEvent e) {
-					// LabelEditorDialog dialog = new LabelEditorDialog(new
-					// Shell());
-					// String sLabel = dialog.open(dataColumn.getText());
-					//
-					// if (sLabel != null && !sLabel.isEmpty()) {
-					// dataColumn.setText(sLabel);
-					// }
-					// }
-					// });
-
-					// colIndex++;
 				}
 
 			}
@@ -466,10 +543,11 @@ public abstract class AImportDialog extends Dialog {
 
 		determineRowIDType();
 		updateTableColors();
+		updateTableInfoLabel();
 
 		parentComposite.pack();
 
-		previewTableUpdated();
+		previewTableCreatedFromFile();
 	}
 
 	private void readDataRow(String line, String delimiter, int rowIndex) {
@@ -512,6 +590,15 @@ public abstract class AImportDialog extends Dialog {
 		TableItem tmpItem = new TableItem(previewTable, SWT.NONE);
 		tmpItem.setText("Use column");
 
+		for (Button button : selectedColumnButtons) {
+			button.dispose();
+		}
+		selectedColumnButtons.clear();
+		for (TableEditor editor : tableEditors) {
+			editor.dispose();
+		}
+		tableEditors.clear();
+
 		Button skipButton;
 		for (int colIndex = 1; colIndex < previewTable.getColumnCount(); colIndex++) {
 			skipButton = new Button(previewTable, SWT.CHECK | SWT.CENTER);
@@ -545,6 +632,7 @@ public abstract class AImportDialog extends Dialog {
 			TableEditor editor = new TableEditor(previewTable);
 			editor.grabHorizontal = editor.grabVertical = true;
 			editor.setEditor(skipButton, tmpItem, colIndex);
+			tableEditors.add(editor);
 		}
 	}
 
@@ -709,6 +797,11 @@ public abstract class AImportDialog extends Dialog {
 	/**
 	 * Method that is called after the {@link #previewTable} was updated.
 	 */
-	protected abstract void previewTableUpdated();
+	protected abstract void previewTableCreatedFromFile();
+
+	protected void updateTableInfoLabel() {
+		tableInfoLabel.setText((previewTable.getColumnCount() - 1) + " of "
+				+ totalNumberOfColumns + " columns shown");
+	}
 
 }
