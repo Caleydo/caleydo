@@ -236,7 +236,7 @@ public class ImportDataDialog extends AImportDialog {
 				FileDialog fileDialog = new FileDialog(new Shell());
 				fileDialog.setText("Open");
 				fileDialog.setFilterPath(filePath);
-				String[] filterExt = { "*.csv", "*.txt", "*.*" };
+				String[] filterExt = { "*.csv;*.txt", "*.*" };
 				fileDialog.setFilterExtensions(filterExt);
 
 				inputFileName = fileDialog.open();
