@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Caleydo Core Libraries Plug-in
-Bundle-SymbolicName: org.caleydo.lib.core
+Bundle-SymbolicName: org.caleydo.lib.core;singleton:=true
 Bundle-Version: 2.0
 Bundle-ClassPath: lib/tagsoup/tagsoup-1.1.3.jar,
  lib/weka/weka.jar,
@@ -39,3 +39,4 @@ Export-Package: org.ccil.cowan.tagsoup;uses:="org.xml.sax.ext,org.xml.sax.helper
    weka.core.stemmers"
 Bundle-Vendor: www.caleydo.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
