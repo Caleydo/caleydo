@@ -19,19 +19,23 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui;
 
+import org.caleydo.core.startup.StartupProcessor;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.jface.wizard.WizardDialog;
 
 public class ImportDataHandler
 	extends AbstractHandler
 	implements IHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		DataImportWizard dataImportWizard = new DataImportWizard();
 
-		new ImportDataDialog(new Shell()).open();
+		new WizardDialog(StartupProcessor.get().getDisplay()
+				.getActiveShell(), dataImportWizard).open();
+//		new ImportDataDialog(new Shell()).open();
 		return null;
 	}
 }

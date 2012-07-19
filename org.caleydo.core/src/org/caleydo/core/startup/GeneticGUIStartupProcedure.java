@@ -22,6 +22,7 @@ package org.caleydo.core.startup;
 import java.io.File;
 import java.util.List;
 
+import org.caleydo.core.io.gui.DataImportWizard;
 import org.caleydo.core.io.gui.ImportDataDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.specialized.Organism;
@@ -29,6 +30,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 
@@ -73,17 +75,24 @@ public class GeneticGUIStartupProcedure extends AStartupProcedure {
 	public void execute() {
 		super.execute();
 
-		ImportDataDialog dialog;
+		if (loadSampleData) {
+			ImportDataDialog dialog = new ImportDataDialog(StartupProcessor.get()
+					.getDisplay().getActiveShell(), REAL_DATA_SAMPLE_FILE.replace("/",
+					File.separator));
+			if (Window.CANCEL == dialog.open())
+				StartupProcessor.get().shutdown();
+		} else {
+			// dialog = new ImportDataDialog(StartupProcessor.get().getDisplay()
+			// .getActiveShell());
 
-		if (loadSampleData)
-			dialog = new ImportDataDialog(StartupProcessor.get().getDisplay()
-					.getActiveShell(), REAL_DATA_SAMPLE_FILE.replace("/", File.separator));
-		else
-			dialog = new ImportDataDialog(StartupProcessor.get().getDisplay()
-					.getActiveShell());
+			DataImportWizard dataImportWizard = new DataImportWizard();
 
-		if (Window.CANCEL == dialog.open())
-			StartupProcessor.get().shutdown();
+			WizardDialog dialog = new WizardDialog(StartupProcessor.get().getDisplay()
+					.getActiveShell(), dataImportWizard);
+
+			if (Window.CANCEL == dialog.open())
+				StartupProcessor.get().shutdown();
+		}
 
 	}
 

@@ -20,9 +20,10 @@
 package org.caleydo.core.io.gui;
 
 import org.caleydo.core.gui.toolbar.action.AToolBarAction;
+import org.caleydo.core.startup.StartupProcessor;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.PlatformUI;
 
 public class ImportDataAction
@@ -44,6 +45,11 @@ public class ImportDataAction
 	public void run() {
 		super.run();
 
-		new ImportDataDialog(new Shell()).open();
+//		new ImportDataDialog(new Shell()).open();
+		
+		DataImportWizard dataImportWizard = new DataImportWizard();
+
+		new WizardDialog(StartupProcessor.get().getDisplay()
+				.getActiveShell(), dataImportWizard).open();
 	}
 }

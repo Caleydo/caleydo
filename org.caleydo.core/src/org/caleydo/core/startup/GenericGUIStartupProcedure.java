@@ -21,11 +21,13 @@ package org.caleydo.core.startup;
 
 import java.util.List;
 
+import org.caleydo.core.io.gui.DataImportWizard;
 import org.caleydo.core.io.gui.ImportDataDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 
 /**
  * Startup procedure for project wizard.
@@ -33,8 +35,7 @@ import org.eclipse.jface.window.Window;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GenericGUIStartupProcedure
-	extends AStartupProcedure {
+public class GenericGUIStartupProcedure extends AStartupProcedure {
 
 	public GenericGUIStartupProcedure() {
 		// Delete old workbench state
@@ -51,8 +52,12 @@ public class GenericGUIStartupProcedure
 	public void execute() {
 		super.execute();
 
-		ImportDataDialog dialog =
-			new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell());
+//		ImportDataDialog dialog = new ImportDataDialog(StartupProcessor.get()
+//				.getDisplay().getActiveShell());
+		DataImportWizard dataImportWizard = new DataImportWizard();
+
+		WizardDialog dialog = new WizardDialog(StartupProcessor.get().getDisplay()
+				.getActiveShell(), dataImportWizard);
 
 		if (Window.CANCEL == dialog.open())
 			StartupProcessor.get().shutdown();
@@ -61,17 +66,20 @@ public class GenericGUIStartupProcedure
 	@Override
 	public void addDefaultStartViews() {
 
-		List<Pair<String, String>> startViewWithDataDomain =
-			appInitData.getAppArgumentStartViewWithDataDomain();
+		List<Pair<String, String>> startViewWithDataDomain = appInitData
+				.getAppArgumentStartViewWithDataDomain();
 
-		// Do not add any default views if at least one view is specified as application argument
+		// Do not add any default views if at least one view is specified as
+		// application argument
 		if (!startViewWithDataDomain.isEmpty())
 			return;
 
-		// startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.browser", dataDomain
+		// startViewWithDataDomain.add(new Pair<String,
+		// String>("org.caleydo.view.browser", dataDomain
 		// .getDataDomainType()));
 		//
-		// startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.parcoords", dataDomain
+		// startViewWithDataDomain.add(new Pair<String,
+		// String>("org.caleydo.view.parcoords", dataDomain
 		// .getDataDomainType()));
 
 	}
