@@ -635,7 +635,6 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		// call after all other rendering because it calls the onDrag methods
 		// which need alpha blending...
 		dragAndDropController.handleDragging(gl, glMouseListener);
-		throw new IllegalStateException();
 	}
 
 	/**
