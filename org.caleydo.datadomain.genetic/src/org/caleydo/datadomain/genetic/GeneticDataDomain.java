@@ -25,7 +25,6 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
@@ -51,11 +50,8 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  */
 @XmlType
 @XmlRootElement
-public class GeneticDataDomain
-	extends ATableBasedDataDomain {
+public class GeneticDataDomain extends ATableBasedDataDomain {
 
-	
-		
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.genetic";
 
 	private static final String CLINICAL_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
@@ -85,27 +81,27 @@ public class GeneticDataDomain
 		super.init();
 	}
 
-	@Override
-	public void createDefaultConfiguration() {
-
-		configuration = new DataDomainConfiguration();
-		configuration.setDefaultConfiguration(true);
-
-		configuration.setRecordIDCategory("GENE");
-		configuration.setDimensionIDCategory("SAMPLE");
-
-
-	}
-
-	@Override
-	public void createDefaultConfigurationWithColumnsAsRecords() {
-
-		configuration = new DataDomainConfiguration();
-		configuration.setDefaultConfiguration(true);
-
-		configuration.setRecordIDCategory("SAMPLE");
-		configuration.setDimensionIDCategory("GENE");
-	}
+	// @Override
+	// public void createDefaultConfiguration() {
+	//
+	// configuration = new DataDomainConfiguration();
+	// configuration.setDefaultConfiguration(true);
+	//
+	// configuration.setRecordIDCategory("GENE");
+	// configuration.setDimensionIDCategory("SAMPLE");
+	//
+	//
+	// }
+	//
+	// @Override
+	// public void createDefaultConfigurationWithColumnsAsRecords() {
+	//
+	// configuration = new DataDomainConfiguration();
+	// configuration.setDefaultConfiguration(true);
+	//
+	// configuration.setRecordIDCategory("SAMPLE");
+	// configuration.setDimensionIDCategory("GENE");
+	// }
 
 	@Override
 	public void setTable(DataTable set) {
@@ -209,8 +205,8 @@ public class GeneticDataDomain
 		clinicalSelectionUpdateListener = new ForeignSelectionUpdateListener();
 		clinicalSelectionUpdateListener.setHandler(this);
 		clinicalSelectionUpdateListener.setExclusiveDataDomainID(clinicalDataDomainID);
-		eventPublisher
-				.addListener(SelectionUpdateEvent.class, clinicalSelectionUpdateListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class,
+				clinicalSelectionUpdateListener);
 
 		clinicalSelectionCommandListener = new ForeignSelectionCommandListener();
 		clinicalSelectionCommandListener.setHandler(this);
@@ -255,7 +251,8 @@ public class GeneticDataDomain
 			for (SelectionDeltaItem item : delta) {
 				SelectionDeltaItem convertedItem = new SelectionDeltaItem();
 				convertedItem.setSelectionType(item.getSelectionType());
-				Integer converteID = convertClinicalExperimentToGeneticExperiment(item.getID());
+				Integer converteID = convertClinicalExperimentToGeneticExperiment(item
+						.getID());
 				if (converteID == null)
 					continue;
 
@@ -267,8 +264,7 @@ public class GeneticDataDomain
 			resendEvent.setSelectionDelta((SelectionDelta) convertedDelta);
 
 			eventPublisher.triggerEvent(resendEvent);
-		}
-		else
+		} else
 			return;
 	}
 
@@ -296,7 +292,8 @@ public class GeneticDataDomain
 	}
 
 	// FIXME its not clear which dimension va should be updated here
-	private Integer convertClinicalExperimentToGeneticExperiment(Integer clinicalContentIndex) {
+	private Integer convertClinicalExperimentToGeneticExperiment(
+			Integer clinicalContentIndex) {
 		return null;
 	}
 
@@ -328,10 +325,11 @@ public class GeneticDataDomain
 	// }
 
 	@Override
-	public void handleForeignSelectionCommand(String dataDomainType, IDCategory idCategory,
-			SelectionCommand selectionCommand) {
+	public void handleForeignSelectionCommand(String dataDomainType,
+			IDCategory idCategory, SelectionCommand selectionCommand) {
 
-		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE && idCategory == dimensionIDCategory) {
+		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE
+				&& idCategory == dimensionIDCategory) {
 			SelectionCommandEvent newCommandEvent = new SelectionCommandEvent();
 			newCommandEvent.setSelectionCommand(selectionCommand);
 			newCommandEvent.tableIDCategory(idCategory);
@@ -431,8 +429,7 @@ public class GeneticDataDomain
 		if (isGeneRecord()) {
 			recordID = geneID;
 			dimensionID = experimentID;
-		}
-		else {
+		} else {
 			recordID = experimentID;
 			dimensionID = geneID;
 		}

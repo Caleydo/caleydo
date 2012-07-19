@@ -17,11 +17,12 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.id;
+package org.caleydo.core.id.object;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
+
 
 /**
  * Returns a system-wide unique id for the different managed units

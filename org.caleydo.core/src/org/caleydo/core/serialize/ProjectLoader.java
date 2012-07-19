@@ -37,6 +37,8 @@ import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IDTypeInitializer;
+import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.manager.BasicInformation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
@@ -161,7 +163,8 @@ public class ProjectLoader {
 		serializationData = new SerializationData();
 
 		for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
-
+			DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
+			IDTypeInitializer.initIDs(dataSetDescription);
 			dataDomain.init();
 			// Register data domain by hand because it restored from the
 			// serialization and not created via the

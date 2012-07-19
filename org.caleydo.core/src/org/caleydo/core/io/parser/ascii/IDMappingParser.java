@@ -26,8 +26,10 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.MappingType;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
@@ -56,6 +58,67 @@ public class IDMappingParser extends ATextParser {
 	/** Defines the token separator. TAB is default. */
 	protected String tokenSeparator = TAB;
 
+	
+	/**
+	 * Creates an ID mapping for the id types specified by parsing the supplied
+	 * file.
+	 * 
+	 * @param filePath
+	 *            the path to the file containing the mapping file
+	 * @param startParsingAtLine
+	 *            the line at which to start the parsing
+	 * @param stopParsingAtLine
+	 *            the line at which to stop the parsing
+	 * @param codeResolvingLUTMappingType
+	 * @param delimiter
+	 * @param idCategory
+	 * @param isMultiMap
+	 * @param createReverseMap
+	 * @param resolveCodeMappingUsingCodeToId_LUT
+	 *            Boolean indicates if one column of the mapping needs to be
+	 *            resolved. Resolving means replacing codes by internal IDs.
+	 */
+	public static void loadMapping(String filePath, int startParsingAtLine,
+			int stopParsingAtLine, IDType fromIDType, IDType toIDType, String delimiter,
+			IDCategory idCategory, boolean isMultiMap, boolean createReverseMap,
+			boolean resolveCodeMappingUsingCodeToId_LUT, IDType codeResolvedFromIDType,
+			IDType codeResolvedToIDType) {
+
+		IDMappingParser idMappingParser = null;
+
+		if (filePath.contains("ORGANISM")) {
+			Organism eOrganism = GeneralManager.get().getBasicInfo().getOrganism();
+			filePath = filePath.replace("ORGANISM", eOrganism.toString());
+		}
+
+		// FIXME: Currently we do not have the ensembl mapping table for home
+		// sapiens
+		if (filePath.contains("HOMO_SAPIENS") && filePath.contains("ENSEMBL"))
+			return;
+
+		if (idCategory == null)
+			throw new IllegalStateException("ID Category was null");
+		IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
+				.getIDMappingManager(idCategory);
+		MappingType mappingType = idMappingManager.createMap(fromIDType, toIDType,
+				isMultiMap, createReverseMap);
+
+		if (resolveCodeMappingUsingCodeToId_LUT) {
+
+			idMappingManager.createCodeResolvedMap(mappingType, codeResolvedFromIDType,
+					codeResolvedToIDType);
+		}
+
+		if (!filePath.equals("already_loaded")) {
+			idMappingParser = new IDMappingParser(idCategory, filePath, mappingType);
+			idMappingParser.setTokenSeperator(delimiter);
+			idMappingParser.setStartParsingAtLine(startParsingAtLine);
+			idMappingParser.setStopParsingAtLine(stopParsingAtLine);
+			idMappingParser.loadData();
+		}
+	}
+	
+	
 	/**
 	 * Constructor.
 	 */
@@ -68,6 +131,8 @@ public class IDMappingParser extends ATextParser {
 		this.idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
 				idCategory);
 	}
+
+	
 
 	/**
 	 * Set the current token separator.

@@ -34,7 +34,7 @@ import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.id.ManagedObjectType;
+import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.AUniqueObject;
 import org.caleydo.core.util.base.IUniqueObject;

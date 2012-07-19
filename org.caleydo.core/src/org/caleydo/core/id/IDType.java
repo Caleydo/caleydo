@@ -48,7 +48,7 @@ import org.eclipse.core.runtime.Status;
  * {@link #idTypeParsingRules}).
  * </p>
  * <p>
- * This class also is a singleton that manages all IDTypes.
+ * This class is also a singleton that manages all IDTypes.
  * </p>
  * 
  * @author Alexander Lex
@@ -56,13 +56,6 @@ import org.eclipse.core.runtime.Status;
 public class IDType {
 
 	private static HashMap<String, IDType> registeredTypes = new HashMap<String, IDType>();
-
-	/**
-	 * Type name that needs to be a unique value for every new IDType. Besides
-	 * being unique, it should also be human-readable to some extend, to make
-	 * debugging easier.
-	 */
-	private String typeName;
 
 	/**
 	 * The {@link IDCategory} of an {@link IDType} specifies to which category
@@ -73,14 +66,22 @@ public class IDType {
 	private IDCategory idCategory;
 
 	/**
+	 * Type name that needs to be a unique value for every new IDType. Besides
+	 * being unique, it should also be human-readable to some extend, to make
+	 * debugging easier.
+	 */
+	private String typeName;
+
+	/**
 	 * Specifies the data type of the IDType. Allowed values are
 	 * {@link EDataType#INT} and {@link EDataType#STRING}
 	 */
-	private EDataType columnType;
+	private EDataType dataType;
+
 	/**
 	 * flag determining whether a type is internal only, meaning that it is
-	 * dynamically generated using a running number (true), or publicly known
-	 * (eg refseq)
+	 * dynamically generated using, e.g., a running number (true), or an
+	 * externally provided ID (e.g., refseq, false)
 	 */
 	private boolean isInternalType = false;
 
@@ -92,7 +93,7 @@ public class IDType {
 	private IDType(String typeName, IDCategory idCategory, EDataType dimensionType) {
 		this.typeName = typeName;
 		this.idCategory = idCategory;
-		this.columnType = dimensionType;
+		this.dataType = dimensionType;
 	}
 
 	/**
@@ -109,8 +110,8 @@ public class IDType {
 	 * 
 	 * @param idCategory
 	 */
-	public void setDimensionType(EDataType dimensionType) {
-		this.columnType = dimensionType;
+	public void setDataType(EDataType dataType) {
+		this.dataType = dataType;
 	}
 
 	/**
@@ -139,7 +140,7 @@ public class IDType {
 	 * @param idCategory
 	 *            see {@link #idCategory}
 	 * @param columnType
-	 *            see {@link #columnType}
+	 *            see {@link #dataType}
 	 * @return the created ID Type
 	 */
 	public static IDType registerType(String typeName, IDCategory idCategory,
@@ -213,10 +214,10 @@ public class IDType {
 	}
 
 	/**
-	 * @return the columnType, see {@link #columnType}
+	 * @return the columnType, see {@link #dataType}
 	 */
 	public EDataType getColumnType() {
-		return columnType;
+		return dataType;
 	}
 
 	/**

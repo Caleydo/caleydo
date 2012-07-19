@@ -38,7 +38,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.view.tablebased.HideHeatMapElementsEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.id.ManagedObjectType;
+import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.mapping.color.IColorMappingUpdateListener;

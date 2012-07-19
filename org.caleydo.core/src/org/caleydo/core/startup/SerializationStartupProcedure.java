@@ -100,7 +100,7 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 		}
 
 		deserializeData(serializationDataList);
-		generateSampleIntIDs();
+//		generateSampleIntIDs();
 	}
 
 	private void deserializeData(SerializationData serializationDataList) {
@@ -135,62 +135,62 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 
 	// FIXME this is probably the worst place ever for this and it's not general
 	// at all
-	private void generateSampleIntIDs() {
-		IDCategory sampleIDCategory = IDCategory.getIDCategory("SAMPLE");
-		IDType sampleIDType = IDType.getIDType("SAMPLE");
-		IDType sampleIntIDType = IDType.getIDType("SAMPLE_INT");
-
-		IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
-				.getIDMappingManager(sampleIDCategory);
-		MappingType sampleMappingType = idMappingManager.createMap(sampleIDType,
-				sampleIntIDType, false, true);
-		Map<String, Integer> sampleIDMap = idMappingManager.getMap(sampleMappingType);
-
-		// Merge SAMPLE maps from each data set to one
-		int generatedSampleID = 0;
-		for (DataDomainSerializationData dataSerializationData : serializationDataList
-				.getDataDomainSerializationDataList()) {
-			ADataDomain dataDomain = dataSerializationData.getDataDomain();
-
-			if (dataDomain instanceof ATableBasedDataDomain) {
-				ATableBasedDataDomain tableDataDomain = (ATableBasedDataDomain) dataDomain;
-
-				IDType sourceIDType;
-
-				if (tableDataDomain.getRecordIDCategory() == sampleIDCategory)
-					sourceIDType = tableDataDomain.getRecordIDType();
-				else if (tableDataDomain.getDimensionIDCategory() == sampleIDCategory)
-					sourceIDType = tableDataDomain.getDimensionIDType();
-				else {
-					Logger.log(new Status(Status.ERROR, this.toString(),
-							"No sample ID Category specified"));
-					continue;
-				}
-
-				MappingType mappingType = null;
-
-				// FIXME marc look into this please!
-				mappingType = idMappingManager.getMappingType(sampleIDType + "_2_"
-						+ sourceIDType);
-
-				if (mappingType == null) {
-					Logger.log(new Status(Status.ERROR, this.toString(),
-							"Could not create mappingType for: " + sampleIDType + " - "
-									+ tableDataDomain.getRecordIDType()));
-					continue;
-				}
-				for (Object sampleID : idMappingManager.getMap(mappingType).keySet()) {
-					if (sampleIDMap.containsKey(sampleID))
-						continue;
-
-					idMappingManager.addMapping(sampleMappingType, (String) sampleID, generatedSampleID++);
-//					sampleIDMap.put(, );
-				}
-			}
-		}
-
-//		idMappingManager.createReverseMap(sampleMappingType);
-	}
+//	private void generateSampleIntIDs() {
+//		IDCategory sampleIDCategory = IDCategory.getIDCategory("SAMPLE");
+//		IDType sampleIDType = IDType.getIDType("SAMPLE");
+//		IDType sampleIntIDType = IDType.getIDType("SAMPLE_INT");
+//
+//		IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
+//				.getIDMappingManager(sampleIDCategory);
+//		MappingType sampleMappingType = idMappingManager.createMap(sampleIDType,
+//				sampleIntIDType, false, true);
+//		Map<String, Integer> sampleIDMap = idMappingManager.getMap(sampleMappingType);
+//
+//		// Merge SAMPLE maps from each data set to one
+//		int generatedSampleID = 0;
+//		for (DataDomainSerializationData dataSerializationData : serializationDataList
+//				.getDataDomainSerializationDataList()) {
+//			ADataDomain dataDomain = dataSerializationData.getDataDomain();
+//
+//			if (dataDomain instanceof ATableBasedDataDomain) {
+//				ATableBasedDataDomain tableDataDomain = (ATableBasedDataDomain) dataDomain;
+//
+//				IDType sourceIDType;
+//
+//				if (tableDataDomain.getRecordIDCategory() == sampleIDCategory)
+//					sourceIDType = tableDataDomain.getRecordIDType();
+//				else if (tableDataDomain.getDimensionIDCategory() == sampleIDCategory)
+//					sourceIDType = tableDataDomain.getDimensionIDType();
+//				else {
+//					Logger.log(new Status(Status.ERROR, this.toString(),
+//							"No sample ID Category specified"));
+//					continue;
+//				}
+//
+//				MappingType mappingType = null;
+//
+//				// FIXME marc look into this please!
+//				mappingType = idMappingManager.getMappingType(sampleIDType + "_2_"
+//						+ sourceIDType);
+//
+//				if (mappingType == null) {
+//					Logger.log(new Status(Status.ERROR, this.toString(),
+//							"Could not create mappingType for: " + sampleIDType + " - "
+//									+ tableDataDomain.getRecordIDType()));
+//					continue;
+//				}
+//				for (Object sampleID : idMappingManager.getMap(mappingType).keySet()) {
+//					if (sampleIDMap.containsKey(sampleID))
+//						continue;
+//
+//					idMappingManager.addMapping(sampleMappingType, (String) sampleID, generatedSampleID++);
+////					sampleIDMap.put(, );
+//				}
+//			}
+//		}
+//
+////		idMappingManager.createReverseMap(sampleMappingType);
+//	}
 
 	public void loadSampleProject(boolean loadSampleProject) {
 		this.loadSampleProject = loadSampleProject;

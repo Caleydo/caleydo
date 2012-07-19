@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.collection.MultiHashMap;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -36,15 +38,74 @@ import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 
 /**
- * Provides methods for mapping different IDTypes using a graph of Maps.
+ * <p>
+ * Handles the mapping between IDs of different {@link IDType}s that share a
+ * common {@link IDCategory}.
+ * </p>
+ * <p>
+ * Mappings between several different types of IDs make the relationships
+ * between multiple datasets possible. The <code>IDMappingManager</code>
+ * provides utilities for such a mapping for identifiers of a common family.
+ * This family relationship is expressed by the {@link IDCategory} of this
+ * manager. All {@link IDType}s that can be mapped to one an other have to
+ * belong to the same <code>IDCategory</code>.
+ * </p>
+ * <p>
+ * The mapping manager contains a list of maps which are defined through their
+ * {@link MappingType}, which basically contains a two id types, the
+ * "fromIDType" which corresponds to the key of a map, and the "toIDType" which
+ * is the value of the map.
+ * </p>
+ * <p>
+ * Every <code>IDCategory</code> contains a <b>primary mapping type</b>. This
+ * primary mapping type can be <b>externally provided</b>, in which case the
+ * manager assumes that all maps are somehow connected through this external
+ * type, or it can be <b>automatically created</b>, in which case the mapping
+ * manager creates a mapping for every type where
+ * {@link IDType#isInternalType()} is false. The primary mapping type must be of
+ * data type Integer, which guarantees that for every IDCategory there is an
+ * Identifier that can be used with Classes such as {@link VirtualArray}s and
+ * {@link SelectionManager}s.
+ * </p>
+ * <p>
+ * Maps can either contain only unique mappings (for every key ID exactly one
+ * value ID), or accommodate multi-mappings (for every key ID multiple value
+ * IDs.
+ * </p>
+ * <p>
+ * Maps can also be specified to be backed by <b>reverse maps</b> where the key
+ * and value are exchanged. If a reverse map is desired it is created and
+ * maintained automatically.
+ * </p>
+ * 
+ * <h2>Known Issues</h2>
+ * <p>
+ * Multi-mapping works in general, but it's not clear how it is preserved e.g.
+ * in reverse maps
+ * </p>
+ * <p>
+ * Code-resolved maps only work for special cases
+ * </p>
+ * 
+ * <p>
+ * TODO: implement search feature
+ * </p>
  * 
  * @author Marc Streit
  * @author Alexander Lex
  * @author Christian Partl
+ * 
  */
 public class IDMappingManager {
 
+	/**
+	 * The {@link IDCategory} for which this mapping manager provides the
+	 * mapping
+	 */
 	private IDCategory idCategory;
+
+	/** A counter for dynamically created primary IDs */
+	private int primaryTypeCounter = 0;
 
 	/**
 	 * HashMap that contains all mappings identified by their MappingType.
@@ -73,9 +134,13 @@ public class IDMappingManager {
 	}
 
 	/**
+	 * <p>
 	 * Adds a new map for the specified mapping type. To fill that map with
-	 * elements, use the method {@link #getMap(MappingType)} after calling this
-	 * one.
+	 * elements, use the {@link #addMapping(MappingType, Object, Object)}
+	 * method.
+	 * </p>
+	 * <p>
+	 * </p>
 	 * 
 	 * @param <K>
 	 *            Type of Keys of the map
@@ -125,11 +190,30 @@ public class IDMappingManager {
 			createReverseMap(mappingType);
 		}
 
+		if (idCategory.isPrimaryMappingTypeDefault()) {
+			// in this case we need to create a mapping for the primary type to
+			// non-internal types
+			if (!fromIDType.isInternalType()
+					&& !fromIDType.equals(idCategory.getPrimaryMappingType())
+					&& MappingType
+							.getType(fromIDType, idCategory.getPrimaryMappingType()) == null) {
+				createMap(fromIDType, idCategory.getPrimaryMappingType(), false, true);
+			}
+
+			if (!toIDType.isInternalType()
+					&& !toIDType.equals(idCategory.getPrimaryMappingType())
+					&& MappingType.getType(toIDType, idCategory.getPrimaryMappingType()) == null) {
+				createMap(toIDType, idCategory.getPrimaryMappingType(), false, true);
+			}
+		}
+
 		return mappingType;
 	}
 
 	/**
-	 * Creates a reverse map to an already existent map.
+	 * Creates a reverse map to an already existing map.
+	 * 
+	 * TODO: Check how multi-mapping is handled.
 	 * 
 	 * @param <SrcType>
 	 * @param <DestType>
@@ -195,6 +279,8 @@ public class IDMappingManager {
 	 * Method takes a map that contains identifier codes and creates a new
 	 * resolved codes. Resolving means mapping from code to internal ID.
 	 * 
+	 * TODO: several cases are not handled
+	 * 
 	 * @param <KeyType>
 	 * @param <ValueType>
 	 * @param mappingType
@@ -205,6 +291,7 @@ public class IDMappingManager {
 	public <KeyType, ValueType> void createCodeResolvedMap(MappingType mappingType,
 			IDType codeResolvedFromType, IDType codeResolvedToType) {
 
+		@SuppressWarnings("rawtypes")
 		Map codeResolvedMap = null;
 
 		IDType originKeyType = mappingType.getFromIDType();
@@ -389,8 +476,11 @@ public class IDMappingManager {
 	 *            Mapping type that identifies the map.
 	 * @return Map that corresponds to the specified mapping type. If no such
 	 *         map exists, null is returned.
+	 * @deprecated replace with search feature, maps shouldn't be exposed
+	 *             externally
 	 */
 	@SuppressWarnings("unchecked")
+	@Deprecated
 	public <KeyType, ValueType> Map<KeyType, ValueType> getMap(MappingType type) {
 		return (Map<KeyType, ValueType>) hashMappingType2Map.get(type);
 	}
@@ -423,17 +513,60 @@ public class IDMappingManager {
 			reverseMap.put(toID, fromID);
 		}
 
+		if (idCategory.isPrimaryMappingTypeDefault()) {
+			// in this case we need to create a mapping for the primary type to
+			// non-internal types
+			IDType fromIDType = mappingType.getFromIDType();
+			IDType toIDType = mappingType.getToIDType();
+
+			Integer primaryTypeID = null;
+
+			if (!fromIDType.isInternalType()
+					&& !fromIDType.equals(idCategory.getPrimaryMappingType())) {
+				MappingType fromToPrimaryMapping = MappingType.getType(fromIDType,
+						idCategory.getPrimaryMappingType());
+				if (getID(fromIDType, idCategory.getPrimaryMappingType(), fromID) == null) {
+					primaryTypeID = primaryTypeCounter++;
+					addMapping(fromToPrimaryMapping, fromID, primaryTypeID);
+				}
+			}
+
+			if (!toIDType.isInternalType()
+					&& !toIDType.equals(idCategory.getPrimaryMappingType())) {
+				MappingType toToPrimaryMapping = MappingType.getType(toIDType,
+						idCategory.getPrimaryMappingType());
+				if (getID(toIDType, idCategory.getPrimaryMappingType(), toID) == null) {
+					if (primaryTypeID == null)
+						primaryTypeID = primaryTypeCounter++;
+					addMapping(toToPrimaryMapping, toID, primaryTypeID);
+				}
+			}
+		}
 	}
 
 	/**
-	 * Returns, whether a mapping is possible from the specified source IDType
-	 * to the destination IDType.
+	 * Convenience wrapper of {@link #addMapping(MappingType, Object, Object)}
+	 * containing {@link IDType}s instead of a {@link MappingType}
+	 * 
+	 * @param fromIDType
+	 * @param fromID
+	 * @param toIDType
+	 * @param toID
+	 */
+	public <KeyType, ValueType> void addMapping(IDType fromIDType, KeyType fromID,
+			IDType toIDType, ValueType toID) {
+		addMapping(MappingType.getType(fromIDType, toIDType), fromID, toIDType);
+	}
+
+	/**
+	 * Checks whether a mapping is possible from the specified source IDType to
+	 * the destination IDType.
 	 * 
 	 * @param source
 	 *            Source IDType of the mapping.
 	 * @param destination
 	 *            Destination IDType of the mapping.
-	 * @return True, if a mapping is possible, false otherwise.
+	 * @return true, if a mapping is possible, false otherwise.
 	 */
 	public final boolean hasMapping(IDType source, IDType destination) {
 
@@ -451,9 +584,9 @@ public class IDMappingManager {
 	 * Tries to find the mapping from the source IDType to the destination
 	 * IDType of the specified sourceID along a path of IDTypes where mappings
 	 * exist. If no such path is found, null is returned. If the path includes
-	 * multimappings, a Set of values is returned. Note that there will always
-	 * be chosen a path that does not include multimappings over paths that
-	 * include multimappings if more than one path exists.
+	 * multi-mappings, a Set of values is returned. Note that there will always
+	 * be chosen a path that does not include multi-mappings over paths that
+	 * include multi-mappings if more than one path exists.
 	 * 
 	 * @param <K>
 	 *            Type of the sourceID
@@ -470,7 +603,6 @@ public class IDMappingManager {
 	 * @deprecated use {@link #getIDAsSet(IDType, IDType, Object)} instead
 	 */
 	@SuppressWarnings("unchecked")
-	@Deprecated
 	public <K, V> V getID(IDType source, IDType destination, K sourceID) {
 
 		if (source.equals(destination))
@@ -635,17 +767,6 @@ public class IDMappingManager {
 		return setResult;
 	}
 
-	// @Override
-	// public List<IDType> getIDTypes(EIDCategory category) {
-	// ArrayList<IDType> idTypes = new ArrayList<IDType>();
-	//
-	// for (IDType idType : mappingGraph.vertexSet()) {
-	// if (idType.getCategory().equals(category))
-	// idTypes.add(idType);
-	// }
-	// return idTypes;
-	// }
-
 	// public void printGraph() {
 	// System.out.println(mappingGraph.toString());
 	// }
@@ -687,18 +808,17 @@ public class IDMappingManager {
 			idTypes.add(mappingType.getFromIDType());
 			idTypes.add(mappingType.getToIDType());
 		}
-
 		return idTypes;
 	}
 
-	/**
-	 * Returns all mapping types of currently loaded mappings.
-	 * 
-	 * @return
-	 */
-	public MappingType getMappingType(String mappingTypeString) {
-		return hashMappingTypeString2MappingType.get(mappingTypeString);
-	}
+//	/**
+//	 * Returns all mapping types of currently loaded mappings.
+//	 * 
+//	 * @return
+//	 */
+//	public MappingType getMappingType(String mappingTypeString) {
+//		return hashMappingTypeString2MappingType.get(mappingTypeString);
+//	}
 
 	@Override
 	public String toString() {

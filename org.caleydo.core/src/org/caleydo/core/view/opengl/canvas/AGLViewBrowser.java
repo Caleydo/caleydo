@@ -39,7 +39,7 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.ViewActivationEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
-import org.caleydo.core.id.ManagedObjectType;
+import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;

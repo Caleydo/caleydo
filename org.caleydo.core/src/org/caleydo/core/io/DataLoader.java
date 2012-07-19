@@ -23,23 +23,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IDTypeInitializer;
 import org.caleydo.core.io.parser.ascii.GroupingParser;
 import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
-import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
-import org.eclipse.core.runtime.Status;
 
 /**
  * Creates datadomains, perspectives, etc based on a {@link DataSetDescription}
@@ -50,11 +47,13 @@ import org.eclipse.core.runtime.Status;
 public class DataLoader {
 
 	/**
-	 * Loads the datasets, groupings and does the processing of the data as
-	 * defined in the {@link DataSetDescription}
+	 * Initializes the {@link IDType}s and {@link IDCategory}s associated with
+	 * this dataset, loads the dataset, groupings and does the processing of the
+	 * data as defined in the {@link DataSetDescription}
 	 */
 	public static ATableBasedDataDomain loadData(DataSetDescription dataSetDescription)
 			throws FileNotFoundException, IOException {
+		IDTypeInitializer.initIDs(dataSetDescription);
 		ATableBasedDataDomain dataDomain = loadDataSet(dataSetDescription);
 		loadGroupings(dataDomain, dataSetDescription);
 		runDataProcessing(dataDomain, dataSetDescription);
@@ -63,144 +62,38 @@ public class DataLoader {
 
 	private static ATableBasedDataDomain loadDataSet(DataSetDescription dataSetDescription)
 			throws FileNotFoundException, IOException {
-		String dimensionIDCategoryName;
-		String dimensionIDTypeName;
-		String recordIDCategoryName;
-		String recordIDTypeName;
-
-		IDSpecification rowIDSpecification = dataSetDescription.getRowIDSpecification();
-		if (rowIDSpecification == null) {
-			rowIDSpecification = new IDSpecification();
-			rowIDSpecification.setIDSpecification(dataSetDescription.getDataSetName()
-					+ "_row", dataSetDescription.getDataSetName() + "_row");
-			dataSetDescription.setRowIDSpecification(rowIDSpecification);
-			Logger.log(new Status(Status.INFO, "DataLoader",
-					"Automatically creating row ID specification for "
-							+ dataSetDescription.getDataSetName()));
-
-		}
-		IDSpecification columnIDSpecification = dataSetDescription
-				.getColumnIDSpecification();
-		if (columnIDSpecification == null) {
-			columnIDSpecification = new IDSpecification();
-			columnIDSpecification.setIDSpecification(dataSetDescription.getDataSetName()
-					+ "_column", dataSetDescription.getDataSetName() + "_column");
-			dataSetDescription.setColumnIDSpecification(columnIDSpecification);
-			Logger.log(new Status(Status.INFO, "DataLoader",
-					"Automatically creating column ID specification for "
-							+ dataSetDescription.getDataSetName()));
-		}
-
-		if (dataSetDescription.isTransposeMatrix()) {
-			dimensionIDTypeName = rowIDSpecification.getIdType();
-			dimensionIDCategoryName = rowIDSpecification.getIdCategory();
-
-			recordIDTypeName = columnIDSpecification.getIdType();
-			recordIDCategoryName = columnIDSpecification.getIdCategory();
-		} else {
-			dimensionIDTypeName = columnIDSpecification.getIdType();
-			dimensionIDCategoryName = columnIDSpecification.getIdCategory();
-
-			recordIDTypeName = rowIDSpecification.getIdType();
-			recordIDCategoryName = rowIDSpecification.getIdCategory();
-		}
-
-		if (dimensionIDCategoryName == null)
-			dimensionIDCategoryName = dimensionIDTypeName;
-		if (recordIDCategoryName == null)
-			recordIDCategoryName = recordIDTypeName;
-
-		IDCategory dimensionIDCategory = IDCategory
-				.getIDCategory(dimensionIDCategoryName);
-		if (dimensionIDCategory == null) {
-			dimensionIDCategory = IDCategory.registerCategory(dimensionIDCategoryName);
-		}
-
-		IDCategory recodIDCategory = IDCategory.getIDCategory(recordIDCategoryName);
-		if (recodIDCategory == null) {
-			recodIDCategory = IDCategory.registerCategory(recordIDCategoryName);
-		}
-
-		IDType recordIDType = IDType.getIDType(recordIDTypeName);
-		if (recordIDType == null) {
-			recordIDType = IDType.registerType(recordIDTypeName, recodIDCategory,
-					EDataType.STRING);
-		}
-
-		IDType dimensionIDType = IDType.getIDType(dimensionIDTypeName);
-		if (dimensionIDType == null) {
-			dimensionIDType = IDType.registerType(dimensionIDTypeName,
-					dimensionIDCategory, EDataType.STRING);
-		}
 
 		ATableBasedDataDomain dataDomain;
 
-		DataDomainConfiguration dataDomainConfiguration = new DataDomainConfiguration();
-		dataDomainConfiguration.setRecordIDCategory(recordIDCategoryName);
-		dataDomainConfiguration.setDimensionIDCategory(dimensionIDCategoryName);
+		IDSpecification columnIDSpecification = dataSetDescription
+				.getColumnIDSpecification();
+		IDSpecification rowIDSpecification = dataSetDescription.getRowIDSpecification();
 
 		if ((rowIDSpecification.isIDTypeGene() && !dataSetDescription.isTransposeMatrix())
 				|| (columnIDSpecification.isIDTypeGene() && dataSetDescription
 						.isTransposeMatrix())) {
-			// dataDomainConfiguration.setPrimaryRecordMappingType("DAVID");
-			// dataDomainConfiguration.setRecordDenominationSingular("Gene");
-			// dataDomainConfiguration.setRecordDenominationPlural("Genes");
-
-			// dataDomainConfiguration.setPrimaryDimensionMappingType(dimensionIDType
-			// + "_INT");
-			// dataDomainConfiguration.setHumanReadableRecordIDType("GENE_SYMBOL");
-			// dataDomainConfiguration.setHumanReadableDimensionIDType(dimensionIDType);
 
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.createDataDomain("org.caleydo.datadomain.genetic",
-							dataDomainConfiguration);
+							dataSetDescription);
 
 		} else if ((columnIDSpecification.isIDTypeGene() && !dataSetDescription
 				.isTransposeMatrix())
 				|| (rowIDSpecification.isIDTypeGene() && dataSetDescription
 						.isTransposeMatrix())) {
 
-			// dataDomainConfiguration.setPrimaryDimensionMappingType("DAVID");
-			// dataDomainConfiguration.setDimensionDenominationSingular("Gene");
-			// dataDomainConfiguration.setDimensionDenominationPlural("Genes");
-			// dataDomainConfiguration.setPrimaryRecordMappingType(recordIDType
-			// + "_INT");
-
-			// dataDomainConfiguration.setHumanReadableRecordIDType(recordIDType);
-			// dataDomainConfiguration.setHumanReadableDimensionIDType("GENE_SYMBOL");
-
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.createDataDomain("org.caleydo.datadomain.genetic",
-							dataDomainConfiguration);
+							dataSetDescription);
 
 		} else {
 
-			// dataDomainConfiguration.setRecordDenominationPlural(recordIDType
-			// + "s");
-			// dataDomainConfiguration.setRecordDenominationSingular(recordIDType);
-			//
-			//
-			// dataDomainConfiguration.setDimensionDenominationSingular(dimensionIDType);
-			// dataDomainConfiguration.setDimensionDenominationPlural(dimensionIDType
-			// + "s");
-			//
-			// dataDomainConfiguration.setHumanReadableRecordIDType(recordIDType);
-			// dataDomainConfiguration.setHumanReadableDimensionIDType(dimensionIDType);
-
-			// dataDomainConfiguration.setPrimaryRecordMappingType(recordIDType
-			// + "_INT");
-			// dataDomainConfiguration.setPrimaryDimensionMappingType(dimensionIDType);
-
-			// TODO: check for plug-in?
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.createDataDomain("org.caleydo.datadomain.generic",
-							dataDomainConfiguration);
-			// dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
-			// .createDataDomain(GenericDataDomain.DATA_DOMAIN_TYPE,
-			// dataDomainConfiguration);
+							dataSetDescription);
+
 		}
 
-		dataDomain.setDataSetDescription(dataSetDescription);
 		dataDomain.setColorMapper(ColorMapper
 				.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED));
 
@@ -294,9 +187,9 @@ public class DataLoader {
 	 */
 	private static void loadGroupings(ATableBasedDataDomain dataDomain,
 			DataSetDescription dataSetDescription) {
+		
 		ArrayList<GroupingParseSpecification> columnGroupingSpecifications = dataSetDescription
 				.getColumnGroupingSpecifications();
-
 		if (columnGroupingSpecifications != null) {
 
 			IDType sourceIDType, targetIDType;

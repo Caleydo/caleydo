@@ -26,7 +26,7 @@ import java.util.List;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.id.ManagedObjectType;
+import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.net.Connection;
 import org.caleydo.core.net.ENetworkStatus;

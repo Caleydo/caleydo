@@ -36,11 +36,20 @@ import org.eclipse.core.runtime.Status;
  * {@link IDMappingManager}.
  * </p>
  * <p>
- * An IDCategory also holds a {@link #primaryMappingType}, which must be set
- * after the IDType itself was created.
+ * For every <code>IDCategory</code> a {@link #primaryMappingType} must be
+ * defined, of which the associated IDs must be Integers.
  * </p>
  * <p>
- * This class also is a singleton that manages all IDCategories
+ * The IDCategory also defines a human-readable ID type (
+ * {@link #humanReadableIDType}), which should be used to present IDs of this
+ * category to the user.
+ * <p>
+ * An IDCategory also holds human readable versions of its name (
+ * {@link #denomination} and {@link #denominationPlural}) which should be used
+ * to identify the <code>IDCategory</code> to the user.
+ * </p>
+ * <p>
+ * This class is also a singleton that manages all IDCategories
  * </p>
  * 
  * @author Alexander Lex
@@ -128,6 +137,10 @@ public class IDCategory {
 	 */
 	private IDType primaryMappingType;
 
+	/**
+	 * True if a the primary mapping type is created by default, false if it is
+	 * specified externally.
+	 */
 	private boolean isPrimaryMappingTypeDefault = true;
 
 	/**
@@ -290,8 +303,8 @@ public class IDCategory {
 	 * {@link #humanReadableIDType} with best guesses if they were not set.
 	 */
 	public void initialize() {
-//		if (idTypes.size() == 0)
-//			throw new IllegalStateException("No id types specified");
+		// if (idTypes.size() == 0)
+		// throw new IllegalStateException("No id types specified");
 
 		if (primaryMappingType == null) {
 			primaryMappingType = IDType.registerType(categoryName + "_primary", this,
@@ -316,9 +329,8 @@ public class IDCategory {
 				humanReadableIDType = candidateHRType;
 			}
 		}
-		
-		if(denomination == null)
-		{
+
+		if (denomination == null) {
 			setDenomination(categoryName.toLowerCase());
 		}
 	}

@@ -178,9 +178,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 	private AggregateGroupListener aggregateGroupListener;
 
-	@XmlElement
-	protected DataDomainConfiguration configuration = null;
-
 	/**
 	 * Constructor that should be used only for serialization
 	 */
@@ -218,32 +215,35 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		return !dataSetDescription.isTransposeMatrix();
 	}
 
-	/**
-	 * @param configuration
-	 *            setter, see {@link #configuration}
-	 */
-	public void setConfiguration(DataDomainConfiguration configuration) {
-		this.configuration = configuration;
-	}
-
 	@Override
 	public void init() {
-		if (configuration == null || configuration.isDefaultConfiguration()) {
-			if (dataSetDescription != null && dataSetDescription.isTransposeMatrix()) {
-				if (configuration.isDefaultConfiguration()) {
-					IDType.unregisterType(recordIDType);
-					IDType.unregisterType(dimensionIDType);
-					IDType.unregisterType(recordGroupIDType);
-					IDType.unregisterType(dimensionGroupIDType);
-				}
-				createDefaultConfigurationWithColumnsAsRecords();
+		//
+		// if (dataSetDescription != null &&
+		// dataSetDescription.isTransposeMatrix()) {
+		// if (configuration.isDefaultConfiguration()) {
+		// IDType.unregisterType(recordIDType);
+		// IDType.unregisterType(dimensionIDType);
+		// IDType.unregisterType(recordGroupIDType);
+		// IDType.unregisterType(dimensionGroupIDType);
+		// }
+		// createDefaultConfigurationWithColumnsAsRecords();
+		//
+		// } else
+		// createDefaultConfiguration();
+		// }
 
-			} else
-				createDefaultConfiguration();
+		if (dataSetDescription.isTransposeMatrix()) {
+			recordIDCategory = IDCategory.getIDCategory(dataSetDescription
+					.getColumnIDSpecification().getIdCategory());
+			dimensionIDCategory = IDCategory.getIDCategory(dataSetDescription
+					.getRowIDSpecification().getIdCategory());
+		} else {
+			recordIDCategory = IDCategory.getIDCategory(dataSetDescription
+					.getRowIDSpecification().getIdCategory());
+			dimensionIDCategory = IDCategory.getIDCategory(dataSetDescription
+					.getColumnIDSpecification().getIdCategory());
+
 		}
-
-		recordIDCategory = IDCategory.getIDCategory(configuration.recordIDCategory);
-		dimensionIDCategory = IDCategory.getIDCategory(configuration.dimensionIDCategory);
 
 		recordIDType = IDType.registerType("record_" + dataDomainID + "_" + hashCode(),
 				recordIDCategory, EDataType.INT);
@@ -279,17 +279,17 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 	}
 
-	/**
-	 * Create a default {@link DataDomainConfiguration} where the columns are
-	 * the dimensions
-	 */
-	public abstract void createDefaultConfiguration();
-
-	/**
-	 * Create a default {@link DataDomainConfiguration} where the columns are
-	 * the records (i.e. perceived swapped compared to the data source)
-	 */
-	public abstract void createDefaultConfigurationWithColumnsAsRecords();
+//	/**
+//	 * Create a default {@link DataDomainConfiguration} where the columns are
+//	 * the dimensions
+//	 */
+//	public abstract void createDefaultConfiguration();
+//
+//	/**
+//	 * Create a default {@link DataDomainConfiguration} where the columns are
+//	 * the records (i.e. perceived swapped compared to the data source)
+//	 */
+//	public abstract void createDefaultConfigurationWithColumnsAsRecords();
 
 	/**
 	 * Sets the {@link #table} of this dataDomain. The table may not be null.

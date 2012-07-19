@@ -24,7 +24,7 @@ import java.io.File;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SWTGUIManager;
-import org.caleydo.core.id.IDCreator;
+import org.caleydo.core.id.object.IDCreator;
 import org.caleydo.core.io.parser.xml.XmlParserManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;

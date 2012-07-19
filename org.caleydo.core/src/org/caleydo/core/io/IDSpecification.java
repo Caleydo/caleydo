@@ -24,6 +24,7 @@ package org.caleydo.core.io;
 
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IDTypeInitializer;
 
 /**
  * <p>
@@ -73,7 +74,9 @@ import org.caleydo.core.id.IDType;
  * This IDSpecification also provides the ability to transform ID Types using
  * regular expressions. For details see the parent {@link IDTypeParsingRules}
  * </p>
- * 
+ * <p>
+ * The defaults are initializes in {@link IDTypeInitializer}
+ * </p>
  * 
  * @author Alexander Lex
  * 
