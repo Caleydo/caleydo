@@ -22,7 +22,6 @@ package org.caleydo.core.startup;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
-
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.PreferenceManager;
 import org.caleydo.core.net.IGroupwareManager;
@@ -36,9 +35,6 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IViewReference;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -211,6 +207,10 @@ public class StartupProcessor {
 		}
 
 		generalManager.getViewManager().stopAnimator();
+		
+		 //jogamp.nativewindow.x11.X11Util.closePendingDisplayConnections();
+		 System.out.println(jogamp.nativewindow.x11.X11Util.getPendingDisplayConnectionNumber());
+		 jogamp.nativewindow.x11.X11Util.closeDisplay(jogamp.nativewindow.x11.X11Util.getPendingDisplayConnectionNumber());
 
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Bye bye!"));
 		// display.dispose();

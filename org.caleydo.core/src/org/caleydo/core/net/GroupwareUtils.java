@@ -62,7 +62,7 @@ public class GroupwareUtils {
 	 * 
 	 * @param serverAddress
 	 *            TODO should better be obtained from deskotheque
-	 * @return intiialization data retrieved from the groupware server to complete application startup
+	 * @return initialization data retrieved from the groupware server to complete application startup
 	 */
 	public static SerializationData startPlexClient(String serverAddress) {
 		IGroupwareManager groupwareManager = GroupwareUtils.createDeskothequeManager();
