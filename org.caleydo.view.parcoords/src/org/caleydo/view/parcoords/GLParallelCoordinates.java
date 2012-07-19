@@ -325,8 +325,6 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 		if (!lazyMode)
 			checkForHits(gl);
-
-		throw new IllegalStateException() ;
 	}
 
 	public void triggerAngularBrushing() {
