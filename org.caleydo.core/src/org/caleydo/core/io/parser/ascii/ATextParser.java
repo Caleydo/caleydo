@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 
 import org.caleydo.core.gui.SWTGUIManager;
-import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
@@ -45,7 +44,7 @@ public abstract class ATextParser {
 	public static final String TAB = "\t";
 
 	/** The path of the file to parse */
-	protected String fileName = "";
+	protected String filePath = "";
 
 	/**
 	 * Contains the number of lines of the number of lines in the file to be
@@ -54,54 +53,64 @@ public abstract class ATextParser {
 	int numberOfLinesInFile = -1;
 
 	/**
-	 * Defines numbers of lines to skip in the read file. This is, e.g., useful
-	 * to ignore headers.
+	 * Defines at which line to start the parsing. This is, e.g., useful to
+	 * ignore headers. Must be positive. Defaults to 0, the first line.
 	 */
-	protected int parsingStartLine = 0;
+	protected int startParsingAtLine = 0;
 
-	/** Defines at which line to stop parsing */
+	/**
+	 * Defines at which line to stop parsing. Is set to parse all lines by
+	 * default.
+	 */
 	protected int stopParsingAtLine = Integer.MAX_VALUE;
 
-	// protected int lineInFile = 0;
-
+	/**
+	 * GUI manager used to update the progress bar.
+	 */
 	protected SWTGUIManager swtGuiManager;
 
 	/**
 	 * Constructor.
 	 */
 	public ATextParser(final String fileName) {
-		this.fileName = fileName;
+		this.filePath = fileName;
 		this.swtGuiManager = GeneralManager.get().getSWTGUIManager();
 	}
 
 	/**
 	 * Set the current file name.
 	 * 
-	 * @param fileName
+	 * @param filePath
 	 *            set current file name
 	 */
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
 
-	public final void setStartParsingStopParsingAtLine(int startParsingAtLine,
-			int stopParsingAtLine) {
+	/**
+	 * @param startParsingAtLine
+	 *            setter, see {@link #startParsingAtLine}
+	 */
+	public void setStartParsingAtLine(int startParsingAtLine) {
+		if (startParsingAtLine < 0)
+			throw new IllegalArgumentException(
+					"Can not start parsing at a negative line: " + startParsingAtLine);
+		this.startParsingAtLine = startParsingAtLine;
+	}
 
-		this.parsingStartLine = startParsingAtLine;
-
-		if (stopParsingAtLine < 0) {
+	/**
+	 * Setter for the line at which to stop parsing. If attribute is <0, all
+	 * lines in the file are parsed.
+	 * 
+	 * @param stopParsingAtLine
+	 *            setter, see {@link #stopParsingAtLine}
+	 * 
+	 */
+	public void setStopParsingAtLine(int stopParsingAtLine) {
+		if (stopParsingAtLine < 0)
 			this.stopParsingAtLine = Integer.MAX_VALUE;
-			return;
-		}
-
-		if (startParsingAtLine > stopParsingAtLine) {
-			this.stopParsingAtLine = Integer.MAX_VALUE;
-			return;
-		}
-		this.stopParsingAtLine = stopParsingAtLine;
-
-		numberOfLinesInFile = stopParsingAtLine - parsingStartLine + 1;
-
+		else
+			this.stopParsingAtLine = stopParsingAtLine;
 	}
 
 	/**
@@ -110,13 +119,13 @@ public abstract class ATextParser {
 	protected final int calculateNumberOfLinesInFile() {
 		try {
 			LineNumberReader lnr = new LineNumberReader(GeneralManager.get()
-					.getResourceLoader().getResource(fileName));
+					.getResourceLoader().getResource(filePath));
 			lnr.skip(Long.MAX_VALUE);
 			numberOfLinesInFile = lnr.getLineNumber();
 			lnr.close();
 
 		} catch (IOException ioe) {
-			throw new IllegalStateException("Could not read from file: " + fileName);
+			throw new IllegalStateException("Could not read from file: " + filePath);
 		}
 
 		return numberOfLinesInFile;
@@ -127,10 +136,10 @@ public abstract class ATextParser {
 		try {
 
 			Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
-					"Start loading file " + fileName + "..."));
+					"Start loading file " + filePath + "..."));
 
 			BufferedReader reader = GeneralManager.get().getResourceLoader()
-					.getResource(fileName);
+					.getResource(filePath);
 
 			this.parseFile(reader);
 
@@ -141,10 +150,10 @@ public abstract class ATextParser {
 			Logger.log(new Status(IStatus.ERROR, this.toString(),
 					"Could not read data file.", e));
 			throw new IllegalStateException(
-					"Could not read data file '" + fileName + "'", e);
+					"Could not read data file '" + filePath + "'", e);
 		}
 
-		Logger.log(new Status(IStatus.INFO, toString(), "File " + fileName
+		Logger.log(new Status(IStatus.INFO, toString(), "File " + filePath
 				+ " successfully loaded."));
 
 		return true;

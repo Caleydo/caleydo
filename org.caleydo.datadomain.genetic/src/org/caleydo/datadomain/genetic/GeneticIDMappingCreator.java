@@ -47,22 +47,22 @@ public class GeneticIDMappingCreator {
 
 		IDMappingCreator idMappingCreator = new IDMappingCreator();
 
-		idMappingCreator.createMapping(fileName + "_DAVID2REFSEQ_MRNA.txt", 0, -1,
+		idMappingCreator.loadMapping(fileName + "_DAVID2REFSEQ_MRNA.txt", 0, -1,
 				IDType.getIDType("DAVID"), IDType.getIDType("REFSEQ_MRNA"), "\t",
 				geneIDCategory, true, true, false, null, null);
-		idMappingCreator.createMapping(fileName + "_DAVID2ENTREZ_GENE_ID.txt", 0, -1,
+		idMappingCreator.loadMapping(fileName + "_DAVID2ENTREZ_GENE_ID.txt", 0, -1,
 				IDType.getIDType("DAVID"), IDType.getIDType("ENTREZ_GENE_ID"), "\t",
 				geneIDCategory, false, true, false, null, null);
-		idMappingCreator.createMapping(fileName + "_DAVID2GENE_SYMBOL.txt", 0, -1,
+		idMappingCreator.loadMapping(fileName + "_DAVID2GENE_SYMBOL.txt", 0, -1,
 				IDType.getIDType("DAVID"), IDType.getIDType("GENE_SYMBOL"), "\t",
 				geneIDCategory, false, true, false, null, null);
-		idMappingCreator.createMapping(fileName + "_DAVID2GENE_NAME.txt", 0, -1,
+		idMappingCreator.loadMapping(fileName + "_DAVID2GENE_NAME.txt", 0, -1,
 				IDType.getIDType("DAVID"), IDType.getIDType("GENE_NAME"), "\t",
 				geneIDCategory, false, true, false, null, null);
-		idMappingCreator.createMapping(fileName + "_DAVID2ENSEMBL_GENE_ID.txt", 0, -1,
+		idMappingCreator.loadMapping(fileName + "_DAVID2ENSEMBL_GENE_ID.txt", 0, -1,
 				IDType.getIDType("DAVID"), IDType.getIDType("ENSEMBL_GENE_ID"), "\t",
 				geneIDCategory, false, true, false, null, null);
-		idMappingCreator.createMapping("data/genome/mapping/"
+		idMappingCreator.loadMapping("data/genome/mapping/"
 				+ GeneralManager.get().getBasicInfo().getOrganism()
 				+ "_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt", 0, -1,
 				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("REFSEQ_MRNA"),

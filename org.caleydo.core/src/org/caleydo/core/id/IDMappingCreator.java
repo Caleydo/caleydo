@@ -38,9 +38,12 @@ public class IDMappingCreator {
 	 * Creates an ID mapping for the id types specified by parsing the supplied
 	 * file.
 	 * 
-	 * @param fileName
+	 * @param filePath
+	 *            the path to the file containing the mapping file
 	 * @param startParsingAtLine
+	 *            the line at which to start the parsing
 	 * @param stopParsingAtLine
+	 *            the line at which to stop the parsing
 	 * @param codeResolvingLUTMappingType
 	 * @param delimiter
 	 * @param idCategory
@@ -50,7 +53,7 @@ public class IDMappingCreator {
 	 *            Boolean indicates if one column of the mapping needs to be
 	 *            resolved. Resolving means replacing codes by internal IDs.
 	 */
-	public void createMapping(String fileName, int startParsingAtLine,
+	public void loadMapping(String filePath, int startParsingAtLine,
 			int stopParsingAtLine, IDType fromIDType, IDType toIDType, String delimiter,
 			IDCategory idCategory, boolean isMultiMap, boolean createReverseMap,
 			boolean resolveCodeMappingUsingCodeToId_LUT, IDType codeResolvedFromIDType,
@@ -58,14 +61,14 @@ public class IDMappingCreator {
 
 		IDMappingParser idMappingParser = null;
 
-		if (fileName.contains("ORGANISM")) {
+		if (filePath.contains("ORGANISM")) {
 			Organism eOrganism = GeneralManager.get().getBasicInfo().getOrganism();
-			this.fileName = fileName.replace("ORGANISM", eOrganism.toString());
+			this.fileName = filePath.replace("ORGANISM", eOrganism.toString());
 		}
 
 		// FIXME: Currently we do not have the ensembl mapping table for home
 		// sapiens
-		if (fileName.contains("HOMO_SAPIENS") && fileName.contains("ENSEMBL"))
+		if (filePath.contains("HOMO_SAPIENS") && filePath.contains("ENSEMBL"))
 			return;
 
 		if (idCategory == null)
@@ -81,11 +84,11 @@ public class IDMappingCreator {
 					codeResolvedToIDType);
 		}
 
-		if (!fileName.equals("already_loaded")) {
-			idMappingParser = new IDMappingParser(idCategory, fileName, mappingType);
+		if (!filePath.equals("already_loaded")) {
+			idMappingParser = new IDMappingParser(idCategory, filePath, mappingType);
 			idMappingParser.setTokenSeperator(delimiter);
-			idMappingParser.setStartParsingStopParsingAtLine(startParsingAtLine,
-					stopParsingAtLine);
+			idMappingParser.setStartParsingAtLine(startParsingAtLine);
+			idMappingParser.setStopParsingAtLine(stopParsingAtLine);
 			idMappingParser.loadData();
 		}
 

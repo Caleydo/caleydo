@@ -1186,7 +1186,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	public void dispose(GLAutoDrawable drawable) {
 		if (PlatformUI.getWorkbench().isClosing())
 			return;
-		System.out.println("dispose " + label);
+		Logger.log(new Status(Status.INFO, toString(), "Disposing view"));
 
 		GL2 gl = drawable.getGL().getGL2();
 		// First, destroy the remote views, then unregister, otherwise the

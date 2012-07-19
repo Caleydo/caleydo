@@ -21,39 +21,30 @@ package org.caleydo.core.io.parser.ascii;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.EDataType;
-import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.MappingType;
-import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
- * Loads ID mappings from a file to and {@link IDMappingManager}. The
- * {@link IDMappingManager} is specified trough the {@link IDCategory}.
+ * Loads ID mappings from a dedicated mapping file to and
+ * {@link IDMappingManager}. The {@link IDMappingManager} is specified trough
+ * the {@link IDCategory}.
  * </p>
  * <p>
- * Mappings can be loaded in two different ways:
- * <ol>
- * <li>From explicit mapping files, which contain something similar to
- * <code>fromID;toID</code> where fromID is of the type fromIDType in and toID
- * of type toIDType in {@link MappingType}.</li>
- * <li>From an ID specified in a file to a dynamically generated ID, where the
- * dynamic ID corresponds to the line number (where line number 0 is considered
- * the line number of the first ID, i.e., skipped lines of the file are
- * ignored).</li>
- * </ol>
+ * Mappings are loaded from explicit, text-based mapping files, where two IDs
+ * are specified in each row in a format similar to <code>fromID;toID</code>
+ * where fromID is of the type fromIDType in and toID of type toIDType in
+ * {@link MappingType}. The IDs have to be separated by a token, which can be
+ * specified using {@link #setTokenSeperator(String)}
  * </p>
  * 
- * @author Michael Kalkusch
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -64,8 +55,6 @@ public class IDMappingParser extends ATextParser {
 
 	/** Defines the token separator. TAB is default. */
 	protected String tokenSeparator = TAB;
-
-	protected SWTGUIManager swtGuiManager;
 
 	/**
 	 * Constructor.
@@ -86,9 +75,7 @@ public class IDMappingParser extends ATextParser {
 	 * @param tokenSeparator
 	 */
 	public final void setTokenSeperator(final String tokenSeparator) {
-
 		this.tokenSeparator = tokenSeparator;
-
 	}
 
 	@Override
@@ -107,7 +94,7 @@ public class IDMappingParser extends ATextParser {
 			 * Start parsing if current line lineInFile is larger than
 			 * parsingStartLine ..
 			 */
-			if (lineCounter <= parsingStartLine) {
+			if (lineCounter <= startParsingAtLine) {
 				lineCounter++;
 				continue;
 			}

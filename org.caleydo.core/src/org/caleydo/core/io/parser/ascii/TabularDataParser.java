@@ -44,11 +44,17 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Loader for tabular data.
+ * <p>
+ * Loader for tabular, matrix data from delimited text files.
+ * </p>
+ * <p>
+ * Asides from loading the data from a file as specified in a supplied
+ * {@link DataSetDescription} the IDs of columns and rows are parsed and dynamic
+ * IDs for columns and rows are created.
+ * <p>
  * 
- * @author Michael Kalkusch
- * @author Marc Streit
  * @author Alexander Lex
+ * @author Marc Streit
  */
 public class TabularDataParser extends ATextParser {
 
@@ -58,8 +64,10 @@ public class TabularDataParser extends ATextParser {
 	 */
 	protected ArrayList<Object> targetColumns;
 
+	/** The {@link ATableBasedDataDomain} for which the file is loaded */
 	private ATableBasedDataDomain dataDomain;
 
+	/** The {@link DataSetDescription} on which the loading of the file is based */
 	private DataSetDescription dataSetDescription;
 
 	/**
@@ -98,7 +106,7 @@ public class TabularDataParser extends ATextParser {
 			try {
 
 				BufferedReader reader = GeneralManager.get().getResourceLoader()
-						.getResource(fileName);
+						.getResource(filePath);
 
 				Integer rowOfColumnIDs = dataSetDescription.getNumberOfHeaderLines() - 1;
 				if (dataSetDescription.getRowOfColumnIDs() != null)
@@ -113,7 +121,7 @@ public class TabularDataParser extends ATextParser {
 			} catch (Exception e) {
 				Logger.log(new Status(IStatus.ERROR, this.toString(),
 						"Could not read data file.", e));
-				throw new IllegalStateException("Could not read data file '" + fileName
+				throw new IllegalStateException("Could not read data file '" + filePath
 						+ "'", e);
 			}
 		}
@@ -200,8 +208,6 @@ public class TabularDataParser extends ATextParser {
 				+ dataSetDescription.getDataSetName());
 		float progressBarFactor = 100f / numberOfLinesInFile;
 
-
-			
 		for (int countHeaderLines = 0; countHeaderLines < dataSetDescription
 				.getNumberOfHeaderLines(); countHeaderLines++) {
 			reader.readLine();
@@ -212,7 +218,7 @@ public class TabularDataParser extends ATextParser {
 
 		int lineCounter = 0;
 		String numberParsingErrorMessage = "Could not parse a number in file"
-				+ dataSetDescription.getDataSetName() + " at path " + fileName
+				+ dataSetDescription.getDataSetName() + " at path " + filePath
 				+ "\n at the following locations: \n";
 		boolean parsingErrorOccured = false;
 
@@ -241,7 +247,7 @@ public class TabularDataParser extends ATextParser {
 		else if (toIDType.getIdTypeParsingRules() != null)
 			parsingRules = toIDType.getIdTypeParsingRules();
 
-		String line;		
+		String line;
 		while ((line = reader.readLine()) != null) {
 			// && lineInFile <= stopParsingAtLine) {
 
@@ -251,7 +257,7 @@ public class TabularDataParser extends ATextParser {
 			String id = splitLine[columnOfRowIDs];
 			convertID(id, parsingRules);
 			rowIDMappingManager.getMap(mappingType).put(id,
-					lineCounter - parsingStartLine);
+					lineCounter - startParsingAtLine);
 
 			for (int count = 0; count < parsingPattern.size(); count++) {
 				ColumnDescription column = parsingPattern.get(count);
@@ -297,28 +303,5 @@ public class TabularDataParser extends ATextParser {
 			Logger.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID,
 					numberParsingErrorMessage));
 		}
-
 	}
-	/**
-	 * Method masking errors with import of categorical data FIXME: find the
-	 * underlying error instead
-	 * 
-	 * @param rawStringData
-	 * @return
-	 */
-	// private ArrayList<String> fillUp(ArrayList<String> rawStringData) {
-	// int missingValues = nrLinesToRead - rawStringData.size();
-	// if (missingValues > 0) {
-	// for (int count = rawStringData.size(); count < nrLinesToRead; count++)
-	// rawStringData.add("ARTIFICIAL");
-	//
-	// Logger.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID,
-	// "Had to fill up stroarge with "
-	// + missingValues + " artificial strings"));
-	//
-	// }
-	// return rawStringData;
-	//
-	// }
-
 }
