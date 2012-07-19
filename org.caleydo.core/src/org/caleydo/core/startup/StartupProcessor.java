@@ -207,10 +207,6 @@ public class StartupProcessor {
 		}
 
 		generalManager.getViewManager().stopAnimator();
-		
-		 //jogamp.nativewindow.x11.X11Util.closePendingDisplayConnections();
-		 System.out.println(jogamp.nativewindow.x11.X11Util.getPendingDisplayConnectionNumber());
-		 jogamp.nativewindow.x11.X11Util.closeDisplay(jogamp.nativewindow.x11.X11Util.getPendingDisplayConnectionNumber());
 
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Bye bye!"));
 		// display.dispose();
