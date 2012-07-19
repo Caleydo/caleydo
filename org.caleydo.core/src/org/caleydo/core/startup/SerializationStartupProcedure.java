@@ -143,7 +143,7 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 		IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
 				.getIDMappingManager(sampleIDCategory);
 		MappingType sampleMappingType = idMappingManager.createMap(sampleIDType,
-				sampleIntIDType, false);
+				sampleIntIDType, false, true);
 		Map<String, Integer> sampleIDMap = idMappingManager.getMap(sampleMappingType);
 
 		// Merge SAMPLE maps from each data set to one
@@ -183,12 +183,13 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 					if (sampleIDMap.containsKey(sampleID))
 						continue;
 
-					sampleIDMap.put((String) sampleID, generatedSampleID++);
+					idMappingManager.addMapping(sampleMappingType, (String) sampleID, generatedSampleID++);
+//					sampleIDMap.put(, );
 				}
 			}
 		}
 
-		idMappingManager.createReverseMap(sampleMappingType);
+//		idMappingManager.createReverseMap(sampleMappingType);
 	}
 
 	public void loadSampleProject(boolean loadSampleProject) {

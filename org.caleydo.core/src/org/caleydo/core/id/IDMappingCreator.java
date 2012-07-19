@@ -76,7 +76,7 @@ public class IDMappingCreator {
 		IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
 				.getIDMappingManager(idCategory);
 		MappingType mappingType = idMappingManager.createMap(fromIDType, toIDType,
-				isMultiMap);
+				isMultiMap, createReverseMap);
 
 		if (resolveCodeMappingUsingCodeToId_LUT) {
 
@@ -91,9 +91,9 @@ public class IDMappingCreator {
 			idMappingParser.setStopParsingAtLine(stopParsingAtLine);
 			idMappingParser.loadData();
 		}
-
-		if (createReverseMap) {
-			idMappingManager.createReverseMap(mappingType);
-		}
+//
+//		if (createReverseMap) {
+//			idMappingManager.createReverseMap(mappingType);
+//		}
 	}
 }

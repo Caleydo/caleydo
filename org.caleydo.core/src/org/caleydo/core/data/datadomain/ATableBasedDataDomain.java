@@ -293,7 +293,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		}
 		recordIDCategory.setPrimaryMappingType(primaryRecordMappingType);
 
-		IDType primaryDimensionMappingType;
+		IDType primaryDimensionMappingType;// = dimensionIDCategory.getPrimaryMappingType();
 		if (configuration.primaryDimensionMappingType != null)
 			primaryDimensionMappingType = IDType
 					.getIDType(configuration.primaryDimensionMappingType);

@@ -145,8 +145,9 @@ public class TabularDataParser extends ATextParser {
 		}
 
 		MappingType mappingType = columnIDMappingManager.createMap(columnIDType,
-				hrColumnIDType, false);
-		Map<Integer, String> columnIDMap = columnIDMappingManager.getMap(mappingType);
+				hrColumnIDType, false, true);
+		// Map<Integer, String> columnIDMap =
+		// columnIDMappingManager.getMap(mappingType);
 
 		int columnCount = 0;
 		for (ColumnDescription parsingDetail : parsingPattern) {
@@ -188,14 +189,13 @@ public class TabularDataParser extends ATextParser {
 				String idString = headers[parsingDetail.getColumn()];
 				idString = convertID(idString, dataSetDescription
 						.getColumnIDSpecification().getIdTypeParsingRules());
-				columnIDMap.put(columnID, idString);
+				columnIDMappingManager.addMapping(mappingType, columnID, idString);
 			} else {
-				columnIDMap.put(columnID, "Column " + columnCount++);
+				columnIDMappingManager.addMapping(mappingType, columnID, "Column "
+						+ columnCount++);
 			}
 
 		}
-
-		columnIDMappingManager.createReverseMap(mappingType);
 
 	}
 
@@ -239,7 +239,7 @@ public class TabularDataParser extends ATextParser {
 		int columnOfRowIDs = dataSetDescription.getColumnOfRowIds();
 
 		MappingType mappingType = rowIDMappingManager.createMap(fromIDType, toIDType,
-				false);
+				false, true);
 
 		IDTypeParsingRules parsingRules = null;
 		if (rowIDSpecification.getIdTypeParsingRules() != null)
@@ -256,8 +256,8 @@ public class TabularDataParser extends ATextParser {
 			// id mapping
 			String id = splitLine[columnOfRowIDs];
 			convertID(id, parsingRules);
-			rowIDMappingManager.getMap(mappingType).put(id,
-					lineCounter - startParsingAtLine);
+			rowIDMappingManager.addMapping(mappingType, id, lineCounter
+					- startParsingAtLine);
 
 			for (int count = 0; count < parsingPattern.size(); count++) {
 				ColumnDescription column = parsingPattern.get(count);
@@ -298,7 +298,7 @@ public class TabularDataParser extends ATextParser {
 			}
 			lineCounter++;
 		}
-		rowIDMappingManager.createReverseMap(mappingType);
+
 		if (parsingErrorOccured) {
 			Logger.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID,
 					numberParsingErrorMessage));

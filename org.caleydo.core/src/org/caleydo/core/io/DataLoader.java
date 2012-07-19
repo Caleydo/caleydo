@@ -113,12 +113,10 @@ public class DataLoader {
 		DataDomainConfiguration dataDomainConfiguration = new DataDomainConfiguration();
 		dataDomainConfiguration.setRecordIDCategory(recordIDCategory);
 
-		dataDomainConfiguration.setHumanReadableRecordIDType(recordIDType);
 		dataDomainConfiguration.setRecordDenominationPlural(recordIDType + "s");
 		dataDomainConfiguration.setRecordDenominationSingular(recordIDType);
 
 		dataDomainConfiguration.setDimensionIDCategory(dimensionIDCategory);
-		dataDomainConfiguration.setHumanReadableDimensionIDType(dimensionIDType);
 		dataDomainConfiguration.setDimensionDenominationSingular(dimensionIDType);
 		dataDomainConfiguration.setDimensionDenominationPlural(dimensionIDType + "s");
 
@@ -126,24 +124,42 @@ public class DataLoader {
 				|| (columnIDSpecification.isIDTypeGene() && dataSetDescription
 						.isTransposeMatrix())) {
 			dataDomainConfiguration.setPrimaryRecordMappingType("DAVID");
-			dataDomainConfiguration.setPrimaryDimensionMappingType(dimensionIDType
-					+ "_INT");
+			dataDomainConfiguration.setRecordDenominationSingular("Gene");
+			dataDomainConfiguration.setRecordDenominationPlural("Genes");
+
+			// dataDomainConfiguration.setPrimaryDimensionMappingType(dimensionIDType
+			// + "_INT");
+			dataDomainConfiguration.setHumanReadableRecordIDType("GENE_SYMBOL");
+			dataDomainConfiguration.setHumanReadableDimensionIDType(dimensionIDType);
+
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.createDataDomain("org.caleydo.datadomain.genetic",
 							dataDomainConfiguration);
+
 		} else if ((columnIDSpecification.isIDTypeGene() && !dataSetDescription
 				.isTransposeMatrix())
 				|| (rowIDSpecification.isIDTypeGene() && dataSetDescription
 						.isTransposeMatrix())) {
 
 			dataDomainConfiguration.setPrimaryDimensionMappingType("DAVID");
-			dataDomainConfiguration.setPrimaryRecordMappingType(recordIDType + "_INT");
+			dataDomainConfiguration.setDimensionDenominationSingular("Gene");
+			dataDomainConfiguration.setDimensionDenominationPlural("Genes");
+			// dataDomainConfiguration.setPrimaryRecordMappingType(recordIDType
+			// + "_INT");
+
+			dataDomainConfiguration.setHumanReadableRecordIDType(recordIDType);
+			dataDomainConfiguration.setHumanReadableDimensionIDType("GENE_SYMBOL");
+
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.createDataDomain("org.caleydo.datadomain.genetic",
 							dataDomainConfiguration);
 
 		} else {
-			dataDomainConfiguration.setPrimaryRecordMappingType(recordIDType + "_INT");
+			dataDomainConfiguration.setHumanReadableRecordIDType(recordIDType);
+			dataDomainConfiguration.setHumanReadableDimensionIDType(dimensionIDType);
+
+			// dataDomainConfiguration.setPrimaryRecordMappingType(recordIDType
+			// + "_INT");
 			dataDomainConfiguration.setPrimaryDimensionMappingType(dimensionIDType);
 
 			// TODO: check for plug-in?

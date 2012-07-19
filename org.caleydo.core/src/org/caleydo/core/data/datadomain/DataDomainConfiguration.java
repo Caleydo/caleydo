@@ -37,7 +37,9 @@ import org.caleydo.core.id.IDType;
  * </p>
  * 
  * @author Alexander Lex
+ * @deprecated This should be moved in large parts to {@link IDCategory} and should  no longer be part of the data domain 
  */
+@Deprecated
 public class DataDomainConfiguration {
 
 	/**

@@ -109,19 +109,19 @@ public class IDMappingParser extends ATextParser {
 						.getIdTypeParsingRules());
 				if (mappingType.getFromIDType().getColumnType() == EDataType.INT) {
 					if (mappingType.getToIDType().getColumnType() == EDataType.INT) {
-						idMappingManager.getMap(mappingType).put(Integer.valueOf(fromID),
+						idMappingManager.addMapping(mappingType, Integer.valueOf(fromID),
 								Integer.valueOf(toID));
 					} else if (mappingType.getToIDType().getColumnType() == EDataType.STRING) {
-						idMappingManager.getMap(mappingType).put(Integer.valueOf(fromID),
+						idMappingManager.addMapping(mappingType, Integer.valueOf(fromID),
 								toID);
 					} else
 						throw new IllegalStateException("Unsupported data type!");
 				} else if (mappingType.getFromIDType().getColumnType() == EDataType.STRING) {
 					if (mappingType.getToIDType().getColumnType() == EDataType.INT) {
-						idMappingManager.getMap(mappingType).put(fromID,
+						idMappingManager.addMapping(mappingType, fromID,
 								Integer.valueOf(toID));
 					} else if (mappingType.getToIDType().getColumnType() == EDataType.STRING) {
-						idMappingManager.getMap(mappingType).put(fromID, toID);
+						idMappingManager.addMapping(mappingType, fromID, toID);
 					} else
 						throw new IllegalStateException("Unsupported data type!");
 				} else
