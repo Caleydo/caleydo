@@ -128,12 +128,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 */
 	protected HashMap<String, DataContainer> dataContainers = new HashMap<String, DataContainer>();
 
-	protected String recordDenominationSingular = "<not specified>";
-	protected String recordDenominationPlural = "<not specified>";
-
-	protected String dimensionDenominationSingular = "<not specified>";
-	protected String dimensionDenominationPlural = "<not specified>";
-
 	protected IDCategory recordIDCategory;
 	protected IDCategory dimensionIDCategory;
 
@@ -248,21 +242,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 				createDefaultConfiguration();
 		}
 
-		recordIDCategory = IDCategory.registerCategory(configuration.recordIDCategory);
-		dimensionIDCategory = IDCategory
-				.registerCategory(configuration.dimensionIDCategory);
-
-		// For genetic this will be already registered and set as human
-		// readable
-		IDType humanReadableRecordIDType = IDType.registerType(
-				configuration.humanReadableRecordIDType, recordIDCategory,
-				EDataType.STRING);
-		IDType humanReadableDimensionIDType = IDType.registerType(
-				configuration.humanReadableDimensionIDType, dimensionIDCategory,
-				EDataType.STRING);
-
-		recordIDCategory.setHumanReadableIDType(humanReadableRecordIDType);
-		dimensionIDCategory.setHumanReadableIDType(humanReadableDimensionIDType);
+		recordIDCategory = IDCategory.getIDCategory(configuration.recordIDCategory);
+		dimensionIDCategory = IDCategory.getIDCategory(configuration.dimensionIDCategory);
 
 		recordIDType = IDType.registerType("record_" + dataDomainID + "_" + hashCode(),
 				recordIDCategory, EDataType.INT);
@@ -281,32 +262,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 				.getCategoryName() + "_GROUP");
 		dimensionGroupIDType = IDType.registerType("group_dimension_" + dataDomainID
 				+ "_" + hashCode(), dimensionGroupIDCategory, EDataType.INT);
-
-		IDType primaryRecordMappingType;
-
-		if (configuration.primaryRecordMappingType != null) {
-			// IDType.getIDType(configuration.primaryRecordMappingType);
-			primaryRecordMappingType = IDType
-					.getIDType(configuration.primaryRecordMappingType);
-		} else {
-			primaryRecordMappingType = recordIDType;
-		}
-		recordIDCategory.setPrimaryMappingType(primaryRecordMappingType);
-
-		IDType primaryDimensionMappingType;// = dimensionIDCategory.getPrimaryMappingType();
-		if (configuration.primaryDimensionMappingType != null)
-			primaryDimensionMappingType = IDType
-					.getIDType(configuration.primaryDimensionMappingType);
-		else
-			primaryDimensionMappingType = dimensionIDType;
-
-		dimensionIDCategory.setPrimaryMappingType(primaryDimensionMappingType);
-
-		recordDenominationPlural = configuration.recordDenominationPlural;
-		recordDenominationSingular = configuration.recordDenominationSingular;
-
-		dimensionDenominationPlural = configuration.dimensionDenominationPlural;
-		dimensionDenominationSingular = configuration.dimensionDenominationSingular;
 
 		recordIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
 				recordIDCategory);
@@ -795,9 +750,9 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	public String getRecordDenomination(boolean capitalized, boolean plural) {
 		String recordDenomination;
 		if (plural)
-			recordDenomination = recordDenominationPlural;
+			recordDenomination = recordIDCategory.getDenominationPlural();
 		else
-			recordDenomination = recordDenominationSingular;
+			recordDenomination = recordIDCategory.getDenomination();
 
 		if (capitalized) {
 			// Make first char capitalized
@@ -812,9 +767,9 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		String dimensionDenomination;
 
 		if (plural)
-			dimensionDenomination = dimensionDenominationPlural;
+			dimensionDenomination = dimensionIDCategory.getDenominationPlural();
 		else
-			dimensionDenomination = dimensionDenominationSingular;
+			dimensionDenomination = dimensionIDCategory.getDenomination();
 
 		if (capitalized) {
 			// Make first char capitalized

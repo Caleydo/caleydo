@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainConfiguration;
@@ -30,6 +31,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.parser.ascii.GroupingParser;
 import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
@@ -61,10 +63,10 @@ public class DataLoader {
 
 	private static ATableBasedDataDomain loadDataSet(DataSetDescription dataSetDescription)
 			throws FileNotFoundException, IOException {
-		String dimensionIDCategory;
-		String dimensionIDType;
-		String recordIDCategory;
-		String recordIDType;
+		String dimensionIDCategoryName;
+		String dimensionIDTypeName;
+		String recordIDCategoryName;
+		String recordIDTypeName;
 
 		IDSpecification rowIDSpecification = dataSetDescription.getRowIDSpecification();
 		if (rowIDSpecification == null) {
@@ -90,47 +92,64 @@ public class DataLoader {
 		}
 
 		if (dataSetDescription.isTransposeMatrix()) {
-			dimensionIDType = rowIDSpecification.getIdType();
-			dimensionIDCategory = rowIDSpecification.getIdCategory();
+			dimensionIDTypeName = rowIDSpecification.getIdType();
+			dimensionIDCategoryName = rowIDSpecification.getIdCategory();
 
-			recordIDType = columnIDSpecification.getIdType();
-			recordIDCategory = columnIDSpecification.getIdCategory();
+			recordIDTypeName = columnIDSpecification.getIdType();
+			recordIDCategoryName = columnIDSpecification.getIdCategory();
 		} else {
-			dimensionIDType = columnIDSpecification.getIdType();
-			dimensionIDCategory = columnIDSpecification.getIdCategory();
+			dimensionIDTypeName = columnIDSpecification.getIdType();
+			dimensionIDCategoryName = columnIDSpecification.getIdCategory();
 
-			recordIDType = rowIDSpecification.getIdType();
-			recordIDCategory = rowIDSpecification.getIdCategory();
+			recordIDTypeName = rowIDSpecification.getIdType();
+			recordIDCategoryName = rowIDSpecification.getIdCategory();
 		}
 
-		if (dimensionIDCategory == null)
-			dimensionIDCategory = dimensionIDType;
-		if (recordIDCategory == null)
-			recordIDCategory = recordIDType;
+		if (dimensionIDCategoryName == null)
+			dimensionIDCategoryName = dimensionIDTypeName;
+		if (recordIDCategoryName == null)
+			recordIDCategoryName = recordIDTypeName;
+
+		IDCategory dimensionIDCategory = IDCategory
+				.getIDCategory(dimensionIDCategoryName);
+		if (dimensionIDCategory == null) {
+			dimensionIDCategory = IDCategory.registerCategory(dimensionIDCategoryName);
+		}
+
+		IDCategory recodIDCategory = IDCategory.getIDCategory(recordIDCategoryName);
+		if (recodIDCategory == null) {
+			recodIDCategory = IDCategory.registerCategory(recordIDCategoryName);
+		}
+
+		IDType recordIDType = IDType.getIDType(recordIDTypeName);
+		if (recordIDType == null) {
+			recordIDType = IDType.registerType(recordIDTypeName, recodIDCategory,
+					EDataType.STRING);
+		}
+
+		IDType dimensionIDType = IDType.getIDType(dimensionIDTypeName);
+		if (dimensionIDType == null) {
+			dimensionIDType = IDType.registerType(dimensionIDTypeName,
+					dimensionIDCategory, EDataType.STRING);
+		}
 
 		ATableBasedDataDomain dataDomain;
 
 		DataDomainConfiguration dataDomainConfiguration = new DataDomainConfiguration();
-		dataDomainConfiguration.setRecordIDCategory(recordIDCategory);
-
-		dataDomainConfiguration.setRecordDenominationPlural(recordIDType + "s");
-		dataDomainConfiguration.setRecordDenominationSingular(recordIDType);
-
-		dataDomainConfiguration.setDimensionIDCategory(dimensionIDCategory);
-		dataDomainConfiguration.setDimensionDenominationSingular(dimensionIDType);
-		dataDomainConfiguration.setDimensionDenominationPlural(dimensionIDType + "s");
+		dataDomainConfiguration.setRecordIDCategory(recordIDCategoryName);
+		dataDomainConfiguration.setDimensionIDCategory(dimensionIDCategoryName);
 
 		if ((rowIDSpecification.isIDTypeGene() && !dataSetDescription.isTransposeMatrix())
 				|| (columnIDSpecification.isIDTypeGene() && dataSetDescription
 						.isTransposeMatrix())) {
-			dataDomainConfiguration.setPrimaryRecordMappingType("DAVID");
-			dataDomainConfiguration.setRecordDenominationSingular("Gene");
-			dataDomainConfiguration.setRecordDenominationPlural("Genes");
+			// dataDomainConfiguration.setPrimaryRecordMappingType("DAVID");
+			// dataDomainConfiguration.setRecordDenominationSingular("Gene");
+			// dataDomainConfiguration.setRecordDenominationPlural("Genes");
 
 			// dataDomainConfiguration.setPrimaryDimensionMappingType(dimensionIDType
 			// + "_INT");
-			dataDomainConfiguration.setHumanReadableRecordIDType("GENE_SYMBOL");
-			dataDomainConfiguration.setHumanReadableDimensionIDType(dimensionIDType);
+			// dataDomainConfiguration.setHumanReadableRecordIDType("GENE_SYMBOL");
+			// dataDomainConfiguration.setHumanReadableDimensionIDType(dimensionIDType);
 
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.createDataDomain("org.caleydo.datadomain.genetic",
@@ -141,26 +160,36 @@ public class DataLoader {
 				|| (rowIDSpecification.isIDTypeGene() && dataSetDescription
 						.isTransposeMatrix())) {
 
-			dataDomainConfiguration.setPrimaryDimensionMappingType("DAVID");
-			dataDomainConfiguration.setDimensionDenominationSingular("Gene");
-			dataDomainConfiguration.setDimensionDenominationPlural("Genes");
+			// dataDomainConfiguration.setPrimaryDimensionMappingType("DAVID");
+			// dataDomainConfiguration.setDimensionDenominationSingular("Gene");
+			// dataDomainConfiguration.setDimensionDenominationPlural("Genes");
 			// dataDomainConfiguration.setPrimaryRecordMappingType(recordIDType
 			// + "_INT");
 
-			dataDomainConfiguration.setHumanReadableRecordIDType(recordIDType);
-			dataDomainConfiguration.setHumanReadableDimensionIDType("GENE_SYMBOL");
+			// dataDomainConfiguration.setHumanReadableRecordIDType(recordIDType);
+			// dataDomainConfiguration.setHumanReadableDimensionIDType("GENE_SYMBOL");
 
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.createDataDomain("org.caleydo.datadomain.genetic",
 							dataDomainConfiguration);
 
 		} else {
-			dataDomainConfiguration.setHumanReadableRecordIDType(recordIDType);
-			dataDomainConfiguration.setHumanReadableDimensionIDType(dimensionIDType);
+
+			// dataDomainConfiguration.setRecordDenominationPlural(recordIDType
+			// + "s");
+			// dataDomainConfiguration.setRecordDenominationSingular(recordIDType);
+			//
+			//
+			// dataDomainConfiguration.setDimensionDenominationSingular(dimensionIDType);
+			// dataDomainConfiguration.setDimensionDenominationPlural(dimensionIDType
+			// + "s");
+			//
+			// dataDomainConfiguration.setHumanReadableRecordIDType(recordIDType);
+			// dataDomainConfiguration.setHumanReadableDimensionIDType(dimensionIDType);
 
 			// dataDomainConfiguration.setPrimaryRecordMappingType(recordIDType
 			// + "_INT");
-			dataDomainConfiguration.setPrimaryDimensionMappingType(dimensionIDType);
+			// dataDomainConfiguration.setPrimaryDimensionMappingType(dimensionIDType);
 
 			// TODO: check for plug-in?
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()

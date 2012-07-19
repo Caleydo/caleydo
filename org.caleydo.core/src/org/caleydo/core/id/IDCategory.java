@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
@@ -98,9 +99,7 @@ public class IDCategory {
 	 * 
 	 * @param categoryName
 	 *            the globally unique name of the category, may not be null
-	 * @throws Throws
-	 *             an IllegalArgumenteException if no category associated with
-	 *             the name is registered
+	 * @return Returns null if no IDCategory of that name is specified.
 	 */
 	public static IDCategory getIDCategory(String categoryName) {
 
@@ -110,8 +109,7 @@ public class IDCategory {
 		IDCategory category = registeredCategories.get(categoryName);
 
 		if (category == null)
-			throw new IllegalStateException("No category with name " + categoryName
-					+ " registered.");
+			return null;
 
 		return category;
 	}
@@ -130,11 +128,25 @@ public class IDCategory {
 	 */
 	private IDType primaryMappingType;
 
+	private boolean isPrimaryMappingTypeDefault = true;
+
 	/**
 	 * The id type that should be used if an ID from this category should be
 	 * printed human readable
 	 */
 	private IDType humanReadableIDType;
+
+	/**
+	 * The human-readable name of the IDCategory. Defaults to the String of
+	 * {@link #humanReadableIDType}
+	 */
+	private String denomination;
+
+	/**
+	 * Same as {@link #denomination} but in plural. Defaults to
+	 * <code>denomination</code>+"s".
+	 */
+	private String denominationPlural;
 
 	/**
 	 * All registered IDTypes for this category.
@@ -159,6 +171,40 @@ public class IDCategory {
 	}
 
 	/**
+	 * @param denomination
+	 *            setter, see {@link #denomination}
+	 */
+	public void setDenomination(String denomination) {
+		this.denomination = denomination;
+		this.denominationPlural = this.denomination + "s";
+	}
+
+	/**
+	 * @return the denomination, see {@link #denomination}
+	 */
+	public String getDenomination() {
+		return denomination;
+	}
+
+	/**
+	 * Setter. Must be called after {@link #setDenomination(String)}, otherwise
+	 * it is overridden.
+	 * 
+	 * @param denominationPlural
+	 *            setter, see {@link #denominationPlural}
+	 */
+	public void setDenominationPlural(String denominationPlural) {
+		this.denominationPlural = denominationPlural;
+	}
+
+	/**
+	 * @return the denominationPlural, see {@link #denominationPlural}
+	 */
+	public String getDenominationPlural() {
+		return denominationPlural;
+	}
+
+	/**
 	 * May be called more than once with the same IDType
 	 * 
 	 * @param primaryMappingType
@@ -171,13 +217,21 @@ public class IDCategory {
 					+ primaryMappingType);
 		if (this.primaryMappingType != null) {
 			if (!this.primaryMappingType.equals(primaryMappingType))
-				throw new IllegalStateException(
-						"Primary mapping type of "+ categoryName + " was already set to "
-								+ this.primaryMappingType + ". Cannot set to "
-								+ primaryMappingType);
+				throw new IllegalStateException("Primary mapping type of " + categoryName
+						+ " was already set to " + this.primaryMappingType
+						+ ". Cannot set to " + primaryMappingType);
 			return;
 		}
+		isPrimaryMappingTypeDefault = false;
 		this.primaryMappingType = primaryMappingType;
+	}
+
+	/**
+	 * @return the isPrimaryMappingTypeDefault, see
+	 *         {@link #isPrimaryMappingTypeDefault}
+	 */
+	public boolean isPrimaryMappingTypeDefault() {
+		return isPrimaryMappingTypeDefault;
 	}
 
 	/**
@@ -229,5 +283,43 @@ public class IDCategory {
 	 */
 	public ArrayList<IDType> getIdTypes() {
 		return idTypes;
+	}
+
+	/**
+	 * Initializes the {@link #primaryMappingType} and the
+	 * {@link #humanReadableIDType} with best guesses if they were not set.
+	 */
+	public void initialize() {
+//		if (idTypes.size() == 0)
+//			throw new IllegalStateException("No id types specified");
+
+		if (primaryMappingType == null) {
+			primaryMappingType = IDType.registerType(categoryName + "_primary", this,
+					EDataType.INT);
+			primaryMappingType.setInternalType(true);
+		}
+
+		if (humanReadableIDType == null) {
+			IDType candidateHRType = null;
+			for (IDType idType : idTypes) {
+				if (!idType.isInternalType()) {
+					if (candidateHRType != null) {
+						throw new IllegalStateException(
+								"To many candidates for Human Readable Types");
+					}
+					candidateHRType = idType;
+				}
+			}
+			if (candidateHRType == null) {
+				humanReadableIDType = primaryMappingType;
+			} else {
+				humanReadableIDType = candidateHRType;
+			}
+		}
+		
+		if(denomination == null)
+		{
+			setDenomination(categoryName.toLowerCase());
+		}
 	}
 }

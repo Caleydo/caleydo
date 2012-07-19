@@ -94,17 +94,7 @@ public class GeneticDataDomain
 		configuration.setRecordIDCategory("GENE");
 		configuration.setDimensionIDCategory("SAMPLE");
 
-		configuration.setPrimaryRecordMappingType("DAVID");
-//		configuration.setPrimaryDimensionMappingType("SAMPLE_INT");
 
-		configuration.setHumanReadableRecordIDType("GENE_SYMBOL");
-		configuration.setHumanReadableDimensionIDType("SAMPLE");
-
-		configuration.setRecordDenominationPlural("genes");
-		configuration.setRecordDenominationSingular("gene");
-
-		configuration.setDimensionDenominationPlural("samples");
-		configuration.setDimensionDenominationSingular("sample");
 	}
 
 	@Override
@@ -115,18 +105,6 @@ public class GeneticDataDomain
 
 		configuration.setRecordIDCategory("SAMPLE");
 		configuration.setDimensionIDCategory("GENE");
-
-//		configuration.setPrimaryRecordMappingType("SAMPLE_INT");
-		configuration.setPrimaryDimensionMappingType("DAVID");
-
-		configuration.setHumanReadableRecordIDType("SAMPLE");
-		configuration.setHumanReadableDimensionIDType("GENE_SYMBOL");
-
-		configuration.setRecordDenominationPlural("samples");
-		configuration.setRecordDenominationSingular("sample");
-
-		configuration.setDimensionDenominationPlural("genes");
-		configuration.setDimensionDenominationSingular("gene");
 	}
 
 	@Override

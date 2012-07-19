@@ -22,7 +22,7 @@ public class GeneticIDMappingCreator {
 
 		IDCategory geneIDCategory = IDCategory.registerCategory(EGeneIDTypes.GENE.name());
 
-		IDType.registerType(EGeneIDTypes.DAVID.name(), geneIDCategory,
+		IDType david = IDType.registerType(EGeneIDTypes.DAVID.name(), geneIDCategory,
 				EGeneIDTypes.DAVID.getColumnType());
 		IDType.registerType(EGeneIDTypes.GENE_NAME.name(), geneIDCategory,
 				EGeneIDTypes.GENE_NAME.getColumnType());
@@ -41,6 +41,10 @@ public class GeneticIDMappingCreator {
 				EGeneIDTypes.PATHWAY_VERTEX.getColumnType());
 		IDType.registerType(EGeneIDTypes.PATHWAY.name(), geneIDCategory,
 				EGeneIDTypes.PATHWAY.getColumnType());
+
+		geneIDCategory.setPrimaryMappingType(david);
+		geneIDCategory.setHumanReadableIDType(geneSymbol);
+		geneIDCategory.setDenomination("gene");
 
 		String fileName = "data/genome/mapping/david/"
 				+ GeneralManager.get().getBasicInfo().getOrganism();
@@ -73,18 +77,12 @@ public class GeneticIDMappingCreator {
 
 		IDCategory sampleIDCategory = IDCategory.registerCategory("SAMPLE");
 
-		IDType sampleIntIDType = IDType.registerType("SAMPLE_INT", sampleIDCategory,
-				EDataType.INT);
-		sampleIntIDType.setInternalType(true);
 		IDType sampleID = IDType.registerType("SAMPLE", sampleIDCategory,
 				EDataType.STRING);
 		sampleIDCategory.setHumanReadableIDType(sampleID);
 
 		IDCategory tcgaSampleIDCategory = IDCategory.registerCategory("TCGA_SAMPLE");
 
-		IDType tcgaSampleIntIDType = IDType.registerType("TCGA_SAMPLE_INT",
-				tcgaSampleIDCategory, EDataType.INT);
-		tcgaSampleIntIDType.setInternalType(true);
 		IDType tcgaSample = IDType.registerType("TCGA_SAMPLE", tcgaSampleIDCategory,
 				EDataType.STRING);
 		IDTypeParsingRules tcgaIDTypeParsingRules = new IDTypeParsingRules();

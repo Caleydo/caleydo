@@ -669,8 +669,7 @@ public abstract class AImportDialog extends Dialog {
 		for (IDCategory idCategory : idCategories) {
 
 			rowIDTypes = new ArrayList<IDType>();
-			HashSet<IDType> alIDTypesTemp = IDMappingManagerRegistry.get()
-					.getIDMappingManager(idCategory).getIDTypes();
+			ArrayList<IDType> alIDTypesTemp = idCategory.getIdTypes();
 			for (IDType idType : alIDTypesTemp) {
 				if (!idType.isInternalType())
 					rowIDTypes.add(idType);

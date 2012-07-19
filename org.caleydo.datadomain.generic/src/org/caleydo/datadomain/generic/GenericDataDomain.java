@@ -53,8 +53,8 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE
 				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
 
-		recordDenominationSingular = "entity";
-		recordDenominationPlural = "entities";
+//		recordDenominationSingular = "entity";
+//		recordDenominationPlural = "entities";
 	}
 
 	@Override
@@ -72,8 +72,8 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 		configuration.setRecordIDCategory("UNSPECIFIED_RECORD");
 		configuration.setDimensionIDCategory("UNSPECIFIED_DIMENSION");
 
-		configuration.setHumanReadableRecordIDType("unspecified_record");
-		configuration.setHumanReadableDimensionIDType("unspecified_column");
+//		configuration.setHumanReadableRecordIDType("unspecified_record");
+//		configuration.setHumanReadableDimensionIDType("unspecified_column");
 
 		// recordIDType = IDType.registerType("UNSPECIFIED_RECORD",
 		// recordIDCategory,
@@ -87,10 +87,10 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 		// primaryDimensionMappingType = dimensionIDType;
 		// humanReadableDimensionIDType = dimensionIDType;
 
-		configuration.setRecordDenominationPlural("records");
-		configuration.setRecordDenominationSingular("record");
-		configuration.setDimensionDenominationPlural("dimensions");
-		configuration.setDimensionDenominationSingular("dimension");
+//		configuration.setRecordDenominationPlural("records");
+//		configuration.setRecordDenominationSingular("record");
+//		configuration.setDimensionDenominationPlural("dimensions");
+//		configuration.setDimensionDenominationSingular("dimension");
 	}
 
 	@Override
@@ -101,12 +101,12 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 		configuration.setRecordIDCategory("UNSPECIFIED_DIMENSION");
 		configuration.setDimensionIDCategory("UNSPECIFIED_RECORD");
 
-		configuration.setHumanReadableRecordIDType("unspecified_column");
-		configuration.setHumanReadableDimensionIDType("unspecified_record");
-
-		configuration.setRecordDenominationPlural("dimensions");
-		configuration.setRecordDenominationSingular("dimension");
-		configuration.setDimensionDenominationPlural("records");
-		configuration.setDimensionDenominationSingular("record");
+//		configuration.setHumanReadableRecordIDType("unspecified_column");
+//		configuration.setHumanReadableDimensionIDType("unspecified_record");
+//
+//		configuration.setRecordDenominationPlural("dimensions");
+//		configuration.setRecordDenominationSingular("dimension");
+//		configuration.setDimensionDenominationPlural("records");
+//		configuration.setDimensionDenominationSingular("record");
 	}
 }

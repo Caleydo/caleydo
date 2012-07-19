@@ -194,9 +194,6 @@ public class IDType {
 	 */
 	public static IDType getIDType(String typeName) {
 		IDType requestedType = registeredTypes.get(typeName);
-		if (requestedType == null)
-			throw new IllegalStateException("Requested IDType for typeName \"" + typeName
-					+ "\" not registered.");
 		return requestedType;
 	}
 

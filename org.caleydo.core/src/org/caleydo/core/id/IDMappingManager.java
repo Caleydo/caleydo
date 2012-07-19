@@ -65,6 +65,7 @@ public class IDMappingManager {
 	 */
 	IDMappingManager(IDCategory idCategory) {
 		this.idCategory = idCategory;
+		idCategory.initialize();
 		hashMappingType2Map = new HashMap<MappingType, Map<?, ?>>();
 		hashMappingTypeString2MappingType = new HashMap<String, MappingType>();
 		mappingGraph = new DefaultDirectedWeightedGraph<IDType, MappingType>(
@@ -96,10 +97,12 @@ public class IDMappingManager {
 			boolean isMultiMap, boolean createReverseMap) {
 
 		if (hashMappingTypeString2MappingType.containsKey(fromIDType.getTypeName()
-				+ "_2_" + toIDType.getTypeName()))
+				+ "_2_" + toIDType.getTypeName())) {
+			// map already exists
 			return hashMappingTypeString2MappingType.get(fromIDType.getTypeName() + "_2_"
 					+ toIDType.getTypeName());
 
+		}
 		if (!mappingGraph.containsVertex(fromIDType))
 			mappingGraph.addVertex(fromIDType);
 		if (!mappingGraph.containsVertex(toIDType))
@@ -659,6 +662,8 @@ public class IDMappingManager {
 	 * @return True, if such an element is fund, false otherwise.
 	 */
 	public <T> boolean doesElementExist(IDType idType, T element) {
+		if (!mappingGraph.containsVertex(idType))
+			return false;
 		Set<MappingType> edges = mappingGraph.edgesOf(idType);
 
 		for (MappingType edge : edges) {
