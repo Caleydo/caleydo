@@ -242,18 +242,236 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		registeredIDCategories = new ArrayList<IDCategory>();
 		registeredIDCategories.addAll(IDCategory.getAllRegisteredIDCategories());
 
-		int numGridCols = 4;
+		int numGridCols = 2;
 
 		parentComposite = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout(numGridCols, false);
+		GridLayout layout = new GridLayout(numGridCols, true);
 		parentComposite.setLayout(layout);
 
-		Group inputFileGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		// File Selection
+
+		createFileSelectionPart(parentComposite);
+
+		// Dataset Name
+
+		createDataSetNamePart(parentComposite);
+
+		// Delimiters
+
+		Composite delimiterComposite = new Composite(parentComposite, SWT.NONE);
+		delimiterComposite.setLayout(new GridLayout(1, false));
+		delimiterComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2,
+				1));
+		createDelimiterGroup(delimiterComposite);
+
+		// Row Config
+
+		createRowConfigPart(parentComposite);
+
+		// Column Config
+
+		createColumnConfigPart(parentComposite);
+
+		previewTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER
+				| SWT.FULL_SELECTION);
+		previewTable.setLinesVisible(true);
+		// previewTable.setHeaderVisible(true);
+		GridData gridData = new GridData(GridData.FILL_BOTH);
+		gridData.horizontalSpan = numGridCols;
+		gridData.heightHint = 400;
+		gridData.widthHint = 800;
+		previewTable.setLayoutData(gridData);
+
+		createTableInfo(parentComposite);
+
+		previewTableManager = new PreviewTableManager(previewTable);
+
+		// Check if an external file name is given to the action
+		if (!inputFileName.isEmpty()) {
+			fileNameTextField.setText(inputFileName);
+			dataSetDescription.setDataSourcePath(inputFileName);
+			// mathFilterMode = "Log10";
+			// mathFilterCombo.select(1);
+
+			createDataPreviewTableFromFile();
+		}
+		setControl(parentComposite);
+	}
+
+	private void createRowConfigPart(Composite parent) {
+
+		Group rowConfigGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		rowConfigGroup.setText("Row configuration");
+		rowConfigGroup.setLayout(new GridLayout(2, false));
+		rowConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		Composite leftConfigGroupPart = new Composite(rowConfigGroup, SWT.NONE);
+		leftConfigGroupPart.setLayout(new GridLayout(2, false));
+		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		createIDCategoryGroup(leftConfigGroupPart, "Row ID category", false);
+		createIDTypeGroup(leftConfigGroupPart, false);
+
+		Label startParseAtLineLabel = new Label(leftConfigGroupPart, SWT.NONE);
+		startParseAtLineLabel.setText("Number of header rows");
+
+		numHeaderRowsSpinner = new Spinner(leftConfigGroupPart, SWT.BORDER);
+		numHeaderRowsSpinner.setMinimum(1);
+		numHeaderRowsSpinner.setMaximum(Integer.MAX_VALUE);
+		numHeaderRowsSpinner.setIncrement(1);
+		numHeaderRowsSpinner.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		numHeaderRowsSpinner.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				try {
+
+					int numHeaderRows = numHeaderRowsSpinner.getSelection();
+					int idRowIndex = rowOfColumnIDSpinner.getSelection();
+					if (idRowIndex > numHeaderRows) {
+						rowOfColumnIDSpinner.setSelection(numHeaderRows);
+						dataSetDescription.setRowOfColumnIDs(numHeaderRows - 1);
+					}
+					dataSetDescription.setNumberOfHeaderLines(numHeaderRows);
+					previewTableManager.updateTableColors(
+							dataSetDescription.getNumberOfHeaderLines(),
+							dataSetDescription.getRowOfColumnIDs() + 1,
+							dataSetDescription.getColumnOfRowIds() + 1);
+
+				} catch (NumberFormatException exc) {
+
+				}
+
+			}
+		});
+
+		Label columnOfRowIDlabel = new Label(leftConfigGroupPart, SWT.NONE);
+		columnOfRowIDlabel.setText("Column with row IDs");
+		// columnOfRowIDGroup.setLayout(new GridLayout(1, false));
+
+		columnOfRowIDSpinner = new Spinner(leftConfigGroupPart, SWT.BORDER);
+		columnOfRowIDSpinner.setMinimum(1);
+		columnOfRowIDSpinner.setMaximum(Integer.MAX_VALUE);
+		columnOfRowIDSpinner.setIncrement(1);
+		columnOfRowIDSpinner.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		columnOfRowIDSpinner.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				dataSetDescription.setColumnOfRowIds(columnOfRowIDSpinner.getSelection() - 1);
+				previewTableManager.updateTableColors(
+						dataSetDescription.getNumberOfHeaderLines(),
+						dataSetDescription.getRowOfColumnIDs() + 1,
+						dataSetDescription.getColumnOfRowIds() + 1);
+			}
+		});
+
+		Composite righttConfigGroupPart = new Composite(rowConfigGroup, SWT.NONE);
+		righttConfigGroupPart.setLayout(new GridLayout(1, false));
+		righttConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		createNewIDCategoryButton(righttConfigGroupPart);
+		createNewIDTypeButton(righttConfigGroupPart);
+	}
+
+	private void createNewIDCategoryButton(Composite parent) {
+		Button createIDCategoryButton = new Button(parent, SWT.PUSH);
+		createIDCategoryButton.setText("New");
+		createIDCategoryButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				CreateIDCategoryDialog dialog = new CreateIDCategoryDialog(new Shell());
+				int status = dialog.open();
+
+				if (status == Dialog.OK) {
+					registeredIDCategories = new ArrayList<IDCategory>();
+					registeredIDCategories.addAll(IDCategory
+							.getAllRegisteredIDCategories());
+					fillIDCategoryCombo(rowIDCategoryCombo);
+					fillIDCategoryCombo(columnIDCategoryCombo);
+				}
+
+				super.widgetSelected(e);
+			}
+		});
+	}
+
+	private void createNewIDTypeButton(Composite parent) {
+		Button createIDTypeButton = new Button(parent, SWT.PUSH);
+		createIDTypeButton.setText("New");
+		createIDTypeButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				CreateIDTypeDialog dialog = new CreateIDTypeDialog(new Shell());
+				int status = dialog.open();
+
+				if (status == Dialog.OK) {
+
+					updateIDTypeCombo(rowIDCategory, rowIDTypes, rowIDCombo);
+
+					updateIDTypeCombo(columnIDCategory, columnIDTypes, columnIDCombo);
+				}
+
+				super.widgetSelected(e);
+			}
+		});
+	}
+
+	private void createColumnConfigPart(Composite parent) {
+
+		Group columnConfigGroup = new Group(parent, SWT.NONE);
+		columnConfigGroup.setText("Column configuration");
+		columnConfigGroup.setLayout(new GridLayout(2, false));
+		columnConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		Composite leftConfigGroupPart = new Composite(columnConfigGroup, SWT.NONE);
+		leftConfigGroupPart.setLayout(new GridLayout(2, false));
+		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		createIDCategoryGroup(leftConfigGroupPart, "Column ID category", true);
+		createIDTypeGroup(leftConfigGroupPart, true);
+
+		Label rowOfColumnIDLabel = new Label(leftConfigGroupPart, SWT.NONE);
+		rowOfColumnIDLabel.setText("Row with column IDs");
+
+		rowOfColumnIDSpinner = new Spinner(leftConfigGroupPart, SWT.BORDER);
+		rowOfColumnIDSpinner.setMinimum(1);
+		rowOfColumnIDSpinner.setMaximum(Integer.MAX_VALUE);
+		rowOfColumnIDSpinner.setIncrement(1);
+		rowOfColumnIDSpinner.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		rowOfColumnIDSpinner.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				int numHeaderRows = numHeaderRowsSpinner.getSelection();
+				int idRowIndex = rowOfColumnIDSpinner.getSelection();
+				dataSetDescription.setRowOfColumnIDs(idRowIndex - 1);
+				if (idRowIndex > numHeaderRows) {
+					numHeaderRowsSpinner.setSelection(idRowIndex);
+					dataSetDescription.setNumberOfHeaderLines(idRowIndex);
+				}
+				previewTableManager.updateTableColors(
+						dataSetDescription.getNumberOfHeaderLines(),
+						dataSetDescription.getRowOfColumnIDs() + 1,
+						dataSetDescription.getColumnOfRowIds() + 1);
+			}
+		});
+
+		createDataPropertiesGroup(leftConfigGroupPart);
+
+		Composite righttConfigGroupPart = new Composite(columnConfigGroup, SWT.NONE);
+		righttConfigGroupPart.setLayout(new GridLayout(1, false));
+		righttConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		createNewIDCategoryButton(righttConfigGroupPart);
+		createNewIDTypeButton(righttConfigGroupPart);
+	}
+
+	private void createFileSelectionPart(Composite parent) {
+
+		Group inputFileGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		inputFileGroup.setText("Input file");
 		inputFileGroup.setLayout(new GridLayout(2, false));
-		GridData gridData = new GridData(SWT.BEGINNING);
-		gridData.horizontalSpan = 2;
-		inputFileGroup.setLayoutData(gridData);
+		inputFileGroup.setLayoutData(new GridData(SWT.BEGINNING));
 
 		Button buttonFileChooser = new Button(inputFileGroup, SWT.PUSH);
 		buttonFileChooser.setText("Choose data file...");
@@ -261,7 +479,9 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		// GridData(GridData.FILL_HORIZONTAL));
 
 		fileNameTextField = new Text(inputFileGroup, SWT.BORDER);
-		fileNameTextField.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gridData.widthHint = 300;
+		fileNameTextField.setLayoutData(gridData);
 		fileNameTextField.setEnabled(false);
 		fileNameTextField.addListener(SWT.Modify, this);
 
@@ -290,176 +510,17 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 				createDataPreviewTableFromFile();
 			}
 		});
+	}
 
-		Composite groupingComposite = new Composite(parentComposite, SWT.NONE);
-		groupingComposite.setLayout(new GridLayout(2, true));
-		groupingComposite
-				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 3));
-
-		Composite idComposite = new Composite(parentComposite, SWT.NONE);
-		idComposite.setLayout(new GridLayout(4, false));
-		idComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-
-		createIDCategoryGroup(idComposite, "Row ID category", false);
-		createIDTypeGroup(idComposite, false);
-
-		createIDCategoryGroup(idComposite, "Column ID category", true);
-		createIDTypeGroup(idComposite, true);
-
-		Button createIDCategoryButton = new Button(parentComposite, SWT.PUSH);
-		createIDCategoryButton.setText("Create ID category");
-		createIDCategoryButton.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				CreateIDCategoryDialog dialog = new CreateIDCategoryDialog(new Shell());
-				int status = dialog.open();
-
-				if (status == Dialog.OK) {
-					registeredIDCategories = new ArrayList<IDCategory>();
-					registeredIDCategories.addAll(IDCategory
-							.getAllRegisteredIDCategories());
-					fillIDCategoryCombo(rowIDCategoryCombo);
-					fillIDCategoryCombo(columnIDCategoryCombo);
-				}
-
-				super.widgetSelected(e);
-			}
-		});
-
-		Button createIDTypeButton = new Button(parentComposite, SWT.PUSH);
-		createIDTypeButton.setText("Create ID type");
-		createIDTypeButton.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				CreateIDTypeDialog dialog = new CreateIDTypeDialog(new Shell());
-				int status = dialog.open();
-
-				if (status == Dialog.OK) {
-
-					updateIDTypeCombo(rowIDCategory, rowIDTypes, rowIDCombo);
-
-					updateIDTypeCombo(columnIDCategory, columnIDTypes, columnIDCombo);
-				}
-
-				super.widgetSelected(e);
-			}
-		});
-
+	private void createDataSetNamePart(Composite parent) {
 		Group dataSetLabelGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		dataSetLabelGroup.setText("Data set name");
+		dataSetLabelGroup.setText("Dataset name");
 		dataSetLabelGroup.setLayout(new GridLayout(1, false));
-		gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
-		dataSetLabelGroup.setLayoutData(gridData);
+		dataSetLabelGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		dataSetLabelTextField = new Text(dataSetLabelGroup, SWT.BORDER);
 		dataSetLabelTextField.setText(determineDataSetLabel());
 		dataSetLabelTextField.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		Group startParseAtLineGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		startParseAtLineGroup.setText("Number of header rows");
-		startParseAtLineGroup.setLayout(new GridLayout(1, false));
-
-		numHeaderRowsSpinner = new Spinner(startParseAtLineGroup, SWT.BORDER);
-		numHeaderRowsSpinner.setMinimum(1);
-		numHeaderRowsSpinner.setMaximum(Integer.MAX_VALUE);
-		numHeaderRowsSpinner.setIncrement(1);
-		numHeaderRowsSpinner.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				try {
-
-					int numHeaderRows = numHeaderRowsSpinner.getSelection();
-					int idRowIndex = rowOfColumnIDSpinner.getSelection();
-					if (idRowIndex > numHeaderRows) {
-						rowOfColumnIDSpinner.setSelection(numHeaderRows);
-						dataSetDescription.setRowOfColumnIDs(numHeaderRows - 1);
-					}
-					dataSetDescription.setNumberOfHeaderLines(numHeaderRows);
-					previewTableManager.updateTableColors(
-							dataSetDescription.getNumberOfHeaderLines(),
-							dataSetDescription.getRowOfColumnIDs() + 1,
-							dataSetDescription.getColumnOfRowIds() + 1);
-
-				} catch (NumberFormatException exc) {
-
-				}
-
-			}
-		});
-
-		Group rowOfColumnIDGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		rowOfColumnIDGroup.setText("Row with column IDs");
-		rowOfColumnIDGroup.setLayout(new GridLayout(1, false));
-
-		rowOfColumnIDSpinner = new Spinner(rowOfColumnIDGroup, SWT.BORDER);
-		rowOfColumnIDSpinner.setMinimum(1);
-		rowOfColumnIDSpinner.setMaximum(Integer.MAX_VALUE);
-		rowOfColumnIDSpinner.setIncrement(1);
-		rowOfColumnIDSpinner.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				int numHeaderRows = numHeaderRowsSpinner.getSelection();
-				int idRowIndex = rowOfColumnIDSpinner.getSelection();
-				dataSetDescription.setRowOfColumnIDs(idRowIndex - 1);
-				if (idRowIndex > numHeaderRows) {
-					numHeaderRowsSpinner.setSelection(idRowIndex);
-					dataSetDescription.setNumberOfHeaderLines(idRowIndex);
-				}
-				previewTableManager.updateTableColors(
-						dataSetDescription.getNumberOfHeaderLines(),
-						dataSetDescription.getRowOfColumnIDs() + 1,
-						dataSetDescription.getColumnOfRowIds() + 1);
-			}
-		});
-
-		Group columnOfRowIDGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		columnOfRowIDGroup.setText("Column with row IDs");
-		columnOfRowIDGroup.setLayout(new GridLayout(1, false));
-
-		columnOfRowIDSpinner = new Spinner(columnOfRowIDGroup, SWT.BORDER);
-		columnOfRowIDSpinner.setMinimum(1);
-		columnOfRowIDSpinner.setMaximum(Integer.MAX_VALUE);
-		columnOfRowIDSpinner.setIncrement(1);
-		columnOfRowIDSpinner.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				dataSetDescription.setColumnOfRowIds(columnOfRowIDSpinner.getSelection() - 1);
-				previewTableManager.updateTableColors(
-						dataSetDescription.getNumberOfHeaderLines(),
-						dataSetDescription.getRowOfColumnIDs() + 1,
-						dataSetDescription.getColumnOfRowIds() + 1);
-			}
-		});
-
-		createDelimiterGroup(parentComposite);
-		createDataPropertiesGroup();
-
-		previewTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER
-				| SWT.FULL_SELECTION);
-		previewTable.setLinesVisible(true);
-		// previewTable.setHeaderVisible(true);
-		gridData = new GridData(GridData.FILL_BOTH);
-		gridData.horizontalSpan = numGridCols;
-		gridData.heightHint = 400;
-		gridData.widthHint = 800;
-		previewTable.setLayoutData(gridData);
-
-		createTableInfo(parentComposite);
-
-		previewTableManager = new PreviewTableManager(previewTable);
-
-		// Check if an external file name is given to the action
-		if (!inputFileName.isEmpty()) {
-			fileNameTextField.setText(inputFileName);
-			dataSetDescription.setDataSourcePath(inputFileName);
-//			mathFilterMode = "Log10";
-			// mathFilterCombo.select(1);
-
-			createDataPreviewTableFromFile();
-		}
-		setControl(parentComposite);
 	}
 
 	protected void createDelimiterGroup(Composite parent) {
@@ -536,12 +597,12 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 	}
 
-	protected void createIDTypeGroup(Composite parent, boolean isColumnIDTypeGroup) {
-		Group idTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		idTypeGroup.setText(isColumnIDTypeGroup ? "Column ID type" : "Row ID type");
-		idTypeGroup.setLayout(new RowLayout());
-		idTypeGroup.setLayoutData(new GridData(SWT.LEFT));
-		Combo idCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
+	private void createIDTypeGroup(Composite parent, boolean isColumnIDTypeGroup) {
+		Label idTypeLabel = new Label(parent, SWT.SHADOW_ETCHED_IN);
+		idTypeLabel.setText(isColumnIDTypeGroup ? "Column ID type" : "Row ID type");
+		// idTypeLabel.setLayout(new RowLayout());
+		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
+		Combo idCombo = new Combo(parent, SWT.DROP_DOWN);
 		ArrayList<IDType> idTypes = new ArrayList<IDType>();
 
 		if (isColumnIDTypeGroup) {
@@ -742,11 +803,12 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 	private void createIDCategoryGroup(Composite parent, String groupLabel,
 			final boolean isColumnCategory) {
-		Group recordIDCategoryGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		Label recordIDCategoryGroup = new Label(parent, SWT.SHADOW_ETCHED_IN);
 		recordIDCategoryGroup.setText(groupLabel);
-		recordIDCategoryGroup.setLayout(new RowLayout());
+		// recordIDCategoryGroup.setLayout(new RowLayout());
 		recordIDCategoryGroup.setLayoutData(new GridData(SWT.LEFT));
-		Combo idCategoryCombo = new Combo(recordIDCategoryGroup, SWT.DROP_DOWN);
+		Combo idCategoryCombo = new Combo(parent, SWT.DROP_DOWN);
+		idCategoryCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		idCategoryCombo.setText("<Please select>");
 
 		if (isColumnCategory) {
@@ -803,14 +865,15 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		}
 	}
 
-	private void createDataPropertiesGroup() {
-		Group dataPropertiesGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		dataPropertiesGroup.setText("Column properties");
-		dataPropertiesGroup.setLayout(new RowLayout());
-		dataPropertiesGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	private void createDataPropertiesGroup(Composite parent) {
+		// Group dataPropertiesGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		// dataPropertiesGroup.setText("Column properties");
+		// dataPropertiesGroup.setLayout(new RowLayout());
+		// dataPropertiesGroup.setLayoutData(new
+		// GridData(GridData.FILL_HORIZONTAL));
 
-		buttonHomogeneous = new Button(dataPropertiesGroup, SWT.CHECK);
-		buttonHomogeneous.setText("Homogeneous data");
+		buttonHomogeneous = new Button(parent, SWT.CHECK);
+		buttonHomogeneous.setText("Columns use same scale");
 		buttonHomogeneous.setEnabled(true);
 		buttonHomogeneous.setSelection(true);
 	}
@@ -820,7 +883,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	 */
 	@Override
 	public void fillDataSetDescription() {
-		
+
 		IDSpecification rowIDSpecification = new IDSpecification();
 		IDType rowIDType = rowIDTypes.get(rowIDCombo.getSelectionIndex());
 		rowIDSpecification.setIdType(rowIDType.toString());
