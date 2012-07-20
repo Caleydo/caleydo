@@ -16,8 +16,8 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
-import org.caleydo.core.io.MatrixDefinition;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -48,7 +48,7 @@ import org.eclipse.swt.widgets.Text;
  * @author Christian Partl
  * 
  */
-public class LoadDataSetPage extends WizardPage {
+public class LoadDataSetPage extends WizardPage implements Listener {
 
 	/**
 	 * Maximum number of previewed rows in {@link #previewTable}.
@@ -230,14 +230,17 @@ public class LoadDataSetPage extends WizardPage {
 	/**
 	 * @param pageName
 	 */
-	protected LoadDataSetPage(String pageName) {
+	protected LoadDataSetPage(String pageName, DataSetDescription dataSetDescription) {
 		super(pageName);
+		this.dataSetDescription = dataSetDescription;
+		inputFileName = dataSetDescription.getDataSourcePath();
+		if (inputFileName == null)
+			inputFileName = "";
 	}
 
 	@Override
 	public void createControl(Composite parent) {
 
-		dataSetDescription = new DataSetDescription();
 		dataSetDescription.setDelimiter("\t");
 		dataSetDescription.setNumberOfHeaderLines(1);
 		dataSetDescription.setRowOfColumnIDs(0);
@@ -266,6 +269,7 @@ public class LoadDataSetPage extends WizardPage {
 		fileNameTextField = new Text(inputFileGroup, SWT.BORDER);
 		fileNameTextField.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		fileNameTextField.setEnabled(false);
+		fileNameTextField.addListener(SWT.Modify, this);
 
 		buttonFileChooser.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -288,7 +292,6 @@ public class LoadDataSetPage extends WizardPage {
 				dataSetLabelTextField.setText(determineDataSetLabel());
 				columnIDCategoryCombo.setEnabled(true);
 				rowIDCategoryCombo.setEnabled(true);
-
 
 				createDataPreviewTableFromFile();
 			}
@@ -563,6 +566,8 @@ public class LoadDataSetPage extends WizardPage {
 
 		updateIDTypeCombo(isColumnIDTypeGroup ? columnIDCategory : rowIDCategory,
 				idTypes, idCombo);
+
+		idCombo.addListener(SWT.Modify, this);
 	}
 
 	private void updateIDTypeCombo(IDCategory idCategory, ArrayList<IDType> idTypes,
@@ -577,8 +582,8 @@ public class LoadDataSetPage extends WizardPage {
 				previousSelection = idTypeCombo.getItem(idTypeCombo.getSelectionIndex());
 			}
 			idTypeCombo.removeAll();
+			idTypes.clear();
 
-			idTypes = new ArrayList<IDType>(allIDTypesOfCategory.size());
 			for (IDType idType : allIDTypesOfCategory) {
 				if (!idType.isInternalType()) {
 					idTypes.add(idType);
@@ -612,6 +617,7 @@ public class LoadDataSetPage extends WizardPage {
 		totalNumberOfRows = parser.getTotalNumberOfRows();
 		previewTableManager.createDataPreviewTableFromDataMatrix(dataMatrix,
 				MAX_PREVIEW_TABLE_COLUMNS);
+		selectedColumnButtons = previewTableManager.getSelectedColumnButtons();
 		determineRowIDType();
 		previewTableManager.updateTableColors(
 				dataSetDescription.getNumberOfHeaderLines(),
@@ -777,12 +783,14 @@ public class LoadDataSetPage extends WizardPage {
 						.createDataPreviewTableFromDataMatrix(dataMatrix,
 								showAllColumns ? totalNumberOfColumns
 										: MAX_PREVIEW_TABLE_COLUMNS);
+				selectedColumnButtons = previewTableManager.getSelectedColumnButtons();
 				determineRowIDType();
 				previewTableManager.updateTableColors(
 						dataSetDescription.getNumberOfHeaderLines(),
 						dataSetDescription.getRowOfColumnIDs() + 1,
 						dataSetDescription.getColumnOfRowIds() + 1);
 				updateWidgetsAccordingToTableChanges();
+				showAllColumnsButton.setSelection(showAllColumns);
 			}
 
 		});
@@ -949,7 +957,7 @@ public class LoadDataSetPage extends WizardPage {
 	/**
 	 * Reads the min and max values (if set) from the dialog
 	 */
-	private void fillDatasetDescription() {
+	public void fillDatasetDescription() {
 		if (minTextField.getEnabled() && !minTextField.getText().isEmpty()) {
 			float fMin = Float.parseFloat(minTextField.getText());
 			if (!Float.isNaN(fMin)) {
@@ -1137,6 +1145,58 @@ public class LoadDataSetPage extends WizardPage {
 		showAllColumnsButton.setEnabled(true);
 		tableInfoLabel.setText((previewTable.getColumnCount() - 1) + " of "
 				+ totalNumberOfColumns + " columns shown");
+	}
+
+	@Override
+	public boolean isPageComplete() {
+		if (fileNameTextField.getText().isEmpty()) {
+			// MessageDialog.openError(new Shell(), "Invalid filename",
+			// "Please specify a file to load");
+			((DataImportWizard) getWizard()).setRequiredDataSpecified(false);
+			return false;
+		}
+
+		if (rowIDCombo.getSelectionIndex() == -1) {
+			// MessageDialog.openError(new Shell(), "Invalid row ID type",
+			// "Please select the ID type of the rows");
+			((DataImportWizard) getWizard()).setRequiredDataSpecified(false);
+			return false;
+		}
+
+		if (columnIDCombo.getSelectionIndex() == -1) {
+			// MessageDialog.openError(new Shell(), "Invalid column ID type",
+			// "Please select the ID type of the columns");
+			((DataImportWizard) getWizard()).setRequiredDataSpecified(false);
+			return false;
+		}
+		((DataImportWizard) getWizard()).setRequiredDataSpecified(true);
+
+		return super.isPageComplete();
+	}
+
+	// @Override
+	// public boolean canFlipToNextPage() {
+	//
+	//
+	//
+	// return super.canFlipToNextPage();
+	// }
+
+	@Override
+	public IWizardPage getNextPage() {
+		return super.getNextPage();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets.
+	 * Event)
+	 */
+	@Override
+	public void handleEvent(Event event) {
+		getWizard().getContainer().updateButtons();
 	}
 
 }

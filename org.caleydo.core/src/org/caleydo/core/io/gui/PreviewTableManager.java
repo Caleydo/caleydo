@@ -234,5 +234,12 @@ public class PreviewTableManager {
 			tableEditors.add(editor);
 		}
 	}
+	
+	/**
+	 * @return the selectedColumnButtons, see {@link #selectedColumnButtons}
+	 */
+	public ArrayList<Button> getSelectedColumnButtons() {
+		return selectedColumnButtons;
+	}
 
 }
