@@ -50,7 +50,7 @@ public class CaleydoProjectWizard
 	 */
 	public CaleydoProjectWizard(final Shell parentShell) {
 
-		this.setWindowTitle("Caleydo - Project Wizard");
+		this.setWindowTitle("Caleydo - Choose Data Source");
 
 		Monitor primary = parentShell.getDisplay().getPrimaryMonitor();
 		Rectangle bounds = primary.getBounds();
