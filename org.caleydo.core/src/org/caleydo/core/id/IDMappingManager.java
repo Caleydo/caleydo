@@ -112,8 +112,6 @@ public class IDMappingManager {
 	 */
 	private HashMap<MappingType, Map<?, ?>> hashMappingType2Map;
 
-	private HashMap<String, MappingType> hashMappingTypeString2MappingType;
-
 	/**
 	 * Graph of mappings. IDTypes are the vertices of the graph, edges represent
 	 * a mapping from one IDType to another that is backed up by a corresponding
@@ -128,7 +126,6 @@ public class IDMappingManager {
 		this.idCategory = idCategory;
 		idCategory.initialize();
 		hashMappingType2Map = new HashMap<MappingType, Map<?, ?>>();
-		hashMappingTypeString2MappingType = new HashMap<String, MappingType>();
 		mappingGraph = new DefaultDirectedWeightedGraph<IDType, MappingType>(
 				MappingType.class);
 	}
@@ -161,21 +158,16 @@ public class IDMappingManager {
 	public <K, V> MappingType createMap(IDType fromIDType, IDType toIDType,
 			boolean isMultiMap, boolean createReverseMap) {
 
-		if (hashMappingTypeString2MappingType.containsKey(fromIDType.getTypeName()
-				+ "_2_" + toIDType.getTypeName())) {
-			// map already exists
-			return hashMappingTypeString2MappingType.get(fromIDType.getTypeName() + "_2_"
-					+ toIDType.getTypeName());
+		MappingType mappingType = MappingType.registerMappingType(fromIDType, toIDType,
+				isMultiMap, createReverseMap);
+		if (hashMappingType2Map.containsKey(mappingType))
+			return mappingType;
 
-		}
 		if (!mappingGraph.containsVertex(fromIDType))
 			mappingGraph.addVertex(fromIDType);
 		if (!mappingGraph.containsVertex(toIDType))
 			mappingGraph.addVertex(toIDType);
 
-		MappingType mappingType = MappingType.registerMappingType(fromIDType, toIDType,
-				isMultiMap, createReverseMap);
-		hashMappingTypeString2MappingType.put(mappingType.toString(), mappingType);
 		mappingGraph.addEdge(fromIDType, toIDType, mappingType);
 
 		if (mappingType.isMultiMap()) {
@@ -226,7 +218,6 @@ public class IDMappingManager {
 		MappingType reverseType = MappingType.registerMappingType(
 				srcMappingType.getToIDType(), srcMappingType.getFromIDType(),
 				srcMappingType.isMultiMap(), true);
-		hashMappingTypeString2MappingType.put(reverseType.toString(), reverseType);
 
 		Map<DestType, SrcType> reverseMap;
 
@@ -301,7 +292,6 @@ public class IDMappingManager {
 
 		MappingType destMappingType = MappingType.registerMappingType(
 				codeResolvedFromType, codeResolvedToType, false, false); // MULTI??
-		hashMappingTypeString2MappingType.put(mappingType.toString(), mappingType);
 
 		Map<KeyType, ValueType> srcMap = (Map<KeyType, ValueType>) hashMappingType2Map
 				.get(mappingType);
@@ -432,9 +422,7 @@ public class IDMappingManager {
 						&& destValueType.getColumnType() == EDataType.STRING) {
 					codeResolvedMap = new HashMap<Integer, String>();
 
-					MappingType conversionType = mappingType;// MappingType.valueOf(originKeyType
-																// + "_2_" +
-																// destKeyType);
+					MappingType conversionType = mappingType;
 
 					for (KeyType key : srcMap.keySet()) {
 						codeResolvedMap.put(
@@ -581,12 +569,17 @@ public class IDMappingManager {
 	}
 
 	/**
+	 * <p>
 	 * Tries to find the mapping from the source IDType to the destination
 	 * IDType of the specified sourceID along a path of IDTypes where mappings
 	 * exist. If no such path is found, null is returned. If the path includes
-	 * multi-mappings, a Set of values is returned. Note that there will always
-	 * be chosen a path that does not include multi-mappings over paths that
-	 * include multi-mappings if more than one path exists.
+	 * multi-mappings, a Set of values is returned.
+	 * </p>
+	 * <p>
+	 * Note that this method always tries to choose a path without
+	 * multi-mappings if possible.
+	 * </p>
+	 * 
 	 * 
 	 * @param <K>
 	 *            Type of the sourceID
@@ -600,9 +593,11 @@ public class IDMappingManager {
 	 *            ID for which the mapping shall be found
 	 * @return If no mapping is found, null, otherwise the corresponding ID, or
 	 *         Set of IDs.
-	 * @deprecated use {@link #getIDAsSet(IDType, IDType, Object)} instead
+	 * @deprecated Use {@link #getIDAsSet(IDType, IDType, Object)} instead as it
+	 *             is safer.
 	 */
 	@SuppressWarnings("unchecked")
+	@Deprecated
 	public <K, V> V getID(IDType source, IDType destination, K sourceID) {
 
 		if (source.equals(destination))
@@ -798,7 +793,9 @@ public class IDMappingManager {
 	}
 
 	/**
-	 * Returns all id types registered in this ID Mapping Manager
+	 * Returns all id types registered in this ID Mapping Manager. Consider
+	 * using {@link IDCategory#getIdTypes()} for a list of all registered
+	 * {@link IDType}s of a category instead.
 	 * 
 	 * @return
 	 */
@@ -810,15 +807,6 @@ public class IDMappingManager {
 		}
 		return idTypes;
 	}
-
-//	/**
-//	 * Returns all mapping types of currently loaded mappings.
-//	 * 
-//	 * @return
-//	 */
-//	public MappingType getMappingType(String mappingTypeString) {
-//		return hashMappingTypeString2MappingType.get(mappingTypeString);
-//	}
 
 	@Override
 	public String toString() {
