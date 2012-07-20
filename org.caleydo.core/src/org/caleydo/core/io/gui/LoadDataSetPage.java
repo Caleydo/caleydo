@@ -13,12 +13,10 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.ModifyEvent;
@@ -35,7 +33,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
@@ -48,7 +45,7 @@ import org.eclipse.swt.widgets.Text;
  * @author Christian Partl
  * 
  */
-public class LoadDataSetPage extends WizardPage implements Listener {
+public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 	/**
 	 * Maximum number of previewed rows in {@link #previewTable}.
@@ -66,24 +63,31 @@ public class LoadDataSetPage extends WizardPage implements Listener {
 	 */
 	protected static int MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION = 10;
 
+	/**
+	 * Text field for the name of the dataset.
+	 */
 	private Text dataSetLabelTextField;
-	private Text minTextField;
-	private Text maxTextField;
 
-	private List columnGroupingsList;
-	private List rowGroupingsList;
-
+	/**
+	 * Button to specify whether the dataset is homogeneous, i.e. all columns
+	 * have the same scale.
+	 */
 	private Button buttonHomogeneous;
-	private Button buttonSwapRowsWithColumns;
 
+	/**
+	 * Combo box to specify the {@link IDCategory} for the columns of the
+	 * dataset.
+	 */
 	private Combo columnIDCategoryCombo;
+	/**
+	 * Combo box to specify the {@link IDCategory} for the rows of the dataset.
+	 */
 	private Combo rowIDCategoryCombo;
 
+	/**
+	 * Default path of the open dataset dialog.
+	 */
 	private String filePath = "";
-
-	private DataSetDescription dataSetDescription;
-
-	private String mathFilterMode = "Log2";
 
 	/**
 	 * Composite that is the parent of all gui elements of this dialog.
@@ -214,15 +218,6 @@ public class LoadDataSetPage extends WizardPage implements Listener {
 	private ArrayList<IDCategory> registeredIDCategories;
 
 	/**
-	 * {@link GroupingParseSpecification}s for column groupings of the data.
-	 */
-	private ArrayList<GroupingParseSpecification> columnGroupingSpecifications = new ArrayList<GroupingParseSpecification>();
-	/**
-	 * {@link GroupingParseSpecification}s for row groupings of the data.
-	 */
-	private ArrayList<GroupingParseSpecification> rowGroupingSpecifications = new ArrayList<GroupingParseSpecification>();
-
-	/**
 	 * Manager for {@link #previewTable} that extends its features.
 	 */
 	private PreviewTableManager previewTableManager;
@@ -231,8 +226,7 @@ public class LoadDataSetPage extends WizardPage implements Listener {
 	 * @param pageName
 	 */
 	protected LoadDataSetPage(String pageName, DataSetDescription dataSetDescription) {
-		super(pageName);
-		this.dataSetDescription = dataSetDescription;
+		super(pageName, dataSetDescription);
 		inputFileName = dataSetDescription.getDataSourcePath();
 		if (inputFileName == null)
 			inputFileName = "";
@@ -301,11 +295,6 @@ public class LoadDataSetPage extends WizardPage implements Listener {
 		groupingComposite.setLayout(new GridLayout(2, true));
 		groupingComposite
 				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 3));
-
-		createGroupingGroup(groupingComposite, "Column Groupings",
-				columnGroupingSpecifications, true);
-		createGroupingGroup(groupingComposite, "Row Groupings",
-				rowGroupingSpecifications, false);
 
 		Composite idComposite = new Composite(parentComposite, SWT.NONE);
 		idComposite.setLayout(new GridLayout(4, false));
@@ -445,7 +434,6 @@ public class LoadDataSetPage extends WizardPage implements Listener {
 		});
 
 		createDelimiterGroup(parentComposite);
-		createFilterGroup();
 		createDataPropertiesGroup();
 
 		previewTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER
@@ -466,7 +454,7 @@ public class LoadDataSetPage extends WizardPage implements Listener {
 		if (!inputFileName.isEmpty()) {
 			fileNameTextField.setText(inputFileName);
 			dataSetDescription.setDataSourcePath(inputFileName);
-			mathFilterMode = "Log10";
+//			mathFilterMode = "Log10";
 			// mathFilterCombo.select(1);
 
 			createDataPreviewTableFromFile();
@@ -699,62 +687,6 @@ public class LoadDataSetPage extends WizardPage implements Listener {
 		setMostProbableRecordIDType(mostProbableIDType);
 	}
 
-	private void createGroupingGroup(Composite parent, String groupLabel,
-			final ArrayList<GroupingParseSpecification> groupingParseSpecifications,
-			final boolean isColumnGrouping) {
-
-		Group groupingsGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		groupingsGroup.setText(groupLabel);
-		groupingsGroup.setLayout(new GridLayout(2, false));
-		groupingsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-		Button addGroupingButton = new Button(groupingsGroup, SWT.PUSH);
-		if (isColumnGrouping) {
-			columnGroupingsList = new List(groupingsGroup, SWT.SINGLE);
-			columnGroupingsList
-					.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		} else {
-			rowGroupingsList = new List(groupingsGroup, SWT.SINGLE);
-			rowGroupingsList.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		}
-
-		addGroupingButton.setText("Add");
-		addGroupingButton.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, false));
-
-		addGroupingButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-
-				ImportGroupingDialog importGroupingDialog = new ImportGroupingDialog(
-						new Shell());
-
-				importGroupingDialog.setRowIDCategory(isColumnGrouping ? columnIDCategory
-						: rowIDCategory);
-
-				int status = importGroupingDialog.open();
-
-				GroupingParseSpecification groupingParseSpecification = importGroupingDialog
-						.getGroupingParseSpecification();
-
-				if (status == Dialog.OK && groupingParseSpecification != null) {
-					groupingParseSpecifications.add(groupingParseSpecification);
-
-					String groupingDataSetName = groupingParseSpecification
-							.getDataSourcePath().substring(
-									groupingParseSpecification.getDataSourcePath()
-											.lastIndexOf(File.separator) + 1,
-									groupingParseSpecification.getDataSourcePath()
-											.lastIndexOf("."));
-					if (isColumnGrouping) {
-						columnGroupingsList.add(groupingDataSetName);
-					} else {
-						rowGroupingsList.add(groupingDataSetName);
-					}
-				}
-			}
-		});
-	}
-
 	/**
 	 * Creates a composite that contains the {@link #tableInfoLabel} and the
 	 * {@link #showAllColumnsButton}.
@@ -871,75 +803,9 @@ public class LoadDataSetPage extends WizardPage implements Listener {
 		}
 	}
 
-	private void createFilterGroup() {
-		Group filterGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		filterGroup.setText("Apply filter");
-		filterGroup.setLayout(new RowLayout());
-		filterGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		final Combo mathFilterCombo = new Combo(filterGroup, SWT.DROP_DOWN);
-		String[] filterOptions = { "Normal", "Log10", "Log2" };
-		mathFilterCombo.setItems(filterOptions);
-		mathFilterCombo.setEnabled(true);
-		mathFilterCombo.select(2);
-		mathFilterCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				mathFilterMode = mathFilterCombo.getText();
-			}
-		});
-
-		final Button buttonMin = new Button(filterGroup, SWT.CHECK);
-		buttonMin.setText("Min");
-		buttonMin.setEnabled(true);
-		buttonMin.setSelection(false);
-		buttonMin.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				minTextField.setEnabled(buttonMin.getSelection());
-			}
-		});
-
-		minTextField = new Text(filterGroup, SWT.BORDER);
-		minTextField.setEnabled(false);
-		minTextField.addListener(SWT.Verify, new Listener() {
-			@Override
-			public void handleEvent(Event e) {
-				// Only allow digits
-				String string = e.text;
-				char[] chars = new char[string.length()];
-				string.getChars(0, chars.length, chars, 0);
-			}
-		});
-
-		final Button buttonMax = new Button(filterGroup, SWT.CHECK);
-		buttonMax.setText("Max");
-		buttonMax.setEnabled(true);
-		buttonMax.setSelection(false);
-		buttonMax.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				maxTextField.setEnabled(buttonMax.getSelection());
-			}
-		});
-
-		maxTextField = new Text(filterGroup, SWT.BORDER);
-		maxTextField.setEnabled(false);
-		maxTextField.addListener(SWT.Verify, new Listener() {
-			@Override
-			public void handleEvent(Event e) {
-				// Only allow digits
-				String string = e.text;
-				char[] chars = new char[string.length()];
-				string.getChars(0, chars.length, chars, 0);
-			}
-		});
-	}
-
 	private void createDataPropertiesGroup() {
 		Group dataPropertiesGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		dataPropertiesGroup.setText("Data properties");
+		dataPropertiesGroup.setText("Column properties");
 		dataPropertiesGroup.setLayout(new RowLayout());
 		dataPropertiesGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
@@ -947,29 +813,14 @@ public class LoadDataSetPage extends WizardPage implements Listener {
 		buttonHomogeneous.setText("Homogeneous data");
 		buttonHomogeneous.setEnabled(true);
 		buttonHomogeneous.setSelection(true);
-
-		buttonSwapRowsWithColumns = new Button(dataPropertiesGroup, SWT.CHECK);
-		buttonSwapRowsWithColumns.setText("Swap rows and columns");
-		buttonSwapRowsWithColumns.setEnabled(true);
-		buttonSwapRowsWithColumns.setSelection(false);
 	}
 
 	/**
 	 * Reads the min and max values (if set) from the dialog
 	 */
-	public void fillDatasetDescription() {
-		if (minTextField.getEnabled() && !minTextField.getText().isEmpty()) {
-			float fMin = Float.parseFloat(minTextField.getText());
-			if (!Float.isNaN(fMin)) {
-				dataSetDescription.setMin(fMin);
-			}
-		}
-		if (maxTextField.getEnabled() && !maxTextField.getText().isEmpty()) {
-			float fMax = Float.parseFloat(maxTextField.getText());
-			if (!Float.isNaN(fMax)) {
-				dataSetDescription.setMax(fMax);
-			}
-		}
+	@Override
+	public void fillDataSetDescription() {
+		
 		IDSpecification rowIDSpecification = new IDSpecification();
 		IDType rowIDType = rowIDTypes.get(rowIDCombo.getSelectionIndex());
 		rowIDSpecification.setIdType(rowIDType.toString());
@@ -990,13 +841,11 @@ public class LoadDataSetPage extends WizardPage implements Listener {
 			columnIDSpecification.setIDTypeGene(true);
 		columnIDSpecification.setIdCategory(columnIDType.getIDCategory().toString());
 
+		dataSetDescription.setColumnIDSpecification(columnIDSpecification);
 		dataSetDescription.setRowIDSpecification(rowIDSpecification);
-		dataSetDescription.setMathFilterMode(mathFilterMode);
+
 		dataSetDescription.setDataHomogeneous(buttonHomogeneous.getSelection());
-		dataSetDescription.setTransposeMatrix(buttonSwapRowsWithColumns.getSelection());
 		dataSetDescription.setDataSetName(dataSetLabelTextField.getText());
-		dataSetDescription.setColumnGroupingSpecifications(columnGroupingSpecifications);
-		dataSetDescription.setRowGroupingSpecifications(rowGroupingSpecifications);
 
 		readDimensionDefinition();
 	}
@@ -1184,6 +1033,7 @@ public class LoadDataSetPage extends WizardPage implements Listener {
 
 	@Override
 	public IWizardPage getNextPage() {
+
 		return super.getNextPage();
 	}
 
@@ -1196,7 +1046,8 @@ public class LoadDataSetPage extends WizardPage implements Listener {
 	 */
 	@Override
 	public void handleEvent(Event event) {
-		getWizard().getContainer().updateButtons();
+		if (getWizard().getContainer().getCurrentPage() != null)
+			getWizard().getContainer().updateButtons();
 	}
 
 }
