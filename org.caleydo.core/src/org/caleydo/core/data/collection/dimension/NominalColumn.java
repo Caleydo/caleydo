@@ -22,7 +22,7 @@ package org.caleydo.core.data.collection.dimension;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.ExternalDataRepresentation;
+import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.ccontainer.NominalCContainer;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
@@ -122,9 +122,9 @@ public class NominalColumn<T>
 	}
 
 	@Override
-	public void setExternalDataRepresentation(ExternalDataRepresentation externalDataRep) {
+	public void setExternalDataRepresentation(EDataTransformation externalDataRep) {
 
-		if (externalDataRep != ExternalDataRepresentation.NORMAL)
+		if (externalDataRep != EDataTransformation.NONE)
 			throw new IllegalArgumentException("Nominal dimensions support only raw representations");
 
 		dataRep = DataRepresentation.RAW;

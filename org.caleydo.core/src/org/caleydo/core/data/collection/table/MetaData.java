@@ -21,7 +21,7 @@ package org.caleydo.core.data.collection.table;
 
 import javax.naming.OperationNotSupportedException;
 
-import org.caleydo.core.data.collection.ExternalDataRepresentation;
+import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.collection.dimension.NominalColumn;
 import org.caleydo.core.data.collection.dimension.NumericalColumn;
@@ -155,11 +155,11 @@ public class MetaData {
 	 * @return The absolute minimum value in the set in the specified data
 	 *         representation.
 	 */
-	public double getMinAs(ExternalDataRepresentation dataRepresentation) {
+	public double getMinAs(EDataTransformation dataRepresentation) {
 		if (min == Double.MAX_VALUE) {
 			calculateGlobalExtrema();
 		}
-		if (dataRepresentation == table.externalDataRep)
+		if (dataRepresentation == table.externalDataTrans)
 			return min;
 		double result = getRawFromExternalDataRep(min);
 
@@ -176,11 +176,11 @@ public class MetaData {
 	 * @return The absolute maximum value in the set in the specified data
 	 *         representation.
 	 */
-	public double getMaxAs(ExternalDataRepresentation dataRepresentation) {
+	public double getMaxAs(EDataTransformation dataRepresentation) {
 		if (max == Double.MIN_VALUE) {
 			calculateGlobalExtrema();
 		}
-		if (dataRepresentation == table.externalDataRep)
+		if (dataRepresentation == table.externalDataTrans)
 			return max;
 		double result = getRawFromExternalDataRep(max);
 
@@ -198,9 +198,9 @@ public class MetaData {
 	 *         value.
 	 */
 	private double getDataRepFromRaw(double dRaw,
-			ExternalDataRepresentation dataRepresentation) {
+			EDataTransformation dataRepresentation) {
 		switch (dataRepresentation) {
-		case NORMAL:
+		case NONE:
 			return dRaw;
 		case LOG2:
 			return Math.log(dRaw) / Math.log(2);
@@ -222,8 +222,8 @@ public class MetaData {
 	 * @return Raw value converted from the specified value.
 	 */
 	private double getRawFromExternalDataRep(double dNumber) {
-		switch (table.externalDataRep) {
-		case NORMAL:
+		switch (table.externalDataTrans) {
+		case NONE:
 			return dNumber;
 		case LOG2:
 			return Math.pow(2, dNumber);
@@ -232,7 +232,7 @@ public class MetaData {
 		default:
 			throw new IllegalStateException(
 					"Conversion to raw not implemented for data rep"
-							+ table.externalDataRep);
+							+ table.externalDataTrans);
 		}
 	}
 

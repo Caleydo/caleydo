@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.ExternalDataRepresentation;
+import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.dimension.NominalColumn;
@@ -94,7 +94,7 @@ public class DataTable extends AUniqueObject {
 	// protected DimensionData defaultDimensionData;
 	// protected RecordPerspective defaultRecordPerspective;
 
-	ExternalDataRepresentation externalDataRep;
+	EDataTransformation externalDataTrans;
 
 	boolean isTableHomogeneous = false;
 
@@ -277,16 +277,16 @@ public class DataTable extends AUniqueObject {
 		result = metaData.getMin() + dNormalized
 				* (metaData.getMax() - metaData.getMin());
 		// return (dNormalized) * (getMax() + getMin());
-		if (externalDataRep == ExternalDataRepresentation.NORMAL) {
+		if (externalDataTrans == EDataTransformation.NONE) {
 			return result;
-		} else if (externalDataRep == ExternalDataRepresentation.LOG2) {
+		} else if (externalDataTrans == EDataTransformation.LOG2) {
 			return Math.pow(2, result);
-		} else if (externalDataRep == ExternalDataRepresentation.LOG10) {
+		} else if (externalDataTrans == EDataTransformation.LOG10) {
 			return Math.pow(10, result);
 		}
 		throw new IllegalStateException(
 				"Conversion raw to normalized not implemented for data rep"
-						+ externalDataRep);
+						+ externalDataTrans);
 	}
 
 	/**
@@ -303,16 +303,16 @@ public class DataTable extends AUniqueObject {
 
 		double result;
 
-		if (externalDataRep == ExternalDataRepresentation.NORMAL) {
+		if (externalDataTrans == EDataTransformation.NONE) {
 			result = dRaw;
-		} else if (externalDataRep == ExternalDataRepresentation.LOG2) {
+		} else if (externalDataTrans == EDataTransformation.LOG2) {
 			result = Math.log(dRaw) / Math.log(2);
-		} else if (externalDataRep == ExternalDataRepresentation.LOG10) {
+		} else if (externalDataTrans == EDataTransformation.LOG10) {
 			result = Math.log10(dRaw);
 		} else {
 			throw new IllegalStateException(
 					"Conversion raw to normalized not implemented for data rep"
-							+ externalDataRep);
+							+ externalDataTrans);
 		}
 
 		result = (result - metaData.getMin()) / (metaData.getMax() - metaData.getMin());
@@ -342,16 +342,16 @@ public class DataTable extends AUniqueObject {
 	}
 
 	/**
-	 * Returns the current {@link ExternalDataRepresentation}, which tells which
+	 * Returns the current {@link EDataTransformation}, which tells which
 	 * was the input source before normalization. E.g., if this tells you
-	 * {@link ExternalDataRepresentation#LOG2} that means that the normalized
+	 * {@link EDataTransformation#LOG2} that means that the normalized
 	 * data used for rendering is based on data that has been logarithmized by
 	 * the base 2 before.
 	 * 
 	 * @return
 	 */
-	public ExternalDataRepresentation getExternalDataRep() {
-		return externalDataRep;
+	public EDataTransformation getExternalDataRep() {
+		return externalDataTrans;
 	}
 
 	/**
@@ -550,7 +550,7 @@ public class DataTable extends AUniqueObject {
 		if (meanDimension == null) {
 			meanDimension = new NumericalColumn();
 			meanDimension
-					.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL);
+					.setExternalDataRepresentation(EDataTransformation.NONE);
 
 			float[] meanValues = new float[metaData.depth()];
 			DimensionVirtualArray dimensionVA = hashDimensionPerspectives.get(
@@ -623,7 +623,7 @@ public class DataTable extends AUniqueObject {
 	 * 
 	 * @param externalDataRep
 	 *            Determines how the data is visualized. For options see
-	 *            {@link ExternalDataRepresentation}
+	 *            {@link EDataTransformation}
 	 * @param isTableHomogeneous
 	 *            Determines whether a set is homogeneous or not. Homogeneous
 	 *            means that the sat has a global maximum and minimum, meaning
@@ -631,13 +631,13 @@ public class DataTable extends AUniqueObject {
 	 *            each dimension is treated separately, has it's own min and max
 	 *            etc. Sets that contain nominal data MUST be inhomogeneous.
 	 */
-	void setExternalDataRepresentation(ExternalDataRepresentation externalDataRep,
+	void setExternalDataRepresentation(EDataTransformation externalDataRep,
 			boolean isTableHomogeneous) {
 		this.isTableHomogeneous = isTableHomogeneous;
-		if (externalDataRep == this.externalDataRep)
+		if (externalDataRep == this.externalDataTrans)
 			return;
 
-		this.externalDataRep = externalDataRep;
+		this.externalDataTrans = externalDataRep;
 
 		for (AColumn dimension : hashColumns.values()) {
 			if (dimension instanceof NumericalColumn) {
@@ -648,7 +648,7 @@ public class DataTable extends AUniqueObject {
 
 		if (isTableHomogeneous) {
 			switch (externalDataRep) {
-			case NORMAL:
+			case NONE:
 				normalization.normalizeGlobally();
 				break;
 			case LOG10:
@@ -662,7 +662,7 @@ public class DataTable extends AUniqueObject {
 			}
 		} else {
 			switch (externalDataRep) {
-			case NORMAL:
+			case NONE:
 				normalization.normalizeLocally();
 				break;
 			case LOG10:

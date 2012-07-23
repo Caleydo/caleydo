@@ -22,7 +22,7 @@ package org.caleydo.core.data.collection.dimension;
 import java.util.EnumMap;
 import java.util.Iterator;
 
-import org.caleydo.core.data.collection.ExternalDataRepresentation;
+import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.ICollection;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainerIterator;
@@ -264,6 +264,6 @@ public abstract class AColumn
 	 * 
 	 * @param dataRep
 	 */
-	public abstract void setExternalDataRepresentation(ExternalDataRepresentation externalDataRep);
+	public abstract void setExternalDataRepresentation(EDataTransformation externalDataRep);
 
 }

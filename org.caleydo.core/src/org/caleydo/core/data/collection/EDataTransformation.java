@@ -26,8 +26,8 @@ package org.caleydo.core.data.collection;
  * @author Alexander Lex
  */
 
-public enum ExternalDataRepresentation {
-	NORMAL,
+public enum EDataTransformation {
+	NONE,
 	LOG10,
 	LOG2,
 	FOLD_CHANGE;

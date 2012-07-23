@@ -26,7 +26,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.ExternalDataRepresentation;
+import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.picking.PickingManager;
@@ -305,7 +305,7 @@ public class Gate extends AGate {
 		lowerValue = (float) table.getRawForNormalized(bottom
 				/ renderStyle.getAxisHeight());
 
-		double setMin = table.getMetaData().getMinAs(ExternalDataRepresentation.NORMAL);
+		double setMin = table.getMetaData().getMinAs(EDataTransformation.NONE);
 
 		if (lowerValue < setMin) {
 			lowerValue = (float) setMin;
@@ -323,7 +323,7 @@ public class Gate extends AGate {
 		this.top = top;
 		upperValue = (float) table.getRawForNormalized(top / renderStyle.getAxisHeight());
 
-		double setMax = table.getMetaData().getMaxAs(ExternalDataRepresentation.NORMAL);
+		double setMax = table.getMetaData().getMaxAs(EDataTransformation.NONE);
 
 		if (upperValue > setMax) {
 			upperValue = (float) setMax;

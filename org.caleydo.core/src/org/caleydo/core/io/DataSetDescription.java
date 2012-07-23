@@ -28,7 +28,7 @@ import java.util.Iterator;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.ExternalDataRepresentation;
+import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.io.parser.ascii.TabularDataParser;
 import org.caleydo.core.manager.GeneralManager;
@@ -146,7 +146,7 @@ public class DataSetDescription extends MatrixDefinition {
 	/**
 	 * Determines whether and if so which transformation should be applied to
 	 * the data (e.g. log2 transformation). This is mapped to values of
-	 * {@link ExternalDataRepresentation}.
+	 * {@link EDataTransformation}.
 	 */
 	private String mathFilterMode = "None";
 

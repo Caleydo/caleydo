@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection.dimension;
 
-import org.caleydo.core.data.collection.ExternalDataRepresentation;
+import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 import org.caleydo.core.data.collection.ccontainer.ICContainer;
@@ -194,9 +194,9 @@ public class NumericalColumn extends AColumn {
 	}
 
 	@Override
-	public void setExternalDataRepresentation(ExternalDataRepresentation externalDataRep) {
+	public void setExternalDataRepresentation(EDataTransformation externalDataRep) {
 		switch (externalDataRep) {
-		case NORMAL:
+		case NONE:
 			dataRep = DataRepresentation.RAW;
 			break;
 		case LOG10:

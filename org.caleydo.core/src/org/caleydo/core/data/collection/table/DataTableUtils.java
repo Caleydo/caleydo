@@ -25,7 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.caleydo.core.data.collection.ExternalDataRepresentation;
+import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
@@ -187,15 +187,15 @@ public class DataTableUtils {
 		boolean isSetHomogeneous = dataSetDescription.isDataHomogeneous();
 
 		if (dataSetDescription.getMathFilterMode().equalsIgnoreCase("None")) {
-			table.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL,
+			table.setExternalDataRepresentation(EDataTransformation.NONE,
 					isSetHomogeneous);
 		}
 		else if (dataSetDescription.getMathFilterMode().equalsIgnoreCase("Log10")) {
-			table.setExternalDataRepresentation(ExternalDataRepresentation.LOG10,
+			table.setExternalDataRepresentation(EDataTransformation.LOG10,
 					isSetHomogeneous);
 		}
 		else if (dataSetDescription.getMathFilterMode().equalsIgnoreCase("Log2")) {
-			table.setExternalDataRepresentation(ExternalDataRepresentation.LOG2,
+			table.setExternalDataRepresentation(EDataTransformation.LOG2,
 					isSetHomogeneous);
 		}
 		else
@@ -207,7 +207,7 @@ public class DataTableUtils {
 	 * normalized is replaced with data calculated from the mode specified.
 	 * 
 	 * @param externalDataRep Determines how the data is visualized. For options
-	 *            see {@link ExternalDataRepresentation}
+	 *            see {@link EDataTransformation}
 	 * @param bIsSetHomogeneous Determines whether a set is homogeneous or not.
 	 *            Homogeneous means that the sat has a global maximum and
 	 *            minimum, meaning that all dimensions in the set contain equal
@@ -216,7 +216,7 @@ public class DataTableUtils {
 	 *            inhomogeneous.
 	 */
 	public static void setExternalDataRepresentation(DataTable table,
-			ExternalDataRepresentation externalDataRep, boolean isSetHomogeneous) {
+			EDataTransformation externalDataRep, boolean isSetHomogeneous) {
 		table.setExternalDataRepresentation(externalDataRep, isSetHomogeneous);
 	}
 
