@@ -22,6 +22,7 @@ package org.caleydo.core.data.datadomain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -279,17 +280,17 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 	}
 
-//	/**
-//	 * Create a default {@link DataDomainConfiguration} where the columns are
-//	 * the dimensions
-//	 */
-//	public abstract void createDefaultConfiguration();
-//
-//	/**
-//	 * Create a default {@link DataDomainConfiguration} where the columns are
-//	 * the records (i.e. perceived swapped compared to the data source)
-//	 */
-//	public abstract void createDefaultConfigurationWithColumnsAsRecords();
+	// /**
+	// * Create a default {@link DataDomainConfiguration} where the columns are
+	// * the dimensions
+	// */
+	// public abstract void createDefaultConfiguration();
+	//
+	// /**
+	// * Create a default {@link DataDomainConfiguration} where the columns are
+	// * the records (i.e. perceived swapped compared to the data source)
+	// */
+	// public abstract void createDefaultConfigurationWithColumnsAsRecords();
 
 	/**
 	 * Sets the {@link #table} of this dataDomain. The table may not be null.
@@ -869,7 +870,11 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	public int getDataAmount() {
 		if (table == null)
 			return 0;
-		return table.getMetaData().size() * table.getMetaData().depth();
+		try {
+			return table.getMetaData().size() * table.getMetaData().depth();
+		} catch (NoSuchElementException e) {
+			return 0;
+		}
 	}
 
 	@Override

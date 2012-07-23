@@ -118,26 +118,26 @@ public class DataImportWizard extends Wizard {
 			e1.printStackTrace();
 			throw new IllegalStateException();
 		}
-		try {
-
-			String secondaryID = UUID.randomUUID().toString();
-			RCPViewInitializationData rcpViewInitData = new RCPViewInitializationData();
-			rcpViewInitData.setDataDomainID(dataDomain.getDataDomainID());
-			RCPViewManager.get().addRCPView(secondaryID, rcpViewInitData);
-
-			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
-				PlatformUI
-						.getWorkbench()
-						.getActiveWorkbenchWindow()
-						.getActivePage()
-						.showView(dataDomain.getDefaultStartViewType(), secondaryID,
-								IWorkbenchPage.VIEW_ACTIVATE);
-
-			}
-		} catch (PartInitException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//
+//			String secondaryID = UUID.randomUUID().toString();
+//			RCPViewInitializationData rcpViewInitData = new RCPViewInitializationData();
+//			rcpViewInitData.setDataDomainID(dataDomain.getDataDomainID());
+//			RCPViewManager.get().addRCPView(secondaryID, rcpViewInitData);
+//
+//			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
+//				PlatformUI
+//						.getWorkbench()
+//						.getActiveWorkbenchWindow()
+//						.getActivePage()
+//						.showView(dataDomain.getDefaultStartViewType(), secondaryID,
+//								IWorkbenchPage.VIEW_ACTIVATE);
+//
+//			}
+//		} catch (PartInitException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 		return true;
 	}

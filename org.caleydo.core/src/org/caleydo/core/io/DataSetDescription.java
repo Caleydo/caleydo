@@ -148,7 +148,7 @@ public class DataSetDescription extends MatrixDefinition {
 	 * the data (e.g. log2 transformation). This is mapped to values of
 	 * {@link ExternalDataRepresentation}.
 	 */
-	private String mathFilterMode = "Normal";
+	private String mathFilterMode = "None";
 
 	/**
 	 * A list of path to grouping files for the columns of the file specified in
