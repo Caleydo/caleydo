@@ -67,43 +67,58 @@ public class StartupProcessor {
 
 	public void initStartupProcudure(Map<String, Object> applicationArguments) {
 
-		String[] runConfigParameters = (String[]) applicationArguments.get("application.args");
+		String[] runConfigParameters = (String[]) applicationArguments
+				.get("application.args");
 
 		if (runConfigParameters != null) {
-			for (String element : runConfigParameters) {
 
-				// else if (element.startsWith("plexclient")) {
-				// if (xmlInputFile != null && !xmlInputFile.isEmpty()) {
-				// throw new IllegalArgumentException(
-				// "It is not allowed to specify a bootstrap-file in plex-client mode.");
-				// }
-				// Application.applicationMode = ApplicationMode.PLEX_CLIENT;
-				// if (element.startsWith("plexclient:")) {
-				// serverAddress = element.substring("plexclient:".length());
-				// }
-				// else {
-				// serverAddress = "127.0.0.1";
-				// }
-				// }
-				// else
-
-				// Application.initData =
-				// GroupwareUtils.startPlexClient(serverAddress);
-
-				if (element.contains(".cal")) {
-					startupProcedure = new SerializationStartupProcedure();
-					((SerializationStartupProcedure) startupProcedure)
-							.setProjectLocation(element);
+			for (int parameterCount = 0; parameterCount < runConfigParameters.length; parameterCount++) {
+				String parameter = runConfigParameters[parameterCount];
+				if (parameterCount == 0) {
+					boolean isFile = checkFileName(parameter);
+					if (isFile) {
+						startupProcedure = new SerializationStartupProcedure();
+						((SerializationStartupProcedure) startupProcedure)
+								.setProjectLocation(parameter);
+					}
 				}
-				else if (element.contains(":")) {
-					// Parse initial start views
-					int delimiterPos = element.indexOf(":");
-					String view = "org.caleydo.view."
-							+ element.substring(delimiterPos + 1, element.length());
-					String dataDomain = "org.caleydo.datadomain."
-							+ element.substring(0, delimiterPos);
-					appInitData.addStartView(view, dataDomain);
+
+				if (parameter.equalsIgnoreCase("-help")
+						|| parameter.equalsIgnoreCase("--help")
+						|| parameter.equalsIgnoreCase("-h")) {
+					System.out.println("This is Caleydo Version "
+							+ GeneralManager.VERSION + "\n\n");
+
+					System.out.println("Usage: caleydo [project_filename.cal]");
+					System.out
+							.println("The following command-line options are available:\n");
+					System.out
+							.println("-h \t --help \t Print help on command line options");
+					System.out.println();
+					shutdown();
+				} else
+
+				{
+					String message = "Unknown Command Line Argument: " + parameter;
+					Logger.log(new Status(Status.WARNING, this.toString(), message));
+					System.out.println(message);
 				}
+
+				// TODO we need to re-think the view command line argument
+
+				// if (parameter.equalsIgnoreCase("-view")
+				// || parameter.equalsIgnoreCase("--view")
+				// || parameter.equalsIgnoreCase("-v")) {
+				//
+				// } else if (parameter.contains(":")) {
+				// // Parse initial start views
+				// int delimiterPos = parameter.indexOf(":");
+				// String view = "org.caleydo.view."
+				// + parameter.substring(delimiterPos + 1, parameter.length());
+				// String dataDomain = "org.caleydo.datadomain."
+				// + parameter.substring(0, delimiterPos);
+				// appInitData.addStartView(view, dataDomain);
+				// }
 			}
 
 			changeWorkspaceLocation();
@@ -124,6 +139,16 @@ public class StartupProcessor {
 		}
 	}
 
+	/** Check whether a string corresponds to a caleydo project file */
+	private boolean checkFileName(String candiateString) {
+		String[] substrings = candiateString.split(".");
+		if (substrings.length > 0) {
+			if (substrings[substrings.length - 1].equals("cal"))
+				return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Changing the workspace location in order to be able to store and restore
 	 * the workbench state (also in combination with serialized projects).
@@ -136,8 +161,7 @@ public class StartupProcessor {
 		try {
 			URL workspaceURL = new URL(workspacePath);
 			instanceLoc.set(workspaceURL, false);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// throw new IllegalStateException
 			System.err.println("Cannot set workspace location at " + workspacePath);
 		}
@@ -161,22 +185,21 @@ public class StartupProcessor {
 			display = PlatformUI.createDisplay();
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
 			PlatformUI.createAndRunWorkbench(display, applicationWorkbenchAdvisor);
-		}
-		finally {
+		} finally {
 			shutdown();
 		}
 	}
 
 	public AStartupProcedure createStartupProcedure(ApplicationMode appMode) {
 		switch (appMode) {
-			case GUI:
-				startupProcedure = new GeneticGUIStartupProcedure();
-				break;
-			case SERIALIZATION:
-				startupProcedure = new SerializationStartupProcedure();
-				break;
-			case GENERIC:
-				startupProcedure = new GenericGUIStartupProcedure();
+		case GUI:
+			startupProcedure = new GeneticGUIStartupProcedure();
+			break;
+		case SERIALIZATION:
+			startupProcedure = new SerializationStartupProcedure();
+			break;
+		case GENERIC:
+			startupProcedure = new GenericGUIStartupProcedure();
 		}
 
 		return startupProcedure;
@@ -194,8 +217,7 @@ public class StartupProcessor {
 			Logger.log(new Status(IStatus.WARNING, this.toString(),
 					"Save Caleydo preferences..."));
 			generalManager.getPreferenceStore().save();
-		}
-		catch (IOException ioException) {
+		} catch (IOException ioException) {
 			throw new IllegalStateException("Unable to save preference file at: "
 					+ PreferenceManager.getPreferencePath(), ioException);
 		}
