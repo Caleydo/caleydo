@@ -6,6 +6,7 @@ package org.caleydo.core.io.gui;
 import org.caleydo.core.io.DataSetDescription;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.PageChangedEvent;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 
 /**
@@ -25,7 +26,9 @@ public abstract class AImportDataPage extends WizardPage implements IPageChanged
 	 * @param pageName
 	 */
 	protected AImportDataPage(String pageName, DataSetDescription dataSetDescription) {
-		super(pageName);
+		super(pageName, pageName, null);
+		setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
+				.getResource("resources/wizard/wizard.png")));
 		this.dataSetDescription = dataSetDescription;
 	}
 

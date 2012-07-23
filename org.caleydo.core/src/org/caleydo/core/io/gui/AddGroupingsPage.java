@@ -29,6 +29,10 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class AddGroupingsPage extends AImportDataPage {
 
+	public static final String PAGE_NAME = "Add Groupings";
+
+	public static final String PAGE_DESCRIPTION = "Add groupings for columns and rows.";
+
 	/**
 	 * List displaying all column groupings for the dataset.
 	 */
@@ -58,11 +62,9 @@ public class AddGroupingsPage extends AImportDataPage {
 	 */
 	private IDCategory rowIDCategory;
 
-	/**
-	 * @param pageName
-	 */
-	protected AddGroupingsPage(String pageName, DataSetDescription dataSetDescription) {
-		super(pageName, dataSetDescription);
+	public AddGroupingsPage(DataSetDescription dataSetDescription) {
+		super(PAGE_NAME, dataSetDescription);
+		setDescription(PAGE_DESCRIPTION);
 	}
 
 	@Override
@@ -107,9 +109,9 @@ public class AddGroupingsPage extends AImportDataPage {
 
 				ImportGroupingDialog importGroupingDialog = new ImportGroupingDialog(
 						new Shell());
-				
-				String columnIDCategoryString = dataSetDescription.getColumnIDSpecification()
-						.getIdCategory();
+
+				String columnIDCategoryString = dataSetDescription
+						.getColumnIDSpecification().getIdCategory();
 				columnIDCategory = IDCategory.getIDCategory(columnIDCategoryString);
 				String rowIDCategoryString = dataSetDescription.getRowIDSpecification()
 						.getIdCategory();

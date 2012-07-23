@@ -46,7 +46,7 @@ public class DataImportWizard extends Wizard {
 	 * Page of the wizard that is used to add groupings to the dataset.
 	 */
 	private AddGroupingsPage addGroupingsPage;
-	
+
 	/**
 	 * Page of the wizard that is used to transform the data of the dataset.
 	 */
@@ -65,18 +65,20 @@ public class DataImportWizard extends Wizard {
 	 */
 	public DataImportWizard() {
 		dataSetDescription = new DataSetDescription();
+		setWindowTitle("Data Import Wizard");
 	}
 
 	public DataImportWizard(DataSetDescription dataSetDescription) {
 		this.dataSetDescription = dataSetDescription;
+		setWindowTitle("Data Import Wizard");
 	}
 
 	@Override
 	public void addPages() {
-		loadDataSetPage = new LoadDataSetPage("Specify Dataset", dataSetDescription);
-		transformDataPage = new TransformDataPage("Transform Data", dataSetDescription);
-		addGroupingsPage = new AddGroupingsPage("Add Groupings", dataSetDescription);
-		
+		loadDataSetPage = new LoadDataSetPage(dataSetDescription);
+		transformDataPage = new TransformDataPage(dataSetDescription);
+		addGroupingsPage = new AddGroupingsPage(dataSetDescription);
+
 		IWizardContainer wizardContainer = getContainer();
 		if (wizardContainer instanceof IPageChangeProvider) {
 			IPageChangeProvider pageChangeProvider = (IPageChangeProvider) wizardContainer;
@@ -86,7 +88,7 @@ public class DataImportWizard extends Wizard {
 		}
 
 		addPage(loadDataSetPage);
-		addPage(transformDataPage);		
+		addPage(transformDataPage);
 		addPage(addGroupingsPage);
 	}
 

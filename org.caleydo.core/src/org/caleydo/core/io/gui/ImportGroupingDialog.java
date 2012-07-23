@@ -167,6 +167,7 @@ public class ImportGroupingDialog extends AImportDialog {
 				.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
 		numHeaderRowsSpinner = new Spinner(linesToSkipGroup, SWT.BORDER);
 		numHeaderRowsSpinner.setMinimum(0);
+		numHeaderRowsSpinner.setSelection(1);
 		numHeaderRowsSpinner.setMaximum(Integer.MAX_VALUE);
 		numHeaderRowsSpinner.setIncrement(1);
 		numHeaderRowsSpinner.addModifyListener(new ModifyListener() {

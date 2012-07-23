@@ -46,22 +46,26 @@ import org.eclipse.swt.widgets.Text;
  * 
  */
 public class LoadDataSetPage extends AImportDataPage implements Listener {
+	
+	public static final String PAGE_NAME = "Load Dataset";
+	
+	public static final String PAGE_DESCRIPTION = "Specify the dataset you want to load.";
 
 	/**
 	 * Maximum number of previewed rows in {@link #previewTable}.
 	 */
-	protected static int MAX_PREVIEW_TABLE_ROWS = 50;
+	protected static final int MAX_PREVIEW_TABLE_ROWS = 50;
 
 	/**
 	 * Maximum number of previewed columns in {@link #previewTable}.
 	 */
-	protected static int MAX_PREVIEW_TABLE_COLUMNS = 10;
+	protected static final int MAX_PREVIEW_TABLE_COLUMNS = 10;
 
 	/**
 	 * The maximum number of ids that are tested in order to determine the
 	 * {@link IDType}.
 	 */
-	protected static int MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION = 10;
+	protected static final int MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION = 10;
 
 	/**
 	 * Text field for the name of the dataset.
@@ -222,11 +226,17 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	 */
 	private PreviewTableManager previewTableManager;
 
-	/**
-	 * @param pageName
-	 */
-	protected LoadDataSetPage(String pageName, DataSetDescription dataSetDescription) {
-		super(pageName, dataSetDescription);
+//	/**
+//	 * @param pageName
+//	 */
+//	protected LoadDataSetPage(String pageName, DataSetDescription dataSetDescription) {
+//		super(pageName, dataSetDescription);
+//		
+//	}
+	
+	public LoadDataSetPage(DataSetDescription dataSetDescription) {
+		super(PAGE_NAME, dataSetDescription);
+		setDescription(PAGE_DESCRIPTION);
 		inputFileName = dataSetDescription.getDataSourcePath();
 		if (inputFileName == null)
 			inputFileName = "";
@@ -256,14 +266,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		createDataSetNamePart(parentComposite);
 
-		// Delimiters
-
-		Composite delimiterComposite = new Composite(parentComposite, SWT.NONE);
-		delimiterComposite.setLayout(new GridLayout(1, false));
-		delimiterComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2,
-				1));
-		createDelimiterGroup(delimiterComposite);
-
 		// Row Config
 
 		createRowConfigPart(parentComposite);
@@ -272,17 +274,27 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		createColumnConfigPart(parentComposite);
 
+		// Delimiters
+
+//		Composite delimiterComposite = new Composite(parentComposite, SWT.NONE);
+//		delimiterComposite.setLayout(new GridLayout(1, false));
+//		delimiterComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2,
+//				1));
+		createDelimiterGroup(parentComposite);
+		
 		previewTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER
 				| SWT.FULL_SELECTION);
 		previewTable.setLinesVisible(true);
 		// previewTable.setHeaderVisible(true);
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalSpan = numGridCols;
-		gridData.heightHint = 400;
+		gridData.heightHint = 300;
 		gridData.widthHint = 800;
 		previewTable.setLayoutData(gridData);
 
-		createTableInfo(parentComposite);
+		//Table info
+		
+		createTableInfo(parentComposite);		
 
 		previewTableManager = new PreviewTableManager(previewTable);
 
@@ -319,7 +331,9 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		numHeaderRowsSpinner.setMinimum(1);
 		numHeaderRowsSpinner.setMaximum(Integer.MAX_VALUE);
 		numHeaderRowsSpinner.setIncrement(1);
-		numHeaderRowsSpinner.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		GridData gridData = new GridData(SWT.LEFT, SWT.FILL, false, true);
+		gridData.widthHint = 70;
+		numHeaderRowsSpinner.setLayoutData(gridData);
 		numHeaderRowsSpinner.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -352,7 +366,9 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		columnOfRowIDSpinner.setMinimum(1);
 		columnOfRowIDSpinner.setMaximum(Integer.MAX_VALUE);
 		columnOfRowIDSpinner.setIncrement(1);
-		columnOfRowIDSpinner.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		gridData = new GridData(SWT.LEFT, SWT.FILL, false, true);
+		gridData.widthHint = 70;
+		columnOfRowIDSpinner.setLayoutData(gridData);
 		columnOfRowIDSpinner.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -364,12 +380,12 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 			}
 		});
 
-		Composite righttConfigGroupPart = new Composite(rowConfigGroup, SWT.NONE);
-		righttConfigGroupPart.setLayout(new GridLayout(1, false));
-		righttConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		Composite rightConfigGroupPart = new Composite(rowConfigGroup, SWT.NONE);
+		rightConfigGroupPart.setLayout(new GridLayout(1, false));
+		rightConfigGroupPart.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
 
-		createNewIDCategoryButton(righttConfigGroupPart);
-		createNewIDTypeButton(righttConfigGroupPart);
+		createNewIDCategoryButton(rightConfigGroupPart);
+		createNewIDTypeButton(rightConfigGroupPart);
 	}
 
 	private void createNewIDCategoryButton(Composite parent) {
@@ -438,7 +454,9 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		rowOfColumnIDSpinner.setMinimum(1);
 		rowOfColumnIDSpinner.setMaximum(Integer.MAX_VALUE);
 		rowOfColumnIDSpinner.setIncrement(1);
-		rowOfColumnIDSpinner.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		GridData gridData = new GridData(SWT.LEFT, SWT.FILL, false, true);
+		gridData.widthHint = 70;
+		rowOfColumnIDSpinner.setLayoutData(gridData);
 		rowOfColumnIDSpinner.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -458,12 +476,12 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		createDataPropertiesGroup(leftConfigGroupPart);
 
-		Composite righttConfigGroupPart = new Composite(columnConfigGroup, SWT.NONE);
-		righttConfigGroupPart.setLayout(new GridLayout(1, false));
-		righttConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		Composite rightConfigGroupPart = new Composite(columnConfigGroup, SWT.NONE);
+		rightConfigGroupPart.setLayout(new GridLayout(1, false));
+		rightConfigGroupPart.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
 
-		createNewIDCategoryButton(righttConfigGroupPart);
-		createNewIDTypeButton(righttConfigGroupPart);
+		createNewIDCategoryButton(rightConfigGroupPart);
+		createNewIDTypeButton(rightConfigGroupPart);
 	}
 
 	private void createFileSelectionPart(Composite parent) {
@@ -480,7 +498,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		fileNameTextField = new Text(inputFileGroup, SWT.BORDER);
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gridData.widthHint = 300;
+		gridData.widthHint = 250;
 		fileNameTextField.setLayoutData(gridData);
 		fileNameTextField.setEnabled(false);
 		fileNameTextField.addListener(SWT.Modify, this);
@@ -520,7 +538,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		dataSetLabelTextField = new Text(dataSetLabelGroup, SWT.BORDER);
 		dataSetLabelTextField.setText(determineDataSetLabel());
-		dataSetLabelTextField.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		dataSetLabelTextField.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 	}
 
 	protected void createDelimiterGroup(Composite parent) {
@@ -603,6 +621,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		// idTypeLabel.setLayout(new RowLayout());
 		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
 		Combo idCombo = new Combo(parent, SWT.DROP_DOWN);
+		idCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		ArrayList<IDType> idTypes = new ArrayList<IDType>();
 
 		if (isColumnIDTypeGroup) {
@@ -757,6 +776,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	protected void createTableInfo(Composite parent) {
 		Composite tableInfoComposite = new Composite(parent, SWT.NONE);
 		tableInfoComposite.setLayout(new GridLayout(4, false));
+		tableInfoComposite.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true, 2, 1));
 
 		tableInfoLabel = new Label(tableInfoComposite, SWT.NONE);
 

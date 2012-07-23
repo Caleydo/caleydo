@@ -26,6 +26,10 @@ import org.eclipse.swt.widgets.Text;
  * 
  */
 public class TransformDataPage extends AImportDataPage {
+	
+	public static final String PAGE_NAME = "Specify Data Transformation";
+	
+	public static final String PAGE_DESCRIPTION = "Specify the data transformations to be performed.";
 
 	private Text minTextField;
 	private Text maxTextField;
@@ -36,8 +40,13 @@ public class TransformDataPage extends AImportDataPage {
 	 * @param pageName
 	 * @param dataSetDescription
 	 */
-	protected TransformDataPage(String pageName, DataSetDescription dataSetDescription) {
-		super(pageName, dataSetDescription);
+//	protected TransformDataPage(String pageName, DataSetDescription dataSetDescription) {
+//		super(pageName, dataSetDescription);
+//	}
+	
+	public TransformDataPage(DataSetDescription dataSetDescription) {
+		super(PAGE_NAME, dataSetDescription);
+		setDescription(PAGE_DESCRIPTION);
 	}
 
 	@Override
