@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -50,8 +50,7 @@ import org.eclipse.swt.widgets.TableItem;
  * @author Marc Streit
  * 
  */
-public class CreateKaplanMeierSmallMultiplesGroupDialog
-	extends TitleAreaDialog {
+public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog {
 
 	private DataContainer dataContainer;
 
@@ -96,7 +95,8 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog
 		data.grabExcessHorizontalSpace = true;
 		data.horizontalAlignment = GridData.FILL;
 		Label descriptionLabel = new Label(parent, SWT.NONE);
-		descriptionLabel.setText("Select the pathways for the group.");
+		descriptionLabel
+				.setText("Select the clinical variables you want to see in the Kaplan-Meier plots.");
 		descriptionLabel.setLayoutData(data);
 
 		VirtualArray<?, ?, ?> va = null;
@@ -109,8 +109,8 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog
 		data.grabExcessVerticalSpace = true;
 		data.horizontalAlignment = GridData.FILL;
 		data.verticalAlignment = GridData.FILL;
-		possibleKaplanMeierDataTable = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL
-				| SWT.H_SCROLL);
+		possibleKaplanMeierDataTable = new Table(parent, SWT.CHECK | SWT.BORDER
+				| SWT.V_SCROLL | SWT.H_SCROLL);
 
 		possibleKaplanMeierDataTable.setHeaderVisible(true);
 		TableColumn column1 = new TableColumn(possibleKaplanMeierDataTable, SWT.CHECK);
@@ -134,8 +134,8 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog
 				continue;
 
 			ATableBasedDataDomain tableBasedDataDomain = (ATableBasedDataDomain) dataDomain;
-			if (!(tableBasedDataDomain.getRecordIDCategory() == dataContainer.getDataDomain()
-					.getRecordIDType().getIDCategory()))
+			if (!(tableBasedDataDomain.getRecordIDCategory() == dataContainer
+					.getDataDomain().getRecordIDType().getIDCategory()))
 				continue;
 
 			if (tableBasedDataDomain.getTable().getDefaultDimensionPerspective()
@@ -144,10 +144,11 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog
 
 			for (Integer dimID : tableBasedDataDomain.getTable()
 					.getDefaultDimensionPerspective().getVirtualArray()) {
-				String dimLabel = tableBasedDataDomain.getDimensionIDMappingManager().getID(
-						tableBasedDataDomain.getTable().getDefaultDimensionPerspective()
-								.getIdType(),
-						tableBasedDataDomain.getHumanReadableDimensionIDType(), dimID);
+				String dimLabel = tableBasedDataDomain.getDimensionIDMappingManager()
+						.getID(tableBasedDataDomain.getTable()
+								.getDefaultDimensionPerspective().getIdType(),
+								tableBasedDataDomain.getHumanReadableDimensionIDType(),
+								dimID);
 
 				TableItem item = new TableItem(possibleKaplanMeierDataTable, SWT.NONE);
 				item.setText(0, dimLabel);
@@ -200,11 +201,12 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog
 				DimensionPerspective singleDimensionPerspective = (DimensionPerspective) item
 						.getData();
 
-				dataDomain.getTable().registerRecordPerspective(convertedRecordPerspective);
+				dataDomain.getTable().registerRecordPerspective(
+						convertedRecordPerspective);
 
-				DataContainer kaplanMeierDimensionGroup = dataDomain
-						.getDataContainer(convertedRecordPerspective.getPerspectiveID(),
-								singleDimensionPerspective.getPerspectiveID());
+				DataContainer kaplanMeierDimensionGroup = dataDomain.getDataContainer(
+						convertedRecordPerspective.getPerspectiveID(),
+						singleDimensionPerspective.getPerspectiveID());
 
 				kaplanMeierDimensionGroupDataList.add(kaplanMeierDimensionGroup);
 				hashConvertedRecordPerspectiveToOrginalRecordPerspective.put(

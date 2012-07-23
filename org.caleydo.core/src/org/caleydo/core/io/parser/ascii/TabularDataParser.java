@@ -255,7 +255,7 @@ public class TabularDataParser extends ATextParser {
 
 			// id mapping
 			String id = splitLine[columnOfRowIDs];
-			convertID(id, parsingRules);
+			id = convertID(id, parsingRules);
 			rowIDMappingManager.addMapping(mappingType, id, lineCounter
 					- startParsingAtLine);
 

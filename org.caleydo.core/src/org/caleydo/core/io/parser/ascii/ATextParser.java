@@ -162,6 +162,14 @@ public abstract class ATextParser {
 	protected void parseFile(BufferedReader reader) throws IOException {
 	}
 
+	/**
+	 * Converts a sourceID based on the {@link IDTypeParsingRules} specified and
+	 * returns a new string with the converted ID
+	 * 
+	 * @param sourceID
+	 * @param idTypeParsingRules
+	 * @return a new String with the converted ID
+	 */
 	public static String convertID(String sourceID, IDTypeParsingRules idTypeParsingRules) {
 		if (idTypeParsingRules == null)
 			return sourceID;

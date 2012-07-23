@@ -22,6 +22,7 @@ package org.caleydo.data.importer;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.parser.ascii.TabularDataParser;
+import org.caleydo.data.importer.tcga.TCGATestDataXMLGenerator;
 
 /**
  * Test class for regular expressions applied to IDs. Uses the actual code which
@@ -35,12 +36,12 @@ public class RegExTester {
 	public static void main(String[] args)
 
 	{
-		String inputString = "NM_153384.1;NM_153385.1;NM_153386.1";
+		String inputString = "TCGA-02-0001";
 
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
 		// idSpecification.setReplacementExpression(replacingExpression,
 		// replacementString)
-		idTypeParsingRules.setSubStringExpression("\\.");
+		idTypeParsingRules.setSubStringExpression(TCGATestDataXMLGenerator.TCGA_ID_SUBSTRING_REGEX);
 
 		String outputString = TabularDataParser.convertID(inputString, idTypeParsingRules);
 
