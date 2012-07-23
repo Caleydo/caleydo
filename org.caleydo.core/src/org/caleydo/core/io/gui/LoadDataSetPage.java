@@ -25,7 +25,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -45,7 +44,8 @@ import org.eclipse.swt.widgets.Text;
  * @author Christian Partl
  * 
  */
-public class LoadDataSetPage extends AImportDataPage implements Listener {
+public class LoadDataSetPage extends AImportDataPage implements Listener,
+		ITabularDataImporter {
 
 	public static final String PAGE_NAME = "Load Dataset";
 
@@ -268,7 +268,9 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		// Delimiters
 
-		createDelimiterGroup(parentComposite);
+		DelimiterRadioGroup delimiterRadioGroup = new DelimiterRadioGroup();
+		delimiterRadioGroup.create(parentComposite, dataSetDescription,
+				this);
 
 		previewTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER
 				| SWT.FULL_SELECTION);
@@ -531,80 +533,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		dataSetLabelTextField.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 	}
 
-	protected void createDelimiterGroup(Composite parent) {
-		Group delimiterGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		delimiterGroup.setText("Separated by (delimiter)");
-		delimiterGroup.setLayout(new RowLayout());
-
-		final Button[] delimiterButtons = new Button[6];
-
-		delimiterButtons[0] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[0].setSelection(true);
-		delimiterButtons[0].setText("TAB");
-		delimiterButtons[0].setData("\t");
-		delimiterButtons[0].setBounds(10, 5, 75, 30);
-
-		delimiterButtons[1] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[1].setText(";");
-		delimiterButtons[1].setData(";");
-		delimiterButtons[1].setBounds(10, 30, 75, 30);
-
-		delimiterButtons[2] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[2].setText(",");
-		delimiterButtons[2].setData(",");
-		delimiterButtons[2].setBounds(10, 55, 75, 30);
-
-		delimiterButtons[3] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[3].setText(".");
-		delimiterButtons[3].setData(".");
-		delimiterButtons[3].setBounds(10, 55, 75, 30);
-
-		delimiterButtons[4] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[4].setText("SPACE");
-		delimiterButtons[4].setData(" ");
-		delimiterButtons[4].setBounds(10, 55, 75, 30);
-
-		delimiterButtons[5] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[5].setText("Other");
-		delimiterButtons[5].setBounds(10, 55, 75, 30);
-
-		final Text customizedDelimiterTextField = new Text(delimiterGroup, SWT.BORDER);
-		customizedDelimiterTextField.setBounds(0, 0, 75, 30);
-		customizedDelimiterTextField.setTextLimit(1);
-		customizedDelimiterTextField.setEnabled(false);
-		customizedDelimiterTextField.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				dataSetDescription.setDelimiter(customizedDelimiterTextField.getText());
-				createDataPreviewTableFromFile();
-				// composite.pack();
-			}
-
-		});
-
-		SelectionAdapter radioGroupSelectionListener = new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Button selectedButton = (Button) e.getSource();
-				if (selectedButton != delimiterButtons[5]) {
-					customizedDelimiterTextField.setEnabled(false);
-					dataSetDescription.setDelimiter((String) selectedButton.getData());
-					createDataPreviewTableFromFile();
-				} else {
-					customizedDelimiterTextField.setEnabled(true);
-					dataSetDescription.setDelimiter(" ");
-					createDataPreviewTableFromFile();
-				}
-			}
-		};
-
-		for (int i = 0; i < delimiterButtons.length; i++) {
-			delimiterButtons[i].addSelectionListener(radioGroupSelectionListener);
-		}
-
-	}
-
 	private void createIDTypeGroup(Composite parent, boolean isColumnIDTypeGroup) {
 		Label idTypeLabel = new Label(parent, SWT.SHADOW_ETCHED_IN);
 		idTypeLabel.setText(isColumnIDTypeGroup ? "Column ID type" : "Row ID type");
@@ -667,7 +595,8 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		}
 	}
 
-	private void createDataPreviewTableFromFile() {
+	@Override
+	public void createDataPreviewTableFromFile() {
 		parser.parse(inputFileName, dataSetDescription.getDelimiter(), false,
 				MAX_PREVIEW_TABLE_ROWS);
 		dataMatrix = parser.getDataMatrix();
@@ -1064,7 +993,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		columnOfRowIDSpinner.setMaximum(totalNumberOfColumns);
 		rowOfColumnIDSpinner.setMaximum(totalNumberOfRows);
 		numHeaderRowsSpinner.setMaximum(totalNumberOfRows);
-//		showAllColumnsButton.setSelection(false);
+		// showAllColumnsButton.setSelection(false);
 		showAllColumnsButton.setEnabled(true);
 		tableInfoLabel.setText((previewTable.getColumnCount() - 1) + " of "
 				+ totalNumberOfColumns + " columns shown");

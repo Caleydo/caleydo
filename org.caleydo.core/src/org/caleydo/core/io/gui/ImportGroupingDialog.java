@@ -13,7 +13,6 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
-import org.caleydo.core.io.MatrixDefinition;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -24,7 +23,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -45,7 +43,7 @@ import org.eclipse.swt.widgets.Text;
  * @author Christian Partl
  * 
  */
-public class ImportGroupingDialog extends Dialog {
+public class ImportGroupingDialog extends Dialog implements ITabularDataImporter {
 
 	/**
 	 * Maximum number of previewed rows in {@link #previewTable}.
@@ -109,11 +107,6 @@ public class ImportGroupingDialog extends Dialog {
 	 * Table editors that are associated with {@link #selectedColumnButtons}.
 	 */
 	protected ArrayList<TableEditor> tableEditors = new ArrayList<TableEditor>();
-
-	/**
-	 * {@link MatrixDefinition} of the dataset that shall be loaded.
-	 */
-	protected MatrixDefinition matrixDefinition;
 
 	/**
 	 * Spinner used to define the index of the column that contains the row ids.
@@ -294,14 +287,16 @@ public class ImportGroupingDialog extends Dialog {
 
 		createRowConfigPart(parentComposite);
 
-		createDelimiterGroup(parentComposite);
+		DelimiterRadioGroup delimiterRadioGroup = new DelimiterRadioGroup();
+		delimiterRadioGroup.create(parentComposite,
+				groupingParseSpecification, this);
 
 		previewTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER
 				| SWT.FULL_SELECTION);
 		previewTable.setLinesVisible(true);
 		// previewTable.setHeaderVisible(true);
 		gridData = new GridData(SWT.FILL, SWT.FILL, true, true, numGridCols, 1);
-		gridData.heightHint = 400;
+		gridData.heightHint = 300;
 		gridData.widthHint = 800;
 		previewTable.setLayoutData(gridData);
 
@@ -421,7 +416,7 @@ public class ImportGroupingDialog extends Dialog {
 		updateIDTypeCombo(rowIDCategory, rowIDTypes, rowIDCombo);
 	}
 
-	private void createDataPreviewTableFromFile() {
+	public void createDataPreviewTableFromFile() {
 		parser.parse(inputFileName, groupingParseSpecification.getDelimiter(), false,
 				MAX_PREVIEW_TABLE_ROWS);
 		dataMatrix = parser.getDataMatrix();
@@ -509,80 +504,6 @@ public class ImportGroupingDialog extends Dialog {
 			}
 		}
 		setMostProbableRecordIDType(mostProbableIDType);
-	}
-
-	protected void createDelimiterGroup(Composite parent) {
-		Group delimiterGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		delimiterGroup.setText("Separated by (delimiter)");
-		delimiterGroup.setLayout(new RowLayout());
-
-		final Button[] delimiterButtons = new Button[6];
-
-		delimiterButtons[0] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[0].setSelection(true);
-		delimiterButtons[0].setText("TAB");
-		delimiterButtons[0].setData("\t");
-		delimiterButtons[0].setBounds(10, 5, 75, 30);
-
-		delimiterButtons[1] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[1].setText(";");
-		delimiterButtons[1].setData(";");
-		delimiterButtons[1].setBounds(10, 30, 75, 30);
-
-		delimiterButtons[2] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[2].setText(",");
-		delimiterButtons[2].setData(",");
-		delimiterButtons[2].setBounds(10, 55, 75, 30);
-
-		delimiterButtons[3] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[3].setText(".");
-		delimiterButtons[3].setData(".");
-		delimiterButtons[3].setBounds(10, 55, 75, 30);
-
-		delimiterButtons[4] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[4].setText("SPACE");
-		delimiterButtons[4].setData(" ");
-		delimiterButtons[4].setBounds(10, 55, 75, 30);
-
-		delimiterButtons[5] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[5].setText("Other");
-		delimiterButtons[5].setBounds(10, 55, 75, 30);
-
-		final Text customizedDelimiterTextField = new Text(delimiterGroup, SWT.BORDER);
-		customizedDelimiterTextField.setBounds(0, 0, 75, 30);
-		customizedDelimiterTextField.setTextLimit(1);
-		customizedDelimiterTextField.setEnabled(false);
-		customizedDelimiterTextField.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				matrixDefinition.setDelimiter(customizedDelimiterTextField.getText());
-				createDataPreviewTableFromFile();
-				// composite.pack();
-			}
-
-		});
-
-		SelectionAdapter radioGroupSelectionListener = new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Button selectedButton = (Button) e.getSource();
-				if (selectedButton != delimiterButtons[5]) {
-					customizedDelimiterTextField.setEnabled(false);
-					matrixDefinition.setDelimiter((String) selectedButton.getData());
-					createDataPreviewTableFromFile();
-				} else {
-					customizedDelimiterTextField.setEnabled(true);
-					matrixDefinition.setDelimiter(" ");
-					createDataPreviewTableFromFile();
-				}
-			}
-		};
-
-		for (int i = 0; i < delimiterButtons.length; i++) {
-			delimiterButtons[i].addSelectionListener(radioGroupSelectionListener);
-		}
-
 	}
 
 	protected void setMostProbableRecordIDType(IDType mostProbableRecordIDType) {
