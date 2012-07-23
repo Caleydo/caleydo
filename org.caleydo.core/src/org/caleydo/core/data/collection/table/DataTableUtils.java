@@ -186,7 +186,7 @@ public class DataTableUtils {
 
 		boolean isSetHomogeneous = dataSetDescription.isDataHomogeneous();
 
-		if (dataSetDescription.getMathFilterMode().equalsIgnoreCase("Normal")) {
+		if (dataSetDescription.getMathFilterMode().equalsIgnoreCase("None")) {
 			table.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL,
 					isSetHomogeneous);
 		}

@@ -90,7 +90,6 @@ public class AddGroupingsPage extends AImportDataPage {
 		groupingsGroup.setLayout(new GridLayout(2, false));
 		groupingsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		Button addGroupingButton = new Button(groupingsGroup, SWT.PUSH);
 		if (isColumnGrouping) {
 			columnGroupingsList = new List(groupingsGroup, SWT.SINGLE);
 			columnGroupingsList
@@ -100,8 +99,13 @@ public class AddGroupingsPage extends AImportDataPage {
 			rowGroupingsList.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		}
 
+		Composite buttonComposite = new Composite(groupingsGroup, SWT.NONE);
+		buttonComposite.setLayout(new GridLayout(1, false));
+		buttonComposite.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
+
+		Button addGroupingButton = new Button(buttonComposite, SWT.PUSH);
 		addGroupingButton.setText("Add");
-		addGroupingButton.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, false));
+		addGroupingButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		addGroupingButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -141,6 +145,91 @@ public class AddGroupingsPage extends AImportDataPage {
 					}
 				}
 			}
+		});
+
+		Button editGroupingButton = new Button(buttonComposite, SWT.PUSH);
+		editGroupingButton.setText("Edit");
+		editGroupingButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		editGroupingButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+
+				List currentList = null;
+
+				if (isColumnGrouping) {
+					currentList = columnGroupingsList;
+				} else {
+					currentList = rowGroupingsList;
+				}
+
+				int groupingIndex = currentList.getSelectionIndex();
+				if (groupingIndex != -1) {
+					GroupingParseSpecification selectedGroupingParseSpecification = groupingParseSpecifications
+							.get(groupingIndex);
+					ImportGroupingDialog importGroupingDialog = new ImportGroupingDialog(
+							new Shell(), selectedGroupingParseSpecification);
+
+					String columnIDCategoryString = dataSetDescription
+							.getColumnIDSpecification().getIdCategory();
+					columnIDCategory = IDCategory.getIDCategory(columnIDCategoryString);
+					String rowIDCategoryString = dataSetDescription
+							.getRowIDSpecification().getIdCategory();
+					rowIDCategory = IDCategory.getIDCategory(rowIDCategoryString);
+
+					importGroupingDialog
+							.setRowIDCategory(isColumnGrouping ? columnIDCategory
+									: rowIDCategory);
+
+					int status = importGroupingDialog.open();
+
+					GroupingParseSpecification groupingParseSpecification = importGroupingDialog
+							.getGroupingParseSpecification();
+
+					if (status == Dialog.OK && groupingParseSpecification != null) {
+
+						groupingParseSpecifications.remove(groupingIndex);
+						groupingParseSpecifications.add(groupingIndex,
+								groupingParseSpecification);
+
+						String groupingDataSetName = groupingParseSpecification
+								.getDataSourcePath().substring(
+										groupingParseSpecification.getDataSourcePath()
+												.lastIndexOf(File.separator) + 1,
+										groupingParseSpecification.getDataSourcePath()
+												.lastIndexOf("."));
+						currentList.remove(groupingIndex);
+						currentList.add(groupingDataSetName, groupingIndex);
+					}
+				}
+			}
+
+		});
+
+		Button removeGroupingButton = new Button(buttonComposite, SWT.PUSH);
+		removeGroupingButton.setText("Remove");
+		removeGroupingButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		removeGroupingButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+
+				List currentList = null;
+				ArrayList<GroupingParseSpecification> currentGroupingParseSpecs = null;
+
+				if (isColumnGrouping) {
+					currentList = columnGroupingsList;
+					currentGroupingParseSpecs = columnGroupingSpecifications;
+				} else {
+					currentList = rowGroupingsList;
+					currentGroupingParseSpecs = rowGroupingSpecifications;
+				}
+
+				int groupingIndex = currentList.getSelectionIndex();
+				if (groupingIndex != -1) {
+					currentList.remove(groupingIndex);
+					currentGroupingParseSpecs.remove(groupingIndex);
+				}
+			}
+
 		});
 	}
 

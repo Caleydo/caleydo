@@ -177,10 +177,48 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 	/**
 	 * @param parentShell
 	 */
-	protected ImportGroupingDialog(Shell parentShell) {
+	public ImportGroupingDialog(Shell parentShell) {
 		super(parentShell);
 		parentShell.setText("Import Grouping");
 		groupingParseSpecification = new GroupingParseSpecification();
+		groupingParseSpecification.setDelimiter("\t");
+		groupingParseSpecification.setNumberOfHeaderLines(1);
+	}
+
+	/**
+	 * @param parentShell
+	 * @param groupingParseSpecification
+	 *            {@link GroupingParseSpecification} that will be used to
+	 *            initialize the widgets of this dialog.
+	 */
+	public ImportGroupingDialog(Shell parentShell,
+			GroupingParseSpecification groupingParseSpecification) {
+		super(parentShell);
+		parentShell.setText("Import Grouping");
+		this.groupingParseSpecification = new GroupingParseSpecification();
+		this.groupingParseSpecification
+				.setColumnIDSpecification(groupingParseSpecification
+						.getColumnIDSpecification());
+		this.groupingParseSpecification.setColumnOfRowIds(groupingParseSpecification
+				.getColumnOfRowIds());
+		this.groupingParseSpecification.setColumns(groupingParseSpecification
+				.getColumns());
+		this.groupingParseSpecification.setContainsColumnIDs(groupingParseSpecification
+				.isContainsColumnIDs());
+		this.groupingParseSpecification.setDataSourcePath(groupingParseSpecification
+				.getDataSourcePath());
+		this.groupingParseSpecification.setDelimiter(groupingParseSpecification
+				.getDelimiter());
+		this.groupingParseSpecification.setGroupingName(groupingParseSpecification
+				.getGroupingName());
+		this.groupingParseSpecification.setNumberOfHeaderLines(groupingParseSpecification
+				.getNumberOfHeaderLines());
+		this.groupingParseSpecification.setRowIDSpecification(groupingParseSpecification
+				.getRowIDSpecification());
+		this.groupingParseSpecification.setRowOfColumnIDs(groupingParseSpecification
+				.getRowOfColumnIDs());
+		if (groupingParseSpecification.getDataSourcePath() != null)
+			inputFileName = groupingParseSpecification.getDataSourcePath();
 	}
 
 	@Override
@@ -234,8 +272,6 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 	protected Control createDialogArea(Composite parent) {
 
 		createGUI(parent);
-		groupingParseSpecification.setDelimiter("\t");
-		groupingParseSpecification.setNumberOfHeaderLines(1);
 		return parent;
 	}
 
@@ -288,8 +324,7 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		createRowConfigPart(parentComposite);
 
 		DelimiterRadioGroup delimiterRadioGroup = new DelimiterRadioGroup();
-		delimiterRadioGroup.create(parentComposite,
-				groupingParseSpecification, this);
+		delimiterRadioGroup.create(parentComposite, groupingParseSpecification, this);
 
 		previewTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER
 				| SWT.FULL_SELECTION);
@@ -301,9 +336,18 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		previewTable.setLayoutData(gridData);
 
 		previewTableManager = new PreviewTableManager(previewTable);
-
-		//
+		
 		createTableInfo(parentComposite);
+		
+		// Check if an external file name is given to the action
+		if (!inputFileName.isEmpty()) {
+			fileNameTextField.setText(inputFileName);
+			groupingParseSpecification.setDataSourcePath(inputFileName);
+			// mathFilterMode = "Log10";
+			// mathFilterCombo.select(1);
+
+			createDataPreviewTableFromFile();
+		}
 	}
 
 	private void createRowConfigPart(Composite parent) {
