@@ -18,6 +18,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 
@@ -72,6 +73,13 @@ public class AddGroupingsPage extends AImportDataPage {
 
 		Composite parentComposite = new Composite(parent, SWT.NONE);
 		parentComposite.setLayout(new GridLayout(2, true));
+
+		Label groupingDescriptionLabel = new Label(parentComposite, SWT.WRAP);
+		groupingDescriptionLabel
+				.setText("Add external files that specify groupings for rows or columns of the dataset.");
+		GridData gridData = new GridData(SWT.FILL, SWT.TOP, true, false, 2, 1);
+		gridData.widthHint = 200;
+		groupingDescriptionLabel.setLayoutData(gridData);
 
 		createGroupingGroup(parentComposite, "Column Groupings",
 				columnGroupingSpecifications, true);
