@@ -100,7 +100,6 @@ public abstract class ADataDomain
 	}
 
 	@Override
-	@XmlID
 	public String getDataDomainID() {
 		return dataDomainID;
 	}

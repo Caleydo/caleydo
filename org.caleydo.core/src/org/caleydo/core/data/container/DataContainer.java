@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -34,6 +33,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
@@ -103,8 +103,10 @@ public class DataContainer {
 	private String dataContainerKey;
 
 	/** The data domain use in this data container */
-	@XmlIDREF
 	protected ATableBasedDataDomain dataDomain;
+
+	@XmlElement
+	private String dataDomainID;
 
 	@XmlElement
 	private String recordPerspectiveID;
@@ -181,6 +183,7 @@ public class DataContainer {
 	public DataContainer(ATableBasedDataDomain dataDomain,
 			RecordPerspective recordPerspective, DimensionPerspective dimensionPerspective) {
 		this.dataDomain = dataDomain;
+		this.dataDomainID = dataDomain.getDataDomainID();
 		this.recordPerspective = recordPerspective;
 		recordPerspectiveID = recordPerspective.getPerspectiveID();
 		this.dimensionPerspective = dimensionPerspective;
@@ -213,6 +216,7 @@ public class DataContainer {
 	}
 
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
+		this.dataDomainID = dataDomain.getDataDomainID();
 		this.dataDomain = dataDomain;
 	}
 
@@ -486,6 +490,8 @@ public class DataContainer {
 	 * the serialized perspective IDs.
 	 */
 	public void postDesirialize() {
+		dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+				dataDomainID);
 		recordPerspective = dataDomain.getTable().getRecordPerspective(
 				recordPerspectiveID);
 		dimensionPerspective = dataDomain.getTable().getDimensionPerspective(

@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -54,7 +53,6 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
 public class PathwayDataContainer extends DataContainer {
 
 	/** The datadomain giving access to the pathways themselves */
-	@XmlIDREF
 	private PathwayDataDomain pathwayDataDomain;
 	/** The pathway associated with this data container */
 	@XmlTransient
