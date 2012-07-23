@@ -93,10 +93,26 @@ public class CreateIDTypeDialog extends Dialog {
 	private Button useRegExButton;
 
 	/**
+	 * {@link IDCategory} the created {@link IDType} will be restricted to.
+	 */
+	private IDCategory restrictingIDCategory;
+
+	/**
 	 * @param parentShell
 	 */
 	protected CreateIDTypeDialog(Shell parentShell) {
 		super(parentShell);
+	}
+
+	/**
+	 * @param parentShell
+	 * @param idCategory
+	 *            {@link IDCategory} the created {@link IDType} will be
+	 *            restricted to.
+	 */
+	protected CreateIDTypeDialog(Shell parentShell, IDCategory idCategory) {
+		super(parentShell);
+		this.restrictingIDCategory = idCategory;
 	}
 
 	@Override
@@ -116,12 +132,19 @@ public class CreateIDTypeDialog extends Dialog {
 
 		idCategoryCombo = new Combo(parentComposite, SWT.DROP_DOWN);
 		idCategoryCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		idCategoryCombo.setText("<Please select>");
-		int index = 0;
-		for (IDCategory category : IDCategory.getAllRegisteredIDCategories()) {
-			idCategoryCombo.add(category.getCategoryName());
-			idCategoryMap.put(index, category);
-			index++;
+		if (restrictingIDCategory != null) {
+			idCategoryCombo.add(restrictingIDCategory.getCategoryName());
+			idCategoryCombo.select(0);
+			idCategoryMap.put(0, restrictingIDCategory);
+			idCategoryCombo.setEnabled(false);
+		} else {
+			idCategoryCombo.setText("<Please select>");
+			int index = 0;
+			for (IDCategory category : IDCategory.getAllRegisteredIDCategories()) {
+				idCategoryCombo.add(category.getCategoryName());
+				idCategoryMap.put(index, category);
+				index++;
+			}
 		}
 
 		Label dataTypeLabel = new Label(parentComposite, SWT.NONE);
@@ -145,24 +168,29 @@ public class CreateIDTypeDialog extends Dialog {
 		regExGroup.setText("Regular expressions");
 		regExGroup.setLayout(new GridLayout(4, false));
 		regExGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-		
+
 		Composite useRegExComposite = new Composite(regExGroup, SWT.NONE);
 		useRegExComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
-		useRegExComposite.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, false, 4, 1));
+		useRegExComposite.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, false, 4,
+				1));
 		useRegExButton = new Button(useRegExComposite, SWT.CHECK);
-//		useRegExButton.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true, 2, 1));
+		// useRegExButton.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false,
+		// true, 2, 1));
 		Label useRegExlabel = new Label(useRegExComposite, SWT.NONE);
 		useRegExlabel.setText("Use regular expressions to convert IDs");
-//		useRegExlabel.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, true, 2, 1));
+		// useRegExlabel.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false,
+		// true, 2, 1));
 
 		final Label replacementRegExLabel = new Label(regExGroup, SWT.NONE);
 		replacementRegExLabel.setText("Replace");
 		replacementRegExLabel.setEnabled(false);
-		replacementRegExLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
+		replacementRegExLabel
+				.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
 
 		replacementRegExTextField = new Text(regExGroup, SWT.BORDER);
 		replacementRegExTextField.setEnabled(false);
-		GridData replacementTextFieldsGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		GridData replacementTextFieldsGridData = new GridData(SWT.FILL, SWT.FILL, true,
+				true);
 		replacementTextFieldsGridData.widthHint = 150;
 		replacementRegExTextField.setLayoutData(replacementTextFieldsGridData);
 
@@ -176,8 +204,9 @@ public class CreateIDTypeDialog extends Dialog {
 
 		final Label substringRegExLabel = new Label(regExGroup, SWT.NONE);
 		substringRegExLabel.setText("Substring specification");
-//		substringRegExLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2,
-//				1));
+		// substringRegExLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
+		// true, true, 2,
+		// 1));
 		substringRegExLabel.setEnabled(false);
 
 		substringRegExTextField = new Text(regExGroup, SWT.BORDER);

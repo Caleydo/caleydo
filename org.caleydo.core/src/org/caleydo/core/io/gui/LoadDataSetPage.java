@@ -46,9 +46,9 @@ import org.eclipse.swt.widgets.Text;
  * 
  */
 public class LoadDataSetPage extends AImportDataPage implements Listener {
-	
+
 	public static final String PAGE_NAME = "Load Dataset";
-	
+
 	public static final String PAGE_DESCRIPTION = "Specify the dataset you want to load.";
 
 	/**
@@ -226,14 +226,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	 */
 	private PreviewTableManager previewTableManager;
 
-//	/**
-//	 * @param pageName
-//	 */
-//	protected LoadDataSetPage(String pageName, DataSetDescription dataSetDescription) {
-//		super(pageName, dataSetDescription);
-//		
-//	}
-	
 	public LoadDataSetPage(DataSetDescription dataSetDescription) {
 		super(PAGE_NAME, dataSetDescription);
 		setDescription(PAGE_DESCRIPTION);
@@ -276,12 +268,8 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		// Delimiters
 
-//		Composite delimiterComposite = new Composite(parentComposite, SWT.NONE);
-//		delimiterComposite.setLayout(new GridLayout(1, false));
-//		delimiterComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2,
-//				1));
 		createDelimiterGroup(parentComposite);
-		
+
 		previewTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER
 				| SWT.FULL_SELECTION);
 		previewTable.setLinesVisible(true);
@@ -292,9 +280,9 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		gridData.widthHint = 800;
 		previewTable.setLayoutData(gridData);
 
-		//Table info
-		
-		createTableInfo(parentComposite);		
+		// Table info
+
+		createTableInfo(parentComposite);
 
 		previewTableManager = new PreviewTableManager(previewTable);
 
@@ -382,7 +370,8 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		Composite rightConfigGroupPart = new Composite(rowConfigGroup, SWT.NONE);
 		rightConfigGroupPart.setLayout(new GridLayout(1, false));
-		rightConfigGroupPart.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
+		rightConfigGroupPart
+				.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
 
 		createNewIDCategoryButton(rightConfigGroupPart);
 		createNewIDTypeButton(rightConfigGroupPart);
@@ -478,7 +467,8 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		Composite rightConfigGroupPart = new Composite(columnConfigGroup, SWT.NONE);
 		rightConfigGroupPart.setLayout(new GridLayout(1, false));
-		rightConfigGroupPart.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
+		rightConfigGroupPart
+				.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
 
 		createNewIDCategoryButton(rightConfigGroupPart);
 		createNewIDTypeButton(rightConfigGroupPart);
@@ -689,8 +679,8 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		determineRowIDType();
 		previewTableManager.updateTableColors(
 				dataSetDescription.getNumberOfHeaderLines(),
-				dataSetDescription.getColumnOfRowIds() + 1,
-				dataSetDescription.getRowOfColumnIDs() + 1);
+				dataSetDescription.getRowOfColumnIDs() + 1,
+				dataSetDescription.getColumnOfRowIds() + 1);
 		updateWidgetsAccordingToTableChanges();
 
 		parentComposite.pack();
@@ -776,7 +766,8 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	protected void createTableInfo(Composite parent) {
 		Composite tableInfoComposite = new Composite(parent, SWT.NONE);
 		tableInfoComposite.setLayout(new GridLayout(4, false));
-		tableInfoComposite.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true, 2, 1));
+		tableInfoComposite.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true,
+				2, 1));
 
 		tableInfoLabel = new Label(tableInfoComposite, SWT.NONE);
 
@@ -1073,7 +1064,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		columnOfRowIDSpinner.setMaximum(totalNumberOfColumns);
 		rowOfColumnIDSpinner.setMaximum(totalNumberOfRows);
 		numHeaderRowsSpinner.setMaximum(totalNumberOfRows);
-		showAllColumnsButton.setSelection(false);
+//		showAllColumnsButton.setSelection(false);
 		showAllColumnsButton.setEnabled(true);
 		tableInfoLabel.setText((previewTable.getColumnCount() - 1) + " of "
 				+ totalNumberOfColumns + " columns shown");

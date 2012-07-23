@@ -154,12 +154,12 @@ public class PreviewTableManager {
 			}
 		}
 
-		if (idRowIndex < previewTable.getItemCount()) {
+		if (idRowIndex != -1 && idRowIndex < previewTable.getItemCount()) {
 			colorTableRow(idRowIndex, Display.getCurrent()
 					.getSystemColor(SWT.COLOR_GREEN));
 		}
 
-		if (idColumnIndex < previewTable.getColumnCount()) {
+		if (idColumnIndex != -1 && idColumnIndex < previewTable.getColumnCount()) {
 			colorTableColumn(idColumnIndex,
 					Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
 			selectedColumnButtons.get(idColumnIndex - 1).setVisible(false);
