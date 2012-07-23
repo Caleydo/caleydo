@@ -1776,6 +1776,11 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	@Override
 	public Set<IDataDomain> getDataDomains() {
 		Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
+		if(dataContainers == null)
+		{
+			System.out.println("Problem");
+			return dataDomains;
+		}
 		for (DataContainer dataContainer : dataContainers) {
 			if (dataContainer instanceof PathwayDataContainer) {
 				dataDomains.add(((PathwayDataContainer) dataContainer)

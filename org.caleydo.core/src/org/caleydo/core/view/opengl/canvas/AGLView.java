@@ -227,7 +227,6 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW),
 				parentComposite, viewType, viewName);
 
-		GeneralManager.get().getViewManager().registerGLView(this);
 		parentGLCanvas = glCanvas;
 
 		glMouseListener = new GLMouseListener();
@@ -270,6 +269,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 	@Override
 	public void initialize() {
+		GeneralManager.get().getViewManager().registerGLView(this);
 		registerEventListeners();
 
 		if (glRemoteRenderingView == null)
