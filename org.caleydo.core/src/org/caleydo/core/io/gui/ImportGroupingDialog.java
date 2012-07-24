@@ -354,7 +354,7 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 
 		Group rowConfigGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		rowConfigGroup.setText("Row configuration");
-		rowConfigGroup.setLayout(new GridLayout(2, false));
+		rowConfigGroup.setLayout(new GridLayout(1, false));
 		rowConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
 		Composite leftConfigGroupPart = new Composite(rowConfigGroup, SWT.NONE);
@@ -419,35 +419,8 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 			}
 		});
 
-		Composite rightConfigGroupPart = new Composite(rowConfigGroup, SWT.NONE);
-		rightConfigGroupPart.setLayout(new GridLayout(1, false));
-		rightConfigGroupPart
-				.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
-
-		new Label(rightConfigGroupPart, SWT.SPACE);
-		// createNewIDCategoryButton(rightConfigGroupPart);
-		createNewIDTypeButton(rightConfigGroupPart);
 	}
 
-	private void createNewIDTypeButton(Composite parent) {
-		Button createIDTypeButton = new Button(parent, SWT.PUSH);
-		createIDTypeButton.setText("New");
-		createIDTypeButton.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				CreateIDTypeDialog dialog = new CreateIDTypeDialog(new Shell(),
-						rowIDCategory);
-				int status = dialog.open();
-
-				if (status == Dialog.OK) {
-					updateIDTypeCombo(rowIDCategory, rowIDTypes, rowIDCombo);
-				}
-
-				super.widgetSelected(e);
-			}
-		});
-	}
 
 	protected void createIDTypeGroup(Composite parent) {
 		Label idTypeLabel = new Label(parent, SWT.SHADOW_ETCHED_IN);
