@@ -48,7 +48,8 @@ public class DataLoader {
 
 	/**
 	 * Creates a {@link ATableBasedDataDomain} and loads the dataset and
-	 * groupings into it. Also does the processing of the data.
+	 * groupings into it. Creates all necessary IDTypes for a dataset. Also does
+	 * the processing of the data.
 	 * 
 	 * @param dataSetDescription
 	 *            The information for how to create everything
@@ -233,8 +234,10 @@ public class DataLoader {
 
 		ArrayList<PerspectiveInitializationData> perspectiveDatas = new ArrayList<PerspectiveInitializationData>();
 		for (GroupingParseSpecification groupingSpecification : groupingSpecifications) {
-			GroupingParser parser = new GroupingParser(groupingSpecification);
-			perspectiveDatas.addAll(parser.parseGrouping(targetIDType));
+			GroupingParser parser = new GroupingParser(groupingSpecification,
+					targetIDType);
+			parser.loadData();
+			perspectiveDatas.addAll(parser.getPerspectiveInitializationDatas());
 		}
 		return perspectiveDatas;
 	}

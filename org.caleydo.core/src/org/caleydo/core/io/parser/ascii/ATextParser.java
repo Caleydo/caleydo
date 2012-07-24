@@ -33,9 +33,8 @@ import org.eclipse.core.runtime.Status;
 /**
  * Base class for text parsers.
  * 
- * @author Michael Kalkusch
- * @author Marc Streit
  * @author Alexander Lex
+ * @author Marc Streit
  */
 public abstract class ATextParser {
 
@@ -131,8 +130,12 @@ public abstract class ATextParser {
 		return numberOfLinesInFile;
 	}
 
+	/**
+	 * Triggers the actual loading and parsing of the data specified.
+	 * 
+	 * @return
+	 */
 	public boolean loadData() {
-
 		try {
 
 			Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,

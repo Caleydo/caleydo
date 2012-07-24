@@ -47,13 +47,19 @@ public class GroupingParser extends ATextParser {
 
 	private GroupingParseSpecification groupingSpecifications;
 	private static final String DEFAULT_GROUP_NAME = "DEFAULT_GROUP_NAME";
+	private IDType targetIDType;
+	/** Where the data is stored during parsing */
+	private ArrayList<PerspectiveInitializationData> perspectiveInitializationDatas;
 
-	public GroupingParser(GroupingParseSpecification groupingSpecifications) {
+	public GroupingParser(GroupingParseSpecification groupingSpecifications,
+			IDType targetIDType) {
 		super(groupingSpecifications.getDataSourcePath());
 		this.groupingSpecifications = groupingSpecifications;
+		this.targetIDType = targetIDType;
 	}
 
-	public ArrayList<PerspectiveInitializationData> parseGrouping(IDType targetIDType) {
+	@Override
+	protected void parseFile(BufferedReader reader) throws IOException {
 
 		swtGuiManager.setProgressBarText("Loading groupings for " + targetIDType);
 		float progressBarFactor = 100f / numberOfLinesInFile;
@@ -71,9 +77,8 @@ public class GroupingParser extends ATextParser {
 		if (groupingSpecifications.getDataSourcePath() == null) {
 			Logger.log(new Status(Status.INFO, this.toString(),
 					"No path for grouping specified"));
-			return null;
+			return;
 		}
-		BufferedReader reader;
 		try {
 
 			String[] headerCells = null;
@@ -105,7 +110,8 @@ public class GroupingParser extends ATextParser {
 			}
 
 			ArrayList<Integer> columnsToRead = groupingSpecifications.getColumns();
-			// if this was not specified we read all columns, the row IDs are
+			// if this was not specified we read all columns, the row IDs
+			// are
 			// guaranteed to be in the first column
 			String firstDataLine = null;
 			if (columnsToRead == null || headerCells == null) {
@@ -159,8 +165,7 @@ public class GroupingParser extends ATextParser {
 				String[] columns = line.split(groupingSpecifications.getDelimiter());
 				String originalID = columns[groupingSpecifications.getColumnOfRowIds()];
 
-				originalID = convertID(originalID,
-						sourceIDType.getIdTypeParsingRules());
+				originalID = convertID(originalID, sourceIDType.getIdTypeParsingRules());
 
 				Integer mappedID = idMappingManager.getID(sourceIDType, targetIDType,
 						originalID);
@@ -195,10 +200,9 @@ public class GroupingParser extends ATextParser {
 							.setProgressBarPercentage((int) (progressBarFactor * lineCounter));
 				}
 			}
-			reader.close();
 
 			// Create the initialization datas
-			ArrayList<PerspectiveInitializationData> perspectiveInitializationDatas = new ArrayList<PerspectiveInitializationData>();
+			perspectiveInitializationDatas = new ArrayList<PerspectiveInitializationData>();
 
 			for (int groupListCount = 0; groupListCount < listOfGroupLists.size(); groupListCount++) {
 				ArrayList<Pair<String, ArrayList<Integer>>> groupList = listOfGroupLists
@@ -233,10 +237,18 @@ public class GroupingParser extends ATextParser {
 				perspectiveInitializationDatas.add(data);
 			}
 
-			return perspectiveInitializationDatas;
 		} catch (IOException ioException) {
 			throw new IllegalStateException("Could not read file: "
 					+ groupingSpecifications.getDataSourcePath());
 		}
 	}
+
+	/**
+	 * @return the perspectiveInitializationDatas, see
+	 *         {@link #perspectiveInitializationDatas}
+	 */
+	public ArrayList<PerspectiveInitializationData> getPerspectiveInitializationDatas() {
+		return perspectiveInitializationDatas;
+	}
+
 }
