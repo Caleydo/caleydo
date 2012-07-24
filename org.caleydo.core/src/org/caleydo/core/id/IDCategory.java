@@ -119,7 +119,7 @@ public class IDCategory {
 
 		if (category == null)
 			return null;
-		
+
 		return category;
 	}
 
@@ -165,6 +165,13 @@ public class IDCategory {
 	 * All registered IDTypes for this category.
 	 */
 	private ArrayList<IDType> idTypes = new ArrayList<IDType>();
+
+	/**
+	 * flag determining whether a category is internal only, meaning that it is
+	 * dynamically generated using, e.g., a running number (true), or an
+	 * externally provided ID (e.g., refseq, false)
+	 */
+	private boolean isInternalCategory = false;
 
 	/** Private constructor, created through the static instances */
 	private IDCategory(String categoryName) {
@@ -267,6 +274,21 @@ public class IDCategory {
 	 */
 	public IDType getHumanReadableIDType() {
 		return humanReadableIDType;
+	}
+
+	/**
+	 * @param isInternaltType
+	 *            setter, see {@link #isInternalCategory}
+	 */
+	public void setInternalCategory(boolean isInternaltType) {
+		this.isInternalCategory = isInternaltType;
+	}
+
+	/**
+	 * @return the isInternalCategory, see {@link #isInternalCategory}
+	 */
+	public boolean isInternaltCategory() {
+		return isInternalCategory;
 	}
 
 	/**

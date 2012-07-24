@@ -255,12 +255,14 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 		recordGroupIDCategory = IDCategory.registerCategory(recordIDCategory
 				.getCategoryName() + "_GROUP");
+		recordGroupIDCategory.setInternalCategory(true);
 		recordGroupIDType = IDType.registerType("group_record_" + dataDomainID + "_"
 				+ hashCode(), recordGroupIDCategory, EDataType.INT);
 		recordGroupIDType.setInternalType(true);
 
 		dimensionGroupIDCategory = IDCategory.registerCategory(dimensionIDCategory
 				.getCategoryName() + "_GROUP");
+		dimensionGroupIDCategory.setInternalCategory(true);
 		dimensionGroupIDType = IDType.registerType("group_dimension_" + dataDomainID
 				+ "_" + hashCode(), dimensionGroupIDCategory, EDataType.INT);
 
