@@ -3,7 +3,6 @@
  */
 package org.caleydo.core.io.gui;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import org.caleydo.core.id.IDCategory;
@@ -140,16 +139,10 @@ public class AddGroupingsPage extends AImportDataPage {
 				if (status == Dialog.OK && groupingParseSpecification != null) {
 					groupingParseSpecifications.add(groupingParseSpecification);
 
-					String groupingDataSetName = groupingParseSpecification
-							.getDataSourcePath().substring(
-									groupingParseSpecification.getDataSourcePath()
-											.lastIndexOf(File.separator) + 1,
-									groupingParseSpecification.getDataSourcePath()
-											.lastIndexOf("."));
 					if (isColumnGrouping) {
-						columnGroupingsList.add(groupingDataSetName);
+						columnGroupingsList.add(groupingParseSpecification.getGroupingName());
 					} else {
-						rowGroupingsList.add(groupingDataSetName);
+						rowGroupingsList.add(groupingParseSpecification.getGroupingName());
 					}
 				}
 			}
@@ -199,14 +192,8 @@ public class AddGroupingsPage extends AImportDataPage {
 						groupingParseSpecifications.add(groupingIndex,
 								groupingParseSpecification);
 
-						String groupingDataSetName = groupingParseSpecification
-								.getDataSourcePath().substring(
-										groupingParseSpecification.getDataSourcePath()
-												.lastIndexOf(File.separator) + 1,
-										groupingParseSpecification.getDataSourcePath()
-												.lastIndexOf("."));
 						currentList.remove(groupingIndex);
-						currentList.add(groupingDataSetName, groupingIndex);
+						currentList.add(groupingParseSpecification.getGroupingName(), groupingIndex);
 					}
 				}
 			}

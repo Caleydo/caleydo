@@ -3,6 +3,7 @@
  */
 package org.caleydo.core.io.gui;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.EDataType;
@@ -175,6 +176,11 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 	private PreviewTableManager previewTableManager;
 
 	/**
+	 * Textfield for the grouping name.
+	 */
+	private Text groupingNameTextField;
+
+	/**
 	 * @param parentShell
 	 */
 	public ImportGroupingDialog(Shell parentShell) {
@@ -264,6 +270,7 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		}
 		groupingParseSpecification.setRowIDSpecification(rowIDSpecification);
 		groupingParseSpecification.setContainsColumnIDs(false);
+		groupingParseSpecification.setGroupingName(groupingNameTextField.getText());
 
 		super.okPressed();
 	}
@@ -286,8 +293,7 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		Group inputFileGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		inputFileGroup.setText("Input file");
 		inputFileGroup.setLayout(new GridLayout(2, false));
-		inputFileGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,
-				numGridCols, 1));
+		inputFileGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		Button openFileButton = new Button(inputFileGroup, SWT.PUSH);
 		openFileButton.setText("Open Grouping File");
@@ -299,6 +305,16 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gridData.widthHint = 200;
 		fileNameTextField.setLayoutData(gridData);
+
+		Group groupingNameGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		groupingNameGroup.setText("Grouping Name");
+		groupingNameGroup.setLayout(new GridLayout(1, false));
+		groupingNameGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		groupingNameTextField = new Text(groupingNameGroup, SWT.BORDER);
+		gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gridData.widthHint = 100;
+		groupingNameTextField.setLayoutData(gridData);
 
 		openFileButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -315,6 +331,9 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 				if (inputFileName == null)
 					return;
 				fileNameTextField.setText(inputFileName);
+				groupingNameTextField.setText(inputFileName.substring(
+						inputFileName.lastIndexOf(File.separator) + 1,
+						inputFileName.lastIndexOf(".")));
 
 				groupingParseSpecification.setDataSourcePath(inputFileName);
 				createDataPreviewTableFromFile();
@@ -420,7 +439,6 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		});
 
 	}
-
 
 	protected void createIDTypeGroup(Composite parent) {
 		Label idTypeLabel = new Label(parent, SWT.SHADOW_ETCHED_IN);
