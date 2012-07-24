@@ -24,11 +24,8 @@ package org.caleydo.core.view.opengl.util.connectionline;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
-
 import java.util.List;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;

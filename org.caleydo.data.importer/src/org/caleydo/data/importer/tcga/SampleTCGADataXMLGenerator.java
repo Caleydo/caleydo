@@ -26,11 +26,9 @@ import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ParsingRule;
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
-import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
+import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
-import org.caleydo.core.util.clusterer.algorithm.kmeans.*;
 
 /**
  * Generator class that writes the loading information of a series of TCGA data

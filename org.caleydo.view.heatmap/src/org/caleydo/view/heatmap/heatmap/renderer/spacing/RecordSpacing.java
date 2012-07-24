@@ -20,7 +20,6 @@
 package org.caleydo.view.heatmap.heatmap.renderer.spacing;
 
 import java.util.ArrayList;
-
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 /**

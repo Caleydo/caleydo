@@ -21,7 +21,6 @@ package org.caleydo.view.dvi.node;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.logging.Logger;

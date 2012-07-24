@@ -21,7 +21,6 @@ package org.caleydo.core.data.virtualarray.similarity;
 
 import java.util.HashMap;
 import java.util.Set;
-
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 

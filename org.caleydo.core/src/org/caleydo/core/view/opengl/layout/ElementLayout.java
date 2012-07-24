@@ -21,10 +21,8 @@ package org.caleydo.core.view.opengl.layout;
 
 import java.awt.Container;
 import java.util.ArrayList;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.Zoomer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;

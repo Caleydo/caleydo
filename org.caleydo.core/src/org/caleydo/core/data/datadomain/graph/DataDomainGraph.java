@@ -21,7 +21,6 @@ package org.caleydo.core.data.datadomain.graph;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.id.IDCategory;

@@ -22,7 +22,6 @@ package org.caleydo.core.io.parser.ascii;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
-
 import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.manager.GeneralManager;

@@ -20,7 +20,6 @@
 package org.caleydo.view.parcoords;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
 import org.caleydo.view.parcoords.toolbar.ParCoordsToolBarContent;

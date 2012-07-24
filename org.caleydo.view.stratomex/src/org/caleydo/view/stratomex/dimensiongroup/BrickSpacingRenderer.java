@@ -20,9 +20,7 @@
 package org.caleydo.view.stratomex.dimensiongroup;
 
 import java.util.Set;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;

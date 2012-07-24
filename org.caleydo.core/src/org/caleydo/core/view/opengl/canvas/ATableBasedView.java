@@ -21,10 +21,8 @@ package org.caleydo.core.view.opengl.canvas;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;
@@ -60,7 +58,6 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.IDataContainerBasedView;
 import org.caleydo.core.view.ISingleDataContainerBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;

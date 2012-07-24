@@ -20,7 +20,6 @@
 package org.caleydo.core.view.opengl.util.hierarchy;
 
 import gleem.linalg.open.Transform;
-
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.AUniqueObject;

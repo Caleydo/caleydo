@@ -21,12 +21,7 @@ package org.caleydo.view.tagclouds;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-
-import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.view.ARcpGLViewPart;
-import org.caleydo.core.view.IDataDomainBasedView;
 import org.eclipse.swt.widgets.Composite;
 
 /**

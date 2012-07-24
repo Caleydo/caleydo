@@ -4,9 +4,7 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.container.Average;
 import org.caleydo.core.data.container.ContainerStatistics;
 import org.caleydo.core.data.selection.SelectionType;

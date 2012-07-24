@@ -23,10 +23,8 @@ package org.caleydo.core.view.opengl.util;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
-
 import javax.media.opengl.GLDrawable;
 import javax.media.opengl.GLException;
-
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.texture.Texture;
 

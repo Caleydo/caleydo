@@ -21,12 +21,6 @@ package org.caleydo.view.stratomex;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.serialize.ASerializedMultiDataContainerBasedView;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 

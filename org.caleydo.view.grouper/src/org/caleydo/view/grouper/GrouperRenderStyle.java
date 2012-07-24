@@ -20,7 +20,6 @@
 package org.caleydo.view.grouper;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 

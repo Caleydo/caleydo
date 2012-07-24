@@ -21,7 +21,6 @@ package org.caleydo.view.browser;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
 import org.caleydo.core.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;

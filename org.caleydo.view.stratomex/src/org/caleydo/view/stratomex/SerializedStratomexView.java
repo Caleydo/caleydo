@@ -19,14 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.serialize.ASerializedMultiDataContainerBasedView;
-import org.caleydo.core.serialize.ASerializedView;
 
 /**
  * Serialized VisBricks view.

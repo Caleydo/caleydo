@@ -22,12 +22,10 @@ package org.caleydo.core.view.contextmenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;

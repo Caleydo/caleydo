@@ -20,7 +20,6 @@
 package org.caleydo.core.gui;
 
 import java.util.HashMap;
-
 import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;

@@ -23,9 +23,7 @@ import static org.caleydo.view.parcoords.PCRenderStyle.GATE_TIP_HEIGHT;
 import static org.caleydo.view.parcoords.PCRenderStyle.GATE_WIDTH;
 import static org.caleydo.view.parcoords.PCRenderStyle.GATE_Z;
 import gleem.linalg.Vec3f;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.util.format.Formatter;

@@ -23,7 +23,6 @@
 package org.caleydo.view.enroute;
 
 import java.util.List;
-
 import org.caleydo.view.enroute.node.ANode;
 
 /**

@@ -21,7 +21,6 @@ package org.caleydo.core.manager;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.logging.Logger;

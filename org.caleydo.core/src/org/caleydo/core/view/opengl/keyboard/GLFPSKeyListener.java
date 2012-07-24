@@ -24,7 +24,6 @@ package org.caleydo.core.view.opengl.keyboard;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 
 /**

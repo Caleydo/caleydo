@@ -20,14 +20,11 @@
 package org.caleydo.view.grouper.compositegraphic;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -43,7 +40,6 @@ import org.caleydo.view.grouper.drawingstrategies.group.AGroupDrawingStrategyRec
 import org.caleydo.view.grouper.drawingstrategies.group.EGroupDrawingStrategyType;
 import org.caleydo.view.grouper.drawingstrategies.group.GroupDrawingStrategyDragged;
 import org.caleydo.view.grouper.drawingstrategies.group.IGroupDrawingStrategy;
-
 import com.jogamp.opengl.util.awt.TextRenderer;
 
 public class GroupRepresentation implements ICompositeGraphic, IDropArea {

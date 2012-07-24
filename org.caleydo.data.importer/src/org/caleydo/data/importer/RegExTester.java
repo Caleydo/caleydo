@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.data.importer;
 
-import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.parser.ascii.TabularDataParser;
 import org.caleydo.data.importer.tcga.TCGATestDataXMLGenerator;

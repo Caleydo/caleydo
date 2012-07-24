@@ -20,7 +20,6 @@
 package org.caleydo.view.stratomex.brick.layout;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;

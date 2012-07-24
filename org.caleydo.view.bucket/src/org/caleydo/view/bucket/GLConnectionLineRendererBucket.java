@@ -20,15 +20,12 @@
 package org.caleydo.view.bucket;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;

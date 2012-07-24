@@ -4,7 +4,6 @@
 package org.caleydo.core.io.gui.dataimport.wizard;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.GroupingParseSpecification;

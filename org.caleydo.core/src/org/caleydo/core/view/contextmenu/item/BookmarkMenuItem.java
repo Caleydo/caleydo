@@ -20,7 +20,6 @@
 package org.caleydo.core.view.contextmenu.item;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.event.data.BookmarkEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;

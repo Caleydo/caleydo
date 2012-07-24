@@ -20,7 +20,6 @@
 package org.caleydo.view.browser;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;

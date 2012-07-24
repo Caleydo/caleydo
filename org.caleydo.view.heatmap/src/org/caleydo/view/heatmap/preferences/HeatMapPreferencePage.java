@@ -20,7 +20,6 @@
 package org.caleydo.view.heatmap.preferences;
 
 import java.util.Collection;
-
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;

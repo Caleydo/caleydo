@@ -20,9 +20,7 @@
 package org.caleydo.core.view.opengl.util;
 
 import gleem.linalg.Vec3f;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**

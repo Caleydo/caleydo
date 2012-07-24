@@ -7,19 +7,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.io.DataLoader;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.view.RCPViewInitializationData;
-import org.caleydo.core.view.RCPViewManager;
 import org.eclipse.jface.dialogs.IPageChangeProvider;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Wizard that guides the user through the different steps of importing a

@@ -23,7 +23,6 @@
 package org.caleydo.core.io;
 
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.data.collection.EDataType;
 
 /**

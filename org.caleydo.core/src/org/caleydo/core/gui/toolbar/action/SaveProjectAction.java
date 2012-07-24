@@ -21,7 +21,6 @@ package org.caleydo.core.gui.toolbar.action;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.resource.ImageDescriptor;

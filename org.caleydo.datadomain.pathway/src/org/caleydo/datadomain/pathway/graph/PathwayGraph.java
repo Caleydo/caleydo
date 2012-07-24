@@ -20,7 +20,6 @@
 package org.caleydo.datadomain.pathway.graph;
 
 import java.io.Serializable;
-
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.IUniqueObject;

@@ -20,7 +20,6 @@
 package org.caleydo.core.view;
 
 import java.util.Set;
-
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.event.EventPublisher;

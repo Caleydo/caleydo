@@ -20,11 +20,8 @@
 package org.caleydo.view.heatmap.uncertainty;
 
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
-
 import java.util.ArrayList;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;

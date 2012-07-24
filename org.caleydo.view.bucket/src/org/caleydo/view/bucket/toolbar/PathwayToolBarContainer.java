@@ -21,7 +21,6 @@ package org.caleydo.view.bucket.toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
 import org.caleydo.view.bucket.SerializedBucketView;

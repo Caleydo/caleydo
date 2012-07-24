@@ -20,7 +20,6 @@
 package org.caleydo.core.net;
 
 import java.util.HashMap;
-
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.view.vislink.CanvasConnectionMap;

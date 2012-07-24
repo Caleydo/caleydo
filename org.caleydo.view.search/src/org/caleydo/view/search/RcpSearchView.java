@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;

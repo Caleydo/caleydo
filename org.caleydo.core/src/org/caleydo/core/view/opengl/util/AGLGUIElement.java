@@ -20,9 +20,7 @@
 package org.caleydo.core.view.opengl.util;
 
 import gleem.linalg.Vec3f;
-
 import java.nio.IntBuffer;
-
 import javax.media.opengl.GL2;
 
 /**

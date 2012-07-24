@@ -20,9 +20,7 @@
 package org.caleydo.view.dvi.datacontainer;
 
 import java.awt.geom.Point2D;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;

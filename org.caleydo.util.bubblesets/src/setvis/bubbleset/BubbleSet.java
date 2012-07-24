@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.Iterator;
-
 import setvis.SetOutline;
 import setvis.bubbleset.Intersection.State;
 

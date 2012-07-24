@@ -20,10 +20,8 @@
 package org.caleydo.view.radial;
 
 import gleem.linalg.Vec2f;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
-
 import org.caleydo.core.view.opengl.picking.PickingManager;
 
 /**

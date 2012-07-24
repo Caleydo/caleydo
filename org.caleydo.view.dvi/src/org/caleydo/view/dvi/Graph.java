@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-
 import org.caleydo.view.dvi.node.IDVINode;
 
 public class Graph {

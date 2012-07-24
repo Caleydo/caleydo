@@ -20,7 +20,6 @@
 package org.caleydo.core.gui.toolbar;
 
 import java.util.ArrayList;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;

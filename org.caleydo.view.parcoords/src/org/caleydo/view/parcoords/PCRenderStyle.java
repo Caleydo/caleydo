@@ -20,7 +20,6 @@
 package org.caleydo.view.parcoords;
 
 import java.util.HashMap;
-
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;

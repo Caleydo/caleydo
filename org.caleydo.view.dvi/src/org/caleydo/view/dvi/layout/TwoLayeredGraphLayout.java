@@ -29,7 +29,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.dvi.Edge;
 import org.caleydo.view.dvi.GLDataViewIntegrator;

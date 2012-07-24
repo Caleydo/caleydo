@@ -20,7 +20,6 @@
 package org.caleydo.core.manager;
 
 import java.util.Collection;
-
 import org.caleydo.core.util.base.IUniqueObject;
 
 /**

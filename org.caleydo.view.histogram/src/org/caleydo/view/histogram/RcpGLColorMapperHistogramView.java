@@ -20,7 +20,6 @@
 package org.caleydo.view.histogram;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ChooseColorMappingDialog;

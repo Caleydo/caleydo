@@ -22,7 +22,6 @@ package org.caleydo.datadomain.pathway.manager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-
 import org.caleydo.core.manager.AManager;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;

@@ -20,7 +20,6 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.enroute.GLEnRoutePathway;

@@ -21,7 +21,6 @@ package org.caleydo.view.grouper;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.view.ISingleDataContainerBasedView;
 

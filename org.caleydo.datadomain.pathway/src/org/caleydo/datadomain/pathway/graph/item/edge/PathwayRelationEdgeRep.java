@@ -21,7 +21,6 @@ package org.caleydo.datadomain.pathway.graph.item.edge;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import org.jgrapht.graph.DefaultEdge;
 
 /**

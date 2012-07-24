@@ -20,19 +20,15 @@
 package org.caleydo.view.grouper.compositegraphic;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.view.grouper.drawingstrategies.DrawingStrategyManager;
-
 import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**

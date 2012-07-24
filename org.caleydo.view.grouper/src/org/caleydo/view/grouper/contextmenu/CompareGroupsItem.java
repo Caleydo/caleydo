@@ -20,7 +20,6 @@
 package org.caleydo.view.grouper.contextmenu;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.event.view.OpenMatchmakerViewEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;

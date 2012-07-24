@@ -20,12 +20,9 @@
 package org.caleydo.view.grouper.drawingstrategies.group;
 
 import gleem.linalg.Vec3f;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.view.grouper.GrouperRenderStyle;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
-
 import com.jogamp.opengl.util.awt.TextRenderer;
 
 public class GroupDrawingStrategyDragged extends AGroupDrawingStrategyRectangular {

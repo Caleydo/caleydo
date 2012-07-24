@@ -21,7 +21,6 @@ package org.caleydo.view.dvi.layout.edge.routing;
 
 import java.awt.geom.Point2D;
 import java.util.List;
-
 import org.caleydo.view.dvi.node.IDVINode;
 
 public interface IEdgeRoutingStrategy {

@@ -26,9 +26,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-
 import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.util.logging.Logger;
