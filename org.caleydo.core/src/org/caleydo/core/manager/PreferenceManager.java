@@ -70,13 +70,13 @@ public class PreferenceManager {
 				throw new IllegalStateException("Cannot determine current version of Caleydo.");
 
 			preferenceStore.load();
-			String sStoredVersion = preferenceStore.getString(PreferenceConstants.VERSION);
+			String storedVersion = preferenceStore.getString(PreferenceConstants.VERSION);
 
 			// If stored version is older then current version - remove old Caleydo folder
 			// Test 1st and 2nd number of version string
-			if (sStoredVersion.equals("")
-				|| (new Integer(sStoredVersion.substring(0, 1)) <= new Integer(
-					GeneralManager.VERSION.substring(0, 1)) && new Integer(sStoredVersion.substring(2, 3)) < new Integer(
+			if (storedVersion.equals("")
+				|| (new Integer(storedVersion.substring(0, 1)) <= new Integer(
+					GeneralManager.VERSION.substring(0, 1)) && new Integer(storedVersion.substring(2, 3)) < new Integer(
 					GeneralManager.VERSION.substring(2, 3)))) {
 
 				MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);

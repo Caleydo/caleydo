@@ -1,26 +1,25 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.manager;
 
 import java.io.File;
-
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SWTGUIManager;
@@ -46,27 +45,34 @@ import org.eclipse.jface.preference.PreferenceStore;
 public class GeneralManager {
 
 	/**
-	 * In release mode non-stable or student views are automatically removed from the workbench.
+	 * In release mode non-stable or student views are automatically removed
+	 * from the workbench.
 	 */
 	public static final boolean RELEASE_MODE = true;
 
 	/**
-	 * This is the current version of Caleydo. The value must be the same as specified in the plugin/bundle.
-	 * We need to access the version before the workbench is started. Therefore we have to set it hardcoded at
-	 * this point.
+	 * This is the current version of Caleydo. The value must be the same as
+	 * specified in the plugin/bundle. We need to access the version before the
+	 * workbench is started. Therefore we have to set it hardcoded at this
+	 * point.
 	 */
-	public static final String VERSION = "2.0";
+	public static final String VERSION = "2.0.1";
 
 	public static final String PLUGIN_ID = "org.caleydo.core";
 
 	/**
-	 * The template for the concrete Caleydo folder, ie CALEYDO_FOLDER. This is used for example in XML files
-	 * and is then replaced with the concrete folder
+	 * The template for the concrete Caleydo folder, ie CALEYDO_FOLDER. This is
+	 * used for example in XML files and is then replaced with the concrete
+	 * folder
 	 */
 	public static final String USER_HOME = "user.home";
 	public static final String CALEYDO_FOLDER_TEMPLATE = "caleydo.folder";
-	public static final String CALEYDO_FOLDER = ".caleydo_" + VERSION;
-//	public static final String CALEYDO_HOME_PATH = Platform.getLocation().toOSString()+ File.separator;
+	
+	/** The major version number determines the name of the Caleydo folder **/
+	public static final String CALEYDO_FOLDER = ".caleydo_" + VERSION.substring(0, 3);
+
+	// public static final String CALEYDO_HOME_PATH =
+	// Platform.getLocation().toOSString()+ File.separator;
 	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME)
 			+ File.separator + CALEYDO_FOLDER + File.separator;
 	public static final String CALEYDO_LOG_PATH = CALEYDO_HOME_PATH + "logs" + File.separator;
@@ -109,8 +115,8 @@ public class GeneralManager {
 	}
 
 	/**
-	 * Returns the general method as a singleton object. When first called the general manager is created
-	 * (lazy).
+	 * Returns the general method as a singleton object. When first called the
+	 * general manager is created (lazy).
 	 * 
 	 * @return singleton GeneralManager instance
 	 */
@@ -135,8 +141,8 @@ public class GeneralManager {
 	}
 
 	/**
-	 * Resource loader that is responsible for loading images, textures and data files in the Caleydo
-	 * framework. DO NOT LOAD YOUR FILES ON YOUR OWN!
+	 * Resource loader that is responsible for loading images, textures and data
+	 * files in the Caleydo framework. DO NOT LOAD YOUR FILES ON YOUR OWN!
 	 * 
 	 * @return resource loader
 	 */
@@ -161,8 +167,8 @@ public class GeneralManager {
 	}
 
 	/**
-	 * Returns the preference store where Caleydo stores its preferences. The object can store and restore
-	 * preferences to/from a predefined file.
+	 * Returns the preference store where Caleydo stores its preferences. The
+	 * object can store and restore preferences to/from a predefined file.
 	 */
 	public PreferenceStore getPreferenceStore() {
 		return PreferenceManager.get().getPreferenceStore();
@@ -178,12 +184,14 @@ public class GeneralManager {
 			// Lazy creation
 			IExtensionRegistry reg = Platform.getExtensionRegistry();
 
-			IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.util.statistics.StatisticsPerformer");
+			IExtensionPoint ep = reg
+					.getExtensionPoint("org.caleydo.util.statistics.StatisticsPerformer");
 			IExtension ext = ep.getExtension("org.caleydo.util.r.RStatisticsPerformer");
 			IConfigurationElement[] ce = ext.getConfigurationElements();
 
 			try {
-				rStatisticsPerformer = (IStatisticsPerformer) ce[0].createExecutableExtension("class");
+				rStatisticsPerformer = (IStatisticsPerformer) ce[0]
+						.createExecutableExtension("class");
 			}
 			catch (Exception ex) {
 				throw new RuntimeException("Could not instantiate R Statistics Peformer", ex);
@@ -194,8 +202,8 @@ public class GeneralManager {
 	}
 
 	/**
-	 * Obtains the {@link IGroupwareManager} responsible for communication purposes with other calyedo
-	 * application
+	 * Obtains the {@link IGroupwareManager} responsible for communication
+	 * purposes with other calyedo application
 	 * 
 	 * @return the {@link IGroupwareManager} of this caleydo application
 	 */
@@ -204,18 +212,19 @@ public class GeneralManager {
 	}
 
 	/**
-	 * Sets the {@link IGroupwareManager} responsible for communication purposes with other calyedo
-	 * application
+	 * Sets the {@link IGroupwareManager} responsible for communication purposes
+	 * with other calyedo application
 	 * 
-	 * @param groupwareManager
-	 *            the environment specific {@link IGroupwareManager} to use
+	 * @param groupwareManager the environment specific
+	 *            {@link IGroupwareManager} to use
 	 */
 	public void setGroupwareManager(IGroupwareManager groupwareManager) {
 		this.groupwareManager = groupwareManager;
 	}
 
 	/**
-	 * Obtains the {@link SerializationManager} responsible for xml-serialization related tasks
+	 * Obtains the {@link SerializationManager} responsible for
+	 * xml-serialization related tasks
 	 * 
 	 * @return the {@link SerializationManager} of this caleydo application
 	 */

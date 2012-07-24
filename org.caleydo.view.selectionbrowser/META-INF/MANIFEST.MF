@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Selection Browser View
 Bundle-SymbolicName: org.caleydo.view.selectionbrowser;singleton:=true
-Bundle-Version: 2.0
-Require-Bundle: org.caleydo.core;bundle-version="2.0.0"
+Bundle-Version: 2.0.1
+Require-Bundle: org.caleydo.core;bundle-version="2.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: gleem.linalg,
  javax.media.opengl,
