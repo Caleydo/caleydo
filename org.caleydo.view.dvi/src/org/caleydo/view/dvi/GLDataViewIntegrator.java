@@ -60,6 +60,10 @@ import org.caleydo.core.event.view.DataContainersChangedEvent;
 import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.io.DataLoader;
+import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.GroupingParseSpecification;
+import org.caleydo.core.io.gui.ImportGroupingDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
@@ -81,6 +85,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.dvi.event.AddDataContainerEvent;
 import org.caleydo.view.dvi.event.ApplySpecificGraphLayoutEvent;
 import org.caleydo.view.dvi.event.CreateViewFromDataContainerEvent;
+import org.caleydo.view.dvi.event.LoadGroupingEvent;
 import org.caleydo.view.dvi.event.OpenViewEvent;
 import org.caleydo.view.dvi.event.ShowDataConnectionsEvent;
 import org.caleydo.view.dvi.event.ShowViewWithoutDataEvent;
@@ -94,6 +99,7 @@ import org.caleydo.view.dvi.listener.DataContainersCangedListener;
 import org.caleydo.view.dvi.listener.DimensionGroupsChangedEventListener;
 import org.caleydo.view.dvi.listener.DimensionVAUpdateEventListener;
 import org.caleydo.view.dvi.listener.GLDVIKeyListener;
+import org.caleydo.view.dvi.listener.LoadGroupingEventListener;
 import org.caleydo.view.dvi.listener.MinSizeAppliedEventListener;
 import org.caleydo.view.dvi.listener.NewDataDomainEventListener;
 import org.caleydo.view.dvi.listener.NewViewEventListener;
@@ -107,6 +113,7 @@ import org.caleydo.view.dvi.node.IDVINode;
 import org.caleydo.view.dvi.node.NodeCreator;
 import org.caleydo.view.dvi.node.ViewNode;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
@@ -117,8 +124,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * This class is responsible for rendering the radial hierarchy and receiving
- * user events and events from other views.
+ * This class is responsible for providing an overview of all loaded datasets
+ * and opened views and their relationships.
  * 
  * @author Christian Partl
  */
@@ -162,6 +169,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	private RecordVAUpdateEventListener recordVAUpdateEventListener;
 	private DimensionVAUpdateEventListener dimensionVAUpdateEventListener;
 	private ShowViewWithoutDataEventListener showViewWithoutDataEventListener;
+	private LoadGroupingEventListener loadGroupingEventListener;
 
 	private IDVINode currentMouseOverNode;
 
@@ -566,6 +574,10 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		showViewWithoutDataEventListener.setHandler(this);
 		eventPublisher.addListener(ShowViewWithoutDataEvent.class,
 				showViewWithoutDataEventListener);
+
+		loadGroupingEventListener = new LoadGroupingEventListener();
+		loadGroupingEventListener.setHandler(this);
+		eventPublisher.addListener(LoadGroupingEvent.class, loadGroupingEventListener);
 	}
 
 	@Override
@@ -640,6 +652,11 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		if (showViewWithoutDataEventListener != null) {
 			eventPublisher.removeListener(showViewWithoutDataEventListener);
 			showViewWithoutDataEventListener = null;
+		}
+
+		if (loadGroupingEventListener != null) {
+			eventPublisher.removeListener(loadGroupingEventListener);
+			loadGroupingEventListener = null;
 		}
 	}
 
@@ -760,10 +777,10 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			updateGraphEdgesOfViewNode(viewNode);
 		}
 	}
-	
+
 	public void updateGraphEdgesOfViewNode(ViewNode viewNode) {
 		Set<IDataDomain> dataDomainsOfView = viewNode.getDataDomains();
-		
+
 		for (IDataDomain dataDomain : dataNodesOfDataDomains.keySet()) {
 
 			Set<ViewNode> viewNodes = viewNodesOfDataDomains.get(dataDomain);
@@ -954,10 +971,12 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 						dimensionPerspective.setLabel(dimensionPerspectiveLabel, true);
 						// TODO: Shall we really set it private?
 						dimensionPerspective.setPrivate(true);
-						dimensionGroup.setPerspectiveID(dimensionPerspective.getPerspectiveID());
+						dimensionGroup.setPerspectiveID(dimensionPerspective
+								.getPerspectiveID());
 						dataDomain.getTable().registerDimensionPerspective(
 								dimensionPerspective);
-						currentDimensionPerspeciveID = dimensionPerspective.getPerspectiveID();
+						currentDimensionPerspeciveID = dimensionPerspective
+								.getPerspectiveID();
 					} else {
 						dimensionPerspective = dataDomain.getTable()
 								.getDimensionPerspective(dimensionPerspectiveID);
@@ -1011,10 +1030,10 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 						.activate(viewPart);
-//				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-//				.activate(viewPart);
-//				viewPart.setFocus();
-//				viewPart.getSWTComposite().setFocus();
+				// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				// .activate(viewPart);
+				// viewPart.setFocus();
+				// viewPart.getSWTComposite().setFocus();
 
 			}
 		});
@@ -1178,6 +1197,58 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		gl.glDeleteLists(displayListIndex, 1);
-		//TODO: delete layout managers
+		// TODO: delete layout managers
+	}
+
+	/**
+	 * Triggers group loading by opening the {@link ImportGroupingDialog}.
+	 * 
+	 * @param dataDomain
+	 *            The datadomain a grouping shall be loaded for.
+	 * @param idCategory
+	 *            Determines for which {@link IDCategory} the grouping should be
+	 *            loaded, i.e. whether rows or columns should be grouped.
+	 */
+	public void loadGrouping(final ATableBasedDataDomain dataDomain,
+			final IDCategory idCategory) {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				ImportGroupingDialog dialog = new ImportGroupingDialog(new Shell());
+				dialog.setRowIDCategory(idCategory);
+				int status = dialog.open();
+
+				if (status == Dialog.OK) {
+					GroupingParseSpecification groupingParseSpecification = dialog
+							.getGroupingParseSpecification();
+					DataSetDescription dataSetDescription = dataDomain
+							.getDataSetDescription();
+					if (dataDomain.getRecordIDCategory() == idCategory) {
+						if (dataDomain.isColumnDimension()) {
+							dataSetDescription
+									.addRowGroupingSpecification(groupingParseSpecification);
+						} else {
+							dataSetDescription
+									.addColumnGroupingSpecification(groupingParseSpecification);
+						}
+					} else {
+						if (dataDomain.isColumnDimension()) {
+							dataSetDescription
+									.addColumnGroupingSpecification(groupingParseSpecification);
+						} else {
+							dataSetDescription
+									.addRowGroupingSpecification(groupingParseSpecification);
+						}
+					}
+
+					DataLoader.loadGrouping(dataDomain, groupingParseSpecification);
+
+					// DataLoader.loadGroupings(dataDomain,
+					// groupingParseSpecification);
+					// What now?
+				}
+			}
+		});
 	}
 }

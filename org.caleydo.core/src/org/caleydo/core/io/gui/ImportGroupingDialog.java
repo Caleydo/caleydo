@@ -83,7 +83,7 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 	protected Table previewTable;
 
 	/**
-	 * The current row id category.
+	 * The row id category for which groupings should be loaded.
 	 */
 	protected IDCategory rowIDCategory;
 
@@ -336,9 +336,9 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		previewTable.setLayoutData(gridData);
 
 		previewTableManager = new PreviewTableManager(previewTable);
-		
+
 		createTableInfo(parentComposite);
-		
+
 		// Check if an external file name is given to the action
 		if (!inputFileName.isEmpty()) {
 			fileNameTextField.setText(inputFileName);

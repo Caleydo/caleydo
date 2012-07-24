@@ -39,6 +39,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -53,6 +54,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
+import org.caleydo.view.dvi.contextmenu.LoadGroupingItem;
 import org.caleydo.view.dvi.contextmenu.ShowViewWithoutDataItem;
 import org.caleydo.view.dvi.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.dvi.datacontainer.DataContainerListRenderer;
@@ -222,6 +224,16 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 				}
 
 			}
+
+			@Override
+			public void rightClicked(Pick pick) {
+				ContextMenuCreator contextMenuCreator = view.getContextMenuCreator();
+				contextMenuCreator.addContextMenuItem(new LoadGroupingItem(dataDomain,
+						dataDomain.getDimensionIDCategory()));
+				contextMenuCreator.addContextMenuItem(new LoadGroupingItem(dataDomain,
+						dataDomain.getRecordIDCategory()));
+			}
+
 		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 
 		// FIXME: Bad hack
@@ -527,7 +539,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 				if (dataDomain.hasDataContainer(recordPerspective.getPerspectiveID(),
 						dimensionPerspective.getPerspectiveID())) {
 					dataContainers.add(dataDomain.getDataContainer(
-							recordPerspective.getPerspectiveID(), dimensionPerspective.getPerspectiveID()));
+							recordPerspective.getPerspectiveID(),
+							dimensionPerspective.getPerspectiveID()));
 				}
 			}
 		}

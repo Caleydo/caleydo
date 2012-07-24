@@ -71,6 +71,7 @@ public class DataLoader {
 			GroupingParseSpecification groupingSpec) {
 		ArrayList<GroupingParseSpecification> groupingList = new ArrayList<GroupingParseSpecification>(
 				1);
+		groupingList.add(groupingSpec);
 		IDCategory category = IDCategory.getIDCategory(groupingSpec
 				.getRowIDSpecification().getIdCategory());
 
@@ -214,7 +215,7 @@ public class DataLoader {
 	 * 
 	 * @param dataSetDescription
 	 */
-	private static void loadGroupings(ATableBasedDataDomain dataDomain,
+	public static void loadGroupings(ATableBasedDataDomain dataDomain,
 			DataSetDescription dataSetDescription) {
 
 		ArrayList<GroupingParseSpecification> columnGroupingSpecifications = dataSetDescription
