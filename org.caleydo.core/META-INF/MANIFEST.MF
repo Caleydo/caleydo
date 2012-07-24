@@ -144,6 +144,7 @@ Export-Package:
    org.caleydo.core.data.collection.table,
    org.eclipse.swt.widgets,
    org.eclipse.jface.dialogs",
+ org.caleydo.core.io.gui.dataimport,
  org.caleydo.core.io.parser.ascii;uses:="org.caleydo.core.data.mapping,org.caleydo.core.gui,org.caleydo.core.data.datadomain",
  org.caleydo.core.io.parser.xml,
  org.caleydo.core.manager;

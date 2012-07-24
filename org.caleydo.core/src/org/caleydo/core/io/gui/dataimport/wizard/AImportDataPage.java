@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.core.io.gui;
+package org.caleydo.core.io.gui.dataimport.wizard;
 
 import org.caleydo.core.io.DataSetDescription;
 import org.eclipse.jface.dialogs.IPageChangedListener;

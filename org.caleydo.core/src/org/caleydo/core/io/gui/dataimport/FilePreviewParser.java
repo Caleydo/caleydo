@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.core.io.gui;
+package org.caleydo.core.io.gui.dataimport;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

@@ -5,7 +5,7 @@ package org.caleydo.view.dvi.contextmenu;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.io.gui.ImportGroupingDialog;
+import org.caleydo.core.io.gui.dataimport.ImportGroupingDialog;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.dvi.event.LoadGroupingEvent;
 

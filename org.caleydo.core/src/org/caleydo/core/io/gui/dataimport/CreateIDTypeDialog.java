@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.core.io.gui;
+package org.caleydo.core.io.gui.dataimport;
 
 import java.util.HashMap;
 import java.util.List;
@@ -100,7 +100,7 @@ public class CreateIDTypeDialog extends Dialog {
 	/**
 	 * @param parentShell
 	 */
-	protected CreateIDTypeDialog(Shell parentShell) {
+	public CreateIDTypeDialog(Shell parentShell) {
 		super(parentShell);
 	}
 
@@ -110,7 +110,7 @@ public class CreateIDTypeDialog extends Dialog {
 	 *            {@link IDCategory} the created {@link IDType} will be
 	 *            restricted to.
 	 */
-	protected CreateIDTypeDialog(Shell parentShell, IDCategory idCategory) {
+	public CreateIDTypeDialog(Shell parentShell, IDCategory idCategory) {
 		super(parentShell);
 		this.restrictingIDCategory = idCategory;
 	}

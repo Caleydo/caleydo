@@ -63,7 +63,7 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataLoader;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.GroupingParseSpecification;
-import org.caleydo.core.io.gui.ImportGroupingDialog;
+import org.caleydo.core.io.gui.dataimport.ImportGroupingDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;

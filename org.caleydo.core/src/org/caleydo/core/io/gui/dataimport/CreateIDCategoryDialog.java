@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.core.io.gui;
+package org.caleydo.core.io.gui.dataimport;
 
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
@@ -33,7 +33,7 @@ public class CreateIDCategoryDialog extends Dialog {
 	/**
 	 * @param parentShell
 	 */
-	protected CreateIDCategoryDialog(Shell parentShell) {
+	public CreateIDCategoryDialog(Shell parentShell) {
 		super(parentShell);
 	}
 

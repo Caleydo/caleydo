@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.core.io.gui;
+package org.caleydo.core.io.gui.dataimport;
 
 /**
  * Interface that defines common methods used when importing tabular data.

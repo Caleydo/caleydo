@@ -53,6 +53,10 @@ public class IDMappingManagerRegistry {
 		return instance;
 	}
 
+	public boolean hasIDMappingManager(IDCategory idCategory) {
+		return hashIDMappingManagers.containsKey(idCategory);
+	}
+
 	/**
 	 * Returns the {@link IDMappingManager} for the {@link IDCategory}
 	 * specified. If no such {@link IDMappingManager} exists, a new one is

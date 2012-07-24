@@ -1,19 +1,18 @@
 /**
  * 
  */
-package org.caleydo.core.io.gui;
+package org.caleydo.core.io.gui.dataimport;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
-import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.id.IDMappingManager;
-import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.util.collection.Pair;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -35,7 +34,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -470,74 +468,30 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 	}
 
 	private void determineRowIDType() {
-
-		ArrayList<IDCategory> idCategories = getAvailableIDCategories();
-
-		TableItem[] items = previewTable.getItems();
-		ArrayList<String> idList = new ArrayList<String>();
-		int rowIndex = 1;
-		while (rowIndex < items.length
-				&& rowIndex <= MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION) {
-			idList.add(items[rowIndex].getText(groupingParseSpecification
-					.getColumnOfRowIds() + 1));
-			rowIndex++;
+		List<String> idList = new ArrayList<String>();
+		for (int i = 0; i < dataMatrix.size()
+				&& i < MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION; i++) {
+			ArrayList<String> row = dataMatrix.get(i);
+			idList.add(row.get(groupingParseSpecification.getColumnOfRowIds()));
 		}
 
-		int maxCorrectElements = 0;
+		float maxProbability = 0;
 		IDType mostProbableIDType = null;
-
-		for (IDCategory idCategory : idCategories) {
-
-			ArrayList<IDType> alIDTypesTemp = idCategory.getIdTypes();
-			rowIDTypes = new ArrayList<IDType>(alIDTypesTemp.size());
-			for (IDType idType : alIDTypesTemp) {
-				if (!idType.isInternalType())
-					rowIDTypes.add(idType);
-			}
-
-			IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
-					.getIDMappingManager(idCategory);
-
-			for (IDType idType : rowIDTypes) {
-
-				int currentCorrectElements = 0;
-
-				for (String currentID : idList) {
-
-					if (idType.getColumnType().equals(EDataType.INT)) {
-						try {
-							Integer idInt = Integer.valueOf(currentID);
-							if (idMappingManager.doesElementExist(idType, idInt)) {
-								currentCorrectElements++;
-							}
-						} catch (NumberFormatException e) {
-						}
-					} else if (idType.getColumnType().equals(EDataType.STRING)) {
-						if (idMappingManager.doesElementExist(idType, currentID)) {
-							currentCorrectElements++;
-						} else if (idType.getTypeName().equals("REFSEQ_MRNA")) {
-							if (currentID.contains(".")) {
-								if (idMappingManager.doesElementExist(idType,
-										currentID.substring(0, currentID.indexOf(".")))) {
-									currentCorrectElements++;
-								}
-							}
-						}
-					}
-
-					if (currentCorrectElements >= idList.size()) {
-
-						setMostProbableRecordIDType(mostProbableIDType);
-
-						return;
-					}
-					if (currentCorrectElements >= maxCorrectElements) {
-						maxCorrectElements = currentCorrectElements;
-						mostProbableIDType = idType;
-					}
+		for (IDCategory idCategory : getAvailableIDCategories()) {
+			List<Pair<Float, IDType>> probabilityList = idCategory
+					.getListOfIDTypeAffiliationProbabilities(idList, false);
+			if (probabilityList.size() > 0) {
+				Pair<Float, IDType> pair = probabilityList.get(0);
+				if (pair.getFirst() > maxProbability) {
+					maxProbability = pair.getFirst();
+					mostProbableIDType = pair.getSecond();
 				}
 			}
 		}
+
+		if (maxProbability < 0.0001f)
+			mostProbableIDType = null;
+
 		setMostProbableRecordIDType(mostProbableIDType);
 	}
 

@@ -1,13 +1,14 @@
 /**
  * 
  */
-package org.caleydo.core.io.gui;
+package org.caleydo.core.io.gui.dataimport.wizard;
 
 import java.util.ArrayList;
 
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.GroupingParseSpecification;
+import org.caleydo.core.io.gui.dataimport.ImportGroupingDialog;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.core.io.gui;
+package org.caleydo.core.io.gui.dataimport.wizard;
 
 import org.caleydo.core.io.DataSetDescription;
 import org.eclipse.swt.SWT;
@@ -79,7 +79,7 @@ public class TransformDataPage extends AImportDataPage {
 		gridData.widthHint = 200;
 		transpositionExplanationLabel.setLayoutData(gridData);
 		buttonSwapRowsWithColumns = new Button(dataTranspositionGroup, SWT.CHECK);
-		buttonSwapRowsWithColumns.setText("Swap rows and columns");
+		buttonSwapRowsWithColumns.setText("Swap Rows and Columns");
 		buttonSwapRowsWithColumns.setEnabled(true);
 		buttonSwapRowsWithColumns.setSelection(false);
 	}

@@ -1,20 +1,25 @@
 /**
  * 
  */
-package org.caleydo.core.io.gui;
+package org.caleydo.core.io.gui.dataimport.wizard;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
-import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.id.IDMappingManager;
-import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.io.gui.dataimport.CreateIDCategoryDialog;
+import org.caleydo.core.io.gui.dataimport.CreateIDTypeDialog;
+import org.caleydo.core.io.gui.dataimport.DelimiterRadioGroup;
+import org.caleydo.core.io.gui.dataimport.FilePreviewParser;
+import org.caleydo.core.io.gui.dataimport.ITabularDataImporter;
+import org.caleydo.core.io.gui.dataimport.PreviewTableManager;
+import org.caleydo.core.util.collection.Pair;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
@@ -36,8 +41,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -269,8 +272,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 		// Delimiters
 
 		DelimiterRadioGroup delimiterRadioGroup = new DelimiterRadioGroup();
-		delimiterRadioGroup.create(parentComposite, dataSetDescription,
-				this);
+		delimiterRadioGroup.create(parentComposite, dataSetDescription, this);
 
 		previewTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER
 				| SWT.FULL_SELECTION);
@@ -303,7 +305,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 	private void createRowConfigPart(Composite parent) {
 
 		Group rowConfigGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		rowConfigGroup.setText("Row configuration");
+		rowConfigGroup.setText("Row Configuration");
 		rowConfigGroup.setLayout(new GridLayout(2, false));
 		rowConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
@@ -311,11 +313,11 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 		leftConfigGroupPart.setLayout(new GridLayout(2, false));
 		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		createIDCategoryGroup(leftConfigGroupPart, "Row ID category", false);
+		createIDCategoryGroup(leftConfigGroupPart, "Row ID Class", false);
 		createIDTypeGroup(leftConfigGroupPart, false);
 
 		Label startParseAtLineLabel = new Label(leftConfigGroupPart, SWT.NONE);
-		startParseAtLineLabel.setText("Number of header rows");
+		startParseAtLineLabel.setText("Number of Header Rows");
 
 		numHeaderRowsSpinner = new Spinner(leftConfigGroupPart, SWT.BORDER);
 		numHeaderRowsSpinner.setMinimum(1);
@@ -349,7 +351,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 		});
 
 		Label columnOfRowIDlabel = new Label(leftConfigGroupPart, SWT.NONE);
-		columnOfRowIDlabel.setText("Column with row IDs");
+		columnOfRowIDlabel.setText("Column with Row IDs");
 		// columnOfRowIDGroup.setLayout(new GridLayout(1, false));
 
 		columnOfRowIDSpinner = new Spinner(leftConfigGroupPart, SWT.BORDER);
@@ -427,7 +429,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 	private void createColumnConfigPart(Composite parent) {
 
 		Group columnConfigGroup = new Group(parent, SWT.NONE);
-		columnConfigGroup.setText("Column configuration");
+		columnConfigGroup.setText("Column Configuration");
 		columnConfigGroup.setLayout(new GridLayout(2, false));
 		columnConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
@@ -435,11 +437,11 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 		leftConfigGroupPart.setLayout(new GridLayout(2, false));
 		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		createIDCategoryGroup(leftConfigGroupPart, "Column ID category", true);
+		createIDCategoryGroup(leftConfigGroupPart, "Column ID Class", true);
 		createIDTypeGroup(leftConfigGroupPart, true);
 
 		Label rowOfColumnIDLabel = new Label(leftConfigGroupPart, SWT.NONE);
-		rowOfColumnIDLabel.setText("Row with column IDs");
+		rowOfColumnIDLabel.setText("Row with Column IDs");
 
 		rowOfColumnIDSpinner = new Spinner(leftConfigGroupPart, SWT.BORDER);
 		rowOfColumnIDSpinner.setMinimum(1);
@@ -479,12 +481,12 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 	private void createFileSelectionPart(Composite parent) {
 
 		Group inputFileGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		inputFileGroup.setText("Input file");
+		inputFileGroup.setText("Input File");
 		inputFileGroup.setLayout(new GridLayout(2, false));
 		inputFileGroup.setLayoutData(new GridData(SWT.BEGINNING));
 
 		Button buttonFileChooser = new Button(inputFileGroup, SWT.PUSH);
-		buttonFileChooser.setText("Choose data file...");
+		buttonFileChooser.setText("Choose Data File...");
 		// buttonFileChooser.setLayoutData(new
 		// GridData(GridData.FILL_HORIZONTAL));
 
@@ -524,7 +526,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 
 	private void createDataSetNamePart(Composite parent) {
 		Group dataSetLabelGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		dataSetLabelGroup.setText("Dataset name");
+		dataSetLabelGroup.setText("Dataset Name");
 		dataSetLabelGroup.setLayout(new GridLayout(1, false));
 		dataSetLabelGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
@@ -535,7 +537,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 
 	private void createIDTypeGroup(Composite parent, boolean isColumnIDTypeGroup) {
 		Label idTypeLabel = new Label(parent, SWT.SHADOW_ETCHED_IN);
-		idTypeLabel.setText(isColumnIDTypeGroup ? "Column ID type" : "Row ID type");
+		idTypeLabel.setText(isColumnIDTypeGroup ? "Column ID Type" : "Row ID Type");
 		// idTypeLabel.setLayout(new RowLayout());
 		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
 		Combo idCombo = new Combo(parent, SWT.DROP_DOWN);
@@ -582,7 +584,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 				selectionIndex = idTypeCombo.indexOf(previousSelection);
 			}
 			if (selectionIndex == -1) {
-				idTypeCombo.setText("<Please select>");
+				idTypeCombo.setText("<Please Select>");
 				idTypeCombo.clearSelection();
 			} else {
 				idTypeCombo.setText(idTypeCombo.getItem(selectionIndex));
@@ -605,7 +607,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 		previewTableManager.createDataPreviewTableFromDataMatrix(dataMatrix,
 				MAX_PREVIEW_TABLE_COLUMNS);
 		selectedColumnButtons = previewTableManager.getSelectedColumnButtons();
-		determineRowIDType();
+		determineIDTypes();
 		previewTableManager.updateTableColors(
 				dataSetDescription.getNumberOfHeaderLines(),
 				dataSetDescription.getRowOfColumnIDs() + 1,
@@ -615,75 +617,47 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 		parentComposite.pack();
 	}
 
-	private void determineRowIDType() {
+	private void determineIDTypes() {
 
-		ArrayList<IDCategory> idCategories = getAvailableIDCategories();
-
-		TableItem[] items = previewTable.getItems();
-		ArrayList<String> idList = new ArrayList<String>();
-		int rowIndex = 1;
-		while (rowIndex < items.length
-				&& rowIndex <= MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION) {
-			idList.add(items[rowIndex].getText(dataSetDescription.getColumnOfRowIds() + 1));
-			rowIndex++;
+		List<String> rowIDList = new ArrayList<String>();
+		for (int i = 0; i < dataMatrix.size()
+				&& i < MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION; i++) {
+			ArrayList<String> row = dataMatrix.get(i);
+			rowIDList.add(row.get(dataSetDescription.getColumnOfRowIds()));
 		}
 
-		int maxCorrectElements = 0;
+		List<String> columnIDList = new ArrayList<String>();
+		ArrayList<String> idRow = dataMatrix.get(dataSetDescription.getRowOfColumnIDs());
+		for (int i = 0; i < idRow.size()
+				&& i < MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION; i++) {
+			columnIDList.add(idRow.get(i));
+		}
+
+		IDType mostProbableRowIDType = determineMostProbableIDType(rowIDList);
+		IDType mostProbableColumnIDType = determineMostProbableIDType(columnIDList);
+
+		setMostProbableIDTypes(mostProbableRowIDType, mostProbableColumnIDType);
+	}
+
+	private IDType determineMostProbableIDType(List<String> idList) {
+		float maxProbability = 0;
 		IDType mostProbableIDType = null;
-
-		for (IDCategory idCategory : idCategories) {
-
-			ArrayList<IDType> alIDTypesTemp = idCategory.getIdTypes();
-			rowIDTypes = new ArrayList<IDType>(alIDTypesTemp.size());
-			for (IDType idType : alIDTypesTemp) {
-				if (!idType.isInternalType())
-					rowIDTypes.add(idType);
-			}
-
-			IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
-					.getIDMappingManager(idCategory);
-
-			for (IDType idType : rowIDTypes) {
-
-				int currentCorrectElements = 0;
-
-				for (String currentID : idList) {
-
-					if (idType.getColumnType().equals(EDataType.INT)) {
-						try {
-							Integer idInt = Integer.valueOf(currentID);
-							if (idMappingManager.doesElementExist(idType, idInt)) {
-								currentCorrectElements++;
-							}
-						} catch (NumberFormatException e) {
-						}
-					} else if (idType.getColumnType().equals(EDataType.STRING)) {
-						if (idMappingManager.doesElementExist(idType, currentID)) {
-							currentCorrectElements++;
-						} else if (idType.getTypeName().equals("REFSEQ_MRNA")) {
-							if (currentID.contains(".")) {
-								if (idMappingManager.doesElementExist(idType,
-										currentID.substring(0, currentID.indexOf(".")))) {
-									currentCorrectElements++;
-								}
-							}
-						}
-					}
-
-					if (currentCorrectElements >= idList.size()) {
-
-						setMostProbableRecordIDType(mostProbableIDType);
-
-						return;
-					}
-					if (currentCorrectElements >= maxCorrectElements) {
-						maxCorrectElements = currentCorrectElements;
-						mostProbableIDType = idType;
-					}
+		for (IDCategory idCategory : getAvailableIDCategories()) {
+			List<Pair<Float, IDType>> probabilityList = idCategory
+					.getListOfIDTypeAffiliationProbabilities(idList, false);
+			if (probabilityList.size() > 0) {
+				Pair<Float, IDType> pair = probabilityList.get(0);
+				if (pair.getFirst() > maxProbability) {
+					maxProbability = pair.getFirst();
+					mostProbableIDType = pair.getSecond();
 				}
 			}
 		}
-		setMostProbableRecordIDType(mostProbableIDType);
+
+		if (maxProbability < 0.0001f)
+			mostProbableIDType = null;
+
+		return mostProbableIDType;
 	}
 
 	/**
@@ -717,7 +691,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 								showAllColumns ? totalNumberOfColumns
 										: MAX_PREVIEW_TABLE_COLUMNS);
 				selectedColumnButtons = previewTableManager.getSelectedColumnButtons();
-				determineRowIDType();
+				determineIDTypes();
 				previewTableManager.updateTableColors(
 						dataSetDescription.getNumberOfHeaderLines(),
 						dataSetDescription.getRowOfColumnIDs() + 1,
@@ -729,13 +703,13 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 		});
 
 		Label showAllColumnsLabel = new Label(tableInfoComposite, SWT.NONE);
-		showAllColumnsLabel.setText("Show all columns");
+		showAllColumnsLabel.setText("Show all Columns");
 	}
 
 	private String determineDataSetLabel() {
 
 		if (inputFileName == null || inputFileName.isEmpty())
-			return "<Insert data set name>";
+			return "<Insert Dataset Name>";
 
 		return inputFileName.substring(inputFileName.lastIndexOf(File.separator) + 1,
 				inputFileName.lastIndexOf("."));
@@ -749,7 +723,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 		recordIDCategoryGroup.setLayoutData(new GridData(SWT.LEFT));
 		Combo idCategoryCombo = new Combo(parent, SWT.DROP_DOWN);
 		idCategoryCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		idCategoryCombo.setText("<Please select>");
+		idCategoryCombo.setText("<Please Select>");
 
 		if (isColumnCategory) {
 			columnIDCategoryCombo = idCategoryCombo;
@@ -797,7 +771,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 			selectionIndex = idCategoryCombo.indexOf(previousSelection);
 		}
 		if (selectionIndex == -1) {
-			idCategoryCombo.setText("<Please select>");
+			idCategoryCombo.setText("<Please Select>");
 			idCategoryCombo.clearSelection();
 		} else {
 			idCategoryCombo.setText(idCategoryCombo.getItem(selectionIndex));
@@ -813,7 +787,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 		// GridData(GridData.FILL_HORIZONTAL));
 
 		buttonHomogeneous = new Button(parent, SWT.CHECK);
-		buttonHomogeneous.setText("Columns use same scale");
+		buttonHomogeneous.setText("Columns use same Scale");
 		buttonHomogeneous.setEnabled(true);
 		buttonHomogeneous.setSelection(true);
 	}
@@ -946,42 +920,52 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 		this.dataSetDescription = dataSetDescripton;
 	}
 
-	protected void setMostProbableRecordIDType(IDType mostProbableRecordIDType) {
+	protected void setMostProbableIDTypes(IDType mostProbableRowIDType,
+			IDType mostProbableColumnIDType) {
 
-		if (mostProbableRecordIDType == null) {
-			rowIDTypes.clear();
-			if (rowIDCategory != null)
-				rowIDTypes = new ArrayList<IDType>(rowIDCategory.getIdTypes());
-			rowIDCombo.clearSelection();
-			rowIDCombo.setText("<Please select>");
+		if (mostProbableRowIDType != null
+				&& mostProbableColumnIDType == null
+				&& mostProbableRowIDType.getIDCategory() == IDCategory
+						.getIDCategory("GENE")) {
+			mostProbableColumnIDType = IDType.getIDType("SAMPLE");
+		}
+
+		if (mostProbableColumnIDType != null
+				&& mostProbableRowIDType == null
+				&& mostProbableColumnIDType.getIDCategory() == IDCategory
+						.getIDCategory("GENE")) {
+			mostProbableRowIDType = IDType.getIDType("SAMPLE");
+		}
+
+		setMostProbableIDType(mostProbableRowIDType, rowIDCategoryCombo, rowIDCombo,
+				rowIDTypes, false);
+		setMostProbableIDType(mostProbableColumnIDType, columnIDCategoryCombo,
+				columnIDCombo, columnIDTypes, true);
+	}
+
+	private void setMostProbableIDType(IDType mostProbableIDType, Combo idCategoryCombo,
+			Combo idTypeCombo, ArrayList<IDType> idTypes, boolean isColumnIDType) {
+		IDCategory idCategory;
+
+		if (isColumnIDType) {
+			idCategory = columnIDCategory;
 		} else {
-			for (int itemIndex = 0; itemIndex < registeredIDCategories.size(); itemIndex++) {
-				if (registeredIDCategories.get(itemIndex) == mostProbableRecordIDType
-						.getIDCategory()) {
-					rowIDCategoryCombo.select(itemIndex);
-					rowIDCategory = mostProbableRecordIDType.getIDCategory();
+			idCategory = rowIDCategory;
+		}
 
-					// If a genetic ID type is detected for the rows,
-					// then SAMPLE is chosen for the columns
-					if (rowIDCategory == IDCategory.getIDCategory("GENE")) {
-						columnIDCategory = IDCategory.getIDCategory("SAMPLE");
-						columnIDCategoryCombo.select(registeredIDCategories
-								.indexOf(columnIDCategory));
-
-						updateIDTypeCombo(columnIDCategory, columnIDTypes, columnIDCombo);
-
-						columnIDCombo.select(columnIDTypes.indexOf(IDType
-								.getIDType("SAMPLE")));
-					}
-					break;
-				}
-			}
-
-			updateIDTypeCombo(rowIDCategory, rowIDTypes, rowIDCombo);
-			rowIDCombo.select(rowIDTypes.indexOf(mostProbableRecordIDType));
-
-			TableColumn idColumn = previewTable.getColumn(1);
-			idColumn.setText(mostProbableRecordIDType.getTypeName());
+		if (mostProbableIDType != null) {
+			int index = registeredIDCategories
+					.indexOf(mostProbableIDType.getIDCategory());
+			idCategoryCombo.select(index);
+			idCategory = mostProbableIDType.getIDCategory();
+			updateIDTypeCombo(idCategory, idTypes, idTypeCombo);
+			idTypeCombo.select(idTypes.indexOf(mostProbableIDType));
+		} else {
+			idTypes.clear();
+			if (idCategory != null)
+				idTypes = new ArrayList<IDType>(idCategory.getIdTypes());
+			idTypeCombo.clearSelection();
+			idTypeCombo.setText("<Please Select>");
 		}
 	}
 
@@ -993,31 +977,24 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 		columnOfRowIDSpinner.setMaximum(totalNumberOfColumns);
 		rowOfColumnIDSpinner.setMaximum(totalNumberOfRows);
 		numHeaderRowsSpinner.setMaximum(totalNumberOfRows);
-		// showAllColumnsButton.setSelection(false);
 		showAllColumnsButton.setEnabled(true);
 		tableInfoLabel.setText((previewTable.getColumnCount() - 1) + " of "
-				+ totalNumberOfColumns + " columns shown");
+				+ totalNumberOfColumns + " Columns shown");
 	}
 
 	@Override
 	public boolean isPageComplete() {
 		if (fileNameTextField.getText().isEmpty()) {
-			// MessageDialog.openError(new Shell(), "Invalid filename",
-			// "Please specify a file to load");
 			((DataImportWizard) getWizard()).setRequiredDataSpecified(false);
 			return false;
 		}
 
 		if (rowIDCombo.getSelectionIndex() == -1) {
-			// MessageDialog.openError(new Shell(), "Invalid row ID type",
-			// "Please select the ID type of the rows");
 			((DataImportWizard) getWizard()).setRequiredDataSpecified(false);
 			return false;
 		}
 
 		if (columnIDCombo.getSelectionIndex() == -1) {
-			// MessageDialog.openError(new Shell(), "Invalid column ID type",
-			// "Please select the ID type of the columns");
 			((DataImportWizard) getWizard()).setRequiredDataSpecified(false);
 			return false;
 		}
@@ -1026,27 +1003,12 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 		return super.isPageComplete();
 	}
 
-	// @Override
-	// public boolean canFlipToNextPage() {
-	//
-	//
-	//
-	// return super.canFlipToNextPage();
-	// }
-
 	@Override
 	public IWizardPage getNextPage() {
 
 		return super.getNextPage();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.swt.widgets.Listener#handleEvent(org.eclipse.swt.widgets.
-	 * Event)
-	 */
 	@Override
 	public void handleEvent(Event event) {
 		if (getWizard().getContainer().getCurrentPage() != null)

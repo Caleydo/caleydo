@@ -21,10 +21,13 @@ package org.caleydo.core.id;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
@@ -355,5 +358,62 @@ public class IDCategory {
 		if (denomination == null) {
 			setDenomination(categoryName.toLowerCase());
 		}
+	}
+
+	/**
+	 * Calculates the probability of the specified id list to belong to every
+	 * {@link IDType} of this category.
+	 * 
+	 * @param idList
+	 *            List of IDs the probabilities should be calculated for.
+	 * @param checkInternalIDTypes
+	 *            Determines whether also internal id types should be
+	 *            considered.
+	 * @return List of {@link Pair}s specifying the probability of the specified
+	 *         id list to belong to the IDtypes of this category. The list is
+	 *         decsendingly ordered according to the probability.
+	 */
+	public List<Pair<Float, IDType>> getListOfIDTypeAffiliationProbabilities(
+			List<String> idList, boolean checkInternalIDTypes) {
+
+		List<Pair<Float, IDType>> probabilityList = new ArrayList<Pair<Float, IDType>>(
+				idTypes.size());
+
+		boolean mappingManagerExists = IDMappingManagerRegistry.get()
+				.hasIDMappingManager(this);
+
+		for (IDType idType : idTypes) {
+			if (idType.isInternalType() && !checkInternalIDTypes)
+				continue;
+
+			if (mappingManagerExists) {
+				float affiliationProbability = idType
+						.calcProbabilityOfIDTypeAffiliation(idList);
+				probabilityList.add(new Pair<Float, IDType>(affiliationProbability,
+						idType));
+			} else {
+				// FIXME: This is a rather hacky solution for TCGA SAMPLES
+				if (idType.getTypeName().equals("TCGA_SAMPLE")) {
+					int numMatchedIDs = 0;
+					for (String currentID : idList) {
+						if (currentID.toUpperCase().contains("TCGA")) {
+							numMatchedIDs++;
+						}
+					}
+					float affiliationProbability = (float) numMatchedIDs
+							/ (float) idList.size();
+					probabilityList.add(new Pair<Float, IDType>(affiliationProbability,
+							idType));
+				} else {
+					probabilityList.add(new Pair<Float, IDType>(0.0f, idType));
+				}
+			}
+
+		}
+
+		Collections.sort(probabilityList);
+		Collections.reverse(probabilityList);
+
+		return probabilityList;
 	}
 }

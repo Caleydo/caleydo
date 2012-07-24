@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.core.io.gui;
+package org.caleydo.core.io.gui.dataimport.wizard;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

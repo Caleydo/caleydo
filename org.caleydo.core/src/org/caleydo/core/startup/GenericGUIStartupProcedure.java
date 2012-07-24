@@ -21,7 +21,7 @@ package org.caleydo.core.startup;
 
 import java.util.List;
 
-import org.caleydo.core.io.gui.DataImportWizard;
+import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.system.FileOperations;

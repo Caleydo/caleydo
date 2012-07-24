@@ -20,6 +20,7 @@
 package org.caleydo.core.io.gui;
 
 import org.caleydo.core.gui.toolbar.action.AToolBarAction;
+import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.startup.StartupProcessor;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.resource.ImageDescriptor;

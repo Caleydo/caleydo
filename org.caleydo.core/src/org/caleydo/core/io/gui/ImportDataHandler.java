@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui;
 
+import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.startup.StartupProcessor;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;

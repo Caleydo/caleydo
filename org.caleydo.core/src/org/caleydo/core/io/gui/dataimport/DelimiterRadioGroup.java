@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.core.io.gui;
+package org.caleydo.core.io.gui.dataimport;
 
 import org.caleydo.core.io.MatrixDefinition;
 import org.eclipse.swt.SWT;
@@ -32,8 +32,7 @@ public class DelimiterRadioGroup {
 	public DelimiterRadioGroup() {
 	}
 
-	protected void create(Composite parent,
-			final MatrixDefinition matrixDefinition,
+	public void create(Composite parent, final MatrixDefinition matrixDefinition,
 			final ITabularDataImporter dataImporter) {
 		Group delimiterGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		delimiterGroup.setText("Separated by (delimiter)");

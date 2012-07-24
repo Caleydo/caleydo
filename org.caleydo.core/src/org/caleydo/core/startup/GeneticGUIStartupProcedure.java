@@ -23,7 +23,7 @@ import java.io.File;
 import java.util.List;
 
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.gui.DataImportWizard;
+import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.collection.Pair;

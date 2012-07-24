@@ -6,7 +6,7 @@ package org.caleydo.view.dvi.event;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.io.gui.ImportGroupingDialog;
+import org.caleydo.core.io.gui.dataimport.ImportGroupingDialog;
 
 /**
  * Event for triggering the {@link ImportGroupingDialog}.

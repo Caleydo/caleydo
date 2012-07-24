@@ -20,6 +20,7 @@
 package org.caleydo.core.id;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -245,6 +246,52 @@ public class IDType {
 	@Override
 	public String toString() {
 		return typeName;
+	}
+
+	/**
+	 * Calculates the probability of the specified list of ids to belong to this
+	 * IDType.
+	 * 
+	 * @param idList
+	 * @return Probability of affiliation as value from 0 to 1. 0 means that
+	 *         none of the specified ids matched this IDType, wheras 1 means
+	 *         that all matched this IDType.
+	 */
+	public float calcProbabilityOfIDTypeAffiliation(List<String> idList) {
+
+		if (idList == null || idList.isEmpty())
+			return 0;
+
+		IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
+				.getIDMappingManager(idCategory);
+
+		int numMatchedIDs = 0;
+
+		for (String currentID : idList) {
+
+			if (getColumnType().equals(EDataType.INT)) {
+				try {
+					Integer idInt = Integer.valueOf(currentID);
+					if (idMappingManager.doesElementExist(this, idInt)) {
+						numMatchedIDs++;
+					}
+				} catch (NumberFormatException e) {
+				}
+			} else if (getColumnType().equals(EDataType.STRING)) {
+				if (idMappingManager.doesElementExist(this, currentID)) {
+					numMatchedIDs++;
+				} else if (getTypeName().equals("REFSEQ_MRNA")) {
+					if (currentID.contains(".")) {
+						if (idMappingManager.doesElementExist(this,
+								currentID.substring(0, currentID.indexOf(".")))) {
+							numMatchedIDs++;
+						}
+					}
+				}
+			}
+		}
+
+		return (float) numMatchedIDs / (float) idList.size();
 	}
 
 }
