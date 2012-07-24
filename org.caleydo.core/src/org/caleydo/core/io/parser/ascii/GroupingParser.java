@@ -160,7 +160,7 @@ public class GroupingParser extends ATextParser {
 				String originalID = columns[groupingSpecifications.getColumnOfRowIds()];
 
 				originalID = convertID(originalID,
-						idSpecification.getIdTypeParsingRules());
+						sourceIDType.getIdTypeParsingRules());
 
 				Integer mappedID = idMappingManager.getID(sourceIDType, targetIDType,
 						originalID);

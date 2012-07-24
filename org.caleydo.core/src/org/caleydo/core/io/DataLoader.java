@@ -47,9 +47,11 @@ import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
 public class DataLoader {
 
 	/**
-	 * Initializes the {@link IDType}s and {@link IDCategory}s associated with
-	 * this dataset, loads the dataset, groupings and does the processing of the
-	 * data as defined in the {@link DataSetDescription}
+	 * Creates a {@link ATableBasedDataDomain} and loads the dataset and
+	 * groupings into it. Also does the processing of the data.
+	 * 
+	 * @param dataSetDescription
+	 *            The information for how to create everything
 	 */
 	public static ATableBasedDataDomain loadData(DataSetDescription dataSetDescription)
 			throws FileNotFoundException, IOException {
@@ -139,74 +141,6 @@ public class DataLoader {
 				createDefaultRecordPerspective);
 		return dataDomain;
 
-	}
-
-	private static void runDataProcessing(ATableBasedDataDomain dataDomain,
-			DataSetDescription dataSetDescription) {
-		DataProcessingDescription dataProcessingDescription = dataSetDescription
-				.getDataProcessingDescription();
-		if (dataProcessingDescription == null)
-			return;
-
-		ArrayList<AClusterConfiguration> rowClusterConfigurations = dataProcessingDescription
-				.getRowClusterConfigurations();
-		if (rowClusterConfigurations != null) {
-			for (AClusterConfiguration clusterConfiguration : rowClusterConfigurations) {
-				if (dataSetDescription.isTransposeMatrix()) {
-					setUpDimensionClustering(clusterConfiguration, dataDomain);
-				} else {
-					setUpRecordClustering(clusterConfiguration, dataDomain);
-				}
-				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
-						.getDefaultDimensionPerspective());
-				clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable()
-						.getDefaultRecordPerspective());
-
-				dataDomain.startClustering(clusterConfiguration);
-			}
-
-		}
-
-		ArrayList<AClusterConfiguration> columnClusterConfigurations = dataProcessingDescription
-				.getColumnClusterConfigurations();
-		if (columnClusterConfigurations != null) {
-			for (AClusterConfiguration clusterConfiguration : columnClusterConfigurations) {
-				if (!dataSetDescription.isTransposeMatrix()) {
-					setUpDimensionClustering(clusterConfiguration, dataDomain);
-				} else {
-					setUpRecordClustering(clusterConfiguration, dataDomain);
-				}
-				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
-						.getDefaultDimensionPerspective());
-				clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable()
-						.getDefaultRecordPerspective());
-
-				dataDomain.startClustering(clusterConfiguration);
-			}
-
-		}
-
-	}
-
-	private static void setUpRecordClustering(AClusterConfiguration clusterConfiguration,
-			ATableBasedDataDomain dataDomain) {
-		clusterConfiguration.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
-		RecordPerspective targetRecordPerspective = new RecordPerspective(dataDomain);
-		dataDomain.getTable().registerRecordPerspective(targetRecordPerspective);
-		targetRecordPerspective.setLabel(clusterConfiguration.toString(), false);
-		clusterConfiguration.setOptionalTargetRecordPerspective(targetRecordPerspective);
-	}
-
-	private static void setUpDimensionClustering(
-			AClusterConfiguration clusterConfiguration, ATableBasedDataDomain dataDomain) {
-		clusterConfiguration.setClusterTarget(EClustererTarget.DIMENSION_CLUSTERING);
-		DimensionPerspective targetDimensionPerspective = new DimensionPerspective(
-				dataDomain);
-		dataDomain.getTable().registerDimensionPerspective(targetDimensionPerspective);
-
-		targetDimensionPerspective.setLabel(clusterConfiguration.toString(), false);
-		clusterConfiguration
-				.setOptionalTargetDimensionPerspective(targetDimensionPerspective);
 	}
 
 	/**
@@ -303,6 +237,74 @@ public class DataLoader {
 			perspectiveDatas.addAll(parser.parseGrouping(targetIDType));
 		}
 		return perspectiveDatas;
+	}
+
+	private static void runDataProcessing(ATableBasedDataDomain dataDomain,
+			DataSetDescription dataSetDescription) {
+		DataProcessingDescription dataProcessingDescription = dataSetDescription
+				.getDataProcessingDescription();
+		if (dataProcessingDescription == null)
+			return;
+
+		ArrayList<AClusterConfiguration> rowClusterConfigurations = dataProcessingDescription
+				.getRowClusterConfigurations();
+		if (rowClusterConfigurations != null) {
+			for (AClusterConfiguration clusterConfiguration : rowClusterConfigurations) {
+				if (dataSetDescription.isTransposeMatrix()) {
+					setUpDimensionClustering(clusterConfiguration, dataDomain);
+				} else {
+					setUpRecordClustering(clusterConfiguration, dataDomain);
+				}
+				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
+						.getDefaultDimensionPerspective());
+				clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable()
+						.getDefaultRecordPerspective());
+
+				dataDomain.startClustering(clusterConfiguration);
+			}
+
+		}
+
+		ArrayList<AClusterConfiguration> columnClusterConfigurations = dataProcessingDescription
+				.getColumnClusterConfigurations();
+		if (columnClusterConfigurations != null) {
+			for (AClusterConfiguration clusterConfiguration : columnClusterConfigurations) {
+				if (!dataSetDescription.isTransposeMatrix()) {
+					setUpDimensionClustering(clusterConfiguration, dataDomain);
+				} else {
+					setUpRecordClustering(clusterConfiguration, dataDomain);
+				}
+				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
+						.getDefaultDimensionPerspective());
+				clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable()
+						.getDefaultRecordPerspective());
+
+				dataDomain.startClustering(clusterConfiguration);
+			}
+
+		}
+
+	}
+
+	private static void setUpRecordClustering(AClusterConfiguration clusterConfiguration,
+			ATableBasedDataDomain dataDomain) {
+		clusterConfiguration.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
+		RecordPerspective targetRecordPerspective = new RecordPerspective(dataDomain);
+		dataDomain.getTable().registerRecordPerspective(targetRecordPerspective);
+		targetRecordPerspective.setLabel(clusterConfiguration.toString(), false);
+		clusterConfiguration.setOptionalTargetRecordPerspective(targetRecordPerspective);
+	}
+
+	private static void setUpDimensionClustering(
+			AClusterConfiguration clusterConfiguration, ATableBasedDataDomain dataDomain) {
+		clusterConfiguration.setClusterTarget(EClustererTarget.DIMENSION_CLUSTERING);
+		DimensionPerspective targetDimensionPerspective = new DimensionPerspective(
+				dataDomain);
+		dataDomain.getTable().registerDimensionPerspective(targetDimensionPerspective);
+
+		targetDimensionPerspective.setLabel(clusterConfiguration.toString(), false);
+		clusterConfiguration
+				.setOptionalTargetDimensionPerspective(targetDimensionPerspective);
 	}
 
 }
