@@ -40,6 +40,15 @@ import com.jogamp.opengl.util.texture.TextureCoords;
 import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
 
+/**
+ * 
+ * TODO: needs to take care of tiled textures in both directions
+ * 
+ * @author Marc Streit
+ * @author Alexander Lex
+ *
+ */
+
 public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
 	private final static int MAX_SAMPLES_PER_TEXTURE = 2000;
@@ -184,6 +193,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 				lookupValue = heatMap.getDataDomain().getTable()
 						.getFloat(dataRepresentation, recordID, dimensionID);
 
+			
 				float[] mappingColor = colorMapper.getColor(lookupValue);
 
 				float[] rgba = { mappingColor[0], mappingColor[1], mappingColor[2],

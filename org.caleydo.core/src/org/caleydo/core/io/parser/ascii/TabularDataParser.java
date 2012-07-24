@@ -130,20 +130,19 @@ public class TabularDataParser extends ATextParser {
 
 		// prepare for id setting of column IDs
 		IDMappingManager columnIDMappingManager;
-		IDType columnIDType;
-		IDType hrColumnIDType;
+		IDType targetColumnIDType;
+		IDType sourceColumnIDType = IDType.getIDType(dataSetDescription
+				.getColumnIDSpecification().getIdType());
 		if (!dataDomain.getDataSetDescription().isTransposeMatrix()) {
 			columnIDMappingManager = dataDomain.getDimensionIDMappingManager();
-			columnIDType = dataDomain.getDimensionIDType();
-			hrColumnIDType = columnIDType.getIDCategory().getHumanReadableIDType();
+			targetColumnIDType = dataDomain.getDimensionIDType();
 		} else {
 			columnIDMappingManager = dataDomain.getRecordIDMappingManager();
-			columnIDType = dataDomain.getRecordIDType();
-			hrColumnIDType = columnIDType.getIDCategory().getHumanReadableIDType();
+			targetColumnIDType = dataDomain.getRecordIDType();
 		}
 
-		MappingType mappingType = columnIDMappingManager.createMap(columnIDType,
-				hrColumnIDType, false, true);
+		MappingType mappingType = columnIDMappingManager.createMap(targetColumnIDType,
+				sourceColumnIDType, false, true);
 		// Map<Integer, String> columnIDMap =
 		// columnIDMappingManager.getMap(mappingType);
 
@@ -185,8 +184,7 @@ public class TabularDataParser extends ATextParser {
 
 			if (headers != null) {
 				String idString = headers[parsingDetail.getColumn()];
-				idString = convertID(idString, dataSetDescription
-						.getColumnIDSpecification().getIdTypeParsingRules());
+				idString = convertID(idString, sourceColumnIDType.getIdTypeParsingRules());
 				columnIDMappingManager.addMapping(mappingType, columnID, idString);
 			} else {
 				columnIDMappingManager.addMapping(mappingType, columnID, "Column "
@@ -239,11 +237,11 @@ public class TabularDataParser extends ATextParser {
 		MappingType mappingType = rowIDMappingManager.createMap(fromIDType, toIDType,
 				false, true);
 
-		IDTypeParsingRules parsingRules = null;
-		if (rowIDSpecification.getIdTypeParsingRules() != null)
-			parsingRules = rowIDSpecification.getIdTypeParsingRules();
-		else if (toIDType.getIdTypeParsingRules() != null)
-			parsingRules = toIDType.getIdTypeParsingRules();
+		// IDTypeParsingRules parsingRules = null;
+		// if (rowIDSpecification.getIdTypeParsingRules() != null)
+		// parsingRules = rowIDSpecification.getIdTypeParsingRules();
+		// else if (toIDType.getIdTypeParsingRules() != null)
+		IDTypeParsingRules parsingRules = toIDType.getIdTypeParsingRules();
 
 		String line;
 		while ((line = reader.readLine()) != null) {
