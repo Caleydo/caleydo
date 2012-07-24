@@ -229,13 +229,13 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 	protected void okPressed() {
 
 		if (fileNameTextField.getText().isEmpty()) {
-			MessageDialog.openError(new Shell(), "Invalid filename",
+			MessageDialog.openError(new Shell(), "Invalid Filename",
 					"Please specify a file to load");
 			return;
 		}
 
 		if (rowIDCombo.getSelectionIndex() == -1) {
-			MessageDialog.openError(new Shell(), "Invalid row ID type",
+			MessageDialog.openError(new Shell(), "Invalid Row ID Type",
 					"Please select the ID type of the rows");
 			return;
 		}
@@ -289,7 +289,7 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		parentComposite.setLayout(layout);
 
 		Group inputFileGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		inputFileGroup.setText("Input file");
+		inputFileGroup.setText("Input File");
 		inputFileGroup.setLayout(new GridLayout(2, false));
 		inputFileGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
@@ -370,7 +370,7 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 	private void createRowConfigPart(Composite parent) {
 
 		Group rowConfigGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		rowConfigGroup.setText("Row configuration");
+		rowConfigGroup.setText("Row Configuration");
 		rowConfigGroup.setLayout(new GridLayout(1, false));
 		rowConfigGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
@@ -379,7 +379,7 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		Label idCategoryLabel = new Label(leftConfigGroupPart, SWT.SHADOW_ETCHED_IN);
-		idCategoryLabel.setText("Row ID category");
+		idCategoryLabel.setText("Row ID Class");
 		idCategoryLabel.setLayoutData(new GridData(SWT.LEFT));
 		Label categoryIDLabel = new Label(leftConfigGroupPart, SWT.NONE);
 		categoryIDLabel.setText(rowIDCategory.getCategoryName());
@@ -387,7 +387,7 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		createIDTypeGroup(leftConfigGroupPart);
 
 		Label startParseAtLineLabel = new Label(leftConfigGroupPart, SWT.NONE);
-		startParseAtLineLabel.setText("Number of header rows");
+		startParseAtLineLabel.setText("Number of Header Rows");
 
 		numHeaderRowsSpinner = new Spinner(leftConfigGroupPart, SWT.BORDER);
 		numHeaderRowsSpinner.setMinimum(1);
@@ -415,7 +415,7 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		});
 
 		Label columnOfRowIDlabel = new Label(leftConfigGroupPart, SWT.NONE);
-		columnOfRowIDlabel.setText("Column with row IDs");
+		columnOfRowIDlabel.setText("Column with Row IDs");
 		// columnOfRowIDGroup.setLayout(new GridLayout(1, false));
 
 		columnOfRowIDSpinner = new Spinner(leftConfigGroupPart, SWT.BORDER);
@@ -440,7 +440,7 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 
 	protected void createIDTypeGroup(Composite parent) {
 		Label idTypeLabel = new Label(parent, SWT.SHADOW_ETCHED_IN);
-		idTypeLabel.setText("Row ID type");
+		idTypeLabel.setText("Row ID Type");
 		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
 		rowIDCombo = new Combo(parent, SWT.DROP_DOWN);
 		rowIDCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -501,7 +501,7 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 			rowIDTypes.clear();
 			rowIDTypes = new ArrayList<IDType>(rowIDCategory.getIdTypes());
 			rowIDCombo.clearSelection();
-			rowIDCombo.setText("<Please select>");
+			rowIDCombo.setText("<Please Select>");
 		} else {
 			updateIDTypeCombo(rowIDCategory, rowIDTypes, rowIDCombo);
 			rowIDCombo.select(rowIDTypes.indexOf(mostProbableRecordIDType));
@@ -537,7 +537,7 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 				selectionIndex = idTypeCombo.indexOf(previousSelection);
 			}
 			if (selectionIndex == -1) {
-				idTypeCombo.setText("<Please select>");
+				idTypeCombo.setText("<Please Select>");
 				idTypeCombo.clearSelection();
 			} else {
 				idTypeCombo.setText(idTypeCombo.getItem(selectionIndex));
@@ -578,7 +578,7 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		// showAllColumnsButton.setSelection(false);
 		showAllColumnsButton.setEnabled(true);
 		tableInfoLabel.setText((previewTable.getColumnCount() - 1) + " of "
-				+ totalNumberOfColumns + " columns shown");
+				+ totalNumberOfColumns + " Columns shown");
 	}
 
 	/**
@@ -623,7 +623,7 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		});
 
 		Label showAllColumnsLabel = new Label(tableInfoComposite, SWT.NONE);
-		showAllColumnsLabel.setText("Show all columns");
+		showAllColumnsLabel.setText("Show all Columns");
 	}
 
 }
