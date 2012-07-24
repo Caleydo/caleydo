@@ -190,7 +190,7 @@ public class ProjectLoader {
 						.get()
 						.getSWTGUIManager()
 						.setProgressBarText(
-								"Loading groupings for : " + dataDomain.getLabel());
+								"Loading groupings for: " + dataDomain.getLabel());
 
 				Set<String> recordPerspectiveIDs = ((ATableBasedDataDomain) dataDomain)
 						.getRecordPerspectiveIDs();
