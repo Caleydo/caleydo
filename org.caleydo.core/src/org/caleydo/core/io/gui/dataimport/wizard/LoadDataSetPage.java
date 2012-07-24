@@ -697,7 +697,8 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 								showAllColumns ? totalNumberOfColumns
 										: MAX_PREVIEW_TABLE_COLUMNS);
 				selectedColumnButtons = previewTableManager.getSelectedColumnButtons();
-				determineIDTypes();
+				// TODO: Disabled by alex, do we need this?
+//				determineIDTypes();
 				previewTableManager.updateTableColors(
 						dataSetDescription.getNumberOfHeaderLines(),
 						dataSetDescription.getRowOfColumnIDs() + 1,
