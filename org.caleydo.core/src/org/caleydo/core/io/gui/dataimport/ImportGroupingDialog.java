@@ -594,6 +594,11 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 				2, 1));
 
 		tableInfoLabel = new Label(tableInfoComposite, SWT.NONE);
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, false, true);
+		// This needs to be looked at again: without it, the label is not
+		// displayed.
+		gd.widthHint = 100;
+		tableInfoLabel.setLayoutData(gd);
 
 		Label separator = new Label(tableInfoComposite, SWT.SEPARATOR | SWT.VERTICAL);
 		GridData separatorGridData = new GridData(SWT.CENTER, SWT.CENTER, false, false);
