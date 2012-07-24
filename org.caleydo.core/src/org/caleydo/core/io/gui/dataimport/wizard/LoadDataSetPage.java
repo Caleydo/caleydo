@@ -245,7 +245,10 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 		dataSetDescription.setRowOfColumnIDs(0);
 		dataSetDescription.setColumnOfRowIds(0);
 		registeredIDCategories = new ArrayList<IDCategory>();
-		registeredIDCategories.addAll(IDCategory.getAllRegisteredIDCategories());
+		for (IDCategory idCategory : IDCategory.getAllRegisteredIDCategories()) {
+			if (!idCategory.isInternaltCategory())
+				registeredIDCategories.add(idCategory);
+		}
 
 		int numGridCols = 2;
 
@@ -393,8 +396,12 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 
 				if (status == Dialog.OK) {
 					registeredIDCategories = new ArrayList<IDCategory>();
-					registeredIDCategories.addAll(IDCategory
-							.getAllRegisteredIDCategories());
+					for (IDCategory idCategory : IDCategory
+							.getAllRegisteredIDCategories()) {
+						if (!idCategory.isInternaltCategory())
+							registeredIDCategories.add(idCategory);
+					}
+
 					fillIDCategoryCombo(rowIDCategoryCombo);
 					fillIDCategoryCombo(columnIDCategoryCombo);
 				}
