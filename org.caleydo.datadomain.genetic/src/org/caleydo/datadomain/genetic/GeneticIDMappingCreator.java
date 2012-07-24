@@ -88,6 +88,6 @@ public class GeneticIDMappingCreator {
 		tcgaIDTypeParsingRules.setReplacementExpression("\\.", "-");
 		tcgaIDTypeParsingRules.setSubStringExpression("TCGA\\-|\\-...\\-");
 		tcgaSample.setIdTypeParsingRules(tcgaIDTypeParsingRules);
-		sampleIDCategory.setHumanReadableIDType(tcgaSample);
+		tcgaSampleIDCategory.setHumanReadableIDType(tcgaSample);
 	}
 }
