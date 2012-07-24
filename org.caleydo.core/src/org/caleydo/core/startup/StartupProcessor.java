@@ -53,8 +53,6 @@ public class StartupProcessor {
 
 	private Display display;
 
-	private ApplicationInitData appInitData = new ApplicationInitData();
-
 	private StartupProcessor() {
 	}
 
@@ -173,7 +171,7 @@ public class StartupProcessor {
 	 */
 	public void initCore() {
 
-		startupProcedure.init(appInitData);
+		startupProcedure.init();
 		startupProcedure.execute();
 
 		// ColorMappingManager.get().initiFromPreferenceStore(ColorMappingType.GENE_EXPRESSION);
@@ -234,10 +232,6 @@ public class StartupProcessor {
 		// display.dispose();
 
 		System.exit(0);
-	}
-
-	public ApplicationInitData getAppInitData() {
-		return appInitData;
 	}
 
 	public AStartupProcedure getStartupProcedure() {

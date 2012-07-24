@@ -19,14 +19,14 @@
  *******************************************************************************/
 package org.caleydo.core.startup;
 
-import java.util.List;
-
 import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.ui.IFolderLayout;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Startup procedure for project wizard.
@@ -42,17 +42,9 @@ public class GenericGUIStartupProcedure extends AStartupProcedure {
 	}
 
 	@Override
-	public void init(ApplicationInitData appInitData) {
-
-		super.init(appInitData);
-	}
-
-	@Override
 	public void execute() {
 		super.execute();
 
-//		ImportDataDialog dialog = new ImportDataDialog(StartupProcessor.get()
-//				.getDisplay().getActiveShell());
 		DataImportWizard dataImportWizard = new DataImportWizard();
 
 		WizardDialog dialog = new WizardDialog(StartupProcessor.get().getDisplay()
@@ -61,25 +53,30 @@ public class GenericGUIStartupProcedure extends AStartupProcedure {
 		if (Window.CANCEL == dialog.open())
 			StartupProcessor.get().shutdown();
 	}
-
+	
 	@Override
-	public void addDefaultStartViews() {
-
-		List<Pair<String, String>> startViewWithDataDomain = appInitData
-				.getAppArgumentStartViewWithDataDomain();
-
-		// Do not add any default views if at least one view is specified as
-		// application argument
-		if (!startViewWithDataDomain.isEmpty())
-			return;
-
-		// startViewWithDataDomain.add(new Pair<String,
-		// String>("org.caleydo.view.browser", dataDomain
-		// .getDataDomainType()));
-		//
-		// startViewWithDataDomain.add(new Pair<String,
-		// String>("org.caleydo.view.parcoords", dataDomain
-		// .getDataDomainType()));
-
+	public void addDefaultStartViews(IFolderLayout layout)  {
+	
+		layout.addView("org.caleydo.view.dvi");
+		layout.addView("org.caleydo.view.startomex");
+		
+		try {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("org.caleydo.view.dvi");
+		}
+		catch (PartInitException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void postWorkbenchOpen() {
+		
+		// Make DVI visible if available
+		try {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("org.caleydo.view.dvi");
+		}
+		catch (PartInitException e) {
+			// do nothing if DVI does not exist
+		}
 	}
 }

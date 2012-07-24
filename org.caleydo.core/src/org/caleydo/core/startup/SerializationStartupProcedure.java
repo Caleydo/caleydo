@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.startup;
 
-import java.util.Map;
-
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.container.DataContainer;
@@ -28,11 +26,6 @@ import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
-import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.id.IDMappingManager;
-import org.caleydo.core.id.IDMappingManagerRegistry;
-import org.caleydo.core.id.IDType;
-import org.caleydo.core.id.MappingType;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.serialize.DataDomainSerializationData;
 import org.caleydo.core.serialize.ProjectLoader;
@@ -41,6 +34,7 @@ import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.IFolderLayout;
 
 public class SerializationStartupProcedure extends AStartupProcedure {
 
@@ -74,13 +68,16 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 			}
 		}
 	}
+	
+	@Override
+	public void postWorkbenchOpen() {
+	}
 
 	@Override
-	public void init(ApplicationInitData appInitData) {
+	public void init() {
 
 		// not calling super.init() on purpose
 
-		this.appInitData = appInitData;
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Load serialized project"));
 
 		if (loadSampleProject) {
@@ -196,18 +193,17 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 		this.loadSampleProject = loadSampleProject;
 	}
 
-	@Override
-	public void addDefaultStartViews() {
-
-		// no default views exist for serialization
-	}
-
 	public void setProjectLocation(String projectLocation) {
 		this.projectLocation = projectLocation;
 	}
 
 	public void setLoadRecentProject(boolean loadRecentProject) {
 		this.loadRecentProject = loadRecentProject;
+	}
+	
+	@Override
+	public void addDefaultStartViews(IFolderLayout layout) {
+		// not implemented because views are deserialized
 	}
 
 }

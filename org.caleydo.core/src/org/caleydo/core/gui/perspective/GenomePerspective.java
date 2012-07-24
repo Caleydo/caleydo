@@ -26,7 +26,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
-import org.eclipse.ui.IPlaceholderFolderLayout;
 
 public class GenomePerspective
 	implements IPerspectiveFactory {
@@ -66,6 +65,6 @@ public class GenomePerspective
 		// bottomLayout.addPlaceholder("org.caleydo.view.filter");
 		// bottomLayout.addPlaceholder("org.caleydo.view.filterpipeline");
 
-		StartupProcessor.get().getStartupProcedure().openRCPViews(mainLayout);
+		StartupProcessor.get().getStartupProcedure().addDefaultStartViews(mainLayout);
 	}
 }

@@ -26,7 +26,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
@@ -78,6 +77,8 @@ public class ApplicationWorkbenchWindowAdvisor
 
 		removeNonCaleydoMenuEntries();
 
+		StartupProcessor.get().getStartupProcedure().postWorkbenchOpen();
+		
 		initializeViews();
 	}
 
@@ -136,6 +137,5 @@ public class ApplicationWorkbenchWindowAdvisor
 		catch (PartInitException e) {
 			throw new IllegalStateException();
 		}
-
 	}
 }

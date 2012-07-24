@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.startup;
 
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.RCPViewManager;
 import org.eclipse.ui.IFolderLayout;
 
@@ -31,11 +30,7 @@ import org.eclipse.ui.IFolderLayout;
  */
 public abstract class AStartupProcedure {
 
-	protected ApplicationInitData appInitData;
-
-	public void init(ApplicationInitData appInitData) {
-		this.appInitData = appInitData;
-		initializeStartViews();
+	public void init() {
 	}
 
 	/**
@@ -46,39 +41,17 @@ public abstract class AStartupProcedure {
 
 	}
 
+	/**
+	 * Initialization stuff that has to be done after the workbech opened (e.g.,
+	 * making a specific view activate)
+	 **/
+	public abstract void postWorkbenchOpen();
+
 	public void execute() {
 
 		// Create RCP view manager
 		RCPViewManager.get();
 	}
 
-	public abstract void addDefaultStartViews();
-
-	/**
-	 * Parses through the list of start-views to initialize them by creating
-	 * default serialized representations of them.
-	 */
-	public void initializeStartViews() {
-		// Create view list dynamically when not specified via the command line
-
-		addDefaultStartViews();
-
-		for (Pair<String, String> viewWithDataDomain : appInitData
-				.getAppArgumentStartViewWithDataDomain()) {
-
-			// ASerializedView view =
-			// GeneralManager.get().getViewGLCanvasManager().getViewCreator(viewWithDataDomain.getFirst())
-			// .createSerializedView();
-			//
-			// view.setDataDomainType(viewWithDataDomain.getSecond());
-			appInitData.getInitializedStartViews().add(viewWithDataDomain.getFirst());
-		}
-	}
-
-	public void openRCPViews(IFolderLayout layout) {
-
-		for (String startViewID : appInitData.getInitializedStartViews()) {
-			layout.addView(startViewID);
-		}
-	}
+	public abstract void addDefaultStartViews(IFolderLayout layout);
 }
