@@ -60,6 +60,35 @@ public class DataLoader {
 		return dataDomain;
 	}
 
+	/**
+	 * Load a single grouping to a {@link ATableBasedDataDomain}
+	 * 
+	 * @param dataDomain
+	 * @param groupingSpec
+	 *            the specification of the grouping
+	 * */
+	public static void loadGrouping(ATableBasedDataDomain dataDomain,
+			GroupingParseSpecification groupingSpec) {
+		ArrayList<GroupingParseSpecification> groupingList = new ArrayList<GroupingParseSpecification>(
+				1);
+		IDCategory category = IDCategory.getIDCategory(groupingSpec
+				.getRowIDSpecification().getIdCategory());
+
+		if (dataDomain.getRecordIDCategory().equals(category)) {
+			loadRecordGroupings(dataDomain, groupingList);
+		} else if (dataDomain.getDimensionIDCategory().equals(category)) {
+			loadDimensionGroupings(dataDomain, groupingList);
+		}
+	}
+
+	/**
+	 * Creates the {@link ATableBasedDataDomain} and loads the data file
+	 * 
+	 * @param dataSetDescription
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	private static ATableBasedDataDomain loadDataSet(DataSetDescription dataSetDescription)
 			throws FileNotFoundException, IOException {
 
@@ -187,38 +216,14 @@ public class DataLoader {
 	 */
 	private static void loadGroupings(ATableBasedDataDomain dataDomain,
 			DataSetDescription dataSetDescription) {
-		
+
 		ArrayList<GroupingParseSpecification> columnGroupingSpecifications = dataSetDescription
 				.getColumnGroupingSpecifications();
 		if (columnGroupingSpecifications != null) {
-
-			IDType sourceIDType, targetIDType;
 			if (dataSetDescription.isTransposeMatrix()) {
-				sourceIDType = dataDomain.getHumanReadableRecordIDType();
-				targetIDType = dataDomain.getRecordIDType();
+				loadRecordGroupings(dataDomain, columnGroupingSpecifications);
 			} else {
-				sourceIDType = dataDomain.getHumanReadableDimensionIDType();
-				targetIDType = dataDomain.getDimensionIDType();
-			}
-
-			ArrayList<PerspectiveInitializationData> columnPerspective = createPerspectivesForGroupings(
-					columnGroupingSpecifications, sourceIDType, targetIDType);
-
-			for (PerspectiveInitializationData data : columnPerspective) {
-				if (dataSetDescription.isTransposeMatrix()) {
-					RecordPerspective recordPerspective = new RecordPerspective(
-							dataDomain);
-					recordPerspective.init(data);
-
-					dataDomain.getTable().registerRecordPerspective(recordPerspective);
-				} else {
-					DimensionPerspective dimensionPerspective = new DimensionPerspective(
-							dataDomain);
-					dimensionPerspective.init(data);
-
-					dataDomain.getTable().registerDimensionPerspective(
-							dimensionPerspective);
-				}
+				loadDimensionGroupings(dataDomain, columnGroupingSpecifications);
 			}
 		}
 
@@ -226,49 +231,76 @@ public class DataLoader {
 				.getRowGroupingSpecifications();
 		if (rowGroupingSpecifications != null) {
 
-			IDType sourceIDType, targetIDType;
 			if (dataSetDescription.isTransposeMatrix()) {
-				sourceIDType = dataDomain.getHumanReadableDimensionIDType();
-				targetIDType = dataDomain.getDimensionIDType();
+				loadDimensionGroupings(dataDomain, rowGroupingSpecifications);
 
 			} else {
-				sourceIDType = dataDomain.getHumanReadableRecordIDType();
-				targetIDType = dataDomain.getRecordIDType();
-			}
-
-			ArrayList<PerspectiveInitializationData> rowPerspective = createPerspectivesForGroupings(
-					rowGroupingSpecifications, sourceIDType, targetIDType);
-
-			for (PerspectiveInitializationData data : rowPerspective) {
-				if (dataSetDescription.isTransposeMatrix()) {
-					DimensionPerspective dimensionPerspective = new DimensionPerspective(
-							dataDomain);
-					dimensionPerspective.init(data);
-
-					dataDomain.getTable().registerDimensionPerspective(
-							dimensionPerspective);
-
-				} else {
-					RecordPerspective recordPerspective = new RecordPerspective(
-							dataDomain);
-					recordPerspective.init(data);
-
-					dataDomain.getTable().registerRecordPerspective(recordPerspective);
-				}
+				loadRecordGroupings(dataDomain, rowGroupingSpecifications);
 			}
 		}
 	}
 
-	private static ArrayList<PerspectiveInitializationData> createPerspectivesForGroupings(
+	/**
+	 * Load groupings for dimensions
+	 * 
+	 * @param dataDomain
+	 * @param dimensionGroupings
+	 */
+	private static void loadDimensionGroupings(ATableBasedDataDomain dataDomain,
+			ArrayList<GroupingParseSpecification> dimensionGroupings) {
+
+		IDType targetIDType = dataDomain.getDimensionIDType();
+
+		ArrayList<PerspectiveInitializationData> dimensionPerspectivesInitData = parseGrouping(
+				dimensionGroupings, targetIDType);
+
+		for (PerspectiveInitializationData data : dimensionPerspectivesInitData) {
+			DimensionPerspective dimensionPerspective = new DimensionPerspective(
+					dataDomain);
+			dimensionPerspective.init(data);
+			dataDomain.getTable().registerDimensionPerspective(dimensionPerspective);
+		}
+
+	}
+
+	/**
+	 * Load groupings for records
+	 * 
+	 * @param dataDomain
+	 * @param recordGroupings
+	 */
+	private static void loadRecordGroupings(ATableBasedDataDomain dataDomain,
+			ArrayList<GroupingParseSpecification> recordGroupings) {
+
+		IDType targetIDType = dataDomain.getRecordIDType();
+
+		ArrayList<PerspectiveInitializationData> dimensionPerspectivesInitData = parseGrouping(
+				recordGroupings, targetIDType);
+
+		for (PerspectiveInitializationData data : dimensionPerspectivesInitData) {
+			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+			recordPerspective.init(data);
+			dataDomain.getTable().registerRecordPerspective(recordPerspective);
+		}
+	}
+
+	/**
+	 * Runs the parser on the groupings and returns a lisst of
+	 * {@link PerspectiveInitializationData}
+	 * 
+	 * @param groupingSpecifications
+	 * @param targetIDType
+	 * @return
+	 */
+	private static ArrayList<PerspectiveInitializationData> parseGrouping(
 			ArrayList<GroupingParseSpecification> groupingSpecifications,
-			IDType sourceIDType, IDType targetIDType) {
+			IDType targetIDType) {
 
 		ArrayList<PerspectiveInitializationData> perspectiveDatas = new ArrayList<PerspectiveInitializationData>();
 		for (GroupingParseSpecification groupingSpecification : groupingSpecifications) {
 			GroupingParser parser = new GroupingParser(groupingSpecification);
 			perspectiveDatas.addAll(parser.parseGrouping(targetIDType));
 		}
-
 		return perspectiveDatas;
 	}
 
