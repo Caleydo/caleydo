@@ -343,7 +343,8 @@ public class IDCategory {
 				if (!idType.isInternalType()) {
 					if (candidateHRType != null) {
 						throw new IllegalStateException(
-								"To many candidates for Human Readable Types");
+								"To many candidates for Human Readable Types in "
+										+ this.toString());
 					}
 					candidateHRType = idType;
 				}
