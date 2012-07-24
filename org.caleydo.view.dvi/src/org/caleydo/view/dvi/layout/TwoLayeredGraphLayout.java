@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -144,8 +144,13 @@ public class TwoLayeredGraphLayout extends AGraphLayout {
 
 		applyBaryCenterReordering();
 
-		float dataNodeSpacingPixels = (float) (area.getWidth() - summedDataNodesWidthPixels)
-				/ (float) (dataNodes.size() - 1);
+		float dataNodeSpacingPixels;
+		if (dataNodes.size() == 1) {
+			dataNodeSpacingPixels = 0;
+		} else {
+			dataNodeSpacingPixels = (float) (area.getWidth() - summedDataNodesWidthPixels)
+					/ (float) (dataNodes.size() - 1);
+		}
 		dataNodeSpacingPixels = Math.max(dataNodeSpacingPixels, MIN_NODE_SPACING_PIXELS);
 		dataNodeSpacingPixels = Math.min(dataNodeSpacingPixels, MAX_NODE_SPACING_PIXELS);
 
@@ -154,7 +159,7 @@ public class TwoLayeredGraphLayout extends AGraphLayout {
 						- summedDataNodesWidthPixels - (dataNodes.size() - 1)
 						* dataNodeSpacingPixels) / 2.0f), area.getMinX());
 
-		maxBendPointOffsetYPixels = Integer.MIN_VALUE;
+		maxBendPointOffsetYPixels = 0;
 		for (Edge edge : graph.getAllEdges()) {
 			if (edge.getNode1() instanceof ADataNode
 					&& edge.getNode2() instanceof ADataNode) {

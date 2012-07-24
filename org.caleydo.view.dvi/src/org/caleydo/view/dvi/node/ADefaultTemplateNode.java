@@ -37,6 +37,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.datacontainer.ADataContainerRenderer;
@@ -350,6 +351,8 @@ public abstract class ADefaultTemplateNode
 		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position.getY());
 		float width = pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
 		float height = pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
+		
+	
 
 		gl.glPushMatrix();
 		gl.glTranslatef(x - width / 2.0f, y - height / 2.0f, 0f);
