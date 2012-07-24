@@ -3,6 +3,7 @@
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
+import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.io.DataSetDescription;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -34,7 +35,7 @@ public class TransformDataPage extends AImportDataPage {
 	private Text minTextField;
 	private Text maxTextField;
 	private Button buttonSwapRowsWithColumns;
-	private String scalingMode = "Log2";
+	private String scalingMode = "None";
 
 	/**
 	 * @param pageName
@@ -168,7 +169,16 @@ public class TransformDataPage extends AImportDataPage {
 		String[] scalingOptions = { "None", "Log10", "Log2" };
 		scalingCombo.setItems(scalingOptions);
 		scalingCombo.setEnabled(true);
-		scalingCombo.select(2);
+		String previousMathFiltermode = dataSetDescription.getMathFilterMode();
+		if(previousMathFiltermode.equals("None"))
+			scalingCombo.select(0);
+		else if(previousMathFiltermode.equals("Log10"))
+			scalingCombo.select(1);
+		else if(previousMathFiltermode.equals("Log2"))
+			scalingCombo.select(2);
+		else
+			scalingCombo.select(0);
+		
 		scalingCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

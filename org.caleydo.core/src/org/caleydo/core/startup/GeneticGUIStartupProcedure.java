@@ -20,6 +20,8 @@
 package org.caleydo.core.startup;
 
 import java.io.File;
+
+import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.manager.GeneralManager;
@@ -39,8 +41,7 @@ import org.osgi.framework.BundleException;
  * 
  * @author Marc Streit
  */
-public class GeneticGUIStartupProcedure
-	extends AStartupProcedure {
+public class GeneticGUIStartupProcedure extends AStartupProcedure {
 
 	private boolean loadSampleData = false;
 
@@ -65,8 +66,7 @@ public class GeneticGUIStartupProcedure
 		try {
 			Bundle bundle = Platform.getBundle("org.caleydo.datadomain.genetic");
 			bundle.start();
-		}
-		catch (BundleException e) {
+		} catch (BundleException e) {
 			throw new IllegalStateException("Failed to initalize genetic data domain");
 		}
 
@@ -83,9 +83,10 @@ public class GeneticGUIStartupProcedure
 			DataSetDescription dataSetDescription = new DataSetDescription();
 			dataSetDescription.setDataSourcePath(REAL_DATA_SAMPLE_FILE.replace("/",
 					File.separator));
+			dataSetDescription.setMathFilterMode(EDataTransformation.LOG2
+					.getHumanReadableRep());
 			dataImportWizard = new DataImportWizard(dataSetDescription);
-		}
-		else {
+		} else {
 			dataImportWizard = new DataImportWizard();
 		}
 
@@ -107,15 +108,15 @@ public class GeneticGUIStartupProcedure
 		layout.addView("org.caleydo.view.dvi");
 		layout.addView("org.caleydo.view.stratomex");
 	}
-	
+
 	@Override
 	public void postWorkbenchOpen() {
-		
+
 		// Make DVI visible if available
 		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("org.caleydo.view.dvi");
-		}
-		catch (PartInitException e) {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.showView("org.caleydo.view.dvi");
+		} catch (PartInitException e) {
 			// do nothing if DVI does not exist
 		}
 	}
