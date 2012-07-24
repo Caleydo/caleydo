@@ -98,8 +98,7 @@ public class TransformDataPage extends AImportDataPage {
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gridData.widthHint = 200;
 		clippingExplanationLabel.setLayoutData(gridData);
-		
-		
+
 		final Button buttonMax = new Button(clippingGroup, SWT.CHECK);
 		buttonMax.setText("Max");
 		buttonMax.setEnabled(true);
@@ -123,7 +122,7 @@ public class TransformDataPage extends AImportDataPage {
 				string.getChars(0, chars.length, chars, 0);
 			}
 		});
-		
+
 		final Button buttonMin = new Button(clippingGroup, SWT.CHECK);
 		buttonMin.setText("Min");
 		buttonMin.setEnabled(true);
@@ -170,15 +169,16 @@ public class TransformDataPage extends AImportDataPage {
 		scalingCombo.setItems(scalingOptions);
 		scalingCombo.setEnabled(true);
 		String previousMathFiltermode = dataSetDescription.getMathFilterMode();
-		if(previousMathFiltermode.equals("None"))
+		if (previousMathFiltermode.equals("None")) {
 			scalingCombo.select(0);
-		else if(previousMathFiltermode.equals("Log10"))
+		} else if (previousMathFiltermode.equals("Log10"))
 			scalingCombo.select(1);
-		else if(previousMathFiltermode.equals("Log2"))
+		else if (previousMathFiltermode.equals("Log2"))
 			scalingCombo.select(2);
 		else
 			scalingCombo.select(0);
-		
+
+		scalingMode = scalingCombo.getText();
 		scalingCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
