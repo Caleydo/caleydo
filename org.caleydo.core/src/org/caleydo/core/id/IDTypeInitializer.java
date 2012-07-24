@@ -22,6 +22,7 @@ package org.caleydo.core.id;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
@@ -56,6 +57,8 @@ public class IDTypeInitializer {
 		String dimensionIDTypeName;
 		String recordIDCategoryName;
 		String recordIDTypeName;
+		IDTypeParsingRules recordIDTypeParsingRules;
+		IDTypeParsingRules dimensionIDTypeParsingRules;
 
 		IDSpecification rowIDSpecification = dataSetDescription.getRowIDSpecification();
 		if (rowIDSpecification == null) {
@@ -92,15 +95,19 @@ public class IDTypeInitializer {
 		if (dataSetDescription.isTransposeMatrix()) {
 			dimensionIDTypeName = rowIDSpecification.getIdType();
 			dimensionIDCategoryName = rowIDSpecification.getIdCategory();
+			dimensionIDTypeParsingRules = rowIDSpecification.getIdTypeParsingRules();
 
 			recordIDTypeName = columnIDSpecification.getIdType();
 			recordIDCategoryName = columnIDSpecification.getIdCategory();
+			recordIDTypeParsingRules = columnIDSpecification.getIdTypeParsingRules();
 		} else {
 			dimensionIDTypeName = columnIDSpecification.getIdType();
 			dimensionIDCategoryName = columnIDSpecification.getIdCategory();
+			dimensionIDTypeParsingRules = columnIDSpecification.getIdTypeParsingRules();
 
 			recordIDTypeName = rowIDSpecification.getIdType();
 			recordIDCategoryName = rowIDSpecification.getIdCategory();
+			recordIDTypeParsingRules = rowIDSpecification.getIdTypeParsingRules();
 		}
 
 		if (dimensionIDCategoryName == null)
@@ -123,12 +130,14 @@ public class IDTypeInitializer {
 		if (recordIDType == null) {
 			recordIDType = IDType.registerType(recordIDTypeName, recodIDCategory,
 					EDataType.STRING);
+			recordIDType.setIdTypeParsingRules(recordIDTypeParsingRules);
 		}
 
 		IDType dimensionIDType = IDType.getIDType(dimensionIDTypeName);
 		if (dimensionIDType == null) {
 			dimensionIDType = IDType.registerType(dimensionIDTypeName,
 					dimensionIDCategory, EDataType.STRING);
+			dimensionIDType.setIdTypeParsingRules(dimensionIDTypeParsingRules);
 		}
 
 		return dataSetDescription;
