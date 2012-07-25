@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+        id="org.caleydo.datadomain.pathway"
+        name="PathwayDataDomain"
+        point="org.caleydo.datadomain.DataDomain">
+        <DataDomain
+          id="org.caleydo.datadomain.DataDomain"
+          name="PathwayDataDomain"
+          class="org.caleydo.datadomain.pathway.PathwayDataDomain" />
+   </extension>
+</plugin>
