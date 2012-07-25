@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="org.caleydo.view.histogram.RcpGLColorMapperHistogramView"
+            icon="resources/icons/histogram.png"
+            id="org.caleydo.view.histogram"
+            name="Histogram, Color Legend">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.caleydo.menu.view"
+               label="View"
+               tooltip="Test">
+            <menu
+                  id="org.caleydo.menu.view.tool"
+                  label="Tools">
+               <command
+                     commandId="org.caleydo.view.histogram.command.openhistogram"
+                     icon="resources/icons/histogram.png"
+                     label="Histogram, Color Legend"
+                     style="push"
+                     tooltip="test2">
+               </command>
+            </menu>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.histogram.command.handler.OpenHistogramHandler"
+            id="org.caleydo.view.histogram.command.openhistogram"
+            name="Histogram, Color Legend">
+      </command>
+   </extension>
+   <extension
+         id="org.caleydo.view.histogram"
+         name="HistogramViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="HistogramViewCreator"
+          class="org.caleydo.view.histogram.creator.ViewCreator" />
+   </extension>
+</plugin>
