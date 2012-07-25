@@ -1,0 +1,541 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Jun 6, 2012 09:41:25 +0900 (GMT+09:00) -->
+<pathway name="path:mmu00531" org="mmu" number="00531"
+         title="Glycosaminoglycan degradation"
+         image="http://www.genome.jp/kegg/pathway/mmu/mmu00531.png"
+         link="http://www.genome.jp/kegg-bin/show_pathway?mmu00531">
+    <entry id="13" name="mmu:27029" type="gene" reaction="rn:R07814"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:27029">
+        <graphics name="Sgsh, 4632406A19Rik" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="331" y="412" width="46" height="17"/>
+    </entry>
+    <entry id="21" name="gl:G08421" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G08421">
+        <graphics name="G08421" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="466" y="508" width="8" height="8"/>
+    </entry>
+    <entry id="22" name="gl:G13033" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G13033">
+        <graphics name="G13033" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="466" y="447" width="8" height="8"/>
+    </entry>
+    <entry id="23" name="gl:G06780" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G06780">
+        <graphics name="G06780" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="466" y="386" width="8" height="8"/>
+    </entry>
+    <entry id="24" name="gl:G13032" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G13032">
+        <graphics name="G13032" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="466" y="325" width="8" height="8"/>
+    </entry>
+    <entry id="25" name="gl:G13031" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G13031">
+        <graphics name="G13031" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="466" y="264" width="8" height="8"/>
+    </entry>
+    <entry id="26" name="gl:G02632" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G02632">
+        <graphics name="G02632" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="330" y="752" width="8" height="8"/>
+    </entry>
+    <entry id="27" name="gl:G09660" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G09660">
+        <graphics name="G09660" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="330" y="691" width="8" height="8"/>
+    </entry>
+    <entry id="28" name="gl:G13040" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G13040">
+        <graphics name="G13040" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="330" y="630" width="8" height="8"/>
+    </entry>
+    <entry id="29" name="gl:G13039" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G13039">
+        <graphics name="G13039" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="330" y="569" width="8" height="8"/>
+    </entry>
+    <entry id="30" name="gl:G13038" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G13038">
+        <graphics name="G13038" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="330" y="508" width="8" height="8"/>
+    </entry>
+    <entry id="31" name="gl:G13037" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G13037">
+        <graphics name="G13037" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="330" y="447" width="8" height="8"/>
+    </entry>
+    <entry id="32" name="gl:G13036" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G13036">
+        <graphics name="G13036" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="330" y="386" width="8" height="8"/>
+    </entry>
+    <entry id="33" name="gl:G13035" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G13035">
+        <graphics name="G13035" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="330" y="325" width="8" height="8"/>
+    </entry>
+    <entry id="34" name="gl:G13034" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G13034">
+        <graphics name="G13034" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="330" y="264" width="8" height="8"/>
+    </entry>
+    <entry id="35" name="gl:G00872" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G00872">
+        <graphics name="G00872" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="113" y="508" width="8" height="8"/>
+    </entry>
+    <entry id="36" name="gl:G13043" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G13043">
+        <graphics name="G13043" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="113" y="447" width="8" height="8"/>
+    </entry>
+    <entry id="37" name="gl:G12336" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G12336">
+        <graphics name="G12336" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="113" y="386" width="8" height="8"/>
+    </entry>
+    <entry id="38" name="gl:G13042" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G13042">
+        <graphics name="G13042" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="113" y="325" width="8" height="8"/>
+    </entry>
+    <entry id="39" name="gl:G13041" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?G13041">
+        <graphics name="G13041" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="113" y="264" width="8" height="8"/>
+    </entry>
+    <entry id="40" name="mmu:545291" type="gene" reaction="rn:R07811"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:545291">
+        <graphics name="Hpse2, Gm968" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="355" y="235" width="46" height="17"/>
+    </entry>
+    <entry id="41" name="mmu:15442" type="gene" reaction="rn:R07811"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15442">
+        <graphics name="Hpse, HSE1, Hpa, Hpr1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="305" y="235" width="46" height="17"/>
+    </entry>
+    <entry id="42" name="path:mmu00534" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu00534">
+        <graphics name="Glycosaminoglycan biosynthesis - heparan sulfate" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="331" y="130" width="93" height="34"/>
+    </entry>
+    <entry id="43" name="path:mmu00533" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu00533">
+        <graphics name="Glycosaminoglycan biosynthesis - keratan sulfate" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="467" y="130" width="93" height="34"/>
+    </entry>
+    <entry id="44" name="path:mmu00532" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu00532">
+        <graphics name="Glycosaminoglycan biosynthesis - chondroitin sulfate" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="211" y="130" width="112" height="34"/>
+    </entry>
+    <entry id="45" name="mmu:75612" type="gene" reaction="rn:R07808"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:75612">
+        <graphics name="Gns, 2610016K11Rik, AU042285, C87209, G6S, N28088" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="467" y="412" width="46" height="17"/>
+    </entry>
+    <entry id="46" name="path:mmu00531" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu00531">
+        <graphics name="TITLE:Glycosaminoglycan degradation" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="184" y="58" width="287" height="25"/>
+    </entry>
+    <entry id="47" name="cpd:C00925" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00925">
+        <graphics name="C00925" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="330" y="203" width="8" height="8"/>
+    </entry>
+    <entry id="49" name="mmu:15931" type="gene" reaction="rn:R07821"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15931">
+        <graphics name="Ids, AW214631" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="114" y="291" width="46" height="17"/>
+    </entry>
+    <entry id="50" name="mmu:15931" type="gene" reaction="rn:R07812"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15931">
+        <graphics name="Ids, AW214631" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="331" y="291" width="46" height="17"/>
+    </entry>
+    <entry id="51" name="mmu:50917" type="gene" reaction="rn:R07806"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:50917">
+        <graphics name="Galns, mFLJ00319" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="467" y="291" width="46" height="17"/>
+    </entry>
+    <entry id="52" name="mmu:15932" type="gene" reaction="rn:R07822"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15932">
+        <graphics name="Idua, 6030426D08" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="114" y="353" width="46" height="17"/>
+    </entry>
+    <entry id="53" name="mmu:15932" type="gene" reaction="rn:R07813"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15932">
+        <graphics name="Idua, 6030426D08" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="331" y="353" width="46" height="17"/>
+    </entry>
+    <entry id="54" name="mmu:11881" type="gene" reaction="rn:R07823"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11881">
+        <graphics name="Arsb, 1110007C02Rik, AI480648, As-1, As-1r, As-1s, As-1t, As1, As1-r, As1-s, As1-t, Asr-1, Ast-1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="114" y="412" width="46" height="17"/>
+    </entry>
+    <entry id="55" name="mmu:12091" type="gene" reaction="rn:R07807"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12091">
+        <graphics name="Glb1, AW125515, Bge, Bgl, Bgl-e, Bgl-s, Bgl-t, Bgs, Bgt, C130097A14Rik" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="467" y="353" width="46" height="17"/>
+    </entry>
+    <entry id="56" name="mmu:109685 mmu:15586 mmu:15587 mmu:20690 mmu:74409 mmu:74468 mmu:77042" type="gene" reaction="rn:R07824"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:109685+mmu:15586+mmu:15587+mmu:20690+mmu:74409+mmu:74468+mmu:77042">
+        <graphics name="Hyal3, Hyl3..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="114" y="475" width="46" height="17"/>
+    </entry>
+    <entry id="57" name="mmu:52120" type="gene" reaction="rn:R07815"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:52120">
+        <graphics name="Hgsnat, 9430010M12Rik, AW208455, D8Ertd354e, Tmem76" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="331" y="475" width="46" height="17"/>
+    </entry>
+    <entry id="58" name="mmu:15211 mmu:15212" type="gene" reaction="rn:R07810"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15211+mmu:15212">
+        <graphics name="Hexa, Hex-1..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="534" y="475" width="46" height="17"/>
+    </entry>
+    <entry id="59" name="mmu:109685 mmu:15586 mmu:15587 mmu:20690 mmu:74409 mmu:74468 mmu:77042" type="gene" reaction="rn:R07825"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:109685+mmu:15586+mmu:15587+mmu:20690+mmu:74409+mmu:74468+mmu:77042">
+        <graphics name="Hyal3, Hyl3..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="44" y="475" width="46" height="17"/>
+    </entry>
+    <entry id="60" name="mmu:27419" type="gene" reaction="rn:R07816"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:27419">
+        <graphics name="Naglu" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="331" y="536" width="46" height="17"/>
+    </entry>
+    <entry id="62" name="mmu:15211 mmu:15212" type="gene" reaction="rn:R07809"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15211+mmu:15212">
+        <graphics name="Hexa, Hex-1..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="467" y="475" width="46" height="17"/>
+    </entry>
+    <entry id="63" name="mmu:110006" type="gene" reaction="rn:R07818"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110006">
+        <graphics name="Gusb, AI747421, Gur, Gus, Gus-r, Gus-s, Gus-t, Gus-u, Gut, asd, g" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="331" y="657" width="46" height="17"/>
+    </entry>
+    <entry id="64" name="mmu:75612" type="gene" reaction="rn:R07819"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:75612">
+        <graphics name="Gns, 2610016K11Rik, AU042285, C87209, G6S, N28088" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="331" y="719" width="46" height="17"/>
+    </entry>
+    <entry id="65" name="cpd:C00426" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00426">
+        <graphics name="C00426" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="113" y="203" width="8" height="8"/>
+    </entry>
+    <entry id="66" name="cpd:C00634" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00634">
+        <graphics name="C00634" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="204" y="386" width="8" height="8"/>
+    </entry>
+    <entry id="67" name="cpd:C00573" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00573">
+        <graphics name="C00573" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="466" y="203" width="8" height="8"/>
+    </entry>
+    <entry id="71" name="mmu:109685 mmu:15586 mmu:15587 mmu:20690 mmu:74409 mmu:74468 mmu:77042" type="gene" reaction="rn:R07824"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:109685+mmu:15586+mmu:15587+mmu:20690+mmu:74409+mmu:74468+mmu:77042">
+        <graphics name="Hyal3, Hyl3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="660,258,690,258"/>
+    </entry>
+    <entry id="72" name="mmu:11881" type="gene" reaction="rn:R07823"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11881">
+        <graphics name="Arsb, 1110007C02Rik, AI480648, As-1, As-1r, As-1s, As-1t, As1, As1-r, As1-s, As1-t, Asr-1, Ast-1" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="634,213,634,243"/>
+    </entry>
+    <entry id="73" name="mmu:110006" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110006">
+        <graphics name="Gusb, AI747421, Gur, Gus, Gus-r, Gus-s, Gus-t, Gus-u, Gut, asd, g" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="739,258,769,258"/>
+    </entry>
+    <entry id="74" name="mmu:50917" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:50917">
+        <graphics name="Galns, mFLJ00319" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="801,213,801,243"/>
+    </entry>
+    <entry id="75" name="mmu:109685 mmu:15586 mmu:15587 mmu:20690 mmu:74409 mmu:74468 mmu:77042" type="gene" reaction="rn:R07824"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:109685+mmu:15586+mmu:15587+mmu:20690+mmu:74409+mmu:74468+mmu:77042">
+        <graphics name="Hyal3, Hyl3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="738,390,768,390"/>
+    </entry>
+    <entry id="77" name="mmu:110006" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110006">
+        <graphics name="Gusb, AI747421, Gur, Gus, Gus-r, Gus-s, Gus-t, Gus-u, Gut, asd, g" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="817,390,847,390"/>
+    </entry>
+    <entry id="78" name="mmu:15931" type="gene" reaction="rn:R07821"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15931">
+        <graphics name="Ids, AW214631" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="627,345,627,375"/>
+    </entry>
+    <entry id="79" name="mmu:15932" type="gene" reaction="rn:R07822"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15932">
+        <graphics name="Idua, 6030426D08" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="647,390,677,390"/>
+    </entry>
+    <entry id="80" name="mmu:27419" type="gene" reaction="rn:R07816"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:27419">
+        <graphics name="Naglu" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="725,530,755,530"/>
+    </entry>
+    <entry id="82" name="mmu:110006" type="gene" reaction="rn:R07818"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110006">
+        <graphics name="Gusb, AI747421, Gur, Gus, Gus-r, Gus-s, Gus-t, Gus-u, Gut, asd, g" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="804,530,834,530"/>
+    </entry>
+    <entry id="83" name="mmu:15931" type="gene" reaction="rn:R07812"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15931">
+        <graphics name="Ids, AW214631" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="627,485,627,515"/>
+    </entry>
+    <entry id="84" name="mmu:15932" type="gene" reaction="rn:R07813"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15932">
+        <graphics name="Idua, 6030426D08" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="647,530,677,530"/>
+    </entry>
+    <entry id="85" name="mmu:27419" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:27419">
+        <graphics name="Naglu" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="896,530,926,530"/>
+    </entry>
+    <entry id="86" name="mmu:15442 mmu:545291" type="gene" reaction="rn:R07811"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15442+mmu:545291">
+        <graphics name="Hpse, HSE1, Hpa, Hpr1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="975,530,1005,530"/>
+    </entry>
+    <entry id="87" name="mmu:27029" type="gene" reaction="rn:R07814"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:27029">
+        <graphics name="Sgsh, 4632406A19Rik" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="691,485,691,515"/>
+    </entry>
+    <entry id="90" name="mmu:15211 mmu:15212" type="gene" reaction="rn:R07809"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15211+mmu:15212">
+        <graphics name="Hexa, Hex-1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="731,669,761,669"/>
+    </entry>
+    <entry id="91" name="mmu:75612" type="gene" reaction="rn:R07808"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:75612">
+        <graphics name="Gns, 2610016K11Rik, AU042285, C87209, G6S, N28088" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="697,624,697,654"/>
+    </entry>
+    <entry id="92" name="mmu:12091" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12091">
+        <graphics name="Glb1, AW125515, Bge, Bgl, Bgl-e, Bgl-s, Bgl-t, Bgs, Bgt, C130097A14Rik" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="802,669,832,669"/>
+    </entry>
+    <entry id="93" name="mmu:50917" type="gene" reaction="rn:R07806"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:50917">
+        <graphics name="Galns, mFLJ00319" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="621,624,621,654"/>
+    </entry>
+    <entry id="94" name="mmu:12091" type="gene" reaction="rn:R07807"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12091">
+        <graphics name="Glb1, AW125515, Bge, Bgl, Bgl-e, Bgl-s, Bgl-t, Bgs, Bgt, C130097A14Rik" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="641,669,671,669"/>
+    </entry>
+    <entry id="95" name="mmu:15211 mmu:15212" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15211+mmu:15212">
+        <graphics name="Hexa, Hex-1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="894,669,924,669"/>
+    </entry>
+    <entry id="97" name="mmu:75612" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:75612">
+        <graphics name="Gns, 2610016K11Rik, AU042285, C87209, G6S, N28088" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="861,624,861,654"/>
+    </entry>
+    <relation entry1="49" entry2="52" type="ECrel">
+        <subtype name="compound" value="38"/>
+    </relation>
+    <relation entry1="52" entry2="54" type="ECrel">
+        <subtype name="compound" value="37"/>
+    </relation>
+    <relation entry1="52" entry2="59" type="ECrel">
+        <subtype name="compound" value="37"/>
+    </relation>
+    <relation entry1="54" entry2="59" type="ECrel">
+        <subtype name="compound" value="37"/>
+    </relation>
+    <relation entry1="54" entry2="56" type="ECrel">
+        <subtype name="compound" value="36"/>
+    </relation>
+    <relation entry1="41" entry2="50" type="ECrel">
+        <subtype name="compound" value="34"/>
+    </relation>
+    <relation entry1="40" entry2="50" type="ECrel">
+        <subtype name="compound" value="34"/>
+    </relation>
+    <relation entry1="50" entry2="53" type="ECrel">
+        <subtype name="compound" value="33"/>
+    </relation>
+    <relation entry1="53" entry2="13" type="ECrel">
+        <subtype name="compound" value="32"/>
+    </relation>
+    <relation entry1="13" entry2="57" type="ECrel">
+        <subtype name="compound" value="31"/>
+    </relation>
+    <relation entry1="57" entry2="60" type="ECrel">
+        <subtype name="compound" value="30"/>
+    </relation>
+    <relation entry1="63" entry2="64" type="ECrel">
+        <subtype name="compound" value="27"/>
+    </relation>
+    <relation entry1="45" entry2="62" type="ECrel">
+        <subtype name="compound" value="22"/>
+    </relation>
+    <relation entry1="45" entry2="55" type="ECrel">
+        <subtype name="compound" value="23"/>
+    </relation>
+    <relation entry1="55" entry2="58" type="ECrel">
+        <subtype name="compound" value="23"/>
+    </relation>
+    <relation entry1="45" entry2="58" type="ECrel">
+        <subtype name="compound" value="23"/>
+    </relation>
+    <relation entry1="51" entry2="55" type="ECrel">
+        <subtype name="compound" value="24"/>
+    </relation>
+    <relation entry1="41" entry2="42" type="maplink">
+        <subtype name="compound" value="47"/>
+    </relation>
+    <relation entry1="40" entry2="42" type="maplink">
+        <subtype name="compound" value="47"/>
+    </relation>
+    <reaction id="40" name="rn:R07811" type="irreversible">
+        <substrate id="47" name="cpd:C00925"/>
+        <product id="34" name="gl:G13034"/>
+    </reaction>
+    <reaction id="41" name="rn:R07811" type="irreversible">
+        <substrate id="47" name="cpd:C00925"/>
+        <product id="34" name="gl:G13034"/>
+    </reaction>
+    <reaction id="45" name="rn:R07808" type="irreversible">
+        <substrate id="23" name="gl:G06780"/>
+        <product id="22" name="gl:G13033"/>
+    </reaction>
+    <reaction id="49" name="rn:R07821" type="irreversible">
+        <substrate id="39" name="gl:G13041"/>
+        <product id="38" name="gl:G13042"/>
+    </reaction>
+    <reaction id="50" name="rn:R07812" type="irreversible">
+        <substrate id="34" name="gl:G13034"/>
+        <product id="33" name="gl:G13035"/>
+    </reaction>
+    <reaction id="51" name="rn:R07806" type="irreversible">
+        <substrate id="25" name="gl:G13031"/>
+        <product id="24" name="gl:G13032"/>
+    </reaction>
+    <reaction id="52" name="rn:R07822" type="irreversible">
+        <substrate id="38" name="gl:G13042"/>
+        <product id="37" name="gl:G12336"/>
+    </reaction>
+    <reaction id="53" name="rn:R07813" type="irreversible">
+        <substrate id="33" name="gl:G13035"/>
+        <product id="32" name="gl:G13036"/>
+    </reaction>
+    <reaction id="54" name="rn:R07823" type="irreversible">
+        <substrate id="37" name="gl:G12336"/>
+        <product id="36" name="gl:G13043"/>
+    </reaction>
+    <reaction id="13" name="rn:R07814" type="irreversible">
+        <substrate id="32" name="gl:G13036"/>
+        <product id="31" name="gl:G13037"/>
+    </reaction>
+    <reaction id="55" name="rn:R07807" type="irreversible">
+        <substrate id="24" name="gl:G13032"/>
+        <product id="23" name="gl:G06780"/>
+    </reaction>
+    <reaction id="56" name="rn:R07824" type="irreversible">
+        <substrate id="36" name="gl:G13043"/>
+        <product id="35" name="gl:G00872"/>
+    </reaction>
+    <reaction id="57" name="rn:R07815" type="irreversible">
+        <substrate id="31" name="gl:G13037"/>
+        <product id="30" name="gl:G13038"/>
+    </reaction>
+    <reaction id="58" name="rn:R07810" type="irreversible">
+        <substrate id="23" name="gl:G06780"/>
+        <product id="21" name="gl:G08421"/>
+    </reaction>
+    <reaction id="59" name="rn:R07825" type="irreversible">
+        <substrate id="37" name="gl:G12336"/>
+        <product id="35" name="gl:G00872"/>
+    </reaction>
+    <reaction id="60" name="rn:R07816" type="irreversible">
+        <substrate id="30" name="gl:G13038"/>
+        <product id="29" name="gl:G13039"/>
+    </reaction>
+    <reaction id="62" name="rn:R07809" type="irreversible">
+        <substrate id="22" name="gl:G13033"/>
+        <product id="21" name="gl:G08421"/>
+    </reaction>
+    <reaction id="63" name="rn:R07818" type="irreversible">
+        <substrate id="28" name="gl:G13040"/>
+        <product id="27" name="gl:G09660"/>
+    </reaction>
+    <reaction id="64" name="rn:R07819" type="irreversible">
+        <substrate id="27" name="gl:G09660"/>
+        <product id="26" name="gl:G02632"/>
+    </reaction>
+    <reaction id="71" name="rn:R07824" type="irreversible">
+        <substrate id="36" name="gl:G13043"/>
+        <product id="35" name="gl:G00872"/>
+    </reaction>
+    <reaction id="72" name="rn:R07823" type="irreversible">
+        <substrate id="37" name="gl:G12336"/>
+        <product id="36" name="gl:G13043"/>
+    </reaction>
+    <reaction id="75" name="rn:R07824" type="irreversible">
+        <substrate id="36" name="gl:G13043"/>
+        <product id="35" name="gl:G00872"/>
+    </reaction>
+    <reaction id="78" name="rn:R07821" type="irreversible">
+        <substrate id="39" name="gl:G13041"/>
+        <product id="38" name="gl:G13042"/>
+    </reaction>
+    <reaction id="79" name="rn:R07822" type="irreversible">
+        <substrate id="38" name="gl:G13042"/>
+        <product id="37" name="gl:G12336"/>
+    </reaction>
+    <reaction id="80" name="rn:R07816" type="irreversible">
+        <substrate id="30" name="gl:G13038"/>
+        <product id="29" name="gl:G13039"/>
+    </reaction>
+    <reaction id="82" name="rn:R07818" type="irreversible">
+        <substrate id="28" name="gl:G13040"/>
+        <product id="27" name="gl:G09660"/>
+    </reaction>
+    <reaction id="83" name="rn:R07812" type="irreversible">
+        <substrate id="34" name="gl:G13034"/>
+        <product id="33" name="gl:G13035"/>
+    </reaction>
+    <reaction id="84" name="rn:R07813" type="irreversible">
+        <substrate id="33" name="gl:G13035"/>
+        <product id="32" name="gl:G13036"/>
+    </reaction>
+    <reaction id="86" name="rn:R07811" type="irreversible">
+        <substrate id="47" name="cpd:C00925"/>
+        <product id="34" name="gl:G13034"/>
+    </reaction>
+    <reaction id="87" name="rn:R07814" type="irreversible">
+        <substrate id="32" name="gl:G13036"/>
+        <product id="31" name="gl:G13037"/>
+    </reaction>
+    <reaction id="90" name="rn:R07809" type="irreversible">
+        <substrate id="22" name="gl:G13033"/>
+        <product id="21" name="gl:G08421"/>
+    </reaction>
+    <reaction id="91" name="rn:R07808" type="irreversible">
+        <substrate id="23" name="gl:G06780"/>
+        <product id="22" name="gl:G13033"/>
+    </reaction>
+    <reaction id="93" name="rn:R07806" type="irreversible">
+        <substrate id="25" name="gl:G13031"/>
+        <product id="24" name="gl:G13032"/>
+    </reaction>
+    <reaction id="94" name="rn:R07807" type="irreversible">
+        <substrate id="24" name="gl:G13032"/>
+        <product id="23" name="gl:G06780"/>
+    </reaction>
+</pathway>
