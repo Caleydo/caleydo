@@ -276,6 +276,34 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 		DelimiterRadioGroup delimiterRadioGroup = new DelimiterRadioGroup();
 		delimiterRadioGroup.create(parentComposite, dataSetDescription, this);
 
+		Group columnSelectionGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		columnSelectionGroup.setText("Column Selection");
+		columnSelectionGroup.setLayout(new GridLayout(2, false));
+		columnSelectionGroup
+				.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
+		Button selectAllButton = new Button(columnSelectionGroup, SWT.PUSH);
+		selectAllButton.setText("Select All");
+		selectAllButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				for (Button button : selectedColumnButtons) {
+					button.setSelection(true);
+				}
+			}
+		});
+		Button selectNoneButton = new Button(columnSelectionGroup, SWT.PUSH);
+		selectNoneButton.setText("Select None");
+		selectNoneButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				for (Button button : selectedColumnButtons) {
+					button.setSelection(false);
+				}
+			}
+		});
+
 		previewTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER
 				| SWT.FULL_SELECTION);
 		previewTable.setLinesVisible(true);
@@ -688,7 +716,8 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 		showAllColumnsButton = new Button(tableInfoComposite, SWT.CHECK);
 		showAllColumnsButton.setSelection(false);
 		showAllColumnsButton.setText("Show all Columns");
-		showAllColumnsButton.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
+		showAllColumnsButton
+				.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
 		showAllColumnsButton.setEnabled(false);
 		showAllColumnsButton.addSelectionListener(new SelectionAdapter() {
 
