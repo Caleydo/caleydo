@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: May 21, 2010 11:19:02 +0900 (GMT+09:00) -->
+<pathway name="path:mmu04966" org="mmu" number="04966"
+         title="Collecting duct acid secretion"
+         image="http://www.genome.jp/kegg/pathway/mmu/mmu04966.png"
+         link="http://www.genome.jp/kegg-bin/show_pathway?mmu04966">
+    <entry id="1" name="path:mmu04966" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu04966">
+        <graphics name="TITLE:Collecting duct acid secretion" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="187" y="58" width="294" height="25"/>
+    </entry>
+    <entry id="2" name="path:mmu04530" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu04530">
+        <graphics name="Tight junction" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="252" y="117" width="115" height="25"/>
+    </entry>
+    <entry id="3" name="cpd:C00001" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00001">
+        <graphics name="C00001" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="332" y="563" width="8" height="8"/>
+    </entry>
+    <entry id="4" name="mmu:110935 mmu:11964 mmu:11966 mmu:11972 mmu:11973 mmu:11974 mmu:11975 mmu:11984 mmu:140494 mmu:21871 mmu:242341 mmu:27060 mmu:338375 mmu:66144 mmu:66237 mmu:66290 mmu:66335 mmu:68775 mmu:73834 mmu:74915 mmu:76252" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110935+mmu:11964+mmu:11966+mmu:11972+mmu:11973+mmu:11974+mmu:11975+mmu:11984+mmu:140494+mmu:21871+mmu:242341+mmu:27060+mmu:338375+mmu:66144+mmu:66237+mmu:66290+mmu:66335+mmu:68775+mmu:73834+mmu:74915+mmu:76252">
+        <graphics name="Atp6v1b1, AW208839, Atp6b1, D630003L15, D630030L16Rik, D630039P21Rik, Vpp-3, Vpp3..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="157" y="334" width="46" height="17"/>
+    </entry>
+    <entry id="5" name="mmu:20533" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20533">
+        <graphics name="Slc4a1, Ae1, CD233, Empb3, l11Jus51" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="544" y="339" width="46" height="17"/>
+    </entry>
+    <entry id="6" name="mmu:11944 mmu:11945" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11944+mmu:11945">
+        <graphics name="Atp4a..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="159" y="415" width="46" height="17"/>
+    </entry>
+    <entry id="7" name="cpd:C00080" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00080">
+        <graphics name="C00080" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="102" y="333" width="8" height="8"/>
+    </entry>
+    <entry id="8" name="cpd:C00011" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00011">
+        <graphics name="C00011" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="374" y="565" width="8" height="8"/>
+    </entry>
+    <entry id="9" name="cpd:C00080" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00080">
+        <graphics name="C00080" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="302" y="336" width="8" height="8"/>
+    </entry>
+    <entry id="10" name="cpd:C00288" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00288">
+        <graphics name="C00288" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="608" y="334" width="8" height="8"/>
+    </entry>
+    <entry id="11" name="mmu:12349" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12349">
+        <graphics name="Car2, AI131712, CAII, Ca2, Car-2, Ltw-5, Lvtw-5" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="392" y="502" width="46" height="17"/>
+    </entry>
+    <entry id="12" name="cpd:C00698" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00698">
+        <graphics name="C00698" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="486" y="345" width="8" height="8"/>
+    </entry>
+    <entry id="14" name="cpd:C00288" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00288">
+        <graphics name="C00288" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="401" y="336" width="8" height="8"/>
+    </entry>
+    <entry id="15" name="cpd:C00014" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00014">
+        <graphics name="C00014" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="33" y="511" width="8" height="8"/>
+    </entry>
+    <entry id="16" name="cpd:C01353" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C01353">
+        <graphics name="C01353" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="355" y="439" width="8" height="8"/>
+    </entry>
+    <entry id="17" name="mmu:20499" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20499">
+        <graphics name="Slc12a7, AA408796, D13Ertd261e, Kcc4" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="542" y="470" width="46" height="17"/>
+    </entry>
+    <entry id="18" name="mmu:56365" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:56365">
+        <graphics name="Clcnkb, CLCKB, Clc-Ka, Clck2, Clcnk1l" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="543" y="517" width="46" height="17"/>
+    </entry>
+    <entry id="19" name="cpd:C00238" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00238">
+        <graphics name="C00238" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="605" y="476" width="8" height="8"/>
+    </entry>
+    <entry id="20" name="cpd:C00698" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00698">
+        <graphics name="C00698" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="605" y="465" width="8" height="8"/>
+    </entry>
+    <entry id="21" name="cpd:C00698" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00698">
+        <graphics name="C00698" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="606" y="519" width="8" height="8"/>
+    </entry>
+    <entry id="22" name="cpd:C00080" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00080">
+        <graphics name="C00080" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="106" y="410" width="8" height="8"/>
+    </entry>
+    <entry id="23" name="cpd:C00238" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00238">
+        <graphics name="C00238" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="215" y="421" width="8" height="8"/>
+    </entry>
+    <entry id="24" name="cpd:C00080" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00080">
+        <graphics name="C00080" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="63" y="374" width="8" height="8"/>
+    </entry>
+    <entry id="27" name="cpd:C00011" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00011">
+        <graphics name="C00011" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="604" y="562" width="8" height="8"/>
+    </entry>
+    <relation entry1="9" entry2="7" type="PCrel">
+        <subtype name="state change" value="..."/>
+    </relation>
+    <relation entry1="9" entry2="22" type="PCrel">
+        <subtype name="state change" value="..."/>
+    </relation>
+    <relation entry1="14" entry2="10" type="PCrel">
+        <subtype name="state change" value="..."/>
+    </relation>
+    <relation entry1="12" entry2="20" type="PCrel">
+        <subtype name="state change" value="..."/>
+    </relation>
+    <relation entry1="12" entry2="21" type="PCrel">
+        <subtype name="state change" value="..."/>
+    </relation>
+    <relation entry1="27" entry2="8" type="PCrel">
+        <subtype name="state change" value="..."/>
+    </relation>
+</pathway>
