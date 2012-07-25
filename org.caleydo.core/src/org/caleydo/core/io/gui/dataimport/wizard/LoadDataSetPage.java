@@ -674,18 +674,21 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 	 */
 	protected void createTableInfo(Composite parent) {
 		Composite tableInfoComposite = new Composite(parent, SWT.NONE);
-		tableInfoComposite.setLayout(new GridLayout(4, false));
+		tableInfoComposite.setLayout(new GridLayout(3, false));
 		tableInfoComposite.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true,
 				2, 1));
 
 		tableInfoLabel = new Label(tableInfoComposite, SWT.NONE);
+		tableInfoLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
 
 		Label separator = new Label(tableInfoComposite, SWT.SEPARATOR | SWT.VERTICAL);
-		GridData separatorGridData = new GridData(SWT.CENTER, SWT.CENTER, false, false);
+		GridData separatorGridData = new GridData(SWT.RIGHT, SWT.CENTER, false, false);
 		separatorGridData.heightHint = 16;
 		separator.setLayoutData(separatorGridData);
 		showAllColumnsButton = new Button(tableInfoComposite, SWT.CHECK);
 		showAllColumnsButton.setSelection(false);
+		showAllColumnsButton.setText("Show all Columns");
+		showAllColumnsButton.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
 		showAllColumnsButton.setEnabled(false);
 		showAllColumnsButton.addSelectionListener(new SelectionAdapter() {
 
@@ -698,7 +701,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 										: MAX_PREVIEW_TABLE_COLUMNS);
 				selectedColumnButtons = previewTableManager.getSelectedColumnButtons();
 				// TODO: Disabled by alex, do we need this?
-//				determineIDTypes();
+				// determineIDTypes();
 				previewTableManager.updateTableColors(
 						dataSetDescription.getNumberOfHeaderLines(),
 						dataSetDescription.getRowOfColumnIDs() + 1,
@@ -708,9 +711,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 			}
 
 		});
-
-		Label showAllColumnsLabel = new Label(tableInfoComposite, SWT.NONE);
-		showAllColumnsLabel.setText("Show all Columns");
 	}
 
 	private String determineDataSetLabel() {
@@ -987,6 +987,10 @@ public class LoadDataSetPage extends AImportDataPage implements Listener,
 		showAllColumnsButton.setEnabled(true);
 		tableInfoLabel.setText((previewTable.getColumnCount() - 1) + " of "
 				+ totalNumberOfColumns + " Columns shown");
+		tableInfoLabel.pack();
+		tableInfoLabel.getParent().pack(true);
+		parentComposite.pack(true);
+		parentComposite.layout(true);
 	}
 
 	@Override

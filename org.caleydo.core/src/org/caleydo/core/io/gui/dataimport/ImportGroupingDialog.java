@@ -578,6 +578,10 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		showAllColumnsButton.setEnabled(true);
 		tableInfoLabel.setText((previewTable.getColumnCount() - 1) + " of "
 				+ totalNumberOfColumns + " Columns shown");
+		tableInfoLabel.pack();
+		tableInfoLabel.getParent().pack(true);
+		parentComposite.pack(true);
+		parentComposite.layout(true);
 	}
 
 	/**
@@ -593,17 +597,14 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 				2, 1));
 
 		tableInfoLabel = new Label(tableInfoComposite, SWT.NONE);
-		GridData gd = new GridData(SWT.FILL, SWT.FILL, false, true);
-		// This needs to be looked at again: without it, the label is not
-		// displayed.
-		gd.widthHint = 100;
-		tableInfoLabel.setLayoutData(gd);
+		tableInfoLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		Label separator = new Label(tableInfoComposite, SWT.SEPARATOR | SWT.VERTICAL);
 		GridData separatorGridData = new GridData(SWT.CENTER, SWT.CENTER, false, false);
 		separatorGridData.heightHint = 16;
 		separator.setLayoutData(separatorGridData);
 		showAllColumnsButton = new Button(tableInfoComposite, SWT.CHECK);
+		showAllColumnsButton.setText("Show all Columns");
 		showAllColumnsButton.setSelection(false);
 		showAllColumnsButton.setEnabled(false);
 		showAllColumnsButton.addSelectionListener(new SelectionAdapter() {
@@ -625,9 +626,6 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 			}
 
 		});
-
-		Label showAllColumnsLabel = new Label(tableInfoComposite, SWT.NONE);
-		showAllColumnsLabel.setText("Show all Columns");
 	}
 
 }
