@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+<TITLE>h_ahspPathway</TITLE>
+<base href="http://cgap.nci.nih.gov/Pathways/BioCarta/">
+
+<META http-equiv="Content-Type" content="text/html; charset=utf-8" name="keywords"
+content="cancer, gene, chromosome, pathway, tissue">
+<title>Cancer Genome Anatomy Project (CGAP) | Cancer Genome Characterization Initiative (CGCI)</title>
+<link rel="stylesheet" type="text/css" href="http://cgap.nci.nih.gov/cgap-cgci.css" />
+<!--[if IE 6]>
+<link href="http://cgap.nci.nih.gov/ie6.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+<!--[if IE 7]>
+<link href="http://cgap.nci.nih.gov/ie7.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+<STYLE TYPE="text/css"> 
+  H3 {text-align:center; font-size:12pt;}
+  H1,H2,H3,H4,H5,H6 {align=center font-family: Arial, Helvetica, sans-serif;}
+  H6 {font-size:8pt;}
+</STYLE>
+
+<SCRIPT LANGUAGE="JavaScript">
+window.name = "CGAP";
+<!--
+var gwindow = null;
+var version = parseFloat(navigator.appVersion);
+
+function gotoFunction() 
+{
+  if(document.gotoCtl.siteList.options[document.gotoCtl.siteList.selectedIndex].value != "")
+  {  
+    self.location = document.gotoCtl.siteList.options[document.gotoCtl.siteList.selectedIndex].value;
+  }
+}
+
+function spawn(url) {
+  var w = window.open(url, "_blank",
+      "screenX=0,screenY=0,status=yes,toolbar=yes,menubar=yes," +
+      "location=yes,scrollbars=yes,resizable=yes");
+}
+
+// -->
+
+</SCRIPT>
+
+</HEAD>
+
+<body class="cgap">
+
+<a href="#main-content" id="skipnav">Skip Navigation</a>
+<div id="nci-banner">
+	<img src="http://cgap.nci.nih.gov/images/nci-banner.png" alt="" height="37" width="822" usemap="#nci-bannermap" />
+	<map id="nci-bannermap" name="nci-bannermap">
+		<area href="http://cancer.gov/" target="_blank" alt="National Cancer Institute" coords="0,0,300,37" shape="rect" />
+		<area href="http://www.nih.gov/" target="_blank" alt="U.S. National Institutes of Health" coords="536,0,717,37" shape="rect" />
+		<area href="http://cancer.gov/" target="_blank" alt="National Cancer Institute" coords="722,1,822,37" shape="rect" />
+	</map>
+</div>
+
+<div id="banner"><a href="http://cgap.nci.nih.gov/cgap.html" title="The Cancer Genome Anatomy Project and the Cancer Genome Characterization Initiative">&nbsp;</a></div>
+</div>
+
+<div id="container">
+<div id="container2">
+<div id="container3">
+<div id="container4">
+<div id="container5">
+<div id="container6">
+<div id="container7">
+<div id="container8">
+	<div id="topnav">
+		<ul>
+			<li><a href="/Catalog" id="nav-cgaphowto">CGAP How To</a></li>
+			<li><a href="/Genes" >Genes</a></li>
+			<li><a href="/Chromosomes" >Chromosomes</a></li>
+			<li><a href="/Tissues" >Tissues</a></li>
+			<li><a href="/SAGE" >SAGE Genie</a></li>
+			<li><a href="/RNAi" >RNAi</a></li>
+			<li><a href="/Pathways" class="active">Pathways</a></li>
+			<li><a href="/Tools" >Tools</a></li>
+		</ul>
+	</div>
+
+
+
+<!-- dtml-if expr="WhichSection!='HomePage'" -->
+    <table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td valign="top" width="189">	
+        <div id="left-content">
+		<div class="left-icon" id="left-icon-pathways">Pathways </div>
+		<ul class="leftnav">
+			<li class="header2">Pathways and Tools</li>
+                        <SCRIPT LANGUAGE="JavaScript">
+                          if (location.href=="http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways") {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways class=active>BioCarta</A></li>");
+                          }
+                          else {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways>BioCarta</A></li>");
+                          }
+                          if (location.href=="http://cgap.nci.nih.gov/Pathways/Kegg_Standard_Pathways") {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/Kegg_Standard_Pathways class=active>KEGG</A></li>");
+                          }
+                          else {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/Kegg_Standard_Pathways>KEGG</A></li>");
+                          }
+                          if (location.href=="http://cgap.nci.nih.gov/Pathways/Pathway_Searcher") {
+                            document.write("<li><a href=/Pathways/Pathway_Searcher class=active>Pathway Searcher</A></li>");
+                          }
+                          else {
+                            document.write("<li><a href=/Pathways/Pathway_Searcher>Pathway Searcher</A></li>");
+                          }
+
+                        </SCRIPT>
+		</ul>
+		<ul class="leftnav">
+			<li class="header2">Related Links</li>
+                        <li><A href="http://www.expasy.ch/cgi-bin/search-biochem-index" target="_blank">ExPASy</a></li>
+                        <li><a href="http://kinase.uhnres.utoronto.ca/signallingmap.html" target="_blank">MAPK signalling</A></li>
+                        <li><a href="http://www.grt.kyushu-u.ac.jp/spad/index.html" target="_blank">SPAD</a></li>
+		</ul>
+
+
+                <ul class="leftnav">
+			<li class="header2">Quick Links:</li>
+			<li><a href="http://www.broad.harvard.edu/science/programs/chemical-biology/initiative-chemical-genetics" target="_blank">ICG</a></li>
+			<li><a href="http://www.nci.nih.gov" target="_blank">NCI Home</a></li>
+			<li><a href="http://ncicb.nci.nih.gov" target="_blank">NCICB Home</a></li>
+			<li><a href="http://www.ncbi.nlm.nih.gov" target="_blank">NCBI Home</a></li>
+			<li><a href="http://ocg.cancer.gov" target="_blank">OCG</a></li>
+		</ul>
+		<a href="cgci.html"><img src="http://cgap.nci.nih.gov/images/tile-cgci.jpg" alt="Cancer Genome Characterization Initiative" height="65" width="169" /></a>
+		<p class="cgci"><a href="cgci.html">Visit</a> the database of genomic characterization data for multiple tumor types.</p>
+	</div>
+
+</td><td valign="top">
+<div id="content">
+<!-- dtml-else -->
+<!--  <td>    -->
+<!-- /dtml-if -->
+
+<a id="maincontent" name="maincontent"></a>
+<!-- beginning of main content -->
+
+<SCRIPT>
+window.name = "CGAP";
+</SCRIPT>
+
+<META http-equiv=Content-Type content='text/html; charset=windows-1252'>
+
+<SPAN style="float:left;"><A href="javascript:pathwayGenes()"><IMG SRC="/images/dna.gif" alt="DNA" BORDER=0><BR>Genes</A><SCRIPT>function pathwayGenes() { location = "/Genes/PathGeneQuery?PAGE=1&ORG=Hs&PATH=h_ahspPathway"}</SCRIPT></SPAN><CENTER>
+<BR>
+<FONT face='verdana, arial, helvetica, sans serif' color=#003366 size=2>
+<b>Hemoglobin's Chaperone</b></FONT>
+<BR><FONT face="Arial" color=#009999 size=2><B>Pathway information provided by <A href="javascript:spawn('http://www.biocarta.com')" style='color: #009999'>BioCarta</A></B></FONT><BR><FONT face="Arial" color=#009999 size=1>(See <A href="javascript:spawn('http://www.biocarta.com/legal/terms.asp')" style='color: #009999'>Terms and Conditions</A> of use)<BR><A href="javascript:spawn('/Pathways/BioCarta/path_legend')" style="color:#003366">Legend</A></FONT><P>
+
+<!--Start pathway image-->
+<TABLE><TR><TD>
+<img name="h_ahspPathway" src="http://cgap.nci.nih.gov/BIOCARTA/Pathways/h_ahspPathway.gif" alt="h_ahspPathway" width="720" height="512" border="0" usemap="#m_h_ahspPathway">
+<map name="m_h_ahspPathway">
+
+<area shape="poly" coords="271,396,254,396,254,400,257,400,257,406,261,406,261,409,265,409,265,412,271,412,271,396" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="238,396,255,396,255,400,252,400,252,406,248,406,248,409,243,409,243,412,238,412,238,396" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="271,428,254,428,254,423,257,423,257,418,261,418,261,414,265,414,265,412,271,412,271,428" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="238,428,255,428,255,423,252,423,252,418,248,418,248,414,243,414,243,412,238,412,238,428" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="262,170,245,170,245,174,248,174,248,180,252,180,252,183,256,183,256,186,262,186,262,170" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="229,170,246,170,246,174,243,174,243,180,239,180,239,183,234,183,234,186,229,186,229,170" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="262,202,245,202,245,197,248,197,248,192,252,192,252,188,256,188,256,186,262,186,262,202" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="229,202,246,202,246,197,243,197,243,192,239,192,239,188,234,188,234,186,229,186,229,202" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="130,393,131,385,134,379,138,375,143,373,147,375,145,383,145,389,147,394,152,395,156,394,151,407,148,411,143,413,138,411,134,407,131,401,130,393,130,393" href="/Genes/GeneInfo?ORG=Hs&BCID=gata1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=gata1">
+<area shape="poly" coords="16,447,17,439,20,433,24,429,29,427,32,429,31,437,31,443,33,448,38,449,42,448,38,461,34,465,29,467,24,465,20,461,17,455,16,447,16,447" href="/Genes/GeneInfo?ORG=Hs&BCID=gata1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=gata1">
+<area shape="poly" coords="25,331,26,323,29,317,33,313,38,311,41,313,40,321,40,327,42,332,47,333,51,332,47,345,43,349,38,351,33,349,29,345,26,339,25,331,25,331" href="/Genes/GeneInfo?ORG=Hs&BCID=gata1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=gata1">
+<area shape="poly" coords="86,233,89,236,89,245,86,248,48,248,45,245,45,236,48,233,86,233,86,233" href="/Genes/GeneInfo?ORG=Hs&BCID=fech"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=fech">
+<area shape="poly" coords="86,218,89,221,89,230,86,233,48,233,45,230,45,221,48,218,86,218,86,218" href="/Genes/GeneInfo?ORG=Hs&BCID=cpo"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=cpo">
+<area shape="poly" coords="86,202,89,205,89,214,86,217,48,217,45,214,45,205,48,202,86,202,86,202" href="/Genes/GeneInfo?ORG=Hs&BCID=urod"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=urod">
+<area shape="poly" coords="86,186,89,189,89,198,86,201,48,201,45,198,45,189,48,186,86,186,86,186" href="/Genes/GeneInfo?ORG=Hs&BCID=uros"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=uros">
+<area shape="poly" coords="86,171,89,174,89,183,86,186,48,186,45,183,45,174,48,171,86,171,86,171" href="/Genes/GeneInfo?ORG=Hs&BCID=hmbs"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hmbs">
+<area shape="poly" coords="85,155,88,158,88,167,85,170,47,170,44,167,44,158,47,155,85,155,85,155" href="/Genes/GeneInfo?ORG=Hs&BCID=alad"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alad">
+<area shape="poly" coords="103,141,106,144,106,152,103,155,67,155,64,152,64,144,67,141,103,141,103,141" href="/Genes/GeneInfo?ORG=Hs&BCID=alas2"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alas2">
+<area shape="poly" coords="61,141,64,144,64,152,61,155,27,155,24,152,24,144,27,141,61,141,61,141" href="/Genes/GeneInfo?ORG=Hs&BCID=alas1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alas1">
+<area shape="poly" coords="346,330,349,333,349,345,346,348,306,348,303,345,303,333,306,330,346,330,346,330" href="/Genes/GeneInfo?ORG=Hs&BCID=ahsp"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=ahsp">
+<area shape="poly" coords="310,240,313,243,313,255,310,258,270,258,267,255,267,243,270,240,310,240,310,240" href="/Genes/GeneInfo?ORG=Hs&BCID=ahsp"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=ahsp">
+<area shape="poly" coords="380,270,383,273,383,285,380,288,340,288,337,285,337,273,340,270,380,270,380,270" href="/Genes/GeneInfo?ORG=Hs&BCID=ahsp"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=ahsp">
+<area shape="poly" coords="342,171,325,171,325,175,328,175,328,181,332,181,332,184,336,184,336,187,342,187,342,171" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="308,171,325,171,325,175,322,175,322,181,318,181,318,184,313,184,313,187,308,187,308,171" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="342,203,325,203,325,198,328,198,328,193,332,193,332,189,336,189,336,187,342,187,342,203" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="308,203,325,203,325,198,322,198,322,193,318,193,318,189,313,189,313,187,308,187,308,203" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="382,134,365,134,365,138,368,138,368,144,372,144,372,147,376,147,376,150,382,150,382,134" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="348,134,365,134,365,138,362,138,362,144,358,144,358,147,353,147,353,150,348,150,348,134" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="382,166,365,166,365,161,368,161,368,156,372,156,372,152,376,152,376,150,382,150,382,166" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="348,166,365,166,365,161,362,161,362,156,358,156,358,152,353,152,353,150,348,150,348,166" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="424,153,407,153,407,157,410,157,410,163,414,163,414,166,418,166,418,169,424,169,424,153" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="391,153,408,153,408,157,405,157,405,163,401,163,401,166,396,166,396,169,391,169,391,153" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="424,185,407,185,407,180,410,180,410,175,414,175,414,171,418,171,418,169,424,169,424,185" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="391,185,408,185,408,180,405,180,405,175,401,175,401,171,396,171,396,169,391,169,391,185" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="458,153,441,153,441,157,444,157,444,163,448,163,448,166,452,166,452,169,458,169,458,153" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="425,153,442,153,442,157,439,157,439,163,435,163,435,166,430,166,430,169,425,169,425,153" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="458,185,441,185,441,180,444,180,444,175,448,175,448,171,452,171,452,169,458,169,458,185" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="425,185,442,185,442,180,439,180,439,175,435,175,435,171,430,171,430,169,425,169,425,185" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="458,185,441,185,441,189,444,189,444,195,448,195,448,198,452,198,452,201,458,201,458,185" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="425,185,442,185,442,189,439,189,439,195,435,195,435,198,430,198,430,201,425,201,425,185" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="458,217,441,217,441,212,444,212,444,207,448,207,448,203,452,203,452,201,458,201,458,217" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="425,217,442,217,442,212,439,212,439,207,435,207,435,203,430,203,430,201,425,201,425,217" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="424,185,407,185,407,189,410,189,410,195,414,195,414,198,418,198,418,201,424,201,424,185" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="391,185,408,185,408,189,405,189,405,195,401,195,401,198,396,198,396,201,391,201,391,185" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="424,217,407,217,407,212,410,212,410,207,414,207,414,203,418,203,418,201,424,201,424,217" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="391,217,408,217,408,212,405,212,405,207,401,207,401,203,396,203,396,201,391,201,391,217" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="343,283,326,283,326,287,329,287,329,293,333,293,333,296,337,296,337,299,343,299,343,283" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="310,283,327,283,327,287,324,287,324,293,320,293,320,296,315,296,315,299,310,299,310,283" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="343,315,326,315,326,310,329,310,329,305,333,305,333,301,337,301,337,299,343,299,343,315" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="310,315,327,315,327,310,324,310,324,305,320,305,320,301,315,301,315,299,310,299,310,315" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="458,269,441,269,441,273,444,273,444,279,448,279,448,282,452,282,452,285,458,285,458,269" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="424,269,441,269,441,273,438,273,438,279,434,279,434,282,429,282,429,285,424,285,424,269" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="458,301,441,301,441,296,444,296,444,291,448,291,448,287,452,287,452,285,458,285,458,301" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="424,301,441,301,441,296,438,296,438,291,434,291,434,287,429,287,429,285,424,285,424,301" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="491,301,474,301,474,305,477,305,477,311,481,311,481,314,485,314,485,317,491,317,491,301" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="458,301,475,301,475,305,472,305,472,311,468,311,468,314,463,314,463,317,458,317,458,301" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="491,333,474,333,474,328,477,328,477,323,481,323,481,319,485,319,485,317,491,317,491,333" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="458,333,475,333,475,328,472,328,472,323,468,323,468,319,463,319,463,317,458,317,458,333" href="/Genes/GeneInfo?ORG=Hs&BCID=hba"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hba">
+<area shape="poly" coords="342,396,325,396,325,400,328,400,328,406,332,406,332,409,336,409,336,412,342,412,342,396" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="309,396,326,396,326,400,323,400,323,406,319,406,319,409,314,409,314,412,309,412,309,396" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="342,428,325,428,325,423,328,423,328,418,332,418,332,414,336,414,336,412,342,412,342,428" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="309,428,326,428,326,423,323,423,323,418,319,418,319,414,314,414,314,412,309,412,309,428" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="382,434,365,434,365,438,368,438,368,444,372,444,372,447,376,447,376,450,382,450,382,434" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="349,434,366,434,366,438,363,438,363,444,359,444,359,447,354,447,354,450,349,450,349,434" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="382,466,365,466,365,461,368,461,368,456,372,456,372,452,376,452,376,450,382,450,382,466" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="349,466,366,466,366,461,363,461,363,456,359,456,359,452,354,452,354,450,349,450,349,466" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="424,379,407,379,407,383,410,383,410,389,414,389,414,392,418,392,418,395,424,395,424,379" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="391,379,408,379,408,383,405,383,405,389,401,389,401,392,396,392,396,395,391,395,391,379" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="424,411,407,411,407,406,410,406,410,401,414,401,414,397,418,397,418,395,424,395,424,411" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="391,411,408,411,408,406,405,406,405,401,401,401,401,397,396,397,396,395,391,395,391,411" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="424,411,407,411,407,415,410,415,410,421,414,421,414,424,418,424,418,427,424,427,424,411" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="391,411,408,411,408,415,405,415,405,421,401,421,401,424,396,424,396,427,391,427,391,411" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="424,443,407,443,407,438,410,438,410,433,414,433,414,429,418,429,418,427,424,427,424,443" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="391,443,408,443,408,438,405,438,405,433,401,433,401,429,396,429,396,427,391,427,391,443" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="458,379,441,379,441,383,444,383,444,389,448,389,448,392,452,392,452,395,458,395,458,379" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="425,379,442,379,442,383,439,383,439,389,435,389,435,392,430,392,430,395,425,395,425,379" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="458,411,441,411,441,406,444,406,444,401,448,401,448,397,452,397,452,395,458,395,458,411" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="425,411,442,411,442,406,439,406,439,401,435,401,435,397,430,397,430,395,425,395,425,411" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="458,411,441,411,441,415,444,415,444,421,448,421,448,424,452,424,452,427,458,427,458,411" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="425,411,442,411,442,415,439,415,439,421,435,421,435,424,430,424,430,427,425,427,425,411" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="458,443,441,443,441,438,444,438,444,433,448,433,448,429,452,429,452,427,458,427,458,443" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="425,443,442,443,442,438,439,438,439,433,435,433,435,429,430,429,430,427,425,427,425,443" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="458,301,441,301,441,305,444,305,444,311,448,311,448,314,452,314,452,317,458,317,458,301" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="424,301,441,301,441,305,438,305,438,311,434,311,434,314,429,314,429,317,424,317,424,301" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="458,333,441,333,441,328,444,328,444,323,448,323,448,319,452,319,452,317,458,317,458,333" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="424,333,441,333,441,328,438,328,438,323,434,323,434,319,429,319,429,317,424,317,424,333" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="491,269,474,269,474,273,477,273,477,279,481,279,481,282,485,282,485,285,491,285,491,269" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="458,269,475,269,475,273,472,273,472,279,468,279,468,282,463,282,463,285,458,285,458,269" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="491,301,474,301,474,296,477,296,477,291,481,291,481,287,485,287,485,285,491,285,491,301" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+<area shape="poly" coords="458,301,475,301,475,296,472,296,472,291,468,291,468,287,463,287,463,285,458,285,458,301" href="/Genes/GeneInfo?ORG=Hs&BCID=hbb"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hbb">
+</map>
+</TD><TD VALIGN=TOP ALIGN=RIGHT>
+<A><IMG SRC="/images/BioCarta/people.gif" alt="people" BORDER=0><BR><FONT face="arial" color=#009999 size=1>This<BR>Pathway</FONT></A>
+<P>
+</TD></TR></TABLE>
+<!--End pathway image-->
+
+</CENTER>
+	</div>
+	</td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="footer">
+     <table cellpadding="0" cellspacing="0" width="150" border="0" align="center">
+      <tr>
+        <td nowrap>Download Plugin:</td>
+        <td align=left><a title="Download Plugin Adobe SVG Viewer" href="http://www.adobe.com/svg/viewer/install/main.html" target="_blank"><img
+    src="/CMAP/images/tmpSVGlogo.png" width="20"
+    height="20" border="0"
+    alt="Download Plugin Adobe SVG Viewer"/></a></td>
+      </tr>
+       </table>
+
+	<ul id="footer-internal">
+		<li class="first"><a href="/">Home</a></li><!--
+		--><li><a href="support.htm">Application Support</a></li><!--
+		--><li><a href="http://www.nih.gov/about/privacy.htm" target="_blank">Policies</a></li><!--
+		--><li><a href="http://www3.cancer.gov/accessibility/nci508.htm" target="_blank">Accessibility</a></li><!--
+		--><li><a href="http://www.nih.gov/about/disclaim.htm" target="_blank">Disclaimer</a></li><!--
+		-->
+	</ul>
+	<p>A Service of the National Cancer Institute</p>
+	<ul id="footer-external">
+		<li><a href="http://www.cancer.gov/" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-nci.png" alt="NCI" height="38" width="48" /></a></li><!--
+		--><li><a href="http://www.dhhs.gov" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-hhs.png" alt="HHS" height="38" width="38" /></a></li><!--
+		--><li><a href="http://www.nih.gov/" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-nih.png" alt="NIH" height="38" width="36" /></a></li><!--
+		--><li><a href="http://www.usa.gov/" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-firstgov.png" alt="First.Gov" height="38" width="90" /></a></li>
+	</ul>
+</div>
+
+</body>
+</html>
+
