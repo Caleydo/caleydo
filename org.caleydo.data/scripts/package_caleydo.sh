@@ -59,8 +59,12 @@ copy_to_web()
 
 copy_webstart()
 {
-  webstart_plugins_folder=$download_folder"/webstart_"$version_number"/plugins"
   webstart_export_path=$export_root"/webstart_"$version_number
+  webstart_plugins_folder=$download_folder"/webstart_"$version_number"/plugins"
+
+  mkdir -p $webstart_export_path
+  mkdir -p $webstart_plugins_folder
+
   sudo cp $webstart_export_path"/plugins/org.caleydo."* $webstart_plugins_folder -v
 }
 
@@ -187,12 +191,11 @@ then
     count=$(($count + 1))
   done
 else
-
+  ask_for_version
   echo "Do you want to package the standalone release? (y/n)"
   read copy
   if [ $copy = "y" ];
     then
-    ask_for_version
     make_archive
     make_debian_packages
     echo "Do you want to copy the release to the website? (y/n)"
