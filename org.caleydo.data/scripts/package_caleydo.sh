@@ -26,10 +26,10 @@
 
 mount_point="/mnt/webdav"
 download_folder=$mount_point"/download"
-webstart_plugins_folder=$download_folder"/webstart_2.0/plugins"
+
 
 export_root=$HOME"/caleydo_export"
-webstart_export_path=$export_root"/webstart_2.0"
+
 debian_folder=$(pwd)"/debian"
 linux_folder=""
 linux_source_folder=""
@@ -59,6 +59,8 @@ copy_to_web()
 
 copy_webstart()
 {
+  webstart_plugins_folder=$download_folder"/webstart_"$version_number"/plugins"
+  webstart_export_path=$export_root"/webstart_"$version_number
   sudo cp $webstart_export_path"/plugins/org.caleydo."* $webstart_plugins_folder -v
 }
 
@@ -131,8 +133,8 @@ print_help()
   echo "Usage: export.sh [ option ]"
   echo ""
   echo "Options:"
-  echo "-a package zips and make rpms and debs"
-  echo "-d make debian and rpm packages"
+  echo "-a package standalone zips, debs and rpms"
+  echo "-d package standalone debs and rpms"
   echo "-c copy standalone"
   echo "-s package, and copy standalone"
   echo "-w copy webstart"
