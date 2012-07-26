@@ -118,8 +118,7 @@ public class AddGroupingsPage extends AImportDataPage {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 
-				ImportGroupingDialog importGroupingDialog = new ImportGroupingDialog(
-						new Shell());
+				
 
 				String columnIDCategoryString = dataSetDescription
 						.getColumnIDSpecification().getIdCategory();
@@ -127,9 +126,11 @@ public class AddGroupingsPage extends AImportDataPage {
 				String rowIDCategoryString = dataSetDescription.getRowIDSpecification()
 						.getIdCategory();
 				rowIDCategory = IDCategory.getIDCategory(rowIDCategoryString);
-
-				importGroupingDialog.setRowIDCategory(isColumnGrouping ? columnIDCategory
-						: rowIDCategory);
+				ImportGroupingDialog importGroupingDialog = new ImportGroupingDialog(
+						new Shell(), isColumnGrouping ? columnIDCategory
+								: rowIDCategory);
+//				importGroupingDialog.setRowIDCategory(isColumnGrouping ? columnIDCategory
+//						: rowIDCategory);
 
 				int status = importGroupingDialog.open();
 
@@ -167,8 +168,7 @@ public class AddGroupingsPage extends AImportDataPage {
 				if (groupingIndex != -1) {
 					GroupingParseSpecification selectedGroupingParseSpecification = groupingParseSpecifications
 							.get(groupingIndex);
-					ImportGroupingDialog importGroupingDialog = new ImportGroupingDialog(
-							new Shell(), selectedGroupingParseSpecification);
+					
 
 					String columnIDCategoryString = dataSetDescription
 							.getColumnIDSpecification().getIdCategory();
@@ -176,10 +176,14 @@ public class AddGroupingsPage extends AImportDataPage {
 					String rowIDCategoryString = dataSetDescription
 							.getRowIDSpecification().getIdCategory();
 					rowIDCategory = IDCategory.getIDCategory(rowIDCategoryString);
-
-					importGroupingDialog
-							.setRowIDCategory(isColumnGrouping ? columnIDCategory
+					
+					ImportGroupingDialog importGroupingDialog = new ImportGroupingDialog(
+							new Shell(), selectedGroupingParseSpecification, isColumnGrouping ? columnIDCategory
 									: rowIDCategory);
+
+//					importGroupingDialog
+//							.setRowIDCategory(isColumnGrouping ? columnIDCategory
+//									: rowIDCategory);
 
 					int status = importGroupingDialog.open();
 

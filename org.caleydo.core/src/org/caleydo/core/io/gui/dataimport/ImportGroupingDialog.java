@@ -3,17 +3,11 @@
  */
 package org.caleydo.core.io.gui.dataimport;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+
 import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.GroupingParseSpecification;
-import org.caleydo.core.io.IDSpecification;
-import org.caleydo.core.io.IDTypeParsingRules;
-import org.caleydo.core.util.collection.Pair;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.ModifyEvent;
@@ -26,13 +20,11 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -41,23 +33,23 @@ import org.eclipse.swt.widgets.Text;
  * @author Christian Partl
  * 
  */
-public class ImportGroupingDialog extends Dialog implements ITabularDataImporter {
+public class ImportGroupingDialog extends Dialog {
 
-	/**
-	 * Maximum number of previewed rows in {@link #previewTable}.
-	 */
-	protected static int MAX_PREVIEW_TABLE_ROWS = 50;
-
-	/**
-	 * Maximum number of previewed columns in {@link #previewTable}.
-	 */
-	protected static int MAX_PREVIEW_TABLE_COLUMNS = 10;
-
-	/**
-	 * The maximum number of ids that are tested in order to determine the
-	 * {@link IDType}.
-	 */
-	protected static int MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION = 10;
+//	/**
+//	 * Maximum number of previewed rows in {@link #previewTable}.
+//	 */
+//	protected static int MAX_PREVIEW_TABLE_ROWS = 50;
+//
+//	/**
+//	 * Maximum number of previewed columns in {@link #previewTable}.
+//	 */
+//	protected static int MAX_PREVIEW_TABLE_COLUMNS = 10;
+//
+//	/**
+//	 * The maximum number of ids that are tested in order to determine the
+//	 * {@link IDType}.
+//	 */
+//	protected static int MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION = 10;
 
 	/**
 	 * Composite that is the parent of all gui elements of this dialog.
@@ -69,10 +61,10 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 	 */
 	protected Text fileNameTextField;
 
-	/**
-	 * File name of the input file.
-	 */
-	protected String inputFileName = "";
+//	/**
+//	 * File name of the input file.
+//	 */
+//	protected String inputFileName = "";
 
 	/**
 	 * Table that displays a preview of the data of the file specified by
@@ -80,20 +72,20 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 	 */
 	protected Table previewTable;
 
-	/**
-	 * The row id category for which groupings should be loaded.
-	 */
-	protected IDCategory rowIDCategory;
+	// /**
+	// * The row id category for which groupings should be loaded.
+	// */
+	// protected IDCategory rowIDCategory;
 
 	/**
 	 * Combo box to specify the row ID Type.
 	 */
 	protected Combo rowIDCombo;
 
-	/**
-	 * The IDTypes available for {@link #rowIDCategory}.
-	 */
-	protected ArrayList<IDType> rowIDTypes;
+	// /**
+	// * The IDTypes available for {@link #rowIDCategory}.
+	// */
+	// protected ArrayList<IDType> rowIDTypes;
 
 	/**
 	 * List of buttons, each created for one column to specify whether this
@@ -123,21 +115,22 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 	 */
 	protected Spinner dataStartColumnSpinner;
 
-	/**
-	 * Matrix that stores the data for {@link #MAX_PREVIEW_TABLE_ROWS} rows and
-	 * all columns of the data file.
-	 */
-	protected ArrayList<ArrayList<String>> dataMatrix;
+	// /**
+	// * Matrix that stores the data for {@link #MAX_PREVIEW_TABLE_ROWS} rows
+	// and
+	// * all columns of the data file.
+	// */
+	// protected ArrayList<ArrayList<String>> dataMatrix;
 
-	/**
-	 * The total number of columns of the input file.
-	 */
-	protected int totalNumberOfColumns;
-
-	/**
-	 * The total number of rows of the input file.
-	 */
-	protected int totalNumberOfRows;
+	// /**
+	// * The total number of columns of the input file.
+	// */
+	// protected int totalNumberOfColumns;
+	//
+	// /**
+	// * The total number of rows of the input file.
+	// */
+	// protected int totalNumberOfRows;
 
 	/**
 	 * Button to specify whether all columns of the data file should be shown in
@@ -145,11 +138,11 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 	 */
 	protected Button showAllColumnsButton;
 
-	/**
-	 * Determines whether all columns of the data file shall be shown in the
-	 * {@link #previewTable}.
-	 */
-	protected boolean showAllColumns = false;
+	// /**
+	// * Determines whether all columns of the data file shall be shown in the
+	// * {@link #previewTable}.
+	// */
+	// protected boolean showAllColumns = false;
 
 	/**
 	 * Shows the total number columns in the data file and the number of
@@ -157,35 +150,51 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 	 */
 	protected Label tableInfoLabel;
 
-	/**
-	 * The {@link GroupingParseSpecification} created using this dialog.
-	 */
-	private GroupingParseSpecification groupingParseSpecification;
+//	/**
+//	 * The {@link GroupingParseSpecification} created using this dialog.
+//	 */
+//	private GroupingParseSpecification groupingParseSpecification;
 
-	/**
-	 * Parser used to parse data files.
-	 */
-	private FilePreviewParser parser = new FilePreviewParser();
-
-	/**
-	 * Manager for {@link #previewTable} that extends its features.
-	 */
-	private PreviewTableManager previewTableManager;
+	// /**
+	// * Parser used to parse data files.
+	// */
+	// private FilePreviewParser parser = new FilePreviewParser();
+	//
+	// /**
+	// * Manager for {@link #previewTable} that extends its features.
+	// */
+	// private PreviewTableManager previewTableManager;
 
 	/**
 	 * Textfield for the grouping name.
 	 */
-	private Text groupingNameTextField;
+	protected Text groupingNameTextField;
+
+	/**
+	 * Mediator for this dialog.
+	 */
+	private ImportGroupingDialogMediator mediator;
+
+	/**
+	 * Radio group that specifies the delimiters used to parse the input file.
+	 */
+	protected DelimiterRadioGroup delimiterRadioGroup;
+
+	/**
+	 * Label with the {@link IDCategory} name.
+	 */
+	protected Label categoryIDLabel;
 
 	/**
 	 * @param parentShell
 	 */
-	public ImportGroupingDialog(Shell parentShell) {
+	public ImportGroupingDialog(Shell parentShell, IDCategory rowIDCategory) {
 		super(parentShell);
 		parentShell.setText("Import Grouping");
-		groupingParseSpecification = new GroupingParseSpecification();
-		groupingParseSpecification.setDelimiter("\t");
-		groupingParseSpecification.setNumberOfHeaderLines(1);
+		mediator = new ImportGroupingDialogMediator(this, rowIDCategory);
+		// groupingParseSpecification = new GroupingParseSpecification();
+		// groupingParseSpecification.setDelimiter("\t");
+		// groupingParseSpecification.setNumberOfHeaderLines(1);
 	}
 
 	/**
@@ -195,79 +204,85 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 	 *            initialize the widgets of this dialog.
 	 */
 	public ImportGroupingDialog(Shell parentShell,
-			GroupingParseSpecification groupingParseSpecification) {
+			GroupingParseSpecification groupingParseSpecification,
+			IDCategory rowIDCategory) {
 		super(parentShell);
 		parentShell.setText("Import Grouping");
-		this.groupingParseSpecification = new GroupingParseSpecification();
-		this.groupingParseSpecification
-				.setColumnIDSpecification(groupingParseSpecification
-						.getColumnIDSpecification());
-		this.groupingParseSpecification.setColumnOfRowIds(groupingParseSpecification
-				.getColumnOfRowIds());
-		this.groupingParseSpecification.setColumns(groupingParseSpecification
-				.getColumns());
-		this.groupingParseSpecification.setContainsColumnIDs(groupingParseSpecification
-				.isContainsColumnIDs());
-		this.groupingParseSpecification.setDataSourcePath(groupingParseSpecification
-				.getDataSourcePath());
-		this.groupingParseSpecification.setDelimiter(groupingParseSpecification
-				.getDelimiter());
-		this.groupingParseSpecification.setGroupingName(groupingParseSpecification
-				.getGroupingName());
-		this.groupingParseSpecification.setNumberOfHeaderLines(groupingParseSpecification
-				.getNumberOfHeaderLines());
-		this.groupingParseSpecification.setRowIDSpecification(groupingParseSpecification
-				.getRowIDSpecification());
-		this.groupingParseSpecification.setRowOfColumnIDs(groupingParseSpecification
-				.getRowOfColumnIDs());
-		if (groupingParseSpecification.getDataSourcePath() != null)
-			inputFileName = groupingParseSpecification.getDataSourcePath();
+		mediator = new ImportGroupingDialogMediator(this, groupingParseSpecification,
+				rowIDCategory);
+		// this.groupingParseSpecification = new GroupingParseSpecification();
+		// this.groupingParseSpecification
+		// .setColumnIDSpecification(groupingParseSpecification
+		// .getColumnIDSpecification());
+		// this.groupingParseSpecification.setColumnOfRowIds(groupingParseSpecification
+		// .getColumnOfRowIds());
+		// this.groupingParseSpecification.setColumns(groupingParseSpecification
+		// .getColumns());
+		// this.groupingParseSpecification.setContainsColumnIDs(groupingParseSpecification
+		// .isContainsColumnIDs());
+		// this.groupingParseSpecification.setDataSourcePath(groupingParseSpecification
+		// .getDataSourcePath());
+		// this.groupingParseSpecification.setDelimiter(groupingParseSpecification
+		// .getDelimiter());
+		// this.groupingParseSpecification.setGroupingName(groupingParseSpecification
+		// .getGroupingName());
+		// this.groupingParseSpecification.setNumberOfHeaderLines(groupingParseSpecification
+		// .getNumberOfHeaderLines());
+		// this.groupingParseSpecification.setRowIDSpecification(groupingParseSpecification
+		// .getRowIDSpecification());
+		// this.groupingParseSpecification.setRowOfColumnIDs(groupingParseSpecification
+		// .getRowOfColumnIDs());
+		// if (groupingParseSpecification.getDataSourcePath() != null)
+		// inputFileName = groupingParseSpecification.getDataSourcePath();
 	}
 
 	@Override
 	protected void okPressed() {
 
-		if (fileNameTextField.getText().isEmpty()) {
-			MessageDialog.openError(new Shell(), "Invalid Filename",
-					"Please specify a file to load");
+		// if (fileNameTextField.getText().isEmpty()) {
+		// MessageDialog.openError(new Shell(), "Invalid Filename",
+		// "Please specify a file to load");
+		// return;
+		// }
+		//
+		// if (rowIDCombo.getSelectionIndex() == -1) {
+		// MessageDialog.openError(new Shell(), "Invalid Row ID Type",
+		// "Please select the ID type of the rows");
+		// return;
+		// }
+		//
+		// ArrayList<Integer> selectedColumns = new ArrayList<Integer>();
+		// for (int columnIndex = 0; columnIndex < totalNumberOfColumns;
+		// columnIndex++) {
+		//
+		// if (groupingParseSpecification.getColumnOfRowIds() != columnIndex) {
+		// if (columnIndex + 1 < previewTable.getColumnCount()) {
+		// if (selectedColumnButtons.get(columnIndex).getSelection()) {
+		// selectedColumns.add(columnIndex);
+		// }
+		// } else {
+		// selectedColumns.add(columnIndex);
+		// }
+		// }
+		// }
+		// groupingParseSpecification.setColumns(selectedColumns);
+		// IDSpecification rowIDSpecification = new IDSpecification();
+		// IDType rowIDType = rowIDTypes.get(rowIDCombo.getSelectionIndex());
+		// rowIDSpecification.setIdType(rowIDType.toString());
+		// if (rowIDType.getIDCategory().getCategoryName().equals("GENE"))
+		// rowIDSpecification.setIDTypeGene(true);
+		// rowIDSpecification.setIdCategory(rowIDType.getIDCategory().toString());
+		// if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
+		// // for REFSEQ_MRNA we ignore the .1, etc.
+		// IDTypeParsingRules parsingRules = new IDTypeParsingRules();
+		// parsingRules.setSubStringExpression("\\.");
+		// rowIDSpecification.setIdTypeParsingRules(parsingRules);
+		// }
+		// groupingParseSpecification.setRowIDSpecification(rowIDSpecification);
+		// groupingParseSpecification.setContainsColumnIDs(false);
+		// groupingParseSpecification.setGroupingName(groupingNameTextField.getText());
+		if (!mediator.okPressed())
 			return;
-		}
-
-		if (rowIDCombo.getSelectionIndex() == -1) {
-			MessageDialog.openError(new Shell(), "Invalid Row ID Type",
-					"Please select the ID type of the rows");
-			return;
-		}
-
-		ArrayList<Integer> selectedColumns = new ArrayList<Integer>();
-		for (int columnIndex = 0; columnIndex < totalNumberOfColumns; columnIndex++) {
-
-			if (groupingParseSpecification.getColumnOfRowIds() != columnIndex) {
-				if (columnIndex + 1 < previewTable.getColumnCount()) {
-					if (selectedColumnButtons.get(columnIndex).getSelection()) {
-						selectedColumns.add(columnIndex);
-					}
-				} else {
-					selectedColumns.add(columnIndex);
-				}
-			}
-		}
-		groupingParseSpecification.setColumns(selectedColumns);
-		IDSpecification rowIDSpecification = new IDSpecification();
-		IDType rowIDType = rowIDTypes.get(rowIDCombo.getSelectionIndex());
-		rowIDSpecification.setIdType(rowIDType.toString());
-		if (rowIDType.getIDCategory().getCategoryName().equals("GENE"))
-			rowIDSpecification.setIDTypeGene(true);
-		rowIDSpecification.setIdCategory(rowIDType.getIDCategory().toString());
-		if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
-			// for REFSEQ_MRNA we ignore the .1, etc.
-			IDTypeParsingRules parsingRules = new IDTypeParsingRules();
-			parsingRules.setSubStringExpression("\\.");
-			rowIDSpecification.setIdTypeParsingRules(parsingRules);
-		}
-		groupingParseSpecification.setRowIDSpecification(rowIDSpecification);
-		groupingParseSpecification.setContainsColumnIDs(false);
-		groupingParseSpecification.setGroupingName(groupingNameTextField.getText());
 
 		super.okPressed();
 	}
@@ -317,31 +332,33 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 
-				FileDialog fileDialog = new FileDialog(new Shell());
-				fileDialog.setText("Open");
-				// fileDialog.setFilterPath(filePath);
-				String[] filterExt = { "*.csv;*.txt", "*.*" };
-				fileDialog.setFilterExtensions(filterExt);
+				mediator.openFileButtonPressed();
 
-				inputFileName = fileDialog.open();
-
-				if (inputFileName == null)
-					return;
-				fileNameTextField.setText(inputFileName);
-				groupingNameTextField.setText(inputFileName.substring(
-						inputFileName.lastIndexOf(File.separator) + 1,
-						inputFileName.lastIndexOf(".")));
-
-				groupingParseSpecification.setDataSourcePath(inputFileName);
-				createDataPreviewTableFromFile();
+				// FileDialog fileDialog = new FileDialog(new Shell());
+				// fileDialog.setText("Open");
+				// // fileDialog.setFilterPath(filePath);
+				// String[] filterExt = { "*.csv;*.txt", "*.*" };
+				// fileDialog.setFilterExtensions(filterExt);
+				//
+				// inputFileName = fileDialog.open();
+				//
+				// if (inputFileName == null)
+				// return;
+				// fileNameTextField.setText(inputFileName);
+				// groupingNameTextField.setText(inputFileName.substring(
+				// inputFileName.lastIndexOf(File.separator) + 1,
+				// inputFileName.lastIndexOf(".")));
+				//
+				// groupingParseSpecification.setDataSourcePath(inputFileName);
+				// createDataPreviewTableFromFile();
 			}
 		});
 
 		createRowConfigPart(parentComposite);
 
-		DelimiterRadioGroup delimiterRadioGroup = new DelimiterRadioGroup();
-		delimiterRadioGroup.create(parentComposite, groupingParseSpecification, this);
-		
+		delimiterRadioGroup = new DelimiterRadioGroup();
+		delimiterRadioGroup.create(parentComposite, mediator);
+
 		Group columnSelectionGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		columnSelectionGroup.setText("Column Selection");
 		columnSelectionGroup.setLayout(new GridLayout(2, false));
@@ -353,9 +370,10 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				for (Button button : selectedColumnButtons) {
-					button.setSelection(true);
-				}
+				mediator.selectAllButtonPressed();
+				// for (Button button : selectedColumnButtons) {
+				// button.setSelection(true);
+				// }
 			}
 		});
 		Button selectNoneButton = new Button(columnSelectionGroup, SWT.PUSH);
@@ -364,9 +382,10 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				for (Button button : selectedColumnButtons) {
-					button.setSelection(false);
-				}
+				mediator.selectNoneButtonPressed();
+				// for (Button button : selectedColumnButtons) {
+				// button.setSelection(false);
+				// }
 			}
 		});
 
@@ -379,19 +398,21 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		gridData.widthHint = 800;
 		previewTable.setLayoutData(gridData);
 
-		previewTableManager = new PreviewTableManager(previewTable);
-
 		createTableInfo(parentComposite);
 
-		// Check if an external file name is given to the action
-		if (!inputFileName.isEmpty()) {
-			fileNameTextField.setText(inputFileName);
-			groupingParseSpecification.setDataSourcePath(inputFileName);
-			// mathFilterMode = "Log10";
-			// mathFilterCombo.select(1);
+		mediator.guiCreated();
 
-			createDataPreviewTableFromFile();
-		}
+		// previewTableManager = new PreviewTableManager(previewTable);
+		//
+		// // Check if an external file name is given to the action
+		// if (!inputFileName.isEmpty()) {
+		// fileNameTextField.setText(inputFileName);
+		// groupingParseSpecification.setDataSourcePath(inputFileName);
+		// // mathFilterMode = "Log10";
+		// // mathFilterCombo.select(1);
+		//
+		// createDataPreviewTableFromFile();
+		// }
 	}
 
 	private void createRowConfigPart(Composite parent) {
@@ -408,8 +429,8 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		Label idCategoryLabel = new Label(leftConfigGroupPart, SWT.SHADOW_ETCHED_IN);
 		idCategoryLabel.setText("Row ID Class");
 		idCategoryLabel.setLayoutData(new GridData(SWT.LEFT));
-		Label categoryIDLabel = new Label(leftConfigGroupPart, SWT.NONE);
-		categoryIDLabel.setText(rowIDCategory.getCategoryName());
+		categoryIDLabel = new Label(leftConfigGroupPart, SWT.NONE);
+		// categoryIDLabel.setText(rowIDCategory.getCategoryName());
 
 		createIDTypeGroup(leftConfigGroupPart);
 
@@ -426,17 +447,18 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		numHeaderRowsSpinner.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				try {
-
-					int numHeaderRows = numHeaderRowsSpinner.getSelection();
-					groupingParseSpecification.setNumberOfHeaderLines(numHeaderRows);
-					previewTableManager.updateTableColors(
-							groupingParseSpecification.getNumberOfHeaderLines(), -1,
-							groupingParseSpecification.getColumnOfRowIds() + 1);
-
-				} catch (NumberFormatException exc) {
-
-				}
+				mediator.numHeaderRowsSpinnerModified();
+				// try {
+				//
+				// int numHeaderRows = numHeaderRowsSpinner.getSelection();
+				// groupingParseSpecification.setNumberOfHeaderLines(numHeaderRows);
+				// previewTableManager.updateTableColors(
+				// groupingParseSpecification.getNumberOfHeaderLines(), -1,
+				// groupingParseSpecification.getColumnOfRowIds() + 1);
+				//
+				// } catch (NumberFormatException exc) {
+				//
+				// }
 
 			}
 		});
@@ -455,11 +477,12 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		columnOfRowIDSpinner.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				groupingParseSpecification.setColumnOfRowIds(columnOfRowIDSpinner
-						.getSelection() - 1);
-				previewTableManager.updateTableColors(
-						groupingParseSpecification.getNumberOfHeaderLines(), -1,
-						groupingParseSpecification.getColumnOfRowIds() + 1);
+				mediator.columnOfRowIDSpinnerModified();
+				// groupingParseSpecification.setColumnOfRowIds(columnOfRowIDSpinner
+				// .getSelection() - 1);
+				// previewTableManager.updateTableColors(
+				// groupingParseSpecification.getNumberOfHeaderLines(), -1,
+				// groupingParseSpecification.getColumnOfRowIds() + 1);
 			}
 		});
 
@@ -471,146 +494,149 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
 		rowIDCombo = new Combo(parent, SWT.DROP_DOWN);
 		rowIDCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		rowIDTypes = new ArrayList<IDType>();
+		// rowIDTypes = new ArrayList<IDType>();
 
-		updateIDTypeCombo(rowIDCategory, rowIDTypes, rowIDCombo);
+		// updateIDTypeCombo(rowIDCategory, rowIDTypes, rowIDCombo);
 	}
 
-	public void createDataPreviewTableFromFile() {
-		parser.parse(inputFileName, groupingParseSpecification.getDelimiter(), false,
-				MAX_PREVIEW_TABLE_ROWS);
-		dataMatrix = parser.getDataMatrix();
-		totalNumberOfColumns = parser.getTotalNumberOfColumns();
-		totalNumberOfRows = parser.getTotalNumberOfRows();
-		previewTableManager.createDataPreviewTableFromDataMatrix(dataMatrix,
-				MAX_PREVIEW_TABLE_COLUMNS);
-		selectedColumnButtons = previewTableManager.getSelectedColumnButtons();
-		determineRowIDType();
-		previewTableManager.updateTableColors(
-				groupingParseSpecification.getNumberOfHeaderLines(), -1,
-				groupingParseSpecification.getColumnOfRowIds() + 1);
-		updateWidgetsAccordingToTableChanges();
+	// public void createDataPreviewTableFromFile() {
+	// parser.parse(inputFileName, groupingParseSpecification.getDelimiter(),
+	// false,
+	// MAX_PREVIEW_TABLE_ROWS);
+	// dataMatrix = parser.getDataMatrix();
+	// totalNumberOfColumns = parser.getTotalNumberOfColumns();
+	// totalNumberOfRows = parser.getTotalNumberOfRows();
+	// previewTableManager.createDataPreviewTableFromDataMatrix(dataMatrix,
+	// MAX_PREVIEW_TABLE_COLUMNS);
+	// selectedColumnButtons = previewTableManager.getSelectedColumnButtons();
+	// determineRowIDType();
+	// previewTableManager.updateTableColors(
+	// groupingParseSpecification.getNumberOfHeaderLines(), -1,
+	// groupingParseSpecification.getColumnOfRowIds() + 1);
+	// updateWidgetsAccordingToTableChanges();
+	//
+	// parentComposite.pack();
+	// }
 
-		parentComposite.pack();
-	}
-
-	private void determineRowIDType() {
-		List<String> idList = new ArrayList<String>();
-		for (int i = 0; i < dataMatrix.size()
-				&& i < MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION; i++) {
-			ArrayList<String> row = dataMatrix.get(i);
-			idList.add(row.get(groupingParseSpecification.getColumnOfRowIds()));
-		}
-
-		float maxProbability = 0;
-		IDType mostProbableIDType = null;
-		for (IDCategory idCategory : getAvailableIDCategories()) {
-			List<Pair<Float, IDType>> probabilityList = idCategory
-					.getListOfIDTypeAffiliationProbabilities(idList, false);
-			if (probabilityList.size() > 0) {
-				Pair<Float, IDType> pair = probabilityList.get(0);
-				if (pair.getFirst() > maxProbability) {
-					maxProbability = pair.getFirst();
-					mostProbableIDType = pair.getSecond();
-				}
-			}
-		}
-
-		if (maxProbability < 0.0001f)
-			mostProbableIDType = null;
-
-		setMostProbableRecordIDType(mostProbableIDType);
-	}
-
-	protected void setMostProbableRecordIDType(IDType mostProbableRecordIDType) {
-
-		if (mostProbableRecordIDType == null) {
-			rowIDTypes.clear();
-			rowIDTypes = new ArrayList<IDType>(rowIDCategory.getIdTypes());
-			rowIDCombo.clearSelection();
-			rowIDCombo.setText("<Please Select>");
-		} else {
-			updateIDTypeCombo(rowIDCategory, rowIDTypes, rowIDCombo);
-			rowIDCombo.select(rowIDTypes.indexOf(mostProbableRecordIDType));
-
-			TableColumn idColumn = previewTable.getColumn(1);
-			idColumn.setText(mostProbableRecordIDType.getTypeName());
-		}
-	}
-
-	private void updateIDTypeCombo(IDCategory idCategory, ArrayList<IDType> idTypes,
-			Combo idTypeCombo) {
-		if (idCategory != null) {
-			ArrayList<IDType> allIDTypesOfCategory = new ArrayList<IDType>(
-					idCategory.getIdTypes());
-
-			String previousSelection = null;
-
-			if (idTypeCombo.getSelectionIndex() != -1) {
-				previousSelection = idTypeCombo.getItem(idTypeCombo.getSelectionIndex());
-			}
-			idTypeCombo.removeAll();
-			idTypes.clear();
-
-			for (IDType idType : allIDTypesOfCategory) {
-				if (!idType.isInternalType()) {
-					idTypes.add(idType);
-					idTypeCombo.add(idType.getTypeName());
-				}
-			}
-
-			int selectionIndex = -1;
-			if (previousSelection != null) {
-				selectionIndex = idTypeCombo.indexOf(previousSelection);
-			}
-			if (selectionIndex == -1) {
-				idTypeCombo.setText("<Please Select>");
-				idTypeCombo.clearSelection();
-			} else {
-				idTypeCombo.setText(idTypeCombo.getItem(selectionIndex));
-				idTypeCombo.select(selectionIndex);
-			}
-
-			idTypeCombo.setEnabled(true);
-		} else {
-			idTypeCombo.setEnabled(false);
-		}
-	}
+	// private void determineRowIDType() {
+	// List<String> idList = new ArrayList<String>();
+	// for (int i = 0; i < dataMatrix.size()
+	// && i < MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION; i++) {
+	// ArrayList<String> row = dataMatrix.get(i);
+	// idList.add(row.get(groupingParseSpecification.getColumnOfRowIds()));
+	// }
+	//
+	// float maxProbability = 0;
+	// IDType mostProbableIDType = null;
+	// for (IDCategory idCategory : getAvailableIDCategories()) {
+	// List<Pair<Float, IDType>> probabilityList = idCategory
+	// .getListOfIDTypeAffiliationProbabilities(idList, false);
+	// if (probabilityList.size() > 0) {
+	// Pair<Float, IDType> pair = probabilityList.get(0);
+	// if (pair.getFirst() > maxProbability) {
+	// maxProbability = pair.getFirst();
+	// mostProbableIDType = pair.getSecond();
+	// }
+	// }
+	// }
+	//
+	// if (maxProbability < 0.0001f)
+	// mostProbableIDType = null;
+	//
+	// setMostProbableRecordIDType(mostProbableIDType);
+	// }
+	//
+	// protected void setMostProbableRecordIDType(IDType
+	// mostProbableRecordIDType) {
+	//
+	// if (mostProbableRecordIDType == null) {
+	// rowIDTypes.clear();
+	// rowIDTypes = new ArrayList<IDType>(rowIDCategory.getIdTypes());
+	// rowIDCombo.clearSelection();
+	// rowIDCombo.setText("<Please Select>");
+	// } else {
+	// updateIDTypeCombo(rowIDCategory, rowIDTypes, rowIDCombo);
+	// rowIDCombo.select(rowIDTypes.indexOf(mostProbableRecordIDType));
+	//
+	// TableColumn idColumn = previewTable.getColumn(1);
+	// idColumn.setText(mostProbableRecordIDType.getTypeName());
+	// }
+	// }
+	//
+	// private void updateIDTypeCombo(IDCategory idCategory, ArrayList<IDType>
+	// idTypes,
+	// Combo idTypeCombo) {
+	// if (idCategory != null) {
+	// ArrayList<IDType> allIDTypesOfCategory = new ArrayList<IDType>(
+	// idCategory.getIdTypes());
+	//
+	// String previousSelection = null;
+	//
+	// if (idTypeCombo.getSelectionIndex() != -1) {
+	// previousSelection = idTypeCombo.getItem(idTypeCombo.getSelectionIndex());
+	// }
+	// idTypeCombo.removeAll();
+	// idTypes.clear();
+	//
+	// for (IDType idType : allIDTypesOfCategory) {
+	// if (!idType.isInternalType()) {
+	// idTypes.add(idType);
+	// idTypeCombo.add(idType.getTypeName());
+	// }
+	// }
+	//
+	// int selectionIndex = -1;
+	// if (previousSelection != null) {
+	// selectionIndex = idTypeCombo.indexOf(previousSelection);
+	// }
+	// if (selectionIndex == -1) {
+	// idTypeCombo.setText("<Please Select>");
+	// idTypeCombo.clearSelection();
+	// } else {
+	// idTypeCombo.setText(idTypeCombo.getItem(selectionIndex));
+	// idTypeCombo.select(selectionIndex);
+	// }
+	//
+	// idTypeCombo.setEnabled(true);
+	// } else {
+	// idTypeCombo.setEnabled(false);
+	// }
+	// }
 
 	/**
 	 * @return the groupingParseSpecification, see
 	 *         {@link #groupingParseSpecification}
 	 */
 	public GroupingParseSpecification getGroupingParseSpecification() {
-		return groupingParseSpecification;
+		return mediator.getGroupingParseSpecification();
 	}
 
 	/**
 	 * @param rowIDCategory
 	 *            setter, see {@link #rowIDCategory}
 	 */
-	public void setRowIDCategory(IDCategory rowIDCategory) {
-		this.rowIDCategory = rowIDCategory;
-	}
+	// public void setRowIDCategory(IDCategory rowIDCategory) {
+	// this.rowIDCategory = rowIDCategory;
+	// }
 
-	protected ArrayList<IDCategory> getAvailableIDCategories() {
-		ArrayList<IDCategory> idCategories = new ArrayList<IDCategory>();
-		idCategories.add(rowIDCategory);
-		return idCategories;
-	}
-
-	protected void updateWidgetsAccordingToTableChanges() {
-		columnOfRowIDSpinner.setMaximum(totalNumberOfColumns);
-		numHeaderRowsSpinner.setMaximum(totalNumberOfRows);
-		// showAllColumnsButton.setSelection(false);
-		showAllColumnsButton.setEnabled(true);
-		tableInfoLabel.setText((previewTable.getColumnCount() - 1) + " of "
-				+ totalNumberOfColumns + " Columns shown");
-		tableInfoLabel.pack();
-		tableInfoLabel.getParent().pack(true);
-		parentComposite.pack(true);
-		parentComposite.layout(true);
-	}
+	// protected ArrayList<IDCategory> getAvailableIDCategories() {
+	// ArrayList<IDCategory> idCategories = new ArrayList<IDCategory>();
+	// idCategories.add(rowIDCategory);
+	// return idCategories;
+	// }
+	//
+	// protected void updateWidgetsAccordingToTableChanges() {
+	// columnOfRowIDSpinner.setMaximum(totalNumberOfColumns);
+	// numHeaderRowsSpinner.setMaximum(totalNumberOfRows);
+	// // showAllColumnsButton.setSelection(false);
+	// showAllColumnsButton.setEnabled(true);
+	// tableInfoLabel.setText((previewTable.getColumnCount() - 1) + " of "
+	// + totalNumberOfColumns + " Columns shown");
+	// tableInfoLabel.pack();
+	// tableInfoLabel.getParent().pack(true);
+	// parentComposite.pack(true);
+	// parentComposite.layout(true);
+	// }
 
 	/**
 	 * Creates a composite that contains the {@link #tableInfoLabel} and the
@@ -639,18 +665,20 @@ public class ImportGroupingDialog extends Dialog implements ITabularDataImporter
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				showAllColumns = showAllColumnsButton.getSelection();
-				previewTableManager
-						.createDataPreviewTableFromDataMatrix(dataMatrix,
-								showAllColumns ? totalNumberOfColumns
-										: MAX_PREVIEW_TABLE_COLUMNS);
-				selectedColumnButtons = previewTableManager.getSelectedColumnButtons();
-				determineRowIDType();
-				previewTableManager.updateTableColors(
-						groupingParseSpecification.getNumberOfHeaderLines(), -1,
-						groupingParseSpecification.getColumnOfRowIds() + 1);
-				updateWidgetsAccordingToTableChanges();
-				showAllColumnsButton.setSelection(showAllColumns);
+				mediator.showAllColumnsButtonPressed();
+				// showAllColumns = showAllColumnsButton.getSelection();
+				// previewTableManager
+				// .createDataPreviewTableFromDataMatrix(dataMatrix,
+				// showAllColumns ? totalNumberOfColumns
+				// : MAX_PREVIEW_TABLE_COLUMNS);
+				// selectedColumnButtons =
+				// previewTableManager.getSelectedColumnButtons();
+				// determineRowIDType();
+				// previewTableManager.updateTableColors(
+				// groupingParseSpecification.getNumberOfHeaderLines(), -1,
+				// groupingParseSpecification.getColumnOfRowIds() + 1);
+				// updateWidgetsAccordingToTableChanges();
+				// showAllColumnsButton.setSelection(showAllColumns);
 			}
 
 		});

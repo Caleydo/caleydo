@@ -31,9 +31,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -1213,8 +1215,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 			@Override
 			public void run() {
-				ImportGroupingDialog dialog = new ImportGroupingDialog(new Shell());
-				dialog.setRowIDCategory(idCategory);
+				ImportGroupingDialog dialog = new ImportGroupingDialog(new Shell(), idCategory);
+//				dialog.setRowIDCategory(idCategory);
 				int status = dialog.open();
 
 				if (status == Dialog.OK) {
