@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=2.01
+Encoding=UTF-8
+Name=Caleydo
+GenericName=Data Visualization 
+Comment=Visualization for Molecular Biology
+Exec=/usr/bin/caleydo
+Icon=/usr/share/pixmaps/caleydo128.png
+StartupNotify=true
+Type=Application
+Categories=Science;

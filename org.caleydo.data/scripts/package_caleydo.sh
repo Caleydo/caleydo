@@ -21,12 +21,21 @@
 # Copyright (C) 2009 Alexander Lex - alexander.lex@icg.tugraz.at
 #
 
+
+# Requires alien to be installed. Run  sudo apt-get install alien
+
 mount_point="/mnt/webdav"
 download_folder=$mount_point"/download"
 webstart_plugins_folder=$download_folder"/webstart_2.0/plugins"
 
 export_root=$HOME"/caleydo_export"
 webstart_export_path=$export_root"/webstart_2.0"
+debian_folder=$(pwd)"/debian"
+linux_folder=""
+linux_source_folder=""
+arch=""
+
+echo $debian_folder
 
 mount_webdav()
 {
@@ -83,6 +92,39 @@ make_archive()
   zip -r $export_path/caleydo_data_importer_$version_number"_macosx_cocoa_x86-64.zip" caleydo_data_importer
 }
 
+# Trigger creation of debian packages for architectures x86-32 and x86-64
+make_debian_packages()
+{
+  mkdir -p $export_path
+  linux_source_folder=$export_root/linux.gtk.x86/
+  linux_folder="caleydo_"$version_number"_linux_x86-32"
+  arch="i386"
+  do_deb
+  
+  linux_source_folder=$export_root/linux.gtk.x86_64/
+  linux_folder="caleydo_"$version_number"_linux_x86-64"
+  arch="amd64"
+  do_deb
+  
+}
+
+# create deb and rpm for specific platform
+do_deb()
+{
+  echo -n "Creating Linux packages for "$arch 
+  cd $export_root
+  cp $debian_folder  $linux_folder -R
+  cp $linux_source_folder $linux_32_folder"/opt/caleydo"
+  #cp eclipse/ $linux_folder"/opt/caleydo" -R
+  sed -i 's/ARCH_STRING/'$arch'/g' $linux_folder"/DEBIAN/control"
+  sed -i 's/VERSION_NUMBER/'$version_number'/g' $linux_folder"/DEBIAN/control"
+  dpkg-deb --build $linux_folder  > /dev/null
+  sudo alien -r $linux_folder".deb" > /dev/null
+  rm $linux_folder -R
+  mv *.deb *.rpm $export_path
+  echo ".... [x] done"
+}
+
 print_help()
 {
   echo "exort.sh - packages calyedo and copies it to the web"
@@ -109,15 +151,19 @@ ask_for_version()
 #$# number of params
 #$1 first param
 
+
 if [ $# -gt 0 ]
 then
   count=0
   while [ "$count" -lt $# ]
   do
     case $1 in
+      -d) ask_for_version
+          make_debian_packages;;
       # package standalone
       -a) ask_for_version
-	  make_archive;;
+	  make_archive
+	  make_debian_packages;;
       # copy standalone
       -c) ask_for_version
 	  mount_webdav
