@@ -65,8 +65,11 @@ public class StartupProcessor {
 
 	public void initStartupProcudure(Map<String, Object> applicationArguments) {
 
-		String[] runConfigParameters = (String[]) applicationArguments.get("application.args");
+		// Load project if provided via webstart system property
+		setProjectLocationFromSystemProperty();
 
+		// Parse application arguments
+		String[] runConfigParameters = (String[]) applicationArguments.get("application.args");
 		if (runConfigParameters != null) {
 
 			for (int parameterCount = 0; parameterCount < runConfigParameters.length; parameterCount++) {
@@ -114,6 +117,21 @@ public class StartupProcessor {
 
 			startupProcedure.initPreWorkbenchOpen();
 			initRCPWorkbench();
+		}
+	}
+
+	/**
+	 * Sets the caleydo project when specified as a system property via webstart
+	 */
+	private void setProjectLocationFromSystemProperty() {
+		String projectLocation = System.getProperty("caleydo.project.location");
+		if (projectLocation != null) {
+			boolean isFile = checkFileName(projectLocation);
+			if (isFile) {
+				startupProcedure = new SerializationStartupProcedure();
+				((SerializationStartupProcedure) startupProcedure)
+						.setProjectLocation(projectLocation);
+			}
 		}
 	}
 

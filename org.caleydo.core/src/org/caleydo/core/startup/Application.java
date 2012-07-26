@@ -47,9 +47,6 @@ public class Application
 
 		StartupProcessor.get().initStartupProcudure(context.getArguments());
 
-		// System.out.println("Start Caleydo...");
-		// System.out.println("OS Name:" +System.getProperty("os.name"));
-
 		// if (System.getProperty("os.name").contains("Win")) {
 		// bIsWindowsOS = true;
 		// }
