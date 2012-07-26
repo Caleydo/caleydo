@@ -25,8 +25,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import javax.media.opengl.GLProfile;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -56,14 +58,24 @@ public class ResourceLoader {
 
 	public InputSource getInputSource(String fileName) throws FileNotFoundException {
 
-		InputSource inputSource;
+		InputSource inputSource = null;
 
 		if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
 			inputSource = new InputSource(loadResourceAsInputStream(fileName));
 		}
-		else {
+		else if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
 			inputSource = new InputSource(new BufferedInputStream(
 					new FileInputStream(fileName)));
+		}
+		else {
+			URL url;
+			try {
+				url = new URL(fileName);
+				inputSource = new InputSource(url.openStream());
+			}
+			catch (IOException e) {
+				throw new IllegalStateException("Cannot load resource from URL: " + fileName);
+			}
 		}
 
 		return inputSource;
