@@ -131,9 +131,10 @@ print_help()
   echo "Usage: export.sh [ option ]"
   echo ""
   echo "Options:"
-  echo "-a package standalone"
+  echo "-a package zips and make rpms and debs"
+  echo "-d make debian and rpm packages"
   echo "-c copy standalone"
-  echo "-s package and copy standalone"
+  echo "-s package, and copy standalone"
   echo "-w copy webstart"
   echo ""
   echo "If none of the options is present all are run: first the archive is made then the result is copied to the web, then the webstart is copied"
@@ -171,6 +172,7 @@ then
       # package and copy standalone
       -s) ask_for_version
 	  make_archive
+	  make_debian_packages
 	  mount_webdav
 	  copy_to_web;;
       # copy webstart
@@ -190,6 +192,7 @@ else
     then
     ask_for_version
     make_archive
+    make_debian_packages
     echo "Do you want to copy the release to the website? (y/n)"
     read copy
     if [ $copy = "y" ];
