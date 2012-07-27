@@ -20,9 +20,9 @@
 package org.caleydo.data.importer.tcga;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.net.URL;
 import java.util.zip.GZIPInputStream;
 import org.apache.tools.tar.TarEntry;
 import org.apache.tools.tar.TarInputStream;
@@ -33,6 +33,7 @@ import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ParsingRule;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
@@ -45,37 +46,44 @@ import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
-	
+public class TCGADataXMLGenerator
+	extends DataSetDescriptionSerializer {
+
+	private static String FIREHOSE_URL_PREFIX = "http://gdac.broadinstitute.org/runs/analyses__";
+	private static String FIREHOSE_TAR_NAME_PREFIX = "gdac.broadinstitute.org_";
+
 	protected String tumorName;
 	protected String tumorAbbreviation;
 	protected String runIdentifier;
+	protected String runIdentifierUnderscore;
 	protected String baseDirectory;
 	protected String tempDirectory;
 	protected String archiveDirectory;
 	protected String outputFilePath;
-	
-	
+
 	/**
 	 * @param arguments
 	 */
 	public TCGADataXMLGenerator(String[] arguments) {
 		super(arguments);
-		
+
 		this.tumorName = "Glioblastoma Multiforme";
-		this.tumorAbbreviation = "UCEC";
-		this.runIdentifier = "20120525";
-		this.tempDirectory = "/Users/nils/Data/StratomeX/temp";
-		this.baseDirectory = "/Users/nils/Data/StratomeX/downloads/analyses__2012_05_25";
-				
+		this.tumorAbbreviation = "OV";
+		this.runIdentifierUnderscore = "2012_05_25";
+		this.runIdentifier = runIdentifierUnderscore.replace("_", "");
+		this.tempDirectory = GeneralManager.CALEYDO_HOME_PATH + "TCGA";// "/Users/nils/Data/StratomeX/temp";
+		this.baseDirectory = FIREHOSE_URL_PREFIX + runIdentifierUnderscore + "/data/"
+				+ tumorAbbreviation + "/" + runIdentifier + "/"; // "/Users/nils/Data/StratomeX/downloads/analyses__2012_05_25";
+
 		// create path of archive search directory
-		this.archiveDirectory = this.baseDirectory + System.getProperty("file.separator") +
-				this.tumorAbbreviation + System.getProperty("file.separator") +
-				this.runIdentifier;
-		
-		this.outputFilePath = this.baseDirectory + System.getProperty("file.separator") + this.tumorAbbreviation + "_" + this.runIdentifier + "_caleydo.xml";		
+		this.archiveDirectory = baseDirectory;
+		// this.baseDirectory + System.getProperty("file.separator")
+		// + this.tumorAbbreviation + System.getProperty("file.separator")
+		// + this.runIdentifier;
+
+		this.outputFilePath = this.tempDirectory + System.getProperty("file.separator")
+				+ this.tumorAbbreviation + "_" + this.runIdentifier + "_caleydo.xml";
 	}
-	
 
 	public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-...\\-";
 
@@ -84,146 +92,142 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 	public static void main(String[] args) {
 
 		TCGADataXMLGenerator generator = new TCGADataXMLGenerator(args);
-		generator.run( generator.getOutputFilePath() );
+		generator.run(generator.getOutputFilePath());
 	}
 
-	
 	// find pipeline archive name filter (filename pattern matcher)
 	// TODO: replace with PathMatcher in Java 7
-	class PipelineNameFilter implements FilenameFilter
-	{
-	  protected String pipelineName;
-		
-	  public PipelineNameFilter( String pipelineName )
-	  {
-		  this.pipelineName = pipelineName;
-	  }		
-	  
-	  public boolean accept( File directory, String fileName )
-	  {
-	    if ( fileName.contains( this.pipelineName + "." + "Level_4" ) )
-	    {
-		    if ( fileName.endsWith( ".tar.gz" ) )
-		    {
-		    	return true;
-		    }
-	    }
-	    
-	    return false;
-	  }
-	}		
-	
-	protected String extractFileFromTarGzArchive( String archiveName, String fileName, String outputDirectoryName )
-    {
-		String outputFileName = null;
-				
-        try
-        {
-            byte[] buf = new byte[1024];
-            TarInputStream tarInputStream = null;
-            TarEntry tarEntry;
-            tarInputStream = new TarInputStream(
-                new GZIPInputStream( new FileInputStream( this.archiveDirectory + System.getProperty("file.separator") + archiveName ) ) );
+	class PipelineNameFilter
+		implements FilenameFilter {
 
-            tarEntry = tarInputStream.getNextEntry();
-            while (tarEntry != null) 
-            { 
-                //for each entry to be extracted
-                String entryName = tarEntry.getName();
-                
-                // only continue if the this entry is the one we need to extract
-                if ( !entryName.endsWith( fileName ) )
-                {
-                	tarEntry = tarInputStream.getNextEntry();
-                	continue;
-                }
-                
-                int n;
-                FileOutputStream fileoutputstream;
-                File newFile = new File(entryName);
-                String directory = newFile.getParent();
-                
-                if ( directory == null )
-                {
-                    if( newFile.isDirectory() )
-                    	
-                        break;
-                }
-                
-                outputDirectoryName += System.getProperty("file.separator") + this.runIdentifier + System.getProperty("file.separator") +
-                		this.tumorAbbreviation + System.getProperty("file.separator") +
-                		archiveName;
-                
-                if ( !(new File( outputDirectoryName ) ).exists() )
-                {
-                    if ( !(new File( outputDirectoryName ) ).mkdirs() )
-                    {
-                        // Directory creation failed
-                    	throw new RuntimeException( "Unable to create output directory " + outputDirectoryName + " for " + fileName + "." );
-                    }
-                }
-                
-                outputFileName = outputDirectoryName + System.getProperty("file.separator") + fileName;
-                
-                fileoutputstream = new FileOutputStream(
-                   outputFileName);             
+		protected String pipelineName;
 
-                while ((n = tarInputStream.read(buf, 0, 1024)) > -1)
-                    fileoutputstream.write(buf, 0, n);
-
-                fileoutputstream.close(); 
-                tarInputStream.close();
-                
-                break;
-            }//while
-
-        }
-        catch (Exception e)
-        {
-        	throw new RuntimeException( "Unable to extract " + fileName + " from " + archiveName + "." );
-        }
-        
-        if ( outputFileName == null )
-        {	
-        	throw new RuntimeException( "File " + fileName + " not found in " + archiveName + "." );
-        }
-                
-        return outputFileName;
-    }	
-	
-	
-	// find Firehose archive in Firehose_get output directory and extract file from archive to temp directory
-	// return path to file in temp directory
-	protected String extractFile( String fileName, String pipelineName )
-	{
-		// check if exactly one archive exists, if not return null
-		String[] archiveNames = new java.io.File( this.archiveDirectory ).list( new PipelineNameFilter( pipelineName ) );
-		
-		if ( archiveNames.length == 0 )
-		{
-			throw new RuntimeException( "No archive found for pipeline " + pipelineName + " in " + this.archiveDirectory );
+		public PipelineNameFilter(String pipelineName) {
+			this.pipelineName = pipelineName;
 		}
 
-		if ( archiveNames.length > 1 )
-		{
-			throw new RuntimeException( "Multiple archives found for pipeline " + pipelineName + " in " + this.archiveDirectory );
+		public boolean accept(File directory, String fileName) {
+			if (fileName.contains(this.pipelineName + "." + "Level_4")) {
+				if (fileName.endsWith(".tar.gz")) {
+					return true;
+				}
+			}
+
+			return false;
 		}
-		
-		
-		String archiveName = archiveNames[0];
-		
-		// extract file to temp directory and return path to file
-		return extractFileFromTarGzArchive( archiveName, fileName, this.tempDirectory );
 	}
-	
-	
-	protected int removeFile( String filePath ) 
-	{
+
+	protected String extractFileFromTarGzArchive(String archiveName, String fileName,
+			String outputDirectoryName) {
+		String outputFileName = null;
+
+		try {
+			byte[] buf = new byte[1024];
+			TarInputStream tarInputStream = null;
+			TarEntry tarEntry;
+
+			tarInputStream = new TarInputStream(new GZIPInputStream(
+					new URL(this.archiveDirectory + System.getProperty("file.separator")
+							+ archiveName).openStream()));
+
+			tarEntry = tarInputStream.getNextEntry();
+			while (tarEntry != null) {
+				// for each entry to be extracted
+				String entryName = tarEntry.getName();
+
+				// only continue if the this entry is the one we need to extract
+				if (!entryName.endsWith(fileName)) {
+					tarEntry = tarInputStream.getNextEntry();
+					continue;
+				}
+
+				int n;
+				FileOutputStream fileoutputstream;
+				File newFile = new File(entryName);
+				String directory = newFile.getParent();
+
+				if (directory == null) {
+					if (newFile.isDirectory())
+
+						break;
+				}
+
+				outputDirectoryName += System.getProperty("file.separator")
+						+ this.runIdentifier + System.getProperty("file.separator")
+						+ this.tumorAbbreviation + System.getProperty("file.separator")
+						+ archiveName;
+
+				if (!(new File(outputDirectoryName)).exists()) {
+					if (!(new File(outputDirectoryName)).mkdirs()) {
+						// Directory creation failed
+						throw new RuntimeException("Unable to create output directory "
+								+ outputDirectoryName + " for " + fileName + ".");
+					}
+				}
+
+				outputFileName = outputDirectoryName + System.getProperty("file.separator")
+						+ fileName;
+
+				fileoutputstream = new FileOutputStream(outputFileName);
+
+				while ((n = tarInputStream.read(buf, 0, 1024)) > -1)
+					fileoutputstream.write(buf, 0, n);
+
+				fileoutputstream.close();
+				tarInputStream.close();
+
+				break;
+			}// while
+
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Unable to extract " + fileName + " from "
+					+ archiveName + ".");
+		}
+
+		if (outputFileName == null) {
+			throw new RuntimeException("File " + fileName + " not found in " + archiveName
+					+ ".");
+		}
+
+		return outputFileName;
+	}
+
+	// find Firehose archive in Firehose_get output directory and extract file
+	// from archive to temp directory
+	// return path to file in temp directory
+	protected String extractFile(String fileName, String pipelineName) {
+		// check if exactly one archive exists, if not return null
+		// String[] archiveNames = new java.io.File(this.archiveDirectory)
+		// .list(new PipelineNameFilter(pipelineName));
+
+		// if (archiveNames.length == 0) {
+		// throw new RuntimeException("No archive found for pipeline " +
+		// pipelineName
+		// + " in " + this.archiveDirectory);
+		// }
+		//
+		// if (archiveNames.length > 1) {
+		// throw new RuntimeException("Multiple archives found for pipeline " +
+		// pipelineName
+		// + " in " + this.archiveDirectory);
+		// }
+		//
+		// String archiveName = archiveNames[0];
+
+		// gdac.broadinstitute.org_GBM.Methylation_Clustering_CNMF.Level_4.2012052500.0.0.tar.gz
+		String archiveName = FIREHOSE_TAR_NAME_PREFIX + tumorAbbreviation + "." + pipelineName
+				+ ".Level_4." + runIdentifier + "00.0.0.tar.gz";
+
+		// extract file to temp directory and return path to file
+		return extractFileFromTarGzArchive(archiveName, fileName, this.tempDirectory);
+	}
+
+	protected int removeFile(String filePath) {
 		// delete file from temp directory if it exists
 		// check if this is requested before calling this file
 		return 0;
 	}
-	
 
 	@Override
 	protected void setUpDataSetDescriptions() {
@@ -235,72 +239,70 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		idTypeParsingRules.setReplacementExpression("\\.", "-");
 		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
-		try
-		{
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "mRNA_Clustering_CNMF", "mRNA_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA", true ));
+		try {
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData("mRNA_Clustering_CNMF",
+					"mRNA_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA", true));
 		}
-		catch( Exception e )
-		{
-			System.err.println( e.getMessage() );
-		}
-
-		try
-		{
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "miR_Clustering_CNMF", "miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA", false ));
-		}
-		catch( Exception e )
-		{
-			System.err.println( e.getMessage() );
+		catch (Exception e) {
+			System.err.println(e.getMessage());
 		}
 
-		try
-		{
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "miRseq_Clustering_CNMF", "miRseq_Clustering_Consensus", "cnmf.normalized.gct", "microRNA-seq", false ));
+		try {
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData("miR_Clustering_CNMF",
+					"miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA", false));
 		}
-		catch( Exception e )
-		{
-			System.err.println( e.getMessage() );
+		catch (Exception e) {
+			System.err.println(e.getMessage());
 		}
-		
-		try
-		{
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "Methylation_Clustering_CNMF", "Methylation_Clustering_Consensus", "cnmf.normalized.gct", "methylation", true ));
+
+		try {
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData(
+					"miRseq_Clustering_CNMF", "miRseq_Clustering_Consensus",
+					"cnmf.normalized.gct", "microRNA-seq", false));
 		}
-		catch( Exception e )
-		{
-			System.err.println( e.getMessage() );
+		catch (Exception e) {
+			System.err.println(e.getMessage());
 		}
-		
-		try
-		{
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "RPPA_Clustering_CNMF", "RPPA_Clustering_Consensus", "cnmf.normalized.gct", "RPPA", false ));
+
+		try {
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData(
+					"Methylation_Clustering_CNMF", "Methylation_Clustering_Consensus",
+					"cnmf.normalized.gct", "methylation", true));
 		}
-		catch( Exception e )
-		{
-			System.err.println( e.getMessage() );
+		catch (Exception e) {
+			System.err.println(e.getMessage());
 		}
-		
-		try
-		{
-			dataSetDescriptionCollection.add(setUpCopyNumberData( "CopyNumber_Gistic2", "Copy Number"));
+
+		try {
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData("RPPA_Clustering_CNMF",
+					"RPPA_Clustering_Consensus", "cnmf.normalized.gct", "RPPA", false));
 		}
-		catch( Exception e )
-		{
-			System.err.println( e.getMessage() );
+		catch (Exception e) {
+			System.err.println(e.getMessage());
 		}
-		
-		//dataSetDescriptionCollection.add(setUpClinicalData());
+
+		try {
+			dataSetDescriptionCollection.add(setUpCopyNumberData("CopyNumber_Gistic2",
+					"Copy Number"));
+		}
+		catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+
+		// dataSetDescriptionCollection.add(setUpClinicalData());
 		// dataSetDescriptionCollection.add(setUpMutationData());
 	}
 
-	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName, String hierarchicalArchiveName, String matrixFileName, String dataType, boolean isGeneIdType ) {
-		String mRNAFile = this.extractFile( matrixFileName, cnmfArchiveName );
-		String mRNACnmfGroupingFile = this.extractFile( "cnmf.membership.txt", cnmfArchiveName );
-		
+	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName,
+			String hierarchicalArchiveName, String matrixFileName, String dataType,
+			boolean isGeneIdType) {
+		String mRNAFile = this.extractFile(matrixFileName, cnmfArchiveName);
+		String mRNACnmfGroupingFile = this.extractFile("cnmf.membership.txt", cnmfArchiveName);
+
 		DataSetDescription matrixData = new DataSetDescription();
 		matrixData.setDataSetName(dataType);
 
-		matrixData.setDataSourcePath( mRNAFile );
+		matrixData.setDataSourcePath(mRNAFile);
 		matrixData.setNumberOfHeaderLines(3);
 
 		ParsingRule parsingRule = new ParsingRule();
@@ -311,8 +313,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		matrixData.addParsingRule(parsingRule);
 		matrixData.setTransposeMatrix(true);
 
-		if ( isGeneIdType )
-		{	
+		if (isGeneIdType) {
 			IDSpecification geneIDSpecification = new IDSpecification();
 			geneIDSpecification.setIDTypeGene(true);
 			geneIDSpecification.setIdType("GENE_SYMBOL");
@@ -327,36 +328,35 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		firehoseCnmfClustering.setRowIDSpecification(sampleIDSpecification);
 		matrixData.addColumnGroupingSpecification(firehoseCnmfClustering);
 
-		try
-		{
-			String mRNAHierarchicalGroupingFile = this.extractFile( this.tumorAbbreviation + ".allclusters.txt", hierarchicalArchiveName ); // e.g. GBM.allclusters.txt		
-			
+		try {
+			String mRNAHierarchicalGroupingFile = this.extractFile(this.tumorAbbreviation
+					+ ".allclusters.txt", hierarchicalArchiveName); // e.g.
+																	// GBM.allclusters.txt
+
 			GroupingParseSpecification firehoseHierarchicalClustering = new GroupingParseSpecification(
 					mRNAHierarchicalGroupingFile);
 			firehoseHierarchicalClustering.setContainsColumnIDs(false);
 			firehoseHierarchicalClustering.setRowIDSpecification(sampleIDSpecification);
-			matrixData.addColumnGroupingSpecification(firehoseHierarchicalClustering);					
+			matrixData.addColumnGroupingSpecification(firehoseHierarchicalClustering);
 		}
-		catch ( RuntimeException e )
-		{
-			System.err.println( e.getMessage() );
+		catch (RuntimeException e) {
+			System.err.println(e.getMessage());
 		}
-		
+
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
 		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 		clusterConfiguration.setNumberOfClusters(5);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		matrixData.setDataProcessingDescription(dataProcessingDescription);
-		
+
 		return matrixData;
 	}
 
-	
-	private DataSetDescription setUpMiRNAData( String archiveName, String dataType ) {
-		String miRNAFile = this.extractFile( "cnmf.normalized.gct", archiveName );
-		String miRNAGroupingFile = this.extractFile( "cnmf.membership.txt", archiveName );
-		
+	private DataSetDescription setUpMiRNAData(String archiveName, String dataType) {
+		String miRNAFile = this.extractFile("cnmf.normalized.gct", archiveName);
+		String miRNAGroupingFile = this.extractFile("cnmf.membership.txt", archiveName);
+
 		DataSetDescription mirnaData = new DataSetDescription();
 		mirnaData.setDataSetName(dataType);
 
@@ -381,7 +381,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		firehoseClustering.setContainsColumnIDs(false);
 		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
 		mirnaData.addColumnGroupingSpecification(firehoseClustering);
-		
+
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
 		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
@@ -392,10 +392,10 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		return mirnaData;
 	}
 
-	private DataSetDescription setUpMethylationData( String archiveName, String dataType ) {
-		String methylationFile = this.extractFile( "cnmf.normalized.gct", archiveName );
-		String methylationGroupingFile = this.extractFile( "cnmf.membership.txt", archiveName );
-		
+	private DataSetDescription setUpMethylationData(String archiveName, String dataType) {
+		String methylationFile = this.extractFile("cnmf.normalized.gct", archiveName);
+		String methylationGroupingFile = this.extractFile("cnmf.membership.txt", archiveName);
+
 		DataSetDescription methylationData = new DataSetDescription();
 		methylationData.setDataSetName(dataType);
 
@@ -420,20 +420,20 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		firehoseClustering.setContainsColumnIDs(false);
 		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
 		methylationData.addColumnGroupingSpecification(firehoseClustering);
-		
+
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
 		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 		clusterConfiguration.setNumberOfClusters(5);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		methylationData.setDataProcessingDescription(dataProcessingDescription);
-		
+
 		return methylationData;
 	}
 
-	private DataSetDescription setUpCopyNumberData( String archiveName, String dataType ) {
-		String copyNumberFile = this.extractFile( "all_thresholded.by_genes.txt", archiveName );
-		
+	private DataSetDescription setUpCopyNumberData(String archiveName, String dataType) {
+		String copyNumberFile = this.extractFile("all_thresholded.by_genes.txt", archiveName);
+
 		DataSetDescription copyNumberData = new DataSetDescription();
 		copyNumberData.setDataSetName(dataType);
 
@@ -495,7 +495,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 
 	private DataSetDescription setUpMutationData() {
 		String MUTATION = "";
-		
+
 		DataSetDescription mutationDataMetaInfo = new DataSetDescription();
 		mutationDataMetaInfo.setDataSetName("Mutation Status");
 		mutationDataMetaInfo.setDataSourcePath(MUTATION);
@@ -519,16 +519,12 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		return mutationDataMetaInfo;
 	}
 
-	
 	public String getOutputFilePath() {
 		return outputFilePath;
 	}
 
-
 	public void setOutputFilePath(String outputFilePath) {
 		this.outputFilePath = outputFilePath;
 	}
-
-
 
 }

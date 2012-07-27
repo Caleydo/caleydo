@@ -24,23 +24,11 @@
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="org.caleydo.core.application"
-            name="Caleydo">
+            application="org.caleydo.data.importer.application"
+            name="Caleydo Data Importer">
          <property
                name="appName"
-               value="Caleydo">
-         </property>
-         <property
-               name="aboutImage"
-               value="resources/wizard/wizard.png">
-         </property>
-         <property
-               name="aboutText"
-               value="Caleydo - Visualization for Molecular Biology&#x0A;http:// www.caleydo.org&#x0A;&#x0A;Copyright 2005 - 2012  by &#x0A;Graz University of Technology - http://www.icg.tugraz.at&#x0A;Marc Streit - http://marc.streit.com&#x0A;Alexander Lex - http://alexander-lex.com&#x0A;Christian Partl - http://icg.tugraz.at/Members/partl&#x0A;Johannes Kepler University Linz - http://www.jku.at/cg/&#x0A;&#x0A;Caleydo is open-source software licenced under the GPL V3">
-         </property>
-         <property
-               name="windowImages"
-               value="platform:/plugin/org.caleydo.core/resources/icons/caleydo_16.png,platform:/plugin/org.caleydo.core/resources/icons/caleydo_32.png,platform:/plugin/org.caleydo.core/resources/icons/caleydo_48.png,platform:/plugin/org.caleydo.core/resources/icons/caleydo_64.png,platform:/plugin/org.caleydo.core/resources/icons/caleydo_128.png">
+               value="Caleydo Data Importer">
          </property>
       </product>
    </extension>
