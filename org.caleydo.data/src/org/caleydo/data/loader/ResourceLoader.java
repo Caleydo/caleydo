@@ -60,21 +60,25 @@ public class ResourceLoader {
 
 		InputSource inputSource = null;
 
-		if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
-			inputSource = new InputSource(loadResourceAsInputStream(fileName));
-		}
-		else if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
-			inputSource = new InputSource(new BufferedInputStream(
-					new FileInputStream(fileName)));
-		}
-		else {
-			URL url;
-			try {
-				url = new URL(fileName);
-				inputSource = new InputSource(url.openStream());
+		try {
+			if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
+				inputSource = new InputSource(loadResourceAsInputStream(fileName));
 			}
-			catch (IOException e) {
-				throw new IllegalStateException("Cannot load resource from URL: " + fileName);
+			else {
+				inputSource = new InputSource(new BufferedInputStream(
+						new FileInputStream(fileName)));
+			}	
+		}
+		catch (FileNotFoundException fnfExeception) {
+			if (inputSource == null) {
+				URL url;
+				try {
+					url = new URL(fileName);
+					inputSource = new InputSource(url.openStream());
+				}
+				catch (IOException ioException) {
+					throw new IllegalStateException("Cannot load resource from URL: " + fileName);
+				}
 			}
 		}
 

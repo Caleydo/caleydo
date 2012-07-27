@@ -73,10 +73,12 @@ public class StartupProcessor {
 		if (runConfigParameters != null) {
 
 			for (int parameterCount = 0; parameterCount < runConfigParameters.length; parameterCount++) {
+				
+				boolean isProjectFile = false;
 				String parameter = runConfigParameters[parameterCount];
 				if (parameterCount == 0) {
-					boolean isFile = checkFileName(parameter);
-					if (isFile) {
+					isProjectFile = checkFileName(parameter);
+					if (isProjectFile) {
 						startupProcedure = new SerializationStartupProcedure();
 						((SerializationStartupProcedure) startupProcedure)
 								.setProjectLocation(parameter);
@@ -95,7 +97,7 @@ public class StartupProcessor {
 					System.out.println();
 					shutdown();
 				}
-				else {
+				else if (!isProjectFile) {
 					String message = "Unknown Command Line Argument: " + parameter;
 					Logger.log(new Status(Status.WARNING, this.toString(), message));
 					System.out.println(message);
