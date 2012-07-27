@@ -128,23 +128,29 @@ public class PreviewTableManager {
 		// colorTableColumn(0,
 		// Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY));
 
-		if (oldNumberOfHeaderRows != -1) {
+		if (oldNumberOfHeaderRows != -1
+				&& oldNumberOfHeaderRows < previewTable.getItemCount()) {
 			for (int i = 1; i < oldNumberOfHeaderRows + 1; i++) {
 				colorTableRow(i, Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 			}
 		}
 
-		if (oldIDRowIndex != -1) {
+		if (oldIDRowIndex != -1 && oldIDRowIndex < previewTable.getItemCount()) {
 			if (oldNumberOfHeaderRows <= oldIDRowIndex) {
 				colorTableRow(oldIDRowIndex,
 						Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 			}
 		}
 
-		if (oldIDColumnIndex != -1) {
+		if (oldIDColumnIndex != -1 && oldIDColumnIndex < previewTable.getColumnCount()) {
 			colorTableColumn(oldIDColumnIndex,
 					Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
-			selectedColumnButtons.get(oldIDColumnIndex - 1).setVisible(true);
+			Button selectionButton = selectedColumnButtons.get(oldIDColumnIndex - 1);
+			selectionButton.setVisible(true);
+			if (!selectionButton.getSelection()) {
+				colorTableColumnText(oldIDColumnIndex, Display.getCurrent()
+						.getSystemColor(SWT.COLOR_GRAY));
+			}
 		}
 
 		if (numberOfHeaderRows < previewTable.getItemCount()) {
@@ -162,6 +168,8 @@ public class PreviewTableManager {
 			colorTableColumn(idColumnIndex,
 					Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
 			selectedColumnButtons.get(idColumnIndex - 1).setVisible(false);
+			colorTableColumnText(idColumnIndex, Display.getCurrent()
+					.getSystemColor(SWT.COLOR_BLACK));
 		}
 
 		oldIDRowIndex = idRowIndex;
@@ -169,16 +177,22 @@ public class PreviewTableManager {
 		oldNumberOfHeaderRows = numberOfHeaderRows;
 	}
 
-	private void colorTableRow(int rowIndex, Color color) {
+	public void colorTableRow(int rowIndex, Color color) {
 		TableItem item = previewTable.getItem(rowIndex);
 		for (int i = 0; i < previewTable.getColumnCount(); i++) {
 			item.setBackground(i, color);
 		}
 	}
 
-	private void colorTableColumn(int columnIndex, Color color) {
+	public void colorTableColumn(int columnIndex, Color color) {
 		for (int i = 1; i < previewTable.getItemCount(); i++) {
 			previewTable.getItem(i).setBackground(columnIndex, color);
+		}
+	}
+
+	public void colorTableColumnText(int columnIndex, Color color) {
+		for (int i = 1; i < previewTable.getItemCount(); i++) {
+			previewTable.getItem(i).setForeground(columnIndex, color);
 		}
 	}
 
@@ -206,22 +220,15 @@ public class PreviewTableManager {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					Color textColor = null;
-					boolean bSkipColumn = false;
+					boolean bSkipColumn = !((Button) e.widget).getSelection();
 
-					for (TableItem item : previewTable.getItems()) {
-						bSkipColumn = !((Button) e.widget).getSelection();
-
-						if (bSkipColumn) {
-							textColor = Display.getCurrent().getSystemColor(
-									SWT.COLOR_GRAY);
-						} else {
-							textColor = Display.getCurrent().getSystemColor(
-									SWT.COLOR_BLACK);
-						}
-
-						item.setForeground(((Integer) e.widget.getData("column")),
-								textColor);
+					if (bSkipColumn) {
+						textColor = Display.getCurrent().getSystemColor(SWT.COLOR_GRAY);
+					} else {
+						textColor = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
 					}
+
+					colorTableColumnText((Integer) e.widget.getData("column"), textColor);
 				}
 			});
 
@@ -233,7 +240,7 @@ public class PreviewTableManager {
 			tableEditors.add(editor);
 		}
 	}
-	
+
 	/**
 	 * @return the selectedColumnButtons, see {@link #selectedColumnButtons}
 	 */
