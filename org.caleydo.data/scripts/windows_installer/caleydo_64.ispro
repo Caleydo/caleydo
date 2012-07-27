@@ -5,9 +5,9 @@ WindowTitle=Install Caleydo
 ProductName=Caleydo
 
 [Graphics]
-SplashScreen=Z:\alexsb\uni\caleydo\org.caleydo.data\resources\splash\splash.bmp
+SplashScreen=Z:\alexsb\uni\caleydo\org.caleydo.core\splash.bmp
 SplashScreenDelay=3
-Header=Z:\alexsb\uni\caleydo\org.caleydo.data\resources\wizard\wizard.bmp
+Header=Z:\alexsb\uni\caleydo\org.caleydo.data\resources\icons\caleydo\caleydo_windows_installer.bmp
 HeaderJustify=Right
 HeaderFontColor=0
 WizardBitmap=
@@ -663,7 +663,6 @@ SetupPath=caleydo
 
 [Shortcuts]
 ProgramGroup=
-Caleydo.exe=dmpq
 
 [Registry]
 

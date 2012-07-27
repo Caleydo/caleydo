@@ -85,13 +85,17 @@ copy_webstart()
 # moves the windows installer if it exists
 move_windows_installer()
 {
+ echo -n "Moving Windows installer for x86"
  setup_file=$win32_folder"/"$product"/Setup.exe"
  target_setup_file=$export_path"/"$product"_"$version_number"_installer_win_x86-32.exe"
  move_file
+ echo ".... [x] done"
  
+  echo -n "Moving Windows installer for x86-64"
  setup_file=$win64_folder"/"$product"/Setup.exe"
  target_setup_file=$export_path"/"$product"_"$version_number"_installer_win_x86-64.exe"
  move_file
+ echo ".... [x] done"
 }
 # helper for moving a file if it exists
 move_file()
@@ -182,7 +186,7 @@ do_deb()
   # remove .svn files from debian folder
   rm -rf `find $linux_folder -type d -name .svn`
   
-  cp $linux_source_folder $linux_folder"/opt/caleydo" -R
+  cp $linux_source_folder"/"$product $linux_folder"/opt/" -R
   #cp eclipse/ $linux_folder"/opt/caleydo" -R
   sed -i 's/ARCH_STRING/'$arch'/g' $linux_folder"/DEBIAN/control"
   sed -i 's/VERSION_NUMBER/'$version_number'/g' $linux_folder"/DEBIAN/control"
