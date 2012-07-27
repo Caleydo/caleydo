@@ -42,7 +42,7 @@ win32_folder=$export_root"/win32.win32.x86"
 win64_folder=$export_root"/win32.win32.x86_64"
 
 mac32_folder=$export_root"/macosx.cocoa.x86"
-mac32_folder=$export_root"/macosx.cocoa.x86_64"
+mac64_folder=$export_root"/macosx.cocoa.x86_64"
 
 #======================================================
 
