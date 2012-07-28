@@ -17,53 +17,51 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.data.importer;
+package org.caleydo.data.importer.tcga;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.data.importer.XMLToProjectBuilder;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 
 /**
- * This class controls all aspects of the application's execution
+ * This class handles the whole workflow of creating a Caleydo project from TCGA
+ * data.
  * 
- * @author Alexander Lex
  * @author Marc Streit
- * @author Nils Gehlenborg
+ * 
  */
-public class Application implements IApplication {
-	
+public class TCGAProjectBuilderApplication
+	implements IApplication {
+
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
-		
-		XMLToProjectBuilder projectBuilder = new XMLToProjectBuilder();
-				
-		String[] programArguments = (String[]) context.getArguments().get(
-				"application.args");
-		
-		String projectFileOutputPath = "";
-		String xmlInputPath = "";
-		
-		if (programArguments == null || programArguments.length != 2) {
 
-			xmlInputPath = System.getProperty("user.home")
-					+ System.getProperty("file.separator") + "caleydo_data.xml";
+		String tumorAbbreviation = "OV";
+		String runIdentifier = "2012_05_25";
 
-			projectFileOutputPath = System.getProperty("user.home")
-					+ System.getProperty("file.separator") + "export_"
-					+ (new SimpleDateFormat("yyyy.MM.dd_HH.mm").format(new Date())) + ".cal";
-		}
-		else {
-			projectFileOutputPath = programArguments[0];
-			xmlInputPath = programArguments[1];
-		}
+		String destinationPath = GeneralManager.CALEYDO_HOME_PATH + "/TCGA/"
+				+ runIdentifier.replace("_", "") + "/" + tumorAbbreviation + "/";
 
-		projectBuilder.buildProject(xmlInputPath, projectFileOutputPath);
-		
-		return IApplication.EXIT_OK;
+		String xmlFilePath = destinationPath + tumorAbbreviation + "_" + runIdentifier
+				+ ".xml";
+
+		String projectOutputPath = destinationPath + tumorAbbreviation + "_" + runIdentifier
+				+ ".cal";
+
+		TCGADataXMLGenerator generator = new TCGADataXMLGenerator(tumorAbbreviation,
+				runIdentifier, xmlFilePath);
+		generator.run(generator.getOutputFilePath());
+
+		XMLToProjectBuilder xmlToProjectBuilder = new XMLToProjectBuilder();
+		xmlToProjectBuilder.buildProject(xmlFilePath, projectOutputPath);
+
+		return context;
 	}
 
 	@Override
 	public void stop() {
+		// TODO Auto-generated method stub
+
 	}
 }

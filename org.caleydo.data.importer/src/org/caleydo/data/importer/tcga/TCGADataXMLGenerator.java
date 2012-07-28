@@ -52,38 +52,13 @@ public class TCGADataXMLGenerator
 	private static String FIREHOSE_URL_PREFIX = "http://gdac.broadinstitute.org/runs/analyses__";
 	private static String FIREHOSE_TAR_NAME_PREFIX = "gdac.broadinstitute.org_";
 
-	protected String tumorName;
+	// protected String tumorName;
 	protected String tumorAbbreviation;
 	protected String runIdentifier;
 	protected String runIdentifierUnderscore;
-	protected String baseDirectory;
 	protected String tempDirectory;
-	protected String archiveDirectory;
-	protected String outputFilePath;
-
-	/**
-	 * @param arguments
-	 */
-	public TCGADataXMLGenerator(String[] arguments) {
-		super(arguments);
-
-		this.tumorName = "Glioblastoma Multiforme";
-		this.tumorAbbreviation = "OV";
-		this.runIdentifierUnderscore = "2012_05_25";
-		this.runIdentifier = runIdentifierUnderscore.replace("_", "");
-		this.tempDirectory = GeneralManager.CALEYDO_HOME_PATH + "TCGA";// "/Users/nils/Data/StratomeX/temp";
-		this.baseDirectory = FIREHOSE_URL_PREFIX + runIdentifierUnderscore + "/data/"
-				+ tumorAbbreviation + "/" + runIdentifier + "/"; // "/Users/nils/Data/StratomeX/downloads/analyses__2012_05_25";
-
-		// create path of archive search directory
-		this.archiveDirectory = baseDirectory;
-		// this.baseDirectory + System.getProperty("file.separator")
-		// + this.tumorAbbreviation + System.getProperty("file.separator")
-		// + this.runIdentifier;
-
-		this.outputFilePath = this.tempDirectory + System.getProperty("file.separator")
-				+ this.tumorAbbreviation + "_" + this.runIdentifier + "_caleydo.xml";
-	}
+	protected String remoteArchiveDirectory;
+	protected String outputXMLFilePath;
 
 	public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-...\\-";
 
@@ -95,26 +70,37 @@ public class TCGADataXMLGenerator
 		generator.run(generator.getOutputFilePath());
 	}
 
-	// find pipeline archive name filter (filename pattern matcher)
-	// TODO: replace with PathMatcher in Java 7
-	class PipelineNameFilter
-		implements FilenameFilter {
+	public TCGADataXMLGenerator(String[] arguments) {
+		super(arguments);
 
-		protected String pipelineName;
+		// this.tumorName = "Glioblastoma Multiforme";
+		this.tumorAbbreviation = "OV";
+		this.runIdentifierUnderscore = "2012_05_25";
+		this.outputXMLFilePath = this.tempDirectory + System.getProperty("file.separator")
+				+ tumorAbbreviation + "_" + this.runIdentifier + "_caleydo.xml";
+	
+		init();
+	}
 
-		public PipelineNameFilter(String pipelineName) {
-			this.pipelineName = pipelineName;
-		}
+	public TCGADataXMLGenerator(String tumorAbbreviation, String runIdentifierUnderscore,
+			String outputXMLFilePath) {
+		
+		super(null);
 
-		public boolean accept(File directory, String fileName) {
-			if (fileName.contains(this.pipelineName + "." + "Level_4")) {
-				if (fileName.endsWith(".tar.gz")) {
-					return true;
-				}
-			}
+		this.tumorAbbreviation = tumorAbbreviation;
+		this.runIdentifierUnderscore = runIdentifierUnderscore;
+		this.outputXMLFilePath = outputXMLFilePath;
+	
+		init();
+	}
 
-			return false;
-		}
+	private void init() {
+		this.runIdentifier = runIdentifierUnderscore.replace("_", "");
+		this.tempDirectory = GeneralManager.CALEYDO_HOME_PATH + "TCGA";
+
+		// create path of archive search directory
+		this.remoteArchiveDirectory = FIREHOSE_URL_PREFIX + runIdentifierUnderscore + "/data/"
+				+ tumorAbbreviation + "/" + runIdentifier + "/";
 	}
 
 	protected String extractFileFromTarGzArchive(String archiveName, String fileName,
@@ -126,8 +112,8 @@ public class TCGADataXMLGenerator
 			TarInputStream tarInputStream = null;
 			TarEntry tarEntry;
 
-			tarInputStream = new TarInputStream(new GZIPInputStream(
-					new URL(this.archiveDirectory + System.getProperty("file.separator")
+			tarInputStream = new TarInputStream(new GZIPInputStream(new URL(
+					this.remoteArchiveDirectory + System.getProperty("file.separator")
 							+ archiveName).openStream()));
 
 			tarEntry = tarInputStream.getNextEntry();
@@ -520,11 +506,32 @@ public class TCGADataXMLGenerator
 	}
 
 	public String getOutputFilePath() {
-		return outputFilePath;
+		return outputXMLFilePath;
 	}
 
 	public void setOutputFilePath(String outputFilePath) {
-		this.outputFilePath = outputFilePath;
+		this.outputXMLFilePath = outputFilePath;
 	}
 
+	// find pipeline archive name filter (filename pattern matcher)
+	// TODO: replace with PathMatcher in Java 7
+	class PipelineNameFilter
+		implements FilenameFilter {
+
+		protected String pipelineName;
+
+		public PipelineNameFilter(String pipelineName) {
+			this.pipelineName = pipelineName;
+		}
+
+		public boolean accept(File directory, String fileName) {
+			if (fileName.contains(this.pipelineName + "." + "Level_4")) {
+				if (fileName.endsWith(".tar.gz")) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+	}
 }

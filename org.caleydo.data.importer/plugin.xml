@@ -14,6 +14,18 @@
       </application>
    </extension>
    <extension
+         id="tcgaProjectBuilderApplication"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            cardinality="singleton-global"
+            thread="main"
+            visible="true">
+         <run
+               class="org.caleydo.data.importer.tcga.TCGAProjectBuilderApplication">
+         </run>
+      </application>
+   </extension>
+   <extension
          point="org.eclipse.core.runtime.products">
       <product
             application="org.caleydo.data.importer.product"

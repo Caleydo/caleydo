@@ -61,7 +61,7 @@ public abstract class DataSetDescriptionSerializer {
 	 * Triggers the loading of the <code>DataSetDescriptions</code> and the
 	 * serialization.
 	 */
-	protected void run( String outputFilePath ) {
+	public void run( String outputFilePath ) {
 		this.outputFilePath = outputFilePath;
 		this.run();
 	}
