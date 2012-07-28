@@ -213,7 +213,7 @@ public class ImportGroupingDialogMediator {
 	}
 
 	/**
-	 * Opens a file dialog to specify the dataset that defines the groupings.
+	 * Opens a file dialog to specify the file that defines the groupings.
 	 */
 	public void openFileButtonPressed() {
 		FileDialog fileDialog = new FileDialog(new Shell());
@@ -499,7 +499,7 @@ public class ImportGroupingDialogMediator {
 			ArrayList<String> row = dataMatrix.get(i);
 			int numFloatsFound = 0;
 			for (int j = 0; j < row.size() && j < MAX_PREVIEW_TABLE_COLUMNS; j++) {
-				String text = row.get(i);
+				String text = row.get(j);
 				try {
 					// This currently only works for numerical values
 					Float.parseFloat(text);

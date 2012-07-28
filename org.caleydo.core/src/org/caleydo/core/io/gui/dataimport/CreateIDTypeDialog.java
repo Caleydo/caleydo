@@ -97,6 +97,11 @@ public class CreateIDTypeDialog extends Dialog {
 	private IDCategory restrictingIDCategory;
 
 	/**
+	 * The {@link IDType} created by this dialog.
+	 */
+	private IDType idType;
+
+	/**
 	 * @param parentShell
 	 */
 	public CreateIDTypeDialog(Shell parentShell) {
@@ -129,7 +134,7 @@ public class CreateIDTypeDialog extends Dialog {
 		Label categoryIDLabel = new Label(parentComposite, SWT.NONE);
 		categoryIDLabel.setText("ID Category");
 
-		idCategoryCombo = new Combo(parentComposite, SWT.DROP_DOWN);
+		idCategoryCombo = new Combo(parentComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
 		idCategoryCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		if (restrictingIDCategory != null) {
 			idCategoryCombo.add(restrictingIDCategory.getCategoryName());
@@ -149,7 +154,7 @@ public class CreateIDTypeDialog extends Dialog {
 		Label dataTypeLabel = new Label(parentComposite, SWT.NONE);
 		dataTypeLabel.setText("Data type");
 
-		dataTypeCombo = new Combo(parentComposite, SWT.DROP_DOWN);
+		dataTypeCombo = new Combo(parentComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
 		dataTypeCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		dataTypeCombo.setText("<Please select>");
 		dataTypeMap.put(0, EDataType.INT);
@@ -264,7 +269,7 @@ public class CreateIDTypeDialog extends Dialog {
 			}
 		}
 
-		IDType idType = IDType.registerType(typeName,
+		idType = IDType.registerType(typeName,
 				idCategoryMap.get(idCategoryCombo.getSelectionIndex()),
 				dataTypeMap.get(dataTypeCombo.getSelectionIndex()));
 
@@ -278,5 +283,12 @@ public class CreateIDTypeDialog extends Dialog {
 		}
 
 		super.okPressed();
+	}
+
+	/**
+	 * @return the idType, see {@link #idType}
+	 */
+	public IDType getIdType() {
+		return idType;
 	}
 }

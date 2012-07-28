@@ -31,6 +31,11 @@ public class CreateIDCategoryDialog extends Dialog {
 	private Text categoryNameTextField;
 
 	/**
+	 * {@link IDCategory} created by this dialog.
+	 */
+	private IDCategory idCategory;
+
+	/**
 	 * @param parentShell
 	 */
 	public CreateIDCategoryDialog(Shell parentShell) {
@@ -74,7 +79,7 @@ public class CreateIDCategoryDialog extends Dialog {
 			}
 		}
 
-		IDCategory idCategory = IDCategory.registerCategory(categoryName);
+		idCategory = IDCategory.registerCategory(categoryName);
 
 		// Create primary IDType
 		IDType primaryIDType = IDType.registerType(categoryName + "_INT", idCategory,
@@ -83,6 +88,13 @@ public class CreateIDCategoryDialog extends Dialog {
 		idCategory.setPrimaryMappingType(primaryIDType);
 		
 		super.okPressed();
+	}
+
+	/**
+	 * @return the idCategory, see {@link #idCategory}
+	 */
+	public IDCategory getIdCategory() {
+		return idCategory;
 	}
 
 }

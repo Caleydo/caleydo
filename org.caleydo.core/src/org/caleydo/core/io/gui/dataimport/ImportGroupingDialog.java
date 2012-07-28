@@ -147,7 +147,7 @@ public class ImportGroupingDialog extends Dialog {
 		mediator = new ImportGroupingDialogMediator(this, groupingParseSpecification,
 				rowIDCategory);
 	}
-	
+
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
@@ -271,7 +271,7 @@ public class ImportGroupingDialog extends Dialog {
 		Label idTypeLabel = new Label(leftConfigGroupPart, SWT.SHADOW_ETCHED_IN);
 		idTypeLabel.setText("Row ID Type");
 		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
-		rowIDCombo = new Combo(leftConfigGroupPart, SWT.DROP_DOWN);
+		rowIDCombo = new Combo(leftConfigGroupPart, SWT.DROP_DOWN | SWT.READ_ONLY);
 		rowIDCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		Label startParseAtLineLabel = new Label(leftConfigGroupPart, SWT.NONE);
