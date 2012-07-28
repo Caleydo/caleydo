@@ -39,11 +39,19 @@ public abstract class AImportDataPage extends WizardPage implements IPageChanged
 
 	@Override
 	public void pageChanged(PageChangedEvent event) {
-		
+
 		if (event.getSelectedPage() == getNextPage()) {
 			fillDataSetDescription();
 			((DataImportWizard) getWizard()).addVisitedPage(this);
 		}
+
+		if (event.getSelectedPage() == this)
+			pageActivated();
 	}
+
+	/**
+	 * Called when the page is presented to the user.
+	 */
+	public abstract void pageActivated();
 
 }

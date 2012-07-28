@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+
 import org.caleydo.core.io.DataLoader;
 import org.caleydo.core.io.DataSetDescription;
 import org.eclipse.jface.dialogs.IPageChangeProvider;
@@ -50,6 +50,16 @@ public class DataImportWizard extends Wizard {
 	 * can be finished.
 	 */
 	private boolean requiredDataSpecified = false;
+
+	/**
+	 * The total number of rows in the loaded dataset.
+	 */
+	private int totalNumberOfRows;
+
+	/**
+	 * The total number of rows in the loaded dataset.
+	 */
+	private int totalNumberOfColumns;
 
 	private Set<AImportDataPage> visitedPages = new HashSet<AImportDataPage>();
 
@@ -98,9 +108,9 @@ public class DataImportWizard extends Wizard {
 				|| getContainer().getCurrentPage().equals(addGroupingsPage))
 			addGroupingsPage.fillDataSetDescription();
 
-		ATableBasedDataDomain dataDomain;
+		// ATableBasedDataDomain dataDomain;
 		try {
-			dataDomain = DataLoader.loadData(dataSetDescription);
+			DataLoader.loadData(dataSetDescription);
 		} catch (FileNotFoundException e1) {
 			// TODO do something intelligent
 			e1.printStackTrace();
@@ -111,26 +121,27 @@ public class DataImportWizard extends Wizard {
 			e1.printStackTrace();
 			throw new IllegalStateException();
 		}
-//		try {
-//
-//			String secondaryID = UUID.randomUUID().toString();
-//			RCPViewInitializationData rcpViewInitData = new RCPViewInitializationData();
-//			rcpViewInitData.setDataDomainID(dataDomain.getDataDomainID());
-//			RCPViewManager.get().addRCPView(secondaryID, rcpViewInitData);
-//
-//			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
-//				PlatformUI
-//						.getWorkbench()
-//						.getActiveWorkbenchWindow()
-//						.getActivePage()
-//						.showView(dataDomain.getDefaultStartViewType(), secondaryID,
-//								IWorkbenchPage.VIEW_ACTIVATE);
-//
-//			}
-//		} catch (PartInitException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		// try {
+		//
+		// String secondaryID = UUID.randomUUID().toString();
+		// RCPViewInitializationData rcpViewInitData = new
+		// RCPViewInitializationData();
+		// rcpViewInitData.setDataDomainID(dataDomain.getDataDomainID());
+		// RCPViewManager.get().addRCPView(secondaryID, rcpViewInitData);
+		//
+		// if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
+		// PlatformUI
+		// .getWorkbench()
+		// .getActiveWorkbenchWindow()
+		// .getActivePage()
+		// .showView(dataDomain.getDefaultStartViewType(), secondaryID,
+		// IWorkbenchPage.VIEW_ACTIVATE);
+		//
+		// }
+		// } catch (PartInitException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 
 		return true;
 	}
@@ -157,6 +168,36 @@ public class DataImportWizard extends Wizard {
 
 	public void addVisitedPage(AImportDataPage page) {
 		visitedPages.add(page);
+	}
+
+	/**
+	 * @param totalNumberOfColumns
+	 *            setter, see {@link #totalNumberOfColumns}
+	 */
+	public void setTotalNumberOfColumns(int totalNumberOfColumns) {
+		this.totalNumberOfColumns = totalNumberOfColumns;
+	}
+
+	/**
+	 * @return the totalNumberOfColumns, see {@link #totalNumberOfColumns}
+	 */
+	public int getTotalNumberOfColumns() {
+		return totalNumberOfColumns;
+	}
+
+	/**
+	 * @param totalNumberOfRows
+	 *            setter, see {@link #totalNumberOfRows}
+	 */
+	public void setTotalNumberOfRows(int totalNumberOfRows) {
+		this.totalNumberOfRows = totalNumberOfRows;
+	}
+
+	/**
+	 * @return the totalNumberOfRows, see {@link #totalNumberOfRows}
+	 */
+	public int getTotalNumberOfRows() {
+		return totalNumberOfRows;
 	}
 
 }

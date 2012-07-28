@@ -3,7 +3,6 @@
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
-import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.io.DataSetDescription;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -32,10 +31,38 @@ public class TransformDataPage extends AImportDataPage {
 
 	public static final String PAGE_DESCRIPTION = "Specify the data transformations to be performed.";
 
-	private Text minTextField;
-	private Text maxTextField;
-	private Button buttonSwapRowsWithColumns;
-	private String scalingMode = "None";
+	/**
+	 * Text field that specifies the minimum data clipping value.
+	 */
+	protected Text minTextField;
+	/**
+	 * Text field that specifies the minimum data clipping value.
+	 */
+	protected Text maxTextField;
+	/**
+	 * Button to determine whether the dataset should be transposed.
+	 */
+	protected Button buttonSwapRowsWithColumns;
+
+	/**
+	 * Button to enable the {@link #maxTextField};
+	 */
+	protected Button maxButton;
+
+	/**
+	 * Button to enable the {@link #minTextField};
+	 */
+	protected Button minButton;
+
+	/**
+	 * Combo to define the scaling method that should be applied to the data.
+	 */
+	protected Combo scalingCombo;
+
+	/**
+	 * Mediator of this class.
+	 */
+	private TransformDataPageMediator mediator;
 
 	/**
 	 * @param pageName
@@ -49,6 +76,7 @@ public class TransformDataPage extends AImportDataPage {
 	public TransformDataPage(DataSetDescription dataSetDescription) {
 		super(PAGE_NAME, dataSetDescription);
 		setDescription(PAGE_DESCRIPTION);
+		mediator = new TransformDataPageMediator(this, dataSetDescription);
 	}
 
 	@Override
@@ -62,6 +90,8 @@ public class TransformDataPage extends AImportDataPage {
 		createClippingGroup(parentComposite);
 
 		createTranspositionGroup(parentComposite);
+
+		mediator.guiCreated();
 
 		setControl(parentComposite);
 	}
@@ -81,8 +111,6 @@ public class TransformDataPage extends AImportDataPage {
 		transpositionExplanationLabel.setLayoutData(gridData);
 		buttonSwapRowsWithColumns = new Button(dataTranspositionGroup, SWT.CHECK);
 		buttonSwapRowsWithColumns.setText("Swap Rows and Columns");
-		buttonSwapRowsWithColumns.setEnabled(true);
-		buttonSwapRowsWithColumns.setSelection(false);
 	}
 
 	private void createClippingGroup(Composite parent) {
@@ -99,50 +127,45 @@ public class TransformDataPage extends AImportDataPage {
 		gridData.widthHint = 200;
 		clippingExplanationLabel.setLayoutData(gridData);
 
-		final Button buttonMax = new Button(clippingGroup, SWT.CHECK);
-		buttonMax.setText("Max");
-		buttonMax.setEnabled(true);
-		buttonMax.setSelection(false);
-		buttonMax.addSelectionListener(new SelectionAdapter() {
+		maxButton = new Button(clippingGroup, SWT.CHECK);
+		maxButton.setText("Max");
+
+		maxButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				maxTextField.setEnabled(buttonMax.getSelection());
+				mediator.maxButtonSelected();
 			}
 		});
 
 		maxTextField = new Text(clippingGroup, SWT.BORDER);
-		maxTextField.setEnabled(false);
+
 		maxTextField.addListener(SWT.Verify, new Listener() {
 			@Override
 			public void handleEvent(Event e) {
 				// Only allow digits
 				String string = e.text;
-				char[] chars = new char[string.length()];
-				string.getChars(0, chars.length, chars, 0);
+				mediator.verifyClippingTextField(string);
 			}
 		});
 
-		final Button buttonMin = new Button(clippingGroup, SWT.CHECK);
-		buttonMin.setText("Min");
-		buttonMin.setEnabled(true);
-		buttonMin.setSelection(false);
-		buttonMin.addSelectionListener(new SelectionAdapter() {
+		minButton = new Button(clippingGroup, SWT.CHECK);
+		minButton.setText("Min");
+
+		minButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				minTextField.setEnabled(buttonMin.getSelection());
+				mediator.minButtonSelected();
 			}
 		});
 
 		minTextField = new Text(clippingGroup, SWT.BORDER);
-		minTextField.setEnabled(false);
 		minTextField.addListener(SWT.Verify, new Listener() {
 			@Override
 			public void handleEvent(Event e) {
 				// Only allow digits
 				String string = e.text;
-				char[] chars = new char[string.length()];
-				string.getChars(0, chars.length, chars, 0);
+				mediator.verifyClippingTextField(string);
 			}
 		});
 
@@ -164,46 +187,24 @@ public class TransformDataPage extends AImportDataPage {
 		Label scalingMethodLabel = new Label(scalingGroup, SWT.NONE);
 		scalingMethodLabel.setText("Scaling Method");
 
-		final Combo scalingCombo = new Combo(scalingGroup, SWT.DROP_DOWN);
-		String[] scalingOptions = { "None", "Log10", "Log2" };
-		scalingCombo.setItems(scalingOptions);
-		scalingCombo.setEnabled(true);
-		String previousMathFiltermode = dataSetDescription.getMathFilterMode();
-		if (previousMathFiltermode.equals("None")) {
-			scalingCombo.select(0);
-		} else if (previousMathFiltermode.equals("Log10"))
-			scalingCombo.select(1);
-		else if (previousMathFiltermode.equals("Log2"))
-			scalingCombo.select(2);
-		else
-			scalingCombo.select(0);
+		scalingCombo = new Combo(scalingGroup, SWT.DROP_DOWN);
 
-		scalingMode = scalingCombo.getText();
 		scalingCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				scalingMode = scalingCombo.getText();
+				mediator.scalingComboSelected();
 			}
 		});
 	}
 
 	@Override
 	public void fillDataSetDescription() {
-		if (minTextField.getEnabled() && !minTextField.getText().isEmpty()) {
-			float fMin = Float.parseFloat(minTextField.getText());
-			if (!Float.isNaN(fMin)) {
-				dataSetDescription.setMin(fMin);
-			}
-		}
-		if (maxTextField.getEnabled() && !maxTextField.getText().isEmpty()) {
-			float fMax = Float.parseFloat(maxTextField.getText());
-			if (!Float.isNaN(fMax)) {
-				dataSetDescription.setMax(fMax);
-			}
-		}
+		mediator.fillDataSetDescription();
+	}
 
-		dataSetDescription.setMathFilterMode(scalingMode);
-		dataSetDescription.setTransposeMatrix(buttonSwapRowsWithColumns.getSelection());
+	@Override
+	public void pageActivated() {
+		mediator.pageActivated();
 
 	}
 

@@ -3,12 +3,7 @@
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
-import java.util.ArrayList;
-import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.GroupingParseSpecification;
-import org.caleydo.core.io.gui.dataimport.ImportGroupingDialog;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -19,7 +14,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Page that is used to specify groupings for a dataset.
@@ -36,35 +30,49 @@ public class AddGroupingsPage extends AImportDataPage {
 	/**
 	 * List displaying all column groupings for the dataset.
 	 */
-	private List columnGroupingsList;
+	protected List columnGroupingsList;
 
 	/**
 	 * List displaying all row groupings for the dataset.
 	 */
-	private List rowGroupingsList;
+	protected List rowGroupingsList;
 
 	/**
-	 * {@link GroupingParseSpecification}s for column groupings of the data.
+	 * Button to add a grouping for columns.
 	 */
-	private ArrayList<GroupingParseSpecification> columnGroupingSpecifications = new ArrayList<GroupingParseSpecification>();
-	/**
-	 * {@link GroupingParseSpecification}s for row groupings of the data.
-	 */
-	private ArrayList<GroupingParseSpecification> rowGroupingSpecifications = new ArrayList<GroupingParseSpecification>();
+	protected Button addColumnGroupingButton;
 
 	/**
-	 * {@link IDCategory} for the column groupings.
+	 * Button to add a grouping for rows.
 	 */
-	private IDCategory columnIDCategory;
+	protected Button addRowGroupingButton;
 
 	/**
-	 * {@link IDCategory} for the row groupings.
+	 * Button to edit a grouping for columns.
 	 */
-	private IDCategory rowIDCategory;
+	protected Button editColumnGroupingButton;
+
+	/**
+	 * Button to edit a grouping for rows.
+	 */
+	protected Button editRowGroupingButton;
+
+	/**
+	 * Button to remove a grouping for columns.
+	 */
+	protected Button removeColumnGroupingButton;
+
+	/**
+	 * Button to remove a grouping for rows.
+	 */
+	protected Button removeRowGroupingButton;
+
+	private AddGroupingsPageMediator mediator;
 
 	public AddGroupingsPage(DataSetDescription dataSetDescription) {
 		super(PAGE_NAME, dataSetDescription);
 		setDescription(PAGE_DESCRIPTION);
+		mediator = new AddGroupingsPageMediator(this, dataSetDescription);
 	}
 
 	@Override
@@ -80,31 +88,21 @@ public class AddGroupingsPage extends AImportDataPage {
 		gridData.widthHint = 200;
 		groupingDescriptionLabel.setLayoutData(gridData);
 
-		createGroupingGroup(parentComposite, "Column Groupings",
-				columnGroupingSpecifications, true);
-		createGroupingGroup(parentComposite, "Row Groupings", rowGroupingSpecifications,
-				false);
+		createGroupingGroup(parentComposite, "Column Groupings", true);
+		createGroupingGroup(parentComposite, "Row Groupings", false);
+
+		mediator.guiCreated();
 
 		setControl(parentComposite);
 	}
 
 	private void createGroupingGroup(Composite parent, String groupLabel,
-			final ArrayList<GroupingParseSpecification> groupingParseSpecifications,
 			final boolean isColumnGrouping) {
 
 		Group groupingsGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		groupingsGroup.setText(groupLabel);
 		groupingsGroup.setLayout(new GridLayout(2, false));
 		groupingsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-		if (isColumnGrouping) {
-			columnGroupingsList = new List(groupingsGroup, SWT.SINGLE);
-			columnGroupingsList
-					.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		} else {
-			rowGroupingsList = new List(groupingsGroup, SWT.SINGLE);
-			rowGroupingsList.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		}
 
 		Composite buttonComposite = new Composite(groupingsGroup, SWT.NONE);
 		buttonComposite.setLayout(new GridLayout(1, false));
@@ -114,128 +112,92 @@ public class AddGroupingsPage extends AImportDataPage {
 		addGroupingButton.setText("Add");
 		addGroupingButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
-		addGroupingButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-
-				
-
-				String columnIDCategoryString = dataSetDescription
-						.getColumnIDSpecification().getIdCategory();
-				columnIDCategory = IDCategory.getIDCategory(columnIDCategoryString);
-				String rowIDCategoryString = dataSetDescription.getRowIDSpecification()
-						.getIdCategory();
-				rowIDCategory = IDCategory.getIDCategory(rowIDCategoryString);
-				ImportGroupingDialog importGroupingDialog = new ImportGroupingDialog(
-						new Shell(), isColumnGrouping ? columnIDCategory
-								: rowIDCategory);
-//				importGroupingDialog.setRowIDCategory(isColumnGrouping ? columnIDCategory
-//						: rowIDCategory);
-
-				int status = importGroupingDialog.open();
-
-				GroupingParseSpecification groupingParseSpecification = importGroupingDialog
-						.getGroupingParseSpecification();
-
-				if (status == Dialog.OK && groupingParseSpecification != null) {
-					groupingParseSpecifications.add(groupingParseSpecification);
-
-					if (isColumnGrouping) {
-						columnGroupingsList.add(groupingParseSpecification.getGroupingName());
-					} else {
-						rowGroupingsList.add(groupingParseSpecification.getGroupingName());
-					}
-				}
-			}
-		});
-
 		Button editGroupingButton = new Button(buttonComposite, SWT.PUSH);
 		editGroupingButton.setText("Edit");
 		editGroupingButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		editGroupingButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-
-				List currentList = null;
-
-				if (isColumnGrouping) {
-					currentList = columnGroupingsList;
-				} else {
-					currentList = rowGroupingsList;
-				}
-
-				int groupingIndex = currentList.getSelectionIndex();
-				if (groupingIndex != -1) {
-					GroupingParseSpecification selectedGroupingParseSpecification = groupingParseSpecifications
-							.get(groupingIndex);
-					
-
-					String columnIDCategoryString = dataSetDescription
-							.getColumnIDSpecification().getIdCategory();
-					columnIDCategory = IDCategory.getIDCategory(columnIDCategoryString);
-					String rowIDCategoryString = dataSetDescription
-							.getRowIDSpecification().getIdCategory();
-					rowIDCategory = IDCategory.getIDCategory(rowIDCategoryString);
-					
-					ImportGroupingDialog importGroupingDialog = new ImportGroupingDialog(
-							new Shell(), selectedGroupingParseSpecification, isColumnGrouping ? columnIDCategory
-									: rowIDCategory);
-
-//					importGroupingDialog
-//							.setRowIDCategory(isColumnGrouping ? columnIDCategory
-//									: rowIDCategory);
-
-					int status = importGroupingDialog.open();
-
-					GroupingParseSpecification groupingParseSpecification = importGroupingDialog
-							.getGroupingParseSpecification();
-
-					if (status == Dialog.OK && groupingParseSpecification != null) {
-
-						groupingParseSpecifications.remove(groupingIndex);
-						groupingParseSpecifications.add(groupingIndex,
-								groupingParseSpecification);
-
-						currentList.remove(groupingIndex);
-						currentList.add(groupingParseSpecification.getGroupingName(), groupingIndex);
-					}
-				}
-			}
-
-		});
 
 		Button removeGroupingButton = new Button(buttonComposite, SWT.PUSH);
 		removeGroupingButton.setText("Remove");
 		removeGroupingButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		removeGroupingButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
 
-				List currentList = null;
-				ArrayList<GroupingParseSpecification> currentGroupingParseSpecs = null;
+		if (isColumnGrouping) {
 
-				if (isColumnGrouping) {
-					currentList = columnGroupingsList;
-					currentGroupingParseSpecs = columnGroupingSpecifications;
-				} else {
-					currentList = rowGroupingsList;
-					currentGroupingParseSpecs = rowGroupingSpecifications;
+			columnGroupingsList = new List(groupingsGroup, SWT.SINGLE);
+			columnGroupingsList
+					.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+			columnGroupingsList.addSelectionListener(new SelectionAdapter() {
+
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					mediator.columnGroupingsListSelected();
 				}
+			});
 
-				int groupingIndex = currentList.getSelectionIndex();
-				if (groupingIndex != -1) {
-					currentList.remove(groupingIndex);
-					currentGroupingParseSpecs.remove(groupingIndex);
+			addColumnGroupingButton = addGroupingButton;
+			addColumnGroupingButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					mediator.addColumnGroupingButtonSelected();
 				}
-			}
+			});
+			editColumnGroupingButton = editGroupingButton;
+			editColumnGroupingButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					mediator.editColumnGroupingButtonSelected();
+				}
+			});
+			removeColumnGroupingButton = removeGroupingButton;
+			removeColumnGroupingButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					mediator.removeColumnGroupingButtonSelected();
+				}
+			});
+		} else {
 
-		});
+			rowGroupingsList = new List(groupingsGroup, SWT.SINGLE);
+			rowGroupingsList.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+			rowGroupingsList.addSelectionListener(new SelectionAdapter() {
+
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					mediator.rowGroupingsListSelected();
+				}
+			});
+
+			addRowGroupingButton = addGroupingButton;
+			addRowGroupingButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					mediator.addRowGroupingButtonSelected();
+				}
+			});
+			editRowGroupingButton = editGroupingButton;
+			editRowGroupingButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					mediator.editRowGroupingButtonSelected();
+				}
+			});
+			removeRowGroupingButton = removeGroupingButton;
+			removeRowGroupingButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					mediator.removeRowGroupingButtonSelected();
+				}
+			});
+		}
 	}
 
 	@Override
 	public void fillDataSetDescription() {
-		dataSetDescription.setColumnGroupingSpecifications(columnGroupingSpecifications);
-		dataSetDescription.setRowGroupingSpecifications(rowGroupingSpecifications);
+		mediator.fillDataSetDescription();
+	}
+
+	@Override
+	public void pageActivated() {
+		mediator.pageActivated();
 	}
 
 }

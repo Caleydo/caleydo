@@ -3,16 +3,13 @@
  */
 package org.caleydo.core.io.gui.dataimport;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.io.IDTypeParsingRules;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -28,7 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Dialog that allows the creation of ID types.
+ * Dialog that allows the creation of ID categories and ID types.
  * 
  * @author Christian Partl
  * 
@@ -36,39 +33,23 @@ import org.eclipse.swt.widgets.Text;
 public class CreateIDTypeDialog extends Dialog {
 
 	/**
-	 * Combo box that allows the specification of the {@link IDCategory} the
-	 * {@link IDType} to be created should be associated with.
-	 */
-	private Combo idCategoryCombo;
-
-	/**
 	 * Combo box that allows the specification of the {@link EDataType} the
 	 * {@link IDType} should be associated with.
 	 */
-	private Combo dataTypeCombo;
+	protected Combo dataTypeCombo;
 
 	/**
 	 * Text field where the user is supposed to specify the name of the
 	 * {@link IDType} to be created.
 	 */
-	private Text typeNameTextField;
-
-	/**
-	 * Maps the index of {@link #idCategoryCombo} to the {@link IDCategory}.
-	 */
-	private Map<Integer, IDCategory> idCategoryMap = new HashMap<Integer, IDCategory>();
-
-	/**
-	 * Maps the index of {@link #dataTypeCombo} to the {@link EDataType}.
-	 */
-	private Map<Integer, EDataType> dataTypeMap = new HashMap<Integer, EDataType>();
+	protected Text typeNameTextField;
 
 	/**
 	 * Text field where the user can specify a string that shall be replaced
 	 * using regular expressions. This regular expression is applied when
 	 * parsing ids of the {@link IDType} created using this dialog.
 	 */
-	private Text replacementRegExTextField;
+	protected Text replacementRegExTextField;
 
 	/**
 	 * Text field where the user can specify a string that shall replace the
@@ -76,36 +57,42 @@ public class CreateIDTypeDialog extends Dialog {
 	 * expression is applied when parsing ids of the {@link IDType} created
 	 * using this dialog.
 	 */
-	private Text replacementStringTextField;
+	protected Text replacementStringTextField;
 
 	/**
 	 * Text field where the user can specify a regular expression to define a
 	 * substring. This regular expression is applied when parsing ids of the
 	 * {@link IDType} created using this dialog.
 	 */
-	private Text substringRegExTextField;
+	protected Text substringRegExTextField;
 
 	/**
 	 * Button to specify whether to use regular expressions shall be used to
 	 * parse ids for the {@link IDType} created in this dialog.
 	 */
-	private Button useRegExButton;
+	protected Button useRegExButton;
 
 	/**
-	 * {@link IDCategory} the created {@link IDType} will be restricted to.
+	 * Text field where the user is supposed to specify the name of the
+	 * {@link IDCategory} to be created.
 	 */
-	private IDCategory restrictingIDCategory;
+	protected Text categoryNameTextField;
+
+	protected Label replacementRegExLabel;
+	protected Label replacementStringLabel;
+	protected Label substringRegExLabel;
 
 	/**
-	 * The {@link IDType} created by this dialog.
+	 * Mediator of this dialog.
 	 */
-	private IDType idType;
+	private CreateIDTypeDialogMediator mediator;
 
 	/**
 	 * @param parentShell
 	 */
 	public CreateIDTypeDialog(Shell parentShell) {
 		super(parentShell);
+		mediator = new CreateIDTypeDialogMediator(this);
 	}
 
 	/**
@@ -116,13 +103,14 @@ public class CreateIDTypeDialog extends Dialog {
 	 */
 	public CreateIDTypeDialog(Shell parentShell, IDCategory idCategory) {
 		super(parentShell);
-		this.restrictingIDCategory = idCategory;
+		mediator = new CreateIDTypeDialogMediator(this, idCategory);
 	}
 
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("Create ID Type");
+		newShell.setText(mediator.isCreateIDCategory() ? "Create ID Class"
+				: "Create ID Type");
 	}
 
 	@Override
@@ -132,35 +120,22 @@ public class CreateIDTypeDialog extends Dialog {
 		parentComposite.setLayout(new GridLayout(2, false));
 
 		Label categoryIDLabel = new Label(parentComposite, SWT.NONE);
-		categoryIDLabel.setText("ID Category");
+		categoryIDLabel.setText("ID Class name");
 
-		idCategoryCombo = new Combo(parentComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
-		idCategoryCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		if (restrictingIDCategory != null) {
-			idCategoryCombo.add(restrictingIDCategory.getCategoryName());
-			idCategoryCombo.select(0);
-			idCategoryMap.put(0, restrictingIDCategory);
-			idCategoryCombo.setEnabled(false);
-		} else {
-			idCategoryCombo.setText("<Please select>");
-			int index = 0;
-			for (IDCategory category : IDCategory.getAllRegisteredIDCategories()) {
-				idCategoryCombo.add(category.getCategoryName());
-				idCategoryMap.put(index, category);
-				index++;
+		categoryNameTextField = new Text(parentComposite, SWT.BORDER);
+		categoryNameTextField.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+				mediator.categoryNameTextFieldModified();
 			}
-		}
+		});
 
 		Label dataTypeLabel = new Label(parentComposite, SWT.NONE);
 		dataTypeLabel.setText("Data type");
 
 		dataTypeCombo = new Combo(parentComposite, SWT.DROP_DOWN | SWT.READ_ONLY);
 		dataTypeCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		dataTypeCombo.setText("<Please select>");
-		dataTypeMap.put(0, EDataType.INT);
-		dataTypeMap.put(1, EDataType.STRING);
-		dataTypeCombo.add("Number");
-		dataTypeCombo.add("Text");
 
 		Label idTypeLabel = new Label(parentComposite, SWT.NONE);
 		idTypeLabel.setText("ID type name");
@@ -178,117 +153,64 @@ public class CreateIDTypeDialog extends Dialog {
 		useRegExComposite.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, false, 4,
 				1));
 		useRegExButton = new Button(useRegExComposite, SWT.CHECK);
-		// useRegExButton.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false,
-		// true, 2, 1));
-		Label useRegExlabel = new Label(useRegExComposite, SWT.NONE);
-		useRegExlabel.setText("Use regular expressions to convert IDs");
-		// useRegExlabel.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false,
-		// true, 2, 1));
+		useRegExButton.setText("Use regular expressions to convert IDs");
 
-		final Label replacementRegExLabel = new Label(regExGroup, SWT.NONE);
+		replacementRegExLabel = new Label(regExGroup, SWT.NONE);
 		replacementRegExLabel.setText("Replace");
-		replacementRegExLabel.setEnabled(false);
 		replacementRegExLabel
 				.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
 
 		replacementRegExTextField = new Text(regExGroup, SWT.BORDER);
-		replacementRegExTextField.setEnabled(false);
+
 		GridData replacementTextFieldsGridData = new GridData(SWT.FILL, SWT.FILL, true,
 				true);
 		replacementTextFieldsGridData.widthHint = 150;
 		replacementRegExTextField.setLayoutData(replacementTextFieldsGridData);
 
-		final Label replacementStringLabel = new Label(regExGroup, SWT.NONE);
+		replacementStringLabel = new Label(regExGroup, SWT.NONE);
 		replacementStringLabel.setText("with");
-		replacementStringLabel.setEnabled(false);
 
 		replacementStringTextField = new Text(regExGroup, SWT.BORDER);
-		replacementStringTextField.setEnabled(false);
 		replacementStringTextField.setLayoutData(replacementTextFieldsGridData);
 
-		final Label substringRegExLabel = new Label(regExGroup, SWT.NONE);
+		substringRegExLabel = new Label(regExGroup, SWT.NONE);
 		substringRegExLabel.setText("Substring specification");
-		// substringRegExLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
-		// true, true, 2,
-		// 1));
-		substringRegExLabel.setEnabled(false);
 
 		substringRegExTextField = new Text(regExGroup, SWT.BORDER);
 		substringRegExTextField.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true, 3, 1));
-		substringRegExTextField.setEnabled(false);
 
 		useRegExButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// regExGroup.setEnabled(useRegExButton.getSelection());
-				replacementRegExTextField.setEnabled(useRegExButton.getSelection());
-				replacementStringTextField.setEnabled(useRegExButton.getSelection());
-				substringRegExTextField.setEnabled(useRegExButton.getSelection());
-				replacementRegExLabel.setEnabled(useRegExButton.getSelection());
-				replacementStringLabel.setEnabled(useRegExButton.getSelection());
-				substringRegExLabel.setEnabled(useRegExButton.getSelection());
+				mediator.useRegExButtonSelected();
 			}
 		});
+
+		mediator.guiCreated();
 
 		return parent;
 	}
 
 	@Override
 	protected void okPressed() {
-		String typeName = typeNameTextField.getText();
-
-		if (typeName.isEmpty()) {
-			MessageDialog.openError(new Shell(), "Invalid ID type name",
-					"Please specify an ID type name");
+		if (!mediator.okPressed())
 			return;
-		}
-
-		if (idCategoryCombo.getSelectionIndex() == -1) {
-			MessageDialog.openError(new Shell(), "Invalid ID category",
-					"Please select an ID category");
-			return;
-		}
-
-		if (dataTypeCombo.getSelectionIndex() == -1) {
-			MessageDialog.openError(new Shell(), "Invalid data type",
-					"Please select a data type");
-			return;
-		}
-
-		for (IDCategory category : IDCategory.getAllRegisteredIDCategories()) {
-			List<IDType> idTypes = category.getIdTypes();
-			for (IDType idType : idTypes) {
-				if (idType.getTypeName().equals(typeName)) {
-
-					MessageDialog.openError(new Shell(), "ID type name already exists",
-							"Please specify a different ID type name");
-					return;
-				}
-			}
-		}
-
-		idType = IDType.registerType(typeName,
-				idCategoryMap.get(idCategoryCombo.getSelectionIndex()),
-				dataTypeMap.get(dataTypeCombo.getSelectionIndex()));
-
-		if (useRegExButton.getSelection()) {
-			IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
-			idTypeParsingRules.setReplacementExpression(
-					replacementRegExTextField.getText(),
-					replacementStringTextField.getText());
-			idTypeParsingRules.setSubStringExpression(substringRegExTextField.getText());
-			idType.setIdTypeParsingRules(idTypeParsingRules);
-		}
-
 		super.okPressed();
+	}
+
+	/**
+	 * @return the idCategory, see {@link #idCategory}
+	 */
+	public IDCategory getIdCategory() {
+		return mediator.getIdCategory();
 	}
 
 	/**
 	 * @return the idType, see {@link #idType}
 	 */
 	public IDType getIdType() {
-		return idType;
+		return mediator.getIdType();
 	}
 }

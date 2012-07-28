@@ -556,4 +556,9 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 			getWizard().getContainer().updateButtons();
 	}
 
+
+	@Override
+	public void pageActivated() {
+	}
+
 }

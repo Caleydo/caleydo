@@ -11,14 +11,15 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
-import org.caleydo.core.io.gui.dataimport.CreateIDCategoryDialog;
 import org.caleydo.core.io.gui.dataimport.CreateIDTypeDialog;
 import org.caleydo.core.io.gui.dataimport.FilePreviewParser;
 import org.caleydo.core.io.gui.dataimport.PreviewTableManager;
 import org.caleydo.core.util.collection.Pair;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -239,6 +240,28 @@ public class LoadDataSetPageMediator {
 				fillIDTypeCombo(columnIDCategory, columnIDTypes, page.columnIDCombo);
 				page.columnIDCombo.setEnabled(true);
 				page.createColumnIDTypeButton.setEnabled(true);
+
+				if (dataSetDescription.getColumnGroupingSpecifications() != null) {
+					ArrayList<GroupingParseSpecification> columnGroupingSpecifications = new ArrayList<GroupingParseSpecification>(
+							dataSetDescription.getColumnGroupingSpecifications());
+
+					boolean groupingParseSpecificationsRemoved = false;
+					for (GroupingParseSpecification groupingParseSpecification : columnGroupingSpecifications) {
+						String categoryString = groupingParseSpecification
+								.getRowIDSpecification().getIdCategory();
+						if (IDCategory.getIDCategory(categoryString) != columnIDCategory) {
+							dataSetDescription.getColumnGroupingSpecifications().remove(
+									groupingParseSpecification);
+							groupingParseSpecificationsRemoved = true;
+						}
+					}
+
+					if (groupingParseSpecificationsRemoved) {
+						MessageDialog
+								.openInformation(new Shell(), "Grouping Removed",
+										"At least one column grouping was removed due to the change of the column ID class.");
+					}
+				}
 			}
 		} else {
 			if (page.rowIDCategoryCombo.getSelectionIndex() != -1) {
@@ -247,6 +270,28 @@ public class LoadDataSetPageMediator {
 				fillIDTypeCombo(rowIDCategory, rowIDTypes, page.rowIDCombo);
 				page.rowIDCombo.setEnabled(true);
 				page.createRowIDTypeButton.setEnabled(true);
+
+				if (dataSetDescription.getRowGroupingSpecifications() != null) {
+					ArrayList<GroupingParseSpecification> rowGroupingSpecifications = new ArrayList<GroupingParseSpecification>(
+							dataSetDescription.getRowGroupingSpecifications());
+
+					boolean groupingParseSpecificationsRemoved = false;
+					for (GroupingParseSpecification groupingParseSpecification : rowGroupingSpecifications) {
+						String categoryString = groupingParseSpecification
+								.getRowIDSpecification().getIdCategory();
+						if (IDCategory.getIDCategory(categoryString) != rowIDCategory) {
+							dataSetDescription.getRowGroupingSpecifications().remove(
+									groupingParseSpecification);
+							groupingParseSpecificationsRemoved = true;
+						}
+					}
+
+					if (groupingParseSpecificationsRemoved) {
+						MessageDialog
+								.openInformation(new Shell(), "Grouping Removed",
+										"At least one row grouping was removed due to the change of the row ID class.");
+					}
+				}
 			}
 		}
 	}
@@ -297,7 +342,7 @@ public class LoadDataSetPageMediator {
 	}
 
 	private void createIDCategory(boolean isColumnCategory) {
-		CreateIDCategoryDialog dialog = new CreateIDCategoryDialog(new Shell());
+		CreateIDTypeDialog dialog = new CreateIDTypeDialog(new Shell());
 		int status = dialog.open();
 
 		if (status == Dialog.OK) {
@@ -318,10 +363,12 @@ public class LoadDataSetPageMediator {
 				columnIDCategory = newIDCategory;
 				page.columnIDCategoryCombo.select(page.columnIDCategoryCombo
 						.indexOf(columnIDCategory.getCategoryName()));
+				fillIDTypeCombo(columnIDCategory, columnIDTypes, page.columnIDCombo);
 			} else {
 				rowIDCategory = newIDCategory;
 				page.rowIDCategoryCombo.select(page.rowIDCategoryCombo
 						.indexOf(rowIDCategory.getCategoryName()));
+				fillIDTypeCombo(rowIDCategory, rowIDTypes, page.rowIDCombo);
 			}
 		}
 	}
@@ -343,7 +390,8 @@ public class LoadDataSetPageMediator {
 	}
 
 	private void createIDType(boolean isColumnIDType) {
-		CreateIDTypeDialog dialog = new CreateIDTypeDialog(new Shell());
+		CreateIDTypeDialog dialog = new CreateIDTypeDialog(new Shell(),
+				isColumnIDType ? columnIDCategory : rowIDCategory);
 		int status = dialog.open();
 
 		if (status == Dialog.OK) {
@@ -461,6 +509,9 @@ public class LoadDataSetPageMediator {
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();
 		totalNumberOfRows = parser.getTotalNumberOfRows();
+		DataImportWizard wizard = (DataImportWizard) page.getWizard();
+		wizard.setTotalNumberOfColumns(totalNumberOfColumns);
+		wizard.setTotalNumberOfRows(totalNumberOfRows);
 		previewTableManager.createDataPreviewTableFromDataMatrix(dataMatrix,
 				MAX_PREVIEW_TABLE_COLUMNS);
 		page.selectedColumnButtons = previewTableManager.getSelectedColumnButtons();
@@ -562,8 +613,19 @@ public class LoadDataSetPageMediator {
 
 			idTypeCombo.select(idTypes.indexOf(mostProbableIDType));
 		} else {
-			fillIDTypeCombo(isColumnIDType ? columnIDCategory : rowIDCategory, idTypes,
-					idTypeCombo);
+			if (isColumnIDType) {
+				columnIDCategory = null;
+				page.createColumnIDTypeButton.setEnabled(false);
+			} else {
+				rowIDCategory = null;
+				page.createRowIDTypeButton.setEnabled(false);
+			}
+			idCategoryCombo.deselectAll();
+			idTypeCombo.deselectAll();
+			idTypeCombo.setEnabled(false);
+			// fillIDTypeCombo(isColumnIDType ? columnIDCategory :
+			// rowIDCategory, idTypes,
+			// idTypeCombo);
 		}
 	}
 
@@ -609,7 +671,8 @@ public class LoadDataSetPageMediator {
 			}
 		}
 
-		if (maxProbability < 0.0001f)
+		if (maxProbability <= (float) 1.0f
+				/ (float) MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION)
 			mostProbableIDType = null;
 
 		return mostProbableIDType;
@@ -633,12 +696,12 @@ public class LoadDataSetPageMediator {
 			selectionIndex = idCategoryCombo.indexOf(previousSelection);
 		}
 		if (registeredIDCategories.size() == 1) {
-//			idCategoryCombo.setText(idCategoryCombo.getItem(0));
+			// idCategoryCombo.setText(idCategoryCombo.getItem(0));
 			idCategoryCombo.select(0);
 		} else if (selectionIndex == -1) {
-			idCategoryCombo.clearSelection();
+			idCategoryCombo.deselectAll();
 		} else {
-//			idCategoryCombo.setText(idCategoryCombo.getItem(selectionIndex));
+			// idCategoryCombo.setText(idCategoryCombo.getItem(selectionIndex));
 			idCategoryCombo.select(selectionIndex);
 		}
 
@@ -672,14 +735,14 @@ public class LoadDataSetPageMediator {
 			selectionIndex = idTypeCombo.indexOf(previousSelection);
 		}
 		if (idTypes.size() == 1) {
-//			idTypeCombo.setText(idTypeCombo.getItem(0));
+			// idTypeCombo.setText(idTypeCombo.getItem(0));
 			idTypeCombo.select(0);
 		} else if (selectionIndex != -1) {
-//			idTypeCombo.setText(idTypeCombo.getItem(selectionIndex));
+			// idTypeCombo.setText(idTypeCombo.getItem(selectionIndex));
 			idTypeCombo.select(selectionIndex);
 		} else {
-//			idTypeCombo.setText("<Please Select>");
-			idTypeCombo.clearSelection();
+			// idTypeCombo.setText("<Please Select>");
+			idTypeCombo.deselectAll();
 		}
 	}
 
@@ -689,7 +752,8 @@ public class LoadDataSetPageMediator {
 	public void fillDataSetDescription() {
 
 		IDSpecification rowIDSpecification = new IDSpecification();
-		IDType rowIDType = rowIDTypes.get(page.rowIDCombo.getSelectionIndex());
+		IDType rowIDType = IDType.getIDType(page.rowIDCombo.getItem(page.rowIDCombo
+				.getSelectionIndex()));
 		rowIDSpecification.setIdType(rowIDType.toString());
 		if (rowIDType.getIDCategory().getCategoryName().equals("GENE"))
 			rowIDSpecification.setIDTypeGene(true);
@@ -702,7 +766,9 @@ public class LoadDataSetPageMediator {
 		}
 
 		IDSpecification columnIDSpecification = new IDSpecification();
-		IDType columnIDType = columnIDTypes.get(page.columnIDCombo.getSelectionIndex());
+		IDType columnIDType = IDType.getIDType(page.columnIDCombo
+				.getItem(page.columnIDCombo.getSelectionIndex()));
+		// columnIDTypes.get(page.columnIDCombo.getSelectionIndex());
 		columnIDSpecification.setIdType(columnIDType.toString());
 		if (columnIDType.getIDCategory().getCategoryName().equals("GENE"))
 			columnIDSpecification.setIDTypeGene(true);

@@ -193,7 +193,8 @@ public class ImportGroupingDialogMediator {
 		}
 		groupingParseSpecification.setColumns(selectedColumns);
 		IDSpecification rowIDSpecification = new IDSpecification();
-		IDType rowIDType = rowIDTypes.get(dialog.rowIDCombo.getSelectionIndex());
+		IDType rowIDType = IDType.getIDType(dialog.rowIDCombo.getItem(dialog.rowIDCombo
+				.getSelectionIndex()));
 		rowIDSpecification.setIdType(rowIDType.toString());
 		if (rowIDType.getIDCategory().getCategoryName().equals("GENE"))
 			rowIDSpecification.setIDTypeGene(true);
@@ -608,8 +609,8 @@ public class ImportGroupingDialogMediator {
 			idTypeCombo.setText(idTypeCombo.getItem(0));
 			idTypeCombo.select(0);
 		} else {
-			idTypeCombo.setText("<Please Select>");
-			idTypeCombo.clearSelection();
+//			idTypeCombo.setText("<Please Select>");
+			idTypeCombo.deselectAll();
 		}
 	}
 
