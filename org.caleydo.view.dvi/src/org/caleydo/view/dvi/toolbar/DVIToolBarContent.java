@@ -24,6 +24,7 @@ import java.util.List;
 import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.ActionToolBarContainer;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
+import org.caleydo.core.gui.toolbar.OpenOnlineHelpAction;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 
@@ -45,16 +46,27 @@ public class DVIToolBarContent extends AToolBarContent {
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		IToolBarItem applySpringBasedLayoutAction = new ApplySpringBasedLayoutAction();
-		IToolBarItem applyBipartiteLayoutAction = new ApplyBipartiteLayoutAction();
-		IToolBarItem toolBarWidgets = new ToolBarWidgets(
-				"Graph Layout");
-		
+		// IToolBarItem applySpringBasedLayoutAction = new
+		// ApplySpringBasedLayoutAction();
+		// IToolBarItem applyBipartiteLayoutAction = new
+		// ApplyBipartiteLayoutAction();
+		IToolBarItem toolBarWidgets = new ToolBarWidgets("Graph Layout");
+
 		actionList.add(toolBarWidgets);
-//		actionList.add(applySpringBasedLayoutAction);
-//		actionList.add(applyBipartiteLayoutAction);
+		// actionList.add(applySpringBasedLayoutAction);
+		// actionList.add(applyBipartiteLayoutAction);
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
+		list.add(container);
+
+		container = new ActionToolBarContainer();
+		actionList = new ArrayList<IToolBarItem>();
+		container.setToolBarItems(actionList);
+		actionList
+				.add(new OpenOnlineHelpAction(
+						"http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/setting-up-visualizations-data-view-integrator",
+						true));
+
 		list.add(container);
 
 		return list;

@@ -43,20 +43,15 @@ import org.eclipse.swt.widgets.Listener;
  * @author Christian
  * 
  */
-public class ToolBarWidgets
-	extends ControlContribution
-	implements IToolBarItem
-{
+public class ToolBarWidgets extends ControlContribution implements IToolBarItem {
 
-	protected ToolBarWidgets(String id)
-	{
+	protected ToolBarWidgets(String id) {
 		super(id);
 
 	}
 
 	@Override
-	protected Control createControl(Composite parent)
-	{
+	protected Control createControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
 		RowLayout layout = new RowLayout();
 		// layout.marginHeight = layout.marginWidth = layout.horizontalSpacing =
@@ -74,25 +69,27 @@ public class ToolBarWidgets
 
 		final Label layoutLabel = new Label(composite, SWT.NONE);
 		layoutLabel.setText("Layout: ");
+
 		final Button bipartiteLayoutButton = new Button(composite, SWT.RADIO);
 		bipartiteLayoutButton.setSelection(true);
 		bipartiteLayoutButton.setText("Bipartite");
+		// bipartiteLayoutButton.setLayoutData(new GridData(SWT.LEFT, SWT.LEFT,
+		// false, false));
 		final Button springBasedLayoutButton = new Button(composite, SWT.RADIO);
 		springBasedLayoutButton.setText("Spring-Based");
-		
-		final Label separator = new Label(composite, SWT.SEPARATOR | SWT.VERTICAL);
-//		layoutLabel.setText("Layout: ");
-		
+		// springBasedLayoutButton.setLayoutData(new GridData(SWT.LEFT,
+		// SWT.LEFT, false, false));
+
+		new Label(composite, SWT.SEPARATOR | SWT.VERTICAL);
+		// layoutLabel.setText("Layout: ");
+
 		final Button showDataConnectionsCheckBox = new Button(composite, SWT.CHECK);
 		showDataConnectionsCheckBox.setSelection(false);
 		showDataConnectionsCheckBox.setText("Show Data Connections");
 
-
-		Listener showDataConnectionsListener = new Listener()
-		{
+		Listener showDataConnectionsListener = new Listener() {
 			@Override
-			public void handleEvent(Event event)
-			{
+			public void handleEvent(Event event) {
 				GeneralManager
 						.get()
 						.getEventPublisher()
@@ -103,19 +100,14 @@ public class ToolBarWidgets
 
 		};
 
-		Listener graphLayoutListener = new Listener()
-		{
+		Listener graphLayoutListener = new Listener() {
 
 			@Override
-			public void handleEvent(Event event)
-			{
+			public void handleEvent(Event event) {
 				ApplySpecificGraphLayoutEvent e = new ApplySpecificGraphLayoutEvent();
-				if (event.widget == bipartiteLayoutButton)
-				{
+				if (event.widget == bipartiteLayoutButton) {
 					e.setGraphLayoutClass(TwoLayeredGraphLayout.class);
-				}
-				else
-				{
+				} else {
 					e.setGraphLayoutClass(ForceDirectedGraphLayout.class);
 				}
 
@@ -127,7 +119,8 @@ public class ToolBarWidgets
 		//
 		// graphLayoutCombo.addListener(SWT.Selection, graphLayoutListener);
 
-		showDataConnectionsCheckBox.addListener(SWT.Selection, showDataConnectionsListener);
+		showDataConnectionsCheckBox.addListener(SWT.Selection,
+				showDataConnectionsListener);
 		bipartiteLayoutButton.addListener(SWT.Selection, graphLayoutListener);
 		springBasedLayoutButton.addListener(SWT.Selection, graphLayoutListener);
 		// composite.pack();
@@ -135,5 +128,4 @@ public class ToolBarWidgets
 
 		return composite;
 	}
-
 }

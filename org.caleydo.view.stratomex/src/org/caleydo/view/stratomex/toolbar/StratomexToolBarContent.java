@@ -24,6 +24,7 @@ import java.util.List;
 import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.ActionToolBarContainer;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
+import org.caleydo.core.gui.toolbar.OpenOnlineHelpAction;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
 import org.caleydo.view.stratomex.GLStratomex;
 
@@ -57,6 +58,15 @@ public class StratomexToolBarContent extends AToolBarContent {
 		actionList.add(trendHighlightModeAction);
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
+		list.add(container);
+
+		container = new ActionToolBarContainer();
+		actionList = new ArrayList<IToolBarItem>();
+		container.setToolBarItems(actionList);
+		actionList.add(new OpenOnlineHelpAction(
+				"http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/stratomex",
+				true));
+
 		list.add(container);
 
 		return list;
