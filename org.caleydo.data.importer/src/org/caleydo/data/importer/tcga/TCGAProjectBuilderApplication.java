@@ -21,6 +21,7 @@ package org.caleydo.data.importer.tcga;
 
 import java.io.File;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.data.importer.XMLToProjectBuilder;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -48,7 +49,7 @@ public class TCGAProjectBuilderApplication
 		String[] tumorTypes = null;
 		String analysisRunIdentifier = "";
 		String dataRunIdentifier = "";
-		String projectOutputFolder = "";
+		String outputFolder = "";
 
 		JSAP jsap = new JSAP();
 		try {
@@ -75,11 +76,11 @@ public class TCGAProjectBuilderApplication
 
 			String defaultDestinationPath = GeneralManager.CALEYDO_HOME_PATH + "TCGA/";
 
-			FlaggedOption projectOutputFolderOpt = new FlaggedOption("output-folder")
+			FlaggedOption outputFolderOpt = new FlaggedOption("output-folder")
 					.setStringParser(JSAP.STRING_PARSER).setDefault(defaultDestinationPath)
 					.setRequired(false).setShortFlag('o').setLongFlag(JSAP.NO_LONGFLAG);
-			projectOutputFolderOpt.setHelp("Output folder (full path)");
-			jsap.registerParameter(projectOutputFolderOpt);
+			outputFolderOpt.setHelp("Output folder (full path)");
+			jsap.registerParameter(outputFolderOpt);
 
 			JSAPResult config = jsap.parse(runConfigParameters);
 
@@ -92,27 +93,31 @@ public class TCGAProjectBuilderApplication
 			tumorTypes = config.getStringArray("tumor");
 			analysisRunIdentifier = config.getString("analysis_run");
 			dataRunIdentifier = config.getString("data_run");
-			projectOutputFolder = config.getString("output-folder");
+			outputFolder = config.getString("output-folder");
 		}
 		catch (JSAPException e) {
 			handleJSAPError(jsap);
 		}
+		
+		String tmpDataOutputPath = outputFolder + "tmp";
 
 		for (int tumorIndex = 0; tumorIndex < tumorTypes.length; tumorIndex++) {
 			String tumorType = tumorTypes[tumorIndex];
 
-			String xmlFilePath = projectOutputFolder + analysisRunIdentifier + "_" + tumorType
+			String xmlFilePath = outputFolder + analysisRunIdentifier + "_" + tumorType
 					+ ".xml";
 
-			String projectOutputPath = projectOutputFolder + analysisRunIdentifier + "_"
+			String projectOutputPath = outputFolder + analysisRunIdentifier + "_"
 					+ tumorType + ".cal";
-
+			
+			FileOperations.createDirectory(tmpDataOutputPath);
+			
 			System.out.println("Downloading data for tumor type " + tumorType
 					+ " for analysis run " + analysisRunIdentifier);
-
+			
 			TCGADataXMLGenerator generator = new TCGADataXMLGenerator(tumorType,
 					analysisRunIdentifier, dataRunIdentifier, xmlFilePath,
-					GeneralManager.CALEYDO_HOME_PATH + "TCGA/tmp");
+					tmpDataOutputPath);
 
 			generator.run();
 
@@ -121,9 +126,12 @@ public class TCGAProjectBuilderApplication
 
 			XMLToProjectBuilder xmlToProjectBuilder = new XMLToProjectBuilder();
 			xmlToProjectBuilder.buildProject(xmlFilePath, projectOutputPath);
-						
+					
+			// Clean up
 			new File(xmlFilePath).delete();
 		}
+		
+		FileOperations.deleteDirectory(tmpDataOutputPath);
 
 		return context;
 	}

@@ -264,6 +264,7 @@ public class ProjectSaver {
 							.get().getResourceLoader().getResource(sourceFileName));
 				}
 				catch (FileNotFoundException e) {
+					e.printStackTrace();
 					throw new IllegalStateException("Error saving project file", e);
 				}
 
