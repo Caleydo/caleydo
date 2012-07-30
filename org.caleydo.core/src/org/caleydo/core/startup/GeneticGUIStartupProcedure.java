@@ -22,6 +22,7 @@ package org.caleydo.core.startup;
 import java.io.File;
 
 import org.caleydo.core.data.collection.EDataTransformation;
+import org.caleydo.core.gui.util.HelpButtonWizardDialog;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.manager.GeneralManager;
@@ -29,7 +30,6 @@ import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -90,7 +90,7 @@ public class GeneticGUIStartupProcedure extends AStartupProcedure {
 			dataImportWizard = new DataImportWizard();
 		}
 
-		WizardDialog dialog = new WizardDialog(StartupProcessor.get().getDisplay()
+		HelpButtonWizardDialog dialog = new HelpButtonWizardDialog(StartupProcessor.get().getDisplay()
 				.getActiveShell(), dataImportWizard);
 
 		if (Window.CANCEL == dialog.open())

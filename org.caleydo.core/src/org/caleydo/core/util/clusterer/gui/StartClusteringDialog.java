@@ -22,9 +22,11 @@ package org.caleydo.core.util.clusterer.gui;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.gui.util.AHelpButtonDialog;
 import org.caleydo.core.io.gui.IDataOKListener;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.link.LinkHandler;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.swt.widgets.Composite;
@@ -36,7 +38,7 @@ import org.eclipse.swt.widgets.Shell;
  * 
  * @author Bernhard Schlegl
  */
-public class StartClusteringDialog extends TrayDialog implements IDataOKListener {
+public class StartClusteringDialog extends AHelpButtonDialog implements IDataOKListener {
 
 	private StartClusteringDialogAction startClusteringAction;
 
@@ -132,7 +134,6 @@ public class StartClusteringDialog extends TrayDialog implements IDataOKListener
 		startClusteringAction = new StartClusteringDialogAction(this, parent, dataDomain,
 				sourceDimensionPerspective, sourceRecordPerspective);
 		startClusteringAction.run();
-	
 
 		return parent;
 	}
@@ -190,6 +191,17 @@ public class StartClusteringDialog extends TrayDialog implements IDataOKListener
 	 */
 	DimensionPerspective getTargetDimensionPerspective() {
 		return targetDimensionPerspective;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.caleydo.core.gui.util.AHelpButtonDialog#helpPressed()
+	 */
+	@Override
+	protected void helpPressed() {
+		LinkHandler
+				.openLink("http://www.icg.tugraz.at/project/caleydo/help/manipulating-data#clustering");
 	}
 
 }

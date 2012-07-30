@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.startup;
 
+import org.caleydo.core.gui.util.HelpButtonWizardDialog;
 import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.system.FileOperations;
@@ -47,7 +48,7 @@ public class GenericGUIStartupProcedure extends AStartupProcedure {
 
 		DataImportWizard dataImportWizard = new DataImportWizard();
 
-		WizardDialog dialog = new WizardDialog(StartupProcessor.get().getDisplay()
+		HelpButtonWizardDialog dialog = new HelpButtonWizardDialog(StartupProcessor.get().getDisplay()
 				.getActiveShell(), dataImportWizard);
 
 		if (Window.CANCEL == dialog.open())

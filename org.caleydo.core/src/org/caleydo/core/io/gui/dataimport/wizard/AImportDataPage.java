@@ -4,6 +4,7 @@
 package org.caleydo.core.io.gui.dataimport.wizard;
 
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.util.link.LinkHandler;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -53,5 +54,13 @@ public abstract class AImportDataPage extends WizardPage implements IPageChanged
 	 * Called when the page is presented to the user.
 	 */
 	public abstract void pageActivated();
+
+	@Override
+	public void performHelp() {
+//		super.performHelp();
+		LinkHandler
+				.openLink("http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/loading-data");
+
+	}
 
 }

@@ -20,6 +20,7 @@
 package org.caleydo.core.util.clusterer.gui;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.configuration.DataChooserComposite;
 import org.caleydo.core.data.configuration.DataConfiguration;
 import org.caleydo.core.data.configuration.DataConfigurationChooser;
@@ -28,7 +29,6 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.event.data.StartClusteringEvent;
-import org.caleydo.core.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.io.gui.IDataOKListener;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityTab;
@@ -37,12 +37,11 @@ import org.caleydo.core.util.clusterer.algorithm.tree.TreeTab;
 import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
+import org.caleydo.core.util.link.LinkHandler;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.HelpEvent;
-import org.eclipse.swt.events.HelpListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -54,7 +53,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 
@@ -223,23 +221,23 @@ public class StartClusteringDialogAction extends Action implements
 			}
 		});
 
-		composite.addHelpListener(new HelpListener() {
-
-			@Override
-			public void helpRequested(HelpEvent e) {
-				try {
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-							.showView("org.caleydo.view.browser");
-
-					final String URL_HELP_CLUSTERING = "http://www.caleydo.org/help/gene_expression.html#Clustering";
-					ChangeURLEvent changeURLEvent = new ChangeURLEvent();
-					changeURLEvent.setSender(this);
-					changeURLEvent.setUrl(URL_HELP_CLUSTERING);
-					GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
-				} catch (PartInitException partInitException) {
-				}
-			}
-		});
+//		composite.addHelpListener(new HelpListener() {
+//
+//			@Override
+//			public void helpRequested(HelpEvent e) {
+//				// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+//				// .showView("org.caleydo.view.browser");
+//				//
+//				// final String URL_HELP_CLUSTERING =
+//				// "http://www.caleydo.org/help/gene_expression.html#Clustering";
+//				// ChangeURLEvent changeURLEvent = new ChangeURLEvent();
+//				// changeURLEvent.setSender(this);
+//				// changeURLEvent.setUrl(URL_HELP_CLUSTERING);
+//				// GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
+//				LinkHandler
+//						.openLink("http://www.caleydo.org/help/gene_expression.html#Clustering");
+//			}
+//		});
 
 		new KMeansTab(tabFolder);
 		new AffinityTab(tabFolder);
@@ -251,19 +249,22 @@ public class StartClusteringDialogAction extends Action implements
 		helpButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				try {
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-							.showView("org.caleydo.view.browser");
-
-					String stHelp = "http://www.caleydo.org/help/gene_expression.html#Cobweb";
-
-					ChangeURLEvent changeURLEvent = new ChangeURLEvent();
-					changeURLEvent.setSender(this);
-					changeURLEvent.setUrl(stHelp);
-					GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
-				} catch (PartInitException e1) {
-					e1.printStackTrace();
-				}
+				// try {
+				// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				// .showView("org.caleydo.view.browser");
+				//
+				// String stHelp =
+				// "http://www.caleydo.org/help/gene_expression.html#Cobweb";
+				//
+				// ChangeURLEvent changeURLEvent = new ChangeURLEvent();
+				// changeURLEvent.setSender(this);
+				// changeURLEvent.setUrl(stHelp);
+				// GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
+				// } catch (PartInitException e1) {
+				// e1.printStackTrace();
+				// }
+				LinkHandler
+				.openLink("http://www.icg.tugraz.at/project/caleydo/help/manipulating-data#cobweb");
 			}
 		});
 

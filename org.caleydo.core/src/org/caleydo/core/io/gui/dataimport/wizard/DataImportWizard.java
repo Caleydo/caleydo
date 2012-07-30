@@ -69,11 +69,13 @@ public class DataImportWizard extends Wizard {
 	public DataImportWizard() {
 		dataSetDescription = new DataSetDescription();
 		setWindowTitle("Data Import Wizard");
+//		setHelpAvailable(true);
 	}
 
 	public DataImportWizard(DataSetDescription dataSetDescription) {
 		this.dataSetDescription = dataSetDescription;
 		setWindowTitle("Data Import Wizard");
+//		setHelpAvailable(true);
 	}
 
 	@Override

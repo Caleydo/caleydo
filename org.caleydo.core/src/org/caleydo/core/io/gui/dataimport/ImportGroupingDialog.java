@@ -5,9 +5,10 @@ package org.caleydo.core.io.gui.dataimport;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.gui.util.AHelpButtonDialog;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.GroupingParseSpecification;
-import org.eclipse.jface.dialogs.Dialog;
+import org.caleydo.core.util.link.LinkHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.ModifyEvent;
@@ -33,7 +34,7 @@ import org.eclipse.swt.widgets.Text;
  * @author Christian Partl
  * 
  */
-public class ImportGroupingDialog extends Dialog {
+public class ImportGroupingDialog extends AHelpButtonDialog {
 
 	/**
 	 * Composite that is the parent of all gui elements of this dialog.
@@ -350,6 +351,12 @@ public class ImportGroupingDialog extends Dialog {
 			}
 
 		});
+	}
+
+	@Override
+	protected void helpPressed() {
+		LinkHandler
+				.openLink("http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/loading-data");
 	}
 
 }

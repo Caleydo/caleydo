@@ -20,15 +20,14 @@
 package org.caleydo.core.io.gui;
 
 import org.caleydo.core.gui.toolbar.action.AToolBarAction;
+import org.caleydo.core.gui.util.HelpButtonWizardDialog;
 import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.startup.StartupProcessor;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.PlatformUI;
 
-public class ImportDataAction
-	extends AToolBarAction {
+public class ImportDataAction extends AToolBarAction {
 	public static final String TEXT = "Load data";
 	public static final String ICON = "resources/icons/general/load_data.png";
 
@@ -38,19 +37,19 @@ public class ImportDataAction
 	public ImportDataAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-			.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
 	public void run() {
 		super.run();
 
-//		new ImportDataDialog(new Shell()).open();
-		
+		// new ImportDataDialog(new Shell()).open();
+
 		DataImportWizard dataImportWizard = new DataImportWizard();
 
-		new WizardDialog(StartupProcessor.get().getDisplay()
-				.getActiveShell(), dataImportWizard).open();
+		new HelpButtonWizardDialog(StartupProcessor.get().getDisplay().getActiveShell(),
+				dataImportWizard).open();
 	}
 }
