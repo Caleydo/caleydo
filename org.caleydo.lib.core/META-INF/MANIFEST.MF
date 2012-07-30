@@ -5,12 +5,15 @@ Bundle-SymbolicName: org.caleydo.lib.core;singleton:=true
 Bundle-Version: 2.0.2
 Bundle-ClassPath: lib/tagsoup/tagsoup-1.1.3.jar,
  lib/weka/weka.jar,
- lib/jgrapht/jgrapht-jdk1.6.jar
-Export-Package: org.ccil.cowan.tagsoup;uses:="org.xml.sax.ext,org.xml.sax.helpers,org.xml.sax",
+ lib/jgrapht/jgrapht-jdk1.6.jar,
+ lib/jsap/JSAP-2.1.jar
+Export-Package: com.martiansoftware.jsap;uses:="com.martiansoftware.jsap.stringparsers",
+ com.martiansoftware.jsap.stringparsers;uses:="com.martiansoftware.jsap",
+ org.ccil.cowan.tagsoup;uses:="org.xml.sax.ext,org.xml.sax.helpers,org.xml.sax",
  org.ccil.cowan.tagsoup.jaxp;uses:="org.ccil.cowan.tagsoup,javax.xml.parsers,org.xml.sax",
  org.jgrapht;uses:="org.jgrapht.event",
  org.jgrapht.alg;uses:="org.jgrapht,org.jgrapht.event,org.jgrapht.graph",
- org.jgrapht.graph;uses:="org.jgrapht,org.jgrapht.event",
+ org.jgrapht.graph;uses:="org.jgrapht,org.jgrapht.event,org.jgrapht.util",
  weka.clusterers;
   uses:="weka.core.neighboursearch,
    weka.clusterers.forOPTICSAndDBScan.Databases,

@@ -22,9 +22,7 @@ package org.caleydo.data.importer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -44,6 +42,7 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectSaver;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * This class handles the creation of Caleydo project files. The class takes an
@@ -91,7 +90,6 @@ public class XMLToProjectBuilder {
 		// calculateVAIntersections();
 
 		new ProjectSaver().save(projectOutputPath, true);
-
 	}
 
 	private void createJAXBContext() {

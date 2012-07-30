@@ -62,8 +62,8 @@ public class ClusterManager {
 	/**
 	 * Runs clustering as specified in the provided clusterConfiguration.
 	 * 
-	 * @param clusterConfiguration
-	 *            the configuration of the clustering to be executed.
+	 * @param clusterConfiguration the configuration of the clustering to be
+	 *            executed.
 	 * @return the results of the clustering which can be used to initialize
 	 *         {@link ADataPerspective}s.
 	 */
@@ -75,16 +75,17 @@ public class ClusterManager {
 
 			if (clusterConfiguration instanceof TreeClusterConfiguration) {
 				clusterResult = runClustering(new TreeClusterer(), clusterConfiguration);
-			} else if (clusterConfiguration instanceof AffinityClusterConfiguration) {
-				clusterResult = runClustering(new AffinityClusterer(),
-						clusterConfiguration);
-			} else if (clusterConfiguration instanceof KMeansClusterConfiguration) {
+			}
+			else if (clusterConfiguration instanceof AffinityClusterConfiguration) {
+				clusterResult = runClustering(new AffinityClusterer(), clusterConfiguration);
+			}
+			else if (clusterConfiguration instanceof KMeansClusterConfiguration) {
 				clusterResult = runClustering(new KMeansClusterer(), clusterConfiguration);
 			}
-			else
-			{
-				throw new IllegalStateException("Unknown ClusterConfiguration: " + clusterConfiguration);
-				
+			else {
+				throw new IllegalStateException("Unknown ClusterConfiguration: "
+						+ clusterConfiguration);
+
 			}
 			// break;
 			// }
@@ -106,7 +107,8 @@ public class ClusterManager {
 			// break;
 
 			return clusterResult;
-		} catch (final Exception e) {
+		}
+		catch (final Exception e) {
 			Logger.log(new Status(Status.ERROR, this.toString(), "Clustering failed", e));
 
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
@@ -136,24 +138,27 @@ public class ClusterManager {
 		try {
 			if (clusterState.getClusterTarget() == EClustererTarget.RECORD_CLUSTERING) {
 				runContentClustering(clusterer, clusterState, result, 0, 2);
-			} else if (clusterState.getClusterTarget() == EClustererTarget.DIMENSION_CLUSTERING) {
+			}
+			else if (clusterState.getClusterTarget() == EClustererTarget.DIMENSION_CLUSTERING) {
 
 				runDimensionClustering(clusterer, clusterState, result, 0, 2);
-			} else 
-			{
-				throw new IllegalStateException("Unkonwn cluster target: " + clusterState.getClusterTarget());
+			}
+			else {
+				throw new IllegalStateException("Unkonwn cluster target: "
+						+ clusterState.getClusterTarget());
 			}
 			clusterer.destroy();
 			// result.finish();
 			return result;
-		} catch (OutOfMemoryError e) {
+		}
+		catch (OutOfMemoryError e) {
 			throw new IllegalStateException("Clusterer out of memory");
 		}
 	}
 
 	private void runContentClustering(AClusterer clusterer,
-			AClusterConfiguration clusterState, ClusterResult result,
-			int progressBarOffset, int progressBarMulti) {
+			AClusterConfiguration clusterState, ClusterResult result, int progressBarOffset,
+			int progressBarMulti) {
 
 		clusterer.setClusterState(clusterState);
 		PerspectiveInitializationData tempResult = clusterer.getSortedVA(dataDomain,

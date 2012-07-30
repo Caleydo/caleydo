@@ -38,7 +38,7 @@ public abstract class DataSetDescriptionSerializer {
 
 	protected ProjectDescription dataSetDescriptionCollection = new ProjectDescription();
 
-	private String outputFilePath = System.getProperty("user.home")
+	protected String outputXMLFilePath = System.getProperty("user.home")
 			+ System.getProperty("file.separator") + "caleydo_data.xml";
 
 	/**
@@ -49,11 +49,11 @@ public abstract class DataSetDescriptionSerializer {
 	 *            the array may contain exactly one string specifying the path
 	 *            where the file is saved. Alternatively, the array may be empty
 	 *            or null, which writes the file to the default location (see
-	 *            {@link #outputFilePath}).
+	 *            {@link #outputXMLFilePath}).
 	 */
 	public DataSetDescriptionSerializer(String[] arguments) {
 		if (arguments != null && arguments.length == 1) {
-			outputFilePath = arguments[0];
+			outputXMLFilePath = arguments[0];
 		}
 	}
 
@@ -61,16 +61,7 @@ public abstract class DataSetDescriptionSerializer {
 	 * Triggers the loading of the <code>DataSetDescriptions</code> and the
 	 * serialization.
 	 */
-	public void run( String outputFilePath ) {
-		this.outputFilePath = outputFilePath;
-		this.run();
-	}
-
-	/**
-	 * Triggers the loading of the <code>DataSetDescriptions</code> and the
-	 * serialization.
-	 */
-	protected void run() {
+	public void run() {
 		setUpDataSetDescriptions();
 		serialize();
 	}
@@ -84,7 +75,7 @@ public abstract class DataSetDescriptionSerializer {
 
 	/**
 	 * Serializes the elements in {@link #dataSetDescriptionCollection} to the
-	 * {@link #outputFilePath}.
+	 * {@link #outputXMLFilePath}.
 	 */
 	public void serialize() {
 		JAXBContext context = null;
@@ -97,12 +88,12 @@ public abstract class DataSetDescriptionSerializer {
 
 			Marshaller marshaller;
 			marshaller = context.createMarshaller();
-			marshaller.marshal(dataSetDescriptionCollection, new File(outputFilePath));
+			marshaller.marshal(dataSetDescriptionCollection, new File(outputXMLFilePath));
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 			System.out.println("Created configuration for "
 					+ dataSetDescriptionCollection.getDataSetDescriptionCollection()
 							.size() + " datasets: " + dataSetDescriptionCollection);
-			System.out.println("Written to: " + outputFilePath);
+			System.out.println("Written to: " + outputXMLFilePath);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}

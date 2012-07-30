@@ -54,11 +54,15 @@ public class TCGADataXMLGenerator
 
 	// protected String tumorName;
 	protected String tumorAbbreviation;
-	protected String runIdentifier;
-	protected String runIdentifierUnderscore;
-	protected String tempDirectory;
+
+	protected String analysisRunIdentifier;
+	protected String analysisRunIdentifierWithoutUnderscore;
+	
+	protected String dataRunIdentifier;
+	protected String dataRunIdentifierWithoutUnderscore;
+	
+	protected String tmpOutputDirectoryPath;
 	protected String remoteArchiveDirectory;
-	protected String outputXMLFilePath;
 
 	public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-...\\-";
 
@@ -67,7 +71,7 @@ public class TCGADataXMLGenerator
 	public static void main(String[] args) {
 
 		TCGADataXMLGenerator generator = new TCGADataXMLGenerator(args);
-		generator.run(generator.getOutputFilePath());
+		generator.run();
 	}
 
 	public TCGADataXMLGenerator(String[] arguments) {
@@ -75,32 +79,36 @@ public class TCGADataXMLGenerator
 
 		// this.tumorName = "Glioblastoma Multiforme";
 		this.tumorAbbreviation = "OV";
-		this.runIdentifierUnderscore = "2012_05_25";
-		this.outputXMLFilePath = this.tempDirectory + System.getProperty("file.separator")
-				+ tumorAbbreviation + "_" + this.runIdentifier + "_caleydo.xml";
-	
+		this.analysisRunIdentifier = "2012_05_25";
+		this.dataRunIdentifier = "2012_07_07";
+		this.tmpOutputDirectoryPath = GeneralManager.CALEYDO_HOME_PATH + "TCGA/tmp";
+		this.outputXMLFilePath = this.tmpOutputDirectoryPath + System.getProperty("file.separator")
+				+ tumorAbbreviation + "_" + this.analysisRunIdentifierWithoutUnderscore + "_caleydo.xml";
+
 		init();
 	}
 
 	public TCGADataXMLGenerator(String tumorAbbreviation, String runIdentifierUnderscore,
-			String outputXMLFilePath) {
-		
+			String dataRunIdentifier, String outputXMLFilePath, String tmpOutputDirectoryPath) {
+
 		super(null);
 
 		this.tumorAbbreviation = tumorAbbreviation;
-		this.runIdentifierUnderscore = runIdentifierUnderscore;
+		this.analysisRunIdentifier = runIdentifierUnderscore;
+		this.dataRunIdentifier = dataRunIdentifier;
 		this.outputXMLFilePath = outputXMLFilePath;
-	
+		this.tmpOutputDirectoryPath = tmpOutputDirectoryPath;
+
 		init();
 	}
 
 	private void init() {
-		this.runIdentifier = runIdentifierUnderscore.replace("_", "");
-		this.tempDirectory = GeneralManager.CALEYDO_HOME_PATH + "TCGA";
+		this.analysisRunIdentifierWithoutUnderscore = analysisRunIdentifier.replace("_", "");
+		this.dataRunIdentifierWithoutUnderscore = dataRunIdentifier.replace("_", "");
 
 		// create path of archive search directory
-		this.remoteArchiveDirectory = FIREHOSE_URL_PREFIX + runIdentifierUnderscore + "/data/"
-				+ tumorAbbreviation + "/" + runIdentifier + "/";
+		this.remoteArchiveDirectory = FIREHOSE_URL_PREFIX + analysisRunIdentifier
+				+ "/data/" + tumorAbbreviation + "/" + analysisRunIdentifierWithoutUnderscore + "/";
 	}
 
 	protected String extractFileFromTarGzArchive(String archiveName, String fileName,
@@ -139,7 +147,7 @@ public class TCGADataXMLGenerator
 				}
 
 				outputDirectoryName += System.getProperty("file.separator")
-						+ this.runIdentifier + System.getProperty("file.separator")
+						+ this.analysisRunIdentifierWithoutUnderscore + System.getProperty("file.separator")
 						+ this.tumorAbbreviation + System.getProperty("file.separator")
 						+ archiveName;
 
@@ -203,16 +211,10 @@ public class TCGADataXMLGenerator
 
 		// gdac.broadinstitute.org_GBM.Methylation_Clustering_CNMF.Level_4.2012052500.0.0.tar.gz
 		String archiveName = FIREHOSE_TAR_NAME_PREFIX + tumorAbbreviation + "." + pipelineName
-				+ ".Level_4." + runIdentifier + "00.0.0.tar.gz";
+				+ ".Level_4." + analysisRunIdentifierWithoutUnderscore + "00.0.0.tar.gz";
 
 		// extract file to temp directory and return path to file
-		return extractFileFromTarGzArchive(archiveName, fileName, this.tempDirectory);
-	}
-
-	protected int removeFile(String filePath) {
-		// delete file from temp directory if it exists
-		// check if this is requested before calling this file
-		return 0;
+		return extractFileFromTarGzArchive(archiveName, fileName, tmpOutputDirectoryPath);
 	}
 
 	@Override
@@ -503,14 +505,6 @@ public class TCGADataXMLGenerator
 		mutationDataMetaInfo.setColumnIDSpecification(sampleIDSpecification);
 
 		return mutationDataMetaInfo;
-	}
-
-	public String getOutputFilePath() {
-		return outputXMLFilePath;
-	}
-
-	public void setOutputFilePath(String outputFilePath) {
-		this.outputXMLFilePath = outputFilePath;
 	}
 
 	// find pipeline archive name filter (filename pattern matcher)

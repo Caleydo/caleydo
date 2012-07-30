@@ -35,6 +35,10 @@ import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
+import com.martiansoftware.jsap.FlaggedOption;
+import com.martiansoftware.jsap.JSAP;
+import com.martiansoftware.jsap.JSAPException;
+import com.martiansoftware.jsap.JSAPResult;
 
 /**
  * Startup processor handles the creation of the startup procedure and its
@@ -67,58 +71,69 @@ public class StartupProcessor {
 		// Load project if provided via webstart system property
 		setProjectLocationFromSystemProperty();
 
-		// Parse application arguments
-		String[] runConfigParameters = (String[]) applicationArguments.get("application.args");
-		if (runConfigParameters != null) {
+		handleProgramArguments(applicationArguments);
 
-			for (int parameterCount = 0; parameterCount < runConfigParameters.length; parameterCount++) {
-				
-				boolean isProjectFile = false;
-				String parameter = runConfigParameters[parameterCount];
-				if (parameterCount == 0) {
-					isProjectFile = checkFileName(parameter);
-					if (isProjectFile) {
-						startupProcedure = new SerializationStartupProcedure();
-						((SerializationStartupProcedure) startupProcedure)
-								.setProjectLocation(parameter);
-					}
-				}
+		changeWorkspaceLocation();
+		GeneralManager.get().getSWTGUIManager();
 
-				if (parameter.equalsIgnoreCase("-help")
-						|| parameter.equalsIgnoreCase("--help")
-						|| parameter.equalsIgnoreCase("-h")) {
-					System.out.println("This is Caleydo Version " + GeneralManager.VERSION
-							+ "\n\n");
+		if (startupProcedure == null) {
+			Shell shell = new Shell();
+			WizardDialog projectWizardDialog = new WizardDialog(shell,
+					new CaleydoProjectWizard(shell));
 
-					System.out.println("Usage: caleydo [project_filename.cal]");
-					System.out.println("The following command-line options are available:\n");
-					System.out.println("-h \t --help \t Print help on command line options");
-					System.out.println();
-					shutdown();
-				}
-				else if (!isProjectFile) {
-					String message = "Unknown Command Line Argument: " + parameter;
-					Logger.log(new Status(Status.WARNING, this.toString(), message));
-					System.out.println(message);
-				}
+			if (projectWizardDialog.open() == Window.CANCEL) {
+				shutdown();
 			}
-
-			changeWorkspaceLocation();
-			GeneralManager.get().getSWTGUIManager();
-
-			if (startupProcedure == null) {
-				Shell shell = new Shell();
-				WizardDialog projectWizardDialog = new WizardDialog(shell,
-						new CaleydoProjectWizard(shell));
-
-				if (projectWizardDialog.open() == Window.CANCEL) {
-					shutdown();
-				}
-			}
-
-			startupProcedure.initPreWorkbenchOpen();
-			initRCPWorkbench();
 		}
+
+		startupProcedure.initPreWorkbenchOpen();
+		initRCPWorkbench();
+	}
+
+	private void handleProgramArguments(Map<String, Object> applicationArguments) {
+
+		String[] runConfigParameters = (String[]) applicationArguments.get("application.args");
+
+		JSAP jsap = new JSAP();
+		try {
+			FlaggedOption project = new FlaggedOption("project")
+					.setStringParser(JSAP.STRING_PARSER).setDefault(JSAP.NO_DEFAULT)
+					.setRequired(false).setShortFlag('p').setLongFlag(JSAP.NO_LONGFLAG);
+			project.setHelp("Load a caleydo project file [project_filename.cal]");
+			jsap.registerParameter(project);
+
+			JSAPResult config = jsap.parse(runConfigParameters);
+
+			// check whether the command line was valid, and if it wasn't,
+			// display usage information and exit.
+			if (!config.success()) {
+				handleJSAPError(jsap);
+			}
+
+			String projectFileName = config.getString("project");
+			boolean isProjectFile = false;
+			if (projectFileName != null) {
+				isProjectFile = checkFileName(projectFileName);
+				if (isProjectFile) {
+					startupProcedure = new SerializationStartupProcedure();
+					((SerializationStartupProcedure) startupProcedure)
+							.setProjectLocation(projectFileName);
+				}
+			}
+
+		}
+		catch (JSAPException e) {
+			handleJSAPError(jsap);
+		}
+	}
+
+	private void handleJSAPError(JSAP jsap) {
+		System.err.println("Error during parsing of program arguments. Closing program.");
+		System.err.println("Usage: Caleydo");
+		System.err.println(jsap.getUsage());
+		System.err.println();
+
+		shutdown();
 	}
 
 	/**
@@ -141,6 +156,7 @@ public class StartupProcessor {
 		if (candiateString.endsWith(".cal"))
 			return true;
 
+		System.err.println("The specified project " + candiateString + " is not a *.cal file");
 		return false;
 	}
 
