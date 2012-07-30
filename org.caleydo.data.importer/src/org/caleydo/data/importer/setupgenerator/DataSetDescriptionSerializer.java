@@ -24,7 +24,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.DataSetDescriptionCollection;
+import org.caleydo.core.io.ProjectDescription;
 
 /**
  * Base class for setting up and serializing (to xml) a set of
@@ -36,7 +36,7 @@ import org.caleydo.core.io.DataSetDescriptionCollection;
  */
 public abstract class DataSetDescriptionSerializer {
 
-	protected DataSetDescriptionCollection dataSetDescriptionCollection = new DataSetDescriptionCollection();
+	protected ProjectDescription dataSetDescriptionCollection = new ProjectDescription();
 
 	private String outputFilePath = System.getProperty("user.home")
 			+ System.getProperty("file.separator") + "caleydo_data.xml";
@@ -91,7 +91,7 @@ public abstract class DataSetDescriptionSerializer {
 		try {
 			Class<?>[] serializableClasses = new Class<?>[2];
 			serializableClasses[0] = DataSetDescription.class;
-			serializableClasses[1] = DataSetDescriptionCollection.class;
+			serializableClasses[1] = ProjectDescription.class;
 
 			context = JAXBContext.newInstance(serializableClasses);
 

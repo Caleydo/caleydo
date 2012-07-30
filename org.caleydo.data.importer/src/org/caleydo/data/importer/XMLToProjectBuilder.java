@@ -41,7 +41,7 @@ import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.io.DataLoader;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.DataSetDescriptionCollection;
+import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectSaver;
 
@@ -70,7 +70,7 @@ public class XMLToProjectBuilder {
 		// GeneralManager.get().getBasicInfo().setOrganism(Organism.MUS_MUSCULUS);
 
 		createJAXBContext();
-		DataSetDescriptionCollection dataSetMetInfoCollection = deserialzeDataSetMetaInfo();
+		ProjectDescription dataSetMetInfoCollection = deserialzeDataSetMetaInfo();
 
 		try {
 			// Iterate over data type sets and trigger processing
@@ -98,7 +98,7 @@ public class XMLToProjectBuilder {
 		try {
 			Class<?>[] serializableClasses = new Class<?>[2];
 			serializableClasses[0] = DataSetDescription.class;
-			serializableClasses[1] = DataSetDescriptionCollection.class;
+			serializableClasses[1] = ProjectDescription.class;
 			context = JAXBContext.newInstance(serializableClasses);
 		}
 		catch (JAXBException ex) {
@@ -106,13 +106,13 @@ public class XMLToProjectBuilder {
 		}
 	}
 
-	private DataSetDescriptionCollection deserialzeDataSetMetaInfo() {
+	private ProjectDescription deserialzeDataSetMetaInfo() {
 
-		DataSetDescriptionCollection dataTypeSetCollection = null;
+		ProjectDescription dataTypeSetCollection = null;
 		try {
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 
-			dataTypeSetCollection = (DataSetDescriptionCollection) unmarshaller
+			dataTypeSetCollection = (ProjectDescription) unmarshaller
 					.unmarshal(new File(dataSetDescriptionFilePath));
 		}
 		catch (JAXBException ex) {

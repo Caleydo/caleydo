@@ -23,19 +23,23 @@
 package org.caleydo.core.io;
 
 import java.util.ArrayList;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * Collection of all @DataTypeSet objects that are needed for loading multiple
- * TCGA data sets.
+ * A description of a project, containing mainly a collection of all @DataTypeSet
+ * objects that are needed for loading multiple data sets.
  * 
  * @author Marc Streit
  * @author Alexander Lex
  */
 @XmlType
 @XmlRootElement
-public class DataSetDescriptionCollection {
+public class ProjectDescription {
+
+	/** The name of the project */
+	String projectName;
 
 	/**
 	 * A list of {@link DataSetDescription}s that specify the datasets to be
@@ -46,7 +50,22 @@ public class DataSetDescriptionCollection {
 	/**
 	 * Default constructor
 	 */
-	public DataSetDescriptionCollection() {
+	public ProjectDescription() {
+	}
+
+	/**
+	 * @param projectName
+	 *            setter, see {@link #projectName}
+	 */
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	/**
+	 * @return the projectName, see {@link #projectName}
+	 */
+	public String getProjectName() {
+		return projectName;
 	}
 
 	/**

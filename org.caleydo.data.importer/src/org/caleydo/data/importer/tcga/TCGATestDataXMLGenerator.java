@@ -22,7 +22,7 @@ package org.caleydo.data.importer.tcga;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.DataSetDescriptionCollection;
+import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -119,7 +119,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
 
-		dataSetDescriptionCollection = new DataSetDescriptionCollection();
+		dataSetDescriptionCollection = new ProjectDescription();
 
 		dataSetDescriptionCollection.add(setUpMRNAData());
 		dataSetDescriptionCollection.add(setUpMutationData());
