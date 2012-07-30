@@ -33,12 +33,6 @@
             id="org.caleydo.core.gui.toolbar.RcpToolBarView"
             name="Tool Bar">
       </view>
-      <view
-            category="org.caleydo.core.views"
-            class="org.caleydo.core.plex.RcpCollabView"
-            id="org.caleydo.core.plex.view.collaboration"
-            name="Collaboration">
-      </view>
    </extension>   
    
    <extension
@@ -102,21 +96,6 @@
             name="Full Screen">
       </command>
       <command
-            defaultHandler="org.caleydo.core.plex.SendRemoteHandler"
-            id="org.caleydo.core.plex.sendviews.remote"
-            name="Send Bucket">
-      </command>
-      <command
-            defaultHandler="org.caleydo.core.plex.ObtainViewHandler"
-            id="org.caleydo.core.plex.sendviews.obtain"
-            name="Obtain View">
-      </command>
-      <command
-            defaultHandler="org.caleydo.core.plex.PublishViewHandler"
-            id="org.caleydo.core.plex.sendviews.publish"
-            name="Publish View">
-      </command>
-      <command
             defaultHandler="org.caleydo.core.io.gui.ExportDataHandler"
             id="org.caleydo.core.io.gui.export_data"
             name="Export Data">
@@ -130,11 +109,6 @@
             defaultHandler="org.caleydo.core.io.gui.SaveProjectHandler"
             id="org.caleydo.core.io.gui.save_project"
             name="Save Project">
-      </command>
-      <command
-            defaultHandler="org.caleydo.core.plex.OpenCollabHandler"
-            id="org.caleydo.core.plex.open_collab"
-            name="Open Collaboration">
       </command>
       <command
             defaultHandler="org.caleydo.core.gui.menu.HelpContentsHandler"
@@ -235,22 +209,29 @@
          </menu>
          
          <menu
-               id="org.caleydo.menu.admin"
-               label="Admin">
-            <command
-                  commandId="org.caleydo.core.plex.open_collab"
-                  label="Collaboration"
-                  mnemonic="T"
-                  style="push">
-            </command>
-               <visibleWhen checkEnabled="false">
-                  <with
-                        variable="org.caleydo.core.isReleaseState">
-                     <equals
-                           value="releaseVersion">
-                     </equals>
-                  </with>
-               </visibleWhen>
+               id="org.caleydo.menu.view"
+               label="View">
+            <menu
+                  id="org.caleydo.menu.view.visualization"
+                  label="Visualizations">
+            </menu>
+            <menu
+                  id="org.caleydo.menu.view.tool"
+                  label="Tools">
+               <command
+                     commandId="org.caleydo.view.generaltoolbar.command.opengeneraltoolbar"
+                     icon="resources/icons/view/general.png"
+                     style="push">
+               </command>
+            </menu>
+            <menu
+                  id="org.caleydo.menu.view.experimental"
+                  label="Experimental">
+            </menu>
+            <menu
+                  id="org.caleydo.menu.view.legacy"
+                  label="Legacy">
+            </menu>
          </menu>
         
          <menu
@@ -291,31 +272,6 @@
                   label="About Caleydo"
                   style="push">
             </command>
-         </menu>
-         <menu
-               id="org.caleydo.menu.view"
-               label="View">
-            <menu
-                  id="org.caleydo.menu.view.visualization"
-                  label="Visualizations">
-            </menu>
-            <menu
-                  id="org.caleydo.menu.view.tool"
-                  label="Tools">
-               <command
-                     commandId="org.caleydo.view.generaltoolbar.command.opengeneraltoolbar"
-                     icon="resources/icons/view/general.png"
-                     style="push">
-               </command>
-            </menu>
-            <menu
-                  id="org.caleydo.menu.view.experimental"
-                  label="Experimental">
-            </menu>
-            <menu
-                  id="org.caleydo.menu.view.legacy"
-                  label="Legacy">
-            </menu>
          </menu>
       </menuContribution>
    </extension>
