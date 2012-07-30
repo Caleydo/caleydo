@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -34,7 +34,6 @@ import org.caleydo.core.event.view.selection.NewConnectionsEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.util.execution.ADisplayLoopEventHandler;
 import org.caleydo.core.util.execution.DisplayLoopExecution;
 import org.caleydo.core.view.listener.AddSelectionListener;
@@ -44,34 +43,40 @@ import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 
 /**
  * <p>
- * Selection manager that manages selections and their {@link ElementConnectionInformation}.
+ * Selection manager that manages selections and their
+ * {@link ElementConnectionInformation}.
  * </p>
  * <p>
- * The manager is able to identify identical selections in different views. Selections have selection
- * representations. Selection representations store their containing view and the x/y/z position in the view
- * area.
+ * The manager is able to identify identical selections in different views.
+ * Selections have selection representations. Selection representations store
+ * their containing view and the x/y/z position in the view area.
  * </p>
  * <p>
- * Multiple connection trees, distinguished by their ID Type are possible. This allows to show relations
- * between elements of different IDTypes at the same type.
+ * Multiple connection trees, distinguished by their ID Type are possible. This
+ * allows to show relations between elements of different IDTypes at the same
+ * type.
  * </p>
  * <p>
- * It is defined in the preference store whether Visual Links should be drawn on Mouse-Over or on Click. The
- * selection manager checks this and only allows elements of the correct SelectionType to be added.
+ * It is defined in the preference store whether Visual Links should be drawn on
+ * Mouse-Over or on Click. The selection manager checks this and only allows
+ * elements of the correct SelectionType to be added.
  * </p>
  * <p>
- * The manager manages also the transformed selections vertices of the selections for remote rendered views
- * and the projected x/y canvas coordinates. The projected coordinates are used to draw connection lines
+ * The manager manages also the transformed selections vertices of the
+ * selections for remote rendered views and the projected x/y canvas
+ * coordinates. The projected coordinates are used to draw connection lines
  * across window borders e.g. with the help of a IGroupwareManager.
  * </p>
  * <p>
- * Adding and clearing of selections is done with events. Therefore this manager should is a
- * {@link ADisplayLoopEventHandler} and should be added to a {@link DisplayLoopExecution} to handle the
- * incoming events during each display loop cycle.
+ * Adding and clearing of selections is done with events. Therefore this manager
+ * should is a {@link ADisplayLoopEventHandler} and should be added to a
+ * {@link DisplayLoopExecution} to handle the incoming events during each
+ * display loop cycle.
  * </p>
  * <p>
- * The purpose of this manager is to make selections available to an external instance that connects them, for
- * example the {@link AGLConnectionLineRenderer}
+ * The purpose of this manager is to make selections available to an external
+ * instance that connects them, for example the
+ * {@link AGLConnectionLineRenderer}
  * 
  * @author Marc Streit
  * @author Alexander Lex
@@ -88,18 +93,22 @@ public class ConnectedElementRepresentationManager
 	/** Stored reference for common usage */
 	protected EventPublisher eventPublisher;
 
-	/** Stores a {@link ConnectionMap} for each possible type as originally provided by the views. */
+	/**
+	 * Stores a {@link ConnectionMap} for each possible type as originally
+	 * provided by the views.
+	 */
 	HashMap<IDType, ConnectionMap> sourceConnectionsByType;
 
 	/**
-	 * Stores a {@link ConnectionMap} with only transformed selection-points as defined by the transformation
-	 * needed within remote rendered views.
+	 * Stores a {@link ConnectionMap} with only transformed selection-points as
+	 * defined by the transformation needed within remote rendered views.
 	 */
 	HashMap<IDType, ConnectionMap> transformedConnectionsByType;
 
 	/**
-	 * Stores {@link CanvasConnectionMap}s with only transformed selection-points as defined by the
-	 * transformation needed within remote rendered views.
+	 * Stores {@link CanvasConnectionMap}s with only transformed
+	 * selection-points as defined by the transformation needed within remote
+	 * rendered views.
 	 */
 	HashMap<IDType, CanvasConnectionMap> canvasConnectionsByType;
 
@@ -107,7 +116,10 @@ public class ConnectedElementRepresentationManager
 	ClearTransformedConnectionsListener clearTransformedConnectionsListener;
 	AddSelectionListener addSelectionListener;
 
-	/** <code>true</code if there are new vertices in the list of 2D canvas conneciton vertices */
+	/**
+	 * <code>true</code if there are new vertices in the list of 2D canvas
+	 * conneciton vertices
+	 */
 	protected boolean newCanvasVertices = false;
 
 	/**
@@ -127,7 +139,8 @@ public class ConnectedElementRepresentationManager
 	public static ConnectedElementRepresentationManager get() {
 		if (instance == null) {
 			synchronized (ConnectedElementRepresentationManager.class) {
-				// this is needed if two threads are waiting at the monitor at the
+				// this is needed if two threads are waiting at the monitor at
+				// the
 				// time when singleton was getting instantiated
 				if (instance == null)
 					instance = new ConnectedElementRepresentationManager();
@@ -137,19 +150,20 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * Sends event to add a selection to a specific tree. The data type is determined by the
-	 * {@link ElementConnectionInformation}, the connection id has to be specified manually
+	 * Sends event to add a selection to a specific tree. The data type is
+	 * determined by the {@link ElementConnectionInformation}, the connection id
+	 * has to be specified manually
 	 * 
-	 * @param iConnectionID
-	 *            the connection ID - one connection id per connection line tree
-	 * @param selectedElementRep
-	 *            the selected element rep associated with the tree specified
-	 * @param selectionType
-	 *            specify which selection type is associated with this selection. If the selectionType should
-	 *            not be rendered at the moment (due to user configuration) the call is ignored.
+	 * @param iConnectionID the connection ID - one connection id per connection
+	 *            line tree
+	 * @param selectedElementRep the selected element rep associated with the
+	 *            tree specified
+	 * @param selectionType specify which selection type is associated with this
+	 *            selection. If the selectionType should not be rendered at the
+	 *            moment (due to user configuration) the call is ignored.
 	 */
-	public void addSelection(int connectionID, final ElementConnectionInformation selectedElementRep,
-		SelectionType selectionType) {
+	public void addSelection(int connectionID,
+			final ElementConnectionInformation selectedElementRep, SelectionType selectionType) {
 
 		if (!isSelectionTypeRenderedWithVisuaLinks(selectionType))
 			return;
@@ -161,20 +175,23 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * Check, whether according to the preferences selections of this type should be shown as visual links.
+	 * Check, whether according to the preferences selections of this type
+	 * should be shown as visual links.
 	 * 
-	 * @param selectionType
-	 *            the type you want to check.
+	 * @param selectionType the type you want to check.
 	 * @return true if visual links are rendered for this type, else false
 	 */
 	public boolean isSelectionTypeRenderedWithVisuaLinks(SelectionType selectionType) {
-		// check in preferences if we should draw connection lines for mouse over
-		if (!generalManager.getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_FOR_MOUSE_OVER)
-			&& selectionType == SelectionType.MOUSE_OVER)
+		// check in preferences if we should draw connection lines for mouse
+		// over
+		if (!generalManager.getPreferenceStore().getBoolean(
+				PreferenceConstants.VISUAL_LINKS_FOR_MOUSE_OVER)
+				&& selectionType == SelectionType.MOUSE_OVER)
 			return false;
 		// check for selections
-		if (!generalManager.getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_FOR_SELECTIONS)
-			&& selectionType == SelectionType.SELECTION)
+		if (!generalManager.getPreferenceStore().getBoolean(
+				PreferenceConstants.VISUAL_LINKS_FOR_SELECTIONS)
+				&& selectionType == SelectionType.SELECTION)
 			return false;
 
 		return true;
@@ -182,15 +199,16 @@ public class ConnectedElementRepresentationManager
 
 	/**
 	 * Adds a selection to a specific tree. The data type is determined by the
-	 * {@link ElementConnectionInformation}, the connection id has to be specified manually
+	 * {@link ElementConnectionInformation}, the connection id has to be
+	 * specified manually
 	 * 
-	 * @param iConnectionID
-	 *            the connection ID - one connection id per connection line tree
-	 * @param selectedElementRep
-	 *            the selected element rep associated with the tree specified
+	 * @param iConnectionID the connection ID - one connection id per connection
+	 *            line tree
+	 * @param selectedElementRep the selected element rep associated with the
+	 *            tree specified
 	 */
 	public void handleAddSelectionEvent(int connectionID,
-		final ElementConnectionInformation selectedElementRep) {
+			final ElementConnectionInformation selectedElementRep) {
 		ConnectionMap tmpHash = sourceConnectionsByType.get(selectedElementRep.getIDType());
 
 		if (tmpHash == null) {
@@ -212,7 +230,8 @@ public class ConnectedElementRepresentationManager
 	 * @param iElementID
 	 * @param selectedElementRep
 	 */
-	public void removeSelection(final int iElementID, ElementConnectionInformation selectedElementRep) {
+	public void removeSelection(final int iElementID,
+			ElementConnectionInformation selectedElementRep) {
 
 		if (sourceConnectionsByType.containsKey(iElementID)) {
 			sourceConnectionsByType.get(iElementID).remove(selectedElementRep);
@@ -225,12 +244,12 @@ public class ConnectedElementRepresentationManager
 	 * 
 	 * @param iElementID
 	 * @param selectedElementRep
-	 * @param selectionType
-	 *            specify which selection type is associated with this selection. If the selectionType should
-	 *            not be rendered at the moment (due to user configuration) the call is ignored.
+	 * @param selectionType specify which selection type is associated with this
+	 *            selection. If the selectionType should not be rendered at the
+	 *            moment (due to user configuration) the call is ignored.
 	 */
-	public void replaceSelection(final int iElementID, ElementConnectionInformation selectedElementRep,
-		SelectionType selectionType) {
+	public void replaceSelection(final int iElementID,
+			ElementConnectionInformation selectedElementRep, SelectionType selectionType) {
 		if (!isSelectionTypeRenderedWithVisuaLinks(selectionType))
 			return;
 		clear(selectedElementRep.getIDType(), selectionType);
@@ -258,20 +277,20 @@ public class ConnectedElementRepresentationManager
 	/**
 	 * Get a representation of a particular element
 	 * 
-	 * @param iDType
-	 *            the type of the object to be connected (e.g. gene expression, clinical)
-	 * @param iElementID
-	 *            the id of the object to be connected
+	 * @param iDType the type of the object to be connected (e.g. gene
+	 *            expression, clinical)
+	 * @param iElementID the id of the object to be connected
 	 * @return a list of the representations of the points
 	 */
-	public ArrayList<ElementConnectionInformation> getSelectedElementRepsByElementID(IDType idType,
-		final int iElementID) {
+	public ArrayList<ElementConnectionInformation> getSelectedElementRepsByElementID(
+			IDType idType, final int iElementID) {
 
-		ArrayList<ElementConnectionInformation> tempList =
-			sourceConnectionsByType.get(idType).get(iElementID);
+		ArrayList<ElementConnectionInformation> tempList = sourceConnectionsByType.get(idType)
+				.get(iElementID);
 
 		if (tempList == null)
-			throw new IllegalArgumentException("SelectionManager: No representations for this element ID");
+			throw new IllegalArgumentException(
+					"SelectionManager: No representations for this element ID");
 		return tempList;
 	}
 
@@ -285,12 +304,13 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * Clears all connections of the given idType irrespective of the selectionType
+	 * Clears all connections of the given idType irrespective of the
+	 * selectionType
 	 * 
 	 * @param idType
-	 * @param selectionType
-	 *            specify which selection type is associated with this clear. If the selectionType should not
-	 *            be rendered at the moment (due to user configuration) the call is ignored.
+	 * @param selectionType specify which selection type is associated with this
+	 *            clear. If the selectionType should not be rendered at the
+	 *            moment (due to user configuration) the call is ignored.
 	 */
 	public void clear(IDType idType, SelectionType selectionType) {
 		if (!isSelectionTypeRenderedWithVisuaLinks(selectionType))
@@ -299,8 +319,9 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * Sends event to clear all selections of a given type, for a given selectionType. Should only be used for
-	 * situations such as re-setting all selections, not for a clear before a update.
+	 * Sends event to clear all selections of a given type, for a given
+	 * selectionType. Should only be used for situations such as re-setting all
+	 * selections, not for a clear before a update.
 	 */
 	public void clear(IDType idType) {
 		ClearConnectionsEvent event = new ClearConnectionsEvent();
@@ -323,10 +344,8 @@ public class ConnectedElementRepresentationManager
 	/**
 	 * Clear all selections of a given type that belong to a certain view
 	 * 
-	 * @param idType
-	 *            the type to be cleared
-	 * @param viewID
-	 *            the id of the view
+	 * @param idType the type to be cleared
+	 * @param viewID the id of the view
 	 */
 	public void clearByViewAndType(IDType idType, int viewID) {
 		ConnectionMap hashReps = sourceConnectionsByType.get(idType);
@@ -349,8 +368,7 @@ public class ConnectedElementRepresentationManager
 	/**
 	 * Clear all elements of a view, regardless of their type.
 	 * 
-	 * @param viewID
-	 *            the view which id's should be removed
+	 * @param viewID the view which id's should be removed
 	 */
 	public void clearByView(int viewID) {
 		for (IDType idType : sourceConnectionsByType.keySet()) {
@@ -383,26 +401,13 @@ public class ConnectedElementRepresentationManager
 
 	public void doViewRelatedTransformation(GL2 gl, ISelectionTransformer transformer) {
 		boolean newTransformedPoints = false;
-		newTransformedPoints = transformer.transform(sourceConnectionsByType, transformedConnectionsByType);
-
-		IGroupwareManager gm = GeneralManager.get().getGroupwareManager();
-		// if (gm != null && gm.isGroupwareConnectionLinesEnabled()) {
-		if (newTransformedPoints) {
-			String networkName = null;
-			if (gm != null) {
-				networkName = gm.getNetworkManager().getNetworkName();
-			}
-			else {
-				networkName = "visLinks";
-			}
-			transformer.project(gl, networkName, transformedConnectionsByType, canvasConnectionsByType);
-			newCanvasVertices = true;
-		}
-		// }
+		newTransformedPoints = transformer.transform(sourceConnectionsByType,
+				transformedConnectionsByType);
 	}
 
 	/**
-	 * To be executed during the display loop with help of a {@link DisplayLoopExecution}
+	 * To be executed during the display loop with help of a
+	 * {@link DisplayLoopExecution}
 	 */
 	@Override
 	public void run() {
@@ -421,7 +426,7 @@ public class ConnectedElementRepresentationManager
 		clearTransformedConnectionsListener = new ClearTransformedConnectionsListener();
 		clearTransformedConnectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearTransformedConnectionsEvent.class,
-			clearTransformedConnectionsListener);
+				clearTransformedConnectionsListener);
 
 		addSelectionListener = new AddSelectionListener();
 		addSelectionListener.setHandler(this);
@@ -445,8 +450,8 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * Gets all {@link CanvasConnectionMap}s by {@link EIDType} containing the finally transformed and
-	 * to-canvas-projected selection vertices.
+	 * Gets all {@link CanvasConnectionMap}s by {@link EIDType} containing the
+	 * finally transformed and to-canvas-projected selection vertices.
 	 * 
 	 * @return 2D canvas selection vertices
 	 */
@@ -455,8 +460,9 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * Gets all {@link ConnectionMap}s by {@link EIDType} containing transformed selection vertices. The
-	 * remoteViewID field of the contained {@link ElementConnectionInformation}s references to the view, the
+	 * Gets all {@link ConnectionMap}s by {@link EIDType} containing transformed
+	 * selection vertices. The remoteViewID field of the contained
+	 * {@link ElementConnectionInformation}s references to the view, the
 	 * coordinates are related to.
 	 * 
 	 * @return
@@ -466,8 +472,8 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * <code>true</code> if there are new vertices for 2D connection line drawing, <code>false</code>
-	 * otherwise
+	 * <code>true</code> if there are new vertices for 2D connection line
+	 * drawing, <code>false</code> otherwise
 	 * 
 	 * @return flag if new connection line vertices exists
 	 */
@@ -476,7 +482,8 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * Sets the status of flag to indicate if new 2D connection line vertices exists.
+	 * Sets the status of flag to indicate if new 2D connection line vertices
+	 * exists.
 	 * 
 	 * @newCanvasVertices new value for the flag
 	 */

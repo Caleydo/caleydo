@@ -29,11 +29,6 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.event.view.CreateGUIViewEvent;
 import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.manager.AManager;
@@ -41,7 +36,6 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.execution.DisplayLoopExecution;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.listener.CreateGUIViewListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.PickingManager;
@@ -62,7 +56,8 @@ import com.jogamp.opengl.util.FPSAnimator;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class ViewManager extends AManager<IView> implements IListenerOwner {
+public class ViewManager
+	extends AManager<IView> {
 
 	private HashMap<GLCanvas, ArrayList<AGLView>> hashGLCanvas2GLView = new HashMap<GLCanvas, ArrayList<AGLView>>();
 
@@ -97,8 +92,6 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 
 	private Set<Object> busyRequests = new HashSet<Object>();
 
-	private CreateGUIViewListener createGUIViewListener;
-
 	/**
 	 * Utility object to execute code within the display loop, e.g. used by
 	 * managers to avoid access conflicts with views.
@@ -106,13 +99,6 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 	private DisplayLoopExecution displayLoopExecution;
 
 	private volatile static ViewManager instance;
-
-	/**
-	 * Constructor.
-	 */
-	private ViewManager() {
-		registerEventListeners();
-	}
 
 	public static ViewManager get() {
 		if (instance == null) {
@@ -163,10 +149,8 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 	 * Registers the dependency between a remote rendering and a remote rendered
 	 * view.
 	 * 
-	 * @param remoteRenderedView
-	 *            The remote rendered view.
-	 * @param remoteRenderingView
-	 *            The view that renders the remoteRenderedView.
+	 * @param remoteRenderedView The remote rendered view.
+	 * @param remoteRenderingView The view that renders the remoteRenderedView.
 	 */
 	public void registerRemoteRenderedView(AGLView remoteRenderedView,
 			AGLView remoteRenderingView) {
@@ -189,8 +173,7 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 	 * @param gl
 	 * @param topLevelRemoteRenderingView
 	 */
-	public void executePendingRemoteViewDestruction(GL2 gl,
-			AGLView topLevelRemoteRenderingView) {
+	public void executePendingRemoteViewDestruction(GL2 gl, AGLView topLevelRemoteRenderingView) {
 
 		Set<AGLView> viewsToBeDestroyed = hashTopLevelView2ViewsToBeDestroyed
 				.get(topLevelRemoteRenderingView);
@@ -227,8 +210,7 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 				.get(remoteRenderingView);
 
 		if (remoteRenderedViews != null) {
-			Set<AGLView> tempRemoteRenderedViews = new HashSet<AGLView>(
-					remoteRenderedViews);
+			Set<AGLView> tempRemoteRenderedViews = new HashSet<AGLView>(remoteRenderedViews);
 			for (AGLView remoteRenderedView : tempRemoteRenderedViews) {
 				destroyRemoteViews(gl, remoteRenderedView);
 				unregisterGLView(remoteRenderedView, false);
@@ -237,8 +219,7 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 		}
 	}
 
-	public void registerGLEventListenerByGLCanvas(final GLCanvas glCanvas,
-			final AGLView glView) {
+	public void registerGLEventListenerByGLCanvas(final GLCanvas glCanvas, final AGLView glView) {
 
 		// This is the case when a view is rendered remote
 		if (glCanvas == null)
@@ -316,10 +297,9 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 	 * Unregisters the specified view from this manager.
 	 * 
 	 * @param glView
-	 * @param registerAtTopLevelViewForDestruction
-	 *            Specifies whether the view (if remote rendered) shall be
-	 *            destroyed in the next display cycle of its top level remote
-	 *            rendering view.
+	 * @param registerAtTopLevelViewForDestruction Specifies whether the view
+	 *            (if remote rendered) shall be destroyed in the next display
+	 *            cycle of its top level remote rendering view.
 	 */
 	private void unregisterGLView(final AGLView glView,
 			boolean registerAtTopLevelViewForDestruction) {
@@ -356,8 +336,8 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 			if (registerAtTopLevelViewForDestruction) {
 				if (viewsToBeDestroyed == null) {
 					viewsToBeDestroyed = new HashSet<AGLView>();
-					hashTopLevelView2ViewsToBeDestroyed.put(topLevelGLView,
-							viewsToBeDestroyed);
+					hashTopLevelView2ViewsToBeDestroyed
+							.put(topLevelGLView, viewsToBeDestroyed);
 				}
 				viewsToBeDestroyed.add(glView);
 			}
@@ -369,8 +349,7 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 						remoteRenderedViews);
 				for (AGLView remoteRenderedView : tempRemoteRenderedViews) {
 					// Unregister remote rendered views of glView
-					unregisterGLView(remoteRenderedView,
-							registerAtTopLevelViewForDestruction);
+					unregisterGLView(remoteRenderedView, registerAtTopLevelViewForDestruction);
 					// Register them to be destroyed in the next display cycle
 					// of the top level remote rendering view
 					if (registerAtTopLevelViewForDestruction)
@@ -378,7 +357,8 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 				}
 				remoteRenderedViews.clear();
 			}
-		} else {
+		}
+		else {
 			hashTopLevelView2ViewsToBeDestroyed.remove(glView);
 			unregisterGLCanvas(glView.getParentGLCanvas());
 		}
@@ -436,8 +416,8 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 
 		fpsAnimator.add(glCanvas);
 
-		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
-				"Add canvas to animator" + glCanvas.getName()));
+		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Add canvas to animator"
+				+ glCanvas.getName()));
 	}
 
 	public void unregisterGLCanvasFromAnimator(final GLCanvas glCanvas) {
@@ -451,8 +431,7 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 	 * Usually this should result disabling user events and showing a loading
 	 * screen animation.
 	 * 
-	 * @param requestInstance
-	 *            object that wants to request busy mode
+	 * @param requestInstance object that wants to request busy mode
 	 */
 	public void requestBusyMode(Object requestInstance) {
 		if (requestInstance == null) {
@@ -476,8 +455,7 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 	 * Releases a previously requested busy mode. Releases are only performed by
 	 * passing the originally requesting object to this method.
 	 * 
-	 * @param requestInstance
-	 *            the object that requested the busy mode
+	 * @param requestInstance the object that requested the busy mode
 	 */
 	public void releaseBusyMode(Object requestInstance) {
 		if (requestInstance == null) {
@@ -502,15 +480,16 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 			@Override
 			public void run() {
 				try {
-					IWorkbenchPage page = PlatformUI.getWorkbench()
-							.getActiveWorkbenchWindow().getActivePage();
-					ARcpGLViewPart viewPart = (ARcpGLViewPart) page
-							.showView(serializedView.getViewType());
+					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+							.getActivePage();
+					ARcpGLViewPart viewPart = (ARcpGLViewPart) page.showView(serializedView
+							.getViewType());
 					AGLView view = viewPart.getGLView();
 					view.initFromSerializableRepresentation(serializedView);
 					// TODO re-init view with its serializedView
 
-				} catch (PartInitException ex) {
+				}
+				catch (PartInitException ex) {
 					throw new RuntimeException("could not create view with gui-id="
 							+ serializedView.getViewType(), ex);
 				}
@@ -526,46 +505,14 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 		try {
 			Class[] argTypes = { GLCanvas.class, Composite.class, ViewFrustum.class };
 			Constructor aConstructor = viewClass.getConstructor(argTypes);
-			view = (AGLView) aConstructor.newInstance(glCanvas, parentComposite,
-					viewFrustum);
-		} catch (Exception e) {
+			view = (AGLView) aConstructor.newInstance(glCanvas, parentComposite, viewFrustum);
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			throw new IllegalStateException("Cannot create GL view " + viewClass);
 		}
 
 		return view;
-	}
-
-	@Override
-	public synchronized void queueEvent(
-			final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
-		// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getDisplay().asyncExec(new
-		// Runnable() {
-		// public void run() {
-		listener.handleEvent(event);
-		// }
-		// });
-	}
-
-	@Override
-	public void registerEventListeners() {
-		GeneralManager generalManager = GeneralManager.get();
-		EventPublisher eventPublisher = generalManager.getEventPublisher();
-
-		createGUIViewListener = new CreateGUIViewListener();
-		createGUIViewListener.setHandler(this);
-		eventPublisher.addListener(CreateGUIViewEvent.class, createGUIViewListener);
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-		GeneralManager generalManager = GeneralManager.get();
-		EventPublisher eventPublisher = generalManager.getEventPublisher();
-
-		if (createGUIViewListener != null) {
-			eventPublisher.removeListener(createGUIViewListener);
-			createGUIViewListener = null;
-		}
 	}
 
 	/**

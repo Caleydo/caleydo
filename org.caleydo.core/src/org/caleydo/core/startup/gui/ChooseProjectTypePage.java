@@ -56,7 +56,8 @@ import org.eclipse.swt.widgets.Text;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class ChooseProjectTypePage extends WizardPage {
+public class ChooseProjectTypePage
+	extends WizardPage {
 
 	public static final String PAGE_NAME = "Project Wizard";
 
@@ -76,7 +77,8 @@ public class ChooseProjectTypePage extends WizardPage {
 	 * this enum specifies the options we have.
 	 */
 	public enum EProjectLoadType {
-		RECENT, SPECIFIED
+		RECENT,
+		SPECIFIED
 	}
 
 	private ProjectMode projectMode = ProjectMode.SAMPLE_PROJECT;
@@ -113,8 +115,8 @@ public class ChooseProjectTypePage extends WizardPage {
 	public ChooseProjectTypePage() {
 		super(PAGE_NAME, PAGE_NAME, null);
 
-		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
-				.getClassLoader().getResource("resources/wizard/wizard.png")));
+		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
+				.getResource("resources/wizard/wizard.png")));
 
 		this.setDescription("What data do you want to load?");
 
@@ -125,7 +127,6 @@ public class ChooseProjectTypePage extends WizardPage {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets
 	 * .Composite)
@@ -153,22 +154,18 @@ public class ChooseProjectTypePage extends WizardPage {
 		// restore the previously selected tab
 		if (projectMode == null || projectMode.equals(ProjectMode.SAMPLE_PROJECT)) {
 			tabFolder.setSelection(0);
-		} else if (projectMode.equals(ProjectMode.GENE_EXPRESSION_SAMPLE_DATA)) {
+		}
+		else if (projectMode.equals(ProjectMode.GENE_EXPRESSION_SAMPLE_DATA)) {
 			tabFolder.setSelection(0);
-		} else if (projectMode.equals(ProjectMode.GENE_EXPRESSION_NEW_DATA)) {
+		}
+		else if (projectMode.equals(ProjectMode.GENE_EXPRESSION_NEW_DATA)) {
 			tabFolder.setSelection(1);
-		} else if (projectMode.equals(ProjectMode.UNSPECIFIED_NEW_DATA)) {
+		}
+		else if (projectMode.equals(ProjectMode.UNSPECIFIED_NEW_DATA)) {
 			tabFolder.setSelection(2);
-		} else if (projectMode.equals(ProjectMode.LOAD_PROJECT)) {
+		}
+		else if (projectMode.equals(ProjectMode.LOAD_PROJECT)) {
 			tabFolder.setSelection(3);
-		} else if (projectMode.equals(ProjectMode.COLLABORATION_CLIENT)) {
-			// if we are in release mode we don't have the collab client
-			if (GeneralManager.RELEASE_MODE) {
-				tabFolder.setSelection(0);
-				projectMode = ProjectMode.SAMPLE_PROJECT;
-			} else {
-				tabFolder.setSelection(4);
-			}
 		}
 		// set the default project mode for each specified tab
 		tabFolder.addSelectionListener(new SelectionAdapter() {
@@ -177,19 +174,20 @@ public class ChooseProjectTypePage extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				if (((TabItem) e.item) == generalDataUseCaseTab) {
 					projectMode = ProjectMode.UNSPECIFIED_NEW_DATA;
-				} else if (((TabItem) e.item) == sampleTab) {
+				}
+				else if (((TabItem) e.item) == sampleTab) {
 					if (btnSampleProject.getSelection())
 						projectMode = ProjectMode.SAMPLE_PROJECT;
 					else
 						projectMode = ProjectMode.GENE_EXPRESSION_SAMPLE_DATA;
-				} else if (((TabItem) e.item) == geneticDataUseCaseTab) {
+				}
+				else if (((TabItem) e.item) == geneticDataUseCaseTab) {
 					projectMode = ProjectMode.GENE_EXPRESSION_NEW_DATA;
-				} else if (((TabItem) e.item) == loadProjectTab) {
+				}
+				else if (((TabItem) e.item) == loadProjectTab) {
 					projectMode = ProjectMode.LOAD_PROJECT;
-
-				} else if (((TabItem) e.item) == collaborationClientTab) {
-					projectMode = ProjectMode.COLLABORATION_CLIENT;
-				} else
+				}
+				else
 					throw new IllegalStateException("Not implemented!");
 			}
 		});
@@ -369,13 +367,13 @@ public class ChooseProjectTypePage extends WizardPage {
 		});
 
 		// Set organism which was used in last session
-		Organism lastChosenOrganism = Organism
-				.valueOf(GeneralManager.get().getPreferenceStore()
-						.getString(PreferenceConstants.LAST_CHOSEN_ORGANISM));
+		Organism lastChosenOrganism = Organism.valueOf(GeneralManager.get()
+				.getPreferenceStore().getString(PreferenceConstants.LAST_CHOSEN_ORGANISM));
 		if (lastChosenOrganism == Organism.HOMO_SAPIENS) {
 			btnOrganismHuman.setSelection(true);
 			organism = Organism.HOMO_SAPIENS;
-		} else {
+		}
+		else {
 			btnOrganismMouse.setSelection(true);
 			organism = Organism.MUS_MUSCULUS;
 		}
@@ -487,13 +485,14 @@ public class ChooseProjectTypePage extends WizardPage {
 			projectLoadType = EProjectLoadType.valueOf(GeneralManager.get()
 					.getPreferenceStore()
 					.getString(PreferenceConstants.LAST_CHOSEN_PROJECT_LOAD_TYPE));
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			// this happens when no preference value exists jet (legal
 			// situation) or when the value could not
 			// be matched to the enum
 		}
-		if ((projectLoadType != null && projectLoadType
-				.equals(EProjectLoadType.SPECIFIED)) || !recentProjectFile.exists()) {
+		if ((projectLoadType != null && projectLoadType.equals(EProjectLoadType.SPECIFIED))
+				|| !recentProjectFile.exists()) {
 
 			if (!recentProjectFile.exists())
 				recentProject.setEnabled(false);
@@ -502,7 +501,8 @@ public class ChooseProjectTypePage extends WizardPage {
 			projectLoadType = EProjectLoadType.SPECIFIED;
 			projectFileName.setEnabled(true);
 			chooseProjectFile.setEnabled(true);
-		} else // if (recentProjectFile.exists())
+		}
+		else // if (recentProjectFile.exists())
 		{
 			recentProject.setEnabled(true);
 			recentProject.setSelection(true);
@@ -534,10 +534,10 @@ public class ChooseProjectTypePage extends WizardPage {
 				projectLoadType = EProjectLoadType.SPECIFIED;
 				projectFileName.setEnabled(true);
 				chooseProjectFile.setEnabled(true);
-				if (projectFileName.getText() != null
-						&& !projectFileName.getText().isEmpty()) {
+				if (projectFileName.getText() != null && !projectFileName.getText().isEmpty()) {
 					setPageComplete(true);
-				} else {
+				}
+				else {
 					setPageComplete(false);
 				}
 			}
@@ -564,8 +564,7 @@ public class ChooseProjectTypePage extends WizardPage {
 	 * Creates the tab for connecting a client to a already running
 	 * caleydo-server-application to get the use case and basic data from.
 	 * 
-	 * @param tabFolder
-	 *            tab-widget to create the new tab-item in
+	 * @param tabFolder tab-widget to create the new tab-item in
 	 */
 	private void createCollaborationClientTab(TabFolder tabFolder) {
 		collaborationClientTab = new TabItem(tabFolder, SWT.NONE);

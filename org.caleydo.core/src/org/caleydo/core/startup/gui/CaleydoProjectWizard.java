@@ -22,7 +22,6 @@ package org.caleydo.core.startup.gui;
 import java.io.IOException;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.net.StandardGroupwareManager;
 import org.caleydo.core.startup.ApplicationMode;
 import org.caleydo.core.startup.GeneticGUIStartupProcedure;
 import org.caleydo.core.startup.SerializationStartupProcedure;
@@ -122,15 +121,6 @@ public class CaleydoProjectWizard
 			else if (projectMode == ProjectMode.UNSPECIFIED_NEW_DATA) {
 				StartupProcessor.get().createStartupProcedure(ApplicationMode.GENERIC);
 
-			}
-			else if (projectMode == ProjectMode.COLLABORATION_CLIENT) {
-				StandardGroupwareManager groupwareManager = new StandardGroupwareManager();
-				groupwareManager.setNetworkName(page.getNetworkName());
-				groupwareManager.setServerAddress(page.getNetworkAddress());
-				groupwareManager.startClient();
-
-				// TODO create groupwarestartupprocedure
-				// groupwareManager.getInitData();
 			}
 			else {
 				throw new IllegalStateException("Not implemented!");

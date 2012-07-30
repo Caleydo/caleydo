@@ -19,14 +19,11 @@
  *******************************************************************************/
 package org.caleydo.core.startup;
 
-import java.awt.Color;
-
 import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;

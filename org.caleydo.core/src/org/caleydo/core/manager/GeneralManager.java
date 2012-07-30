@@ -25,7 +25,6 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.id.object.IDCreator;
 import org.caleydo.core.io.parser.xml.XmlParserManager;
-import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.core.view.ViewManager;
@@ -67,7 +66,7 @@ public class GeneralManager {
 	 */
 	public static final String USER_HOME = "user.home";
 	public static final String CALEYDO_FOLDER_TEMPLATE = "caleydo.folder";
-	
+
 	/** The major version number determines the name of the Caleydo folder **/
 	public static final String CALEYDO_FOLDER = ".caleydo_" + VERSION.substring(0, 3);
 
@@ -90,7 +89,6 @@ public class GeneralManager {
 	private XmlParserManager xmlParserManager;
 	private IDCreator idCreator;
 	private ResourceLoader resourceLoader;
-	private IGroupwareManager groupwareManager;
 	private SerializationManager serializationManager;
 	private IStatisticsPerformer rStatisticsPerformer;
 
@@ -107,10 +105,7 @@ public class GeneralManager {
 		xmlParserManager = new XmlParserManager();
 		idCreator = new IDCreator();
 		xmlParserManager.initHandlers();
-
-		groupwareManager = null;
 		serializationManager = SerializationManager.get();
-
 		resourceLoader = new ResourceLoader();
 	}
 
@@ -199,27 +194,6 @@ public class GeneralManager {
 		}
 
 		return rStatisticsPerformer;
-	}
-
-	/**
-	 * Obtains the {@link IGroupwareManager} responsible for communication
-	 * purposes with other calyedo application
-	 * 
-	 * @return the {@link IGroupwareManager} of this caleydo application
-	 */
-	public IGroupwareManager getGroupwareManager() {
-		return groupwareManager;
-	}
-
-	/**
-	 * Sets the {@link IGroupwareManager} responsible for communication purposes
-	 * with other calyedo application
-	 * 
-	 * @param groupwareManager the environment specific
-	 *            {@link IGroupwareManager} to use
-	 */
-	public void setGroupwareManager(IGroupwareManager groupwareManager) {
-		this.groupwareManager = groupwareManager;
 	}
 
 	/**
