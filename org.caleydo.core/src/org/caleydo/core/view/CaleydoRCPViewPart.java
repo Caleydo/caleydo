@@ -166,22 +166,36 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 			DataContainer container = tDataDomain
 					.getDataContainer(serializedSingleDataContainerBasedView
 							.getDataContainerKey());
-
-			singleDataContainerBasedView.setDataContainer(container);
+			// In case the stored datacontainer is not available in this run
+			if (container == null) {
+				createDefaultSerializedView();
+				serializedSingleDataContainerBasedView = (ASerializedSingleDataContainerBasedView) serializedView;
+			} else {
+				singleDataContainerBasedView.setDataContainer(container);
+			}
 
 		} else if (view instanceof IMultiDataContainerBasedView) {
 			IMultiDataContainerBasedView multiDataContainerBasedView = (IMultiDataContainerBasedView) view;
 			ASerializedMultiDataContainerBasedView serializedMultiDataContainerBasedView = (ASerializedMultiDataContainerBasedView) serializedView;
 
 			if (serializedMultiDataContainerBasedView.getDataDomainAndDataContainerKeys() != null) {
-
+				boolean inconsistentSerializedView = false;
 				for (Pair<String, String> data : serializedMultiDataContainerBasedView
 						.getDataDomainAndDataContainerKeys()) {
+
 					ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
 							.get().getDataDomainByID(data.getFirst());
 					DataContainer dataContainer = ((ATableBasedDataDomain) dataDomain)
 							.getDataContainer(data.getSecond());
+					if (dataContainer == null) {
+						inconsistentSerializedView = true;
+						break;
+					}
 					multiDataContainerBasedView.addDataContainer(dataContainer);
+				}
+				if (inconsistentSerializedView) {
+					createDefaultSerializedView();
+					serializedMultiDataContainerBasedView = (ASerializedMultiDataContainerBasedView) serializedView;
 				}
 			}
 		}
