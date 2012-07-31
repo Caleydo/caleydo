@@ -41,9 +41,11 @@ import org.caleydo.core.manager.BasicInformation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 
@@ -292,8 +294,10 @@ public class ProjectLoader {
 	public void loadWorkbenchData(String dirName) {
 		try {
 			// clear old workbench file
-			FileOperations.deleteDirectory(ProjectSaver.WORKBENCH_MEMENTO_FOLDER
-					+ ProjectSaver.WORKBENCH_MEMENTO_FILE);
+
+			IPath path = WorkbenchPlugin.getDefault().getDataLocation();
+			path = path.append(ProjectSaver.WORKBENCH_MEMENTO_FILE);
+			FileOperations.deleteDirectory(path.toOSString());
 
 			File workbenchFile = new File(dirName + ProjectSaver.WORKBENCH_MEMENTO_FILE);
 
@@ -311,9 +315,7 @@ public class ProjectLoader {
 			}
 
 			FileOperations.copyFolder(new File(dirName
-					+ ProjectSaver.WORKBENCH_MEMENTO_FILE), new File(
-					ProjectSaver.WORKBENCH_MEMENTO_FOLDER
-							+ ProjectSaver.WORKBENCH_MEMENTO_FILE));
+					+ ProjectSaver.WORKBENCH_MEMENTO_FILE), new File(path.toOSString()));
 		} catch (IOException e) {
 			// throw new
 			// IllegalStateException("Could not load workbench data from " +

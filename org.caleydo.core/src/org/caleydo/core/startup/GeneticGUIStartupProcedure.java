@@ -20,18 +20,22 @@
 package org.caleydo.core.startup;
 
 import java.io.File;
+
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.gui.util.HelpButtonWizardDialog;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.system.FileOperations;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 
@@ -88,9 +92,15 @@ public class GeneticGUIStartupProcedure extends AStartupProcedure {
 		} else {
 			dataImportWizard = new DataImportWizard();
 		}
+		// clear old workbench file
+		IPath path = WorkbenchPlugin.getDefault().getDataLocation();
+		path = path.append(ProjectSaver.WORKBENCH_MEMENTO_FILE);
+		FileOperations.deleteDirectory(path.toOSString());
+//		FileOperations.deleteDirectory(ProjectSaver.WORKBENCH_MEMENTO_FOLDER
+//				+ ProjectSaver.WORKBENCH_MEMENTO_FILE);
 
-		HelpButtonWizardDialog dialog = new HelpButtonWizardDialog(StartupProcessor.get().getDisplay()
-				.getActiveShell(), dataImportWizard);
+		HelpButtonWizardDialog dialog = new HelpButtonWizardDialog(StartupProcessor.get()
+				.getDisplay().getActiveShell(), dataImportWizard);
 
 		if (Window.CANCEL == dialog.open())
 			StartupProcessor.get().shutdown();
