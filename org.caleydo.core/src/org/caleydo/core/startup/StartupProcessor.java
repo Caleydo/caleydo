@@ -39,6 +39,7 @@ import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
+import com.martiansoftware.jsap.UnflaggedOption;
 
 /**
  * Startup processor handles the creation of the startup procedure and its
@@ -96,11 +97,16 @@ public class StartupProcessor {
 
 		JSAP jsap = new JSAP();
 		try {
-			FlaggedOption project = new FlaggedOption("project")
+			UnflaggedOption project = new UnflaggedOption("project")
+					.setStringParser(JSAP.STRING_PARSER).setDefault("").setRequired(false)
+					.setGreedy(false);
+			jsap.registerParameter(project);
+
+			FlaggedOption projectFlagged = new FlaggedOption("projectFlagged")
 					.setStringParser(JSAP.STRING_PARSER).setDefault(JSAP.NO_DEFAULT)
 					.setRequired(false).setShortFlag('p').setLongFlag(JSAP.NO_LONGFLAG);
-			project.setHelp("Load a caleydo project file [project_filename.cal]");
-			jsap.registerParameter(project);
+			projectFlagged.setHelp("Load a caleydo project file [project_filename.cal]");
+			jsap.registerParameter(projectFlagged);
 
 			JSAPResult config = jsap.parse(runConfigParameters);
 
@@ -111,6 +117,10 @@ public class StartupProcessor {
 			}
 
 			String projectFileName = config.getString("project");
+			
+			if (projectFileName.isEmpty())
+				projectFileName = config.getString("projectFlagged");
+			
 			boolean isProjectFile = false;
 			if (projectFileName != null) {
 				isProjectFile = checkFileName(projectFileName);
