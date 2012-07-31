@@ -4,6 +4,8 @@
 package org.caleydo.core.io.gui.dataimport.wizard;
 
 import org.caleydo.core.io.DataSetDescription;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -42,7 +44,7 @@ public class TransformDataPage extends AImportDataPage {
 	/**
 	 * Button to determine whether the dataset should be transposed.
 	 */
-	protected Button buttonSwapRowsWithColumns;
+	protected Button swapRowsWithColumnsButton;
 
 	/**
 	 * Button to enable the {@link #maxTextField};
@@ -58,6 +60,16 @@ public class TransformDataPage extends AImportDataPage {
 	 * Combo to define the scaling method that should be applied to the data.
 	 */
 	protected Combo scalingCombo;
+
+	/**
+	 * Label with a warning icon.
+	 */
+	protected Label warningIconLabel;
+
+	/**
+	 * Label with a warning description.
+	 */
+	protected Label warningDescriptionLabel;
 
 	/**
 	 * Mediator of this class.
@@ -109,8 +121,24 @@ public class TransformDataPage extends AImportDataPage {
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gridData.widthHint = 200;
 		transpositionExplanationLabel.setLayoutData(gridData);
-		buttonSwapRowsWithColumns = new Button(dataTranspositionGroup, SWT.CHECK);
-		buttonSwapRowsWithColumns.setText("Swap Rows and Columns");
+		swapRowsWithColumnsButton = new Button(dataTranspositionGroup, SWT.CHECK);
+		swapRowsWithColumnsButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				true, 2, 1));
+		swapRowsWithColumnsButton.setText("Swap Rows and Columns");
+		swapRowsWithColumnsButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				mediator.swapRowsWithColumnsButtonSelected();
+			}
+		});
+
+		warningIconLabel = new Label(dataTranspositionGroup, SWT.NONE);
+		warningIconLabel
+				.setImage(JFaceResources.getImage(Dialog.DLG_IMG_MESSAGE_WARNING));
+		warningDescriptionLabel = new Label(dataTranspositionGroup, SWT.NONE);
+		warningDescriptionLabel
+				.setText("The number of columns is so high that it might leads to a loss in visualization quality");
 	}
 
 	private void createClippingGroup(Composite parent) {

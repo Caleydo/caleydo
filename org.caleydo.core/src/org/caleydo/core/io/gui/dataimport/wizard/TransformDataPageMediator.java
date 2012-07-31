@@ -3,6 +3,7 @@
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
+import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
 
 /**
@@ -29,9 +30,9 @@ public class TransformDataPageMediator {
 	private TransformDataPage page;
 
 	/**
-	 * Determines whether the page has been activated the first time.
+	 * File name of the current dataset.
 	 */
-	private boolean firstTimeActivation = true;
+	private String dataSourcePath = "";
 
 	public TransformDataPageMediator(TransformDataPage page,
 			DataSetDescription dataSetDescription) {
@@ -75,10 +76,9 @@ public class TransformDataPageMediator {
 		if (minDefined)
 			page.minTextField.setText(dataSetDescription.getMin().toString());
 
-		page.buttonSwapRowsWithColumns.setEnabled(true);
-		page.buttonSwapRowsWithColumns.setSelection(dataSetDescription
+		page.swapRowsWithColumnsButton.setEnabled(true);
+		page.swapRowsWithColumnsButton.setSelection(dataSetDescription
 				.isTransposeMatrix());
-
 	}
 
 	/**
@@ -108,22 +108,53 @@ public class TransformDataPageMediator {
 	}
 
 	/**
+	 * Sets the column count warning visible or not, depending on the current
+	 * count of columns.
+	 */
+	public void swapRowsWithColumnsButtonSelected() {
+		updateColumnCountWarning();
+	}
+
+	/**
 	 * Reinitializes all widgets according to the {@link #dataSetDescription}.
 	 */
 	public void pageActivated() {
-		if (firstTimeActivation) {
+		if (!dataSourcePath.equals(dataSetDescription.getDataSourcePath())) {
 			guiCreated();
 			// Guess transposal
 			DataImportWizard wizard = (DataImportWizard) page.getWizard();
 			int totalNumberOfColumns = wizard.getTotalNumberOfColumns();
 			int totalNumberOfRows = wizard.getTotalNumberOfRows();
-			if (totalNumberOfColumns > 100 && totalNumberOfColumns > totalNumberOfRows)
-				page.buttonSwapRowsWithColumns.setSelection(true);
-			else
-				page.buttonSwapRowsWithColumns.setSelection(false);
-		}
-		firstTimeActivation = false;
+			IDCategory tcgaSampleCategory = IDCategory.getIDCategory("TCGA_SAMPLE");
+			if (totalNumberOfColumns > 100
+					&& totalNumberOfColumns > totalNumberOfRows
+					|| (dataSetDescription.getColumnIDSpecification().getIdCategory()
+							.equals(tcgaSampleCategory.getCategoryName()))) {
+				page.swapRowsWithColumnsButton.setSelection(true);
 
+			} else {
+				page.swapRowsWithColumnsButton.setSelection(false);
+			}
+
+			updateColumnCountWarning();
+
+		}
+		dataSourcePath = dataSetDescription.getDataSourcePath();
+	}
+
+	private void updateColumnCountWarning() {
+		DataImportWizard wizard = (DataImportWizard) page.getWizard();
+		int totalNumberOfRows = wizard.getTotalNumberOfRows();
+
+		int numColumns = page.swapRowsWithColumnsButton.getSelection() ? totalNumberOfRows
+				: dataSetDescription.getParsingPattern().size();
+		if (numColumns > 50) {
+			page.warningIconLabel.setVisible(true);
+			page.warningDescriptionLabel.setVisible(true);
+		} else {
+			page.warningIconLabel.setVisible(false);
+			page.warningDescriptionLabel.setVisible(false);
+		}
 	}
 
 	/**
@@ -144,7 +175,7 @@ public class TransformDataPageMediator {
 		}
 
 		dataSetDescription.setMathFilterMode(scalingMode);
-		dataSetDescription.setTransposeMatrix(page.buttonSwapRowsWithColumns
+		dataSetDescription.setTransposeMatrix(page.swapRowsWithColumnsButton
 				.getSelection());
 	}
 
