@@ -78,7 +78,7 @@ public class TCGADataXMLGenerator
 		super(arguments);
 
 		// this.tumorName = "Glioblastoma Multiforme";
-		this.tumorAbbreviation = "OV";
+		this.tumorAbbreviation = "STAD";
 		this.analysisRunIdentifier = "2012_05_25";
 		this.dataRunIdentifier = "2012_07_07";
 		this.tmpOutputDirectoryPath = GeneralManager.CALEYDO_HOME_PATH + "TCGA/tmp";
@@ -229,15 +229,24 @@ public class TCGADataXMLGenerator
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
 		try {
 			dataSetDescriptionCollection.add(setUpClusteredMatrixData("mRNA_Clustering_CNMF",
-					"mRNA_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA", true));
+					"mRNA_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA", "mRNA", true));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
 
 		try {
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData("mRNAseq_Clustering_CNMF",
+					"mRNAseq_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA-seq", "mRNA", true));
+		}
+		catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+
+
+		try {
 			dataSetDescriptionCollection.add(setUpClusteredMatrixData("miR_Clustering_CNMF",
-					"miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA", false));
+					"miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA", "microRNA", false));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -246,7 +255,7 @@ public class TCGADataXMLGenerator
 		try {
 			dataSetDescriptionCollection.add(setUpClusteredMatrixData(
 					"miRseq_Clustering_CNMF", "miRseq_Clustering_Consensus",
-					"cnmf.normalized.gct", "microRNA-seq", false));
+					"cnmf.normalized.gct", "microRNA-seq", "microRNA", false));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -255,7 +264,7 @@ public class TCGADataXMLGenerator
 		try {
 			dataSetDescriptionCollection.add(setUpClusteredMatrixData(
 					"Methylation_Clustering_CNMF", "Methylation_Clustering_Consensus",
-					"cnmf.normalized.gct", "methylation", true));
+					"cnmf.normalized.gct", "methylation", "methylation", true));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -263,7 +272,7 @@ public class TCGADataXMLGenerator
 
 		try {
 			dataSetDescriptionCollection.add(setUpClusteredMatrixData("RPPA_Clustering_CNMF",
-					"RPPA_Clustering_Consensus", "cnmf.normalized.gct", "RPPA", false));
+					"RPPA_Clustering_Consensus", "cnmf.normalized.gct", "RPPA", "RPPA", false));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -282,15 +291,15 @@ public class TCGADataXMLGenerator
 	}
 
 	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName,
-			String hierarchicalArchiveName, String matrixFileName, String dataType,
+			String hierarchicalArchiveName, String matrixFileName, String dataSetName, String dataType,
 			boolean isGeneIdType) {
-		String mRNAFile = this.extractFile(matrixFileName, cnmfArchiveName);
-		String mRNACnmfGroupingFile = this.extractFile("cnmf.membership.txt", cnmfArchiveName);
+		String matrixFile = this.extractFile(matrixFileName, cnmfArchiveName);
+		String cnmfGroupingFile = this.extractFile("cnmf.membership.txt", cnmfArchiveName);
 
 		DataSetDescription matrixData = new DataSetDescription();
 		matrixData.setDataSetName(dataType);
 
-		matrixData.setDataSourcePath(mRNAFile);
+		matrixData.setDataSourcePath(matrixFile);
 		matrixData.setNumberOfHeaderLines(3);
 
 		ParsingRule parsingRule = new ParsingRule();
@@ -311,20 +320,22 @@ public class TCGADataXMLGenerator
 		matrixData.setColumnIDSpecification(sampleIDSpecification);
 
 		GroupingParseSpecification firehoseCnmfClustering = new GroupingParseSpecification(
-				mRNACnmfGroupingFile);
+				cnmfGroupingFile);
 		firehoseCnmfClustering.setContainsColumnIDs(false);
 		firehoseCnmfClustering.setRowIDSpecification(sampleIDSpecification);
+		firehoseCnmfClustering.setGroupingName( "NMF Cluster" );
 		matrixData.addColumnGroupingSpecification(firehoseCnmfClustering);
 
 		try {
-			String mRNAHierarchicalGroupingFile = this.extractFile(this.tumorAbbreviation
+			String hierarchicalGroupingFile = this.extractFile(this.tumorAbbreviation
 					+ ".allclusters.txt", hierarchicalArchiveName); // e.g.
 																	// GBM.allclusters.txt
 
 			GroupingParseSpecification firehoseHierarchicalClustering = new GroupingParseSpecification(
-					mRNAHierarchicalGroupingFile);
+					hierarchicalGroupingFile);
 			firehoseHierarchicalClustering.setContainsColumnIDs(false);
 			firehoseHierarchicalClustering.setRowIDSpecification(sampleIDSpecification);
+			firehoseHierarchicalClustering.setGroupingName( "Hier. Cluster" );
 			matrixData.addColumnGroupingSpecification(firehoseHierarchicalClustering);
 		}
 		catch (RuntimeException e) {
@@ -341,84 +352,7 @@ public class TCGADataXMLGenerator
 		return matrixData;
 	}
 
-	private DataSetDescription setUpMiRNAData(String archiveName, String dataType) {
-		String miRNAFile = this.extractFile("cnmf.normalized.gct", archiveName);
-		String miRNAGroupingFile = this.extractFile("cnmf.membership.txt", archiveName);
-
-		DataSetDescription mirnaData = new DataSetDescription();
-		mirnaData.setDataSetName(dataType);
-
-		mirnaData.setDataSourcePath(miRNAFile);
-		mirnaData.setNumberOfHeaderLines(3);
-
-		ParsingRule parsingRule = new ParsingRule();
-		parsingRule.setFromColumn(2);
-		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
-				ColumnDescription.CONTINUOUS));
-		mirnaData.addParsingRule(parsingRule);
-
-		IDSpecification mirnaIDSpecification = new IDSpecification();
-		mirnaIDSpecification.setIdType(dataType);
-		mirnaData.setRowIDSpecification(mirnaIDSpecification);
-		mirnaData.setTransposeMatrix(true);
-		mirnaData.setColumnIDSpecification(sampleIDSpecification);
-
-		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(
-				miRNAGroupingFile);
-		firehoseClustering.setContainsColumnIDs(false);
-		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
-		mirnaData.addColumnGroupingSpecification(firehoseClustering);
-
-		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
-		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
-		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		clusterConfiguration.setNumberOfClusters(5);
-		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
-		mirnaData.setDataProcessingDescription(dataProcessingDescription);
-
-		return mirnaData;
-	}
-
-	private DataSetDescription setUpMethylationData(String archiveName, String dataType) {
-		String methylationFile = this.extractFile("cnmf.normalized.gct", archiveName);
-		String methylationGroupingFile = this.extractFile("cnmf.membership.txt", archiveName);
-
-		DataSetDescription methylationData = new DataSetDescription();
-		methylationData.setDataSetName(dataType);
-
-		methylationData.setDataSourcePath(methylationFile);
-		methylationData.setNumberOfHeaderLines(3);
-
-		ParsingRule parsingRule = new ParsingRule();
-		parsingRule.setFromColumn(2);
-		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
-				ColumnDescription.CONTINUOUS));
-		methylationData.addParsingRule(parsingRule);
-		methylationData.setTransposeMatrix(true);
-
-		IDSpecification methylationIDSpecification = new IDSpecification();
-		methylationIDSpecification.setIdType(dataType);
-		methylationData.setRowIDSpecification(methylationIDSpecification);
-		methylationData.setColumnIDSpecification(sampleIDSpecification);
-
-		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(
-				methylationGroupingFile);
-		firehoseClustering.setContainsColumnIDs(false);
-		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
-		methylationData.addColumnGroupingSpecification(firehoseClustering);
-
-		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
-		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
-		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		clusterConfiguration.setNumberOfClusters(5);
-		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
-		methylationData.setDataProcessingDescription(dataProcessingDescription);
-
-		return methylationData;
-	}
-
+	
 	private DataSetDescription setUpCopyNumberData(String archiveName, String dataType) {
 		String copyNumberFile = this.extractFile("all_thresholded.by_genes.txt", archiveName);
 
