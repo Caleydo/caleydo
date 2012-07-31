@@ -187,12 +187,14 @@ do_deb()
   rm -rf `find $linux_folder -type d -name .svn`
   
   cp $linux_source_folder"/"$product $linux_folder"/opt/" -R
-  #cp eclipse/ $linux_folder"/opt/caleydo" -R
   sed -i 's/ARCH_STRING/'$arch'/g' $linux_folder"/DEBIAN/control"
   sed -i 's/VERSION_NUMBER/'$version_number'/g' $linux_folder"/DEBIAN/control"
+  sed -i 's/VERSION_NUMBER/'$version_number'/g' $linux_folder"/usr/share/applications/caleydo.desktop"
+  sudo chgrp root $linux_folder -R
+  sudo chown root $linux_folder -R
   dpkg-deb --build $linux_folder  > /dev/null
-  sudo alien -r $linux_folder".deb" > /dev/null
-  rm $linux_folder -R
+  sudo alien -r --scripts $linux_folder".deb" > /dev/null
+  sudo rm $linux_folder -Rf
   mv *.deb *.rpm $export_path
   echo ".... [x] done"
 }

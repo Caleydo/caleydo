@@ -1,0 +1,9 @@
+#!/bin/sh
+
+xdg-icon-resource uninstall --context mimemtypes --size 16 application-x-cal
+xdg-icon-resource uninstall --context mimemtypes --size 32 application-x-cal
+xdg-icon-resource uninstall --context mimemtypes --size 48 application-x-cal
+xdg-icon-resource uninstall --context mimemtypes --size 64 application-x-cal
+xdg-icon-resource uninstall --context mimemtypes --size 128 application-x-cal
+xdg-icon-resource uninstall --context mimemtypes --size 256 application-x-cal
+xdg-mime uninstall --mode system /opt/caleydo/mime/x-cal.xml

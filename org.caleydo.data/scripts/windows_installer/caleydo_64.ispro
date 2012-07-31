@@ -663,8 +663,19 @@ SetupPath=caleydo
 
 [Shortcuts]
 ProgramGroup=
+Caleydo.exe=dmq
 
 [Registry]
+[HKEY_CLASSES_ROOT\.cal]
+@="caleydo.cal"
+[HKEY_CLASSES_ROOT\.cal]
+".cal"="caleydo.cal"
+[HKEY_CLASSES_ROOT\caleydo.cal\shell\open\command]
+@="<SetupPath>\\CALEYDO.EXE %1"
+[HKEY_CLASSES_ROOT\caleydo.cal]
+@="Caleydo Project"
+[HKEY_CLASSES_ROOT\caleydo.cal\DefaultIcon]
+@="<SetupPath>\\gfx\\file\\file.ico"
 
 [Requirements]
 OperatingSystem=Win2000/XP/2003/Vista/2008/7
@@ -673,4 +684,4 @@ NetFrameworkLink=http://www.microsoft.com/download/en/details.aspx?id=17113260
 AdminRights=1
 
 [AfterInstalling]
-Reboot=0
+Reboot=1
