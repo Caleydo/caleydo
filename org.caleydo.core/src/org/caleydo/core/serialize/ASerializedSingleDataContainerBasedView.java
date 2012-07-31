@@ -39,19 +39,6 @@ public abstract class ASerializedSingleDataContainerBasedView extends ASerialize
 	/** The ID string of the data domain */
 	protected String dataDomainID;
 
-	// /**
-	// * Specifies which {@link DimensionPerspective} is used to view the data
-	// in
-	// * the {@link DataTable}
-	// */
-	// protected String dimensionPerspectiveID;
-	//
-	// /**
-	// * Specifies which {@link recordData} is used to view the data in the
-	// * {@link DataTable}
-	// */
-	// protected String recordPerspectiveID;
-
 	/** The key of the dataContainer */
 	protected String dataContainerKey;
 
@@ -115,25 +102,4 @@ public abstract class ASerializedSingleDataContainerBasedView extends ASerialize
 	public void setDataContainerKey(String dataContainerKey) {
 		this.dataContainerKey = dataContainerKey;
 	}
-	
-//	/** Set the {@link #recordPerspectiveID} */
-//	public void setRecordPerspectiveID(String recordPerspectiveID) {
-//		this.recordPerspectiveID = recordPerspectiveID;
-//	}
-//
-//	/** Get the {@link #recordPerspectiveID} */
-//	public String getRecordPerspectiveID() {
-//		return recordPerspectiveID;
-//	}
-//
-//	/** Set the {@link #dimensionPerspectiveID} */
-//	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
-//		this.dimensionPerspectiveID = dimensionPerspectiveID;
-//	}
-//
-//	/** Set the {@link #dimensionPerspectiveID} */
-//	public String getDimensionPerspectiveID() {
-//		return dimensionPerspectiveID;
-//	}
-
 }
