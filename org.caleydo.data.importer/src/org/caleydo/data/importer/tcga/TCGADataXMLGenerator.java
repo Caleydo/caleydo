@@ -227,9 +227,15 @@ public class TCGADataXMLGenerator
 		idTypeParsingRules.setReplacementExpression("\\.", "-");
 		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
+		IDSpecification rowIDSpecification;
+		
+		
+		// ====== mRNA ============================================================================
+				
+		rowIDSpecification = null; // uses genes
 		try {
 			dataSetDescriptionCollection.add(setUpClusteredMatrixData("mRNA_Clustering_CNMF",
-					"mRNA_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA", "mRNA", true));
+					"mRNA_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA", rowIDSpecification, true));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -237,16 +243,22 @@ public class TCGADataXMLGenerator
 
 		try {
 			dataSetDescriptionCollection.add(setUpClusteredMatrixData("mRNAseq_Clustering_CNMF",
-					"mRNAseq_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA-seq", "mRNA", true));
+					"mRNAseq_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA-seq", rowIDSpecification, true));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
 
 
+		// ====== microRNA ========================================================================
+
+		rowIDSpecification = new IDSpecification();
+		rowIDSpecification.setIdType("microRNA");
+		rowIDSpecification.setIdCategory("microRNA");
+
 		try {
 			dataSetDescriptionCollection.add(setUpClusteredMatrixData("miR_Clustering_CNMF",
-					"miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA", "microRNA", false));
+					"miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA", rowIDSpecification, false));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -255,28 +267,44 @@ public class TCGADataXMLGenerator
 		try {
 			dataSetDescriptionCollection.add(setUpClusteredMatrixData(
 					"miRseq_Clustering_CNMF", "miRseq_Clustering_Consensus",
-					"cnmf.normalized.gct", "microRNA-seq", "microRNA", false));
+					"cnmf.normalized.gct", "microRNA-seq", rowIDSpecification, false));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
+
+		
+		// ====== methylation =====================================================================
+		
+		rowIDSpecification = null; // uses genes
 
 		try {
 			dataSetDescriptionCollection.add(setUpClusteredMatrixData(
 					"Methylation_Clustering_CNMF", "Methylation_Clustering_Consensus",
-					"cnmf.normalized.gct", "methylation", "methylation", true));
+					"cnmf.normalized.gct", "methylation", rowIDSpecification, true));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
-		}
+		}		
+		
+		
+		// ====== reverse-phase protein arrays ====================================================
 
+		rowIDSpecification = new IDSpecification();
+		rowIDSpecification.setIdType("protein");
+		rowIDSpecification.setIdCategory("protein");
+
+		
 		try {
 			dataSetDescriptionCollection.add(setUpClusteredMatrixData("RPPA_Clustering_CNMF",
-					"RPPA_Clustering_Consensus", "cnmf.normalized.gct", "RPPA", "RPPA", false));
+					"RPPA_Clustering_Consensus", "cnmf.normalized.gct", "RPPA", rowIDSpecification, false));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
+		
+		
+		// ====== copy number =====================================================================
 
 		try {
 			dataSetDescriptionCollection.add(setUpCopyNumberData("CopyNumber_Gistic2",
@@ -291,13 +319,13 @@ public class TCGADataXMLGenerator
 	}
 
 	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName,
-			String hierarchicalArchiveName, String matrixFileName, String dataSetName, String dataType,
+			String hierarchicalArchiveName, String matrixFileName, String dataSetName, IDSpecification rowIDSpecification,
 			boolean isGeneIdType) {
 		String matrixFile = this.extractFile(matrixFileName, cnmfArchiveName);
 		String cnmfGroupingFile = this.extractFile("cnmf.membership.txt", cnmfArchiveName);
 
 		DataSetDescription matrixData = new DataSetDescription();
-		matrixData.setDataSetName(dataType);
+		matrixData.setDataSetName(dataSetName);
 
 		matrixData.setDataSourcePath(matrixFile);
 		matrixData.setNumberOfHeaderLines(3);
@@ -315,6 +343,14 @@ public class TCGADataXMLGenerator
 			geneIDSpecification.setIDTypeGene(true);
 			geneIDSpecification.setIdType("GENE_SYMBOL");
 			matrixData.setRowIDSpecification(geneIDSpecification);
+		}
+		else {
+			if ( rowIDSpecification == null ) {
+				rowIDSpecification = new IDSpecification();
+				rowIDSpecification.setIdType("unknown");				
+				rowIDSpecification.setIdCategory("unknown");				
+			}				
+			matrixData.setRowIDSpecification(rowIDSpecification);				
 		}
 
 		matrixData.setColumnIDSpecification(sampleIDSpecification);
