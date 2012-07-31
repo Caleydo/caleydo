@@ -313,9 +313,19 @@ public class TCGADataXMLGenerator
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
+		
 
-		// dataSetDescriptionCollection.add(setUpClinicalData());
-		// dataSetDescriptionCollection.add(setUpMutationData());
+		// ====== mutation ========================================================================
+
+		try {
+			dataSetDescriptionCollection.add(setUpMutationData("Mutation_Significance",
+					"Mutations"));
+		}
+		catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		
+		
 	}
 
 	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName,
@@ -389,8 +399,42 @@ public class TCGADataXMLGenerator
 	}
 
 	
+	private DataSetDescription setUpMutationData(String archiveName, String dataSetName) {
+		IDSpecification mutationSampleIDSpecification = new IDSpecification();
+		mutationSampleIDSpecification.setIdCategory("TCGA_SAMPLE");
+		mutationSampleIDSpecification.setIdType("TCGA_SAMPLE");
+		IDTypeParsingRules mutationIDTypeParsingRules = new IDTypeParsingRules();
+		mutationIDTypeParsingRules.setSubStringExpression(this.tumorAbbreviation + "\\_|\\_...");
+		mutationSampleIDSpecification.setIdTypeParsingRules(mutationIDTypeParsingRules);
+				
+		String mutationFile = this.extractFile( this.tumorAbbreviation + ".per_gene.mutation_counts.txt", archiveName);
+
+		DataSetDescription mutationData = new DataSetDescription();
+		mutationData.setDataSetName(dataSetName);
+
+		mutationData.setDataSourcePath(mutationFile);
+		mutationData.setNumberOfHeaderLines(1);
+
+		ParsingRule parsingRule = new ParsingRule();
+		parsingRule.setFromColumn(8);
+		parsingRule.setParseUntilEnd(true);
+		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
+				ColumnDescription.NOMINAL));
+		mutationData.addParsingRule(parsingRule);
+		mutationData.setTransposeMatrix(true);
+
+		IDSpecification geneIDSpecification = new IDSpecification();
+		geneIDSpecification.setIDTypeGene(true);
+		geneIDSpecification.setIdType("GENE_SYMBOL");
+		mutationData.setRowIDSpecification(geneIDSpecification);
+		mutationData.setColumnIDSpecification(mutationSampleIDSpecification);
+
+		return mutationData;
+	}
+
+	
 	private DataSetDescription setUpCopyNumberData(String archiveName, String dataType) {
-		String copyNumberFile = this.extractFile("all_thresholded.by_genes.txt", archiveName);
+		String copyNumberFile = this.extractFile(  "all_thresholded.by_genes.txt", archiveName);
 
 		DataSetDescription copyNumberData = new DataSetDescription();
 		copyNumberData.setDataSetName(dataType);
@@ -413,69 +457,7 @@ public class TCGADataXMLGenerator
 
 		return copyNumberData;
 	}
-
-	//
-	private DataSetDescription setUpClinicalData() {
-		String CLINICAL = "";
-		DataSetDescription clinicalData = new DataSetDescription();
-		clinicalData.setDataSetName("Clinical");
-		clinicalData.setDataHomogeneous(false);
-
-		clinicalData.setDataSourcePath(CLINICAL);
-		clinicalData.setNumberOfHeaderLines(1);
-
-		ParsingRule parsingRule = new ParsingRule();
-		parsingRule.setFromColumn(10);
-		parsingRule.setToColumn(11);
-		parsingRule.setColumnDescripton(new ColumnDescription());
-		clinicalData.addParsingRule(parsingRule);
-		parsingRule = new ParsingRule();
-		parsingRule.setFromColumn(13);
-		parsingRule.setToColumn(15);
-		parsingRule.setColumnDescripton(new ColumnDescription());
-		clinicalData.addParsingRule(parsingRule);
-
-		IDSpecification clinicalIdSpecification = new IDSpecification();
-		clinicalIdSpecification.setIdCategory("CLINICAL");
-		clinicalIdSpecification.setIdType("clinical");
-
-		clinicalData.setColumnIDSpecification(clinicalIdSpecification);
-		clinicalData.setRowIDSpecification(sampleIDSpecification);
-
-		// columnLabels.add("Days to birth");
-		// columnLabels.add("Days to death");
-		// columnLabels.add("Days to last followup");
-		// columnLabels.add("Days to tumor progression");
-		// columnLabels.add("Days to tumor recurrence");
-
-		return clinicalData;
-	}
-
-	private DataSetDescription setUpMutationData() {
-		String MUTATION = "";
-
-		DataSetDescription mutationDataMetaInfo = new DataSetDescription();
-		mutationDataMetaInfo.setDataSetName("Mutation Status");
-		mutationDataMetaInfo.setDataSourcePath(MUTATION);
-
-		mutationDataMetaInfo.setNumberOfHeaderLines(1);
-
-		ParsingRule parsingRule = new ParsingRule();
-		parsingRule.setFromColumn(1);
-		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
-				ColumnDescription.NOMINAL));
-		mutationDataMetaInfo.addParsingRule(parsingRule);
-		mutationDataMetaInfo.setTransposeMatrix(true);
-
-		IDSpecification geneIDSpecification = new IDSpecification();
-		geneIDSpecification.setIDTypeGene(true);
-		geneIDSpecification.setIdType("GENE_SYMBOL");
-		mutationDataMetaInfo.setRowIDSpecification(geneIDSpecification);
-		mutationDataMetaInfo.setColumnIDSpecification(sampleIDSpecification);
-
-		return mutationDataMetaInfo;
-	}
+	
 
 	// find pipeline archive name filter (filename pattern matcher)
 	// TODO: replace with PathMatcher in Java 7
