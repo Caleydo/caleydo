@@ -34,6 +34,11 @@ public class TransformDataPage extends AImportDataPage {
 	public static final String PAGE_DESCRIPTION = "Specify the data transformations to be performed.";
 
 	/**
+	 * Parent composite of all widgets in this page.
+	 */
+	protected Composite parentComposite;
+
+	/**
 	 * Text field that specifies the minimum data clipping value.
 	 */
 	protected Text minTextField;
@@ -64,12 +69,27 @@ public class TransformDataPage extends AImportDataPage {
 	/**
 	 * Label with a warning icon.
 	 */
-	protected Label warningIconLabel;
+	protected Label warningIconLabel1;
 
 	/**
 	 * Label with a warning description.
 	 */
-	protected Label warningDescriptionLabel;
+	protected Label warningDescriptionLabel1;
+
+	/**
+	 * Label with a warning icon.
+	 */
+	protected Label warningIconLabel2;
+
+	/**
+	 * Label with a warning description.
+	 */
+	protected Label warningDescriptionLabel2;
+
+	/**
+	 * Group that contains widgets associated with data transposition.
+	 */
+	protected Group dataTranspositionGroup;
 
 	/**
 	 * Mediator of this class.
@@ -94,7 +114,8 @@ public class TransformDataPage extends AImportDataPage {
 	@Override
 	public void createControl(Composite parent) {
 
-		Composite parentComposite = new Composite(parent, SWT.NONE);
+		parentComposite = new Composite(parent, SWT.NONE);
+		parentComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		parentComposite.setLayout(new GridLayout(1, true));
 
 		createScalingGroup(parentComposite);
@@ -109,7 +130,7 @@ public class TransformDataPage extends AImportDataPage {
 	}
 
 	private void createTranspositionGroup(Composite parent) {
-		Group dataTranspositionGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		dataTranspositionGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		dataTranspositionGroup.setText("Data Transposition");
 		dataTranspositionGroup.setLayout(new GridLayout(2, false));
 		dataTranspositionGroup
@@ -117,7 +138,7 @@ public class TransformDataPage extends AImportDataPage {
 
 		Label transpositionExplanationLabel = new Label(dataTranspositionGroup, SWT.WRAP);
 		transpositionExplanationLabel
-				.setText("Specify whether the table should be transposed, i.e., whether the rows should become columns and vice versa.");
+				.setText("Caleydo assumes a limited number of dimensions and a lot of records.  You typically want to observe a variation in records over dimensions, where dimensions would be, for example points in time, and records expression values of genes. Dimensions do not necessarely map to columns in a source file and equally  records must not be the rows in your file. If you select this option you choose to show the rows in the file as dimensions and the columns in the file as records.");
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gridData.widthHint = 200;
 		transpositionExplanationLabel.setLayoutData(gridData);
@@ -133,12 +154,21 @@ public class TransformDataPage extends AImportDataPage {
 			}
 		});
 
-		warningIconLabel = new Label(dataTranspositionGroup, SWT.NONE);
-		warningIconLabel
-				.setImage(JFaceResources.getImage(Dialog.DLG_IMG_MESSAGE_WARNING));
-		warningDescriptionLabel = new Label(dataTranspositionGroup, SWT.NONE);
-		warningDescriptionLabel
-				.setText("The number of columns is so high that it might leads to a loss in visualization quality");
+	}
+
+	protected Label createWarningIconLabel(Composite parent) {
+		Label warningLabel = new Label(parent, SWT.NONE);
+		warningLabel.setImage(JFaceResources.getImage(Dialog.DLG_IMG_MESSAGE_WARNING));
+		return warningLabel;
+	}
+
+	protected Label createWarningDescriptionLabel(Composite parent, String text) {
+		Label warningLabel = new Label(parent, SWT.WRAP);
+		warningLabel.setText(text);
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gridData.widthHint = 200;
+		warningLabel.setLayoutData(gridData);
+		return warningLabel;
 	}
 
 	private void createClippingGroup(Composite parent) {

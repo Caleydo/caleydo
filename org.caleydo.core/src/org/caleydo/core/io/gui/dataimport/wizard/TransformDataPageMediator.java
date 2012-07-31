@@ -147,14 +147,45 @@ public class TransformDataPageMediator {
 		int totalNumberOfRows = wizard.getTotalNumberOfRows();
 
 		int numColumns = page.swapRowsWithColumnsButton.getSelection() ? totalNumberOfRows
-				: dataSetDescription.getParsingPattern().size();
-		if (numColumns > 50) {
-			page.warningIconLabel.setVisible(true);
-			page.warningDescriptionLabel.setVisible(true);
-		} else {
-			page.warningIconLabel.setVisible(false);
-			page.warningDescriptionLabel.setVisible(false);
+				: (dataSetDescription.getParsingPattern().size() + 1);
+
+		if (page.warningIconLabel1 != null && !page.warningIconLabel1.isDisposed()) {
+			page.warningIconLabel1.dispose();
+			page.warningDescriptionLabel1.dispose();
 		}
+
+		if (page.warningIconLabel2 != null && !page.warningIconLabel2.isDisposed()) {
+			page.warningIconLabel2.dispose();
+			page.warningDescriptionLabel2.dispose();
+		}
+
+		page.parentComposite.layout(true);
+
+		if (numColumns > 50) {
+			String warningText1 = "Attention: the large number of columns (" + numColumns
+					+ ") may lead to an impaired visualization quality in some views";
+
+			if (page.warningIconLabel1 == null || page.warningIconLabel1.isDisposed()) {
+				page.warningIconLabel1 = page
+						.createWarningIconLabel(page.dataTranspositionGroup);
+				page.warningDescriptionLabel1 = page.createWarningDescriptionLabel(
+						page.dataTranspositionGroup, warningText1);
+			}
+		}
+
+		if (totalNumberOfRows > 50 && dataSetDescription.getParsingPattern().size() > 50) {
+			if (page.warningIconLabel2 == null || page.warningIconLabel2.isDisposed()) {
+				page.warningIconLabel2 = page
+						.createWarningIconLabel(page.dataTranspositionGroup);
+				page.warningDescriptionLabel2 = page
+						.createWarningDescriptionLabel(
+								page.dataTranspositionGroup,
+								"Attention: In your dataset the choice of dimensions is not obvious. Please choose whether you want to keep the columns in the file as dimensions (do not check) or whether you want to use the rows as dimensions.");
+			}
+		}
+
+		// page.parentComposite.pack(true);
+		page.parentComposite.layout(true);
 	}
 
 	/**
