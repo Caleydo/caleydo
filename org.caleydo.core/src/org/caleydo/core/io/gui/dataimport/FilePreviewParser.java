@@ -8,7 +8,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Parses the preview of a file and stores it in a data matrix.
@@ -57,10 +61,7 @@ public class FilePreviewParser {
 	public void parse(String fileName, String delimiter, boolean parseAllRows,
 			int maxRowsToParse) {
 
-		for (List<String> row : dataMatrix) {
-			row.clear();
-		}
-		dataMatrix.clear();
+		reset();
 
 		// Read preview
 		try {
@@ -68,8 +69,6 @@ public class FilePreviewParser {
 					.getResource(fileName);
 
 			String line = "";
-			totalNumberOfColumns = 0;
-			totalNumberOfRows = 0;
 
 			while ((line = file.readLine()) != null) {
 
@@ -106,55 +105,28 @@ public class FilePreviewParser {
 
 			}
 
-		} catch (FileNotFoundException e) {
-			throw new IllegalStateException("File not found!");
-		} catch (IOException ioe) {
-			throw new IllegalStateException("Input/output problem!");
-		}
+			Logger.log(new Status(IStatus.INFO, "FilePreviewParser",
+					"Preview data loaded from '" + fileName + "'!"));
 
-		// determineRowIDType();
-		// updateTableColors();
-		// updateTableInfoLabel();
-		//
-		// parentComposite.pack();
-		//
-		// updateWidgetsAccordingToTableChanges();
+		} catch (FileNotFoundException e) {
+			Logger.log(new Status(IStatus.ERROR, "FilePreviewParser", "File '" + fileName
+					+ "' not found!"));
+			reset();
+		} catch (IOException ioe) {
+			Logger.log(new Status(IStatus.ERROR, "FilePreviewParser",
+					"Input/output problem while reading file '" + fileName + "'!"));
+			reset();
+		}
 	}
 
-	// private void readDataRow(String line, String delimiter, int rowIndex) {
-	// // last flag triggers return of delimiter itself
-	// StringTokenizer tokenizer = new StringTokenizer(line, delimiter, true);
-	// TableItem item = new TableItem(previewTable, SWT.NONE);
-	// item.setText("" + (rowIndex + 1)); // +1 to be intuitive for
-	// // a non programmer :)
-	// int colIndex = 0;
-	// boolean isCellFilled = false;
-	//
-	// String[] dataRow = new String[totalNumberOfColumns];
-	// dataMatrix[rowIndex] = dataRow;
-	//
-	// while (tokenizer.hasMoreTokens()) {
-	// String nextToken = tokenizer.nextToken();
-	//
-	// // Check for empty cells
-	// if (nextToken.equals(delimiter) && !isCellFilled) {
-	// dataRow[colIndex] = "";
-	// if (colIndex + 1 < previewTable.getColumnCount()) {
-	// item.setText(colIndex + 1, dataRow[colIndex]);
-	// }
-	// colIndex++;
-	// } else if (nextToken.equals(delimiter) && isCellFilled) {
-	// isCellFilled = false; // reset
-	// } else {
-	// isCellFilled = true;
-	// dataRow[colIndex] = nextToken;
-	// if (colIndex + 1 < previewTable.getColumnCount()) {
-	// item.setText(colIndex + 1, dataRow[colIndex]);
-	// }
-	// colIndex++;
-	// }
-	// }
-	// }
+	private void reset() {
+		totalNumberOfColumns = 0;
+		totalNumberOfRows = 0;
+		for (List<String> row : dataMatrix) {
+			row.clear();
+		}
+		dataMatrix.clear();
+	}
 
 	/**
 	 * @return the dataMatrix, see {@link #dataMatrix}

@@ -136,7 +136,7 @@ public class LoadDataSetPageMediator {
 	public void openFileButtonPressed() {
 		FileDialog fileDialog = new FileDialog(new Shell());
 		fileDialog.setText("Open");
-		String[] filterExt = { "*.csv;*.txt", "*.*" };
+		String[] filterExt = { "*.csv;*.txt;*.gct", "*.*" };
 		fileDialog.setFilterExtensions(filterExt);
 
 		String inputFileName = fileDialog.open();
