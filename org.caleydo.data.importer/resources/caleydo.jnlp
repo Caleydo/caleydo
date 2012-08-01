@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp 
+    spec="1.0+" 
+    codebase="http://data.icg.tugraz.at/caleydo/download/webstart_2.0.2/" 
+    href="JNLP_NAME">
+  <information>
+    <title>Caleydo - visualization for molecular biology</title>  
+    <vendor>www.caleydo.org</vendor>
+    <homepage href="caleydo.org" /> 
+    <description>Caleydo - visualization for molecular biology</description> 
+  </information>
+ 
+  <security>
+    <all-permissions/>
+  </security>
+ 
+  <resources>
+    <jar href="plugins/org.eclipse.equinox.launcher_1.2.0.v20110502.jar"/>
+    <extension name="Caleydo feature" href="features/org.caleydo.rcp.feature_2.0.2.jnlp"/>
+    <property name="osgi.instance.area" value="@user.home/.caleydo_2.0"/>
+    <property name="osgi.configuration.area" value="@user.home/.caleydo_2.0/configuration"/>
+    <property name="eclipse.product" value="org.caleydo.core.product"/> 
+    <property name="osgi.splashPath" value="file:/plugins/org.caleydo.core"/>
+    <j2se version="1.6+" java-vm-args="-Xms512m -Xmx1024m -Xss16384k -XstartOnFirstThread"/>
+    <property name="sun.java2d.opengl" value="false"/>
+    <property name="sun.java2d.opengl.fbobject=false" value="false"/>
+    <property name="caleydo.project.location" value="CALEYDO_PROJECT_URL"/>
+    
+  </resources>
+
+  <application-desc main-class="org.eclipse.equinox.launcher.WebStartMain">
+    <argument>-showsplash</argument>
+  </application-desc>
+</jnlp>

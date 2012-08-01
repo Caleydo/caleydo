@@ -83,10 +83,8 @@ public class DataDomainManager {
 	 * default (true) use {@link #createDataDomain(String)}.
 	 * </p>
 	 * 
-	 * @param dataDomainType
-	 *            the plug-in id of the data domain
-	 * @param isColumnDimension
-	 *            set to false if this dataDomain is of type
+	 * @param dataDomainType the plug-in id of the data domain
+	 * @param isColumnDimension set to false if this dataDomain is of type
 	 *            {@link ATableBasedDataDomain} and you want to access the
 	 *            columns of the loaded files as records
 	 * @return the created {@link IDataDomain}
@@ -101,20 +99,19 @@ public class DataDomainManager {
 		IConfigurationElement[] ce = ext.getConfigurationElements();
 
 		try {
-			ADataDomain dataDomain = (ADataDomain) ce[0]
-					.createExecutableExtension("class");
+			ADataDomain dataDomain = (ADataDomain) ce[0].createExecutableExtension("class");
 			if (dataSetDescription != null && dataDomain instanceof ATableBasedDataDomain)
-				((ATableBasedDataDomain) dataDomain)
-						.setDataSetDescription(dataSetDescription);
+				((ATableBasedDataDomain) dataDomain).setDataSetDescription(dataSetDescription);
 			dataDomain.init();
 			Thread thread = new Thread(dataDomain, dataDomainType);
 			thread.start();
 			register(dataDomain);
 
 			return dataDomain;
-		} catch (Exception ex) {
-			throw new RuntimeException("Could not instantiate data domain "
-					+ dataDomainType, ex);
+		}
+		catch (Exception ex) {
+			throw new RuntimeException("Could not instantiate data domain " + dataDomainType,
+					ex);
 		}
 	}
 
@@ -123,8 +120,7 @@ public class DataDomainManager {
 	 * <code>dataDomainType</code>. The created dataDomain is also registered
 	 * with the manager.
 	 * 
-	 * @param dataDomainType
-	 *            the plug-in id of the data domain
+	 * @param dataDomainType the plug-in id of the data domain
 	 * @return the created {@link IDataDomain}
 	 */
 	public IDataDomain createDataDomain(String dataDomainType) {
@@ -198,11 +194,10 @@ public class DataDomainManager {
 		if (registeredDataDomainsByType.get(dataDomain.getDataDomainType()) == null) {
 			ArrayList<IDataDomain> dataDomainList = new ArrayList<IDataDomain>();
 			dataDomainList.add(dataDomain);
-			registeredDataDomainsByType.put(dataDomain.getDataDomainType(),
-					dataDomainList);
-		} else {
-			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).add(
-					dataDomain);
+			registeredDataDomainsByType.put(dataDomain.getDataDomainType(), dataDomainList);
+		}
+		else {
+			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).add(dataDomain);
 		}
 
 		Color color = ColorManager.get().getFirstMarkedColorOfList(
@@ -228,8 +223,7 @@ public class DataDomainManager {
 			registeredDataDomainsByID.remove(dataDomain.getDataDomainID());
 
 		if (registeredDataDomainsByType.get(dataDomain.getDataDomainType()) != null) {
-			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).remove(
-					dataDomain);
+			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).remove(dataDomain);
 		}
 
 		Color color = dataDomain.getColor();
@@ -280,12 +274,22 @@ public class DataDomainManager {
 				T typedDataDomain = classType.cast(dataDomain);
 				// if we get here cast was successful
 				result.add(typedDataDomain);
-			} catch (ClassCastException e) {
+			}
+			catch (ClassCastException e) {
 				// this is expected for every failed cast, i.e. the checked
 				// dataDomain is not an instance of
 				// the specified class.
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Unregisters all data domains. This is for instance needed when loading a
+	 * new cal file during runtime.
+	 */
+	public void unregisterAllDataDomains() {
+		registeredDataDomainsByID.clear();
+		registeredDataDomainsByType.clear();
 	}
 }

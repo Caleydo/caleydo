@@ -19,7 +19,13 @@
  *******************************************************************************/
 package org.caleydo.data.importer.tcga;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.data.importer.XMLToProjectBuilder;
@@ -40,6 +46,8 @@ import com.martiansoftware.jsap.JSAPResult;
 public class TCGAProjectBuilderApplication
 	implements IApplication {
 
+	public static String DEFAULT_TCGA_SERVER_URL = "http://compbio.med.harvard.edu/tcga/stratomex/data/";
+
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
 
@@ -50,6 +58,7 @@ public class TCGAProjectBuilderApplication
 		String analysisRunIdentifier = "";
 		String dataRunIdentifier = "";
 		String outputFolder = "";
+		String tcgaServerURL = "";
 
 		JSAP jsap = new JSAP();
 		try {
@@ -82,6 +91,12 @@ public class TCGAProjectBuilderApplication
 			outputFolderOpt.setHelp("Output folder (full path)");
 			jsap.registerParameter(outputFolderOpt);
 
+			FlaggedOption tcgaServerURLOpt = new FlaggedOption("server")
+					.setStringParser(JSAP.STRING_PARSER).setDefault(DEFAULT_TCGA_SERVER_URL)
+					.setRequired(false).setShortFlag('s').setLongFlag(JSAP.NO_LONGFLAG);
+			tcgaServerURLOpt.setHelp("TCGA Server URL that hosts TCGA Caleydo project files");
+			jsap.registerParameter(tcgaServerURLOpt);
+
 			JSAPResult config = jsap.parse(runConfigParameters);
 
 			// check whether the command line was valid, and if it wasn't,
@@ -94,11 +109,12 @@ public class TCGAProjectBuilderApplication
 			analysisRunIdentifier = config.getString("analysis_run");
 			dataRunIdentifier = config.getString("data_run");
 			outputFolder = config.getString("output-folder");
+			tcgaServerURL = config.getString("server");
 		}
 		catch (JSAPException e) {
 			handleJSAPError(jsap);
 		}
-		
+
 		String tmpDataOutputPath = outputFolder + "tmp";
 
 		for (int tumorIndex = 0; tumorIndex < tumorTypes.length; tumorIndex++) {
@@ -107,17 +123,22 @@ public class TCGAProjectBuilderApplication
 			String xmlFilePath = outputFolder + analysisRunIdentifier + "_" + tumorType
 					+ ".xml";
 
-			String projectOutputPath = outputFolder + analysisRunIdentifier + "_"
+			String projectOutputPath = outputFolder + analysisRunIdentifier + "_" + tumorType
+					+ ".cal";
+
+			String jnlpFileName = analysisRunIdentifier + "_" + tumorType + ".jnlp";
+			String jnlpOutputPath = outputFolder + jnlpFileName;
+
+			String jnlpRemoteOutputURL = tcgaServerURL + analysisRunIdentifier + "_"
 					+ tumorType + ".cal";
-			
+
 			FileOperations.createDirectory(tmpDataOutputPath);
-			
+
 			System.out.println("Downloading data for tumor type " + tumorType
 					+ " for analysis run " + analysisRunIdentifier);
-			
+
 			TCGADataXMLGenerator generator = new TCGADataXMLGenerator(tumorType,
-					analysisRunIdentifier, dataRunIdentifier, xmlFilePath,
-					tmpDataOutputPath);
+					analysisRunIdentifier, dataRunIdentifier, xmlFilePath, tmpDataOutputPath);
 
 			generator.run();
 
@@ -126,11 +147,25 @@ public class TCGAProjectBuilderApplication
 
 			XMLToProjectBuilder xmlToProjectBuilder = new XMLToProjectBuilder();
 			xmlToProjectBuilder.buildProject(xmlFilePath, projectOutputPath);
-					
+
+			DataDomainManager.get().unregisterAllDataDomains();
+
 			// Clean up
 			new File(xmlFilePath).delete();
+
+			try {
+				// Generate jnlp file from jnlp template
+				replaceStringInFile("CALEYDO_PROJECT_URL", jnlpRemoteOutputURL, new File(
+						"resources/caleydo.jnlp"), new File(jnlpOutputPath));
+
+				replaceStringInFile("JNLP_NAME", jnlpFileName, new File(jnlpOutputPath),
+						new File(jnlpOutputPath));
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		
+
 		FileOperations.deleteDirectory(tmpDataOutputPath);
 
 		return context;
@@ -144,9 +179,23 @@ public class TCGAProjectBuilderApplication
 		System.exit(1);
 	}
 
+	private void replaceStringInFile(String oldstring, String newstring, File in, File out)
+			throws IOException {
+
+		BufferedReader reader = new BufferedReader(new FileReader(in));
+		PrintWriter writer = new PrintWriter(new FileWriter(out));
+		String line = null;
+		while ((line = reader.readLine()) != null)
+			writer.println(line.replaceAll(oldstring, newstring));
+
+		// I'm aware of the potential for resource leaks here. Proper resource
+		// handling has been omitted in the interest of brevity
+		reader.close();
+		writer.close();
+	}
+
 	@Override
 	public void stop() {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 }
