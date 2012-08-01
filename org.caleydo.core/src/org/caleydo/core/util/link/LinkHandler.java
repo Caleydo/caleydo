@@ -19,7 +19,14 @@
  *******************************************************************************/
 package org.caleydo.core.util.link;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
+
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.Status;
 
 /**
  * URL related utilities.
@@ -33,44 +40,94 @@ public class LinkHandler {
 	 * Opens a link in the user's preferred browser in a platform-independent
 	 * way.
 	 * 
-	 * @param link the link to be opened
+	 * @param link
+	 *            the link to be opened
 	 */
-	public static void openLink(String link) {
-		String osName = System.getProperty("os.name");
-		try {
-			if (osName.startsWith("Mac OS")) {
-				Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
-				Method openURL = fileMgr.getDeclaredMethod("openURL",
-						new Class[] { String.class });
-				openURL.invoke(null, new Object[] { link });
-			} else if (osName.startsWith("Windows")) {
-				Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + link);
-			} else {
-				// Assume Unix or Linux
-				// we first try xdg-open
-				Process process = Runtime.getRuntime().exec(
-						new String[] { "xdg-open", link });
-				// if that fails we try using which to find a browser
-				if (process.exitValue() != 0) {
+	public static void openLink(final String link) {
+		Thread execThread = new Thread(new Runnable() {
+			public void run() {
 
-					String[] browsers = { "chrome", "firefox", "opera", "konqueror",
-							"epiphany", "mozilla", "netscape" };
-					String browser = null;
-					for (int count = 0; count < browsers.length && browser == null; count++)
-						if (Runtime.getRuntime()
-								.exec(new String[] { "which", browsers[count] })
-								.waitFor() == 0) {
-							browser = browsers[count];
+				String osName = System.getProperty("os.name");
+				try {
+					if (osName.startsWith("Mac OS")) {
+						Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
+						Method openURL = fileMgr.getDeclaredMethod("openURL",
+								new Class[] { String.class });
+						openURL.invoke(null, new Object[] { link });
+					} else if (osName.startsWith("Windows")) {
+						exec("rundll32 url.dll,FileProtocolHandler " + link);
+					} else {
+						System.out.println("vorher");
+
+						boolean success = exec(new String[] { "xdg-open", link });
+						// Assume Unix or Linux
+						// we first try xdg-open
+
+						System.out.println("nacher");
+						// if that fails we try using which to find a browser
+						if (!success) {
+
+							String[] browsers = { "chrome", "firefox", "opera",
+									"konqueror", "epiphany", "mozilla", "netscape" };
+							String browser = null;
+							for (int count = 0; count < browsers.length
+									&& browser == null; count++) {
+								success = exec("which", browsers[count]);
+
+								if (success) {
+									browser = browsers[count];
+								}
+							}
+							if (browser == null)
+								throw new Exception("Could not find web browser");
+							else {
+								exec(new String[] { browser, link });
+							}
 						}
-					if (browser == null)
-						throw new Exception("Could not find web browser");
-					else {
-						Runtime.getRuntime().exec(new String[] { browser, link });
 					}
+				} catch (Exception exception) {
+					Logger.log(new Status(Status.ERROR, "LinkHandler",
+							"Caught exception while handling a link: \n" + link,
+							exception));
 				}
 			}
-		} catch (Exception exception) {
-		}
+		});
+		execThread.setName("LinkHandlerExec");
+		execThread.start();
 	}
 
+	/**
+	 * Savely executes a process according to {@link Runtime#getRuntime()
+	 * #exec(String[])}
+	 */
+	public static boolean exec(String... args) throws IOException, InterruptedException {
+
+		ProcessBuilder pb = new ProcessBuilder(args);
+		args[args.length - 1] += "<NUL";
+
+		pb.redirectErrorStream(true);
+		Process p = pb.start();
+
+		InputStreamReader isr = new InputStreamReader(p.getInputStream());
+		BufferedReader input = new BufferedReader(isr);
+
+		while (input.readLine() != null) {
+		}
+		input.close();
+		isr.close();
+
+		p.waitFor();
+
+		try {
+
+			if (p.exitValue() == 0)
+				return true;
+			else
+				return false;
+		} catch (IllegalThreadStateException e) {
+			Logger.log(new Status(Status.ERROR, "LinkHandler", "Process didn't complete",
+					e));
+			return false;
+		}
+	}
 }
