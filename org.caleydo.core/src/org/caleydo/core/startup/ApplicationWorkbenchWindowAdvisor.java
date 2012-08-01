@@ -137,5 +137,14 @@ public class ApplicationWorkbenchWindowAdvisor
 		catch (PartInitException e) {
 			throw new IllegalStateException();
 		}
+		
+		// Make DVI visible
+		try {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.showView("org.caleydo.view.dvi");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

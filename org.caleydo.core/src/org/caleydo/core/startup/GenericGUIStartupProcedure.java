@@ -55,20 +55,6 @@ public class GenericGUIStartupProcedure extends AStartupProcedure {
 	}
 	
 	@Override
-	public void addDefaultStartViews(IFolderLayout layout)  {
-	
-		layout.addView("org.caleydo.view.dvi");
-		layout.addView("org.caleydo.view.startomex");
-		
-		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("org.caleydo.view.dvi");
-		}
-		catch (PartInitException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
 	public void postWorkbenchOpen() {
 		
 		// Make DVI visible if available

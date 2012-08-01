@@ -112,13 +112,6 @@ public class GeneticGUIStartupProcedure extends AStartupProcedure {
 	}
 
 	@Override
-	public void addDefaultStartViews(IFolderLayout layout) {
-
-		layout.addView("org.caleydo.view.dvi");
-		layout.addView("org.caleydo.view.stratomex");
-	}
-
-	@Override
 	public void postWorkbenchOpen() {
 
 		// Make DVI visible if available
