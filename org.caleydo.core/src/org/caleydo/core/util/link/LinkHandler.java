@@ -55,7 +55,7 @@ public class LinkHandler {
 								new Class[] { String.class });
 						openURL.invoke(null, new Object[] { link });
 					} else if (osName.startsWith("Windows")) {
-						exec("rundll32 url.dll,FileProtocolHandler " + link);
+						exec("rundll32", "url.dll", "FileProtocolHandler", link);
 					} else {
 						System.out.println("vorher");
 
@@ -103,7 +103,7 @@ public class LinkHandler {
 	public static boolean exec(String... args) throws IOException, InterruptedException {
 
 		ProcessBuilder pb = new ProcessBuilder(args);
-		args[args.length - 1] += "<NUL";
+		 args[args.length - 1] += "<NUL";
 
 		pb.redirectErrorStream(true);
 		Process p = pb.start();
