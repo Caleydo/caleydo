@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;

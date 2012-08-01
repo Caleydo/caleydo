@@ -25,9 +25,12 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
+
 import org.caleydo.core.view.opengl.renderstyle.infoarea.AInfoOverlayRenderStyle;
+
 import com.jogamp.opengl.util.awt.Overlay;
 
 /**

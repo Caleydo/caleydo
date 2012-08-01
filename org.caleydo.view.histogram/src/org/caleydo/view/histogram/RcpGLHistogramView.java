@@ -21,8 +21,10 @@ package org.caleydo.view.histogram;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;

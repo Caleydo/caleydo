@@ -24,9 +24,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.DimensionPerspective;
@@ -42,7 +44,6 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectSaver;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * This class handles the creation of Caleydo project files. The class takes an

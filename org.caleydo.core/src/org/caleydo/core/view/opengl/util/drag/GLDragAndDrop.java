@@ -20,8 +20,10 @@
 package org.caleydo.core.view.opengl.util.drag;
 
 import java.awt.Point;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
 

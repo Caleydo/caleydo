@@ -20,6 +20,7 @@
 package org.caleydo.core.data.selection.delta;
 
 import java.util.Collection;
+
 import org.caleydo.core.id.IDType;
 
 /**

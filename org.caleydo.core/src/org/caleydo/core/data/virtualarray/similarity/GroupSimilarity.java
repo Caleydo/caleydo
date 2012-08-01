@@ -22,6 +22,7 @@ package org.caleydo.core.data.virtualarray.similarity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;

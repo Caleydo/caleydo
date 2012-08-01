@@ -20,6 +20,7 @@
 package org.caleydo.view.stratomex.event;
 
 import java.util.List;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.view.listener.AddDataContainersEvent;
 import org.caleydo.view.stratomex.GLStratomex;

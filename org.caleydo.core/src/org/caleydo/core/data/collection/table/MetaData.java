@@ -20,6 +20,7 @@
 package org.caleydo.core.data.collection.table;
 
 import javax.naming.OperationNotSupportedException;
+
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.collection.dimension.NominalColumn;

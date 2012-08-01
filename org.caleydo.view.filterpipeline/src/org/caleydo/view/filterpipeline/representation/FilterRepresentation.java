@@ -23,8 +23,11 @@
 package org.caleydo.view.filterpipeline.representation;
 
 import gleem.linalg.Vec2f;
+
 import java.util.Set;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.picking.PickingManager;

@@ -20,6 +20,7 @@
 package org.caleydo.core.data.graph.tree;
 
 import java.util.ArrayList;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 

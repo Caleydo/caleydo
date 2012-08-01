@@ -21,7 +21,9 @@ package org.caleydo.view.stratomex.brick.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;

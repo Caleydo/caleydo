@@ -22,7 +22,9 @@ package org.caleydo.view.filterpipeline.representation;
 import java.util.ArrayList;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.data.selection.SelectionType;

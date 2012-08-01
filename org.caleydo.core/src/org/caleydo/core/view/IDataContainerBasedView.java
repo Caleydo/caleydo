@@ -23,6 +23,7 @@
 package org.caleydo.core.view;
 
 import java.util.List;
+
 import org.caleydo.core.data.container.DataContainer;
 
 /**

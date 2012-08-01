@@ -20,6 +20,7 @@
 package org.caleydo.core.view.opengl.renderstyle.border;
 
 import gleem.linalg.Vec4f;
+
 import javax.media.opengl.GL2;
 
 public interface IBorderRenderStyle {

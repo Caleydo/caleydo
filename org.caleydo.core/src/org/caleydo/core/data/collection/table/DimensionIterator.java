@@ -21,6 +21,7 @@ package org.caleydo.core.data.collection.table;
 
 import java.util.HashMap;
 import java.util.ListIterator;
+
 import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VAIterator;

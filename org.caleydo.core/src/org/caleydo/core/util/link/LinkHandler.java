@@ -22,7 +22,6 @@ package org.caleydo.core.util.link;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 
 import org.caleydo.core.util.logging.Logger;

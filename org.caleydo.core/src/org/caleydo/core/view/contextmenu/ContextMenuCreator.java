@@ -21,7 +21,9 @@ package org.caleydo.core.view.contextmenu;
 
 import java.awt.MouseInfo;
 import java.util.ArrayList;
+
 import javax.swing.JPopupMenu;
+
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.swt.widgets.Composite;
 

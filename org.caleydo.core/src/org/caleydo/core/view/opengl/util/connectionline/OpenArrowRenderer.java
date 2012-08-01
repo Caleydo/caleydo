@@ -23,7 +23,9 @@
 package org.caleydo.core.view.opengl.util.connectionline;
 
 import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 
 /**

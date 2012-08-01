@@ -20,7 +20,9 @@
 package org.caleydo.core.view.vislink;
 
 import java.util.HashMap;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.id.IDType;
 

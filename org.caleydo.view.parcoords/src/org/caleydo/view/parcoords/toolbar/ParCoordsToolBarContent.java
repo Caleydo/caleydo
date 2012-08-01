@@ -21,10 +21,10 @@ package org.caleydo.view.parcoords.toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.ActionToolBarContainer;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
-import org.caleydo.core.gui.toolbar.OpenOnlineHelpAction;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
 import org.caleydo.core.gui.toolbar.action.PropagateSelectionsAction;
 import org.caleydo.core.gui.toolbar.action.ResetViewAction;

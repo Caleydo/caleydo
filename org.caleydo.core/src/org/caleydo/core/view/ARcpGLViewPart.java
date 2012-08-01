@@ -22,9 +22,11 @@ package org.caleydo.core.view;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;

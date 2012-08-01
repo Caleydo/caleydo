@@ -25,12 +25,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.data.importer.XMLToProjectBuilder;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;

@@ -2,10 +2,12 @@ package setvis.gui;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import setvis.SetOutline;
 import setvis.bubbleset.BubbleSet;
 import setvis.ch.ConvexHull;

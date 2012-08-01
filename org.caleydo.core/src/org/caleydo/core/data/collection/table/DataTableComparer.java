@@ -20,6 +20,7 @@
 package org.caleydo.core.data.collection.table;
 
 import java.util.HashMap;
+
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 
 public class DataTableComparer {

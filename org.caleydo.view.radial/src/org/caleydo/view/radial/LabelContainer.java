@@ -20,7 +20,9 @@
 package org.caleydo.view.radial;
 
 import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**

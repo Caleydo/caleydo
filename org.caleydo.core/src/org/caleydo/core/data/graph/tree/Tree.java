@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDType;
 import org.jgrapht.DirectedGraph;

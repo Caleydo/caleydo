@@ -21,6 +21,7 @@ package org.caleydo.core.gui.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.accessibility.ACC;

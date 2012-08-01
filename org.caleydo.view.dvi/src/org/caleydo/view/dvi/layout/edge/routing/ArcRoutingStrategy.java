@@ -21,6 +21,7 @@ package org.caleydo.view.dvi.layout.edge.routing;
 
 import java.awt.geom.Point2D;
 import java.util.List;
+
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.view.dvi.layout.TwoLayeredGraphLayout;
 import org.caleydo.view.dvi.node.IDVINode;

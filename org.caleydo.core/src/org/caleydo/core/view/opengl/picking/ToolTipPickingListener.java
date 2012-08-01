@@ -23,11 +23,13 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
+
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 

@@ -20,6 +20,7 @@
 package org.caleydo.view.radial;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.view.radial.UpdateDepthSliderPositionEvent;
 import org.caleydo.core.manager.GeneralManager;

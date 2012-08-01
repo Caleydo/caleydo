@@ -20,8 +20,11 @@
 package org.caleydo.view.radial;
 
 import gleem.linalg.Vec2f;
+
 import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
