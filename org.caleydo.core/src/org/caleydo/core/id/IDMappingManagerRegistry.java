@@ -22,6 +22,7 @@
  */
 package org.caleydo.core.id;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 /**
@@ -89,4 +90,12 @@ public class IDMappingManagerRegistry {
 		return "Registered IDMappingManagers: " + hashIDMappingManagers.keySet();
 	}
 
+	/**
+	 * Returns all mapping managers that are currently registered.
+	 * 
+	 * @return collection of mapping managers
+	 */
+	public Collection<IDMappingManager> getAllIDMappingManager() {
+		return hashIDMappingManagers.values();
+	}
 }

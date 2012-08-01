@@ -126,8 +126,7 @@ public class IDMappingManager {
 		this.idCategory = idCategory;
 		idCategory.initialize();
 		hashMappingType2Map = new HashMap<MappingType, Map<?, ?>>();
-		mappingGraph = new DefaultDirectedWeightedGraph<IDType, MappingType>(
-				MappingType.class);
+		mappingGraph = new DefaultDirectedWeightedGraph<IDType, MappingType>(MappingType.class);
 	}
 
 	/**
@@ -139,21 +138,16 @@ public class IDMappingManager {
 	 * <p>
 	 * </p>
 	 * 
-	 * @param <K>
-	 *            Type of Keys of the map
-	 * @param <V>
-	 *            Type of Values of the map
-	 * @param fromIDType
-	 *            Specifies the source ID type.
-	 * @param toIDType
-	 *            Specifies the target ID type.
-	 * @param isMultiMap
-	 *            If true, a multi-map will be created (i.e,. multiple values of
-	 *            toIDType can map to one key), else only a single key-value
-	 *            relationship is allowed
-	 * @param createReverseMap
-	 *            Flag that determines whether the resolution of fromIDType to
-	 *            toIDType should also be created from toIDType to fromIDType
+	 * @param <K> Type of Keys of the map
+	 * @param <V> Type of Values of the map
+	 * @param fromIDType Specifies the source ID type.
+	 * @param toIDType Specifies the target ID type.
+	 * @param isMultiMap If true, a multi-map will be created (i.e,. multiple
+	 *            values of toIDType can map to one key), else only a single
+	 *            key-value relationship is allowed
+	 * @param createReverseMap Flag that determines whether the resolution of
+	 *            fromIDType to toIDType should also be created from toIDType to
+	 *            fromIDType
 	 */
 	public <K, V> MappingType createMap(IDType fromIDType, IDType toIDType,
 			boolean isMultiMap, boolean createReverseMap) {
@@ -173,7 +167,8 @@ public class IDMappingManager {
 		if (mappingType.isMultiMap()) {
 			hashMappingType2Map.put(mappingType, new MultiHashMap<K, V>());
 			mappingGraph.setEdgeWeight(mappingType, Double.MAX_VALUE);
-		} else {
+		}
+		else {
 			hashMappingType2Map.put(mappingType, new HashMap<K, V>());
 			mappingGraph.setEdgeWeight(mappingType, 1);
 		}
@@ -187,8 +182,7 @@ public class IDMappingManager {
 			// non-internal types
 			if (!fromIDType.isInternalType()
 					&& !fromIDType.equals(idCategory.getPrimaryMappingType())
-					&& MappingType
-							.getType(fromIDType, idCategory.getPrimaryMappingType()) == null) {
+					&& MappingType.getType(fromIDType, idCategory.getPrimaryMappingType()) == null) {
 				createMap(fromIDType, idCategory.getPrimaryMappingType(), false, true);
 			}
 
@@ -209,8 +203,8 @@ public class IDMappingManager {
 	 * 
 	 * @param <SrcType>
 	 * @param <DestType>
-	 * @param sourceMappingType
-	 *            Mapping type the reverse map shall be created for.
+	 * @param sourceMappingType Mapping type the reverse map shall be created
+	 *            for.
 	 */
 	@SuppressWarnings("unchecked")
 	private <SrcType, DestType> void createReverseMap(MappingType srcMappingType) {
@@ -226,16 +220,15 @@ public class IDMappingManager {
 					.get(srcMappingType);
 
 			if (reverseType.isMultiMap()) {
-				hashMappingType2Map.put(reverseType,
-						new MultiHashMap<DestType, SrcType>());
+				hashMappingType2Map.put(reverseType, new MultiHashMap<DestType, SrcType>());
 
 				reverseMap = (MultiHashMap<DestType, SrcType>) hashMappingType2Map
 						.get(reverseType);
-			} else {
+			}
+			else {
 				hashMappingType2Map.put(reverseType, new HashMap<DestType, SrcType>());
 
-				reverseMap = (HashMap<DestType, SrcType>) hashMappingType2Map
-						.get(reverseType);
+				reverseMap = (HashMap<DestType, SrcType>) hashMappingType2Map.get(reverseType);
 			}
 
 			for (SrcType key : sourceMap.keySet()) {
@@ -243,11 +236,11 @@ public class IDMappingManager {
 					reverseMap.put(value, key);
 				}
 			}
-		} else {
+		}
+		else {
 			hashMappingType2Map.put(reverseType, new HashMap<DestType, SrcType>());
 
-			reverseMap = (HashMap<DestType, SrcType>) hashMappingType2Map
-					.get(reverseType);
+			reverseMap = (HashMap<DestType, SrcType>) hashMappingType2Map.get(reverseType);
 			Map<SrcType, DestType> sourceMap = (HashMap<SrcType, DestType>) hashMappingType2Map
 					.get(srcMappingType);
 
@@ -261,7 +254,8 @@ public class IDMappingManager {
 
 		if (reverseType.isMultiMap()) {
 			mappingGraph.setEdgeWeight(reverseType, Double.MAX_VALUE);
-		} else {
+		}
+		else {
 			mappingGraph.setEdgeWeight(reverseType, 1);
 		}
 	}
@@ -274,24 +268,22 @@ public class IDMappingManager {
 	 * 
 	 * @param <KeyType>
 	 * @param <ValueType>
-	 * @param mappingType
-	 *            Mapping type that specifies the already existent map which is
-	 *            used for creating the code resolved map.
+	 * @param mappingType Mapping type that specifies the already existent map
+	 *            which is used for creating the code resolved map.
 	 */
 	@SuppressWarnings("unchecked")
 	public <KeyType, ValueType> void createCodeResolvedMap(MappingType mappingType,
 			IDType codeResolvedFromType, IDType codeResolvedToType) {
 
-		@SuppressWarnings("rawtypes")
-		Map codeResolvedMap = null;
+		@SuppressWarnings("rawtypes") Map codeResolvedMap = null;
 
 		IDType originKeyType = mappingType.getFromIDType();
 		IDType originValueType = mappingType.getToIDType();
 		IDType destKeyType = codeResolvedFromType;
 		IDType destValueType = codeResolvedToType;
 
-		MappingType destMappingType = MappingType.registerMappingType(
-				codeResolvedFromType, codeResolvedToType, false, false); // MULTI??
+		MappingType destMappingType = MappingType.registerMappingType(codeResolvedFromType,
+				codeResolvedToType, false, false); // MULTI??
 
 		Map<KeyType, ValueType> srcMap = (Map<KeyType, ValueType>) hashMappingType2Map
 				.get(mappingType);
@@ -306,12 +298,11 @@ public class IDMappingManager {
 						codeResolvedMap = new HashMap<Integer, Integer>();
 
 						for (KeyType key : srcMap.keySet()) {
-							codeResolvedMap
-									.put(key,
-											getID(originValueType, destValueType,
-													srcMap.get(key)));
+							codeResolvedMap.put(key,
+									getID(originValueType, destValueType, srcMap.get(key)));
 						}
-					} else {
+					}
+					else {
 						codeResolvedMap = new MultiHashMap<Integer, Integer>();
 						MultiHashMap<Integer, String> srcMultiMap = (MultiHashMap<Integer, String>) srcMap;
 						Integer iID = 0;
@@ -328,29 +319,31 @@ public class IDMappingManager {
 							}
 						}
 					}
-				} else if (originKeyType.getColumnType() == EDataType.INT
+				}
+				else if (originKeyType.getColumnType() == EDataType.INT
 						&& destValueType.getColumnType() == EDataType.STRING) {
 					codeResolvedMap = new HashMap<Integer, String>();
 
 					throw new RuntimeException("Not implemented!");
-				} else if (originKeyType.getColumnType() == EDataType.STRING
+				}
+				else if (originKeyType.getColumnType() == EDataType.STRING
 						&& destValueType.getColumnType() == EDataType.STRING) {
 					codeResolvedMap = new HashMap<String, String>();
 
 					throw new RuntimeException("Not implemented!");
-				} else if (originKeyType.getColumnType() == EDataType.STRING
+				}
+				else if (originKeyType.getColumnType() == EDataType.STRING
 						&& destValueType.getColumnType() == EDataType.INT) {
 
 					if (!mappingType.isMultiMap()) {
 						codeResolvedMap = new HashMap<String, Integer>();
 
 						for (KeyType key : srcMap.keySet()) {
-							codeResolvedMap
-									.put(key,
-											getID(originValueType, destValueType,
-													srcMap.get(key)));
+							codeResolvedMap.put(key,
+									getID(originValueType, destValueType, srcMap.get(key)));
 						}
-					} else {
+					}
+					else {
 						codeResolvedMap = new MultiHashMap<String, Integer>();
 						MultiHashMap<String, String> srcMultiMap = (MultiHashMap<String, String>) srcMap;
 						Integer iID = 0;
@@ -372,7 +365,8 @@ public class IDMappingManager {
 					}
 				}
 			}
-		} else {
+		}
+		else {
 			if (originValueType == destValueType) {
 				if (destKeyType.getColumnType() == EDataType.INT
 						&& destValueType.getColumnType() == EDataType.INT) {
@@ -391,7 +385,8 @@ public class IDMappingManager {
 											conversionType.getToIDType(), key),
 									srcMap.get(key));
 						}
-					} else {
+					}
+					else {
 						codeResolvedMap = new MultiHashMap<Integer, Integer>();
 						MultiHashMap<String, Integer> srcMultiMap = (MultiHashMap<String, Integer>) srcMap;
 						Integer iResolvedID = 0;
@@ -418,7 +413,8 @@ public class IDMappingManager {
 							}
 						}
 					}
-				} else if (destKeyType.getColumnType() == EDataType.INT
+				}
+				else if (destKeyType.getColumnType() == EDataType.INT
 						&& destValueType.getColumnType() == EDataType.STRING) {
 					codeResolvedMap = new HashMap<Integer, String>();
 
@@ -427,15 +423,16 @@ public class IDMappingManager {
 					for (KeyType key : srcMap.keySet()) {
 						codeResolvedMap.put(
 								getID(conversionType.getFromIDType(),
-										conversionType.getToIDType(), key),
-								srcMap.get(key));
+										conversionType.getToIDType(), key), srcMap.get(key));
 					}
-				} else if (destKeyType.getColumnType() == EDataType.STRING
+				}
+				else if (destKeyType.getColumnType() == EDataType.STRING
 						&& destValueType.getColumnType() == EDataType.STRING) {
 					codeResolvedMap = new HashMap<String, String>();
 
 					throw new RuntimeException("Not implemented!");
-				} else if (destKeyType.getColumnType() == EDataType.STRING
+				}
+				else if (destKeyType.getColumnType() == EDataType.STRING
 						&& destValueType.getColumnType() == EDataType.INT) {
 					codeResolvedMap = new HashMap<String, Integer>();
 
@@ -446,11 +443,12 @@ public class IDMappingManager {
 
 		// Add new code resolved map
 		hashMappingType2Map.put(destMappingType, codeResolvedMap);
-		mappingGraph.addEdge(destMappingType.getFromIDType(),
-				destMappingType.getToIDType(), mappingType);
+		mappingGraph.addEdge(destMappingType.getFromIDType(), destMappingType.getToIDType(),
+				mappingType);
 		if (destMappingType.isMultiMap()) {
 			mappingGraph.setEdgeWeight(mappingType, Double.MAX_VALUE);
-		} else {
+		}
+		else {
 			mappingGraph.setEdgeWeight(mappingType, 1);
 		}
 	}
@@ -460,8 +458,7 @@ public class IDMappingManager {
 	 * 
 	 * @param <KeyType>
 	 * @param <ValueType>
-	 * @param type
-	 *            Mapping type that identifies the map.
+	 * @param type Mapping type that identifies the map.
 	 * @return Map that corresponds to the specified mapping type. If no such
 	 *         map exists, null is returned.
 	 * @deprecated replace with search feature, maps shouldn't be exposed
@@ -478,25 +475,21 @@ public class IDMappingManager {
 	 * {@link MappingType}. If {@link MappingType#isHasReverseMap()} is true, a
 	 * corresponding entry to the reverse map is automatically added.
 	 * 
-	 * @param mappingType
-	 *            the mapping type identifying the map for the supplied ids
-	 * @param fromID
-	 *            the source ID
-	 * @param toID
-	 *            the target ID
+	 * @param mappingType the mapping type identifying the map for the supplied
+	 *            ids
+	 * @param fromID the source ID
+	 * @param toID the target ID
 	 */
 	public <KeyType, ValueType> void addMapping(MappingType mappingType, KeyType fromID,
 			ValueType toID) {
-		@SuppressWarnings("unchecked")
-		Map<KeyType, ValueType> map = (Map<KeyType, ValueType>) hashMappingType2Map
+		@SuppressWarnings("unchecked") Map<KeyType, ValueType> map = (Map<KeyType, ValueType>) hashMappingType2Map
 				.get(mappingType);
 		map.put(fromID, toID);
 
 		if (mappingType.isHasReverseMap()) {
-			MappingType reverseMappingType = MappingType.getType(
-					mappingType.getToIDType(), mappingType.getFromIDType());
-			@SuppressWarnings("unchecked")
-			Map<ValueType, KeyType> reverseMap = (Map<ValueType, KeyType>) hashMappingType2Map
+			MappingType reverseMappingType = MappingType.getType(mappingType.getToIDType(),
+					mappingType.getFromIDType());
+			@SuppressWarnings("unchecked") Map<ValueType, KeyType> reverseMap = (Map<ValueType, KeyType>) hashMappingType2Map
 					.get(reverseMappingType);
 			reverseMap.put(toID, fromID);
 		}
@@ -550,10 +543,8 @@ public class IDMappingManager {
 	 * Checks whether a mapping is possible from the specified source IDType to
 	 * the destination IDType.
 	 * 
-	 * @param source
-	 *            Source IDType of the mapping.
-	 * @param destination
-	 *            Destination IDType of the mapping.
+	 * @param source Source IDType of the mapping.
+	 * @param destination Destination IDType of the mapping.
 	 * @return true, if a mapping is possible, false otherwise.
 	 */
 	public final boolean hasMapping(IDType source, IDType destination) {
@@ -561,9 +552,9 @@ public class IDMappingManager {
 		if (source.equals(destination))
 			return true;
 		try {
-			return (DijkstraShortestPath.findPathBetween(mappingGraph, source,
-					destination) != null);
-		} catch (IllegalArgumentException e) {
+			return (DijkstraShortestPath.findPathBetween(mappingGraph, source, destination) != null);
+		}
+		catch (IllegalArgumentException e) {
 			return false;
 		}
 	}
@@ -581,16 +572,11 @@ public class IDMappingManager {
 	 * </p>
 	 * 
 	 * 
-	 * @param <K>
-	 *            Type of the sourceID
-	 * @param <V>
-	 *            Type of the expected result of the mapping
-	 * @param source
-	 *            IDType of the source data
-	 * @param destination
-	 *            IDType of the destination data
-	 * @param sourceID
-	 *            ID for which the mapping shall be found
+	 * @param <K> Type of the sourceID
+	 * @param <V> Type of the expected result of the mapping
+	 * @param source IDType of the source data
+	 * @param destination IDType of the destination data
+	 * @param sourceID ID for which the mapping shall be found
 	 * @return If no mapping is found, null, otherwise the corresponding ID, or
 	 *         Set of IDs.
 	 * @deprecated Use {@link #getIDAsSet(IDType, IDType, Object)} instead as it
@@ -606,9 +592,9 @@ public class IDMappingManager {
 		List<MappingType> path;
 
 		try {
-			path = DijkstraShortestPath
-					.findPathBetween(mappingGraph, source, destination);
-		} catch (IllegalArgumentException e) {
+			path = DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
+		}
+		catch (IllegalArgumentException e) {
 			Logger.log(new Status(Status.ERROR, this.toString(), "One of the data types "
 					+ source + " and " + destination
 					+ " is not registered with this IDMappingManager."));
@@ -638,7 +624,8 @@ public class IDMappingManager {
 								.getAll(key);
 						if (temp != null)
 							values.addAll(temp);
-					} else {
+					}
+					else {
 						Object value = currentMap.get(key);
 						if (value != null)
 							values.add(value);
@@ -652,13 +639,14 @@ public class IDMappingManager {
 					keys.add(value);
 				}
 				values.clear();
-			} else {
+			}
+			else {
 				if (edge.isMultiMap()) {
-					keys = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap))
-							.getAll(currentID);
+					keys = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(currentID);
 					if ((keys == null) || (keys.isEmpty()))
 						return null;
-				} else {
+				}
+				else {
 					currentID = currentMap.get(currentID);
 					if (currentID == null)
 						return null;
@@ -677,16 +665,11 @@ public class IDMappingManager {
 	 * exist. If no such path is found, null is returned. The result will always
 	 * be a Set of the found mappings.
 	 * 
-	 * @param <K>
-	 *            Type of the sourceID
-	 * @param <V>
-	 *            Type of the expected result of the mapping
-	 * @param source
-	 *            IDType of the source data
-	 * @param destination
-	 *            IDType of the destination data
-	 * @param sourceID
-	 *            ID for which the mapping shall be found
+	 * @param <K> Type of the sourceID
+	 * @param <V> Type of the expected result of the mapping
+	 * @param source IDType of the source data
+	 * @param destination IDType of the destination data
+	 * @param sourceID ID for which the mapping shall be found
 	 * @return If no mapping is found, null, otherwise the Set containing the
 	 *         corresponding ID(s).
 	 */
@@ -701,9 +684,9 @@ public class IDMappingManager {
 		}
 		List<MappingType> path;
 		try {
-			path = DijkstraShortestPath
-					.findPathBetween(mappingGraph, source, destination);
-		} catch (IllegalArgumentException e) {
+			path = DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
+		}
+		catch (IllegalArgumentException e) {
 			Logger.log(new Status(IStatus.INFO, toString(), "No mapping found between "
 					+ source + " and " + destination + " for: " + sourceID));
 			return null;
@@ -726,7 +709,8 @@ public class IDMappingManager {
 								.getAll(key);
 						if (temp != null)
 							values.addAll(temp);
-					} else {
+					}
+					else {
 						Object value = currentMap.get(key);
 						if (value != null)
 							values.add(value);
@@ -740,13 +724,14 @@ public class IDMappingManager {
 					keys.add(value);
 				}
 				values.clear();
-			} else {
+			}
+			else {
 				if (edge.isMultiMap()) {
-					keys = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap))
-							.getAll(currentID);
+					keys = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(currentID);
 					if ((keys == null) || (keys.isEmpty()))
 						return null;
-				} else {
+				}
+				else {
 					currentID = currentMap.get(currentID);
 					if (currentID == null)
 						return null;
@@ -771,10 +756,8 @@ public class IDMappingManager {
 	 * specified element of the specified type.
 	 * 
 	 * @param <T>
-	 * @param idType
-	 *            IDType of the element.
-	 * @param element
-	 *            Element to be found.
+	 * @param idType IDType of the element.
+	 * @param element Element to be found.
 	 * @return True, if such an element is fund, false otherwise.
 	 */
 	public <T> boolean doesElementExist(IDType idType, T element) {
@@ -812,5 +795,30 @@ public class IDMappingManager {
 	public String toString() {
 		return "IDMappingManager for " + idCategory + " with registered id types: "
 				+ hashMappingType2Map.keySet();
+	}
+
+	/**
+	 * Clear all mapping types that have a from- or to-type that is internal.
+	 */
+	public void clearInternalMappingsAndIDTypes() {
+
+		Object[] mappingTypes = hashMappingType2Map.keySet().toArray();
+		for (int i = 0; i < mappingTypes.length; i++) {
+			MappingType mappingType = (MappingType) mappingTypes[i];
+
+			if (mappingType.getFromIDType().getTypeName().contains("org.caleydo.")
+					|| mappingType.getToIDType().getTypeName().contains("org.caleydo.")) {
+
+				hashMappingType2Map.get(mappingType).clear();
+				hashMappingType2Map.remove(mappingType);
+				mappingGraph.removeEdge(mappingType);
+
+				if (mappingType.getFromIDType().getTypeName().contains("org.caleydo."))
+					mappingGraph.removeVertex(mappingType.getFromIDType());
+
+				if (mappingType.getToIDType().getTypeName().contains("org.caleydo."))
+					mappingGraph.removeVertex(mappingType.getToIDType());
+			}
+		}
 	}
 }

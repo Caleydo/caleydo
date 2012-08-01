@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.data.importer.XMLToProjectBuilder;
@@ -151,20 +153,26 @@ public class TCGAProjectBuilderApplication
 			xmlToProjectBuilder.buildProject(xmlFilePath, projectOutputPath);
 
 			DataDomainManager.get().unregisterAllDataDomains();
-
+			
 			// Clean up
 			new File(xmlFilePath).delete();
-
+			
 			try {
 				// Generate jnlp file from jnlp template
 				replaceStringInFile("CALEYDO_PROJECT_URL", jnlpRemoteOutputURL, new File(
-						"resources/caleydo.jnlp"), new File(jnlpOutputPath));
+						"resources/caleydo.jnlp"), new File(jnlpOutputPath + "_"));
 
-				replaceStringInFile("JNLP_NAME", jnlpFileName, new File(jnlpOutputPath),
+				replaceStringInFile("JNLP_NAME", jnlpFileName, new File(jnlpOutputPath + "_"),
 						new File(jnlpOutputPath));
+				
+				new File(jnlpOutputPath + "_").delete();
 			}
 			catch (IOException e) {
 				e.printStackTrace();
+			}
+			
+			for (IDMappingManager idMappingManager : IDMappingManagerRegistry.get().getAllIDMappingManager()) {
+				idMappingManager.clearInternalMappingsAndIDTypes();
 			}
 		}
 
