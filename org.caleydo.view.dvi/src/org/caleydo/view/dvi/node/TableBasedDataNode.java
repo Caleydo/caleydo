@@ -235,10 +235,13 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 
 		// FIXME: Bad hack
-		if (dataDomain.getLabel().contains("Copy")) {
-			view.addIDPickingListener(
-					new ToolTipPickingListener(view,
-							"To create a copy number categorization for one gene use the Search view."),
+		if (dataDomain.getLabel().toLowerCase().contains("copy")
+				|| dataDomain.getLabel().toLowerCase().contains("mutation")) {
+			final boolean isCopyNumber = dataDomain.getLabel().toLowerCase().contains("copy");
+
+			view.addIDPickingListener(new ToolTipPickingListener(view, "To create a "
+					+ (isCopyNumber ? "copy number" : "mutation status")
+					+ " categorization for one gene use the Search view."),
 					DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 
 			view.addIDPickingListener(new APickingListener() {
@@ -260,11 +263,11 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 					}
 					if (viewExists) {
-						view.getContextMenuCreator()
-								.addContextMenuItem(
-										new ShowViewWithoutDataItem(
-												"org.caleydo.view.search",
-												"Create Categorization of a Gene's Copy-Number Status"));
+						view.getContextMenuCreator().addContextMenuItem(
+								new ShowViewWithoutDataItem("org.caleydo.view.search",
+										"Create Categorization of a Gene's "
+												+ (isCopyNumber ? "Copy Number"
+														: "Mutation") + " Status"));
 
 					}
 
