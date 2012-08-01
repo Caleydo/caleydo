@@ -68,6 +68,7 @@
          point="org.caleydo.view.ViewCategory">
       <ViewCategory
             isDataView="false"
+            isReleaseView="false"
             viewID="org.caleydo.view.enroute">
       </ViewCategory>
    </extension>

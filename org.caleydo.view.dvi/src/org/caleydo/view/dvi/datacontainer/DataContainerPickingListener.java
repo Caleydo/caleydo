@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -124,15 +125,16 @@ public class DataContainerPickingListener extends APickingListener {
 		view.setDisplayListDirty();
 	}
 
-//	@Override
-//	public void dragged(Pick pick) {
-//		String draggingMode = dragAndDropController.getDraggingMode();
-//
-//		if (!dragAndDropController.isDragging() && dragAndDropController.hasDraggables()
-//				&& draggingMode != null && draggingMode.equals("DimensionGroupDrag")) {
-//			dragAndDropController.startDragging();
-//		}
-//	}
+	// @Override
+	// public void dragged(Pick pick) {
+	// String draggingMode = dragAndDropController.getDraggingMode();
+	//
+	// if (!dragAndDropController.isDragging() &&
+	// dragAndDropController.hasDraggables()
+	// && draggingMode != null && draggingMode.equals("DimensionGroupDrag")) {
+	// dragAndDropController.startDragging();
+	// }
+	// }
 
 	@Override
 	public void rightClicked(Pick pick) {
@@ -162,7 +164,10 @@ public class DataContainerPickingListener extends APickingListener {
 
 						if (category.getAttribute("viewID").equals(bundleID)
 								&& new Boolean(category.getAttribute("isDataView"))) {
-
+							boolean isReleaseView = new Boolean(category.getAttribute("isReleaseView"));
+							if (GeneralManager.RELEASE_MODE && !isReleaseView) {
+								continue;
+							}
 							int indexOfLastDot = -1;
 							for (int i = 0; i < 4; i++) {
 								indexOfLastDot = bundleID
@@ -230,5 +235,4 @@ public class DataContainerPickingListener extends APickingListener {
 			}
 		}
 	}
-
 }

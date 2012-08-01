@@ -119,6 +119,7 @@
             point="org.caleydo.view.ViewCategory">
          <ViewCategory
                isDataView="true"
+               isReleaseView="false"
                viewID="org.caleydo.view.heatmap.hierarchical">
          </ViewCategory>
       </extension>

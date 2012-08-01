@@ -52,6 +52,7 @@
          point="org.caleydo.view.ViewCategory">
       <ViewCategory
             isDataView="true"
+            isReleaseView="true"
             viewID="org.caleydo.view.parcoords">
       </ViewCategory>
    </extension>
