@@ -835,21 +835,25 @@ public class LoadDataSetPageMediator {
 	 * @return The ColumnDescription.
 	 */
 	private ColumnDescription createColumnDescription(int columnIndex) {
-		String dataType = "FLOAT";
-		try {
-			int testSize = page.previewTable.getItemCount() - 1;
-			for (int rowIndex = dataSetDescription.getNumberOfHeaderLines(); rowIndex < testSize; rowIndex++) {
-				if (rowIndex != dataSetDescription.getRowOfColumnIDs()) {
-					String testString = dataMatrix.get(rowIndex).get(columnIndex);
-					if (!testString.isEmpty())
+
+		// TODO: This is just a temporary solution to the problem of detecting
+		// NaN values: now we expect the column to be float, if one float is
+		// found, otherwise it is a string.
+		int testSize = page.previewTable.getItemCount() - 1;
+		for (int rowIndex = dataSetDescription.getNumberOfHeaderLines(); rowIndex < testSize; rowIndex++) {
+			if (rowIndex != dataSetDescription.getRowOfColumnIDs()) {
+				String testString = dataMatrix.get(rowIndex).get(columnIndex);
+				try {
+					if (!testString.isEmpty()) {
 						Float.parseFloat(testString);
+						return new ColumnDescription(columnIndex, "FLOAT",
+								ColumnDescription.CONTINUOUS);
+					}
+				} catch (NumberFormatException nfe) {
 				}
 			}
-		} catch (NumberFormatException nfe) {
-			dataType = "STRING";
 		}
-
-		return new ColumnDescription(columnIndex, dataType, ColumnDescription.CONTINUOUS);
+		return new ColumnDescription(columnIndex, "STRING", ColumnDescription.CONTINUOUS);
 	}
 
 	/**
