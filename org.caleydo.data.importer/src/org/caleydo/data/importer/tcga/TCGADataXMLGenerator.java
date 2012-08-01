@@ -24,7 +24,6 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
-
 import org.apache.tools.tar.TarEntry;
 import org.apache.tools.tar.TarInputStream;
 import org.caleydo.core.io.ColumnDescription;
@@ -50,7 +49,7 @@ import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 public class TCGADataXMLGenerator
 	extends DataSetDescriptionSerializer {
 
-	private static String FIREHOSE_URL_PREFIX = "http://gdac.broadinstitute.org/runs/analyses__";
+	private static String FIREHOSE_URL_PREFIX = "http://gdac.broadinstitute.org/runs/";
 	private static String FIREHOSE_TAR_NAME_PREFIX = "gdac.broadinstitute.org_";
 
 	// protected String tumorName;
@@ -58,12 +57,13 @@ public class TCGADataXMLGenerator
 
 	protected String analysisRunIdentifier;
 	protected String analysisRunIdentifierWithoutUnderscore;
-	
+
 	protected String dataRunIdentifier;
 	protected String dataRunIdentifierWithoutUnderscore;
-	
+
 	protected String tmpOutputDirectoryPath;
-	protected String remoteArchiveDirectory;
+	protected String remoteAnalysisRunArchiveDirectory;
+	protected String remoteDataRunArchiveDirectory;
 
 	public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-...\\-";
 
@@ -83,8 +83,9 @@ public class TCGADataXMLGenerator
 		this.analysisRunIdentifier = "2012_05_25";
 		this.dataRunIdentifier = "2012_07_07";
 		this.tmpOutputDirectoryPath = GeneralManager.CALEYDO_HOME_PATH + "TCGA/tmp";
-		this.outputXMLFilePath = this.tmpOutputDirectoryPath + System.getProperty("file.separator")
-				+ tumorAbbreviation + "_" + this.analysisRunIdentifierWithoutUnderscore + "_caleydo.xml";
+		this.outputXMLFilePath = this.tmpOutputDirectoryPath
+				+ System.getProperty("file.separator") + tumorAbbreviation + "_"
+				+ this.analysisRunIdentifierWithoutUnderscore + "_caleydo.xml";
 
 		init();
 	}
@@ -108,12 +109,17 @@ public class TCGADataXMLGenerator
 		this.dataRunIdentifierWithoutUnderscore = dataRunIdentifier.replace("_", "");
 
 		// create path of archive search directory
-		this.remoteArchiveDirectory = FIREHOSE_URL_PREFIX + analysisRunIdentifier
-				+ "/data/" + tumorAbbreviation + "/" + analysisRunIdentifierWithoutUnderscore + "/";
+		this.remoteAnalysisRunArchiveDirectory = FIREHOSE_URL_PREFIX + "analyses__" + analysisRunIdentifier
+				+ "/data/" + tumorAbbreviation + "/" + analysisRunIdentifierWithoutUnderscore
+				+ "/";
+
+		this.remoteDataRunArchiveDirectory = FIREHOSE_URL_PREFIX + "stddata__" + dataRunIdentifier + "/data/"
+				+ tumorAbbreviation + "/" + dataRunIdentifierWithoutUnderscore + "/";
 	}
 
 	protected String extractFileFromTarGzArchive(String archiveName, String fileName,
-			String outputDirectoryName) {
+			String outputDirectoryName, String remoteArchiveDirectory) {
+
 		String outputFileName = null;
 
 		try {
@@ -122,7 +128,7 @@ public class TCGADataXMLGenerator
 			TarEntry tarEntry;
 
 			tarInputStream = new TarInputStream(new GZIPInputStream(new URL(
-					this.remoteArchiveDirectory + System.getProperty("file.separator")
+					remoteArchiveDirectory + System.getProperty("file.separator")
 							+ archiveName).openStream()));
 
 			tarEntry = tarInputStream.getNextEntry();
@@ -148,9 +154,9 @@ public class TCGADataXMLGenerator
 				}
 
 				outputDirectoryName += System.getProperty("file.separator")
-						+ this.analysisRunIdentifierWithoutUnderscore + System.getProperty("file.separator")
-						+ this.tumorAbbreviation + System.getProperty("file.separator")
-						+ archiveName;
+						+ this.analysisRunIdentifierWithoutUnderscore
+						+ System.getProperty("file.separator") + this.tumorAbbreviation
+						+ System.getProperty("file.separator") + archiveName;
 
 				if (!(new File(outputDirectoryName)).exists()) {
 					if (!(new File(outputDirectoryName)).mkdirs()) {
@@ -191,31 +197,16 @@ public class TCGADataXMLGenerator
 	// find Firehose archive in Firehose_get output directory and extract file
 	// from archive to temp directory
 	// return path to file in temp directory
-	protected String extractFile(String fileName, String pipelineName) {
-		// check if exactly one archive exists, if not return null
-		// String[] archiveNames = new java.io.File(this.archiveDirectory)
-		// .list(new PipelineNameFilter(pipelineName));
-
-		// if (archiveNames.length == 0) {
-		// throw new RuntimeException("No archive found for pipeline " +
-		// pipelineName
-		// + " in " + this.archiveDirectory);
-		// }
-		//
-		// if (archiveNames.length > 1) {
-		// throw new RuntimeException("Multiple archives found for pipeline " +
-		// pipelineName
-		// + " in " + this.archiveDirectory);
-		// }
-		//
-		// String archiveName = archiveNames[0];
+	protected String extractFile(String fileName, String pipelineName, String runIdentifier,
+			String remoteArchiveDirectory, int level) {
 
 		// gdac.broadinstitute.org_GBM.Methylation_Clustering_CNMF.Level_4.2012052500.0.0.tar.gz
 		String archiveName = FIREHOSE_TAR_NAME_PREFIX + tumorAbbreviation + "." + pipelineName
-				+ ".Level_4." + analysisRunIdentifierWithoutUnderscore + "00.0.0.tar.gz";
+				+ ".Level_" + level + "." + runIdentifier + "00.0.0.tar.gz";
 
 		// extract file to temp directory and return path to file
-		return extractFileFromTarGzArchive(archiveName, fileName, tmpOutputDirectoryPath);
+		return extractFileFromTarGzArchive(archiveName, fileName, tmpOutputDirectoryPath,
+				remoteArchiveDirectory);
 	}
 
 	@Override
@@ -229,29 +220,31 @@ public class TCGADataXMLGenerator
 		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
 		IDSpecification rowIDSpecification;
-		
-		
-		// ====== mRNA ============================================================================
-				
+
+		// ====== mRNA
+		// ============================================================================
+
 		rowIDSpecification = null; // uses genes
 		try {
 			dataSetDescriptionCollection.add(setUpClusteredMatrixData("mRNA_Clustering_CNMF",
-					"mRNA_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA", rowIDSpecification, true));
+					"mRNA_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA",
+					rowIDSpecification, true));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
 
 		try {
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData("mRNAseq_Clustering_CNMF",
-					"mRNAseq_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA-seq", rowIDSpecification, true));
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData(
+					"mRNAseq_Clustering_CNMF", "mRNAseq_Clustering_Consensus",
+					"outputprefix.expclu.gct", "mRNA-seq", rowIDSpecification, true));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
 
-
-		// ====== microRNA ========================================================================
+		// ====== microRNA
+		// ========================================================================
 
 		rowIDSpecification = new IDSpecification();
 		rowIDSpecification.setIdType("microRNA");
@@ -259,7 +252,8 @@ public class TCGADataXMLGenerator
 
 		try {
 			dataSetDescriptionCollection.add(setUpClusteredMatrixData("miR_Clustering_CNMF",
-					"miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA", rowIDSpecification, false));
+					"miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA",
+					rowIDSpecification, false));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -274,9 +268,9 @@ public class TCGADataXMLGenerator
 			System.err.println(e.getMessage());
 		}
 
-		
-		// ====== methylation =====================================================================
-		
+		// ====== methylation
+		// =====================================================================
+
 		rowIDSpecification = null; // uses genes
 
 		try {
@@ -286,26 +280,26 @@ public class TCGADataXMLGenerator
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
-		}		
-		
-		
-		// ====== reverse-phase protein arrays ====================================================
+		}
+
+		// ====== reverse-phase protein arrays
+		// ====================================================
 
 		rowIDSpecification = new IDSpecification();
 		rowIDSpecification.setIdType("protein");
 		rowIDSpecification.setIdCategory("protein");
 
-		
 		try {
 			dataSetDescriptionCollection.add(setUpClusteredMatrixData("RPPA_Clustering_CNMF",
-					"RPPA_Clustering_Consensus", "cnmf.normalized.gct", "RPPA", rowIDSpecification, false));
+					"RPPA_Clustering_Consensus", "cnmf.normalized.gct", "RPPA",
+					rowIDSpecification, false));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
-		
-		
-		// ====== copy number =====================================================================
+
+		// ====== copy number
+		// =====================================================================
 
 		try {
 			dataSetDescriptionCollection.add(setUpCopyNumberData("CopyNumber_Gistic2",
@@ -314,9 +308,9 @@ public class TCGADataXMLGenerator
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
-		
 
-		// ====== mutation ========================================================================
+		// ====== mutation
+		// ========================================================================
 
 		try {
 			dataSetDescriptionCollection.add(setUpMutationData("Mutation_Significance",
@@ -325,15 +319,26 @@ public class TCGADataXMLGenerator
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
-		
-		
+
+		// ====== clinical
+		// ========================================================================
+
+		try {
+			dataSetDescriptionCollection.add(setUpClinicalData("Merge_Clinical", "Clinical"));
+		}
+		catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+
 	}
 
 	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName,
-			String hierarchicalArchiveName, String matrixFileName, String dataSetName, IDSpecification rowIDSpecification,
-			boolean isGeneIdType) {
-		String matrixFile = this.extractFile(matrixFileName, cnmfArchiveName);
-		String cnmfGroupingFile = this.extractFile("cnmf.membership.txt", cnmfArchiveName);
+			String hierarchicalArchiveName, String matrixFileName, String dataSetName,
+			IDSpecification rowIDSpecification, boolean isGeneIdType) {
+		String matrixFile = this.extractFile(matrixFileName, cnmfArchiveName,
+				analysisRunIdentifierWithoutUnderscore, remoteAnalysisRunArchiveDirectory, 4);
+		String cnmfGroupingFile = this.extractFile("cnmf.membership.txt", cnmfArchiveName,
+				analysisRunIdentifierWithoutUnderscore, remoteAnalysisRunArchiveDirectory, 4);
 
 		DataSetDescription matrixData = new DataSetDescription();
 		matrixData.setDataSetName(dataSetName);
@@ -356,12 +361,12 @@ public class TCGADataXMLGenerator
 			matrixData.setRowIDSpecification(geneIDSpecification);
 		}
 		else {
-			if ( rowIDSpecification == null ) {
+			if (rowIDSpecification == null) {
 				rowIDSpecification = new IDSpecification();
-				rowIDSpecification.setIdType("unknown");				
-				rowIDSpecification.setIdCategory("unknown");				
-			}				
-			matrixData.setRowIDSpecification(rowIDSpecification);				
+				rowIDSpecification.setIdType("unknown");
+				rowIDSpecification.setIdCategory("unknown");
+			}
+			matrixData.setRowIDSpecification(rowIDSpecification);
 		}
 
 		matrixData.setColumnIDSpecification(sampleIDSpecification);
@@ -370,19 +375,19 @@ public class TCGADataXMLGenerator
 				cnmfGroupingFile);
 		firehoseCnmfClustering.setContainsColumnIDs(false);
 		firehoseCnmfClustering.setRowIDSpecification(sampleIDSpecification);
-		firehoseCnmfClustering.setGroupingName( "NMF Cluster" );
+		firehoseCnmfClustering.setGroupingName("NMF Cluster");
 		matrixData.addColumnGroupingSpecification(firehoseCnmfClustering);
 
 		try {
 			String hierarchicalGroupingFile = this.extractFile(this.tumorAbbreviation
-					+ ".allclusters.txt", hierarchicalArchiveName); // e.g.
-																	// GBM.allclusters.txt
+					+ ".allclusters.txt", hierarchicalArchiveName,
+					analysisRunIdentifierWithoutUnderscore, remoteAnalysisRunArchiveDirectory, 4);
 
 			GroupingParseSpecification firehoseHierarchicalClustering = new GroupingParseSpecification(
 					hierarchicalGroupingFile);
 			firehoseHierarchicalClustering.setContainsColumnIDs(false);
 			firehoseHierarchicalClustering.setRowIDSpecification(sampleIDSpecification);
-			firehoseHierarchicalClustering.setGroupingName( "Hier. Cluster" );
+			firehoseHierarchicalClustering.setGroupingName("Hier. Cluster");
 			matrixData.addColumnGroupingSpecification(firehoseHierarchicalClustering);
 		}
 		catch (RuntimeException e) {
@@ -399,16 +404,11 @@ public class TCGADataXMLGenerator
 		return matrixData;
 	}
 
-	
 	private DataSetDescription setUpMutationData(String archiveName, String dataSetName) {
-		IDSpecification mutationSampleIDSpecification = new IDSpecification();
-		mutationSampleIDSpecification.setIdCategory("TCGA_SAMPLE");
-		mutationSampleIDSpecification.setIdType("TCGA_SAMPLE");
-		IDTypeParsingRules mutationIDTypeParsingRules = new IDTypeParsingRules();
-		mutationIDTypeParsingRules.setSubStringExpression(this.tumorAbbreviation + "\\_|\\_...");
-		mutationSampleIDSpecification.setIdTypeParsingRules(mutationIDTypeParsingRules);
-				
-		String mutationFile = this.extractFile( this.tumorAbbreviation + ".per_gene.mutation_counts.txt", archiveName);
+
+		String mutationFile = this.extractFile(this.tumorAbbreviation
+				+ ".per_gene.mutation_counts.txt", archiveName,
+				analysisRunIdentifierWithoutUnderscore, remoteAnalysisRunArchiveDirectory, 4);
 
 		DataSetDescription mutationData = new DataSetDescription();
 		mutationData.setDataSetName(dataSetName);
@@ -424,6 +424,14 @@ public class TCGADataXMLGenerator
 		mutationData.addParsingRule(parsingRule);
 		mutationData.setTransposeMatrix(true);
 
+		IDSpecification mutationSampleIDSpecification = new IDSpecification();
+		mutationSampleIDSpecification.setIdCategory("TCGA_SAMPLE");
+		mutationSampleIDSpecification.setIdType("TCGA_SAMPLE");
+		IDTypeParsingRules mutationIDTypeParsingRules = new IDTypeParsingRules();
+		mutationIDTypeParsingRules.setSubStringExpression(this.tumorAbbreviation
+				+ "\\_|\\_...");
+		mutationSampleIDSpecification.setIdTypeParsingRules(mutationIDTypeParsingRules);
+
 		IDSpecification geneIDSpecification = new IDSpecification();
 		geneIDSpecification.setIDTypeGene(true);
 		geneIDSpecification.setIdType("GENE_SYMBOL");
@@ -433,9 +441,10 @@ public class TCGADataXMLGenerator
 		return mutationData;
 	}
 
-	
 	private DataSetDescription setUpCopyNumberData(String archiveName, String dataType) {
-		String copyNumberFile = this.extractFile(  "all_thresholded.by_genes.txt", archiveName);
+		String copyNumberFile = this.extractFile("all_thresholded.by_genes.txt",
+				analysisRunIdentifierWithoutUnderscore, archiveName,
+				remoteAnalysisRunArchiveDirectory, 4);
 
 		DataSetDescription copyNumberData = new DataSetDescription();
 		copyNumberData.setDataSetName(dataType);
@@ -458,7 +467,44 @@ public class TCGADataXMLGenerator
 
 		return copyNumberData;
 	}
-	
+
+	private DataSetDescription setUpClinicalData(String archiveName, String dataType) {
+		String clinicalFile = this
+				.extractFile(this.tumorAbbreviation + ".clin.merged.txt", archiveName,
+						dataRunIdentifierWithoutUnderscore, remoteDataRunArchiveDirectory, 1);
+
+		DataSetDescription clinicalData = new DataSetDescription();
+		clinicalData.setDataSetName("Clinical");
+		clinicalData.setDataHomogeneous(false);
+
+		clinicalData.setDataSourcePath(clinicalFile);
+		clinicalData.setNumberOfHeaderLines(1);
+
+		ParsingRule parsingRule = new ParsingRule();
+		parsingRule.setFromColumn(10);
+		parsingRule.setToColumn(11);
+		parsingRule.setColumnDescripton(new ColumnDescription());
+		clinicalData.addParsingRule(parsingRule);
+		parsingRule = new ParsingRule();
+		parsingRule.setFromColumn(13);
+		parsingRule.setToColumn(15);
+		parsingRule.setColumnDescripton(new ColumnDescription());
+		clinicalData.addParsingRule(parsingRule);
+
+		IDSpecification clinicalIdSpecification = new IDSpecification();
+		clinicalIdSpecification.setIdType("clinical");
+
+		clinicalData.setColumnIDSpecification(clinicalIdSpecification);
+		clinicalData.setRowIDSpecification(sampleIDSpecification);
+
+		// columnLabels.add("Days to birth");
+		// columnLabels.add("Days to death");
+		// columnLabels.add("Days to last followup");
+		// columnLabels.add("Days to tumor progression");
+		// columnLabels.add("Days to tumor recurrence");
+
+		return clinicalData;
+	}
 
 	// find pipeline archive name filter (filename pattern matcher)
 	// TODO: replace with PathMatcher in Java 7

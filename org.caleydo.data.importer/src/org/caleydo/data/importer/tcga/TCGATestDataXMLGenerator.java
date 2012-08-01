@@ -76,26 +76,6 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 
 	private IDSpecification sampleIDSpecification;
 
-	/*
-	 * public static final String DROPBOX_GBM_FOLDER =
-	 * System.getProperty("user.home") + System.getProperty("file.separator") +
-	 * "Dropbox/TCGA GDAC/Omics Integration/testdata/20111026/brca/"; public
-	 * static final String MRNA = DROPBOX_GBM_FOLDER +
-	 * "mrna_cnmf/outputprefix.expclu.gct"; public static final String
-	 * MRNA_GROUPING = DROPBOX_GBM_FOLDER + "mrna_cnmf/cnmf.membership.txt";
-	 * public static final String MIRNA = DROPBOX_GBM_FOLDER +
-	 * "mir_cnmf/cnmf.normalized.gct"; public static final String MIRNA_GROUPING
-	 * = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.membership.txt"; public static
-	 * final String METHYLATION = DROPBOX_GBM_FOLDER +
-	 * "methylation_cnmf/cnmf.normalized.gct"; public static final String
-	 * METHYLATION_GROUPING = DROPBOX_GBM_FOLDER +
-	 * "methylation_cnmf/cnmf.membership.txt"; public static final String
-	 * COPY_NUMBER = DROPBOX_GBM_FOLDER +
-	 * "copy_number/all_thresholded_by_genes.txt"; public static final String
-	 * OUTPUT_FILE_PATH = System.getProperty("user.home") +
-	 * System.getProperty("file.separator") + "tcga_brca_data.xml";
-	 */
-
 	public static void main(String[] args) {
 
 		TCGATestDataXMLGenerator generator = new TCGATestDataXMLGenerator(args);

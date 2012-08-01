@@ -100,10 +100,6 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	@Override
 	public List<IView> getAllViews() {
 
-		// FIXXXME: rcp-view id is the same as the first gl-view-id, so
-		// rcp-view-ids have to be omitted
-		// List<Integer> ids = super.getAllViewIDs();
-
 		List<IView> views = new ArrayList<IView>();
 		views.add(getGLView());
 		if (getGLView() instanceof IGLRemoteRenderingView) {

@@ -176,7 +176,7 @@ public class TCGAProjectBuilderApplication
 			}
 		}
 
-		FileOperations.deleteDirectory(tmpDataOutputPath);
+		//FileOperations.deleteDirectory(tmpDataOutputPath);
 
 		return context;
 	}
@@ -197,9 +197,6 @@ public class TCGAProjectBuilderApplication
 		String line = null;
 		while ((line = reader.readLine()) != null)
 			writer.println(line.replaceAll(oldstring, newstring));
-
-		// I'm aware of the potential for resource leaks here. Proper resource
-		// handling has been omitted in the interest of brevity
 		reader.close();
 		writer.close();
 	}
