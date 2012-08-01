@@ -107,16 +107,15 @@ public class LinkHandler {
 
 		pb.redirectErrorStream(true);
 		Process p = pb.start();
-
 		InputStreamReader isr = new InputStreamReader(p.getInputStream());
 		BufferedReader input = new BufferedReader(isr);
-
-		while (input.readLine() != null) {
+		String line;
+		while ((line = input.readLine()) != null) {
+			System.out.println(line);
 		}
+		p.waitFor();
 		input.close();
 		isr.close();
-
-		p.waitFor();
 
 		try {
 
