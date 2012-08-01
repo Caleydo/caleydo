@@ -237,7 +237,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		// FIXME: Bad hack
 		if (dataDomain.getLabel().toLowerCase().contains("copy")
 				|| dataDomain.getLabel().toLowerCase().contains("mutation")) {
-			final boolean isCopyNumber = dataDomain.getLabel().toLowerCase().contains("copy");
+			final boolean isCopyNumber = dataDomain.getLabel().toLowerCase()
+					.contains("copy");
 
 			view.addIDPickingListener(new ToolTipPickingListener(view, "To create a "
 					+ (isCopyNumber ? "copy number" : "mutation status")
@@ -343,8 +344,9 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		toggleDataContainerButtonLayout.setRenderer(toggleDataContainerButtonRenderer);
 
 		// FIXME: Very bad hack
-		if ((!dataDomain.getLabel().contains("Copy"))
-				&& (!dataDomain.getLabel().contains("Clinical"))) {
+		if ((!dataDomain.getLabel().toLowerCase().contains("copy"))
+				&& (!dataDomain.getLabel().toLowerCase().contains("clinical"))
+				&& (!dataDomain.getLabel().toLowerCase().contains("mutation"))) {
 			titleRow.append(spacingLayoutX);
 			titleRow.append(toggleDataContainerButtonLayout);
 		}
