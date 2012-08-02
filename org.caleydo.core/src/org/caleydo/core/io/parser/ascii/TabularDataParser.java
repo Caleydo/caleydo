@@ -214,7 +214,7 @@ public class TabularDataParser extends ATextParser {
 				.getParsingPattern();
 
 		int lineCounter = 0;
-		String numberParsingErrorMessage = "Could not parse a number in file"
+		String numberParsingErrorMessage = "Could not parse a number in file "
 				+ dataSetDescription.getDataSetName() + " at path " + filePath
 				+ "\n at the following locations: \n";
 		boolean parsingErrorOccured = false;
@@ -242,7 +242,7 @@ public class TabularDataParser extends ATextParser {
 		// if (rowIDSpecification.getIdTypeParsingRules() != null)
 		// parsingRules = rowIDSpecification.getIdTypeParsingRules();
 		// else if (toIDType.getIdTypeParsingRules() != null)
-		IDTypeParsingRules parsingRules = toIDType.getIdTypeParsingRules();
+		IDTypeParsingRules parsingRules = fromIDType.getIdTypeParsingRules();
 
 		String line;
 		while ((line = reader.readLine()) != null) {
