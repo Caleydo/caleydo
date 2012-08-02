@@ -50,7 +50,7 @@ public class ColumnDescription {
 	private String dataType = "FLOAT";
 
 	/**
-	 * The type of data found in the column. We destinguish between
+	 * The type of data found in the column. We distinguish between
 	 * {@link #CONTINUOUS} (real numbers, integers), {@link #ORDINAL} (ordered
 	 * categories) and {@link #NOMINAL} (unordered categories). Defaults to
 	 * continuous.

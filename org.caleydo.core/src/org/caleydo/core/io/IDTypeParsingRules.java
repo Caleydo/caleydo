@@ -80,7 +80,7 @@ public class IDTypeParsingRules {
 	 * not-empty string in the array is the desired substring. So if, for
 	 * example a leading string "abc-" is to be removed from a string "abc-001",
 	 * the expression must match to "abc-" so that the split operation results
-	 * in ["","001"]. Using, for example, "\\-" as expression wuld result in
+	 * in ["","001"]. Using, for example, "\\-" as expression would result in
 	 * ["abc","001"] and "abc" would be used as the result.
 	 * </p>
 	 * <p>

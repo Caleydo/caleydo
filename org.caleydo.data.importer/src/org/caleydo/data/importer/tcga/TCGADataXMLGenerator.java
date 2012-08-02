@@ -19,9 +19,11 @@
  *******************************************************************************/
 package org.caleydo.data.importer.tcga;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
 import org.apache.tools.tar.TarEntry;
@@ -36,6 +38,7 @@ import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
+import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 
 /**
@@ -220,6 +223,7 @@ public class TCGADataXMLGenerator
 		idTypeParsingRules.setReplacementExpression("\\.", "-");
 		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
+		
 		IDSpecification rowIDSpecification;
 
 		// ====== mRNA ======
@@ -330,6 +334,7 @@ public class TCGADataXMLGenerator
 	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName,
 			String hierarchicalArchiveName, String matrixFileName, String dataSetName,
 			IDSpecification rowIDSpecification, boolean isGeneIdType) {
+		
 		String matrixFile = this.extractFile(matrixFileName, cnmfArchiveName,
 				analysisRunIdentifierWithoutUnderscore, remoteAnalysisRunArchiveDirectory, 4);
 		String cnmfGroupingFile = this.extractFile("cnmf.membership.txt", cnmfArchiveName,
@@ -460,6 +465,7 @@ public class TCGADataXMLGenerator
 		geneIDSpecification.setIDTypeGene(true);
 		geneIDSpecification.setIdType("GENE_SYMBOL");
 		copyNumberData.setRowIDSpecification(geneIDSpecification);
+		copyNumberData.setColumnIDSpecification(sampleIDSpecification);
 
 		return copyNumberData;
 	}
@@ -469,37 +475,71 @@ public class TCGADataXMLGenerator
 				+ ".clin.merged.picked.txt", archiveName, dataRunIdentifierWithoutUnderscore,
 				remoteDataRunArchiveDirectory, 4);
 
+		transposeCSV(clinicalFile);
+
 		DataSetDescription clinicalData = new DataSetDescription();
 		clinicalData.setDataSetName("Clinical");
 		clinicalData.setDataHomogeneous(false);
 
 		clinicalData.setDataSourcePath(clinicalFile);
 		clinicalData.setNumberOfHeaderLines(1);
-		// clinicalData.setTransposeMatrix(true);
 
 		ParsingRule parsingRule = new ParsingRule();
-		parsingRule.setFromColumn(10);
-		parsingRule.setToColumn(11);
+		parsingRule.setFromColumn(2);
+		parsingRule.setToColumn(4);
 		parsingRule.setColumnDescripton(new ColumnDescription());
 		clinicalData.addParsingRule(parsingRule);
-		parsingRule = new ParsingRule();
-		parsingRule.setFromColumn(13);
-		parsingRule.setToColumn(15);
-		parsingRule.setColumnDescripton(new ColumnDescription());
-		clinicalData.addParsingRule(parsingRule);
+		// parsingRule = new ParsingRule();
+		// parsingRule.setFromColumn(13);
+		// parsingRule.setToColumn(15);
+		// parsingRule.setColumnDescripton(new ColumnDescription());
+		// clinicalData.addParsingRule(parsingRule);
 
 		IDSpecification clinicalIdSpecification = new IDSpecification();
 		clinicalIdSpecification.setIdType("clinical");
-
 		clinicalData.setColumnIDSpecification(clinicalIdSpecification);
-		clinicalData.setRowIDSpecification(sampleIDSpecification);
 
-		// columnLabels.add("Days to birth");
-		// columnLabels.add("Days to death");
-		// columnLabels.add("Days to last followup");
-		// columnLabels.add("Days to tumor progression");
-		// columnLabels.add("Days to tumor recurrence");
+		IDSpecification clinicalSampleIDSpecification = new IDSpecification();
+		clinicalSampleIDSpecification.setIdCategory("TCGA_SAMPLE");
+		clinicalSampleIDSpecification.setIdType("TCGA_SAMPLE");
+		IDTypeParsingRules clinicalSampleIDTypeParsingRules = new IDTypeParsingRules();
+		clinicalSampleIDTypeParsingRules.setSubStringExpression("tcga\\-");
+		clinicalSampleIDSpecification.setIdTypeParsingRules(clinicalSampleIDTypeParsingRules);
+		clinicalData.setRowIDSpecification(clinicalSampleIDSpecification);
 
 		return clinicalData;
+	}
+
+	private void transposeCSV(String fileName) {
+
+		// Tmp file needed because script cannot read and write from same file
+		// simultaneously
+		String tmpFile = fileName + "tmp";
+
+		Runtime rt = Runtime.getRuntime();
+		Process p;
+		try {
+
+			new File(tmpFile).delete();
+
+			p = rt.exec(new String[] { "resources/transpose_csv.sh", fileName, tmpFile });
+			p.waitFor();
+			BufferedReader buf = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line = "";
+			while ((line = buf.readLine()) != null) {
+				System.out.println(line);
+			}
+
+			FileOperations.copyFolder(new File(tmpFile), new File(fileName));
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 }
