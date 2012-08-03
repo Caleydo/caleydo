@@ -95,6 +95,7 @@ public class HCCConfigurationGenerator extends DataSetDescriptionSerializer {
 		geneIDSpecification.setIdType("REFSEQ_MRNA");
 		IDTypeParsingRules idParsingRule = new IDTypeParsingRules();
 		idParsingRule.setSubStringExpression("\\.");
+		idParsingRule.setDefault(true);
 		geneIDSpecification.setIdTypeParsingRules(idParsingRule);
 		mrnaData.setRowIDSpecification(geneIDSpecification);
 		mrnaData.setColumnIDSpecification(sampleIDSpecification);

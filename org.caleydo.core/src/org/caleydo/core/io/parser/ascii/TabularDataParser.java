@@ -134,6 +134,15 @@ public class TabularDataParser extends ATextParser {
 		IDType targetColumnIDType;
 		IDType sourceColumnIDType = IDType.getIDType(dataSetDescription
 				.getColumnIDSpecification().getIdType());
+
+		IDTypeParsingRules parsingRules = null;
+		if (dataSetDescription.getColumnIDSpecification().getIdTypeParsingRules() != null)
+			parsingRules = dataSetDescription.getColumnIDSpecification()
+					.getIdTypeParsingRules();
+		else if (sourceColumnIDType.getIdTypeParsingRules() != null)
+			parsingRules = sourceColumnIDType.getIdTypeParsingRules();
+
+		
 		if (!dataDomain.getDataSetDescription().isTransposeMatrix()) {
 			columnIDMappingManager = dataDomain.getDimensionIDMappingManager();
 			targetColumnIDType = dataDomain.getDimensionIDType();
@@ -185,7 +194,7 @@ public class TabularDataParser extends ATextParser {
 
 			if (headers != null) {
 				String idString = headers[parsingDetail.getColumn()];
-				idString = convertID(idString, sourceColumnIDType.getIdTypeParsingRules());
+				idString = convertID(idString, parsingRules);
 				columnIDMappingManager.addMapping(mappingType, columnID, idString);
 			} else {
 				columnIDMappingManager.addMapping(mappingType, columnID, "Column "
@@ -238,11 +247,11 @@ public class TabularDataParser extends ATextParser {
 		MappingType mappingType = rowIDMappingManager.createMap(fromIDType, toIDType,
 				false, true);
 
-		// IDTypeParsingRules parsingRules = null;
-		// if (rowIDSpecification.getIdTypeParsingRules() != null)
-		// parsingRules = rowIDSpecification.getIdTypeParsingRules();
-		// else if (toIDType.getIdTypeParsingRules() != null)
-		IDTypeParsingRules parsingRules = fromIDType.getIdTypeParsingRules();
+		IDTypeParsingRules parsingRules = null;
+		if (rowIDSpecification.getIdTypeParsingRules() != null)
+			parsingRules = rowIDSpecification.getIdTypeParsingRules();
+		else if (toIDType.getIdTypeParsingRules() != null)
+			parsingRules = fromIDType.getIdTypeParsingRules();
 
 		String line;
 		while ((line = reader.readLine()) != null) {

@@ -33,11 +33,38 @@ import org.caleydo.core.id.IDType;
  * <li>defining a substring of the incoming string - see
  * {@link #subStringExpression}</li>
  * </ul>
+ * <p>
+ * There are two main ways that IDTypeParsingRules are used:
+ * <ol>
+ * <li><b>As part of an {@link IDSpecification}.</b> An IDSpecifcation is a
+ * specific rule usually associated with a dataset for parsing. If a parsing
+ * rule is specified as part of an IDSpecification, it will be used in any case.
+ * If {@link #isDefault} in the parsing rule is set to true, the parsing rule
+ * will also be stored as the default parsing rule of the ID Type.</li>
+ * <li><b>As part of an {@link IDType}.</b> If a parsing rule's
+ * {@link #isDefault} is true, it will be stored as the default parsing rule for
+ * the <code>IDType</code>.<b>The default parsing rule will only be used if the
+ * parsing rule of the <code>IDSpecification</code> is null.</b></li>
+ * </ol>
+ * </p>
+ * <p>
+ * Consequently an IDSpecification parsing rule overrides IDType parsing rules.
+ * If you want to use no parsing rule for an IDType that has a default parsing
+ * rule you have to create an empty parsing rule for the IDSpecification.
+ * </p>
  * 
  * @author Alexander Lex
  * 
  */
 public class IDTypeParsingRules {
+
+	/**
+	 * Flag determining whether this parsing rule is a default rule for an
+	 * {@link IDType}, i.e., if true it will be stored in
+	 * {@link IDType#setIdTypeParsingRules(IDTypeParsingRules) and used if no
+	 * dynamic parsing rule is applied.
+	 */
+	boolean isDefault = false;
 
 	/**
 	 * <p>
@@ -99,6 +126,21 @@ public class IDTypeParsingRules {
 	 * </p>
 	 */
 	private String subStringExpression = null;
+
+	/**
+	 * @param isDefault
+	 *            setter, see {@link #isDefault}
+	 */
+	public void setDefault(boolean isDefault) {
+		this.isDefault = isDefault;
+	}
+
+	/**
+	 * @return the isDefault, see {@link #isDefault}
+	 */
+	public boolean isDefault() {
+		return isDefault;
+	}
 
 	/**
 	 * Set a replacement expression. Sets {@link #replacingExpression} and

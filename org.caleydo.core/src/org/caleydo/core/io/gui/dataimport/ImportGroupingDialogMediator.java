@@ -203,6 +203,7 @@ public class ImportGroupingDialogMediator {
 			// for REFSEQ_MRNA we ignore the .1, etc.
 			IDTypeParsingRules parsingRules = new IDTypeParsingRules();
 			parsingRules.setSubStringExpression("\\.");
+			parsingRules.setDefault(true);
 			rowIDSpecification.setIdTypeParsingRules(parsingRules);
 		}
 		groupingParseSpecification.setRowIDSpecification(rowIDSpecification);

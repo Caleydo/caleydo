@@ -97,6 +97,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
 		idTypeParsingRules.setReplacementExpression("\\.", "-");
 		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		idTypeParsingRules.setDefault(true);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
 
 		dataSetDescriptionCollection = new ProjectDescription();

@@ -30,6 +30,7 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
@@ -66,6 +67,12 @@ public class GroupingParser extends ATextParser {
 
 		IDSpecification idSpecification = groupingSpecifications.getRowIDSpecification();
 		IDType sourceIDType = IDType.getIDType(idSpecification.getIdType());
+
+		IDTypeParsingRules parsingRules = null;
+		if (idSpecification.getIdTypeParsingRules() != null)
+			parsingRules = idSpecification.getIdTypeParsingRules();
+		else if (sourceIDType.getIdTypeParsingRules() != null)
+			parsingRules = sourceIDType.getIdTypeParsingRules();
 
 		if (!sourceIDType.getIDCategory().equals(targetIDType.getIDCategory()))
 			throw new IllegalArgumentException("Can not map between specified IDTypes: "
@@ -165,7 +172,7 @@ public class GroupingParser extends ATextParser {
 				String[] columns = line.split(groupingSpecifications.getDelimiter());
 				String originalID = columns[groupingSpecifications.getColumnOfRowIds()];
 
-				originalID = convertID(originalID, sourceIDType.getIdTypeParsingRules());
+				originalID = convertID(originalID, parsingRules);
 
 				Integer mappedID = idMappingManager.getID(sourceIDType, targetIDType,
 						originalID);

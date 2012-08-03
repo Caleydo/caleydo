@@ -130,14 +130,16 @@ public class IDTypeInitializer {
 		if (recordIDType == null) {
 			recordIDType = IDType.registerType(recordIDTypeName, recodIDCategory,
 					EDataType.STRING);
-			recordIDType.setIdTypeParsingRules(recordIDTypeParsingRules);
+			if (recordIDTypeParsingRules != null  && recordIDTypeParsingRules.isDefault())
+				recordIDType.setIdTypeParsingRules(recordIDTypeParsingRules);
 		}
 
 		IDType dimensionIDType = IDType.getIDType(dimensionIDTypeName);
 		if (dimensionIDType == null) {
 			dimensionIDType = IDType.registerType(dimensionIDTypeName,
 					dimensionIDCategory, EDataType.STRING);
-			dimensionIDType.setIdTypeParsingRules(dimensionIDTypeParsingRules);
+			if (dimensionIDTypeParsingRules != null && dimensionIDTypeParsingRules.isDefault())
+				dimensionIDType.setIdTypeParsingRules(dimensionIDTypeParsingRules);
 		}
 
 		return dataSetDescription;

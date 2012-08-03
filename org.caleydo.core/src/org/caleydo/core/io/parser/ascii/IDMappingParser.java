@@ -132,8 +132,6 @@ public class IDMappingParser extends ATextParser {
 				idCategory);
 	}
 
-	
-
 	/**
 	 * Set the current token separator.
 	 * 

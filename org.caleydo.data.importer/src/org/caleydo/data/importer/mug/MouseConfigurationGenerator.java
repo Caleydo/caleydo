@@ -95,6 +95,7 @@ public class MouseConfigurationGenerator extends DataSetDescriptionSerializer {
 		geneIDSpecification.setIDTypeGene(true);
 		geneIDSpecification.setIdType("REFSEQ_MRNA");
 		IDTypeParsingRules idParsingRule = new IDTypeParsingRules();
+		idParsingRule.setDefault(true);
 		idParsingRule.setSubStringExpression("\\.");
 		geneIDSpecification.setIdTypeParsingRules(idParsingRule);
 		mrnaData.setRowIDSpecification(geneIDSpecification);

@@ -174,6 +174,7 @@ public class CreateIDTypeDialogMediator {
 					dialog.replacementStringTextField.getText());
 			idTypeParsingRules.setSubStringExpression(dialog.substringRegExTextField
 					.getText());
+			idTypeParsingRules.setDefault(true);
 			idType.setIdTypeParsingRules(idTypeParsingRules);
 		}
 

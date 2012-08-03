@@ -120,6 +120,9 @@ public class IDType {
 	 *            setter, see {@link #idTypeParsingRules}
 	 */
 	public void setIdTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
+		if (!idTypeParsingRules.isDefault())
+			throw new IllegalArgumentException(
+					"A parsing rule set to an id type must be a default parsing rule but the passed one isn't.");
 		this.idTypeParsingRules = idTypeParsingRules;
 	}
 
