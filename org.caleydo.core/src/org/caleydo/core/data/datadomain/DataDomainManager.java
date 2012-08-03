@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-
 import org.caleydo.core.data.configuration.ChooseDataConfigurationDialog;
 import org.caleydo.core.data.datadomain.graph.DataDomainGraph;
 import org.caleydo.core.event.data.NewDataDomainEvent;
@@ -201,10 +200,13 @@ public class DataDomainManager {
 			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).add(dataDomain);
 		}
 
-		Color color = ColorManager.get().getFirstMarkedColorOfList(
-				ColorManager.QUALITATIVE_COLORS, false);
-		ColorManager.get().markColor(ColorManager.QUALITATIVE_COLORS, color, true);
-		dataDomain.setColor(color);
+		// Only assign random color if no color has been set externally
+		if (dataDomain.getColor() == null) {
+			Color color = ColorManager.get().getFirstMarkedColorOfList(
+					ColorManager.QUALITATIVE_COLORS, false);
+			ColorManager.get().markColor(ColorManager.QUALITATIVE_COLORS, color, true);
+			dataDomain.getDataSetDescription().setColor(color);
+		}
 
 		dataDomainGraph.addDataDomain(dataDomain);
 

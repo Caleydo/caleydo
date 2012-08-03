@@ -119,8 +119,8 @@ public class GeneDataTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		idTypeParsingRules.setDefault(true);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
 
-		dataSetDescriptionCollection.add(setUpMRNAData());
-		dataSetDescriptionCollection.add(setUpCopyNumberData());
+		projectDescription.add(setUpMRNAData());
+		projectDescription.add(setUpCopyNumberData());
 		// dataSetDescriptionCollection.add(setUpMutationData());
 
 	}

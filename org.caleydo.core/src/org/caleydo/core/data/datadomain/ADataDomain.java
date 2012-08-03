@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,11 +21,9 @@ package org.caleydo.core.data.datadomain;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.event.AEventHandler;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
@@ -47,18 +45,20 @@ public abstract class ADataDomain
 	protected String dataDomainType;
 
 	/**
-	 * All {@link IDCategory}s that are used in this data container. Used to define associations between
-	 * DataDomains
+	 * All {@link IDCategory}s that are used in this data container. Used to
+	 * define associations between DataDomains
 	 */
 	@XmlTransient
 	protected Set<IDCategory> idCategories = new HashSet<IDCategory>();
 
-//	/**
-//	 * This mode determines whether the user can load and work with gene expression data or otherwise if an
-//	 * not further specified data set is loaded. In the case of the unspecified data set some specialized gene
-//	 * expression features are not available.
-//	 */
-	
+	// /**
+	// * This mode determines whether the user can load and work with gene
+	// expression data or otherwise if an
+	// * not further specified data set is loaded. In the case of the
+	// unspecified data set some specialized gene
+	// * expression features are not available.
+	// */
+
 	protected String dataDomainID = "unspecified";
 
 	protected EIconTextures icon = EIconTextures.NO_ICON_AVAILABLE;
@@ -66,12 +66,9 @@ public abstract class ADataDomain
 	/** parameters for loading the data-{@link set} */
 	protected DataSetDescription dataSetDescription;
 
-	/** The color used to encode this data domain */
-	protected Color color;
-
 	/** determines which view will be opened after a DataDomain is created */
 	protected String defaultStartViewType;
-	
+
 	/** determines whether a data domain should be serialized **/
 	protected boolean isSerializeable = true;
 
@@ -90,8 +87,9 @@ public abstract class ADataDomain
 
 	/**
 	 * <p>
-	 * All initialization of the ADataDomain must be done in here instead of in the constructor. This is
-	 * called when the ADataDomain is created in the {@link DataDomainManager}.
+	 * All initialization of the ADataDomain must be done in here instead of in
+	 * the constructor. This is called when the ADataDomain is created in the
+	 * {@link DataDomainManager}.
 	 * </p>
 	 */
 	public void init() {
@@ -145,9 +143,11 @@ public abstract class ADataDomain
 	// }
 
 	// @Override
-	// public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups) {
+	// public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups)
+	// {
 	// this.dimensionGroups = dimensionGroups;
-	// DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
+	// DimensionGroupsChangedEvent event = new
+	// DimensionGroupsChangedEvent(this);
 	// event.setSender(this);
 	// GeneralManager.get().getEventPublisher().triggerEvent(event);
 	// }
@@ -155,19 +155,15 @@ public abstract class ADataDomain
 	// @Override
 	// public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
 	// dimensionGroups.add(dimensionGroup);
-	// DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
+	// DimensionGroupsChangedEvent event = new
+	// DimensionGroupsChangedEvent(this);
 	// event.setSender(this);
 	// GeneralManager.get().getEventPublisher().triggerEvent(event);
 	// }
 
 	@Override
 	public Color getColor() {
-		return color;
-	}
-
-	@Override
-	public void setColor(Color color) {
-		this.color = color;
+		return dataSetDescription.getColor();
 	}
 
 	/**
@@ -196,7 +192,7 @@ public abstract class ADataDomain
 	public void addIDCategory(IDCategory category) {
 		idCategories.add(category);
 	}
-	
+
 	/**
 	 * @return the isSerializeable, see {@link #isSerializeable}
 	 */

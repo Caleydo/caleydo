@@ -24,14 +24,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.io.parser.ascii.TabularDataParser;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.color.Color;
 
 /**
  * <p>
@@ -75,7 +74,8 @@ import org.caleydo.core.manager.GeneralManager;
  */
 @XmlType
 @XmlRootElement
-public class DataSetDescription extends MatrixDefinition {
+public class DataSetDescription
+	extends MatrixDefinition {
 
 	/** A human readable name of the dataset. Optional. */
 	private String dataSetName;
@@ -160,10 +160,14 @@ public class DataSetDescription extends MatrixDefinition {
 	private ArrayList<GroupingParseSpecification> rowGroupingSpecifications;
 
 	/**
-	 * A description on how to pre-process (e.g., cluster, filter) the data. Optional.
+	 * A description on how to pre-process (e.g., cluster, filter) the data.
+	 * Optional.
 	 */
 	private DataProcessingDescription dataProcessingDescription;
-	
+
+	/** The color used to encode this data domain */
+	protected Color color;
+
 	/**
 	 * 
 	 */
@@ -171,8 +175,7 @@ public class DataSetDescription extends MatrixDefinition {
 	}
 
 	/**
-	 * @param transposeMatrix
-	 *            setter, see {@link #transposeMatrix}
+	 * @param transposeMatrix setter, see {@link #transposeMatrix}
 	 */
 	public void setTransposeMatrix(boolean transposeMatrix) {
 		this.transposeMatrix = transposeMatrix;
@@ -186,8 +189,7 @@ public class DataSetDescription extends MatrixDefinition {
 	}
 
 	/**
-	 * @param dataSetName
-	 *            setter, see {@link #dataSetName}
+	 * @param dataSetName setter, see {@link #dataSetName}
 	 */
 	public void setDataSetName(String dataSetName) {
 		this.dataSetName = dataSetName;
@@ -201,8 +203,7 @@ public class DataSetDescription extends MatrixDefinition {
 	}
 
 	/**
-	 * @param isDataHomogeneous
-	 *            setter, see {@link #isDataHomogeneous}
+	 * @param isDataHomogeneous setter, see {@link #isDataHomogeneous}
 	 */
 	public void setDataHomogeneous(boolean isDataHomogeneous) {
 		this.isDataHomogeneous = isDataHomogeneous;
@@ -216,8 +217,7 @@ public class DataSetDescription extends MatrixDefinition {
 	}
 
 	/**
-	 * @param min
-	 *            setter, see {@link #min}
+	 * @param min setter, see {@link #min}
 	 */
 	public void setMin(Float min) {
 		this.min = min;
@@ -231,8 +231,7 @@ public class DataSetDescription extends MatrixDefinition {
 	}
 
 	/**
-	 * @param max
-	 *            setter, see {@link #max}
+	 * @param max setter, see {@link #max}
 	 */
 	public void setMax(Float max) {
 		this.max = max;
@@ -253,8 +252,7 @@ public class DataSetDescription extends MatrixDefinition {
 	}
 
 	/**
-	 * @param mathFilterMode
-	 *            setter, see {@link #mathFilterMode}
+	 * @param mathFilterMode setter, see {@link #mathFilterMode}
 	 */
 	public void setMathFilterMode(String mathFilterMode) {
 		this.mathFilterMode = mathFilterMode;
@@ -264,8 +262,8 @@ public class DataSetDescription extends MatrixDefinition {
 	 * Setter for {@link #columnGroupingSpecifications}. Overrides previous
 	 * values of columnGroupingPaths
 	 * 
-	 * @param columnGroupingPaths
-	 *            setter, see {@link #columnGroupingSpecifications}
+	 * @param columnGroupingPaths setter, see
+	 *            {@link #columnGroupingSpecifications}
 	 */
 	public void setColumnGroupingSpecifications(
 			ArrayList<GroupingParseSpecification> columnGroupingSpecifications) {
@@ -294,8 +292,8 @@ public class DataSetDescription extends MatrixDefinition {
 	}
 
 	/**
-	 * @param rowGroupingSpecifications
-	 *            setter, see {@link #rowGroupingSpecifications}
+	 * @param rowGroupingSpecifications setter, see
+	 *            {@link #rowGroupingSpecifications}
 	 */
 	public void setRowGroupingSpecifications(
 			ArrayList<GroupingParseSpecification> rowGroupingSpecifications) {
@@ -305,11 +303,9 @@ public class DataSetDescription extends MatrixDefinition {
 	/**
 	 * Adds a path to the {@link #rowGroupingSpecifications}
 	 * 
-	 * @param rowGroupingPath
-	 *            a new path to the row groupings
+	 * @param rowGroupingPath a new path to the row groupings
 	 */
-	public void addRowGroupingSpecification(
-			GroupingParseSpecification rowGroupingSpecification) {
+	public void addRowGroupingSpecification(GroupingParseSpecification rowGroupingSpecification) {
 		if (rowGroupingSpecifications == null) {
 			rowGroupingSpecifications = new ArrayList<GroupingParseSpecification>();
 		}
@@ -325,8 +321,7 @@ public class DataSetDescription extends MatrixDefinition {
 	}
 
 	/**
-	 * @param parsingRules
-	 *            setter, see {@link #parsingRules}
+	 * @param parsingRules setter, see {@link #parsingRules}
 	 */
 	public void setParsingRules(ArrayList<ParsingRule> parsingRules) {
 		this.parsingRules = parsingRules;
@@ -352,8 +347,7 @@ public class DataSetDescription extends MatrixDefinition {
 	}
 
 	/**
-	 * @param parsingPattern
-	 *            setter, see {@link #parsingPattern}
+	 * @param parsingPattern setter, see {@link #parsingPattern}
 	 */
 	public void setParsingPattern(ArrayList<ColumnDescription> parsingPattern) {
 		this.parsingPattern = parsingPattern;
@@ -387,7 +381,8 @@ public class DataSetDescription extends MatrixDefinition {
 			String[] columns = dataLine.split(delimiter);
 			numberOfColumns = columns.length;
 
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			// Logger.log(new Status(Status.ERROR, "Parsing",
 			// "Cannot read from: "
 			// + dataSourcePath));
@@ -421,7 +416,8 @@ public class DataSetDescription extends MatrixDefinition {
 						}
 
 					}
-				} else {
+				}
+				else {
 					// we have passed the last rule
 					break;
 				}
@@ -431,8 +427,7 @@ public class DataSetDescription extends MatrixDefinition {
 				// we skip until we reach the from column
 				continue;
 			}
-			if (currentParsingRule.getToColumn() < 0
-					&& !currentParsingRule.isParseUntilEnd()) {
+			if (currentParsingRule.getToColumn() < 0 && !currentParsingRule.isParseUntilEnd()) {
 				// if only a single from column is specified we write that and
 				// continue with the next parsing rule
 				parsingPattern.add(new ColumnDescription(columnCount, currentParsingRule
@@ -470,8 +465,8 @@ public class DataSetDescription extends MatrixDefinition {
 	}
 
 	/**
-	 * @param dataProcessingDescription
-	 *            setter, see {@link #dataProcessingDescription}
+	 * @param dataProcessingDescription setter, see
+	 *            {@link #dataProcessingDescription}
 	 */
 	public void setDataProcessingDescription(
 			DataProcessingDescription dataProcessingDescription) {
@@ -497,6 +492,20 @@ public class DataSetDescription extends MatrixDefinition {
 				return false;
 		}
 		return true;
+	}
+
+	/**
+	 * @return the color, see {@link #color}
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+	/**
+	 * @param color setter, see {@link #color}
+	 */
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 	@Override

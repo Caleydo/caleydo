@@ -122,11 +122,11 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		idTypeParsingRules.setDefault(true);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
 
-		dataSetDescriptionCollection.add(setUpMRNAData());
-		dataSetDescriptionCollection.add(setUpMiRNAData());
-		dataSetDescriptionCollection.add(setUpMethylationData());
-		dataSetDescriptionCollection.add(setUpCopyNumberData());
-		dataSetDescriptionCollection.add(setUpClinicalData());
+		projectDescription.add(setUpMRNAData());
+		projectDescription.add(setUpMiRNAData());
+		projectDescription.add(setUpMethylationData());
+		projectDescription.add(setUpCopyNumberData());
+		projectDescription.add(setUpClinicalData());
 		// dataSetDescriptionCollection.add(setUpMutationData());
 
 	}

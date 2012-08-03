@@ -100,14 +100,14 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		idTypeParsingRules.setDefault(true);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
 
-		dataSetDescriptionCollection = new ProjectDescription();
+		projectDescription = new ProjectDescription();
 
-		dataSetDescriptionCollection.add(setUpMRNAData());
-		dataSetDescriptionCollection.add(setUpMutationData());
-		dataSetDescriptionCollection.add(setUpMiRNAData());
-		dataSetDescriptionCollection.add(setUpMethylationData());
-		dataSetDescriptionCollection.add(setUpCopyNumberData());
-		dataSetDescriptionCollection.add(setUpClinicalData());
+		projectDescription.add(setUpMRNAData());
+		projectDescription.add(setUpMutationData());
+		projectDescription.add(setUpMiRNAData());
+		projectDescription.add(setUpMethylationData());
+		projectDescription.add(setUpCopyNumberData());
+		projectDescription.add(setUpClinicalData());
 
 	}
 

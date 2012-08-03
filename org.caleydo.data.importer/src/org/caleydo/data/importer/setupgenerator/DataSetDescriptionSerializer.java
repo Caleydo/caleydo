@@ -38,7 +38,7 @@ import org.caleydo.core.io.ProjectDescription;
  */
 public abstract class DataSetDescriptionSerializer {
 
-	protected ProjectDescription dataSetDescriptionCollection = new ProjectDescription();
+	protected ProjectDescription projectDescription = new ProjectDescription();
 
 	protected String outputXMLFilePath = System.getProperty("user.home")
 			+ System.getProperty("file.separator") + "caleydo_data.xml";
@@ -71,12 +71,12 @@ public abstract class DataSetDescriptionSerializer {
 	
 	/**
 	 * The <code>DataSetDescription</code> creation is triggered and all of them
-	 * are written into the {@link #dataSetDescriptionCollection}
+	 * are written into the {@link #projectDescription}
 	 */
 	protected abstract void setUpDataSetDescriptions();
 
 	/**
-	 * Serializes the elements in {@link #dataSetDescriptionCollection} to the
+	 * Serializes the elements in {@link #projectDescription} to the
 	 * {@link #outputXMLFilePath}.
 	 */
 	public void serialize() {
@@ -90,11 +90,11 @@ public abstract class DataSetDescriptionSerializer {
 
 			Marshaller marshaller;
 			marshaller = context.createMarshaller();
-			marshaller.marshal(dataSetDescriptionCollection, new File(outputXMLFilePath));
+			marshaller.marshal(projectDescription, new File(outputXMLFilePath));
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 			System.out.println("Created configuration for "
-					+ dataSetDescriptionCollection.getDataSetDescriptionCollection()
-							.size() + " datasets: " + dataSetDescriptionCollection);
+					+ projectDescription.getDataSetDescriptionCollection()
+							.size() + " datasets: " + projectDescription);
 			System.out.println("Written to: " + outputXMLFilePath);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);

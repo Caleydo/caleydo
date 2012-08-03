@@ -179,6 +179,7 @@ public class SearchViewMediator {
 	private RecordPerspective binRecords(int nrBins, Integer dimensionID,
 			RecordPerspective recordPerspective, GeneticDataDomain dataDomain,
 			String label, ArrayList<String> groupLabels) {
+		
 		ArrayList<ArrayList<Integer>> bins = new ArrayList<ArrayList<Integer>>(nrBins);
 		for (int count = 0; count < nrBins; count++) {
 			bins.add(new ArrayList<Integer>());
@@ -188,6 +189,9 @@ public class SearchViewMediator {
 		for (Integer recordID : recordPerspective.getVirtualArray()) {
 			float value = table.getFloat(DataRepresentation.NORMALIZED, recordID,
 					dimensionID);
+			
+			System.out.println(value);
+			
 			// this works because value is normalized
 			int bin = (int) (value * nrBins);
 			if (bin == nrBins)

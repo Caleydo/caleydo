@@ -38,6 +38,8 @@ import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.ColorManager;
 import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 
@@ -231,9 +233,9 @@ public class TCGADataXMLGenerator
 
 		rowIDSpecification = null; // uses genes
 		try {
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData("mRNA_Clustering_CNMF",
+			projectDescription.add(setUpClusteredMatrixData("mRNA_Clustering_CNMF",
 					"mRNA_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA",
-					rowIDSpecification, sampleIDSpecification, true));
+					rowIDSpecification, sampleIDSpecification, true, getNextDataSetColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -246,9 +248,9 @@ public class TCGADataXMLGenerator
 		rowIDSpecification.setIdCategory("microRNA");
 
 		try {
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData("miR_Clustering_CNMF",
+			projectDescription.add(setUpClusteredMatrixData("miR_Clustering_CNMF",
 					"miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA",
-					rowIDSpecification, sampleIDSpecification, false));
+					rowIDSpecification, sampleIDSpecification, false, getNextDataSetColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -267,10 +269,11 @@ public class TCGADataXMLGenerator
 		// ====== mRNAseq ======
 
 		try {
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData(
-					"mRNAseq_Clustering_CNMF", "mRNAseq_Clustering_Consensus",
-					"outputprefix.expclu.gct", "mRNA-seq", rowIDSpecification,
-					seqSampleIDSpecification, true));
+			projectDescription
+					.add(setUpClusteredMatrixData("mRNAseq_Clustering_CNMF",
+							"mRNAseq_Clustering_Consensus", "outputprefix.expclu.gct",
+							"mRNA-seq", rowIDSpecification, seqSampleIDSpecification, true,
+							getNextDataSetColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -279,10 +282,11 @@ public class TCGADataXMLGenerator
 		// ====== microRNAseq ======
 
 		try {
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData(
-					"miRseq_Clustering_CNMF", "miRseq_Clustering_Consensus",
-					"cnmf.normalized.gct", "microRNA-seq", rowIDSpecification,
-					seqSampleIDSpecification, false));
+			projectDescription
+					.add(setUpClusteredMatrixData("miRseq_Clustering_CNMF",
+							"miRseq_Clustering_Consensus", "cnmf.normalized.gct",
+							"microRNA-seq", rowIDSpecification, seqSampleIDSpecification,
+							false, getNextDataSetColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -293,10 +297,9 @@ public class TCGADataXMLGenerator
 		rowIDSpecification = null; // uses genes
 
 		try {
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData(
-					"Methylation_Clustering_CNMF", "Methylation_Clustering_Consensus",
-					"cnmf.normalized.gct", "methylation", rowIDSpecification,
-					sampleIDSpecification, true));
+			projectDescription.add(setUpClusteredMatrixData("Methylation_Clustering_CNMF",
+					"Methylation_Clustering_Consensus", "cnmf.normalized.gct", "methylation",
+					rowIDSpecification, sampleIDSpecification, true, getNextDataSetColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -309,9 +312,9 @@ public class TCGADataXMLGenerator
 		rowIDSpecification.setIdCategory("protein");
 
 		try {
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData("RPPA_Clustering_CNMF",
+			projectDescription.add(setUpClusteredMatrixData("RPPA_Clustering_CNMF",
 					"RPPA_Clustering_Consensus", "cnmf.normalized.gct", "RPPA",
-					rowIDSpecification, sampleIDSpecification, false));
+					rowIDSpecification, sampleIDSpecification, false, getNextDataSetColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -320,8 +323,8 @@ public class TCGADataXMLGenerator
 		// ====== copy number ======
 
 		try {
-			dataSetDescriptionCollection.add(setUpCopyNumberData("CopyNumber_Gistic2",
-					"Copy Number"));
+			projectDescription.add(setUpCopyNumberData("CopyNumber_Gistic2", "Copy Number",
+					getNextDataSetColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -330,8 +333,8 @@ public class TCGADataXMLGenerator
 		// ====== mutation ======
 
 		try {
-			dataSetDescriptionCollection.add(setUpMutationData("Mutation_Significance",
-					"Mutations"));
+			projectDescription.add(setUpMutationData("Mutation_Significance", "Mutations",
+					getNextDataSetColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -340,18 +343,26 @@ public class TCGADataXMLGenerator
 		// ====== clinical ======
 
 		try {
-			dataSetDescriptionCollection.add(setUpClinicalData("Clinical_Pick_Tier1",
-					"Clinical"));
+			projectDescription.add(setUpClinicalData("Clinical_Pick_Tier1", "Clinical",
+					getNextDataSetColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
 	}
 
+	private Color getNextDataSetColor() {
+
+		Color color = ColorManager.get().getFirstMarkedColorOfList(
+				ColorManager.QUALITATIVE_COLORS, false);
+		ColorManager.get().markColor(ColorManager.QUALITATIVE_COLORS, color, true);
+		return color;
+	}
+
 	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName,
 			String hierarchicalArchiveName, String matrixFileName, String dataSetName,
 			IDSpecification rowIDSpecification, IDSpecification columnIDSpecification,
-			boolean isGeneIdType) {
+			boolean isGeneIdType, Color color) {
 
 		String matrixFile = this.extractFile(matrixFileName, cnmfArchiveName,
 				analysisRunIdentifierWithoutUnderscore, remoteAnalysisRunArchiveDirectory, 4);
@@ -360,9 +371,9 @@ public class TCGADataXMLGenerator
 
 		DataSetDescription matrixData = new DataSetDescription();
 		matrixData.setDataSetName(dataSetName);
-
 		matrixData.setDataSourcePath(matrixFile);
 		matrixData.setNumberOfHeaderLines(3);
+		matrixData.setColor(color);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
@@ -423,7 +434,8 @@ public class TCGADataXMLGenerator
 		return matrixData;
 	}
 
-	private DataSetDescription setUpMutationData(String archiveName, String dataSetName) {
+	private DataSetDescription setUpMutationData(String archiveName, String dataSetName,
+			Color color) {
 
 		String mutationFile = this.extractFile(this.tumorAbbreviation
 				+ ".per_gene.mutation_counts.txt", archiveName,
@@ -434,6 +446,7 @@ public class TCGADataXMLGenerator
 		mutationData.setDataSourcePath(mutationFile);
 		mutationData.setNumberOfHeaderLines(1);
 		mutationData.setMax((float) 1);
+		mutationData.setColor(color);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(8);
@@ -460,7 +473,8 @@ public class TCGADataXMLGenerator
 		return mutationData;
 	}
 
-	private DataSetDescription setUpCopyNumberData(String archiveName, String dataType) {
+	private DataSetDescription setUpCopyNumberData(String archiveName, String dataType,
+			Color color) {
 		String copyNumberFile = this.extractFile("all_thresholded.by_genes.txt", archiveName,
 				analysisRunIdentifierWithoutUnderscore, remoteAnalysisRunArchiveDirectory, 4);
 
@@ -468,6 +482,7 @@ public class TCGADataXMLGenerator
 		copyNumberData.setDataSetName(dataType);
 		copyNumberData.setDataSourcePath(copyNumberFile);
 		copyNumberData.setNumberOfHeaderLines(1);
+		copyNumberData.setColor(color);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
@@ -486,7 +501,9 @@ public class TCGADataXMLGenerator
 		return copyNumberData;
 	}
 
-	private DataSetDescription setUpClinicalData(String archiveName, String dataType) {
+	private DataSetDescription setUpClinicalData(String archiveName, String dataType,
+			Color color) {
+
 		String clinicalFile = this.extractFile(this.tumorAbbreviation
 				+ ".clin.merged.picked.txt", archiveName, dataRunIdentifierWithoutUnderscore,
 				remoteDataRunArchiveDirectory, 4);
@@ -496,9 +513,9 @@ public class TCGADataXMLGenerator
 		DataSetDescription clinicalData = new DataSetDescription();
 		clinicalData.setDataSetName("Clinical");
 		clinicalData.setDataHomogeneous(false);
-
 		clinicalData.setDataSourcePath(clinicalFile);
 		clinicalData.setNumberOfHeaderLines(1);
+		clinicalData.setColor(color);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
