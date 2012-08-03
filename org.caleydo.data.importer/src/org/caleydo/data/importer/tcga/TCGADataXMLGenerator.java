@@ -298,7 +298,7 @@ public class TCGADataXMLGenerator
 
 		try {
 			projectDescription.add(setUpClusteredMatrixData("Methylation_Clustering_CNMF",
-					"Methylation_Clustering_Consensus", "cnmf.normalized.gct", "methylation",
+					"Methylation_Clustering_Consensus", "cnmf.normalized.gct", "Methylation",
 					rowIDSpecification, sampleIDSpecification, true, getNextDataSetColor()));
 		}
 		catch (Exception e) {
@@ -349,6 +349,8 @@ public class TCGADataXMLGenerator
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
+
+		ColorManager.get().unmarkAllColors(ColorManager.QUALITATIVE_COLORS);
 	}
 
 	private Color getNextDataSetColor() {

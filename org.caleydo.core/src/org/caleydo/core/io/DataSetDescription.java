@@ -166,7 +166,7 @@ public class DataSetDescription
 	private DataProcessingDescription dataProcessingDescription;
 
 	/** The color used to encode this data domain */
-	protected Color color;
+	private Color color;
 
 	/**
 	 * 
