@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,64 +22,63 @@ package org.caleydo.core.data.collection.ccontainer;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 
 /**
- * CContainer implementation for int A container for ints. Initialized with an int array. The length can not
- * be modified after initialization. Optimized to hold a large amount of data.
+ * CContainer implementation for int A container for ints. Initialized with an
+ * int array. The length can not be modified after initialization. Optimized to
+ * hold a large amount of data.
  * 
  * @author Alexander Lex
  */
 public class IntCContainer
 	implements INumericalCContainer {
 
-	private int[] iArContainer;
+	private int[] container;
 
-	private int iMin = Integer.MAX_VALUE;
+	private int min = Integer.MAX_VALUE;
 
-	private int iMax = Integer.MIN_VALUE;
+	private int max = Integer.MIN_VALUE;
 
 	/**
-	 * Constructor Pass an int array. The length of the array can not be modified after initialization
+	 * Constructor Pass an int array. The length of the array can not be
+	 * modified after initialization
 	 * 
-	 * @param iArContainer
-	 *            the int array
+	 * @param iArContainer the int array
 	 */
 	public IntCContainer(int[] iArContainer) {
-		this.iArContainer = iArContainer;
+		this.container = iArContainer;
 	}
 
 	@Override
 	public int size() {
 
-		return iArContainer.length;
+		return container.length;
 	}
 
 	/**
 	 * Returns the value associated with the index at the variable
 	 * 
-	 * @throws IndexOutOfBoundsException
-	 *             if index is out of specified range
-	 * @param iIndex
-	 *            the index of the variable
+	 * @throws IndexOutOfBoundsException if index is out of specified range
+	 * @param iIndex the index of the variable
 	 * @return the variable associated with the index
 	 */
 	public int get(int iIndex) {
-		return iArContainer[iIndex];
+		return container[iIndex];
 	}
 
 	@Override
 	public double getMin() {
-		if (Integer.MAX_VALUE == iMin) {
+		if (Integer.MAX_VALUE == min) {
 			calculateMinMax();
 		}
-		return iMin;
+		return min;
 	}
 
 	@Override
 	public double getMax() {
 
-		if (Integer.MIN_VALUE == iMax) {
+		if (Integer.MIN_VALUE == max) {
 			calculateMinMax();
 		}
-		return iMax;
+		return max;
 	}
 
 	/**
@@ -95,8 +94,7 @@ public class IntCContainer
 	/**
 	 * Iterator which takes a virtual array into account
 	 * 
-	 * @param virtualArray
-	 *            the virtual array
+	 * @param virtualArray the virtual array
 	 * @return the iterator
 	 */
 	public IntCContainerIterator iterator(VirtualArray<?, ?, ?> virtualArray) {
@@ -104,11 +102,11 @@ public class IntCContainer
 	}
 
 	@Override
-	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax) {
-		if (dMin > getMin() || dMax < getMax())
+	public FloatCContainer normalizeWithExternalExtrema(double min, double max) {
+		if (min > getMin() || max < getMax())
 			throw new IllegalArgumentException("Provided external values are more "
-				+ "limiting than calculated ones");
-		return normalize((int) dMin, (int) dMax);
+					+ "limiting than calculated ones");
+		return normalize((int) min, (int) max);
 	}
 
 	@Override
@@ -119,24 +117,23 @@ public class IntCContainer
 	/**
 	 * Does the actual normalization
 	 * 
-	 * @param iMin
-	 * @param iMax
+	 * @param min
+	 * @param max
 	 * @return
-	 * @throws IllegalAttributeException
-	 *             when iMin is >= iMax
+	 * @throws IllegalAttributeException when iMin is >= iMax
 	 */
-	private FloatCContainer normalize(int iMin, int iMax)
+	private FloatCContainer normalize(int min, int max)
 
 	{
-		if (iMin >= iMax)
+		if (min >= max)
 			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
-		float[] fArTmpTarget = new float[iArContainer.length];
+		float[] target = new float[container.length];
 
-		for (int iCount = 0; iCount < iArContainer.length; iCount++) {
-			fArTmpTarget[iCount] = ((float) iArContainer[iCount] - iMin) / (iMax - iMin);
-			fArTmpTarget[iCount] = fArTmpTarget[iCount] > 1 ? 1 : fArTmpTarget[iCount];
+		for (int iCount = 0; iCount < container.length; iCount++) {
+			target[iCount] = ((float) container[iCount] - min) / (max - min);
+			target[iCount] = target[iCount] > 1 ? 1 : target[iCount];
 		}
-		return new FloatCContainer(fArTmpTarget);
+		return new FloatCContainer(target);
 	}
 
 	/**
@@ -144,17 +141,17 @@ public class IntCContainer
 	 */
 	private void calculateMinMax() {
 
-		for (int iCurrentValue : iArContainer) {
+		for (int current : container) {
 			// Handle NaN values
-			if (iCurrentValue == Integer.MIN_VALUE) {
+			if (current == Integer.MIN_VALUE) {
 				continue;
 			}
 
-			if (iCurrentValue < iMin) {
-				iMin = iCurrentValue;
+			if (current < min) {
+				min = current;
 			}
-			if (iCurrentValue > iMax) {
-				iMax = iCurrentValue;
+			if (current > max) {
+				max = current;
 			}
 		}
 	}
@@ -162,15 +159,15 @@ public class IntCContainer
 	@Override
 	public FloatCContainer log(int iBase) {
 
-		float[] fArTarget = new float[iArContainer.length];
+		float[] target = new float[container.length];
 
-		float fTmp;
-		for (int index = 0; index < iArContainer.length; index++) {
-			fTmp = iArContainer[index];
-			fArTarget[index] = (float) Math.log(fTmp) / (float) Math.log(iBase);
+		float tmp;
+		for (int index = 0; index < container.length; index++) {
+			tmp = container[index];
+			target[index] = (float) Math.log(tmp) / (float) Math.log(iBase);
 		}
 
-		return new FloatCContainer(fArTarget);
+		return new FloatCContainer(target);
 	}
 
 }
