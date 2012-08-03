@@ -34,9 +34,8 @@ public class RegExTester {
 
 	public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-01";
 
-	public static void main(String[] args)
-
-	{
+	public static void main(String[] args) {
+		
 		String inputString = "TCGA-09-0364-01";
 
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
@@ -47,6 +46,5 @@ public class RegExTester {
 		String outputString = TabularDataParser.convertID(inputString, idTypeParsingRules);
 
 		System.out.println("Output: " + outputString);
-
 	}
 }
