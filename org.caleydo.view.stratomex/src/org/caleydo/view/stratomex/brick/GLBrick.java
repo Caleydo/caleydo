@@ -1188,8 +1188,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 								kaplanMeierDimensionGroupData);
 
 						ClinicalDataConfigurer dataConfigurer = new ClinicalDataConfigurer();
-						dataConfigurer
-								.setMaxTimeValue(calculateMaxTimeValue(kaplanMeierDimensionGroupData));
+//						dataConfigurer
+//								.setMaxTimeValue(calculateMaxTimeValue(kaplanMeierDimensionGroupData));
 						ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
 						sortingStrategy.setExternalBricks(dimensionGroup.getBricks());
 						sortingStrategy

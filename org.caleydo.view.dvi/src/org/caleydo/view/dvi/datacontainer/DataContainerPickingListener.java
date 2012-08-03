@@ -164,8 +164,9 @@ public class DataContainerPickingListener extends APickingListener {
 					for (IConfigurationElement category : categoryElements) {
 
 						if (category.getAttribute("viewID").equals(bundleID)
-								&& new Boolean(category.getAttribute("isDataView"))) {
-							boolean isReleaseView = new Boolean(category.getAttribute("isReleaseView"));
+								&& Boolean.valueOf(category.getAttribute("isDataView"))) {
+							boolean isReleaseView = Boolean.valueOf(category
+									.getAttribute("isReleaseView"));
 							if (GeneralManager.RELEASE_MODE && !isReleaseView) {
 								continue;
 							}

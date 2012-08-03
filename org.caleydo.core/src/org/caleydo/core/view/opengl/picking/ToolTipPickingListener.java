@@ -106,6 +106,7 @@ public class ToolTipPickingListener extends APickingListener {
 
 			if (toolTip != null) {
 				toolTip.setVisible(false);
+				toolTip.dispose();
 			}
 		}
 

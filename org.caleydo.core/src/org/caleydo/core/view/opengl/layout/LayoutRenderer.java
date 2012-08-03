@@ -114,10 +114,12 @@ public abstract class LayoutRenderer {
 		}
 
 	}
-	
-	protected void deleteDisplayList(GL2 gl) {
-		if(hasDisplayListIndex) {
+
+	public void deleteDisplayList(GL2 gl) {
+		if (hasDisplayListIndex) {
 			gl.glDeleteLists(displayListIndex, 1);
+			hasDisplayListIndex = false;
+			displayListIndex = -1;
 		}
 	}
 
@@ -203,9 +205,12 @@ public abstract class LayoutRenderer {
 
 	@Override
 	protected void finalize() throws Throwable {
-		if (layoutManager != null && hasDisplayListIndex)
-			layoutManager.addDisplayListToDelete(displayListIndex);
-		super.finalize();
+		try {
+			if (layoutManager != null && hasDisplayListIndex)
+				layoutManager.addDisplayListToDelete(displayListIndex);
+		} finally {
+			super.finalize();
+		}
 	}
 
 }

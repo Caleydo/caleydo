@@ -142,6 +142,7 @@ public class LayoutManager {
 	 * @param gl
 	 */
 	protected void deleteDisplayListsOfDestroyedRenderers(GL2 gl) {
+
 		// Free display lists
 		for (int displayListIndex : displayListsToDelete) {
 			gl.glDeleteLists(displayListIndex, 1);

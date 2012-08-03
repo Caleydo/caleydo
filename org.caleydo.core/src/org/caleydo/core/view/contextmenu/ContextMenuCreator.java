@@ -51,13 +51,22 @@ public class ContextMenuCreator {
 		this.parent = view.getParentComposite();
 
 		final ContextMenuCreator menuCreator = this;
-		final JPopupMenu popup = menuCreator.create();
+		
+		parent.getDisplay().asyncExec(new Runnable() {
+			
+			@Override
+			public void run() {
+				final JPopupMenu popup = menuCreator.create();
 
-		int cursorLocationX = MouseInfo.getPointerInfo().getLocation().x
-				- view.getParentGLCanvas().getLocationOnScreen().x;
-		int cursorLocationY = MouseInfo.getPointerInfo().getLocation().y
-				- view.getParentGLCanvas().getLocationOnScreen().y;
-		popup.show(view.getParentGLCanvas().getParent(), cursorLocationX, cursorLocationY);
+				int cursorLocationX = MouseInfo.getPointerInfo().getLocation().x
+						- view.getParentGLCanvas().getLocationOnScreen().x;
+				int cursorLocationY = MouseInfo.getPointerInfo().getLocation().y
+						- view.getParentGLCanvas().getLocationOnScreen().y;
+				popup.show(view.getParentGLCanvas().getParent(), cursorLocationX, cursorLocationY);
+				
+			}
+		});
+		
 	}
 
 	public Composite getParent() {

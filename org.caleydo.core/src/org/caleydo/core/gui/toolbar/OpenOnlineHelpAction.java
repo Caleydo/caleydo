@@ -51,5 +51,6 @@ public class OpenOnlineHelpAction extends AToolBarAction implements IToolBarItem
 		setChecked(false);
 		LinkHandler.openLink(url);
 	};
+	
 
 }
