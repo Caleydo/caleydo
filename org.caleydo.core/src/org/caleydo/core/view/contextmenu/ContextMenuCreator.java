@@ -73,26 +73,26 @@ public class ContextMenuCreator {
 		return parent;
 	}
 
-	public void clear() {
+	public synchronized void clear() {
 		menuItems.clear();
 	}
 
-	public void addContextMenuItem(AContextMenuItem menuItem) {
+	public synchronized void addContextMenuItem(AContextMenuItem menuItem) {
 		menuItems.add(menuItem);
 	}
 
-	public void addContextMenuItemContainer(AContextMenuItemContainer menuItemContainer) {
+	public synchronized void addContextMenuItemContainer(AContextMenuItemContainer menuItemContainer) {
 		menuItems.addAll(menuItemContainer.getContextMenuItems());
 	}
 
-	public boolean hasMenuItems() {
+	public synchronized boolean hasMenuItems() {
 		if (menuItems.size() > 0)
 			return true;
 
 		return false;
 	}
 
-	public JPopupMenu create() {
+	public synchronized JPopupMenu create() {
 
 		JPopupMenu menu = new JPopupMenu();
 
