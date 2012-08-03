@@ -431,9 +431,9 @@ public class TCGADataXMLGenerator
 
 		DataSetDescription mutationData = new DataSetDescription();
 		mutationData.setDataSetName(dataSetName);
-
 		mutationData.setDataSourcePath(mutationFile);
 		mutationData.setNumberOfHeaderLines(1);
+		mutationData.setMax((float) 1);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(8);
@@ -462,12 +462,10 @@ public class TCGADataXMLGenerator
 
 	private DataSetDescription setUpCopyNumberData(String archiveName, String dataType) {
 		String copyNumberFile = this.extractFile("all_thresholded.by_genes.txt", archiveName,
-				analysisRunIdentifierWithoutUnderscore,
-				remoteAnalysisRunArchiveDirectory, 4);
+				analysisRunIdentifierWithoutUnderscore, remoteAnalysisRunArchiveDirectory, 4);
 
 		DataSetDescription copyNumberData = new DataSetDescription();
 		copyNumberData.setDataSetName(dataType);
-
 		copyNumberData.setDataSourcePath(copyNumberFile);
 		copyNumberData.setNumberOfHeaderLines(1);
 
