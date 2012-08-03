@@ -346,7 +346,6 @@ public class TCGADataXMLGenerator
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
-
 	}
 
 	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName,
@@ -393,7 +392,7 @@ public class TCGADataXMLGenerator
 		GroupingParseSpecification firehoseCnmfClustering = new GroupingParseSpecification(
 				cnmfGroupingFile);
 		firehoseCnmfClustering.setContainsColumnIDs(false);
-		firehoseCnmfClustering.setRowIDSpecification(sampleIDSpecification);
+		firehoseCnmfClustering.setRowIDSpecification(columnIDSpecification);
 		firehoseCnmfClustering.setGroupingName("NMF Cluster");
 		matrixData.addColumnGroupingSpecification(firehoseCnmfClustering);
 
@@ -406,7 +405,7 @@ public class TCGADataXMLGenerator
 			GroupingParseSpecification firehoseHierarchicalClustering = new GroupingParseSpecification(
 					hierarchicalGroupingFile);
 			firehoseHierarchicalClustering.setContainsColumnIDs(false);
-			firehoseHierarchicalClustering.setRowIDSpecification(sampleIDSpecification);
+			firehoseHierarchicalClustering.setRowIDSpecification(columnIDSpecification);
 			firehoseHierarchicalClustering.setGroupingName("Hier. Cluster");
 			matrixData.addColumnGroupingSpecification(firehoseHierarchicalClustering);
 		}
