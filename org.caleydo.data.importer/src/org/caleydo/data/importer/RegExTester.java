@@ -32,15 +32,17 @@ import org.caleydo.data.importer.tcga.TCGATestDataXMLGenerator;
  */
 public class RegExTester {
 
+	public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-01";
+
 	public static void main(String[] args)
 
 	{
-		String inputString = "TCGA-02-0001";
+		String inputString = "TCGA-09-0364-01";
 
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
 		// idSpecification.setReplacementExpression(replacingExpression,
 		// replacementString)
-		idTypeParsingRules.setSubStringExpression(TCGATestDataXMLGenerator.TCGA_ID_SUBSTRING_REGEX);
+		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
 
 		String outputString = TabularDataParser.convertID(inputString, idTypeParsingRules);
 
