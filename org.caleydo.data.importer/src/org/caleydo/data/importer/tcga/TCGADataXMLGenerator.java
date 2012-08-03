@@ -244,15 +244,15 @@ public class TCGADataXMLGenerator
 		rowIDSpecification = new IDSpecification();
 		rowIDSpecification.setIdType("microRNA");
 		rowIDSpecification.setIdCategory("microRNA");
-
-		try {
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData("miR_Clustering_CNMF",
-					"miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA",
-					rowIDSpecification, sampleIDSpecification, false));
-		}
-		catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
+		
+		 try {
+		 dataSetDescriptionCollection.add(setUpClusteredMatrixData("miR_Clustering_CNMF",
+		 "miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA",
+		 rowIDSpecification, sampleIDSpecification, false));
+		 }
+		 catch (Exception e) {
+		 System.err.println(e.getMessage());
+		 }
 
 		// TCGA SAMPLE IDs look different for seq data (an "-01" is attached)
 
@@ -261,20 +261,20 @@ public class TCGADataXMLGenerator
 		seqSampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules seqSampleIDTypeParsingRules = new IDTypeParsingRules();
 		seqSampleIDTypeParsingRules.setSubStringExpression("TCGA\\-|\\-..\\z");
-
+		seqSampleIDTypeParsingRules.setReplacementExpression("\\.", "-");
 		seqSampleIDSpecification.setIdTypeParsingRules(seqSampleIDTypeParsingRules);
 
 		// ====== mRNAseq ======
 
-		try {
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData(
-					"mRNAseq_Clustering_CNMF", "mRNAseq_Clustering_Consensus",
-					"outputprefix.expclu.gct", "mRNA-seq", rowIDSpecification,
-					seqSampleIDSpecification, true));
-		}
-		catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
+		 try {
+		 dataSetDescriptionCollection.add(setUpClusteredMatrixData(
+		 "mRNAseq_Clustering_CNMF", "mRNAseq_Clustering_Consensus",
+		 "outputprefix.expclu.gct", "mRNA-seq", rowIDSpecification,
+		 seqSampleIDSpecification, true));
+		 }
+		 catch (Exception e) {
+		 System.err.println(e.getMessage());
+		 }
 
 		// ====== microRNAseq ======
 
@@ -292,60 +292,60 @@ public class TCGADataXMLGenerator
 
 		rowIDSpecification = null; // uses genes
 
-		try {
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData(
-					"Methylation_Clustering_CNMF", "Methylation_Clustering_Consensus",
-					"cnmf.normalized.gct", "methylation", rowIDSpecification,
-					sampleIDSpecification, true));
-		}
-		catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
-
-		// ====== reverse-phase protein arrays ======
-
-		rowIDSpecification = new IDSpecification();
-		rowIDSpecification.setIdType("protein");
-		rowIDSpecification.setIdCategory("protein");
-
-		try {
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData("RPPA_Clustering_CNMF",
-					"RPPA_Clustering_Consensus", "cnmf.normalized.gct", "RPPA",
-					rowIDSpecification, sampleIDSpecification, false));
-		}
-		catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
-
-		// ====== copy number ======
-
-		try {
-			dataSetDescriptionCollection.add(setUpCopyNumberData("CopyNumber_Gistic2",
-					"Copy Number"));
-		}
-		catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
-
-		// ====== mutation ======
-
-		try {
-			dataSetDescriptionCollection.add(setUpMutationData("Mutation_Significance",
-					"Mutations"));
-		}
-		catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
-
-		// ====== clinical ======
-
-		try {
-			dataSetDescriptionCollection.add(setUpClinicalData("Clinical_Pick_Tier1",
-					"Clinical"));
-		}
-		catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
+		 try {
+		 dataSetDescriptionCollection.add(setUpClusteredMatrixData(
+		 "Methylation_Clustering_CNMF", "Methylation_Clustering_Consensus",
+		 "cnmf.normalized.gct", "methylation", rowIDSpecification,
+		 sampleIDSpecification, true));
+		 }
+		 catch (Exception e) {
+		 System.err.println(e.getMessage());
+		 }
+		
+		 // ====== reverse-phase protein arrays ======
+		
+		 rowIDSpecification = new IDSpecification();
+		 rowIDSpecification.setIdType("protein");
+		 rowIDSpecification.setIdCategory("protein");
+		
+		 try {
+		 dataSetDescriptionCollection.add(setUpClusteredMatrixData("RPPA_Clustering_CNMF",
+		 "RPPA_Clustering_Consensus", "cnmf.normalized.gct", "RPPA",
+		 rowIDSpecification, sampleIDSpecification, false));
+		 }
+		 catch (Exception e) {
+		 System.err.println(e.getMessage());
+		 }
+		
+		 // ====== copy number ======
+		
+		 try {
+		 dataSetDescriptionCollection.add(setUpCopyNumberData("CopyNumber_Gistic2",
+		 "Copy Number"));
+		 }
+		 catch (Exception e) {
+		 System.err.println(e.getMessage());
+		 }
+		
+		 // ====== mutation ======
+		
+		 try {
+		 dataSetDescriptionCollection.add(setUpMutationData("Mutation_Significance",
+		 "Mutations"));
+		 }
+		 catch (Exception e) {
+		 System.err.println(e.getMessage());
+		 }
+		
+		 // ====== clinical ======
+		
+		 try {
+		 dataSetDescriptionCollection.add(setUpClinicalData("Clinical_Pick_Tier1",
+		 "Clinical"));
+		 }
+		 catch (Exception e) {
+		 System.err.println(e.getMessage());
+		 }
 	}
 
 	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName,
