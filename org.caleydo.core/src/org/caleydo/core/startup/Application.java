@@ -36,12 +36,17 @@ public class Application implements IApplication {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
+		try {
 
-		Logger.log(new Status(Status.INFO, this.toString(), "Starting Caleydo"));
-		GeneralManager.get().getPreferenceStore();
+			Logger.log(new Status(Status.INFO, this.toString(), "Starting Caleydo"));
+			GeneralManager.get().getPreferenceStore();
 
-		StartupProcessor.get().initStartupProcudure(context.getArguments());
-
+			StartupProcessor.get().initStartupProcudure(context.getArguments());
+		} catch (Exception e) {
+			Logger.log(new Status(Status.ERROR, this.toString(),
+					"Caught exception, crashing.", e));
+			throw e;
+		}
 		return IApplication.EXIT_OK;
 	}
 

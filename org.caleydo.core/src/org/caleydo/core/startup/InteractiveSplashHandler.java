@@ -24,6 +24,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
@@ -34,8 +35,7 @@ import org.eclipse.ui.splash.AbstractSplashHandler;
  * 
  * @author Marc Streit
  */
-public class InteractiveSplashHandler
-	extends AbstractSplashHandler {
+public class InteractiveSplashHandler extends AbstractSplashHandler {
 	private ProgressBar progressBar;
 
 	private static Shell shell;
@@ -73,10 +73,11 @@ public class InteractiveSplashHandler
 		progressMessageLabel.setText(" Loading...");
 		// label.setForeground(splash.getDisplay().getSystemColor
 		// (SWT.COLOR_BLACK));
-		progressMessageLabel.setFont(new Font(splash.getDisplay(), "Arial", 10, SWT.NONE));
-		progressMessageLabel.setBounds(20, 230, getSplash().getSize().x - 40, 25);
 		progressMessageLabel
-				.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+				.setFont(new Font(splash.getDisplay(), "Arial", 10, SWT.NONE));
+		progressMessageLabel.setBounds(20, 230, getSplash().getSize().x - 40, 25);
+		progressMessageLabel.setForeground(splash.getDisplay().getSystemColor(
+				SWT.COLOR_WHITE));
 
 		Label versionLabel = new Label(splash, SWT.NONE);
 		versionLabel.setText(" Version " + Activator.version + " BETA");
@@ -84,52 +85,57 @@ public class InteractiveSplashHandler
 		versionLabel.setBounds(336, 185, 150, 20);
 		versionLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
-//		Label brandingLabelTUGCaption = new Label(splash, SWT.NONE);
-//		brandingLabelTUGCaption.setText(" Graz University of Technology, Austria:");
-//		brandingLabelTUGCaption.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
-//		brandingLabelTUGCaption.setBounds(20, 253, 220, 15);
-//		brandingLabelTUGCaption.setForeground(splash.getDisplay().getSystemColor(
-//				SWT.COLOR_WHITE));
+		// Label brandingLabelTUGCaption = new Label(splash, SWT.NONE);
+		// brandingLabelTUGCaption.setText(" Graz University of Technology, Austria:");
+		// brandingLabelTUGCaption.setFont(new Font(splash.getDisplay(),
+		// "Arial", 8, SWT.BOLD));
+		// brandingLabelTUGCaption.setBounds(20, 253, 220, 15);
+		// brandingLabelTUGCaption.setForeground(splash.getDisplay().getSystemColor(
+		// SWT.COLOR_WHITE));
 
-//		Label brandingLabelTUGTeamCaption = new Label(splash, SWT.NONE);
-//		brandingLabelTUGTeamCaption
-//				.setText(" Alexander Lex, Christian Partl, Dieter Schmalstieg ");
-//		brandingLabelTUGTeamCaption.setFont(new Font(splash.getDisplay(), "Arial", 8,
-//				SWT.NORMAL));
-//		brandingLabelTUGTeamCaption.setBounds(240, 253, 250, 15);
-//		brandingLabelTUGTeamCaption.setForeground(splash.getDisplay().getSystemColor(
-//				SWT.COLOR_WHITE));
-//
-//		Label brandingLabelJKUCaption = new Label(splash, SWT.NONE);
-//		brandingLabelJKUCaption.setText(" Johannes Kepler University Linz, Austria:");
-//		brandingLabelJKUCaption.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
-//		brandingLabelJKUCaption.setBounds(20, 270, 220, 15);
-//		brandingLabelJKUCaption.setForeground(splash.getDisplay().getSystemColor(
-//				SWT.COLOR_WHITE));
-//
-//		Label brandingLabelJKUTeamCaption = new Label(splash, SWT.NONE);
-//		brandingLabelJKUTeamCaption.setText(" Marc Streit ");
-//		brandingLabelJKUTeamCaption.setFont(new Font(splash.getDisplay(), "Arial", 8,
-//				SWT.NORMAL));
-//		brandingLabelJKUTeamCaption.setBounds(240, 270, 100, 15);
-//		brandingLabelJKUTeamCaption.setForeground(splash.getDisplay().getSystemColor(
-//				SWT.COLOR_WHITE));
+		// Label brandingLabelTUGTeamCaption = new Label(splash, SWT.NONE);
+		// brandingLabelTUGTeamCaption
+		// .setText(" Alexander Lex, Christian Partl, Dieter Schmalstieg ");
+		// brandingLabelTUGTeamCaption.setFont(new Font(splash.getDisplay(),
+		// "Arial", 8,
+		// SWT.NORMAL));
+		// brandingLabelTUGTeamCaption.setBounds(240, 253, 250, 15);
+		// brandingLabelTUGTeamCaption.setForeground(splash.getDisplay().getSystemColor(
+		// SWT.COLOR_WHITE));
+		//
+		// Label brandingLabelJKUCaption = new Label(splash, SWT.NONE);
+		// brandingLabelJKUCaption.setText(" Johannes Kepler University Linz, Austria:");
+		// brandingLabelJKUCaption.setFont(new Font(splash.getDisplay(),
+		// "Arial", 8, SWT.BOLD));
+		// brandingLabelJKUCaption.setBounds(20, 270, 220, 15);
+		// brandingLabelJKUCaption.setForeground(splash.getDisplay().getSystemColor(
+		// SWT.COLOR_WHITE));
+		//
+		// Label brandingLabelJKUTeamCaption = new Label(splash, SWT.NONE);
+		// brandingLabelJKUTeamCaption.setText(" Marc Streit ");
+		// brandingLabelJKUTeamCaption.setFont(new Font(splash.getDisplay(),
+		// "Arial", 8,
+		// SWT.NORMAL));
+		// brandingLabelJKUTeamCaption.setBounds(240, 270, 100, 15);
+		// brandingLabelJKUTeamCaption.setForeground(splash.getDisplay().getSystemColor(
+		// SWT.COLOR_WHITE));
 
-//		Label brandingLabelHarvardCaption = new Label(splash, SWT.NONE);
-//		brandingLabelHarvardCaption.setText(" Harvard University, US: ");
-//		brandingLabelHarvardCaption
-//				.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
-//		brandingLabelHarvardCaption.setBounds(20, 287, 220, 15);
-//		brandingLabelHarvardCaption.setForeground(splash.getDisplay().getSystemColor(
-//				SWT.COLOR_WHITE));
-//
-//		Label brandingLabelHarvardTeamCaption = new Label(splash, SWT.NONE);
-//		brandingLabelHarvardTeamCaption.setText(" Nils Gehlenborg ");
-//		brandingLabelHarvardTeamCaption.setFont(new Font(splash.getDisplay(), "Arial", 8,
-//				SWT.NORMAL));
-//		brandingLabelHarvardTeamCaption.setBounds(240, 287, 100, 15);
-//		brandingLabelHarvardTeamCaption.setForeground(splash.getDisplay().getSystemColor(
-//				SWT.COLOR_WHITE));
+		// Label brandingLabelHarvardCaption = new Label(splash, SWT.NONE);
+		// brandingLabelHarvardCaption.setText(" Harvard University, US: ");
+		// brandingLabelHarvardCaption
+		// .setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
+		// brandingLabelHarvardCaption.setBounds(20, 287, 220, 15);
+		// brandingLabelHarvardCaption.setForeground(splash.getDisplay().getSystemColor(
+		// SWT.COLOR_WHITE));
+		//
+		// Label brandingLabelHarvardTeamCaption = new Label(splash, SWT.NONE);
+		// brandingLabelHarvardTeamCaption.setText(" Nils Gehlenborg ");
+		// brandingLabelHarvardTeamCaption.setFont(new Font(splash.getDisplay(),
+		// "Arial", 8,
+		// SWT.NORMAL));
+		// brandingLabelHarvardTeamCaption.setBounds(240, 287, 100, 15);
+		// brandingLabelHarvardTeamCaption.setForeground(splash.getDisplay().getSystemColor(
+		// SWT.COLOR_WHITE));
 
 		// Label brandingLabelTUGNames = new Label(splash, SWT.NONE);
 		// brandingLabelTUGNames
@@ -153,11 +159,12 @@ public class InteractiveSplashHandler
 		// brandingLabelMUGNames.setBounds(20, 312, 300, 15);
 		// brandingLabelMUGNames.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
-//		Label copyrightLabel = new Label(splash, SWT.NONE);
-//		copyrightLabel.setText(" (c) 2005 - 2012  www.caleydo.org");
-//		copyrightLabel.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
-//		copyrightLabel.setBounds(385, 312, 180, 16);
-//		copyrightLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		// Label copyrightLabel = new Label(splash, SWT.NONE);
+		// copyrightLabel.setText(" (c) 2005 - 2012  www.caleydo.org");
+		// copyrightLabel.setFont(new Font(splash.getDisplay(), "Arial", 8,
+		// SWT.BOLD));
+		// copyrightLabel.setBounds(385, 312, 180, 16);
+		// copyrightLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		GeneralManager.get().getSWTGUIManager()
 				.setExternalProgressBarAndLabel(progressBar, progressMessageLabel);
@@ -178,7 +185,11 @@ public class InteractiveSplashHandler
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				splash.forceActive();
+				Display.getDefault().syncExec(new Runnable() {
+					public void run() {
+						splash.forceActive();
+					}
+				});
 			}
 		});
 	}

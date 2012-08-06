@@ -99,6 +99,7 @@ public class ProjectLoader {
 		} catch (Exception e) {
 			String message = "Failed to load project from\n" + dirName;
 			Logger.log(new Status(IStatus.ERROR, this.toString(), message, e));
+			e.printStackTrace();
 			// MessageBox messageBox =
 			// new
 			// MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),

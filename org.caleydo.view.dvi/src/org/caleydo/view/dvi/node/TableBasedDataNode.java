@@ -68,8 +68,8 @@ import org.eclipse.core.runtime.Platform;
 
 public class TableBasedDataNode extends ADataNode implements IDropArea {
 
-	private final static String TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE = "org.caleydo.view.dvi.toggletableperspectivebutton";
-	private final static int TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID = 0;
+	private final static String TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_TYPE = "org.caleydo.view.dvi.toggletableperspectivebutton";
+	private final static int TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_ID = 0;
 
 	private final static String TRIGGER_VENDING_MACHINE_BUTTON_PICKING_TYPE = "org.caleydo.view.dvi.triggervendingmachinebutton";
 	private final static int TRIGGER_VENDING_MACHINE_BUTTON_PICKING_ID = 1;
@@ -194,8 +194,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 				view.setDisplayListDirty();
 			}
 
-		}, TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE + getID(),
-				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID);
+		}, TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_TYPE + getID(),
+				TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_ID);
 
 		view.addIDPickingListener(new APickingListener() {
 
@@ -330,8 +330,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 				"toggleTablePerspectiveLayout");
 		toggleTablePerspectiveButtonLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		toggleTablePerspectiveButtonLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
-		toggleTablePerspectiveButton = new Button(TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE
-				+ getID(), TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID,
+		toggleTablePerspectiveButton = new Button(TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_TYPE
+				+ getID(), TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_ID,
 				EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
 
 		if (dataDomain.getRecordPerspectiveIDs().size() < 1
@@ -386,8 +386,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 	@Override
 	public void destroy() {
-		view.removeAllIDPickingListeners(TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE
-				+ getID(), TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID);
+		view.removeAllIDPickingListeners(TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_TYPE
+				+ getID(), TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_ID);
 		view.removeAllIDPickingListeners(TRIGGER_VENDING_MACHINE_BUTTON_PICKING_TYPE
 				+ getID(), TRIGGER_VENDING_MACHINE_BUTTON_PICKING_ID);
 		view.removeAllIDPickingListeners(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
