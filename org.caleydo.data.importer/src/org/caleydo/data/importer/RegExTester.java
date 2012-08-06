@@ -21,12 +21,13 @@ package org.caleydo.data.importer;
 
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.parser.ascii.TabularDataParser;
-import org.caleydo.data.importer.tcga.TCGATestDataXMLGenerator;
 
 /**
  * Test class for regular expressions applied to IDs. Uses the actual code which
  * is also used in caleydo. Can be used for replacement and substring
  * expressions
+ * 
+ * @see{http://docs.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html}
  * 
  * @author Alexander Lex
  */
@@ -36,12 +37,18 @@ public class RegExTester {
 
 	public static void main(String[] args) {
 		
-		String inputString = "TCGA-09-0364-01";
+
+		String inputString = "TCGA-61-2113-01";
+		
+		String regex = "TCGA\\-|\\-..\\z";
+//		String regex =TCGATestDataXMLGenerator.TCGA_ID_SUBSTRING_REGEX;
+
 
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
 		// idSpecification.setReplacementExpression(replacingExpression,
 		// replacementString)
-		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+
+		idTypeParsingRules.setSubStringExpression(regex);
 
 		String outputString = TabularDataParser.convertID(inputString, idTypeParsingRules);
 

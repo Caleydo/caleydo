@@ -25,9 +25,11 @@ import org.caleydo.core.id.IDType;
 
 /**
  * Parsing rules based on regular expressions for converting strings to ids of a
- * specific {@link IDType}. There are two modifications possible for incoming id
- * types:
+ * specific {@link IDType}. There are three modifications possible for incoming
+ * id types, <b>and these operations are executed in this order</b>. Note that
+ * the order has consequences on the process.
  * <ul>
+ * <li>Converting a string to lowercase, if {@link #toLowerCase} is true.</li>
  * <li>replacing (parts) of a string that matches the
  * {@link #replacingExpression} by the {@link #replacementString}</li>
  * <li>defining a substring of the incoming string - see
@@ -68,12 +70,26 @@ public class IDTypeParsingRules {
 
 	/**
 	 * <p>
+	 * Flag that determines whether all characters [A-Z] should be converted to
+	 * their lower-case equivalent. This is done <b>before</b> all other
+	 * operations. Defaults to false.
+	 * </p>
+	 * <p>
+	 * Implementation node: {@link String#toLowerCase()} is used, so look at the
+	 * details there especially for non-ascii characters.
+	 * </p>
+	 */
+	boolean toLowerCase = false;
+
+	/**
+	 * <p>
 	 * Regular expression specifying a string that is to be replaced with
 	 * {@link #replacementString} before storing and resolving the id.
 	 * {@link String#replaceAll(String, String)} is used to achieve this.
 	 * </p>
 	 * <p>
-	 * This is executed <b>before</b> a possible operation based on
+	 * This is executed <b>after</b> a possible conversion to lower case (
+	 * {@link #toLowerCase}) and <b>before</b> a possible operation based on
 	 * {@link #subStringExpression}.
 	 * </p>
 	 * <p>
@@ -114,7 +130,8 @@ public class IDTypeParsingRules {
 	 * Trailing strings can be removed in this manner.
 	 * </p>
 	 * <p>
-	 * This is executed <b>after</b> a possible operation based on
+	 * This is executed <b>after</b> a possible conversion to lower case (
+	 * {@link #toLowerCase}) and an operation based on
 	 * {@link #replacingExpression}.
 	 * </p>
 	 * <p>
@@ -140,6 +157,21 @@ public class IDTypeParsingRules {
 	 */
 	public boolean isDefault() {
 		return isDefault;
+	}
+
+	/**
+	 * @param toLowerCase
+	 *            setter, see {@link #toLowerCase}
+	 */
+	public void setToLowerCase(boolean toLowerCase) {
+		this.toLowerCase = toLowerCase;
+	}
+
+	/**
+	 * @return the toLowerCase, see {@link #toLowerCase}
+	 */
+	public boolean isToLowerCase() {
+		return toLowerCase;
 	}
 
 	/**

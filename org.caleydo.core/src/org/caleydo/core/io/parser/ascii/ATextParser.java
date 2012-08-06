@@ -176,6 +176,8 @@ public abstract class ATextParser {
 	public static String convertID(String sourceID, IDTypeParsingRules idTypeParsingRules) {
 		if (idTypeParsingRules == null)
 			return sourceID;
+		if(idTypeParsingRules.isToLowerCase())
+			sourceID = sourceID.toLowerCase();
 		if (idTypeParsingRules.getReplacingExpression() != null) {
 			sourceID = sourceID.replaceAll(idTypeParsingRules.getReplacingExpression(),
 					idTypeParsingRules.getReplacementString());
