@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 
+import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
+
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.PreferenceManager;
 import org.caleydo.core.startup.gui.CaleydoProjectWizard;
@@ -95,13 +97,22 @@ public class StartupProcessor {
 
 	private void handleProgramArguments(Map<String, Object> applicationArguments) {
 
-		String[] runConfigParameters = (String[]) applicationArguments.get("application.args");
+		String[] runConfigParameters = (String[]) applicationArguments
+				.get("application.args");
+
+		String argumentString = "[";
+		for (String argument : runConfigParameters) {
+			argumentString += argument + " ";
+		}
+		argumentString += "]";
+		Logger.log(new Status(Status.INFO, this.toString(), "Application arguments: "
+				+ argumentString));
 
 		JSAP jsap = new JSAP();
 		try {
 			UnflaggedOption project = new UnflaggedOption("project")
-					.setStringParser(JSAP.STRING_PARSER).setDefault("").setRequired(false)
-					.setGreedy(false);
+					.setStringParser(JSAP.STRING_PARSER).setDefault("")
+					.setRequired(false).setGreedy(false);
 			jsap.registerParameter(project);
 
 			FlaggedOption projectFlagged = new FlaggedOption("projectFlagged")
@@ -115,14 +126,19 @@ public class StartupProcessor {
 			// check whether the command line was valid, and if it wasn't,
 			// display usage information and exit.
 			if (!config.success()) {
+				Logger.log(new Status(Status.ERROR, this.toString(),
+						"Failed to parse program line arguments with JSAP: "
+								+ argumentString));
+
 				handleJSAPError(jsap);
+				return;
 			}
 
 			String projectFileName = config.getString("project");
-			
+
 			if (projectFileName.isEmpty())
 				projectFileName = config.getString("projectFlagged");
-			
+
 			boolean isProjectFile = false;
 			if (projectFileName != null) {
 				isProjectFile = checkFileName(projectFileName);
@@ -133,8 +149,11 @@ public class StartupProcessor {
 				}
 			}
 
-		}
-		catch (JSAPException e) {
+		} catch (JSAPException e) {
+			e.printStackTrace();
+
+			Logger.log(new Status(Status.ERROR, this.toString(),
+					"Error during parsing of program arguments", e));
 			handleJSAPError(jsap);
 		}
 	}
@@ -144,8 +163,6 @@ public class StartupProcessor {
 		System.err.println("Usage: Caleydo");
 		System.err.println(jsap.getUsage());
 		System.err.println();
-
-		shutdown();
 	}
 
 	/**
@@ -168,7 +185,8 @@ public class StartupProcessor {
 		if (candiateString.endsWith(".cal"))
 			return true;
 
-		System.err.println("The specified project " + candiateString + " is not a *.cal file");
+		System.err.println("The specified project " + candiateString
+				+ " is not a *.cal file");
 		return false;
 	}
 
@@ -184,8 +202,7 @@ public class StartupProcessor {
 		try {
 			URL workspaceURL = new URL(workspacePath);
 			instanceLoc.set(workspaceURL, false);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// throw new IllegalStateException
 			System.err.println("Cannot set workspace location at " + workspacePath);
 		}
@@ -209,22 +226,21 @@ public class StartupProcessor {
 			display = PlatformUI.createDisplay();
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
 			PlatformUI.createAndRunWorkbench(display, applicationWorkbenchAdvisor);
-		}
-		finally {
+		} finally {
 			shutdown();
 		}
 	}
 
 	public AStartupProcedure createStartupProcedure(ApplicationMode appMode) {
 		switch (appMode) {
-			case GUI:
-				startupProcedure = new GeneticGUIStartupProcedure();
-				break;
-			case SERIALIZATION:
-				startupProcedure = new SerializationStartupProcedure();
-				break;
-			case GENERIC:
-				startupProcedure = new GenericGUIStartupProcedure();
+		case GUI:
+			startupProcedure = new GeneticGUIStartupProcedure();
+			break;
+		case SERIALIZATION:
+			startupProcedure = new SerializationStartupProcedure();
+			break;
+		case GENERIC:
+			startupProcedure = new GenericGUIStartupProcedure();
 		}
 
 		return startupProcedure;
@@ -242,8 +258,7 @@ public class StartupProcessor {
 			Logger.log(new Status(IStatus.WARNING, this.toString(),
 					"Save Caleydo preferences..."));
 			generalManager.getPreferenceStore().save();
-		}
-		catch (IOException ioException) {
+		} catch (IOException ioException) {
 			throw new IllegalStateException("Unable to save preference file at: "
 					+ PreferenceManager.getPreferencePath(), ioException);
 		}
