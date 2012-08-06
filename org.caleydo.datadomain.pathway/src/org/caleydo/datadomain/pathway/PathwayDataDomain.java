@@ -21,10 +21,8 @@ package org.caleydo.datadomain.pathway;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -35,6 +33,7 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
@@ -92,6 +91,9 @@ public class PathwayDataDomain
 
 		this.dataSetDescription = new DataSetDescription();
 
+		// set a neutral gray as the pathway color
+		dataSetDescription.setColor(new Color(0.8f, 0.8f, 0.8f));
+
 		// Pathways should not be serialized, as they are automatically loaded
 		// when genetic data get loaded.
 		isSerializeable = false;
@@ -125,8 +127,8 @@ public class PathwayDataDomain
 
 		PathwayManager.get().loadPathwaysByType(pathwayDatabase);
 
-		pathwayDatabase = PathwayManager.get().createPathwayDatabase(EPathwayDatabaseType.KEGG,
-				"data/xml/", "data/images/", "");
+		pathwayDatabase = PathwayManager.get().createPathwayDatabase(
+				EPathwayDatabaseType.KEGG, "data/xml/", "data/images/", "");
 
 		PathwayManager.get().loadPathwaysByType(pathwayDatabase);
 

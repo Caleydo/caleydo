@@ -70,7 +70,7 @@ public class TCGADataXMLGenerator
 	protected String remoteAnalysisRunArchiveDirectory;
 	protected String remoteDataRunArchiveDirectory;
 
-	public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-...\\-";
+	public static final String TCGA_ID_SUBSTRING_REGEX = "tcga\\-|\\-...\\-";
 
 	private IDSpecification sampleIDSpecification;
 
@@ -224,6 +224,7 @@ public class TCGADataXMLGenerator
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
 		idTypeParsingRules.setReplacementExpression("\\.", "-");
 		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		idTypeParsingRules.setToLowerCase(true);
 		idTypeParsingRules.setDefault(true);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
 
@@ -262,8 +263,9 @@ public class TCGADataXMLGenerator
 		seqSampleIDSpecification.setIdCategory("TCGA_SAMPLE");
 		seqSampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules seqSampleIDTypeParsingRules = new IDTypeParsingRules();
-		seqSampleIDTypeParsingRules.setSubStringExpression("TCGA\\-|\\-..\\z");
+		seqSampleIDTypeParsingRules.setSubStringExpression("tcga\\-|\\-..\\z");
 		seqSampleIDTypeParsingRules.setReplacementExpression("\\.", "-");
+		seqSampleIDTypeParsingRules.setToLowerCase(true);
 		seqSampleIDSpecification.setIdTypeParsingRules(seqSampleIDTypeParsingRules);
 
 		// ====== mRNAseq ======
@@ -464,6 +466,7 @@ public class TCGADataXMLGenerator
 		IDTypeParsingRules mutationIDTypeParsingRules = new IDTypeParsingRules();
 		mutationIDTypeParsingRules.setReplacementExpression("\\_", "-");
 		mutationIDTypeParsingRules.setSubStringExpression("^[A-Z]+\\-");
+		mutationIDTypeParsingRules.setToLowerCase(true);
 		mutationSampleIDSpecification.setIdTypeParsingRules(mutationIDTypeParsingRules);
 		mutationData.setColumnIDSpecification(mutationSampleIDSpecification);
 
@@ -539,6 +542,7 @@ public class TCGADataXMLGenerator
 		clinicalSampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules clinicalSampleIDTypeParsingRules = new IDTypeParsingRules();
 		clinicalSampleIDTypeParsingRules.setSubStringExpression("tcga\\-");
+		clinicalSampleIDTypeParsingRules.setToLowerCase(true);
 		clinicalSampleIDSpecification.setIdTypeParsingRules(clinicalSampleIDTypeParsingRules);
 		clinicalData.setRowIDSpecification(clinicalSampleIDSpecification);
 
