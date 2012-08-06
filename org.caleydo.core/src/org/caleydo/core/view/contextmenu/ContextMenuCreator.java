@@ -23,6 +23,7 @@ import java.awt.MouseInfo;
 import java.util.ArrayList;
 
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.swt.widgets.Composite;
@@ -52,7 +53,7 @@ public class ContextMenuCreator {
 
 		final ContextMenuCreator menuCreator = this;
 		
-		parent.getDisplay().asyncExec(new Runnable() {
+		SwingUtilities.invokeLater(new Runnable() {
 			
 			@Override
 			public void run() {

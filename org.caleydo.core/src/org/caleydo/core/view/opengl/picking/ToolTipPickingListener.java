@@ -29,6 +29,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
+import javax.swing.SwingUtilities;
 
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -164,7 +165,7 @@ public class ToolTipPickingListener extends APickingListener {
 			public void run() {
 				// try {
 				// Thread.sleep(500);
-				view.getParentComposite().getDisplay().asyncExec(toolTipThread);
+				SwingUtilities.invokeLater(toolTipThread);
 				// } catch (InterruptedException e) {
 				// e.printStackTrace();
 				// }
@@ -202,7 +203,7 @@ public class ToolTipPickingListener extends APickingListener {
 
 	private void triggerToolTipHide() {
 		// System.out.println("hide picking");
-		view.getParentComposite().getDisplay().asyncExec(new Runnable() {
+		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
