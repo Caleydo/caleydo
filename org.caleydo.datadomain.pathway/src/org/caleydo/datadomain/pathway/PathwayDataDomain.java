@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
@@ -35,7 +36,7 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
+import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -59,9 +60,9 @@ public class PathwayDataDomain
 	IDType primaryIDType;
 
 	/**
-	 * {@link PathwayDataContainer}s of this datadomain.
+	 * {@link PathwayTablePerspective}s of this datadomain.
 	 */
-	private List<PathwayDataContainer> dataContainers = new ArrayList<PathwayDataContainer>();
+	private List<PathwayTablePerspective> tablePerspectives = new ArrayList<PathwayTablePerspective>();
 
 	/**
 	 * Counter used for determining the extension that together with the type
@@ -166,26 +167,26 @@ public class PathwayDataDomain
 	}
 
 	/**
-	 * Adds the specified datacontainer to this datadomain.
+	 * Adds the specified {@link TablePerspective} to this data domain.
 	 * 
 	 * @param tablePerspective
 	 */
-	public void addDataContainer(PathwayDataContainer dataContainer) {
-		if (dataContainer != null)
-			dataContainers.add(dataContainer);
+	public void addTablePerspective(PathwayTablePerspective tablePerspective) {
+		if (tablePerspective != null)
+			tablePerspectives.add(tablePerspective);
 
 		DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
-	public List<PathwayDataContainer> getDataContainers() {
-		return dataContainers;
+	public List<PathwayTablePerspective> getTablePerspectives() {
+		return tablePerspectives;
 	}
 
-	public void setDataContainers(List<PathwayDataContainer> dataContainers) {
-		if (dataContainers != null)
-			this.dataContainers = dataContainers;
+	public void setTablePerspectives(List<PathwayTablePerspective> tablePerspectives) {
+		if (tablePerspectives != null)
+			this.tablePerspectives = tablePerspectives;
 
 		DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
 		event.setSender(this);

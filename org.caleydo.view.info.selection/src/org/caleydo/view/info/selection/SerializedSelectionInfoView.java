@@ -22,8 +22,8 @@ package org.caleydo.view.info.selection;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 
 /**
  * Serialized form of a parallel-coordinates-view.
@@ -34,7 +34,7 @@ import org.caleydo.core.view.ISingleDataContainerBasedView;
 @Deprecated
 @XmlRootElement
 @XmlType
-public class SerializedSelectionInfoView extends ASerializedSingleDataContainerBasedView {
+public class SerializedSelectionInfoView extends ASerializedSingleTablePerspectiveBasedView {
 
 	/**
 	 * Default constructor with default initialization
@@ -42,7 +42,7 @@ public class SerializedSelectionInfoView extends ASerializedSingleDataContainerB
 	public SerializedSelectionInfoView() {
 	}
 
-	public SerializedSelectionInfoView(ISingleDataContainerBasedView view) {
+	public SerializedSelectionInfoView(ISingleTablePerspectiveBasedView view) {
 		super(view);
 	}
 

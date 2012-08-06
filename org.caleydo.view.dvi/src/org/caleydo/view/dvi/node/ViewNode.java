@@ -28,7 +28,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.view.IDataContainerBasedView;
+import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -41,8 +41,8 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.ViewNodeBackGroundRenderer;
 import org.caleydo.view.dvi.contextmenu.OpenViewItem;
-import org.caleydo.view.dvi.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.dvi.layout.AGraphLayout;
+import org.caleydo.view.dvi.tableperspective.ATablePerspectiveRenderer;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -54,7 +54,7 @@ import org.osgi.framework.FrameworkUtil;
 
 public class ViewNode extends ADefaultTemplateNode {
 
-	// private DataContainerListRenderer overviewDataContainerRenderer;
+	// private TablePerspectiveListRenderer overviewTablePerspectiveRenderer;
 	protected AGLView representedView;
 	protected Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
 	protected String viewName;
@@ -172,11 +172,11 @@ public class ViewNode extends ADefaultTemplateNode {
 
 		ElementLayout bodySpacingLayoutY = new ElementLayout("compGroupOverview");
 		// if (representedView instanceof ATableBasedView) {
-		// overviewDataContainerRenderer = new DataContainerListRenderer(this,
+		// overviewTablePerspectiveRenderer = new TablePerspectiveListRenderer(this,
 		// view, dragAndDropController, new ArrayList<TablePerspective>());
 		// } else {
-		// overviewDataContainerRenderer = new DataContainerListRenderer(this,
-		// view, dragAndDropController, getDataContainers());
+		// overviewTablePerspectiveRenderer = new TablePerspectiveListRenderer(this,
+		// view, dragAndDropController, getTablePerspectives());
 		// }
 
 		bodySpacingLayoutY.setRatioSizeY(1);
@@ -201,12 +201,12 @@ public class ViewNode extends ADefaultTemplateNode {
 	}
 
 	@Override
-	public List<TablePerspective> getDataContainers() {
+	public List<TablePerspective> getTablePerspectives() {
 
-		if (representedView instanceof IDataContainerBasedView) {
-			return ((IDataContainerBasedView) representedView).getDataContainers();
+		if (representedView instanceof ITablePerspectiveBasedView) {
+			return ((ITablePerspectiveBasedView) representedView).getTablePerspectives();
 			// TablePerspective tablePerspective = ((ATableBasedView) representedView)
-			// .getDataContainers();
+			// .getTablePerspectives();
 			// List<TablePerspective> containers = new ArrayList<TablePerspective>();
 			// containers.add(tablePerspective);
 			// return containers;
@@ -231,30 +231,30 @@ public class ViewNode extends ADefaultTemplateNode {
 	@Override
 	public void update() {
 		// if (representedView instanceof ATableBasedView) {
-		// overviewDataContainerRenderer
-		// .setDataContainers(new ArrayList<TablePerspective>());
+		// overviewTablePerspectiveRenderer
+		// .setTablePerspectives(new ArrayList<TablePerspective>());
 		// } else {
-		// overviewDataContainerRenderer
-		// .setDataContainers(getDataContainers());
+		// overviewTablePerspectiveRenderer
+		// .setTablePerspectives(getTablePerspectives());
 		// }
 		dataDomains = representedView.getDataDomains();
 		recalculateNodeSize();
 	}
 
 	@Override
-	protected ADataContainerRenderer getDataContainerRenderer() {
+	protected ATablePerspectiveRenderer getTablePerspectiveRenderer() {
 		return null;
 	}
 
 	@Override
 	public void destroy() {
 		super.destroy();
-		// overviewDataContainerRenderer.destroy();
+		// overviewTablePerspectiveRenderer.destroy();
 		view.removeAllIDPickingListeners(DATA_GRAPH_NODE_PICKING_TYPE, id);
 	}
 
 	@Override
-	public boolean showsDataContainers() {
+	public boolean showsTablePerspectives() {
 		return false;
 	}
 

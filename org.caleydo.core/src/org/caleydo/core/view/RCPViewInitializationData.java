@@ -48,11 +48,11 @@ public class RCPViewInitializationData {
 		this.dataDomainID = dataDomainID;
 	}
 
-	public TablePerspective getDataContainer() {
+	public TablePerspective getTablePerspective() {
 		return tablePerspective;
 	}
 
-	public void setDataContainer(TablePerspective tablePerspective) {
+	public void setTablePerspective(TablePerspective tablePerspective) {
 		this.tablePerspective = tablePerspective;
 	}
 }

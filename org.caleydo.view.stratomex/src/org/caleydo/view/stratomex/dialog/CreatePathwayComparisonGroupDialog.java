@@ -60,7 +60,7 @@ import org.eclipse.swt.widgets.TableItem;
  */
 public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 
-	private TablePerspective inputDataContainer;
+	private TablePerspective inputTablePerspective;
 
 	private ATableBasedDataDomain sourceDataDomain;
 	private PathwayDataDomain pathwayDataDomain;
@@ -120,7 +120,7 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 
 		super(parentShell);
 		// pathwayTableSorter = new PathwayTableSorter();
-		inputDataContainer = tablePerspective;
+		inputTablePerspective = tablePerspective;
 	}
 
 	@Override
@@ -148,14 +148,14 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 		descriptionLabel.setLayoutData(data);
 
 		VirtualArray<?, ?, ?> va = null;
-		if (inputDataContainer.getDataDomain().isColumnDimension())
-			va = inputDataContainer.getRecordPerspective().getVirtualArray();
+		if (inputTablePerspective.getDataDomain().isColumnDimension())
+			va = inputTablePerspective.getRecordPerspective().getVirtualArray();
 		else
-			va = inputDataContainer.getDimensionPerspective().getVirtualArray();
+			va = inputTablePerspective.getDimensionPerspective().getVirtualArray();
 
 		pathwayGraphsWithOccurrences = PathwayManager.get()
 				.getPathwayGraphsWithOccurencesByGeneIDs(
-						(GeneticDataDomain) inputDataContainer.getDataDomain(),
+						(GeneticDataDomain) inputTablePerspective.getDataDomain(),
 						va.getIdType(), va.getIDs());
 
 		// Create a list that contains pathways sorted by gene occurences

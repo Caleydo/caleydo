@@ -755,7 +755,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	}
 
 	@Override
-	public List<TablePerspective> getDataContainers() {
+	public List<TablePerspective> getTablePerspectives() {
 		ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>();
 		tablePerspectives.add(tablePerspective);
 		return tablePerspectives;

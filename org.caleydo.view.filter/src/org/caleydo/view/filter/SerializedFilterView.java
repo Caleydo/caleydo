@@ -22,8 +22,8 @@ package org.caleydo.view.filter;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 
 /**
  * Serialized filter view view.
@@ -32,7 +32,7 @@ import org.caleydo.core.view.ISingleDataContainerBasedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedFilterView extends ASerializedSingleDataContainerBasedView {
+public class SerializedFilterView extends ASerializedSingleTablePerspectiveBasedView {
 
 	/**
 	 * Default constructor with default initialization
@@ -40,7 +40,7 @@ public class SerializedFilterView extends ASerializedSingleDataContainerBasedVie
 	public SerializedFilterView() {
 	}
 
-	public SerializedFilterView(ISingleDataContainerBasedView view) {
+	public SerializedFilterView(ISingleTablePerspectiveBasedView view) {
 		super(view);
 	}
 

@@ -60,7 +60,7 @@ public class DimensionSelectionRenderer extends AHeatMapRenderer {
 
 		selectedSet = heatMap.getDimensionSelectionManager().getElements(selectionType);
 		int columnIndex = 0;
-		for (int tempColumn : heatMap.getDataContainer().getDimensionPerspective()
+		for (int tempColumn : heatMap.getTablePerspective().getDimensionPerspective()
 				.getVirtualArray()) {
 			for (Integer selectedColumn : selectedSet) {
 				if (tempColumn == selectedColumn) {

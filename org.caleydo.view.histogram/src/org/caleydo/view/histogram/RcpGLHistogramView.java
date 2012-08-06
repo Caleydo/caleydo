@@ -27,10 +27,10 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.ARcpGLViewPart;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.MinimumSizeComposite;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -41,7 +41,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLHistogramView extends ARcpGLViewPart implements IView,   
-		ISingleDataContainerBasedView {
+		ISingleTablePerspectiveBasedView {
 
 	
 //	protected SelectionCommandListener clearSelectionsListener;
@@ -110,7 +110,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 		if (dataDomain == null)
 			determineDataConfiguration(serializedView);
 		else
-			((ASerializedSingleDataContainerBasedView) serializedView).setDataDomainID(dataDomain
+			((ASerializedSingleTablePerspectiveBasedView) serializedView).setDataDomainID(dataDomain
 					.getDataDomainID());
 	}
 
@@ -125,7 +125,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 	}
 
 	@Override
-	public void setDataContainer(TablePerspective tablePerspective) {
+	public void setTablePerspective(TablePerspective tablePerspective) {
 		this.tablePerspective = tablePerspective;
 	}
 
@@ -133,7 +133,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 	public void initialize() {
 		ATableBasedView glHistogram = (ATableBasedView) view;
 		setDataDomain(glHistogram.getDataDomain());
-		setDataContainer(glHistogram.getDataContainer());
+		setTablePerspective(glHistogram.getTablePerspective());
 	}
 
 	@Override
@@ -167,13 +167,13 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 
 
 	@Override
-	public List<TablePerspective> getDataContainers() {
-		return ((ISingleDataContainerBasedView) view).getDataContainers();
+	public List<TablePerspective> getTablePerspectives() {
+		return ((ISingleTablePerspectiveBasedView) view).getTablePerspectives();
 	}
 
 	@Override
-	public TablePerspective getDataContainer() {
-		return ((ISingleDataContainerBasedView) view).getDataContainer();
+	public TablePerspective getTablePerspective() {
+		return ((ISingleTablePerspectiveBasedView) view).getTablePerspective();
 	}
 
 	

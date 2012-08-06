@@ -26,7 +26,7 @@ import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
 import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
-import org.caleydo.core.view.listener.RemoveDataContainerEvent;
+import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -275,7 +275,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 							StartClusteringDialog dialog = new StartClusteringDialog(
 									new Shell(), brick.getDataDomain());
 							TablePerspective data = brick.getDimensionGroup()
-									.getDataContainer();
+									.getTablePerspective();
 							dialog.setSourceDimensionPerspective(data
 									.getDimensionPerspective());
 							dialog.setSourceRecordPerspective(data.getRecordPerspective());
@@ -328,8 +328,8 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				brick.getParentComposite().getDisplay().asyncExec(new Runnable() {
 					@Override
 					public void run() {
-						RemoveDataContainerEvent event = new RemoveDataContainerEvent(
-								brick.getDimensionGroup().getDataContainer().getID());
+						RemoveTablePerspectiveEvent event = new RemoveTablePerspectiveEvent(
+								brick.getDimensionGroup().getTablePerspective().getID());
 						event.setSender(this);
 						GeneralManager.get().getEventPublisher().triggerEvent(event);
 					}

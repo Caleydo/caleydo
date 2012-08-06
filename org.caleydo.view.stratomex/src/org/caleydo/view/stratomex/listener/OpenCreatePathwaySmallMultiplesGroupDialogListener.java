@@ -43,13 +43,13 @@ public class OpenCreatePathwaySmallMultiplesGroupDialogListener
 			// Only the view on which the context menu was clicked should handle
 			// the event
 			if (((OpenCreatePathwaySmallMultiplesGroupDialogEvent) event)
-					.getDimensionGroupDataContainer() != handler.getDataContainer())
+					.getDimensionGroupTablePerspective() != handler.getTablePerspective())
 				return;
 
 			OpenCreatePathwaySmallMultiplesGroupDialogEvent openCreatePathwaySmallMultiplesGroupDialogevent = (OpenCreatePathwaySmallMultiplesGroupDialogEvent) event;
 			handler.openCreatePathwaySmallMultiplesGroupDialog(
 					openCreatePathwaySmallMultiplesGroupDialogevent
-							.getDimensionGroupDataContainer(),
+							.getDimensionGroupTablePerspective(),
 					openCreatePathwaySmallMultiplesGroupDialogevent.getDimensionPerspective());
 		}
 	}

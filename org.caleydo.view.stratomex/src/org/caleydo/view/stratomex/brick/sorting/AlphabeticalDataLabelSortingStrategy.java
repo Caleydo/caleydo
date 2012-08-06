@@ -57,7 +57,7 @@ public class AlphabeticalDataLabelSortingStrategy implements IBrickSortingStrate
 		ArrayList<DataLabelComparable> comparables = new ArrayList<DataLabelComparable>();
 
 		for (GLBrick brick : segmentBricks) {
-			comparables.add(new DataLabelComparable(brick.getDataContainer().getLabel(),
+			comparables.add(new DataLabelComparable(brick.getTablePerspective().getLabel(),
 					brick));
 		}
 		// comparables.add(new DataLabelComparable(summaryBrick.getBrickData()

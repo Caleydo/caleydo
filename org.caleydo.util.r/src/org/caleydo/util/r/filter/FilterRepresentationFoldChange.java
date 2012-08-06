@@ -59,8 +59,8 @@ public class FilterRepresentationFoldChange extends
 	private final static String TITLE = "Fold Change Filter";
 
 	private ATableBasedDataDomain dataDomain;
-	private TablePerspective dataContainer1;
-	private TablePerspective dataContainer2;
+	private TablePerspective tablePerspective1;
+	private TablePerspective tablePerspective2;
 
 	private float foldChange = 3;
 	private float foldChangeUncertainty = 1.2f;
@@ -153,8 +153,8 @@ public class FilterRepresentationFoldChange extends
 				evaluatorCheckBox[1].setText("Greater (up regulated)");
 
 				try {
-					FoldChangeSettings settings = dataContainer1.getContainerStatistics()
-							.foldChange().getResult(dataContainer2).getSecond();
+					FoldChangeSettings settings = tablePerspective1.getContainerStatistics()
+							.foldChange().getResult(tablePerspective2).getSecond();
 					switch (settings.getEvaluator()) {
 					case GREATER:
 						evaluatorCheckBox[1].setSelection(true);
@@ -228,8 +228,8 @@ public class FilterRepresentationFoldChange extends
 						// parentComposite.layout();
 					}
 				});
-				dataContainer1.getContainerStatistics().foldChange()
-						.getResult(dataContainer2).getFirst();
+				tablePerspective1.getContainerStatistics().foldChange()
+						.getResult(tablePerspective2).getFirst();
 
 				Composite histoComposite = new Composite(parentComposite, SWT.NULL);
 				histoComposite.setLayout(new FillLayout(SWT.VERTICAL));
@@ -243,12 +243,12 @@ public class FilterRepresentationFoldChange extends
 
 				RcpGLHistogramView histogramView = new RcpGLHistogramView();
 				histogramView.setDataDomain(dataDomain);
-				histogramView.setDataContainer(dataContainer1);
+				histogramView.setTablePerspective(tablePerspective1);
 				SerializedHistogramView serializedHistogramView = new SerializedHistogramView();
 				serializedHistogramView.setViewID(histogramView.getID());
 				serializedHistogramView.setDataDomainID(dataDomain.getDataDomainID());
-				serializedHistogramView.setDataContainerKey(dataContainer1
-						.getDataContainerKey());
+				serializedHistogramView.setTablePerspectiveKey(tablePerspective1
+						.getTablePerspectiveKey());
 
 				histogramView.setExternalSerializedView(serializedHistogramView);
 				histogramView.createPartControl(histoComposite);
@@ -281,12 +281,12 @@ public class FilterRepresentationFoldChange extends
 		this.histogram = histogram;
 	}
 
-	public void setDataContainer1(TablePerspective dataContainer1) {
-		this.dataContainer1 = dataContainer1;
+	public void setTablePerspective1(TablePerspective tablePerspective1) {
+		this.tablePerspective1 = tablePerspective1;
 	}
 
-	public void setDataContainer2(TablePerspective dataContainer2) {
-		this.dataContainer2 = dataContainer2;
+	public void setTablePerspective2(TablePerspective tablePerspective2) {
+		this.tablePerspective2 = tablePerspective2;
 	}
 
 	@Override
@@ -310,10 +310,10 @@ public class FilterRepresentationFoldChange extends
 		RecordVirtualArray recordVA = subFilter.getDataDomain().getTable()
 				.getRecordPerspective(filter.getPerspectiveID()).getVirtualArray();
 
-		double[] resultVector = dataContainer1.getContainerStatistics().foldChange()
-				.getResult(dataContainer2).getFirst();
-		FoldChangeSettings settings = dataContainer1.getContainerStatistics()
-				.foldChange().getResult(dataContainer2).getSecond();
+		double[] resultVector = tablePerspective1.getContainerStatistics().foldChange()
+				.getResult(tablePerspective2).getFirst();
+		FoldChangeSettings settings = tablePerspective1.getContainerStatistics()
+				.foldChange().getResult(tablePerspective2).getSecond();
 
 		double foldChangeRatio = settings.getRatio();
 		double foldChangeRatioUncertainty = settings.getRatioUncertainty();
@@ -398,10 +398,10 @@ public class FilterRepresentationFoldChange extends
 			FoldChangeSettings foldChangeSettings = new FoldChangeSettings(foldChange,
 					foldChangeUncertainty, foldChangeEvaluator);
 
-			dataContainer1.getContainerStatistics().foldChange()
-					.setFoldChangeSettings(dataContainer2, foldChangeSettings);
-			dataContainer2.getContainerStatistics().foldChange()
-					.setFoldChangeSettings(dataContainer1, foldChangeSettings);
+			tablePerspective1.getContainerStatistics().foldChange()
+					.setFoldChangeSettings(tablePerspective2, foldChangeSettings);
+			tablePerspective2.getContainerStatistics().foldChange()
+					.setFoldChangeSettings(tablePerspective1, foldChangeSettings);
 
 			createVADelta();
 			filter.updateFilterManager();

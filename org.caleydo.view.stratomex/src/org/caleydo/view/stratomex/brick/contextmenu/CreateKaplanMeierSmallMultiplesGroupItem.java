@@ -33,13 +33,13 @@ import org.caleydo.view.stratomex.event.OpenCreateKaplanMeierSmallMultiplesGroup
 public class CreateKaplanMeierSmallMultiplesGroupItem extends AContextMenuItem {
 
 	public CreateKaplanMeierSmallMultiplesGroupItem(
-			TablePerspective dimensionGroupDataContainer,
+			TablePerspective dimensionGroupTablePerspective,
 			DimensionPerspective dimensionPerspective) {
 
 		setLabel("Create Small Multiple Clinical Data Group");
 
 		OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent event = new OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent(
-				dimensionGroupDataContainer, dimensionPerspective);
+				dimensionGroupTablePerspective, dimensionPerspective);
 		event.setSender(this);
 		registerEvent(event);
 	}

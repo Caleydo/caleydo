@@ -25,9 +25,9 @@ import java.util.Map;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.IDataContainerBasedView;
-import org.caleydo.core.view.IMultiDataContainerBasedView;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.view.ITablePerspectiveBasedView;
+import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
@@ -38,16 +38,16 @@ import org.eclipse.core.runtime.Status;
 public class NodeCreator {
 
 	private Map<Class<? extends IDataDomain>, Class<? extends ADataNode>> dataNodeClasses = new HashMap<Class<? extends IDataDomain>, Class<? extends ADataNode>>();
-	private Map<Class<? extends IDataContainerBasedView>, Class<? extends ViewNode>> viewNodeClasses = new HashMap<Class<? extends IDataContainerBasedView>, Class<? extends ViewNode>>();
+	private Map<Class<? extends ITablePerspectiveBasedView>, Class<? extends ViewNode>> viewNodeClasses = new HashMap<Class<? extends ITablePerspectiveBasedView>, Class<? extends ViewNode>>();
 
 	public NodeCreator() {
 		dataNodeClasses.put(ATableBasedDataDomain.class, TableBasedDataNode.class);
 		dataNodeClasses.put(PathwayDataDomain.class, PathwayDataNode.class);
 
-		viewNodeClasses.put(ISingleDataContainerBasedView.class, ViewNode.class);
-		viewNodeClasses.put(IMultiDataContainerBasedView.class,
-				MultiDataContainerViewNode.class);
-		// viewNodeClasses.put(GLLin.class, MultiDataContainerViewNode.class);
+		viewNodeClasses.put(ISingleTablePerspectiveBasedView.class, ViewNode.class);
+		viewNodeClasses.put(IMultiTablePerspectiveBasedView.class,
+				MultiTablePerspectiveViewNode.class);
+		// viewNodeClasses.put(GLLin.class, MultiTablePerspectiveViewNode.class);
 	}
 
 	public ADataNode createDataNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
@@ -89,7 +89,7 @@ public class NodeCreator {
 				.getClass());
 
 		if (nodeClass == null) {
-			for (Class<? extends IDataContainerBasedView> c : viewNodeClasses.keySet()) {
+			for (Class<? extends ITablePerspectiveBasedView> c : viewNodeClasses.keySet()) {
 				if (c.isAssignableFrom(representedView.getClass())) {
 					nodeClass = viewNodeClasses.get(c);
 					break;

@@ -18,7 +18,7 @@ public class AddGroupsToStratomexListener extends AEventListener<GLVisBricks20> 
 		if (event instanceof AddGroupsToStratomexEvent) {
 			AddGroupsToStratomexEvent addGroupsToVisBricksEvent = (AddGroupsToStratomexEvent) event;
 			if (addGroupsToVisBricksEvent.getReceiver() == handler) {
-				handler.addDimensionGroups(addGroupsToVisBricksEvent.getDataContainers(),
+				handler.addDimensionGroups(addGroupsToVisBricksEvent.getTablePerspectives(),
 						addGroupsToVisBricksEvent.getDataConfigurer());
 			}
 		}

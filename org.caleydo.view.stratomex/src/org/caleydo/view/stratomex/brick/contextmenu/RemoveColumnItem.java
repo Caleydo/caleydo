@@ -20,7 +20,7 @@
 package org.caleydo.view.stratomex.brick.contextmenu;
 
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.listener.RemoveDataContainerEvent;
+import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 
 /**
  * @author Alexander Lex
@@ -31,11 +31,11 @@ public class RemoveColumnItem extends AContextMenuItem {
 	/**
 	 * 
 	 */
-	public RemoveColumnItem(int dataContainerID) {
+	public RemoveColumnItem(int tablePerspectiveID) {
 
 		setLabel("Remove column");
 
-		RemoveDataContainerEvent event = new RemoveDataContainerEvent(dataContainerID);
+		RemoveTablePerspectiveEvent event = new RemoveTablePerspectiveEvent(tablePerspectiveID);
 		event.setSender(this);
 		registerEvent(event);
 	}

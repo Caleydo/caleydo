@@ -25,7 +25,7 @@ import org.caleydo.core.data.collection.HistogramCreator;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.Average;
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.container.TablePerspective;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -190,7 +190,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 	 * </p>
 	 */
 	@Override
-	public void foldChange(DataContainer container1, DataContainer container2,
+	public void foldChange(TablePerspective container1, TablePerspective container2,
 			boolean betweenRecords) {
 
 		// Do nothing if the operations was already performed earlier
@@ -263,14 +263,14 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		FilterRepresentationFoldChange filterRep = new FilterRepresentationFoldChange();
 		filterRep.setFilter(contentFilter);
 		filterRep.setDataDomain(container1.getDataDomain());
-		filterRep.setDataContainer1(container1);
-		filterRep.setDataContainer2(container2);
+		filterRep.setTablePerspective1(container1);
+		filterRep.setTablePerspective2(container2);
 		filterRep.setHistogram(histogram);
 		contentFilter.setFilterRep(filterRep);
 		contentFilter.openRepresentation();
 	}
 
-	public void oneSidedTTest(ArrayList<DataContainer> dataContainers) {
+	public void oneSidedTTest(ArrayList<TablePerspective> tablePerspectives) {
 
 		// TODO: don't recalculate if pvalue array is already calculated
 		// however, the evaluation must be done using the new pvalue
@@ -296,7 +296,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		// metaFilter.setFilterRep(filterRep);
 		// }
 
-		for (DataContainer container : dataContainers) {
+		for (TablePerspective container : tablePerspectives) {
 
 			RecordVirtualArray recordVA = container.getRecordPerspective()
 					.getVirtualArray();
@@ -351,7 +351,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 			// } else {
 			FilterRepresentationPValue filterRep = new FilterRepresentationPValue();
 			filterRep.setFilter(contentFilter);
-			filterRep.setDataContainer1(container);
+			filterRep.setTablePerspective1(container);
 			filterRep.setHistogram(histogram);
 			contentFilter.setFilterRep(filterRep);
 			contentFilter.openRepresentation();
@@ -366,7 +366,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 	 * FIXME this uses only the first two!
 	 */
 	@Override
-	public void twoSidedTTest(ArrayList<DataContainer> dataContainers) {
+	public void twoSidedTTest(ArrayList<TablePerspective> tablePerspectives) {
 
 		// Perform t-test between all neighboring sets (A<->B<->C)
 		// for (int setIndex = 0; setIndex < sets.size(); setIndex++) {
@@ -374,23 +374,23 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		// if (setIndex + 1 == sets.size())
 		// break;
 
-		DataContainer dataContainer1 = dataContainers.get(0);
-		DataContainer dataContainer2 = dataContainers.get(1);
+		TablePerspective tablePerspective1 = tablePerspectives.get(0);
+		TablePerspective tablePerspective2 = tablePerspectives.get(1);
 
-		if (!dataContainer1.getRecordPerspective().equals(
-				dataContainer2.getRecordPerspective()))
+		if (!tablePerspective1.getRecordPerspective().equals(
+				tablePerspective2.getRecordPerspective()))
 			throw new IllegalStateException(
 					"data containers have to share record prespective");
 
-		DataTable table = dataContainer1.getDataDomain().getTable();
+		DataTable table = tablePerspective1.getDataDomain().getTable();
 
 		ArrayList<Double> pValueVector = new ArrayList<Double>();
 
-		for (int recordIndex = 0; recordIndex < dataContainer1.getNrRecords(); recordIndex++) {
+		for (int recordIndex = 0; recordIndex < tablePerspective1.getNrRecords(); recordIndex++) {
 
-			DimensionVirtualArray dimensionVA1 = dataContainer1.getDimensionPerspective()
+			DimensionVirtualArray dimensionVA1 = tablePerspective1.getDimensionPerspective()
 					.getVirtualArray();
-			DimensionVirtualArray dimensionVA2 = dataContainer2.getDimensionPerspective()
+			DimensionVirtualArray dimensionVA2 = tablePerspective2.getDimensionPerspective()
 					.getVirtualArray();
 
 			double[] compareVec1 = new double[dimensionVA1.size()];
@@ -420,21 +420,21 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 			// System.out.println(pValue.asDouble());
 		}
 
-		dataContainer1.getContainerStatistics().tTest()
-				.setTwoSiddedTTestResult(dataContainer2, pValueVector);
-		dataContainer2.getContainerStatistics().tTest()
-				.setTwoSiddedTTestResult(dataContainer1, pValueVector);
+		tablePerspective1.getContainerStatistics().tTest()
+				.setTwoSiddedTTestResult(tablePerspective2, pValueVector);
+		tablePerspective2.getContainerStatistics().tTest()
+				.setTwoSiddedTTestResult(tablePerspective1, pValueVector);
 
-		RecordFilter contentFilter = new RecordFilter(dataContainer1
+		RecordFilter contentFilter = new RecordFilter(tablePerspective1
 				.getRecordPerspective().getID());
-		contentFilter.setDataDomain(dataContainer1.getDataDomain());
-		contentFilter.setLabel("Two sided t-test of " + dataContainer1.getLabel()
-				+ " and " + dataContainer2.getLabel());
+		contentFilter.setDataDomain(tablePerspective1.getDataDomain());
+		contentFilter.setLabel("Two sided t-test of " + tablePerspective1.getLabel()
+				+ " and " + tablePerspective2.getLabel());
 
 		FilterRepresentationTwoSidedTTest filterRep = new FilterRepresentationTwoSidedTTest();
 		filterRep.setFilter(contentFilter);
-		filterRep.setDataContainer1(dataContainer1);
-		filterRep.setDataContainer2(dataContainer2);
+		filterRep.setTablePerspective1(tablePerspective1);
+		filterRep.setTablePerspective2(tablePerspective2);
 		contentFilter.setFilterRep(filterRep);
 		contentFilter.openRepresentation();
 	}

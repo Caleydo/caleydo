@@ -57,10 +57,10 @@ public class ExternallyProvidedSortingStrategy
 		GLBrick[] sortedBricks = new GLBrick[segmentBricks.size()];
 		for (GLBrick brick : segmentBricks) {
 
-			Group group = brick.getDataContainer().getRecordGroup();
+			Group group = brick.getTablePerspective().getRecordGroup();
 
 			RecordPerspective dimGroupRecordPerspective = brick.getDimensionGroup()
-					.getDataContainer().getRecordPerspective();
+					.getTablePerspective().getRecordPerspective();
 
 			RecordPerspective originalDimGroupRecordPerspective = hashConvertedRecordPerspectiveToOrginalRecordPerspective
 					.get(dimGroupRecordPerspective);
@@ -76,7 +76,7 @@ public class ExternallyProvidedSortingStrategy
 
 					for (GLBrick originalBrick : externalSortedBricks) {
 
-						if (originalBrick.getDataContainer().getRecordGroup() == originalGroup)
+						if (originalBrick.getTablePerspective().getRecordGroup() == originalGroup)
 						{
 							sortedBricks[externalSortedBricks.indexOf(originalBrick)] = brick;
 							continue;

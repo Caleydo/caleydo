@@ -19,20 +19,20 @@
  *******************************************************************************/
 package org.caleydo.view.tabular;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 
 /**
  * Serialized form of a tabular-browser view.
  * 
  * @author Werner Puff
  */
-public class SerializedTabularDataView extends ASerializedSingleDataContainerBasedView {
+public class SerializedTabularDataView extends ASerializedSingleTablePerspectiveBasedView {
 
 	public SerializedTabularDataView() {
 	}
 
-	public SerializedTabularDataView(ISingleDataContainerBasedView view) {
+	public SerializedTabularDataView(ISingleTablePerspectiveBasedView view) {
 		super(view);
 	}
 

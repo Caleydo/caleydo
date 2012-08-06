@@ -26,7 +26,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.view.histogram.RcpGLColorMapperHistogramView;
@@ -76,7 +76,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 		if (dataDomain == null) {
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID(
-							((ASerializedSingleDataContainerBasedView) serializedView)
+							((ASerializedSingleTablePerspectiveBasedView) serializedView)
 									.getDataDomainID());
 		}
 
@@ -149,8 +149,8 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 			SerializedHistogramView serializedHistogramView = new SerializedHistogramView();
 			serializedHistogramView.setDataDomainID(dataDomain.getDataDomainID());
 			serializedHistogramView
-					.setDataContainerKey(((ASerializedSingleDataContainerBasedView) serializedView)
-							.getDataContainerKey());
+					.setTablePerspectiveKey(((ASerializedSingleTablePerspectiveBasedView) serializedView)
+							.getTablePerspectiveKey());
 
 			histogramView.setExternalSerializedView(serializedHistogramView);
 			histogramView.createPartControl(composite);
@@ -182,10 +182,10 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 			return;
 
 		this.dataDomain = dataDomain;
-		ASerializedSingleDataContainerBasedView dcSerializedView = (ASerializedSingleDataContainerBasedView) serializedView;
+		ASerializedSingleTablePerspectiveBasedView dcSerializedView = (ASerializedSingleTablePerspectiveBasedView) serializedView;
 		dcSerializedView.setDataDomainID(dataDomain.getDataDomainID());
-		TablePerspective container = dataDomain.getDefaultDataContainer();
-		dcSerializedView.setDataContainerKey(container.getDataContainerKey());
+		TablePerspective container = dataDomain.getDefaultTablePerspective();
+		dcSerializedView.setTablePerspectiveKey(container.getTablePerspectiveKey());
 
 		parentComposite.dispose();
 		createPartControl(parent);

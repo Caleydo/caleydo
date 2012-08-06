@@ -34,13 +34,13 @@ import org.caleydo.view.stratomex.event.OpenCreatePathwaySmallMultiplesGroupDial
 public class CreatePathwaySmallMultiplesGroupItem extends AContextMenuItem {
 
 	public CreatePathwaySmallMultiplesGroupItem(
-			TablePerspective dimensionGroupDataContainer,
+			TablePerspective dimensionGroupTablePerspective,
 			DimensionPerspective dimensionPerspective) {
 
 		setLabel("Create Small Multiple Pathway Group");
 
 		OpenCreatePathwaySmallMultiplesGroupDialogEvent event = new OpenCreatePathwaySmallMultiplesGroupDialogEvent(
-				dimensionGroupDataContainer, dimensionPerspective);
+				dimensionGroupTablePerspective, dimensionPerspective);
 		event.setSender(this);
 		registerEvent(event);
 	}

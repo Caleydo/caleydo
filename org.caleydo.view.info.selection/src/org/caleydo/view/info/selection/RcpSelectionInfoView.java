@@ -24,7 +24,7 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IDataDomainBasedView;
 import org.eclipse.swt.SWT;
@@ -71,7 +71,7 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements
 		if (dataDomain == null) {
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID(
-							((ASerializedSingleDataContainerBasedView) serializedView)
+							((ASerializedSingleTablePerspectiveBasedView) serializedView)
 									.getDataDomainID());
 			if (dataDomain == null)
 				return;
@@ -109,11 +109,11 @@ public class RcpSelectionInfoView extends CaleydoRCPViewPart implements
 			return;
 
 		this.dataDomain = dataDomain;
-		ASerializedSingleDataContainerBasedView serializedSDView = ((ASerializedSingleDataContainerBasedView) serializedView);
+		ASerializedSingleTablePerspectiveBasedView serializedSDView = ((ASerializedSingleTablePerspectiveBasedView) serializedView);
 
 		serializedSDView.setDataDomainID(dataDomain.getDataDomainID());
-		serializedSDView.setDataContainerKey(dataDomain.getDefaultDataContainer()
-				.getDataContainerKey());
+		serializedSDView.setTablePerspectiveKey(dataDomain.getDefaultTablePerspective()
+				.getTablePerspectiveKey());
 
 		parentComposite.dispose();
 		createPartControl(parent);

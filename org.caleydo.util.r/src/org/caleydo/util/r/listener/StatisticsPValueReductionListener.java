@@ -32,7 +32,7 @@ public class StatisticsPValueReductionListener extends
 		StatisticsPValueReductionEvent pValueReductionEvent = null;
 		if (event instanceof StatisticsPValueReductionEvent) {
 			pValueReductionEvent = (StatisticsPValueReductionEvent) event;
-			handler.oneSidedTTest(pValueReductionEvent.getDataContainers());
+			handler.oneSidedTTest(pValueReductionEvent.getTablePerspectives());
 		}
 	}
 }

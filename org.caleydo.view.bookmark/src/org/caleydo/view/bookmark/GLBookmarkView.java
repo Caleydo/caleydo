@@ -365,7 +365,7 @@ public class GLBookmarkView extends ATableBasedView {
 	}
 
 	@Override
-	public List<TablePerspective> getDataContainers() {
+	public List<TablePerspective> getTablePerspectives() {
 		// TODO Auto-generated method stub
 		return null;
 	}

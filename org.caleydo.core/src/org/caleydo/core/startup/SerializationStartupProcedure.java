@@ -121,7 +121,7 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 						.getDimensionPerspectiveMap().values()) {
 					table.registerDimensionPerspective(perspective);
 				}
-				for (TablePerspective container : tDataDomain.getDataContainers().values()) {
+				for (TablePerspective container : tDataDomain.getTablePerspectives().values()) {
 					container.postDesirialize();
 				}
 			}

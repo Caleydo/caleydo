@@ -21,7 +21,7 @@ package org.caleydo.view.stratomex.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.view.listener.AddDataContainersEvent;
+import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 
@@ -39,15 +39,15 @@ public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 		if (event instanceof AddGroupsToStratomexEvent) {
 			AddGroupsToStratomexEvent addGroupsToVisBricksEvent = (AddGroupsToStratomexEvent) event;
 			if (addGroupsToVisBricksEvent.getReceiver() == handler) {
-				handler.addDataContainers(addGroupsToVisBricksEvent.getDataContainers(),
+				handler.addTablePerspectives(addGroupsToVisBricksEvent.getTablePerspectives(),
 						addGroupsToVisBricksEvent.getDataConfigurer());
 			}
 		}
 
-		if (event instanceof AddDataContainersEvent) {
-			AddDataContainersEvent addDataContainersEvent = (AddDataContainersEvent) event;
-			if (addDataContainersEvent.getReceiver() == handler) {
-				handler.addDataContainers(addDataContainersEvent.getDataContainers(),
+		if (event instanceof AddTablePerspectivesEvent) {
+			AddTablePerspectivesEvent addTablePerspectivesEvent = (AddTablePerspectivesEvent) event;
+			if (addTablePerspectivesEvent.getReceiver() == handler) {
+				handler.addTablePerspectives(addTablePerspectivesEvent.getTablePerspectives(),
 						null);
 			}
 		}

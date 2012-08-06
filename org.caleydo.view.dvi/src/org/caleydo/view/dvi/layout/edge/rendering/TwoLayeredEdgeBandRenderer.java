@@ -41,8 +41,8 @@ public class TwoLayeredEdgeBandRenderer extends AEdgeBandRenderer {
 	protected void determineNodeConnectors(
 			Pair<ANodeConnector, ANodeConnector> nodeConnectors, IDVINode leftNode,
 			IDVINode rightNode, IDVINode bottomNode, IDVINode topNode,
-			List<TablePerspective> commonDataContainersNode1,
-			List<TablePerspective> commonDataContainersNode2,
+			List<TablePerspective> commonTablePerspectivesNode1,
+			List<TablePerspective> commonTablePerspectivesNode2,
 			ConnectionBandRenderer connectionBandRenderer) {
 
 		ANodeConnector connector1 = new TopSideConnector(bottomNode, pixelGLConverter,
@@ -53,24 +53,24 @@ public class TwoLayeredEdgeBandRenderer extends AEdgeBandRenderer {
 		nodeConnectors.setFirst(connector1);
 		nodeConnectors.setSecond(connector2);
 
-		determineBundleConnectors(nodeConnectors, commonDataContainersNode1,
-				commonDataContainersNode2, connectionBandRenderer);
+		determineBundleConnectors(nodeConnectors, commonTablePerspectivesNode1,
+				commonTablePerspectivesNode2, connectionBandRenderer);
 
-		// if (!commonDataContainersNode1.isEmpty()) {
+		// if (!commonTablePerspectivesNode1.isEmpty()) {
 		//
-		// if (node1.showsDataContainers()) {
+		// if (node1.showsTablePerspectives()) {
 		//
 		// ANodeConnector currentConnector = null;
 		//
 		// if (node1.isUpsideDown()) {
 		// currentConnector = new TopBundleConnector(node1,
 		// pixelGLConverter, connectionBandRenderer,
-		// commonDataContainersNode1, minBandWidth,
+		// commonTablePerspectivesNode1, minBandWidth,
 		// maxBandWidth, maxDataAmount);
 		// } else {
 		// currentConnector = new BottomBundleConnector(node1,
 		// pixelGLConverter, connectionBandRenderer,
-		// commonDataContainersNode1, minBandWidth,
+		// commonTablePerspectivesNode1, minBandWidth,
 		// maxBandWidth, maxDataAmount);
 		// }
 		//
@@ -81,19 +81,19 @@ public class TwoLayeredEdgeBandRenderer extends AEdgeBandRenderer {
 		// }
 		// }
 		//
-		// if (node2.showsDataContainers()) {
+		// if (node2.showsTablePerspectives()) {
 		//
 		// ANodeConnector currentConnector = null;
 		//
 		// if (node2.isUpsideDown()) {
 		// currentConnector = new TopBundleConnector(node2,
 		// pixelGLConverter, connectionBandRenderer,
-		// commonDataContainersNode2, minBandWidth,
+		// commonTablePerspectivesNode2, minBandWidth,
 		// maxBandWidth, maxDataAmount);
 		// } else {
 		// currentConnector = new BottomBundleConnector(node2,
 		// pixelGLConverter, connectionBandRenderer,
-		// commonDataContainersNode2, minBandWidth,
+		// commonTablePerspectivesNode2, minBandWidth,
 		// maxBandWidth, maxDataAmount);
 		// }
 		//

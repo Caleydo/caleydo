@@ -62,7 +62,7 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 
 		float yOverview = overviewHeatMap.getSelectedClusterY();
 
-		RecordVirtualArray recordVA = detailHeatMap.getDataContainer()
+		RecordVirtualArray recordVA = detailHeatMap.getTablePerspective()
 				.getRecordPerspective().getVirtualArray();
 
 		try {

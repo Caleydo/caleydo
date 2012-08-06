@@ -56,7 +56,7 @@ public class FilterRepresentationPValue extends
 	private final static String TITLE = "Variance Filter";
 
 	private ATableBasedDataDomain dataDomain;
-	private TablePerspective dataContainer1;
+	private TablePerspective tablePerspective1;
 
 	private Histogram histogram;
 	private float pValue = -1;
@@ -193,14 +193,14 @@ public class FilterRepresentationPValue extends
 
 	private void createVADelta(RecordFilter subFilter) {
 
-		RecordVADelta recordVADelta = new RecordVADelta(dataContainer1
+		RecordVADelta recordVADelta = new RecordVADelta(tablePerspective1
 				.getRecordPerspective().getPerspectiveID(), subFilter.getDataDomain()
 				.getRecordIDType());
 
-		RecordVirtualArray recordVA = dataContainer1.getRecordPerspective()
+		RecordVirtualArray recordVA = tablePerspective1.getRecordPerspective()
 				.getVirtualArray();
 
-		double[] tTestResult = dataContainer1.getContainerStatistics().tTest()
+		double[] tTestResult = tablePerspective1.getContainerStatistics().tTest()
 				.getOneSidedTTestResult();// ((FilterRepresentationPValue)
 											// subFilter.getFilterRep())
 
@@ -237,7 +237,7 @@ public class FilterRepresentationPValue extends
 		this.dataDomain = dataDomain;
 	}
 
-	public void setDataContainer1(TablePerspective dataContainer1) {
-		this.dataContainer1 = dataContainer1;
+	public void setTablePerspective1(TablePerspective tablePerspective1) {
+		this.tablePerspective1 = tablePerspective1;
 	}
 }

@@ -53,7 +53,7 @@ public class PathwayDimensionGroupData extends TablePerspective {
 	protected PathwayDataDomain pathwayDataDomain;
 	protected ArrayList<PathwayGraph> pathways;
 
-	private List<TablePerspective> recordSubDataContainers = new ArrayList<TablePerspective>();
+	private List<TablePerspective> recordSubTablePerspectives = new ArrayList<TablePerspective>();
 
 	public PathwayDimensionGroupData(ATableBasedDataDomain dataDomain,
 			PathwayDataDomain pathwayDataDomain, RecordPerspective recordPerspective,
@@ -145,13 +145,13 @@ public class PathwayDimensionGroupData extends TablePerspective {
 
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(idsInPathway);
-			PathwayDataContainer pathwayDataContainer;
+			PathwayTablePerspective pathwayTablePerspective;
 			if (dataDomain.isColumnDimension()) {
 				RecordPerspective pathwayRecordPerspective = new RecordPerspective(
 						dataDomain);
 				pathwayRecordPerspective.init(data);
 
-				pathwayDataContainer = new PathwayDataContainer(dataDomain,
+				pathwayTablePerspective = new PathwayTablePerspective(dataDomain,
 						pathwayDataDomain, pathwayRecordPerspective,
 						dimensionPerspective, pathway);
 			} else {
@@ -159,15 +159,15 @@ public class PathwayDimensionGroupData extends TablePerspective {
 						dataDomain);
 				pathwayDimensionPerspective.init(data);
 
-				pathwayDataContainer = new PathwayDataContainer(dataDomain,
+				pathwayTablePerspective = new PathwayTablePerspective(dataDomain,
 						pathwayDataDomain, recordPerspective,
 						pathwayDimensionPerspective, pathway);
 			}
 
-			pathwayDataContainer.setRecordGroup(recordPerspective.getVirtualArray()
+			pathwayTablePerspective.setRecordGroup(recordPerspective.getVirtualArray()
 					.getGroupList().get(0));
 
-			recordSubDataContainers.add(pathwayDataContainer);
+			recordSubTablePerspectives.add(pathwayTablePerspective);
 		}
 	}
 
@@ -285,9 +285,9 @@ public class PathwayDimensionGroupData extends TablePerspective {
 	}
 
 	@Override
-	public List<TablePerspective> getRecordSubDataContainers() {
+	public List<TablePerspective> getRecordSubTablePerspectives() {
 
-		List<TablePerspective> recordSubDataContainers = new ArrayList<TablePerspective>();
+		List<TablePerspective> recordSubTablePerspectives = new ArrayList<TablePerspective>();
 
 		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
 
@@ -306,14 +306,14 @@ public class PathwayDimensionGroupData extends TablePerspective {
 			recordPerspective.init(data);
 
 			// FIXME: currently only the first pathway is taken from the list
-			PathwayDataContainer subDataContainer = new PathwayDataContainer(dataDomain,
-					pathwayDataDomain, recordPerspective, dimensionPerspective,
-					pathways.get(0));
-			subDataContainer.setRecordGroup(group);
-			recordSubDataContainers.add(subDataContainer);
+			PathwayTablePerspective subTablePerspective = new PathwayTablePerspective(
+					dataDomain, pathwayDataDomain, recordPerspective,
+					dimensionPerspective, pathways.get(0));
+			subTablePerspective.setRecordGroup(group);
+			recordSubTablePerspectives.add(subTablePerspective);
 
 		}
 
-		return recordSubDataContainers;
+		return recordSubTablePerspectives;
 	}
 }

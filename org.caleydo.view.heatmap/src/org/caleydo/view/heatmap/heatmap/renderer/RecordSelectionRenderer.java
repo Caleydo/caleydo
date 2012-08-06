@@ -51,7 +51,7 @@ public class RecordSelectionRenderer extends AHeatMapRenderer {
 		int lineIndex = 0;
 		// FIXME this iterates over all elements but could do by only iterating
 		// of the selected elements
-		for (int recordIndex : heatMap.getDataContainer().getRecordPerspective()
+		for (int recordIndex : heatMap.getTablePerspective().getRecordPerspective()
 				.getVirtualArray()) {
 			if (heatMap.getRecordSelectionManager().checkStatus(
 					GLHeatMap.SELECTION_HIDDEN, recordIndex))

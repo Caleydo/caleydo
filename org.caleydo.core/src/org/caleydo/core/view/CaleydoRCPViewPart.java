@@ -43,8 +43,8 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedMultiDataContainerBasedView;
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedMultiTablePerspectiveBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.listener.ExtendedSelectionUpdateListener;
@@ -138,7 +138,7 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 	/**
 	 * <p>
 	 * If applicable initializes the {@link #view} with the {@link ADataDomain}
-	 * and the {@link TablePerspective}, or with multiple DataContainers as they
+	 * and the {@link TablePerspective}, or with multiple TablePerspectives as they
 	 * are specified in the {@link #serializedView}.
 	 * </p>
 	 * <p>
@@ -150,54 +150,54 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 	protected void initializeView() {
 		if (view instanceof IDataDomainBasedView<?>) {
 			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					((ASerializedSingleDataContainerBasedView) serializedView)
+					((ASerializedSingleTablePerspectiveBasedView) serializedView)
 							.getDataDomainID());
 			@SuppressWarnings("unchecked")
 			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
 		}
-		if (view instanceof ISingleDataContainerBasedView) {
-			ISingleDataContainerBasedView singleDataContainerBasedView = (ISingleDataContainerBasedView) view;
+		if (view instanceof ISingleTablePerspectiveBasedView) {
+			ISingleTablePerspectiveBasedView singleTablePerspectiveBasedView = (ISingleTablePerspectiveBasedView) view;
 
-			ASerializedSingleDataContainerBasedView serializedSingleDataContainerBasedView = (ASerializedSingleDataContainerBasedView) serializedView;
+			ASerializedSingleTablePerspectiveBasedView serializedSingleTablePerspectiveBasedView = (ASerializedSingleTablePerspectiveBasedView) serializedView;
 
 			ATableBasedDataDomain tDataDomain = (ATableBasedDataDomain) DataDomainManager
 					.get().getDataDomainByID(
-							serializedSingleDataContainerBasedView.getDataDomainID());
+							serializedSingleTablePerspectiveBasedView.getDataDomainID());
 
 			TablePerspective container = tDataDomain
-					.getDataContainer(serializedSingleDataContainerBasedView
-							.getDataContainerKey());
-			// In case the stored datacontainer is not available in this run
+					.getTablePerspective(serializedSingleTablePerspectiveBasedView
+							.getTablePerspectiveKey());
+			// In case the stored TablePerspective is not available in this run
 			if (container == null) {
 				createDefaultSerializedView();
-				serializedSingleDataContainerBasedView = (ASerializedSingleDataContainerBasedView) serializedView;
+				serializedSingleTablePerspectiveBasedView = (ASerializedSingleTablePerspectiveBasedView) serializedView;
 			} else {
-				singleDataContainerBasedView.setDataContainer(container);
+				singleTablePerspectiveBasedView.setTablePerspective(container);
 			}
 
-		} else if (view instanceof IMultiDataContainerBasedView) {
-			IMultiDataContainerBasedView multiDataContainerBasedView = (IMultiDataContainerBasedView) view;
-			ASerializedMultiDataContainerBasedView serializedMultiDataContainerBasedView = (ASerializedMultiDataContainerBasedView) serializedView;
+		} else if (view instanceof IMultiTablePerspectiveBasedView) {
+			IMultiTablePerspectiveBasedView multiTablePerspectiveBasedView = (IMultiTablePerspectiveBasedView) view;
+			ASerializedMultiTablePerspectiveBasedView serializedMultiTablePerspectiveBasedView = (ASerializedMultiTablePerspectiveBasedView) serializedView;
 
-			if (serializedMultiDataContainerBasedView.getDataDomainAndDataContainerKeys() != null) {
+			if (serializedMultiTablePerspectiveBasedView.getDataDomainAndTablePerspectiveKeys() != null) {
 				boolean inconsistentSerializedView = false;
-				for (Pair<String, String> data : serializedMultiDataContainerBasedView
-						.getDataDomainAndDataContainerKeys()) {
+				for (Pair<String, String> data : serializedMultiTablePerspectiveBasedView
+						.getDataDomainAndTablePerspectiveKeys()) {
 
 					ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
 							.get().getDataDomainByID(data.getFirst());
 					TablePerspective tablePerspective = ((ATableBasedDataDomain) dataDomain)
-							.getDataContainer(data.getSecond());
+							.getTablePerspective(data.getSecond());
 					if (tablePerspective == null) {
 						inconsistentSerializedView = true;
 						break;
 					}
-					multiDataContainerBasedView.addDataContainer(tablePerspective);
+					multiTablePerspectiveBasedView.addTablePerspective(tablePerspective);
 				}
 				if (inconsistentSerializedView) {
 					createDefaultSerializedView();
-					serializedMultiDataContainerBasedView = (ASerializedMultiDataContainerBasedView) serializedView;
+					serializedMultiTablePerspectiveBasedView = (ASerializedMultiTablePerspectiveBasedView) serializedView;
 				}
 			}
 		}
@@ -243,10 +243,10 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 	protected void determineDataConfiguration(ASerializedView serializedView,
 			boolean letUserChoose) {
 
-		if (!(serializedView instanceof ASerializedSingleDataContainerBasedView))
+		if (!(serializedView instanceof ASerializedSingleTablePerspectiveBasedView))
 			return;
 
-		ASerializedSingleDataContainerBasedView serializedTopLevelDataView = (ASerializedSingleDataContainerBasedView) serializedView;
+		ASerializedSingleTablePerspectiveBasedView serializedTopLevelDataView = (ASerializedSingleTablePerspectiveBasedView) serializedView;
 
 		// then we check whether the serialization has a data domain already
 		String dataDomainID = serializedTopLevelDataView.getDataDomainID();
@@ -259,17 +259,17 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 			if (rcpViewInitData != null) {
 				dataDomainID = rcpViewInitData.getDataDomainID();
 
-				TablePerspective tablePerspective = rcpViewInitData.getDataContainer();
+				TablePerspective tablePerspective = rcpViewInitData.getTablePerspective();
 				serializedTopLevelDataView.setDataDomainID(dataDomainID);
 				if (tablePerspective != null) {
-					serializedTopLevelDataView.setDataContainerKey(tablePerspective
-							.getDataContainerKey());
+					serializedTopLevelDataView.setTablePerspectiveKey(tablePerspective
+							.getTablePerspectiveKey());
 
 				} else {
 					serializedTopLevelDataView
-							.setDataContainerKey(((ATableBasedDataDomain) DataDomainManager
+							.setTablePerspectiveKey(((ATableBasedDataDomain) DataDomainManager
 									.get().getDataDomainByID(dataDomainID))
-									.getDefaultDataContainer().getDataContainerKey());
+									.getDefaultTablePerspective().getTablePerspectiveKey());
 				}
 			}
 		}
@@ -292,11 +292,11 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 
 			serializedTopLevelDataView.setDataDomainID(config.getDataDomain()
 					.getDataDomainID());
-			serializedTopLevelDataView.setDataContainerKey(config
+			serializedTopLevelDataView.setTablePerspectiveKey(config
 					.getDataDomain()
-					.getDataContainer(config.getRecordPerspective().getPerspectiveID(),
+					.getTablePerspective(config.getRecordPerspective().getPerspectiveID(),
 							config.getDimensionPerspective().getPerspectiveID())
-					.getDataContainerKey());
+					.getTablePerspectiveKey());
 		}
 	}
 
@@ -338,15 +338,15 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 			} catch (JAXBException ex) {
 				throw new RuntimeException("could not deserialize view-xml", ex);
 			}
-			if (serializedView instanceof ASerializedSingleDataContainerBasedView
+			if (serializedView instanceof ASerializedSingleTablePerspectiveBasedView
 					&& DataDomainManager.get().getDataDomainByID(
-							((ASerializedSingleDataContainerBasedView) serializedView)
+							((ASerializedSingleTablePerspectiveBasedView) serializedView)
 									.getDataDomainID()) == null) {
 				serializedView = null;
 			}
-			if (serializedView instanceof ASerializedMultiDataContainerBasedView) {
-				ASerializedMultiDataContainerBasedView v = (ASerializedMultiDataContainerBasedView) serializedView;
-				// v.getDataDomainAndDataContainerKeys();
+			if (serializedView instanceof ASerializedMultiTablePerspectiveBasedView) {
+				ASerializedMultiTablePerspectiveBasedView v = (ASerializedMultiTablePerspectiveBasedView) serializedView;
+				// v.getDataDomainAndTablePerspectiveKeys();
 			}
 		}
 		// this is the case if either the view has not been saved to a memento

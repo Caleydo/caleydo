@@ -42,10 +42,10 @@ public abstract class ABundleConnector
 	protected final static int MAX_BAND_ANCHOR_OFFSET_DISTANCE_Y_2_CP = 20;
 	protected final static int MAX_BAND_ANCHOR_OFFSET_DISTANCE_Y_4_CP = 100;
 	protected final static int MIN_BAND_ANCHOR_OFFSET_DISTANCE_Y_4_CP = 10;
-	protected final static int DATACONTAINER_OFFSET_Y = 7;
-	protected final static int DATACONTAINER_TO_BUNDLE_OFFSET_Y = 14;
+	protected final static int TABLEPERSPECTIVE_OFFSET_Y = 7;
+	protected final static int TABLEPERSPECTIVE_TO_BUNDLE_OFFSET_Y = 14;
 
-	protected List<TablePerspective> commonDataContainers;
+	protected List<TablePerspective> commonTablePerspectives;
 	protected int bandWidthPixels;
 	protected Map<TablePerspective, Integer> bandWidthMap = new HashMap<TablePerspective, Integer>();
 	protected Point2D bundlingPoint;
@@ -54,13 +54,13 @@ public abstract class ABundleConnector
 
 	public ABundleConnector(IDVINode node, PixelGLConverter pixelGLconverter,
 			ConnectionBandRenderer connectionBandRenderer,
-			List<TablePerspective> commonDataContainers, int minBandWidth, int maxBandWidth,
+			List<TablePerspective> commonTablePerspectives, int minBandWidth, int maxBandWidth,
 			int maxDataAmount, IDVINode otherNode, ViewFrustum viewFrustum,
 			GLDataViewIntegrator view)
 	{
 		super(node, pixelGLconverter, connectionBandRenderer, otherNode, viewFrustum);
 
-		this.commonDataContainers = commonDataContainers;
+		this.commonTablePerspectives = commonTablePerspectives;
 		this.view = view;
 		calcBandWidths(minBandWidth, maxBandWidth, maxDataAmount);
 	}
@@ -73,7 +73,7 @@ public abstract class ABundleConnector
 		for (TablePerspective tablePerspective : tablePerspectives)
 		{
 			Pair<Point2D, Point2D> anchorPoints = node
-					.getBottomDataContainerAnchorPoints(tablePerspective);
+					.getBottomTablePerspectiveAnchorPoints(tablePerspective);
 			if (anchorPoints == null)
 				return (float) node.getPosition().getX();
 			summedX += anchorPoints.getFirst().getX() + anchorPoints.getSecond().getX();
@@ -86,7 +86,7 @@ public abstract class ABundleConnector
 	{
 		bandWidthPixels = 0;
 
-		for (TablePerspective tablePerspective : commonDataContainers)
+		for (TablePerspective tablePerspective : commonTablePerspectives)
 		{
 			int width = calcDimensionGroupBandWidthPixels(tablePerspective, minBandWidth,
 					maxBandWidth, maxDataAmount);
@@ -101,7 +101,7 @@ public abstract class ABundleConnector
 
 			int newBandWidth = 0;
 
-			for (TablePerspective dimensionGroupData : commonDataContainers)
+			for (TablePerspective dimensionGroupData : commonTablePerspectives)
 			{
 				int width = bandWidthMap.get(dimensionGroupData);
 				int newWidth = width

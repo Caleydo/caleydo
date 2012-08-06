@@ -22,8 +22,8 @@ package org.caleydo.view.grouper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 
 /**
  * Serialized form of the remote-rendering view (bucket).
@@ -34,12 +34,12 @@ import org.caleydo.core.view.ISingleDataContainerBasedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedGrouperView extends ASerializedSingleDataContainerBasedView {
+public class SerializedGrouperView extends ASerializedSingleTablePerspectiveBasedView {
 
 	public SerializedGrouperView() {
 	}
 
-	public SerializedGrouperView(ISingleDataContainerBasedView view) {
+	public SerializedGrouperView(ISingleTablePerspectiveBasedView view) {
 		super(view);
 	}
 

@@ -82,7 +82,7 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
 import org.caleydo.datadomain.pathway.contextmenu.item.LoadPathwaysByPathwayItem;
-import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
+import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
@@ -260,12 +260,12 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	}
 
 	@Override
-	public void setDataContainer(TablePerspective tablePerspective) {
+	public void setTablePerspective(TablePerspective tablePerspective) {
 
-		super.setDataContainer(tablePerspective);
+		super.setTablePerspective(tablePerspective);
 
-		if (tablePerspective instanceof PathwayDataContainer)
-			pathway = ((PathwayDataContainer) tablePerspective).getPathway();
+		if (tablePerspective instanceof PathwayTablePerspective)
+			pathway = ((PathwayTablePerspective) tablePerspective).getPathway();
 	}
 
 	public void setPathway(final int iPathwayID) {

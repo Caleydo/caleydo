@@ -67,7 +67,7 @@ import org.caleydo.core.id.IDType;
  * </p>
  * <p>
  * A TablePerspective should be created/accessed by using
- * {@link ATableBasedDataDomain#getDataContainer(String, String)}, where the
+ * {@link ATableBasedDataDomain#getTablePerspective(String, String)}, where the
  * Strings are the IDs of the perspectives that define the TablePerspective. The
  * dataDomain registers the tablePerspective for those perspective and provides
  * other instances which need a TablePerspective for the same combination of
@@ -76,14 +76,14 @@ import org.caleydo.core.id.IDType;
  * and storage-wise expensive)
  * </p>
  * <p>
- * The tablePerspectives are identified by a the {@link #dataContainerKey}, which
+ * The tablePerspectives are identified by a the {@link #tablePerspectiveKey}, which
  * is created as a function of the identifiers of the two perspectives.
  * </p>
  * <p>
  * Data containers can be hierarchically created based on {@link GroupList}s of
  * one of the {@link AVariablePerspective}s using the
- * {@link #getRecordSubDataContainers()} and
- * {@link #getDimensionSubDataContainers()}. The resulting
+ * {@link #getRecordSubTablePerspectives()} and
+ * {@link #getDimensionSubTablePerspectives()}. The resulting
  * <code>TablePerspective</code>s have the {@link #recordGroup}, resp. the
  * #dimensionGroup set, which are otherwise null.
  * </p>
@@ -100,7 +100,7 @@ public class TablePerspective {
 	private int id;
 
 	/** The key, which is created by using a function of the perspective IDs */
-	private String dataContainerKey;
+	private String tablePerspectiveKey;
 
 	/** The data domain use in this data container */
 	protected ATableBasedDataDomain dataDomain;
@@ -204,10 +204,10 @@ public class TablePerspective {
 	}
 
 	/**
-	 * @return the dataContainerKey, see {@link #dataContainerKey}
+	 * @return the tablePerspectiveKey, see {@link #tablePerspectiveKey}
 	 */
-	public String getDataContainerKey() {
-		return dataContainerKey;
+	public String getTablePerspectiveKey() {
+		return tablePerspectiveKey;
 	}
 
 	@XmlTransient
@@ -235,7 +235,7 @@ public class TablePerspective {
 	public void setRecordPerspective(RecordPerspective recordPerspective) {
 		if (this.recordPerspective != null)
 			throw new IllegalStateException(
-					"Illegal to change perspectives of DataContainers.");
+					"Illegal to change perspectives of TablePerspectives.");
 		this.recordPerspective = recordPerspective;
 		this.recordPerspectiveID = recordPerspective.getPerspectiveID();
 		createKey();
@@ -256,7 +256,7 @@ public class TablePerspective {
 	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
 		if (this.dimensionPerspective != null)
 			throw new IllegalStateException(
-					"Illegal to change perspectives of DataContainers.");
+					"Illegal to change perspectives of TablePerspectives.");
 		this.dimensionPerspective = dimensionPerspective;
 		dimensionPerspectiveID = dimensionPerspective.getPerspectiveID();
 		createKey();
@@ -386,9 +386,9 @@ public class TablePerspective {
 	 * @return a new list of new {@link TablePerspective}s or null if no group list
 	 *         is set.
 	 */
-	public List<TablePerspective> getRecordSubDataContainers() {
+	public List<TablePerspective> getRecordSubTablePerspectives() {
 
-		List<TablePerspective> recordSubDataContainers = new ArrayList<TablePerspective>();
+		List<TablePerspective> recordSubTablePerspectives = new ArrayList<TablePerspective>();
 
 		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
 
@@ -410,16 +410,16 @@ public class TablePerspective {
 			data.setData(indices);
 			recordPerspective.init(data);
 
-			TablePerspective subDataContainer = new TablePerspective(dataDomain,
+			TablePerspective subTablePerspective = new TablePerspective(dataDomain,
 					recordPerspective, dimensionPerspective);
-			subDataContainer.setRecordGroup(group);
-			subDataContainer.setLabel(recordPerspective.getLabel(),
+			subTablePerspective.setRecordGroup(group);
+			subTablePerspective.setLabel(recordPerspective.getLabel(),
 					recordPerspective.isDefaultLabel());
-			recordSubDataContainers.add(subDataContainer);
+			recordSubTablePerspectives.add(subTablePerspective);
 
 		}
 
-		return recordSubDataContainers;
+		return recordSubTablePerspectives;
 	}
 
 	/**
@@ -431,9 +431,9 @@ public class TablePerspective {
 	 * @return a new list of new {@link TablePerspective}s or null if no group list
 	 *         is set.
 	 */
-	public List<TablePerspective> getDimensionSubDataContainers() {
+	public List<TablePerspective> getDimensionSubTablePerspectives() {
 
-		List<TablePerspective> dimensionSubDataContainers = new ArrayList<TablePerspective>();
+		List<TablePerspective> dimensionSubTablePerspectives = new ArrayList<TablePerspective>();
 
 		DimensionVirtualArray dimensionVA = dimensionPerspective.getVirtualArray();
 
@@ -455,27 +455,27 @@ public class TablePerspective {
 			data.setData(indices);
 			dimensionPerspective.init(data);
 
-			TablePerspective subDataContainer = new TablePerspective(dataDomain,
+			TablePerspective subTablePerspective = new TablePerspective(dataDomain,
 					recordPerspective, dimensionPerspective);
-			subDataContainer.setDimensionGroup(group);
-			subDataContainer.setLabel(group.getLabel(), group.isLabelDefault());
-			dimensionSubDataContainers.add(subDataContainer);
+			subTablePerspective.setDimensionGroup(group);
+			subTablePerspective.setLabel(group.getLabel(), group.isLabelDefault());
+			dimensionSubTablePerspectives.add(subTablePerspective);
 
 		}
 
-		return dimensionSubDataContainers;
+		return dimensionSubTablePerspectives;
 	}
 
 	// public void afterUnmarshal(Unmarshaller u, Object parent) {
 	// this.dataDomain = (ATableBasedDataDomain) parent;
 	// }
 	/**
-	 * Creates the {@link #dataContainerKey} if both {@link #recordPerspective}
+	 * Creates the {@link #tablePerspectiveKey} if both {@link #recordPerspective}
 	 * and {@link #dimensionPerspective} are already initialized.
 	 */
 	private void createKey() {
 		if (recordPerspective != null && dimensionPerspective != null)
-			dataContainerKey = createKey(recordPerspective.getPerspectiveID(),
+			tablePerspectiveKey = createKey(recordPerspective.getPerspectiveID(),
 					dimensionPerspective.getPerspectiveID());
 	}
 

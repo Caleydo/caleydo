@@ -135,13 +135,13 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 			return;
 
 		SimilarityMap similarityMap = relationAnalyzer.getSimilarityMap(leftDimGroup
-				.getDataContainer().getRecordPerspective().getPerspectiveID());
+				.getTablePerspective().getRecordPerspective().getPerspectiveID());
 
 		if (similarityMap == null)
 			return;
 
 		VASimilarity<RecordVirtualArray, RecordGroupList> vaSimilarityMap = similarityMap
-				.getVASimilarity(rightDimGroup.getDataContainer().getRecordPerspective()
+				.getVASimilarity(rightDimGroup.getTablePerspective().getRecordPerspective()
 						.getPerspectiveID());
 		if (vaSimilarityMap == null)
 			return;
@@ -150,15 +150,15 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 			if (leftBrick.isHeaderBrick())
 				continue;
 			GroupMatch groupMatch = new GroupMatch(leftBrick);
-			hashGroupID2GroupMatches.put(leftBrick.getDataContainer().getRecordGroup()
+			hashGroupID2GroupMatches.put(leftBrick.getTablePerspective().getRecordGroup()
 					.getGroupIndex(), groupMatch);
 
 			RectangleCoordinates leftBrickElementLayout = leftBrick
 					.getLayoutForConnections();
 
 			GroupSimilarity<RecordVirtualArray, RecordGroupList> leftGroupSimilarity = vaSimilarityMap
-					.getGroupSimilarity(leftDimGroup.getDataContainer()
-							.getRecordPerspective().getPerspectiveID(), leftBrick.getDataContainer()
+					.getGroupSimilarity(leftDimGroup.getTablePerspective()
+							.getRecordPerspective().getPerspectiveID(), leftBrick.getTablePerspective()
 							.getRecordGroup().getGroupIndex());
 
 			float[] leftSimilarities = leftGroupSimilarity.getSimilarities();
@@ -169,11 +169,11 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 					continue;
 				SubGroupMatch subGroupMatch = new SubGroupMatch(
 						glVisBricks.getNextConnectionBandID(), rightBrick);
-				groupMatch.addSubGroupMatch(rightBrick.getDataContainer()
+				groupMatch.addSubGroupMatch(rightBrick.getTablePerspective()
 						.getRecordGroup().getGroupIndex(), subGroupMatch);
 
 				RecordVirtualArray similarityVA = leftGroupSimilarity
-						.getSimilarityVAs(rightBrick.getDataContainer().getRecordGroup()
+						.getSimilarityVAs(rightBrick.getTablePerspective().getRecordGroup()
 								.getGroupIndex());
 
 				ribbonIDs.add(subGroupMatch.getConnectionBandID());
@@ -188,7 +188,7 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 				calculateSubMatchSelections(subGroupMatch, similarityVA);
 
 				float leftSimilarityRatioY = leftSimilarities[rightBrick
-						.getDataContainer().getRecordGroup().getGroupIndex()];
+						.getTablePerspective().getRecordGroup().getGroupIndex()];
 				leftSimilarityOffsetY += leftSimilarityRatioY;
 
 				subGroupMatch.setSimilarityRatioLeft(leftSimilarityRatioY);
@@ -209,9 +209,9 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 					.getLayoutForConnections();
 
 			GroupSimilarity<RecordVirtualArray, RecordGroupList> rightGroupSimilarity = vaSimilarityMap
-					.getGroupSimilarity(rightDimGroup.getDataContainer()
+					.getGroupSimilarity(rightDimGroup.getTablePerspective()
 							.getRecordPerspective().getPerspectiveID(), rightBrick
-							.getDataContainer().getRecordGroup().getGroupIndex());
+							.getTablePerspective().getRecordGroup().getGroupIndex());
 
 			float[] rightSimilarities = rightGroupSimilarity.getSimilarities();
 
@@ -221,12 +221,12 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 				if (leftBrick.isHeaderBrick())
 					continue;
 				GroupMatch groupMatch = hashGroupID2GroupMatches.get(leftBrick
-						.getDataContainer().getRecordGroup().getGroupIndex());
+						.getTablePerspective().getRecordGroup().getGroupIndex());
 				SubGroupMatch subGroupMatch = groupMatch.getSubGroupMatch(rightBrick
-						.getDataContainer().getRecordGroup().getGroupIndex());
+						.getTablePerspective().getRecordGroup().getGroupIndex());
 
 				float rightSimilarityRatioY = rightSimilarities[leftBrick
-						.getDataContainer().getRecordGroup().getGroupIndex()];
+						.getTablePerspective().getRecordGroup().getGroupIndex()];
 				rightSimilarityOffsetY += rightSimilarityRatioY;
 
 				subGroupMatch.setSimilarityRatioRight(rightSimilarityRatioY);

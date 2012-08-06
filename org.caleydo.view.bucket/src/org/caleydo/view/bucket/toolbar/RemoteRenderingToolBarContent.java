@@ -26,7 +26,7 @@ import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.ActionToolBarContainer;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.view.bucket.GLBucket;
 import org.caleydo.view.bucket.SerializedBucketView;
 import org.caleydo.view.bucket.toolbar.actions.CloseOrResetContainedViews;
@@ -116,7 +116,7 @@ public class RemoteRenderingToolBarContent extends AToolBarContent {
 		container.setTitle(PATHWAY_VIEW_TITLE);
 
 		container.setPathwayToolBarMediator(new PathwayToolBarMediator(
-				((ASerializedSingleDataContainerBasedView) targetViewData).getDataDomainID()));
+				((ASerializedSingleTablePerspectiveBasedView) targetViewData).getDataDomainID()));
 		container.setTargetViewData((SerializedBucketView) getTargetViewData());
 
 		return container;

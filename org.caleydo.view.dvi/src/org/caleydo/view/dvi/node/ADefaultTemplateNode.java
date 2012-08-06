@@ -39,8 +39,8 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
-import org.caleydo.view.dvi.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.dvi.layout.AGraphLayout;
+import org.caleydo.view.dvi.tableperspective.ATablePerspectiveRenderer;
 
 public abstract class ADefaultTemplateNode
 	extends ADraggableDataGraphNode
@@ -80,15 +80,15 @@ public abstract class ADefaultTemplateNode
 	}
 
 	@Override
-	public Pair<Point2D, Point2D> getBottomDataContainerAnchorPoints(
+	public Pair<Point2D, Point2D> getBottomTablePerspectiveAnchorPoints(
 			TablePerspective tablePerspective)
 	{
 
-		if (getDataContainerRenderer() == null)
+		if (getTablePerspectiveRenderer() == null)
 			return null;
 
-		Pair<Point2D, Point2D> anchorPoints = getDataContainerRenderer()
-				.getBottomAnchorPointsOfDataContainer(tablePerspective);
+		Pair<Point2D, Point2D> anchorPoints = getTablePerspectiveRenderer()
+				.getBottomAnchorPointsOfTablePerspective(tablePerspective);
 
 		return getAbsoluteDimensionGroupAnchorPoints(
 				anchorPoints,
@@ -98,14 +98,14 @@ public abstract class ADefaultTemplateNode
 	}
 
 	@Override
-	public Pair<Point2D, Point2D> getTopDataContainerAnchorPoints(TablePerspective tablePerspective)
+	public Pair<Point2D, Point2D> getTopTablePerspectiveAnchorPoints(TablePerspective tablePerspective)
 	{
 
-		if (getDataContainerRenderer() == null)
+		if (getTablePerspectiveRenderer() == null)
 			return null;
 
-		Pair<Point2D, Point2D> anchorPoints = getDataContainerRenderer()
-				.getTopAnchorPointsOfDataContainer(tablePerspective);
+		Pair<Point2D, Point2D> anchorPoints = getTablePerspectiveRenderer()
+				.getTopAnchorPointsOfTablePerspective(tablePerspective);
 
 		return getAbsoluteDimensionGroupAnchorPoints(
 				anchorPoints,
@@ -114,7 +114,7 @@ public abstract class ADefaultTemplateNode
 						: (SPACING_PIXELS));
 	}
 
-	public Point2D getAbsolutPositionOfRelativeDataContainerRendererCoordinates(
+	public Point2D getAbsolutPositionOfRelativeTablePerspectiveRendererCoordinates(
 			Point2D coordinates)
 	{
 		Point2D position = graphLayout.getNodePosition(this);
@@ -254,8 +254,8 @@ public abstract class ADefaultTemplateNode
 		// + CAPTION_HEIGHT_PIXELS
 		// + LINE_SEPARATOR_HEIGHT_PIXELS
 		// + Math.max(MIN_DATA_CONTAINER_HEIGHT_PIXELS,
-		// ((getDataContainerRenderer() == null) ? 0 :
-		// getDataContainerRenderer()
+		// ((getTablePerspectiveRenderer() == null) ? 0 :
+		// getTablePerspectiveRenderer()
 		// .getMinHeightPixels()));
 
 		if (heightPixels < 0)
@@ -272,8 +272,8 @@ public abstract class ADefaultTemplateNode
 		// widthPixels = 2
 		// * SPACING_PIXELS
 		// + Math.max(getMinTitleBarWidthPixels(),
-		// ((getDataContainerRenderer() == null) ? 0 :
-		// getDataContainerRenderer()
+		// ((getTablePerspectiveRenderer() == null) ? 0 :
+		// getTablePerspectiveRenderer()
 		// .getMinWidthPixels()));
 		if (widthPixels < 0)
 			recalculateNodeSize();
@@ -412,9 +412,9 @@ public abstract class ADefaultTemplateNode
 		bodyColumn.setBottomUp(!isUpsideDown);
 
 		view.setDisplayListDirty();
-		if (getDataContainerRenderer() != null)
+		if (getTablePerspectiveRenderer() != null)
 		{
-			getDataContainerRenderer().setUpsideDown(isUpsideDown);
+			getTablePerspectiveRenderer().setUpsideDown(isUpsideDown);
 		}
 	}
 
@@ -466,19 +466,19 @@ public abstract class ADefaultTemplateNode
 				+ CAPTION_HEIGHT_PIXELS
 				+ LINE_SEPARATOR_HEIGHT_PIXELS
 				+ Math.max(MIN_DATA_CONTAINER_HEIGHT_PIXELS,
-						((getDataContainerRenderer() == null) ? 0 : getDataContainerRenderer()
+						((getTablePerspectiveRenderer() == null) ? 0 : getTablePerspectiveRenderer()
 								.getMinHeightPixels()));
 
 		widthPixels = 2
 				* SPACING_PIXELS
 				+ Math.max(getMinTitleBarWidthPixels(),
-						((getDataContainerRenderer() == null) ? 0 : getDataContainerRenderer()
+						((getTablePerspectiveRenderer() == null) ? 0 : getTablePerspectiveRenderer()
 								.getMinWidthPixels()));
 	}
 
 	protected abstract ElementLayout setupLayout();
 
-	protected abstract ADataContainerRenderer getDataContainerRenderer();
+	protected abstract ATablePerspectiveRenderer getTablePerspectiveRenderer();
 
 	protected abstract int getMinTitleBarWidthPixels();
 

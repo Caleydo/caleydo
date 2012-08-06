@@ -189,7 +189,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	/**
 	 * @return the tablePerspectives, see {@link #tablePerspectives}
 	 */
-	public HashMap<String, TablePerspective> getDataContainers() {
+	public HashMap<String, TablePerspective> getTablePerspectives() {
 		return tablePerspectives;
 	}
 
@@ -197,7 +197,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * @param tablePerspectives
 	 *            setter, see {@link #tablePerspectives}
 	 */
-	public void setDataContainers(HashMap<String, TablePerspective> tablePerspectives) {
+	public void setTablePerspectives(HashMap<String, TablePerspective> tablePerspectives) {
 		this.tablePerspectives = tablePerspectives;
 	}
 
@@ -331,7 +331,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * @param dimensionPerspectiveID
 	 * @return
 	 */
-	public TablePerspective getDataContainer(String recordPerspectiveID,
+	public TablePerspective getTablePerspective(String recordPerspectiveID,
 			String dimensionPerspectiveID) {
 		TablePerspective container = tablePerspectives.get(TablePerspective.createKey(
 				recordPerspectiveID, dimensionPerspectiveID));
@@ -366,16 +366,16 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	/**
 	 * Returns a data container based on its key
 	 * 
-	 * @param dataContainerKey
+	 * @param tablePerspectiveKey
 	 * @return
 	 */
-	public TablePerspective getDataContainer(String dataContainerKey) {
-		return tablePerspectives.get(dataContainerKey);
+	public TablePerspective getTablePerspective(String tablePerspectiveKey) {
+		return tablePerspectives.get(tablePerspectiveKey);
 	}
 
 	/** Returns the data container made up of the default perspectives */
-	public TablePerspective getDefaultDataContainer() {
-		return getDataContainer(table.getDefaultRecordPerspective().getPerspectiveID(),
+	public TablePerspective getDefaultTablePerspective() {
+		return getTablePerspective(table.getDefaultRecordPerspective().getPerspectiveID(),
 				table.getDefaultDimensionPerspective().getPerspectiveID());
 	}
 
@@ -387,7 +387,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * @param dimensionPerspectiveID
 	 * @return
 	 */
-	public boolean hasDataContainer(String recordPerspectiveID,
+	public boolean hasTablePerspective(String recordPerspectiveID,
 			String dimensionPerspectiveID) {
 		return tablePerspectives.get(TablePerspective.createKey(recordPerspectiveID,
 				dimensionPerspectiveID)) != null;
@@ -396,7 +396,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	/**
 	 * @return All {@link TablePerspective}s of this datadomain.
 	 */
-	public Collection<TablePerspective> getAllDataContainers() {
+	public Collection<TablePerspective> getAllTablePerspectives() {
 		return tablePerspectives.values();
 	}
 

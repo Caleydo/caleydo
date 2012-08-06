@@ -47,7 +47,7 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 
 		AHeatMapLayoutConfiguration heatMapTemplate = heatMap.getTemplate();
 
-		int nrRecordElements = heatMap.getDataContainer().getRecordPerspective()
+		int nrRecordElements = heatMap.getTablePerspective().getRecordPerspective()
 				.getVirtualArray().size();
 
 		RecordSelectionManager selectionManager = heatMap.getRecordSelectionManager();
@@ -57,7 +57,7 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 					.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
 		}
 
-		recordSpacing.calculateRecordSpacing(nrRecordElements, heatMap.getDataContainer()
+		recordSpacing.calculateRecordSpacing(nrRecordElements, heatMap.getTablePerspective()
 				.getDimensionPerspective().getVirtualArray().size(),
 				elementLayout.getSizeScaledX(), elementLayout.getSizeScaledY(),
 				heatMapTemplate.getMinSelectedFieldHeight());
@@ -83,7 +83,7 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 
 		PixelGLConverter conv = heatMap.getPixelGLConverter();
 
-		for (Integer recordID : heatMap.getDataContainer().getRecordPerspective()
+		for (Integer recordID : heatMap.getTablePerspective().getRecordPerspective()
 				.getVirtualArray()) {
 			fieldHeight = recordSpacing.getFieldHeight(recordID);
 
@@ -191,7 +191,7 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 		if (recordSpacing != null)
 			return y
 					- recordSpacing.getYDistances().get(recordIndex)
-					- recordSpacing.getFieldHeight(heatMap.getDataContainer()
+					- recordSpacing.getFieldHeight(heatMap.getTablePerspective()
 							.getRecordPerspective().getVirtualArray().get(recordIndex))
 					/ 2;
 		return 0;

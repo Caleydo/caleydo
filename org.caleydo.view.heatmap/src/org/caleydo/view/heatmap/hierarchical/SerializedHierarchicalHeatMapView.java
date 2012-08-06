@@ -22,8 +22,8 @@ package org.caleydo.view.heatmap.hierarchical;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -34,12 +34,12 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
  */
 @XmlRootElement
 @XmlType
-public class SerializedHierarchicalHeatMapView extends ASerializedSingleDataContainerBasedView {
+public class SerializedHierarchicalHeatMapView extends ASerializedSingleTablePerspectiveBasedView {
 
 	public SerializedHierarchicalHeatMapView() {
 	}
 
-	public SerializedHierarchicalHeatMapView(ISingleDataContainerBasedView view) {
+	public SerializedHierarchicalHeatMapView(ISingleTablePerspectiveBasedView view) {
 		super(view);
 	}
 

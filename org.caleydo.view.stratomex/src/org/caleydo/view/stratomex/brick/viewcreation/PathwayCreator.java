@@ -54,7 +54,7 @@ public class PathwayCreator implements IRemoteViewCreator {
 
 		pathwayView.setRemoteRenderingGLView(remoteRenderingView);
 		pathwayView.setDataDomain(remoteRenderingView.getDataDomain());
-		pathwayView.setDataContainer(remoteRenderingView.getDataContainer());
+		pathwayView.setTablePerspective(remoteRenderingView.getTablePerspective());
 		// pathwayView.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		pathwayView.initialize();
 		pathwayView.initRemote(gl, remoteRenderingView, glMouseListener);

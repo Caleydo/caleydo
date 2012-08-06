@@ -22,10 +22,10 @@ package org.caleydo.view.radial;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 
 /**
  * Serialized form of the radial hierarchy view.
@@ -34,7 +34,7 @@ import org.caleydo.core.view.ISingleDataContainerBasedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedRadialHierarchyView extends ASerializedSingleDataContainerBasedView {
+public class SerializedRadialHierarchyView extends ASerializedSingleTablePerspectiveBasedView {
 
 	private EDrawingStateType drawingStateType;
 	private int maxDisplayedHierarchyDepth;
@@ -53,7 +53,7 @@ public class SerializedRadialHierarchyView extends ASerializedSingleDataContaine
 		init();
 	}
 
-	public SerializedRadialHierarchyView(ISingleDataContainerBasedView view) {
+	public SerializedRadialHierarchyView(ISingleTablePerspectiveBasedView view) {
 		super(view);
 		init();
 	}

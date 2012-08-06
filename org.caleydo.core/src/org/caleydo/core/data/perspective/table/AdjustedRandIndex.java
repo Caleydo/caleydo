@@ -33,12 +33,12 @@ public class AdjustedRandIndex {
 	/**
 	 * The data container to which the score belongs to.
 	 */
-	TablePerspective referenceDataContainer;
+	TablePerspective referenceTablePerspective;
 
-	HashMap<TablePerspective, Float> dataContainerToScore = new HashMap<TablePerspective, Float>();
+	HashMap<TablePerspective, Float> tablePerspectiveToScore = new HashMap<TablePerspective, Float>();
 
-	public AdjustedRandIndex(TablePerspective referenceDataContainer) {
-		this.referenceDataContainer = referenceDataContainer;
+	public AdjustedRandIndex(TablePerspective referenceTablePerspective) {
+		this.referenceTablePerspective = referenceTablePerspective;
 	}
 
 	/**
@@ -49,8 +49,8 @@ public class AdjustedRandIndex {
 	public float getScore(TablePerspective tablePerspective, boolean storeResult) {
 
 		// check if calculation result is alrady available
-		if (dataContainerToScore.containsKey(tablePerspective))
-			return dataContainerToScore.get(tablePerspective);
+		if (tablePerspectiveToScore.containsKey(tablePerspective))
+			return tablePerspectiveToScore.get(tablePerspective);
 
 		float score = 1;
 		score = new Random().nextFloat();
@@ -60,8 +60,8 @@ public class AdjustedRandIndex {
 		System.out.println("Calculate Adjusted Rand Index");
 		
 		if (storeResult) {
-			dataContainerToScore.put(tablePerspective, score);
-			referenceDataContainer.getContainerStatistics().adjustedRandIndex()
+			tablePerspectiveToScore.put(tablePerspective, score);
+			referenceTablePerspective.getContainerStatistics().adjustedRandIndex()
 					.setScore(tablePerspective, score);
 		}
 
@@ -69,6 +69,6 @@ public class AdjustedRandIndex {
 	}
 
 	public void setScore(TablePerspective tablePerspective, float score) {
-		dataContainerToScore.put(tablePerspective, score);
+		tablePerspectiveToScore.put(tablePerspective, score);
 	}
 }

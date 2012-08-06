@@ -26,9 +26,9 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
@@ -40,7 +40,7 @@ import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedBucketView extends ASerializedSingleDataContainerBasedView {
+public class SerializedBucketView extends ASerializedSingleTablePerspectiveBasedView {
 
 	/** @see org.caleydo.core.org.caleydo.core.view.opengl.canvas.AGLViewBrowser.pathwayTexturesEnabled */
 	private boolean pathwayTexturesEnabled;
@@ -68,7 +68,7 @@ public class SerializedBucketView extends ASerializedSingleDataContainerBasedVie
 		init();
 	}
 
-	public SerializedBucketView(ISingleDataContainerBasedView view) {
+	public SerializedBucketView(ISingleTablePerspectiveBasedView view) {
 		super(view);
 		init();
 	}
@@ -83,7 +83,7 @@ public class SerializedBucketView extends ASerializedSingleDataContainerBasedVie
 
 		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>();
 
-		SerializedHeatMapView heatMap = new SerializedHeatMapView(-1, dataDomainID, dataContainerKey);
+		SerializedHeatMapView heatMap = new SerializedHeatMapView(-1, dataDomainID, tablePerspectiveKey);
 		remoteViews.add(heatMap);
 
 		ArrayList<ASerializedView> focusLevel = new ArrayList<ASerializedView>();

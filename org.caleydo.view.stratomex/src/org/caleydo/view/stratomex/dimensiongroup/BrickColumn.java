@@ -57,7 +57,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
+import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.EContainedViewType;
 import org.caleydo.view.stratomex.brick.GLBrick;
@@ -299,8 +299,8 @@ public class BrickColumn extends ATableBasedView implements
 		// create basic layouts
 
 		float[] glowColor = tablePerspective.getDataDomain().getColor().getRGBA();
-		if (tablePerspective instanceof PathwayDataContainer) {
-			glowColor = ((PathwayDataContainer) tablePerspective).getPathwayDataDomain()
+		if (tablePerspective instanceof PathwayTablePerspective) {
+			glowColor = ((PathwayTablePerspective) tablePerspective).getPathwayDataDomain()
 					.getColor().getRGBA();
 		}
 
@@ -351,15 +351,15 @@ public class BrickColumn extends ATableBasedView implements
 
 		destroyOldBricks();
 
-		List<TablePerspective> brickDataContainers = tablePerspective
-				.getRecordSubDataContainers();
+		List<TablePerspective> brickTablePerspectives = tablePerspective
+				.getRecordSubTablePerspectives();
 
-		if (brickDataContainers == null || brickDataContainers.size() <= 0)
+		if (brickTablePerspectives == null || brickTablePerspectives.size() <= 0)
 			return;
 
 		List<GLBrick> segmentBricks = new ArrayList<GLBrick>();
 
-		for (TablePerspective brickData : brickDataContainers) {
+		for (TablePerspective brickData : brickTablePerspectives) {
 			GLBrick segmentBrick = createBrick(new ElementLayout("brick"), brickData);
 
 			// segmentBrick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
@@ -388,7 +388,7 @@ public class BrickColumn extends ATableBasedView implements
 		for (GLBrick brick : sortedBricks) {
 			// System.out.println("Average Value: "
 			// +
-			// brick.getDataContainer().getContainerStatistics().getAverageValue());
+			// brick.getTablePerspective().getContainerStatistics().getAverageValue());
 			ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
 			brickSpacingLayout.setPixelSizeY(BETWEEN_BRICKS_SPACING);
 			brickSpacingLayout.setRatioSizeX(0f);
@@ -475,7 +475,7 @@ public class BrickColumn extends ATableBasedView implements
 						brickFrustum);
 
 		brick.setDataDomain(dataDomain);
-		brick.setDataContainer(tablePerspective);
+		brick.setTablePerspective(tablePerspective);
 		brick.setBrickConfigurer(brickConfigurer);
 		brick.setRemoteRenderingGLView(this);
 		brick.setStratomex(stratomex);
@@ -1022,7 +1022,7 @@ public class BrickColumn extends ATableBasedView implements
 
 		detailBrickLayout = new Column("detailBrickWrappingLayout");
 
-		detailBrick = createBrick(detailBrickLayout, brick.getDataContainer());
+		detailBrick = createBrick(detailBrickLayout, brick.getTablePerspective());
 		detailBrick.setHeaderBrick(brick.isHeaderBrick());
 		// detailBrick.setBrickData(brick.getBrickData());
 		// detailBrick.setBrickConfigurer(brick.getBrickConfigurer());

@@ -22,8 +22,8 @@ package org.caleydo.view.histogram;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 
 /**
  * Serialized form of the remote-rendering view (bucket).
@@ -32,12 +32,12 @@ import org.caleydo.core.view.ISingleDataContainerBasedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedHistogramView extends ASerializedSingleDataContainerBasedView {
+public class SerializedHistogramView extends ASerializedSingleTablePerspectiveBasedView {
 
 	public SerializedHistogramView() {
 	}
 
-	public SerializedHistogramView(ISingleDataContainerBasedView view) {
+	public SerializedHistogramView(ISingleTablePerspectiveBasedView view) {
 		super(view);
 	}
 

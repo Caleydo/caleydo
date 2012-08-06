@@ -33,11 +33,11 @@ public class StatisticsPValueReductionEvent
 		this.tablePerspectives = tablePerspectives;
 	}
 
-	public void setDataContainers(ArrayList<TablePerspective> tablePerspectives) {
+	public void setTablePerspectives(ArrayList<TablePerspective> tablePerspectives) {
 		this.tablePerspectives = tablePerspectives;
 	}
 
-	public ArrayList<TablePerspective> getDataContainers() {
+	public ArrayList<TablePerspective> getTablePerspectives() {
 		return tablePerspectives;
 	}
 

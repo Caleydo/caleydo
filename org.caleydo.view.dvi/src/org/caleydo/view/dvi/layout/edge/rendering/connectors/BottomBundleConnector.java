@@ -44,11 +44,11 @@ public class BottomBundleConnector
 
 	public BottomBundleConnector(IDVINode node, PixelGLConverter pixelGLConverter,
 			ConnectionBandRenderer connectionBandRenderer,
-			List<TablePerspective> commonDataContainers, int minBandWidth, int maxBandWidth,
+			List<TablePerspective> commonTablePerspectives, int minBandWidth, int maxBandWidth,
 			int maxDataAmount, IDVINode otherNode, ViewFrustum viewFrustum,
 			GLDataViewIntegrator view)
 	{
-		super(node, pixelGLConverter, connectionBandRenderer, commonDataContainers,
+		super(node, pixelGLConverter, connectionBandRenderer, commonTablePerspectives,
 				minBandWidth, maxBandWidth, maxDataAmount, otherNode, viewFrustum, view);
 
 		calcBundlingPoint();
@@ -57,7 +57,7 @@ public class BottomBundleConnector
 
 	protected void calcBundlingPoint()
 	{
-		float bundlingPositionX = calcXPositionOfBundlingPoint(node, commonDataContainers);
+		float bundlingPositionX = calcXPositionOfBundlingPoint(node, commonTablePerspectives);
 
 		float nodeBottomPositionY = (float) node.getBottomAnchorPoints().getFirst().getY();
 
@@ -71,7 +71,7 @@ public class BottomBundleConnector
 	{
 		float bundlingPositionX = (float) bundlingPoint.getX();
 		float bundlingPositionXOtherNode = calcXPositionOfBundlingPoint(otherNode,
-				commonDataContainers);
+				commonTablePerspectives);
 
 		float deltaX = (float) (bundlingPositionXOtherNode - bundlingPositionX);
 		float ratioX = deltaX / viewFrustum.getWidth();
@@ -96,7 +96,7 @@ public class BottomBundleConnector
 		float bundleDeltaX = (float) (edgeAnchorX - bundlingPoint.getX());
 
 		use4ControlPointsForBandBundleConnection = true;
-		float deltaXLimit = commonDataContainers.size() > 1 ? pixelGLConverter
+		float deltaXLimit = commonTablePerspectives.size() > 1 ? pixelGLConverter
 				.getGLWidthForPixelWidth(bandWidthPixels) : pixelGLConverter
 				.getGLWidthForPixelWidth(bandWidthPixels) / 2.0f;
 		if (hasEdgeNodeIntersection || (Math.abs(bundleDeltaX) < deltaXLimit)
@@ -171,8 +171,8 @@ public class BottomBundleConnector
 		Point2D rightBandConnectionPointOffsetAnchor = null;
 		Point2D leftBundleConnectionPointOffsetAnchor = null;
 		Point2D rightBundleConnectionPointOffsetAnchor = null;
-		Point2D leftDataContainerBundleConnectionPoint = null;
-		Point2D rightDataContainerBundleConnectionPoint = null;
+		Point2D leftTablePerspectiveBundleConnectionPoint = null;
+		Point2D rightTablePerspectiveBundleConnectionPoint = null;
 
 		float bandWidth = pixelGLConverter.getGLWidthForPixelWidth(bandWidthPixels);
 
@@ -218,9 +218,9 @@ public class BottomBundleConnector
 				rightBandConnectionPointOffsetAnchor = rightBandBundleConnectionPoint;
 			}
 
-			leftDataContainerBundleConnectionPoint = new Point2D.Float(
+			leftTablePerspectiveBundleConnectionPoint = new Point2D.Float(
 					(float) leftBandBundleConnectionPoint.getX(), (float) bundlingPoint.getY());
-			rightDataContainerBundleConnectionPoint = new Point2D.Float(
+			rightTablePerspectiveBundleConnectionPoint = new Point2D.Float(
 					(float) rightBandBundleConnectionPoint.getX(),
 					(float) bundlingPoint.getY());
 
@@ -326,8 +326,8 @@ public class BottomBundleConnector
 			rightBundleConnectionPointOffsetAnchor = new Point2D.Float(
 					(float) rightBandBundleConnectionPoint.getX(), fixedY);
 
-			leftDataContainerBundleConnectionPoint = leftBandBundleConnectionPoint;
-			rightDataContainerBundleConnectionPoint = rightBandBundleConnectionPoint;
+			leftTablePerspectiveBundleConnectionPoint = leftBandBundleConnectionPoint;
+			rightTablePerspectiveBundleConnectionPoint = rightBandBundleConnectionPoint;
 		}
 
 		// }
@@ -358,10 +358,10 @@ public class BottomBundleConnector
 		// rightBundleConnectionPointOffsetAnchor.getY(), 3);
 		// }
 		// gl.glColor3f(0, 1, 1);
-		// gl.glVertex3d(leftDataContainerBundleConnectionPoint.getX(),
-		// leftDataContainerBundleConnectionPoint.getY(), 3);
-		// gl.glVertex3d(rightDataContainerBundleConnectionPoint.getX(),
-		// rightDataContainerBundleConnectionPoint.getY(), 3);
+		// gl.glVertex3d(leftTablePerspectiveBundleConnectionPoint.getX(),
+		// leftTablePerspectiveBundleConnectionPoint.getY(), 3);
+		// gl.glVertex3d(rightTablePerspectiveBundleConnectionPoint.getX(),
+		// rightTablePerspectiveBundleConnectionPoint.getY(), 3);
 		// gl.glEnd();
 
 		List<Pair<Point2D, Point2D>> anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
@@ -383,10 +383,10 @@ public class BottomBundleConnector
 		if (!use4ControlPointsForBandBundleConnection)
 		{
 			connectionBandRenderer.renderStraightBand(gl, new float[] {
-					(float) rightDataContainerBundleConnectionPoint.getX(),
-					(float) rightDataContainerBundleConnectionPoint.getY() }, new float[] {
-					(float) leftDataContainerBundleConnectionPoint.getX(),
-					(float) leftDataContainerBundleConnectionPoint.getY() }, new float[] {
+					(float) rightTablePerspectiveBundleConnectionPoint.getX(),
+					(float) rightTablePerspectiveBundleConnectionPoint.getY() }, new float[] {
+					(float) leftTablePerspectiveBundleConnectionPoint.getX(),
+					(float) leftTablePerspectiveBundleConnectionPoint.getY() }, new float[] {
 					(float) rightBandBundleConnectionPoint.getX(),
 					(float) rightBandBundleConnectionPoint.getY() }, new float[] {
 					(float) leftBandBundleConnectionPoint.getX(),
@@ -394,14 +394,14 @@ public class BottomBundleConnector
 					(highlightBand) ? 1 : 0.5f);
 		}
 
-		Point2D prevBandAnchorPoint = leftDataContainerBundleConnectionPoint;
+		Point2D prevBandAnchorPoint = leftTablePerspectiveBundleConnectionPoint;
 
 		List<Pair<Double, TablePerspective>> sortedDimensionGroups = new ArrayList<Pair<Double, TablePerspective>>(
-				commonDataContainers.size());
-		for (TablePerspective tablePerspective : commonDataContainers)
+				commonTablePerspectives.size());
+		for (TablePerspective tablePerspective : commonTablePerspectives)
 		{
 			sortedDimensionGroups.add(new Pair<Double, TablePerspective>(node
-					.getBottomDataContainerAnchorPoints(tablePerspective).getFirst().getX(),
+					.getBottomTablePerspectiveAnchorPoints(tablePerspective).getFirst().getX(),
 					tablePerspective));
 		}
 
@@ -412,12 +412,12 @@ public class BottomBundleConnector
 			TablePerspective tablePerspective = sortedDimensionGroups.get(i).getSecond();
 			anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
 			Pair<Point2D, Point2D> dimensionGroupAnchorPoints = node
-					.getBottomDataContainerAnchorPoints(tablePerspective);
+					.getBottomTablePerspectiveAnchorPoints(tablePerspective);
 			Pair<Point2D, Point2D> dimensionGroupAnchorOffsetPoints = new Pair<Point2D, Point2D>();
 			Pair<Point2D, Point2D> nodeBottomAnchorPoints = node.getBottomAnchorPoints();
 
 			float offsetPositionY = (float) (nodeBottomAnchorPoints.getFirst().getY() - pixelGLConverter
-					.getGLHeightForPixelHeight(DATACONTAINER_OFFSET_Y));
+					.getGLHeightForPixelHeight(TABLEPERSPECTIVE_OFFSET_Y));
 
 			dimensionGroupAnchorOffsetPoints.setFirst(new Point2D.Float(
 					(float) dimensionGroupAnchorPoints.getFirst().getX(), offsetPositionY));
@@ -429,9 +429,9 @@ public class BottomBundleConnector
 
 			Point2D nextBandAnchorPoint = null;
 
-			if (i == commonDataContainers.size() - 1)
+			if (i == commonTablePerspectives.size() - 1)
 			{
-				nextBandAnchorPoint = rightDataContainerBundleConnectionPoint;
+				nextBandAnchorPoint = rightTablePerspectiveBundleConnectionPoint;
 			}
 			else
 			{
@@ -442,7 +442,7 @@ public class BottomBundleConnector
 
 			float bandOffsetPositionY = (float) nodeBottomAnchorPoints.getFirst().getY()
 					- pixelGLConverter
-							.getGLHeightForPixelHeight(DATACONTAINER_TO_BUNDLE_OFFSET_Y);
+							.getGLHeightForPixelHeight(TABLEPERSPECTIVE_TO_BUNDLE_OFFSET_Y);
 
 			Point2D bandOffsetPoint1 = new Point2D.Float((float) prevBandAnchorPoint.getX(),
 					bandOffsetPositionY);
@@ -549,10 +549,10 @@ public class BottomBundleConnector
 	//
 	// List<Pair<Double, TablePerspective>> sortedDimensionGroups = new
 	// ArrayList<Pair<Double, TablePerspective>>(
-	// commonDataContainers.size());
-	// for (TablePerspective tablePerspective : commonDataContainers) {
+	// commonTablePerspectives.size());
+	// for (TablePerspective tablePerspective : commonTablePerspectives) {
 	// sortedDimensionGroups.add(new Pair<Double, TablePerspective>(node
-	// .getBottomDataContainerAnchorPoints(tablePerspective)
+	// .getBottomTablePerspectiveAnchorPoints(tablePerspective)
 	// .getFirst().getX(), tablePerspective));
 	// }
 	//
@@ -563,7 +563,7 @@ public class BottomBundleConnector
 	// .getSecond();
 	// anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
 	// Pair<Point2D, Point2D> dimensionGroupAnchorPoints = node
-	// .getBottomDataContainerAnchorPoints(tablePerspective);
+	// .getBottomTablePerspectiveAnchorPoints(tablePerspective);
 	// Pair<Point2D, Point2D> dimensionGroupAnchorOffsetPoints = new
 	// Pair<Point2D, Point2D>();
 	// Pair<Point2D, Point2D> nodeBottomAnchorPoints = node
@@ -580,7 +580,7 @@ public class BottomBundleConnector
 	//
 	// Point2D nextBandAnchorPoint = null;
 	//
-	// if (i == commonDataContainers.size() - 1) {
+	// if (i == commonTablePerspectives.size() - 1) {
 	// nextBandAnchorPoint = rightBandBundleConnecionPoint;
 	// } else {
 	// nextBandAnchorPoint = new Point2D.Float(

@@ -29,7 +29,7 @@ import org.caleydo.core.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.CaleydoRCPViewPart;
@@ -106,7 +106,7 @@ public class ActivateViewListener
 					ASerializedView serView = ((CaleydoRCPViewPart) viewPart).getSerializedView();
 
 					if (event.getDataDomainID().equals(
-						((ASerializedSingleDataContainerBasedView) serView).getDataDomainID())
+						((ASerializedSingleTablePerspectiveBasedView) serView).getDataDomainID())
 						&& serView.getViewType().equals(viewType)) {
 						viewExists = true;
 						break;

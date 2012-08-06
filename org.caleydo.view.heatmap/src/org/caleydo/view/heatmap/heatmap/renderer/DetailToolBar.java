@@ -113,7 +113,7 @@ public class DetailToolBar extends LayoutRenderer {
 		}
 		float secondButtonOffset = 2 * sideSpacing + buttonSize;
 
-		int nrTotal = heatMap.getDataContainer().getRecordPerspective().getVirtualArray()
+		int nrTotal = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray()
 				.size();
 		int nrVisible = nrTotal
 				- heatMap.getRecordSelectionManager().getNumberOfElements(

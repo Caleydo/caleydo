@@ -24,7 +24,7 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.core.view.swt.ASWTView;
@@ -76,7 +76,7 @@ public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 		if (view instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) view).setDataDomain(DataDomainManager
 					.get().getDataDomainByID(
-							((ASerializedSingleDataContainerBasedView) serializedView)
+							((ASerializedSingleTablePerspectiveBasedView) serializedView)
 									.getDataDomainID()));
 		}
 

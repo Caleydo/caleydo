@@ -35,7 +35,7 @@ public class OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent extends AEvent 
 	 * The base data container which contains the subgroups for which the small
 	 * multiples will be created.
 	 */
-	private TablePerspective dimensionGroupDataContainer;
+	private TablePerspective dimensionGroupTablePerspective;
 
 	/**
 	 * The base dimension perspective containing all genes that will be mapped
@@ -49,10 +49,10 @@ public class OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent extends AEvent 
 	 *            the small multiples will be created.
 	 */
 	public OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent(
-			TablePerspective dimensionGroupDataContainer,
+			TablePerspective dimensionGroupTablePerspective,
 			DimensionPerspective dimensionPerspective) {
 
-		this.setDimensionGroupDataContainer(dimensionGroupDataContainer);
+		this.setDimensionGroupTablePerspective(dimensionGroupTablePerspective);
 		this.setDimensionPerspective(dimensionPerspective);
 	}
 
@@ -63,17 +63,17 @@ public class OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent extends AEvent 
 
 	/**
 	 * @param tablePerspective
-	 *            setter, see {@link #dimensionGroupDataContainer}
+	 *            setter, see {@link #dimensionGroupTablePerspective}
 	 */
-	public void setDimensionGroupDataContainer(TablePerspective tablePerspective) {
-		this.dimensionGroupDataContainer = tablePerspective;
+	public void setDimensionGroupTablePerspective(TablePerspective tablePerspective) {
+		this.dimensionGroupTablePerspective = tablePerspective;
 	}
 
 	/**
-	 * @return the tablePerspective, see {@link #dimensionGroupDataContainer}
+	 * @return the tablePerspective, see {@link #dimensionGroupTablePerspective}
 	 */
-	public TablePerspective getDimensionGroupDataContainer() {
-		return dimensionGroupDataContainer;
+	public TablePerspective getDimensionGroupTablePerspective() {
+		return dimensionGroupTablePerspective;
 	}
 
 	/**

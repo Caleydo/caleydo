@@ -77,7 +77,7 @@ public abstract class ContentRenderer extends SelectableRenderer {
 		topBarColor = MappedDataRenderer.BAR_COLOR;
 		bottomBarColor = topBarColor;
 		this.dataDomain = contentRendererInitializor.getDataDomain();
-		this.tablePerspective = contentRendererInitializor.getDataContainer();
+		this.tablePerspective = contentRendererInitializor.getTablePerspective();
 		this.experimentPerspective = contentRendererInitializor
 				.getExperimentPerspective();
 		this.group = contentRendererInitializor.getGroup();

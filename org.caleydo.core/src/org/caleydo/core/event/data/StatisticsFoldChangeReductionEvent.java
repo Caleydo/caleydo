@@ -29,8 +29,8 @@ import org.caleydo.core.event.AEvent;
 public class StatisticsFoldChangeReductionEvent
 	extends AEvent {
 
-	private TablePerspective dataContainer1;
-	private TablePerspective dataContainer2;
+	private TablePerspective tablePerspective1;
+	private TablePerspective tablePerspective2;
 	/**
 	 * A fold change can be calculated between the records or the dimensions of the two specified containers.
 	 * If this flag is set to be true, it is calculated for the records, els for the dimensions
@@ -38,48 +38,48 @@ public class StatisticsFoldChangeReductionEvent
 	private boolean betweenRecords;
 
 	/**
-	 * @param dataContainer1
-	 *            set to {@link #dataContainer1}
-	 * @param dataContainer2
-	 *            set to {@link #dataContainer2}
+	 * @param tablePerspective1
+	 *            set to {@link #tablePerspective1}
+	 * @param tablePerspective2
+	 *            set to {@link #tablePerspective2}
 	 * @param betweenRecords
 	 *            set to {@link #betweenRecords}
 	 */
-	public StatisticsFoldChangeReductionEvent(TablePerspective dataContainer1, TablePerspective dataContainer2,
+	public StatisticsFoldChangeReductionEvent(TablePerspective tablePerspective1, TablePerspective tablePerspective2,
 		boolean betweenRecords) {
-		this.dataContainer1 = dataContainer1;
-		this.dataContainer2 = dataContainer2;
+		this.tablePerspective1 = tablePerspective1;
+		this.tablePerspective2 = tablePerspective2;
 		this.betweenRecords = betweenRecords;
 	}
 
 	/**
-	 * @return the dataContainer1, see {@link #dataContainer1}
+	 * @return the tablePerspective1, see {@link #tablePerspective1}
 	 */
-	public TablePerspective getDataContainer1() {
-		return dataContainer1;
+	public TablePerspective getTablePerspective1() {
+		return tablePerspective1;
 	}
 
 	/**
-	 * @param dataContainer1
-	 *            setter, see {@link #dataContainer1}
+	 * @param tablePerspective1
+	 *            setter, see {@link #tablePerspective1}
 	 */
-	public void setDataContainer1(TablePerspective dataContainer1) {
-		this.dataContainer1 = dataContainer1;
+	public void setTablePerspective1(TablePerspective tablePerspective1) {
+		this.tablePerspective1 = tablePerspective1;
 	}
 
 	/**
-	 * @return the dataContainer2, see {@link #dataContainer2}
+	 * @return the tablePerspective2, see {@link #tablePerspective2}
 	 */
-	public TablePerspective getDataContainer2() {
-		return dataContainer2;
+	public TablePerspective getTablePerspective2() {
+		return tablePerspective2;
 	}
 
 	/**
-	 * @param dataContainer2
-	 *            setter, see {@link #dataContainer2}
+	 * @param tablePerspective2
+	 *            setter, see {@link #tablePerspective2}
 	 */
-	public void setDataContainer2(TablePerspective dataContainer2) {
-		this.dataContainer2 = dataContainer2;
+	public void setTablePerspective2(TablePerspective tablePerspective2) {
+		this.tablePerspective2 = tablePerspective2;
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class StatisticsFoldChangeReductionEvent
 	@Override
 	public boolean checkIntegrity() {
 
-		if (dataContainer1 == null || dataContainer2 == null)
+		if (tablePerspective1 == null || tablePerspective2 == null)
 			return false;
 
 		return true;

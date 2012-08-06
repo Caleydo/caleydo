@@ -22,8 +22,8 @@ package org.caleydo.view.heatmap.heatmap;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -34,7 +34,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
  */
 @XmlRootElement
 @XmlType
-public class SerializedHeatMapView extends ASerializedSingleDataContainerBasedView {
+public class SerializedHeatMapView extends ASerializedSingleTablePerspectiveBasedView {
 
 	/**
 	 * Default constructor with default initialization
@@ -43,12 +43,12 @@ public class SerializedHeatMapView extends ASerializedSingleDataContainerBasedVi
 
 	}
 
-	public SerializedHeatMapView(ISingleDataContainerBasedView view) {
+	public SerializedHeatMapView(ISingleTablePerspectiveBasedView view) {
 		super(view);
 	}
 
-	public SerializedHeatMapView(int viewID, String dataDomainID, String dataContainerKey) {
-		super(viewID, dataDomainID, dataContainerKey);
+	public SerializedHeatMapView(int viewID, String dataDomainID, String tablePerspectiveKey) {
+		super(viewID, dataDomainID, tablePerspectiveKey);
 	}
 
 	@Override

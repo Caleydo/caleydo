@@ -22,7 +22,7 @@ package org.caleydo.view.template;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 
 /**
  * Serialized <INSERT VIEW NAME> view.
@@ -31,7 +31,7 @@ import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedTemplateView extends ASerializedSingleDataContainerBasedView {
+public class SerializedTemplateView extends ASerializedSingleTablePerspectiveBasedView {
 
 	/**
 	 * Default constructor with default initialization

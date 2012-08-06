@@ -22,7 +22,7 @@ package org.caleydo.view.stratomex;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedMultiDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedMultiTablePerspectiveBasedView;
 
 /**
  * Serialized VisBricks view.
@@ -31,7 +31,7 @@ import org.caleydo.core.serialize.ASerializedMultiDataContainerBasedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedStratomexView extends ASerializedMultiDataContainerBasedView {
+public class SerializedStratomexView extends ASerializedMultiTablePerspectiveBasedView {
 
 	/**
 	 * Default constructor with default initialization

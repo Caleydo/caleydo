@@ -180,10 +180,10 @@ public class GLPathwayContentCreator {
 			// calculating the average
 			if (selectedSamplesArray.size() == 0) {
 				if (!geneticDataDomain.isGeneRecord())
-					selectedSamplesArray.addAll(glPathwayView.getDataContainer()
+					selectedSamplesArray.addAll(glPathwayView.getTablePerspective()
 							.getRecordPerspective().getVirtualArray().getIDs());
 				else
-					selectedSamplesArray.addAll(glPathwayView.getDataContainer()
+					selectedSamplesArray.addAll(glPathwayView.getTablePerspective()
 							.getDimensionPerspective().getVirtualArray().getIDs());
 			}
 		}

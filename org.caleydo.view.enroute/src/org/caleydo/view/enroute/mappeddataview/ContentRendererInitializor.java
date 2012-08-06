@@ -98,7 +98,7 @@ public class ContentRendererInitializor implements IContentRendererInitializor {
 	 * @return the tablePerspective, see {@link #tablePerspective}
 	 */
 	@Override
-	public TablePerspective getDataContainer() {
+	public TablePerspective getTablePerspective() {
 		return tablePerspective;
 	}
 

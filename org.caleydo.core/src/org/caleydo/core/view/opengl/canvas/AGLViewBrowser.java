@@ -41,7 +41,7 @@ import org.caleydo.core.event.view.ViewActivationEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.Time;
@@ -1716,7 +1716,7 @@ public abstract class AGLViewBrowser extends AGLView implements ISelectionUpdate
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
 					.get().getDataDomainByID(
-							((ASerializedSingleDataContainerBasedView) serView).getDataDomainID()));
+							((ASerializedSingleTablePerspectiveBasedView) serView).getDataDomainID()));
 		}
 
 		glView.initialize();

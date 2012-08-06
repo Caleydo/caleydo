@@ -77,7 +77,7 @@ public class TagRenderer extends LayoutRenderer {
 			break;
 		}
 
-		if (!tagCloud.getDataContainer().getRecordPerspective().getVirtualArray()
+		if (!tagCloud.getTablePerspective().getRecordPerspective().getVirtualArray()
 				.contains(recordID))
 			return;
 		text = tagCloud.getDataDomain().getTable().getRawAsString(dimensionID, recordID);

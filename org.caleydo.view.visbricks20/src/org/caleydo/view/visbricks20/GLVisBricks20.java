@@ -323,27 +323,27 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 
 		// For the vending machine it does not matter which record perspective
 		// we take
-		TablePerspective tablePerspective = tableBasedDataDomain.getDataContainer(
+		TablePerspective tablePerspective = tableBasedDataDomain.getTablePerspective(
 				tableBasedDataDomain.getTable().getDefaultRecordPerspective().getPerspectiveID(),
 				tableBasedDataDomain.getTable().getDefaultDimensionPerspective().getPerspectiveID());
 
-		List<TablePerspective> dataContainerWrapper = new ArrayList<TablePerspective>();
-		dataContainerWrapper.add(tablePerspective);
-		addDimensionGroups(dataContainerWrapper, null);
-		visBricks.addDataContainers(dataContainerWrapper, null);
+		List<TablePerspective> tablePerspectiveWrapper = new ArrayList<TablePerspective>();
+		tablePerspectiveWrapper.add(tablePerspective);
+		addDimensionGroups(tablePerspectiveWrapper, null);
+		visBricks.addTablePerspectives(tablePerspectiveWrapper, null);
 
-		vendingMachine.setDataContainer(tablePerspective);
+		vendingMachine.setTablePerspective(tablePerspective);
 	}
 
 	public void addDimensionGroups(List<TablePerspective> tablePerspectives,
 			IBrickConfigurer dataConfigurer) {
 
-		visBricks.addDataContainers(tablePerspectives, dataConfigurer);
+		visBricks.addTablePerspectives(tablePerspectives, dataConfigurer);
 
 		// Show dimension group as detail brick
 		for (BrickColumn dimGroup : visBricks.getDimensionGroupManager()
 				.getBrickColumns()) {
-			if (tablePerspectives.get(0) == dimGroup.getDataContainer()) {
+			if (tablePerspectives.get(0) == dimGroup.getTablePerspective()) {
 				detailDimensionGroup = dimGroup;
 				detailDimensionGroup.showDetailedBrick(vendingMachine, false);
 				break;

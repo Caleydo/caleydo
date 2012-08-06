@@ -40,15 +40,15 @@ import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.SetMinViewSizeEvent;
-import org.caleydo.core.event.view.DataContainersChangedEvent;
+import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedMultiDataContainerBasedView;
-import org.caleydo.core.view.IMultiDataContainerBasedView;
-import org.caleydo.core.view.listener.AddDataContainersEvent;
-import org.caleydo.core.view.listener.AddDataContainersListener;
-import org.caleydo.core.view.listener.RemoveDataContainerEvent;
-import org.caleydo.core.view.listener.RemoveDataContainerListener;
+import org.caleydo.core.serialize.ASerializedMultiTablePerspectiveBasedView;
+import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
+import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
+import org.caleydo.core.view.listener.AddTablePerspectivesListener;
+import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
+import org.caleydo.core.view.listener.RemoveTablePerspectiveListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -96,7 +96,7 @@ import org.jgrapht.graph.GraphPathImpl;
  * @author Alexander Lex
  */
 
-public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBasedView,
+public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveBasedView,
 		IEventBasedSelectionManagerUser {
 
 	public static String VIEW_TYPE = "org.caleydo.view.enroute";
@@ -190,9 +190,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 	private EventBasedSelectionManager metaboliteSelectionManager;
 
 	private EnRoutePathEventListener linearizePathwayPathEventListener;
-	private AddDataContainersListener addDataContainersListener;
+	private AddTablePerspectivesListener addTablePerspectivesListener;
 	private RemoveEnRouteNodeEventListener removeLinearizedNodeEventListener;
-	private RemoveDataContainerListener removeDataContainerListener;
+	private RemoveTablePerspectiveListener removeTablePerspectiveListener;
 
 	/**
 	 * Constructor.
@@ -936,7 +936,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 	}
 
 	@Override
-	public ASerializedMultiDataContainerBasedView getSerializableRepresentation() {
+	public ASerializedMultiTablePerspectiveBasedView getSerializableRepresentation() {
 		SerializedEnRoutePathwayView serializedForm = new SerializedEnRoutePathwayView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
@@ -956,20 +956,20 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 		eventPublisher.addListener(EnRoutePathEvent.class,
 				linearizePathwayPathEventListener);
 
-		addDataContainersListener = new AddDataContainersListener();
-		addDataContainersListener.setHandler(this);
-		eventPublisher.addListener(AddDataContainersEvent.class,
-				addDataContainersListener);
+		addTablePerspectivesListener = new AddTablePerspectivesListener();
+		addTablePerspectivesListener.setHandler(this);
+		eventPublisher.addListener(AddTablePerspectivesEvent.class,
+				addTablePerspectivesListener);
 
 		removeLinearizedNodeEventListener = new RemoveEnRouteNodeEventListener();
 		removeLinearizedNodeEventListener.setHandler(this);
 		eventPublisher.addListener(RemoveEnRouteNodeEvent.class,
 				removeLinearizedNodeEventListener);
-		
-		removeDataContainerListener = new RemoveDataContainerListener();
-		removeDataContainerListener.setHandler(this);
-		eventPublisher.addListener(RemoveDataContainerEvent.class,
-				removeDataContainerListener);
+
+		removeTablePerspectiveListener = new RemoveTablePerspectiveListener();
+		removeTablePerspectiveListener.setHandler(this);
+		eventPublisher.addListener(RemoveTablePerspectiveEvent.class,
+				removeTablePerspectiveListener);
 
 	}
 
@@ -982,19 +982,19 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 			linearizePathwayPathEventListener = null;
 		}
 
-		if (addDataContainersListener != null) {
-			eventPublisher.removeListener(addDataContainersListener);
-			addDataContainersListener = null;
+		if (addTablePerspectivesListener != null) {
+			eventPublisher.removeListener(addTablePerspectivesListener);
+			addTablePerspectivesListener = null;
 		}
 
 		if (removeLinearizedNodeEventListener != null) {
 			eventPublisher.removeListener(removeLinearizedNodeEventListener);
 			removeLinearizedNodeEventListener = null;
 		}
-		
-		if (removeDataContainerListener != null) {
-			eventPublisher.removeListener(removeDataContainerListener);
-			removeDataContainerListener = null;
+
+		if (removeTablePerspectiveListener != null) {
+			eventPublisher.removeListener(removeTablePerspectiveListener);
+			removeTablePerspectiveListener = null;
 		}
 
 		geneSelectionManager.unregisterEventListeners();
@@ -1256,8 +1256,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 	}
 
 	@Override
-	public void addDataContainer(TablePerspective newDataContainer) {
-		mappedDataRenderer.addDataContainer(newDataContainer);
+	public void addTablePerspective(TablePerspective newTablePerspective) {
+		mappedDataRenderer.addTablePerspective(newTablePerspective);
 		for (ALinearizableNode node : linearizedNodes) {
 			setMappedDavidIds(node);
 		}
@@ -1267,14 +1267,14 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 				((ALinearizableNode) node).update();
 			}
 		}
-		dataDomains.add(newDataContainer.getDataDomain());
+		dataDomains.add(newTablePerspective.getDataDomain());
 		setMappedDataRendererGeometry();
 		setDisplayListDirty();
 	}
 
 	@Override
-	public void addDataContainers(List<TablePerspective> newDataContainers) {
-		mappedDataRenderer.addDataContainers(newDataContainers);
+	public void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
+		mappedDataRenderer.addTablePerspectives(newTablePerspectives);
 		for (ALinearizableNode node : linearizedNodes) {
 			setMappedDavidIds(node);
 		}
@@ -1284,23 +1284,23 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 				((ALinearizableNode) node).update();
 			}
 		}
-		for (TablePerspective tablePerspective : newDataContainers) {
+		for (TablePerspective tablePerspective : newTablePerspectives) {
 			dataDomains.add(tablePerspective.getDataDomain());
 		}
 
 		setMappedDataRendererGeometry();
 
-		DataContainersChangedEvent event = new DataContainersChangedEvent(this);
+		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 		setDisplayListDirty();
 	}
 
 	@Override
-	public List<TablePerspective> getDataContainers() {
+	public List<TablePerspective> getTablePerspectives() {
 		if (mappedDataRenderer == null)
 			return null;
-		return mappedDataRenderer.getDataContainers();
+		return mappedDataRenderer.getTablePerspectives();
 	}
 
 	@Override
@@ -1309,12 +1309,13 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 	}
 
 	/**
-	 * Returns true if one of the set {@link TablePerspective}s maps to the davidID
-	 * provided, else false
+	 * Returns true if one of the set {@link TablePerspective}s maps to the
+	 * davidID provided, else false
 	 */
 	public boolean doesDavidMapToData(Integer davidID) {
-		for (TablePerspective currentDataContainer : mappedDataRenderer.getDataContainers()) {
-			GeneticDataDomain dataDomain = (GeneticDataDomain) currentDataContainer
+		for (TablePerspective currentTablePerspective : mappedDataRenderer
+				.getTablePerspectives()) {
+			GeneticDataDomain dataDomain = (GeneticDataDomain) currentTablePerspective
 					.getDataDomain();
 			Set<Integer> ids = dataDomain.getGeneIDMappingManager().getIDAsSet(
 					IDType.getIDType("DAVID"), dataDomain.getGeneIDType(), davidID);
@@ -1352,8 +1353,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 		return mappedDataRenderer;
 	}
 
-	public List<TablePerspective> getResolvedDataContainers() {
-		return mappedDataRenderer.getResolvedDataContainers();
+	public List<TablePerspective> getResolvedTablePerspectives() {
+		return mappedDataRenderer.getResolvedTablePerspectives();
 	}
 
 	@Override
@@ -1362,15 +1363,15 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 	}
 
 	@Override
-	public void removeDataContainer(int dataContainerID) {
-		mappedDataRenderer.removeDataContainer(dataContainerID);
+	public void removeTablePerspective(int tablePerspectiveID) {
+		mappedDataRenderer.removeTablePerspective(tablePerspectiveID);
 	}
 
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		gl.glDeleteLists(displayListIndex, 1);
 		// TODO: Destroy all the layoutManagers
-		
+
 	}
 
 }

@@ -52,7 +52,7 @@ import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.view.ClearSelectionsEvent;
-import org.caleydo.core.event.view.DataContainersChangedEvent;
+import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.event.view.tablebased.ConnectionsModeEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.id.IDCategory;
@@ -62,10 +62,10 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.IMultiDataContainerBasedView;
-import org.caleydo.core.view.listener.AddDataContainersEvent;
-import org.caleydo.core.view.listener.RemoveDataContainerEvent;
-import org.caleydo.core.view.listener.RemoveDataContainerListener;
+import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
+import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
+import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
+import org.caleydo.core.view.listener.RemoveTablePerspectiveListener;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -83,7 +83,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
-import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
+import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
@@ -108,7 +108,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  */
 
-public class GLStratomex extends AGLView implements IMultiDataContainerBasedView,
+public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedView,
 		IGLRemoteRenderingView, IViewCommandHandler, ISelectionUpdateHandler {
 	public static String VIEW_TYPE = "org.caleydo.view.stratomex";
 
@@ -127,7 +127,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	private ClearSelectionsListener clearSelectionsListener;
 	private ConnectionsModeListener trendHighlightModeListener;
 	private SplitBrickListener splitBrickListener;
-	private RemoveDataContainerListener removeDataContainerListener;
+	private RemoveTablePerspectiveListener removeTablePerspectiveListener;
 
 	private BrickColumnManager brickColumnManager;
 
@@ -1134,7 +1134,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		addGroupsToStratomexListener.setHandler(this);
 		eventPublisher.addListener(AddGroupsToStratomexEvent.class,
 				addGroupsToStratomexListener);
-		eventPublisher.addListener(AddDataContainersEvent.class,
+		eventPublisher.addListener(AddTablePerspectivesEvent.class,
 				addGroupsToStratomexListener);
 
 		clearSelectionsListener = new ClearSelectionsListener();
@@ -1150,10 +1150,10 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		splitBrickListener.setHandler(this);
 		eventPublisher.addListener(SplitBrickEvent.class, splitBrickListener);
 
-		removeDataContainerListener = new RemoveDataContainerListener();
-		removeDataContainerListener.setHandler(this);
-		eventPublisher.addListener(RemoveDataContainerEvent.class,
-				removeDataContainerListener);
+		removeTablePerspectiveListener = new RemoveTablePerspectiveListener();
+		removeTablePerspectiveListener.setHandler(this);
+		eventPublisher.addListener(RemoveTablePerspectiveEvent.class,
+				removeTablePerspectiveListener);
 
 	}
 
@@ -1181,9 +1181,9 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			splitBrickListener = null;
 		}
 
-		if (removeDataContainerListener != null) {
-			eventPublisher.removeListener(removeDataContainerListener);
-			removeDataContainerListener = null;
+		if (removeTablePerspectiveListener != null) {
+			eventPublisher.removeListener(removeTablePerspectiveListener);
+			removeTablePerspectiveListener = null;
 		}
 	}
 
@@ -1229,15 +1229,15 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 	// /** Adds the specified data container to the view */
 	@Override
-	public void addDataContainer(TablePerspective tablePerspective) {
-		List<TablePerspective> dataContainerWrapper = new ArrayList<TablePerspective>();
-		dataContainerWrapper.add(tablePerspective);
-		addDataContainers(dataContainerWrapper, null);
+	public void addTablePerspective(TablePerspective tablePerspective) {
+		List<TablePerspective> tablePerspectiveWrapper = new ArrayList<TablePerspective>();
+		tablePerspectiveWrapper.add(tablePerspective);
+		addTablePerspectives(tablePerspectiveWrapper, null);
 	}
 
 	@Override
-	public void addDataContainers(List<TablePerspective> newDataContainers) {
-		addDataContainers(newDataContainers, null);
+	public void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
+		addTablePerspectives(newTablePerspectives, null);
 	}
 
 	/**
@@ -1250,30 +1250,31 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	 * done here if there is no data set yet.
 	 * </p>
 	 * 
-	 * @param newDataContainers
+	 * @param newTablePerspectives
 	 * @param brickConfigurer
 	 *            The brick configurer can be specified externally (e.g.,
 	 *            pathways, kaplan meier). If null, the
 	 *            {@link NumericalDataConfigurer} will be used.
 	 */
-	public void addDataContainers(List<TablePerspective> newDataContainers,
+	public void addTablePerspectives(List<TablePerspective> newTablePerspectives,
 			IBrickConfigurer brickConfigurer) {
 
-		if (newDataContainers == null || newDataContainers.size() == 0) {
+		if (newTablePerspectives == null || newTablePerspectives.size() == 0) {
 			Logger.log(new Status(Status.WARNING, this.toString(),
-					"newDataContainers in addDimensionGroups was null or empty"));
+					"newTablePerspectives in addDimensionGroups was null or empty"));
 			return;
 		}
 
 		// if this is the first data container set, we imprint StratomeX
 		if (recordIDCategory == null) {
-			ATableBasedDataDomain dataDomain = newDataContainers.get(0).getDataDomain();
+			ATableBasedDataDomain dataDomain = newTablePerspectives.get(0)
+					.getDataDomain();
 			imprintVisBricks(dataDomain);
 		}
 
 		ArrayList<BrickColumn> brickColumns = brickColumnManager.getBrickColumns();
 
-		for (TablePerspective tablePerspective : newDataContainers) {
+		for (TablePerspective tablePerspective : newTablePerspectives) {
 			if (tablePerspective == null) {
 				Logger.log(new Status(Status.ERROR, this.toString(),
 						"Data container was null."));
@@ -1291,7 +1292,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			}
 			boolean dimensionGroupExists = false;
 			for (BrickColumn brickColumn : brickColumns) {
-				if (brickColumn.getDataContainer().getID() == tablePerspective.getID()) {
+				if (brickColumn.getTablePerspective().getID() == tablePerspective.getID()) {
 					dimensionGroupExists = true;
 					break;
 				}
@@ -1326,7 +1327,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 				brickColumn.setDetailLevel(this.getDetailLevel());
 				brickColumn.setBrickConfigurer(brickConfigurer);
 				brickColumn.setDataDomain(tablePerspective.getDataDomain());
-				brickColumn.setDataContainer(tablePerspective);
+				brickColumn.setTablePerspective(tablePerspective);
 				brickColumn.setRemoteRenderingGLView(this);
 				brickColumn.setStratomex(this);
 				brickColumn.initialize();
@@ -1335,8 +1336,8 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 				tablePerspectives.add(tablePerspective);
 
 				uninitializedBrickColumns.add(brickColumn);
-				// if (tablePerspective instanceof PathwayDataContainer) {
-				// dataDomains.add(((PathwayDataContainer) tablePerspective)
+				// if (tablePerspective instanceof PathwayTablePerspective) {
+				// dataDomains.add(((PathwayTablePerspective) tablePerspective)
 				// .getPathwayDataDomain());
 				// } else {
 				// dataDomains.add(tablePerspective.getDataDomain());
@@ -1347,32 +1348,32 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			}
 		}
 
-		DataContainersChangedEvent event = new DataContainersChangedEvent(this);
+		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
 	@Override
-	public void removeDataContainer(int dataContainerID) {
+	public void removeTablePerspective(int tablePerspectiveID) {
 
-		Iterator<TablePerspective> dataContainerIterator = tablePerspectives.iterator();
+		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives.iterator();
 
-		while (dataContainerIterator.hasNext()) {
-			TablePerspective container = dataContainerIterator.next();
-			if (container.getID() == dataContainerID) {
-				dataContainerIterator.remove();
+		while (tablePerspectiveIterator.hasNext()) {
+			TablePerspective container = tablePerspectiveIterator.next();
+			if (container.getID() == tablePerspectiveID) {
+				tablePerspectiveIterator.remove();
 			}
 		}
 
-		brickColumnManager.removeBrickColumn(dataContainerID);
+		brickColumnManager.removeBrickColumn(tablePerspectiveID);
 		initLayouts();
-		DataContainersChangedEvent event = new DataContainersChangedEvent(this);
+		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
 	@Override
-	public List<TablePerspective> getDataContainers() {
+	public List<TablePerspective> getTablePerspectives() {
 		return tablePerspectives;
 	}
 
@@ -1660,10 +1661,10 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			sourceBrick = brickConnection.getRightBrick();
 		}
 
-		sourcePerspective = sourceBrick.getDimensionGroup().getDataContainer()
+		sourcePerspective = sourceBrick.getDimensionGroup().getTablePerspective()
 				.getRecordPerspective();
 		sourceVA = sourcePerspective.getVirtualArray();
-		sourceGroupIndex = sourceBrick.getDataContainer().getRecordGroup()
+		sourceGroupIndex = sourceBrick.getTablePerspective().getRecordGroup()
 				.getGroupIndex();
 
 		boolean idNeedsConverting = false;
@@ -1776,14 +1777,13 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	@Override
 	public Set<IDataDomain> getDataDomains() {
 		Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
-		if(tablePerspectives == null)
-		{
+		if (tablePerspectives == null) {
 			System.out.println("Problem");
 			return dataDomains;
 		}
 		for (TablePerspective tablePerspective : tablePerspectives) {
-			if (tablePerspective instanceof PathwayDataContainer) {
-				dataDomains.add(((PathwayDataContainer) tablePerspective)
+			if (tablePerspective instanceof PathwayTablePerspective) {
+				dataDomains.add(((PathwayTablePerspective) tablePerspective)
 						.getPathwayDataDomain());
 			} else {
 				dataDomains.add(tablePerspective.getDataDomain());

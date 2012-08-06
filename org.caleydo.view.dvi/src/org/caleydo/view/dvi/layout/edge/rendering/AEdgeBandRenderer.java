@@ -69,14 +69,14 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 			ConnectionBandRenderer connectionBandRenderer, boolean highlight) {
 		maxDataAmount = view.getMaxDataAmount();
 
-		List<TablePerspective> commonDataContainersNode1 = new ArrayList<TablePerspective>();
-		List<TablePerspective> commonDataContainersNode2 = new ArrayList<TablePerspective>();
+		List<TablePerspective> commonTablePerspectivesNode1 = new ArrayList<TablePerspective>();
+		List<TablePerspective> commonTablePerspectivesNode2 = new ArrayList<TablePerspective>();
 
-		for (TablePerspective dimensionGroupData1 : node1.getDataContainers()) {
-			for (TablePerspective dimensionGroupData2 : node2.getDataContainers()) {
+		for (TablePerspective dimensionGroupData1 : node1.getTablePerspectives()) {
+			for (TablePerspective dimensionGroupData2 : node2.getTablePerspectives()) {
 				if (dimensionGroupData1.getID() == dimensionGroupData2.getID()) {
-					commonDataContainersNode1.add(dimensionGroupData1);
-					commonDataContainersNode2.add(dimensionGroupData2);
+					commonTablePerspectivesNode1.add(dimensionGroupData1);
+					commonTablePerspectivesNode2.add(dimensionGroupData2);
 				}
 			}
 		}
@@ -148,8 +148,8 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 		Pair<ANodeConnector, ANodeConnector> nodeConnectors = new Pair<ANodeConnector, ANodeConnector>();
 
 		determineNodeConnectors(nodeConnectors, leftNode, rightNode,
-				bottomNode, topNode, commonDataContainersNode1,
-				commonDataContainersNode2, connectionBandRenderer);
+				bottomNode, topNode, commonTablePerspectivesNode1,
+				commonTablePerspectivesNode2, connectionBandRenderer);
 
 		ANodeConnector connector1 = nodeConnectors.getFirst();
 		ANodeConnector connector2 = nodeConnectors.getSecond();
@@ -189,34 +189,34 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 			Pair<ANodeConnector, ANodeConnector> nodeConnectors,
 			IDVINode leftNode, IDVINode rightNode,
 			IDVINode bottomNode, IDVINode topNode,
-			List<TablePerspective> commonDataContainersNode1,
-			List<TablePerspective> commonDataContainersNode2,
+			List<TablePerspective> commonTablePerspectivesNode1,
+			List<TablePerspective> commonTablePerspectivesNode2,
 			ConnectionBandRenderer connectionBandRenderer);
 
 	protected void determineBundleConnectors(
 			Pair<ANodeConnector, ANodeConnector> nodeConnectors,
-			List<TablePerspective> commonDataContainersNode1,
-			List<TablePerspective> commonDataContainersNode2,
+			List<TablePerspective> commonTablePerspectivesNode1,
+			List<TablePerspective> commonTablePerspectivesNode2,
 			ConnectionBandRenderer connectionBandRenderer) {
 
 		ANodeConnector connector1 = nodeConnectors.getFirst();
 		ANodeConnector connector2 = nodeConnectors.getSecond();
 
-		if (!commonDataContainersNode1.isEmpty()) {
+		if (!commonTablePerspectivesNode1.isEmpty()) {
 
-			if (node1.showsDataContainers()) {
+			if (node1.showsTablePerspectives()) {
 
 				ANodeConnector currentConnector = null;
 
 				if (node1.isUpsideDown()) {
 					currentConnector = new TopBundleConnector(node1,
 							pixelGLConverter, connectionBandRenderer,
-							commonDataContainersNode1, minBandWidth,
+							commonTablePerspectivesNode1, minBandWidth,
 							maxBandWidth, maxDataAmount, node2, viewFrustum, view);
 				} else {
 					currentConnector = new BottomBundleConnector(node1,
 							pixelGLConverter, connectionBandRenderer,
-							commonDataContainersNode1, minBandWidth,
+							commonTablePerspectivesNode1, minBandWidth,
 							maxBandWidth, maxDataAmount, node2, viewFrustum, view);
 				}
 
@@ -227,19 +227,19 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 				}
 			}
 
-			if (node2.showsDataContainers()) {
+			if (node2.showsTablePerspectives()) {
 
 				ANodeConnector currentConnector = null;
 
 				if (node2.isUpsideDown()) {
 					currentConnector = new TopBundleConnector(node2,
 							pixelGLConverter, connectionBandRenderer,
-							commonDataContainersNode2, minBandWidth,
+							commonTablePerspectivesNode2, minBandWidth,
 							maxBandWidth, maxDataAmount, node1, viewFrustum, view);
 				} else {
 					currentConnector = new BottomBundleConnector(node2,
 							pixelGLConverter, connectionBandRenderer,
-							commonDataContainersNode2, minBandWidth,
+							commonTablePerspectivesNode2, minBandWidth,
 							maxBandWidth, maxDataAmount, node1, viewFrustum, view);
 				}
 

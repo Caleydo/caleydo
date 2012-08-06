@@ -191,11 +191,11 @@ public class CategoricalDataConfigurer extends ATableBasedDataConfigurer {
 				histogramLayoutRenderer);
 		
 		LayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getDataContainer(), brick.getDataDomain().getTable(), true);
+				brick.getTablePerspective(), brick.getDataDomain().getTable(), true);
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP,
 				overviewHeatMapRenderer);
 		LayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getDataContainer(), brick.getDataDomain().getTable(), false);
+				brick.getTablePerspective(), brick.getDataDomain().getTable(), false);
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,
 				compactOverviewHeatMapRenderer);
 

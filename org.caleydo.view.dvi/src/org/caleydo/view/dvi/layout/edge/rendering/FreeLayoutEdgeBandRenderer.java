@@ -45,16 +45,16 @@ public class FreeLayoutEdgeBandRenderer extends AEdgeBandRenderer {
 	//
 	// maxDataAmount = view.getMaxDataAmount();
 	//
-	// List<TablePerspective> commonDataContainersNode1 = new
+	// List<TablePerspective> commonTablePerspectivesNode1 = new
 	// ArrayList<TablePerspective>();
-	// List<TablePerspective> commonDataContainersNode2 = new
+	// List<TablePerspective> commonTablePerspectivesNode2 = new
 	// ArrayList<TablePerspective>();
 	//
-	// for (TablePerspective dimensionGroupData1 : node1.getDataContainers()) {
-	// for (TablePerspective dimensionGroupData2 : node2.getDataContainers()) {
+	// for (TablePerspective dimensionGroupData1 : node1.getTablePerspectives()) {
+	// for (TablePerspective dimensionGroupData2 : node2.getTablePerspectives()) {
 	// if (dimensionGroupData1.getID() == dimensionGroupData2.getID()) {
-	// commonDataContainersNode1.add(dimensionGroupData1);
-	// commonDataContainersNode2.add(dimensionGroupData2);
+	// commonTablePerspectivesNode1.add(dimensionGroupData1);
+	// commonTablePerspectivesNode2.add(dimensionGroupData2);
 	// }
 	// }
 	// }
@@ -158,8 +158,8 @@ public class FreeLayoutEdgeBandRenderer extends AEdgeBandRenderer {
 	protected void determineNodeConnectors(
 			Pair<ANodeConnector, ANodeConnector> nodeConnectors, IDVINode leftNode,
 			IDVINode rightNode, IDVINode bottomNode, IDVINode topNode,
-			List<TablePerspective> commonDataContainersNode1,
-			List<TablePerspective> commonDataContainersNode2,
+			List<TablePerspective> commonTablePerspectivesNode1,
+			List<TablePerspective> commonTablePerspectivesNode2,
 			ConnectionBandRenderer connectionBandRenderer) {
 
 		float spacingX = (float) ((rightNode.getPosition().getX() - rightNode.getWidth() / 2.0f) - (leftNode
@@ -188,8 +188,8 @@ public class FreeLayoutEdgeBandRenderer extends AEdgeBandRenderer {
 		nodeConnectors.setFirst(connector1);
 		nodeConnectors.setSecond(connector2);
 
-		determineBundleConnectors(nodeConnectors, commonDataContainersNode1,
-				commonDataContainersNode2, connectionBandRenderer);
+		determineBundleConnectors(nodeConnectors, commonTablePerspectivesNode1,
+				commonTablePerspectivesNode2, connectionBandRenderer);
 
 	}
 }

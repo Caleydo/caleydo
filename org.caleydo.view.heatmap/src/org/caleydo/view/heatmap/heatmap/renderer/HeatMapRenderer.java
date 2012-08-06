@@ -42,7 +42,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 
 		AHeatMapLayoutConfiguration heatMapTemplate = heatMap.getTemplate();
 
-		int nrRecordElements = heatMap.getDataContainer().getRecordPerspective()
+		int nrRecordElements = heatMap.getTablePerspective().getRecordPerspective()
 				.getVirtualArray().size();
 
 		RecordSelectionManager selectionManager = heatMap.getRecordSelectionManager();
@@ -52,7 +52,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 					.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
 		}
 
-		recordSpacing.calculateRecordSpacing(nrRecordElements, heatMap.getDataContainer()
+		recordSpacing.calculateRecordSpacing(nrRecordElements, heatMap.getTablePerspective()
 				.getDimensionPerspective().getVirtualArray().size(),
 				elementLayout.getSizeScaledX(), elementLayout.getSizeScaledY(),
 				heatMapTemplate.getMinSelectedFieldHeight());
@@ -71,7 +71,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 
 		// DimensionVirtualArray dimensionVA =
 
-		for (Integer recordID : heatMap.getDataContainer().getRecordPerspective()
+		for (Integer recordID : heatMap.getTablePerspective().getRecordPerspective()
 				.getVirtualArray()) {
 			fieldHeight = recordSpacing.getFieldHeight(recordID);
 
@@ -87,7 +87,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 			yPosition -= fieldHeight;
 			xPosition = 0;
 
-			for (Integer dimensionID : heatMap.getDataContainer()
+			for (Integer dimensionID : heatMap.getTablePerspective()
 					.getDimensionPerspective().getVirtualArray()) {
 
 				renderElement(gl, dimensionID, recordID, yPosition, xPosition,
@@ -154,7 +154,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 		if (recordSpacing != null)
 			return y
 					- recordSpacing.getYDistances().get(recordIndex)
-					- recordSpacing.getFieldHeight(heatMap.getDataContainer()
+					- recordSpacing.getFieldHeight(heatMap.getTablePerspective()
 							.getRecordPerspective().getVirtualArray().get(recordIndex))
 					/ 2;
 		return 0;

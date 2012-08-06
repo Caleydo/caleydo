@@ -693,7 +693,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		TablePerspective embeddedHMContainer = new TablePerspective(dataDomain,
 				recordPerspective, tablePerspective.getDimensionPerspective());
 
-		glHeatMapView.setDataContainer(embeddedHMContainer);
+		glHeatMapView.setTablePerspective(embeddedHMContainer);
 
 		glHeatMapView.setRemoteRenderingGLView(this);
 		glHeatMapView.setRemoteLevelElement(heatMapRemoteElement);
@@ -722,7 +722,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		glRecordDendrogramView = new GLDendrogram<RecordGroupList>(parentGLCanvas,
 				parentComposite, viewFrustum, true);
 		glRecordDendrogramView.setRemoteRenderingGLView(this);
-		glRecordDendrogramView.setDataContainer(tablePerspective);
+		glRecordDendrogramView.setTablePerspective(tablePerspective);
 		glRecordDendrogramView.setDataDomain(dataDomain);
 		glRecordDendrogramView.setRemoteRenderingGLView(this);
 		glRecordDendrogramView.initData();
@@ -731,7 +731,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		glDimensionDendrogramView = new GLDendrogram<DimensionGroupList>(parentGLCanvas,
 				parentComposite, viewFrustum, false);
 		glDimensionDendrogramView.setRemoteRenderingGLView(this);
-		glDimensionDendrogramView.setDataContainer(tablePerspective);
+		glDimensionDendrogramView.setTablePerspective(tablePerspective);
 		glDimensionDendrogramView.setDataDomain(dataDomain);
 		glDimensionDendrogramView.setRemoteRenderingGLView(this);
 		glDimensionDendrogramView.initData();
@@ -3371,8 +3371,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		}
 		data.setData(embeddedRecords);
-		glHeatMapView.getDataContainer().getRecordPerspective().init(data);
-		glHeatMapView.handleRecordVAUpdate(glHeatMapView.getDataContainer()
+		glHeatMapView.getTablePerspective().getRecordPerspective().init(data);
+		glHeatMapView.handleRecordVAUpdate(glHeatMapView.getTablePerspective()
 				.getRecordPerspective().getPerspectiveID());
 
 	}

@@ -41,13 +41,13 @@ public class OpenCreateKaplanMeierSmallMultiplesGroupDialogListener extends
 			// Only the view on which the context menu was clicked should handle
 			// the event
 			if (((OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent) event)
-					.getDimensionGroupDataContainer() != handler.getDataContainer())
+					.getDimensionGroupTablePerspective() != handler.getTablePerspective())
 				return;
 
 			OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent openCreateKaplanMeierSmallMultiplesGroupDialogevent = (OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent) event;
 			handler.openCreateKaplanMeierSmallMultiplesGroupDialog(
 					openCreateKaplanMeierSmallMultiplesGroupDialogevent
-							.getDimensionGroupDataContainer(),
+							.getDimensionGroupTablePerspective(),
 					openCreateKaplanMeierSmallMultiplesGroupDialogevent
 							.getDimensionPerspective());
 		}

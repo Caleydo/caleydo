@@ -39,7 +39,7 @@ public class OpenCreatePathwayGroupDialogListener extends AEventListener<GLBrick
 			// Only the view on which the context menu was clicked should handle
 			// the event
 			if (((OpenCreatePathwayGroupDialogEvent) event).getSourceRecordVA() != handler
-					.getDataContainer().getRecordPerspective().getVirtualArray())
+					.getTablePerspective().getRecordPerspective().getVirtualArray())
 				return;
 
 			OpenCreatePathwayGroupDialogEvent openCreatePathwayGroupDialogEvent = (OpenCreatePathwayGroupDialogEvent) event;

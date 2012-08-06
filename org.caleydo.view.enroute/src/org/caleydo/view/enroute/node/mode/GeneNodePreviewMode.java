@@ -114,7 +114,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 	private Column createPreviewRow(ElementLayout horizontalSpacing,
 			ElementLayout verticalSpacing) {
 
-		List<TablePerspective> tablePerspectives = view.getResolvedDataContainers();
+		List<TablePerspective> tablePerspectives = view.getResolvedTablePerspectives();
 		List<Integer> davidIds = node.getMappedDavidIDs();
 
 		// Row previewRow = new Row("previewRow");
@@ -158,15 +158,15 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 					geneRow.append(datasetSpacing);
 				}
 
-				ContentRenderer dataContainerPreviewRenderer = null;
+				ContentRenderer tablePerspectivePreviewRenderer = null;
 				ContentRendererInitializor initializor = new ContentRendererInitializor(
 						tablePerspective, davidId, view.getMappedDataRenderer(), view);
 				// FIXME: Bad hack to determine categorical data
 				if (currentDataDomain.getLabel().contains("Copy")) {
-					dataContainerPreviewRenderer = new CategoricalContentPreviewRenderer(
+					tablePerspectivePreviewRenderer = new CategoricalContentPreviewRenderer(
 							initializor);
 				} else {
-					dataContainerPreviewRenderer = new ContinuousContentPreviewRenderer(
+					tablePerspectivePreviewRenderer = new ContinuousContentPreviewRenderer(
 							initializor);
 				}
 
@@ -175,7 +175,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 				// previewRendererLayout.setFrameColor(1, 0, 0, 1);
 				previewRendererLayout.setDynamicSizeUnitsX(3);
 
-				previewRendererLayout.setRenderer(dataContainerPreviewRenderer);
+				previewRendererLayout.setRenderer(tablePerspectivePreviewRenderer);
 				geneRow.append(previewRendererLayout);
 
 				prevDataDomain = currentDataDomain;

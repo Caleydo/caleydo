@@ -57,10 +57,10 @@ import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
@@ -77,7 +77,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Marc Streit
  */
 public abstract class ATableBasedView extends AGLView implements
-		ISingleDataContainerBasedView, ISelectionUpdateHandler, IRecordVAUpdateHandler,
+		ISingleTablePerspectiveBasedView, ISelectionUpdateHandler, IRecordVAUpdateHandler,
 		IDimensionVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	protected ATableBasedDataDomain dataDomain;
@@ -164,7 +164,7 @@ public abstract class ATableBasedView extends AGLView implements
 	/**
 	 * @return the tablePerspective, see {@link #tablePerspective}
 	 */
-	public TablePerspective getDataContainer() {
+	public TablePerspective getTablePerspective() {
 		return tablePerspective;
 	}
 
@@ -173,7 +173,7 @@ public abstract class ATableBasedView extends AGLView implements
 	 *            setter, see {@link #tablePerspective}
 	 */
 	@Override
-	public void setDataContainer(TablePerspective tablePerspective) {
+	public void setTablePerspective(TablePerspective tablePerspective) {
 		this.tablePerspective = tablePerspective;
 	}
 
@@ -196,10 +196,10 @@ public abstract class ATableBasedView extends AGLView implements
 
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView serialzedView) {
-		if (serialzedView instanceof ASerializedSingleDataContainerBasedView) {
-			ASerializedSingleDataContainerBasedView topSerializedView = (ASerializedSingleDataContainerBasedView) serialzedView;
-			tablePerspective = dataDomain.getDataContainer(
-					topSerializedView.getDataContainerKey());
+		if (serialzedView instanceof ASerializedSingleTablePerspectiveBasedView) {
+			ASerializedSingleTablePerspectiveBasedView topSerializedView = (ASerializedSingleTablePerspectiveBasedView) serialzedView;
+			tablePerspective = dataDomain.getTablePerspective(
+					topSerializedView.getTablePerspectiveKey());
 		}
 	}
 
@@ -528,7 +528,7 @@ public abstract class ATableBasedView extends AGLView implements
 	}
 
 	@Override
-	public List<TablePerspective> getDataContainers() {
+	public List<TablePerspective> getTablePerspectives() {
 		ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>();
 		tablePerspectives.add(tablePerspective);
 		return tablePerspectives;

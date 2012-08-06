@@ -48,8 +48,8 @@ public class FilterRepresentationTwoSidedTTest extends
 	private final static String TITLE = "Two-sided T-Test Filter";
 
 	private ATableBasedDataDomain dataDomain;
-	private TablePerspective dataContainer1;
-	private TablePerspective dataContainer2;
+	private TablePerspective tablePerspective1;
+	private TablePerspective tablePerspective2;
 
 	private float pValue = 1f;
 
@@ -123,20 +123,20 @@ public class FilterRepresentationTwoSidedTTest extends
 
 	private void createVADelta(RecordFilter subFilter) {
 
-		RecordVADelta recordVADelta = new RecordVADelta(dataContainer1
+		RecordVADelta recordVADelta = new RecordVADelta(tablePerspective1
 				.getRecordPerspective().getPerspectiveID(), subFilter.getDataDomain()
 				.getRecordIDType());
-		RecordVirtualArray recordVA = dataContainer1.getRecordPerspective()
+		RecordVirtualArray recordVA = tablePerspective1.getRecordPerspective()
 				.getVirtualArray();
 
 		ArrayList<Double> tTestResult = ((FilterRepresentationTwoSidedTTest) subFilter
 				.getFilterRep())
-				.getDataContainer1()
+				.getTablePerspective1()
 				.getContainerStatistics()
 				.tTest()
 				.getTwoSidedTTestResult(
 						((FilterRepresentationTwoSidedTTest) subFilter.getFilterRep())
-								.getDataContainer2());
+								.getTablePerspective2());
 
 		for (int recordIndex = 0; recordIndex < recordVA.size(); recordIndex++) {
 
@@ -171,25 +171,25 @@ public class FilterRepresentationTwoSidedTTest extends
 		this.dataDomain = dataDomain;
 	}
 
-	public void setDataContainer1(TablePerspective dataContainer1) {
-		this.dataContainer1 = dataContainer1;
+	public void setTablePerspective1(TablePerspective tablePerspective1) {
+		this.tablePerspective1 = tablePerspective1;
 	}
 
 	/**
-	 * @return the dataContainer1, see {@link #dataContainer1}
+	 * @return the tablePerspective1, see {@link #tablePerspective1}
 	 */
-	public TablePerspective getDataContainer1() {
-		return dataContainer1;
+	public TablePerspective getTablePerspective1() {
+		return tablePerspective1;
 	}
 
-	public void setDataContainer2(TablePerspective dataContainer2) {
-		this.dataContainer2 = dataContainer2;
+	public void setTablePerspective2(TablePerspective tablePerspective2) {
+		this.tablePerspective2 = tablePerspective2;
 	}
 
 	/**
-	 * @return the dataContainer2, see {@link #dataContainer2}
+	 * @return the tablePerspective2, see {@link #tablePerspective2}
 	 */
-	public TablePerspective getDataContainer2() {
-		return dataContainer2;
+	public TablePerspective getTablePerspective2() {
+		return tablePerspective2;
 	}
 }

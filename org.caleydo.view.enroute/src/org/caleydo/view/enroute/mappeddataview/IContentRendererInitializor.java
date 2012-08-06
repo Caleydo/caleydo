@@ -21,7 +21,7 @@ public interface IContentRendererInitializor {
 
 	public Integer getGeneID();
 
-	public TablePerspective getDataContainer();
+	public TablePerspective getTablePerspective();
 
 	public GeneticDataDomain getDataDomain();
 

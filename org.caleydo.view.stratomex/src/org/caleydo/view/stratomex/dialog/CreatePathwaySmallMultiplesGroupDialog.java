@@ -35,7 +35,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
+import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -72,7 +72,7 @@ public class CreatePathwaySmallMultiplesGroupDialog
 
 	private Composite parent;
 
-	private ArrayList<PathwayDataContainer> pathwayDataContainer = new ArrayList<PathwayDataContainer>();
+	private ArrayList<PathwayTablePerspective> pathwayTablePerspective = new ArrayList<PathwayTablePerspective>();
 	private HashMap<PathwayGraph, Integer> pathwayGraphsWithOccurrences;
 
 	private class PathwayTableSorter
@@ -285,13 +285,13 @@ public class CreatePathwaySmallMultiplesGroupDialog
 
 				newRecordPerspective.init(data);
 
-				PathwayDataContainer pathwayDimensionGroup = new PathwayDataContainer(
+				PathwayTablePerspective pathwayDimensionGroup = new PathwayTablePerspective(
 						tablePerspective.getDataDomain(), pathwayDataDomain,
 						newRecordPerspective, dimensionPerspective, pathway);
 				
-				pathwayDataDomain.addDataContainer(pathwayDimensionGroup);
+				pathwayDataDomain.addTablePerspective(pathwayDimensionGroup);
 
-				pathwayDataContainer.add(pathwayDimensionGroup);
+				pathwayTablePerspective.add(pathwayDimensionGroup);
 			}
 
 			super.okPressed();
@@ -300,9 +300,9 @@ public class CreatePathwaySmallMultiplesGroupDialog
 	}
 
 	/**
-	 * @return the pathwayDataContainer, see {@link #pathwayDataContainer}
+	 * @return the pathwayTablePerspective, see {@link #pathwayTablePerspective}
 	 */
-	public ArrayList<PathwayDataContainer> getPathwayDataContainer() {
-		return pathwayDataContainer;
+	public ArrayList<PathwayTablePerspective> getPathwayTablePerspective() {
+		return pathwayTablePerspective;
 	}
 }

@@ -22,7 +22,7 @@ package org.caleydo.view.kaplanmeier;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 
 /**
  * Serialized Kaplan Meier view.
@@ -31,7 +31,7 @@ import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedKaplanMeierView extends ASerializedSingleDataContainerBasedView {
+public class SerializedKaplanMeierView extends ASerializedSingleTablePerspectiveBasedView {
 
 	/**
 	 * Default constructor with default initialization

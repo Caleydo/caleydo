@@ -71,9 +71,9 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		this.brick = brick;
 		// this.dataDomain = brick.getDataDomain();
 		this.relationAnalyzer = stratomex.getRelationAnalyzer();
-		perspectiveID = brick.getDimensionGroup().getDataContainer()
+		perspectiveID = brick.getDimensionGroup().getTablePerspective()
 				.getRecordPerspective().getPerspectiveID();
-		groupID = brick.getDataContainer().getRecordGroup().getGroupIndex();
+		groupID = brick.getTablePerspective().getRecordGroup().getGroupIndex();
 		this.stratomex = stratomex;
 		this.isLeft = isLeft;
 	}
@@ -97,7 +97,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 
 		int count = 0;
 		for (BrickColumn dimensionGroup : dimensionGroups) {
-			currentID = dimensionGroup.getDataContainer().getRecordPerspective().getPerspectiveID();
+			currentID = dimensionGroup.getTablePerspective().getRecordPerspective().getPerspectiveID();
 			if (currentID.equals(perspectiveID) && isLeft) {
 				neighborPerspectiveID = previousID;
 				if (neighborPerspectiveID != null)
@@ -147,7 +147,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		float yOffset = 0;
 		for (GLBrick brick : neighborBrickOrder) {
 
-			Group recordGroup = brick.getDataContainer().getRecordGroup();
+			Group recordGroup = brick.getTablePerspective().getRecordGroup();
 			if (recordGroup == null) {
 				// this is true for header bricks
 				continue;
@@ -161,9 +161,9 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			gl.glColor3f(0, 0, 0);
 			gl.glVertex3f(0, yOffset, 0);
 			gl.glVertex3f(x, yOffset, 0);
-			if (brick.getDataContainerSelectionManager().checkStatus(
+			if (brick.getTablePerspectiveSelectionManager().checkStatus(
 					SelectionType.SELECTION,
-					brick.getDataContainer().getRecordGroup().getID()))
+					brick.getTablePerspective().getRecordGroup().getID()))
 				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 			else
 

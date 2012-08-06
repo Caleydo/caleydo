@@ -60,7 +60,7 @@ public class KaplanMeierCreator implements IRemoteViewCreator {
 								-1, 1));
 
 		kaplanMeier.setRemoteRenderingGLView(remoteRenderingView);
-		kaplanMeier.setDataContainer(remoteRenderingView.getDataContainer());
+		kaplanMeier.setTablePerspective(remoteRenderingView.getTablePerspective());
 		kaplanMeier.setDataDomain(remoteRenderingView.getDataDomain());
 		kaplanMeier.setMaxAxisTime(maxTimeValue);
 

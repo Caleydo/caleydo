@@ -58,7 +58,7 @@ public class HistogramCreator implements IRemoteViewCreator {
 
 		histogram.setRemoteRenderingGLView(remoteRenderingView);
 
-		histogram.setHistogram(remoteRenderingView.getDataContainer()
+		histogram.setHistogram(remoteRenderingView.getTablePerspective()
 				.getContainerStatistics().getHistogram());
 		histogram.setDataDomain(remoteRenderingView.getDataDomain());
 		histogram.initialize();

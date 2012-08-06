@@ -56,7 +56,7 @@ public class HeatMapCreator implements IRemoteViewCreator {
 								-1, 1));
 
 		heatMap.setRemoteRenderingGLView(remoteRenderingView);
-		heatMap.setDataContainer(remoteRenderingView.getDataContainer());
+		heatMap.setTablePerspective(remoteRenderingView.getTablePerspective());
 		heatMap.setDataDomain(remoteRenderingView.getDataDomain());
 		BrickHeatMapLayoutConfiguration template = new BrickHeatMapLayoutConfiguration(heatMap);
 		heatMap.setRenderTemplate(template);

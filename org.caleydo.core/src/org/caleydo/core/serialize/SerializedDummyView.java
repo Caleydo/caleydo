@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlType
 public class SerializedDummyView
-	extends ASerializedSingleDataContainerBasedView {
+	extends ASerializedSingleTablePerspectiveBasedView {
 
 	public SerializedDummyView() {
 	}

@@ -57,12 +57,12 @@ import org.caleydo.core.event.view.remote.ToggleZoomEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.IDataDomainBasedView;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -120,7 +120,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * @author Alexander Lex
  * @author Werner Puff
  */
-public class GLBucket extends AGLView implements ISingleDataContainerBasedView,
+public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedView,
 		ISelectionUpdateHandler, IGLBucketView, IRemoteRenderingHandler, IPathwayLoader {
 	public static String VIEW_TYPE = "org.caleydo.view.bucket";
 
@@ -2490,13 +2490,13 @@ public class GLBucket extends AGLView implements ISingleDataContainerBasedView,
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
 					.get().getDataDomainByID(
-							((ASerializedSingleDataContainerBasedView) serView)
+							((ASerializedSingleTablePerspectiveBasedView) serView)
 									.getDataDomainID()));
 		}
 
 		if (glView instanceof ATableBasedView) {
 			ATableBasedView tableBasedView = (ATableBasedView) glView;
-			tableBasedView.setDataContainer(tablePerspective);
+			tableBasedView.setTablePerspective(tablePerspective);
 			tableBasedView.initialize();
 		}
 
@@ -2506,7 +2506,7 @@ public class GLBucket extends AGLView implements ISingleDataContainerBasedView,
 			glPathway.enablePathwayTextures(pathwayTexturesEnabled);
 			glPathway.enableNeighborhood(neighborhoodEnabled);
 			glPathway.enableGeneMapping(geneMappingEnabled);
-			glPathway.setDataContainer(tablePerspective);
+			glPathway.setTablePerspective(tablePerspective);
 		}
 
 		if (glView instanceof GLHeatMap) {
@@ -2849,7 +2849,7 @@ public class GLBucket extends AGLView implements ISingleDataContainerBasedView,
 		recordPerspective.init(null);
 		dataDomain.getTable().registerRecordPerspective(recordPerspective);
 		tablePerspective = dataDomain
-				.getDataContainer(recordPerspective.getPerspectiveID(), dataDomain
+				.getTablePerspective(recordPerspective.getPerspectiveID(), dataDomain
 						.getTable().getDefaultDimensionPerspective().getPerspectiveID());
 	}
 
@@ -2859,19 +2859,19 @@ public class GLBucket extends AGLView implements ISingleDataContainerBasedView,
 	}
 
 	@Override
-	public void setDataContainer(TablePerspective tablePerspective) {
+	public void setTablePerspective(TablePerspective tablePerspective) {
 		this.tablePerspective = tablePerspective;
 	}
 
 	@Override
-	public TablePerspective getDataContainer() {
+	public TablePerspective getTablePerspective() {
 		return tablePerspective;
 	}
 
 	@Override
-	public List<TablePerspective> getDataContainers() {
-		ArrayList<TablePerspective> dataContainerList = new ArrayList<TablePerspective>();
-		dataContainerList.add(tablePerspective);
-		return dataContainerList;
+	public List<TablePerspective> getTablePerspectives() {
+		ArrayList<TablePerspective> tablePerspectiveList = new ArrayList<TablePerspective>();
+		tablePerspectiveList.add(tablePerspective);
+		return tablePerspectiveList;
 	}
 }

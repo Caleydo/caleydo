@@ -106,13 +106,13 @@ public class BrickColumnManager {
 		return brickColumns.indexOf(brickColumn);
 	}
 
-	public void removeBrickColumn(int dataContainerID) {
+	public void removeBrickColumn(int tablePerspectiveID) {
 		Iterator<BrickColumn> brickColumnIterator = brickColumns.iterator();
 
 		int count = 0;
 		while (brickColumnIterator.hasNext()) {
 			BrickColumn brickColumn = brickColumnIterator.next();
-			if (brickColumn.getDataContainer().getID() == dataContainerID) {
+			if (brickColumn.getTablePerspective().getID() == tablePerspectiveID) {
 				ViewManager.get().unregisterGLView(brickColumn);
 				brickColumnIterator.remove();
 				if (count < centerGroupStartIndex) {

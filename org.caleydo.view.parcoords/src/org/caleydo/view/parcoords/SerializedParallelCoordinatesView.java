@@ -22,8 +22,8 @@ package org.caleydo.view.parcoords;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 
 /**
  * Serialized form of a parallel-coordinates-view.
@@ -32,7 +32,7 @@ import org.caleydo.core.view.ISingleDataContainerBasedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedParallelCoordinatesView extends ASerializedSingleDataContainerBasedView {
+public class SerializedParallelCoordinatesView extends ASerializedSingleTablePerspectiveBasedView {
 
 	/**
 	 * Default constructor with default initialization
@@ -40,7 +40,7 @@ public class SerializedParallelCoordinatesView extends ASerializedSingleDataCont
 	public SerializedParallelCoordinatesView() {
 	}
 
-	public SerializedParallelCoordinatesView(ISingleDataContainerBasedView view) {
+	public SerializedParallelCoordinatesView(ISingleTablePerspectiveBasedView view) {
 		super(view);
 	}
 

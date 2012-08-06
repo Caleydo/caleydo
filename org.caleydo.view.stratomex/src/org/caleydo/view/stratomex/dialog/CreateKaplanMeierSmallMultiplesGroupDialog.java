@@ -204,7 +204,7 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog 
 				dataDomain.getTable().registerRecordPerspective(
 						convertedRecordPerspective);
 
-				TablePerspective kaplanMeierDimensionGroup = dataDomain.getDataContainer(
+				TablePerspective kaplanMeierDimensionGroup = dataDomain.getTablePerspective(
 						convertedRecordPerspective.getPerspectiveID(),
 						singleDimensionPerspective.getPerspectiveID());
 

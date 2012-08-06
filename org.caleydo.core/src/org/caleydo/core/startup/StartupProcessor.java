@@ -23,8 +23,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 
-import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
-
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.PreferenceManager;
 import org.caleydo.core.startup.gui.CaleydoProjectWizard;

@@ -45,13 +45,13 @@ public class FuelBarRenderer extends LayoutRenderer {
 	@Override
 	public void renderContent(GL2 gl) {
 
-		RecordVirtualArray recordVA = brick.getDataContainer().getRecordPerspective()
+		RecordVirtualArray recordVA = brick.getTablePerspective().getRecordPerspective()
 				.getVirtualArray();
 
 		if (recordVA == null)
 			return;
 
-		RecordVirtualArray setRecordVA = brick.getDimensionGroup().getDataContainer()
+		RecordVirtualArray setRecordVA = brick.getDimensionGroup().getTablePerspective()
 				.getRecordPerspective().getVirtualArray();
 
 		if (setRecordVA == null)
@@ -88,7 +88,7 @@ public class FuelBarRenderer extends LayoutRenderer {
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(fuelWidth, 0, 0);
 		// if (selectionManager.checkStatus(SelectionType.SELECTION, brick
-		// .getDataContainer().getRecordPerspective().getTreeRoot().getID())) {
+		// .getTablePerspective().getRecordPerspective().getTreeRoot().getID())) {
 		// float[] baseColor = SelectionType.SELECTION.getColor();
 		//
 		// gl.glColor3f(baseColor[0] + 0.3f, baseColor[1] + 0.3f, baseColor[2] +

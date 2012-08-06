@@ -167,7 +167,7 @@ public class SearchViewMediator {
 		}
 
 		if (binnedPerspective != null) {
-			TablePerspective tablePerspective = dataDomain.getDataContainer(
+			TablePerspective tablePerspective = dataDomain.getTablePerspective(
 					binnedPerspective.getPerspectiveID(), perspective.getPerspectiveID());
 			tablePerspective.setLabel(label, false);
 			tablePerspective.getContainerStatistics().setNumberOfBucketsForHistogram(

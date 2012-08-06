@@ -41,7 +41,7 @@ public class RecordCaptionRenderer extends AHeatMapRenderer {
 		float yPosition = y;
 		float fieldHeight = 0;
 
-		RecordVirtualArray recordVA = heatMap.getDataContainer().getRecordPerspective()
+		RecordVirtualArray recordVA = heatMap.getTablePerspective().getRecordPerspective()
 				.getVirtualArray();
 
 		for (Integer recordID : recordVA) {

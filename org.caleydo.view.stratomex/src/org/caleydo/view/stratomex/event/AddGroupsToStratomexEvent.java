@@ -22,7 +22,7 @@ package org.caleydo.view.stratomex.event;
 import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.view.listener.AddDataContainersEvent;
+import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.NumericalDataConfigurer;
@@ -43,7 +43,7 @@ import org.caleydo.view.stratomex.brick.configurer.NumericalDataConfigurer;
  * @author Alexander Lex
  * 
  */
-public class AddGroupsToStratomexEvent extends AddDataContainersEvent {
+public class AddGroupsToStratomexEvent extends AddTablePerspectivesEvent {
 
 	/**
 	 * Optional member for determining a specialized data configurer that will

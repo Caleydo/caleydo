@@ -32,17 +32,17 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
+import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
-import org.caleydo.view.dvi.datacontainer.ADataContainerRenderer;
-import org.caleydo.view.dvi.datacontainer.DataContainerListRenderer;
 import org.caleydo.view.dvi.layout.AGraphLayout;
+import org.caleydo.view.dvi.tableperspective.ATablePerspectiveRenderer;
+import org.caleydo.view.dvi.tableperspective.TablePerspectiveListRenderer;
 
 public class PathwayDataNode
 	extends ADataNode
 {
 
-	private ADataContainerRenderer dataContainerRenderer;
+	private ATablePerspectiveRenderer tablePerspectiveRenderer;
 	private PathwayDataDomain dataDomain;
 	private Row bodyRow;
 
@@ -75,26 +75,26 @@ public class PathwayDataNode
 
 		bodyRow = new Row("bodyRow");
 
-		if (getDataContainers().size() > 0)
+		if (getTablePerspectives().size() > 0)
 		{
 			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 		}
 
 		bodyColumn = new Column("bodyColumn");
 
-		dataContainerRenderer = new DataContainerListRenderer(this, view,
-				dragAndDropController, getDataContainers());
+		tablePerspectiveRenderer = new TablePerspectiveListRenderer(this, view,
+				dragAndDropController, getTablePerspectives());
 
 		List<Pair<String, Integer>> pickingIDsToBePushed = new ArrayList<Pair<String, Integer>>();
 		pickingIDsToBePushed.add(new Pair<String, Integer>(
 				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
 
-		dataContainerRenderer.setPickingIDsToBePushed(pickingIDsToBePushed);
+		tablePerspectiveRenderer.setPickingIDsToBePushed(pickingIDsToBePushed);
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
 		compGroupLayout.setRatioSizeY(1);
 		// compGroupLayout.setPixelSizeX(compGroupOverviewRenderer.getMinWidthPixels());
-		compGroupLayout.setRenderer(dataContainerRenderer);
+		compGroupLayout.setRenderer(tablePerspectiveRenderer);
 
 		ElementLayout spacingLayoutY = createDefaultSpacingY();
 
@@ -118,9 +118,9 @@ public class PathwayDataNode
 	@Override
 	public void update()
 	{
-		dataContainerRenderer.setDataContainers(getDataContainers());
+		tablePerspectiveRenderer.setTablePerspectives(getTablePerspectives());
 		recalculateNodeSize();
-		if (getDataContainers().size() > 0)
+		if (getTablePerspectives().size() > 0)
 		{
 			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 		}
@@ -129,24 +129,24 @@ public class PathwayDataNode
 	@Override
 	public void destroy()
 	{
-		dataContainerRenderer.destroy();
+		tablePerspectiveRenderer.destroy();
 	}
 
 	@Override
-	protected ADataContainerRenderer getDataContainerRenderer()
+	protected ATablePerspectiveRenderer getTablePerspectiveRenderer()
 	{
-		return dataContainerRenderer;
+		return tablePerspectiveRenderer;
 	}
 
 	@Override
-	public List<TablePerspective> getDataContainers()
+	public List<TablePerspective> getTablePerspectives()
 	{
-		List<PathwayDataContainer> containers = dataDomain.getDataContainers();
+		List<PathwayTablePerspective> containers = dataDomain.getTablePerspectives();
 
 		List<Pair<String, TablePerspective>> sortedContainers = new ArrayList<Pair<String, TablePerspective>>(
 				containers.size());
 
-		for (PathwayDataContainer container : containers)
+		for (PathwayTablePerspective container : containers)
 		{
 			sortedContainers.add(new Pair<String, TablePerspective>(container.getLabel(),
 					container));

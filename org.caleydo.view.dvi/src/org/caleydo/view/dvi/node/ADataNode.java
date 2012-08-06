@@ -46,7 +46,7 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 	}
 
 	@Override
-	public boolean showsDataContainers() {
+	public boolean showsTablePerspectives() {
 		return true;
 	}
 

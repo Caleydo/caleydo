@@ -32,8 +32,8 @@ public class StatisticsFoldChangeReductionListener extends
 		StatisticsFoldChangeReductionEvent foldChangeReductionEvent = null;
 		if (event instanceof StatisticsFoldChangeReductionEvent) {
 			foldChangeReductionEvent = (StatisticsFoldChangeReductionEvent) event;
-			handler.foldChange(foldChangeReductionEvent.getDataContainer1(),
-					foldChangeReductionEvent.getDataContainer2(),
+			handler.foldChange(foldChangeReductionEvent.getTablePerspective1(),
+					foldChangeReductionEvent.getTablePerspective2(),
 					foldChangeReductionEvent.isBetweenRecords());
 		}
 	}

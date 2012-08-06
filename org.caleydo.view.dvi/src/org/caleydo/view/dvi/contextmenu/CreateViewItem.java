@@ -22,7 +22,7 @@ package org.caleydo.view.dvi.contextmenu;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.view.dvi.event.CreateViewFromDataContainerEvent;
+import org.caleydo.view.dvi.event.CreateViewFromTablePerspectiveEvent;
 
 public class CreateViewItem extends AContextMenuItem {
 
@@ -31,7 +31,7 @@ public class CreateViewItem extends AContextMenuItem {
 
 		setLabel(viewName);
 
-		CreateViewFromDataContainerEvent event = new CreateViewFromDataContainerEvent(
+		CreateViewFromTablePerspectiveEvent event = new CreateViewFromTablePerspectiveEvent(
 				viewType, dataDomain, tablePerspective);
 		event.setSender(this);
 		registerEvent(event);

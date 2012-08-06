@@ -611,7 +611,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 							selectedNodes.add(hashGroups.get(groupID).getClusterNode());
 						}
 
-						ArrayList<TablePerspective> tablePerspectives = makeDataContainers(selectedNodes);
+						ArrayList<TablePerspective> tablePerspectives = makeTablePerspectives(selectedNodes);
 
 						AddGroupsToStratomexItem addGroupsToStratomexItem = new AddGroupsToStratomexItem(
 								dataDomain, tablePerspective, tablePerspectives);
@@ -719,7 +719,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 		}
 	}
 
-	private ArrayList<TablePerspective> makeDataContainers(
+	private ArrayList<TablePerspective> makeTablePerspectives(
 			ArrayList<ClusterNode> selectedNodes) {
 		ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>();
 		for (ClusterNode node : selectedNodes) {
@@ -729,9 +729,9 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 					DimensionPerspective.class, dataDomain);
 
 			dataDomain.getTable().registerDimensionPerspective(subDimensionPerspective1);
-			TablePerspective dataContainer1 = dataDomain.getDataContainer(tablePerspective
+			TablePerspective tablePerspective1 = dataDomain.getTablePerspective(tablePerspective
 					.getRecordPerspective().getPerspectiveID(), subDimensionPerspective1.getPerspectiveID());
-			tablePerspectives.add(dataContainer1);
+			tablePerspectives.add(tablePerspective1);
 
 		}
 		return tablePerspectives;
@@ -1299,7 +1299,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	}
 
 	@Override
-	public List<TablePerspective> getDataContainers() {
+	public List<TablePerspective> getTablePerspectives() {
 		// TODO Auto-generated method stub
 		return null;
 	}

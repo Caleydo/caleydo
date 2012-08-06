@@ -32,9 +32,9 @@ import org.caleydo.view.dvi.layout.AGraphLayout;
 
 public interface IDVINode extends IDraggable {
 
-	public List<TablePerspective> getDataContainers();
+	public List<TablePerspective> getTablePerspectives();
 
-	public boolean showsDataContainers();
+	public boolean showsTablePerspectives();
 
 	public void render(GL2 gl);
 
@@ -46,10 +46,10 @@ public interface IDVINode extends IDraggable {
 
 	public float getWidth();
 
-	public Pair<Point2D, Point2D> getBottomDataContainerAnchorPoints(
+	public Pair<Point2D, Point2D> getBottomTablePerspectiveAnchorPoints(
 			TablePerspective tablePerspective);
 
-	public Pair<Point2D, Point2D> getTopDataContainerAnchorPoints(
+	public Pair<Point2D, Point2D> getTopTablePerspectiveAnchorPoints(
 			TablePerspective tablePerspective);
 
 	public Pair<Point2D, Point2D> getTopAnchorPoints();
@@ -82,7 +82,7 @@ public interface IDVINode extends IDraggable {
 
 	public void setGraphLayout(AGraphLayout graphLayout);
 
-	public Point2D getAbsolutPositionOfRelativeDataContainerRendererCoordinates(
+	public Point2D getAbsolutPositionOfRelativeTablePerspectiveRendererCoordinates(
 			Point2D coordinates);
 
 	public float getSpacingX(IDVINode node);

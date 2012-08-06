@@ -92,7 +92,7 @@ public class TabularDataParser extends ATextParser {
 	 * {@link IDMappingManager}
 	 * </p>
 	 */
-	private void initializeDataContainers() {
+	private void initializeTablePerspectives() {
 
 		DataTable table = new DataTable(dataDomain);
 		dataDomain.setTable(table);
@@ -207,7 +207,7 @@ public class TabularDataParser extends ATextParser {
 
 	@Override
 	protected void parseFile(BufferedReader reader) throws IOException {
-		initializeDataContainers();
+		initializeTablePerspectives();
 
 		// Init progress bar
 		swtGuiManager.setProgressBarText("Loading data for: "

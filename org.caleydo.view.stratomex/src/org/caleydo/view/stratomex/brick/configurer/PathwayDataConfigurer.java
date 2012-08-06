@@ -32,7 +32,7 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
+import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.EContainedViewType;
@@ -220,8 +220,8 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 
 		String label = "";
 
-		if (brick.getDimensionGroup().getDataContainer() instanceof PathwayDataContainer)
-			label = ((PathwayDataContainer) brick.getDimensionGroup().getDataContainer())
+		if (brick.getDimensionGroup().getTablePerspective() instanceof PathwayTablePerspective)
+			label = ((PathwayTablePerspective) brick.getDimensionGroup().getTablePerspective())
 					.getPathway().getTitle();
 		else
 			throw new IllegalStateException(
@@ -239,9 +239,9 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		containedViewRenderers.put(EContainedViewType.PATHWAYS_SUMMARY_COMPACT,
 				pathwaysSummaryCompactRenderer);
 
-		if (brick.getDataContainer() instanceof PathwayDataContainer) {
-			PathwayDataContainer brickData = (PathwayDataContainer) brick
-					.getDataContainer();
+		if (brick.getTablePerspective() instanceof PathwayTablePerspective) {
+			PathwayTablePerspective brickData = (PathwayTablePerspective) brick
+					.getTablePerspective();
 			if (brickData.getPathway() != null) {
 				EPathwayDatabaseType dataBaseType = brickData.getPathway().getType();
 				EIconTextures texture;
@@ -251,7 +251,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 					texture = EIconTextures.CM_BIOCARTA;
 				}
 				LayoutRenderer compactPathwayRenderer = new CompactPathwayRenderer(brick,
-						brick.getDataContainer().getLabel(), EPickingType.BRICK.name(),
+						brick.getTablePerspective().getLabel(), EPickingType.BRICK.name(),
 						brick.getID(), brick.getTextureManager(), texture);
 
 				containedViewRenderers.put(EContainedViewType.PATHWAY_VIEW_COMPACT,

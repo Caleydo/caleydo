@@ -22,8 +22,8 @@ package org.caleydo.view.heatmap.dendrogram;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 
 /**
  * Serialized form of a dengrogram view.
@@ -32,7 +32,7 @@ import org.caleydo.core.view.ISingleDataContainerBasedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedDendogramVerticalView extends ASerializedSingleDataContainerBasedView {
+public class SerializedDendogramVerticalView extends ASerializedSingleTablePerspectiveBasedView {
 
 	/**
 	 * Default constructor with default initialization
@@ -40,7 +40,7 @@ public class SerializedDendogramVerticalView extends ASerializedSingleDataContai
 	public SerializedDendogramVerticalView() {
 	}
 
-	public SerializedDendogramVerticalView(ISingleDataContainerBasedView view) {
+	public SerializedDendogramVerticalView(ISingleTablePerspectiveBasedView view) {
 		super(view);
 	}
 

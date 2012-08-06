@@ -83,7 +83,7 @@ public class OverviewRenderer extends LayoutRenderer {
 		// overviewLayout.clear();
 		clusterLayoutList.clear();
 
-		RecordVirtualArray recordVA = uncertaintyHeatMap.getDataContainer()
+		RecordVirtualArray recordVA = uncertaintyHeatMap.getTablePerspective()
 				.getRecordPerspective().getVirtualArray();
 		RecordGroupList clusterList = recordVA.getGroupList();
 
@@ -94,7 +94,7 @@ public class OverviewRenderer extends LayoutRenderer {
 		// If the dataset is unclustered yet, the whole VA is given to the
 		// detail heat map.
 		if (clusterList == null && detailHeatMap != null) {
-			detailHeatMap.setDataContainer(uncertaintyHeatMap.getDataContainer());
+			detailHeatMap.setTablePerspective(uncertaintyHeatMap.getTablePerspective());
 			detailHeatMap.setDisplayListDirty();
 		}
 
@@ -138,7 +138,7 @@ public class OverviewRenderer extends LayoutRenderer {
 
 				// Initially the first cluster gets selected
 				if (clusterIndex == 0 && detailHeatMap != null) {
-					detailHeatMap.setDataContainer(clusterContainer);
+					detailHeatMap.setTablePerspective(clusterContainer);
 					detailHeatMap.setDisplayListDirty();
 				}
 			}
@@ -157,7 +157,7 @@ public class OverviewRenderer extends LayoutRenderer {
 	}
 
 	public TablePerspective getClusterContainer(int clusterIndex) {
-		TablePerspective sourceContainer = uncertaintyHeatMap.getDataContainer();
+		TablePerspective sourceContainer = uncertaintyHeatMap.getTablePerspective();
 		if (sourceContainer.getRecordPerspective().getVirtualArray().getGroupList()
 				.size() == 1) {
 			return sourceContainer;

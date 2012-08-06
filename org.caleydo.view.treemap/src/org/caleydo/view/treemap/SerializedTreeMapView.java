@@ -22,8 +22,8 @@ package org.caleydo.view.treemap;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 
 /**
  * Serialized form of a treemap view.
@@ -32,7 +32,7 @@ import org.caleydo.core.view.ISingleDataContainerBasedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedTreeMapView extends ASerializedSingleDataContainerBasedView {
+public class SerializedTreeMapView extends ASerializedSingleTablePerspectiveBasedView {
 
 	/**
 	 * Default constructor with default initialization
@@ -40,7 +40,7 @@ public class SerializedTreeMapView extends ASerializedSingleDataContainerBasedVi
 	public SerializedTreeMapView() {
 	}
 
-	public SerializedTreeMapView(ISingleDataContainerBasedView view) {
+	public SerializedTreeMapView(ISingleTablePerspectiveBasedView view) {
 		super(view);
 	}
 

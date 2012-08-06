@@ -22,8 +22,8 @@ package org.caleydo.view.pathway;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -34,7 +34,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
  */
 @XmlRootElement
 @XmlType
-public class SerializedPathwayView extends ASerializedSingleDataContainerBasedView {
+public class SerializedPathwayView extends ASerializedSingleTablePerspectiveBasedView {
 
 	/**
 	 * id of the pathway in caleydo's pathway library, -1 for unknown pathway
@@ -44,7 +44,7 @@ public class SerializedPathwayView extends ASerializedSingleDataContainerBasedVi
 
 	/**
 	 * The id of the pathway data domain. The id of the underlying mapped data
-	 * datadomain is stored in {@link ASerializedSingleDataContainerBasedView}
+	 * datadomain is stored in {@link ASerializedSingleTablePerspectiveBasedView}
 	 */
 	private String pathwayDataDomainID;
 
@@ -55,7 +55,7 @@ public class SerializedPathwayView extends ASerializedSingleDataContainerBasedVi
 	}
 
 	public SerializedPathwayView(String pathwayDataDomainID,
-			ISingleDataContainerBasedView view) {
+			ISingleTablePerspectiveBasedView view) {
 		super(view);
 		pathwayID = -1;
 		this.pathwayDataDomainID = pathwayDataDomainID;

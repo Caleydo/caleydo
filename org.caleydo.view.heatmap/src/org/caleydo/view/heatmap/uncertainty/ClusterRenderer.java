@@ -85,7 +85,7 @@ public class ClusterRenderer extends LayoutRenderer {
 
 	public void init(GL2 gl) {
 
-		DimensionVirtualArray dimensionVA = uncertaintyHeatMap.getDataContainer()
+		DimensionVirtualArray dimensionVA = uncertaintyHeatMap.getTablePerspective()
 				.getDimensionPerspective().getVirtualArray();
 		DataTable table = uncertaintyHeatMap.getDataDomain().getTable();
 

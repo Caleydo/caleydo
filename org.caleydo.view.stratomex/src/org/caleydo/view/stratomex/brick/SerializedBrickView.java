@@ -22,7 +22,7 @@ package org.caleydo.view.stratomex.brick;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 
 /**
  * Serialized VisBricks view.
@@ -32,7 +32,7 @@ import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedBrickView extends ASerializedSingleDataContainerBasedView {
+public class SerializedBrickView extends ASerializedSingleTablePerspectiveBasedView {
 
 	/**
 	 * Default constructor with default initialization

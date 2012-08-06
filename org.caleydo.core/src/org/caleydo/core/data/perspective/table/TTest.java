@@ -32,7 +32,7 @@ import org.caleydo.core.data.collection.table.DataTable;
  */
 public class TTest {
 
-	HashMap<TablePerspective, ArrayList<Double>> dataContainerToTwoSidedTTestResult =
+	HashMap<TablePerspective, ArrayList<Double>> tablePerspectiveToTwoSidedTTestResult =
 		new HashMap<TablePerspective, ArrayList<Double>>();
 
 	double[] oneSidedTTestResult;
@@ -40,17 +40,17 @@ public class TTest {
 	// TablePerspective container;
 
 	public void setTwoSiddedTTestResult(TablePerspective set, ArrayList<Double> resultVector) {
-		dataContainerToTwoSidedTTestResult.put(set, resultVector);
+		tablePerspectiveToTwoSidedTTestResult.put(set, resultVector);
 	}
 
 	public ArrayList<Double> getTwoSidedTTestResult(TablePerspective tablePerspective) {
 
-		return dataContainerToTwoSidedTTestResult.get(tablePerspective);
+		return tablePerspectiveToTwoSidedTTestResult.get(tablePerspective);
 	}
 
-	public Double getTwoSidedTTestResult(DataTable dataContainer, Integer recordID) {
+	public Double getTwoSidedTTestResult(DataTable tablePerspective, Integer recordID) {
 
-		return dataContainerToTwoSidedTTestResult.get(dataContainer).get(recordID);
+		return tablePerspectiveToTwoSidedTTestResult.get(tablePerspective).get(recordID);
 	}
 
 	public void setOneSiddedTTestResult(double[] pValueVector) {
@@ -62,7 +62,7 @@ public class TTest {
 	}
 
 	public HashMap<TablePerspective, ArrayList<Double>> getAllTwoSidedTTestResults() {
-		return dataContainerToTwoSidedTTestResult;
+		return tablePerspectiveToTwoSidedTTestResult;
 	}
 
 }

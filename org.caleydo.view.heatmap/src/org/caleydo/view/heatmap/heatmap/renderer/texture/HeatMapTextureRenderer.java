@@ -101,7 +101,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		// AHeatMapTemplate heatMapTemplate = heatMap.getTemplate();
 		//
 		// RecordVirtualArray recordVA =
-		// heatMap.getDataContainer().getRecordPerspective()
+		// heatMap.getTablePerspective().getRecordPerspective()
 		// .getVirtualArray();
 		//
 		// int recordElements = recordVA.size();
@@ -114,7 +114,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		// }
 		//
 		// recordSpacing.calculateRecordSpacing(recordElements,
-		// heatMap.getDataContainer()
+		// heatMap.getTablePerspective()
 		// .getDimensionPerspective().getVirtualArray().size(),
 		// parameters.getSizeScaledX(), parameters.getSizeScaledY(),
 		// heatMapTemplate.getMinSelectedFieldHeight());
@@ -135,9 +135,9 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	 */
 	public void initialize(GL2 gl) {
 		DataRepresentation dataRepresentation = heatMap.getRenderingRepresentation();
-		int textureHeight = numberOfRecords = heatMap.getDataContainer()
+		int textureHeight = numberOfRecords = heatMap.getTablePerspective()
 				.getRecordPerspective().getVirtualArray().size();
-		int textureWidth = numberOfDimensions = heatMap.getDataContainer()
+		int textureWidth = numberOfDimensions = heatMap.getTablePerspective()
 				.getDimensionPerspective().getVirtualArray().size();
 
 		numberOfTextures = (int) Math.ceil((double) numberOfRecords
@@ -178,12 +178,12 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		float opacity = 1;
 
 		ColorMapper colorMapper = heatMap.getDataDomain().getColorMapper();
-		for (Integer recordID : heatMap.getDataContainer().getRecordPerspective()
+		for (Integer recordID : heatMap.getTablePerspective().getRecordPerspective()
 				.getVirtualArray()) {
 
 			recordCount++;
 
-			for (Integer dimensionID : heatMap.getDataContainer()
+			for (Integer dimensionID : heatMap.getTablePerspective()
 					.getDimensionPerspective().getVirtualArray()) {
 				// if
 				// (contentSelectionManager.checkStatus(SelectionType.DESELECTED,
@@ -301,9 +301,9 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		endRecord = endRecord > numberOfRecords - 1 ? numberOfRecords - 1 : endRecord;
 
 		DataTable table = heatMap.getDataDomain().getTable();
-		RecordVirtualArray recordVA = heatMap.getDataContainer().getRecordPerspective()
+		RecordVirtualArray recordVA = heatMap.getTablePerspective().getRecordPerspective()
 				.getVirtualArray();
-		DimensionVirtualArray dimensionVA = heatMap.getDataContainer()
+		DimensionVirtualArray dimensionVA = heatMap.getTablePerspective()
 				.getDimensionPerspective().getVirtualArray();
 
 		for (int dimensionCount = 0; dimensionCount < numberOfDimensions; dimensionCount++) {

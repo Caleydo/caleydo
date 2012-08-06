@@ -46,10 +46,10 @@ public class AverageValueSortingStrategy implements IBrickSortingStrategy {
 	private void insertBrick(GLBrick brickToInsert, ArrayList<GLBrick> bricks) {
 
 		int count;
-		TablePerspective brickToInsertData = brickToInsert.getDataContainer();
+		TablePerspective brickToInsertData = brickToInsert.getTablePerspective();
 		for (count = 0; count < bricks.size(); count++) {
 			TablePerspective brickData = (TablePerspective) bricks.get(count)
-					.getDataContainer();
+					.getTablePerspective();
 			if (brickData.getContainerStatistics().getAverageValue() < brickToInsertData
 					.getContainerStatistics().getAverageValue())
 				break;

@@ -244,7 +244,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 		TablePerspective detailHeatMapContainer = new TablePerspective(dataDomain,
 				detailHMRecordPerspective, tablePerspective.getDimensionPerspective());
-		detailHeatMap.setDataContainer(detailHeatMapContainer);
+		detailHeatMap.setTablePerspective(detailHeatMapContainer);
 		detailHeatMap.setRemoteRenderingGLView(this);
 		detailHeatMap.setRenderTemplate(new UncertaintyDetailHeatMapTemplate(
 				detailHeatMap, this));
@@ -327,14 +327,14 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 				// .getVirtualArray();
 
 				data.setData(embeddedRecords);
-				detailHeatMap.getDataContainer().getRecordPerspective().init(data);
-				detailHeatMap.handleRecordVAUpdate(detailHeatMap.getDataContainer()
+				detailHeatMap.getTablePerspective().getRecordPerspective().init(data);
+				detailHeatMap.handleRecordVAUpdate(detailHeatMap.getTablePerspective()
 						.getRecordPerspective().getPerspectiveID());
 
 				// ArrayList<Integer> clusterElements =
 				// tablePerspective.getRecordPerspective().getVirtualArray().getIDsOfGroup(groupList
 				// .get(externalID);
-				// detailHeatMap.setDataContainer(tablePerspective)
+				// detailHeatMap.setTablePerspective(tablePerspective)
 				// RecordVirtualArray clusterVA = new RecordVirtualArray(
 				// recordPerspectiveID, clusterElements);
 				// detailHeatMap.setRecordVA(clusterVA);

@@ -250,7 +250,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		dimensionBarLaylout.setRatioSizeX(1);
 		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick.getDataDomain()
 				.getTable().getDefaultDimensionPerspective().getVirtualArray(), brick
-				.getDataContainer().getDimensionPerspective().getVirtualArray()));
+				.getTablePerspective().getDimensionPerspective().getVirtualArray()));
 
 		footerBarElements.add(dimensionBarLaylout);
 

@@ -22,8 +22,8 @@ package org.caleydo.view.scatterplot;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
-import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 
 /**
  * Serialized form of a scatterplot-view.
@@ -32,7 +32,7 @@ import org.caleydo.core.view.ISingleDataContainerBasedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedScatterplotView extends ASerializedSingleDataContainerBasedView {
+public class SerializedScatterplotView extends ASerializedSingleTablePerspectiveBasedView {
 
 	/**
 	 * Default constructor with default initialization
@@ -40,7 +40,7 @@ public class SerializedScatterplotView extends ASerializedSingleDataContainerBas
 	public SerializedScatterplotView() {
 	}
 
-	public SerializedScatterplotView(ISingleDataContainerBasedView view) {
+	public SerializedScatterplotView(ISingleTablePerspectiveBasedView view) {
 		super(view);
 	}
 

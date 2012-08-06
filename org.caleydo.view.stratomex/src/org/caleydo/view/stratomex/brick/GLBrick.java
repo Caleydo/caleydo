@@ -68,7 +68,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
-import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
+import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
@@ -219,7 +219,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	private BrickColumn dimensionGroup;
 
-	private SelectionManager dataContainerSelectionManager;
+	private SelectionManager tablePerspectiveSelectionManager;
 	private SelectionManager recordGroupSelectionManager;
 
 	private boolean isInOverviewMode = false;
@@ -246,7 +246,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	@Override
 	public void initialize() {
 		super.initialize();
-		dataContainerSelectionManager = new SelectionManager(
+		tablePerspectiveSelectionManager = new SelectionManager(
 				TablePerspective.DATA_CONTAINER_IDTYPE);
 		recordGroupSelectionManager = dataDomain.getRecordGroupSelectionManager().clone();
 		registerPickingListeners();
@@ -779,16 +779,16 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			@Override
 			public void clicked(Pick pick) {
 
-				SelectionType currentSelectionType = dataContainerSelectionManager.getSelectionType();
-				dataContainerSelectionManager.clearSelection(currentSelectionType);
+				SelectionType currentSelectionType = tablePerspectiveSelectionManager.getSelectionType();
+				tablePerspectiveSelectionManager.clearSelection(currentSelectionType);
 
-				dataContainerSelectionManager.addToType(currentSelectionType,
+				tablePerspectiveSelectionManager.addToType(currentSelectionType,
 						tablePerspective.getID());
 
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setDataDomainID(getDataDomain().getDataDomainID());
 				event.setSender(this);
-				SelectionDelta delta = dataContainerSelectionManager.getDelta();
+				SelectionDelta delta = tablePerspectiveSelectionManager.getDelta();
 				event.setSelectionDelta(delta);
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 
@@ -843,31 +843,31 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			@Override
 			public void rightClicked(Pick pick) {
 
-				if (dimensionGroup.getDataContainer() == tablePerspective) {
+				if (dimensionGroup.getTablePerspective() == tablePerspective) {
 
 					if (dataDomain instanceof GeneticDataDomain
 							&& !dataDomain.isColumnDimension()) {
 						contextMenuCreator
 								.addContextMenuItem(new CreatePathwaySmallMultiplesGroupItem(
-										dimensionGroup.getDataContainer(), dimensionGroup
-												.getDataContainer()
+										dimensionGroup.getTablePerspective(), dimensionGroup
+												.getTablePerspective()
 												.getDimensionPerspective()));
 					}
 					contextMenuCreator
 							.addContextMenuItem(new CreateKaplanMeierSmallMultiplesGroupItem(
-									dimensionGroup.getDataContainer(), dimensionGroup
-											.getDataContainer().getDimensionPerspective()));
+									dimensionGroup.getTablePerspective(), dimensionGroup
+											.getTablePerspective().getDimensionPerspective()));
 				} else
 					contextMenuCreator
 							.addContextMenuItem(new CreatePathwayGroupFromDataItem(
 									dataDomain, tablePerspective.getRecordPerspective()
 											.getVirtualArray(), dimensionGroup
-											.getDataContainer().getDimensionPerspective()));
+											.getTablePerspective().getDimensionPerspective()));
 
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
 
 				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(
-						getDimensionGroup().getDataContainer().getID()));
+						getDimensionGroup().getTablePerspective().getID()));
 			}
 
 		}, EPickingType.BRICK.name(), getID());
@@ -939,17 +939,17 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * 
 	 * @return
 	 */
-	public SelectionManager getDataContainerSelectionManager() {
-		return dataContainerSelectionManager;
+	public SelectionManager getTablePerspectiveSelectionManager() {
+		return tablePerspectiveSelectionManager;
 	}
 
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
-		if (selectionDelta.getIDType() == dataContainerSelectionManager.getIDType()) {
-			dataContainerSelectionManager.setDelta(selectionDelta);
+		if (selectionDelta.getIDType() == tablePerspectiveSelectionManager.getIDType()) {
+			tablePerspectiveSelectionManager.setDelta(selectionDelta);
 
-			if (dataContainerSelectionManager.checkStatus(
-					dataContainerSelectionManager.getSelectionType(),
+			if (tablePerspectiveSelectionManager.checkStatus(
+					tablePerspectiveSelectionManager.getSelectionType(),
 					tablePerspective.getID())) {
 				// brickLayout.setShowHandles(true);
 				brickLayoutConfiguration.setSelected(true);
@@ -969,7 +969,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * @return true, if the brick us currently selected, false otherwise
 	 */
 	public boolean isActive() {
-		return dataContainerSelectionManager.checkStatus(SelectionType.SELECTION,
+		return tablePerspectiveSelectionManager.checkStatus(SelectionType.SELECTION,
 				tablePerspective.getID());
 	}
 
@@ -1126,7 +1126,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * @param sourceRecordVA
 	 */
 	public void openCreatePathwaySmallMultiplesGroupDialog(
-			final TablePerspective dimensionGroupDataContainer,
+			final TablePerspective dimensionGroupTablePerspective,
 			final DimensionPerspective dimensionPerspective) {
 		getParentComposite().getDisplay().asyncExec(new Runnable() {
 			@Override
@@ -1135,19 +1135,19 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				// shell.setSize(500, 800);
 
 				CreatePathwaySmallMultiplesGroupDialog dialog = new CreatePathwaySmallMultiplesGroupDialog(
-						shell, dimensionGroupDataContainer, dimensionPerspective);
+						shell, dimensionGroupTablePerspective, dimensionPerspective);
 				dialog.create();
 				dialog.setBlockOnOpen(true);
 
 				if (dialog.open() == Status.OK) {
 
-					List<PathwayDataContainer> pathwayDataContainers = dialog
-							.getPathwayDataContainer();
+					List<PathwayTablePerspective> pathwayTablePerspectives = dialog
+							.getPathwayTablePerspective();
 
-					for (PathwayDataContainer pathwayDataContainer : pathwayDataContainers) {
+					for (PathwayTablePerspective pathwayTablePerspective : pathwayTablePerspectives) {
 
 						AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(
-								pathwayDataContainer);
+								pathwayTablePerspective);
 						event.setDataConfigurer(new PathwayDataConfigurer());
 						event.setSender(this);
 						event.setReceiver(stratomex);
@@ -1165,7 +1165,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * @param sourceRecordVA
 	 */
 	public void openCreateKaplanMeierSmallMultiplesGroupDialog(
-			final TablePerspective dimensionGroupDataContainer,
+			final TablePerspective dimensionGroupTablePerspective,
 			final DimensionPerspective dimensionPerspective) {
 
 		getParentComposite().getDisplay().asyncExec(new Runnable() {
@@ -1173,7 +1173,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			public void run() {
 				Shell shell = new Shell();
 				CreateKaplanMeierSmallMultiplesGroupDialog dialog = new CreateKaplanMeierSmallMultiplesGroupDialog(
-						shell, dimensionGroupDataContainer);
+						shell, dimensionGroupTablePerspective);
 				dialog.create();
 				dialog.setBlockOnOpen(true);
 

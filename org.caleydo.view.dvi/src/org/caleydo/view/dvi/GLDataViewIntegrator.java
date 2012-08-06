@@ -56,8 +56,8 @@ import org.caleydo.core.event.MinSizeAppliedEvent;
 import org.caleydo.core.event.SetMinViewSizeEvent;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.NewDataDomainEvent;
-import org.caleydo.core.event.view.DataContainersChangedEvent;
 import org.caleydo.core.event.view.NewViewEvent;
+import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataLoader;
@@ -70,7 +70,7 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.RCPViewInitializationData;
 import org.caleydo.core.view.RCPViewManager;
-import org.caleydo.core.view.listener.AddDataContainersEvent;
+import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -82,9 +82,9 @@ import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.view.dvi.event.AddDataContainerEvent;
+import org.caleydo.view.dvi.event.AddTablePerspectiveEvent;
 import org.caleydo.view.dvi.event.ApplySpecificGraphLayoutEvent;
-import org.caleydo.view.dvi.event.CreateViewFromDataContainerEvent;
+import org.caleydo.view.dvi.event.CreateViewFromTablePerspectiveEvent;
 import org.caleydo.view.dvi.event.LoadGroupingEvent;
 import org.caleydo.view.dvi.event.OpenViewEvent;
 import org.caleydo.view.dvi.event.ShowDataConnectionsEvent;
@@ -92,10 +92,9 @@ import org.caleydo.view.dvi.event.ShowViewWithoutDataEvent;
 import org.caleydo.view.dvi.layout.AGraphLayout;
 import org.caleydo.view.dvi.layout.TwoLayeredGraphLayout;
 import org.caleydo.view.dvi.layout.edge.rendering.AEdgeRenderer;
-import org.caleydo.view.dvi.listener.AddDataContainerEventListener;
+import org.caleydo.view.dvi.listener.AddTablePerspectiveEventListener;
 import org.caleydo.view.dvi.listener.ApplySpecificGraphLayoutEventListener;
-import org.caleydo.view.dvi.listener.CreateViewFromDataContainerEventListener;
-import org.caleydo.view.dvi.listener.DataContainersCangedListener;
+import org.caleydo.view.dvi.listener.CreateViewFromTablePerspectiveEventListener;
 import org.caleydo.view.dvi.listener.DimensionGroupsChangedEventListener;
 import org.caleydo.view.dvi.listener.DimensionVAUpdateEventListener;
 import org.caleydo.view.dvi.listener.GLDVIKeyListener;
@@ -107,6 +106,7 @@ import org.caleydo.view.dvi.listener.OpenViewEventListener;
 import org.caleydo.view.dvi.listener.RecordVAUpdateEventListener;
 import org.caleydo.view.dvi.listener.ShowDataConnectionsEventListener;
 import org.caleydo.view.dvi.listener.ShowViewWithoutDataEventListener;
+import org.caleydo.view.dvi.listener.TablePerspectivesCangedListener;
 import org.caleydo.view.dvi.listener.ViewClosedEventListener;
 import org.caleydo.view.dvi.node.ADataNode;
 import org.caleydo.view.dvi.node.IDVINode;
@@ -158,11 +158,11 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	private NewViewEventListener newViewEventListener;
 	private NewDataDomainEventListener newDataDomainEventListener;
 	private ViewClosedEventListener viewClosedEventListener;
-	private DataContainersCangedListener dataContainersChangedListener;
+	private TablePerspectivesCangedListener tablePerspectivesChangedListener;
 	private DimensionGroupsChangedEventListener dimensionGroupsChangedEventListener;
-	private AddDataContainerEventListener addDataContainerEventListener;
+	private AddTablePerspectiveEventListener addTablePerspectiveEventListener;
 	private OpenViewEventListener openViewEventListener;
-	private CreateViewFromDataContainerEventListener createViewFromDataContainerEventListener;
+	private CreateViewFromTablePerspectiveEventListener createViewFromTablePerspectiveEventListener;
 	private ApplySpecificGraphLayoutEventListener applySpecificGraphLayoutEventListener;
 	private MinSizeAppliedEventListener minSizeAppliedEventListener;
 	private ShowDataConnectionsEventListener showDataConnectionsEventListener;
@@ -517,10 +517,10 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		viewClosedEventListener.setHandler(this);
 		eventPublisher.addListener(ViewClosedEvent.class, viewClosedEventListener);
 
-		dataContainersChangedListener = new DataContainersCangedListener();
-		dataContainersChangedListener.setHandler(this);
-		eventPublisher.addListener(DataContainersChangedEvent.class,
-				dataContainersChangedListener);
+		tablePerspectivesChangedListener = new TablePerspectivesCangedListener();
+		tablePerspectivesChangedListener.setHandler(this);
+		eventPublisher.addListener(TablePerspectivesChangedEvent.class,
+				tablePerspectivesChangedListener);
 
 		dimensionGroupsChangedEventListener = new DimensionGroupsChangedEventListener();
 		dimensionGroupsChangedEventListener.setHandler(this);
@@ -531,19 +531,19 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		newDataDomainEventListener.setHandler(this);
 		eventPublisher.addListener(NewDataDomainEvent.class, newDataDomainEventListener);
 
-		addDataContainerEventListener = new AddDataContainerEventListener();
-		addDataContainerEventListener.setHandler(this);
-		eventPublisher.addListener(AddDataContainerEvent.class,
-				addDataContainerEventListener);
+		addTablePerspectiveEventListener = new AddTablePerspectiveEventListener();
+		addTablePerspectiveEventListener.setHandler(this);
+		eventPublisher.addListener(AddTablePerspectiveEvent.class,
+				addTablePerspectiveEventListener);
 
 		openViewEventListener = new OpenViewEventListener();
 		openViewEventListener.setHandler(this);
 		eventPublisher.addListener(OpenViewEvent.class, openViewEventListener);
 
-		createViewFromDataContainerEventListener = new CreateViewFromDataContainerEventListener();
-		createViewFromDataContainerEventListener.setHandler(this);
-		eventPublisher.addListener(CreateViewFromDataContainerEvent.class,
-				createViewFromDataContainerEventListener);
+		createViewFromTablePerspectiveEventListener = new CreateViewFromTablePerspectiveEventListener();
+		createViewFromTablePerspectiveEventListener.setHandler(this);
+		eventPublisher.addListener(CreateViewFromTablePerspectiveEvent.class,
+				createViewFromTablePerspectiveEventListener);
 
 		applySpecificGraphLayoutEventListener = new ApplySpecificGraphLayoutEventListener();
 		applySpecificGraphLayoutEventListener.setHandler(this);
@@ -594,9 +594,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			viewClosedEventListener = null;
 		}
 
-		if (dataContainersChangedListener != null) {
-			eventPublisher.removeListener(dataContainersChangedListener);
-			dataContainersChangedListener = null;
+		if (tablePerspectivesChangedListener != null) {
+			eventPublisher.removeListener(tablePerspectivesChangedListener);
+			tablePerspectivesChangedListener = null;
 		}
 
 		if (dimensionGroupsChangedEventListener != null) {
@@ -609,9 +609,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			newDataDomainEventListener = null;
 		}
 
-		if (addDataContainerEventListener != null) {
-			eventPublisher.removeListener(addDataContainerEventListener);
-			addDataContainerEventListener = null;
+		if (addTablePerspectiveEventListener != null) {
+			eventPublisher.removeListener(addTablePerspectiveEventListener);
+			addTablePerspectiveEventListener = null;
 		}
 
 		if (openViewEventListener != null) {
@@ -619,9 +619,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			openViewEventListener = null;
 		}
 
-		if (createViewFromDataContainerEventListener != null) {
-			eventPublisher.removeListener(createViewFromDataContainerEventListener);
-			createViewFromDataContainerEventListener = null;
+		if (createViewFromTablePerspectiveEventListener != null) {
+			eventPublisher.removeListener(createViewFromTablePerspectiveEventListener);
+			createViewFromTablePerspectiveEventListener = null;
 		}
 
 		if (applySpecificGraphLayoutEventListener != null) {
@@ -921,7 +921,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	 * @param dimensionVA
 	 * @param dimensionGroup
 	 */
-	public void createDataContainer(final ATableBasedDataDomain dataDomain,
+	public void createTablePerspective(final ATableBasedDataDomain dataDomain,
 			final String recordPerspectiveID, final boolean createRecordPerspective,
 			final RecordVirtualArray recordVA, final Group recordGroup,
 			final String dimensionPerspectiveID,
@@ -1003,13 +1003,13 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 								recordPerspectiveID);
 					}
 
-					TablePerspective tablePerspective = dataDomain.getDataContainer(
+					TablePerspective tablePerspective = dataDomain.getTablePerspective(
 							currentRecordPerspeciveID, currentDimensionPerspeciveID);
 					tablePerspective.setLabel(dialog.getValue(), false);
 					tablePerspective.setPrivate(false);
 
 					if (isRenderedRemote()) {
-						AddDataContainersEvent event = new AddDataContainersEvent(
+						AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(
 								tablePerspective);
 						event.setReceiver((AGLView) getRemoteRenderingGLView());
 						event.setSender(this);
@@ -1070,7 +1070,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 					String secondaryID = UUID.randomUUID().toString();
 					RCPViewInitializationData rcpViewInitData = new RCPViewInitializationData();
 					rcpViewInitData.setDataDomainID(dataDomain.getDataDomainID());
-					rcpViewInitData.setDataContainer(tablePerspective);
+					rcpViewInitData.setTablePerspective(tablePerspective);
 					RCPViewManager.get().addRCPView(secondaryID, rcpViewInitData);
 
 					if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
