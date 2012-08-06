@@ -402,7 +402,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		Set<Integer> removedElements = recordSelectionManager
 				.getElements(SelectionType.DESELECTED);
 
-		RecordVADelta delta = new RecordVADelta(dataContainer.getRecordPerspective()
+		RecordVADelta delta = new RecordVADelta(tablePerspective.getRecordPerspective()
 				.getPerspectiveID(), recordIDType);
 		for (Integer recordID : removedElements) {
 			delta.add(VADeltaItem.removeElement(recordID));
@@ -440,7 +440,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
-		if (dataContainer.getNrRecords() == 0 || dataContainer.getNrDimensions() == 0) {
+		if (tablePerspective.getNrRecords() == 0 || tablePerspective.getNrDimensions() == 0) {
 			gl.glTranslatef(-xSideSpacing, -fYTranslation, 0.0f);
 			renderSymbol(gl, EIconTextures.PAR_COORDS_SYMBOL, 2);
 			gl.glTranslatef(+xSideSpacing, fYTranslation, 0.0f);
@@ -480,10 +480,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	 */
 	private void renderNormalPolylines(GL2 gl, SelectionType selectionType) {
 
-		int nrVisibleLines = dataContainer.getNrRecords()
+		int nrVisibleLines = tablePerspective.getNrRecords()
 				- recordSelectionManager.getNumberOfElements(SelectionType.DESELECTED);
 
-		displayEveryNthPolyline = (dataContainer.getNrRecords() - recordSelectionManager
+		displayEveryNthPolyline = (tablePerspective.getNrRecords() - recordSelectionManager
 				.getNumberOfElements(SelectionType.DESELECTED)) / numberOfRandomElements;
 
 		if (displayEveryNthPolyline == 0) {
@@ -494,8 +494,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				nrVisibleLines / displayEveryNthPolyline);
 
 		// this loop executes once per polyline
-		for (int recordIndex = 0; recordIndex < dataContainer.getNrRecords(); recordIndex += displayEveryNthPolyline) {
-			int recordID = dataContainer.getRecordPerspective().getVirtualArray()
+		for (int recordIndex = 0; recordIndex < tablePerspective.getNrRecords(); recordIndex += displayEveryNthPolyline) {
+			int recordID = tablePerspective.getRecordPerspective().getVirtualArray()
 					.get(recordIndex);
 			if (!recordSelectionManager.checkStatus(SelectionType.DESELECTED, recordID))
 				renderSingleLine(gl, recordID, selectionType, renderState, false);
@@ -515,7 +515,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		renderState.updateOcclusionPrev(nrVisibleLines);
 		for (Integer recordID : lines) {
 
-			if (dataContainer.getRecordPerspective().getVirtualArray().contains(recordID))
+			if (tablePerspective.getRecordPerspective().getVirtualArray().contains(recordID))
 				renderSingleLine(gl, recordID, selectionType, renderState,
 						renderAsSelection);
 		}
@@ -543,12 +543,12 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			gl.glBegin(GL2.GL_LINE_STRIP);
 		}
 
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 		DataTable table = dataDomain.getTable();
 
 		// this loop executes once per axis
-		for (int dimensionCount = 0; dimensionCount < dataContainer.getNrDimensions(); dimensionCount++) {
+		for (int dimensionCount = 0; dimensionCount < tablePerspective.getNrDimensions(); dimensionCount++) {
 
 			Integer dimensionID = dimensionVA.get(dimensionCount);
 
@@ -618,7 +618,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			return;
 		textRenderer.setColor(0, 0, 0, 1);
 
-		int numberOfAxis = dataContainer.getNrDimensions();
+		int numberOfAxis = tablePerspective.getNrDimensions();
 		// draw X-Axis
 		gl.glColor4fv(X_AXIS_COLOR, 0);
 		gl.glLineWidth(X_AXIS_LINE_WIDTH);
@@ -640,7 +640,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				.getElements(SelectionType.MOUSE_OVER);
 
 		int count = 0;
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 
 		while (count < numberOfAxis) {
@@ -925,7 +925,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			// Pair<Float, Float> gate = hashGates.get(iGateID);
 			// TODO for all indices
 
-			ArrayList<Integer> axesIndices = dataContainer.getDimensionPerspective()
+			ArrayList<Integer> axesIndices = tablePerspective.getDimensionPerspective()
 					.getVirtualArray().indicesOf(axisID);
 			for (int axisIndex : axesIndices) {
 				float currentPosition = axisSpacings.get(axisIndex);
@@ -1034,7 +1034,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				PCRenderStyle.MIN_NUMBER_TEXT_SIZE);
 		float fSmallSpacing = renderStyle.getVerySmallSpacing();
 		float fBackPlaneWidth = (float) tempRectangle.getWidth();
-		float maxWidth = renderStyle.getAxisSpacing(dataContainer.getNrDimensions());
+		float maxWidth = renderStyle.getAxisSpacing(tablePerspective.getNrDimensions());
 		if (fBackPlaneWidth > maxWidth)
 			fBackPlaneWidth = maxWidth;
 
@@ -1130,7 +1130,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			int axisID = gate.getAxisID();
 			if (axisID == -1)
 				continue;
-			for (int recordID : dataContainer.getRecordPerspective().getVirtualArray()) {
+			for (int recordID : tablePerspective.getRecordPerspective().getVirtualArray()) {
 				DataRepresentation usedDataRepresentation = DataRepresentation.RAW;
 				if (!dataDomain.getTable().isDataHomogeneous())
 					usedDataRepresentation = DataRepresentation.NORMALIZED;
@@ -1156,7 +1156,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		hashIsNANBlocking.clear();
 		for (Integer axisID : hashExcludeNAN.keySet()) {
 			ArrayList<Integer> deselectedLines = new ArrayList<Integer>();
-			for (int polylineIndex : dataContainer.getRecordPerspective()
+			for (int polylineIndex : tablePerspective.getRecordPerspective()
 					.getVirtualArray()) {
 
 				currentValue = dataDomain.getTable().getFloat(
@@ -1180,9 +1180,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				return;
 			alCurrentGateBlocks.clear();
 			Gate gate = hashMasterGates.get(iGateID);
-			for (int recordID : dataContainer.getRecordPerspective().getVirtualArray()) {
+			for (int recordID : tablePerspective.getRecordPerspective().getVirtualArray()) {
 				boolean bIsBlocking = true;
-				for (int dimensionID : dataContainer.getDimensionPerspective()
+				for (int dimensionID : tablePerspective.getDimensionPerspective()
 						.getVirtualArray()) {
 
 					currentValue = dataDomain.getTable().getFloat(DataRepresentation.RAW,
@@ -1215,7 +1215,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	@Override
 	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
-		if (!dataContainer.getDimensionPerspective().getPerspectiveID()
+		if (!tablePerspective.getDimensionPerspective().getPerspectiveID()
 				.equals(dimensionPerspectiveID))
 			return;
 		super.handleDimensionVAUpdate(dimensionPerspectiveID);
@@ -1473,13 +1473,13 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				iChangeDropOnAxisNumber = pickingID;
 				break;
 			case CLICKED:
-				DimensionVirtualArray dimensionVA = dataContainer
+				DimensionVirtualArray dimensionVA = tablePerspective
 						.getDimensionPerspective().getVirtualArray();
 				if (dimensionVA.occurencesOf(dimensionVA.get(pickingID)) == 1) {
 					removeGate(dimensionVA.get(pickingID));
 				}
 
-				DimensionVADelta vaDelta = new DimensionVADelta(dataContainer
+				DimensionVADelta vaDelta = new DimensionVADelta(tablePerspective
 						.getDimensionPerspective().getPerspectiveID(), dimensionIDType);
 				vaDelta.add(VADeltaItem.remove(pickingID));
 
@@ -1516,14 +1516,14 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			case CLICKED:
 				if (pickingID >= 0) {
 					// dimensionVA.copy(pickingID);
-					DimensionVADelta vaDelta = new DimensionVADelta(dataContainer
+					DimensionVADelta vaDelta = new DimensionVADelta(tablePerspective
 							.getDimensionPerspective().getPerspectiveID(),
 							dimensionIDType);
 					vaDelta.add(VADeltaItem.copy(pickingID));
 					triggerDimensionFilterEvent(
 							vaDelta,
 							"Copied "
-									+ dataDomain.getDimensionLabel(dataContainer
+									+ dataDomain.getDimensionLabel(tablePerspective
 											.getDimensionPerspective().getVirtualArray()
 											.get(pickingID)));
 
@@ -1628,7 +1628,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	private void triggerDimensionFilterEvent(DimensionVADelta delta, String label) {
 
-		DimensionFilter filter = new DimensionFilter(dataContainer
+		DimensionFilter filter = new DimensionFilter(tablePerspective
 				.getDimensionPerspective().getPerspectiveID());
 
 		filter.setVADelta(delta);
@@ -1645,7 +1645,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	private void triggerRecordFilterEvent(RecordVADelta delta, String label) {
 
-		RecordFilter filter = new RecordFilter(dataContainer.getRecordPerspective()
+		RecordFilter filter = new RecordFilter(tablePerspective.getRecordPerspective()
 				.getPerspectiveID());
 		filter.setVADelta(delta);
 		filter.setLabel(label);
@@ -1668,7 +1668,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		float x = 0;
 		float y = 0;
 
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 		if (idType == dimensionIDType
 				&& dataDomain.getDataDomainID().equals("org.caleydo.datadomain.genetic")) {
@@ -1735,9 +1735,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		int leftAxisIndex;
 		int rightAxisIndex;
 
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
-		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
 				.getVirtualArray();
 		DataTable table = dataDomain.getTable();
 
@@ -1937,7 +1937,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			}
 		}
 
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 
 		if (iSwitchAxisWithThis != -1) {
@@ -1945,7 +1945,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			axisSpacings.remove(iMovedAxisPosition);
 			axisSpacings.add(iSwitchAxisWithThis, fWidth);
 
-			DimensionVADelta vaDelta = new DimensionVADelta(dataContainer
+			DimensionVADelta vaDelta = new DimensionVADelta(tablePerspective
 					.getDimensionPerspective().getPerspectiveID(), dimensionIDType);
 			vaDelta.add(VADeltaItem.move(iMovedAxisPosition, iSwitchAxisWithThis));
 			triggerDimensionFilterEvent(
@@ -1965,7 +1965,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	public void resetAxisSpacing() {
 		axisSpacings.clear();
-		int numAxis = dataContainer.getNrDimensions();
+		int numAxis = tablePerspective.getNrDimensions();
 		float initialAxisSpacing = renderStyle.getAxisSpacing(numAxis);
 		for (int count = 0; count < numAxis; count++) {
 			axisSpacings.add(initialAxisSpacing * count);

@@ -25,8 +25,8 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.ARcpGLViewPart;
@@ -49,7 +49,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 	protected Composite histoComposite;
 
 	protected ATableBasedDataDomain dataDomain;
-	protected DataContainer dataContainer;
+	protected TablePerspective tablePerspective;
 
 	/**
 	 * Constructor.
@@ -125,8 +125,8 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 	}
 
 	@Override
-	public void setDataContainer(DataContainer dataContainer) {
-		this.dataContainer = dataContainer;
+	public void setDataContainer(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
 	}
 
 	@Override
@@ -167,12 +167,12 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 
 
 	@Override
-	public List<DataContainer> getDataContainers() {
+	public List<TablePerspective> getDataContainers() {
 		return ((ISingleDataContainerBasedView) view).getDataContainers();
 	}
 
 	@Override
-	public DataContainer getDataContainer() {
+	public TablePerspective getDataContainer() {
 		return ((ISingleDataContainerBasedView) view).getDataContainer();
 	}
 

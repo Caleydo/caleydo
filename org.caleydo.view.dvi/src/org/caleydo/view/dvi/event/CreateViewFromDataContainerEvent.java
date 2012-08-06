@@ -19,21 +19,21 @@
  *******************************************************************************/
 package org.caleydo.view.dvi.event;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 
 public class CreateViewFromDataContainerEvent extends AEvent {
 
 	private String viewType;
 	private IDataDomain dataDomain;
-	private DataContainer dataContainer;
+	private TablePerspective tablePerspective;
 
 	public CreateViewFromDataContainerEvent(String viewType, IDataDomain dataDomain,
-			DataContainer dataContainer) {
+			TablePerspective tablePerspective) {
 		this.setViewType(viewType);
 		this.setDataDomain(dataDomain);
-		this.setDataContainer(dataContainer);
+		this.setDataContainer(tablePerspective);
 	}
 
 	@Override
@@ -58,12 +58,12 @@ public class CreateViewFromDataContainerEvent extends AEvent {
 		return dataDomain;
 	}
 
-	public void setDataContainer(DataContainer dataContainer) {
-		this.dataContainer = dataContainer;
+	public void setDataContainer(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
 	}
 
-	public DataContainer getDataContainer() {
-		return dataContainer;
+	public TablePerspective getDataContainer() {
+		return tablePerspective;
 	}
 
 }

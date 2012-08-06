@@ -23,11 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.data.perspective.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
@@ -39,7 +39,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 
 /**
- * Specialization of {@link DataContainer} for pathway dimension groups. A
+ * Specialization of {@link TablePerspective} for pathway dimension groups. A
  * {@link PathwayDimensionGroupData} can be used to hold small-multiple pathways
  * or multiple different pathways in the same dimension group.
  * 
@@ -48,12 +48,12 @@ import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
  * @author Marc Streit
  * 
  */
-public class PathwayDimensionGroupData extends DataContainer {
+public class PathwayDimensionGroupData extends TablePerspective {
 
 	protected PathwayDataDomain pathwayDataDomain;
 	protected ArrayList<PathwayGraph> pathways;
 
-	private List<DataContainer> recordSubDataContainers = new ArrayList<DataContainer>();
+	private List<TablePerspective> recordSubDataContainers = new ArrayList<TablePerspective>();
 
 	public PathwayDimensionGroupData(ATableBasedDataDomain dataDomain,
 			PathwayDataDomain pathwayDataDomain, RecordPerspective recordPerspective,
@@ -221,7 +221,7 @@ public class PathwayDimensionGroupData extends DataContainer {
 	// }
 
 	// @Override
-	// public List<DataContainer> getDa() {
+	// public List<TablePerspective> getDa() {
 	//
 	// List<ISegmentData> segmentData = new ArrayList<ISegmentData>();
 	//
@@ -285,9 +285,9 @@ public class PathwayDimensionGroupData extends DataContainer {
 	}
 
 	@Override
-	public List<DataContainer> getRecordSubDataContainers() {
+	public List<TablePerspective> getRecordSubDataContainers() {
 
-		List<DataContainer> recordSubDataContainers = new ArrayList<DataContainer>();
+		List<TablePerspective> recordSubDataContainers = new ArrayList<TablePerspective>();
 
 		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
 

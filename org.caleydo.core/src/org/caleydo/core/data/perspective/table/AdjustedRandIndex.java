@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.container;
+package org.caleydo.core.data.perspective.table;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -33,24 +33,24 @@ public class AdjustedRandIndex {
 	/**
 	 * The data container to which the score belongs to.
 	 */
-	DataContainer referenceDataContainer;
+	TablePerspective referenceDataContainer;
 
-	HashMap<DataContainer, Float> dataContainerToScore = new HashMap<DataContainer, Float>();
+	HashMap<TablePerspective, Float> dataContainerToScore = new HashMap<TablePerspective, Float>();
 
-	public AdjustedRandIndex(DataContainer referenceDataContainer) {
+	public AdjustedRandIndex(TablePerspective referenceDataContainer) {
 		this.referenceDataContainer = referenceDataContainer;
 	}
 
 	/**
 	 * 
-	 * @param dataContainer The data container to compare
+	 * @param tablePerspective The data container to compare
 	 * @return the calculation result
 	 */
-	public float getScore(DataContainer dataContainer, boolean storeResult) {
+	public float getScore(TablePerspective tablePerspective, boolean storeResult) {
 
 		// check if calculation result is alrady available
-		if (dataContainerToScore.containsKey(dataContainer))
-			return dataContainerToScore.get(dataContainer);
+		if (dataContainerToScore.containsKey(tablePerspective))
+			return dataContainerToScore.get(tablePerspective);
 
 		float score = 1;
 		score = new Random().nextFloat();
@@ -60,15 +60,15 @@ public class AdjustedRandIndex {
 		System.out.println("Calculate Adjusted Rand Index");
 		
 		if (storeResult) {
-			dataContainerToScore.put(dataContainer, score);
+			dataContainerToScore.put(tablePerspective, score);
 			referenceDataContainer.getContainerStatistics().adjustedRandIndex()
-					.setScore(dataContainer, score);
+					.setScore(tablePerspective, score);
 		}
 
 		return score;
 	}
 
-	public void setScore(DataContainer dataContainer, float score) {
-		dataContainerToScore.put(dataContainer, score);
+	public void setScore(TablePerspective tablePerspective, float score) {
+		dataContainerToScore.put(tablePerspective, score);
 	}
 }

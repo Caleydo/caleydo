@@ -21,11 +21,11 @@ package org.caleydo.core.view;
 
 import java.util.List;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 
 /**
- * Interface for views that use a single {@link DataContainer}
+ * Interface for views that use a single {@link TablePerspective}
  * 
  * @author Alexander Lex
  * 
@@ -35,12 +35,12 @@ public interface ISingleDataContainerBasedView extends IDataContainerBasedView, 
 	/**
 	 * Set the data container for this view
 	 */
-	public void setDataContainer(DataContainer dataContainer);
+	public void setDataContainer(TablePerspective tablePerspective);
 
 	/** Returns the data container of this view */
-	public DataContainer getDataContainer();
+	public TablePerspective getDataContainer();
 
 	/** Returns the data container of this view as the only element in a list. */
 	@Override
-	public List<DataContainer> getDataContainers();
+	public List<TablePerspective> getDataContainers();
 }

@@ -26,9 +26,9 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.perspective.ADataPerspective;
-import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.io.gui.IDataOKListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -41,7 +41,7 @@ import org.eclipse.swt.widgets.Group;
 
 /**
  * Composite that lets a user determine which instance of
- * {@link ATableBasedDataDomain} and the respective {@link ADataPerspective}s to
+ * {@link ATableBasedDataDomain} and the respective {@link AVariablePerspective}s to
  * use.
  * 
  * @author Alexander Lex

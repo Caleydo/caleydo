@@ -21,7 +21,7 @@ package org.caleydo.view.dvi.layout.edge.rendering;
 
 import java.util.List;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.dvi.Edge;
@@ -41,8 +41,8 @@ public class TwoLayeredEdgeBandRenderer extends AEdgeBandRenderer {
 	protected void determineNodeConnectors(
 			Pair<ANodeConnector, ANodeConnector> nodeConnectors, IDVINode leftNode,
 			IDVINode rightNode, IDVINode bottomNode, IDVINode topNode,
-			List<DataContainer> commonDataContainersNode1,
-			List<DataContainer> commonDataContainersNode2,
+			List<TablePerspective> commonDataContainersNode1,
+			List<TablePerspective> commonDataContainersNode2,
 			ConnectionBandRenderer connectionBandRenderer) {
 
 		ANodeConnector connector1 = new TopSideConnector(bottomNode, pixelGLConverter,

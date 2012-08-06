@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -139,30 +139,30 @@ public class PathwayDataNode
 	}
 
 	@Override
-	public List<DataContainer> getDataContainers()
+	public List<TablePerspective> getDataContainers()
 	{
 		List<PathwayDataContainer> containers = dataDomain.getDataContainers();
 
-		List<Pair<String, DataContainer>> sortedContainers = new ArrayList<Pair<String, DataContainer>>(
+		List<Pair<String, TablePerspective>> sortedContainers = new ArrayList<Pair<String, TablePerspective>>(
 				containers.size());
 
 		for (PathwayDataContainer container : containers)
 		{
-			sortedContainers.add(new Pair<String, DataContainer>(container.getLabel(),
+			sortedContainers.add(new Pair<String, TablePerspective>(container.getLabel(),
 					container));
 		}
 
 		Collections.sort(sortedContainers);
 
-		List<DataContainer> dataContainers = new ArrayList<DataContainer>(containers.size());
-		for (Pair<String, DataContainer> containerPair : sortedContainers)
+		List<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>(containers.size());
+		for (Pair<String, TablePerspective> containerPair : sortedContainers)
 		{
-			dataContainers.add(containerPair.getSecond());
+			tablePerspectives.add(containerPair.getSecond());
 		}
 
-		return dataContainers;
+		return tablePerspectives;
 
-		// return new ArrayList<DataContainer>(dataDomain.get);
+		// return new ArrayList<TablePerspective>(dataDomain.get);
 	}
 
 	@Override

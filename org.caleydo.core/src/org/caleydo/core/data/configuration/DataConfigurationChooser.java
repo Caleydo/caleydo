@@ -27,9 +27,9 @@ import java.util.Set;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.perspective.ADataPerspective;
-import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
@@ -115,8 +115,8 @@ public class DataConfigurationChooser {
 	 * parameters. If so, this one match is returned, else null is returned.
 	 * </p>
 	 * <p>
-	 * As {@link ADataPerspective}s can be either private or public (see
-	 * {@link ADataPerspective#setIsPrivate(boolean)}, it is possible to let the
+	 * As {@link AVariablePerspective}s can be either private or public (see
+	 * {@link AVariablePerspective#setIsPrivate(boolean)}, it is possible to let the
 	 * chooser only chose from those that are public.
 	 * </p>
 	 * 
@@ -172,7 +172,7 @@ public class DataConfigurationChooser {
 			Iterator<String> iterator = candidates.iterator();
 			while (iterator.hasNext()) {
 				String tempPerspectiveID = iterator.next();
-				ADataPerspective<?, ?, ?, ?> perspective;
+				AVariablePerspective<?, ?, ?, ?> perspective;
 				if (isRecord)
 					perspective = table.getRecordPerspective(tempPerspectiveID);
 				else

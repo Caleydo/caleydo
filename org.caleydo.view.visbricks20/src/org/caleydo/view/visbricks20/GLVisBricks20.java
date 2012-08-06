@@ -7,9 +7,9 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -323,27 +323,27 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 
 		// For the vending machine it does not matter which record perspective
 		// we take
-		DataContainer dataContainer = tableBasedDataDomain.getDataContainer(
+		TablePerspective tablePerspective = tableBasedDataDomain.getDataContainer(
 				tableBasedDataDomain.getTable().getDefaultRecordPerspective().getPerspectiveID(),
 				tableBasedDataDomain.getTable().getDefaultDimensionPerspective().getPerspectiveID());
 
-		List<DataContainer> dataContainerWrapper = new ArrayList<DataContainer>();
-		dataContainerWrapper.add(dataContainer);
+		List<TablePerspective> dataContainerWrapper = new ArrayList<TablePerspective>();
+		dataContainerWrapper.add(tablePerspective);
 		addDimensionGroups(dataContainerWrapper, null);
 		visBricks.addDataContainers(dataContainerWrapper, null);
 
-		vendingMachine.setDataContainer(dataContainer);
+		vendingMachine.setDataContainer(tablePerspective);
 	}
 
-	public void addDimensionGroups(List<DataContainer> dataContainers,
+	public void addDimensionGroups(List<TablePerspective> tablePerspectives,
 			IBrickConfigurer dataConfigurer) {
 
-		visBricks.addDataContainers(dataContainers, dataConfigurer);
+		visBricks.addDataContainers(tablePerspectives, dataConfigurer);
 
 		// Show dimension group as detail brick
 		for (BrickColumn dimGroup : visBricks.getDimensionGroupManager()
 				.getBrickColumns()) {
-			if (dataContainers.get(0) == dimGroup.getDataContainer()) {
+			if (tablePerspectives.get(0) == dimGroup.getDataContainer()) {
 				detailDimensionGroup = dimGroup;
 				detailDimensionGroup.showDetailedBrick(vendingMachine, false);
 				break;

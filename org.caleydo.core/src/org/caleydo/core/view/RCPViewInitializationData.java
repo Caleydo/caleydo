@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 
 /**
  * Bean class that holds data that needs to be passed to a view when it is opened via the RCP open mechanism.
@@ -31,7 +31,7 @@ public class RCPViewInitializationData {
 	/** The ID of the data domain that will be initially shown in the view */
 	private String dataDomainID;
 
-	private DataContainer dataContainer;
+	private TablePerspective tablePerspective;
 
 	/**
 	 * @return the dataDomainID, see {@link #dataDomainID}
@@ -48,11 +48,11 @@ public class RCPViewInitializationData {
 		this.dataDomainID = dataDomainID;
 	}
 
-	public DataContainer getDataContainer() {
-		return dataContainer;
+	public TablePerspective getDataContainer() {
+		return tablePerspective;
 	}
 
-	public void setDataContainer(DataContainer dataContainer) {
-		this.dataContainer = dataContainer;
+	public void setDataContainer(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
 	}
 }

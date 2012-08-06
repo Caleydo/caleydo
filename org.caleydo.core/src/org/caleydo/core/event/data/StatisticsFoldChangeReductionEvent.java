@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.event.data;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 
 /**
@@ -29,8 +29,8 @@ import org.caleydo.core.event.AEvent;
 public class StatisticsFoldChangeReductionEvent
 	extends AEvent {
 
-	private DataContainer dataContainer1;
-	private DataContainer dataContainer2;
+	private TablePerspective dataContainer1;
+	private TablePerspective dataContainer2;
 	/**
 	 * A fold change can be calculated between the records or the dimensions of the two specified containers.
 	 * If this flag is set to be true, it is calculated for the records, els for the dimensions
@@ -45,7 +45,7 @@ public class StatisticsFoldChangeReductionEvent
 	 * @param betweenRecords
 	 *            set to {@link #betweenRecords}
 	 */
-	public StatisticsFoldChangeReductionEvent(DataContainer dataContainer1, DataContainer dataContainer2,
+	public StatisticsFoldChangeReductionEvent(TablePerspective dataContainer1, TablePerspective dataContainer2,
 		boolean betweenRecords) {
 		this.dataContainer1 = dataContainer1;
 		this.dataContainer2 = dataContainer2;
@@ -55,7 +55,7 @@ public class StatisticsFoldChangeReductionEvent
 	/**
 	 * @return the dataContainer1, see {@link #dataContainer1}
 	 */
-	public DataContainer getDataContainer1() {
+	public TablePerspective getDataContainer1() {
 		return dataContainer1;
 	}
 
@@ -63,14 +63,14 @@ public class StatisticsFoldChangeReductionEvent
 	 * @param dataContainer1
 	 *            setter, see {@link #dataContainer1}
 	 */
-	public void setDataContainer1(DataContainer dataContainer1) {
+	public void setDataContainer1(TablePerspective dataContainer1) {
 		this.dataContainer1 = dataContainer1;
 	}
 
 	/**
 	 * @return the dataContainer2, see {@link #dataContainer2}
 	 */
-	public DataContainer getDataContainer2() {
+	public TablePerspective getDataContainer2() {
 		return dataContainer2;
 	}
 
@@ -78,7 +78,7 @@ public class StatisticsFoldChangeReductionEvent
 	 * @param dataContainer2
 	 *            setter, see {@link #dataContainer2}
 	 */
-	public void setDataContainer2(DataContainer dataContainer2) {
+	public void setDataContainer2(TablePerspective dataContainer2) {
 		this.dataContainer2 = dataContainer2;
 	}
 

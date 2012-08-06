@@ -29,7 +29,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -44,7 +44,7 @@ public class BottomBundleConnector
 
 	public BottomBundleConnector(IDVINode node, PixelGLConverter pixelGLConverter,
 			ConnectionBandRenderer connectionBandRenderer,
-			List<DataContainer> commonDataContainers, int minBandWidth, int maxBandWidth,
+			List<TablePerspective> commonDataContainers, int minBandWidth, int maxBandWidth,
 			int maxDataAmount, IDVINode otherNode, ViewFrustum viewFrustum,
 			GLDataViewIntegrator view)
 	{
@@ -396,23 +396,23 @@ public class BottomBundleConnector
 
 		Point2D prevBandAnchorPoint = leftDataContainerBundleConnectionPoint;
 
-		List<Pair<Double, DataContainer>> sortedDimensionGroups = new ArrayList<Pair<Double, DataContainer>>(
+		List<Pair<Double, TablePerspective>> sortedDimensionGroups = new ArrayList<Pair<Double, TablePerspective>>(
 				commonDataContainers.size());
-		for (DataContainer dataContainer : commonDataContainers)
+		for (TablePerspective tablePerspective : commonDataContainers)
 		{
-			sortedDimensionGroups.add(new Pair<Double, DataContainer>(node
-					.getBottomDataContainerAnchorPoints(dataContainer).getFirst().getX(),
-					dataContainer));
+			sortedDimensionGroups.add(new Pair<Double, TablePerspective>(node
+					.getBottomDataContainerAnchorPoints(tablePerspective).getFirst().getX(),
+					tablePerspective));
 		}
 
 		Collections.sort(sortedDimensionGroups);
 
 		for (int i = 0; i < sortedDimensionGroups.size(); i++)
 		{
-			DataContainer dataContainer = sortedDimensionGroups.get(i).getSecond();
+			TablePerspective tablePerspective = sortedDimensionGroups.get(i).getSecond();
 			anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
 			Pair<Point2D, Point2D> dimensionGroupAnchorPoints = node
-					.getBottomDataContainerAnchorPoints(dataContainer);
+					.getBottomDataContainerAnchorPoints(tablePerspective);
 			Pair<Point2D, Point2D> dimensionGroupAnchorOffsetPoints = new Pair<Point2D, Point2D>();
 			Pair<Point2D, Point2D> nodeBottomAnchorPoints = node.getBottomAnchorPoints();
 
@@ -425,7 +425,7 @@ public class BottomBundleConnector
 			dimensionGroupAnchorOffsetPoints.setSecond(new Point2D.Float(
 					(float) dimensionGroupAnchorPoints.getSecond().getX(), offsetPositionY));
 
-			int width = bandWidthMap.get(dataContainer);
+			int width = bandWidthMap.get(tablePerspective);
 
 			Point2D nextBandAnchorPoint = null;
 
@@ -547,23 +547,23 @@ public class BottomBundleConnector
 	//
 	// Point2D prevBandAnchorPoint = leftBandBundleConnecionPoint;
 	//
-	// List<Pair<Double, DataContainer>> sortedDimensionGroups = new
-	// ArrayList<Pair<Double, DataContainer>>(
+	// List<Pair<Double, TablePerspective>> sortedDimensionGroups = new
+	// ArrayList<Pair<Double, TablePerspective>>(
 	// commonDataContainers.size());
-	// for (DataContainer dataContainer : commonDataContainers) {
-	// sortedDimensionGroups.add(new Pair<Double, DataContainer>(node
-	// .getBottomDataContainerAnchorPoints(dataContainer)
-	// .getFirst().getX(), dataContainer));
+	// for (TablePerspective tablePerspective : commonDataContainers) {
+	// sortedDimensionGroups.add(new Pair<Double, TablePerspective>(node
+	// .getBottomDataContainerAnchorPoints(tablePerspective)
+	// .getFirst().getX(), tablePerspective));
 	// }
 	//
 	// Collections.sort(sortedDimensionGroups);
 	//
 	// for (int i = 0; i < sortedDimensionGroups.size(); i++) {
-	// DataContainer dataContainer = sortedDimensionGroups.get(i)
+	// TablePerspective tablePerspective = sortedDimensionGroups.get(i)
 	// .getSecond();
 	// anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
 	// Pair<Point2D, Point2D> dimensionGroupAnchorPoints = node
-	// .getBottomDataContainerAnchorPoints(dataContainer);
+	// .getBottomDataContainerAnchorPoints(tablePerspective);
 	// Pair<Point2D, Point2D> dimensionGroupAnchorOffsetPoints = new
 	// Pair<Point2D, Point2D>();
 	// Pair<Point2D, Point2D> nodeBottomAnchorPoints = node
@@ -576,7 +576,7 @@ public class BottomBundleConnector
 	// (float) dimensionGroupAnchorPoints.getSecond().getX(),
 	// (float) nodeBottomAnchorPoints.getSecond().getY() - 0.1f));
 	//
-	// int width = bandWidthMap.get(dataContainer);
+	// int width = bandWidthMap.get(tablePerspective);
 	//
 	// Point2D nextBandAnchorPoint = null;
 	//

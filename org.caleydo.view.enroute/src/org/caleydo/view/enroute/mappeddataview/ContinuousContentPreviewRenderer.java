@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.Average;
-import org.caleydo.core.data.container.ContainerStatistics;
+import org.caleydo.core.data.perspective.table.Average;
+import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.collection.Algorithms;
 
@@ -34,7 +34,7 @@ public class ContinuousContentPreviewRenderer extends ContentRenderer {
 	public void init() {
 		if (geneID == null)
 			return;
-		average = ContainerStatistics.calculateAverage(
+		average = TablePerspectiveStatistics.calculateAverage(
 				experimentPerspective.getVirtualArray(), dataDomain.getTable(), geneID);
 		// if (experimentPerspective.getVirtualArray().size() > 100) {
 		//

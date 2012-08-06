@@ -33,12 +33,12 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.data.perspective.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -277,7 +277,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 		ClusterHelper.calculateClusterAveragesRecursive(tree, tree.getRoot(),
 				EClustererTarget.DIMENSION_CLUSTERING, dataDomain.getTable(),
-				dataContainer.getDimensionPerspective().getVirtualArray(), dataContainer
+				tablePerspective.getDimensionPerspective().getVirtualArray(), tablePerspective
 						.getRecordPerspective().getVirtualArray());
 
 		tree.setDirty();
@@ -286,7 +286,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 		eventPublisher
 				.triggerEvent(new ReplaceDimensionPerspectiveEvent(dataDomain
-						.getDataDomainID(), dataContainer.getDimensionPerspective()
+						.getDataDomainID(), tablePerspective.getDimensionPerspective()
 						.getPerspectiveID(), data));
 
 		// UpdateViewEvent event = new UpdateViewEvent();
@@ -611,10 +611,10 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 							selectedNodes.add(hashGroups.get(groupID).getClusterNode());
 						}
 
-						ArrayList<DataContainer> dataContainers = makeDataContainers(selectedNodes);
+						ArrayList<TablePerspective> tablePerspectives = makeDataContainers(selectedNodes);
 
 						AddGroupsToStratomexItem addGroupsToStratomexItem = new AddGroupsToStratomexItem(
-								dataDomain, dataContainer, dataContainers);
+								dataDomain, tablePerspective, tablePerspectives);
 
 						contextMenuCreator.addContextMenuItem(addGroupsToStratomexItem);
 
@@ -627,11 +627,11 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 							// // Lazy loading of R
 							GeneralManager.get().getRStatisticsPerformer().performTest();
 							//
-							// if (dataContainers.size() == 2) {
+							// if (tablePerspectives.size() == 2) {
 							//
 							// StatisticsFoldChangeReductionEvent event = new
 							// StatisticsFoldChangeReductionEvent(
-							// dataContainers.get(0), dataContainers.get(1),
+							// tablePerspectives.get(0), tablePerspectives.get(1),
 							// false);
 							//
 							// StatisticsFoldChangeReductionItem
@@ -644,13 +644,13 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 							//
 							// StatisticsPValueReductionItem pValueReductionItem
 							// = new StatisticsPValueReductionItem(
-							// dataContainers);
+							// tablePerspectives);
 							// contextMenuCreator.addContextMenuItem(pValueReductionItem);
 							//
 							// StatisticsTwoSidedTTestReductionItem
 							// twoSidedTTestReductionItem = new
 							// StatisticsTwoSidedTTestReductionItem(
-							// dataContainers);
+							// tablePerspectives);
 							// contextMenuCreator
 							// .addContextMenuItem(twoSidedTTestReductionItem);
 
@@ -719,9 +719,9 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 		}
 	}
 
-	private ArrayList<DataContainer> makeDataContainers(
+	private ArrayList<TablePerspective> makeDataContainers(
 			ArrayList<ClusterNode> selectedNodes) {
-		ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
+		ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>();
 		for (ClusterNode node : selectedNodes) {
 			if (node.isLeaf())
 				continue;
@@ -729,12 +729,12 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 					DimensionPerspective.class, dataDomain);
 
 			dataDomain.getTable().registerDimensionPerspective(subDimensionPerspective1);
-			DataContainer dataContainer1 = dataDomain.getDataContainer(dataContainer
+			TablePerspective dataContainer1 = dataDomain.getDataContainer(tablePerspective
 					.getRecordPerspective().getPerspectiveID(), subDimensionPerspective1.getPerspectiveID());
-			dataContainers.add(dataContainer1);
+			tablePerspectives.add(dataContainer1);
 
 		}
-		return dataContainers;
+		return tablePerspectives;
 
 	}
 
@@ -1195,7 +1195,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 		if (selectionDelta.getIDType() == selectionManager.getIDType()
 				|| selectionDelta.getIDType() == dataDomain.getDimensionIDType()) {
 			Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
-			Tree<ClusterNode> experimentTree = dataContainer.getDimensionPerspective()
+			Tree<ClusterNode> experimentTree = tablePerspective.getDimensionPerspective()
 					.getTree();
 
 			if (experimentTree != null) {
@@ -1275,9 +1275,9 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	public void initialize() {
 		super.initialize();
 
-		drawingStrategyManager = new DrawingStrategyManager(dataContainer
+		drawingStrategyManager = new DrawingStrategyManager(tablePerspective
 				.getDimensionPerspective().getPerspectiveID(), pickingManager, uniqueID, renderStyle);
-		tree = dataContainer.getDimensionPerspective().getTree();
+		tree = tablePerspective.getDimensionPerspective().getTree();
 		initHierarchy(tree);
 		selectionManager = new SelectionManager(tree.getNodeIDType());
 
@@ -1299,7 +1299,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	}
 
 	@Override
-	public List<DataContainer> getDataContainers() {
+	public List<TablePerspective> getDataContainers() {
 		// TODO Auto-generated method stub
 		return null;
 	}

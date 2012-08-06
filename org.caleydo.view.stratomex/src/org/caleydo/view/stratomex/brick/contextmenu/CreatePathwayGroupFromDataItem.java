@@ -20,7 +20,7 @@
 package org.caleydo.view.stratomex.brick.contextmenu;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.stratomex.event.OpenCreatePathwayGroupDialogEvent;

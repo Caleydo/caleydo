@@ -1002,7 +1002,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 	// public void handleUpdateView() {
 	// // Tree<ClusterNode> tree = table.getClusteredTreeGenes();
 	// Tree<ClusterNode> tree =
-	// dataContainer.getDimensionPerspective().getTree();
+	// tablePerspective.getDimensionPerspective().getTree();
 	// if (tree != null) {
 	//
 	// // if (pdRealRootElement == null) {
@@ -1015,7 +1015,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 	// // initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 	// // new GeneClusterDataEventManager(this), alColorModes);
 	// initHierarchy(tree,
-	// dataContainer.getDimensionPerspective().getTreeRoot(),
+	// tablePerspective.getDimensionPerspective().getTreeRoot(),
 	// new ExperimentClusterDataEventManager(this), alColorModes);
 	// // }
 	//
@@ -1133,7 +1133,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 		// alColorModes);
 		// }
 
-		Tree<ClusterNode> tree = dataContainer.getRecordPerspective().getTree();
+		Tree<ClusterNode> tree = tablePerspective.getRecordPerspective().getTree();
 		// Tree<ClusterNode> tree = table.getClusteredTreeGenes();
 		if (tree != null) {
 			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();

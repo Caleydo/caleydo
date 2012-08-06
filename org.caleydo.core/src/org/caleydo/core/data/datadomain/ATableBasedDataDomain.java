@@ -32,14 +32,14 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.event.AggregateGroupEvent;
 import org.caleydo.core.data.datadomain.event.AggregateGroupListener;
 import org.caleydo.core.data.datadomain.event.StartClusteringListener;
-import org.caleydo.core.data.perspective.ADataPerspective;
-import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.data.perspective.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -90,7 +90,7 @@ import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
 /**
  * <p>
  * Primary access point to a table data set. Holds the {@link DataTable}, the
- * {@link DataContainer} which hold the rules on how to access the DataTable and
+ * {@link TablePerspective} which hold the rules on how to access the DataTable and
  * a lot of meta-information such as human-readable labels.
  * </p>
  * <p>
@@ -117,17 +117,17 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 	/**
 	 * <p>
-	 * The {@link DataContainer} registered for this data domain. A
-	 * {@link DataContainer} is defined by its combination of
+	 * The {@link TablePerspective} registered for this data domain. A
+	 * {@link TablePerspective} is defined by its combination of
 	 * {@link RecordPerspective} and {@link DimensionPerspective}.
 	 * </p>
 	 * <p>
 	 * The key in this hasMap is created as a concatenation of the
-	 * {@link ADataPerspective#getPerspectiveID()} s using
+	 * {@link AVariablePerspective#getPerspectiveID()} s using
 	 * {@link #createKey(String, String)},
 	 * </p>
 	 */
-	protected HashMap<String, DataContainer> dataContainers = new HashMap<String, DataContainer>();
+	protected HashMap<String, TablePerspective> tablePerspectives = new HashMap<String, TablePerspective>();
 
 	protected IDCategory recordIDCategory;
 	protected IDCategory dimensionIDCategory;
@@ -187,18 +187,18 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	/**
-	 * @return the dataContainers, see {@link #dataContainers}
+	 * @return the tablePerspectives, see {@link #tablePerspectives}
 	 */
-	public HashMap<String, DataContainer> getDataContainers() {
-		return dataContainers;
+	public HashMap<String, TablePerspective> getDataContainers() {
+		return tablePerspectives;
 	}
 
 	/**
-	 * @param dataContainers
-	 *            setter, see {@link #dataContainers}
+	 * @param tablePerspectives
+	 *            setter, see {@link #tablePerspectives}
 	 */
-	public void setDataContainers(HashMap<String, DataContainer> dataContainers) {
-		this.dataContainers = dataContainers;
+	public void setDataContainers(HashMap<String, TablePerspective> tablePerspectives) {
+		this.tablePerspectives = tablePerspectives;
 	}
 
 	public ATableBasedDataDomain(String dataDomainType, String dataDomainID) {
@@ -320,7 +320,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	/**
-	 * Returns the {@link DataContainer} for the {@link RecordPerspective} and
+	 * Returns the {@link TablePerspective} for the {@link RecordPerspective} and
 	 * the {@link DimensionPerspective} specified. </p>
 	 * <p>
 	 * If such a container exists already, the existing container is returned.
@@ -331,9 +331,9 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * @param dimensionPerspectiveID
 	 * @return
 	 */
-	public DataContainer getDataContainer(String recordPerspectiveID,
+	public TablePerspective getDataContainer(String recordPerspectiveID,
 			String dimensionPerspectiveID) {
-		DataContainer container = dataContainers.get(DataContainer.createKey(
+		TablePerspective container = tablePerspectives.get(TablePerspective.createKey(
 				recordPerspectiveID, dimensionPerspectiveID));
 		if (container == null) {
 			RecordPerspective recordPerspective = table
@@ -350,10 +350,10 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 						"No dimension perspective registered with this datadomain for "
 								+ dimensionPerspectiveID);
 
-			container = new DataContainer(this, recordPerspective, dimensionPerspective);
+			container = new TablePerspective(this, recordPerspective, dimensionPerspective);
 
-			dataContainers.put(
-					DataContainer.createKey(recordPerspectiveID, dimensionPerspectiveID),
+			tablePerspectives.put(
+					TablePerspective.createKey(recordPerspectiveID, dimensionPerspectiveID),
 					container);
 			DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
 			event.setSender(this);
@@ -369,18 +369,18 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * @param dataContainerKey
 	 * @return
 	 */
-	public DataContainer getDataContainer(String dataContainerKey) {
-		return dataContainers.get(dataContainerKey);
+	public TablePerspective getDataContainer(String dataContainerKey) {
+		return tablePerspectives.get(dataContainerKey);
 	}
 
 	/** Returns the data container made up of the default perspectives */
-	public DataContainer getDefaultDataContainer() {
+	public TablePerspective getDefaultDataContainer() {
 		return getDataContainer(table.getDefaultRecordPerspective().getPerspectiveID(),
 				table.getDefaultDimensionPerspective().getPerspectiveID());
 	}
 
 	/**
-	 * Returns whether a {@link DataContainer} Object exists in this datadomain
+	 * Returns whether a {@link TablePerspective} Object exists in this datadomain
 	 * for the given perspectiveIDs.
 	 * 
 	 * @param recordPerspectiveID
@@ -389,15 +389,15 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 */
 	public boolean hasDataContainer(String recordPerspectiveID,
 			String dimensionPerspectiveID) {
-		return dataContainers.get(DataContainer.createKey(recordPerspectiveID,
+		return tablePerspectives.get(TablePerspective.createKey(recordPerspectiveID,
 				dimensionPerspectiveID)) != null;
 	}
 
 	/**
-	 * @return All {@link DataContainer}s of this datadomain.
+	 * @return All {@link TablePerspective}s of this datadomain.
 	 */
-	public Collection<DataContainer> getAllDataContainers() {
-		return dataContainers.values();
+	public Collection<TablePerspective> getAllDataContainers() {
+		return tablePerspectives.values();
 	}
 
 	/**

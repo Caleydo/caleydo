@@ -28,9 +28,9 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.perspective.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -239,11 +239,11 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 		RecordPerspective detailHMRecordPerspective = new RecordPerspective(dataDomain);
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
-		data.setData(dataContainer.getRecordPerspective().getVirtualArray().getIDs());
+		data.setData(tablePerspective.getRecordPerspective().getVirtualArray().getIDs());
 		detailHMRecordPerspective.init(data);
 
-		DataContainer detailHeatMapContainer = new DataContainer(dataDomain,
-				detailHMRecordPerspective, dataContainer.getDimensionPerspective());
+		TablePerspective detailHeatMapContainer = new TablePerspective(dataDomain,
+				detailHMRecordPerspective, tablePerspective.getDimensionPerspective());
 		detailHeatMap.setDataContainer(detailHeatMapContainer);
 		detailHeatMap.setRemoteRenderingGLView(this);
 		detailHeatMap.setRenderTemplate(new UncertaintyDetailHeatMapTemplate(
@@ -310,20 +310,20 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 			case CLICKED:
 
 				overviewHeatMap.setSelectedGroup(externalID);
-				RecordGroupList groupList = dataContainer.getRecordPerspective()
+				RecordGroupList groupList = tablePerspective.getRecordPerspective()
 						.getVirtualArray().getGroupList();
 
 				// null if data set is not clustered
 				if (groupList == null)
 					break;
 
-				List<Integer> embeddedRecords = dataContainer.getRecordPerspective()
+				List<Integer> embeddedRecords = tablePerspective.getRecordPerspective()
 						.getVirtualArray().getIDsOfGroup(externalID);
 
 				PerspectiveInitializationData data = new PerspectiveInitializationData();
 
 				// RecordVirtualArray recordVA =
-				// dataContainer.getRecordPerspective()
+				// tablePerspective.getRecordPerspective()
 				// .getVirtualArray();
 
 				data.setData(embeddedRecords);
@@ -332,9 +332,9 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 						.getRecordPerspective().getPerspectiveID());
 
 				// ArrayList<Integer> clusterElements =
-				// dataContainer.getRecordPerspective().getVirtualArray().getIDsOfGroup(groupList
+				// tablePerspective.getRecordPerspective().getVirtualArray().getIDsOfGroup(groupList
 				// .get(externalID);
-				// detailHeatMap.setDataContainer(dataContainer)
+				// detailHeatMap.setDataContainer(tablePerspective)
 				// RecordVirtualArray clusterVA = new RecordVirtualArray(
 				// recordPerspectiveID, clusterElements);
 				// detailHeatMap.setRecordVA(clusterVA);
@@ -445,10 +445,10 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 		multiLevelUncertainty.add(convertedSNR);
 
 		// Collection<double[]> statisticsUncertainties =
-		// dataContainer.getContainerStatistics().foldChange().getAllFoldChangeResults().values();
+		// tablePerspective.getContainerStatistics().foldChange().getAllFoldChangeResults().values();
 		// multiLevelUncertainty.addAll(statisticsUncertainties);
 
-		for (Integer recordID : dataContainer.getRecordPerspective().getVirtualArray()) {
+		for (Integer recordID : tablePerspective.getRecordPerspective().getVirtualArray()) {
 			for (double[] uncertaintyLevel : multiLevelUncertainty) {
 
 				double uncertainty = uncertaintyLevel[recordID];

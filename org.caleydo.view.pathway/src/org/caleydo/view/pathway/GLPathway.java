@@ -38,9 +38,9 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
@@ -260,12 +260,12 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	}
 
 	@Override
-	public void setDataContainer(DataContainer dataContainer) {
+	public void setDataContainer(TablePerspective tablePerspective) {
 
-		super.setDataContainer(dataContainer);
+		super.setDataContainer(tablePerspective);
 
-		if (dataContainer instanceof PathwayDataContainer)
-			pathway = ((PathwayDataContainer) dataContainer).getPathway();
+		if (tablePerspective instanceof PathwayDataContainer)
+			pathway = ((PathwayDataContainer) tablePerspective).getPathway();
 	}
 
 	public void setPathway(final int iPathwayID) {
@@ -1096,7 +1096,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		if (pathway == null)
 			return;
 
-		RecordVADelta delta = new RecordVADelta(dataContainer.getRecordPerspective()
+		RecordVADelta delta = new RecordVADelta(tablePerspective.getRecordPerspective()
 				.getPerspectiveID(), pathwayDataDomain.getDavidIDType());
 
 		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {

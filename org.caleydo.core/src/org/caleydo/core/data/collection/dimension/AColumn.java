@@ -24,12 +24,12 @@ import java.util.Iterator;
 
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.ICollection;
-import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
-import org.caleydo.core.data.collection.ccontainer.FloatCContainerIterator;
-import org.caleydo.core.data.collection.ccontainer.ICContainer;
-import org.caleydo.core.data.collection.ccontainer.IntCContainer;
-import org.caleydo.core.data.collection.ccontainer.IntCContainerIterator;
-import org.caleydo.core.data.collection.ccontainer.NumericalCContainer;
+import org.caleydo.core.data.collection.container.FloatContainer;
+import org.caleydo.core.data.collection.container.FloatContainerIterator;
+import org.caleydo.core.data.collection.container.IContainer;
+import org.caleydo.core.data.collection.container.IntContainer;
+import org.caleydo.core.data.collection.container.IntContainerIterator;
+import org.caleydo.core.data.collection.container.NumericalContainer;
 import org.caleydo.core.util.base.AUniqueObject;
 
 /**
@@ -49,7 +49,7 @@ public abstract class AColumn
 	extends AUniqueObject
 	implements ICollection {
 
-	protected EnumMap<DataRepresentation, ICContainer> hashCContainers;
+	protected EnumMap<DataRepresentation, IContainer> hashCContainers;
 
 	protected String label;
 
@@ -65,7 +65,7 @@ public abstract class AColumn
 	public AColumn(int uniqueID) {
 		super(uniqueID);
 
-		hashCContainers = new EnumMap<DataRepresentation, ICContainer>(DataRepresentation.class);
+		hashCContainers = new EnumMap<DataRepresentation, IContainer>(DataRepresentation.class);
 		label = new String("Not specified");
 	}
 
@@ -103,7 +103,7 @@ public abstract class AColumn
 		rawDataType = RawDataType.FLOAT;
 		isRawDataSet = true;
 
-		FloatCContainer container = new FloatCContainer(rawData);
+		FloatContainer container = new FloatContainer(rawData);
 		hashCContainers.put(DataRepresentation.RAW, container);
 	}
 
@@ -121,7 +121,7 @@ public abstract class AColumn
 		rawDataType = RawDataType.INT;
 		isRawDataSet = true;
 
-		IntCContainer container = new IntCContainer(rawData);
+		IntContainer container = new IntContainer(rawData);
 		hashCContainers.put(DataRepresentation.RAW, container);
 	}
 
@@ -130,7 +130,7 @@ public abstract class AColumn
 			throw new IllegalStateException("Certainty data was already set in Dimension " + uniqueID
 				+ " , tried to set again.");
 
-		FloatCContainer container = new FloatCContainer(uncertaintyData);
+		FloatContainer container = new FloatContainer(uncertaintyData);
 		hashCContainers.put(DataRepresentation.UNCERTAINTY_RAW, container);
 	}
 
@@ -151,10 +151,10 @@ public abstract class AColumn
 	public float getFloat(DataRepresentation dimensionKind, int iIndex) {
 		if (!hashCContainers.containsKey(dimensionKind))
 			throw new IllegalArgumentException("Requested dimension kind " + dimensionKind + " not produced");
-		if (!(hashCContainers.get(dimensionKind) instanceof FloatCContainer))
+		if (!(hashCContainers.get(dimensionKind) instanceof FloatContainer))
 			throw new IllegalArgumentException("Requested dimension kind is not of type float");
 
-		FloatCContainer container = (FloatCContainer) hashCContainers.get(dimensionKind);
+		FloatContainer container = (FloatContainer) hashCContainers.get(dimensionKind);
 		return container.get(iIndex);
 	}
 
@@ -164,12 +164,12 @@ public abstract class AColumn
 	 * @param dimensionKind
 	 * @return
 	 */
-	public FloatCContainerIterator floatIterator(DataRepresentation dimensionKind) {
+	public FloatContainerIterator floatIterator(DataRepresentation dimensionKind) {
 
-		if (!(hashCContainers.get(dimensionKind) instanceof FloatCContainer))
+		if (!(hashCContainers.get(dimensionKind) instanceof FloatContainer))
 			throw new IllegalArgumentException("Requested dimension kind is not of type float");
 
-		FloatCContainer container = (FloatCContainer) hashCContainers.get(dimensionKind);
+		FloatContainer container = (FloatContainer) hashCContainers.get(dimensionKind);
 		return container.iterator();
 	}
 
@@ -184,10 +184,10 @@ public abstract class AColumn
 	 * @return The associated value
 	 */
 	public int getInt(DataRepresentation dimensionKind, int iIndex) {
-		if (!(hashCContainers.get(dimensionKind) instanceof IntCContainer))
+		if (!(hashCContainers.get(dimensionKind) instanceof IntContainer))
 			throw new IllegalArgumentException("Requested dimension kind is not of type int");
 
-		IntCContainer container = (IntCContainer) hashCContainers.get(dimensionKind);
+		IntContainer container = (IntContainer) hashCContainers.get(dimensionKind);
 		return container.get(iIndex);
 	}
 
@@ -197,11 +197,11 @@ public abstract class AColumn
 	 * @param dimensionKind
 	 * @return
 	 */
-	public IntCContainerIterator intIterator(DataRepresentation dimensionKind) {
-		if (!(hashCContainers.get(dimensionKind) instanceof IntCContainer))
+	public IntContainerIterator intIterator(DataRepresentation dimensionKind) {
+		if (!(hashCContainers.get(dimensionKind) instanceof IntContainer))
 			throw new IllegalArgumentException("Requested dimension kind is not of type int");
 
-		IntCContainer container = (IntCContainer) hashCContainers.get(dimensionKind);
+		IntContainer container = (IntContainer) hashCContainers.get(dimensionKind);
 		return container.iterator();
 	}
 
@@ -214,10 +214,10 @@ public abstract class AColumn
 	 * @return the Number
 	 */
 	public Number get(DataRepresentation dimensionKind, int iIndex) {
-		if (!(hashCContainers.get(dimensionKind) instanceof NumericalCContainer<?>))
+		if (!(hashCContainers.get(dimensionKind) instanceof NumericalContainer<?>))
 			throw new IllegalArgumentException("Requested dimension kind is not a subtype of Number");
 
-		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers.get(dimensionKind);
+		NumericalContainer<?> container = (NumericalContainer<?>) hashCContainers.get(dimensionKind);
 		return container.get(iIndex);
 	}
 
@@ -229,10 +229,10 @@ public abstract class AColumn
 	 * @return the iterator
 	 */
 	public Iterator<? extends Number> iterator(DataRepresentation dimensionKind) {
-		if (!(hashCContainers.get(dimensionKind) instanceof NumericalCContainer<?>))
+		if (!(hashCContainers.get(dimensionKind) instanceof NumericalContainer<?>))
 			throw new IllegalArgumentException("Requested dimension kind is not a subtype of Number");
 
-		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers.get(dimensionKind);
+		NumericalContainer<?> container = (NumericalContainer<?>) hashCContainers.get(dimensionKind);
 		return container.iterator();
 	}
 

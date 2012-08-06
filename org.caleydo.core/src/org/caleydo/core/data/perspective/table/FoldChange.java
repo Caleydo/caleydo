@@ -20,11 +20,11 @@
 /**
  * 
  */
-package org.caleydo.core.data.container;
+package org.caleydo.core.data.perspective.table;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.container.FoldChangeSettings.FoldChangeEvaluator;
+import org.caleydo.core.data.perspective.table.FoldChangeSettings.FoldChangeEvaluator;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.conversion.ConversionTools;
 
@@ -33,28 +33,28 @@ import org.caleydo.core.util.conversion.ConversionTools;
  */
 public class FoldChange {
 
-	HashMap<DataContainer, Pair<double[], FoldChangeSettings>> containerToFoldChangeResult =
-		new HashMap<DataContainer, Pair<double[], FoldChangeSettings>>();
+	HashMap<TablePerspective, Pair<double[], FoldChangeSettings>> containerToFoldChangeResult =
+		new HashMap<TablePerspective, Pair<double[], FoldChangeSettings>>();
 
-	HashMap<DataContainer, double[]> containerToFoldChangeUncertainty =
-		new HashMap<DataContainer, double[]>();
+	HashMap<TablePerspective, double[]> containerToFoldChangeUncertainty =
+		new HashMap<TablePerspective, double[]>();
 
-	public void setResult(DataContainer container, double[] resultVector) {
+	public void setResult(TablePerspective container, double[] resultVector) {
 
 		containerToFoldChangeResult
 			.put(container, new Pair<double[], FoldChangeSettings>(resultVector, null));
 	}
 
-	public HashMap<DataContainer, Pair<double[], FoldChangeSettings>> getAllFoldChangeResults() {
+	public HashMap<TablePerspective, Pair<double[], FoldChangeSettings>> getAllFoldChangeResults() {
 		return containerToFoldChangeResult;
 	}
 
-	public Pair<double[], FoldChangeSettings> getResult(DataContainer container) {
+	public Pair<double[], FoldChangeSettings> getResult(TablePerspective container) {
 
 		return containerToFoldChangeResult.get(container);
 	}
 
-	public void setFoldChangeSettings(DataContainer container, FoldChangeSettings foldChangeSettings) {
+	public void setFoldChangeSettings(TablePerspective container, FoldChangeSettings foldChangeSettings) {
 		containerToFoldChangeResult.get(container).setSecond(foldChangeSettings);
 
 		// Recalculate normalized uncertainty for fold change
@@ -67,9 +67,9 @@ public class FoldChange {
 			.getRatio(), calculateAbsolute));
 	}
 
-	public double[] getFoldChangeUncertainty(DataContainer dataContainer) {
+	public double[] getFoldChangeUncertainty(TablePerspective tablePerspective) {
 
-		return containerToFoldChangeUncertainty.get(dataContainer);
+		return containerToFoldChangeUncertainty.get(tablePerspective);
 	}
 
 }

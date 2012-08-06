@@ -22,9 +22,9 @@ package org.caleydo.view.info.dataset;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
@@ -184,7 +184,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 		this.dataDomain = dataDomain;
 		ASerializedSingleDataContainerBasedView dcSerializedView = (ASerializedSingleDataContainerBasedView) serializedView;
 		dcSerializedView.setDataDomainID(dataDomain.getDataDomainID());
-		DataContainer container = dataDomain.getDefaultDataContainer();
+		TablePerspective container = dataDomain.getDefaultDataContainer();
 		dcSerializedView.setDataContainerKey(container.getDataContainerKey());
 
 		parentComposite.dispose();

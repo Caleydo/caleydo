@@ -22,7 +22,6 @@ package org.caleydo.view.filter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.filter.DimensionFilter;
@@ -33,6 +32,7 @@ import org.caleydo.core.data.filter.RecordMetaFilter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
 import org.caleydo.core.data.filter.event.RemoveDimensionFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;
@@ -101,10 +101,10 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 				serializedSDView.getDataDomainID());
 		// FIXME - that is probably null
-		DataContainer dataContainer = dataDomain.getDataContainer(serializedSDView
+		TablePerspective tablePerspective = dataDomain.getDataContainer(serializedSDView
 				.getDataContainerKey());
-		recordPerspectiveID = dataContainer.getRecordPerspective().getPerspectiveID();
-		dimensionPerspectiveID = dataContainer.getDimensionPerspective()
+		recordPerspectiveID = tablePerspective.getRecordPerspective().getPerspectiveID();
+		dimensionPerspectiveID = tablePerspective.getDimensionPerspective()
 				.getPerspectiveID();
 		parentComposite = parent;
 

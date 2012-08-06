@@ -27,8 +27,8 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IDataContainerBasedView;
@@ -51,7 +51,7 @@ import org.caleydo.view.dvi.layout.AGraphLayout;
 public class MultiDataContainerViewNode extends ViewNode implements IDropArea {
 
 	protected DataContainerListRenderer dataContainerListRenderer;
-	protected List<DataContainer> dataContainers;
+	protected List<TablePerspective> tablePerspectives;
 
 	public MultiDataContainerViewNode(AGraphLayout graphLayout,
 			GLDataViewIntegrator view, DragAndDropController dragAndDropController,
@@ -140,27 +140,27 @@ public class MultiDataContainerViewNode extends ViewNode implements IDropArea {
 	}
 
 	@Override
-	public List<DataContainer> getDataContainers() {
+	public List<TablePerspective> getDataContainers() {
 
-		if (dataContainers == null) {
+		if (tablePerspectives == null) {
 			retrieveDataContainers();
 		}
 
-		return dataContainers;
+		return tablePerspectives;
 	}
 
 	protected void retrieveDataContainers() {
 
-		dataContainers = new ArrayList<DataContainer>(
+		tablePerspectives = new ArrayList<TablePerspective>(
 				((IDataContainerBasedView) representedView).getDataContainers());
-		if (dataContainers == null) {
-			dataContainers = new ArrayList<DataContainer>();
+		if (tablePerspectives == null) {
+			tablePerspectives = new ArrayList<TablePerspective>();
 			return;
 		}
 
 		Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
 
-		for (DataContainer container : dataContainers) {
+		for (TablePerspective container : tablePerspectives) {
 			if (container instanceof PathwayDataContainer) {
 				dataDomains
 						.add(((PathwayDataContainer) container).getPathwayDataDomain());
@@ -174,7 +174,7 @@ public class MultiDataContainerViewNode extends ViewNode implements IDropArea {
 	}
 
 	private void sortDataContainers() {
-		List<DataContainer> containers = new ArrayList<DataContainer>(dataContainers);
+		List<TablePerspective> containers = new ArrayList<TablePerspective>(tablePerspectives);
 
 		List<Pair<Float, ADataNode>> sortedDataNodes = new ArrayList<Pair<Float, ADataNode>>();
 
@@ -187,18 +187,18 @@ public class MultiDataContainerViewNode extends ViewNode implements IDropArea {
 		}
 
 		Collections.sort(sortedDataNodes);
-		dataContainers.clear();
+		tablePerspectives.clear();
 
 		for (Pair<Float, ADataNode> dataNodePair : sortedDataNodes) {
 			ADataNode dataNode = dataNodePair.getSecond();
 
-			List<DataContainer> sortedNodeDataContainers = dataNode.getDataContainers();
+			List<TablePerspective> sortedNodeDataContainers = dataNode.getDataContainers();
 
-			for (DataContainer nodeContainer : sortedNodeDataContainers) {
-				DataContainer addedContainer = null;
-				for (DataContainer container : containers) {
+			for (TablePerspective nodeContainer : sortedNodeDataContainers) {
+				TablePerspective addedContainer = null;
+				for (TablePerspective container : containers) {
 					if (nodeContainer == container) {
-						dataContainers.add(container);
+						tablePerspectives.add(container);
 						addedContainer = container;
 						break;
 					}
@@ -212,30 +212,30 @@ public class MultiDataContainerViewNode extends ViewNode implements IDropArea {
 	@Override
 	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
 			float mouseCoordinateY, DragAndDropController dragAndDropController) {
-		ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
+		ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>();
 		for (IDraggable draggable : draggables) {
 			if (draggable instanceof DimensionGroupRenderer) {
 				DimensionGroupRenderer dimensionGroupRenderer = (DimensionGroupRenderer) draggable;
-				dataContainers.add(dimensionGroupRenderer.getDataContainer());
+				tablePerspectives.add(dimensionGroupRenderer.getDataContainer());
 			}
 		}
 
-		if (!dataContainers.isEmpty()) {
+		if (!tablePerspectives.isEmpty()) {
 			// FIXME: this needs to be looked at again
 			// System.out.println("Drop");
-			DataContainer dataContainer = dataContainers.get(0);
-			AddDataContainersEvent event = new AddDataContainersEvent(dataContainer);
+			TablePerspective tablePerspective = tablePerspectives.get(0);
+			AddDataContainersEvent event = new AddDataContainersEvent(tablePerspective);
 			event.setReceiver(representedView);
 			event.setSender(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 
-			if (dataContainer instanceof PathwayDataContainer) {
-				dataDomains.add(((PathwayDataContainer) dataContainer)
+			if (tablePerspective instanceof PathwayDataContainer) {
+				dataDomains.add(((PathwayDataContainer) tablePerspective)
 						.getPathwayDataDomain());
 			} else {
-				dataDomains.add(dataContainer.getDataDomain());
+				dataDomains.add(tablePerspective.getDataDomain());
 			}
-			getDataContainers().add(dataContainer);
+			getDataContainers().add(tablePerspective);
 			sortDataContainers();
 			dataContainerListRenderer.setDataContainers(getDataContainers());
 			view.updateGraphEdgesOfViewNode(this);

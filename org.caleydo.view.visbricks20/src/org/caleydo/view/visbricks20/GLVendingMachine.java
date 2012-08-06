@@ -12,9 +12,9 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -64,7 +64,7 @@ public class GLVendingMachine
 
 	private ArrayList<GLStratomex> visBricksStack = new ArrayList<GLStratomex>();
 
-	private List<DataContainer> dataContainers = new ArrayList<DataContainer>();
+	private List<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>();
 
 	private BrickColumnManager dimGroupManager;
 
@@ -76,7 +76,7 @@ public class GLVendingMachine
 	 * Hash that maps a GLVisBrick to the data container that is shown in
 	 * addition to the "fixed" data containers.
 	 */
-	private HashMap<GLStratomex, DataContainer> hashVisBricks2DataContainerChoice = new HashMap<GLStratomex, DataContainer>();
+	private HashMap<GLStratomex, TablePerspective> hashVisBricks2DataContainerChoice = new HashMap<GLStratomex, TablePerspective>();
 
 	/**
 	 * Constructor.
@@ -155,7 +155,7 @@ public class GLVendingMachine
 		mainColumn.setBottomUp(false);
 		layoutManager.setBaseElementLayout(mainColumn);
 
-		if (dataContainers != null || dataContainers.size() == 0)
+		if (tablePerspectives != null || tablePerspectives.size() == 0)
 			createRankedVisBricksViews();
 
 		layoutManager.updateLayout();
@@ -164,24 +164,24 @@ public class GLVendingMachine
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void createRankedVisBricksViews() {
 
-		List<DataContainer> fixedDataContainers = new ArrayList<DataContainer>();
+		List<TablePerspective> fixedDataContainers = new ArrayList<TablePerspective>();
 
 		for (BrickColumn dimGroup : dimGroupManager.getBrickColumns()) {
 
 			// Only add fixed data container if it is not contained in the
 			// options itself
-			if (!dataContainers.contains(dimGroup.getDataContainer()))
+			if (!tablePerspectives.contains(dimGroup.getDataContainer()))
 				fixedDataContainers.add(dimGroup.getDataContainer());
 		}
 
 		hashVisBricks2DataContainerChoice.clear();
 
 		// Trigger ranking of data containers
-		List<Pair<Float, DataContainer>> score2DataContainerList = new ArrayList<Pair<Float, DataContainer>>();
-		for (DataContainer referenceDataContainer : dataContainers) {
+		List<Pair<Float, TablePerspective>> score2DataContainerList = new ArrayList<Pair<Float, TablePerspective>>();
+		for (TablePerspective referenceDataContainer : tablePerspectives) {
 			float scoreSum = 0;
 			int scoreCount = 0;
-			for (DataContainer fixedDataContainer : fixedDataContainers) {
+			for (TablePerspective fixedDataContainer : fixedDataContainers) {
 
 				scoreSum += referenceDataContainer.getContainerStatistics()
 						.adjustedRandIndex().getScore(fixedDataContainer, false);
@@ -194,9 +194,9 @@ public class GLVendingMachine
 		Collections.sort(score2DataContainerList);
 
 		int rank = score2DataContainerList.size();
-		for (Pair<Float, DataContainer> score2DataContainer : score2DataContainerList) {
+		for (Pair<Float, TablePerspective> score2DataContainer : score2DataContainerList) {
 
-			DataContainer dataContainer = score2DataContainer.getSecond();
+			TablePerspective tablePerspective = score2DataContainer.getSecond();
 
 			Row vendingMachineElementLayout = new Row("vendingMachineElementLayout");
 			vendingMachineElementLayout.setGrabY(true);
@@ -211,10 +211,10 @@ public class GLVendingMachine
 					"visBricksElementLayoutRow");
 
 			GLStratomex visBricks = createVisBricks(visBricksElementLayout);
-			visBricks.addDataContainer(dataContainer);
+			visBricks.addDataContainer(tablePerspective);
 
 			visBricksStack.add(0, visBricks);
-			hashVisBricks2DataContainerChoice.put(visBricks, dataContainer);
+			hashVisBricks2DataContainerChoice.put(visBricks, tablePerspective);
 
 			if (visBricksStack.size() == score2DataContainerList.size()) {
 				// by default the last vending machine is selected
@@ -327,12 +327,12 @@ public class GLVendingMachine
 		return 0;
 	}
 
-	public void setDataContainer(DataContainer dataContainer) {
-		// dataContainers.add(dataContainer);
+	public void setDataContainer(TablePerspective tablePerspective) {
+		// tablePerspectives.add(tablePerspective);
 
-		dataContainers.clear();
+		tablePerspectives.clear();
 
-		ATableBasedDataDomain dataDomain = dataContainer.getDataDomain();
+		ATableBasedDataDomain dataDomain = tablePerspective.getDataDomain();
 		Set<String> rowIDs = dataDomain.getRecordPerspectiveIDs();
 
 		int count = 0;
@@ -347,24 +347,24 @@ public class GLVendingMachine
 				continue;
 			}
 
-			DataContainer newDataContainer = dataDomain.getDataContainer(id, dataContainer
+			TablePerspective newDataContainer = dataDomain.getDataContainer(id, tablePerspective
 					.getDimensionPerspective().getPerspectiveID());
 			newDataContainer.setPrivate(true);
 
-			dataContainers.add(newDataContainer);
+			tablePerspectives.add(newDataContainer);
 		}
 
 		initLayouts();
 	}
 
-	public List<DataContainer> getDataContainers() {
-		return dataContainers;
+	public List<TablePerspective> getDataContainers() {
+		return tablePerspectives;
 	}
 
 	public void highlightNextPreviousVisBrick(boolean next) {
 
 		GLStratomex previouslySelectedVisBricksChoice = selectedVisBricksChoice;
-		DataContainer previouslySelectedDatacontainer = hashVisBricks2DataContainerChoice
+		TablePerspective previouslySelectedDatacontainer = hashVisBricks2DataContainerChoice
 				.get(selectedVisBricksChoice);
 		previouslySelectedDatacontainer.setPrivate(true);
 
@@ -375,7 +375,7 @@ public class GLVendingMachine
 			selectedIndex--;
 
 		selectedVisBricksChoice = visBricksStack.get(selectedIndex);
-		DataContainer selectedDataContainer = hashVisBricks2DataContainerChoice
+		TablePerspective selectedDataContainer = hashVisBricks2DataContainerChoice
 				.get(selectedVisBricksChoice);
 		selectedDataContainer.setPrivate(false);
 
@@ -412,11 +412,11 @@ public class GLVendingMachine
 
 	public void selectVisBricksChoice() {
 
-		DataContainer selectedDataContainer = hashVisBricks2DataContainerChoice
+		TablePerspective selectedDataContainer = hashVisBricks2DataContainerChoice
 				.get(selectedVisBricksChoice);
 		selectedDataContainer.setPrivate(false);
 
-		dataContainers.clear();
+		tablePerspectives.clear();
 		selectedVisBricksChoice = null;
 		visBricksStack.clear();
 		initLayouts();

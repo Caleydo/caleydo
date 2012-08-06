@@ -26,9 +26,9 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.perspective.ADataPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
@@ -88,20 +88,20 @@ public class MappedDataRenderer {
 	 * The top-level data containers as set externally through the
 	 * {@link IMultiDataContainerBasedView} interface of {@link #parentView}
 	 */
-	private ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>(5);
+	private ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>(5);
 
 	/**
 	 * The data containers resolved based on the {@link GroupList}s of the
-	 * {@link #dataContainers}. That means that this list contains a
-	 * dataContainer for every experiment group in one of the DataContainers in
-	 * {@link #dataContainers}.
+	 * {@link #tablePerspectives}. That means that this list contains a
+	 * tablePerspective for every experiment group in one of the DataContainers in
+	 * {@link #tablePerspectives}.
 	 */
-	private ArrayList<DataContainer> resolvedDataContainers = new ArrayList<DataContainer>();
+	private ArrayList<TablePerspective> resolvedDataContainers = new ArrayList<TablePerspective>();
 
 	/**
-	 * Set to either {@link #dataContainers} or {@link #resolvedDataContainers}
+	 * Set to either {@link #tablePerspectives} or {@link #resolvedDataContainers}
 	 */
-	private ArrayList<DataContainer> usedDataContainers;
+	private ArrayList<TablePerspective> usedDataContainers;
 
 	/**
 	 * the distance from the left edge of this renderer to the left edge of the
@@ -347,7 +347,7 @@ public class MappedDataRenderer {
 						.size(); dataContainerCount++) {
 
 					ElementLayout dataContainerLayout = new ElementLayout(
-							"DataContainer " + dataContainerCount + " / " + idCount);
+							"TablePerspective " + dataContainerCount + " / " + idCount);
 					// dataContainerRow.setPixelSizeX(5);
 					dataContainerLayout.addBackgroundRenderer(new RowBackgroundRenderer(
 							color));
@@ -415,32 +415,32 @@ public class MappedDataRenderer {
 	}
 
 	/** Fills the layout with data specific for the data containers */
-	private void prepareData(DataContainer dataContainer,
+	private void prepareData(TablePerspective tablePerspective,
 			ArrayList<ElementLayout> rowLayouts, ColumnCaptionLayout topCaptionLayout,
 			ColumnCaptionLayout bottomCaptionLayout, ArrayList<Integer> davidIDs) {
-		GeneticDataDomain dataDomain = (GeneticDataDomain) dataContainer.getDataDomain();
+		GeneticDataDomain dataDomain = (GeneticDataDomain) tablePerspective.getDataDomain();
 
-		ADataPerspective<?, ?, ?, ?> experimentPerspective;
+		AVariablePerspective<?, ?, ?, ?> experimentPerspective;
 		if (dataDomain.isGeneRecord()) {
-			experimentPerspective = dataContainer.getDimensionPerspective();
+			experimentPerspective = tablePerspective.getDimensionPerspective();
 		} else {
-			experimentPerspective = dataContainer.getRecordPerspective();
+			experimentPerspective = tablePerspective.getRecordPerspective();
 		}
 
 		Group group = null;
 		if (dataDomain.isGeneRecord()) {
-			group = dataContainer.getDimensionGroup();
+			group = tablePerspective.getDimensionGroup();
 			if (group == null) {
-				group = dataContainer.getDimensionPerspective().getVirtualArray()
+				group = tablePerspective.getDimensionPerspective().getVirtualArray()
 						.getGroupList().get(0);
-				group.setLabel(dataContainer.getLabel(), dataContainer.isDefaultLabel());
+				group.setLabel(tablePerspective.getLabel(), tablePerspective.isDefaultLabel());
 			}
 		} else {
-			group = dataContainer.getRecordGroup();
+			group = tablePerspective.getRecordGroup();
 			if (group == null) {
-				group = dataContainer.getRecordPerspective().getVirtualArray()
+				group = tablePerspective.getRecordPerspective().getVirtualArray()
 						.getGroupList().get(0);
-				group.setLabel(dataContainer.getLabel(), dataContainer.isDefaultLabel());
+				group.setLabel(tablePerspective.getLabel(), tablePerspective.isDefaultLabel());
 			}
 		}
 		topCaptionLayout.init(group, experimentPerspective, dataDomain);
@@ -494,11 +494,11 @@ public class MappedDataRenderer {
 			// FIXME: BAAAAD Hack to distinguish categorical data
 			if (!dataDomain.getLabel().contains("Copy")) {
 				dataContainerLayout.setRenderer(new ContinuousContentRenderer(geneID,
-						davidID, dataDomain, dataContainer, experimentPerspective,
+						davidID, dataDomain, tablePerspective, experimentPerspective,
 						parentView, this, group));
 			} else {
 				dataContainerLayout.setRenderer(new CategoricalRowContentRenderer(geneID,
-						davidID, dataDomain, dataContainer, experimentPerspective,
+						davidID, dataDomain, tablePerspective, experimentPerspective,
 						parentView, this, group));
 			}
 
@@ -507,39 +507,39 @@ public class MappedDataRenderer {
 	}
 
 	/**
-	 * Adds a data container to {@link #dataContainers} and resolves sub data
+	 * Adds a data container to {@link #tablePerspectives} and resolves sub data
 	 * containers by calling {@link #resolveSubDataContainers(List)}
 	 * 
 	 * @param newDataContainer
 	 */
-	public void addDataContainer(DataContainer newDataContainer) {
-		dataContainers.add(newDataContainer);
-		ArrayList<DataContainer> newDataContainers = new ArrayList<DataContainer>(1);
+	public void addDataContainer(TablePerspective newDataContainer) {
+		tablePerspectives.add(newDataContainer);
+		ArrayList<TablePerspective> newDataContainers = new ArrayList<TablePerspective>(1);
 		newDataContainers.add(newDataContainer);
 		resolveSubDataContainers(newDataContainers);
 	}
 
 	/**
-	 * Same as {@link #addDataContainer(DataContainer)} but for multiple data
+	 * Same as {@link #addDataContainer(TablePerspective)} but for multiple data
 	 * containers
 	 */
-	public void addDataContainers(List<DataContainer> newDataContainers) {
-		dataContainers.addAll(newDataContainers);
+	public void addDataContainers(List<TablePerspective> newDataContainers) {
+		tablePerspectives.addAll(newDataContainers);
 		resolveSubDataContainers(newDataContainers);
 	}
 
 	/**
-	 * @return the dataContainers, see {@link #dataContainers}
+	 * @return the tablePerspectives, see {@link #tablePerspectives}
 	 */
-	public ArrayList<DataContainer> getDataContainers() {
-		return dataContainers;
+	public ArrayList<TablePerspective> getDataContainers() {
+		return tablePerspectives;
 	}
 
 	public void removeDataContainer(int dataContainerID) {
-		Iterator<DataContainer> dataContainerIterator = dataContainers.iterator();
+		Iterator<TablePerspective> dataContainerIterator = tablePerspectives.iterator();
 
 		while (dataContainerIterator.hasNext()) {
-			DataContainer container = dataContainerIterator.next();
+			TablePerspective container = dataContainerIterator.next();
 			if (container.getID() == dataContainerID) {
 				dataContainerIterator.remove();
 			}
@@ -547,7 +547,7 @@ public class MappedDataRenderer {
 		resolvedDataContainers.clear();
 		// TODO - this is maybe not the most elegant way to remove the resolved
 		// sub-data containers
-		resolveSubDataContainers(dataContainers);
+		resolveSubDataContainers(tablePerspectives);
 	}
 
 	/**
@@ -555,24 +555,24 @@ public class MappedDataRenderer {
 	 * data container. If no group lists are present, the original data
 	 * container is added.
 	 */
-	private void resolveSubDataContainers(List<DataContainer> newDataContainers) {
-		for (DataContainer dataContainer : newDataContainers) {
-			GeneticDataDomain dataDomain = (GeneticDataDomain) dataContainer
+	private void resolveSubDataContainers(List<TablePerspective> newDataContainers) {
+		for (TablePerspective tablePerspective : newDataContainers) {
+			GeneticDataDomain dataDomain = (GeneticDataDomain) tablePerspective
 					.getDataDomain();
 
-			List<DataContainer> newlyResovedDataContainers;
+			List<TablePerspective> newlyResovedDataContainers;
 			if (dataDomain.isGeneRecord()) {
-				newlyResovedDataContainers = dataContainer
+				newlyResovedDataContainers = tablePerspective
 						.getDimensionSubDataContainers();
 			} else {
-				newlyResovedDataContainers = dataContainer.getRecordSubDataContainers();
+				newlyResovedDataContainers = tablePerspective.getRecordSubDataContainers();
 			}
 
 			if (newlyResovedDataContainers != null) {
 				resolvedDataContainers.addAll(newlyResovedDataContainers);
 
 			} else {
-				resolvedDataContainers.add(dataContainer);
+				resolvedDataContainers.add(tablePerspective);
 			}
 
 		}
@@ -670,7 +670,7 @@ public class MappedDataRenderer {
 	/**
 	 * @return the resolvedDataContainers, see {@link #resolvedDataContainers}
 	 */
-	public ArrayList<DataContainer> getResolvedDataContainers() {
+	public ArrayList<TablePerspective> getResolvedDataContainers() {
 		return resolvedDataContainers;
 	}
 

@@ -21,18 +21,18 @@ package org.caleydo.core.view.contextmenu.item;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.data.StatisticsPValueReductionEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 public class StatisticsPValueReductionItem
 	extends AContextMenuItem {
 
-	public StatisticsPValueReductionItem(ArrayList<DataContainer> dataContainers) {
+	public StatisticsPValueReductionItem(ArrayList<TablePerspective> tablePerspectives) {
 
 		setLabel("Variance Filter");
 
-		StatisticsPValueReductionEvent event = new StatisticsPValueReductionEvent(dataContainers);
+		StatisticsPValueReductionEvent event = new StatisticsPValueReductionEvent(tablePerspectives);
 		event.setSender(this);
 		registerEvent(event);
 	}

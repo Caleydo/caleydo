@@ -24,9 +24,9 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.perspective.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -105,7 +105,7 @@ public class OverviewRenderer extends LayoutRenderer {
 				// creatinng Texture for each cluster
 
 				// creating Layout for each cluster
-				DataContainer clusterContainer = this.getClusterContainer(clusterIndex);
+				TablePerspective clusterContainer = this.getClusterContainer(clusterIndex);
 				float ratio = (float) clusterContainer.getNrRecords()
 						/ ((float) recordVA.getIDs().size());
 
@@ -156,14 +156,14 @@ public class OverviewRenderer extends LayoutRenderer {
 		overviewLayout.updateSubLayout();
 	}
 
-	public DataContainer getClusterContainer(int clusterIndex) {
-		DataContainer sourceContainer = uncertaintyHeatMap.getDataContainer();
+	public TablePerspective getClusterContainer(int clusterIndex) {
+		TablePerspective sourceContainer = uncertaintyHeatMap.getDataContainer();
 		if (sourceContainer.getRecordPerspective().getVirtualArray().getGroupList()
 				.size() == 1) {
 			return sourceContainer;
 		}
 
-		DataContainer clusterContainer = new DataContainer();
+		TablePerspective clusterContainer = new TablePerspective();
 		clusterContainer.setDataDomain(sourceContainer.getDataDomain());
 		clusterContainer.setDimensionPerspective(sourceContainer
 				.getDimensionPerspective());

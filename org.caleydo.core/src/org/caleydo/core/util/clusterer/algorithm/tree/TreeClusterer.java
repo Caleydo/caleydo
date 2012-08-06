@@ -24,7 +24,7 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
-import org.caleydo.core.data.perspective.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.event.data.ClusterProgressEvent;
 import org.caleydo.core.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.GeneralManager;

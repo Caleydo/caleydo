@@ -20,7 +20,7 @@
 /**
  * 
  */
-package org.caleydo.core.data.container;
+package org.caleydo.core.data.perspective.table;
 
 import java.util.ArrayList;
 
@@ -33,8 +33,8 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 
 /**
  * <p>
- * {@link ContainerStatistics} provides access and calculates derivable
- * meta-data for the data specified by a {@link DataContainer}, such as
+ * {@link TablePerspectiveStatistics} provides access and calculates derivable
+ * meta-data for the data specified by a {@link TablePerspective}, such as
  * averages, histograms, etc.
  * </p>
  * <p>
@@ -47,8 +47,8 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
  * 
  * @author Alexander Lex
  */
-public class ContainerStatistics {
-	private DataContainer container;
+public class TablePerspectiveStatistics {
+	private TablePerspective container;
 
 	/** The average of all cells in the container */
 	private float averageValue = Float.NEGATIVE_INFINITY;
@@ -78,7 +78,7 @@ public class ContainerStatistics {
 	/** Same as {@link #averageRecords} for dimensions */
 	private ArrayList<Average> averageDimensions;
 
-	public ContainerStatistics(DataContainer container) {
+	public TablePerspectiveStatistics(TablePerspective container) {
 		this.container = container;
 	}
 

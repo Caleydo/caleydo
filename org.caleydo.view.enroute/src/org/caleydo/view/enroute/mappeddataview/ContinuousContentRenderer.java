@@ -25,10 +25,10 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.container.Average;
-import org.caleydo.core.data.container.ContainerStatistics;
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.perspective.ADataPerspective;
+import org.caleydo.core.data.perspective.table.Average;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Algorithms;
@@ -50,10 +50,10 @@ public class ContinuousContentRenderer extends ContentRenderer {
 	private int rendererID;
 
 	public ContinuousContentRenderer(Integer geneID, Integer davidID,
-			GeneticDataDomain dataDomain, DataContainer dataContainer,
-			ADataPerspective<?, ?, ?, ?> experimentPerspective, AGLView parentView,
+			GeneticDataDomain dataDomain, TablePerspective tablePerspective,
+			AVariablePerspective<?, ?, ?, ?> experimentPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group) {
-		super(geneID, davidID, dataDomain, dataContainer, experimentPerspective,
+		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective,
 				parentView, parent, group);
 		synchronized (rendererIDCounter) {
 			rendererID = rendererIDCounter++;
@@ -72,7 +72,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 	public void init() {
 		if (geneID == null)
 			return;
-		average = ContainerStatistics.calculateAverage(
+		average = TablePerspectiveStatistics.calculateAverage(
 				experimentPerspective.getVirtualArray(), dataDomain.getTable(), geneID);
 		
 		registerPickingListener();

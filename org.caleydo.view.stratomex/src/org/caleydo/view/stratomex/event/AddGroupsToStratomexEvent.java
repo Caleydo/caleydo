@@ -21,7 +21,7 @@ package org.caleydo.view.stratomex.event;
 
 import java.util.List;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.listener.AddDataContainersEvent;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
@@ -30,13 +30,13 @@ import org.caleydo.view.stratomex.brick.configurer.NumericalDataConfigurer;
 /**
  * <p>
  * The {@link AddGroupsToStratomexEvent} is an event that signals to add one or
- * several {@link DataContainer}s as DimensionGroups to {@link GLStratomex}.
+ * several {@link TablePerspective}s as DimensionGroups to {@link GLStratomex}.
  * </p>
  * <p>
  * There are two ways to specify a group to be added:
  * <ol>
- * <li>by adding a list of pre-existing {@link DataContainer}s</li>
- * <li>by specifying exactly one {@link DataContainer}</li>
+ * <li>by adding a list of pre-existing {@link TablePerspective}s</li>
+ * <li>by specifying exactly one {@link TablePerspective}</li>
  * </ol>
  * </p>
  * 
@@ -58,18 +58,18 @@ public class AddGroupsToStratomexEvent extends AddDataContainersEvent {
 	/**
 	 * Initialize event with a single data container
 	 */
-	public AddGroupsToStratomexEvent(DataContainer dataContainer) {
-		super(dataContainer);
+	public AddGroupsToStratomexEvent(TablePerspective tablePerspective) {
+		super(tablePerspective);
 	}
 
 	/**
 	 * Add a list of data containers, creating multiple dimension groups at the
 	 * same time
 	 * 
-	 * @param dataContainers
+	 * @param tablePerspectives
 	 */
-	public AddGroupsToStratomexEvent(List<DataContainer> dataContainers) {
-		super(dataContainers);
+	public AddGroupsToStratomexEvent(List<TablePerspective> tablePerspectives) {
+		super(tablePerspectives);
 	}
 
 	/**

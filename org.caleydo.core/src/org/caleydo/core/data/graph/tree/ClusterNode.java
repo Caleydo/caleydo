@@ -28,8 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.ADataPerspective;
-import org.caleydo.core.data.perspective.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.SelectionType;
 
 /**
@@ -62,7 +62,7 @@ public class ClusterNode
 	private boolean isPartOfSubTree = false;
 	private Vec3f vPosSubTree;
 
-	private ADataPerspective<?, ?, ?, ?> perspective;
+	private AVariablePerspective<?, ?, ?, ?> perspective;
 
 	public ClusterNode() {
 	}
@@ -94,7 +94,7 @@ public class ClusterNode
 	}
 
 	@SuppressWarnings("unchecked")
-	public <PerspectiveType extends ADataPerspective<?, ?, ?, ?>> PerspectiveType getSubPerspective(
+	public <PerspectiveType extends AVariablePerspective<?, ?, ?, ?>> PerspectiveType getSubPerspective(
 		Class<PerspectiveType> concreteClass, ATableBasedDataDomain dataDomain) {
 		if (perspective != null)
 			return (PerspectiveType) perspective;

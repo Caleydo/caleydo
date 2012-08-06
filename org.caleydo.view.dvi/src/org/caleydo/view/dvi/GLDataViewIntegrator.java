@@ -36,14 +36,14 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.graph.DataDomainGraph;
-import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.data.perspective.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -1003,14 +1003,14 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 								recordPerspectiveID);
 					}
 
-					DataContainer dataContainer = dataDomain.getDataContainer(
+					TablePerspective tablePerspective = dataDomain.getDataContainer(
 							currentRecordPerspeciveID, currentDimensionPerspeciveID);
-					dataContainer.setLabel(dialog.getValue(), false);
-					dataContainer.setPrivate(false);
+					tablePerspective.setLabel(dialog.getValue(), false);
+					tablePerspective.setPrivate(false);
 
 					if (isRenderedRemote()) {
 						AddDataContainersEvent event = new AddDataContainersEvent(
-								dataContainer);
+								tablePerspective);
 						event.setReceiver((AGLView) getRemoteRenderingGLView());
 						event.setSender(this);
 						GeneralManager.get().getEventPublisher().triggerEvent(event);
@@ -1059,7 +1059,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	}
 
 	public void createView(final String viewID, final IDataDomain dataDomain,
-			final DataContainer dataContainer) {
+			final TablePerspective tablePerspective) {
 
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
@@ -1070,7 +1070,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 					String secondaryID = UUID.randomUUID().toString();
 					RCPViewInitializationData rcpViewInitData = new RCPViewInitializationData();
 					rcpViewInitData.setDataDomainID(dataDomain.getDataDomainID());
-					rcpViewInitData.setDataContainer(dataContainer);
+					rcpViewInitData.setDataContainer(tablePerspective);
 					RCPViewManager.get().addRCPView(secondaryID, rcpViewInitData);
 
 					if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {

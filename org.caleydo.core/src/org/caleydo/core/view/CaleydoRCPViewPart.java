@@ -31,11 +31,11 @@ import javax.xml.bind.Unmarshaller;
 
 import org.caleydo.core.data.configuration.DataConfiguration;
 import org.caleydo.core.data.configuration.DataConfigurationChooser;
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
@@ -138,7 +138,7 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 	/**
 	 * <p>
 	 * If applicable initializes the {@link #view} with the {@link ADataDomain}
-	 * and the {@link DataContainer}, or with multiple DataContainers as they
+	 * and the {@link TablePerspective}, or with multiple DataContainers as they
 	 * are specified in the {@link #serializedView}.
 	 * </p>
 	 * <p>
@@ -165,7 +165,7 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 					.get().getDataDomainByID(
 							serializedSingleDataContainerBasedView.getDataDomainID());
 
-			DataContainer container = tDataDomain
+			TablePerspective container = tDataDomain
 					.getDataContainer(serializedSingleDataContainerBasedView
 							.getDataContainerKey());
 			// In case the stored datacontainer is not available in this run
@@ -187,13 +187,13 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 
 					ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
 							.get().getDataDomainByID(data.getFirst());
-					DataContainer dataContainer = ((ATableBasedDataDomain) dataDomain)
+					TablePerspective tablePerspective = ((ATableBasedDataDomain) dataDomain)
 							.getDataContainer(data.getSecond());
-					if (dataContainer == null) {
+					if (tablePerspective == null) {
 						inconsistentSerializedView = true;
 						break;
 					}
-					multiDataContainerBasedView.addDataContainer(dataContainer);
+					multiDataContainerBasedView.addDataContainer(tablePerspective);
 				}
 				if (inconsistentSerializedView) {
 					createDefaultSerializedView();
@@ -259,10 +259,10 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 			if (rcpViewInitData != null) {
 				dataDomainID = rcpViewInitData.getDataDomainID();
 
-				DataContainer dataContainer = rcpViewInitData.getDataContainer();
+				TablePerspective tablePerspective = rcpViewInitData.getDataContainer();
 				serializedTopLevelDataView.setDataDomainID(dataDomainID);
-				if (dataContainer != null) {
-					serializedTopLevelDataView.setDataContainerKey(dataContainer
+				if (tablePerspective != null) {
+					serializedTopLevelDataView.setDataContainerKey(tablePerspective
 							.getDataContainerKey());
 
 				} else {

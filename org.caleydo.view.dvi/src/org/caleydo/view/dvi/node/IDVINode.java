@@ -25,14 +25,14 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.view.dvi.layout.AGraphLayout;
 
 public interface IDVINode extends IDraggable {
 
-	public List<DataContainer> getDataContainers();
+	public List<TablePerspective> getDataContainers();
 
 	public boolean showsDataContainers();
 
@@ -47,10 +47,10 @@ public interface IDVINode extends IDraggable {
 	public float getWidth();
 
 	public Pair<Point2D, Point2D> getBottomDataContainerAnchorPoints(
-			DataContainer dataContainer);
+			TablePerspective tablePerspective);
 
 	public Pair<Point2D, Point2D> getTopDataContainerAnchorPoints(
-			DataContainer dataContainer);
+			TablePerspective tablePerspective);
 
 	public Pair<Point2D, Point2D> getTopAnchorPoints();
 

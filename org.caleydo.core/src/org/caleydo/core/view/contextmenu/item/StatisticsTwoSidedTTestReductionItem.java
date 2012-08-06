@@ -21,19 +21,19 @@ package org.caleydo.core.view.contextmenu.item;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.data.StatisticsTwoSidedTTestReductionEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 public class StatisticsTwoSidedTTestReductionItem
 	extends AContextMenuItem {
 
-	public StatisticsTwoSidedTTestReductionItem(ArrayList<DataContainer> dataContainers) {
+	public StatisticsTwoSidedTTestReductionItem(ArrayList<TablePerspective> tablePerspectives) {
 
 		setLabel("Two-Sided T-Test Filter");
 
 		StatisticsTwoSidedTTestReductionEvent event =
-			new StatisticsTwoSidedTTestReductionEvent(dataContainers);
+			new StatisticsTwoSidedTTestReductionEvent(tablePerspectives);
 		event.setSender(this);
 		registerEvent(event);
 	}

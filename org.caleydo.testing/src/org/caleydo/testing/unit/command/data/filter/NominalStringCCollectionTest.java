@@ -23,12 +23,12 @@ import java.util.ArrayList;
 
 import junit.framework.TestCase;
 
-import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
-import org.caleydo.core.data.collection.ccontainer.ICContainer;
-import org.caleydo.core.data.collection.ccontainer.NominalCContainer;
+import org.caleydo.core.data.collection.container.FloatContainer;
+import org.caleydo.core.data.collection.container.IContainer;
+import org.caleydo.core.data.collection.container.NominalContainer;
 
 public class NominalStringCCollectionTest extends TestCase {
-	NominalCContainer<String> sCollection;
+	NominalContainer<String> sCollection;
 	ArrayList<String> sAlTestWords;
 
 	@Override
@@ -40,7 +40,7 @@ public class NominalStringCCollectionTest extends TestCase {
 		sAlTestWords.add("Flu");
 		sAlTestWords.add("Gastritis");
 
-		sCollection = new NominalCContainer<String>(sAlTestWords);
+		sCollection = new NominalContainer<String>(sAlTestWords);
 	}
 
 	public void testGet() {
@@ -49,11 +49,11 @@ public class NominalStringCCollectionTest extends TestCase {
 	}
 
 	public void testNormalize() {
-		ICContainer normalizedStorage = sCollection.normalize();
-		if (!(normalizedStorage instanceof FloatCContainer))
+		IContainer normalizedStorage = sCollection.normalize();
+		if (!(normalizedStorage instanceof FloatContainer))
 			fail("Should be primitive float");
 
-		FloatCContainer normalizedFloatStorage = (FloatCContainer) normalizedStorage;
+		FloatContainer normalizedFloatStorage = (FloatContainer) normalizedStorage;
 		assertEquals(sCollection.getDiscreteForNominalValue("Flu"),
 				normalizedFloatStorage.get(0), 0.01);
 		assertEquals(sCollection.getDiscreteForNominalValue("Cancer"),

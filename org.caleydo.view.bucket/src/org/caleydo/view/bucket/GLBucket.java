@@ -32,11 +32,11 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
@@ -127,7 +127,7 @@ public class GLBucket extends AGLView implements ISingleDataContainerBasedView,
 	public static String VIEW_NAME = "Bucket";
 
 	protected ATableBasedDataDomain dataDomain;
-	protected DataContainer dataContainer;
+	protected TablePerspective tablePerspective;
 
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
 	// private RecordPerspective recordPerspective;
@@ -2496,7 +2496,7 @@ public class GLBucket extends AGLView implements ISingleDataContainerBasedView,
 
 		if (glView instanceof ATableBasedView) {
 			ATableBasedView tableBasedView = (ATableBasedView) glView;
-			tableBasedView.setDataContainer(dataContainer);
+			tableBasedView.setDataContainer(tablePerspective);
 			tableBasedView.initialize();
 		}
 
@@ -2506,7 +2506,7 @@ public class GLBucket extends AGLView implements ISingleDataContainerBasedView,
 			glPathway.enablePathwayTextures(pathwayTexturesEnabled);
 			glPathway.enableNeighborhood(neighborhoodEnabled);
 			glPathway.enableGeneMapping(geneMappingEnabled);
-			glPathway.setDataContainer(dataContainer);
+			glPathway.setDataContainer(tablePerspective);
 		}
 
 		if (glView instanceof GLHeatMap) {
@@ -2848,7 +2848,7 @@ public class GLBucket extends AGLView implements ISingleDataContainerBasedView,
 		recordPerspective.setPrivate(true);
 		recordPerspective.init(null);
 		dataDomain.getTable().registerRecordPerspective(recordPerspective);
-		dataContainer = dataDomain
+		tablePerspective = dataDomain
 				.getDataContainer(recordPerspective.getPerspectiveID(), dataDomain
 						.getTable().getDefaultDimensionPerspective().getPerspectiveID());
 	}
@@ -2859,19 +2859,19 @@ public class GLBucket extends AGLView implements ISingleDataContainerBasedView,
 	}
 
 	@Override
-	public void setDataContainer(DataContainer dataContainer) {
-		this.dataContainer = dataContainer;
+	public void setDataContainer(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
 	}
 
 	@Override
-	public DataContainer getDataContainer() {
-		return dataContainer;
+	public TablePerspective getDataContainer() {
+		return tablePerspective;
 	}
 
 	@Override
-	public List<DataContainer> getDataContainers() {
-		ArrayList<DataContainer> dataContainerList = new ArrayList<DataContainer>();
-		dataContainerList.add(dataContainer);
+	public List<TablePerspective> getDataContainers() {
+		ArrayList<TablePerspective> dataContainerList = new ArrayList<TablePerspective>();
+		dataContainerList.add(tablePerspective);
 		return dataContainerList;
 	}
 }

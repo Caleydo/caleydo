@@ -21,14 +21,14 @@ package org.caleydo.core.util.statistics;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 
 public interface IStatisticsPerformer {
 	public void init();
 
 	public void performTest();
 
-	public void twoSidedTTest(ArrayList<DataContainer> setsToCompare);
+	public void twoSidedTTest(ArrayList<TablePerspective> setsToCompare);
 
-	public void foldChange(DataContainer container1, DataContainer container2, boolean betweenRecords);
+	public void foldChange(TablePerspective container1, TablePerspective container2, boolean betweenRecords);
 }

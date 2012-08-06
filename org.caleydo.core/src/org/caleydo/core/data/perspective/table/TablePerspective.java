@@ -20,7 +20,7 @@
 /**
  * 
  */
-package org.caleydo.core.data.container;
+package org.caleydo.core.data.perspective.table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +34,10 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.perspective.ADataPerspective;
-import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.data.perspective.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
@@ -49,7 +49,7 @@ import org.caleydo.core.id.IDType;
 
 /**
  * <p>
- * A DataContainer holds all the "rules" and properties on how the data in the
+ * A TablePerspective holds all the "rules" and properties on how the data in the
  * underlying {@link DataTable} should be accessed. It does so by holding
  * references to one {@link DimensionPerspective} and one
  * {@link RecordPerspective}, who define things like order, groups, and
@@ -59,32 +59,32 @@ import org.caleydo.core.id.IDType;
  * <p>
  * While the perspectives are only defined for either the records or the
  * dimensions, and thereby cannot reference specific cells (and consequently no
- * data), the DataContainer defines a concrete subset of the data.
+ * data), the TablePerspective defines a concrete subset of the data.
  * </p>
  * <p>
- * This allows to calculate statistics (see {@link ContainerStatistics}) for a
- * DataContainer, thereby providing things like histograms or averages.
+ * This allows to calculate statistics (see {@link TablePerspectiveStatistics}) for a
+ * TablePerspective, thereby providing things like histograms or averages.
  * </p>
  * <p>
- * A DataContainer should be created/accessed by using
+ * A TablePerspective should be created/accessed by using
  * {@link ATableBasedDataDomain#getDataContainer(String, String)}, where the
- * Strings are the IDs of the perspectives that define the DataContainer. The
- * dataDomain registers the dataContainer for those perspective and provides
- * other instances which need a DataContainer for the same combination of
- * perspectives with the same instance of the DataContainer, thereby avoiding
+ * Strings are the IDs of the perspectives that define the TablePerspective. The
+ * dataDomain registers the tablePerspective for those perspective and provides
+ * other instances which need a TablePerspective for the same combination of
+ * perspectives with the same instance of the TablePerspective, thereby avoiding
  * double-calculation of derived meta-data (which can be both, computationally
  * and storage-wise expensive)
  * </p>
  * <p>
- * The dataContainers are identified by a the {@link #dataContainerKey}, which
+ * The tablePerspectives are identified by a the {@link #dataContainerKey}, which
  * is created as a function of the identifiers of the two perspectives.
  * </p>
  * <p>
  * Data containers can be hierarchically created based on {@link GroupList}s of
- * one of the {@link ADataPerspective}s using the
+ * one of the {@link AVariablePerspective}s using the
  * {@link #getRecordSubDataContainers()} and
  * {@link #getDimensionSubDataContainers()}. The resulting
- * <code>DataContainer</code>s have the {@link #recordGroup}, resp. the
+ * <code>TablePerspective</code>s have the {@link #recordGroup}, resp. the
  * #dimensionGroup set, which are otherwise null.
  * </p>
  * 
@@ -92,7 +92,7 @@ import org.caleydo.core.id.IDType;
  */
 @XmlType
 @XmlRootElement
-public class DataContainer {
+public class TablePerspective {
 
 	/** The static counter used to create unique ids */
 	private static int idCounter;
@@ -151,8 +151,8 @@ public class DataContainer {
 	/**
 	 * A group containing all elements of the {@link #recordPerspective}'s
 	 * virtual array of this data container. This is only set when the
-	 * <code>DataContainer</code> is a sub-container of another
-	 * <code>DataContainer</code> which
+	 * <code>TablePerspective</code> is a sub-container of another
+	 * <code>TablePerspective</code> which
 	 */
 	protected Group recordGroup = null;
 
@@ -166,12 +166,12 @@ public class DataContainer {
 	 * meta-data for this container
 	 */
 	@XmlTransient
-	protected ContainerStatistics containerStatistics;
+	protected TablePerspectiveStatistics tablePerspectiveStatistics;
 
 	/**
 	 * Empty constructor, nothing initialized
 	 */
-	public DataContainer() {
+	public TablePerspective() {
 		System.out.println("S");
 	}
 
@@ -180,7 +180,7 @@ public class DataContainer {
 	 * @param recordPerspective
 	 * @param dimensionPerspective
 	 */
-	public DataContainer(ATableBasedDataDomain dataDomain,
+	public TablePerspective(ATableBasedDataDomain dataDomain,
 			RecordPerspective recordPerspective, DimensionPerspective dimensionPerspective) {
 		this.dataDomain = dataDomain;
 		this.dataDomainID = dataDomain.getDataDomainID();
@@ -193,7 +193,7 @@ public class DataContainer {
 
 	{
 		id = ++idCounter;
-		containerStatistics = new ContainerStatistics(this);
+		tablePerspectiveStatistics = new TablePerspectiveStatistics(this);
 	}
 
 	/**
@@ -264,7 +264,7 @@ public class DataContainer {
 
 	/**
 	 * Checks whether the specified container id matches to the record
-	 * perspective in this {@link DataContainer}
+	 * perspective in this {@link TablePerspective}
 	 * 
 	 * @param recordPerspectiveID
 	 * @return true if the specified id equals the id of the perspective in this
@@ -286,10 +286,10 @@ public class DataContainer {
 	}
 
 	/**
-	 * @return the statistics, see {@link #containerStatistics}
+	 * @return the statistics, see {@link #tablePerspectiveStatistics}
 	 */
-	public ContainerStatistics getContainerStatistics() {
-		return containerStatistics;
+	public TablePerspectiveStatistics getContainerStatistics() {
+		return tablePerspectiveStatistics;
 	}
 
 	/**
@@ -378,17 +378,17 @@ public class DataContainer {
 	}
 
 	/**
-	 * Creates and returns one new {@link DataContainer} for each group in the
+	 * Creates and returns one new {@link TablePerspective} for each group in the
 	 * {@link RecordPerspective}, where the new {@link RecordPerspective}
 	 * contains the elements of the group. The {@link DimensionPerspective} is
 	 * the same as for this container.
 	 * 
-	 * @return a new list of new {@link DataContainer}s or null if no group list
+	 * @return a new list of new {@link TablePerspective}s or null if no group list
 	 *         is set.
 	 */
-	public List<DataContainer> getRecordSubDataContainers() {
+	public List<TablePerspective> getRecordSubDataContainers() {
 
-		List<DataContainer> recordSubDataContainers = new ArrayList<DataContainer>();
+		List<TablePerspective> recordSubDataContainers = new ArrayList<TablePerspective>();
 
 		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
 
@@ -410,7 +410,7 @@ public class DataContainer {
 			data.setData(indices);
 			recordPerspective.init(data);
 
-			DataContainer subDataContainer = new DataContainer(dataDomain,
+			TablePerspective subDataContainer = new TablePerspective(dataDomain,
 					recordPerspective, dimensionPerspective);
 			subDataContainer.setRecordGroup(group);
 			subDataContainer.setLabel(recordPerspective.getLabel(),
@@ -423,17 +423,17 @@ public class DataContainer {
 	}
 
 	/**
-	 * Creates and returns one new {@link DataContainer} for each group in the
+	 * Creates and returns one new {@link TablePerspective} for each group in the
 	 * {@link RecordPerspective}, where the new {@link RecordPerspective}
 	 * contains the elements of the group. The {@link DimensionPerspective} is
 	 * the same as for this container.
 	 * 
-	 * @return a new list of new {@link DataContainer}s or null if no group list
+	 * @return a new list of new {@link TablePerspective}s or null if no group list
 	 *         is set.
 	 */
-	public List<DataContainer> getDimensionSubDataContainers() {
+	public List<TablePerspective> getDimensionSubDataContainers() {
 
-		List<DataContainer> dimensionSubDataContainers = new ArrayList<DataContainer>();
+		List<TablePerspective> dimensionSubDataContainers = new ArrayList<TablePerspective>();
 
 		DimensionVirtualArray dimensionVA = dimensionPerspective.getVirtualArray();
 
@@ -455,7 +455,7 @@ public class DataContainer {
 			data.setData(indices);
 			dimensionPerspective.init(data);
 
-			DataContainer subDataContainer = new DataContainer(dataDomain,
+			TablePerspective subDataContainer = new TablePerspective(dataDomain,
 					recordPerspective, dimensionPerspective);
 			subDataContainer.setDimensionGroup(group);
 			subDataContainer.setLabel(group.getLabel(), group.isLabelDefault());

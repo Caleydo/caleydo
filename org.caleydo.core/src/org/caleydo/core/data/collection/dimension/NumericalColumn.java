@@ -21,9 +21,9 @@ package org.caleydo.core.data.collection.dimension;
 
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
-import org.caleydo.core.data.collection.ccontainer.ICContainer;
-import org.caleydo.core.data.collection.ccontainer.INumericalCContainer;
+import org.caleydo.core.data.collection.container.FloatContainer;
+import org.caleydo.core.data.collection.container.IContainer;
+import org.caleydo.core.data.collection.container.INumericalContainer;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
@@ -61,16 +61,16 @@ public class NumericalColumn extends AColumn {
 	@Override
 	public void normalize() {
 
-		INumericalCContainer iRawContainer = (INumericalCContainer) hashCContainers
+		INumericalContainer iRawContainer = (INumericalContainer) hashCContainers
 				.get(dataRep);
 		hashCContainers.put(DataRepresentation.NORMALIZED, iRawContainer.normalize());
 	}
 
 	public void normalizeUncertainty(float invalidThreshold, float validThreshold) {
 
-		FloatCContainer certainties = (FloatCContainer) hashCContainers
+		FloatContainer certainties = (FloatContainer) hashCContainers
 				.get(DataRepresentation.UNCERTAINTY_RAW);
-		FloatCContainer normalizedCertainties = certainties.normalizeWithExternalExtrema(
+		FloatContainer normalizedCertainties = certainties.normalizeWithExternalExtrema(
 				invalidThreshold, validThreshold);
 		hashCContainers.put(DataRepresentation.UNCERTAINTY_NORMALIZED,
 				normalizedCertainties);
@@ -87,10 +87,10 @@ public class NumericalColumn extends AColumn {
 	 */
 	public void normalizeWithExternalExtrema(DataRepresentation sourceRep,
 			DataRepresentation targetRep, double dMin, double dMax) {
-		INumericalCContainer rawDimension = (INumericalCContainer) hashCContainers
+		INumericalContainer rawDimension = (INumericalContainer) hashCContainers
 				.get(sourceRep);
 
-		INumericalCContainer numericalContainer = rawDimension
+		INumericalContainer numericalContainer = rawDimension
 				.normalizeWithExternalExtrema(dMin, dMax);
 
 		hashCContainers.put(targetRep, numericalContainer);
@@ -136,7 +136,7 @@ public class NumericalColumn extends AColumn {
 		if (!hashCContainers.containsKey(dataRep))
 			throw new IllegalStateException(
 					"The requested data representation was not produced.");
-		return ((INumericalCContainer) hashCContainers.get(dataRep)).getMin();
+		return ((INumericalContainer) hashCContainers.get(dataRep)).getMin();
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class NumericalColumn extends AColumn {
 	 * @return the maximum - a double since it can contain all values
 	 */
 	public double getMax() {
-		return ((INumericalCContainer) hashCContainers.get(dataRep)).getMax();
+		return ((INumericalContainer) hashCContainers.get(dataRep)).getMax();
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class NumericalColumn extends AColumn {
 	 */
 	public void log10() {
 		hashCContainers.put(DataRepresentation.LOG10,
-				((INumericalCContainer) hashCContainers.get(DataRepresentation.RAW))
+				((INumericalContainer) hashCContainers.get(DataRepresentation.RAW))
 						.log(10));
 	}
 
@@ -180,7 +180,7 @@ public class NumericalColumn extends AColumn {
 	 */
 	public void log2() {
 		hashCContainers.put(DataRepresentation.LOG2,
-				((INumericalCContainer) hashCContainers.get(DataRepresentation.RAW))
+				((INumericalContainer) hashCContainers.get(DataRepresentation.RAW))
 						.log(2));
 	}
 
@@ -220,7 +220,7 @@ public class NumericalColumn extends AColumn {
 		int iNumberOfBuckets = (int) Math.sqrt(size());
 		Histogram histogram = new Histogram(iNumberOfBuckets);
 
-		FloatCContainer container = (FloatCContainer) hashCContainers
+		FloatContainer container = (FloatContainer) hashCContainers
 				.get(DataRepresentation.NORMALIZED);
 		for (int count = 0; count < container.size(); count++) {
 			// this works because the values in the container are already
@@ -253,7 +253,7 @@ public class NumericalColumn extends AColumn {
 		// ((FloatCContainer)
 		// hashCContainers.get(DataRepresentation.NORMALIZED)).iterator(recordVA);
 		// while (iterator.hasNext()) {
-		FloatCContainer container = (FloatCContainer) hashCContainers
+		FloatContainer container = (FloatContainer) hashCContainers
 				.get(DataRepresentation.NORMALIZED);
 
 		for (Integer recordID : recordVA) {
@@ -284,7 +284,7 @@ public class NumericalColumn extends AColumn {
 		if (hashCContainers.containsKey(dataRepresentation))
 			throw new IllegalStateException("The data representation "
 					+ dataRepresentation + " already exists in " + this);
-		ICContainer container = new FloatCContainer(representation);
+		IContainer container = new FloatContainer(representation);
 		hashCContainers.put(dataRepresentation, container);
 	}
 

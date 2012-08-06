@@ -27,7 +27,7 @@ import java.util.HashMap;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.event.data.ClusterProgressEvent;
 import org.caleydo.core.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.GeneralManager;

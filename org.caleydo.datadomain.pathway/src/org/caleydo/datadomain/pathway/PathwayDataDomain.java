@@ -166,7 +166,7 @@ public class PathwayDataDomain
 	/**
 	 * Adds the specified datacontainer to this datadomain.
 	 * 
-	 * @param dataContainer
+	 * @param tablePerspective
 	 */
 	public void addDataContainer(PathwayDataContainer dataContainer) {
 		if (dataContainer != null)

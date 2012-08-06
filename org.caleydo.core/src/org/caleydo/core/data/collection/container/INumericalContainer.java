@@ -17,15 +17,15 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.ccontainer;
+package org.caleydo.core.data.collection.container;
 
 /**
  * Extension of the ICContainer interface for numerical values
  * 
  * @author Alexander Lex
  */
-public interface INumericalCContainer
-	extends ICContainer {
+public interface INumericalContainer
+	extends IContainer {
 
 	/**
 	 * Execute the normalize method, where values in the container are normalized to values between 0 and 1,
@@ -41,7 +41,7 @@ public interface INumericalCContainer
 	 * @throws IllegalAttributeException
 	 *             when iMin is >= iMax
 	 */
-	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax);
+	public FloatContainer normalizeWithExternalExtrema(double dMin, double dMax);
 
 	/**
 	 * Returns the minimum of the container, double to fit all datatypes
@@ -71,6 +71,6 @@ public interface INumericalCContainer
 	 * 
 	 * @return
 	 */
-	public FloatCContainer log(int iBase);
+	public FloatContainer log(int iBase);
 
 }

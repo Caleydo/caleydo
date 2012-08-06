@@ -26,8 +26,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.IDataContainerBasedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -173,7 +173,7 @@ public class ViewNode extends ADefaultTemplateNode {
 		ElementLayout bodySpacingLayoutY = new ElementLayout("compGroupOverview");
 		// if (representedView instanceof ATableBasedView) {
 		// overviewDataContainerRenderer = new DataContainerListRenderer(this,
-		// view, dragAndDropController, new ArrayList<DataContainer>());
+		// view, dragAndDropController, new ArrayList<TablePerspective>());
 		// } else {
 		// overviewDataContainerRenderer = new DataContainerListRenderer(this,
 		// view, dragAndDropController, getDataContainers());
@@ -201,22 +201,22 @@ public class ViewNode extends ADefaultTemplateNode {
 	}
 
 	@Override
-	public List<DataContainer> getDataContainers() {
+	public List<TablePerspective> getDataContainers() {
 
 		if (representedView instanceof IDataContainerBasedView) {
 			return ((IDataContainerBasedView) representedView).getDataContainers();
-			// DataContainer dataContainer = ((ATableBasedView) representedView)
+			// TablePerspective tablePerspective = ((ATableBasedView) representedView)
 			// .getDataContainers();
-			// List<DataContainer> containers = new ArrayList<DataContainer>();
-			// containers.add(dataContainer);
+			// List<TablePerspective> containers = new ArrayList<TablePerspective>();
+			// containers.add(tablePerspective);
 			// return containers;
 		}
 
 		// List<ADimensionGroupData> groups = representedView.get();
 		// if (groups == null) {
-		return new ArrayList<DataContainer>();
+		return new ArrayList<TablePerspective>();
 		// }
-		// return new ArrayList<DataContainer>(groups);
+		// return new ArrayList<TablePerspective>(groups);
 	}
 
 
@@ -232,7 +232,7 @@ public class ViewNode extends ADefaultTemplateNode {
 	public void update() {
 		// if (representedView instanceof ATableBasedView) {
 		// overviewDataContainerRenderer
-		// .setDataContainers(new ArrayList<DataContainer>());
+		// .setDataContainers(new ArrayList<TablePerspective>());
 		// } else {
 		// overviewDataContainerRenderer
 		// .setDataContainers(getDataContainers());

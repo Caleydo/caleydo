@@ -27,9 +27,9 @@ import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.RecordSelectionManager;
@@ -82,7 +82,7 @@ public abstract class ATableBasedView extends AGLView implements
 
 	protected ATableBasedDataDomain dataDomain;
 
-	protected DataContainer dataContainer;
+	protected TablePerspective tablePerspective;
 
 	protected ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
@@ -162,19 +162,19 @@ public abstract class ATableBasedView extends AGLView implements
 	}
 
 	/**
-	 * @return the dataContainer, see {@link #dataContainer}
+	 * @return the tablePerspective, see {@link #tablePerspective}
 	 */
-	public DataContainer getDataContainer() {
-		return dataContainer;
+	public TablePerspective getDataContainer() {
+		return tablePerspective;
 	}
 
 	/**
-	 * @param dataContainer
-	 *            setter, see {@link #dataContainer}
+	 * @param tablePerspective
+	 *            setter, see {@link #tablePerspective}
 	 */
 	@Override
-	public void setDataContainer(DataContainer dataContainer) {
-		this.dataContainer = dataContainer;
+	public void setDataContainer(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
 	}
 
 	@Override
@@ -198,7 +198,7 @@ public abstract class ATableBasedView extends AGLView implements
 	public void initFromSerializableRepresentation(ASerializedView serialzedView) {
 		if (serialzedView instanceof ASerializedSingleDataContainerBasedView) {
 			ASerializedSingleDataContainerBasedView topSerializedView = (ASerializedSingleDataContainerBasedView) serialzedView;
-			dataContainer = dataDomain.getDataContainer(
+			tablePerspective = dataDomain.getDataContainer(
 					topSerializedView.getDataContainerKey());
 		}
 	}
@@ -256,7 +256,7 @@ public abstract class ATableBasedView extends AGLView implements
 
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
-		if (dataContainer != null && dataContainer.hasRecordPerspective(recordPerspectiveID)) {
+		if (tablePerspective != null && tablePerspective.hasRecordPerspective(recordPerspectiveID)) {
 
 			reactOnRecordVAChanges();
 			// reactOnExternalSelection();
@@ -266,7 +266,7 @@ public abstract class ATableBasedView extends AGLView implements
 
 	@Override
 	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
-		if (dataContainer.hasDimensionPerspective(dimensionPerspectiveID)) {
+		if (tablePerspective.hasDimensionPerspective(dimensionPerspectiveID)) {
 			setDisplayListDirty();
 		}
 	}
@@ -340,19 +340,19 @@ public abstract class ATableBasedView extends AGLView implements
 					if (selectionDelta.getIDType() == recordIDType) {
 						id = item.getID();
 						idType = recordIDType;
-						if (dataContainer == null) {
+						if (tablePerspective == null) {
 							Logger.log(new Status(Status.ERROR, this.toString(),
-									"dataContainer was null"));
+									"tablePerspective was null"));
 							return;
 						}
-						if (!dataContainer.getRecordPerspective().getVirtualArray()
+						if (!tablePerspective.getRecordPerspective().getVirtualArray()
 								.contains(id))
 							return;
 
 					} else if (selectionDelta.getIDType() == dimensionIDType) {
 						id = item.getID();
 						idType = dimensionIDType;
-						if (!dataContainer.getDimensionPerspective().getVirtualArray()
+						if (!tablePerspective.getDimensionPerspective().getVirtualArray()
 								.contains(id))
 							return;
 					} else
@@ -528,10 +528,10 @@ public abstract class ATableBasedView extends AGLView implements
 	}
 
 	@Override
-	public List<DataContainer> getDataContainers() {
-		ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
-		dataContainers.add(dataContainer);
-		return dataContainers;
+	public List<TablePerspective> getDataContainers() {
+		ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>();
+		tablePerspectives.add(tablePerspective);
+		return tablePerspectives;
 	}
 
 	/**
@@ -566,9 +566,9 @@ public abstract class ATableBasedView extends AGLView implements
 		}
 		VirtualArray<?, ?, ?> va;
 		if (forRecord)
-			va = dataContainer.getRecordPerspective().getVirtualArray();
+			va = tablePerspective.getRecordPerspective().getVirtualArray();
 		else
-			va = dataContainer.getDimensionPerspective().getVirtualArray();
+			va = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		int pixelHeight = va.size() * pixelPerElement;
 		return pixelHeight;

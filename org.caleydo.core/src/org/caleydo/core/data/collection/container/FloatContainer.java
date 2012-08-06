@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.ccontainer;
+package org.caleydo.core.data.collection.container;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.conversion.ConversionTools;
@@ -28,8 +28,8 @@ import org.caleydo.core.util.conversion.ConversionTools;
  * 
  * @author Alexander Lex
  */
-public class FloatCContainer
-	implements INumericalCContainer {
+public class FloatContainer
+	implements INumericalContainer {
 
 	private float[] container;
 
@@ -43,7 +43,7 @@ public class FloatCContainer
 	 * 
 	 * @param container the float array
 	 */
-	public FloatCContainer(final float[] container) {
+	public FloatContainer(final float[] container) {
 
 		this.container = container;
 	}
@@ -70,8 +70,8 @@ public class FloatCContainer
 	 * 
 	 * @return the iterator for the container
 	 */
-	public FloatCContainerIterator iterator() {
-		return new FloatCContainerIterator(this);
+	public FloatContainerIterator iterator() {
+		return new FloatContainerIterator(this);
 	}
 
 	/**
@@ -79,8 +79,8 @@ public class FloatCContainer
 	 * 
 	 * @return the iterator for the container
 	 */
-	public FloatCContainerIterator iterator(VirtualArray<?, ?, ?> virtualArray) {
-		return new FloatCContainerIterator(this, virtualArray);
+	public FloatContainerIterator iterator(VirtualArray<?, ?, ?> virtualArray) {
+		return new FloatContainerIterator(this, virtualArray);
 	}
 
 	@Override
@@ -100,18 +100,18 @@ public class FloatCContainer
 	}
 
 	@Override
-	public FloatCContainer normalize() {
+	public FloatContainer normalize() {
 
-		return new FloatCContainer(ConversionTools.normalize(container, (int) getMin(),
+		return new FloatContainer(ConversionTools.normalize(container, (int) getMin(),
 				(int) getMax()));
 	}
 
 	@Override
-	public FloatCContainer normalizeWithExternalExtrema(final double min, final double max) {
+	public FloatContainer normalizeWithExternalExtrema(final double min, final double max) {
 		if (min >= max)
 			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
 
-		return new FloatCContainer(ConversionTools.normalize(container, (float) min,
+		return new FloatContainer(ConversionTools.normalize(container, (float) min,
 				(float) max));
 
 	}
@@ -134,7 +134,7 @@ public class FloatCContainer
 	// }
 
 	@Override
-	public FloatCContainer log(int base) {
+	public FloatContainer log(int base) {
 		float[] target = new float[container.length];
 
 		float tmp;
@@ -148,7 +148,7 @@ public class FloatCContainer
 			}
 		}
 
-		return new FloatCContainer(target);
+		return new FloatContainer(target);
 	}
 
 	/**

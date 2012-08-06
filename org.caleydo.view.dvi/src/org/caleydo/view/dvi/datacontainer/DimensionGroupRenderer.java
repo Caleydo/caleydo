@@ -23,7 +23,7 @@ import java.awt.geom.Point2D;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -38,19 +38,19 @@ public class DimensionGroupRenderer extends ADraggableColorRenderer {
 	public final static int TEXT_ROTATION_180 = 180;
 	public final static int TEXT_ROTATION_270 = 270;
 
-	private DataContainer dataContainer;
+	private TablePerspective tablePerspective;
 
 	private IDVINode node;
 	protected boolean showText = true;
 	protected int textRotation = 0;
 	protected int textHeightPixels;
 
-	public DimensionGroupRenderer(DataContainer dataContainer, AGLView view,
+	public DimensionGroupRenderer(TablePerspective tablePerspective, AGLView view,
 			IDVINode node, float[] color) {
 		super(color,
 				new float[] { color[0] - 0.2f, color[1] - 0.2f, color[2] - 0.2f, 1f }, 2,
 				view);
-		this.setDataContainer(dataContainer);
+		this.setDataContainer(tablePerspective);
 		this.view = view;
 		this.node = node;
 	}
@@ -71,7 +71,7 @@ public class DimensionGroupRenderer extends ADraggableColorRenderer {
 			case TEXT_ROTATION_0:
 				textRenderer.renderTextInBounds(
 						gl,
-						dataContainer.getLabel(),
+						tablePerspective.getLabel(),
 						pixelGLConverter.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS),
 						pixelGLConverter.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS),
 						0.1f,
@@ -96,7 +96,7 @@ public class DimensionGroupRenderer extends ADraggableColorRenderer {
 				gl.glRotatef(90, 0, 0, 1);
 				textRenderer.renderTextInBounds(
 						gl,
-						dataContainer.getLabel(),
+						tablePerspective.getLabel(),
 						0,
 						0,
 						0,
@@ -120,7 +120,7 @@ public class DimensionGroupRenderer extends ADraggableColorRenderer {
 				gl.glRotatef(-90, 0, 0, 1);
 				textRenderer.renderTextInBounds(
 						gl,
-						dataContainer.getLabel(),
+						tablePerspective.getLabel(),
 						0,
 						0,
 						0,
@@ -137,17 +137,17 @@ public class DimensionGroupRenderer extends ADraggableColorRenderer {
 
 	}
 
-	public void setDataContainer(DataContainer dimensionGroupData) {
-		this.dataContainer = dimensionGroupData;
+	public void setDataContainer(TablePerspective dimensionGroupData) {
+		this.tablePerspective = dimensionGroupData;
 	}
 
-	public DataContainer getDataContainer() {
-		return dataContainer;
+	public TablePerspective getDataContainer() {
+		return tablePerspective;
 	}
 
 	@Override
 	protected Point2D getPosition() {
-		return node.getBottomDataContainerAnchorPoints(dataContainer).getFirst();
+		return node.getBottomDataContainerAnchorPoints(tablePerspective).getFirst();
 	}
 
 	public boolean isShowText() {

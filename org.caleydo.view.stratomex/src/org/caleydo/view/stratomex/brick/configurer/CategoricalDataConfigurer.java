@@ -25,7 +25,7 @@ import java.util.HashSet;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -58,8 +58,8 @@ public class CategoricalDataConfigurer extends ATableBasedDataConfigurer {
 	protected static final int HEATMAP_BUTTON_ID = 1;
 	protected static final int HISTOGRAM_BUTTON_ID = 3;
 
-	public CategoricalDataConfigurer(DataContainer dataContainer) {
-		super(dataContainer);
+	public CategoricalDataConfigurer(TablePerspective tablePerspective) {
+		super(tablePerspective);
 	}
 
 	@Override

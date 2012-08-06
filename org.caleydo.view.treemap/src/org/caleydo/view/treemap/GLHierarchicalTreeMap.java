@@ -154,7 +154,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 
 	@Override
 	public void initData() {
-		bDisplayData = dataContainer.getRecordPerspective().getTree() != null;
+		bDisplayData = tablePerspective.getRecordPerspective().getTree() != null;
 		for (GLTreeMap view : thumbnailTreemapViews)
 			view.initData();
 	}
@@ -354,7 +354,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 				SelectionType.SELECTION);
 		if (elements.size() == 1 /* && thumbnailTreemapViews.size() < 3 */) {
 
-			ClusterNode dataRoot = dataContainer.getRecordPerspective().getTree()
+			ClusterNode dataRoot = tablePerspective.getRecordPerspective().getTree()
 					.getNodeByNumber(elements.iterator().next());
 
 			mainTreeMapView.setRemotePickingManager(null, 0);
@@ -503,7 +503,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		if (dataDomain != null) {
-			if (dataContainer.getRecordPerspective().getTree() != null) {
+			if (tablePerspective.getRecordPerspective().getTree() != null) {
 				for (GLTreeMap view : thumbnailTreemapViews) {
 					view.setDataDomain(dataDomain);
 				}

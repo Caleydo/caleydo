@@ -21,12 +21,12 @@ package org.caleydo.util.r.filter;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.RecordMetaFilter;
 import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
 import org.caleydo.core.data.filter.representation.AFilterRepresentation;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
@@ -48,8 +48,8 @@ public class FilterRepresentationTwoSidedTTest extends
 	private final static String TITLE = "Two-sided T-Test Filter";
 
 	private ATableBasedDataDomain dataDomain;
-	private DataContainer dataContainer1;
-	private DataContainer dataContainer2;
+	private TablePerspective dataContainer1;
+	private TablePerspective dataContainer2;
 
 	private float pValue = 1f;
 
@@ -171,25 +171,25 @@ public class FilterRepresentationTwoSidedTTest extends
 		this.dataDomain = dataDomain;
 	}
 
-	public void setDataContainer1(DataContainer dataContainer1) {
+	public void setDataContainer1(TablePerspective dataContainer1) {
 		this.dataContainer1 = dataContainer1;
 	}
 
 	/**
 	 * @return the dataContainer1, see {@link #dataContainer1}
 	 */
-	public DataContainer getDataContainer1() {
+	public TablePerspective getDataContainer1() {
 		return dataContainer1;
 	}
 
-	public void setDataContainer2(DataContainer dataContainer2) {
+	public void setDataContainer2(TablePerspective dataContainer2) {
 		this.dataContainer2 = dataContainer2;
 	}
 
 	/**
 	 * @return the dataContainer2, see {@link #dataContainer2}
 	 */
-	public DataContainer getDataContainer2() {
+	public TablePerspective getDataContainer2() {
 		return dataContainer2;
 	}
 }

@@ -17,35 +17,26 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-/**
- * 
- */
-package org.caleydo.core.data.container;
+package org.caleydo.core.data.collection.container;
 
 /**
- * Container for average values and related information such as standard deviations
+ * Interface for iterators on CContainers
  * 
  * @author Alexander Lex
  */
-public class Average {
-
-	/** The average value (mean) of the record */
-	double arithmeticMean;
-	/** The standard deviation from the {@link #arithmeticMean} */
-	double standardDeviation;
+public interface IContainerIterator {
 
 	/**
-	 * @return the arithmeticMean, see {@link #arithmeticMean}
+	 * Returns true if another element exists in the container
+	 * 
+	 * @return false if no more elements exist
 	 */
-	public double getArithmeticMean() {
-		return arithmeticMean;
-	}
+	public boolean hasNext();
 
 	/**
-	 * @return the standardDeviation, see {@link #standardDeviation}
+	 * Removes the element last called by next or previous from the virtual array. Works only if virtual
+	 * arrays are enabled, throws exception if called without an enabled virtual array.
 	 */
-	public double getStandardDeviation() {
-		return standardDeviation;
-	}
+	public void remove();
 
 }

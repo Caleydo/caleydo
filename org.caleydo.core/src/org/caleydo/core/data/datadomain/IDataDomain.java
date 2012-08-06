@@ -74,21 +74,21 @@ public interface IDataDomain {
 	// * @return The dimension groups that have been created for this
 	// IDataDomain object (data set).
 	// */
-	// public List<DataContainer> getDimensionGroups();
+	// public List<TablePerspective> getDimensionGroups();
 	//
 	// /**
 	// * Sets the dimension groups for this IDataDomain object (data set).
 	// *
 	// * @param dimensionGroups
 	// */
-	// public void setDimensionGroups(List<DataContainer> dimensionGroups);
+	// public void setDimensionGroups(List<TablePerspective> dimensionGroups);
 	//
 	// /**
 	// * Adds a dimension group to this IDataDomain object (data set).
 	// *
 	// * @param dimensionGroup
 	// */
-	// public void addDimensionGroup(DataContainer dimensionGroup);
+	// public void addDimensionGroup(TablePerspective dimensionGroup);
 
 	public String getDataDomainType();
 

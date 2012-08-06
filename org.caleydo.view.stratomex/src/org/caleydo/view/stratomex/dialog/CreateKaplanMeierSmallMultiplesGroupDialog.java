@@ -22,13 +22,13 @@ package org.caleydo.view.stratomex.dialog;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.data.perspective.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
@@ -52,11 +52,11 @@ import org.eclipse.swt.widgets.TableItem;
  */
 public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog {
 
-	private DataContainer dataContainer;
+	private TablePerspective tablePerspective;
 
 	private Composite parent;
 
-	private ArrayList<DataContainer> kaplanMeierDimensionGroupDataList = new ArrayList<DataContainer>();
+	private ArrayList<TablePerspective> kaplanMeierDimensionGroupDataList = new ArrayList<TablePerspective>();
 
 	/**
 	 * Hash between the converted record perspective to the original one from
@@ -69,9 +69,9 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog 
 	private Table possibleKaplanMeierDataTable;
 
 	public CreateKaplanMeierSmallMultiplesGroupDialog(Shell parentShell,
-			DataContainer dataContainer) {
+			TablePerspective tablePerspective) {
 		super(parentShell);
-		this.dataContainer = dataContainer;
+		this.tablePerspective = tablePerspective;
 	}
 
 	@Override
@@ -100,8 +100,8 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog 
 		descriptionLabel.setLayoutData(data);
 
 		VirtualArray<?, ?, ?> va = null;
-		// if (dataContainer.getDataDomain().isColumnDimension())
-		va = dataContainer.getDataDomain().getTable().getDefaultDimensionPerspective()
+		// if (tablePerspective.getDataDomain().isColumnDimension())
+		va = tablePerspective.getDataDomain().getTable().getDefaultDimensionPerspective()
 				.getVirtualArray();
 
 		data = new GridData();
@@ -134,7 +134,7 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog 
 				continue;
 
 			ATableBasedDataDomain tableBasedDataDomain = (ATableBasedDataDomain) dataDomain;
-			if (!(tableBasedDataDomain.getRecordIDCategory() == dataContainer
+			if (!(tableBasedDataDomain.getRecordIDCategory() == tablePerspective
 					.getDataDomain().getRecordIDType().getIDCategory()))
 				continue;
 
@@ -192,7 +192,7 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog 
 				ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) item
 						.getData("dataDomain");
 
-				RecordPerspective foreignRecordPerspective = dataContainer
+				RecordPerspective foreignRecordPerspective = tablePerspective
 						.getRecordPerspective();
 
 				RecordPerspective convertedRecordPerspective = dataDomain
@@ -204,7 +204,7 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog 
 				dataDomain.getTable().registerRecordPerspective(
 						convertedRecordPerspective);
 
-				DataContainer kaplanMeierDimensionGroup = dataDomain.getDataContainer(
+				TablePerspective kaplanMeierDimensionGroup = dataDomain.getDataContainer(
 						convertedRecordPerspective.getPerspectiveID(),
 						singleDimensionPerspective.getPerspectiveID());
 
@@ -218,7 +218,7 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog 
 
 	}
 
-	public ArrayList<DataContainer> getKaplanMeierDimensionGroupDataList() {
+	public ArrayList<TablePerspective> getKaplanMeierDimensionGroupDataList() {
 		return kaplanMeierDimensionGroupDataList;
 	}
 

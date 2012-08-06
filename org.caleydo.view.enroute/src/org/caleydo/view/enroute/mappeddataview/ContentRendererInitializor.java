@@ -5,8 +5,8 @@ package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.Set;
 
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.perspective.ADataPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -23,38 +23,38 @@ public class ContentRendererInitializor implements IContentRendererInitializor {
 	private Integer geneID;
 	private Integer davidID;
 	private GeneticDataDomain dataDomain;
-	private DataContainer dataContainer;
-	private ADataPerspective<?, ?, ?, ?> experimentPerspective;
+	private TablePerspective tablePerspective;
+	private AVariablePerspective<?, ?, ?, ?> experimentPerspective;
 	private AGLView view;
 	private MappedDataRenderer mappedDataRenderer;
 	private Group group;
 
-	public ContentRendererInitializor(DataContainer dataContainer, int davidId,
+	public ContentRendererInitializor(TablePerspective tablePerspective, int davidId,
 			MappedDataRenderer mappedDataRenderer, AGLView view) {
 
-		this.dataContainer = dataContainer;
+		this.tablePerspective = tablePerspective;
 		this.davidID = davidId;
 		this.mappedDataRenderer = mappedDataRenderer;
 		this.view = view;
 
-		dataDomain = (GeneticDataDomain) dataContainer.getDataDomain();
+		dataDomain = (GeneticDataDomain) tablePerspective.getDataDomain();
 
 		if (dataDomain.isGeneRecord()) {
-			experimentPerspective = dataContainer.getDimensionPerspective();
+			experimentPerspective = tablePerspective.getDimensionPerspective();
 		} else {
-			experimentPerspective = dataContainer.getRecordPerspective();
+			experimentPerspective = tablePerspective.getRecordPerspective();
 		}
 
 		if (dataDomain.isGeneRecord()) {
-			group = dataContainer.getDimensionGroup();
+			group = tablePerspective.getDimensionGroup();
 			if (group == null) {
-				group = dataContainer.getDimensionPerspective().getVirtualArray()
+				group = tablePerspective.getDimensionPerspective().getVirtualArray()
 						.getGroupList().get(0);
 			}
 		} else {
-			group = dataContainer.getRecordGroup();
+			group = tablePerspective.getRecordGroup();
 			if (group == null) {
-				group = dataContainer.getRecordPerspective().getVirtualArray()
+				group = tablePerspective.getRecordPerspective().getVirtualArray()
 						.getGroupList().get(0);
 			}
 		}
@@ -95,11 +95,11 @@ public class ContentRendererInitializor implements IContentRendererInitializor {
 	}
 
 	/**
-	 * @return the dataContainer, see {@link #dataContainer}
+	 * @return the tablePerspective, see {@link #tablePerspective}
 	 */
 	@Override
-	public DataContainer getDataContainer() {
-		return dataContainer;
+	public TablePerspective getDataContainer() {
+		return tablePerspective;
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class ContentRendererInitializor implements IContentRendererInitializor {
 	 * @return the experimentPerspective, see {@link #experimentPerspective}
 	 */
 	@Override
-	public ADataPerspective<?, ?, ?, ?> getExperimentPerspective() {
+	public AVariablePerspective<?, ?, ?, ?> getExperimentPerspective() {
 		return experimentPerspective;
 	}
 

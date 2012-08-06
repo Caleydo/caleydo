@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -45,16 +45,16 @@ public abstract class ABundleConnector
 	protected final static int DATACONTAINER_OFFSET_Y = 7;
 	protected final static int DATACONTAINER_TO_BUNDLE_OFFSET_Y = 14;
 
-	protected List<DataContainer> commonDataContainers;
+	protected List<TablePerspective> commonDataContainers;
 	protected int bandWidthPixels;
-	protected Map<DataContainer, Integer> bandWidthMap = new HashMap<DataContainer, Integer>();
+	protected Map<TablePerspective, Integer> bandWidthMap = new HashMap<TablePerspective, Integer>();
 	protected Point2D bundlingPoint;
 	protected boolean use4ControlPointsForBandBundleConnection;
 	protected GLDataViewIntegrator view;
 
 	public ABundleConnector(IDVINode node, PixelGLConverter pixelGLconverter,
 			ConnectionBandRenderer connectionBandRenderer,
-			List<DataContainer> commonDataContainers, int minBandWidth, int maxBandWidth,
+			List<TablePerspective> commonDataContainers, int minBandWidth, int maxBandWidth,
 			int maxDataAmount, IDVINode otherNode, ViewFrustum viewFrustum,
 			GLDataViewIntegrator view)
 	{
@@ -66,32 +66,32 @@ public abstract class ABundleConnector
 	}
 
 	protected float calcXPositionOfBundlingPoint(IDVINode node,
-			List<DataContainer> dataContainers)
+			List<TablePerspective> tablePerspectives)
 	{
 		float summedX = 0;
 
-		for (DataContainer dataContainer : dataContainers)
+		for (TablePerspective tablePerspective : tablePerspectives)
 		{
 			Pair<Point2D, Point2D> anchorPoints = node
-					.getBottomDataContainerAnchorPoints(dataContainer);
+					.getBottomDataContainerAnchorPoints(tablePerspective);
 			if (anchorPoints == null)
 				return (float) node.getPosition().getX();
 			summedX += anchorPoints.getFirst().getX() + anchorPoints.getSecond().getX();
 		}
 
-		return summedX / ((float) dataContainers.size() * 2.0f);
+		return summedX / ((float) tablePerspectives.size() * 2.0f);
 	}
 
 	protected void calcBandWidths(int minBandWidth, int maxBandWidth, int maxDataAmount)
 	{
 		bandWidthPixels = 0;
 
-		for (DataContainer dataContainer : commonDataContainers)
+		for (TablePerspective tablePerspective : commonDataContainers)
 		{
-			int width = calcDimensionGroupBandWidthPixels(dataContainer, minBandWidth,
+			int width = calcDimensionGroupBandWidthPixels(tablePerspective, minBandWidth,
 					maxBandWidth, maxDataAmount);
 			bandWidthPixels += width;
-			bandWidthMap.put(dataContainer, width);
+			bandWidthMap.put(tablePerspective, width);
 		}
 
 		if (bandWidthPixels > maxBandWidth)
@@ -101,7 +101,7 @@ public abstract class ABundleConnector
 
 			int newBandWidth = 0;
 
-			for (DataContainer dimensionGroupData : commonDataContainers)
+			for (TablePerspective dimensionGroupData : commonDataContainers)
 			{
 				int width = bandWidthMap.get(dimensionGroupData);
 				int newWidth = width
@@ -115,7 +115,7 @@ public abstract class ABundleConnector
 		}
 	}
 
-	protected int calcDimensionGroupBandWidthPixels(DataContainer dataContainer,
+	protected int calcDimensionGroupBandWidthPixels(TablePerspective tablePerspective,
 			int minBandWidth, int maxBandWidth, int maxDataAmount)
 	{
 		// TODO: implement properly

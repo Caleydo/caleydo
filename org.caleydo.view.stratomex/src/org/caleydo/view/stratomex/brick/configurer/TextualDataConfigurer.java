@@ -25,7 +25,7 @@ import java.util.HashSet;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -58,8 +58,8 @@ public class TextualDataConfigurer
 	protected static final int PARCOORDS_BUTTON_ID = 2;
 	protected static final int TAGCLOUD_BUTTON_ID = 3;
 
-	public TextualDataConfigurer(DataContainer dataContainer) {
-		super(dataContainer);
+	public TextualDataConfigurer(TablePerspective tablePerspective) {
+		super(tablePerspective);
 	}
 
 	@Override

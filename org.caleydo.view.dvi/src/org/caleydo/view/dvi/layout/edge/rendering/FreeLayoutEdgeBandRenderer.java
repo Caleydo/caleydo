@@ -21,7 +21,7 @@ package org.caleydo.view.dvi.layout.edge.rendering;
 
 import java.util.List;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.dvi.Edge;
@@ -45,13 +45,13 @@ public class FreeLayoutEdgeBandRenderer extends AEdgeBandRenderer {
 	//
 	// maxDataAmount = view.getMaxDataAmount();
 	//
-	// List<DataContainer> commonDataContainersNode1 = new
-	// ArrayList<DataContainer>();
-	// List<DataContainer> commonDataContainersNode2 = new
-	// ArrayList<DataContainer>();
+	// List<TablePerspective> commonDataContainersNode1 = new
+	// ArrayList<TablePerspective>();
+	// List<TablePerspective> commonDataContainersNode2 = new
+	// ArrayList<TablePerspective>();
 	//
-	// for (DataContainer dimensionGroupData1 : node1.getDataContainers()) {
-	// for (DataContainer dimensionGroupData2 : node2.getDataContainers()) {
+	// for (TablePerspective dimensionGroupData1 : node1.getDataContainers()) {
+	// for (TablePerspective dimensionGroupData2 : node2.getDataContainers()) {
 	// if (dimensionGroupData1.getID() == dimensionGroupData2.getID()) {
 	// commonDataContainersNode1.add(dimensionGroupData1);
 	// commonDataContainersNode2.add(dimensionGroupData2);
@@ -158,8 +158,8 @@ public class FreeLayoutEdgeBandRenderer extends AEdgeBandRenderer {
 	protected void determineNodeConnectors(
 			Pair<ANodeConnector, ANodeConnector> nodeConnectors, IDVINode leftNode,
 			IDVINode rightNode, IDVINode bottomNode, IDVINode topNode,
-			List<DataContainer> commonDataContainersNode1,
-			List<DataContainer> commonDataContainersNode2,
+			List<TablePerspective> commonDataContainersNode1,
+			List<TablePerspective> commonDataContainersNode2,
 			ConnectionBandRenderer connectionBandRenderer) {
 
 		float spacingX = (float) ((rightNode.getPosition().getX() - rightNode.getWidth() / 2.0f) - (leftNode

@@ -25,7 +25,7 @@ import java.util.Iterator;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
-import org.caleydo.core.data.perspective.ADataPerspective;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
@@ -52,7 +52,7 @@ import org.caleydo.core.manager.GeneralManager;
  * @param <FilterType>
  * @param <VA>
  */
-public abstract class FilterManager<PerspectiveType extends ADataPerspective<?, ?, ?, ?>, DeltaType extends VirtualArrayDelta<?>, FilterType extends Filter<DeltaType>, VA extends VirtualArray<?, DeltaType, ?>>
+public abstract class FilterManager<PerspectiveType extends AVariablePerspective<?, ?, ?, ?>, DeltaType extends VirtualArrayDelta<?>, FilterType extends Filter<DeltaType>, VA extends VirtualArray<?, DeltaType, ?>>
 	implements IListenerOwner {
 
 	// private final IFilterFactory<FilterType> factory;

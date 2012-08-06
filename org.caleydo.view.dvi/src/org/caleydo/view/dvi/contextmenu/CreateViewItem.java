@@ -19,20 +19,20 @@
  *******************************************************************************/
 package org.caleydo.view.dvi.contextmenu;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.dvi.event.CreateViewFromDataContainerEvent;
 
 public class CreateViewItem extends AContextMenuItem {
 
 	public CreateViewItem(String viewName, String viewType, IDataDomain dataDomain,
-			DataContainer dataContainer) {
+			TablePerspective tablePerspective) {
 
 		setLabel(viewName);
 
 		CreateViewFromDataContainerEvent event = new CreateViewFromDataContainerEvent(
-				viewType, dataDomain, dataContainer);
+				viewType, dataDomain, tablePerspective);
 		event.setSender(this);
 		registerEvent(event);
 	}

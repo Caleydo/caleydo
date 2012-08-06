@@ -87,7 +87,7 @@ public class GLKaplanMeier extends ATableBasedView {
 
 	/**
 	 * The maximum time value that is mapped to the x axis. If this value is not
-	 * set externally, it is calculated using the dataContainer.
+	 * set externally, it is calculated using the tablePerspective.
 	 */
 	private float maxAxisTime = Float.MIN_VALUE;
 
@@ -146,7 +146,7 @@ public class GLKaplanMeier extends ATableBasedView {
 
 	private void createPickingListeners() {
 
-		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
 				.getVirtualArray();
 
 		for (Group group : recordVA.getGroupList()) {
@@ -179,10 +179,10 @@ public class GLKaplanMeier extends ATableBasedView {
 	}
 
 	private void calculateMaxAxisTime() {
-		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
 				.getVirtualArray();
 
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 
 		maxAxisTime = 0;
@@ -193,7 +193,7 @@ public class GLKaplanMeier extends ATableBasedView {
 			List<Integer> recordIDs = recordVA.getIDsOfGroup(group.getGroupIndex());
 			for (int recordID = 0; recordID < recordIDs.size(); recordID++) {
 
-				float rawValue = dataContainer
+				float rawValue = tablePerspective
 						.getDataDomain()
 						.getTable()
 						.getFloat(DataRepresentation.RAW, recordIDs.get(recordID),
@@ -258,7 +258,7 @@ public class GLKaplanMeier extends ATableBasedView {
 
 		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
-		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
 				.getVirtualArray();
 
 		// do not fill curve if multiple curves are rendered in this plot
@@ -270,8 +270,8 @@ public class GLKaplanMeier extends ATableBasedView {
 			List<Integer> recordIDs = recordVA.getIDsOfGroup(group.getGroupIndex());
 
 			int colorIndex = 0;
-			if (dataContainer.getRecordGroup() != null)
-				colorIndex = dataContainer.getRecordGroup().getGroupIndex();
+			if (tablePerspective.getRecordGroup() != null)
+				colorIndex = tablePerspective.getRecordGroup().getGroupIndex();
 			else
 				colorIndex = group.getGroupIndex();
 
@@ -382,7 +382,7 @@ public class GLKaplanMeier extends ATableBasedView {
 
 		// if (recordIDs.size() == 0)
 		// return;
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 
 		ArrayList<Float> dataVector = new ArrayList<Float>();
@@ -390,7 +390,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		// maxAxisTime = Float.MIN_VALUE;
 
 		for (int recordID = 0; recordID < recordIDs.size(); recordID++) {
-			float normalizedValue = dataContainer
+			float normalizedValue = tablePerspective
 					.getDataDomain()
 					.getTable()
 					.getFloat(DataRepresentation.NORMALIZED, recordIDs.get(recordID),
@@ -482,7 +482,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		float leftAxisSpacing = (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
 				.getGLWidthForPixelWidth(LEFT_AXIS_SPACING_PIXELS) : 0);
 		// float TIME_BINS = 20;
-		// float TIME_BINS = (float) dataContainer.getDataDomain().getTable()
+		// float TIME_BINS = (float) tablePerspective.getDataDomain().getTable()
 		// .getRawForNormalized(1);
 
 		float timeBinStepSize = 1 / Math.abs(maxAxisTime);

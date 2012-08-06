@@ -21,7 +21,7 @@ package org.caleydo.view.stratomex.brick.configurer;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -63,10 +63,10 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 	protected static final int CLUSTER_BUTTON_ID = 1;
 
-	protected DataContainer dataContainer;
+	protected TablePerspective tablePerspective;
 
-	public ATableBasedDataConfigurer(DataContainer dimensionGroupData) {
-		this.dataContainer = dimensionGroupData;
+	public ATableBasedDataConfigurer(TablePerspective dimensionGroupData) {
+		this.tablePerspective = dimensionGroupData;
 	}
 
 	protected ArrayList<ElementLayout> createHeaderBarElements(

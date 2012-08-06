@@ -17,37 +17,26 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.container;
+package org.caleydo.core.data.collection.container;
 
-public class FoldChangeSettings {
+/**
+ * Interface for the low level containers which hold the data for the dimensions
+ * 
+ * @author Alexander Lex
+ */
+public interface IContainer {
 
-	public enum FoldChangeEvaluator {
-		GREATER,
-		LESS,
-		BOTH
-	}
+	/**
+	 * Returns the size of the container
+	 * 
+	 * @return the size of the container
+	 */
+	public int size();
 
-	double ratio = -1;
+	/**
+	 * Brings any dataset into a format between 0 and 1. This is used for drawing. For nominal data the first
+	 * value is 0, the last value is 1
+	 */
+	public FloatContainer normalize();
 
-	double ratioUncertainty = -1;
-
-	FoldChangeEvaluator evaluator;
-
-	public FoldChangeSettings(double ratio, double ratioUncertainty, FoldChangeEvaluator evaluator) {
-		this.ratio = ratio;
-		this.ratioUncertainty = ratioUncertainty;
-		this.evaluator = evaluator;
-	}
-
-	public FoldChangeEvaluator getEvaluator() {
-		return evaluator;
-	}
-
-	public double getRatio() {
-		return ratio;
-	}
-
-	public double getRatioUncertainty() {
-		return ratioUncertainty;
-	}
 }

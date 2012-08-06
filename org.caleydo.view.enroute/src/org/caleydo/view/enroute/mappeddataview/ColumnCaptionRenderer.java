@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.ADataPerspective;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -43,11 +43,11 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 	private CaleydoTextRenderer textRenderer;
 	private PixelGLConverter pixelGLConverter;
 	private String label;
-	ADataPerspective<?, ?, ?, ?> samplePerspective;
+	AVariablePerspective<?, ?, ?, ?> samplePerspective;
 	APickingListener groupPickingListener;
 
 	public ColumnCaptionRenderer(AGLView parentView, MappedDataRenderer parent,
-			Group group, ADataPerspective<?, ?, ?, ?> samplePerspective,
+			Group group, AVariablePerspective<?, ?, ?, ?> samplePerspective,
 			ATableBasedDataDomain dataDomain) {
 		super(parentView, parent);
 		this.textRenderer = parentView.getTextRenderer();

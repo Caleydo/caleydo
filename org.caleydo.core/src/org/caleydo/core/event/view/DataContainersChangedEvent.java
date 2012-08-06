@@ -19,12 +19,12 @@
  *******************************************************************************/
 package org.caleydo.core.event.view;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
 /**
- * This event should be triggered when the {@link DataContainer}(s) of a view change(s).
+ * This event should be triggered when the {@link TablePerspective}(s) of a view change(s).
  * 
  * @author Partl
  * @author Alexander Lex

@@ -27,8 +27,8 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.container.Average;
-import org.caleydo.core.data.container.ContainerStatistics;
+import org.caleydo.core.data.perspective.table.Average;
+import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -842,7 +842,7 @@ public class GLPathwayContentCreator {
 			// taken
 			for (Integer expressionIndex : expressionIndices) {
 
-				Average average = ContainerStatistics.calculateAverage(selectedSamplesVA,
+				Average average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA,
 						geneticDataDomain.getTable(), expressionIndex);
 
 				return average;

@@ -20,14 +20,14 @@
 package org.caleydo.util.r.filter;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.container.FoldChangeSettings;
-import org.caleydo.core.data.container.FoldChangeSettings.FoldChangeEvaluator;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.RecordMetaFilter;
 import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
 import org.caleydo.core.data.filter.representation.AFilterRepresentation;
+import org.caleydo.core.data.perspective.table.FoldChangeSettings;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.table.FoldChangeSettings.FoldChangeEvaluator;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
@@ -59,8 +59,8 @@ public class FilterRepresentationFoldChange extends
 	private final static String TITLE = "Fold Change Filter";
 
 	private ATableBasedDataDomain dataDomain;
-	private DataContainer dataContainer1;
-	private DataContainer dataContainer2;
+	private TablePerspective dataContainer1;
+	private TablePerspective dataContainer2;
 
 	private float foldChange = 3;
 	private float foldChangeUncertainty = 1.2f;
@@ -281,11 +281,11 @@ public class FilterRepresentationFoldChange extends
 		this.histogram = histogram;
 	}
 
-	public void setDataContainer1(DataContainer dataContainer1) {
+	public void setDataContainer1(TablePerspective dataContainer1) {
 		this.dataContainer1 = dataContainer1;
 	}
 
-	public void setDataContainer2(DataContainer dataContainer2) {
+	public void setDataContainer2(TablePerspective dataContainer2) {
 		this.dataContainer2 = dataContainer2;
 	}
 

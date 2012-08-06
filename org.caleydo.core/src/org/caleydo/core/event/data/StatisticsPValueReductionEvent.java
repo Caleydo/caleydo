@@ -21,29 +21,29 @@ package org.caleydo.core.event.data;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 
 public class StatisticsPValueReductionEvent
 	extends AEvent {
 
-	private ArrayList<DataContainer> dataContainers;
+	private ArrayList<TablePerspective> tablePerspectives;
 
-	public StatisticsPValueReductionEvent(ArrayList<DataContainer> dataContainers) {
-		this.dataContainers = dataContainers;
+	public StatisticsPValueReductionEvent(ArrayList<TablePerspective> tablePerspectives) {
+		this.tablePerspectives = tablePerspectives;
 	}
 
-	public void setDataContainers(ArrayList<DataContainer> dataContainers) {
-		this.dataContainers = dataContainers;
+	public void setDataContainers(ArrayList<TablePerspective> tablePerspectives) {
+		this.tablePerspectives = tablePerspectives;
 	}
 
-	public ArrayList<DataContainer> getDataContainers() {
-		return dataContainers;
+	public ArrayList<TablePerspective> getDataContainers() {
+		return tablePerspectives;
 	}
 
 	@Override
 	public boolean checkIntegrity() {
-		if (dataContainers == null || dataContainers.size() == 0)
+		if (tablePerspectives == null || tablePerspectives.size() == 0)
 			return false;
 
 		return true;

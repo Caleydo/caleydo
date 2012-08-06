@@ -24,11 +24,11 @@ import java.util.List;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.perspective.ADataPerspective;
-import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.data.perspective.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.EventPublisher;
@@ -108,7 +108,7 @@ public class SearchViewMediator {
 
 		ids.add(id);
 
-		ADataPerspective<?, ?, ?, ?> perspective;
+		AVariablePerspective<?, ?, ?, ?> perspective;
 
 		if (dataDomain.isColumnDimension()) {
 			perspective = new RecordPerspective(dataDomain);
@@ -167,10 +167,10 @@ public class SearchViewMediator {
 		}
 
 		if (binnedPerspective != null) {
-			DataContainer dataContainer = dataDomain.getDataContainer(
+			TablePerspective tablePerspective = dataDomain.getDataContainer(
 					binnedPerspective.getPerspectiveID(), perspective.getPerspectiveID());
-			dataContainer.setLabel(label, false);
-			dataContainer.getContainerStatistics().setNumberOfBucketsForHistogram(
+			tablePerspective.setLabel(label, false);
+			tablePerspective.getContainerStatistics().setNumberOfBucketsForHistogram(
 					numberOfBins);
 		}
 

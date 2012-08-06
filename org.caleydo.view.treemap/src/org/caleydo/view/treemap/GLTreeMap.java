@@ -177,7 +177,7 @@ public class GLTreeMap extends ATableBasedView {
 	public void initData() {
 		if (dataDomain == null)
 			return;
-		tree = dataContainer.getRecordPerspective().getTree();
+		tree = tablePerspective.getRecordPerspective().getTree();
 		colorMapper = dataDomain.getColorMapper();
 		int maxDepth = Integer.MAX_VALUE;
 		maxDepth = GeneralManager.get().getPreferenceStore()
@@ -378,7 +378,7 @@ public class GLTreeMap extends ATableBasedView {
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		if (dataDomain != null) {
-			tree = dataContainer.getRecordPerspective().getTree();
+			tree = tablePerspective.getRecordPerspective().getTree();
 			if (tree != null) {
 				treeSelectionManager = new SelectionManager(tree.getNodeIDType());
 			}

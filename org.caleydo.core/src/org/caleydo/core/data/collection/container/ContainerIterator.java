@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.ccontainer;
+package org.caleydo.core.data.collection.container;
 
 import java.util.ListIterator;
 
@@ -34,7 +34,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 public class ContainerIterator<T>
 	extends AContainerIterator
 	implements ListIterator<T> {
-	private ATypedCContainer<T> container;
+	private ATypedContainer<T> container;
 	private ListIterator<T> containerIterator;
 
 	/**
@@ -45,7 +45,7 @@ public class ContainerIterator<T>
 	 * @param containerIterator
 	 *            a ListIterator from the ArrayList
 	 */
-	public ContainerIterator(ATypedCContainer<T> container, ListIterator<T> containerIterator) {
+	public ContainerIterator(ATypedContainer<T> container, ListIterator<T> containerIterator) {
 		this.container = container;
 		this.containerIterator = containerIterator;
 	}
@@ -58,7 +58,7 @@ public class ContainerIterator<T>
 	 * @param virtualArray
 	 *            the virtual array
 	 */
-	public ContainerIterator(ATypedCContainer<T> container, VirtualArray<?, ?, ?> virtualArray) {
+	public ContainerIterator(ATypedContainer<T> container, VirtualArray<?, ?, ?> virtualArray) {
 		this.container = container;
 		this.virtualArray = virtualArray;
 		this.vaIterator = virtualArray.iterator();

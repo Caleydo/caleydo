@@ -19,8 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview;
 
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.perspective.ADataPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
@@ -36,8 +36,8 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
 public abstract class ContentRenderer extends SelectableRenderer {
 
 	Integer geneID;
-	DataContainer dataContainer;
-	ADataPerspective<?, ?, ?, ?> experimentPerspective;
+	TablePerspective tablePerspective;
+	AVariablePerspective<?, ?, ?, ?> experimentPerspective;
 	GeneticDataDomain dataDomain;
 	Integer davidID;
 	float z = 0.05f;
@@ -49,8 +49,8 @@ public abstract class ContentRenderer extends SelectableRenderer {
 	IDMappingManager sampleIDMappingManager;
 
 	public ContentRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
-			DataContainer dataContainer,
-			ADataPerspective<?, ?, ?, ?> experimentPerspective, AGLView parentView,
+			TablePerspective tablePerspective,
+			AVariablePerspective<?, ?, ?, ?> experimentPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group) {
 		super(parentView, parent);
 		this.davidID = davidID;
@@ -59,7 +59,7 @@ public abstract class ContentRenderer extends SelectableRenderer {
 		topBarColor = MappedDataRenderer.BAR_COLOR;
 		bottomBarColor = topBarColor;
 		this.dataDomain = dataDomain;
-		this.dataContainer = dataContainer;
+		this.tablePerspective = tablePerspective;
 		this.experimentPerspective = experimentPerspective;
 		this.group = group;
 		sampleIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
@@ -77,7 +77,7 @@ public abstract class ContentRenderer extends SelectableRenderer {
 		topBarColor = MappedDataRenderer.BAR_COLOR;
 		bottomBarColor = topBarColor;
 		this.dataDomain = contentRendererInitializor.getDataDomain();
-		this.dataContainer = contentRendererInitializor.getDataContainer();
+		this.tablePerspective = contentRendererInitializor.getDataContainer();
 		this.experimentPerspective = contentRendererInitializor
 				.getExperimentPerspective();
 		this.group = contentRendererInitializor.getGroup();

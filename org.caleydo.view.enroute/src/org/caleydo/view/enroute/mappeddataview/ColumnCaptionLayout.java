@@ -20,7 +20,7 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.ADataPerspective;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -54,7 +54,7 @@ public class ColumnCaptionLayout extends Column {
 
 	}
 
-	public void init(Group group, ADataPerspective<?, ?, ?, ?> samplePerspective,
+	public void init(Group group, AVariablePerspective<?, ?, ?, ?> samplePerspective,
 			ATableBasedDataDomain dataDomain) {
 		this.group = group;
 		ElementLayout caption = new ElementLayout();

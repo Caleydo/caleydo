@@ -31,9 +31,9 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -139,7 +139,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * Defaults to false (not a header-brick).
 	 * </p>
 	 * <p>
-	 * For header bricks {@link DataContainer#getRecordGroup()} is null, for
+	 * For header bricks {@link TablePerspective#getRecordGroup()} is null, for
 	 * cluster brick the recordGroup must be defined.
 	 * </p>
 	 */
@@ -247,7 +247,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	public void initialize() {
 		super.initialize();
 		dataContainerSelectionManager = new SelectionManager(
-				DataContainer.DATA_CONTAINER_IDTYPE);
+				TablePerspective.DATA_CONTAINER_IDTYPE);
 		recordGroupSelectionManager = dataDomain.getRecordGroupSelectionManager().clone();
 		registerPickingListeners();
 	}
@@ -313,7 +313,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				ChangeNameDialog dialog = new ChangeNameDialog();
 				dialog.run(PlatformUI.getWorkbench().getDisplay(), label);
 				label = dialog.getResultingName();
-				dataContainer.setLabel(label, false);
+				tablePerspective.setLabel(label, false);
 				setDisplayListDirty();
 
 				if (brickLayoutConfiguration instanceof DefaultBrickLayoutTemplate)
@@ -343,7 +343,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		if (dimensionGroup.getHeaderBrick() == this)
 			return;
 
-		RecordVirtualArray va = dataContainer.getRecordPerspective().getVirtualArray();
+		RecordVirtualArray va = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		for (Integer recordID : va) {
 			recordSelectionManager.addToType(selectedByGroupSelectionType,
@@ -616,7 +616,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			break;
 		case PROPORTIONAL:
 			double proportionalHeight = dimensionGroup.getProportionalHeightPerRecord()
-					* dataContainer.getNrRecords()
+					* tablePerspective.getNrRecords()
 					+ getHeightOverheadOfProportioanlBrick();
 
 			wrappingLayout.setPixelSizeY((int) proportionalHeight);
@@ -783,7 +783,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				dataContainerSelectionManager.clearSelection(currentSelectionType);
 
 				dataContainerSelectionManager.addToType(currentSelectionType,
-						dataContainer.getID());
+						tablePerspective.getID());
 
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setDataDomainID(getDataDomain().getDataDomainID());
@@ -792,14 +792,14 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				event.setSelectionDelta(delta);
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 
-				if (dataContainer.getRecordGroup() != null) {
+				if (tablePerspective.getRecordGroup() != null) {
 					SelectionType currentRecordGroupSelectionType = recordGroupSelectionManager
 							.getSelectionType();
 					recordGroupSelectionManager
 							.clearSelection(currentRecordGroupSelectionType);
 
 					recordGroupSelectionManager.addToType(
-							currentRecordGroupSelectionType, dataContainer
+							currentRecordGroupSelectionType, tablePerspective
 									.getRecordGroup().getID());
 
 					event = new SelectionUpdateEvent();
@@ -843,7 +843,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			@Override
 			public void rightClicked(Pick pick) {
 
-				if (dimensionGroup.getDataContainer() == dataContainer) {
+				if (dimensionGroup.getDataContainer() == tablePerspective) {
 
 					if (dataDomain instanceof GeneticDataDomain
 							&& !dataDomain.isColumnDimension()) {
@@ -860,7 +860,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				} else
 					contextMenuCreator
 							.addContextMenuItem(new CreatePathwayGroupFromDataItem(
-									dataDomain, dataContainer.getRecordPerspective()
+									dataDomain, tablePerspective.getRecordPerspective()
 											.getVirtualArray(), dimensionGroup
 											.getDataContainer().getDimensionPerspective()));
 
@@ -896,7 +896,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	@Override
 	public String toString() {
-		return "Brick: " + dataContainer;// + table.getLabel();
+		return "Brick: " + tablePerspective;// + table.getLabel();
 
 	}
 
@@ -950,7 +950,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 			if (dataContainerSelectionManager.checkStatus(
 					dataContainerSelectionManager.getSelectionType(),
-					dataContainer.getID())) {
+					tablePerspective.getID())) {
 				// brickLayout.setShowHandles(true);
 				brickLayoutConfiguration.setSelected(true);
 				stratomex.updateConnectionLinesBetweenDimensionGroups();
@@ -970,7 +970,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 */
 	public boolean isActive() {
 		return dataContainerSelectionManager.checkStatus(SelectionType.SELECTION,
-				dataContainer.getID());
+				tablePerspective.getID());
 	}
 
 	/**
@@ -1126,7 +1126,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * @param sourceRecordVA
 	 */
 	public void openCreatePathwaySmallMultiplesGroupDialog(
-			final DataContainer dimensionGroupDataContainer,
+			final TablePerspective dimensionGroupDataContainer,
 			final DimensionPerspective dimensionPerspective) {
 		getParentComposite().getDisplay().asyncExec(new Runnable() {
 			@Override
@@ -1165,7 +1165,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * @param sourceRecordVA
 	 */
 	public void openCreateKaplanMeierSmallMultiplesGroupDialog(
-			final DataContainer dimensionGroupDataContainer,
+			final TablePerspective dimensionGroupDataContainer,
 			final DimensionPerspective dimensionPerspective) {
 
 		getParentComposite().getDisplay().asyncExec(new Runnable() {
@@ -1179,10 +1179,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 				if (dialog.open() == Status.OK) {
 
-					List<DataContainer> kaplanMeierDimensionGroupDataList = dialog
+					List<TablePerspective> kaplanMeierDimensionGroupDataList = dialog
 							.getKaplanMeierDimensionGroupDataList();
 
-					for (DataContainer kaplanMeierDimensionGroupData : kaplanMeierDimensionGroupDataList) {
+					for (TablePerspective kaplanMeierDimensionGroupData : kaplanMeierDimensionGroupDataList) {
 
 						AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(
 								kaplanMeierDimensionGroupData);
@@ -1206,11 +1206,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				}
 			}
 
-			private float calculateMaxTimeValue(DataContainer dataContainer) {
-				RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+			private float calculateMaxTimeValue(TablePerspective tablePerspective) {
+				RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
 						.getVirtualArray();
 
-				DimensionVirtualArray dimensionVA = dataContainer
+				DimensionVirtualArray dimensionVA = tablePerspective
 						.getDimensionPerspective().getVirtualArray();
 
 				float maxTimeValue = 0;
@@ -1222,7 +1222,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 							.getGroupIndex());
 					for (int recordID = 0; recordID < recordIDs.size(); recordID++) {
 
-						float rawValue = dataContainer
+						float rawValue = tablePerspective
 								.getDataDomain()
 								.getTable()
 								.getFloat(DataRepresentation.RAW,
@@ -1263,12 +1263,12 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				// shell.setSize(500, 800);
 
 				CreatePathwayComparisonGroupDialog dialog = new CreatePathwayComparisonGroupDialog(
-						shell, dataContainer);
+						shell, tablePerspective);
 				dialog.create();
 				dialog.setSourceDataDomain(sourceDataDomain);
 				dialog.setSourceVA(sourceRecordVA);
-				dialog.setDimensionPerspective(dataContainer.getDimensionPerspective());
-				dialog.setRecordPerspective(dataContainer.getRecordPerspective());
+				dialog.setDimensionPerspective(tablePerspective.getDimensionPerspective());
+				dialog.setRecordPerspective(tablePerspective.getRecordPerspective());
 
 				dialog.setBlockOnOpen(true);
 
@@ -1297,7 +1297,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * @return the isDefaultLabel, see {@link #isDefaultLabel}
 	 */
 	public boolean isLabelDefault() {
-		return dataContainer.isDefaultLabel();
+		return tablePerspective.isDefaultLabel();
 	}
 
 	/**
@@ -1392,7 +1392,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		if (brickHeigthMode == EBrickHeightMode.PROPORTIONAL) {
 
 			double proportionalHeight = dimensionGroup.getProportionalHeightPerRecord()
-					* dataContainer.getNrRecords()
+					* tablePerspective.getNrRecords()
 					+ getHeightOverheadOfProportioanlBrick();
 
 			wrappingLayout.setPixelSizeY((int) proportionalHeight);
@@ -1403,7 +1403,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	@Override
 	public String getLabel() {
-		return dataContainer.getLabel();
+		return tablePerspective.getLabel();
 	}
 
 	@Override

@@ -35,11 +35,11 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.perspective.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
@@ -217,7 +217,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	private boolean isConnectionLinesDirty = true;
 
 	// private Set<IDataDomain> dataDomains;
-	private List<DataContainer> dataContainers;
+	private List<TablePerspective> tablePerspectives;
 
 	private boolean isVendingMachineMode = false;
 
@@ -243,7 +243,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		relationAnalyzer = new RelationAnalyzer();
 
 		// dataDomains = new HashSet<IDataDomain>();
-		dataContainers = new ArrayList<DataContainer>();
+		tablePerspectives = new ArrayList<TablePerspective>();
 
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
 		parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
@@ -1229,20 +1229,20 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 	// /** Adds the specified data container to the view */
 	@Override
-	public void addDataContainer(DataContainer dataContainer) {
-		List<DataContainer> dataContainerWrapper = new ArrayList<DataContainer>();
-		dataContainerWrapper.add(dataContainer);
+	public void addDataContainer(TablePerspective tablePerspective) {
+		List<TablePerspective> dataContainerWrapper = new ArrayList<TablePerspective>();
+		dataContainerWrapper.add(tablePerspective);
 		addDataContainers(dataContainerWrapper, null);
 	}
 
 	@Override
-	public void addDataContainers(List<DataContainer> newDataContainers) {
+	public void addDataContainers(List<TablePerspective> newDataContainers) {
 		addDataContainers(newDataContainers, null);
 	}
 
 	/**
 	 * <p>
-	 * Creates a column for each DataContainer supplied
+	 * Creates a column for each TablePerspective supplied
 	 * </p>
 	 * <p>
 	 * As StratomeX can only map between data sets that share a mapping between
@@ -1256,7 +1256,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	 *            pathways, kaplan meier). If null, the
 	 *            {@link NumericalDataConfigurer} will be used.
 	 */
-	public void addDataContainers(List<DataContainer> newDataContainers,
+	public void addDataContainers(List<TablePerspective> newDataContainers,
 			IBrickConfigurer brickConfigurer) {
 
 		if (newDataContainers == null || newDataContainers.size() == 0) {
@@ -1273,25 +1273,25 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 		ArrayList<BrickColumn> brickColumns = brickColumnManager.getBrickColumns();
 
-		for (DataContainer dataContainer : newDataContainers) {
-			if (dataContainer == null) {
+		for (TablePerspective tablePerspective : newDataContainers) {
+			if (tablePerspective == null) {
 				Logger.log(new Status(Status.ERROR, this.toString(),
 						"Data container was null."));
 				continue;
 			}
-			if (!dataContainer.getDataDomain().getRecordIDCategory()
+			if (!tablePerspective.getDataDomain().getRecordIDCategory()
 					.equals(recordIDCategory)) {
 				Logger.log(new Status(
 						Status.ERROR,
 						this.toString(),
 						"Data container "
-								+ dataContainer
+								+ tablePerspective
 								+ "does not match the recordIDCategory of Visbricks - no mapping possible."));
 				continue;
 			}
 			boolean dimensionGroupExists = false;
 			for (BrickColumn brickColumn : brickColumns) {
-				if (brickColumn.getDataContainer().getID() == dataContainer.getID()) {
+				if (brickColumn.getDataContainer().getID() == tablePerspective.getID()) {
 					dimensionGroupExists = true;
 					break;
 				}
@@ -1314,32 +1314,32 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 				 * configurer is created by default
 				 **/
 				if (brickConfigurer == null) {
-					// FIXME this is a hack to make dataContainers that have
+					// FIXME this is a hack to make tablePerspectives that have
 					// only one dimension categorical data
-					if (dataContainer.getNrDimensions() == 1) {
-						brickConfigurer = new CategoricalDataConfigurer(dataContainer);
+					if (tablePerspective.getNrDimensions() == 1) {
+						brickConfigurer = new CategoricalDataConfigurer(tablePerspective);
 					} else {
-						brickConfigurer = new NumericalDataConfigurer(dataContainer);
+						brickConfigurer = new NumericalDataConfigurer(tablePerspective);
 					}
 				}
 
 				brickColumn.setDetailLevel(this.getDetailLevel());
 				brickColumn.setBrickConfigurer(brickConfigurer);
-				brickColumn.setDataDomain(dataContainer.getDataDomain());
-				brickColumn.setDataContainer(dataContainer);
+				brickColumn.setDataDomain(tablePerspective.getDataDomain());
+				brickColumn.setDataContainer(tablePerspective);
 				brickColumn.setRemoteRenderingGLView(this);
 				brickColumn.setStratomex(this);
 				brickColumn.initialize();
 
 				brickColumns.add(brickColumn);
-				dataContainers.add(dataContainer);
+				tablePerspectives.add(tablePerspective);
 
 				uninitializedBrickColumns.add(brickColumn);
-				// if (dataContainer instanceof PathwayDataContainer) {
-				// dataDomains.add(((PathwayDataContainer) dataContainer)
+				// if (tablePerspective instanceof PathwayDataContainer) {
+				// dataDomains.add(((PathwayDataContainer) tablePerspective)
 				// .getPathwayDataDomain());
 				// } else {
-				// dataDomains.add(dataContainer.getDataDomain());
+				// dataDomains.add(tablePerspective.getDataDomain());
 				// }
 
 				brickColumnManager.setRightGroupStartIndex(brickColumnManager
@@ -1355,10 +1355,10 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	@Override
 	public void removeDataContainer(int dataContainerID) {
 
-		Iterator<DataContainer> dataContainerIterator = dataContainers.iterator();
+		Iterator<TablePerspective> dataContainerIterator = tablePerspectives.iterator();
 
 		while (dataContainerIterator.hasNext()) {
-			DataContainer container = dataContainerIterator.next();
+			TablePerspective container = dataContainerIterator.next();
 			if (container.getID() == dataContainerID) {
 				dataContainerIterator.remove();
 			}
@@ -1372,8 +1372,8 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	}
 
 	@Override
-	public List<DataContainer> getDataContainers() {
-		return dataContainers;
+	public List<TablePerspective> getDataContainers() {
+		return tablePerspectives;
 	}
 
 	/**
@@ -1776,17 +1776,17 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	@Override
 	public Set<IDataDomain> getDataDomains() {
 		Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
-		if(dataContainers == null)
+		if(tablePerspectives == null)
 		{
 			System.out.println("Problem");
 			return dataDomains;
 		}
-		for (DataContainer dataContainer : dataContainers) {
-			if (dataContainer instanceof PathwayDataContainer) {
-				dataDomains.add(((PathwayDataContainer) dataContainer)
+		for (TablePerspective tablePerspective : tablePerspectives) {
+			if (tablePerspective instanceof PathwayDataContainer) {
+				dataDomains.add(((PathwayDataContainer) tablePerspective)
 						.getPathwayDataDomain());
 			} else {
-				dataDomains.add(dataContainer.getDataDomain());
+				dataDomains.add(tablePerspective.getDataDomain());
 			}
 		}
 		return dataDomains;

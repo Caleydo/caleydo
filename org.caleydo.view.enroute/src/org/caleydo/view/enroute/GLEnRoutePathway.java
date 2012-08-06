@@ -34,8 +34,8 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionType;
@@ -1256,7 +1256,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 	}
 
 	@Override
-	public void addDataContainer(DataContainer newDataContainer) {
+	public void addDataContainer(TablePerspective newDataContainer) {
 		mappedDataRenderer.addDataContainer(newDataContainer);
 		for (ALinearizableNode node : linearizedNodes) {
 			setMappedDavidIds(node);
@@ -1273,7 +1273,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 	}
 
 	@Override
-	public void addDataContainers(List<DataContainer> newDataContainers) {
+	public void addDataContainers(List<TablePerspective> newDataContainers) {
 		mappedDataRenderer.addDataContainers(newDataContainers);
 		for (ALinearizableNode node : linearizedNodes) {
 			setMappedDavidIds(node);
@@ -1284,8 +1284,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 				((ALinearizableNode) node).update();
 			}
 		}
-		for (DataContainer dataContainer : newDataContainers) {
-			dataDomains.add(dataContainer.getDataDomain());
+		for (TablePerspective tablePerspective : newDataContainers) {
+			dataDomains.add(tablePerspective.getDataDomain());
 		}
 
 		setMappedDataRendererGeometry();
@@ -1297,7 +1297,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 	}
 
 	@Override
-	public List<DataContainer> getDataContainers() {
+	public List<TablePerspective> getDataContainers() {
 		if (mappedDataRenderer == null)
 			return null;
 		return mappedDataRenderer.getDataContainers();
@@ -1309,11 +1309,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 	}
 
 	/**
-	 * Returns true if one of the set {@link DataContainer}s maps to the davidID
+	 * Returns true if one of the set {@link TablePerspective}s maps to the davidID
 	 * provided, else false
 	 */
 	public boolean doesDavidMapToData(Integer davidID) {
-		for (DataContainer currentDataContainer : mappedDataRenderer.getDataContainers()) {
+		for (TablePerspective currentDataContainer : mappedDataRenderer.getDataContainers()) {
 			GeneticDataDomain dataDomain = (GeneticDataDomain) currentDataContainer
 					.getDataDomain();
 			Set<Integer> ids = dataDomain.getGeneIDMappingManager().getIDAsSet(
@@ -1352,7 +1352,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 		return mappedDataRenderer;
 	}
 
-	public List<DataContainer> getResolvedDataContainers() {
+	public List<TablePerspective> getResolvedDataContainers() {
 		return mappedDataRenderer.getResolvedDataContainers();
 	}
 

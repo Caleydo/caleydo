@@ -20,8 +20,8 @@
 package org.caleydo.core.util.clusterer;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.ADataPerspective;
-import org.caleydo.core.data.perspective.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClusterConfiguration;
 import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClusterer;
@@ -65,7 +65,7 @@ public class ClusterManager {
 	 * @param clusterConfiguration the configuration of the clustering to be
 	 *            executed.
 	 * @return the results of the clustering which can be used to initialize
-	 *         {@link ADataPerspective}s.
+	 *         {@link AVariablePerspective}s.
 	 */
 	public ClusterResult cluster(AClusterConfiguration clusterConfiguration) {
 		Logger.log(new Status(Status.INFO, this.toString(),

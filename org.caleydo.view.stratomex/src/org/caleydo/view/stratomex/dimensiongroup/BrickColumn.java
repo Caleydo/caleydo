@@ -29,7 +29,7 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
@@ -298,9 +298,9 @@ public class BrickColumn extends ATableBasedView implements
 	protected void createBricks() {
 		// create basic layouts
 
-		float[] glowColor = dataContainer.getDataDomain().getColor().getRGBA();
-		if (dataContainer instanceof PathwayDataContainer) {
-			glowColor = ((PathwayDataContainer) dataContainer).getPathwayDataDomain()
+		float[] glowColor = tablePerspective.getDataDomain().getColor().getRGBA();
+		if (tablePerspective instanceof PathwayDataContainer) {
+			glowColor = ((PathwayDataContainer) tablePerspective).getPathwayDataDomain()
 					.getColor().getRGBA();
 		}
 
@@ -322,7 +322,7 @@ public class BrickColumn extends ATableBasedView implements
 		headerBrickLayout.append(innerHeaderBrickLayout);
 		headerBrickLayout.append(brickSpacingLayout);
 
-		headerBrick = createBrick(innerHeaderBrickLayout, dataContainer);
+		headerBrick = createBrick(innerHeaderBrickLayout, tablePerspective);
 		headerBrick.setHeaderBrick(true);
 
 		ABrickLayoutConfiguration layoutTemplate;
@@ -351,7 +351,7 @@ public class BrickColumn extends ATableBasedView implements
 
 		destroyOldBricks();
 
-		List<DataContainer> brickDataContainers = dataContainer
+		List<TablePerspective> brickDataContainers = tablePerspective
 				.getRecordSubDataContainers();
 
 		if (brickDataContainers == null || brickDataContainers.size() <= 0)
@@ -359,7 +359,7 @@ public class BrickColumn extends ATableBasedView implements
 
 		List<GLBrick> segmentBricks = new ArrayList<GLBrick>();
 
-		for (DataContainer brickData : brickDataContainers) {
+		for (TablePerspective brickData : brickDataContainers) {
 			GLBrick segmentBrick = createBrick(new ElementLayout("brick"), brickData);
 
 			// segmentBrick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
@@ -379,8 +379,8 @@ public class BrickColumn extends ATableBasedView implements
 		addSortedBricks(sortedBricks);
 
 		stratomex.getRelationAnalyzer().updateRelations(
-				dataContainer.getRecordPerspective().getPerspectiveID(),
-				dataContainer.getRecordPerspective().getVirtualArray());
+				tablePerspective.getRecordPerspective().getPerspectiveID(),
+				tablePerspective.getRecordPerspective().getVirtualArray());
 
 	}
 
@@ -465,7 +465,7 @@ public class BrickColumn extends ATableBasedView implements
 	 * @param wrappingLayout
 	 * @return
 	 */
-	private GLBrick createBrick(ElementLayout wrappingLayout, DataContainer dataContainer) {
+	private GLBrick createBrick(ElementLayout wrappingLayout, TablePerspective tablePerspective) {
 		ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
 				0, 0, 0, -4, 4);
 		GLBrick brick = (GLBrick) GeneralManager
@@ -475,7 +475,7 @@ public class BrickColumn extends ATableBasedView implements
 						brickFrustum);
 
 		brick.setDataDomain(dataDomain);
-		brick.setDataContainer(dataContainer);
+		brick.setDataContainer(tablePerspective);
 		brick.setBrickConfigurer(brickConfigurer);
 		brick.setRemoteRenderingGLView(this);
 		brick.setStratomex(stratomex);
@@ -569,7 +569,7 @@ public class BrickColumn extends ATableBasedView implements
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
 
-		if (!dataContainer.getRecordPerspective().getPerspectiveID().equals(recordPerspectiveID))
+		if (!tablePerspective.getRecordPerspective().getPerspectiveID().equals(recordPerspectiveID))
 			return;
 
 		clusterBrickColumn.clear();
@@ -811,7 +811,7 @@ public class BrickColumn extends ATableBasedView implements
 	 * @return
 	 */
 	public int getTableID() {
-		return dataContainer.getID();
+		return tablePerspective.getID();
 	}
 
 	/**
@@ -1225,7 +1225,7 @@ public class BrickColumn extends ATableBasedView implements
 				* BETWEEN_BRICKS_SPACING
 				- DefaultBrickLayoutTemplate.BUTTON_HEIGHT_PIXELS - brickHeightOverhead;
 		double proportionalRecordHeight = useablePixelHeight
-				/ dataContainer.getNrRecords();
+				/ tablePerspective.getNrRecords();
 		return proportionalRecordHeight;
 	}
 

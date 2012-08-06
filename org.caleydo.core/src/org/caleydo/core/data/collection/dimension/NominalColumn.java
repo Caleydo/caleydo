@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.caleydo.core.data.collection.EDataTransformation;
-import org.caleydo.core.data.collection.ccontainer.NominalCContainer;
+import org.caleydo.core.data.collection.container.NominalContainer;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 
@@ -79,7 +79,7 @@ public class NominalColumn<T>
 				rawDataType = RawDataType.OBJECT;
 			}
 
-			NominalCContainer<T> sDimension = new NominalCContainer<T>(alData);
+			NominalContainer<T> sDimension = new NominalContainer<T>(alData);
 			hashCContainers.put(DataRepresentation.RAW, sDimension);
 		}
 	}
@@ -94,11 +94,11 @@ public class NominalColumn<T>
 		if (alPossibleValues.isEmpty())
 			throw new IllegalStateException("Raw Data is empty");
 		else {
-			if (hashCContainers.get(DataRepresentation.RAW) instanceof NominalCContainer)
+			if (hashCContainers.get(DataRepresentation.RAW) instanceof NominalContainer)
 				throw new IllegalStateException("Raw data format does not correspond to"
 					+ "specified value list.");
 			else {
-				((NominalCContainer<T>) hashCContainers.get(DataRepresentation.RAW))
+				((NominalContainer<T>) hashCContainers.get(DataRepresentation.RAW))
 					.setPossibleValues(alPossibleValues);
 			}
 		}
@@ -106,7 +106,7 @@ public class NominalColumn<T>
 
 	@SuppressWarnings("unchecked")
 	public T getRaw(int index) {
-		return ((NominalCContainer<T>) hashCContainers.get(DataRepresentation.RAW)).get(index);
+		return ((NominalContainer<T>) hashCContainers.get(DataRepresentation.RAW)).get(index);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -118,7 +118,7 @@ public class NominalColumn<T>
 	 * @return a hash map mapping the nominal value to it's histogram value
 	 */
 	public HashMap<T, Float> getHistogram() {
-		return ((NominalCContainer<T>) hashCContainers.get(DataRepresentation.RAW)).getHistogram();
+		return ((NominalContainer<T>) hashCContainers.get(DataRepresentation.RAW)).getHistogram();
 	}
 
 	@Override

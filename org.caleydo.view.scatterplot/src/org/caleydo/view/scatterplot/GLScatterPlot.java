@@ -285,8 +285,8 @@ public class GLScatterPlot extends ATableBasedView {
 	 * Aligns the dimension of the Scatter-Matrix With the Dimension-Size
 	 */
 	private void updateMaxAxis() {
-		if (MAX_AXES > dataContainer.getNrDimensions())
-			MAX_AXES = dataContainer.getNrDimensions();
+		if (MAX_AXES > tablePerspective.getNrDimensions())
+			MAX_AXES = tablePerspective.getNrDimensions();
 
 	}
 
@@ -1250,9 +1250,9 @@ public class GLScatterPlot extends ATableBasedView {
 
 		Texture tempTextur;
 
-		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
 				.getVirtualArray();
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 		DataTable table = dataDomain.getTable();
 
@@ -1439,7 +1439,7 @@ public class GLScatterPlot extends ATableBasedView {
 							int current_SELECTED_X_AXIS = iAxisX;
 							int current_SELECTED_Y_AXIS = iAxisY;
 
-							DimensionVirtualArray dimensionVA = dataContainer
+							DimensionVirtualArray dimensionVA = tablePerspective
 									.getDimensionPerspective().getVirtualArray();
 							DataTable table = dataDomain.getTable();
 
@@ -2067,7 +2067,7 @@ public class GLScatterPlot extends ATableBasedView {
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
 
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 
 		String sAxisLabel = "X-Axis: "
@@ -2155,9 +2155,9 @@ public class GLScatterPlot extends ATableBasedView {
 		EScatterPointType tmpPointStyle = POINTSTYLE;
 		float[] fArMappingColor = { 0.0f, 0.0f, 0.0f }; // (black);
 
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
-		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
 				.getVirtualArray();
 		DataTable table = dataDomain.getTable();
 
@@ -2266,7 +2266,7 @@ public class GLScatterPlot extends ATableBasedView {
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 		DataTable table = dataDomain.getTable();
 
@@ -2344,7 +2344,7 @@ public class GLScatterPlot extends ATableBasedView {
 		String sLabel = null;
 		String recordLabel = dataDomain.getRecordLabel(recordIndex);
 
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 		DataTable table = dataDomain.getTable();
 
@@ -2430,9 +2430,9 @@ public class GLScatterPlot extends ATableBasedView {
 	 */
 	private void updateSelection() {
 
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
-		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
 				.getVirtualArray();
 		DataTable table = dataDomain.getTable();
 
@@ -2518,7 +2518,7 @@ public class GLScatterPlot extends ATableBasedView {
 			// float[] fArMappingColor = new float[]{1.0f, 0.1f, 0.5f};
 			float[] fArMappingColor = tmpSelectionType.getColor();
 
-			DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+			DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 					.getVirtualArray();
 			DataTable table = dataDomain.getTable();
 
@@ -2807,7 +2807,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 	public void selectAxesfromExternal() {
 
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 		int iMouseOverSelections = dimensionSelectionManager
 				.getNumberOfElements(SelectionType.MOUSE_OVER);
@@ -2868,7 +2868,7 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	public void selectNewSelectionAxes() {
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 		dimensionSelectionManager.clearSelection(SelectionType.SELECTION);
 
@@ -2905,7 +2905,7 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	public void selectNewMouseOverAxes() {
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 
 		dimensionSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
@@ -3209,7 +3209,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 	@Override
 	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
-		if (!dataContainer.getDimensionPerspective().getPerspectiveID()
+		if (!tablePerspective.getDimensionPerspective().getPerspectiveID()
 				.equals(dimensionPerspectiveID))
 			return;
 		super.handleDimensionVAUpdate(dimensionPerspectiveID);
@@ -3245,7 +3245,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 	@Override
 	public String toString() {
-		return "Scatterplot for " + dataContainer;
+		return "Scatterplot for " + tablePerspective;
 
 	}
 
@@ -3268,7 +3268,7 @@ public class GLScatterPlot extends ATableBasedView {
 		ArrayList<ElementConnectionInformation> alElementReps = new ArrayList<ElementConnectionInformation>(
 				4);
 
-		for (int recordIndex : dataContainer.getRecordPerspective().getVirtualArray()
+		for (int recordIndex : tablePerspective.getRecordPerspective().getVirtualArray()
 				.indicesOf(iDimensionIndex)) {
 			if (recordIndex == -1) {
 				throw new IllegalStateException("No such element in virtual array");

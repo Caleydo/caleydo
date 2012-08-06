@@ -19,8 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.event;
 
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.event.AEvent;
 
 /**
@@ -35,7 +35,7 @@ public class OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent extends AEvent 
 	 * The base data container which contains the subgroups for which the small
 	 * multiples will be created.
 	 */
-	private DataContainer dimensionGroupDataContainer;
+	private TablePerspective dimensionGroupDataContainer;
 
 	/**
 	 * The base dimension perspective containing all genes that will be mapped
@@ -44,12 +44,12 @@ public class OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent extends AEvent 
 	private DimensionPerspective dimensionPerspective;
 
 	/**
-	 * @param dataContainer
+	 * @param tablePerspective
 	 *            the base data container which contains the subgroups for which
 	 *            the small multiples will be created.
 	 */
 	public OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent(
-			DataContainer dimensionGroupDataContainer,
+			TablePerspective dimensionGroupDataContainer,
 			DimensionPerspective dimensionPerspective) {
 
 		this.setDimensionGroupDataContainer(dimensionGroupDataContainer);
@@ -62,17 +62,17 @@ public class OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent extends AEvent 
 	}
 
 	/**
-	 * @param dataContainer
+	 * @param tablePerspective
 	 *            setter, see {@link #dimensionGroupDataContainer}
 	 */
-	public void setDimensionGroupDataContainer(DataContainer dataContainer) {
-		this.dimensionGroupDataContainer = dataContainer;
+	public void setDimensionGroupDataContainer(TablePerspective tablePerspective) {
+		this.dimensionGroupDataContainer = tablePerspective;
 	}
 
 	/**
-	 * @return the dataContainer, see {@link #dimensionGroupDataContainer}
+	 * @return the tablePerspective, see {@link #dimensionGroupDataContainer}
 	 */
-	public DataContainer getDimensionGroupDataContainer() {
+	public TablePerspective getDimensionGroupDataContainer() {
 		return dimensionGroupDataContainer;
 	}
 

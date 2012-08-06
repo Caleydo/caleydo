@@ -24,12 +24,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.collection.Pair;
@@ -60,7 +60,7 @@ import org.eclipse.swt.widgets.TableItem;
  */
 public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 
-	private DataContainer inputDataContainer;
+	private TablePerspective inputDataContainer;
 
 	private ATableBasedDataDomain sourceDataDomain;
 	private PathwayDataDomain pathwayDataDomain;
@@ -116,11 +116,11 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 	// }
 
 	public CreatePathwayComparisonGroupDialog(Shell parentShell,
-			DataContainer dataContainer) {
+			TablePerspective tablePerspective) {
 
 		super(parentShell);
 		// pathwayTableSorter = new PathwayTableSorter();
-		inputDataContainer = dataContainer;
+		inputDataContainer = tablePerspective;
 	}
 
 	@Override

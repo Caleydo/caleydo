@@ -28,7 +28,7 @@ import org.caleydo.core.data.filter.event.ReEvaluateDimensionFilterListEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateDimensionFilterListListener;
 import org.caleydo.core.data.filter.event.RemoveDimensionFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveDimensionFilterListener;
-import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.events.DimensionVADeltaEvent;

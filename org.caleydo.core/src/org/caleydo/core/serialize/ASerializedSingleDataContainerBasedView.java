@@ -40,7 +40,7 @@ public abstract class ASerializedSingleDataContainerBasedView extends ASerialize
 	/** The ID string of the data domain */
 	protected String dataDomainID;
 
-	/** The key of the dataContainer */
+	/** The key of the tablePerspective */
 	protected String dataContainerKey;
 
 	/**

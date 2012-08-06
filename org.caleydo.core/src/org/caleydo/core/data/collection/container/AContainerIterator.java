@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.ccontainer;
+package org.caleydo.core.data.collection.container;
 
 import org.caleydo.core.data.virtualarray.VAIterator;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -28,7 +28,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
  * @author Alexander Lex
  */
 public class AContainerIterator
-	implements ICContainerIterator {
+	implements IContainerIterator {
 	protected VirtualArray<?, ?, ?> virtualArray = null;
 	protected VAIterator vaIterator = null;
 	protected int iIndex = 0;

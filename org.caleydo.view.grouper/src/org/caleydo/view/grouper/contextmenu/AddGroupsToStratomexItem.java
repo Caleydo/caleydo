@@ -21,19 +21,19 @@ package org.caleydo.view.grouper.contextmenu;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 
 public class AddGroupsToStratomexItem extends AContextMenuItem {
 
 	public AddGroupsToStratomexItem(ATableBasedDataDomain dataDomain,
-			DataContainer dataContainer, ArrayList<DataContainer> dataContainers) {
+			TablePerspective tablePerspective, ArrayList<TablePerspective> tablePerspectives) {
 
 		setLabel("Show Groups In StratomeX");
 
-		AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(dataContainers);
+		AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(tablePerspectives);
 		event.setSender(this);
 
 		registerEvent(event);

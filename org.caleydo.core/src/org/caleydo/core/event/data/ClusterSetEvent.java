@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 
 /**
@@ -37,7 +37,7 @@ import org.caleydo.core.event.AEvent;
 public class ClusterSetEvent
 	extends AEvent {
 
-	private ArrayList<DataContainer> sets;
+	private ArrayList<TablePerspective> sets;
 
 	/**
 	 * default no-arg constructor
@@ -46,15 +46,15 @@ public class ClusterSetEvent
 		// nothing to initialize here
 	}
 
-	public ClusterSetEvent(ArrayList<DataContainer> sets) {
+	public ClusterSetEvent(ArrayList<TablePerspective> sets) {
 		this.sets = sets;
 	}
 
-	public ArrayList<DataContainer> setTables() {
+	public ArrayList<TablePerspective> setTables() {
 		return sets;
 	}
 
-	public ArrayList<DataContainer> getTables() {
+	public ArrayList<TablePerspective> getTables() {
 		return sets;
 	}
 

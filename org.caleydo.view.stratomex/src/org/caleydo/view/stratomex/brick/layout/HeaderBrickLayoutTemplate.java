@@ -21,8 +21,8 @@ package org.caleydo.view.stratomex.brick.layout;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
 import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
@@ -274,7 +274,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 						public void run() {
 							StartClusteringDialog dialog = new StartClusteringDialog(
 									new Shell(), brick.getDataDomain());
-							DataContainer data = brick.getDimensionGroup()
+							TablePerspective data = brick.getDimensionGroup()
 									.getDataContainer();
 							dialog.setSourceDimensionPerspective(data
 									.getDimensionPerspective());

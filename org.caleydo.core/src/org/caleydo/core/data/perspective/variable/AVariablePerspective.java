@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.perspective;
+package org.caleydo.core.data.perspective.variable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +30,11 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.FilterManager;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -47,10 +47,10 @@ import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
- * A {@link ADataPerspective} holds all relevant meta data for either records
+ * A {@link AVariablePerspective} holds all relevant meta data for either records
  * through the {@link RecordPerspective} or dimensions through the
  * {@link DimensionPerspective}. For many uses both, a RecordPerspective and a
- * DimsenionPerspective are necessary. {@link DataContainer} is designed to hold
+ * DimsenionPerspective are necessary. {@link TablePerspective} is designed to hold
  * combinations of Record- and DimensionPerspectives.
  * </p>
  * <p>
@@ -78,7 +78,7 @@ import org.eclipse.core.runtime.Status;
 @XmlSeeAlso({ RecordPerspective.class, DimensionPerspective.class,
 		RecordVirtualArray.class, DimensionVirtualArray.class })
 @XmlRootElement
-public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, GroupType>, GroupType extends GroupList<GroupType, VA, DeltaType>, DeltaType extends VirtualArrayDelta<DeltaType>, FilterManagerType extends FilterManager<?, DeltaType, ?, VA>> {
+public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType, GroupType>, GroupType extends GroupList<GroupType, VA, DeltaType>, DeltaType extends VirtualArrayDelta<DeltaType>, FilterManagerType extends FilterManager<?, DeltaType, ?, VA>> {
 
 	/** The unique ID of the perspective */
 	@XmlElement
@@ -147,10 +147,10 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	private ClusterTree tree;
 
 	/** Only for serialization */
-	public ADataPerspective() {
+	public AVariablePerspective() {
 	}
 
-	public ADataPerspective(ATableBasedDataDomain dataDomain) {
+	public AVariablePerspective(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		init();
 	}
@@ -369,7 +369,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 
 	/**
 	 * <p>
-	 * {@link ADataPerspective}s are initialized by providing a
+	 * {@link AVariablePerspective}s are initialized by providing a
 	 * {@link PerspectiveInitializationData} object, which can contain a number
 	 * of different combinations of information to initialize the perspective.
 	 * </p>

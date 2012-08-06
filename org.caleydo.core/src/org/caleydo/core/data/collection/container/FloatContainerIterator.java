@@ -17,34 +17,34 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.ccontainer;
+package org.caleydo.core.data.collection.container;
 
 import java.util.NoSuchElementException;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
 
 /**
- * Iterator for FloatCContainer Initialized by passing the container. Then provides the common iterator
+ * Iterator for FloatContainer Initialized by passing the container. Then provides the common iterator
  * accessors.
  * 
  * @author Alexander Lex
  */
-public class FloatCContainerIterator
+public class FloatContainerIterator
 	extends AContainerIterator {
 
-	private FloatCContainer floatCContainer = null;
+	private FloatContainer floatContainer = null;
 
 	/**
 	 * Constructor Pass the container you want to have an iterator on
 	 * 
 	 * @param primitiveFloatDimension
 	 */
-	public FloatCContainerIterator(FloatCContainer floatCContainer) {
-		this.floatCContainer = floatCContainer;
-		this.iSize = floatCContainer.size();
+	public FloatContainerIterator(FloatContainer floatContainer) {
+		this.floatContainer = floatContainer;
+		this.iSize = floatContainer.size();
 	}
 
-	public FloatCContainerIterator(FloatCContainer floatCContainer, VirtualArray<?, ?, ?> virtualArray) {
+	public FloatContainerIterator(FloatContainer floatCContainer, VirtualArray<?, ?, ?> virtualArray) {
 		this(floatCContainer);
 		this.virtualArray = virtualArray;
 		this.vaIterator = virtualArray.iterator();
@@ -57,10 +57,10 @@ public class FloatCContainerIterator
 	 */
 	public float next() {
 		if (virtualArray != null)
-			return floatCContainer.get(vaIterator.next());
+			return floatContainer.get(vaIterator.next());
 		else {
 			try {
-				return floatCContainer.get(++iIndex);
+				return floatContainer.get(++iIndex);
 			}
 			catch (IndexOutOfBoundsException e) {
 				throw new NoSuchElementException();

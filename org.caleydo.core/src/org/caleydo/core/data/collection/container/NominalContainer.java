@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.ccontainer;
+package org.caleydo.core.data.collection.container;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,15 +31,15 @@ import java.util.Set;
  * 
  * @author Alexander Lex
  */
-public class NominalCContainer<T>
-	extends ATypedCContainer<T>
-	implements INominalCContainer<T> {
+public class NominalContainer<T>
+	extends ATypedContainer<T>
+	implements INominalContainer<T> {
 
 	private HashMap<T, Float> hashNominalToDiscrete;
 
 	private HashMap<Float, T> hashDiscreteToNominal;
 
-	private boolean bHashMapsInitialized = false;
+	private boolean areHashMapsInitialized = false;
 
 	/**
 	 * Constructor
@@ -47,7 +47,7 @@ public class NominalCContainer<T>
 	 * @param sAlContainer
 	 *            The complete list of all Strings in the dataset
 	 */
-	public NominalCContainer(ArrayList<T> tAlContainer) {
+	public NominalContainer(ArrayList<T> tAlContainer) {
 		this.alContainer = tAlContainer;
 		hashNominalToDiscrete = new HashMap<T, Float>();
 		hashDiscreteToNominal = new HashMap<Float, T>();
@@ -72,9 +72,9 @@ public class NominalCContainer<T>
 	 * same value. If no list of possible values has been specified beforehand, a list is created.
 	 */
 	@Override
-	public FloatCContainer normalize() {
+	public FloatContainer normalize() {
 
-		if (!bHashMapsInitialized) {
+		if (!areHashMapsInitialized) {
 			setUpMapping(alContainer);
 		}
 
@@ -91,7 +91,7 @@ public class NominalCContainer<T>
 			iCount++;
 		}
 
-		return new FloatCContainer(fArNormalized);
+		return new FloatContainer(fArNormalized);
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class NominalCContainer<T>
 	 * @return the string associated with the discrete value, or null if no such value exists
 	 */
 	public T getNominalForDiscreteValue(Float fDiscrete) {
-		if (!bHashMapsInitialized) {
+		if (!areHashMapsInitialized) {
 			setUpMapping(alContainer);
 		}
 		return hashDiscreteToNominal.get(fDiscrete);
@@ -116,7 +116,7 @@ public class NominalCContainer<T>
 	 * @return
 	 */
 	public Float getDiscreteForNominalValue(T tNominal) {
-		if (!bHashMapsInitialized) {
+		if (!areHashMapsInitialized) {
 			setUpMapping(alContainer);
 		}
 		return hashNominalToDiscrete.get(tNominal);
@@ -154,7 +154,7 @@ public class NominalCContainer<T>
 
 			iCount++;
 		}
-		bHashMapsInitialized = true;
+		areHashMapsInitialized = true;
 	}
 
 	@Override

@@ -17,34 +17,37 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.ccontainer;
+package org.caleydo.core.data.perspective.table;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+public class FoldChangeSettings {
 
-/**
- * Extension of the ICContainer interface for handling nominal data.
- * 
- * @author Alexander Lex
- */
-public interface INominalCContainer<T>
-	extends ICContainer {
+	public enum FoldChangeEvaluator {
+		GREATER,
+		LESS,
+		BOTH
+	}
 
-	/**
-	 * Provide a list with all possible values on the nominal scale. Useful when the data set does not contain
-	 * all values by itself. Take care that every value in the data set is also in this list, otherwise an
-	 * exception will occur
-	 * 
-	 * @param sAlPossibleValues
-	 *            the List
-	 */
-	public void setPossibleValues(ArrayList<T> tAlPossibleValues);
+	double ratio = -1;
 
-	/**
-	 * Create a histogram for the values in the container
-	 * 
-	 * @return the
-	 */
-	public HashMap<T, Float> getHistogram();
+	double ratioUncertainty = -1;
 
+	FoldChangeEvaluator evaluator;
+
+	public FoldChangeSettings(double ratio, double ratioUncertainty, FoldChangeEvaluator evaluator) {
+		this.ratio = ratio;
+		this.ratioUncertainty = ratioUncertainty;
+		this.evaluator = evaluator;
+	}
+
+	public FoldChangeEvaluator getEvaluator() {
+		return evaluator;
+	}
+
+	public double getRatio() {
+		return ratio;
+	}
+
+	public double getRatioUncertainty() {
+		return ratioUncertainty;
+	}
 }

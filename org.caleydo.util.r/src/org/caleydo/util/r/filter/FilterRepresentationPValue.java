@@ -20,12 +20,12 @@
 package org.caleydo.util.r.filter;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.RecordMetaFilter;
 import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
 import org.caleydo.core.data.filter.representation.AFilterRepresentation;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
@@ -56,7 +56,7 @@ public class FilterRepresentationPValue extends
 	private final static String TITLE = "Variance Filter";
 
 	private ATableBasedDataDomain dataDomain;
-	private DataContainer dataContainer1;
+	private TablePerspective dataContainer1;
 
 	private Histogram histogram;
 	private float pValue = -1;
@@ -237,7 +237,7 @@ public class FilterRepresentationPValue extends
 		this.dataDomain = dataDomain;
 	}
 
-	public void setDataContainer1(DataContainer dataContainer1) {
+	public void setDataContainer1(TablePerspective dataContainer1) {
 		this.dataContainer1 = dataContainer1;
 	}
 }

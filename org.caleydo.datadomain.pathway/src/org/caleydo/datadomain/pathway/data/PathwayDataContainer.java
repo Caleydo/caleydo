@@ -27,11 +27,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.data.perspective.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
@@ -41,7 +41,7 @@ import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
- * Specialization of {@link DataContainer} for pathways. Adds a
+ * Specialization of {@link TablePerspective} for pathways. Adds a
  * {@link PathwayGraph} to the data container.
  * 
  * @author Christian Partl
@@ -50,7 +50,7 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
  */
 @XmlType
 @XmlRootElement
-public class PathwayDataContainer extends DataContainer {
+public class PathwayDataContainer extends TablePerspective {
 
 	/** The datadomain giving access to the pathways themselves */
 	private PathwayDataDomain pathwayDataDomain;
@@ -110,9 +110,9 @@ public class PathwayDataContainer extends DataContainer {
 	}
 
 	@Override
-	public List<DataContainer> getRecordSubDataContainers() {
+	public List<TablePerspective> getRecordSubDataContainers() {
 
-		List<DataContainer> recordSubDataContainers = new ArrayList<DataContainer>();
+		List<TablePerspective> recordSubDataContainers = new ArrayList<TablePerspective>();
 
 		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
 

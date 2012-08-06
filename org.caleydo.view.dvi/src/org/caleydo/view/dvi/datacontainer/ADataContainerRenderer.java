@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -52,16 +52,16 @@ public abstract class ADataContainerRenderer extends LayoutRenderer {
 		topDimensionGroupPositions = new HashMap<Integer, Pair<Point2D, Point2D>>();
 	}
 
-	public abstract void setDataContainers(List<DataContainer> dataContainers);
+	public abstract void setDataContainers(List<TablePerspective> tablePerspectives);
 
 	public Pair<Point2D, Point2D> getBottomAnchorPointsOfDataContainer(
-			DataContainer dataContainer) {
-		return bottomDimensionGroupPositions.get(dataContainer.getID());
+			TablePerspective tablePerspective) {
+		return bottomDimensionGroupPositions.get(tablePerspective.getID());
 	}
 
 	public Pair<Point2D, Point2D> getTopAnchorPointsOfDataContainer(
-			DataContainer dataContainer) {
-		return topDimensionGroupPositions.get(dataContainer.getID());
+			TablePerspective tablePerspective) {
+		return topDimensionGroupPositions.get(tablePerspective.getID());
 	}
 
 	public void registerPickingListeners() {

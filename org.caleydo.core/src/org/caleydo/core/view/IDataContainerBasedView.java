@@ -24,11 +24,11 @@ package org.caleydo.core.view;
 
 import java.util.List;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 
 /**
  * <p>
- * Base interface for views that use a single or multiple {@link DataContainer}
+ * Base interface for views that use a single or multiple {@link TablePerspective}
  * s.
  * </p>
  * <p>
@@ -41,10 +41,10 @@ import org.caleydo.core.data.container.DataContainer;
 public interface IDataContainerBasedView extends IView {
 
 	/**
-	 * Returns all {@link DataContainer}s that this view and all of its possible
+	 * Returns all {@link TablePerspective}s that this view and all of its possible
 	 * remote views contain.
 	 * 
 	 * @return
 	 */
-	public List<DataContainer> getDataContainers();
+	public List<TablePerspective> getDataContainers();
 }

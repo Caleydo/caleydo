@@ -29,7 +29,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -45,7 +45,7 @@ public class TopBundleConnector
 
 	public TopBundleConnector(IDVINode node, PixelGLConverter pixelGLConverter,
 			ConnectionBandRenderer connectionBandRenderer,
-			List<DataContainer> commonDataContainers, int minBandWidth, int maxBandWidth,
+			List<TablePerspective> commonDataContainers, int minBandWidth, int maxBandWidth,
 			int maxDataAmount, IDVINode otherNode, ViewFrustum viewFrustum,
 			GLDataViewIntegrator view)
 	{
@@ -59,9 +59,9 @@ public class TopBundleConnector
 	// protected void calcBundlingPoint() {
 	// float summedX = 0;
 	//
-	// for (DataContainer dataContainer : commonDataContainers) {
+	// for (TablePerspective tablePerspective : commonDataContainers) {
 	// Pair<Point2D, Point2D> anchorPoints = node
-	// .getTopDataContainerAnchorPoints(dataContainer);
+	// .getTopDataContainerAnchorPoints(tablePerspective);
 	// summedX += anchorPoints.getFirst().getX()
 	// + anchorPoints.getSecond().getX();
 	// }
@@ -376,23 +376,23 @@ public class TopBundleConnector
 
 		Point2D prevBandAnchorPoint = leftDataContainerBundleConnectionPoint;
 
-		List<Pair<Double, DataContainer>> sortedDataContainers = new ArrayList<Pair<Double, DataContainer>>(
+		List<Pair<Double, TablePerspective>> sortedDataContainers = new ArrayList<Pair<Double, TablePerspective>>(
 				commonDataContainers.size());
-		for (DataContainer dataContainer : commonDataContainers)
+		for (TablePerspective tablePerspective : commonDataContainers)
 		{
-			sortedDataContainers.add(new Pair<Double, DataContainer>(node
-					.getTopDataContainerAnchorPoints(dataContainer).getFirst().getX(),
-					dataContainer));
+			sortedDataContainers.add(new Pair<Double, TablePerspective>(node
+					.getTopDataContainerAnchorPoints(tablePerspective).getFirst().getX(),
+					tablePerspective));
 		}
 
 		Collections.sort(sortedDataContainers);
 
 		for (int i = 0; i < sortedDataContainers.size(); i++)
 		{
-			DataContainer dataContainer = sortedDataContainers.get(i).getSecond();
+			TablePerspective tablePerspective = sortedDataContainers.get(i).getSecond();
 			anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
 			Pair<Point2D, Point2D> dimensionGroupAnchorPoints = node
-					.getTopDataContainerAnchorPoints(dataContainer);
+					.getTopDataContainerAnchorPoints(tablePerspective);
 			Pair<Point2D, Point2D> dimensionGroupAnchorOffsetPoints = new Pair<Point2D, Point2D>();
 			Pair<Point2D, Point2D> nodeTopAnchorPoints = node.getTopAnchorPoints();
 
@@ -409,7 +409,7 @@ public class TopBundleConnector
 			// dimensionGroupAnchorPoints.getSecond(),
 			// dimensionGroupAnchorPoints.getFirst());
 
-			int width = bandWidthMap.get(dataContainer);
+			int width = bandWidthMap.get(tablePerspective);
 
 			Point2D nextBandAnchorPoint = null;
 

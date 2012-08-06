@@ -24,7 +24,7 @@ package org.caleydo.core.view;
 
 import java.util.List;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.view.listener.AddDataContainersEvent;
 import org.caleydo.core.view.listener.AddDataContainersListener;
@@ -41,22 +41,22 @@ import org.caleydo.core.view.listener.AddDataContainersListener;
 public interface IMultiDataContainerBasedView extends IDataContainerBasedView, IListenerOwner {
 
 	/** Adds a single data container to the view */
-	public void addDataContainer(DataContainer newDataContainer);
+	public void addDataContainer(TablePerspective newDataContainer);
 
 	/**
-	 * Add a list of dataContainers to the view.
+	 * Add a list of tablePerspectives to the view.
 	 * 
 	 * @param newDataContainers
 	 */
-	public void addDataContainers(List<DataContainer> newDataContainers);
+	public void addDataContainers(List<TablePerspective> newDataContainers);
 
-	/** Returns all {@link DataContainer}s of this view */
-	public List<DataContainer> getDataContainers();
+	/** Returns all {@link TablePerspective}s of this view */
+	public List<TablePerspective> getDataContainers();
 
 	/**
 	 * Removes the data container that has the specified id from the view
 	 * 
-	 * @param dataContainer
+	 * @param tablePerspective
 	 */
 	public void removeDataContainer(int dataContainerID);
 }

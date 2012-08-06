@@ -3,8 +3,8 @@
  */
 package org.caleydo.view.enroute.mappeddataview;
 
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.perspective.ADataPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
@@ -21,13 +21,13 @@ public interface IContentRendererInitializor {
 
 	public Integer getGeneID();
 
-	public DataContainer getDataContainer();
+	public TablePerspective getDataContainer();
 
 	public GeneticDataDomain getDataDomain();
 
 	public MappedDataRenderer getMappedDataRenderer();
 
-	public ADataPerspective<?, ?, ?, ?> getExperimentPerspective();
+	public AVariablePerspective<?, ?, ?, ?> getExperimentPerspective();
 
 	public Group getGroup();
 

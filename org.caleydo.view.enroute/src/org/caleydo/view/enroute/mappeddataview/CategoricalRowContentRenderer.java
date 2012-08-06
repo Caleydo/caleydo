@@ -25,10 +25,10 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.container.ContainerStatistics;
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.perspective.ADataPerspective;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -53,11 +53,11 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 	 * 
 	 */
 	public CategoricalRowContentRenderer(Integer geneID, Integer davidID,
-			GeneticDataDomain dataDomain, DataContainer dataContainer,
-			ADataPerspective<?, ?, ?, ?> experimentPerspective, AGLView parentView,
+			GeneticDataDomain dataDomain, TablePerspective tablePerspective,
+			AVariablePerspective<?, ?, ?, ?> experimentPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group) {
 
-		super(geneID, davidID, dataDomain, dataContainer, experimentPerspective,
+		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective,
 				parentView, parent, group);
 	}
 
@@ -74,13 +74,13 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 
 			DimensionVirtualArray dimensionVirtualArray = new DimensionVirtualArray();
 			dimensionVirtualArray.append(geneID);
-			histogram = ContainerStatistics.calculateHistogram(dataDomain.getTable(),
+			histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
 					(RecordVirtualArray) experimentPerspective.getVirtualArray(),
 					dimensionVirtualArray, 5);
 		} else {
 			RecordVirtualArray recordVirtualArray = new RecordVirtualArray();
 			recordVirtualArray.append(geneID);
-			histogram = ContainerStatistics.calculateHistogram(dataDomain.getTable(),
+			histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
 					recordVirtualArray,
 					(DimensionVirtualArray) experimentPerspective.getVirtualArray(), 5);
 		}

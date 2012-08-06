@@ -17,26 +17,35 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.ccontainer;
+/**
+ * 
+ */
+package org.caleydo.core.data.perspective.table;
 
 /**
- * Interface for the low level containers which hold the data for the dimensions
+ * Container for average values and related information such as standard deviations
  * 
  * @author Alexander Lex
  */
-public interface ICContainer {
+public class Average {
+
+	/** The average value (mean) of the record */
+	double arithmeticMean;
+	/** The standard deviation from the {@link #arithmeticMean} */
+	double standardDeviation;
 
 	/**
-	 * Returns the size of the container
-	 * 
-	 * @return the size of the container
+	 * @return the arithmeticMean, see {@link #arithmeticMean}
 	 */
-	public int size();
+	public double getArithmeticMean() {
+		return arithmeticMean;
+	}
 
 	/**
-	 * Brings any dataset into a format between 0 and 1. This is used for drawing. For nominal data the first
-	 * value is 0, the last value is 1
+	 * @return the standardDeviation, see {@link #standardDeviation}
 	 */
-	public FloatCContainer normalize();
+	public double getStandardDeviation() {
+		return standardDeviation;
+	}
 
 }

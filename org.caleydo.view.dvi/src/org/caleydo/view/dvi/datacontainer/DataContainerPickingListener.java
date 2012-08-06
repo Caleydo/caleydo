@@ -26,8 +26,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -113,12 +113,12 @@ public class DataContainerPickingListener extends APickingListener {
 		if (dimensionGroupRenderer == null)
 			return;
 
-		DataContainer dataContainer = dimensionGroupRenderer.getDataContainer();
+		TablePerspective tablePerspective = dimensionGroupRenderer.getDataContainer();
 
-		float[] color = dataContainer.getDataDomain().getColor().getRGBA();
+		float[] color = tablePerspective.getDataDomain().getColor().getRGBA();
 
-		if (dataContainer instanceof PathwayDataContainer) {
-			color = ((PathwayDataContainer) dataContainer).getPathwayDataDomain()
+		if (tablePerspective instanceof PathwayDataContainer) {
+			color = ((PathwayDataContainer) tablePerspective).getPathwayDataDomain()
 					.getColor().getRGBA();
 		}
 
@@ -144,7 +144,7 @@ public class DataContainerPickingListener extends APickingListener {
 		DimensionGroupRenderer dimensionGroupRenderer = getDimensionGroupRenderer(dimensionGroupID);
 		if (dimensionGroupRenderer == null)
 			return;
-		DataContainer dataContainer = dimensionGroupRenderer.getDataContainer();
+		TablePerspective tablePerspective = dimensionGroupRenderer.getDataContainer();
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 
@@ -199,7 +199,7 @@ public class DataContainerPickingListener extends APickingListener {
 				.get()
 				.getAssociationManager()
 				.getViewTypesForDataDomain(
-						dataContainer.getDataDomain().getDataDomainType());
+						tablePerspective.getDataDomain().getDataDomainType());
 
 		List<Pair<String, String>> finalViewTypes = new ArrayList<Pair<String, String>>();
 
@@ -217,7 +217,7 @@ public class DataContainerPickingListener extends APickingListener {
 
 		for (Pair<String, String> viewType : viewTypes) {
 			createViewItems.add(new CreateViewItem(viewType.getFirst(), viewType
-					.getSecond(), dataContainer.getDataDomain(), dataContainer));
+					.getSecond(), tablePerspective.getDataDomain(), tablePerspective));
 		}
 
 		if (createViewItems.size() > 0) {
@@ -232,7 +232,7 @@ public class DataContainerPickingListener extends APickingListener {
 				if (node.getRepresentedView() instanceof GLStratomex) {
 					view.getContextMenuCreator().addContextMenuItem(
 							new AddGroupToStratomexItem((GLStratomex) node
-									.getRepresentedView(), dataContainer));
+									.getRepresentedView(), tablePerspective));
 				}
 			}
 		}

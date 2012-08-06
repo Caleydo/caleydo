@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IMultiDataContainerBasedView;
 
@@ -51,9 +51,9 @@ public abstract class ASerializedMultiDataContainerBasedView extends ASerialized
 
 	public ASerializedMultiDataContainerBasedView(IMultiDataContainerBasedView view) {
 		dataDomainAndDataContainerKeys = new ArrayList<Pair<String, String>>();
-		for (DataContainer dataContainer : view.getDataContainers()) {
-			dataDomainAndDataContainerKeys.add(new Pair<String, String>(dataContainer
-					.getDataDomain().getDataDomainID(), dataContainer
+		for (TablePerspective tablePerspective : view.getDataContainers()) {
+			dataDomainAndDataContainerKeys.add(new Pair<String, String>(tablePerspective
+					.getDataDomain().getDataDomainID(), tablePerspective
 					.getDataContainerKey()));
 		}
 	}

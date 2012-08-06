@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.ccontainer;
+package org.caleydo.core.data.collection.container;
 
 import java.util.ArrayList;
 
@@ -29,9 +29,9 @@ import java.util.ArrayList;
  *            the Type, can be anything that implements java.Number
  */
 
-public class NumericalCContainer<T extends Number>
-	extends ATypedCContainer<T>
-	implements INumericalCContainer
+public class NumericalContainer<T extends Number>
+	extends ATypedContainer<T>
+	implements INumericalContainer
 
 {
 
@@ -43,7 +43,7 @@ public class NumericalCContainer<T extends Number>
 	 * 
 	 * @param alContainer
 	 */
-	public NumericalCContainer(ArrayList<T> alContainer) {
+	public NumericalContainer(ArrayList<T> alContainer) {
 		this.alContainer = alContainer;
 	}
 
@@ -64,12 +64,12 @@ public class NumericalCContainer<T extends Number>
 	}
 
 	@Override
-	public FloatCContainer normalize() {
+	public FloatContainer normalize() {
 		return normalize(getMin(), getMax());
 	}
 
 	@Override
-	public FloatCContainer log(int iBase) {
+	public FloatContainer log(int iBase) {
 		float[] fArTarget = new float[alContainer.size()];
 
 		float fTmp;
@@ -81,11 +81,11 @@ public class NumericalCContainer<T extends Number>
 			}
 		}
 
-		return new FloatCContainer(fArTarget);
+		return new FloatContainer(fArTarget);
 	}
 
 	@Override
-	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax) {
+	public FloatContainer normalizeWithExternalExtrema(double dMin, double dMax) {
 		return normalize(dMin, dMax);
 	}
 
@@ -98,7 +98,7 @@ public class NumericalCContainer<T extends Number>
 	 * @throws IllegalAttributeException
 	 *             when dMin is >= dMax
 	 */
-	private FloatCContainer normalize(double dMin, double dMax) {
+	private FloatContainer normalize(double dMin, double dMax) {
 
 		if (dMin >= dMax)
 			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
@@ -122,7 +122,7 @@ public class NumericalCContainer<T extends Number>
 				}
 			}
 		}
-		return new FloatCContainer(fArTmpTarget);
+		return new FloatContainer(fArTmpTarget);
 	}
 
 	/**

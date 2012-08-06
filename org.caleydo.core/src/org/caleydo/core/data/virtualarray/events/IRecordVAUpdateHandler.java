@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.data.virtualarray.events;
 
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.event.IListenerOwner;
 
 /**

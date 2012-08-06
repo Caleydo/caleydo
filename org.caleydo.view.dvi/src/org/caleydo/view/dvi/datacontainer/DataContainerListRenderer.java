@@ -26,7 +26,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -49,12 +49,12 @@ public class DataContainerListRenderer
 	private List<DimensionGroupRenderer> dimensionGroupRenderers;
 
 	public DataContainerListRenderer(IDVINode node, GLDataViewIntegrator view,
-			DragAndDropController dragAndDropController, List<DataContainer> dataContainers)
+			DragAndDropController dragAndDropController, List<TablePerspective> tablePerspectives)
 	{
 		super(node, view, dragAndDropController);
 
 		dimensionGroupRenderers = new ArrayList<DimensionGroupRenderer>();
-		setDataContainers(dataContainers);
+		setDataContainers(tablePerspectives);
 		registerPickingListeners();
 	}
 
@@ -66,23 +66,23 @@ public class DataContainerListRenderer
 	}
 
 	@Override
-	public void setDataContainers(List<DataContainer> dataContainers)
+	public void setDataContainers(List<TablePerspective> tablePerspectives)
 	{
 		dimensionGroupRenderers.clear();
-		for (DataContainer dataContainer : dataContainers)
+		for (TablePerspective tablePerspective : tablePerspectives)
 		{
-			if(dataContainer.isPrivate())
+			if(tablePerspective.isPrivate())
 				continue;
-			float[] color = dataContainer.getDataDomain().getColor().getRGBA();
+			float[] color = tablePerspective.getDataDomain().getColor().getRGBA();
 
-			if (dataContainer instanceof PathwayDataContainer)
+			if (tablePerspective instanceof PathwayDataContainer)
 			{
-				color = ((PathwayDataContainer) dataContainer).getPathwayDataDomain()
+				color = ((PathwayDataContainer) tablePerspective).getPathwayDataDomain()
 						.getColor().getRGBA();
 			}
 
 			DimensionGroupRenderer dimensionGroupRenderer = new DimensionGroupRenderer(
-					dataContainer, view, node, color);
+					tablePerspective, view, node, color);
 			dimensionGroupRenderer.setTextHeightPixels(TEXT_HEIGHT_PIXELS);
 			dimensionGroupRenderer
 					.setTextRotation(isUpsideDown ? DimensionGroupRenderer.TEXT_ROTATION_90
@@ -183,10 +183,10 @@ public class DataContainerListRenderer
 
 		float maxTextWidth = Float.MIN_VALUE;
 
-		for (DataContainer dataContainer : node.getDataContainers())
+		for (TablePerspective tablePerspective : node.getDataContainers())
 		{
 			float textWidth = textRenderer.getRequiredTextWidthWithMax(
-					dataContainer.getLabel(),
+					tablePerspective.getLabel(),
 					pixelGLConverter.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS),
 					pixelGLConverter.getGLWidthForPixelWidth(MAX_TEXT_WIDTH_PIXELS));
 			if (textWidth > maxTextWidth)

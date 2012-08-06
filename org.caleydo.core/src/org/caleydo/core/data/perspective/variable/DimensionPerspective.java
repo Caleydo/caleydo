@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.perspective;
+package org.caleydo.core.data.perspective.variable;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,24 +25,25 @@ import java.util.UUID;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.filter.RecordFilterManager;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.data.filter.DimensionFilterManager;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
+import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 
 /**
- * Implementation of {@link ADataPerspective} for records.
+ * Implementation of {@link AVariablePerspective} for dimensions.
  * 
  * @author Alexander Lex
  */
 @XmlRootElement
-public class RecordPerspective
-	extends ADataPerspective<RecordVirtualArray, RecordGroupList, RecordVADelta, RecordFilterManager> {
+public class DimensionPerspective
+	extends
+	AVariablePerspective<DimensionVirtualArray, DimensionGroupList, DimensionVADelta, DimensionFilterManager> {
 
-	public RecordPerspective() {
+	public DimensionPerspective() {
 	}
 
-	public RecordPerspective(ATableBasedDataDomain dataDomain) {
+	public DimensionPerspective(ATableBasedDataDomain dataDomain) {
 		super(dataDomain);
 	}
 
@@ -50,34 +51,33 @@ public class RecordPerspective
 	protected void init() {
 		// if this perspective is de-serialized the perspectiveID is already set.
 		if (perspectiveID == null)
-			perspectiveID = "RecordPerspective_" + UUID.randomUUID();
-		filterManager = new RecordFilterManager(dataDomain, this);
-		idType = dataDomain.getRecordIDType();
+			perspectiveID = "DimensionPerspective_" + UUID.randomUUID();
+		filterManager = new DimensionFilterManager(dataDomain, this);
+		idType = dataDomain.getDimensionIDType();
 	}
 
 	@Override
-	protected RecordGroupList createGroupList() {
-		return new RecordGroupList();
+	protected DimensionGroupList createGroupList() {
+		return new DimensionGroupList();
 	}
 
 	@Override
 	protected void createFilterManager() {
-		filterManager = new RecordFilterManager(dataDomain, this);
+		filterManager = new DimensionFilterManager(dataDomain, this);
 	}
 
 	@Override
-	protected RecordVirtualArray newConcreteVirtualArray(List<Integer> indexList) {
-		return new RecordVirtualArray(idType, indexList);
+	protected DimensionVirtualArray newConcreteVirtualArray(List<Integer> indexList) {
+		return new DimensionVirtualArray(idType, indexList);
 	}
 
 	@Override
 	protected String getElementLabel(Integer id) {
-		return dataDomain.getRecordLabel(id);
+		return dataDomain.getDimensionLabel(id);
 	}
 
 	@Override
 	protected List<Integer> getIDList() {
-		return dataDomain.getTable().getRowIDList();
+		return dataDomain.getTable().getColumnIDList();
 	}
-
 }

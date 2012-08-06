@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.ccontainer;
+package org.caleydo.core.data.collection.container;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
 
@@ -28,8 +28,8 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
  * 
  * @author Alexander Lex
  */
-public class IntCContainer
-	implements INumericalCContainer {
+public class IntContainer
+	implements INumericalContainer {
 
 	private int[] container;
 
@@ -43,7 +43,7 @@ public class IntCContainer
 	 * 
 	 * @param iArContainer the int array
 	 */
-	public IntCContainer(int[] iArContainer) {
+	public IntContainer(int[] iArContainer) {
 		this.container = iArContainer;
 	}
 
@@ -86,9 +86,9 @@ public class IntCContainer
 	 * 
 	 * @return the iterator for the container
 	 */
-	public IntCContainerIterator iterator() {
+	public IntContainerIterator iterator() {
 
-		return new IntCContainerIterator(this);
+		return new IntContainerIterator(this);
 	}
 
 	/**
@@ -97,12 +97,12 @@ public class IntCContainer
 	 * @param virtualArray the virtual array
 	 * @return the iterator
 	 */
-	public IntCContainerIterator iterator(VirtualArray<?, ?, ?> virtualArray) {
-		return new IntCContainerIterator(this, virtualArray);
+	public IntContainerIterator iterator(VirtualArray<?, ?, ?> virtualArray) {
+		return new IntContainerIterator(this, virtualArray);
 	}
 
 	@Override
-	public FloatCContainer normalizeWithExternalExtrema(double min, double max) {
+	public FloatContainer normalizeWithExternalExtrema(double min, double max) {
 		if (min > getMin() || max < getMax())
 			throw new IllegalArgumentException("Provided external values are more "
 					+ "limiting than calculated ones");
@@ -110,7 +110,7 @@ public class IntCContainer
 	}
 
 	@Override
-	public FloatCContainer normalize() {
+	public FloatContainer normalize() {
 		return normalize((int) getMin(), (int) getMax());
 	}
 
@@ -122,7 +122,7 @@ public class IntCContainer
 	 * @return
 	 * @throws IllegalAttributeException when iMin is >= iMax
 	 */
-	private FloatCContainer normalize(int min, int max)
+	private FloatContainer normalize(int min, int max)
 
 	{
 		if (min >= max)
@@ -133,7 +133,7 @@ public class IntCContainer
 			target[iCount] = ((float) container[iCount] - min) / (max - min);
 			target[iCount] = target[iCount] > 1 ? 1 : target[iCount];
 		}
-		return new FloatCContainer(target);
+		return new FloatContainer(target);
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class IntCContainer
 	}
 
 	@Override
-	public FloatCContainer log(int iBase) {
+	public FloatContainer log(int iBase) {
 
 		float[] target = new float[container.length];
 
@@ -167,7 +167,7 @@ public class IntCContainer
 			target[index] = (float) Math.log(tmp) / (float) Math.log(iBase);
 		}
 
-		return new FloatCContainer(target);
+		return new FloatContainer(target);
 	}
 
 }

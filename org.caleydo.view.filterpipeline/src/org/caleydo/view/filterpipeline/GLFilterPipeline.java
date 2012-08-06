@@ -36,7 +36,6 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.filter.DimensionFilterManager;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.FilterManager;
@@ -46,6 +45,7 @@ import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateDimensionFilterListEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateRecordFilterListEvent;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -642,14 +642,14 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		filterList.clear();
 		int filterID = 0;
 
-		RecordFilterManager recordFilterManager = dataContainer.getRecordPerspective()
+		RecordFilterManager recordFilterManager = tablePerspective.getRecordPerspective()
 				.getFilterManager();
-		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
 				.getVirtualArray();
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 
-		DimensionFilterManager dimensionFilterManager = dataContainer
+		DimensionFilterManager dimensionFilterManager = tablePerspective
 				.getDimensionPerspective().getFilterManager();
 
 		VirtualArray<?, ?, ?> currentVA;
@@ -704,19 +704,19 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		if (table.getUncertainty().getNormalizedUncertainty() != null)
 			return;
 
-		RecordFilter contentFilter = new RecordFilter(dataContainer
+		RecordFilter contentFilter = new RecordFilter(tablePerspective
 				.getRecordPerspective().getPerspectiveID());
 		contentFilter.setDataDomain(dataDomain);
 		contentFilter.setLabel("Signal-To-Noise Ratio Filter");
 
 		table.getUncertainty().calculateRawAverageUncertainty(
-				dataContainer.getDimensionPerspective().getPerspectiveID());
+				tablePerspective.getDimensionPerspective().getPerspectiveID());
 
 		Histogram histogram = HistogramCreator.createHistogram(table.getUncertainty()
 				.getRawUncertainty());
 
-		FilterRepresentationSNR filterRep = new FilterRepresentationSNR(dataContainer
-				.getRecordPerspective().getPerspectiveID(), dataContainer.getDimensionPerspective()
+		FilterRepresentationSNR filterRep = new FilterRepresentationSNR(tablePerspective
+				.getRecordPerspective().getPerspectiveID(), tablePerspective.getDimensionPerspective()
 				.getPerspectiveID());
 		filterRep.setFilter(contentFilter);
 		filterRep.setTable(table);
@@ -755,10 +755,10 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	}
 
 	@Override
-	public List<DataContainer> getDataContainers() {
-		ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
-		dataContainers.add(dataContainer);
-		return dataContainers;
+	public List<TablePerspective> getDataContainers() {
+		ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>();
+		tablePerspectives.add(tablePerspective);
+		return tablePerspectives;
 	}
 
 	@Override

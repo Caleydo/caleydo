@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.container.Average;
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.Average;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
@@ -53,17 +53,17 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 	 * @param set
 	 * @param showStandardDeviation
 	 */
-	public OverviewHeatMapRenderer(DataContainer dataContainer, DataTable table,
+	public OverviewHeatMapRenderer(TablePerspective tablePerspective, DataTable table,
 			boolean showStandardDeviation) {
 		colorMapper = table.getDataDomain().getColorMapper();
 		this.showStandardDeviation = showStandardDeviation;
 
-		// float[] expressionValues = new float[dataContainer.getNrRecords()];
+		// float[] expressionValues = new float[tablePerspective.getNrRecords()];
 		heatMapValuesMean = new ArrayList<Float>();
 		heatMapValuesMeanMinusStdDev = new ArrayList<Float>();
 		heatMapValuesMeanPlusStdDev = new ArrayList<Float>();
 
-		ArrayList<Average> averageRecords = dataContainer.getContainerStatistics()
+		ArrayList<Average> averageRecords = tablePerspective.getContainerStatistics()
 				.getAverageRecords();
 
 		for (Average averageRecord : averageRecords) {
@@ -76,11 +76,11 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 		}
 
 		// for (int dimensionID :
-		// dataContainer.getDimensionPerspective().getVirtualArray()) {
+		// tablePerspective.getDimensionPerspective().getVirtualArray()) {
 		//
 		// int index = 0;
 		// for (int recordIndex :
-		// dataContainer.getRecordPerspective().getVirtualArray()) {
+		// tablePerspective.getRecordPerspective().getVirtualArray()) {
 		// expressionValues[index] =
 		// table.getFloat(DataRepresentation.NORMALIZED,
 		// recordIndex, dimensionID);

@@ -29,11 +29,11 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
@@ -88,7 +88,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 	private ElementLayout dataContainerLayout;
 	private ADataContainerRenderer dataContainerRenderer;
 	private Row bodyRow;
-	private List<DataContainer> dataContainers;
+	private List<TablePerspective> tablePerspectives;
 
 	private abstract class ALayoutState {
 		protected ADataContainerRenderer dataContainerRenderer;
@@ -412,16 +412,16 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 	}
 
 	protected void retrieveDataContainers() {
-		Collection<DataContainer> containerCollection = dataDomain.getAllDataContainers();
+		Collection<TablePerspective> containerCollection = dataDomain.getAllDataContainers();
 		if (containerCollection == null) {
-			dataContainers = new ArrayList<DataContainer>();
+			tablePerspectives = new ArrayList<TablePerspective>();
 			return;
 		}
-		// List<Pair<String, DataContainer>> sortedParentDataContainers = new
-		// ArrayList<Pair<String, DataContainer>>();
-		// for (DataContainer container : containerCollection) {
+		// List<Pair<String, TablePerspective>> sortedParentDataContainers = new
+		// ArrayList<Pair<String, TablePerspective>>();
+		// for (TablePerspective container : containerCollection) {
 		// sortedParentDataContainers.add(new Pair<String,
-		// DataContainer>(container
+		// TablePerspective>(container
 		// .getLabel(), container));
 		// }
 
@@ -537,31 +537,31 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			}
 		}
 
-		dataContainers = new ArrayList<DataContainer>(containerCollection.size());
+		tablePerspectives = new ArrayList<TablePerspective>(containerCollection.size());
 
 		for (DimensionPerspective dimensionPerspective : sortedDimensionPerspectives) {
 			for (RecordPerspective recordPerspective : sortedRecordPerspectives) {
 				if (dataDomain.hasDataContainer(recordPerspective.getPerspectiveID(),
 						dimensionPerspective.getPerspectiveID())) {
-					dataContainers.add(dataDomain.getDataContainer(
+					tablePerspectives.add(dataDomain.getDataContainer(
 							recordPerspective.getPerspectiveID(),
 							dimensionPerspective.getPerspectiveID()));
 				}
 			}
 		}
 
-		// for (Pair<String, DataContainer> pair : sortedParentDataContainers) {
-		// dataContainers.add(pair.getSecond());
+		// for (Pair<String, TablePerspective> pair : sortedParentDataContainers) {
+		// tablePerspectives.add(pair.getSecond());
 		// }
 	}
 
 	@Override
-	public List<DataContainer> getDataContainers() {
+	public List<TablePerspective> getDataContainers() {
 
-		if (dataContainers == null)
+		if (tablePerspectives == null)
 			retrieveDataContainers();
 
-		return dataContainers;
+		return tablePerspectives;
 	}
 
 	@Override
@@ -574,8 +574,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 	@Override
 	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
 			float mouseCoordinateY, DragAndDropController dragAndDropController) {
-		// ArrayList<DataContainer> dataContainers = new
-		// ArrayList<DataContainer>();
+		// ArrayList<TablePerspective> tablePerspectives = new
+		// ArrayList<TablePerspective>();
 		for (IDraggable draggable : draggables) {
 			if (draggable instanceof PerspectiveRenderer) {
 				PerspectiveRenderer perspectiveRenderer = (PerspectiveRenderer) draggable;
@@ -594,16 +594,16 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 								convertedPerspective);
 					}
 				}
-				// dataContainers.add(dimensionGroupRenderer.getDataContainer());
+				// tablePerspectives.add(dimensionGroupRenderer.getDataContainer());
 			}
 		}
 
-		// if (!dataContainers.isEmpty())
+		// if (!tablePerspectives.isEmpty())
 		// {
 		// // FIXME: this needs to be looked at again
 		// // System.out.println("Drop");
 		// AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
-		// dataContainers.get(0));
+		// tablePerspectives.get(0));
 		// event.setReceiver((GLVisBricks) representedView);
 		// event.setSender(this);
 		// GeneralManager.get().getEventPublisher().triggerEvent(event);

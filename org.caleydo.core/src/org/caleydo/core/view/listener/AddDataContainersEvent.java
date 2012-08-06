@@ -22,12 +22,12 @@ package org.caleydo.core.view.listener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
 /**
- * Event that triggers adding a list of {@link DataContainer}s to a specific
+ * Event that triggers adding a list of {@link TablePerspective}s to a specific
  * view.
  * 
  * @author Alexander Lex
@@ -36,7 +36,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 public class AddDataContainersEvent extends AEvent {
 
 	/** The data containers that are to be added to the view */
-	private List<DataContainer> dataContainers;
+	private List<TablePerspective> tablePerspectives;
 
 	/** The view which is the receiver of the data containers */
 	private AGLView receiver;
@@ -50,22 +50,22 @@ public class AddDataContainersEvent extends AEvent {
 	/**
 	 * Constructor initializing the event with a single data container.
 	 * 
-	 * @param dataContainer
-	 *            added to a new instance of {@link #dataContainers}
+	 * @param tablePerspective
+	 *            added to a new instance of {@link #tablePerspectives}
 	 */
-	public AddDataContainersEvent(DataContainer dataContainer) {
-		dataContainers = new ArrayList<DataContainer>();
-		this.dataContainers.add(dataContainer);
+	public AddDataContainersEvent(TablePerspective tablePerspective) {
+		tablePerspectives = new ArrayList<TablePerspective>();
+		this.tablePerspectives.add(tablePerspective);
 	}
 
 	/**
 	 * Constructor initializing the event with multiple data containers.
 	 * 
-	 * @param dataContainers
-	 *            set to {@link #dataContainers}
+	 * @param tablePerspectives
+	 *            set to {@link #tablePerspectives}
 	 */
-	public AddDataContainersEvent(List<DataContainer> dataContainers) {
-		this.dataContainers = dataContainers;
+	public AddDataContainersEvent(List<TablePerspective> tablePerspectives) {
+		this.tablePerspectives = tablePerspectives;
 	}
 
 	/**
@@ -84,23 +84,23 @@ public class AddDataContainersEvent extends AEvent {
 	}
 
 	/**
-	 * @param dataContainers
-	 *            setter, see {@link #dataContainers}
+	 * @param tablePerspectives
+	 *            setter, see {@link #tablePerspectives}
 	 */
-	public void setDataContainers(List<DataContainer> dataContainers) {
-		this.dataContainers = dataContainers;
+	public void setDataContainers(List<TablePerspective> tablePerspectives) {
+		this.tablePerspectives = tablePerspectives;
 	}
 
 	/**
-	 * @return the dataContainers, see {@link #dataContainers}
+	 * @return the tablePerspectives, see {@link #tablePerspectives}
 	 */
-	public List<DataContainer> getDataContainers() {
-		return dataContainers;
+	public List<TablePerspective> getDataContainers() {
+		return tablePerspectives;
 	}
 
 	@Override
 	public boolean checkIntegrity() {
-		if (dataContainers == null)
+		if (tablePerspectives == null)
 			return false;
 
 		return true;

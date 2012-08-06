@@ -26,7 +26,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -81,14 +81,14 @@ public abstract class ADefaultTemplateNode
 
 	@Override
 	public Pair<Point2D, Point2D> getBottomDataContainerAnchorPoints(
-			DataContainer dataContainer)
+			TablePerspective tablePerspective)
 	{
 
 		if (getDataContainerRenderer() == null)
 			return null;
 
 		Pair<Point2D, Point2D> anchorPoints = getDataContainerRenderer()
-				.getBottomAnchorPointsOfDataContainer(dataContainer);
+				.getBottomAnchorPointsOfDataContainer(tablePerspective);
 
 		return getAbsoluteDimensionGroupAnchorPoints(
 				anchorPoints,
@@ -98,14 +98,14 @@ public abstract class ADefaultTemplateNode
 	}
 
 	@Override
-	public Pair<Point2D, Point2D> getTopDataContainerAnchorPoints(DataContainer dataContainer)
+	public Pair<Point2D, Point2D> getTopDataContainerAnchorPoints(TablePerspective tablePerspective)
 	{
 
 		if (getDataContainerRenderer() == null)
 			return null;
 
 		Pair<Point2D, Point2D> anchorPoints = getDataContainerRenderer()
-				.getTopAnchorPointsOfDataContainer(dataContainer);
+				.getTopAnchorPointsOfDataContainer(tablePerspective);
 
 		return getAbsoluteDimensionGroupAnchorPoints(
 				anchorPoints,

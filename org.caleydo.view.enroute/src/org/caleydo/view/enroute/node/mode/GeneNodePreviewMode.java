@@ -5,8 +5,8 @@ package org.caleydo.view.enroute.node.mode;
 
 import java.util.List;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -114,7 +114,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 	private Column createPreviewRow(ElementLayout horizontalSpacing,
 			ElementLayout verticalSpacing) {
 
-		List<DataContainer> dataContainers = view.getResolvedDataContainers();
+		List<TablePerspective> tablePerspectives = view.getResolvedDataContainers();
 		List<Integer> davidIds = node.getMappedDavidIDs();
 
 		// Row previewRow = new Row("previewRow");
@@ -127,7 +127,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 		geneColumn.setYDynamic(true);
 		geneColumn.setBottomUp(false);
 
-		if (dataContainers == null || davidIds == null || davidIds.isEmpty())
+		if (tablePerspectives == null || davidIds == null || davidIds.isEmpty())
 			return geneColumn;
 
 		// previewRow.append(geneColumn);
@@ -152,15 +152,15 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 			geneRow.append(horizontalSpacing);
 			geneRow.append(columnSpacingLayout);
 
-			for (DataContainer dataContainer : dataContainers) {
-				IDataDomain currentDataDomain = dataContainer.getDataDomain();
+			for (TablePerspective tablePerspective : tablePerspectives) {
+				IDataDomain currentDataDomain = tablePerspective.getDataDomain();
 				if (currentDataDomain != prevDataDomain && prevDataDomain != null) {
 					geneRow.append(datasetSpacing);
 				}
 
 				ContentRenderer dataContainerPreviewRenderer = null;
 				ContentRendererInitializor initializor = new ContentRendererInitializor(
-						dataContainer, davidId, view.getMappedDataRenderer(), view);
+						tablePerspective, davidId, view.getMappedDataRenderer(), view);
 				// FIXME: Bad hack to determine categorical data
 				if (currentDataDomain.getLabel().contains("Copy")) {
 					dataContainerPreviewRenderer = new CategoricalContentPreviewRenderer(

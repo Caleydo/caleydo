@@ -22,8 +22,8 @@ package org.caleydo.core.serialize;
 import java.util.HashMap;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 
 /**
  * Bean that holds the initialization data for new started Caleydo application.

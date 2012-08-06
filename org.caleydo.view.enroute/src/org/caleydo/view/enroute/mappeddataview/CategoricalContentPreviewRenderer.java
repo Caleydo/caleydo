@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.container.ContainerStatistics;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -39,13 +39,13 @@ public class CategoricalContentPreviewRenderer extends ContentRenderer {
 
 			DimensionVirtualArray dimensionVirtualArray = new DimensionVirtualArray();
 			dimensionVirtualArray.append(geneID);
-			histogram = ContainerStatistics.calculateHistogram(dataDomain.getTable(),
+			histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
 					(RecordVirtualArray) experimentPerspective.getVirtualArray(),
 					dimensionVirtualArray, 5);
 		} else {
 			RecordVirtualArray recordVirtualArray = new RecordVirtualArray();
 			recordVirtualArray.append(geneID);
-			histogram = ContainerStatistics.calculateHistogram(dataDomain.getTable(),
+			histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
 					recordVirtualArray,
 					(DimensionVirtualArray) experimentPerspective.getVirtualArray(), 5);
 		}

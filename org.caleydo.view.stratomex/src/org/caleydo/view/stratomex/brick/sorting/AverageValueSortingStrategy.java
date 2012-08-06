@@ -22,7 +22,7 @@ package org.caleydo.view.stratomex.brick.sorting;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.view.stratomex.brick.GLBrick;
 
 /**
@@ -46,9 +46,9 @@ public class AverageValueSortingStrategy implements IBrickSortingStrategy {
 	private void insertBrick(GLBrick brickToInsert, ArrayList<GLBrick> bricks) {
 
 		int count;
-		DataContainer brickToInsertData = brickToInsert.getDataContainer();
+		TablePerspective brickToInsertData = brickToInsert.getDataContainer();
 		for (count = 0; count < bricks.size(); count++) {
-			DataContainer brickData = (DataContainer) bricks.get(count)
+			TablePerspective brickData = (TablePerspective) bricks.get(count)
 					.getDataContainer();
 			if (brickData.getContainerStatistics().getAverageValue() < brickToInsertData
 					.getContainerStatistics().getAverageValue())

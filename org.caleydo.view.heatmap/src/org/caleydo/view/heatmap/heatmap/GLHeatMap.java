@@ -193,7 +193,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		if (detailLevel.equals(this.detailLevel))
 			return;
 		super.setDetailLevel(detailLevel);
-		if (dataContainer.getNrDimensions() > 1
+		if (tablePerspective.getNrDimensions() > 1
 				&& (detailLevel == EDetailLevel.HIGH || detailLevel == EDetailLevel.MEDIUM)) {
 			layoutManager.setStaticLayoutConfiguration(detailedRenderingTemplate);
 			detailedRenderingTemplate.setStaticLayouts();
@@ -228,7 +228,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	@Override
 	public void display(GL2 gl) {
 
-		if (dataContainer == null)
+		if (tablePerspective == null)
 			return;
 		if (updateColorMapping) {
 			textureTemplate.updateColorMapping(gl);
@@ -259,7 +259,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		}
 		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
-		if (dataContainer.getNrRecords() == 0 || dataContainer.getNrDimensions() == 0) {
+		if (tablePerspective.getNrRecords() == 0 || tablePerspective.getNrDimensions() == 0) {
 			renderSymbol(gl, EIconTextures.HEAT_MAP_SYMBOL, 2);
 		} else {
 			layoutManager.render(gl);
@@ -448,7 +448,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	}
 
 	public void upDownSelect(boolean isUp) {
-		RecordVirtualArray virtualArray = dataContainer.getRecordPerspective()
+		RecordVirtualArray virtualArray = tablePerspective.getRecordPerspective()
 				.getVirtualArray();
 		if (virtualArray == null)
 			throw new IllegalStateException(
@@ -460,7 +460,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	}
 
 	public void leftRightSelect(boolean isLeft) {
-		DimensionVirtualArray virtualArray = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray virtualArray = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 		if (virtualArray == null)
 			throw new IllegalStateException(
@@ -473,7 +473,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	}
 
 	public void enterPressedSelect() {
-		DimensionVirtualArray virtualArray = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray virtualArray = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 		if (virtualArray == null)
 			throw new IllegalStateException(
@@ -487,7 +487,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 			createDimensionSelection(SelectionType.SELECTION, selectedElement);
 		}
 
-		RecordVirtualArray recordVirtualArray = dataContainer.getRecordPerspective()
+		RecordVirtualArray recordVirtualArray = tablePerspective.getRecordPerspective()
 				.getVirtualArray();
 		if (recordVirtualArray == null)
 			throw new IllegalStateException(
@@ -538,7 +538,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		ArrayList<ElementConnectionInformation> alElementReps = new ArrayList<ElementConnectionInformation>(
 				4);
 
-		for (int recordIndex : dataContainer.getRecordPerspective().getVirtualArray()
+		for (int recordIndex : tablePerspective.getRecordPerspective().getVirtualArray()
 				.indicesOf(id)) {
 			if (recordIndex == -1) {
 				continue;
@@ -568,7 +568,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	 */
 	public Float getYCoordinateOfRecord(int recordIndex) {
 		if (isHideElements()) {
-			Integer recordID = dataContainer.getRecordPerspective().getVirtualArray()
+			Integer recordID = tablePerspective.getRecordPerspective().getVirtualArray()
 					.get(recordIndex);
 			if (recordSelectionManager.checkStatus(SELECTION_HIDDEN, recordID))
 				return null;
@@ -645,7 +645,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 	@Override
 	public String toString() {
-		return "Heat map for " + dataContainer;
+		return "Heat map for " + tablePerspective;
 	}
 
 	@Override
@@ -681,7 +681,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	 * @return
 	 */
 	public int getNumberOfVisibleRecords() {
-		int size = dataContainer.getRecordPerspective().getVirtualArray().size();
+		int size = tablePerspective.getRecordPerspective().getVirtualArray().size();
 		if (isHideElements())
 			return size - recordSelectionManager.getNumberOfElements(SELECTION_HIDDEN);
 		else
@@ -758,7 +758,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		Iterator<Integer> elementIterator = zoomedElements.iterator();
 		while (elementIterator.hasNext()) {
 			int recordID = elementIterator.next();
-			if (!dataContainer.getRecordPerspective().getVirtualArray()
+			if (!tablePerspective.getRecordPerspective().getVirtualArray()
 					.contains(recordID))
 				elementIterator.remove();
 			else if (recordSelectionManager.checkStatus(SELECTION_HIDDEN, recordID))

@@ -125,9 +125,9 @@ public class GLTagCloud extends ATableBasedView {
 
 		DataTable table = dataDomain.getTable();
 
-		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
 				.getVirtualArray();
-		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 
 		for (Integer dimensionID : dimensionVA) {
@@ -164,14 +164,14 @@ public class GLTagCloud extends ATableBasedView {
 				.getPixelWidthForGLWidth(viewFrustum.getWidth())
 				/ MIN_NUMBER_PIXELS_PER_DIMENSION;
 
-		if (dataContainer.getNrDimensions() > numberOfVisibleDimensions) {
+		if (tablePerspective.getNrDimensions() > numberOfVisibleDimensions) {
 			if (clippedDimensionVA == null) {
 				clippedDimensionVA = new DimensionVirtualArray(dimensionIDType);
 
 				firstDimensionIndex = 0;
 				lastDimensionIndex = numberOfVisibleDimensions - 1;
 				for (int count = 0; count < numberOfVisibleDimensions; count++) {
-					clippedDimensionVA.append(dataContainer.getDimensionPerspective()
+					clippedDimensionVA.append(tablePerspective.getDimensionPerspective()
 							.getVirtualArray().get(count));
 
 				}
@@ -215,7 +215,7 @@ public class GLTagCloud extends ATableBasedView {
 			baseRow.append(nextDimensionColumn);
 
 		} else {
-			visibleDimensionVA = dataContainer.getDimensionPerspective()
+			visibleDimensionVA = tablePerspective.getDimensionPerspective()
 					.getVirtualArray();
 			baseRow.append(baseColumn);
 			clippedDimensionVA = null;
@@ -402,7 +402,7 @@ public class GLTagCloud extends ATableBasedView {
 			switch (pickingMode) {
 			case CLICKED:
 				if (externalID == BUTTON_NEXT_ID) {
-					if (lastDimensionIndex != dataContainer.getNrDimensions() - 1) {
+					if (lastDimensionIndex != tablePerspective.getNrDimensions() - 1) {
 						firstDimensionIndex++;
 						lastDimensionIndex++;
 						updateClippedVA();
@@ -432,7 +432,7 @@ public class GLTagCloud extends ATableBasedView {
 	private void updateClippedVA() {
 		clippedDimensionVA = new DimensionVirtualArray(dimensionIDType);
 		for (int count = firstDimensionIndex; count <= lastDimensionIndex; count++) {
-			clippedDimensionVA.append(dataContainer.getDimensionPerspective()
+			clippedDimensionVA.append(tablePerspective.getDimensionPerspective()
 					.getVirtualArray().get(count));
 		}
 	}
@@ -476,7 +476,7 @@ public class GLTagCloud extends ATableBasedView {
 		case MEDIUM:
 			return 100;
 		case LOW:
-			return Math.max(150, 30 * dataContainer.getNrRecords());
+			return Math.max(150, 30 * tablePerspective.getNrRecords());
 		default:
 			return 100;
 		}
