@@ -84,7 +84,6 @@ public class TCGADataXMLGenerator
 	public TCGADataXMLGenerator(String[] arguments) {
 		super(arguments);
 
-		// this.tumorName = "Glioblastoma Multiforme";
 		this.tumorAbbreviation = "STAD";
 		this.analysisRunIdentifier = "2012_05_25";
 		this.dataRunIdentifier = "2012_07_07";

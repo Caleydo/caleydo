@@ -29,6 +29,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.manager.GeneralManager;
@@ -65,7 +66,7 @@ public class TCGAProjectBuilderApplication
 	private String reportJSONOutputPath;
 
 	private String reportStringHTML = "";
-	private String reportStringJSON = "";
+	private String reportJSONGenomicData = "";
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
@@ -183,7 +184,7 @@ public class TCGAProjectBuilderApplication
 			generateTumorReportLine(tumorType, jnlpFileName, projectRemoteOutputURL);
 
 			if (tumorIndex < tumorTypes.length - 1)
-				reportStringJSON += ",";
+				reportJSONGenomicData += ",";
 
 			cleanUp(xmlFilePath, jnlpOutputPath, jnlpFileName, projectRemoteOutputURL);
 		}
@@ -266,12 +267,12 @@ public class TCGAProjectBuilderApplication
 
 	private void generateJSONReport() {
 
-		reportStringJSON = reportStringJSON.replace("\"null\"", "null");
+		reportJSONGenomicData = reportJSONGenomicData.replace("\"null\"", "null");
 
 		StringBuilder htmlBuilder = new StringBuilder();
 		htmlBuilder.append("{\"analysisRun\":\"" + analysisRunIdentifier + "\",\"dataRun\":\""
 				+ dataRunIdentifier + "\",");
-		htmlBuilder.append("\"details\":[" + reportStringJSON + "]");
+		htmlBuilder.append("\"details\":[" + reportJSONGenomicData + "]");
 		htmlBuilder.append("}\n");
 
 		FileWriter writer;
@@ -341,6 +342,7 @@ public class TCGAProjectBuilderApplication
 			}
 			else if (dataSetName.equals("Clinical")) {
 				isClinicalLoaded = true;
+				addInfoClinical = getClinicalInfo(dataDomain);
 			}
 			else if (dataSetName.equals("Mutations")) {
 				isMutationsLoaded = true;
@@ -368,22 +370,40 @@ public class TCGAProjectBuilderApplication
 				+ "</td>" + "<td>" + jnlpLinkTag + "</td>" + "<td>" + projectLinkTag + "</td>"
 				+ "<td>" + firehoseReportLinkTag + "</td>" + "</td></tr>";
 
-		reportStringJSON += "{\"tumorAbbreviation\":\"" + tumorAbbreviation
-				+ "\",\"tumorName\":\"" + tumorName + "\",\"dataSets\":{\"mRNA\":"
+		reportJSONGenomicData += "{\"tumorAbbreviation\":\"" + tumorAbbreviation
+				+ "\",\"tumorName\":\"" + tumorName + "\",\"genomic\":{\"mRNA\":"
 				+ addInfoMRNA + ",\"mRNA-seq\":" + addInfoMRNASeq + ",\"microRNA\":"
 				+ addInfoMicroRNA + ",\"microRNA-seq\":" + addInfoMicroRNASeq
-				+ ",\"Clinical\":" + addInfoClinical + ",\"Mutations\":" + addInfoMutations
-				+ ",\"Copy Number\":" + addInfoCopyNumber + ",\"Methylation\":"
-				+ addInfoMethylation + ",\"RPPA\":" + addInfoRPPA + "},\"Caleydo JNLP\":\""
-				+ jnlpURL + "\",\"Caleydo Project\":\"" + projectOutputPath
-				+ "\",\"Firehose Report\":\"" + firehoseReportURL + "\"}\n";
+				+ ",\"Mutations\":" + addInfoMutations + ",\"Copy Number\":"
+				+ addInfoCopyNumber + ",\"Methylation\":" + addInfoMethylation + ",\"RPPA\":"
+				+ addInfoRPPA + "},\"nonGenomic\":{\"Clinical\":" + addInfoClinical + "},\"Caleydo JNLP\":\"" + jnlpURL
+				+ "\",\"Caleydo Project\":\"" + projectOutputPath
+				+ "\",\"Firehose Report\":\"" + firehoseReportURL
+				+ "\"}\n";
+	}
+
+	private String getClinicalInfo(ATableBasedDataDomain dataDomain) {
+		String clinicalParameters = "";
+		DimensionVirtualArray dimensionVA = dataDomain.getTable()
+				.getDefaultDimensionPerspective().getVirtualArray();
+		for (int dimensionID : dimensionVA) {
+			clinicalParameters += "\"" + dataDomain.getDimensionLabel(dimensionID) + "\",";
+		}
+
+		// remove last comma
+		if (clinicalParameters.length() > 1)
+			clinicalParameters = clinicalParameters.substring(0,
+					clinicalParameters.length() - 1);
+
+		return "{\"count\":\"" + dataDomain.getTable().getMetaData().depth()
+				+ "\",\"parameters\":[" + clinicalParameters + "]}";
 	}
 
 	private String getAdditionalInfo(ATableBasedDataDomain dataDomain) {
 		return "{\"gene\":{\"count\":\"" + dataDomain.getTable().getMetaData().size()
-				+ "\",\"groupings\":\"" + getDimensionGroupingList(dataDomain)
-				+ "\"},\"sample\":{\"count\":\"" + dataDomain.getTable().getMetaData().depth()
-				+ "\",\"groupings\":\"" + getRecordGroupingList(dataDomain) + "\"}}";
+				+ "\",\"groupings\":[" + getDimensionGroupingList(dataDomain)
+				+ "]},\"sample\":{\"count\":\"" + dataDomain.getTable().getMetaData().depth()
+				+ "\",\"groupings\":[" + getRecordGroupingList(dataDomain) + "]}}";
 	}
 
 	private String getRecordGroupingList(ATableBasedDataDomain dataDomain) {
@@ -399,12 +419,12 @@ public class TCGAProjectBuilderApplication
 			if (recordPerspective.getLabel().equals("Default"))
 				continue;
 
-			recordGroupings += recordPerspective.getLabel() + ", ";
+			recordGroupings += "\"" + recordPerspective.getLabel() + "\",";
 		}
 
 		// remove last comma
-		if (recordGroupings.length() > 2)
-			recordGroupings = recordGroupings.substring(0, recordGroupings.length() - 2);
+		if (recordGroupings.length() > 1)
+			recordGroupings = recordGroupings.substring(0, recordGroupings.length() - 1);
 
 		return recordGroupings;
 	}
@@ -420,13 +440,13 @@ public class TCGAProjectBuilderApplication
 			if (dimensionPerspective.getLabel().equals("Default"))
 				continue;
 
-			dimensionGroupings += dimensionPerspective.getLabel() + ", ";
+			dimensionGroupings += "\"" + dimensionPerspective.getLabel() + "\",";
 		}
 
 		// remove last comma
-		if (dimensionGroupings.length() > 2)
+		if (dimensionGroupings.length() > 1)
 			dimensionGroupings = dimensionGroupings.substring(0,
-					dimensionGroupings.length() - 2);
+					dimensionGroupings.length() - 1);
 
 		return dimensionGroupings;
 	}
