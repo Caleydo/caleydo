@@ -3,25 +3,111 @@
 (function() {
 // ---------------------------------
 
-function initializeData( callback ) {
-	$.getJSON( "http://compbio.med.harvard.edu/tcga/stratomex/data/2012_06_23.json", callback );
+var tumor;
+var analysis;
+var runs;
+
+// Read a page's GET URL variables and return them as an associative array.
+function getUrlParameters( decode )
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        
+        if ( hash.length == 2 ) {
+	        vars.push(hash[0]);
+	        
+	        if ( decode == true ) {
+		        vars[hash[0]] = decodeURIComponent( hash[1].split( "#" )[0] );
+		    }
+		    else {
+		        vars[hash[0]] = hash[1].split( "#" )[0];	    
+			}	            	
+        }	    
+    }
+
+    return vars;
+}   
+
+
+function getBaseUrl()
+{
+    //return window.location.href.slice(0, window.location.href.indexOf('?'));
+    return "http://compbio.med.harvard.edu/tcga/stratomex";
+}   
+
+function getCurrentUrl()
+{
+    var base = getBaseUrl();
+
+    return base + "/index.html"
+    			+ "?" + "analysis=" + analysis
+    			+ "&" + "tumor=" + tumor;
+}   
+
+
+function initialize() {
+	tumor = getUrlParameters()["tumor"];
+	analysis = getUrlParameters()["analysis"];
+	
+	loadRuns( function( data ) {
+		runs = data;
+		analysisIndex = renderAnalysisSelection( data, "#analysis-selection-container" );
+		
+		loadRun( getBaseUrl() + "/data/" + runs[analysisIndex].json, renderContent );
+	});	
+}
+
+
+function loadRuns( callback ) {
+	$.getJSON( getBaseUrl() + "/data/" + "tcga_analysis_runs.json", callback );
+}
+
+
+function loadRun( url, callback ) {
+	$.getJSON( url, callback );
 }
 
 
 function renderContent( data )
 {
-	renderTumorSelection( data, "#tumor-selection-container" );
-	renderTumorType( data, 0 );	
+	if ( !data ) {
+		$( "<div/>", {
+			class: "alert alert-info",
+			"html": "<a class=\"close\" data-dismiss=\"alert\" href=\"#\">x</a>" + getCurrentUrl()
+		}).appendTo(  "#header-container"  );		
+		
+	}
+
+	tumorIndex = renderTumorSelection( data, "#tumor-selection-container", tumor );
+	renderTumorType( data, tumorIndex );	
 }
 
 function renderTumorType( data, tumorIndex ) {
 	renderHeader( data, tumorIndex, "#header-container" );	
+	renderTable( data, tumorIndex, "#table-container" );	
 	renderControls( data, tumorIndex, "#controls-container" );	
-	renderTable( data, tumorIndex, "#table-container" );		
+}
+
+function clearTumorType() {
+	$( "#header-container" ).html("");	
+	$( "#table-container" ).html("");	
+	$( "#controls-container" ).html("");
+	
+	$( "#tumor-selection-container" ).html(""); 	
+	$( "#webstart-instructions-container" ).html( "" );
+	$( "#webstart-button-container" ).html( "" );
+	$( "#download-button-container" ).html( "" );
+	$( "#report-button-container" ).html( "" );
+	$( "#direct-link-container" ).html( "" );
+	$( "#direct-link-url-container" ).html( "" );		
 }
 
 
-
+/*
 function renderTumorSelectionBootstrap( data, element ) {
 	
 	var tumorTypes = [];
@@ -52,15 +138,60 @@ function renderTumorSelectionBootstrap( data, element ) {
     	$("#tumor-selection-dropdown-title").html(text);
 	});	
 }
+*/
 
 
-function renderTumorSelection( data, element ) {
+function renderAnalysisSelection( runs, element ) {
 	
+	var analysisDates = [];
+	var analysisIndex = 0;
+	console.log(runs);
+	
+	for ( var i = 0; i < runs.length; ++i ) {
+		if ( runs[i].id === analysis ) {
+			analysisIndex = i;
+			analysisDates.push( "<option selected id=\"" + "analysis_" + i + "\" value=\"" + i + "\">" + runs[i].label + "</option>" );
+		}
+		else {
+			analysisDates.push( "<option id=\"" + "analysis_" + i + "\" value=\"" + i + "\">" + runs[i].label + "</option>" );
+		}		
+	}
+	
+	$( "<select/>", {
+		id: "analysis-selection",
+		class: "",
+		"html": analysisDates.join("\n")
+	}).appendTo( element );
+
+	analysis = runs[analysisIndex].id;
+	
+	
+	$( "#analysis-selection" ).on( "change", function() {
+		clearTumorType();
+		loadRun( getBaseUrl() + "/" + runs[this.value].json, renderContent );		
+	});	
+	
+	return analysisIndex;
+}
+
+
+function renderTumorSelection( data, element ) {	
 	var tumorTypes = [];
+	var tumorIndex = 0;
+	
+	$( element ).html("");
 	
 	for ( var i = 0; i < data.details.length; ++i ) {
-		tumorTypes.push( "<option id=\"" + "tumor_" + i + "\" value=\"" + i + "\">" + data.details[i].tumorAbbreviation + " - " + data.details[i].tumorName + "</option>" );
+		if ( data.details[i].tumorAbbreviation === tumor ) {
+			tumorIndex = i;
+			tumorTypes.push( "<option selected id=\"" + "tumor_" + i + "\" value=\"" + i + "\">" + data.details[i].tumorAbbreviation + " - " + data.details[i].tumorName + "</option>" );
+		}
+		else {
+			tumorTypes.push( "<option id=\"" + "tumor_" + i + "\" value=\"" + i + "\">" + data.details[i].tumorAbbreviation + " - " + data.details[i].tumorName + "</option>" );			
+		}		
 	}
+
+	tumor = data.details[tumorIndex].tumorAbbreviation;
 	
 	$( "<select/>", {
 		id: "tumor-selection",
@@ -71,7 +202,10 @@ function renderTumorSelection( data, element ) {
 	
 	$( "#tumor-selection" ).on( "change", function() {
 		renderTumorType( data, this.value );
+		tumor = data.details[this.value].tumorAbbreviation;
 	});	
+	
+	return tumorIndex;
 }
 
 
@@ -85,8 +219,8 @@ function renderHeader( data, tumorIndex, element ) {
 	// render caption
 	$( "<div>", {
 		class: "",
-		"html": "<h3>" + data.details[tumorIndex].tumorAbbreviation + " - " + data.details[tumorIndex].tumorName + " (" + data.analysisRun  + ")</h3>"
-	}).appendTo( element );	
+		"html": "<h2>" + data.details[tumorIndex].tumorAbbreviation + " - " + data.details[tumorIndex].tumorName + " (" + data.analysisRun  + ")</h2>"
+	}).appendTo( element );
 }
 
 
@@ -95,16 +229,25 @@ function renderControls( data, tumorIndex, element ) {
 	var element = element || "#controls-container";
 
 	// clear the element
+	$( "#webstart-instructions-container" ).html( "" );
 	$( "#webstart-button-container" ).html( "" );
 	$( "#download-button-container" ).html( "" );
 	$( "#report-button-container" ).html( "" );
+	$( "#direct-link-container" ).html( "" );
+	$( "#direct-link-url-container" ).html( "" );		
 		
 	// links
+	$( "<span/>", {
+		class: "",
+		"html": "Start <b>Caleydo Stratomex " + data.caleydoVersion + "</b> with Java Web Start and automatically load all data for the selected tumor type."
+	}).appendTo( "#webstart-instructions-container" );	
+	
 	$( "<a/>", {
 		"href": data.details[tumorIndex]["Caleydo JNLP"], 
 		class: "btn btn-primary",
 		"html": "<i class=\"icon-play icon-white\"></i>&nbsp;Start with " + data.details[tumorIndex].tumorAbbreviation
-	}).appendTo( "#webstart-button-container" );
+	}).appendTo( "#webstart-button-container" );		
+	
 
 	$( "<a/>", {
 		"href": data.details[tumorIndex]["Caleydo Project"], 
@@ -118,7 +261,19 @@ function renderControls( data, tumorIndex, element ) {
 		target: "_new",
 		"html": "<i class=\"icon-file\"></i>&nbsp;View Nozzle Report"
 	}).appendTo( "#report-button-container" );
+
+	$( "<div/>", {
+		class: "",
+		"html": "<i class=\"icon-retweet\"></i>&nbsp;<a id=\"direct-link\" href=\"#\">Get direct link</a>"
+	}).appendTo(  "#direct-link-container"  );
 	
+	$( "#direct-link" ).on( "click", function() {
+		$( "#direct-link-url-container" ).html( "" );		
+		$( "<div/>", {
+			class: "alert alert-info",
+			"html": "<a class=\"close\" data-dismiss=\"alert\" href=\"#\">x</a>" + getCurrentUrl()
+		}).appendTo(  "#direct-link-url-container"  );
+	});		
 }
 
 
@@ -132,31 +287,65 @@ function renderTable( data, tumorIndex, element ) {
 	
 
 	// render table
+	$( "<h3/>", {
+		"html": "Molecular Data Types",
+	}).appendTo( element );
+	
+	$( "<table/>", {
+		"width": "100%",
+		class: "table table-striped table-condensed",
+		"html": _genomicHeaderRender() + _.map( data.details[tumorIndex].genomic, _genomicRowRender ).join("\n"),
+	}).appendTo( element );
+
+	$( "<h3/>", {
+		"html": "Other Data Types",
+	}).appendTo( element );
+	
 	$( "<table/>", {
 		"width": "100%",
 		class: "table table-striped",
-		"html": _headerRender() + _.map( data.details[tumorIndex].dataSets, _rowRender ).join("\n"),
+		"html": _nonGenomicHeaderRender() + _.map( data.details[tumorIndex].nonGenomic, _nonGenomicRowRender ).join("\n"),
 	}).appendTo( element );
+
 }
 
 
-function _headerRender() {
+function _genomicHeaderRender() {
 		return "<thead><tr><th width=10%>" + "Data Type" + "</th><th>" + "#Patients" + "</th><th width=40%>" + "Patient Stratifications" + 
 										  "</td><th>" + "#Genes" + "</th><th width=40%>" + "Gene Stratifications" + "</th></tr></thead>";			
 	}
 
-function _rowRender( dataset, datasetName ) {
+function _genomicRowRender( dataset, datasetName ) {
 	if ( dataset ) {
-		return "<tr><th>" + datasetName + "</th><td>" + dataset.sample.count + "</td><td>" + dataset.sample.groupings + 
-										  "</td><td>" + dataset.gene.count + "</td><td>" + dataset.gene.groupings + "</td></tr>";			
+		return "<tr><th>" + datasetName + "</th><td>" + dataset.sample.count + "</td><td>" + dataset.sample.groupings.join( "; ") + 
+										  "</td><td>" + dataset.gene.count + "</td><td>" + dataset.gene.groupings.join( "; ") + "</td></tr>";			
 	}
+	/*
 	else {
 		return "<tr><th>" + datasetName + "</th><td>" + "0" + "</td><td>" + "" + "</td><td>" + "0" + "</td><td>" + "" + "</td></tr>";					
 	}
+	*/
 }
 
 
-initializeData( renderContent )
+function _nonGenomicHeaderRender() {
+		return "<thead><tr><th width=10%>" + "Data Type" + "</th><th>" + "#Patients" + "</th><th>" + "Parameters" + 
+										  "</th></tr></thead>";			
+	}
+
+function _nonGenomicRowRender( dataset, datasetName ) {
+	if ( dataset ) {
+		return "<tr><th>" + datasetName + "</th><td>" + dataset.count + "</td><td>" + dataset.parameters.join( "; ") + 
+										  "</td></tr>";			
+	}
+	else {
+		return "<tr><th>" + datasetName + "</th><td>" + "0" + "</td><td>" + "" + "</td></tr>";					
+	}
+}
+
+initialize();
+
+
 
 // ---------------------------------
 })();

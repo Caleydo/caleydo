@@ -47,54 +47,62 @@
 
 <div class="container-fluid">
 
-<div class="row-fluid">
- 	<div class="span12">
- 		<div class="page-header">    
-			<h1>StratomeX <small>Visual Exploration of Tumor Subtypes in Genomics Data</small></h1>
-    	</div>
-    </div>
-</div>
+	<div class="row-fluid">
+	 	<div class="span12">
+	 		<div class="page-header">    
+				<h1>StratomeX <small>Visual Exploration of Tumor Subtypes in Genomics Data</small></h1>
+	    	</div>
+	    </div>
+	</div>
       
-<div class="row-fluid">
- 	<div class="span3">
- 		
- 		<h3>Firehose Analysis</h3>
-		<p>
-			<div id="date-selection-container">
-				<select>
-					<option value="2012_06_23.json">23 June 2012</option>
-				</select>
-	    	</div>    		
-			<div id="tumor-selection-container"></div>
-    	</p>
- 		<p>
-			<div id="webstart-button-container"></div>  
-    	</p>
- 		<p>
-    		Start Caleydo Stratomex using Java Web Start technology and automatically open all data for the selected tumor type.
-    		Or download the data for use with your existing Caleydo StratomeX installation. 
-    	</p>
-    	<p>
-    		<span id="download-button-container"></span>   		
-    	</p>
- 		<p>
-    		View the Firehose Nozzle analysis reports for this tumor type. 		
-    	</p>
- 		<p>
-			<div id="report-button-container"></div>  
-    	</p>
-
-     	</div> 		    
-		
-      
-	<div class="span9">
-		<div id="header-container"></div>
-		<p>
-		<div id="table-container">
-    	</div>    					
-		</p>
-   </div>
-</div>
+	<div class="row-fluid">
+	 	<div class="span3">
+	 		
+	 		<h2>Firehose Analysis</h2>
+			<p>
+				<div id="analysis-selection-container"></div>    		
+				<div id="tumor-selection-container"></div>
+	    	</p>
+	 		<p>
+				<div id="webstart-instructions-container"></div>  
+	    	</p>
+	 		<p>
+				<div id="webstart-button-container"></div>  
+	    	</p>
+		</div> 		    
+			
+	      
+		<div class="span9">
+			<div id="header-container"></div>
+			
+			<div class="row-fluid">
+				<div class="span6">
+		    		<p>
+		    			<span id="download-button-container"></span>&nbsp;&nbsp;   		
+		    			<span id="report-button-container"></span>   		
+		    		</p>
+	    		</div>
+				<div class="span6" align="right">
+		    		<p>
+		    			<span id="direct-link-container"></span>   		
+		    		</p>
+	    		</div>
+			</div>
+			<p>
+			<div id="direct-link-url-container"></div>  
+			<div id="table-container">
+	    	</div>    					
+			</p>
+	   </div>
+	</div>
+	
+	<div class="row-fluid">
+	 	<div class="span12">
+	 		<hr>
+			<p><i>Copyright &copy; 2012 Park Lab at Harvard Medical School as part of the TCGA Research Network. All rights reserved.</i></p>
+	    </div>
+	</div>
+	
 </div>
 
 	</body>
@@ -103,6 +111,7 @@
     <script src="js/jquery/jquery-1.7.2.min.js"></script>
     <script src="js/underscore/underscore-min.js"></script>
     <script src="js/bootstrap/js/bootstrap.min.js"></script>
+    
 	
 	<!-- our own -->    
     <script src="js/firehose-data.js"></script>	
