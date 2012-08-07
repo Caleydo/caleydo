@@ -60,6 +60,7 @@ public class TCGAProjectBuilderApplication
 	private String analysisRunIdentifier = "";
 	private String dataRunIdentifier = "";
 	private String outputPath = "";
+	private String runSpecificOutputPath = "";
 	private String tcgaServerURL = "";
 
 	private String reportHTMLOutputPath;
@@ -75,7 +76,7 @@ public class TCGAProjectBuilderApplication
 
 		generateTCGAProjectFiles();
 
-		generateHTMLReport();
+		// generateHTMLReport();
 		generateJSONReport();
 
 		// FileOperations.deleteDirectory(tmpDataOutputPath);
@@ -110,10 +111,10 @@ public class TCGAProjectBuilderApplication
 			dataRunIdentifierOpt.setHelp("Data run identifier");
 			jsap.registerParameter(dataRunIdentifierOpt);
 
-			String defaultDestinationPath = GeneralManager.CALEYDO_HOME_PATH + "TCGA/";
+			String defaultOutputFolder = GeneralManager.CALEYDO_HOME_PATH + "TCGA/";
 
 			FlaggedOption outputFolderOpt = new FlaggedOption("output-folder")
-					.setStringParser(JSAP.STRING_PARSER).setDefault(defaultDestinationPath)
+					.setStringParser(JSAP.STRING_PARSER).setDefault(defaultOutputFolder)
 					.setRequired(false).setShortFlag('o').setLongFlag(JSAP.NO_LONGFLAG);
 			outputFolderOpt.setHelp("Output folder (full path)");
 			jsap.registerParameter(outputFolderOpt);
@@ -136,10 +137,11 @@ public class TCGAProjectBuilderApplication
 			analysisRunIdentifier = config.getString("analysis_run");
 			dataRunIdentifier = config.getString("data_run");
 			outputPath = config.getString("output-folder");
+			runSpecificOutputPath = outputPath + analysisRunIdentifier + "/";
 			tcgaServerURL = config.getString("server");
 
-			reportHTMLOutputPath = outputPath + "index.html";
-			reportJSONOutputPath = outputPath + analysisRunIdentifier + ".json";
+			reportHTMLOutputPath = runSpecificOutputPath + "index.html";
+			reportJSONOutputPath = runSpecificOutputPath + analysisRunIdentifier + ".json";
 		}
 		catch (JSAPException e) {
 			handleJSAPError(jsap);
@@ -147,31 +149,35 @@ public class TCGAProjectBuilderApplication
 	}
 
 	private void generateTCGAProjectFiles() {
-		String tmpDataOutputPath = outputPath + "tmp";
+		String tmpDataOutputPath = outputPath + "tmp/";
+
+		FileOperations.createDirectory(runSpecificOutputPath);
+
+		String jnlpOutputFolder = outputPath + "jnlp/";
+		FileOperations.createDirectory(jnlpOutputFolder);
 
 		for (int tumorIndex = 0; tumorIndex < tumorTypes.length; tumorIndex++) {
 
 			String tumorType = tumorTypes[tumorIndex];
 
-			String xmlFilePath = outputPath + analysisRunIdentifier + "_" + tumorType + ".xml";
+			String xmlFilePath = tmpDataOutputPath + analysisRunIdentifier + "_" + tumorType
+					+ ".xml";
 
-			String projectOutputPath = outputPath + analysisRunIdentifier + "_" + tumorType
-					+ ".cal";
-
-			String jnlpFileName = analysisRunIdentifier + "_" + tumorType + ".jnlp";
-			String jnlpOutputPath = outputPath + jnlpFileName;
-
-			String projectRemoteOutputURL = tcgaServerURL + analysisRunIdentifier + "_"
+			String projectOutputPath = runSpecificOutputPath + analysisRunIdentifier + "_"
 					+ tumorType + ".cal";
 
-			FileOperations.createDirectory(tmpDataOutputPath);
+			String jnlpFileName = analysisRunIdentifier + "_" + tumorType + ".jnlp";
+			String jnlpOutputPath = jnlpOutputFolder + jnlpFileName;
+
+			String projectRemoteOutputURL = tcgaServerURL + analysisRunIdentifier + "/"
+					+ analysisRunIdentifier + "_" + tumorType + ".cal";
 
 			System.out.println("Downloading data for tumor type " + tumorType
 					+ " for analysis run " + analysisRunIdentifier);
 
 			TCGADataXMLGenerator generator = new TCGADataXMLGenerator(tumorType,
-					analysisRunIdentifier, dataRunIdentifier, xmlFilePath, outputPath,
-					tmpDataOutputPath);
+					analysisRunIdentifier, dataRunIdentifier, xmlFilePath,
+					runSpecificOutputPath, tmpDataOutputPath);
 
 			generator.run();
 
@@ -272,7 +278,8 @@ public class TCGAProjectBuilderApplication
 		StringBuilder htmlBuilder = new StringBuilder();
 		htmlBuilder.append("{\"analysisRun\":\"" + analysisRunIdentifier + "\",\"dataRun\":\""
 				+ dataRunIdentifier + "\",");
-		htmlBuilder.append("\"details\":[" + reportJSONGenomicData + "]");
+		htmlBuilder.append("\"details\":[" + reportJSONGenomicData + "],\"caleydoVersion\":\""
+				+ GeneralManager.VERSION + "\"");
 		htmlBuilder.append("}\n");
 
 		FileWriter writer;
@@ -376,9 +383,9 @@ public class TCGAProjectBuilderApplication
 				+ addInfoMicroRNA + ",\"microRNA-seq\":" + addInfoMicroRNASeq
 				+ ",\"Mutations\":" + addInfoMutations + ",\"Copy Number\":"
 				+ addInfoCopyNumber + ",\"Methylation\":" + addInfoMethylation + ",\"RPPA\":"
-				+ addInfoRPPA + "},\"nonGenomic\":{\"Clinical\":" + addInfoClinical + "},\"Caleydo JNLP\":\"" + jnlpURL
-				+ "\",\"Caleydo Project\":\"" + projectOutputPath
-				+ "\",\"Firehose Report\":\"" + firehoseReportURL
+				+ addInfoRPPA + "},\"nonGenomic\":{\"Clinical\":" + addInfoClinical
+				+ "},\"Caleydo JNLP\":\"" + jnlpURL + "\",\"Caleydo Project\":\""
+				+ projectOutputPath + "\",\"Firehose Report\":\"" + firehoseReportURL
 				+ "\"}\n";
 	}
 

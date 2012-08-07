@@ -162,8 +162,7 @@ public class TCGADataXMLGenerator
 						break;
 				}
 
-				outputDirectoryName += System.getProperty("file.separator")
-						+ this.analysisRunIdentifierWithoutUnderscore
+				outputDirectoryName += this.analysisRunIdentifierWithoutUnderscore
 						+ System.getProperty("file.separator") + this.tumorAbbreviation
 						+ System.getProperty("file.separator") + archiveName;
 
@@ -175,8 +174,7 @@ public class TCGADataXMLGenerator
 					}
 				}
 
-				outputFileName = outputDirectoryName + System.getProperty("file.separator")
-						+ fileName;
+				outputFileName = outputDirectoryName + fileName;
 
 				fileoutputstream = new FileOutputStream(outputFileName);
 
