@@ -372,11 +372,11 @@ public class TCGAProjectBuilderApplication
 				+ "\",\"tumorName\":\"" + tumorName + "\",\"statistics\":{\"mRNA\":"
 				+ addInfoMRNA + ",\"mRNA-seq\":" + addInfoMRNASeq + ",\"microRNA\":"
 				+ addInfoMicroRNA + ",\"microRNA-seq\":" + addInfoMicroRNASeq
-				+ ",\"Clinical\":" + addInfoClinical + ",\"Mutations\":"
-				+ addInfoMutations + ",\"Copy Number\":" + addInfoCopyNumber
-				+ ",\"Methylation\":" + addInfoMethylation + ",\"RPPA\":" + addInfoRPPA
-				+ ",\"Caleydo JNLP\":\"" + jnlpURL + "\",\"Caleydo Project\":\""
-				+ projectOutputPath + "\",\"Firehose Report\":\"" + firehoseReportURL + "}\n";
+				+ ",\"Clinical\":" + addInfoClinical + ",\"Mutations\":" + addInfoMutations
+				+ ",\"Copy Number\":" + addInfoCopyNumber + ",\"Methylation\":"
+				+ addInfoMethylation + ",\"RPPA\":" + addInfoRPPA + "},\"Caleydo JNLP\":\""
+				+ jnlpURL + "\",\"Caleydo Project\":\"" + projectOutputPath
+				+ "\",\"Firehose Report\":\"" + firehoseReportURL + "\"}\n";
 	}
 
 	private String getAdditionalInfo(ATableBasedDataDomain dataDomain) {
