@@ -369,7 +369,7 @@ public class TCGAProjectBuilderApplication
 				+ "<td>" + firehoseReportLinkTag + "</td>" + "</td></tr>";
 
 		reportStringJSON += "{\"tumorAbbreviation\":\"" + tumorAbbreviation
-				+ "\",\"tumorName\":\"" + tumorName + "\",\"statistics\":{\"mRNA\":"
+				+ "\",\"tumorName\":\"" + tumorName + "\",\"dataSets\":{\"mRNA\":"
 				+ addInfoMRNA + ",\"mRNA-seq\":" + addInfoMRNASeq + ",\"microRNA\":"
 				+ addInfoMicroRNA + ",\"microRNA-seq\":" + addInfoMicroRNASeq
 				+ ",\"Clinical\":" + addInfoClinical + ",\"Mutations\":" + addInfoMutations
