@@ -54,21 +54,22 @@ import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 public class TCGADataXMLGenerator
 	extends DataSetDescriptionSerializer {
 
-	private static String FIREHOSE_URL_PREFIX = "http://gdac.broadinstitute.org/runs/";
+	public static String FIREHOSE_URL_PREFIX = "http://gdac.broadinstitute.org/runs/";
 	private static String FIREHOSE_TAR_NAME_PREFIX = "gdac.broadinstitute.org_";
 
 	// protected String tumorName;
-	protected String tumorAbbreviation;
+	private String tumorAbbreviation;
 
-	protected String analysisRunIdentifier;
-	protected String analysisRunIdentifierWithoutUnderscore;
+	private String analysisRunIdentifier;
+	private String analysisRunIdentifierWithoutUnderscore;
 
-	protected String dataRunIdentifier;
-	protected String dataRunIdentifierWithoutUnderscore;
+	private String dataRunIdentifier;
+	private String dataRunIdentifierWithoutUnderscore;
 
-	protected String tmpOutputDirectoryPath;
-	protected String remoteAnalysisRunArchiveDirectory;
-	protected String remoteDataRunArchiveDirectory;
+	private String outputDirectoryPath;
+	private String tmpOutputDirectoryPath;
+	private String remoteAnalysisRunArchiveDirectory;
+	private String remoteDataRunArchiveDirectory;
 
 	public static final String TCGA_ID_SUBSTRING_REGEX = "tcga\\-|\\-...\\-";
 
@@ -87,7 +88,8 @@ public class TCGADataXMLGenerator
 		this.tumorAbbreviation = "STAD";
 		this.analysisRunIdentifier = "2012_05_25";
 		this.dataRunIdentifier = "2012_07_07";
-		this.tmpOutputDirectoryPath = GeneralManager.CALEYDO_HOME_PATH + "TCGA/tmp";
+		this.outputDirectoryPath = GeneralManager.CALEYDO_HOME_PATH + "TCGA/";
+		this.tmpOutputDirectoryPath = outputDirectoryPath + "tmp/";
 		this.outputXMLFilePath = this.tmpOutputDirectoryPath
 				+ System.getProperty("file.separator") + tumorAbbreviation + "_"
 				+ this.analysisRunIdentifierWithoutUnderscore + "_caleydo.xml";
@@ -96,7 +98,8 @@ public class TCGADataXMLGenerator
 	}
 
 	public TCGADataXMLGenerator(String tumorAbbreviation, String runIdentifierUnderscore,
-			String dataRunIdentifier, String outputXMLFilePath, String tmpOutputDirectoryPath) {
+			String dataRunIdentifier, String outputXMLFilePath, String outputFolderPath,
+			String tmpOutputFolderPath) {
 
 		super(null);
 
@@ -104,7 +107,8 @@ public class TCGADataXMLGenerator
 		this.analysisRunIdentifier = runIdentifierUnderscore;
 		this.dataRunIdentifier = dataRunIdentifier;
 		this.outputXMLFilePath = outputXMLFilePath;
-		this.tmpOutputDirectoryPath = tmpOutputDirectoryPath;
+		this.outputDirectoryPath = outputFolderPath;
+		this.tmpOutputDirectoryPath = tmpOutputFolderPath;
 
 		init();
 	}

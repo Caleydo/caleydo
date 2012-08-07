@@ -250,7 +250,7 @@ public class DataDomainManager {
 
 	/**
 	 * Returns a list of all data domains of this type registered or null if no
-	 * such data domain is regeisterd.
+	 * such data domain is registered.
 	 * 
 	 * @param dataDomainType
 	 * @return

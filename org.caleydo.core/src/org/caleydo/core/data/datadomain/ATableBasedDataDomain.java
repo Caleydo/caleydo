@@ -153,7 +153,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 	/**
 	 * All recordPerspectiveIDs registered with the DataTable. This variable is
-	 * synchronous with the keys of the hashMap of the DatTable.
+	 * synchronous with the keys of the hashMap of the DataTable.
 	 */
 	@XmlElement
 	private Set<String> recordPerspectiveIDs;
