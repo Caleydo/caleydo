@@ -185,11 +185,11 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				Display.getDefault().syncExec(new Runnable() {
-					public void run() {
-						splash.forceActive();
-					}
-				});
+//				Display.getDefault().syncExec(new Runnable() {
+//					public void run() {
+//						splash.forceActive();
+//					}
+//				});
 			}
 		});
 	}
