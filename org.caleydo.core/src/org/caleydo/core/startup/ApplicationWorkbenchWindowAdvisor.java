@@ -124,27 +124,27 @@ public class ApplicationWorkbenchWindowAdvisor
 	 */
 	private void initializeViews() {
 
-		IViewReference[] views = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getActivePage().getViewReferences();
-
-		try {
-			for (IViewReference view : views) {
-				
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-						.showView(view.getId(), view.getSecondaryId(), IWorkbenchPage.VIEW_VISIBLE);
-			}
-		}
-		catch (PartInitException e) {
-			throw new IllegalStateException();
-		}
-		
-		// Make DVI visible
-		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.showView("org.caleydo.view.dvi");
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+//		IViewReference[] views = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+//				.getActivePage().getViewReferences();
+//
+//		try {
+//			for (IViewReference view : views) {
+//				
+//				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+//						.showView(view.getId(), view.getSecondaryId(), IWorkbenchPage.VIEW_VISIBLE);
+//			}
+//		}
+//		catch (PartInitException e) {
+//			throw new IllegalStateException();
+//		}
+//		
+//		// Make DVI visible
+//		try {
+//			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+//					.showView("org.caleydo.view.dvi");
+//		}
+//		catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 }
