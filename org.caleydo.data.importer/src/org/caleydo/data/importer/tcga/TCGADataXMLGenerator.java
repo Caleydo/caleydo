@@ -466,7 +466,7 @@ public class TCGADataXMLGenerator
 		mutationSampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules mutationIDTypeParsingRules = new IDTypeParsingRules();
 		mutationIDTypeParsingRules.setReplacementExpression("\\_", "-");
-		mutationIDTypeParsingRules.setSubStringExpression("^[A-Z]+\\-");
+		mutationIDTypeParsingRules.setSubStringExpression("^[a-z]+\\-");
 		mutationIDTypeParsingRules.setToLowerCase(true);
 		mutationSampleIDSpecification.setIdTypeParsingRules(mutationIDTypeParsingRules);
 		mutationData.setColumnIDSpecification(mutationSampleIDSpecification);
