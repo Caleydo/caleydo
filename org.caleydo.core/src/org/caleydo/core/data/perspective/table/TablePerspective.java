@@ -49,8 +49,8 @@ import org.caleydo.core.id.IDType;
 
 /**
  * <p>
- * A TablePerspective holds all the "rules" and properties on how the data in the
- * underlying {@link DataTable} should be accessed. It does so by holding
+ * A TablePerspective holds all the "rules" and properties on how the data in
+ * the underlying {@link DataTable} should be accessed. It does so by holding
  * references to one {@link DimensionPerspective} and one
  * {@link RecordPerspective}, who define things like order, groups, and
  * hierarchical relationships for either the dimensions or the records of a
@@ -62,8 +62,8 @@ import org.caleydo.core.id.IDType;
  * data), the TablePerspective defines a concrete subset of the data.
  * </p>
  * <p>
- * This allows to calculate statistics (see {@link TablePerspectiveStatistics}) for a
- * TablePerspective, thereby providing things like histograms or averages.
+ * This allows to calculate statistics (see {@link TablePerspectiveStatistics})
+ * for a TablePerspective, thereby providing things like histograms or averages.
  * </p>
  * <p>
  * A TablePerspective should be created/accessed by using
@@ -76,8 +76,8 @@ import org.caleydo.core.id.IDType;
  * and storage-wise expensive)
  * </p>
  * <p>
- * The tablePerspectives are identified by a the {@link #tablePerspectiveKey}, which
- * is created as a function of the identifiers of the two perspectives.
+ * The tablePerspectives are identified by a the {@link #tablePerspectiveKey},
+ * which is created as a function of the identifiers of the two perspectives.
  * </p>
  * <p>
  * Data containers can be hierarchically created based on {@link GroupList}s of
@@ -378,13 +378,13 @@ public class TablePerspective {
 	}
 
 	/**
-	 * Creates and returns one new {@link TablePerspective} for each group in the
-	 * {@link RecordPerspective}, where the new {@link RecordPerspective}
+	 * Creates and returns one new {@link TablePerspective} for each group in
+	 * the {@link RecordPerspective}, where the new {@link RecordPerspective}
 	 * contains the elements of the group. The {@link DimensionPerspective} is
 	 * the same as for this container.
 	 * 
-	 * @return a new list of new {@link TablePerspective}s or null if no group list
-	 *         is set.
+	 * @return a new list of new {@link TablePerspective}s or null if no group
+	 *         list is set.
 	 */
 	public List<TablePerspective> getRecordSubTablePerspectives() {
 
@@ -423,13 +423,13 @@ public class TablePerspective {
 	}
 
 	/**
-	 * Creates and returns one new {@link TablePerspective} for each group in the
-	 * {@link RecordPerspective}, where the new {@link RecordPerspective}
+	 * Creates and returns one new {@link TablePerspective} for each group in
+	 * the {@link RecordPerspective}, where the new {@link RecordPerspective}
 	 * contains the elements of the group. The {@link DimensionPerspective} is
 	 * the same as for this container.
 	 * 
-	 * @return a new list of new {@link TablePerspective}s or null if no group list
-	 *         is set.
+	 * @return a new list of new {@link TablePerspective}s or null if no group
+	 *         list is set.
 	 */
 	public List<TablePerspective> getDimensionSubTablePerspectives() {
 
@@ -470,8 +470,9 @@ public class TablePerspective {
 	// this.dataDomain = (ATableBasedDataDomain) parent;
 	// }
 	/**
-	 * Creates the {@link #tablePerspectiveKey} if both {@link #recordPerspective}
-	 * and {@link #dimensionPerspective} are already initialized.
+	 * Creates the {@link #tablePerspectiveKey} if both
+	 * {@link #recordPerspective} and {@link #dimensionPerspective} are already
+	 * initialized.
 	 */
 	private void createKey() {
 		if (recordPerspective != null && dimensionPerspective != null)

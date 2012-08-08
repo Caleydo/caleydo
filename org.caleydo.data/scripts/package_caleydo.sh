@@ -77,7 +77,7 @@ copy_standalone()
 copy_webstart()
 {
   webstart_export_path=$export_root"/webstart_"$version_number
-  webstart_plugins_folder=$download_folder"/webstart_"$version_number"/plugins"
+  webstart_plugins_folder=$download_folder"/webstart/plugins"
 
   sudo cp $webstart_export_path"/plugins/org.caleydo."* $webstart_plugins_folder -v
 }
