@@ -20,9 +20,12 @@
 package org.caleydo.core.data.collection.table;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataTransformation;
@@ -40,9 +43,11 @@ import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
+import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.AUniqueObject;
+import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -340,18 +345,13 @@ public class DataTable extends AUniqueObject {
 		}
 		return list;
 	}
-//	
-//	private List<Integer> sampleIDList(int numberOfSamples, List<Integer> idList)
-//	{
-//		
-//	}
 
 	/**
-	 * Returns the current {@link EDataTransformation}, which tells which
-	 * was the input source before normalization. E.g., if this tells you
-	 * {@link EDataTransformation#LOG2} that means that the normalized
-	 * data used for rendering is based on data that has been logarithmized by
-	 * the base 2 before.
+	 * Returns the current {@link EDataTransformation}, which tells which was
+	 * the input source before normalization. E.g., if this tells you
+	 * {@link EDataTransformation#LOG2} that means that the normalized data used
+	 * for rendering is based on data that has been logarithmized by the base 2
+	 * before.
 	 * 
 	 * @return
 	 */
@@ -429,7 +429,8 @@ public class DataTable extends AUniqueObject {
 			throw new IllegalStateException(
 					"Invalid reocrd id type for this datadomain: "
 							+ recordPerspective.getIdType());
-		hashRecordPerspectives.put(recordPerspective.getPerspectiveID(), recordPerspective);
+		hashRecordPerspectives.put(recordPerspective.getPerspectiveID(),
+				recordPerspective);
 
 		if (recordPerspective.isDefault()) {
 			if (defaultRecordPerspective != null)
@@ -483,7 +484,8 @@ public class DataTable extends AUniqueObject {
 			throw new IllegalStateException(
 					"Dimension perspective not correctly initiaklized: "
 							+ dimensionPerspective);
-		hashDimensionPerspectives.put(dimensionPerspective.getPerspectiveID(), dimensionPerspective);
+		hashDimensionPerspectives.put(dimensionPerspective.getPerspectiveID(),
+				dimensionPerspective);
 
 		if (dimensionPerspective.isDefault()) {
 			if (defaultDimensionPerspective != null)
@@ -554,8 +556,7 @@ public class DataTable extends AUniqueObject {
 							+ isTableHomogeneous + ")");
 		if (meanDimension == null) {
 			meanDimension = new NumericalColumn();
-			meanDimension
-					.setExternalDataRepresentation(EDataTransformation.NONE);
+			meanDimension.setExternalDataRepresentation(EDataTransformation.NONE);
 
 			float[] meanValues = new float[metaData.depth()];
 			DimensionVirtualArray dimensionVA = hashDimensionPerspectives.get(
@@ -716,10 +717,17 @@ public class DataTable extends AUniqueObject {
 		defaultDimensionPerspective = new DimensionPerspective(dataDomain);
 		defaultDimensionPerspective.setDefault(true);
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
+		List<Integer> dimensionIDs;
 		if (isColumnDimension)
-			data.setData(getColumnIDList());
+			dimensionIDs = getColumnIDList();
 		else
-			data.setData(getRowIDList());
+			dimensionIDs = getRowIDList();
+
+		// here we sample the list of dimensions to avoid problems with the heat
+		// map TODO: we should probably move this to some better place
+		dimensionIDs = Algorithms.sampleList(1600, dimensionIDs);
+
+		data.setData(dimensionIDs);
 		defaultDimensionPerspective.init(data);
 
 		defaultDimensionPerspective.setLabel("Ungrouped", true);

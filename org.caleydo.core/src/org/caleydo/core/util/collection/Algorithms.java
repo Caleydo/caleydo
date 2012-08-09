@@ -22,6 +22,11 @@ package org.caleydo.core.util.collection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
+
+import org.eclipse.core.runtime.Status;
+
+import org.caleydo.core.util.logging.Logger;
 
 /**
  * This class provides algorithms similar to the {@link Collections} class.
@@ -71,4 +76,31 @@ public class Algorithms {
 
 	}
 
+	/**
+	 * Returns a randomly sampled list of Integers of a size not larger than
+	 * numberOfSamples based on the provides sourceList. </p>
+	 * <p>
+	 * Notice that the sourceList will also be modified, so clone it beforehand
+	 * if you don't want that.
+	 * </p>
+	 * 
+	 * @param numberOfSamples
+	 *            the maximum number of elements in the returned list
+	 * @param sourceList
+	 *            the source list
+	 * @return the sourceList if it's length is smaller than numberOfSamples or
+	 *         a new randomly sampled list of length numberOfSamples
+	 */
+	public static List<Integer> sampleList(int numberOfSamples, List<Integer> sourceList) {
+		if (sourceList.size() < numberOfSamples)
+			return sourceList;
+
+		Logger.log(new Status(Status.INFO, "Sampling in core util.Algorithms",
+				"Sampling a list of size " + sourceList.size() + " to " + numberOfSamples
+						+ " values."));
+		Collections.shuffle(sourceList);
+		ArrayList<Integer> sampledList = new ArrayList<Integer>(sourceList.subList(0,
+				numberOfSamples));
+		return sampledList;
+	}
 }
