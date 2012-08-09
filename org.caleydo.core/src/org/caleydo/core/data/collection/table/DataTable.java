@@ -340,6 +340,11 @@ public class DataTable extends AUniqueObject {
 		}
 		return list;
 	}
+//	
+//	private List<Integer> sampleIDList(int numberOfSamples, List<Integer> idList)
+//	{
+//		
+//	}
 
 	/**
 	 * Returns the current {@link EDataTransformation}, which tells which
@@ -700,7 +705,7 @@ public class DataTable extends AUniqueObject {
 		else
 			data.setData(getColumnIDList());
 		defaultRecordPerspective.init(data);
-		defaultRecordPerspective.setLabel("Default", true);
+		defaultRecordPerspective.setLabel("Ungrouped", true);
 
 		hashRecordPerspectives.put(defaultRecordPerspective.getPerspectiveID(),
 				defaultRecordPerspective);
@@ -717,7 +722,7 @@ public class DataTable extends AUniqueObject {
 			data.setData(getRowIDList());
 		defaultDimensionPerspective.init(data);
 
-		defaultDimensionPerspective.setLabel("Default", true);
+		defaultDimensionPerspective.setLabel("Ungrouped", true);
 
 		hashDimensionPerspectives.put(defaultDimensionPerspective.getPerspectiveID(),
 				defaultDimensionPerspective);

@@ -58,7 +58,6 @@ public class IDMappingParser extends ATextParser {
 	/** Defines the token separator. TAB is default. */
 	protected String tokenSeparator = TAB;
 
-	
 	/**
 	 * Creates an ID mapping for the id types specified by parsing the supplied
 	 * file.
@@ -117,8 +116,7 @@ public class IDMappingParser extends ATextParser {
 			idMappingParser.loadData();
 		}
 	}
-	
-	
+
 	/**
 	 * Constructor.
 	 */
