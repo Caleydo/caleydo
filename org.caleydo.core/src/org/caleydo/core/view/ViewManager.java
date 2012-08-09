@@ -558,7 +558,7 @@ public class ViewManager extends AManager<IView> {
 
 				@Override
 				public void run() {
-					System.out.println("unserialized view initialization");
+//					System.out.println("unserialized view initialization");
 					IViewReference[] views = PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow().getActivePage()
 							.getViewReferences();
