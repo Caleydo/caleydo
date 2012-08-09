@@ -269,12 +269,14 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 	@Override
 	public void initialize() {
-		GeneralManager.get().getViewManager().registerGLView(this);
+		ViewManager viewManager = GeneralManager.get().getViewManager();
+		viewManager.registerGLView(this);
 		registerEventListeners();
 
 		if (glRemoteRenderingView == null)
-			GeneralManager.get().getViewManager()
-					.registerGLEventListenerByGLCanvas(parentGLCanvas, this);
+			viewManager.registerGLEventListenerByGLCanvas(parentGLCanvas, this);
+		
+		viewManager.initializeUnserializedViews();
 	}
 
 	@Override

@@ -47,6 +47,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -59,8 +60,7 @@ import com.jogamp.opengl.util.FPSAnimator;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class ViewManager
-	extends AManager<IView> {
+public class ViewManager extends AManager<IView> {
 
 	private HashMap<GLCanvas, ArrayList<AGLView>> hashGLCanvas2GLView = new HashMap<GLCanvas, ArrayList<AGLView>>();
 
@@ -94,6 +94,13 @@ public class ViewManager
 	private GLInfoAreaManager infoAreaManager = new GLInfoAreaManager();
 
 	private Set<Object> busyRequests = new HashSet<Object>();
+
+	/**
+	 * Determines whether the views that were deserialized have already been
+	 * initialized. Views do not get initialized by default when they are not
+	 * visible.
+	 */
+	private boolean areSerializedViewsInitialized = false;
 
 	/**
 	 * Utility object to execute code within the display loop, e.g. used by
@@ -152,8 +159,10 @@ public class ViewManager
 	 * Registers the dependency between a remote rendering and a remote rendered
 	 * view.
 	 * 
-	 * @param remoteRenderedView The remote rendered view.
-	 * @param remoteRenderingView The view that renders the remoteRenderedView.
+	 * @param remoteRenderedView
+	 *            The remote rendered view.
+	 * @param remoteRenderingView
+	 *            The view that renders the remoteRenderedView.
 	 */
 	public void registerRemoteRenderedView(AGLView remoteRenderedView,
 			AGLView remoteRenderingView) {
@@ -176,7 +185,8 @@ public class ViewManager
 	 * @param gl
 	 * @param topLevelRemoteRenderingView
 	 */
-	public void executePendingRemoteViewDestruction(GL2 gl, AGLView topLevelRemoteRenderingView) {
+	public void executePendingRemoteViewDestruction(GL2 gl,
+			AGLView topLevelRemoteRenderingView) {
 
 		Set<AGLView> viewsToBeDestroyed = hashTopLevelView2ViewsToBeDestroyed
 				.get(topLevelRemoteRenderingView);
@@ -213,7 +223,8 @@ public class ViewManager
 				.get(remoteRenderingView);
 
 		if (remoteRenderedViews != null) {
-			Set<AGLView> tempRemoteRenderedViews = new HashSet<AGLView>(remoteRenderedViews);
+			Set<AGLView> tempRemoteRenderedViews = new HashSet<AGLView>(
+					remoteRenderedViews);
 			for (AGLView remoteRenderedView : tempRemoteRenderedViews) {
 				destroyRemoteViews(gl, remoteRenderedView);
 				unregisterGLView(remoteRenderedView, false);
@@ -222,7 +233,8 @@ public class ViewManager
 		}
 	}
 
-	public void registerGLEventListenerByGLCanvas(final GLCanvas glCanvas, final AGLView glView) {
+	public void registerGLEventListenerByGLCanvas(final GLCanvas glCanvas,
+			final AGLView glView) {
 
 		// This is the case when a view is rendered remote
 		if (glCanvas == null)
@@ -300,9 +312,10 @@ public class ViewManager
 	 * Unregisters the specified view from this manager.
 	 * 
 	 * @param glView
-	 * @param registerAtTopLevelViewForDestruction Specifies whether the view
-	 *            (if remote rendered) shall be destroyed in the next display
-	 *            cycle of its top level remote rendering view.
+	 * @param registerAtTopLevelViewForDestruction
+	 *            Specifies whether the view (if remote rendered) shall be
+	 *            destroyed in the next display cycle of its top level remote
+	 *            rendering view.
 	 */
 	private void unregisterGLView(final AGLView glView,
 			boolean registerAtTopLevelViewForDestruction) {
@@ -339,8 +352,8 @@ public class ViewManager
 			if (registerAtTopLevelViewForDestruction) {
 				if (viewsToBeDestroyed == null) {
 					viewsToBeDestroyed = new HashSet<AGLView>();
-					hashTopLevelView2ViewsToBeDestroyed
-							.put(topLevelGLView, viewsToBeDestroyed);
+					hashTopLevelView2ViewsToBeDestroyed.put(topLevelGLView,
+							viewsToBeDestroyed);
 				}
 				viewsToBeDestroyed.add(glView);
 			}
@@ -352,7 +365,8 @@ public class ViewManager
 						remoteRenderedViews);
 				for (AGLView remoteRenderedView : tempRemoteRenderedViews) {
 					// Unregister remote rendered views of glView
-					unregisterGLView(remoteRenderedView, registerAtTopLevelViewForDestruction);
+					unregisterGLView(remoteRenderedView,
+							registerAtTopLevelViewForDestruction);
 					// Register them to be destroyed in the next display cycle
 					// of the top level remote rendering view
 					if (registerAtTopLevelViewForDestruction)
@@ -360,8 +374,7 @@ public class ViewManager
 				}
 				remoteRenderedViews.clear();
 			}
-		}
-		else {
+		} else {
 			hashTopLevelView2ViewsToBeDestroyed.remove(glView);
 			unregisterGLCanvas(glView.getParentGLCanvas());
 		}
@@ -419,8 +432,8 @@ public class ViewManager
 
 		fpsAnimator.add(glCanvas);
 
-		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Add canvas to animator"
-				+ glCanvas.getName()));
+		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
+				"Add canvas to animator" + glCanvas.getName()));
 	}
 
 	public void unregisterGLCanvasFromAnimator(final GLCanvas glCanvas) {
@@ -434,7 +447,8 @@ public class ViewManager
 	 * Usually this should result disabling user events and showing a loading
 	 * screen animation.
 	 * 
-	 * @param requestInstance object that wants to request busy mode
+	 * @param requestInstance
+	 *            object that wants to request busy mode
 	 */
 	public void requestBusyMode(Object requestInstance) {
 		if (requestInstance == null) {
@@ -458,7 +472,8 @@ public class ViewManager
 	 * Releases a previously requested busy mode. Releases are only performed by
 	 * passing the originally requesting object to this method.
 	 * 
-	 * @param requestInstance the object that requested the busy mode
+	 * @param requestInstance
+	 *            the object that requested the busy mode
 	 */
 	public void releaseBusyMode(Object requestInstance) {
 		if (requestInstance == null) {
@@ -483,16 +498,15 @@ public class ViewManager
 			@Override
 			public void run() {
 				try {
-					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-							.getActivePage();
-					ARcpGLViewPart viewPart = (ARcpGLViewPart) page.showView(serializedView
-							.getViewType());
+					IWorkbenchPage page = PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getActivePage();
+					ARcpGLViewPart viewPart = (ARcpGLViewPart) page
+							.showView(serializedView.getViewType());
 					AGLView view = viewPart.getGLView();
 					view.initFromSerializableRepresentation(serializedView);
 					// TODO re-init view with its serializedView
 
-				}
-				catch (PartInitException ex) {
+				} catch (PartInitException ex) {
 					throw new RuntimeException("could not create view with gui-id="
 							+ serializedView.getViewType(), ex);
 				}
@@ -508,9 +522,9 @@ public class ViewManager
 		try {
 			Class[] argTypes = { GLCanvas.class, Composite.class, ViewFrustum.class };
 			Constructor aConstructor = viewClass.getConstructor(argTypes);
-			view = (AGLView) aConstructor.newInstance(glCanvas, parentComposite, viewFrustum);
-		}
-		catch (Exception e) {
+			view = (AGLView) aConstructor.newInstance(glCanvas, parentComposite,
+					viewFrustum);
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new IllegalStateException("Cannot create GL view " + viewClass);
 		}
@@ -535,5 +549,43 @@ public class ViewManager
 			displayLoopExecution.executeMultiple(connectedElementRepManager);
 		}
 		return displayLoopExecution;
+	}
+
+	public synchronized void initializeUnserializedViews() {
+		if (!areSerializedViewsInitialized) {
+			areSerializedViewsInitialized = true;
+			Display.getDefault().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					System.out.println("unserialized view initialization");
+					IViewReference[] views = PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getActivePage()
+							.getViewReferences();
+
+					try {
+						for (IViewReference view : views) {
+
+							PlatformUI
+									.getWorkbench()
+									.getActiveWorkbenchWindow()
+									.getActivePage()
+									.showView(view.getId(), view.getSecondaryId(),
+											IWorkbenchPage.VIEW_VISIBLE);
+						}
+					} catch (PartInitException e) {
+						throw new IllegalStateException();
+					}
+
+					// Make DVI visible
+					try {
+						PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+								.getActivePage().showView("org.caleydo.view.dvi");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		}
 	}
 }

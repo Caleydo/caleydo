@@ -124,39 +124,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private void initializeViews() {
 
-		// Initialization of views has to be done when the workspace has been
-		// built. This is ensured by making an asyncExec.
 
-		Display.getDefault().asyncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				IViewReference[] views = PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage().getViewReferences();
-
-				try {
-					for (IViewReference view : views) {
-
-						PlatformUI
-								.getWorkbench()
-								.getActiveWorkbenchWindow()
-								.getActivePage()
-								.showView(view.getId(), view.getSecondaryId(),
-										IWorkbenchPage.VIEW_VISIBLE);
-					}
-				} catch (PartInitException e) {
-					throw new IllegalStateException();
-				}
-
-				// Make DVI visible
-				try {
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-							.showView("org.caleydo.view.dvi");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 
 	}
 }
