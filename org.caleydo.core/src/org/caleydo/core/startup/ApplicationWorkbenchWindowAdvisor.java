@@ -24,6 +24,7 @@ import org.caleydo.core.gui.perspective.PartListener;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -33,8 +34,7 @@ import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
-public class ApplicationWorkbenchWindowAdvisor
-	extends WorkbenchWindowAdvisor {
+public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 	/**
 	 * Constructor.
@@ -61,8 +61,8 @@ public class ApplicationWorkbenchWindowAdvisor
 		configurer.setShowStatusLine(false);
 		// configurer.setShowProgressIndicator(true);
 
-		//if (!GeneralManager.RELEASE_MODE)
-		//	configurer.setShowPerspectiveBar(true);
+		// if (!GeneralManager.RELEASE_MODE)
+		// configurer.setShowPerspectiveBar(true);
 
 		configurer.setTitle("Caleydo");
 
@@ -78,7 +78,7 @@ public class ApplicationWorkbenchWindowAdvisor
 		removeNonCaleydoMenuEntries();
 
 		StartupProcessor.get().getStartupProcedure().postWorkbenchOpen();
-		
+
 		initializeViews();
 	}
 
@@ -98,7 +98,8 @@ public class ApplicationWorkbenchWindowAdvisor
 
 		if (DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.generic") != null) {
 
-			IActionBarConfigurer configurer = getWindowConfigurer().getActionBarConfigurer();
+			IActionBarConfigurer configurer = getWindowConfigurer()
+					.getActionBarConfigurer();
 
 			// Delete unwanted menu items
 			IContributionItem[] menuItems = configurer.getMenuManager().getItems();
@@ -106,8 +107,7 @@ public class ApplicationWorkbenchWindowAdvisor
 				IContributionItem menuItem = menuItems[i];
 				if (menuItem.getId().equals("org.caleydo.search.menu")) {
 					configurer.getMenuManager().remove(menuItem);
-				}
-				else if (menuItem.getId().equals("viewMenu")) {
+				} else if (menuItem.getId().equals("viewMenu")) {
 					IContributionItem itemToRemove = ((MenuManager) menuItem)
 							.find("org.caleydo.core.command.openviews.remote");
 
@@ -124,27 +124,39 @@ public class ApplicationWorkbenchWindowAdvisor
 	 */
 	private void initializeViews() {
 
-//		IViewReference[] views = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-//				.getActivePage().getViewReferences();
-//
-//		try {
-//			for (IViewReference view : views) {
-//				
-//				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-//						.showView(view.getId(), view.getSecondaryId(), IWorkbenchPage.VIEW_VISIBLE);
-//			}
-//		}
-//		catch (PartInitException e) {
-//			throw new IllegalStateException();
-//		}
-//		
-//		// Make DVI visible
-//		try {
-//			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-//					.showView("org.caleydo.view.dvi");
-//		}
-//		catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		// Initialization of views has to be done when the workspace has been
+		// built. This is ensured by making an asyncExec.
+
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				IViewReference[] views = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage().getViewReferences();
+
+				try {
+					for (IViewReference view : views) {
+
+						PlatformUI
+								.getWorkbench()
+								.getActiveWorkbenchWindow()
+								.getActivePage()
+								.showView(view.getId(), view.getSecondaryId(),
+										IWorkbenchPage.VIEW_VISIBLE);
+					}
+				} catch (PartInitException e) {
+					throw new IllegalStateException();
+				}
+
+				// Make DVI visible
+				try {
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+							.showView("org.caleydo.view.dvi");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
 	}
 }
