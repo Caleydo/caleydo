@@ -24,7 +24,6 @@ import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.jface.window.Window;
-import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 

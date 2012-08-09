@@ -21,8 +21,6 @@ package org.caleydo.core.startup;
 
 import org.caleydo.core.view.RCPViewManager;
 import org.eclipse.ui.IFolderLayout;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Abstract startup procedure. Handling of view initialization and application

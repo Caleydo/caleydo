@@ -28,11 +28,12 @@ import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.specialized.Organism;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.window.Window;
-import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.WorkbenchPlugin;
@@ -61,7 +62,6 @@ public class GeneticGUIStartupProcedure extends AStartupProcedure {
 	public void init() {
 
 		if (loadSampleData) {
-
 			GeneralManager.get().getBasicInfo().setOrganism(Organism.HOMO_SAPIENS);
 		}
 
@@ -70,6 +70,8 @@ public class GeneticGUIStartupProcedure extends AStartupProcedure {
 			Bundle bundle = Platform.getBundle("org.caleydo.datadomain.genetic");
 			bundle.start();
 		} catch (BundleException e) {
+			Logger.log(new Status(Status.ERROR, this.toString(),
+					"Failed to initalize genetic data domain", e));
 			throw new IllegalStateException("Failed to initalize genetic data domain");
 		}
 
@@ -96,8 +98,8 @@ public class GeneticGUIStartupProcedure extends AStartupProcedure {
 		IPath path = WorkbenchPlugin.getDefault().getDataLocation();
 		path = path.append(ProjectSaver.WORKBENCH_MEMENTO_FILE);
 		FileOperations.deleteDirectory(path.toOSString());
-//		FileOperations.deleteDirectory(ProjectSaver.WORKBENCH_MEMENTO_FOLDER
-//				+ ProjectSaver.WORKBENCH_MEMENTO_FILE);
+		// FileOperations.deleteDirectory(ProjectSaver.WORKBENCH_MEMENTO_FOLDER
+		// + ProjectSaver.WORKBENCH_MEMENTO_FILE);
 
 		HelpButtonWizardDialog dialog = new HelpButtonWizardDialog(StartupProcessor.get()
 				.getDisplay().getActiveShell(), dataImportWizard);
