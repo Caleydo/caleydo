@@ -20,14 +20,12 @@
 package org.caleydo.core.view;
 
 import java.awt.Frame;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
-import javax.swing.SwingUtilities;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -58,27 +56,12 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 
 	protected void createGLCanvas() {
 		GLProfile profile = GLProfile.get(GLProfile.GL2);
-		final GLCapabilities glCapabilities = new GLCapabilities(profile);
+		GLCapabilities glCapabilities = new GLCapabilities(profile);
 		glCapabilities.setStencilBits(1);
 		glCapabilities.setDoubleBuffered(true);
 
-		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-				
-				@Override
-				public void run() {
-					glCanvas = new GLCanvas(glCapabilities);
-					
-				}
-			});
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		glCanvas = new GLCanvas(glCapabilities);
+
 		GeneralManager.get().getViewManager().registerGLCanvasToAnimator(glCanvas);
 	}
 
