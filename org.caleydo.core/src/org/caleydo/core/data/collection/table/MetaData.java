@@ -25,6 +25,7 @@ import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.collection.dimension.NominalColumn;
 import org.caleydo.core.data.collection.dimension.NumericalColumn;
+import org.caleydo.core.io.DataSetDescription;
 
 /**
  * This class encapsulates all metadata related operations for DataTables.
@@ -44,6 +45,7 @@ public class MetaData {
 	private boolean artificialMax = false;
 	double max = Double.MIN_VALUE;
 
+	/** same as {@link DataSetDescription#isDataCenteredAtZero()} */
 	private boolean isDataCenteredAtZero = false;
 
 	public MetaData(DataTable table) {
