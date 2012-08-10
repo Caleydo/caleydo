@@ -55,11 +55,13 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 /**
- * File dialog for starting clustering
+ * Dialog for configuring and starting clustering
  * 
+ * @author Alexander Lex
  * @author Bernhard Schlegl
+ * @author Christian Partl
  */
-public class StartClusteringDialog extends AHelpButtonDialog implements IDataOKListener {
+public class ClusterDialog extends AHelpButtonDialog implements IDataOKListener {
 
 	public static final String TEXT = "Clustering";
 	public static final String ICON = "resources/icons/view/tablebased/clustering.png";
@@ -86,12 +88,12 @@ public class StartClusteringDialog extends AHelpButtonDialog implements IDataOKL
 
 	private DataChooserComposite dataChooser;
 
-	public StartClusteringDialog(Shell parentShell) {
+	public ClusterDialog(Shell parentShell) {
 		super(parentShell);
 		clusterConfiguration = new ClusterConfiguration();
 	}
 
-	public StartClusteringDialog(Shell parentShell, ATableBasedDataDomain dataDomain) {
+	public ClusterDialog(Shell parentShell, ATableBasedDataDomain dataDomain) {
 		super(parentShell);
 		this.dataDomain = dataDomain;
 		clusterConfiguration = new ClusterConfiguration();
@@ -100,7 +102,7 @@ public class StartClusteringDialog extends AHelpButtonDialog implements IDataOKL
 	/**
 	 * Constructor with {@link ClusterConfiguration} for pre-setting values
 	 */
-	public StartClusteringDialog(Shell parentShell, ATableBasedDataDomain dataDomain,
+	public ClusterDialog(Shell parentShell, ATableBasedDataDomain dataDomain,
 			ClusterConfiguration clusterConfiguration) {
 		super(parentShell);
 		this.dataDomain = dataDomain;

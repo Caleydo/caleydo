@@ -5,10 +5,10 @@ package org.caleydo.view.dvi.event;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.event.AEvent;
-import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
+import org.caleydo.core.util.clusterer.gui.ClusterDialog;
 
 /**
- * Event to trigger the {@link StartClusteringDialog} in order to create a
+ * Event to trigger the {@link ClusterDialog} in order to create a
  * clustering for a datadomain.
  * 
  * @author Christian Partl

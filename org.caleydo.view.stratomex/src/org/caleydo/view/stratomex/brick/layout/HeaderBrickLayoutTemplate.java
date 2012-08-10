@@ -25,7 +25,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
+import org.caleydo.core.util.clusterer.gui.ClusterDialog;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -313,7 +313,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 							brick.getBrickColumn().getStratomexView().replaceTablePerspective(
 									newTablePerspective, originalTablePerspective);
 
-							StartClusteringDialog dialog = new StartClusteringDialog(
+							ClusterDialog dialog = new ClusterDialog(
 									new Shell(), brick.getDataDomain(),
 									clusterConfiguration);
 							dialog.open();

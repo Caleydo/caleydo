@@ -66,7 +66,7 @@ import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.gui.dataimport.ImportGroupingDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
+import org.caleydo.core.util.clusterer.gui.ClusterDialog;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.logging.Logger;
@@ -1271,7 +1271,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 	/**
 	 * Creates a new perspective for the specified data domain through
-	 * clustering via the {@link StartClusteringDialog}. The default
+	 * clustering via the {@link ClusterDialog}. The default
 	 * perspectives of the data domain are used to specify the data to be
 	 * clustered.
 	 * 
@@ -1301,7 +1301,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 					clusterConfiguration
 							.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
 
-				StartClusteringDialog dialog = new StartClusteringDialog(new Shell(),
+				ClusterDialog dialog = new ClusterDialog(new Shell(),
 						dataDomain, clusterConfiguration);
 
 				dialog.open();

@@ -283,6 +283,8 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 
 					Set<Integer> recordIDs = mappingManager.getIDAsSet(
 							recordVA.getIdType(), destIDType, recordID);
+					if(recordIDs == null)
+						continue;
 					recordID = recordIDs.iterator().next();
 					if (recordIDs.size() > 1) {
 						Logger.log(new Status(Status.WARNING, this.toString(),

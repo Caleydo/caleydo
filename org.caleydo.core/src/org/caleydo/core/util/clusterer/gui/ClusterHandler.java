@@ -34,7 +34,7 @@ public class ClusterHandler
 		StartClusteringAction action = new StartClusteringAction();
 		action.run();
 
-		// StartClusteringDialog dialog = new StartClusteringDialog(new Shell());
+		// ClusterDialog dialog = new ClusterDialog(new Shell());
 		// dialog.open();
 		// ClusterState clusterState = dialog.getClusterState();
 		//

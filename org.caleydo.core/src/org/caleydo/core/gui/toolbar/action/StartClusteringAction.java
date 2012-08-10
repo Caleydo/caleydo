@@ -20,7 +20,7 @@
 package org.caleydo.core.gui.toolbar.action;
 
 import org.caleydo.core.gui.toolbar.IToolBarItem;
-import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
+import org.caleydo.core.util.clusterer.gui.ClusterDialog;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
@@ -46,7 +46,7 @@ public class StartClusteringAction extends AToolBarAction implements IToolBarIte
 	public void run() {
 		super.run();
 
-		StartClusteringDialog dialog = new StartClusteringDialog(new Shell());
+		ClusterDialog dialog = new ClusterDialog(new Shell());
 
 		dialog.open();
 		
