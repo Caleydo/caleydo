@@ -20,7 +20,7 @@
 package org.caleydo.core.util.clusterer.algorithm.affinity;
 
 import org.caleydo.core.util.clusterer.gui.AClusterTab;
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.AClusterAlgorithmConfiguration;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -39,12 +39,10 @@ import org.eclipse.swt.widgets.Text;
  * 
  */
 public class AffinityTab extends AClusterTab {
-	
-	private float fclusterFactorGenes = 1f;
-	private float fclusterFactorExperiments = 1f;
-	
-	private Text clusterFactorGenes = null;
-	private Text clusterFactorExperiments = null;
+
+	private float clusterFactor = 1f;
+
+	private Text clusterFactorText = null;
 
 	/**
 	 * 
@@ -53,7 +51,7 @@ public class AffinityTab extends AClusterTab {
 		super(tabFolder);
 		createAffinityPropagationTab();
 	}
-	
+
 	private void createAffinityPropagationTab() {
 		clusterTab = new TabItem(tabFolder, SWT.NONE);
 		clusterTab.setData(this);
@@ -66,65 +64,68 @@ public class AffinityTab extends AClusterTab {
 		ModifyListener listenerFloatGenes = new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				valueChangedFloat((Text) e.widget, true);
+				valueChangedFloat((Text) e.widget);
 			}
 		};
 
-		ModifyListener listenerFloatExperiments = new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				valueChangedFloat((Text) e.widget, false);
-			}
-		};
+		// ModifyListener listenerFloatExperiments = new ModifyListener() {
+		// @Override
+		// public void modifyText(ModifyEvent e) {
+		// valueChangedFloat((Text) e.widget, false);
+		// }
+		// };
 
 		final Label lblClusterFactor = new Label(composite, SWT.SHADOW_ETCHED_IN);
 		lblClusterFactor.setText("Factor for clustering (Range 1-10)");
 		lblClusterFactor.setLayoutData(new GridData(GridData.END, GridData.CENTER, false,
 				false));
 
-		clusterFactorGenes = new Text(composite, SWT.SHADOW_ETCHED_IN);
-		clusterFactorGenes.addModifyListener(listenerFloatGenes);
-		clusterFactorGenes.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		clusterFactorGenes.setText("1.0");
-		clusterFactorGenes
+		clusterFactorText = new Text(composite, SWT.SHADOW_ETCHED_IN);
+		clusterFactorText.addModifyListener(listenerFloatGenes);
+		clusterFactorText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		clusterFactorText.setText("1.0");
+		clusterFactorText
 				.setToolTipText("Float value. Range: 1 up to 10. The bigger the value the less clusters will be formed");
 
-//		final Label lblClusterFactorExperiments = new Label(composite, SWT.SHADOW_ETCHED_IN);
-//		lblClusterFactorExperiments.setText("Factor for clustering experiments");
-//		lblClusterFactorExperiments.setLayoutData(new GridData(GridData.END, GridData.CENTER,
-//				false, false));
+		// final Label lblClusterFactorExperiments = new Label(composite,
+		// SWT.SHADOW_ETCHED_IN);
+		// lblClusterFactorExperiments.setText("Factor for clustering experiments");
+		// lblClusterFactorExperiments.setLayoutData(new GridData(GridData.END,
+		// GridData.CENTER,
+		// false, false));
 
-//		clusterFactorExperiments = new Text(composite, SWT.SHADOW_ETCHED_IN);
-//		clusterFactorExperiments.addModifyListener(listenerFloatExperiments);
-//		clusterFactorExperiments.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//		clusterFactorExperiments.setText("1.0");
-//		clusterFactorExperiments
-//				.setToolTipText("Float value. Range: 1 up to 10. The bigger the value the less clusters will be formed");
-//		clusterFactorExperiments.setEnabled(false);
+		// clusterFactorExperiments = new Text(composite, SWT.SHADOW_ETCHED_IN);
+		// clusterFactorExperiments.addModifyListener(listenerFloatExperiments);
+		// clusterFactorExperiments.setLayoutData(new
+		// GridData(GridData.FILL_HORIZONTAL));
+		// clusterFactorExperiments.setText("1.0");
+		// clusterFactorExperiments
+		// .setToolTipText("Float value. Range: 1 up to 10. The bigger the value the less clusters will be formed");
+		// clusterFactorExperiments.setEnabled(false);
 
-//		clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				clusterType = clusterTypeCombo.getText();
-//				if (clusterType.equals(typeOptions[0])) {
-//					clusterFactorGenes.setEnabled(true);
-//					clusterFactorExperiments.setEnabled(false);
-//				}
-//				else if (clusterType.equals(typeOptions[1])) {
-//					clusterFactorGenes.setEnabled(false);
-//					clusterFactorExperiments.setEnabled(true);
-//				}
-//				else {
-//					clusterFactorGenes.setEnabled(true);
-//					clusterFactorExperiments.setEnabled(true);
-//				}
-//
-//			}
-//		});
+		// clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// clusterType = clusterTypeCombo.getText();
+		// if (clusterType.equals(typeOptions[0])) {
+		// clusterFactorText.setEnabled(true);
+		// clusterFactorExperiments.setEnabled(false);
+		// }
+		// else if (clusterType.equals(typeOptions[1])) {
+		// clusterFactorText.setEnabled(false);
+		// clusterFactorExperiments.setEnabled(true);
+		// }
+		// else {
+		// clusterFactorText.setEnabled(true);
+		// clusterFactorExperiments.setEnabled(true);
+		// }
+		//
+		// }
+		// });
 
 	}
-	
-	private void valueChangedFloat(Text text, boolean bGeneFactor) {
+
+	private void valueChangedFloat(Text text) {
 		if (!text.isFocusControl())
 			return;
 
@@ -133,12 +134,8 @@ public class AffinityTab extends AClusterTab {
 		try {
 			temp = Float.parseFloat(text.getText());
 			if (temp >= 1f && temp <= 10) {
-				if (bGeneFactor == true)
-					fclusterFactorGenes = temp;
-				else
-					fclusterFactorExperiments = temp;
-			}
-			else {
+				clusterFactor = temp;
+			} else {
 				Shell shell = new Shell();
 				MessageBox messageBox = new MessageBox(shell, SWT.OK);
 				messageBox.setText("Start Clustering");
@@ -146,20 +143,16 @@ public class AffinityTab extends AClusterTab {
 						.setMessage("Factor for affinity propagation has to be between 1.0 and 10.0");
 				messageBox.open();
 			}
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			System.out.println("Invalid input");
 		}
 
 	}
-	
+
 	@Override
-	public AClusterConfiguration getClusterConfiguration() {
+	public AClusterAlgorithmConfiguration getClusterConfiguration() {
 		AffinityClusterConfiguration clusterConfiguration = new AffinityClusterConfiguration();
-		clusterConfiguration.setClusterFactor(fclusterFactorGenes);
-//		clusterConfiguration
-//				.setAffinityPropClusterFactorExperiments(fclusterFactorExperiments);
-		// TODO Auto-generated method stub
+		clusterConfiguration.setClusterFactor(clusterFactor);
 		return clusterConfiguration;
 	}
 

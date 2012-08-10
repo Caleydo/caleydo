@@ -20,7 +20,8 @@
 package org.caleydo.core.util.clusterer.algorithm.kmeans;
 
 import org.caleydo.core.util.clusterer.gui.AClusterTab;
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.AClusterAlgorithmConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -188,7 +189,7 @@ public class KMeansTab extends AClusterTab {
 	// }
 
 	@Override
-	public AClusterConfiguration getClusterConfiguration() {
+	public AClusterAlgorithmConfiguration getClusterConfiguration() {
 		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
 		clusterConfiguration.setNumberOfClusters(nrClustersRecords);
 		return clusterConfiguration;

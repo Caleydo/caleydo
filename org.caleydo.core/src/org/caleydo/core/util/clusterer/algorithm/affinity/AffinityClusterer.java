@@ -19,7 +19,7 @@ import org.caleydo.core.util.clusterer.distancemeasures.EuclideanDistance;
 import org.caleydo.core.util.clusterer.distancemeasures.IDistanceMeasure;
 import org.caleydo.core.util.clusterer.distancemeasures.ManhattanDistance;
 import org.caleydo.core.util.clusterer.distancemeasures.PearsonCorrelation;
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.logging.Logger;
@@ -74,7 +74,7 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 	}
 
 	@Override
-	public void setClusterState(AClusterConfiguration clusterState) {
+	public void setClusterState(ClusterConfiguration clusterState) {
 		super.setClusterState(clusterState);
 
 		try {
@@ -101,7 +101,7 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 	 * @param clusterState
 	 * @return in case of error a negative value will be returned.
 	 */
-	private int determineSimilarities(DataTable table, AClusterConfiguration clusterState) {
+	private int determineSimilarities(DataTable table, ClusterConfiguration clusterState) {
 
 		RecordVirtualArray recordVA = clusterState.getSourceRecordPerspective()
 				.getVirtualArray();
@@ -628,10 +628,11 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 
 	@Override
 	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain,
-			AClusterConfiguration clusterConfiguration, int iProgressBarOffsetValue,
+			ClusterConfiguration clusterConfiguration, int iProgressBarOffsetValue,
 			int iProgressBarMultiplier) {
 
-		AffinityClusterConfiguration affinityClusterConfiguration = (AffinityClusterConfiguration) clusterConfiguration;
+		AffinityClusterConfiguration affinityClusterConfiguration = (AffinityClusterConfiguration) clusterConfiguration
+				.getClusterAlgorithmConfiguration();
 
 		this.dataDomain = dataDomain;
 

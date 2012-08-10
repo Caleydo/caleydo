@@ -32,8 +32,8 @@ public class CreateClusteringItem extends AContextMenuItem {
 		IDCategory idCategory = isDimensionClustering ? dataDomain
 				.getDimensionIDCategory() : dataDomain.getRecordIDCategory();
 
-		setLabel("Create Grouping for " + idCategory.getCategoryName()
-				+ " via clustering");
+		setLabel("Create grouping for " + idCategory.getCategoryName()
+				+ " using clustering");
 
 		CreateClusteringEvent event = new CreateClusteringEvent(dataDomain,
 				isDimensionClustering);

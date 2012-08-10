@@ -21,7 +21,7 @@ package org.caleydo.core.io;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 
 /**
  * <p>
@@ -41,7 +41,7 @@ public class DataProcessingDescription {
 	/**
 	 * <p>
 	 * A list of configurations on how to cluster the column data. Only the
-	 * {@link AClusterConfiguration#setDistanceMeasure(org.caleydo.core.util.clusterer.initialization.EDistanceMeasure)}
+	 * {@link ClusterConfiguration#setDistanceMeasure(org.caleydo.core.util.clusterer.initialization.EDistanceMeasure)}
 	 * and the specific parameters of the concrete implementation of the cluster
 	 * configuration need to be set, <b>but not the source or target
 	 * dimensions/records</b>.
@@ -50,17 +50,17 @@ public class DataProcessingDescription {
 	 * Optional.
 	 * </p>
 	 */
-	private ArrayList<AClusterConfiguration> columnClusterConfigurations;
+	private ArrayList<ClusterConfiguration> columnClusterConfigurations;
 
 	/** Same as {@link #columnClusterConfigurations} */
-	private ArrayList<AClusterConfiguration> rowClusterConfigurations;
+	private ArrayList<ClusterConfiguration> rowClusterConfigurations;
 
 	/**
 	 * @param columnClusterConfigurations
 	 *            setter, see {@link #columnClusterConfigurations}
 	 */
 	public void setColumnClusterConfigurations(
-			ArrayList<AClusterConfiguration> columnClusterConfigurations) {
+			ArrayList<ClusterConfiguration> columnClusterConfigurations) {
 		this.columnClusterConfigurations = columnClusterConfigurations;
 	}
 
@@ -68,15 +68,15 @@ public class DataProcessingDescription {
 	 * @return the columnClusterConfigurations, see
 	 *         {@link #columnClusterConfigurations}
 	 */
-	public ArrayList<AClusterConfiguration> getColumnClusterConfigurations() {
+	public ArrayList<ClusterConfiguration> getColumnClusterConfigurations() {
 		return columnClusterConfigurations;
 	}
 
 	/** Adds a cluster configuration to {@link #columnClusterConfigurations} */
 	public void addColumnClusterConfiguration(
-			AClusterConfiguration columnClusterConfiguration) {
+			ClusterConfiguration columnClusterConfiguration) {
 		if (columnClusterConfiguration != null) {
-			columnClusterConfigurations = new ArrayList<AClusterConfiguration>(3);
+			columnClusterConfigurations = new ArrayList<ClusterConfiguration>(3);
 		}
 		columnClusterConfigurations.add(columnClusterConfiguration);
 	}
@@ -86,7 +86,7 @@ public class DataProcessingDescription {
 	 *            setter, see {@link #rowClusterConfigurations}
 	 */
 	public void setRowClusterConfigurations(
-			ArrayList<AClusterConfiguration> rowClusterConfigurations) {
+			ArrayList<ClusterConfiguration> rowClusterConfigurations) {
 		this.rowClusterConfigurations = rowClusterConfigurations;
 	}
 
@@ -94,14 +94,14 @@ public class DataProcessingDescription {
 	 * @return the rowClusterConfigurations, see
 	 *         {@link #rowClusterConfigurations}
 	 */
-	public ArrayList<AClusterConfiguration> getRowClusterConfigurations() {
+	public ArrayList<ClusterConfiguration> getRowClusterConfigurations() {
 		return rowClusterConfigurations;
 	}
 
 	/** Adds a cluster configuration to {@link #rowClusterConfigurations} */
-	public void addRowClusterConfiguration(AClusterConfiguration rowClusterConfiguration) {
+	public void addRowClusterConfiguration(ClusterConfiguration rowClusterConfiguration) {
 		if (rowClusterConfiguration != null) {
-			rowClusterConfigurations = new ArrayList<AClusterConfiguration>(3);
+			rowClusterConfigurations = new ArrayList<ClusterConfiguration>(3);
 		}
 		rowClusterConfigurations.add(rowClusterConfiguration);
 	}

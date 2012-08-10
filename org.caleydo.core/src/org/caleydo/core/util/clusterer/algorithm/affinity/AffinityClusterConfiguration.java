@@ -19,13 +19,14 @@
  *******************************************************************************/
 package org.caleydo.core.util.clusterer.algorithm.affinity;
 
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.AClusterAlgorithmConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 
 /**
  * @author Alexander Lex
  * 
  */
-public class AffinityClusterConfiguration extends AClusterConfiguration {
+public class AffinityClusterConfiguration extends AClusterAlgorithmConfiguration {
 
 	private float clusterFactor;
 

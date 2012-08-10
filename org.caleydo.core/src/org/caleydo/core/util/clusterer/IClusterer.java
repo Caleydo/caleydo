@@ -22,7 +22,7 @@ package org.caleydo.core.util.clusterer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 
 /**
  * Interface class for all clustering algorithms.
@@ -50,7 +50,7 @@ public interface IClusterer
 	 * @return Sorted VirtualArray.
 	 */
 	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain,
-		AClusterConfiguration clusterState, int iProgressBarOffsetValue, int iProgressBarMultiplier);
+		ClusterConfiguration clusterState, int iProgressBarOffsetValue, int iProgressBarMultiplier);
 
 	public void cancel();
 

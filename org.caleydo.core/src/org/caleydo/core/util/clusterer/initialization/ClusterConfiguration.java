@@ -39,19 +39,17 @@ import org.caleydo.core.util.clusterer.algorithm.tree.TreeClusterConfiguration;
  * </p>
  * <p>
  * Depending on the selected algorithm different variables (cluster factor,
- * cluster number) are required.
+ * cluster number) are required, which is reflected through the sub-classes of
+ * this abstract base class.
  * </p>
  * <p>
- * The clustering algorithm use the sourcePerspectives (
+ * The clustering algorithm uses the sourcePerspectives (
  * {@link #sourceRecordPerspective} and {@link #sourceDimensionPerspective}) and
- * intended to be written into the targetPerspectives, which can either be the
- * source Perspectives (overriding the original data), or specific
- * targetPerspectives, as defined in ({@link #optionalTargetRecordPerspective}
- * and {@link #optionalTargetDimensionPerspective}). The methods
- * {@link #getTargetRecordPerspective()} and
- * {@link #getTargetDimensionPerspective()} will always deliver the correct
- * perspective, no matter whether the perspectives are intend to be overridden
- * or other perspectives were specified
+ * writes it into the target perspectives, which can either be the source
+ * Perspectives (overriding the original data), specific targetPerspectives, as
+ * defined in ({@link #optionalTargetRecordPerspective} and
+ * {@link #optionalTargetDimensionPerspective}), or newly created perspectives
+ * (if {@link #modifyExistingPerspective} is false)
  * </p>
  * 
  * @author Bernhard Schlegl
@@ -60,15 +58,13 @@ import org.caleydo.core.util.clusterer.algorithm.tree.TreeClusterConfiguration;
 @XmlType
 @XmlSeeAlso({ KMeansClusterConfiguration.class, AffinityClusterConfiguration.class,
 		TreeClusterConfiguration.class, NominalClusterConfiguration.class })
-public abstract class AClusterConfiguration {
+public class ClusterConfiguration {
 
-	/**
-	 * The name of the clustering algorithm, must be overriden in implementing
-	 * classes
-	 */
-	protected String clusterAlgorithmName = "Unlabeled Clustering Algorithm";
 	private EClustererTarget clusterTarget;
 	private EDistanceMeasure distanceMeasure;
+
+	/** The algorithm-specific configurations */
+	private AClusterAlgorithmConfiguration clusterAlgorithmConfiguration;
 
 	/**
 	 * The record perspective which provides the source information on what to
@@ -89,11 +85,19 @@ public abstract class AClusterConfiguration {
 	/** same as {@link #optionalTargetRecordPerspective} for dimensions */
 	private DimensionPerspective optionalTargetDimensionPerspective;
 
-	public AClusterConfiguration() {
+	/**
+	 * Flag determining whether the clustered perspective should be modified
+	 * (true), or whether a new one should be added with the cluster result.
+	 * Default to true. This flag is also automatically set to false if a
+	 * optional target perspective is specified
+	 */
+	private boolean modifyExistingPerspective = true;
+
+	public ClusterConfiguration() {
 
 	}
 
-	public AClusterConfiguration(EClustererTarget clusterTarget, EDistanceMeasure dist) {
+	public ClusterConfiguration(EClustererTarget clusterTarget, EDistanceMeasure dist) {
 		this.setClusterTarget(clusterTarget);
 		this.setDistanceMeasure(dist);
 	}
@@ -120,22 +124,15 @@ public abstract class AClusterConfiguration {
 	public void setOptionalTargetRecordPerspective(
 			RecordPerspective optionalTargetRecordPerspective) {
 		this.optionalTargetRecordPerspective = optionalTargetRecordPerspective;
+		modifyExistingPerspective = false;
 	}
 
 	/**
-	 * Returns the {@link RecordPerspective} to which the results of the
-	 * clustering algorithm should be written to. This is either the same as the
-	 * source perspective (thereby overrideing data) or, if specified, a
-	 * separate perspective.
-	 * 
-	 * @return the targetRecordPerspective, see
+	 * @return the optionalTargetRecordPerspective, see
 	 *         {@link #optionalTargetRecordPerspective}
 	 */
-	public RecordPerspective getTargetRecordPerspective() {
-		if (optionalTargetRecordPerspective != null)
-			return optionalTargetRecordPerspective;
-
-		return sourceRecordPerspective;
+	public RecordPerspective getOptionalTargetRecordPerspective() {
+		return optionalTargetRecordPerspective;
 	}
 
 	/**
@@ -160,17 +157,31 @@ public abstract class AClusterConfiguration {
 	public void setOptionalTargetDimensionPerspective(
 			DimensionPerspective targetDimensionPerspective) {
 		this.optionalTargetDimensionPerspective = targetDimensionPerspective;
+		modifyExistingPerspective = false;
 	}
 
 	/**
-	 * @return the targetDimensionPerspective, see
+	 * @return the optionalTargetDimensionPerspective, see
 	 *         {@link #optionalTargetDimensionPerspective}
 	 */
-	public DimensionPerspective getTargetDimensionPerspective() {
-		if (optionalTargetDimensionPerspective != null)
-			return optionalTargetDimensionPerspective;
+	public DimensionPerspective getOptionalTargetDimensionPerspective() {
+		return optionalTargetDimensionPerspective;
+	}
 
-		return sourceDimensionPerspective;
+	/**
+	 * @param modifyExistingPerspective
+	 *            setter, see {@link #modifyExistingPerspective}
+	 */
+	public void setModifyExistingPerspective(boolean modifyExistingPerspective) {
+		this.modifyExistingPerspective = modifyExistingPerspective;
+	}
+
+	/**
+	 * @return the modifyExistingPerspective, see
+	 *         {@link #modifyExistingPerspective}
+	 */
+	public boolean isModifyExistingPerspective() {
+		return modifyExistingPerspective;
 	}
 
 	/**
@@ -202,16 +213,28 @@ public abstract class AClusterConfiguration {
 	public EDistanceMeasure getDistanceMeasure() {
 		return distanceMeasure;
 	}
+	
+	/**
+	 * @param clusterAlgorithmConfiguration setter, see {@link #clusterAlgorithmConfiguration}
+	 */
+	public void setClusterAlgorithmConfiguration(
+			AClusterAlgorithmConfiguration clusterAlgorithmConfiguration) {
+		this.clusterAlgorithmConfiguration = clusterAlgorithmConfiguration;
+	}
+	
+	/**
+	 * @return the clusterAlgorithmConfiguration, see {@link #clusterAlgorithmConfiguration}
+	 */
+	public AClusterAlgorithmConfiguration getClusterAlgorithmConfiguration() {
+		return clusterAlgorithmConfiguration;
+	}
 
 	@Override
 	public String toString() {
-		return clusterAlgorithmName;
+		if (clusterAlgorithmConfiguration != null)
+			return clusterAlgorithmConfiguration.getClusterAlgorithmName();
+		else
+			return "ClusterConfiguration, no algorithm set";
 	}
 
-	/**
-	 * @return the clusterAlgorithmName, see {@link #clusterAlgorithmName}
-	 */
-	public String getClusterAlgorithmName() {
-		return clusterAlgorithmName;
-	}
 }

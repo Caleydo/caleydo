@@ -35,7 +35,7 @@ import org.caleydo.core.util.clusterer.distancemeasures.EuclideanDistance;
 import org.caleydo.core.util.clusterer.distancemeasures.IDistanceMeasure;
 import org.caleydo.core.util.clusterer.distancemeasures.ManhattanDistance;
 import org.caleydo.core.util.clusterer.distancemeasures.PearsonCorrelation;
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 
@@ -90,7 +90,7 @@ public class TreeClusterer extends AClusterer {
 	// Integer>();
 
 	@Override
-	public void setClusterState(AClusterConfiguration clusterState) {
+	public void setClusterState(ClusterConfiguration clusterState) {
 		super.setClusterState(clusterState);
 		try {
 
@@ -915,7 +915,7 @@ public class TreeClusterer extends AClusterer {
 
 	@Override
 	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain,
-			AClusterConfiguration clusterState, int iProgressBarOffsetValue,
+			ClusterConfiguration clusterState, int iProgressBarOffsetValue,
 			int iProgressBarMultiplier) {
 
 		this.dataDomain = dataDomain;
@@ -937,7 +937,7 @@ public class TreeClusterer extends AClusterer {
 
 		PerspectiveInitializationData tempResult;
 
-		TreeClusterConfiguration treeClusterConfiguration = (TreeClusterConfiguration) clusterState;
+		TreeClusterConfiguration treeClusterConfiguration = (TreeClusterConfiguration) clusterState.getClusterAlgorithmConfiguration();
 
 		switch (treeClusterConfiguration.getTreeClustererAlgo()) {
 
@@ -952,7 +952,7 @@ public class TreeClusterer extends AClusterer {
 			break;
 		default:
 			throw new IllegalStateException("Unkonwn cluster type: "
-					+ treeClusterConfiguration.getClusterTarget());
+					+ treeClusterConfiguration.getTreeClustererAlgo());
 		}
 
 		return tempResult;

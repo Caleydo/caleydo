@@ -20,7 +20,8 @@
 package org.caleydo.core.util.clusterer.algorithm.nominal;
 
 import org.caleydo.core.util.clusterer.gui.AClusterTab;
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.AClusterAlgorithmConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -57,10 +58,8 @@ public class OtherClusterersTab extends AClusterTab {
 
 
 	@Override
-	public AClusterConfiguration getClusterConfiguration() {
-		AClusterConfiguration clusterState = new NominalClusterConfiguration();
-
-		return clusterState;
+	public AClusterAlgorithmConfiguration getClusterConfiguration() {
+		return new NominalClusterConfiguration();
 	}
 
 }

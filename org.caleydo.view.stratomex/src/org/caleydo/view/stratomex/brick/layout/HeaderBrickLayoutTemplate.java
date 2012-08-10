@@ -25,7 +25,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -272,17 +272,14 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 					brick.getParentComposite().getDisplay().asyncExec(new Runnable() {
 						@Override
 						public void run() {
-							StartClusteringDialog dialog = new StartClusteringDialog(
-									new Shell(), brick.getDataDomain());
+
+							ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 							TablePerspective data = brick.getDimensionGroup()
 									.getTablePerspective();
-							dialog.setSourceDimensionPerspective(data
+							clusterConfiguration.setSourceDimensionPerspective(data
 									.getDimensionPerspective());
-							dialog.setSourceRecordPerspective(data.getRecordPerspective());
-							dialog.open();
-							AClusterConfiguration clusterState = dialog.getClusterState();
-							if (clusterState == null)
-								return;
+							clusterConfiguration.setSourceRecordPerspective(data
+									.getRecordPerspective());
 
 							// here we create the new record perspective
 							// which is
@@ -300,8 +297,17 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 							data.getDataDomain().getTable()
 									.registerRecordPerspective(newRecordPerspective);
 							data.setRecordPerspective(newRecordPerspective);
-							clusterState
+							clusterConfiguration
 									.setOptionalTargetRecordPerspective(newRecordPerspective);
+
+							StartClusteringDialog dialog = new StartClusteringDialog(
+									new Shell(), brick.getDataDomain(),
+									clusterConfiguration);
+							dialog.open();
+							// clusterConfiguration =
+							// dialog.getClusterConfiguration();
+							// if (clusterConfiguration == null)
+							// return;
 						}
 					});
 				}

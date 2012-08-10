@@ -19,7 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.util.clusterer.gui;
 
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.AClusterAlgorithmConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
@@ -28,7 +29,7 @@ import org.eclipse.swt.widgets.TabItem;
  * Base class for a tab containing clustering algorithm-specific configurations.
  * It is expected that a new {@link TabItem} is registered with the
  * <code>TabFolder</code> when the constructor is called. The algorithm-specific
- * instance of {@link AClusterConfiguration} is expected to be returned with all
+ * instance of {@link ClusterConfiguration} is expected to be returned with all
  * algorithm-specific parameters set when {@link #getClusterConfiguration()} is
  * called.
  * 
@@ -47,7 +48,7 @@ public abstract class AClusterTab {
 	}
 
 	/** Returns an algorithm-specific cluster configuration */
-	public abstract AClusterConfiguration getClusterConfiguration();
+	public abstract AClusterAlgorithmConfiguration getClusterConfiguration();
 
 	/**
 	 * Returns the distance measures supported by this clustering algorithm. By

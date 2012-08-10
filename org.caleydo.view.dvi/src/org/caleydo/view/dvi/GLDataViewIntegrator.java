@@ -67,6 +67,8 @@ import org.caleydo.core.io.gui.dataimport.ImportGroupingDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.RCPViewInitializationData;
@@ -1284,24 +1286,23 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 			@Override
 			public void run() {
-				StartClusteringDialog dialog = new StartClusteringDialog(new Shell(),
-						dataDomain);
-				dialog.setSourceDimensionPerspective(dataDomain
+
+				ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
+				clusterConfiguration.setSourceDimensionPerspective(dataDomain
 						.getDefaultTablePerspective().getDimensionPerspective());
-				dialog.setSourceRecordPerspective(dataDomain.getDefaultTablePerspective()
-						.getRecordPerspective());
-				if (isDimensionClustering) {
-					DimensionPerspective dimensionPerspective = new DimensionPerspective(
-							dataDomain);
-					dataDomain.getTable().registerDimensionPerspective(
-							dimensionPerspective);
-					dialog.setTargetDimensionPerspective(dimensionPerspective);
-				} else {
-					RecordPerspective recordPerspective = new RecordPerspective(
-							dataDomain);
-					dataDomain.getTable().registerRecordPerspective(recordPerspective);
-					dialog.setTargetRecordPerspective(recordPerspective);
-				}
+				clusterConfiguration.setSourceRecordPerspective(dataDomain
+						.getDefaultTablePerspective().getRecordPerspective());
+
+				clusterConfiguration.setModifyExistingPerspective(false);
+				if (isDimensionClustering)
+					clusterConfiguration
+							.setClusterTarget(EClustererTarget.DIMENSION_CLUSTERING);
+				else
+					clusterConfiguration
+							.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
+
+				StartClusteringDialog dialog = new StartClusteringDialog(new Shell(),
+						dataDomain, clusterConfiguration);
 
 				int status = dialog.open();
 

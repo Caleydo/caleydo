@@ -29,7 +29,7 @@ import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfigurati
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterer;
 import org.caleydo.core.util.clusterer.algorithm.tree.TreeClusterConfiguration;
 import org.caleydo.core.util.clusterer.algorithm.tree.TreeClusterer;
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Cluster manager handels {@link AClusterConfiguration} and calls corresponding
+ * Cluster manager handels {@link ClusterConfiguration} and calls corresponding
  * clusterer.
  * 
  * @author Bernhard Schlegl
@@ -67,19 +67,19 @@ public class ClusterManager {
 	 * @return the results of the clustering which can be used to initialize
 	 *         {@link AVariablePerspective}s.
 	 */
-	public ClusterResult cluster(AClusterConfiguration clusterConfiguration) {
+	public ClusterResult cluster(ClusterConfiguration clusterConfiguration) {
 		Logger.log(new Status(Status.INFO, this.toString(),
 				"Started clustering with clusterConfiguration: " + clusterConfiguration));
 		try {
 			ClusterResult clusterResult = null;
 
-			if (clusterConfiguration instanceof TreeClusterConfiguration) {
+			if (clusterConfiguration.getClusterAlgorithmConfiguration() instanceof TreeClusterConfiguration) {
 				clusterResult = runClustering(new TreeClusterer(), clusterConfiguration);
 			}
-			else if (clusterConfiguration instanceof AffinityClusterConfiguration) {
+			else if (clusterConfiguration.getClusterAlgorithmConfiguration() instanceof AffinityClusterConfiguration) {
 				clusterResult = runClustering(new AffinityClusterer(), clusterConfiguration);
 			}
-			else if (clusterConfiguration instanceof KMeansClusterConfiguration) {
+			else if (clusterConfiguration.getClusterAlgorithmConfiguration() instanceof KMeansClusterConfiguration) {
 				clusterResult = runClustering(new KMeansClusterer(), clusterConfiguration);
 			}
 			else {
@@ -132,7 +132,7 @@ public class ClusterManager {
 	}
 
 	private ClusterResult runClustering(AClusterer clusterer,
-			AClusterConfiguration clusterState) {
+			ClusterConfiguration clusterState) {
 		ClusterResult result = new ClusterResult();
 
 		try {
@@ -157,7 +157,7 @@ public class ClusterManager {
 	}
 
 	private void runContentClustering(AClusterer clusterer,
-			AClusterConfiguration clusterState, ClusterResult result, int progressBarOffset,
+			ClusterConfiguration clusterState, ClusterResult result, int progressBarOffset,
 			int progressBarMulti) {
 
 		clusterer.setClusterState(clusterState);
@@ -173,7 +173,7 @@ public class ClusterManager {
 	}
 
 	private void runDimensionClustering(AClusterer clusterer,
-			AClusterConfiguration clusterConfiguration, ClusterResult result,
+			ClusterConfiguration clusterConfiguration, ClusterResult result,
 			int progressBarOffset, int progressBarMulti) {
 		clusterer.setClusterState(clusterConfiguration);
 

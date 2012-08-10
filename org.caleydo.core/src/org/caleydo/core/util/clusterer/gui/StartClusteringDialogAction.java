@@ -26,23 +26,19 @@ import org.caleydo.core.data.configuration.DataConfiguration;
 import org.caleydo.core.data.configuration.DataConfigurationChooser;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.event.data.StartClusteringEvent;
 import org.caleydo.core.io.gui.IDataOKListener;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityTab;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansTab;
 import org.caleydo.core.util.clusterer.algorithm.tree.TreeTab;
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
-import org.caleydo.core.util.link.LinkHandler;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -51,6 +47,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.PlatformUI;
@@ -79,11 +76,14 @@ public class StartClusteringDialogAction extends Action implements
 	private Combo distanceMeasureCombo;
 	private String[] distanceMeasureOptions = EDistanceMeasure.getNames();
 
-	private ATableBasedDataDomain dataDomain;
-	private AClusterConfiguration clusterConfiguration;
+	/**
+	 * Check button determining whether the selected perspective should be
+	 * replaced (check) or not
+	 */
+	private Button modifyExistingPerspectiveButton;
 
-	private RecordPerspective recordPerspective = null;
-	private DimensionPerspective dimensionPerspective = null;
+	private ATableBasedDataDomain dataDomain;
+	private ClusterConfiguration clusterConfiguration;
 
 	private TabFolder tabFolder;
 
@@ -95,8 +95,9 @@ public class StartClusteringDialogAction extends Action implements
 	 */
 	public StartClusteringDialogAction(StartClusteringDialog parent,
 			final Composite parentComposite, ATableBasedDataDomain dataDomain,
-			DimensionPerspective dimensionPerspective, RecordPerspective recordPerspective) {
+			ClusterConfiguration clusterConfiguration) {
 		super(TEXT);
+		this.clusterConfiguration = clusterConfiguration;
 		setId(ID);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
@@ -120,21 +121,22 @@ public class StartClusteringDialogAction extends Action implements
 							false);
 
 			this.dataDomain = config.getDataDomain();
-			dimensionPerspective = config.getDimensionPerspective();
-			recordPerspective = config.getRecordPerspective();
+			clusterConfiguration.setSourceDimensionPerspective(config
+					.getDimensionPerspective());
+			clusterConfiguration
+					.setSourceRecordPerspective(config.getRecordPerspective());
 
 		} else {
 			this.dataDomain = dataDomain;
 
 		}
 
-		this.dimensionPerspective = dimensionPerspective;
-		this.recordPerspective = recordPerspective;
 		if (this.dataDomain != null) {
 			typeOptions[0] = this.dataDomain.getRecordDenomination(true, false);
 			typeOptions[1] = this.dataDomain.getDimensionDenomination(true, false);
 			// parent.dataOK();
 		}
+
 	}
 
 	@Override
@@ -181,6 +183,19 @@ public class StartClusteringDialogAction extends Action implements
 		distanceMeasureCombo.setEnabled(true);
 		distanceMeasureCombo.select(0);
 
+		Label replaceExplanation = new Label(composite, SWT.WRAP);
+		replaceExplanation
+				.setText("Select whether you want to add a new grouping, or whether you want the selected grouping to be changed.");
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, false, false);
+		gd.widthHint = 80;
+		replaceExplanation.setLayoutData(gd);
+
+		modifyExistingPerspectiveButton = new Button(composite, SWT.CHECK);
+		modifyExistingPerspectiveButton.setLayoutData(new GridData());
+		modifyExistingPerspectiveButton.setText("Add new Grouping");
+		modifyExistingPerspectiveButton.setSelection(clusterConfiguration
+				.isModifyExistingPerspective());
+
 		tabFolder = new TabFolder(composite, SWT.BORDER);
 
 		// check whether the algorithm supports all distance measures
@@ -210,60 +225,15 @@ public class StartClusteringDialogAction extends Action implements
 			}
 		});
 
-		// composite.addHelpListener(new HelpListener() {
-		//
-		// @Override
-		// public void helpRequested(HelpEvent e) {
-		// //
-		// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-		// // .showView("org.caleydo.view.browser");
-		// //
-		// // final String URL_HELP_CLUSTERING =
-		// // "http://www.caleydo.org/help/gene_expression.html#Clustering";
-		// // ChangeURLEvent changeURLEvent = new ChangeURLEvent();
-		// // changeURLEvent.setSender(this);
-		// // changeURLEvent.setUrl(URL_HELP_CLUSTERING);
-		// //
-		// GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
-		// LinkHandler
-		// .openLink("http://www.caleydo.org/help/gene_expression.html#Clustering");
-		// }
-		// });
-
 		new KMeansTab(tabFolder);
 		new AffinityTab(tabFolder);
 		new TreeTab(tabFolder);
 		// new OtherClusterersTab(tabFolder);
 
-		Button helpButton = new Button(composite, SWT.PUSH);
-		helpButton.setText("Help");
-		helpButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				// try {
-				// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				// .showView("org.caleydo.view.browser");
-				//
-				// String stHelp =
-				// "http://www.caleydo.org/help/gene_expression.html#Cobweb";
-				//
-				// ChangeURLEvent changeURLEvent = new ChangeURLEvent();
-				// changeURLEvent.setSender(this);
-				// changeURLEvent.setUrl(stHelp);
-				// GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
-				// } catch (PartInitException e1) {
-				// e1.printStackTrace();
-				// }
-				LinkHandler
-						.openLink("http://www.icg.tugraz.at/project/caleydo/help/manipulating-data#cobweb");
-			}
-		});
-
 		tabFolder.pack();
-		// if (dataDomain != null) {
-		// setDataDependendStuff();
-		// }
-		// composite.pack();
+		composite.pack();
+		composite.layout();
+
 	}
 
 	public void execute(boolean cancelPressed) {
@@ -276,7 +246,8 @@ public class StartClusteringDialogAction extends Action implements
 		TabItem tabItem = tabFolder.getItems()[selectionIndex];
 		AClusterTab clusterTab = (AClusterTab) tabItem.getData();
 
-		clusterConfiguration = clusterTab.getClusterConfiguration();
+		clusterConfiguration.setClusterAlgorithmConfiguration(clusterTab
+				.getClusterConfiguration());
 
 		if (clusterTypeCombo.getText().equals(typeOptions[0]))
 			clusterConfiguration.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
@@ -290,16 +261,17 @@ public class StartClusteringDialogAction extends Action implements
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure
 				.getTypeForName(distanceMeasureCombo.getText()));
 
-		clusterConfiguration.setSourceRecordPerspective(recordPerspective);
-		clusterConfiguration.setSourceDimensionPerspective(dimensionPerspective);
-
-		clusterConfiguration.setOptionalTargetRecordPerspective(parent
-				.getTargetRecordPerspective());
-		clusterConfiguration.setOptionalTargetDimensionPerspective(parent
-				.getTargetDimensionPerspective());
+		// clusterConfiguration.setSourceRecordPerspective(recordPerspective);
+		// clusterConfiguration.setSourceDimensionPerspective(dimensionPerspective);
+		//
+		// clusterConfiguration.setOptionalTargetRecordPerspective(parent
+		// .getTargetRecordPerspective());
+		// clusterConfiguration.setOptionalTargetDimensionPerspective(parent
+		// .getTargetDimensionPerspective());
 
 		ClusteringProgressBar progressBar = new ClusteringProgressBar(
-				clusterConfiguration.getClusterAlgorithmName());
+				clusterConfiguration.getClusterAlgorithmConfiguration()
+						.getClusterAlgorithmName());
 		progressBar.run();
 
 		if (clusterConfiguration == null)
@@ -318,15 +290,17 @@ public class StartClusteringDialogAction extends Action implements
 	public void dispose() {
 	}
 
-	public AClusterConfiguration getClusterState() {
+	public ClusterConfiguration getClusterState() {
 		return clusterConfiguration;
 	}
 
 	@Override
 	public void dataOK() {
 		dataDomain = dataChooser.getDataDomain();
-		recordPerspective = dataChooser.getRecordPerspective();
-		dimensionPerspective = dataChooser.getDimensionPerspective();
+		clusterConfiguration.setSourceRecordPerspective(dataChooser
+				.getRecordPerspective());
+		clusterConfiguration.setSourceDimensionPerspective(dataChooser
+				.getDimensionPerspective());
 
 		setDataDependendStuff();
 	}
@@ -342,8 +316,9 @@ public class StartClusteringDialogAction extends Action implements
 
 	/** Returns true if the data is fully initalized, else false */
 	public boolean isDataOK() {
-		if (dataDomain != null && recordPerspective != null
-				&& dimensionPerspective != null)
+		if (dataDomain != null
+				&& clusterConfiguration.getSourceRecordPerspective() != null
+				&& clusterConfiguration.getSourceDimensionPerspective() != null)
 			return true;
 
 		return false;

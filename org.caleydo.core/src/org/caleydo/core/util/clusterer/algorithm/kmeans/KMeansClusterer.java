@@ -34,7 +34,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.IClusterer;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 
@@ -61,7 +61,7 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 	}
 
 	private PerspectiveInitializationData cluster(DataTable table,
-			AClusterConfiguration clusterState) {
+			ClusterConfiguration clusterState) {
 
 		// Arraylist holding clustered indicess
 		ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -349,13 +349,14 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 
 	@Override
 	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain,
-			AClusterConfiguration clusterConfiguration, int iProgressBarOffsetValue,
+			ClusterConfiguration clusterConfiguration, int iProgressBarOffsetValue,
 			int iProgressBarMultiplier) {
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
-		KMeansClusterConfiguration kMeansClusterConfiguration = (KMeansClusterConfiguration) clusterConfiguration;
+		KMeansClusterConfiguration kMeansClusterConfiguration = (KMeansClusterConfiguration) clusterConfiguration
+				.getClusterAlgorithmConfiguration();
 
 		numberOfCluster = kMeansClusterConfiguration.getNumberOfClusters();
 		if (numberOfCluster < 1) {
@@ -365,6 +366,5 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 
 		return cluster(dataDomain.getTable(), clusterConfiguration);
 	}
-	
 
 }

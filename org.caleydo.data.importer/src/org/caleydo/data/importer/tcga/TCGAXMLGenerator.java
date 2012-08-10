@@ -36,6 +36,7 @@ import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorManager;
@@ -424,9 +425,11 @@ public class TCGAXMLGenerator
 		}
 
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
-		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
+		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		clusterConfiguration.setNumberOfClusters(5);
+		KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
+		kMeansAlgo.setNumberOfClusters(5);
+		clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		matrixData.setDataProcessingDescription(dataProcessingDescription);
 

@@ -27,6 +27,7 @@ import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 
@@ -159,9 +160,11 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		mrnaData.addColumnGroupingSpecification(firehoseClustering);
 
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
-		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
+		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		clusterConfiguration.setNumberOfClusters(5);
+		KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
+		kMeansAlgo.setNumberOfClusters(5);
+		clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		mrnaData.setDataProcessingDescription(dataProcessingDescription);
 
@@ -202,9 +205,11 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		mirnaData.addColumnGroupingSpecification(firehoseClustering);
 		
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
-		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
+		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		clusterConfiguration.setNumberOfClusters(5);
+		KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
+		kMeansAlgo.setNumberOfClusters(5);
+		clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		mirnaData.setDataProcessingDescription(dataProcessingDescription);
 
@@ -239,9 +244,11 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		methylationData.addColumnGroupingSpecification(firehoseClustering);
 		
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
-		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
+		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		clusterConfiguration.setNumberOfClusters(5);
+		KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
+		kMeansAlgo.setNumberOfClusters(5);
+		clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		methylationData.setDataProcessingDescription(dataProcessingDescription);
 

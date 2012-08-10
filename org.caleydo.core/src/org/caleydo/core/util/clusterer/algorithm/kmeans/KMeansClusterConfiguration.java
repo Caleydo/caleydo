@@ -19,13 +19,14 @@
  *******************************************************************************/
 package org.caleydo.core.util.clusterer.algorithm.kmeans;
 
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.AClusterAlgorithmConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 
 /**
  * @author Alexander Lex
  * 
  */
-public class KMeansClusterConfiguration extends AClusterConfiguration {
+public class KMeansClusterConfiguration  extends AClusterAlgorithmConfiguration {
 
 	private int numberOfClusters = -1;
 

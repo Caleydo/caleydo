@@ -33,7 +33,7 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IDTypeInitializer;
 import org.caleydo.core.io.parser.ascii.GroupingParser;
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
@@ -249,10 +249,10 @@ public class DataLoader {
 		if (dataProcessingDescription == null)
 			return;
 
-		ArrayList<AClusterConfiguration> rowClusterConfigurations = dataProcessingDescription
+		ArrayList<ClusterConfiguration> rowClusterConfigurations = dataProcessingDescription
 				.getRowClusterConfigurations();
 		if (rowClusterConfigurations != null) {
-			for (AClusterConfiguration clusterConfiguration : rowClusterConfigurations) {
+			for (ClusterConfiguration clusterConfiguration : rowClusterConfigurations) {
 				if (dataSetDescription.isTransposeMatrix()) {
 					setUpDimensionClustering(clusterConfiguration, dataDomain);
 				} else {
@@ -268,10 +268,10 @@ public class DataLoader {
 
 		}
 
-		ArrayList<AClusterConfiguration> columnClusterConfigurations = dataProcessingDescription
+		ArrayList<ClusterConfiguration> columnClusterConfigurations = dataProcessingDescription
 				.getColumnClusterConfigurations();
 		if (columnClusterConfigurations != null) {
-			for (AClusterConfiguration clusterConfiguration : columnClusterConfigurations) {
+			for (ClusterConfiguration clusterConfiguration : columnClusterConfigurations) {
 				if (!dataSetDescription.isTransposeMatrix()) {
 					setUpDimensionClustering(clusterConfiguration, dataDomain);
 				} else {
@@ -289,7 +289,7 @@ public class DataLoader {
 
 	}
 
-	private static void setUpRecordClustering(AClusterConfiguration clusterConfiguration,
+	private static void setUpRecordClustering(ClusterConfiguration clusterConfiguration,
 			ATableBasedDataDomain dataDomain) {
 		clusterConfiguration.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
 		RecordPerspective targetRecordPerspective = new RecordPerspective(dataDomain);
@@ -299,7 +299,7 @@ public class DataLoader {
 	}
 
 	private static void setUpDimensionClustering(
-			AClusterConfiguration clusterConfiguration, ATableBasedDataDomain dataDomain) {
+			ClusterConfiguration clusterConfiguration, ATableBasedDataDomain dataDomain) {
 		clusterConfiguration.setClusterTarget(EClustererTarget.DIMENSION_CLUSTERING);
 		DimensionPerspective targetDimensionPerspective = new DimensionPerspective(
 				dataDomain);

@@ -25,7 +25,7 @@ import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.gui.util.AHelpButtonDialog;
 import org.caleydo.core.io.gui.IDataOKListener;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.link.LinkHandler;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TrayDialog;
@@ -43,77 +43,27 @@ public class StartClusteringDialog extends AHelpButtonDialog implements IDataOKL
 	private StartClusteringDialogAction startClusteringAction;
 
 	private ATableBasedDataDomain dataDomain;
-
-	/**
-	 * source for the clustering, used for
-	 * {@link AClusterConfiguration#setSourceRecordPerspective(RecordPerspective)}
-	 */
-	private RecordPerspective sourceRecordPerspective;
-	/**
-	 * source for the clustering, used for
-	 * {@link AClusterConfiguration#setSourceDimensionPerspective(DimensionPerspective)}
-	 */
-	private DimensionPerspective sourceDimensionPerspective;
-	/**
-	 * Optional target perspective, if null, the source is overridden. Used for
-	 * {@link AClusterConfiguration#setOptionalTargetRecordPerspective(RecordPerspective)}
-	 */
-	private RecordPerspective targetRecordPerspective;
-	/**
-	 * Optional target perspective, if null, the source is overridden. Used for
-	 * {@link AClusterConfiguration#setOptionalTargetDimensionPerspective(DimensionPerspective)}
-	 */
-	private DimensionPerspective targetDimensionPerspective;
+	private ClusterConfiguration clusterConfiguration;
 
 	public StartClusteringDialog(Shell parentShell) {
 		super(parentShell);
 
 	}
 
-	/**
-	 * Constructor.
-	 */
 	public StartClusteringDialog(Shell parentShell, ATableBasedDataDomain dataDomain) {
 		super(parentShell);
-
 		this.dataDomain = dataDomain;
-
+		clusterConfiguration = new ClusterConfiguration();
 	}
 
 	/**
-	 * @param sourceRcordPerspective
-	 *            setter, see {@link #sourceRecordPerspective}
+	 * Constructor with {@link ClusterConfiguration} for pre-setting values
 	 */
-	public void setSourceRecordPerspective(RecordPerspective sourceRecordPerspective) {
-		this.sourceRecordPerspective = sourceRecordPerspective;
-
-	}
-
-	/**
-	 * @param sourceDimensionPerspective
-	 *            setter, see {@link #sourceDimensionPerspective}
-	 */
-	public void setSourceDimensionPerspective(
-			DimensionPerspective sourceDimensionPerspective) {
-		this.sourceDimensionPerspective = sourceDimensionPerspective;
-
-	}
-
-	/**
-	 * @param targetRecordPerspective
-	 *            setter, see {@link #targetRecordPerspective}
-	 */
-	public void setTargetRecordPerspective(RecordPerspective targetRecordPerspective) {
-		this.targetRecordPerspective = targetRecordPerspective;
-	}
-
-	/**
-	 * @param targetDimensionPerspective
-	 *            setter, see {@link #targetDimensionPerspective}
-	 */
-	public void setTargetDimensionPerspective(
-			DimensionPerspective targetDimensionPerspective) {
-		this.targetDimensionPerspective = targetDimensionPerspective;
+	public StartClusteringDialog(Shell parentShell, ATableBasedDataDomain dataDomain,
+			ClusterConfiguration clusterConfiguration) {
+		super(parentShell);
+		this.dataDomain = dataDomain;
+		this.clusterConfiguration = clusterConfiguration;
 	}
 
 	@Override
@@ -132,7 +82,7 @@ public class StartClusteringDialog extends AHelpButtonDialog implements IDataOKL
 	protected Control createDialogArea(Composite parent) {
 
 		startClusteringAction = new StartClusteringDialogAction(this, parent, dataDomain,
-				sourceDimensionPerspective, sourceRecordPerspective);
+				clusterConfiguration);
 		startClusteringAction.run();
 
 		return parent;
@@ -167,7 +117,7 @@ public class StartClusteringDialog extends AHelpButtonDialog implements IDataOKL
 	 * 
 	 * @return
 	 */
-	public AClusterConfiguration getClusterState() {
+	public ClusterConfiguration getClusterConfiguration() {
 		return startClusteringAction.getClusterState();
 
 	}
@@ -176,21 +126,6 @@ public class StartClusteringDialog extends AHelpButtonDialog implements IDataOKL
 	public void dataOK() {
 		getButton(OK).setEnabled(true);
 		getButton(IDialogConstants.OK_ID).setEnabled(true);
-	}
-
-	/**
-	 * @return the targetRecordPerspective, see {@link #targetRecordPerspective}
-	 */
-	RecordPerspective getTargetRecordPerspective() {
-		return targetRecordPerspective;
-	}
-
-	/**
-	 * @return the targetDimensionPerspective, see
-	 *         {@link #targetDimensionPerspective}
-	 */
-	DimensionPerspective getTargetDimensionPerspective() {
-		return targetDimensionPerspective;
 	}
 
 	/*
