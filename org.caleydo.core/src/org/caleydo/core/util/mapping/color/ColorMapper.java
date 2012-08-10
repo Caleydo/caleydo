@@ -182,7 +182,7 @@ public class ColorMapper {
 	 * @param value
 	 * @return float array with length 3, RGB
 	 * @throws IllegalArgumentException
-	 *             if fvalue > 1 || fvalue < 0
+	 *             if value > 1 || value < 0
 	 */
 	public float[] getColor(float value) {
 		if (Float.isNaN(value))

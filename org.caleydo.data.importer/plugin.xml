@@ -44,4 +44,16 @@
          </property>
       </product>
    </extension>
+   <extension
+         id="tcgaInterAnalysisRunProjectBuilderApplication"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            cardinality="singleton-global"
+            thread="main"
+            visible="true">
+         <run
+               class="org.caleydo.data.importer.tcga.TCGAInterAnalysisRunProjectBuilderApplication">
+         </run>
+      </application>
+   </extension>
 </plugin>

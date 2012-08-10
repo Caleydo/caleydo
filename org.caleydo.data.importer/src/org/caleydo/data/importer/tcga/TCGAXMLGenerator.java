@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
-
 import org.apache.tools.tar.TarEntry;
 import org.apache.tools.tar.TarInputStream;
 import org.caleydo.core.io.ColumnDescription;
@@ -36,7 +35,6 @@ import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ParsingRule;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.color.Color;
@@ -52,13 +50,12 @@ import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class TCGADataXMLGenerator
+public class TCGAXMLGenerator
 	extends DataSetDescriptionSerializer {
 
 	public static String FIREHOSE_URL_PREFIX = "http://gdac.broadinstitute.org/runs/";
 	private static String FIREHOSE_TAR_NAME_PREFIX = "gdac.broadinstitute.org_";
 
-	// protected String tumorName;
 	private String tumorAbbreviation;
 
 	private String analysisRunIdentifier;
@@ -67,7 +64,6 @@ public class TCGADataXMLGenerator
 	private String dataRunIdentifier;
 	private String dataRunIdentifierWithoutUnderscore;
 
-	private String outputDirectoryPath;
 	private String tmpOutputDirectoryPath;
 	private String remoteAnalysisRunArchiveDirectory;
 	private String remoteDataRunArchiveDirectory;
@@ -78,18 +74,16 @@ public class TCGADataXMLGenerator
 
 	public static void main(String[] args) {
 
-		TCGADataXMLGenerator generator = new TCGADataXMLGenerator(args);
+		TCGAXMLGenerator generator = new TCGAXMLGenerator(args);
 		generator.run();
 	}
 
-	public TCGADataXMLGenerator(String[] arguments) {
+	public TCGAXMLGenerator(String[] arguments) {
 		super(arguments);
 
 		this.tumorAbbreviation = "STAD";
 		this.analysisRunIdentifier = "2012_05_25";
 		this.dataRunIdentifier = "2012_07_07";
-		this.outputDirectoryPath = GeneralManager.CALEYDO_HOME_PATH + "TCGA/";
-		this.tmpOutputDirectoryPath = outputDirectoryPath + "tmp/";
 		this.outputXMLFilePath = this.tmpOutputDirectoryPath
 				+ System.getProperty("file.separator") + tumorAbbreviation + "_"
 				+ this.analysisRunIdentifierWithoutUnderscore + "_caleydo.xml";
@@ -97,7 +91,7 @@ public class TCGADataXMLGenerator
 		init();
 	}
 
-	public TCGADataXMLGenerator(String tumorAbbreviation, String runIdentifierUnderscore,
+	public TCGAXMLGenerator(String tumorAbbreviation, String runIdentifierUnderscore,
 			String dataRunIdentifier, String outputXMLFilePath, String outputFolderPath,
 			String tmpOutputFolderPath) {
 
@@ -107,7 +101,6 @@ public class TCGADataXMLGenerator
 		this.analysisRunIdentifier = runIdentifierUnderscore;
 		this.dataRunIdentifier = dataRunIdentifier;
 		this.outputXMLFilePath = outputXMLFilePath;
-		this.outputDirectoryPath = outputFolderPath;
 		this.tmpOutputDirectoryPath = tmpOutputFolderPath;
 
 		init();
@@ -410,7 +403,7 @@ public class TCGADataXMLGenerator
 				cnmfGroupingFile);
 		firehoseCnmfClustering.setContainsColumnIDs(false);
 		firehoseCnmfClustering.setRowIDSpecification(columnIDSpecification);
-		firehoseCnmfClustering.setGroupingName("NMF Cluster");
+		firehoseCnmfClustering.setGroupingName("CNMF Cluster");
 		matrixData.addColumnGroupingSpecification(firehoseCnmfClustering);
 
 		try {
@@ -529,11 +522,6 @@ public class TCGADataXMLGenerator
 		parsingRule.setToColumn(4);
 		parsingRule.setColumnDescripton(new ColumnDescription());
 		clinicalData.addParsingRule(parsingRule);
-		// parsingRule = new ParsingRule();
-		// parsingRule.setFromColumn(13);
-		// parsingRule.setToColumn(15);
-		// parsingRule.setColumnDescripton(new ColumnDescription());
-		// clinicalData.addParsingRule(parsingRule);
 
 		IDSpecification clinicalIdSpecification = new IDSpecification();
 		clinicalIdSpecification.setIdType("clinical");

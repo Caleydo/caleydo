@@ -29,7 +29,6 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.manager.GeneralManager;
@@ -44,21 +43,20 @@ import com.martiansoftware.jsap.JSAPResult;
 
 /**
  * This class handles the whole workflow of creating a Caleydo project from TCGA
- * data.
+ * data for inter analysis run comparisons.
  * 
  * @author Marc Streit
  * 
  */
-public class TCGAProjectBuilderApplication
+public class TCGAInterAnalysisRunProjectBuilderApplication
 	implements IApplication {
 
-	public static String DEFAULT_TCGA_SERVER_URL = "http://compbio.med.harvard.edu/tcga/stratomex/data/";
+	public static String DEFAULT_TCGA_SERVER_URL = "http://compbio.med.harvard.edu/tcga/stratomex/data_qc/";
 	public static String CALEYDO_WEBSTART_URL = "http://data.icg.tugraz.at/caleydo/download/webstart_"
 			+ GeneralManager.VERSION + "/";
 
 	private String[] tumorTypes = null;
 	private String[] analysisRuns = null;
-	private String[] dataRuns = null;
 	private String outputPath = "";
 	private String tcgaServerURL = "";
 
@@ -99,14 +97,6 @@ public class TCGAProjectBuilderApplication
 			analysisRunIdentifierOpt.setHelp("Analysis run identifiers");
 			jsap.registerParameter(analysisRunIdentifierOpt);
 
-			FlaggedOption dataRunIdentifierOpt = new FlaggedOption("data_runs")
-					.setStringParser(JSAP.STRING_PARSER).setDefault(JSAP.NO_DEFAULT)
-					.setRequired(true).setShortFlag('d').setLongFlag(JSAP.NO_LONGFLAG);
-			dataRunIdentifierOpt.setList(true);
-			dataRunIdentifierOpt.setListSeparator(',');
-			dataRunIdentifierOpt.setHelp("Data run identifiers");
-			jsap.registerParameter(dataRunIdentifierOpt);
-
 			String defaultOutputFolder = GeneralManager.CALEYDO_HOME_PATH + "TCGA/";
 
 			FlaggedOption outputFolderOpt = new FlaggedOption("output-folder")
@@ -130,18 +120,7 @@ public class TCGAProjectBuilderApplication
 			}
 
 			tumorTypes = config.getStringArray("tumor");
-
 			analysisRuns = config.getStringArray("analysis_runs");
-			dataRuns = config.getStringArray("data_runs");
-
-			if (analysisRuns.length != dataRuns.length) {
-				System.err
-						.println("Error during parsing of program arguments. You need to provide a corresponding data run for each analysis run. Closing program.");
-				System.err.println("Usage: Caleydo");
-				System.err.println(jsap.getUsage());
-				System.err.println();
-				System.exit(1);
-			}
 			outputPath = config.getString("output-folder");
 			tcgaServerURL = config.getString("server");
 		}
@@ -155,54 +134,52 @@ public class TCGAProjectBuilderApplication
 		String jnlpOutputFolder = outputPath + "jnlp/";
 		FileOperations.createDirectory(jnlpOutputFolder);
 
-		for (int tumorIndex = 0; tumorIndex < tumorTypes.length; tumorIndex++) {
+		for (EDataSetType dataSetType : EDataSetType.values()) {
 
-			String tumorType = tumorTypes[tumorIndex];
+			String dataTypeSpecificOutputPath = outputPath + dataSetType + "/";
+			FileOperations.createDirectory(dataTypeSpecificOutputPath);
 
-			for (int analysisRunIndex = 0; analysisRunIndex < analysisRuns.length; analysisRunIndex++) {
+			for (int tumorIndex = 0; tumorIndex < tumorTypes.length; tumorIndex++) {
 
-				String analysisRun = analysisRuns[analysisRunIndex];
-				String dataRun = dataRuns[analysisRunIndex];
+				String tumorType = tumorTypes[tumorIndex];
 
-				String runSpecificOutputPath = outputPath + analysisRun + "/";
-				FileOperations.createDirectory(runSpecificOutputPath);
-
-				String xmlFilePath = tmpDataOutputPath + analysisRun + "_" + tumorType
+				String xmlFilePath = tmpDataOutputPath + dataSetType + "_" + tumorType
 						+ ".xml";
 
-				String projectOutputPath = runSpecificOutputPath + analysisRun + "_"
+				String projectOutputPath = dataTypeSpecificOutputPath + dataSetType + "_"
 						+ tumorType + ".cal";
 
-				String jnlpFileName = analysisRun + "_" + tumorType + ".jnlp";
+				String jnlpFileName = dataSetType + "_" + tumorType + ".jnlp";
 				String jnlpOutputPath = jnlpOutputFolder + jnlpFileName;
 
-				String projectRemoteOutputURL = tcgaServerURL + analysisRun + "/"
-						+ analysisRun + "_" + tumorType + ".cal";
+				String projectRemoteOutputURL = tcgaServerURL + dataSetType + "/"
+						+ dataSetType + "_" + tumorType + ".cal";
 
-				System.out.println("Downloading data for tumor type " + tumorType
-						+ " for analysis run " + analysisRun);
+				System.out.println("Downloading " + dataSetType + " data for tumor type "
+						+ tumorType);
 
-				TCGAXMLGenerator generator = new TCGAXMLGenerator(tumorType, analysisRun,
-						dataRun, xmlFilePath, runSpecificOutputPath, tmpDataOutputPath);
+				TCGAInterAnalysisRunXMLGenerator generator = new TCGAInterAnalysisRunXMLGenerator(
+						tumorType, analysisRuns, dataSetType, xmlFilePath,
+						dataTypeSpecificOutputPath, tmpDataOutputPath);
 
 				generator.run();
 
-				System.out.println("Building project file for tumor type " + tumorType
-						+ " for analysis run " + analysisRun);
+				System.out.println("Building project file for " + dataSetType
+						+ " data for tumor type " + tumorType);
 
 				XMLToProjectBuilder xmlToProjectBuilder = new XMLToProjectBuilder();
 				xmlToProjectBuilder.buildProject(xmlFilePath, projectOutputPath);
 
-				generateTumorReportLine(tumorType, analysisRun, jnlpFileName,
-						projectRemoteOutputURL);
-
+				generateTumorReportLine(tumorType, jnlpFileName, projectRemoteOutputURL);
+				
 				if (tumorIndex < tumorTypes.length - 1)
 					reportJSONGenomicData += ",";
-
+				
 				cleanUp(xmlFilePath, jnlpOutputPath, jnlpFileName, projectRemoteOutputURL);
-
-				generateJSONReport(analysisRun, dataRun, runSpecificOutputPath);
 			}
+			
+			generateJSONReport(dataSetType, dataTypeSpecificOutputPath);
+			reportJSONGenomicData = "";
 		}
 	}
 
@@ -254,16 +231,15 @@ public class TCGAProjectBuilderApplication
 		}
 	}
 
-	private void generateJSONReport(String analysisRun, String dataRun,
-			String runSpecificOutputPath) {
+	private void generateJSONReport(EDataSetType dataSetType,
+			String dataSetTypeSpecificOutputPath) {
 
-		String reportJSONOutputPath = runSpecificOutputPath + analysisRun + ".json";
+		String reportJSONOutputPath = dataSetTypeSpecificOutputPath + dataSetType + ".json";
 
 		reportJSONGenomicData = reportJSONGenomicData.replace("\"null\"", "null");
 
 		StringBuilder htmlBuilder = new StringBuilder();
-		htmlBuilder.append("{\"analysisRun\":\"" + analysisRun + "\",\"dataRun\":\"" + dataRun
-				+ "\",");
+		htmlBuilder.append("{\"analysisRun\":\"" + dataSetType + "\",");
 		htmlBuilder.append("\"details\":[" + reportJSONGenomicData + "],\"caleydoVersion\":\""
 				+ GeneralManager.VERSION + "\"");
 		htmlBuilder.append("}\n");
@@ -279,87 +255,33 @@ public class TCGAProjectBuilderApplication
 		}
 	}
 
-	private void generateTumorReportLine(String tumorAbbreviation, String analysisRun,
-			String jnlpFileName, String projectOutputPath) {
-
-		String addInfoMRNA = "null";
-		String addInfoMRNASeq = "null";
-		String addInfoMicroRNA = "null";
-		String addInfoMicroRNASeq = "null";
-		String addInfoClinical = "null";
-		String addInfoMutations = "null";
-		String addInfoCopyNumber = "null";
-		String addInfoMethylation = "null";
-		String addInfoRPPA = "null";
+	private void generateTumorReportLine(String tumorAbbreviation, String jnlpFileName,
+			String projectOutputPath) {
 
 		String jnlpURL = CALEYDO_WEBSTART_URL + jnlpFileName;
 
-		String firehoseReportURL = TCGAXMLGenerator.FIREHOSE_URL_PREFIX + "analyses__"
-				+ analysisRun + "/reports/cancer/" + tumorAbbreviation + "/";
-
 		String tumorName = ETumorType.valueOf(tumorAbbreviation).getTumorName();
+
+		reportJSONGenomicData += "{\"tumorAbbreviation\":\"" + tumorAbbreviation
+				+ "\",\"tumorName\":\"" + tumorName + "\",\"genomic\":{";
 
 		for (ATableBasedDataDomain dataDomain : DataDomainManager.get().getDataDomainsByType(
 				ATableBasedDataDomain.class)) {
 
-			String dataSetName = dataDomain.getDataSetDescription().getDataSetName();
+			String analysisRunName = dataDomain.getDataSetDescription().getDataSetName();
 
-			if (dataSetName.equals("mRNA")) {
-				addInfoMRNA = getAdditionalInfo(dataDomain);
-			}
-			else if (dataSetName.equals("mRNA-seq")) {
-				addInfoMRNASeq = getAdditionalInfo(dataDomain);
-			}
-			else if (dataSetName.equals("microRNA")) {
-				addInfoMicroRNA = getAdditionalInfo(dataDomain);
-			}
-			else if (dataSetName.equals("microRNA-seq")) {
-				addInfoMicroRNASeq = getAdditionalInfo(dataDomain);
-			}
-			else if (dataSetName.equals("Clinical")) {
-				addInfoClinical = getClinicalInfo(dataDomain);
-			}
-			else if (dataSetName.equals("Mutations")) {
-				addInfoMutations = getAdditionalInfo(dataDomain);
-			}
-			else if (dataSetName.equals("Copy Number")) {
-				addInfoCopyNumber = getAdditionalInfo(dataDomain);
-			}
-			else if (dataSetName.equals("Methylation")) {
-				addInfoMethylation = getAdditionalInfo(dataDomain);
-			}
-			else if (dataSetName.equals("RPPA")) {
-				addInfoRPPA = getAdditionalInfo(dataDomain);
-			}
-		}
-
-		reportJSONGenomicData += "{\"tumorAbbreviation\":\"" + tumorAbbreviation
-				+ "\",\"tumorName\":\"" + tumorName + "\",\"genomic\":{\"mRNA\":"
-				+ addInfoMRNA + ",\"mRNA-seq\":" + addInfoMRNASeq + ",\"microRNA\":"
-				+ addInfoMicroRNA + ",\"microRNA-seq\":" + addInfoMicroRNASeq
-				+ ",\"Mutations\":" + addInfoMutations + ",\"Copy Number\":"
-				+ addInfoCopyNumber + ",\"Methylation\":" + addInfoMethylation + ",\"RPPA\":"
-				+ addInfoRPPA + "},\"nonGenomic\":{\"Clinical\":" + addInfoClinical
-				+ "},\"Caleydo JNLP\":\"" + jnlpURL + "\",\"Caleydo Project\":\""
-				+ projectOutputPath + "\",\"Firehose Report\":\"" + firehoseReportURL
-				+ "\"}\n";
-	}
-
-	private String getClinicalInfo(ATableBasedDataDomain dataDomain) {
-		String clinicalParameters = "";
-		DimensionVirtualArray dimensionVA = dataDomain.getTable()
-				.getDefaultDimensionPerspective().getVirtualArray();
-		for (int dimensionID : dimensionVA) {
-			clinicalParameters += "\"" + dataDomain.getDimensionLabel(dimensionID) + "\",";
+			reportJSONGenomicData += "\"" + analysisRunName + "\":"
+					+ getAdditionalInfo(dataDomain) + ",";
 		}
 
 		// remove last comma
-		if (clinicalParameters.length() > 1)
-			clinicalParameters = clinicalParameters.substring(0,
-					clinicalParameters.length() - 1);
+		if (DataDomainManager.get().getDataDomainsByType(
+				ATableBasedDataDomain.class).size() > 0)
+			reportJSONGenomicData = reportJSONGenomicData.substring(0,
+					reportJSONGenomicData.length() - 1);
 
-		return "{\"count\":\"" + dataDomain.getTable().getMetaData().depth()
-				+ "\",\"parameters\":[" + clinicalParameters + "]}";
+		reportJSONGenomicData += "},\"Caleydo JNLP\":\"" + jnlpURL + "\",\"Caleydo Project\":\""
+				+ projectOutputPath + "\"}\n";
 	}
 
 	private String getAdditionalInfo(ATableBasedDataDomain dataDomain) {
