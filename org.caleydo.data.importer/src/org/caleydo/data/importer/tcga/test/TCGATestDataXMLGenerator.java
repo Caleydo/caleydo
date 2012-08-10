@@ -126,6 +126,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 				ColumnDescription.CONTINUOUS));
 		mrnaData.addParsingRule(parsingRule);
 		mrnaData.setTransposeMatrix(true);
+		mrnaData.setDataCenteredAtZero(true);
 
 		IDSpecification geneIDSpecification = new IDSpecification();
 		geneIDSpecification.setIDTypeGene(true);

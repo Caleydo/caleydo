@@ -74,10 +74,9 @@ public class DataTableUtils {
 			}
 			buffer = new byte[(int) file.length()];
 			is.read(buffer, 0, buffer.length);
-		}
-		catch (IOException ex) {
-			throw new RuntimeException("Could not read from specified set-file '" + dataPath
-					+ "'", ex);
+		} catch (IOException ex) {
+			throw new RuntimeException("Could not read from specified set-file '"
+					+ dataPath + "'", ex);
 		}
 		return buffer;
 	}
@@ -87,8 +86,10 @@ public class DataTableUtils {
 	 * The {@link LoadDataParameters} of the useCase are set according to the
 	 * created set-file
 	 * 
-	 * @param parameters set-load parameters to store the filename;
-	 * @param data set-data to save
+	 * @param parameters
+	 *            set-load parameters to store the filename;
+	 * @param data
+	 *            set-data to save
 	 */
 	public static void saveTableFile(DataSetDescription parameters, byte[] data) {
 		File homeDir = new File(GeneralManager.CALEYDO_HOME_PATH);
@@ -96,8 +97,7 @@ public class DataTableUtils {
 		try {
 			setFile = File.createTempFile(DATA_FILE_PREFIX, "csv", homeDir);
 			parameters.setDataSourcePath(setFile.getCanonicalPath());
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new RuntimeException(
 					"Could not create temporary file to store the set file", ex);
 		}
@@ -107,28 +107,26 @@ public class DataTableUtils {
 	/**
 	 * Saves the given data in the given file.
 	 * 
-	 * @param data data to save.
-	 * @param target file to store the data.
+	 * @param data
+	 *            data to save.
+	 * @param target
+	 *            file to store the data.
 	 */
 	public static void saveFile(byte[] data, File setFile) {
 		FileOutputStream os = null;
 		try {
 			os = new FileOutputStream(setFile);
 			os.write(data);
-		}
-		catch (FileNotFoundException ex) {
+		} catch (FileNotFoundException ex) {
 			throw new RuntimeException(
 					"Could not create temporary file to store the set file", ex);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new RuntimeException("Could not write to temportary set file", ex);
-		}
-		finally {
+		} finally {
 			if (os != null) {
 				try {
 					os.close();
-				}
-				catch (IOException ex) {
+				} catch (IOException ex) {
 					// nothing to do here, assuming output stream is already
 					// closed
 				}
@@ -146,21 +144,22 @@ public class DataTableUtils {
 	 * @return
 	 */
 	public static void loadData(ATableBasedDataDomain dataDomain,
-			DataSetDescription dataSetDescription, boolean createDefaultDimensionPerspectives,
+			DataSetDescription dataSetDescription,
+			boolean createDefaultDimensionPerspectives,
 			boolean createDefaultRecordPerspective) {
 
 		// --------- load dynamic mapping ---------------
 
-//		IDType rowTargetIDType;
-		
+		// IDType rowTargetIDType;
 
-//		IDMappingCreator idMappingCreator = new IDMappingCreator();
-//		idMappingCreator.setIdSpecification(dataSetDescription.getRowIDSpecification());
-//		idMappingCreator.createMapping(dataSetDescription.getDataSourcePath(),
-//				dataSetDescription.getNumberOfHeaderLines(), -1,
-//				IDType.getIDType(dataSetDescription.getRowIDSpecification().getIdType()),
-//				rowTargetIDType, "\t", rowTargetIDType.getIDCategory(), false, true, false,
-//				null, null);
+		// IDMappingCreator idMappingCreator = new IDMappingCreator();
+		// idMappingCreator.setIdSpecification(dataSetDescription.getRowIDSpecification());
+		// idMappingCreator.createMapping(dataSetDescription.getDataSourcePath(),
+		// dataSetDescription.getNumberOfHeaderLines(), -1,
+		// IDType.getIDType(dataSetDescription.getRowIDSpecification().getIdType()),
+		// rowTargetIDType, "\t", rowTargetIDType.getIDCategory(), false, true,
+		// false,
+		// null, null);
 
 		// --------- data loading ---------------
 
@@ -177,6 +176,9 @@ public class DataTableUtils {
 		// TODO re-enable this
 		// loadTrees(loadDataParameters, set);
 
+		table.getMetaData().setDataCenteredAtZero(
+				dataSetDescription.isDataCenteredAtZero());
+
 		if (dataSetDescription.getMin() != null) {
 			table.getMetaData().setMin(dataSetDescription.getMin());
 		}
@@ -189,16 +191,13 @@ public class DataTableUtils {
 		if (dataSetDescription.getMathFilterMode().equalsIgnoreCase("None")) {
 			table.setExternalDataRepresentation(EDataTransformation.NONE,
 					isSetHomogeneous);
-		}
-		else if (dataSetDescription.getMathFilterMode().equalsIgnoreCase("Log10")) {
+		} else if (dataSetDescription.getMathFilterMode().equalsIgnoreCase("Log10")) {
 			table.setExternalDataRepresentation(EDataTransformation.LOG10,
 					isSetHomogeneous);
-		}
-		else if (dataSetDescription.getMathFilterMode().equalsIgnoreCase("Log2")) {
+		} else if (dataSetDescription.getMathFilterMode().equalsIgnoreCase("Log2")) {
 			table.setExternalDataRepresentation(EDataTransformation.LOG2,
 					isSetHomogeneous);
-		}
-		else
+		} else
 			throw new IllegalStateException("Unknown data representation type");
 	}
 
@@ -206,14 +205,15 @@ public class DataTableUtils {
 	 * Switch the representation of the data. When this is called the data in
 	 * normalized is replaced with data calculated from the mode specified.
 	 * 
-	 * @param externalDataRep Determines how the data is visualized. For options
-	 *            see {@link EDataTransformation}
-	 * @param bIsSetHomogeneous Determines whether a set is homogeneous or not.
-	 *            Homogeneous means that the sat has a global maximum and
-	 *            minimum, meaning that all dimensions in the set contain equal
-	 *            data. If false, each dimension is treated separately, has it's
-	 *            own min and max etc. Sets that contain nominal data MUST be
-	 *            inhomogeneous.
+	 * @param externalDataRep
+	 *            Determines how the data is visualized. For options see
+	 *            {@link EDataTransformation}
+	 * @param bIsSetHomogeneous
+	 *            Determines whether a set is homogeneous or not. Homogeneous
+	 *            means that the sat has a global maximum and minimum, meaning
+	 *            that all dimensions in the set contain equal data. If false,
+	 *            each dimension is treated separately, has it's own min and max
+	 *            etc. Sets that contain nominal data MUST be inhomogeneous.
 	 */
 	public static void setExternalDataRepresentation(DataTable table,
 			EDataTransformation externalDataRep, boolean isSetHomogeneous) {
@@ -225,8 +225,10 @@ public class DataTableUtils {
 	 * file
 	 * 
 	 * @param set
-	 * @param vaType specify for which va type this is valid
-	 * @param groupInfo the array list extracted from the file
+	 * @param vaType
+	 *            specify for which va type this is valid
+	 * @param groupInfo
+	 *            the array list extracted from the file
 	 */
 	public static void setContentGroupList(DataTable table, String vaType, int[] groupInfo) {
 
@@ -257,10 +259,13 @@ public class DataTableUtils {
 	 * stored file
 	 * 
 	 * @param set
-	 * @param vaType specify for which va type this is valid
-	 * @param groupInfo the array list extracted from the file
+	 * @param vaType
+	 *            specify for which va type this is valid
+	 * @param groupInfo
+	 *            the array list extracted from the file
 	 */
-	public static void setDimensionGroupList(DataTable table, String vaType, int[] groupInfo) {
+	public static void setDimensionGroupList(DataTable table, String vaType,
+			int[] groupInfo) {
 		int cluster = 0, cnt = 0;
 
 		DimensionGroupList dimensionGroupList = table.getDimensionPerspective(vaType)
@@ -295,8 +300,9 @@ public class DataTableUtils {
 
 		int group = 0;
 
-		RecordGroupList contentGroupList = table.getRecordPerspective(recordPerspectiveID)
-				.getVirtualArray().getGroupList();
+		RecordGroupList contentGroupList = table
+				.getRecordPerspective(recordPerspectiveID).getVirtualArray()
+				.getGroupList();
 
 		contentGroupList.get(group).setRepresentativeElementIndex(0);
 		group++;

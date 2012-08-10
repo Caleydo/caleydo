@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -38,11 +38,13 @@ public class MetaData {
 	protected int nrColumns = 0;
 	protected int depth = 0;
 
-	private boolean bArtificialMin = false;
+	private boolean artificialMin = false;
 	double min = Double.MAX_VALUE;
 
-	private boolean bArtificialMax = false;
+	private boolean artificialMax = false;
 	double max = Double.MIN_VALUE;
+
+	private boolean isDataCenteredAtZero = false;
 
 	public MetaData(DataTable table) {
 		this.table = table;
@@ -58,7 +60,7 @@ public class MetaData {
 			return getNrColumns();
 		else
 			return getNrRows();
-			
+
 	}
 
 	/**
@@ -77,24 +79,19 @@ public class MetaData {
 	/** Get the number of columns in the table */
 	int getNrColumns() {
 		return table.hashColumns.size();
-//		if (nrColumns == 0) {
-//			for (AColumn dimension : table.hashColumns.values()) {
-//				if (nrColumns == 0)
-//					nrColumns = dimension.size();
-//				else {
-//					if (nrColumns != dimension.size())
-//						throw new IllegalArgumentException(
-//								"All dimensions in a set must be of the same length");
-//				}
-//
-//			}
-//		}
-//		return nrColumns;
 	}
 
 	/** Get the number of rows in the table */
 	int getNrRows() {
 		return table.hashColumns.values().iterator().next().size();
+	}
+
+	/**
+	 * @param isDataCenteredAtZero
+	 *            setter, see {@link #isDataCenteredAtZero}
+	 */
+	public void setDataCenteredAtZero(boolean isDataCenteredAtZero) {
+		this.isDataCenteredAtZero = isDataCenteredAtZero;
 	}
 
 	/**
@@ -131,7 +128,7 @@ public class MetaData {
 	 * the normalization, does not alter the raw data
 	 */
 	void setMin(double dMin) {
-		bArtificialMin = true;
+		artificialMin = true;
 		this.min = dMin;
 	}
 
@@ -141,7 +138,7 @@ public class MetaData {
 	 * the normalization, does not alter the raw data
 	 */
 	void setMax(double dMax) {
-		bArtificialMax = true;
+		artificialMax = true;
 		this.max = dMax;
 	}
 
@@ -197,8 +194,7 @@ public class MetaData {
 	 * @return Value in the specified data representation converted from the raw
 	 *         value.
 	 */
-	private double getDataRepFromRaw(double dRaw,
-			EDataTransformation dataRepresentation) {
+	private double getDataRepFromRaw(double dRaw, EDataTransformation dataRepresentation) {
 		switch (dataRepresentation) {
 		case NONE:
 			return dRaw;
@@ -237,23 +233,38 @@ public class MetaData {
 	}
 
 	private void calculateGlobalExtrema() {
-		double dTemp = 1.0;
+		double temp = 1.0;
 
 		if (table.tableType.equals(DataTableDataType.NUMERIC)) {
-			for (AColumn dimension : table.hashColumns.values()) {
-				NumericalColumn nDimension = (NumericalColumn) dimension;
-				dTemp = nDimension.getMin();
-				if (!bArtificialMin && dTemp < min) {
-					min = dTemp;
+			for (AColumn column : table.hashColumns.values()) {
+				NumericalColumn nColumn = (NumericalColumn) column;
+				temp = nColumn.getMin();
+				if (!artificialMin && temp < min) {
+					min = temp;
 				}
-				dTemp = nDimension.getMax();
-				if (!bArtificialMax && dTemp > max) {
-					max = dTemp;
+				temp = nColumn.getMax();
+				if (!artificialMax && temp > max) {
+					max = temp;
 				}
 			}
-		} else if (table.hashColumns.get(0) instanceof NominalColumn<?>)
+			if (isDataCenteredAtZero) {
+				if (min > 0 || max < 0)
+					throw new IllegalStateException(
+							"Flag isDataCenteredAtZero was set, but min is larger than 0: "
+									+ min + " or max is smaller than 0: " + max);
+				double absMin = Math.abs(min);
+				if (absMin > max) {
+					max = absMin;
+				} else if (absMin < max) {
+					min = max * -1;
+				}
+
+			}
+
+		} else if (table.hashColumns.get(0) instanceof NominalColumn<?>) {
 			throw new UnsupportedOperationException(
 					"No minimum or maximum can be calculated " + "on nominal data");
+		}
 	}
 
 }
