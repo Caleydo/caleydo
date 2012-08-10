@@ -100,7 +100,7 @@ import org.caleydo.view.dvi.listener.AddTablePerspectiveEventListener;
 import org.caleydo.view.dvi.listener.ApplySpecificGraphLayoutEventListener;
 import org.caleydo.view.dvi.listener.CreateClusteringEventListener;
 import org.caleydo.view.dvi.listener.CreateViewFromTablePerspectiveEventListener;
-import org.caleydo.view.dvi.listener.DimensionGroupsChangedEventListener;
+import org.caleydo.view.dvi.listener.DataDomainChangedListener;
 import org.caleydo.view.dvi.listener.DimensionVAUpdateEventListener;
 import org.caleydo.view.dvi.listener.GLDVIKeyListener;
 import org.caleydo.view.dvi.listener.LoadGroupingEventListener;
@@ -164,7 +164,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	private NewDataDomainEventListener newDataDomainEventListener;
 	private ViewClosedEventListener viewClosedEventListener;
 	private TablePerspectivesCangedListener tablePerspectivesChangedListener;
-	private DimensionGroupsChangedEventListener dimensionGroupsChangedEventListener;
+	private DataDomainChangedListener dataDomainChangedListener;
 	private AddTablePerspectiveEventListener addTablePerspectiveEventListener;
 	private OpenViewEventListener openViewEventListener;
 	private CreateViewFromTablePerspectiveEventListener createViewFromTablePerspectiveEventListener;
@@ -528,10 +528,10 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		eventPublisher.addListener(TablePerspectivesChangedEvent.class,
 				tablePerspectivesChangedListener);
 
-		dimensionGroupsChangedEventListener = new DimensionGroupsChangedEventListener();
-		dimensionGroupsChangedEventListener.setHandler(this);
+		dataDomainChangedListener = new DataDomainChangedListener();
+		dataDomainChangedListener.setHandler(this);
 		eventPublisher.addListener(DataDomainUpdateEvent.class,
-				dimensionGroupsChangedEventListener);
+				dataDomainChangedListener);
 
 		newDataDomainEventListener = new NewDataDomainEventListener();
 		newDataDomainEventListener.setHandler(this);
@@ -610,9 +610,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			tablePerspectivesChangedListener = null;
 		}
 
-		if (dimensionGroupsChangedEventListener != null) {
-			eventPublisher.removeListener(dimensionGroupsChangedEventListener);
-			dimensionGroupsChangedEventListener = null;
+		if (dataDomainChangedListener != null) {
+			eventPublisher.removeListener(dataDomainChangedListener);
+			dataDomainChangedListener = null;
 		}
 
 		if (newDataDomainEventListener != null) {
@@ -1304,7 +1304,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 				StartClusteringDialog dialog = new StartClusteringDialog(new Shell(),
 						dataDomain, clusterConfiguration);
 
-				int status = dialog.open();
+				dialog.open();
 
 				// if (status == Dialog.OK) {
 				// GroupingParseSpecification groupingParseSpecification =

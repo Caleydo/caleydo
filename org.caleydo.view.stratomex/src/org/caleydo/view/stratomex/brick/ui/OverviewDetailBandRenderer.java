@@ -26,7 +26,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.stratomex.brick.GLBrick;
-import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
+import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * Renderer for the band between a normal brick (overview) and the detailed
@@ -55,7 +55,7 @@ public class OverviewDetailBandRenderer extends LayoutRenderer {
 
 		ElementLayout leftLayout = leftBrick.getLayout();
 		ElementLayout rightLayout = rightBrick.getLayout();
-		BrickColumn dimensionGroup = leftBrick.getDimensionGroup();
+		BrickColumn dimensionGroup = leftBrick.getBrickColumn();
 		Column groupColumn = dimensionGroup.getGroupColumn();
 
 		float leftX = leftLayout.getTranslateX() + leftLayout.getSizeScaledX();

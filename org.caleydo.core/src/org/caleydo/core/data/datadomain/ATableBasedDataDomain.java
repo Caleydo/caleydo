@@ -578,6 +578,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		// FIXME this should be re-designed so that the clustering is a separate
 		// thread and communicates via
 		// events
+	
 		ClusterManager clusterManager = new ClusterManager(this);
 		ClusterResult result = clusterManager.cluster(clusterState);
 
@@ -640,6 +641,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 			eventPublisher.triggerEvent(new RecordVAUpdateEvent(dataDomainID,
 					targetRecordPerspective.getPerspectiveID(), this));
 		}
+		
+		eventPublisher.triggerEvent(new DataDomainUpdateEvent(this));
 		return result;
 	}
 

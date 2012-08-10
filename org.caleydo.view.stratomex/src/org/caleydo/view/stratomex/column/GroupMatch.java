@@ -17,21 +17,43 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.dvi.listener;
+package org.caleydo.view.stratomex.column;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.data.DataDomainUpdateEvent;
-import org.caleydo.view.dvi.GLDataViewIntegrator;
+import java.util.Collection;
+import java.util.HashMap;
 
-public class DimensionGroupsChangedEventListener extends AEventListener<GLDataViewIntegrator> {
+import org.caleydo.view.stratomex.brick.GLBrick;
 
-	@Override
-	public void handleEvent(AEvent event) {
-		if (event instanceof DataDomainUpdateEvent) {
-			DataDomainUpdateEvent dimensionGroupsChangedEvent = (DataDomainUpdateEvent) event;
-			handler.updateDataDomain(dimensionGroupsChangedEvent.getDataDomain());
-		}
+/**
+ * FIXME documentation
+ * 
+ * @author alexsb
+ * 
+ */
+public class GroupMatch {
+
+	private GLBrick glBrick;
+
+	private HashMap<Integer, SubGroupMatch> hashSubGroupID2SubGroupMatch = new HashMap<Integer, SubGroupMatch>();
+
+	public GroupMatch(GLBrick glBrick) {
+		this.glBrick = glBrick;
 	}
 
+	public void addSubGroupMatch(Integer subGroupID, SubGroupMatch subGroupMatch) {
+
+		hashSubGroupID2SubGroupMatch.put(subGroupID, subGroupMatch);
+	}
+
+	public Collection<SubGroupMatch> getSubGroupMatches() {
+		return hashSubGroupID2SubGroupMatch.values();
+	}
+
+	public SubGroupMatch getSubGroupMatch(Integer groupID) {
+		return hashSubGroupID2SubGroupMatch.get(groupID);
+	}
+
+	public GLBrick getBrick() {
+		return glBrick;
+	}
 }

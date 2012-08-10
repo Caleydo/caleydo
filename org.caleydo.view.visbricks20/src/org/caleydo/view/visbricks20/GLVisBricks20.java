@@ -28,7 +28,7 @@ import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.event.OpenVendingMachineEvent;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
-import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
+import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.visbricks20.listener.AddGroupsToStratomexListener;
 import org.caleydo.view.visbricks20.listener.OpenVendingMachineListener;

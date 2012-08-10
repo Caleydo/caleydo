@@ -39,7 +39,7 @@ import org.caleydo.view.stratomex.brick.configurer.ATableBasedDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
 import org.caleydo.view.stratomex.brick.ui.RelationIndicatorRenderer;
-import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
+import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * Default brick layout containing a toolbar, a view and a fuelbar.

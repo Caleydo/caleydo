@@ -35,7 +35,7 @@ import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
-import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
+import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * Brick layout for a compact overview containing a view and a small fuel bar.

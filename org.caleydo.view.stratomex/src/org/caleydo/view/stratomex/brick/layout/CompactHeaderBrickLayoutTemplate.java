@@ -28,7 +28,7 @@ import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
-import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
+import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * Layout for central brick that is displayed in the arch.

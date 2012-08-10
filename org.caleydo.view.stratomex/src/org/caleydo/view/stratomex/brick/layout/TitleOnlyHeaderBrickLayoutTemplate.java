@@ -27,7 +27,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
-import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
+import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * Layout for header brick that shows only the title.

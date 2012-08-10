@@ -220,8 +220,8 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 
 		String label = "";
 
-		if (brick.getDimensionGroup().getTablePerspective() instanceof PathwayTablePerspective)
-			label = ((PathwayTablePerspective) brick.getDimensionGroup().getTablePerspective())
+		if (brick.getBrickColumn().getTablePerspective() instanceof PathwayTablePerspective)
+			label = ((PathwayTablePerspective) brick.getBrickColumn().getTablePerspective())
 					.getPathway().getTitle();
 		else
 			throw new IllegalStateException(

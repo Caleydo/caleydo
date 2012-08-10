@@ -84,7 +84,7 @@ public class HandleRenderer extends LayoutRenderer {
 		brick.addIDPickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
-				brick.getDimensionGroup().setVerticalMoveDraggingActive(true);
+				brick.getBrickColumn().setVerticalMoveDraggingActive(true);
 			}
 
 		}, EPickingType.MOVE_VERTICALLY_HANDLE.name(), brick.getID());
@@ -99,7 +99,7 @@ public class HandleRenderer extends LayoutRenderer {
 			}
 		};
 
-		brick.getDimensionGroup().getStratomexView()
+		brick.getBrickColumn().getStratomexView()
 				.addTypePickingListener(brickPickingListener, EPickingType.BRICK.name());
 
 	}
@@ -202,9 +202,9 @@ public class HandleRenderer extends LayoutRenderer {
 
 		if ((handles & MOVE_HORIZONTALLY_HANDLE) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(
-					brick.getDimensionGroup().getStratomexView().getID(),
+					brick.getBrickColumn().getStratomexView().getID(),
 					EPickingType.MOVE_HORIZONTALLY_HANDLE.name(),
-					brick.getDimensionGroup().getID()));
+					brick.getBrickColumn().getID()));
 			
 			Vec3f lowerLeftCorner = new Vec3f(x / 2f - glHandleWidth, y ,
 					BUTTON_Z);

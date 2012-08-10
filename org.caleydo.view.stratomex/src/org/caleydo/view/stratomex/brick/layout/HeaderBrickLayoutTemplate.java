@@ -21,6 +21,7 @@ package org.caleydo.view.stratomex.brick.layout;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.manager.GeneralManager;
@@ -43,7 +44,7 @@ import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
-import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
+import org.caleydo.view.stratomex.column.BrickColumn;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -274,31 +275,43 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 						public void run() {
 
 							ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
-							TablePerspective data = brick.getDimensionGroup()
-									.getTablePerspective();
-							clusterConfiguration.setSourceDimensionPerspective(data
-									.getDimensionPerspective());
-							clusterConfiguration.setSourceRecordPerspective(data
-									.getRecordPerspective());
+							TablePerspective originalTablePerspective = brick
+									.getBrickColumn().getTablePerspective();
+							clusterConfiguration
+									.setSourceDimensionPerspective(originalTablePerspective
+											.getDimensionPerspective());
+							clusterConfiguration
+									.setSourceRecordPerspective(originalTablePerspective
+											.getRecordPerspective());
+							ATableBasedDataDomain dataDomain = originalTablePerspective
+									.getDataDomain();
 
 							// here we create the new record perspective
 							// which is
 							// intended to be used once the clustering is
 							// complete
 							RecordPerspective newRecordPerspective = new RecordPerspective(
-									data.getDataDomain());
+									dataDomain);
 
 							// we temporarily set the old va to the new
 							// perspective,
 							// to avoid empty bricks
-							newRecordPerspective.setVirtualArray(data
+							newRecordPerspective.setVirtualArray(originalTablePerspective
 									.getRecordPerspective().getVirtualArray());
 
-							data.getDataDomain().getTable()
-									.registerRecordPerspective(newRecordPerspective);
-							data.setRecordPerspective(newRecordPerspective);
+							dataDomain.getTable().registerRecordPerspective(
+									newRecordPerspective);
+
 							clusterConfiguration
 									.setOptionalTargetRecordPerspective(newRecordPerspective);
+
+							TablePerspective newTablePerspective = dataDomain.getTablePerspective(
+									newRecordPerspective.getPerspectiveID(),
+									originalTablePerspective.getDimensionPerspective()
+											.getPerspectiveID());
+
+							brick.getBrickColumn().getStratomexView().replaceTablePerspective(
+									newTablePerspective, originalTablePerspective);
 
 							StartClusteringDialog dialog = new StartClusteringDialog(
 									new Shell(), brick.getDataDomain(),
@@ -335,7 +348,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 					@Override
 					public void run() {
 						RemoveTablePerspectiveEvent event = new RemoveTablePerspectiveEvent(
-								brick.getDimensionGroup().getTablePerspective().getID());
+								brick.getBrickColumn().getTablePerspective().getID());
 						event.setSender(this);
 						GeneralManager.get().getEventPublisher().triggerEvent(event);
 					}

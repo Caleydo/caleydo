@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.dimensiongroup;
+package org.caleydo.view.stratomex.column;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -80,8 +80,8 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  * 
  */
-public class BrickColumn extends ATableBasedView implements
-		ILayoutSizeCollisionHandler, ILayoutedElement, IDraggable, IGLRemoteRenderingView {
+public class BrickColumn extends ATableBasedView implements ILayoutSizeCollisionHandler,
+		ILayoutedElement, IDraggable, IGLRemoteRenderingView {
 	public static String VIEW_TYPE = "org.caleydo.view.dimensiongroup";
 
 	public static String VIEW_NAME = "Brick Column";
@@ -187,8 +187,7 @@ public class BrickColumn extends ATableBasedView implements
 
 	IBrickConfigurer brickConfigurer;
 
-	public BrickColumn(GLCanvas canvas, Composite parentComposite,
-			ViewFrustum viewFrustum) {
+	public BrickColumn(GLCanvas canvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(canvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 	}
@@ -300,8 +299,8 @@ public class BrickColumn extends ATableBasedView implements
 
 		float[] glowColor = tablePerspective.getDataDomain().getColor().getRGBA();
 		if (tablePerspective instanceof PathwayTablePerspective) {
-			glowColor = ((PathwayTablePerspective) tablePerspective).getPathwayDataDomain()
-					.getColor().getRGBA();
+			glowColor = ((PathwayTablePerspective) tablePerspective)
+					.getPathwayDataDomain().getColor().getRGBA();
 		}
 
 		mainColumn.addBackgroundRenderer(new BrickColumnGlowRenderer(glowColor, this,
@@ -465,7 +464,8 @@ public class BrickColumn extends ATableBasedView implements
 	 * @param wrappingLayout
 	 * @return
 	 */
-	private GLBrick createBrick(ElementLayout wrappingLayout, TablePerspective tablePerspective) {
+	private GLBrick createBrick(ElementLayout wrappingLayout,
+			TablePerspective tablePerspective) {
 		ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
 				0, 0, 0, -4, 4);
 		GLBrick brick = (GLBrick) GeneralManager
@@ -480,7 +480,7 @@ public class BrickColumn extends ATableBasedView implements
 		brick.setRemoteRenderingGLView(this);
 		brick.setStratomex(stratomex);
 		brick.setLayout(wrappingLayout);
-		brick.setDimensionGroup(this);
+		brick.setBrickColumn(this);
 		brick.initialize();
 
 		uninitializedBricks.add(brick);
@@ -569,21 +569,31 @@ public class BrickColumn extends ATableBasedView implements
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
 
-		if (!tablePerspective.getRecordPerspective().getPerspectiveID().equals(recordPerspectiveID))
+		if (!tablePerspective.getRecordPerspective().getPerspectiveID()
+				.equals(recordPerspectiveID))
 			return;
+		reactOnGroupingChanges();
+
+	}
+
+	/**
+	 * Replaces the local table perspective with the one provided. This should
+	 * only be called through
+	 * {@link GLStratomex#replaceTablePerspective(TablePerspective)}
+	 * 
+	 * @param tablePerspective
+	 */
+	public void replaceTablePerspective(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
+		reactOnGroupingChanges();
+	}
+
+	private void reactOnGroupingChanges() {
 
 		clusterBrickColumn.clear();
 		clusterBricks.clear();
 		createClusterBricks();
 		stratomex.setLayoutDirty();
-		// mainRow.updateSubLayout();
-		// groupColumn.updateSubLayout();
-		// visBricks.updateConnectionLinesBetweenDimensionGroups();
-
-		// visBricks.getRelationAnalyzer().updateRelations(
-		// dimensionGroupData.getID(),
-		// dimensionGroupData.getSummaryBrickVA());
-
 	}
 
 	@Override
@@ -1107,8 +1117,8 @@ public class BrickColumn extends ATableBasedView implements
 					.getGroupColumnWidthPixels();
 		}
 		int detailAreaWidth = parentGLCanvas.getWidth() - 2 * OVERVIEW_DETAIL_GAP_PIXEL
-				- 2 * GLStratomex.BRICK_COLUMN_SIDE_SPACING
-				- getGroupColumnWidthPixels() - otherDimensionGroupColumnWidth;
+				- 2 * GLStratomex.BRICK_COLUMN_SIDE_SPACING - getGroupColumnWidthPixels()
+				- otherDimensionGroupColumnWidth;
 		int detailGapWidth = (int) (DETAIL_GAP_PORTION * detailAreaWidth);
 		detailGapWidth = (detailGapWidth < MIN_DETAIL_GAP_PIXEL) ? MIN_DETAIL_GAP_PIXEL
 				: detailGapWidth;
@@ -1120,9 +1130,9 @@ public class BrickColumn extends ATableBasedView implements
 	}
 
 	/**
-	 * Returns the neighboring {@link BrickColumn}, either the one to the
-	 * right, if the parameter is true, or the one to the left, if the parameter
-	 * is false.
+	 * Returns the neighboring {@link BrickColumn}, either the one to the right,
+	 * if the parameter is true, or the one to the left, if the parameter is
+	 * false.
 	 * <p>
 	 * Returns null there is no dimension group on the specified side
 	 * 
@@ -1133,14 +1143,11 @@ public class BrickColumn extends ATableBasedView implements
 	 * @return The other dimension group that is currently visible in the detail
 	 *         mode, or null if there is no other group
 	 */
-	private BrickColumn getOtherDetailDimensionGroup(
-			boolean isCurrentDimensionGroupLeft) {
+	private BrickColumn getOtherDetailDimensionGroup(boolean isCurrentDimensionGroupLeft) {
 
-		BrickColumnManager dimensionGroupManager = stratomex
-				.getDimensionGroupManager();
+		BrickColumnManager dimensionGroupManager = stratomex.getDimensionGroupManager();
 
-		ArrayList<BrickColumn> dimensionGroups = dimensionGroupManager
-				.getBrickColumns();
+		ArrayList<BrickColumn> dimensionGroups = dimensionGroupManager.getBrickColumns();
 		int dimensionGroupIndex = dimensionGroups.indexOf(this);
 
 		if (isCurrentDimensionGroupLeft) {
@@ -1164,8 +1171,7 @@ public class BrickColumn extends ATableBasedView implements
 	 * @return True if this dimension group is the leftmost dimension group.
 	 */
 	public boolean isLeftmost() {
-		BrickColumnManager dimensionGroupManager = stratomex
-				.getDimensionGroupManager();
+		BrickColumnManager dimensionGroupManager = stratomex.getDimensionGroupManager();
 		int index = dimensionGroupManager.indexOfBrickColumn(this);
 		return (index == dimensionGroupManager.getCenterGroupStartIndex());
 	}
@@ -1174,8 +1180,7 @@ public class BrickColumn extends ATableBasedView implements
 	 * @return True if this dimension group is the rightmost dimension group.
 	 */
 	public boolean isRightmost() {
-		BrickColumnManager dimensionGroupManager = stratomex
-				.getDimensionGroupManager();
+		BrickColumnManager dimensionGroupManager = stratomex.getDimensionGroupManager();
 		int index = dimensionGroupManager.indexOfBrickColumn(this);
 		return (index == dimensionGroupManager.getRightGroupStartIndex() - 1);
 	}
@@ -1233,16 +1238,14 @@ public class BrickColumn extends ATableBasedView implements
 		return isCollapsed;
 	}
 
-
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
-		//Nothing to do here
+		// Nothing to do here
 	}
 }

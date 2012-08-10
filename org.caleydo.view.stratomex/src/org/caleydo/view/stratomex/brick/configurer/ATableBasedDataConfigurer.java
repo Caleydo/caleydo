@@ -41,7 +41,7 @@ import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.stratomex.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.stratomex.brick.ui.DimensionBarRenderer;
 import org.caleydo.view.stratomex.brick.ui.FuelBarRenderer;
-import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
+import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * Abstract base class for brick configurers for table based data that provides

@@ -30,7 +30,7 @@ import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.view.stratomex.brick.EContainedViewType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
-import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
+import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * Base class are intended to specify the elements and their

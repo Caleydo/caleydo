@@ -37,7 +37,7 @@ import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
 import org.caleydo.view.stratomex.brick.ui.RelationIndicatorRenderer;
-import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
+import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * Layout for the detailed inspection of a brick. Contains a tool bar, a view

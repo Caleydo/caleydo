@@ -51,7 +51,7 @@ public class FuelBarRenderer extends LayoutRenderer {
 		if (recordVA == null)
 			return;
 
-		RecordVirtualArray setRecordVA = brick.getDimensionGroup().getTablePerspective()
+		RecordVirtualArray setRecordVA = brick.getBrickColumn().getTablePerspective()
 				.getRecordPerspective().getVirtualArray();
 
 		if (setRecordVA == null)
@@ -63,7 +63,7 @@ public class FuelBarRenderer extends LayoutRenderer {
 
 		float fuelWidth = (float) x / totalNumElements * currentNumElements;
 
-		GLStratomex stratomex = brick.getDimensionGroup().getStratomexView();
+		GLStratomex stratomex = brick.getBrickColumn().getStratomexView();
 
 		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
 				EPickingType.BRICK.name(), brick.getID()));

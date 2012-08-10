@@ -66,7 +66,7 @@ public class ToolBar extends Row {
 			}
 		};
 
-		brick.getDimensionGroup().getStratomexView()
+		brick.getBrickColumn().getStratomexView()
 				.addTypePickingListener(brickPickingListener, EPickingType.BRICK.name());
 
 	}
@@ -85,7 +85,7 @@ public class ToolBar extends Row {
 
 	@Override
 	public void destroy() {
-		brick.getDimensionGroup()
+		brick.getBrickColumn()
 				.getStratomexView()
 				.removeTypePickingListener(brickPickingListener, EPickingType.BRICK.name());
 		super.destroy();

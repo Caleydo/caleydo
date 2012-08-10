@@ -130,10 +130,7 @@ public class DataLoader {
 		dataDomain.setColorMapper(ColorMapper
 				.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED));
 
-		dataDomain.init();
-
-		Thread thread = new Thread(dataDomain, dataDomain.getDataDomainType());
-		thread.start();
+//		dataDomain.init();
 
 		boolean createDefaultRecordPerspective = true;
 

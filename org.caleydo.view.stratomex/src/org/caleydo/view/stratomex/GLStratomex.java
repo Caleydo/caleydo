@@ -50,6 +50,7 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
+import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.view.ClearSelectionsEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
@@ -89,9 +90,9 @@ import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.NumericalDataConfigurer;
 import org.caleydo.view.stratomex.brick.contextmenu.SplitBrickItem;
-import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
-import org.caleydo.view.stratomex.dimensiongroup.BrickColumnManager;
-import org.caleydo.view.stratomex.dimensiongroup.BrickColumnSpacingRenderer;
+import org.caleydo.view.stratomex.column.BrickColumn;
+import org.caleydo.view.stratomex.column.BrickColumnManager;
+import org.caleydo.view.stratomex.column.BrickColumnSpacingRenderer;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.stratomex.event.SplitBrickEvent;
 import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
@@ -1356,7 +1357,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@Override
 	public void removeTablePerspective(int tablePerspectiveID) {
 
-		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives.iterator();
+		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives
+				.iterator();
 
 		while (tablePerspectiveIterator.hasNext()) {
 			TablePerspective container = tablePerspectiveIterator.next();
@@ -1375,6 +1377,36 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@Override
 	public List<TablePerspective> getTablePerspectives() {
 		return tablePerspectives;
+	}
+
+	/**
+	 * Replaces an old tablePerspective with a new one whil keeping the column
+	 * at the same place.
+	 * 
+	 * @param newTablePerspective
+	 * @param oldTablePerspective
+	 */
+	public void replaceTablePerspective(TablePerspective newTablePerspective,
+			TablePerspective oldTablePerspective) {
+
+		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives
+				.iterator();
+		while (tablePerspectiveIterator.hasNext()) {
+			TablePerspective tempPerspective = tablePerspectiveIterator.next();
+			if (tempPerspective.equals(oldTablePerspective)) {
+				tablePerspectiveIterator.remove();
+			}
+		}
+		tablePerspectives.add(newTablePerspective);
+
+		for (BrickColumn column : brickColumnManager.getBrickColumns()) {
+			if (column.getTablePerspective().equals(oldTablePerspective)) {
+				column.replaceTablePerspective(newTablePerspective);
+			}
+		}
+		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
+		eventPublisher.triggerEvent(event);
+		
 	}
 
 	/**
@@ -1661,7 +1693,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			sourceBrick = brickConnection.getRightBrick();
 		}
 
-		sourcePerspective = sourceBrick.getDimensionGroup().getTablePerspective()
+		sourcePerspective = sourceBrick.getBrickColumn().getTablePerspective()
 				.getRecordPerspective();
 		sourceVA = sourcePerspective.getVirtualArray();
 		sourceGroupIndex = sourceBrick.getTablePerspective().getRecordGroup()

@@ -59,7 +59,7 @@ public class ExternallyProvidedSortingStrategy
 
 			Group group = brick.getTablePerspective().getRecordGroup();
 
-			RecordPerspective dimGroupRecordPerspective = brick.getDimensionGroup()
+			RecordPerspective dimGroupRecordPerspective = brick.getBrickColumn()
 					.getTablePerspective().getRecordPerspective();
 
 			RecordPerspective originalDimGroupRecordPerspective = hashConvertedRecordPerspectiveToOrginalRecordPerspective

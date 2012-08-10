@@ -88,10 +88,10 @@ import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.sorting.ExternallyProvidedSortingStrategy;
 import org.caleydo.view.stratomex.brick.ui.RectangleCoordinates;
 import org.caleydo.view.stratomex.brick.ui.RelationIndicatorRenderer;
+import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.dialog.CreateKaplanMeierSmallMultiplesGroupDialog;
 import org.caleydo.view.stratomex.dialog.CreatePathwayComparisonGroupDialog;
 import org.caleydo.view.stratomex.dialog.CreatePathwaySmallMultiplesGroupDialog;
-import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.stratomex.event.OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent;
 import org.caleydo.view.stratomex.event.OpenCreatePathwayGroupDialogEvent;
@@ -217,7 +217,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	private BrickState expandedBrickState;
 
-	private BrickColumn dimensionGroup;
+	private BrickColumn brickColumn;
 
 	private SelectionManager tablePerspectiveSelectionManager;
 	private SelectionManager recordGroupSelectionManager;
@@ -268,7 +268,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		if (brickLayoutConfiguration == null) {
 			brickLayoutConfiguration = new DefaultBrickLayoutTemplate(this, stratomex,
-					dimensionGroup, brickConfigurer);
+					brickColumn, brickConfigurer);
 		}
 
 		brickConfigurer
@@ -289,7 +289,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		// layoutManager.setStaticLayoutConfiguration(brickLayoutConfiguration);
 
-		dimensionGroup.updateLayout();
+		brickColumn.updateLayout();
 
 		isInitialized = true;
 
@@ -340,7 +340,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		}
 
 		// Prevent selection for center brick as this would select all elements
-		if (dimensionGroup.getHeaderBrick() == this)
+		if (brickColumn.getHeaderBrick() == this)
 			return;
 
 		RecordVirtualArray va = tablePerspective.getRecordPerspective().getVirtualArray();
@@ -380,7 +380,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		if (isBaseDisplayListDirty)
 			buildBaseDisplayList(gl);
 
-		GLStratomex stratomex = getDimensionGroup().getStratomexView();
+		GLStratomex stratomex = getBrickColumn().getStratomexView();
 		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
 				EPickingType.BRICK.name(), getID()));
 		gl.glPushName(getPickingManager().getPickingID(getID(),
@@ -401,7 +401,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		gl.glPopName();
 
 		// The full brick content will not be rendered with DetailLevel.LOW
-		if (dimensionGroup.getDetailLevel() != EDetailLevel.LOW || isHeaderBrick)
+		if (brickColumn.getDetailLevel() != EDetailLevel.LOW || isHeaderBrick)
 			layoutManager.render(gl);
 
 		gl.glCallList(baseDisplayListIndex);
@@ -505,7 +505,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		wrappingLayout.setAbsoluteSizeY(newHeight);
 
 		// templateRenderer.updateLayout();
-		// dimensionGroup.updateLayout();
+		// brickColumn.updateLayout();
 		// groupColumn.setAbsoluteSizeX(width + changeX);
 
 		// float height = wrappingLayout.getSizeScaledY();
@@ -532,10 +532,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	/**
 	 * Set the {@link BrickColumn} this brick belongs to.
 	 * 
-	 * @param dimensionGroup
+	 * @param brickColumn
 	 */
-	public void setDimensionGroup(BrickColumn dimensionGroup) {
-		this.dimensionGroup = dimensionGroup;
+	public void setBrickColumn(BrickColumn brickColumn) {
+		this.brickColumn = brickColumn;
 	}
 
 	/**
@@ -543,8 +543,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * 
 	 * @return
 	 */
-	public BrickColumn getDimensionGroup() {
-		return dimensionGroup;
+	public BrickColumn getBrickColumn() {
+		return brickColumn;
 	}
 
 	@Override
@@ -615,7 +615,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			wrappingLayout.setPixelSizeY(defaultHeightPixels);
 			break;
 		case PROPORTIONAL:
-			double proportionalHeight = dimensionGroup.getProportionalHeightPerRecord()
+			double proportionalHeight = brickColumn.getProportionalHeightPerRecord()
 					* tablePerspective.getNrRecords()
 					+ getHeightOverheadOfProportioanlBrick();
 
@@ -823,7 +823,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 							point.y));
 					dragAndDropController.addDraggable(GLBrick.this);
 					dragAndDropController.setDraggingMode("BrickDrag"
-							+ dimensionGroup.getID());
+							+ brickColumn.getID());
 					stratomex.setDisplayListDirty();
 				}
 			}
@@ -835,7 +835,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			// String draggingMode = dragAndDropController.getDraggingMode();
 			// if (!dragAndDropController.isDragging()
 			// && dragAndDropController.hasDraggables() && draggingMode != null
-			// && draggingMode.equals("BrickDrag" + dimensionGroup.getID())) {
+			// && draggingMode.equals("BrickDrag" + brickColumn.getID())) {
 			// dragAndDropController.startDragging();
 			// }
 			// }
@@ -843,31 +843,31 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			@Override
 			public void rightClicked(Pick pick) {
 
-				if (dimensionGroup.getTablePerspective() == tablePerspective) {
+				if (brickColumn.getTablePerspective() == tablePerspective) {
 
 					if (dataDomain instanceof GeneticDataDomain
 							&& !dataDomain.isColumnDimension()) {
 						contextMenuCreator
 								.addContextMenuItem(new CreatePathwaySmallMultiplesGroupItem(
-										dimensionGroup.getTablePerspective(), dimensionGroup
+										brickColumn.getTablePerspective(), brickColumn
 												.getTablePerspective()
 												.getDimensionPerspective()));
 					}
 					contextMenuCreator
 							.addContextMenuItem(new CreateKaplanMeierSmallMultiplesGroupItem(
-									dimensionGroup.getTablePerspective(), dimensionGroup
+									brickColumn.getTablePerspective(), brickColumn
 											.getTablePerspective().getDimensionPerspective()));
 				} else
 					contextMenuCreator
 							.addContextMenuItem(new CreatePathwayGroupFromDataItem(
 									dataDomain, tablePerspective.getRecordPerspective()
-											.getVirtualArray(), dimensionGroup
+											.getVirtualArray(), brickColumn
 											.getTablePerspective().getDimensionPerspective()));
 
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
 
 				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(
-						getDimensionGroup().getTablePerspective().getID()));
+						getBrickColumn().getTablePerspective().getID()));
 			}
 
 		}, EPickingType.BRICK.name(), getID());
@@ -1029,7 +1029,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		}
 		isInOverviewMode = false;
 		brickLayoutConfiguration.setLockResizing(true);
-		// dimensionGroup.updateLayout();
+		// brickColumn.updateLayout();
 		stratomex.setLayoutDirty();
 		stratomex.updateConnectionLinesBetweenDimensionGroups();
 	}
@@ -1191,7 +1191,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 //						dataConfigurer
 //								.setMaxTimeValue(calculateMaxTimeValue(kaplanMeierDimensionGroupData));
 						ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
-						sortingStrategy.setExternalBricks(dimensionGroup.getBricks());
+						sortingStrategy.setExternalBricks(brickColumn.getBricks());
 						sortingStrategy
 								.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(dialog
 										.getHashConvertedRecordPerspectiveToOrginalRecordPerspective());
@@ -1391,7 +1391,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	public void updateLayout() {
 		if (brickHeigthMode == EBrickHeightMode.PROPORTIONAL) {
 
-			double proportionalHeight = dimensionGroup.getProportionalHeightPerRecord()
+			double proportionalHeight = brickColumn.getProportionalHeightPerRecord()
 					* tablePerspective.getNrRecords()
 					+ getHeightOverheadOfProportioanlBrick();
 

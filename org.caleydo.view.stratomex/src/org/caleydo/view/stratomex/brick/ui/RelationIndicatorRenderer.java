@@ -37,7 +37,7 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
-import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
+import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * <p>
@@ -71,7 +71,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		this.brick = brick;
 		// this.dataDomain = brick.getDataDomain();
 		this.relationAnalyzer = stratomex.getRelationAnalyzer();
-		perspectiveID = brick.getDimensionGroup().getTablePerspective()
+		perspectiveID = brick.getBrickColumn().getTablePerspective()
 				.getRecordPerspective().getPerspectiveID();
 		groupID = brick.getTablePerspective().getRecordGroup().getGroupIndex();
 		this.stratomex = stratomex;
