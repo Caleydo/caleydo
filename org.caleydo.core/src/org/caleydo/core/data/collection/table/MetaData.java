@@ -20,7 +20,6 @@
 package org.caleydo.core.data.collection.table;
 
 import javax.naming.OperationNotSupportedException;
-
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.collection.dimension.NominalColumn;
@@ -89,8 +88,7 @@ public class MetaData {
 	}
 
 	/**
-	 * @param isDataCenteredAtZero
-	 *            setter, see {@link #isDataCenteredAtZero}
+	 * @param isDataCenteredAtZero setter, see {@link #isDataCenteredAtZero}
 	 */
 	public void setDataCenteredAtZero(boolean isDataCenteredAtZero) {
 		this.isDataCenteredAtZero = isDataCenteredAtZero;
@@ -99,8 +97,7 @@ public class MetaData {
 	/**
 	 * Get the minimum value in the table.
 	 * 
-	 * @throws OperationNotSupportedException
-	 *             when executed on nominal data
+	 * @throws OperationNotSupportedException when executed on nominal data
 	 * @return the absolute minimum value in the set
 	 */
 	public double getMin() {
@@ -113,8 +110,7 @@ public class MetaData {
 	/**
 	 * Get the maximum value in the table.
 	 * 
-	 * @throws OperationNotSupportedException
-	 *             when executed on nominal data
+	 * @throws OperationNotSupportedException when executed on nominal data
 	 * @return the absolute minimum value in the set
 	 */
 	public double getMax() {
@@ -147,10 +143,9 @@ public class MetaData {
 	/**
 	 * Gets the minimum value in the set in the specified data representation.
 	 * 
-	 * @param dataRepresentation
-	 *            Data representation the minimum value shall be returned in.
-	 * @throws OperationNotSupportedException
-	 *             when executed on nominal data
+	 * @param dataRepresentation Data representation the minimum value shall be
+	 *            returned in.
+	 * @throws OperationNotSupportedException when executed on nominal data
 	 * @return The absolute minimum value in the set in the specified data
 	 *         representation.
 	 */
@@ -168,10 +163,9 @@ public class MetaData {
 	/**
 	 * Gets the maximum value in the set in the specified data representation.
 	 * 
-	 * @param dataRepresentation
-	 *            Data representation the maximum value shall be returned in.
-	 * @throws OperationNotSupportedException
-	 *             when executed on nominal data
+	 * @param dataRepresentation Data representation the maximum value shall be
+	 *            returned in.
+	 * @throws OperationNotSupportedException when executed on nominal data
 	 * @return The absolute maximum value in the set in the specified data
 	 *         representation.
 	 */
@@ -189,25 +183,24 @@ public class MetaData {
 	/**
 	 * Converts a raw value to the specified data representation.
 	 * 
-	 * @param dRaw
-	 *            Raw value that shall be converted
-	 * @param dataRepresentation
-	 *            Data representation the raw value shall be converted to.
+	 * @param dRaw Raw value that shall be converted
+	 * @param dataRepresentation Data representation the raw value shall be
+	 *            converted to.
 	 * @return Value in the specified data representation converted from the raw
 	 *         value.
 	 */
 	private double getDataRepFromRaw(double dRaw, EDataTransformation dataRepresentation) {
 		switch (dataRepresentation) {
-		case NONE:
-			return dRaw;
-		case LOG2:
-			return Math.log(dRaw) / Math.log(2);
-		case LOG10:
-			return Math.log10(dRaw);
-		default:
-			throw new IllegalStateException(
-					"Conversion to data rep not implemented for data rep"
-							+ dataRepresentation);
+			case NONE:
+				return dRaw;
+			case LOG2:
+				return Math.log(dRaw) / Math.log(2);
+			case LOG10:
+				return Math.log10(dRaw);
+			default:
+				throw new IllegalStateException(
+						"Conversion to data rep not implemented for data rep"
+								+ dataRepresentation);
 		}
 	}
 
@@ -215,22 +208,21 @@ public class MetaData {
 	 * Converts the specified value into raw using the current external data
 	 * representation.
 	 * 
-	 * @param dNumber
-	 *            Value in the current external data representation.
+	 * @param dNumber Value in the current external data representation.
 	 * @return Raw value converted from the specified value.
 	 */
 	private double getRawFromExternalDataRep(double dNumber) {
 		switch (table.externalDataTrans) {
-		case NONE:
-			return dNumber;
-		case LOG2:
-			return Math.pow(2, dNumber);
-		case LOG10:
-			return Math.pow(10, dNumber);
-		default:
-			throw new IllegalStateException(
-					"Conversion to raw not implemented for data rep"
-							+ table.externalDataTrans);
+			case NONE:
+				return dNumber;
+			case LOG2:
+				return Math.pow(2, dNumber);
+			case LOG10:
+				return Math.pow(10, dNumber);
+			default:
+				throw new IllegalStateException(
+						"Conversion to raw not implemented for data rep"
+								+ table.externalDataTrans);
 		}
 	}
 
@@ -250,23 +242,32 @@ public class MetaData {
 				}
 			}
 			if (isDataCenteredAtZero) {
-				if (min > 0 || max < 0)
+				if (min > 0 || max < 0) {
+					// FIXME: we need to think about a better solution than
+					// ignoring this. The dataset creator should not set this
+					// flag if for intance no negative values are contained.
+					// However, we don't always know the value
+					// range of a dataset during its creation.
 					return;
-//					throw new IllegalStateException(
-//							"Flag isDataCenteredAtZero was set, but min is larger than 0: "
-//									+ min + " or max is smaller than 0: " + max);
+				}
+				// throw new IllegalStateException(
+				// "Flag isDataCenteredAtZero was set, but min is larger than 0: "
+				// + min + " or max is smaller than 0: " + max);
+
 				double absMin = Math.abs(min);
 				if (absMin > max) {
 					max = absMin;
-				} else if (absMin < max) {
+				}
+				else if (absMin < max) {
 					min = max * -1;
 				}
 
 			}
 
-		} else if (table.hashColumns.get(0) instanceof NominalColumn<?>) {
-			throw new UnsupportedOperationException(
-					"No minimum or maximum can be calculated " + "on nominal data");
+		}
+		else if (table.hashColumns.get(0) instanceof NominalColumn<?>) {
+			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
+					+ "on nominal data");
 		}
 	}
 

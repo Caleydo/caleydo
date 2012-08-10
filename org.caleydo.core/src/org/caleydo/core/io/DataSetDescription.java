@@ -136,7 +136,7 @@ public class DataSetDescription extends MatrixDefinition {
 	 * Flag determining whether the data is of the form that 0 is the neutral
 	 * value, lower values are in the negative and larger values are in the
 	 * positive range. If this flag is set to true, it will be assumed that the
-	 * extend into both, positive and negatie directon is the same. Eg, for a
+	 * extend into both, positive and negative direction is the same. Eg, for a
 	 * dataset [-0.5, 0.7] the value range will be set to -0.7 to 0.7.
 	 */
 	private boolean isDataCenteredAtZero = false;

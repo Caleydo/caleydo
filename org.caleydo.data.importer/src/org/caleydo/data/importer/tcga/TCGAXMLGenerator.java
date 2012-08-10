@@ -110,7 +110,7 @@ public class TCGAXMLGenerator
 
 		String outputDirectoryName = tmpOutputDirectoryPath + runIdentifierWithoutUnderscore
 				+ System.getProperty("file.separator") + tumorAbbreviation
-				+ System.getProperty("file.separator");
+				+ System.getProperty("file.separator") + archiveName;
 
 		// extract file to temp directory and return path to file
 		return ArchiveExtractionUtils.extractFileFromTarGzArchive(archiveName, fileName,

@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.zip.GZIPInputStream;
 import org.apache.tools.tar.TarEntry;
 import org.apache.tools.tar.TarInputStream;
+import org.caleydo.core.util.system.FileOperations;
 
 public class ArchiveExtractionUtils {
 
@@ -59,17 +60,10 @@ public class ArchiveExtractionUtils {
 
 				if (directory == null) {
 					if (newFile.isDirectory())
-
 						break;
 				}
 
-				if (!(new File(outputDirectoryName)).exists()) {
-					if (!(new File(outputDirectoryName)).mkdirs()) {
-						// Directory creation failed
-						throw new RuntimeException("Unable to create output directory "
-								+ outputDirectoryName + " for " + fileToExtract + ".");
-					}
-				}
+				FileOperations.createDirectory(outputDirectoryName);
 
 				outputFileName = outputDirectoryName + fileToExtract;
 

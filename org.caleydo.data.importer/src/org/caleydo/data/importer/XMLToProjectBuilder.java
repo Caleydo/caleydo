@@ -42,7 +42,6 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectSaver;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
 /**
  * This class handles the creation of Caleydo project files. The class takes an

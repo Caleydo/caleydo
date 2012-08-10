@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -28,7 +28,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -56,10 +55,8 @@ public class FileOperations {
 	/**
 	 * Renames a given folder.
 	 * 
-	 * @param fromDir
-	 *            source directory
-	 * @param toDir
-	 *            target directory
+	 * @param fromDir source directory
+	 * @param toDir target directory
 	 */
 	public static void renameDirectory(String fromDir, String toDir) {
 
@@ -81,9 +78,9 @@ public class FileOperations {
 	/**
 	 * Deletes the directory with the given name
 	 * 
-	 * @param dirName
-	 *            directory name to delete
-	 * @return <code>true</code> if the directory was deleted, <code>false</code> otherwise
+	 * @param dirName directory name to delete
+	 * @return <code>true</code> if the directory was deleted,
+	 *         <code>false</code> otherwise
 	 */
 	public static boolean deleteDirectory(String dirName) {
 		File directory = new File(dirName);
@@ -93,9 +90,9 @@ public class FileOperations {
 	/**
 	 * Deletes the given directory
 	 * 
-	 * @param directory
-	 *            directory to delete
-	 * @return <code>true</code> if the directory was deleted, <code>false</code> otherwise
+	 * @param directory directory to delete
+	 * @return <code>true</code> if the directory was deleted,
+	 *         <code>false</code> otherwise
 	 */
 	public static boolean deleteDirectory(File directory) {
 		if (directory.isDirectory()) {
@@ -115,8 +112,12 @@ public class FileOperations {
 			dirName += File.separator;
 		}
 
-		File tempDirFile = new File(dirName);
-		tempDirFile.mkdir();
+		if (!(new File(dirName)).exists()) {
+			if (!(new File(dirName)).mkdirs()) {
+				// Directory creation failed
+				throw new RuntimeException("Unable to create directory " + dirName);
+			}
+		}
 	}
 
 	public static void copyFolder(File src, File dest) throws IOException {
@@ -158,8 +159,8 @@ public class FileOperations {
 			in.close();
 			out.close();
 
-			Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "File copied from " + src + " to "
-				+ dest));
+			Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "File copied from "
+					+ src + " to " + dest));
 		}
 	}
 }

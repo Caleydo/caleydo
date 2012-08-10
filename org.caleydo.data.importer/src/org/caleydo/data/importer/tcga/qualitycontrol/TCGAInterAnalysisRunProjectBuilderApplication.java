@@ -19,19 +19,12 @@
  *******************************************************************************/
 package org.caleydo.data.importer.tcga.qualitycontrol;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.id.IDMappingManager;
-import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.data.importer.XMLToProjectBuilder;
+import org.caleydo.data.importer.tcga.AProjectBuilderApplication;
 import org.caleydo.data.importer.tcga.EDataSetType;
 import org.caleydo.data.importer.tcga.ETumorType;
 import org.caleydo.data.importer.tcga.utils.GroupingListCreator;
@@ -50,6 +43,7 @@ import com.martiansoftware.jsap.JSAPResult;
  * 
  */
 public class TCGAInterAnalysisRunProjectBuilderApplication
+	extends AProjectBuilderApplication
 	implements IApplication {
 
 	public static String DEFAULT_TCGA_SERVER_URL = "http://compbio.med.harvard.edu/tcga/stratomex/data_qc/";
@@ -58,26 +52,17 @@ public class TCGAInterAnalysisRunProjectBuilderApplication
 	public static String DEFAULT_OUTPUT_FOLDER_PATH = GeneralManager.CALEYDO_HOME_PATH
 			+ "TCGA/";
 
-	private String[] tumorTypes = null;
-	private String[] analysisRuns = null;
-	private String outputPath = "";
-	private String tcgaServerURL = "";
-
-	private String reportJSONGenomicData = "";
-
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
 
-		handleProgramArguments(context);
+		defaultTCGAServerURL = DEFAULT_TCGA_SERVER_URL;
+		caleydoWebstartURL = CALEYDO_WEBSTART_URL;
+		defaultOutputFolderPath = DEFAULT_OUTPUT_FOLDER_PATH;
 
-		generateTCGAProjectFiles();
-
-		// FileOperations.deleteDirectory(tmpDataOutputPath);
-
-		return context;
+		return super.start(context);
 	}
 
-	private void handleProgramArguments(IApplicationContext context) {
+	protected void handleProgramArguments(IApplicationContext context) {
 		String[] runConfigParameters = (String[]) context.getArguments().get(
 				"application.args");
 
@@ -131,14 +116,17 @@ public class TCGAInterAnalysisRunProjectBuilderApplication
 		}
 	}
 
-	private void generateTCGAProjectFiles() {
+	protected void generateTCGAProjectFiles() {
 		String tmpDataOutputPath = outputPath + "tmp/";
+		FileOperations.createDirectory(tmpDataOutputPath);
+
 		String jnlpOutputFolder = outputPath + "jnlp/";
 		FileOperations.createDirectory(jnlpOutputFolder);
 
 		for (EDataSetType dataSetType : EDataSetType.values()) {
 
-			String dataTypeSpecificOutputPath = outputPath + "data_qc" + dataSetType + "/";
+			FileOperations.createDirectory(outputPath + "data_qc/");
+			String dataTypeSpecificOutputPath = outputPath + "data_qc/" + dataSetType + "/";
 			FileOperations.createDirectory(dataTypeSpecificOutputPath);
 
 			for (int tumorIndex = 0; tumorIndex < tumorTypes.length; tumorIndex++) {
@@ -185,54 +173,6 @@ public class TCGAInterAnalysisRunProjectBuilderApplication
 		}
 	}
 
-	private void handleJSAPError(JSAP jsap) {
-		System.err.println("Error during parsing of program arguments. Closing program.");
-		System.err.println("Usage: Caleydo");
-		System.err.println(jsap.getUsage());
-		System.err.println();
-		System.exit(1);
-	}
-
-	private void replaceStringInFile(String oldstring, String newstring, File in, File out)
-			throws IOException {
-
-		BufferedReader reader = new BufferedReader(new FileReader(in));
-		PrintWriter writer = new PrintWriter(new FileWriter(out));
-		String line = null;
-		while ((line = reader.readLine()) != null)
-			writer.println(line.replaceAll(oldstring, newstring));
-		reader.close();
-		writer.close();
-	}
-
-	private void cleanUp(String xmlFilePath, String jnlpOutputPath, String jnlpFileName,
-			String jnlpRemoteOutputURL) {
-
-		DataDomainManager.get().unregisterAllDataDomains();
-
-		// Clean up
-		new File(xmlFilePath).delete();
-
-		try {
-			// Generate jnlp file from jnlp template
-			replaceStringInFile("CALEYDO_PROJECT_URL", jnlpRemoteOutputURL, new File(
-					"resources/caleydo.jnlp"), new File(jnlpOutputPath + "_"));
-
-			replaceStringInFile("JNLP_NAME", jnlpFileName, new File(jnlpOutputPath + "_"),
-					new File(jnlpOutputPath));
-
-			new File(jnlpOutputPath + "_").delete();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		for (IDMappingManager idMappingManager : IDMappingManagerRegistry.get()
-				.getAllIDMappingManager()) {
-			idMappingManager.clearInternalMappingsAndIDTypes();
-		}
-	}
-
 	private void generateJSONReport(EDataSetType dataSetType,
 			String dataSetTypeSpecificOutputPath) {
 
@@ -240,24 +180,14 @@ public class TCGAInterAnalysisRunProjectBuilderApplication
 
 		reportJSONGenomicData = reportJSONGenomicData.replace("\"null\"", "null");
 
-		StringBuilder htmlBuilder = new StringBuilder();
-		htmlBuilder.append("{\"analysisRun\":\"" + dataSetType + "\",");
-		htmlBuilder.append("\"details\":[" + reportJSONGenomicData + "],\"caleydoVersion\":\""
-				+ GeneralManager.VERSION + "\"");
-		htmlBuilder.append("}\n");
+		reportJSONGenomicData = "{\"analysisRun\":\"" + dataSetType + "\",\"details\":["
+				+ reportJSONGenomicData + "],\"caleydoVersion\":\"" + GeneralManager.VERSION
+				+ "\"}\n";
 
-		FileWriter writer;
-		try {
-			writer = new FileWriter(reportJSONOutputPath);
-			writer.write(htmlBuilder.toString());
-			writer.close();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
+		writeJSONReport(reportJSONOutputPath);
 	}
 
-	private void generateTumorReportLine(String tumorAbbreviation, String jnlpFileName,
+	protected void generateTumorReportLine(String tumorAbbreviation, String jnlpFileName,
 			String projectOutputPath) {
 
 		String jnlpURL = CALEYDO_WEBSTART_URL + jnlpFileName;
