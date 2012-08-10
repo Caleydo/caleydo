@@ -98,8 +98,11 @@ public class SimilarityMap {
 			throw new IllegalStateException("Can not set this similarity (" + vaSimilarity
 				+ ") since it does not contain this SimilarityMap's VA (tableID: " + tableID + ")");
 		if (comparedPerspectiveID == null)
-			throw new IllegalStateException("No other va set in " + vaSimilarity);
-
+		{
+			// comparison to one self
+			comparedPerspectiveID = tableID;
+//			throw new IllegalStateException("No other va set in " + vaSimilarity);
+		}
 		similarityMap.put(comparedPerspectiveID, vaSimilarity);
 
 	}

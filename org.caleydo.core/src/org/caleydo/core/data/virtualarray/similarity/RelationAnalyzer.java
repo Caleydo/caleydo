@@ -50,8 +50,8 @@ public class RelationAnalyzer {
 		SimilarityMap currentMap = new SimilarityMap(perspectiveID, recordVA);
 
 		for (Entry<String, SimilarityMap> entry : hashSimilarityMaps.entrySet()) {
-			if (entry.getKey() == perspectiveID)
-				continue;
+//			if (entry.getKey() == perspectiveID)
+//				continue;
 			VASimilarity<RecordVirtualArray, RecordGroupList> similarity =
 				entry.getValue().calculateVASimilarity(perspectiveID, recordVA);
 			currentMap.setVaSimilarity(similarity);
