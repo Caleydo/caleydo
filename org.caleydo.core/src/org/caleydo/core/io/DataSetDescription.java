@@ -76,8 +76,7 @@ import org.caleydo.core.util.color.Color;
  */
 @XmlType
 @XmlRootElement
-public class DataSetDescription
-	extends MatrixDefinition {
+public class DataSetDescription extends MatrixDefinition {
 
 	/** A human readable name of the dataset. Optional. */
 	private String dataSetName;
@@ -134,6 +133,15 @@ public class DataSetDescription
 	private boolean isDataHomogeneous = true;
 
 	/**
+	 * Flag determining whether the data is of the form that 0 is the neutral
+	 * value, lower values are in the negative and larger values are in the
+	 * positive range. If this flag is set to true, it will be assumed that the
+	 * extend into both, positive and negatie directon is the same. Eg, for a
+	 * dataset [-0.5, 0.7] the value range will be set to -0.7 to 0.7.
+	 */
+	private boolean isDataCenteredAtZero = false;
+
+	/**
 	 * An artificial min value used for normalization in the {@link DataTable}.
 	 * Defaults to null.
 	 */
@@ -177,7 +185,8 @@ public class DataSetDescription
 	}
 
 	/**
-	 * @param transposeMatrix setter, see {@link #transposeMatrix}
+	 * @param transposeMatrix
+	 *            setter, see {@link #transposeMatrix}
 	 */
 	public void setTransposeMatrix(boolean transposeMatrix) {
 		this.transposeMatrix = transposeMatrix;
@@ -191,7 +200,8 @@ public class DataSetDescription
 	}
 
 	/**
-	 * @param dataSetName setter, see {@link #dataSetName}
+	 * @param dataSetName
+	 *            setter, see {@link #dataSetName}
 	 */
 	public void setDataSetName(String dataSetName) {
 		this.dataSetName = dataSetName;
@@ -205,7 +215,8 @@ public class DataSetDescription
 	}
 
 	/**
-	 * @param isDataHomogeneous setter, see {@link #isDataHomogeneous}
+	 * @param isDataHomogeneous
+	 *            setter, see {@link #isDataHomogeneous}
 	 */
 	public void setDataHomogeneous(boolean isDataHomogeneous) {
 		this.isDataHomogeneous = isDataHomogeneous;
@@ -219,7 +230,23 @@ public class DataSetDescription
 	}
 
 	/**
-	 * @param min setter, see {@link #min}
+	 * @param isDataCenteredAtZero
+	 *            setter, see {@link #isDataCenteredAtZero}
+	 */
+	public void setDataCenteredAtZero(boolean isDataCenteredAtZero) {
+		this.isDataCenteredAtZero = isDataCenteredAtZero;
+	}
+
+	/**
+	 * @return the isDataCenteredAtZero, see {@link #isDataCenteredAtZero}
+	 */
+	public boolean isDataCenteredAtZero() {
+		return isDataCenteredAtZero;
+	}
+
+	/**
+	 * @param min
+	 *            setter, see {@link #min}
 	 */
 	public void setMin(Float min) {
 		this.min = min;
@@ -233,7 +260,8 @@ public class DataSetDescription
 	}
 
 	/**
-	 * @param max setter, see {@link #max}
+	 * @param max
+	 *            setter, see {@link #max}
 	 */
 	public void setMax(Float max) {
 		this.max = max;
@@ -254,7 +282,8 @@ public class DataSetDescription
 	}
 
 	/**
-	 * @param mathFilterMode setter, see {@link #mathFilterMode}
+	 * @param mathFilterMode
+	 *            setter, see {@link #mathFilterMode}
 	 */
 	public void setMathFilterMode(String mathFilterMode) {
 		this.mathFilterMode = mathFilterMode;
@@ -264,8 +293,8 @@ public class DataSetDescription
 	 * Setter for {@link #columnGroupingSpecifications}. Overrides previous
 	 * values of columnGroupingPaths
 	 * 
-	 * @param columnGroupingPaths setter, see
-	 *            {@link #columnGroupingSpecifications}
+	 * @param columnGroupingPaths
+	 *            setter, see {@link #columnGroupingSpecifications}
 	 */
 	public void setColumnGroupingSpecifications(
 			ArrayList<GroupingParseSpecification> columnGroupingSpecifications) {
@@ -294,8 +323,8 @@ public class DataSetDescription
 	}
 
 	/**
-	 * @param rowGroupingSpecifications setter, see
-	 *            {@link #rowGroupingSpecifications}
+	 * @param rowGroupingSpecifications
+	 *            setter, see {@link #rowGroupingSpecifications}
 	 */
 	public void setRowGroupingSpecifications(
 			ArrayList<GroupingParseSpecification> rowGroupingSpecifications) {
@@ -305,9 +334,11 @@ public class DataSetDescription
 	/**
 	 * Adds a path to the {@link #rowGroupingSpecifications}
 	 * 
-	 * @param rowGroupingPath a new path to the row groupings
+	 * @param rowGroupingPath
+	 *            a new path to the row groupings
 	 */
-	public void addRowGroupingSpecification(GroupingParseSpecification rowGroupingSpecification) {
+	public void addRowGroupingSpecification(
+			GroupingParseSpecification rowGroupingSpecification) {
 		if (rowGroupingSpecifications == null) {
 			rowGroupingSpecifications = new ArrayList<GroupingParseSpecification>();
 		}
@@ -323,7 +354,8 @@ public class DataSetDescription
 	}
 
 	/**
-	 * @param parsingRules setter, see {@link #parsingRules}
+	 * @param parsingRules
+	 *            setter, see {@link #parsingRules}
 	 */
 	public void setParsingRules(ArrayList<ParsingRule> parsingRules) {
 		this.parsingRules = parsingRules;
@@ -349,7 +381,8 @@ public class DataSetDescription
 	}
 
 	/**
-	 * @param parsingPattern setter, see {@link #parsingPattern}
+	 * @param parsingPattern
+	 *            setter, see {@link #parsingPattern}
 	 */
 	public void setParsingPattern(ArrayList<ColumnDescription> parsingPattern) {
 		this.parsingPattern = parsingPattern;
@@ -383,8 +416,7 @@ public class DataSetDescription
 			String[] columns = dataLine.split(delimiter);
 			numberOfColumns = columns.length;
 
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			// Logger.log(new Status(Status.ERROR, "Parsing",
 			// "Cannot read from: "
 			// + dataSourcePath));
@@ -418,8 +450,7 @@ public class DataSetDescription
 						}
 
 					}
-				}
-				else {
+				} else {
 					// we have passed the last rule
 					break;
 				}
@@ -429,7 +460,8 @@ public class DataSetDescription
 				// we skip until we reach the from column
 				continue;
 			}
-			if (currentParsingRule.getToColumn() < 0 && !currentParsingRule.isParseUntilEnd()) {
+			if (currentParsingRule.getToColumn() < 0
+					&& !currentParsingRule.isParseUntilEnd()) {
 				// if only a single from column is specified we write that and
 				// continue with the next parsing rule
 				parsingPattern.add(new ColumnDescription(columnCount, currentParsingRule
@@ -467,8 +499,8 @@ public class DataSetDescription
 	}
 
 	/**
-	 * @param dataProcessingDescription setter, see
-	 *            {@link #dataProcessingDescription}
+	 * @param dataProcessingDescription
+	 *            setter, see {@link #dataProcessingDescription}
 	 */
 	public void setDataProcessingDescription(
 			DataProcessingDescription dataProcessingDescription) {
@@ -504,7 +536,8 @@ public class DataSetDescription
 	}
 
 	/**
-	 * @param color setter, see {@link #color}
+	 * @param color
+	 *            setter, see {@link #color}
 	 */
 	public void setColor(Color color) {
 		this.color = color;
