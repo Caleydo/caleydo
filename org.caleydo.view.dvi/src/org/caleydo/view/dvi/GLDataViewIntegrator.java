@@ -530,8 +530,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		dataDomainChangedListener = new DataDomainChangedListener();
 		dataDomainChangedListener.setHandler(this);
-		eventPublisher.addListener(DataDomainUpdateEvent.class,
-				dataDomainChangedListener);
+		eventPublisher
+				.addListener(DataDomainUpdateEvent.class, dataDomainChangedListener);
 
 		newDataDomainEventListener = new NewDataDomainEventListener();
 		newDataDomainEventListener.setHandler(this);
@@ -1305,37 +1305,6 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 						dataDomain, clusterConfiguration);
 
 				dialog.open();
-
-				// if (status == Dialog.OK) {
-				// GroupingParseSpecification groupingParseSpecification =
-				// dialog
-				// .getGroupingParseSpecification();
-				// DataSetDescription dataSetDescription = dataDomain
-				// .getDataSetDescription();
-				// if (dataDomain.getRecordIDCategory() == idCategory) {
-				// if (dataDomain.isColumnDimension()) {
-				// dataSetDescription
-				// .addRowGroupingSpecification(groupingParseSpecification);
-				// } else {
-				// dataSetDescription
-				// .addColumnGroupingSpecification(groupingParseSpecification);
-				// }
-				// } else {
-				// if (dataDomain.isColumnDimension()) {
-				// dataSetDescription
-				// .addColumnGroupingSpecification(groupingParseSpecification);
-				// } else {
-				// dataSetDescription
-				// .addRowGroupingSpecification(groupingParseSpecification);
-				// }
-				// }
-				//
-				// DataLoader.loadGrouping(dataDomain,
-				// groupingParseSpecification);
-
-				// DataLoader.loadGroupings(dataDomain,
-				// groupingParseSpecification);
-				// What now?
 
 			}
 		});

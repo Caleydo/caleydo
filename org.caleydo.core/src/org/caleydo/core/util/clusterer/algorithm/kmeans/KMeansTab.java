@@ -21,7 +21,6 @@ package org.caleydo.core.util.clusterer.algorithm.kmeans;
 
 import org.caleydo.core.util.clusterer.gui.AClusterTab;
 import org.caleydo.core.util.clusterer.initialization.AClusterAlgorithmConfiguration;
-import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

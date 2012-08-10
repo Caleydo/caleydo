@@ -37,12 +37,12 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * Composite that lets a user determine which instance of
- * {@link ATableBasedDataDomain} and the respective {@link AVariablePerspective}s to
- * use.
+ * {@link ATableBasedDataDomain} and the respective {@link AVariablePerspective}
+ * s to use.
  * 
  * @author Alexander Lex
  */
@@ -90,18 +90,19 @@ public class DataChooserComposite extends Composite {
 
 	/** Creates the GUI for this composite */
 	public void initGui() {
-		GridLayout layout = new GridLayout(1, false);
+		GridLayout layout = new GridLayout(2, false);
 		this.setLayout(layout);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.grabExcessHorizontalSpace = true;
 		this.setLayoutData(gridData);
 
-		Group dataDomainGroup = new Group(this, SWT.NONE);
-		dataDomainGroup.setText("Data set:");
-		dataDomainGroup.setLayout(new GridLayout(1, false));
+		Label dataDomainLabel = new Label(this, SWT.NONE);
+		dataDomainLabel.setText("Data Set:");
+		// dataDomainGroup.setLayout(new GridLayout(1, false));
 
-		dataDomainChooser = new Combo(dataDomainGroup, SWT.NONE);
+		dataDomainChooser = new Combo(this, SWT.NONE | SWT.READ_ONLY);
 		dataDomainChooser.setText("Choose data set");
+		dataDomainChooser.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		ArrayList<ATableBasedDataDomain> tDataDomains = DataDomainManager.get()
 				.getDataDomainsByType(ATableBasedDataDomain.class);
@@ -131,12 +132,14 @@ public class DataChooserComposite extends Composite {
 			}
 		});
 
-		Group recordPerspectiveGroup = new Group(this, SWT.NONE);
-		recordPerspectiveGroup.setText("Rows:");
-		recordPerspectiveGroup.setLayout(new GridLayout(1, false));
+		Label recordPerspectiveLabel = new Label(this, SWT.NONE);
+		recordPerspectiveLabel.setText("Rows:");
+		// recordPerspectiveLabel.setLayout(new GridLayout(1, false));
 
-		recordPerspectiveChooser = new Combo(recordPerspectiveGroup, SWT.DROP_DOWN
-				| SWT.BORDER);
+		recordPerspectiveChooser = new Combo(this, SWT.DROP_DOWN | SWT.BORDER
+				| SWT.READ_ONLY);
+		recordPerspectiveChooser.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true,
+				false));
 		recordPerspectiveChooser.setText("Choose record perspective");
 
 		// data = new GridData(GridData.FILL_HORIZONTAL);
@@ -159,12 +162,14 @@ public class DataChooserComposite extends Composite {
 		// data.minimumWidth = labelWidth;
 		// dimensionPerspectiveLabel.setLayoutData(data);
 
-		Group dimensionPerspectiveGroup = new Group(this, SWT.NONE);
-		dimensionPerspectiveGroup.setText("Columns:");
-		dimensionPerspectiveGroup.setLayout(new GridLayout(1, false));
+		Label dimensionPerspectiveLabel = new Label(this, SWT.NONE);
+		dimensionPerspectiveLabel.setText("Columns:");
+		// dimensionPerspectiveLabel.setLayout(new GridLayout(1, false));
 
-		dimensionPerspectiveChooser = new Combo(dimensionPerspectiveGroup, SWT.DROP_DOWN
-				| SWT.BORDER);
+		dimensionPerspectiveChooser = new Combo(this, SWT.DROP_DOWN | SWT.BORDER
+				| SWT.READ_ONLY);
+		dimensionPerspectiveChooser.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true,
+				false));
 		dimensionPerspectiveChooser.setText("Choose columns:");
 		//
 		// data = new GridData(GridData.FILL_HORIZONTAL);
