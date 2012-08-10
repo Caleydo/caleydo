@@ -72,12 +72,11 @@ public class StartClusteringDialogAction extends Action implements
 
 	private Composite parentComposite;
 
-	private String clusterTargetName;
-	private String distanceMeasureName;
-
-	private String[] typeOptions = { "Choose Dataset First", "Invisible" };
+	/** The combo for choosing which type of perspective to cluster */
 	private Combo clusterTypeCombo;
+	private String[] typeOptions = { "Choose Dataset First", "Invisible" };
 
+	private Combo distanceMeasureCombo;
 	private String[] distanceMeasureOptions = EDistanceMeasure.getNames();
 
 	private ATableBasedDataDomain dataDomain;
@@ -168,7 +167,6 @@ public class StartClusteringDialogAction extends Action implements
 		clusterTypeCombo = new Combo(clusterDimensionGroup, SWT.DROP_DOWN);
 		clusterTypeCombo.setItems(typeOptions);
 		clusterTypeCombo.select(0);
-		clusterTargetName = typeOptions[0];
 
 		if (dataDomain == null) {
 			clusterTypeCombo.setEnabled(false);
@@ -178,17 +176,10 @@ public class StartClusteringDialogAction extends Action implements
 		distanceMeasureGroup.setText("Distance measure:");
 		distanceMeasureGroup.setLayout(new GridLayout(1, false));
 
-		final Combo distMeasureCombo = new Combo(distanceMeasureGroup, SWT.DROP_DOWN);
-		distMeasureCombo.setItems(distanceMeasureOptions);
-		distMeasureCombo.setEnabled(true);
-		distMeasureCombo.select(0);
-		distanceMeasureName = distanceMeasureOptions[0];
-		distMeasureCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				distanceMeasureName = distMeasureCombo.getText();
-			}
-		});
+		distanceMeasureCombo = new Combo(distanceMeasureGroup, SWT.DROP_DOWN);
+		distanceMeasureCombo.setItems(distanceMeasureOptions);
+		distanceMeasureCombo.setEnabled(true);
+		distanceMeasureCombo.select(0);
 
 		tabFolder = new TabFolder(composite, SWT.BORDER);
 
@@ -203,15 +194,13 @@ public class StartClusteringDialogAction extends Action implements
 						.getData();
 				if (tab == null)
 					return;
-				int selectedMeasure = distMeasureCombo.getSelectionIndex();
+				int selectedMeasure = distanceMeasureCombo.getSelectionIndex();
 				String[] supportedMeasures = tab.getSupportedDistanceMeasures();
-				distMeasureCombo.setItems(supportedMeasures);
+				distanceMeasureCombo.setItems(supportedMeasures);
 				if (supportedMeasures.length - 1 < selectedMeasure)
-					distMeasureCombo.select(0);
+					distanceMeasureCombo.select(0);
 				else
-					distMeasureCombo.select(selectedMeasure);
-
-				distanceMeasureName = distMeasureCombo.getText();
+					distanceMeasureCombo.select(selectedMeasure);
 
 			}
 
@@ -221,23 +210,25 @@ public class StartClusteringDialogAction extends Action implements
 			}
 		});
 
-//		composite.addHelpListener(new HelpListener() {
-//
-//			@Override
-//			public void helpRequested(HelpEvent e) {
-//				// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-//				// .showView("org.caleydo.view.browser");
-//				//
-//				// final String URL_HELP_CLUSTERING =
-//				// "http://www.caleydo.org/help/gene_expression.html#Clustering";
-//				// ChangeURLEvent changeURLEvent = new ChangeURLEvent();
-//				// changeURLEvent.setSender(this);
-//				// changeURLEvent.setUrl(URL_HELP_CLUSTERING);
-//				// GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
-//				LinkHandler
-//						.openLink("http://www.caleydo.org/help/gene_expression.html#Clustering");
-//			}
-//		});
+		// composite.addHelpListener(new HelpListener() {
+		//
+		// @Override
+		// public void helpRequested(HelpEvent e) {
+		// //
+		// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+		// // .showView("org.caleydo.view.browser");
+		// //
+		// // final String URL_HELP_CLUSTERING =
+		// // "http://www.caleydo.org/help/gene_expression.html#Clustering";
+		// // ChangeURLEvent changeURLEvent = new ChangeURLEvent();
+		// // changeURLEvent.setSender(this);
+		// // changeURLEvent.setUrl(URL_HELP_CLUSTERING);
+		// //
+		// GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
+		// LinkHandler
+		// .openLink("http://www.caleydo.org/help/gene_expression.html#Clustering");
+		// }
+		// });
 
 		new KMeansTab(tabFolder);
 		new AffinityTab(tabFolder);
@@ -264,7 +255,7 @@ public class StartClusteringDialogAction extends Action implements
 				// e1.printStackTrace();
 				// }
 				LinkHandler
-				.openLink("http://www.icg.tugraz.at/project/caleydo/help/manipulating-data#cobweb");
+						.openLink("http://www.icg.tugraz.at/project/caleydo/help/manipulating-data#cobweb");
 			}
 		});
 
@@ -287,17 +278,17 @@ public class StartClusteringDialogAction extends Action implements
 
 		clusterConfiguration = clusterTab.getClusterConfiguration();
 
-		if (clusterTargetName.equals(typeOptions[0]))
+		if (clusterTypeCombo.getText().equals(typeOptions[0]))
 			clusterConfiguration.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
-		else if (clusterTargetName.equals(typeOptions[1]))
+		else if (clusterTypeCombo.getText().equals(typeOptions[1]))
 			clusterConfiguration.setClusterTarget(EClustererTarget.DIMENSION_CLUSTERING);
 		else {
 			throw new IllegalStateException("Unkonwn Cluster Target: "
-					+ clusterTargetName);
+					+ clusterTypeCombo.getText());
 		}
 
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure
-				.getTypeForName(distanceMeasureName));
+				.getTypeForName(distanceMeasureCombo.getText()));
 
 		clusterConfiguration.setSourceRecordPerspective(recordPerspective);
 		clusterConfiguration.setSourceDimensionPerspective(dimensionPerspective);
@@ -346,7 +337,6 @@ public class StartClusteringDialogAction extends Action implements
 		clusterTypeCombo.setItems(typeOptions);
 		clusterTypeCombo.select(0);
 		clusterTypeCombo.setEnabled(true);
-		clusterTargetName = typeOptions[0];
 		parent.dataOK();
 	}
 
