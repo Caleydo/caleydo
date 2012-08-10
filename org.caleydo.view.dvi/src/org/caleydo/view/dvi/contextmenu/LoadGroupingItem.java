@@ -21,9 +21,8 @@ public class LoadGroupingItem extends AContextMenuItem {
 	/**
 	 * @param dataDomain
 	 *            The datadomain a grouping should be loaded for.
-	 * @param isColumnGrouping
-	 *            Determines whether the grouping should be loaded for rows or
-	 *            columns.
+	 * @param idCategory
+	 *            The {@link IDCategory} a grouping is loaded for.
 	 */
 	public LoadGroupingItem(ATableBasedDataDomain dataDomain, IDCategory idCategory) {
 		setLabel("Load Grouping for " + idCategory.getCategoryName());

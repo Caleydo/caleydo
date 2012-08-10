@@ -66,6 +66,7 @@ import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.gui.dataimport.ImportGroupingDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.RCPViewInitializationData;
@@ -84,6 +85,7 @@ import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.dvi.event.AddTablePerspectiveEvent;
 import org.caleydo.view.dvi.event.ApplySpecificGraphLayoutEvent;
+import org.caleydo.view.dvi.event.CreateClusteringEvent;
 import org.caleydo.view.dvi.event.CreateViewFromTablePerspectiveEvent;
 import org.caleydo.view.dvi.event.LoadGroupingEvent;
 import org.caleydo.view.dvi.event.OpenViewEvent;
@@ -94,6 +96,7 @@ import org.caleydo.view.dvi.layout.TwoLayeredGraphLayout;
 import org.caleydo.view.dvi.layout.edge.rendering.AEdgeRenderer;
 import org.caleydo.view.dvi.listener.AddTablePerspectiveEventListener;
 import org.caleydo.view.dvi.listener.ApplySpecificGraphLayoutEventListener;
+import org.caleydo.view.dvi.listener.CreateClusteringEventListener;
 import org.caleydo.view.dvi.listener.CreateViewFromTablePerspectiveEventListener;
 import org.caleydo.view.dvi.listener.DimensionGroupsChangedEventListener;
 import org.caleydo.view.dvi.listener.DimensionVAUpdateEventListener;
@@ -170,6 +173,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	private DimensionVAUpdateEventListener dimensionVAUpdateEventListener;
 	private ShowViewWithoutDataEventListener showViewWithoutDataEventListener;
 	private LoadGroupingEventListener loadGroupingEventListener;
+	private CreateClusteringEventListener createClusteringEventListener;
 
 	private IDVINode currentMouseOverNode;
 
@@ -578,6 +582,11 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		loadGroupingEventListener = new LoadGroupingEventListener();
 		loadGroupingEventListener.setHandler(this);
 		eventPublisher.addListener(LoadGroupingEvent.class, loadGroupingEventListener);
+
+		createClusteringEventListener = new CreateClusteringEventListener();
+		createClusteringEventListener.setHandler(this);
+		eventPublisher.addListener(CreateClusteringEvent.class,
+				createClusteringEventListener);
 	}
 
 	@Override
@@ -657,6 +666,11 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		if (loadGroupingEventListener != null) {
 			eventPublisher.removeListener(loadGroupingEventListener);
 			loadGroupingEventListener = null;
+		}
+
+		if (createClusteringEventListener != null) {
+			eventPublisher.removeListener(createClusteringEventListener);
+			createClusteringEventListener = null;
 		}
 	}
 
@@ -1215,8 +1229,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 			@Override
 			public void run() {
-				ImportGroupingDialog dialog = new ImportGroupingDialog(new Shell(), idCategory);
-//				dialog.setRowIDCategory(idCategory);
+				ImportGroupingDialog dialog = new ImportGroupingDialog(new Shell(),
+						idCategory);
+				// dialog.setRowIDCategory(idCategory);
 				int status = dialog.open();
 
 				if (status == Dialog.OK) {
@@ -1248,6 +1263,79 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 					// groupingParseSpecification);
 					// What now?
 				}
+			}
+		});
+	}
+
+	/**
+	 * Creates a new perspective for the specified data domain through
+	 * clustering via the {@link StartClusteringDialog}. The default
+	 * perspectives of the data domain are used to specify the data to be
+	 * clustered.
+	 * 
+	 * @param dataDomain
+	 * @param isDimensionClustering
+	 *            Specifies whether a {@link DimensionPerspective} or a
+	 *            {@link RecordPerspective} shall be created.
+	 */
+	public void createClustering(final ATableBasedDataDomain dataDomain,
+			final boolean isDimensionClustering) {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				StartClusteringDialog dialog = new StartClusteringDialog(new Shell(),
+						dataDomain);
+				dialog.setSourceDimensionPerspective(dataDomain
+						.getDefaultTablePerspective().getDimensionPerspective());
+				dialog.setSourceRecordPerspective(dataDomain.getDefaultTablePerspective()
+						.getRecordPerspective());
+				if (isDimensionClustering) {
+					DimensionPerspective dimensionPerspective = new DimensionPerspective(
+							dataDomain);
+					dataDomain.getTable().registerDimensionPerspective(
+							dimensionPerspective);
+					dialog.setTargetDimensionPerspective(dimensionPerspective);
+				} else {
+					RecordPerspective recordPerspective = new RecordPerspective(
+							dataDomain);
+					dataDomain.getTable().registerRecordPerspective(recordPerspective);
+					dialog.setTargetRecordPerspective(recordPerspective);
+				}
+
+				int status = dialog.open();
+
+				// if (status == Dialog.OK) {
+				// GroupingParseSpecification groupingParseSpecification =
+				// dialog
+				// .getGroupingParseSpecification();
+				// DataSetDescription dataSetDescription = dataDomain
+				// .getDataSetDescription();
+				// if (dataDomain.getRecordIDCategory() == idCategory) {
+				// if (dataDomain.isColumnDimension()) {
+				// dataSetDescription
+				// .addRowGroupingSpecification(groupingParseSpecification);
+				// } else {
+				// dataSetDescription
+				// .addColumnGroupingSpecification(groupingParseSpecification);
+				// }
+				// } else {
+				// if (dataDomain.isColumnDimension()) {
+				// dataSetDescription
+				// .addColumnGroupingSpecification(groupingParseSpecification);
+				// } else {
+				// dataSetDescription
+				// .addRowGroupingSpecification(groupingParseSpecification);
+				// }
+				// }
+				//
+				// DataLoader.loadGrouping(dataDomain,
+				// groupingParseSpecification);
+
+				// DataLoader.loadGroupings(dataDomain,
+				// groupingParseSpecification);
+				// What now?
+
 			}
 		});
 	}

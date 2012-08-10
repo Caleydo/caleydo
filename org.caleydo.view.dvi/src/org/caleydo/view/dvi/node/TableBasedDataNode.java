@@ -54,6 +54,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
+import org.caleydo.view.dvi.contextmenu.CreateClusteringItem;
 import org.caleydo.view.dvi.contextmenu.LoadGroupingItem;
 import org.caleydo.view.dvi.contextmenu.ShowViewWithoutDataItem;
 import org.caleydo.view.dvi.event.OpenVendingMachineEvent;
@@ -144,8 +145,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 	private class DetailState extends ALayoutState {
 
 		public DetailState() {
-			tablePerspectiveRenderer = new TablePerspectiveMatrixRenderer(dataDomain, view,
-					TableBasedDataNode.this, dragAndDropController);
+			tablePerspectiveRenderer = new TablePerspectiveMatrixRenderer(dataDomain,
+					view, TableBasedDataNode.this, dragAndDropController);
 			List<Pair<String, Integer>> pickingIDsToBePushed = new ArrayList<Pair<String, Integer>>();
 			pickingIDsToBePushed.add(new Pair<String, Integer>(
 					DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
@@ -232,6 +233,11 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 						dataDomain.getDimensionIDCategory()));
 				contextMenuCreator.addContextMenuItem(new LoadGroupingItem(dataDomain,
 						dataDomain.getRecordIDCategory()));
+
+				contextMenuCreator.addContextMenuItem(new CreateClusteringItem(
+						dataDomain, true));
+				contextMenuCreator.addContextMenuItem(new CreateClusteringItem(
+						dataDomain, false));
 			}
 
 		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
@@ -330,20 +336,22 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 				"toggleTablePerspectiveLayout");
 		toggleTablePerspectiveButtonLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		toggleTablePerspectiveButtonLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
-		toggleTablePerspectiveButton = new Button(TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_TYPE
-				+ getID(), TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_ID,
+		toggleTablePerspectiveButton = new Button(
+				TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_TYPE + getID(),
+				TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_ID,
 				EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
 
 		if (dataDomain.getRecordPerspectiveIDs().size() < 1
 				&& dataDomain.getDimensionPerspectiveIDs().size() < 1) {
 			toggleTablePerspectiveButton.setVisible(false);
 		}
-		toggleTablePerspectiveButtonRenderer = new ButtonRenderer(toggleTablePerspectiveButton,
-				view);
+		toggleTablePerspectiveButtonRenderer = new ButtonRenderer(
+				toggleTablePerspectiveButton, view);
 		toggleTablePerspectiveButtonRenderer.addPickingID(
 				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 		toggleTablePerspectiveButtonRenderer.setZCoordinate(1);
-		toggleTablePerspectiveButtonLayout.setRenderer(toggleTablePerspectiveButtonRenderer);
+		toggleTablePerspectiveButtonLayout
+				.setRenderer(toggleTablePerspectiveButtonRenderer);
 
 		// FIXME: Very bad hack
 		if ((!dataDomain.getLabel().toLowerCase().contains("copy"))
@@ -418,7 +426,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			tablePerspectives = new ArrayList<TablePerspective>();
 			return;
 		}
-		// List<Pair<String, TablePerspective>> sortedParentTablePerspectives = new
+		// List<Pair<String, TablePerspective>> sortedParentTablePerspectives =
+		// new
 		// ArrayList<Pair<String, TablePerspective>>();
 		// for (TablePerspective container : containerCollection) {
 		// sortedParentTablePerspectives.add(new Pair<String,
