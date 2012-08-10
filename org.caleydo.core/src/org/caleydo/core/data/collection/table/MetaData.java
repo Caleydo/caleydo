@@ -251,9 +251,10 @@ public class MetaData {
 			}
 			if (isDataCenteredAtZero) {
 				if (min > 0 || max < 0)
-					throw new IllegalStateException(
-							"Flag isDataCenteredAtZero was set, but min is larger than 0: "
-									+ min + " or max is smaller than 0: " + max);
+					return;
+//					throw new IllegalStateException(
+//							"Flag isDataCenteredAtZero was set, but min is larger than 0: "
+//									+ min + " or max is smaller than 0: " + max);
 				double absMin = Math.abs(min);
 				if (absMin > max) {
 					max = absMin;

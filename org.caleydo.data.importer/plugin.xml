@@ -52,7 +52,7 @@
             thread="main"
             visible="true">
          <run
-               class="org.caleydo.data.importer.tcga.TCGAInterAnalysisRunProjectBuilderApplication">
+               class="org.caleydo.data.importer.tcga.qualitycontrol.TCGAInterAnalysisRunProjectBuilderApplication">
          </run>
       </application>
    </extension>

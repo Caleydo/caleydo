@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.data.importer.tcga;
+package org.caleydo.data.importer.tcga.qualitycontrol;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,13 +27,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.data.importer.XMLToProjectBuilder;
+import org.caleydo.data.importer.tcga.EDataSetType;
+import org.caleydo.data.importer.tcga.ETumorType;
+import org.caleydo.data.importer.tcga.utils.GroupingListCreator;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import com.martiansoftware.jsap.FlaggedOption;
@@ -54,6 +55,8 @@ public class TCGAInterAnalysisRunProjectBuilderApplication
 	public static String DEFAULT_TCGA_SERVER_URL = "http://compbio.med.harvard.edu/tcga/stratomex/data_qc/";
 	public static String CALEYDO_WEBSTART_URL = "http://data.icg.tugraz.at/caleydo/download/webstart_"
 			+ GeneralManager.VERSION + "/";
+	public static String DEFAULT_OUTPUT_FOLDER_PATH = GeneralManager.CALEYDO_HOME_PATH
+			+ "TCGA/";
 
 	private String[] tumorTypes = null;
 	private String[] analysisRuns = null;
@@ -97,11 +100,10 @@ public class TCGAInterAnalysisRunProjectBuilderApplication
 			analysisRunIdentifierOpt.setHelp("Analysis run identifiers");
 			jsap.registerParameter(analysisRunIdentifierOpt);
 
-			String defaultOutputFolder = GeneralManager.CALEYDO_HOME_PATH + "TCGA/";
-
 			FlaggedOption outputFolderOpt = new FlaggedOption("output-folder")
-					.setStringParser(JSAP.STRING_PARSER).setDefault(defaultOutputFolder)
-					.setRequired(false).setShortFlag('o').setLongFlag(JSAP.NO_LONGFLAG);
+					.setStringParser(JSAP.STRING_PARSER)
+					.setDefault(DEFAULT_OUTPUT_FOLDER_PATH).setRequired(false)
+					.setShortFlag('o').setLongFlag(JSAP.NO_LONGFLAG);
 			outputFolderOpt.setHelp("Output folder (full path)");
 			jsap.registerParameter(outputFolderOpt);
 
@@ -136,7 +138,7 @@ public class TCGAInterAnalysisRunProjectBuilderApplication
 
 		for (EDataSetType dataSetType : EDataSetType.values()) {
 
-			String dataTypeSpecificOutputPath = outputPath + dataSetType + "/";
+			String dataTypeSpecificOutputPath = outputPath + "data_qc" + dataSetType + "/";
 			FileOperations.createDirectory(dataTypeSpecificOutputPath);
 
 			for (int tumorIndex = 0; tumorIndex < tumorTypes.length; tumorIndex++) {
@@ -171,13 +173,13 @@ public class TCGAInterAnalysisRunProjectBuilderApplication
 				xmlToProjectBuilder.buildProject(xmlFilePath, projectOutputPath);
 
 				generateTumorReportLine(tumorType, jnlpFileName, projectRemoteOutputURL);
-				
+
 				if (tumorIndex < tumorTypes.length - 1)
 					reportJSONGenomicData += ",";
-				
+
 				cleanUp(xmlFilePath, jnlpOutputPath, jnlpFileName, projectRemoteOutputURL);
 			}
-			
+
 			generateJSONReport(dataSetType, dataTypeSpecificOutputPath);
 			reportJSONGenomicData = "";
 		}
@@ -275,65 +277,21 @@ public class TCGAInterAnalysisRunProjectBuilderApplication
 		}
 
 		// remove last comma
-		if (DataDomainManager.get().getDataDomainsByType(
-				ATableBasedDataDomain.class).size() > 0)
+		if (DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class).size() > 0)
 			reportJSONGenomicData = reportJSONGenomicData.substring(0,
 					reportJSONGenomicData.length() - 1);
 
-		reportJSONGenomicData += "},\"Caleydo JNLP\":\"" + jnlpURL + "\",\"Caleydo Project\":\""
-				+ projectOutputPath + "\"}\n";
+		reportJSONGenomicData += "},\"Caleydo JNLP\":\"" + jnlpURL
+				+ "\",\"Caleydo Project\":\"" + projectOutputPath + "\"}\n";
 	}
 
 	private String getAdditionalInfo(ATableBasedDataDomain dataDomain) {
 		return "{\"gene\":{\"count\":\"" + dataDomain.getTable().getMetaData().size()
-				+ "\",\"groupings\":[" + getDimensionGroupingList(dataDomain)
+				+ "\",\"groupings\":["
+				+ GroupingListCreator.getDimensionGroupingList(dataDomain)
 				+ "]},\"sample\":{\"count\":\"" + dataDomain.getTable().getMetaData().depth()
-				+ "\",\"groupings\":[" + getRecordGroupingList(dataDomain) + "]}}";
-	}
-
-	private String getRecordGroupingList(ATableBasedDataDomain dataDomain) {
-
-		String recordGroupings = "";
-
-		for (String recordPerspectiveID : dataDomain.getRecordPerspectiveIDs()) {
-			RecordPerspective recordPerspective = dataDomain.getTable().getRecordPerspective(
-					recordPerspectiveID);
-
-			if (recordPerspective.isPrivate())
-				continue;
-			if (recordPerspective.getLabel().equals("Default"))
-				continue;
-
-			recordGroupings += "\"" + recordPerspective.getLabel() + "\",";
-		}
-
-		// remove last comma
-		if (recordGroupings.length() > 1)
-			recordGroupings = recordGroupings.substring(0, recordGroupings.length() - 1);
-
-		return recordGroupings;
-	}
-
-	private String getDimensionGroupingList(ATableBasedDataDomain dataDomain) {
-		String dimensionGroupings = "";
-		for (String dimensionPerspectiveID : dataDomain.getDimensionPerspectiveIDs()) {
-			DimensionPerspective dimensionPerspective = dataDomain.getTable()
-					.getDimensionPerspective(dimensionPerspectiveID);
-			if (dimensionPerspective.isPrivate()) {
-				continue;
-			}
-			if (dimensionPerspective.getLabel().equals("Default"))
-				continue;
-
-			dimensionGroupings += "\"" + dimensionPerspective.getLabel() + "\",";
-		}
-
-		// remove last comma
-		if (dimensionGroupings.length() > 1)
-			dimensionGroupings = dimensionGroupings.substring(0,
-					dimensionGroupings.length() - 1);
-
-		return dimensionGroupings;
+				+ "\",\"groupings\":[" + GroupingListCreator.getRecordGroupingList(dataDomain)
+				+ "]}}";
 	}
 
 	@Override

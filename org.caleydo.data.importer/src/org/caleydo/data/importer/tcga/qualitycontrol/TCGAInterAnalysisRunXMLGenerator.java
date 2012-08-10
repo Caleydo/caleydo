@@ -17,14 +17,8 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.data.importer.tcga;
+package org.caleydo.data.importer.tcga.qualitycontrol;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.net.URL;
-import java.util.zip.GZIPInputStream;
-import org.apache.tools.tar.TarEntry;
-import org.apache.tools.tar.TarInputStream;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
@@ -38,6 +32,8 @@ import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorManager;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
+import org.caleydo.data.importer.tcga.EDataSetType;
+import org.caleydo.data.importer.tcga.utils.ArchiveExtractionUtils;
 
 /**
  * Generator class that writes the loading information of a series of TCGA data
@@ -76,97 +72,6 @@ public class TCGAInterAnalysisRunXMLGenerator
 		this.outputXMLFilePath = outputXMLFilePath;
 		this.tmpOutputDirectoryPath = tmpOutputFolderPath;
 		this.dataSetType = dataSetType;
-	}
-
-	protected String extractFileFromTarGzArchive(String archiveName, String fileName,
-			String outputDirectoryName, String remoteArchiveDirectory,
-			String analysisRunWithoutUnderscore) {
-
-		String outputFileName = null;
-
-		try {
-			byte[] buf = new byte[1024];
-			TarInputStream tarInputStream = null;
-			TarEntry tarEntry;
-
-			tarInputStream = new TarInputStream(new GZIPInputStream(new URL(
-					remoteArchiveDirectory + System.getProperty("file.separator")
-							+ archiveName).openStream()));
-
-			tarEntry = tarInputStream.getNextEntry();
-			while (tarEntry != null) {
-				// for each entry to be extracted
-				String entryName = tarEntry.getName();
-
-				// only continue if the this entry is the one we need to extract
-				if (!entryName.endsWith(fileName)) {
-					tarEntry = tarInputStream.getNextEntry();
-					continue;
-				}
-
-				int n;
-				FileOutputStream fileoutputstream;
-				File newFile = new File(entryName);
-				String directory = newFile.getParent();
-
-				if (directory == null) {
-					if (newFile.isDirectory())
-
-						break;
-				}
-
-				outputDirectoryName += analysisRunWithoutUnderscore
-						+ System.getProperty("file.separator") + tumorAbbreviation
-						+ System.getProperty("file.separator") + archiveName;
-
-				if (!(new File(outputDirectoryName)).exists()) {
-					if (!(new File(outputDirectoryName)).mkdirs()) {
-						// Directory creation failed
-						throw new RuntimeException("Unable to create output directory "
-								+ outputDirectoryName + " for " + fileName + ".");
-					}
-				}
-
-				outputFileName = outputDirectoryName + fileName;
-
-				fileoutputstream = new FileOutputStream(outputFileName);
-
-				while ((n = tarInputStream.read(buf, 0, 1024)) > -1)
-					fileoutputstream.write(buf, 0, n);
-
-				fileoutputstream.close();
-				tarInputStream.close();
-
-				break;
-			}// while
-
-		}
-		catch (Exception e) {
-			throw new RuntimeException("Unable to extract " + fileName + " from "
-					+ archiveName + ".");
-		}
-
-		if (outputFileName == null) {
-			throw new RuntimeException("File " + fileName + " not found in " + archiveName
-					+ ".");
-		}
-
-		return outputFileName;
-	}
-
-	// find Firehose archive in Firehose_get output directory and extract file
-	// from archive to temp directory
-	// return path to file in temp directory
-	protected String extractFile(String fileName, String pipelineName,
-			String analysisRunWithoutUnderscore, String remoteArchiveDirectory, int level) {
-
-		// gdac.broadinstitute.org_GBM.Methylation_Clustering_CNMF.Level_4.2012052500.0.0.tar.gz
-		String archiveName = FIREHOSE_TAR_NAME_PREFIX + tumorAbbreviation + "." + pipelineName
-				+ ".Level_" + level + "." + analysisRunWithoutUnderscore + "00.0.0.tar.gz";
-
-		// extract file to temp directory and return path to file
-		return extractFileFromTarGzArchive(archiveName, fileName, tmpOutputDirectoryPath,
-				remoteArchiveDirectory, analysisRunWithoutUnderscore);
 	}
 
 	@Override
@@ -308,8 +213,7 @@ public class TCGAInterAnalysisRunXMLGenerator
 		matrixData.setDataSourcePath(matrixFile);
 		matrixData.setNumberOfHeaderLines(3);
 		matrixData.setColor(color);
-		matrixData.setMin(-17.5f);
-		matrixData.setMax(17.5f);
+		matrixData.setDataCenteredAtZero(true);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
@@ -369,5 +273,24 @@ public class TCGAInterAnalysisRunXMLGenerator
 		matrixData.setDataProcessingDescription(dataProcessingDescription);
 
 		return matrixData;
+	}
+
+	// find Firehose archive in Firehose_get output directory and extract file
+	// from archive to temp directory
+	// return path to file in temp directory
+	protected String extractFile(String fileName, String pipelineName,
+			String runIdentifierWithoutUnderscore, String remoteArchiveDirectory, int level) {
+
+		// gdac.broadinstitute.org_GBM.Methylation_Clustering_CNMF.Level_4.2012052500.0.0.tar.gz
+		String archiveName = FIREHOSE_TAR_NAME_PREFIX + tumorAbbreviation + "." + pipelineName
+				+ ".Level_" + level + "." + runIdentifierWithoutUnderscore + "00.0.0.tar.gz";
+
+		String outputDirectoryName = tmpOutputDirectoryPath + runIdentifierWithoutUnderscore
+				+ System.getProperty("file.separator") + tumorAbbreviation
+				+ System.getProperty("file.separator") + archiveName;
+
+		// extract file to temp directory and return path to file
+		return ArchiveExtractionUtils.extractFileFromTarGzArchive(archiveName, fileName,
+				outputDirectoryName, remoteArchiveDirectory);
 	}
 }

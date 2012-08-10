@@ -20,7 +20,6 @@
 package org.caleydo.core.manager;
 
 import java.io.File;
-
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SWTGUIManager;
@@ -81,6 +80,13 @@ public class GeneralManager {
 	 * General manager as a singleton
 	 */
 	private volatile static GeneralManager instance;
+
+	/**
+	 * In dry mode Caleydo runs without GUI. However, the core's functionality
+	 * can be used without limitations. This is for instance used when Caleydo
+	 * project files are generated from XML files.
+	 */
+	private boolean isDryMode;
 
 	private BasicInformation basicInfo;
 
@@ -209,5 +215,19 @@ public class GeneralManager {
 
 	public static DataDomainManager getDataDomainManagerInstance() {
 		return DataDomainManager.get();
+	}
+
+	/**
+	 * @param isDryMode setter, see {@link #isDryMode}
+	 */
+	public void setDryMode(boolean isDryMode) {
+		this.isDryMode = isDryMode;
+	}
+
+	/**
+	 * @return the isDryMode, see {@link #isDryMode}
+	 */
+	public boolean isDryMode() {
+		return isDryMode;
 	}
 }

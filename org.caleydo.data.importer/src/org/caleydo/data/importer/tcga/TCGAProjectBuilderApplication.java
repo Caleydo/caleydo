@@ -27,14 +27,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.data.importer.XMLToProjectBuilder;
+import org.caleydo.data.importer.tcga.utils.GroupingListCreator;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import com.martiansoftware.jsap.FlaggedOption;
@@ -55,6 +54,8 @@ public class TCGAProjectBuilderApplication
 	public static String DEFAULT_TCGA_SERVER_URL = "http://compbio.med.harvard.edu/tcga/stratomex/data/";
 	public static String CALEYDO_WEBSTART_URL = "http://data.icg.tugraz.at/caleydo/download/webstart_"
 			+ GeneralManager.VERSION + "/";
+	public static String DEFAULT_OUTPUT_FOLDER_PATH = GeneralManager.CALEYDO_HOME_PATH
+			+ "TCGA/";
 
 	private String[] tumorTypes = null;
 	private String[] analysisRuns = null;
@@ -107,11 +108,10 @@ public class TCGAProjectBuilderApplication
 			dataRunIdentifierOpt.setHelp("Data run identifiers");
 			jsap.registerParameter(dataRunIdentifierOpt);
 
-			String defaultOutputFolder = GeneralManager.CALEYDO_HOME_PATH + "TCGA/";
-
 			FlaggedOption outputFolderOpt = new FlaggedOption("output-folder")
-					.setStringParser(JSAP.STRING_PARSER).setDefault(defaultOutputFolder)
-					.setRequired(false).setShortFlag('o').setLongFlag(JSAP.NO_LONGFLAG);
+					.setStringParser(JSAP.STRING_PARSER)
+					.setDefault(DEFAULT_OUTPUT_FOLDER_PATH).setRequired(false)
+					.setShortFlag('o').setLongFlag(JSAP.NO_LONGFLAG);
 			outputFolderOpt.setHelp("Output folder (full path)");
 			jsap.registerParameter(outputFolderOpt);
 
@@ -155,17 +155,18 @@ public class TCGAProjectBuilderApplication
 		String jnlpOutputFolder = outputPath + "jnlp/";
 		FileOperations.createDirectory(jnlpOutputFolder);
 
-		for (int tumorIndex = 0; tumorIndex < tumorTypes.length; tumorIndex++) {
+		for (int analysisRunIndex = 0; analysisRunIndex < analysisRuns.length; analysisRunIndex++) {
 
-			String tumorType = tumorTypes[tumorIndex];
+			String analysisRun = analysisRuns[analysisRunIndex];
+			String dataRun = dataRuns[analysisRunIndex];
 
-			for (int analysisRunIndex = 0; analysisRunIndex < analysisRuns.length; analysisRunIndex++) {
+			FileOperations.createDirectory(outputPath + "data/");
+			String runSpecificOutputPath = outputPath + "data/" + analysisRun + "/";
+			FileOperations.createDirectory(runSpecificOutputPath);
 
-				String analysisRun = analysisRuns[analysisRunIndex];
-				String dataRun = dataRuns[analysisRunIndex];
+			for (int tumorIndex = 0; tumorIndex < tumorTypes.length; tumorIndex++) {
 
-				String runSpecificOutputPath = outputPath + analysisRun + "/";
-				FileOperations.createDirectory(runSpecificOutputPath);
+				String tumorType = tumorTypes[tumorIndex];
 
 				String xmlFilePath = tmpDataOutputPath + analysisRun + "_" + tumorType
 						+ ".xml";
@@ -200,9 +201,9 @@ public class TCGAProjectBuilderApplication
 					reportJSONGenomicData += ",";
 
 				cleanUp(xmlFilePath, jnlpOutputPath, jnlpFileName, projectRemoteOutputURL);
-
-				generateJSONReport(analysisRun, dataRun, runSpecificOutputPath);
 			}
+
+			generateJSONReport(analysisRun, dataRun, runSpecificOutputPath);
 		}
 	}
 
@@ -364,54 +365,11 @@ public class TCGAProjectBuilderApplication
 
 	private String getAdditionalInfo(ATableBasedDataDomain dataDomain) {
 		return "{\"gene\":{\"count\":\"" + dataDomain.getTable().getMetaData().size()
-				+ "\",\"groupings\":[" + getDimensionGroupingList(dataDomain)
+				+ "\",\"groupings\":["
+				+ GroupingListCreator.getDimensionGroupingList(dataDomain)
 				+ "]},\"sample\":{\"count\":\"" + dataDomain.getTable().getMetaData().depth()
-				+ "\",\"groupings\":[" + getRecordGroupingList(dataDomain) + "]}}";
-	}
-
-	private String getRecordGroupingList(ATableBasedDataDomain dataDomain) {
-
-		String recordGroupings = "";
-
-		for (String recordPerspectiveID : dataDomain.getRecordPerspectiveIDs()) {
-			RecordPerspective recordPerspective = dataDomain.getTable().getRecordPerspective(
-					recordPerspectiveID);
-
-			if (recordPerspective.isPrivate())
-				continue;
-			if (recordPerspective.getLabel().equals("Default"))
-				continue;
-
-			recordGroupings += "\"" + recordPerspective.getLabel() + "\",";
-		}
-
-		// remove last comma
-		if (recordGroupings.length() > 1)
-			recordGroupings = recordGroupings.substring(0, recordGroupings.length() - 1);
-
-		return recordGroupings;
-	}
-
-	private String getDimensionGroupingList(ATableBasedDataDomain dataDomain) {
-		String dimensionGroupings = "";
-		for (String dimensionPerspectiveID : dataDomain.getDimensionPerspectiveIDs()) {
-			DimensionPerspective dimensionPerspective = dataDomain.getTable()
-					.getDimensionPerspective(dimensionPerspectiveID);
-			if (dimensionPerspective.isPrivate()) {
-				continue;
-			}
-			if (dimensionPerspective.getLabel().equals("Default"))
-				continue;
-
-			dimensionGroupings += "\"" + dimensionPerspective.getLabel() + "\",";
-		}
-
-		// remove last comma
-		if (dimensionGroupings.length() > 1)
-			dimensionGroupings = dimensionGroupings.substring(0,
-					dimensionGroupings.length() - 1);
-
-		return dimensionGroupings;
+				+ "\",\"groupings\":[" + GroupingListCreator.getRecordGroupingList(dataDomain)
+				+ "]}}";
 	}
 
 	@Override

@@ -24,11 +24,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
@@ -44,6 +42,7 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectSaver;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
 /**
  * This class handles the creation of Caleydo project files. The class takes an
@@ -64,7 +63,7 @@ public class XMLToProjectBuilder {
 
 		dataSetDescriptionFilePath = xmlInputPath;
 
-		GeneralManager.get().init();
+		GeneralManager.get().setDryMode(true);
 
 		createJAXBContext();
 		ProjectDescription dataSetMetInfoCollection = deserialzeDataSetMetaInfo();
@@ -74,8 +73,7 @@ public class XMLToProjectBuilder {
 			for (DataSetDescription dataSetDescription : dataSetMetInfoCollection
 					.getDataSetDescriptionCollection()) {
 
-				ATableBasedDataDomain dataDomain = DataLoader.loadData(dataSetDescription);
-				dataDomain.getDataAmount();
+				DataLoader.loadData(dataSetDescription);
 			}
 		}
 		catch (FileNotFoundException e) {
