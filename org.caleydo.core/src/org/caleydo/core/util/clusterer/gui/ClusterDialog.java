@@ -55,7 +55,30 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 /**
- * Dialog for configuring and starting clustering
+ * <p>
+ * Dialog for configuring and starting clustering. Reads and writes a
+ * {@link ClusterConfiguration} bean.
+ * </p>
+ * <p>
+ * Writing is supported for all options except for the
+ * {@link ClusterConfiguration#setOptionalTargetDimensionPerspective(org.caleydo.core.data.perspective.variable.DimensionPerspective)}
+ * and its record equivalent.
+ * </p>
+ * <p>
+ * Reading (i.e. initializing the dialog based on an existing configuration is
+ * only implemented for the following propoerties:
+ * </p>
+ * 
+ * <ul>
+ * <li>
+ * {@link ClusterConfiguration#getClusterTarget()}</li>
+ * <li>
+ * {@link ClusterConfiguration#getSourceRecordPerspective()}</li>
+ * <li>
+ * {@link ClusterConfiguration#getSourceDimensionPerspective()}</li>
+ * <li>
+ * {@link ClusterConfiguration#isModifyExistingPerspective()}</li>
+ * </ul>
  * 
  * @author Alexander Lex
  * @author Bernhard Schlegl
@@ -184,7 +207,14 @@ public class ClusterDialog extends AHelpButtonDialog implements IDataOKListener 
 		clusterTypeCombo = new Combo(composite, SWT.DROP_DOWN | SWT.READ_ONLY);
 		clusterTypeCombo.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		clusterTypeCombo.setItems(typeOptions);
-		clusterTypeCombo.select(0);
+
+		EClustererTarget target = clusterConfiguration.getClusterTarget();
+		if (target == null || target.equals(EClustererTarget.RECORD_CLUSTERING)) {
+			clusterTypeCombo.select(0);
+
+		} else {
+			clusterTypeCombo.select(1);
+		}
 
 		if (dataDomain == null) {
 			clusterTypeCombo.setEnabled(false);
@@ -250,7 +280,7 @@ public class ClusterDialog extends AHelpButtonDialog implements IDataOKListener 
 		modifyExistingPerspectiveButton = new Button(modifyPerspectiveGroup, SWT.CHECK);
 		modifyExistingPerspectiveButton.setLayoutData(new GridData());
 		modifyExistingPerspectiveButton.setText("Add new Grouping");
-		modifyExistingPerspectiveButton.setSelection(clusterConfiguration
+		modifyExistingPerspectiveButton.setSelection(!clusterConfiguration
 				.isModifyExistingPerspective());
 		// new OtherClusterersTab(tabFolder);
 
@@ -300,6 +330,10 @@ public class ClusterDialog extends AHelpButtonDialog implements IDataOKListener 
 
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure
 				.getTypeForName(distanceMeasureCombo.getText()));
+
+		clusterConfiguration
+				.setModifyExistingPerspective(!modifyExistingPerspectiveButton
+						.getSelection());
 
 		// clusterConfiguration.setSourceRecordPerspective(recordPerspective);
 		// clusterConfiguration.setSourceDimensionPerspective(dimensionPerspective);
