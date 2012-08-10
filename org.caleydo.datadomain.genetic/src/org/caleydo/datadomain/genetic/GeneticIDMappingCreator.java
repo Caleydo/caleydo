@@ -9,6 +9,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.parser.ascii.IDMappingParser;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.specialized.Organism;
 
 /**
  * Class that triggers the creation of all genetic {@link IDType}s and mappings.
@@ -49,7 +50,6 @@ public class GeneticIDMappingCreator {
 		String fileName = "data/genome/mapping/david/"
 				+ GeneralManager.get().getBasicInfo().getOrganism();
 
-		
 		IDMappingParser.loadMapping(fileName + "_DAVID2REFSEQ_MRNA.txt", 0, -1,
 				IDType.getIDType("DAVID"), IDType.getIDType("REFSEQ_MRNA"), "\t",
 				geneIDCategory, true, true, false, null, null);
@@ -62,22 +62,36 @@ public class GeneticIDMappingCreator {
 		IDMappingParser.loadMapping(fileName + "_DAVID2GENE_NAME.txt", 0, -1,
 				IDType.getIDType("DAVID"), IDType.getIDType("GENE_NAME"), "\t",
 				geneIDCategory, false, true, false, null, null);
-		IDMappingParser.loadMapping(fileName + "_DAVID2ENSEMBL_GENE_ID.txt", 0, -1,
-				IDType.getIDType("DAVID"), IDType.getIDType("ENSEMBL_GENE_ID"), "\t",
-				geneIDCategory, false, true, false, null, null);
+
+		if (GeneralManager.get().getBasicInfo().getOrganism() == Organism.MUS_MUSCULUS) {
+			IDMappingParser.loadMapping(fileName + "_DAVID2ENSEMBL_GENE_ID.txt", 0, -1,
+					IDType.getIDType("DAVID"), IDType.getIDType("ENSEMBL_GENE_ID"), "\t",
+					geneIDCategory, false, true, false, null, null);
+		}
+		else {
+			// This is indirection via REFSEQ_MRNA instead of DAVID is needed as
+			// we currently do not have a mapping file DAVID2ENSEMBL for home
+			// sapiens
+			IDMappingParser.loadMapping("data/genome/mapping/"
+					+ Organism.HOMO_SAPIENS
+					+ "_ENSEMBL_GENE_ID_2_REFSEQ_MRNA.txt", 0, -1,
+					IDType.getIDType("ENSEMBL_GENE_ID"), IDType.getIDType("REFSEQ_MRNA"),
+					";", geneIDCategory, true, true, true,
+					IDType.getIDType("ENSEMBL_GENE_ID"), IDType.getIDType("DAVID"));
+		}
+
 		IDMappingParser.loadMapping("data/genome/mapping/"
 				+ GeneralManager.get().getBasicInfo().getOrganism()
 				+ "_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt", 0, -1,
-				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("REFSEQ_MRNA"),
-				";", geneIDCategory, true, true, true,
-				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("DAVID"));
+				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("REFSEQ_MRNA"), ";",
+				geneIDCategory, true, true, true, IDType.getIDType("BIOCARTA_GENE_ID"),
+				IDType.getIDType("DAVID"));
 
 		// ==== SAMPLES ======
 
 		IDCategory sampleIDCategory = IDCategory.registerCategory("SAMPLE");
 
-		IDType sampleID = IDType.registerType("SAMPLE", sampleIDCategory,
-				EDataType.STRING);
+		IDType sampleID = IDType.registerType("SAMPLE", sampleIDCategory, EDataType.STRING);
 		sampleIDCategory.setHumanReadableIDType(sampleID);
 
 		IDCategory tcgaSampleIDCategory = IDCategory.registerCategory("TCGA_SAMPLE");

@@ -90,23 +90,14 @@ public class IDMappingParser extends ATextParser {
 			filePath = filePath.replace("ORGANISM", eOrganism.toString());
 		}
 
-		// FIXME: Currently we do not have the ensembl mapping table for home
-		// sapiens
-		if (filePath.contains("HOMO_SAPIENS") && filePath.contains("ENSEMBL"))
-			return;
-
 		if (idCategory == null)
 			throw new IllegalStateException("ID Category was null");
+		
 		IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
 				.getIDMappingManager(idCategory);
+		
 		MappingType mappingType = idMappingManager.createMap(fromIDType, toIDType,
 				isMultiMap, createReverseMap);
-
-		if (resolveCodeMappingUsingCodeToId_LUT) {
-
-			idMappingManager.createCodeResolvedMap(mappingType, codeResolvedFromIDType,
-					codeResolvedToIDType);
-		}
 
 		if (!filePath.equals("already_loaded")) {
 			idMappingParser = new IDMappingParser(idCategory, filePath, mappingType);
@@ -114,6 +105,12 @@ public class IDMappingParser extends ATextParser {
 			idMappingParser.setStartParsingAtLine(startParsingAtLine);
 			idMappingParser.setStopParsingAtLine(stopParsingAtLine);
 			idMappingParser.loadData();
+		}
+		
+		if (resolveCodeMappingUsingCodeToId_LUT) {
+
+			idMappingManager.createCodeResolvedMap(mappingType, codeResolvedFromIDType,
+					codeResolvedToIDType);
 		}
 	}
 
