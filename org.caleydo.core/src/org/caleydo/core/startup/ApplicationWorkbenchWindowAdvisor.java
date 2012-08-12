@@ -24,17 +24,21 @@ import org.caleydo.core.gui.perspective.PartListener;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IViewReference;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
-public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
+public class ApplicationWorkbenchWindowAdvisor
+	extends WorkbenchWindowAdvisor {
+
+	/**
+	 * This is the only point where we get the workbench window configurer. We
+	 * cache it in order to be able to change the window title during runtime.
+	 */
+	private static IWorkbenchWindowConfigurer configurer;
+
+	private static String windowTitle;
 
 	/**
 	 * Constructor.
@@ -55,31 +59,29 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 	@Override
 	public void preWindowOpen() {
-		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-		// configurer.setInitialSize(new Point(400, 300));
+		configurer = getWindowConfigurer();
 		configurer.setShowCoolBar(false);
 		configurer.setShowStatusLine(false);
-		// configurer.setShowProgressIndicator(true);
-
-		// if (!GeneralManager.RELEASE_MODE)
-		// configurer.setShowPerspectiveBar(true);
-
-		configurer.setTitle("Caleydo");
-
 		configurer.getWindow().getPartService().addPartListener(new PartListener());
+		// configurer.setShowProgressIndicator(true);
 	}
 
 	@Override
 	public void postWindowCreate() {
 		super.postWindowCreate();
 
-		getWindowConfigurer().getWindow().getShell().setMaximized(true);
+		configurer.getWindow().getShell().setMaximized(true);
+
+		// If the title was not set during startup (e.g. when a project is
+		// loaded), the default title is set
+		if (windowTitle == null)
+			setWindowTitle("Caleydo - unsaved project");
+		else
+			setWindowTitle(windowTitle);
 
 		removeNonCaleydoMenuEntries();
 
 		StartupProcessor.get().getStartupProcedure().postWorkbenchOpen();
-
-		initializeViews();
 	}
 
 	/**
@@ -98,8 +100,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 		if (DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.generic") != null) {
 
-			IActionBarConfigurer configurer = getWindowConfigurer()
-					.getActionBarConfigurer();
+			IActionBarConfigurer configurer = getWindowConfigurer().getActionBarConfigurer();
 
 			// Delete unwanted menu items
 			IContributionItem[] menuItems = configurer.getMenuManager().getItems();
@@ -107,7 +108,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 				IContributionItem menuItem = menuItems[i];
 				if (menuItem.getId().equals("org.caleydo.search.menu")) {
 					configurer.getMenuManager().remove(menuItem);
-				} else if (menuItem.getId().equals("viewMenu")) {
+				}
+				else if (menuItem.getId().equals("viewMenu")) {
 					IContributionItem itemToRemove = ((MenuManager) menuItem)
 							.find("org.caleydo.core.command.openviews.remote");
 
@@ -118,13 +120,11 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		}
 	}
 
-	/**
-	 * Make sure that all views get initialized (i.e., constructor and
-	 * createPartControl created) Otherwise views will not show up
-	 */
-	private void initializeViews() {
+	public static void setWindowTitle(String title) {
 
+		windowTitle = title;
 
-
+		if (configurer != null)
+			configurer.setTitle(windowTitle);
 	}
 }

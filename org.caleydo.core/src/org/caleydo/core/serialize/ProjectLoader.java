@@ -24,11 +24,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -41,12 +39,16 @@ import org.caleydo.core.id.IDTypeInitializer;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.manager.BasicInformation;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.startup.Application;
+import org.caleydo.core.startup.ApplicationWorkbenchWindowAdvisor;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.action.Separator;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
@@ -70,8 +72,7 @@ public class ProjectLoader {
 	/**
 	 * Loads the project from a specified zip-archive.
 	 * 
-	 * @param fileName
-	 *            name of the file to load the project from
+	 * @param fileName name of the file to load the project from
 	 * @return initialization data for the application from which it can restore
 	 *         itself
 	 */
@@ -86,8 +87,7 @@ public class ProjectLoader {
 	/**
 	 * Loads the project from a directory
 	 * 
-	 * @param dirName
-	 *            name of the directory to load the project from
+	 * @param dirName name of the directory to load the project from
 	 * @return initialization data for the application from which it can restore
 	 *         itself
 	 */
@@ -95,8 +95,10 @@ public class ProjectLoader {
 		try {
 			loadPluginData(dirName);
 			SerializationData serializationData = loadData(dirName);
+
 			return serializationData;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			String message = "Failed to load project from\n" + dirName;
 			Logger.log(new Status(IStatus.ERROR, this.toString(), message, e));
 			e.printStackTrace();
@@ -135,8 +137,8 @@ public class ProjectLoader {
 		for (String plugIn : plugIns) {
 			Bundle bundle = Platform.getBundle(plugIn);
 			if (bundle == null) {
-				Logger.log(new Status(IStatus.WARNING, toString(),
-						"Could not load bundle: " + plugIn));
+				Logger.log(new Status(IStatus.WARNING, toString(), "Could not load bundle: "
+						+ plugIn));
 				continue;
 			}
 			bundle.start();
@@ -159,9 +161,8 @@ public class ProjectLoader {
 
 		DataDomainList dataDomainList;
 
-		dataDomainList = (DataDomainList) unmarshaller
-				.unmarshal(GeneralManager.get().getResourceLoader()
-						.getResource(dirName + ProjectSaver.DATA_DOMAIN_FILE));
+		dataDomainList = (DataDomainList) unmarshaller.unmarshal(GeneralManager.get()
+				.getResourceLoader().getResource(dirName + ProjectSaver.DATA_DOMAIN_FILE));
 
 		serializationData = new SerializationData();
 
@@ -191,11 +192,8 @@ public class ProjectLoader {
 
 				HashMap<String, RecordPerspective> recordPerspectives = new HashMap<String, RecordPerspective>();
 
-				GeneralManager
-						.get()
-						.getSWTGUIManager()
-						.setProgressBarText(
-								"Loading groupings for: " + dataDomain.getLabel());
+				GeneralManager.get().getSWTGUIManager()
+						.setProgressBarText("Loading groupings for: " + dataDomain.getLabel());
 
 				Set<String> recordPerspectiveIDs = ((ATableBasedDataDomain) dataDomain)
 						.getRecordPerspectiveIDs();
@@ -213,8 +211,7 @@ public class ProjectLoader {
 									.get()
 									.getResourceLoader()
 									.getResource(
-											extendedDirName + recordPerspectiveID
-													+ ".xml"));
+											extendedDirName + recordPerspectiveID + ".xml"));
 					recordPerspective.setDataDomain((ATableBasedDataDomain) dataDomain);
 					recordPerspective.setIDType(((ATableBasedDataDomain) dataDomain)
 							.getRecordIDType());
@@ -245,14 +242,11 @@ public class ProjectLoader {
 									.get()
 									.getResourceLoader()
 									.getResource(
-											extendedDirName + dimensionPerspectiveID
-													+ ".xml"));
-					dimensionPerspective
-							.setDataDomain((ATableBasedDataDomain) dataDomain);
+											extendedDirName + dimensionPerspectiveID + ".xml"));
+					dimensionPerspective.setDataDomain((ATableBasedDataDomain) dataDomain);
 					dimensionPerspective.setIDType(((ATableBasedDataDomain) dataDomain)
 							.getDimensionIDType());
-					dimensionPerspectives.put(dimensionPerspectiveID,
-							dimensionPerspective);
+					dimensionPerspectives.put(dimensionPerspectiveID, dimensionPerspective);
 
 					ClusterTree tree = loadTree(extendedDirName + dimensionPerspectiveID
 							+ "_tree.xml",
@@ -285,8 +279,7 @@ public class ProjectLoader {
 	 * @param loadDataParameters
 	 * @param set
 	 */
-	private ClusterTree loadTree(String path, IDType idType) throws JAXBException,
-			IOException {
+	private ClusterTree loadTree(String path, IDType idType) throws JAXBException, IOException {
 		TreePorter treePorter = new TreePorter();
 		ClusterTree tree;
 		tree = treePorter.importTree(path, idType);
@@ -317,9 +310,10 @@ public class ProjectLoader {
 				f.mkdirs();
 			}
 
-			FileOperations.copyFolder(new File(dirName
-					+ ProjectSaver.WORKBENCH_MEMENTO_FILE), new File(path.toOSString()));
-		} catch (IOException e) {
+			FileOperations.copyFolder(new File(dirName + ProjectSaver.WORKBENCH_MEMENTO_FILE),
+					new File(path.toOSString()));
+		}
+		catch (IOException e) {
 			// throw new
 			// IllegalStateException("Could not load workbench data from " +
 			// dirName, e);

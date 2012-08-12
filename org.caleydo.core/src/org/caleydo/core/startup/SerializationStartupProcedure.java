@@ -35,7 +35,8 @@ import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-public class SerializationStartupProcedure extends AStartupProcedure {
+public class SerializationStartupProcedure
+	extends AStartupProcedure {
 
 	public static final String SAMPLE_PROJECT_LOCATION = "data/sample_project/sample_project.cal";
 
@@ -53,21 +54,28 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 		super.initPreWorkbenchOpen();
 
 		if (loadSampleProject) {
-			loader.loadProjectFromZIP(SAMPLE_PROJECT_LOCATION);
+			projectLocation = SAMPLE_PROJECT_LOCATION;
+			loader.loadProjectFromZIP(projectLocation);
 			loader.loadWorkbenchData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);
-		} else {
+		}
+		else {
 			if (loadRecentProject) {
-				loader.loadWorkbenchData(ProjectSaver.RECENT_PROJECT_FOLDER);
-			} else if (projectLocation != null && !projectLocation.isEmpty()) {
+				projectLocation = ProjectSaver.RECENT_PROJECT_FOLDER;
+				loader.loadWorkbenchData(projectLocation);
+			}
+			else if (projectLocation != null && !projectLocation.isEmpty()) {
 				loader.loadProjectFromZIP(projectLocation);
 				loader.loadWorkbenchData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);
-			} else {
-				throw new IllegalArgumentException(
-						"encountered unknown project-load-type");
+			}
+			else {
+				throw new IllegalArgumentException("encountered unknown project-load-type");
 			}
 		}
+
+		ApplicationWorkbenchWindowAdvisor.setWindowTitle("Caleydo - "
+				+ projectLocation.substring(projectLocation.lastIndexOf("/")+1));
 	}
-	
+
 	@Override
 	public void postWorkbenchOpen() {
 	}
@@ -82,16 +90,18 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 		if (loadSampleProject) {
 			serializationDataList = loader
 					.loadProjectData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);
-		} else {
+		}
+		else {
 			if (loadRecentProject) {
 				serializationDataList = loader
 						.loadProjectData(ProjectSaver.RECENT_PROJECT_FOLDER);
-			} else if (projectLocation != null || projectLocation.isEmpty()) {
+			}
+			else if (projectLocation != null || projectLocation.isEmpty()) {
 				serializationDataList = loader
 						.loadProjectData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);
-			} else {
-				throw new IllegalArgumentException(
-						"encoutnered unknown project-load-type");
+			}
+			else {
+				throw new IllegalArgumentException("encoutnered unknown project-load-type");
 			}
 		}
 
@@ -107,8 +117,7 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 			if (dataDomain instanceof ATableBasedDataDomain) {
 				ATableBasedDataDomain tDataDomain = (ATableBasedDataDomain) dataDomain;
 
-				DataSetDescription dataSetDescription = dataDomain
-						.getDataSetDescription();
+				DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
 
 				DataTableUtils.loadData(tDataDomain, dataSetDescription, false, false);
 				DataTable table = tDataDomain.getTable();
@@ -139,5 +148,4 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 	public void setLoadRecentProject(boolean loadRecentProject) {
 		this.loadRecentProject = loadRecentProject;
 	}
-}	
-
+}

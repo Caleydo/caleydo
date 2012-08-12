@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.caleydo.core.serialize.ProjectSaver;
+import org.caleydo.core.startup.ApplicationWorkbenchWindowAdvisor;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
@@ -65,5 +66,8 @@ public class SaveProjectAction
 
 		ProjectSaver save = new ProjectSaver();
 		save.save(fileName);
+		
+		ApplicationWorkbenchWindowAdvisor.setWindowTitle("Caleydo - "
+				+ fileName.substring(fileName.lastIndexOf("/")+1));
 	}
 }
