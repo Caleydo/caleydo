@@ -1243,6 +1243,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	// /** Adds the specified data container to the view */
 	@Override
 	public void addTablePerspective(TablePerspective tablePerspective) {
+
 		List<TablePerspective> tablePerspectiveWrapper = new ArrayList<TablePerspective>();
 		tablePerspectiveWrapper.add(tablePerspective);
 		addTablePerspectives(tablePerspectiveWrapper, null);
@@ -1291,6 +1292,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			if (tablePerspective == null) {
 				Logger.log(new Status(Status.ERROR, this.toString(),
 						"Data container was null."));
+				continue;
+			}
+			if (!tablePerspective.getDataDomain().getTable().isDataHomogeneous() && brickConfigurer == null) {
+				Logger.log(new Status(Status.WARNING, this.toString(),
+						"Tried to add inhomogeneous table perspective without brick configurerer. Currently not supported."));
 				continue;
 			}
 			if (!tablePerspective.getDataDomain().getRecordIDCategory()
