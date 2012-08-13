@@ -265,6 +265,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		dimensionGroupIDCategory.setInternalCategory(true);
 		dimensionGroupIDType = IDType.registerType("group_dimension_" + dataDomainID
 				+ "_" + hashCode(), dimensionGroupIDCategory, EDataType.INT);
+		dimensionGroupIDType.setInternalType(true);
 
 		recordIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
 				recordIDCategory);
