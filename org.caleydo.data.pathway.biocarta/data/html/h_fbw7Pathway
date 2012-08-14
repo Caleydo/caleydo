@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+<TITLE>h_fbw7Pathway</TITLE>
+<base href="http://cgap.nci.nih.gov/Pathways/BioCarta/">
+
+<META http-equiv="Content-Type" content="text/html; charset=utf-8" name="keywords"
+content="cancer, gene, chromosome, pathway, tissue">
+<title>Cancer Genome Anatomy Project (CGAP) | Cancer Genome Characterization Initiative (CGCI)</title>
+<link rel="stylesheet" type="text/css" href="http://cgap.nci.nih.gov/cgap-cgci.css" />
+<!--[if IE 6]>
+<link href="http://cgap.nci.nih.gov/ie6.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+<!--[if IE 7]>
+<link href="http://cgap.nci.nih.gov/ie7.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+<STYLE TYPE="text/css"> 
+  H3 {text-align:center; font-size:12pt;}
+  H1,H2,H3,H4,H5,H6 {align=center font-family: Arial, Helvetica, sans-serif;}
+  H6 {font-size:8pt;}
+</STYLE>
+
+<SCRIPT LANGUAGE="JavaScript">
+window.name = "CGAP";
+<!--
+var gwindow = null;
+var version = parseFloat(navigator.appVersion);
+
+function gotoFunction() 
+{
+  if(document.gotoCtl.siteList.options[document.gotoCtl.siteList.selectedIndex].value != "")
+  {  
+    self.location = document.gotoCtl.siteList.options[document.gotoCtl.siteList.selectedIndex].value;
+  }
+}
+
+function spawn(url) {
+  var w = window.open(url, "_blank",
+      "screenX=0,screenY=0,status=yes,toolbar=yes,menubar=yes," +
+      "location=yes,scrollbars=yes,resizable=yes");
+}
+
+// -->
+
+</SCRIPT>
+
+</HEAD>
+
+<body class="cgap">
+
+<a href="#main-content" id="skipnav">Skip Navigation</a>
+<div id="nci-banner">
+	<img src="http://cgap.nci.nih.gov/images/nci-banner.png" alt="" height="37" width="822" usemap="#nci-bannermap" />
+	<map id="nci-bannermap" name="nci-bannermap">
+		<area href="http://cancer.gov/" target="_blank" alt="National Cancer Institute" coords="0,0,300,37" shape="rect" />
+		<area href="http://www.nih.gov/" target="_blank" alt="U.S. National Institutes of Health" coords="536,0,717,37" shape="rect" />
+		<area href="http://cancer.gov/" target="_blank" alt="National Cancer Institute" coords="722,1,822,37" shape="rect" />
+	</map>
+</div>
+
+<div id="banner"><a href="http://cgap.nci.nih.gov/cgap.html" title="The Cancer Genome Anatomy Project and the Cancer Genome Characterization Initiative">&nbsp;</a></div>
+</div>
+
+<div id="container">
+<div id="container2">
+<div id="container3">
+<div id="container4">
+<div id="container5">
+<div id="container6">
+<div id="container7">
+<div id="container8">
+	<div id="topnav">
+		<ul>
+			<li><a href="/Catalog" id="nav-cgaphowto">CGAP How To</a></li>
+			<li><a href="/Genes" >Genes</a></li>
+			<li><a href="/Chromosomes" >Chromosomes</a></li>
+			<li><a href="/Tissues" >Tissues</a></li>
+			<li><a href="/SAGE" >SAGE Genie</a></li>
+			<li><a href="/RNAi" >RNAi</a></li>
+			<li><a href="/Pathways" class="active">Pathways</a></li>
+			<li><a href="/Tools" >Tools</a></li>
+		</ul>
+	</div>
+
+
+
+<!-- dtml-if expr="WhichSection!='HomePage'" -->
+    <table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td valign="top" width="189">	
+        <div id="left-content">
+		<div class="left-icon" id="left-icon-pathways">Pathways </div>
+		<ul class="leftnav">
+			<li class="header2">Pathways and Tools</li>
+                        <SCRIPT LANGUAGE="JavaScript">
+                          if (location.href=="http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways") {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways class=active>BioCarta</A></li>");
+                          }
+                          else {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways>BioCarta</A></li>");
+                          }
+                          if (location.href=="http://cgap.nci.nih.gov/Pathways/Kegg_Standard_Pathways") {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/Kegg_Standard_Pathways class=active>KEGG</A></li>");
+                          }
+                          else {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/Kegg_Standard_Pathways>KEGG</A></li>");
+                          }
+                          if (location.href=="http://cgap.nci.nih.gov/Pathways/Pathway_Searcher") {
+                            document.write("<li><a href=/Pathways/Pathway_Searcher class=active>Pathway Searcher</A></li>");
+                          }
+                          else {
+                            document.write("<li><a href=/Pathways/Pathway_Searcher>Pathway Searcher</A></li>");
+                          }
+
+                        </SCRIPT>
+		</ul>
+		<ul class="leftnav">
+			<li class="header2">Related Links</li>
+                        <li><A href="http://www.expasy.ch/cgi-bin/search-biochem-index" target="_blank">ExPASy</a></li>
+                        <li><a href="http://kinase.uhnres.utoronto.ca/signallingmap.html" target="_blank">MAPK signalling</A></li>
+                        <li><a href="http://www.grt.kyushu-u.ac.jp/spad/index.html" target="_blank">SPAD</a></li>
+		</ul>
+
+
+                <ul class="leftnav">
+			<li class="header2">Quick Links:</li>
+			<li><a href="http://www.broad.harvard.edu/science/programs/chemical-biology/initiative-chemical-genetics" target="_blank">ICG</a></li>
+			<li><a href="http://www.nci.nih.gov" target="_blank">NCI Home</a></li>
+			<li><a href="http://ncicb.nci.nih.gov" target="_blank">NCICB Home</a></li>
+			<li><a href="http://www.ncbi.nlm.nih.gov" target="_blank">NCBI Home</a></li>
+			<li><a href="http://ocg.cancer.gov" target="_blank">OCG</a></li>
+		</ul>
+		<a href="cgci.html"><img src="http://cgap.nci.nih.gov/images/tile-cgci.jpg" alt="Cancer Genome Characterization Initiative" height="65" width="169" /></a>
+		<p class="cgci"><a href="cgci.html">Visit</a> the database of genomic characterization data for multiple tumor types.</p>
+	</div>
+
+</td><td valign="top">
+<div id="content">
+<!-- dtml-else -->
+<!--  <td>    -->
+<!-- /dtml-if -->
+
+<a id="maincontent" name="maincontent"></a>
+<!-- beginning of main content -->
+
+<SCRIPT>
+window.name = "CGAP";
+</SCRIPT>
+
+<META http-equiv=Content-Type content='text/html; charset=windows-1252'>
+
+<SPAN style="float:left;"><A href="javascript:pathwayGenes()"><IMG SRC="/images/dna.gif" alt="DNA" BORDER=0><BR>Genes</A><SCRIPT>function pathwayGenes() { location = "/Genes/PathGeneQuery?PAGE=1&ORG=Hs&PATH=h_fbw7Pathway"}</SCRIPT></SPAN><CENTER>
+<BR>
+<FONT face='verdana, arial, helvetica, sans serif' color=#003366 size=2>
+<b>Cyclin E Destruction Pathway</b></FONT>
+<BR><FONT face="Arial" color=#009999 size=2><B>Pathway information provided by <A href="javascript:spawn('http://www.biocarta.com')" style='color: #009999'>BioCarta</A></B></FONT><BR><FONT face="Arial" color=#009999 size=1>(See <A href="javascript:spawn('http://www.biocarta.com/legal/terms.asp')" style='color: #009999'>Terms and Conditions</A> of use)<BR><A href="javascript:spawn('/Pathways/BioCarta/path_legend')" style="color:#003366">Legend</A></FONT><P>
+
+<!--Start pathway image-->
+<TABLE><TR><TD>
+<img name="h_fbw7Pathway" src="http://cgap.nci.nih.gov/BIOCARTA/Pathways/h_fbw7Pathway.gif" alt="h_fbw7Pathway" width="487" height="406" border="0" usemap="#m_h_fbw7Pathway">
+<map name="m_h_fbw7Pathway">
+
+<area shape="poly" coords="68,135,28,135,25,133,25,119,28,117,68,117,72,119,72,133,68,135" href="/Genes/GeneInfo?ORG=Hs&BCID=cul1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=cul1">
+<area shape="poly" coords="120,134,78,134,75,132,75,118,78,116,120,116,123,118,123,132,120,134" href="/Genes/GeneInfo?ORG=Hs&BCID=cdc34"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=cdc34">
+<area shape="poly" coords="89,118,54,118,51,116,51,102,54,100,89,100,92,102,92,116,89,118" href="/Genes/GeneInfo?ORG=Hs&BCID=skp1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=skp1">
+<area shape="poly" coords="294,161,301,162,307,165,312,169,313,174,311,177,304,176,297,176,292,177,291,180,291,183,292,187,280,182,276,178,274,174,276,169,280,165,286,162,294,161" href="/Genes/GeneInfo?ORG=Hs&BCID=rb1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=rb1">
+<area shape="poly" coords="351,309,351,292,412,292,412,309,351,309" href="/Genes/GeneInfo?ORG=Hs&BCID=cyce"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=cyce">
+<area shape="poly" coords="41,194,38,193,36,191,38,189,41,188,45,189,47,191,45,193,41,194" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="48,190,45,189,48,188,52,189,48,190" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="50,196,46,196,45,194,46,192,50,191,53,192,54,194,53,196,50,196" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="42,198,39,195,42,192,44,195,42,198" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="33,196,36,197,37,199,36,201,33,202,30,201,29,199,30,197,33,196" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="35,200,32,199,31,196,32,192,35,191,37,192,38,196,37,199,35,200" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="35,206,32,205,30,204,32,202,35,201,39,202,41,204,39,205,35,206" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="38,204,40,205,41,208,40,210,38,211,35,210,34,208,35,205,38,204" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="49,211,46,208,49,206,53,208,49,211" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="43,212,39,211,38,209,39,207,43,206,46,207,47,209,46,211,43,212" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="53,208,55,209,56,212,55,215,53,216,51,215,50,212,51,209,53,208" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="42,223,39,221,38,218,39,214,42,213,44,214,46,218,44,221,42,223" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="49,223,46,221,45,218,46,214,49,213,51,214,53,218,51,221,49,223" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="57,220,54,221,51,219,49,216,50,213,53,212,56,214,58,217,57,220" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="42,212,43,215,41,218,38,220,35,219,34,216,36,213,39,211,42,212" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="49,218,46,216,45,213,46,209,49,208,51,209,53,213,51,216,49,218" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="41,218,38,216,37,213,38,209,41,208,43,209,45,213,43,216,41,218" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="45,231,41,230,40,226,41,223,45,221,48,223,50,226,48,230,45,231" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="52,230,48,229,47,225,48,222,52,220,55,222,57,225,55,229,52,230" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="53,226,49,225,48,221,49,218,53,216,56,218,58,221,56,225,53,226" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="40,230,36,229,35,225,36,222,40,220,43,222,45,225,43,229,40,230" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="38,226,34,225,33,221,34,218,38,216,41,218,43,221,41,225,38,226" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="50,223,46,222,45,218,46,215,50,213,53,215,55,218,53,222,50,223" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="42,223,38,222,37,218,38,215,42,213,45,215,47,218,45,222,42,223" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="46,237,42,236,41,232,42,229,46,227,49,229,51,232,49,236,46,237" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="52,236,48,235,47,231,48,228,52,226,55,228,57,231,55,235,52,236" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="53,232,49,231,48,227,49,224,53,222,56,224,58,227,56,231,53,232" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="40,236,36,235,35,231,36,228,40,226,43,228,45,231,43,235,40,236" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="38,232,34,231,33,227,34,224,38,222,41,224,43,227,41,231,38,232" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="51,229,47,228,46,224,47,221,51,219,54,221,56,224,54,228,51,229" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="42,229,38,228,37,224,38,221,42,219,45,221,47,224,45,228,42,229" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="46,244,42,243,41,239,42,236,46,234,49,236,51,239,49,243,46,244" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="52,243,48,242,47,238,48,235,52,233,55,235,57,238,55,242,52,243" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="54,238,50,237,49,233,50,230,54,228,57,230,59,233,57,237,54,238" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="40,242,36,241,35,237,36,234,40,232,43,234,45,237,43,241,40,242" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="38,238,34,237,33,233,34,230,38,228,41,230,43,233,41,237,38,238" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="51,236,47,235,46,231,47,228,51,226,54,228,56,231,54,235,51,236" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="43,236,39,235,38,231,39,228,43,226,46,228,48,231,46,235,43,236" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="46,250,42,249,41,245,42,242,46,240,49,242,51,245,49,249,46,250" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="52,249,48,248,47,244,48,241,52,239,55,241,57,244,55,248,52,249" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="53,244,49,243,48,239,49,236,53,234,56,236,58,239,56,243,53,244" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="40,248,36,247,35,243,36,240,40,238,43,240,45,243,43,247,40,248" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="38,244,34,243,33,239,34,236,38,234,41,236,43,239,41,243,38,244" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="51,242,47,241,46,237,47,234,51,232,54,234,56,237,54,241,51,242" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="43,242,39,241,38,237,39,234,43,232,46,234,48,237,46,241,43,242" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="50,268,54,269,56,271,54,273,50,274,47,273,45,271,47,269,50,268" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="43,272,47,273,43,274,40,273,43,272" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="43,266,46,267,47,269,46,271,43,271,39,271,38,269,39,267,43,266" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="51,264,53,267,51,270,48,267,51,264" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="59,261,62,262,63,264,62,266,59,267,56,266,55,264,56,262,59,261" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="57,262,59,263,60,267,59,270,57,271,54,270,53,267,54,263,57,262" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="56,256,60,257,62,259,60,260,56,261,53,260,51,259,53,257,56,256" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="54,251,56,252,57,255,56,257,54,258,51,257,50,255,51,252,54,251" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="41,252,45,254,41,257,38,254,41,252" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="49,251,52,252,53,254,52,256,49,257,45,256,44,254,45,252,49,251" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="38,246,40,247,41,250,40,253,38,254,36,253,35,250,36,247,38,246" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="50,240,52,241,54,245,52,248,50,250,47,248,46,245,47,241,50,240" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="43,240,45,241,47,245,45,248,43,250,40,248,39,245,40,241,43,240" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="35,243,38,242,41,244,43,247,42,250,39,251,36,249,34,246,35,243" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="50,251,49,248,51,245,54,243,57,244,58,247,56,250,53,252,50,251" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="43,244,45,245,47,249,45,252,43,254,40,252,39,249,40,245,43,244" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="51,245,53,246,55,250,53,253,51,255,48,253,47,250,48,246,51,245" href="/Pathways/BioCarta/proteasomePathway"   alt="Go to /Pathways/BioCarta/proteasomePathway">
+<area shape="poly" coords="119,204,119,187,180,187,180,204,119,204" href="/Genes/GeneInfo?ORG=Hs&BCID=cyce"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=cyce">
+<area shape="poly" coords="373,100,388,102,391,100,396,99,399,100,400,101,400,107,400,113,399,115,396,116,391,115,388,112,373,115,360,113,356,110,354,107,356,105,360,102,373,100" href="/Genes/GeneInfo?ORG=Hs&BCID=cdk2"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=cdk2">
+<area shape="poly" coords="295,210,302,211,308,214,313,218,314,223,312,226,305,225,298,225,293,226,292,229,292,232,293,236,281,231,277,227,275,223,277,218,281,214,287,211,295,210" href="/Genes/GeneInfo?ORG=Hs&BCID=e2f1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=e2f1">
+<area shape="poly" coords="295,302,302,303,308,306,313,310,314,315,312,318,305,317,298,317,293,318,292,321,292,324,293,328,281,323,277,319,275,315,277,310,281,306,287,303,295,302" href="/Genes/GeneInfo?ORG=Hs&BCID=e2f1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=e2f1">
+<area shape="poly" coords="389,160,396,161,402,164,407,168,408,173,406,176,399,175,392,175,387,176,386,179,386,182,387,186,375,181,371,177,369,173,371,168,375,164,381,161,389,160" href="/Genes/GeneInfo?ORG=Hs&BCID=rb1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=rb1">
+<area shape="poly" coords="305,105,305,88,366,88,366,105,305,105" href="/Genes/GeneInfo?ORG=Hs&BCID=cyce"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=cyce">
+<area shape="poly" coords="120,104,120,87,181,87,181,104,120,104" href="/Genes/GeneInfo?ORG=Hs&BCID=cyce"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=cyce">
+<area shape="poly" coords="115,104,55,104,51,102,50,97,50,58,51,53,55,51,115,51,118,53,120,58,120,97,118,102,115,104" href="/Genes/GeneInfo?ORG=Hs&BCID=fbw7"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=fbw7">
+<area shape="poly" coords="266,314,273,315,279,318,284,322,285,327,283,330,276,329,269,329,264,330,263,333,263,336,264,340,252,335,248,331,246,327,248,322,252,318,258,315,266,314" href="/Genes/GeneInfo?ORG=Hs&BCID=tfdp1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=tfdp1">
+</map>
+</TD><TD VALIGN=TOP ALIGN=RIGHT>
+<A><IMG SRC="/images/BioCarta/people.gif" alt="people" BORDER=0><BR><FONT face="arial" color=#009999 size=1>This<BR>Pathway</FONT></A>
+<P>
+<A href="/Pathways/BioCarta/m_fbw7Pathway"><IMG SRC="/images/BioCarta/mouse.gif" alt="mouse" BORDER=0><BR><FONT face="arial" color=#009999 size=1>Mouse<BR>Pathway</FONT></A>
+</TD></TR></TABLE>
+<!--End pathway image-->
+
+</CENTER>
+	</div>
+	</td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="footer">
+     <table cellpadding="0" cellspacing="0" width="150" border="0" align="center">
+      <tr>
+        <td nowrap>Download Plugin:</td>
+        <td align=left><a title="Download Plugin Adobe SVG Viewer" href="http://www.adobe.com/svg/viewer/install/main.html" target="_blank"><img
+    src="/CMAP/images/tmpSVGlogo.png" width="20"
+    height="20" border="0"
+    alt="Download Plugin Adobe SVG Viewer"/></a></td>
+      </tr>
+       </table>
+
+	<ul id="footer-internal">
+		<li class="first"><a href="/">Home</a></li><!--
+		--><li><a href="support.htm">Application Support</a></li><!--
+		--><li><a href="http://www.nih.gov/about/privacy.htm" target="_blank">Policies</a></li><!--
+		--><li><a href="http://www3.cancer.gov/accessibility/nci508.htm" target="_blank">Accessibility</a></li><!--
+		--><li><a href="http://www.nih.gov/about/disclaim.htm" target="_blank">Disclaimer</a></li><!--
+		-->
+	</ul>
+	<p>A Service of the National Cancer Institute</p>
+	<ul id="footer-external">
+		<li><a href="http://www.cancer.gov/" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-nci.png" alt="NCI" height="38" width="48" /></a></li><!--
+		--><li><a href="http://www.dhhs.gov" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-hhs.png" alt="HHS" height="38" width="38" /></a></li><!--
+		--><li><a href="http://www.nih.gov/" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-nih.png" alt="NIH" height="38" width="36" /></a></li><!--
+		--><li><a href="http://www.usa.gov/" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-firstgov.png" alt="First.Gov" height="38" width="90" /></a></li>
+	</ul>
+</div>
+
+</body>
+</html>
+

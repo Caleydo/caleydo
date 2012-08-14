@@ -1,0 +1,316 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+<TITLE>m_vipPathway</TITLE>
+<base href="http://cgap.nci.nih.gov/Pathways/BioCarta/">
+
+<META http-equiv="Content-Type" content="text/html; charset=utf-8" name="keywords"
+content="cancer, gene, chromosome, pathway, tissue">
+<title>Cancer Genome Anatomy Project (CGAP) | Cancer Genome Characterization Initiative (CGCI)</title>
+<link rel="stylesheet" type="text/css" href="http://cgap.nci.nih.gov/cgap-cgci.css" />
+<!--[if IE 6]>
+<link href="http://cgap.nci.nih.gov/ie6.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+<!--[if IE 7]>
+<link href="http://cgap.nci.nih.gov/ie7.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+<STYLE TYPE="text/css"> 
+  H3 {text-align:center; font-size:12pt;}
+  H1,H2,H3,H4,H5,H6 {align=center font-family: Arial, Helvetica, sans-serif;}
+  H6 {font-size:8pt;}
+</STYLE>
+
+<SCRIPT LANGUAGE="JavaScript">
+window.name = "CGAP";
+<!--
+var gwindow = null;
+var version = parseFloat(navigator.appVersion);
+
+function gotoFunction() 
+{
+  if(document.gotoCtl.siteList.options[document.gotoCtl.siteList.selectedIndex].value != "")
+  {  
+    self.location = document.gotoCtl.siteList.options[document.gotoCtl.siteList.selectedIndex].value;
+  }
+}
+
+function spawn(url) {
+  var w = window.open(url, "_blank",
+      "screenX=0,screenY=0,status=yes,toolbar=yes,menubar=yes," +
+      "location=yes,scrollbars=yes,resizable=yes");
+}
+
+// -->
+
+</SCRIPT>
+
+</HEAD>
+
+<body class="cgap">
+
+<a href="#main-content" id="skipnav">Skip Navigation</a>
+<div id="nci-banner">
+	<img src="http://cgap.nci.nih.gov/images/nci-banner.png" alt="" height="37" width="822" usemap="#nci-bannermap" />
+	<map id="nci-bannermap" name="nci-bannermap">
+		<area href="http://cancer.gov/" target="_blank" alt="National Cancer Institute" coords="0,0,300,37" shape="rect" />
+		<area href="http://www.nih.gov/" target="_blank" alt="U.S. National Institutes of Health" coords="536,0,717,37" shape="rect" />
+		<area href="http://cancer.gov/" target="_blank" alt="National Cancer Institute" coords="722,1,822,37" shape="rect" />
+	</map>
+</div>
+
+<div id="banner"><a href="http://cgap.nci.nih.gov/cgap.html" title="The Cancer Genome Anatomy Project and the Cancer Genome Characterization Initiative">&nbsp;</a></div>
+</div>
+
+<div id="container">
+<div id="container2">
+<div id="container3">
+<div id="container4">
+<div id="container5">
+<div id="container6">
+<div id="container7">
+<div id="container8">
+	<div id="topnav">
+		<ul>
+			<li><a href="/Catalog" id="nav-cgaphowto">CGAP How To</a></li>
+			<li><a href="/Genes" >Genes</a></li>
+			<li><a href="/Chromosomes" >Chromosomes</a></li>
+			<li><a href="/Tissues" >Tissues</a></li>
+			<li><a href="/SAGE" >SAGE Genie</a></li>
+			<li><a href="/RNAi" >RNAi</a></li>
+			<li><a href="/Pathways" class="active">Pathways</a></li>
+			<li><a href="/Tools" >Tools</a></li>
+		</ul>
+	</div>
+
+
+
+<!-- dtml-if expr="WhichSection!='HomePage'" -->
+    <table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td valign="top" width="189">	
+        <div id="left-content">
+		<div class="left-icon" id="left-icon-pathways">Pathways </div>
+		<ul class="leftnav">
+			<li class="header2">Pathways and Tools</li>
+                        <SCRIPT LANGUAGE="JavaScript">
+                          if (location.href=="http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways") {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways class=active>BioCarta</A></li>");
+                          }
+                          else {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways>BioCarta</A></li>");
+                          }
+                          if (location.href=="http://cgap.nci.nih.gov/Pathways/Kegg_Standard_Pathways") {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/Kegg_Standard_Pathways class=active>KEGG</A></li>");
+                          }
+                          else {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/Kegg_Standard_Pathways>KEGG</A></li>");
+                          }
+                          if (location.href=="http://cgap.nci.nih.gov/Pathways/Pathway_Searcher") {
+                            document.write("<li><a href=/Pathways/Pathway_Searcher class=active>Pathway Searcher</A></li>");
+                          }
+                          else {
+                            document.write("<li><a href=/Pathways/Pathway_Searcher>Pathway Searcher</A></li>");
+                          }
+
+                        </SCRIPT>
+		</ul>
+		<ul class="leftnav">
+			<li class="header2">Related Links</li>
+                        <li><A href="http://www.expasy.ch/cgi-bin/search-biochem-index" target="_blank">ExPASy</a></li>
+                        <li><a href="http://kinase.uhnres.utoronto.ca/signallingmap.html" target="_blank">MAPK signalling</A></li>
+                        <li><a href="http://www.grt.kyushu-u.ac.jp/spad/index.html" target="_blank">SPAD</a></li>
+		</ul>
+
+
+                <ul class="leftnav">
+			<li class="header2">Quick Links:</li>
+			<li><a href="http://www.broad.harvard.edu/science/programs/chemical-biology/initiative-chemical-genetics" target="_blank">ICG</a></li>
+			<li><a href="http://www.nci.nih.gov" target="_blank">NCI Home</a></li>
+			<li><a href="http://ncicb.nci.nih.gov" target="_blank">NCICB Home</a></li>
+			<li><a href="http://www.ncbi.nlm.nih.gov" target="_blank">NCBI Home</a></li>
+			<li><a href="http://ocg.cancer.gov" target="_blank">OCG</a></li>
+		</ul>
+		<a href="cgci.html"><img src="http://cgap.nci.nih.gov/images/tile-cgci.jpg" alt="Cancer Genome Characterization Initiative" height="65" width="169" /></a>
+		<p class="cgci"><a href="cgci.html">Visit</a> the database of genomic characterization data for multiple tumor types.</p>
+	</div>
+
+</td><td valign="top">
+<div id="content">
+<!-- dtml-else -->
+<!--  <td>    -->
+<!-- /dtml-if -->
+
+<a id="maincontent" name="maincontent"></a>
+<!-- beginning of main content -->
+
+<SCRIPT>
+window.name = "CGAP";
+</SCRIPT>
+
+<META http-equiv=Content-Type content='text/html; charset=windows-1252'>
+
+<SPAN style="float:left;"><A href="javascript:pathwayGenes()"><IMG SRC="/images/dna.gif" alt="DNA" BORDER=0><BR>Genes</A><SCRIPT>function pathwayGenes() { location = "/Genes/PathGeneQuery?PAGE=1&ORG=Mm&PATH=m_vipPathway"}</SCRIPT></SPAN><CENTER>
+<BR>
+<FONT face='verdana, arial, helvetica, sans serif' color=#003366 size=2>
+<b>Neuropeptides VIP and PACAP inhibit the apoptosis of activated T cells</b></FONT>
+<BR><FONT face="Arial" color=#009999 size=2><B>Pathway information provided by <A href="javascript:spawn('http://www.biocarta.com')" style='color: #009999'>BioCarta</A></B></FONT><BR><FONT face="Arial" color=#009999 size=1>(See <A href="javascript:spawn('http://www.biocarta.com/legal/terms.asp')" style='color: #009999'>Terms and Conditions</A> of use)<BR><A href="javascript:spawn('/Pathways/BioCarta/path_legend')" style="color:#003366">Legend</A></FONT><P>
+
+<!--Start pathway image-->
+<TABLE><TR><TD>
+<img name="m_vipPathway" src="http://cgap.nci.nih.gov/BIOCARTA/Pathways/m_vipPathway.gif" alt="m_vipPathway" width="540" height="456" border="0" usemap="#m_m_vipPathway">
+<map name="m_m_vipPathway">
+
+<area shape="poly" coords="206,422,193,423,189,422,187,419,186,415,182,412,184,410,188,409,194,409,198,409,202,408,208,405,218,409,221,411,223,414,221,418,218,419,216,422,212,424,208,424,206,422" href="/Genes/GeneInfo?ORG=Mm&BCID=cmyc"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=cmyc">
+<area shape="poly" coords="241,290,228,291,224,290,222,287,221,283,217,280,219,278,223,277,229,277,233,277,237,276,243,273,253,277,256,279,258,282,256,286,253,287,251,290,247,292,243,292,241,290" href="/Genes/GeneInfo?ORG=Mm&BCID=cmyc"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=cmyc">
+<area shape="poly" coords="65,304,72,305,78,308,83,312,84,317,82,320,75,319,68,319,63,320,62,323,62,326,63,330,51,325,47,321,45,317,47,312,51,308,57,305,65,304" href="/Genes/GeneInfo?ORG=Mm&BCID=nfkb"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=nfkb">
+<area shape="poly" coords="41,247,48,248,54,251,59,255,60,260,58,263,51,262,44,262,39,263,38,266,38,269,39,273,27,268,23,264,21,260,23,255,27,251,33,248,41,247" href="/Genes/GeneInfo?ORG=Mm&BCID=nfkb"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=nfkb">
+<area shape="poly" coords="63,260,80,263,85,266,87,270,85,273,80,276,63,279,46,276,41,273,39,270,41,266,46,263,63,260" href="/Genes/GeneInfo?ORG=Mm&BCID=ikba"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=ikba">
+<area shape="poly" coords="152,273,169,276,174,279,176,283,174,286,169,289,152,292,135,289,130,286,128,283,130,279,135,276,152,273" href="/Genes/GeneInfo?ORG=Mm&BCID=ikba"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=ikba">
+<area shape="poly" coords="451,247,459,248,465,251,469,255,471,260,470,262,469,264,461,262,455,262,450,264,449,266,449,269,450,273,437,269,433,265,431,260,433,255,437,251,443,248,451,247" href="/Genes/GeneInfo?ORG=Mm&BCID=nfat"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=nfat">
+<area shape="poly" coords="343,246,351,247,357,250,361,254,363,259,362,261,361,263,353,261,347,261,342,263,341,265,341,268,342,272,329,268,325,264,323,259,325,254,329,250,335,247,343,246" href="/Genes/GeneInfo?ORG=Mm&BCID=nfat"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=nfat">
+<area shape="poly" coords="395,163,403,162,408,160,412,156,414,152,412,148,408,144,403,142,395,141,388,142,382,144,378,148,377,152,378,156,382,160,388,162,395,163" href="/Genes/GeneInfo?ORG=Mm&BCID=calmodulin"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=calmodulin">
+<area shape="poly" coords="398,191,406,192,411,194,415,198,417,202,415,206,411,210,406,212,398,213,391,212,385,210,381,206,380,202,381,198,385,194,391,192,398,191" href="/Genes/GeneInfo?ORG=Mm&BCID=calmodulin"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=calmodulin">
+<area shape="poly" coords="384,95,393,98,396,101,398,104,396,108,393,110,384,113,374,110,371,108,370,104,371,101,374,98,384,95" href="/Genes/GeneInfo?ORG=Mm&BCID=gnaq"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=gnaq">
+<area shape="poly" coords="432,99,431,103,428,106,420,108,412,105,408,108,403,108,395,105,393,102,392,97,394,92,391,88,390,83,391,79,394,76,402,74,407,75,410,77,415,74,420,73,428,76,431,80,431,84,428,90,431,94,432,99" href="/Genes/GeneInfo?ORG=Mm&BCID=plcg"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=plcg">
+<area shape="poly" coords="421,211,427,209,432,209,439,212,427,218,439,224,432,226,427,226,421,224,371,224,365,223,363,219,363,217,365,213,371,211,421,211" href="/Genes/GeneInfo?ORG=Mm&BCID=calcineurin"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=calcineurin">
+<area shape="rect" coords="189,219,311,248" href="/Pathways/BioCarta/m_gsPathway"   alt="Go to /Pathways/BioCarta/m_gsPathway">
+<area shape="poly" coords="56,155,72,157,75,154,80,154,84,154,85,156,85,162,85,168,84,170,80,171,75,170,72,167,56,170,42,167,37,165,36,162,37,159,42,157,56,155" href="/Genes/GeneInfo?ORG=Mm&BCID=ikk1"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=ikk1">
+<area shape="poly" coords="154,393,163,394,169,397,174,401,175,406,173,409,165,408,158,407,153,409,152,412,152,415,153,419,140,414,135,410,134,406,135,401,140,397,146,394,154,393" href="/Genes/GeneInfo?ORG=Mm&BCID=nfkb"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=nfkb">
+<area shape="poly" coords="249,391,258,392,265,395,269,399,271,404,270,406,268,408,260,406,254,406,248,408,247,410,247,413,248,417,235,413,230,409,228,404,230,399,234,395,241,392,249,391" href="/Genes/GeneInfo?ORG=Mm&BCID=nfat"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=nfat">
+<area shape="poly" coords="383,334,392,335,398,338,403,342,405,347,404,349,402,351,394,349,387,349,382,351,381,353,381,356,382,360,368,356,364,352,362,347,364,342,368,338,375,335,383,334" href="/Genes/GeneInfo?ORG=Mm&BCID=nfat"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=nfat">
+<area shape="poly" coords="292,399,300,400,306,403,311,407,312,412,310,415,302,414,296,414,290,415,289,418,289,421,290,425,277,420,272,417,271,412,272,407,277,403,283,400,292,399" href="/Genes/GeneInfo?ORG=Mm&BCID=egr2"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=egr2">
+<area shape="poly" coords="325,391,333,392,339,395,344,399,345,404,343,407,335,406,329,405,323,407,322,410,322,413,323,417,310,412,305,408,304,404,305,399,310,395,316,392,325,391" href="/Genes/GeneInfo?ORG=Mm&BCID=egr3"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=egr3">
+<area shape="poly" coords="331,29,333,36,338,40,344,43,344,92,338,92,338,47,330,40,328,34,329,31,331,29" href="/Pathways/BioCarta/m_tcrmolecule"   alt="Go to /Pathways/BioCarta/m_tcrmolecule">
+<area shape="poly" coords="353,92,346,92,346,43,353,40,358,36,360,29,361,31,363,34,361,40,353,47,353,92" href="/Pathways/BioCarta/m_tcrmolecule"   alt="Go to /Pathways/BioCarta/m_tcrmolecule">
+<area shape="poly" coords="374,60,374,97,367,97,367,60,374,60" href="/Pathways/BioCarta/m_tcrmolecule"   alt="Go to /Pathways/BioCarta/m_tcrmolecule">
+<area shape="poly" coords="367,60,367,97,360,97,360,60,367,60" href="/Pathways/BioCarta/m_tcrmolecule"   alt="Go to /Pathways/BioCarta/m_tcrmolecule">
+<area shape="poly" coords="360,60,360,93,353,93,353,60,360,60" href="/Pathways/BioCarta/m_tcrmolecule"   alt="Go to /Pathways/BioCarta/m_tcrmolecule">
+<area shape="poly" coords="382,60,382,93,375,93,375,60,382,60" href="/Pathways/BioCarta/m_tcrmolecule"   alt="Go to /Pathways/BioCarta/m_tcrmolecule">
+<area shape="poly" coords="336,60,336,99,329,99,329,60,336,60" href="/Pathways/BioCarta/m_tcrmolecule"   alt="Go to /Pathways/BioCarta/m_tcrmolecule">
+<area shape="poly" coords="328,60,328,99,322,99,322,60,328,60" href="/Pathways/BioCarta/m_tcrmolecule"   alt="Go to /Pathways/BioCarta/m_tcrmolecule">
+<area shape="poly" coords="347,29,341,21" href="#"   alt="Go to #">
+<area shape="poly" coords="41,30,43,37,48,41,55,44,55,93,48,93,48,48,40,41,38,35,39,32,41,30" href="/Pathways/BioCarta/m_tcrmolecule"   alt="Go to /Pathways/BioCarta/m_tcrmolecule">
+<area shape="poly" coords="63,93,56,93,56,44,63,41,68,37,70,30,71,32,73,35,71,41,63,48,63,93" href="/Pathways/BioCarta/m_tcrmolecule"   alt="Go to /Pathways/BioCarta/m_tcrmolecule">
+<area shape="poly" coords="84,61,84,98,77,98,77,61,84,61" href="/Pathways/BioCarta/m_tcrmolecule"   alt="Go to /Pathways/BioCarta/m_tcrmolecule">
+<area shape="poly" coords="78,61,78,98,71,98,71,61,78,61" href="/Pathways/BioCarta/m_tcrmolecule"   alt="Go to /Pathways/BioCarta/m_tcrmolecule">
+<area shape="poly" coords="70,61,70,94,63,94,63,61,70,61" href="/Pathways/BioCarta/m_tcrmolecule"   alt="Go to /Pathways/BioCarta/m_tcrmolecule">
+<area shape="poly" coords="92,61,92,94,85,94,85,61,92,61" href="/Pathways/BioCarta/m_tcrmolecule"   alt="Go to /Pathways/BioCarta/m_tcrmolecule">
+<area shape="poly" coords="46,61,46,100,39,100,39,61,46,61" href="/Pathways/BioCarta/m_tcrmolecule"   alt="Go to /Pathways/BioCarta/m_tcrmolecule">
+<area shape="poly" coords="38,61,38,100,32,100,32,61,38,61" href="/Pathways/BioCarta/m_tcrmolecule"   alt="Go to /Pathways/BioCarta/m_tcrmolecule">
+<area shape="poly" coords="57,31,51,23" href="#"   alt="Go to #">
+<area shape="poly" coords="256,34,256,50,226,50,226,34,256,34" href="/Genes/GeneInfo?ORG=Mm&BCID=vip"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=vip">
+<area shape="poly" coords="235,122,229,116,229,55,232,53,247,45,253,47,253,119,235,122" href="/Genes/GeneInfo?ORG=Mm&BCID=vpac2r"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=vpac2r">
+<area shape="poly" coords="252,201,255,198,260,197,263,200,265,207,263,214,260,216,255,215,252,212,240,214,227,213,217,211,213,209,212,206,217,202,227,199,240,198,252,201" href="/Genes/GeneInfo?ORG=Mm&BCID=pka"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=pka">
+<area shape="poly" coords="134,157,149,159,153,156,158,156,161,156,163,158,163,164,163,170,161,172,158,173,153,172,149,169,134,172,119,169,115,167,113,164,115,161,119,159,134,157" href="/Genes/GeneInfo?ORG=Mm&BCID=map3k1"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=map3k1">
+<area shape="poly" coords="309,282,317,283,323,286,328,290,329,295,327,298,319,297,313,297,307,298,306,301,306,304,307,308,294,303,289,299,288,295,289,290,294,286,300,283,309,282" href="/Genes/GeneInfo?ORG=Mm&BCID=egr2"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=egr2">
+<area shape="poly" coords="353,289,361,290,368,293,372,297,374,302,372,306,364,304,357,304,352,306,351,308,351,311,352,315,339,310,334,307,332,302,334,297,339,293,345,290,353,289" href="/Genes/GeneInfo?ORG=Mm&BCID=egr3"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=egr3">
+<area shape="poly" coords="32,71,31,71,31,73,31,75,31,76,31,77,31,75,31,74,31,72,31,71,31,70,31,70,31,68,31,68,31,67,31,67,32,67,33,67,33,70,33,70,33,71,33,72,33,74,33,75,33,77,33,77,33,75,33,73,32,71,32,71" href="#"   alt="Go to #">
+<area shape="poly" coords="33,83,33,82,33,80,33,79,33,81,33,83,33,84,33,86,33,86,33,87,33,89,32,90,31,89,31,89,31,89,31,88,31,87,31,86,31,86,31,84,31,83,31,82,31,79,31,80,31,82,31,83,31,86,32,86,32,86,33,83" href="#"   alt="Go to #">
+<area shape="poly" coords="36,71,36,71,35,73,36,75,35,76,35,77,35,75,35,74,35,72,35,71,35,70,35,70,35,68,35,68,35,67,35,67,36,67,37,67,38,70,37,70,37,71,37,72,37,74,37,75,37,77,37,77,37,75,37,73,37,71,36,71" href="#"   alt="Go to #">
+<area shape="poly" coords="37,83,37,82,37,80,37,79,37,81,37,83,37,84,37,86,37,86,38,87,37,89,36,90,35,89,35,89,35,89,35,88,35,87,35,86,35,86,35,84,35,83,35,82,35,79,35,80,36,82,35,83,36,86,36,86,37,86,37,83" href="#"   alt="Go to #">
+<area shape="poly" coords="40,71,40,71,40,73,40,75,40,76,40,77,40,75,40,74,39,72,39,71,39,70,39,70,39,68,39,68,39,67,39,67,40,67,41,67,42,70,41,70,41,71,42,72,41,74,41,75,41,77,41,77,41,75,41,73,41,71,40,71" href="#"   alt="Go to #">
+<area shape="poly" coords="41,83,41,82,41,80,41,79,41,81,41,83,42,84,41,86,41,86,42,87,41,89,40,90,39,89,39,89,39,89,39,88,39,87,39,86,39,86,39,84,40,83,40,82,40,79,40,80,40,82,40,83,40,86,40,86,41,86,41,83" href="#"   alt="Go to #">
+<area shape="poly" coords="45,71,44,71,44,73,44,75,44,76,44,77,44,75,44,74,43,72,44,71,44,70,43,70,43,68,43,68,44,67,44,67,44,67,46,67,46,70,46,70,46,71,46,72,46,74,46,75,45,77,46,77,45,75,45,73,45,71,45,71" href="#"   alt="Go to #">
+<area shape="poly" coords="45,83,45,82,46,80,45,79,46,81,46,83,46,84,46,86,46,86,46,87,46,89,44,90,44,89,44,89,43,89,43,88,43,87,44,86,44,86,43,84,44,83,44,82,44,79,44,80,44,82,44,83,44,86,45,86,45,86,45,83" href="#"   alt="Go to #">
+<area shape="poly" coords="49,71,48,71,48,73,48,75,48,76,48,77,48,75,48,74,48,72,48,71,48,70,48,70,48,68,48,68,48,67,48,67,49,67,50,67,50,70,50,70,50,71,50,72,50,74,50,75,50,77,50,77,50,75,50,73,50,71,49,71" href="#"   alt="Go to #">
+<area shape="poly" coords="50,83,50,82,50,80,50,79,50,81,50,83,50,84,50,86,50,86,50,87,50,89,49,90,48,89,48,89,48,89,48,88,48,87,48,86,48,86,48,84,48,83,48,82,48,79,48,80,48,82,48,83,48,86,49,86,50,86,50,83" href="#"   alt="Go to #">
+<area shape="poly" coords="53,71,53,71,52,73,53,75,52,76,52,77,52,75,52,74,52,72,52,71,52,70,52,70,52,68,52,68,52,67,52,67,53,67,54,67,55,70,54,70,54,71,54,72,54,74,54,75,54,77,54,77,54,75,54,73,54,71,53,71" href="#"   alt="Go to #">
+<area shape="poly" coords="54,83,54,82,54,80,54,79,54,81,54,83,54,84,54,86,54,86,55,87,54,89,53,90,52,89,52,89,52,89,52,88,52,87,52,86,52,86,52,84,52,83,52,82,52,79,52,80,53,82,52,83,53,86,53,86,54,86,54,83" href="#"   alt="Go to #">
+<area shape="poly" coords="57,71,57,71,57,73,57,75,57,76,57,77,57,75,57,74,56,72,56,71,56,70,56,70,56,68,56,68,56,67,56,67,57,67,58,67,59,70,58,70,58,71,59,72,58,74,58,75,58,77,58,77,58,75,58,73,58,71,57,71" href="#"   alt="Go to #">
+<area shape="poly" coords="58,83,58,82,58,80,58,79,58,81,58,83,59,84,58,86,58,86,59,87,58,89,57,90,56,89,56,89,56,89,56,88,56,87,56,86,56,86,56,84,57,83,57,82,57,79,57,80,57,82,57,83,57,86,57,86,58,86,58,83" href="#"   alt="Go to #">
+<area shape="poly" coords="62,71,61,71,61,73,61,75,61,76,61,77,61,75,61,74,60,72,61,71,61,70,60,70,60,68,60,68,61,67,61,67,61,67,63,67,63,70,63,70,63,71,63,72,63,74,63,75,62,77,63,77,62,75,62,73,62,71,62,71" href="#"   alt="Go to #">
+<area shape="poly" coords="62,83,62,82,63,80,62,79,63,81,63,83,63,84,63,86,63,86,63,87,63,89,61,90,61,89,61,89,60,89,60,88,60,87,61,86,61,86,60,84,61,83,61,82,61,79,61,80,61,82,61,83,61,86,62,86,62,86,62,83" href="#"   alt="Go to #">
+<area shape="poly" coords="66,71,65,71,65,73,65,75,65,76,65,77,65,75,65,74,65,72,65,71,65,70,65,70,65,68,65,68,65,67,65,67,66,67,67,67,67,70,67,70,67,71,67,72,67,74,67,75,67,77,67,77,67,75,67,73,67,71,66,71" href="#"   alt="Go to #">
+<area shape="poly" coords="67,83,67,82,67,80,67,79,67,81,67,83,67,84,67,86,67,86,67,87,67,89,66,90,65,89,65,89,65,89,65,88,65,87,65,86,65,86,65,84,65,83,65,82,65,79,65,80,65,82,65,83,65,86,66,86,67,86,67,83" href="#"   alt="Go to #">
+<area shape="poly" coords="70,71,70,71,69,73,70,75,69,76,69,77,69,75,69,74,69,72,69,71,69,70,69,70,69,68,69,68,69,67,69,67,70,67,71,67,72,70,71,70,71,71,71,72,71,74,71,75,71,77,71,77,71,75,71,73,71,71,70,71" href="#"   alt="Go to #">
+<area shape="poly" coords="71,83,71,82,71,80,71,79,71,81,71,83,71,84,71,86,71,86,72,87,71,89,70,90,69,89,69,89,69,89,69,88,69,87,69,86,69,86,69,84,69,83,69,82,69,79,69,80,70,82,69,83,70,86,70,86,71,86,71,83" href="#"   alt="Go to #">
+<area shape="poly" coords="74,71,74,71,74,73,74,75,74,76,74,77,74,75,74,74,73,72,73,71,73,70,73,70,73,68,73,68,73,67,73,67,74,67,75,67,76,70,75,70,75,71,76,72,75,74,75,75,75,77,75,77,75,75,75,73,75,71,74,71" href="#"   alt="Go to #">
+<area shape="poly" coords="75,83,75,82,75,80,75,79,75,81,75,83,76,84,75,86,75,86,76,87,75,89,74,90,73,89,73,89,73,89,73,88,73,87,73,86,73,86,73,84,74,83,74,82,74,79,74,80,74,82,74,83,74,86,74,86,75,86,75,83" href="#"   alt="Go to #">
+<area shape="poly" coords="79,71,78,71,78,73,78,75,78,76,78,77,78,75,78,74,77,72,78,71,78,70,77,70,77,68,77,68,78,67,78,67,78,67,80,67,80,70,80,70,80,71,80,72,80,74,80,75,79,77,80,77,79,75,79,73,79,71,79,71" href="#"   alt="Go to #">
+<area shape="poly" coords="79,83,79,82,80,80,79,79,80,81,80,83,80,84,80,86,80,86,80,87,80,89,78,90,78,89,78,89,77,89,77,88,77,87,78,86,78,86,77,84,78,83,78,82,78,79,78,80,78,82,78,83,78,86,79,86,79,86,79,83" href="#"   alt="Go to #">
+<area shape="poly" coords="83,71,82,71,82,73,82,75,82,76,82,77,82,75,82,74,82,72,82,71,82,70,82,70,82,68,82,68,82,67,82,67,83,67,84,67,84,70,84,70,84,71,84,72,84,74,84,75,84,77,84,77,84,75,84,73,84,71,83,71" href="#"   alt="Go to #">
+<area shape="poly" coords="84,83,84,82,84,80,84,79,84,81,84,83,84,84,84,86,84,86,84,87,84,89,83,90,82,89,82,89,82,89,82,88,82,87,82,86,82,86,82,84,82,83,82,82,82,79,82,80,82,82,82,83,82,86,83,86,84,86,84,83" href="#"   alt="Go to #">
+<area shape="poly" coords="87,71,87,71,86,73,87,75,86,76,86,77,86,75,86,74,86,72,86,71,86,70,86,70,86,68,86,68,86,67,86,67,87,67,88,67,89,70,88,70,88,71,88,72,88,74,88,75,88,77,88,77,88,75,88,73,88,71,87,71" href="#"   alt="Go to #">
+<area shape="poly" coords="88,83,88,82,88,80,88,79,88,81,88,83,88,84,88,86,88,86,89,87,88,89,87,90,86,89,86,89,86,89,86,88,86,87,86,86,86,86,86,84,86,83,86,82,86,79,86,80,87,82,86,83,87,86,87,86,88,86,88,83" href="#"   alt="Go to #">
+<area shape="poly" coords="91,71,91,71,91,73,91,75,91,76,91,77,91,75,91,74,90,72,90,71,90,70,90,70,90,68,90,68,90,67,90,67,91,67,92,67,93,70,92,70,92,71,93,72,92,74,92,75,92,77,92,77,92,75,92,73,92,71,91,71" href="#"   alt="Go to #">
+<area shape="poly" coords="92,83,92,82,92,80,92,79,92,81,92,83,93,84,92,86,92,86,93,87,92,89,91,90,90,89,90,89,90,89,90,88,90,87,90,86,90,86,90,84,91,83,91,82,91,79,91,80,91,82,91,83,91,86,91,86,92,86,92,83" href="#"   alt="Go to #">
+<area shape="poly" coords="323,71,322,71,322,73,322,75,322,76,322,77,322,75,322,74,322,72,322,71,322,70,322,70,322,68,322,68,322,67,322,67,323,67,324,67,324,70,324,70,324,71,324,72,324,74,324,75,324,77,324,77,324,75,324,73,324,71,323,71" href="#"   alt="Go to #">
+<area shape="poly" coords="324,83,324,82,324,80,324,79,324,81,324,83,324,84,324,86,324,86,324,87,324,89,323,90,322,89,322,89,322,89,322,88,322,87,322,86,322,86,322,84,322,83,322,82,322,79,322,80,322,82,322,83,322,86,323,86,324,86,324,83" href="#"   alt="Go to #">
+<area shape="poly" coords="327,71,327,71,327,73,327,75,326,76,327,77,326,75,326,74,326,72,326,71,326,70,326,70,326,68,326,68,326,67,326,67,327,67,328,67,329,70,328,70,328,71,328,72,328,74,328,75,328,77,328,77,328,75,328,73,328,71,327,71" href="#"   alt="Go to #">
+<area shape="poly" coords="328,83,328,82,328,80,328,79,328,81,328,83,328,84,328,86,328,86,329,87,328,89,327,90,326,89,326,89,326,89,326,88,326,87,326,86,326,86,326,84,326,83,326,82,327,79,326,80,327,82,327,83,327,86,327,86,328,86,328,83" href="#"   alt="Go to #">
+<area shape="poly" coords="331,71,331,71,331,73,331,75,331,76,331,77,331,75,331,74,330,72,330,71,330,70,330,70,330,68,330,68,330,67,330,67,331,67,332,67,333,70,332,70,333,71,333,72,332,74,332,75,332,77,332,77,332,75,332,73,332,71,331,71" href="#"   alt="Go to #">
+<area shape="poly" coords="332,83,332,82,332,80,332,79,332,81,332,83,333,84,333,86,332,86,333,87,332,89,331,90,330,89,330,89,330,89,330,88,330,87,330,86,330,86,330,84,331,83,331,82,331,79,331,80,331,82,331,83,331,86,331,86,332,86,332,83" href="#"   alt="Go to #">
+<area shape="poly" coords="336,71,335,71,335,73,335,75,335,76,335,77,335,75,335,74,335,72,335,71,335,70,334,70,334,68,334,68,335,67,335,67,335,67,337,67,337,70,337,70,337,71,337,72,337,74,337,75,336,77,337,77,336,75,336,73,336,71,336,71" href="#"   alt="Go to #">
+<area shape="poly" coords="336,83,336,82,337,80,336,79,337,81,337,83,337,84,337,86,337,86,337,87,337,89,335,90,335,89,335,89,334,89,334,88,334,87,335,86,335,86,335,84,335,83,335,82,335,79,335,80,335,82,335,83,335,86,336,86,336,86,336,83" href="#"   alt="Go to #">
+<area shape="poly" coords="340,71,339,71,339,73,339,75,339,76,339,77,339,75,339,74,339,72,339,71,339,70,339,70,339,68,339,68,339,67,339,67,340,67,341,67,341,70,341,70,341,71,341,72,341,74,341,75,341,77,341,77,341,75,341,73,341,71,340,71" href="#"   alt="Go to #">
+<area shape="poly" coords="341,83,341,82,341,80,341,79,341,81,341,83,341,84,341,86,341,86,341,87,341,89,340,90,339,89,339,89,339,89,339,88,339,87,339,86,339,86,339,84,339,83,339,82,339,79,339,80,339,82,339,83,339,86,340,86,341,86,341,83" href="#"   alt="Go to #">
+<area shape="poly" coords="344,71,344,71,344,73,344,75,343,76,344,77,343,75,343,74,343,72,343,71,343,70,343,70,343,68,343,68,343,67,343,67,344,67,345,67,346,70,345,70,345,71,345,72,345,74,345,75,345,77,345,77,345,75,345,73,345,71,344,71" href="#"   alt="Go to #">
+<area shape="poly" coords="345,83,345,82,345,80,345,79,345,81,345,83,345,84,345,86,345,86,346,87,345,89,344,90,343,89,343,89,343,89,343,88,343,87,343,86,343,86,343,84,343,83,343,82,344,79,343,80,344,82,344,83,344,86,344,86,345,86,345,83" href="#"   alt="Go to #">
+<area shape="poly" coords="348,71,348,71,348,73,348,75,348,76,348,77,348,75,348,74,347,72,347,71,347,70,347,70,347,68,347,68,347,67,347,67,348,67,349,67,350,70,349,70,350,71,350,72,349,74,349,75,349,77,349,77,349,75,349,73,349,71,348,71" href="#"   alt="Go to #">
+<area shape="poly" coords="349,83,349,82,349,80,349,79,349,81,349,83,350,84,350,86,349,86,350,87,349,89,348,90,347,89,347,89,347,89,347,88,347,87,347,86,347,86,347,84,348,83,348,82,348,79,348,80,348,82,348,83,348,86,348,86,349,86,349,83" href="#"   alt="Go to #">
+<area shape="poly" coords="353,71,352,71,352,73,352,75,352,76,352,77,352,75,352,74,352,72,352,71,352,70,351,70,351,68,351,68,352,67,352,67,352,67,354,67,354,70,354,70,354,71,354,72,354,74,354,75,353,77,354,77,353,75,353,73,353,71,353,71" href="#"   alt="Go to #">
+<area shape="poly" coords="353,83,353,82,354,80,353,79,354,81,354,83,354,84,354,86,354,86,354,87,354,89,352,90,352,89,352,89,351,89,351,88,351,87,352,86,352,86,352,84,352,83,352,82,352,79,352,80,352,82,352,83,352,86,353,86,353,86,353,83" href="#"   alt="Go to #">
+<area shape="poly" coords="357,71,356,71,356,73,356,75,356,76,356,77,356,75,356,74,356,72,356,71,356,70,356,70,356,68,356,68,356,67,356,67,357,67,358,67,358,70,358,70,358,71,358,72,358,74,358,75,358,77,358,77,358,75,358,73,358,71,357,71" href="#"   alt="Go to #">
+<area shape="poly" coords="358,83,358,82,358,80,358,79,358,81,358,83,358,84,358,86,358,86,358,87,358,89,357,90,356,89,356,89,356,89,356,88,356,87,356,86,356,86,356,84,356,83,356,82,356,79,356,80,356,82,356,83,356,86,357,86,358,86,358,83" href="#"   alt="Go to #">
+<area shape="poly" coords="361,71,361,71,361,73,361,75,360,76,361,77,360,75,360,74,360,72,360,71,360,70,360,70,360,68,360,68,360,67,360,67,361,67,362,67,363,70,362,70,362,71,362,72,362,74,362,75,362,77,362,77,362,75,362,73,362,71,361,71" href="#"   alt="Go to #">
+<area shape="poly" coords="362,83,362,82,362,80,362,79,362,81,362,83,362,84,362,86,362,86,363,87,362,89,361,90,360,89,360,89,360,89,360,88,360,87,360,86,360,86,360,84,360,83,360,82,361,79,360,80,361,82,361,83,361,86,361,86,362,86,362,83" href="#"   alt="Go to #">
+<area shape="poly" coords="365,71,365,71,365,73,365,75,365,76,365,77,365,75,365,74,364,72,364,71,364,70,364,70,364,68,364,68,364,67,364,67,365,67,366,67,367,70,366,70,367,71,367,72,366,74,366,75,366,77,366,77,366,75,366,73,366,71,365,71" href="#"   alt="Go to #">
+<area shape="poly" coords="366,83,366,82,366,80,366,79,366,81,366,83,367,84,367,86,366,86,367,87,366,89,365,90,364,89,364,89,364,89,364,88,364,87,364,86,364,86,364,84,365,83,365,82,365,79,365,80,365,82,365,83,365,86,365,86,366,86,366,83" href="#"   alt="Go to #">
+<area shape="poly" coords="370,71,369,71,369,73,369,75,369,76,369,77,369,75,369,74,369,72,369,71,369,70,368,70,368,68,368,68,369,67,369,67,369,67,371,67,371,70,371,70,371,71,371,72,371,74,371,75,370,77,371,77,370,75,370,73,370,71,370,71" href="#"   alt="Go to #">
+<area shape="poly" coords="370,83,370,82,371,80,370,79,371,81,371,83,371,84,371,86,371,86,371,87,371,89,369,90,369,89,369,89,368,89,368,88,368,87,369,86,369,86,369,84,369,83,369,82,369,79,369,80,369,82,369,83,369,86,370,86,370,86,370,83" href="#"   alt="Go to #">
+<area shape="poly" coords="374,71,373,71,373,73,373,75,373,76,373,77,373,75,373,74,373,72,373,71,373,70,373,70,373,68,373,68,373,67,373,67,374,67,375,67,375,70,375,70,375,71,375,72,375,74,375,75,375,77,375,77,375,75,375,73,375,71,374,71" href="#"   alt="Go to #">
+<area shape="poly" coords="375,83,375,82,375,80,375,79,375,81,375,83,375,84,375,86,375,86,375,87,375,89,374,90,373,89,373,89,373,89,373,88,373,87,373,86,373,86,373,84,373,83,373,82,373,79,373,80,373,82,373,83,373,86,374,86,375,86,375,83" href="#"   alt="Go to #">
+<area shape="poly" coords="378,71,378,71,378,73,378,75,377,76,378,77,377,75,377,74,377,72,377,71,377,70,377,70,377,68,377,68,377,67,377,67,378,67,379,67,380,70,379,70,379,71,379,72,379,74,379,75,379,77,379,77,379,75,379,73,379,71,378,71" href="#"   alt="Go to #">
+<area shape="poly" coords="379,83,379,82,379,80,379,79,379,81,379,83,379,84,379,86,379,86,380,87,379,89,378,90,377,89,377,89,377,89,377,88,377,87,377,86,377,86,377,84,377,83,377,82,378,79,377,80,378,82,378,83,378,86,378,86,379,86,379,83" href="#"   alt="Go to #">
+</map>
+</TD><TD VALIGN=TOP ALIGN=RIGHT>
+<A><IMG SRC="/images/BioCarta/mouse.gif" alt="mouse" BORDER=0><BR><FONT face="arial" color=#009999 size=1>This<BR>Pathway</FONT></A>
+<P>
+<A href="/Pathways/BioCarta/h_vipPathway"><IMG SRC="/images/BioCarta/people.gif" alt="people" BORDER=0><BR><FONT face="arial" color=#009999 size=1>Human<BR>Pathway</FONT></A>
+</TD></TR></TABLE>
+<!--End pathway image-->
+
+</CENTER>
+	</div>
+	</td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="footer">
+     <table cellpadding="0" cellspacing="0" width="150" border="0" align="center">
+      <tr>
+        <td nowrap>Download Plugin:</td>
+        <td align=left><a title="Download Plugin Adobe SVG Viewer" href="http://www.adobe.com/svg/viewer/install/main.html" target="_blank"><img
+    src="/CMAP/images/tmpSVGlogo.png" width="20"
+    height="20" border="0"
+    alt="Download Plugin Adobe SVG Viewer"/></a></td>
+      </tr>
+       </table>
+
+	<ul id="footer-internal">
+		<li class="first"><a href="/">Home</a></li><!--
+		--><li><a href="support.htm">Application Support</a></li><!--
+		--><li><a href="http://www.nih.gov/about/privacy.htm" target="_blank">Policies</a></li><!--
+		--><li><a href="http://www3.cancer.gov/accessibility/nci508.htm" target="_blank">Accessibility</a></li><!--
+		--><li><a href="http://www.nih.gov/about/disclaim.htm" target="_blank">Disclaimer</a></li><!--
+		-->
+	</ul>
+	<p>A Service of the National Cancer Institute</p>
+	<ul id="footer-external">
+		<li><a href="http://www.cancer.gov/" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-nci.png" alt="NCI" height="38" width="48" /></a></li><!--
+		--><li><a href="http://www.dhhs.gov" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-hhs.png" alt="HHS" height="38" width="38" /></a></li><!--
+		--><li><a href="http://www.nih.gov/" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-nih.png" alt="NIH" height="38" width="36" /></a></li><!--
+		--><li><a href="http://www.usa.gov/" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-firstgov.png" alt="First.Gov" height="38" width="90" /></a></li>
+	</ul>
+</div>
+
+</body>
+</html>
+

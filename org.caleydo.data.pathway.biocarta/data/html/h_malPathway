@@ -1,0 +1,390 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+<TITLE>h_malPathway</TITLE>
+<base href="http://cgap.nci.nih.gov/Pathways/BioCarta/">
+
+<META http-equiv="Content-Type" content="text/html; charset=utf-8" name="keywords"
+content="cancer, gene, chromosome, pathway, tissue">
+<title>Cancer Genome Anatomy Project (CGAP) | Cancer Genome Characterization Initiative (CGCI)</title>
+<link rel="stylesheet" type="text/css" href="http://cgap.nci.nih.gov/cgap-cgci.css" />
+<!--[if IE 6]>
+<link href="http://cgap.nci.nih.gov/ie6.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+<!--[if IE 7]>
+<link href="http://cgap.nci.nih.gov/ie7.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+<STYLE TYPE="text/css"> 
+  H3 {text-align:center; font-size:12pt;}
+  H1,H2,H3,H4,H5,H6 {align=center font-family: Arial, Helvetica, sans-serif;}
+  H6 {font-size:8pt;}
+</STYLE>
+
+<SCRIPT LANGUAGE="JavaScript">
+window.name = "CGAP";
+<!--
+var gwindow = null;
+var version = parseFloat(navigator.appVersion);
+
+function gotoFunction() 
+{
+  if(document.gotoCtl.siteList.options[document.gotoCtl.siteList.selectedIndex].value != "")
+  {  
+    self.location = document.gotoCtl.siteList.options[document.gotoCtl.siteList.selectedIndex].value;
+  }
+}
+
+function spawn(url) {
+  var w = window.open(url, "_blank",
+      "screenX=0,screenY=0,status=yes,toolbar=yes,menubar=yes," +
+      "location=yes,scrollbars=yes,resizable=yes");
+}
+
+// -->
+
+</SCRIPT>
+
+</HEAD>
+
+<body class="cgap">
+
+<a href="#main-content" id="skipnav">Skip Navigation</a>
+<div id="nci-banner">
+	<img src="http://cgap.nci.nih.gov/images/nci-banner.png" alt="" height="37" width="822" usemap="#nci-bannermap" />
+	<map id="nci-bannermap" name="nci-bannermap">
+		<area href="http://cancer.gov/" target="_blank" alt="National Cancer Institute" coords="0,0,300,37" shape="rect" />
+		<area href="http://www.nih.gov/" target="_blank" alt="U.S. National Institutes of Health" coords="536,0,717,37" shape="rect" />
+		<area href="http://cancer.gov/" target="_blank" alt="National Cancer Institute" coords="722,1,822,37" shape="rect" />
+	</map>
+</div>
+
+<div id="banner"><a href="http://cgap.nci.nih.gov/cgap.html" title="The Cancer Genome Anatomy Project and the Cancer Genome Characterization Initiative">&nbsp;</a></div>
+</div>
+
+<div id="container">
+<div id="container2">
+<div id="container3">
+<div id="container4">
+<div id="container5">
+<div id="container6">
+<div id="container7">
+<div id="container8">
+	<div id="topnav">
+		<ul>
+			<li><a href="/Catalog" id="nav-cgaphowto">CGAP How To</a></li>
+			<li><a href="/Genes" >Genes</a></li>
+			<li><a href="/Chromosomes" >Chromosomes</a></li>
+			<li><a href="/Tissues" >Tissues</a></li>
+			<li><a href="/SAGE" >SAGE Genie</a></li>
+			<li><a href="/RNAi" >RNAi</a></li>
+			<li><a href="/Pathways" class="active">Pathways</a></li>
+			<li><a href="/Tools" >Tools</a></li>
+		</ul>
+	</div>
+
+
+
+<!-- dtml-if expr="WhichSection!='HomePage'" -->
+    <table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td valign="top" width="189">	
+        <div id="left-content">
+		<div class="left-icon" id="left-icon-pathways">Pathways </div>
+		<ul class="leftnav">
+			<li class="header2">Pathways and Tools</li>
+                        <SCRIPT LANGUAGE="JavaScript">
+                          if (location.href=="http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways") {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways class=active>BioCarta</A></li>");
+                          }
+                          else {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways>BioCarta</A></li>");
+                          }
+                          if (location.href=="http://cgap.nci.nih.gov/Pathways/Kegg_Standard_Pathways") {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/Kegg_Standard_Pathways class=active>KEGG</A></li>");
+                          }
+                          else {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/Kegg_Standard_Pathways>KEGG</A></li>");
+                          }
+                          if (location.href=="http://cgap.nci.nih.gov/Pathways/Pathway_Searcher") {
+                            document.write("<li><a href=/Pathways/Pathway_Searcher class=active>Pathway Searcher</A></li>");
+                          }
+                          else {
+                            document.write("<li><a href=/Pathways/Pathway_Searcher>Pathway Searcher</A></li>");
+                          }
+
+                        </SCRIPT>
+		</ul>
+		<ul class="leftnav">
+			<li class="header2">Related Links</li>
+                        <li><A href="http://www.expasy.ch/cgi-bin/search-biochem-index" target="_blank">ExPASy</a></li>
+                        <li><a href="http://kinase.uhnres.utoronto.ca/signallingmap.html" target="_blank">MAPK signalling</A></li>
+                        <li><a href="http://www.grt.kyushu-u.ac.jp/spad/index.html" target="_blank">SPAD</a></li>
+		</ul>
+
+
+                <ul class="leftnav">
+			<li class="header2">Quick Links:</li>
+			<li><a href="http://www.broad.harvard.edu/science/programs/chemical-biology/initiative-chemical-genetics" target="_blank">ICG</a></li>
+			<li><a href="http://www.nci.nih.gov" target="_blank">NCI Home</a></li>
+			<li><a href="http://ncicb.nci.nih.gov" target="_blank">NCICB Home</a></li>
+			<li><a href="http://www.ncbi.nlm.nih.gov" target="_blank">NCBI Home</a></li>
+			<li><a href="http://ocg.cancer.gov" target="_blank">OCG</a></li>
+		</ul>
+		<a href="cgci.html"><img src="http://cgap.nci.nih.gov/images/tile-cgci.jpg" alt="Cancer Genome Characterization Initiative" height="65" width="169" /></a>
+		<p class="cgci"><a href="cgci.html">Visit</a> the database of genomic characterization data for multiple tumor types.</p>
+	</div>
+
+</td><td valign="top">
+<div id="content">
+<!-- dtml-else -->
+<!--  <td>    -->
+<!-- /dtml-if -->
+
+<a id="maincontent" name="maincontent"></a>
+<!-- beginning of main content -->
+
+<SCRIPT>
+window.name = "CGAP";
+</SCRIPT>
+
+<META http-equiv=Content-Type content='text/html; charset=windows-1252'>
+
+<SPAN style="float:left;"><A href="javascript:pathwayGenes()"><IMG SRC="/images/dna.gif" alt="DNA" BORDER=0><BR>Genes</A><SCRIPT>function pathwayGenes() { location = "/Genes/PathGeneQuery?PAGE=1&ORG=Hs&PATH=h_malPathway"}</SCRIPT></SPAN><CENTER>
+<BR>
+<FONT face='verdana, arial, helvetica, sans serif' color=#003366 size=2>
+<b>Role of MAL in Rho-Mediated Activation of SRF</b></FONT>
+<BR><FONT face="Arial" color=#009999 size=2><B>Pathway information provided by <A href="javascript:spawn('http://www.biocarta.com')" style='color: #009999'>BioCarta</A></B></FONT><BR><FONT face="Arial" color=#009999 size=1>(See <A href="javascript:spawn('http://www.biocarta.com/legal/terms.asp')" style='color: #009999'>Terms and Conditions</A> of use)<BR><A href="javascript:spawn('/Pathways/BioCarta/path_legend')" style="color:#003366">Legend</A></FONT><P>
+
+<!--Start pathway image-->
+<TABLE><TR><TD>
+<img name="h_malPathway" src="http://cgap.nci.nih.gov/BIOCARTA/Pathways/h_malPathway.gif" alt="h_malPathway" width="544" height="464" border="0" usemap="#m_h_malPathway">
+<map name="m_h_malPathway">
+
+<area shape="poly" coords="278,183,287,184,295,187,300,192,302,198,301,201,299,202,290,200,283,200,277,202,276,205,276,209,277,213,269,212,262,208,257,204,255,198,257,192,262,187,269,184,278,183" href="/Genes/GeneInfo?ORG=Hs&BCID=mal"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=mal">
+
+<area shape="poly" coords="290,183,285,182,282,178,284,173,289,171,295,172,298,177,296,181,290,183" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="255,256,264,257,272,260,277,265,279,271,278,274,276,275,267,273,260,273,254,275,253,278,253,282,254,286,246,285,239,281,234,277,232,271,234,265,239,260,246,257,255,256" href="/Genes/GeneInfo?ORG=Hs&BCID=mal"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=mal">
+
+<area shape="poly" coords="267,256,262,255,259,251,261,246,266,244,272,245,275,250,273,254,267,256" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="203,415,204,406,207,398,212,393,218,391,220,392,222,393,220,402,220,410,222,416,225,417,229,416,233,415,232,423,229,430,224,435,219,438,213,436,208,431,205,424,203,415" href="/Genes/GeneInfo?ORG=Hs&BCID=mal"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=mal">
+
+<area shape="poly" coords="429,268,438,269,446,272,451,277,453,283,452,286,450,287,441,285,434,285,428,287,427,290,427,294,428,298,420,297,413,293,408,289,406,283,408,277,413,272,420,269,429,268" href="/Genes/GeneInfo?ORG=Hs&BCID=mal"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=mal">
+
+<area shape="poly" coords="177,103,166,110,173,119,116,119,124,103,177,103" href="/Genes/GeneInfo?ORG=Hs&BCID=rac1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=rac1">
+
+<area shape="poly" coords="160,153,170,154,178,156,183,153,188,152,192,153,194,155,194,163,194,170,192,172,188,173,183,172,178,169,170,171,160,172,143,169,138,166,136,163,138,159,143,156,160,153" href="/Genes/GeneInfo?ORG=Hs&BCID=map4k2"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=map4k2">
+
+<area shape="poly" coords="158,206,168,207,176,209,181,206,186,205,190,206,192,208,192,216,192,223,190,225,186,226,181,225,176,222,168,224,158,225,141,222,136,219,134,216,136,212,141,209,158,206" href="/Genes/GeneInfo?ORG=Hs&BCID=map3k1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=map3k1">
+
+<area shape="poly" coords="156,264,172,267,176,264,181,263,185,264,186,266,186,272,186,279,185,281,181,282,176,281,172,278,156,281,140,278,136,276,134,272,136,269,140,267,156,264" href="/Genes/GeneInfo?ORG=Hs&BCID=mapk8"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=mapk8">
+
+<area shape="poly" coords="415,252,415,249,418,247,421,247,423,250,423,253,421,255,417,254,415,252" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="419,251,418,248,420,246,424,246,426,248,427,251,425,253,421,253,419,251" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="422,250,421,247,423,245,427,245,429,247,430,250,428,252,424,252,422,250" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="424,247,423,245,425,242,428,242,431,244,432,247,431,249,427,249,424,247" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="425,245,425,242,427,240,431,240,433,243,434,246,431,247,428,247,425,245" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="428,243,427,240,429,238,432,238,435,240,436,243,434,245,431,245,428,243" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="415,244,415,241,418,239,421,240,423,242,423,245,420,247,417,246,415,244" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="429,240,429,237,431,235,435,235,437,238,438,241,435,243,432,242,429,240" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="431,238,431,235,433,233,437,233,439,235,440,238,437,240,434,240,431,238" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="435,236,434,234,436,231,439,231,442,233,443,236,442,238,438,238,435,236" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="439,236,439,233,441,231,445,231,447,234,447,237,445,239,442,238,439,236" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="443,236,443,233,445,231,449,231,451,233,452,236,449,238,446,238,443,236" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="446,235,447,232,450,231,453,232,455,235,454,237,451,239,448,238,446,235" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="450,236,451,233,454,232,457,233,459,236,458,238,455,240,452,239,450,236" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="454,237,454,234,457,232,460,233,462,235,462,238,460,240,456,239,454,237" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="458,236,458,233,460,231,464,231,466,234,467,237,464,238,461,238,458,236" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="420,245,419,242,421,240,424,240,427,242,428,245,426,247,423,247,420,245" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="424,245,424,242,426,240,430,240,432,243,433,246,430,248,427,247,424,245" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="429,245,428,242,430,240,433,240,436,242,437,245,436,247,432,247,429,245" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="460,234,460,231,462,229,466,229,468,232,469,235,466,236,463,236,460,234" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="462,232,462,229,465,227,468,228,470,230,470,233,468,235,464,234,462,232" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="465,230,465,227,467,225,471,225,473,228,473,231,471,233,468,232,465,230" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="467,227,466,224,468,222,472,222,474,224,475,227,473,229,469,229,467,227" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="469,224,468,221,470,219,474,219,476,221,477,224,475,226,471,226,469,224" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="471,222,470,219,472,217,476,217,478,219,479,222,477,224,473,224,471,222" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="473,220,472,217,474,215,478,215,480,217,481,220,479,222,475,222,473,220" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="476,218,475,215,477,213,481,213,483,215,484,218,482,220,478,220,476,218" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="480,217,479,214,481,212,485,212,487,214,488,217,486,219,482,219,480,217" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="483,216,482,213,484,211,488,211,490,213,491,216,489,218,485,218,483,216" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="488,216,487,213,489,211,493,211,495,213,496,216,494,218,490,218,488,216" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="492,216,491,213,493,211,497,211,499,213,500,216,498,218,494,218,492,216" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="495,216,494,213,496,211,500,211,502,213,503,216,501,218,497,218,495,216" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="499,215,498,212,500,210,504,210,506,212,507,215,505,217,501,217,499,215" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="501,214,500,211,502,209,506,209,508,211,509,214,507,216,503,216,501,214" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="433,246,432,243,434,241,437,241,440,243,441,246,439,248,436,248,433,246" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="435,243,434,240,436,238,439,238,442,240,443,243,441,245,438,245,435,243" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="436,240,436,237,438,235,442,235,444,237,445,240,442,242,439,242,436,240" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="437,237,437,234,440,232,443,233,445,235,445,238,443,240,439,239,437,237" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="440,235,440,232,442,230,446,230,448,232,449,235,446,237,443,237,440,235" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="442,233,442,230,444,228,448,228,450,230,451,233,449,235,445,235,442,233" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="446,232,445,229,447,227,450,227,453,229,454,232,452,234,449,234,446,232" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="450,231,449,228,451,226,454,226,457,228,458,231,457,233,453,233,450,231" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="454,231,455,228,457,226,461,227,463,229,462,232,459,234,456,233,454,231" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="458,231,458,228,461,226,464,227,466,229,466,232,464,234,460,233,458,231" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="462,231,462,228,464,226,468,226,470,229,470,232,468,234,465,233,462,231" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="466,231,466,228,468,226,472,226,474,229,474,232,472,234,468,233,466,231" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="471,231,470,228,472,226,475,226,478,228,479,231,477,233,473,233,471,231" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="474,230,473,227,475,225,478,225,481,227,482,230,480,232,477,232,474,230" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="478,229,477,226,479,224,482,224,485,226,486,229,484,231,480,231,478,229" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="480,226,479,224,481,221,484,221,487,223,488,226,487,228,483,228,480,226" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="481,223,480,221,482,218,485,218,488,220,489,223,488,225,484,225,481,223" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="482,220,481,218,483,215,486,215,489,217,490,220,489,222,485,222,482,220" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="484,217,483,215,485,212,488,212,491,214,492,217,491,219,487,219,484,217" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="486,214,485,212,487,209,490,209,493,211,494,214,493,216,489,216,486,214" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="489,212,488,210,490,207,493,207,496,209,497,212,496,214,492,214,489,212" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="492,209,491,207,493,204,496,204,499,206,500,209,499,211,495,211,492,209" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="503,212,502,210,504,207,507,207,510,209,511,212,510,214,506,214,503,212" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="507,210,506,208,508,205,511,205,514,207,515,210,514,212,510,212,507,210" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="495,207,494,205,496,202,499,202,502,204,503,207,502,209,498,209,495,207" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="497,206,496,204,498,201,501,201,504,203,505,206,504,208,500,208,497,206" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="501,205,500,203,502,200,505,200,508,202,509,205,508,207,504,207,501,205" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="507,206,506,204,508,201,511,201,514,203,515,206,514,208,510,208,507,206" href="/Genes/GeneInfo?ORG=Hs&BCID=alpha_actin"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=alpha_actin">
+
+<area shape="poly" coords="342,103,393,103,380,110,392,118,334,118,342,103" href="/Genes/GeneInfo?ORG=Hs&BCID=rhoa"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=rhoa">
+
+<area shape="poly" coords="174,102,225,102,212,109,223,117,166,117,174,102" href="/Genes/GeneInfo?ORG=Hs&BCID=cdc42"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=cdc42">
+
+<area shape="poly" coords="174,413,175,404,178,396,183,391,189,389,191,390,193,391,191,400,191,408,193,414,196,415,200,414,204,413,203,421,200,428,195,433,190,436,184,434,179,429,176,422,174,413" href="/Genes/GeneInfo?ORG=Hs&BCID=srf"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=srf">
+
+<area shape="poly" coords="142,415,143,406,146,398,150,393,156,391,158,392,160,393,159,402,159,410,161,415,164,417,168,416,172,415,171,423,168,430,164,435,159,437,152,436,147,431,144,424,142,415" href="/Genes/GeneInfo?ORG=Hs&BCID=srf"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=srf">
+
+<area shape="poly" coords="254,337,263,338,271,341,276,346,278,352,277,355,275,356,266,354,259,354,253,356,252,359,252,363,253,367,245,366,238,362,233,358,231,352,233,346,238,341,245,338,254,337" href="/Genes/GeneInfo?ORG=Hs&BCID=srf"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=srf">
+
+<area shape="poly" coords="112,414,114,405,118,398,123,393,129,392,131,393,133,395,130,404,130,411,131,417,134,418,138,419,142,418,140,426,136,432,131,437,126,438,120,436,115,431,113,423,112,414" href="/Genes/GeneInfo?ORG=Hs&BCID=tcf"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=tcf">
+
+<area shape="poly" coords="286,311,295,312,303,315,308,320,310,326,309,329,307,330,298,328,291,328,285,330,284,333,284,337,285,341,277,340,270,336,265,332,263,326,265,320,270,315,277,312,286,311" href="/Genes/GeneInfo?ORG=Hs&BCID=srf"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=srf">
+
+<area shape="poly" coords="448,147,458,148,466,150,471,147,477,146,482,147,483,149,483,156,483,164,482,166,477,167,471,165,466,162,458,165,448,165,430,163,424,160,422,156,424,153,430,150,448,147" href="/Genes/GeneInfo?ORG=Hs&BCID=rhokinasedia"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=rhokinasedia">
+
+<area shape="poly" coords="354,203,364,204,372,206,377,203,382,202,386,203,388,205,388,213,388,220,386,222,382,223,377,222,372,219,364,221,354,222,337,219,332,216,330,213,332,209,337,206,354,203" href="/Genes/GeneInfo?ORG=Hs&BCID=limk"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=limk">
+
+<area shape="poly" coords="94,103,84,109,90,117,39,117,46,103,94,103" href="/Genes/GeneInfo?ORG=Hs&BCID=hras"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=hras">
+
+<area shape="poly" coords="57,224,73,227,77,224,82,223,86,224,87,226,87,232,87,239,86,241,82,242,77,241,73,238,57,241,41,238,37,236,35,232,37,229,41,227,57,224" href="/Genes/GeneInfo?ORG=Hs&BCID=map2k2"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=map2k2">
+
+<area shape="poly" coords="56,203,72,206,76,203,81,202,85,203,86,205,86,211,86,218,85,220,81,221,76,220,72,217,56,220,40,217,36,215,34,211,36,208,40,206,56,203" href="/Genes/GeneInfo?ORG=Hs&BCID=map2k1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=map2k1">
+
+<area shape="poly" coords="57,294,73,297,77,294,82,293,86,294,87,296,87,302,87,309,86,311,82,312,77,311,73,308,57,311,41,308,37,306,35,302,37,299,41,297,57,294" href="/Genes/GeneInfo?ORG=Hs&BCID=mapk1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=mapk1">
+
+<area shape="poly" coords="57,275,73,278,77,275,82,274,86,275,87,277,87,283,87,290,86,292,82,293,77,292,73,289,57,292,41,289,37,287,35,283,37,280,41,278,57,275" href="/Genes/GeneInfo?ORG=Hs&BCID=mapk3"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=mapk3">
+
+<area shape="poly" coords="59,153,75,156,79,153,84,152,88,153,89,155,89,161,89,168,88,170,84,171,79,170,75,167,59,170,43,167,39,165,37,161,39,158,43,156,59,153" href="/Genes/GeneInfo?ORG=Hs&BCID=raf1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=raf1">
+
+<area shape="poly" coords="357,154,367,155,375,157,380,154,385,153,389,154,391,156,391,164,391,171,389,173,385,174,380,173,375,170,367,172,357,173,340,170,335,167,333,164,335,160,340,157,357,154" href="/Genes/GeneInfo?ORG=Hs&BCID=rock1"   alt="Go to /Genes/GeneInfo?ORG=Hs&BCID=rock1">
+</map>
+
+</TD><TD VALIGN=TOP ALIGN=RIGHT>
+<A><IMG SRC="/images/BioCarta/people.gif" alt="people" BORDER=0><BR><FONT face="arial" color=#009999 size=1>This<BR>Pathway</FONT></A>
+<P>
+<A href="/Pathways/BioCarta/m_malPathway"><IMG SRC="/images/BioCarta/mouse.gif" alt="mouse" BORDER=0><BR><FONT face="arial" color=#009999 size=1>Mouse<BR>Pathway</FONT></A>
+</TD></TR></TABLE>
+<!--End pathway image-->
+
+</CENTER>
+	</div>
+	</td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="footer">
+     <table cellpadding="0" cellspacing="0" width="150" border="0" align="center">
+      <tr>
+        <td nowrap>Download Plugin:</td>
+        <td align=left><a title="Download Plugin Adobe SVG Viewer" href="http://www.adobe.com/svg/viewer/install/main.html" target="_blank"><img
+    src="/CMAP/images/tmpSVGlogo.png" width="20"
+    height="20" border="0"
+    alt="Download Plugin Adobe SVG Viewer"/></a></td>
+      </tr>
+       </table>
+
+	<ul id="footer-internal">
+		<li class="first"><a href="/">Home</a></li><!--
+		--><li><a href="support.htm">Application Support</a></li><!--
+		--><li><a href="http://www.nih.gov/about/privacy.htm" target="_blank">Policies</a></li><!--
+		--><li><a href="http://www3.cancer.gov/accessibility/nci508.htm" target="_blank">Accessibility</a></li><!--
+		--><li><a href="http://www.nih.gov/about/disclaim.htm" target="_blank">Disclaimer</a></li><!--
+		-->
+	</ul>
+	<p>A Service of the National Cancer Institute</p>
+	<ul id="footer-external">
+		<li><a href="http://www.cancer.gov/" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-nci.png" alt="NCI" height="38" width="48" /></a></li><!--
+		--><li><a href="http://www.dhhs.gov" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-hhs.png" alt="HHS" height="38" width="38" /></a></li><!--
+		--><li><a href="http://www.nih.gov/" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-nih.png" alt="NIH" height="38" width="36" /></a></li><!--
+		--><li><a href="http://www.usa.gov/" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-firstgov.png" alt="First.Gov" height="38" width="90" /></a></li>
+	</ul>
+</div>
+
+</body>
+</html>
+

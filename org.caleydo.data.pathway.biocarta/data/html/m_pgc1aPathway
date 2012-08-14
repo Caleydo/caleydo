@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<HEAD>
+<TITLE>m_pgc1aPathway</TITLE>
+<base href="http://cgap.nci.nih.gov/Pathways/BioCarta/">
+
+<META http-equiv="Content-Type" content="text/html; charset=utf-8" name="keywords"
+content="cancer, gene, chromosome, pathway, tissue">
+<title>Cancer Genome Anatomy Project (CGAP) | Cancer Genome Characterization Initiative (CGCI)</title>
+<link rel="stylesheet" type="text/css" href="http://cgap.nci.nih.gov/cgap-cgci.css" />
+<!--[if IE 6]>
+<link href="http://cgap.nci.nih.gov/ie6.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+<!--[if IE 7]>
+<link href="http://cgap.nci.nih.gov/ie7.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+<STYLE TYPE="text/css"> 
+  H3 {text-align:center; font-size:12pt;}
+  H1,H2,H3,H4,H5,H6 {align=center font-family: Arial, Helvetica, sans-serif;}
+  H6 {font-size:8pt;}
+</STYLE>
+
+<SCRIPT LANGUAGE="JavaScript">
+window.name = "CGAP";
+<!--
+var gwindow = null;
+var version = parseFloat(navigator.appVersion);
+
+function gotoFunction() 
+{
+  if(document.gotoCtl.siteList.options[document.gotoCtl.siteList.selectedIndex].value != "")
+  {  
+    self.location = document.gotoCtl.siteList.options[document.gotoCtl.siteList.selectedIndex].value;
+  }
+}
+
+function spawn(url) {
+  var w = window.open(url, "_blank",
+      "screenX=0,screenY=0,status=yes,toolbar=yes,menubar=yes," +
+      "location=yes,scrollbars=yes,resizable=yes");
+}
+
+// -->
+
+</SCRIPT>
+
+</HEAD>
+
+<body class="cgap">
+
+<a href="#main-content" id="skipnav">Skip Navigation</a>
+<div id="nci-banner">
+	<img src="http://cgap.nci.nih.gov/images/nci-banner.png" alt="" height="37" width="822" usemap="#nci-bannermap" />
+	<map id="nci-bannermap" name="nci-bannermap">
+		<area href="http://cancer.gov/" target="_blank" alt="National Cancer Institute" coords="0,0,300,37" shape="rect" />
+		<area href="http://www.nih.gov/" target="_blank" alt="U.S. National Institutes of Health" coords="536,0,717,37" shape="rect" />
+		<area href="http://cancer.gov/" target="_blank" alt="National Cancer Institute" coords="722,1,822,37" shape="rect" />
+	</map>
+</div>
+
+<div id="banner"><a href="http://cgap.nci.nih.gov/cgap.html" title="The Cancer Genome Anatomy Project and the Cancer Genome Characterization Initiative">&nbsp;</a></div>
+</div>
+
+<div id="container">
+<div id="container2">
+<div id="container3">
+<div id="container4">
+<div id="container5">
+<div id="container6">
+<div id="container7">
+<div id="container8">
+	<div id="topnav">
+		<ul>
+			<li><a href="/Catalog" id="nav-cgaphowto">CGAP How To</a></li>
+			<li><a href="/Genes" >Genes</a></li>
+			<li><a href="/Chromosomes" >Chromosomes</a></li>
+			<li><a href="/Tissues" >Tissues</a></li>
+			<li><a href="/SAGE" >SAGE Genie</a></li>
+			<li><a href="/RNAi" >RNAi</a></li>
+			<li><a href="/Pathways" class="active">Pathways</a></li>
+			<li><a href="/Tools" >Tools</a></li>
+		</ul>
+	</div>
+
+
+
+<!-- dtml-if expr="WhichSection!='HomePage'" -->
+    <table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td valign="top" width="189">	
+        <div id="left-content">
+		<div class="left-icon" id="left-icon-pathways">Pathways </div>
+		<ul class="leftnav">
+			<li class="header2">Pathways and Tools</li>
+                        <SCRIPT LANGUAGE="JavaScript">
+                          if (location.href=="http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways") {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways class=active>BioCarta</A></li>");
+                          }
+                          else {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways>BioCarta</A></li>");
+                          }
+                          if (location.href=="http://cgap.nci.nih.gov/Pathways/Kegg_Standard_Pathways") {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/Kegg_Standard_Pathways class=active>KEGG</A></li>");
+                          }
+                          else {
+                            document.write("<li><a href=http://cgap.nci.nih.gov/Pathways/Kegg_Standard_Pathways>KEGG</A></li>");
+                          }
+                          if (location.href=="http://cgap.nci.nih.gov/Pathways/Pathway_Searcher") {
+                            document.write("<li><a href=/Pathways/Pathway_Searcher class=active>Pathway Searcher</A></li>");
+                          }
+                          else {
+                            document.write("<li><a href=/Pathways/Pathway_Searcher>Pathway Searcher</A></li>");
+                          }
+
+                        </SCRIPT>
+		</ul>
+		<ul class="leftnav">
+			<li class="header2">Related Links</li>
+                        <li><A href="http://www.expasy.ch/cgi-bin/search-biochem-index" target="_blank">ExPASy</a></li>
+                        <li><a href="http://kinase.uhnres.utoronto.ca/signallingmap.html" target="_blank">MAPK signalling</A></li>
+                        <li><a href="http://www.grt.kyushu-u.ac.jp/spad/index.html" target="_blank">SPAD</a></li>
+		</ul>
+
+
+                <ul class="leftnav">
+			<li class="header2">Quick Links:</li>
+			<li><a href="http://www.broad.harvard.edu/science/programs/chemical-biology/initiative-chemical-genetics" target="_blank">ICG</a></li>
+			<li><a href="http://www.nci.nih.gov" target="_blank">NCI Home</a></li>
+			<li><a href="http://ncicb.nci.nih.gov" target="_blank">NCICB Home</a></li>
+			<li><a href="http://www.ncbi.nlm.nih.gov" target="_blank">NCBI Home</a></li>
+			<li><a href="http://ocg.cancer.gov" target="_blank">OCG</a></li>
+		</ul>
+		<a href="cgci.html"><img src="http://cgap.nci.nih.gov/images/tile-cgci.jpg" alt="Cancer Genome Characterization Initiative" height="65" width="169" /></a>
+		<p class="cgci"><a href="cgci.html">Visit</a> the database of genomic characterization data for multiple tumor types.</p>
+	</div>
+
+</td><td valign="top">
+<div id="content">
+<!-- dtml-else -->
+<!--  <td>    -->
+<!-- /dtml-if -->
+
+<a id="maincontent" name="maincontent"></a>
+<!-- beginning of main content -->
+
+<SCRIPT>
+window.name = "CGAP";
+</SCRIPT>
+
+<META http-equiv=Content-Type content='text/html; charset=windows-1252'>
+
+<SPAN style="float:left;"><A href="javascript:pathwayGenes()"><IMG SRC="/images/dna.gif" alt="DNA" BORDER=0><BR>Genes</A><SCRIPT>function pathwayGenes() { location = "/Genes/PathGeneQuery?PAGE=1&ORG=Mm&PATH=m_pgc1aPathway"}</SCRIPT></SPAN><CENTER>
+<BR>
+<FONT face='verdana, arial, helvetica, sans serif' color=#003366 size=2>
+<b>Regulation of PGC-1a</b></FONT>
+<BR><FONT face="Arial" color=#009999 size=2><B>Pathway information provided by <A href="javascript:spawn('http://www.biocarta.com')" style='color: #009999'>BioCarta</A></B></FONT><BR><FONT face="Arial" color=#009999 size=1>(See <A href="javascript:spawn('http://www.biocarta.com/legal/terms.asp')" style='color: #009999'>Terms and Conditions</A> of use)<BR><A href="javascript:spawn('/Pathways/BioCarta/path_legend')" style="color:#003366">Legend</A></FONT><P>
+
+<!--Start pathway image-->
+<TABLE><TR><TD>
+<img name="m_pgc1aPathway" src="http://cgap.nci.nih.gov/BIOCARTA/Pathways/m_pgc1aPathway.gif" alt="m_pgc1aPathway" width="530" height="432" border="0" usemap="#m_m_pgc1aPathway">
+<map name="m_m_pgc1aPathway">
+
+<area shape="poly" coords="228,182,246,181,250,182,253,184,246,189,254,193,251,196,246,198,228,198,216,196,212,193,211,190,212,187,216,184,228,182,228,182" href="/Genes/GeneInfo?ORG=Mm&BCID=hdac5"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=hdac5">
+<area shape="poly" coords="277,383,261,384,256,383,254,380,252,375,248,373,247,371,249,368,254,367,262,367,267,366,272,366,275,364,279,362,286,365,292,367,296,369,298,373,296,378,292,380,290,383,285,386,280,385,277,383,277,383" href="/Genes/GeneInfo?ORG=Mm&BCID=glut4"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=glut4">
+<area shape="poly" coords="227,54,245,53,249,54,252,56,245,61,253,65,250,68,245,70,227,70,215,68,211,65,210,62,211,59,215,56,227,54,227,54" href="/Genes/GeneInfo?ORG=Mm&BCID=hdac5"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=hdac5">
+<area shape="poly" coords="333,270,342,271,350,274,355,279,357,285,356,288,354,289,345,287,338,287,332,289,331,292,331,296,332,300,324,299,317,295,312,291,310,285,312,279,317,274,324,271,333,270,333,270" href="/Genes/GeneInfo?ORG=Mm&BCID=esrra"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=esrra">
+<area shape="poly" coords="251,34,259,35,264,37,268,41,270,45,268,49,264,53,259,55,251,56,244,55,238,53,234,49,233,45,234,41,238,37,244,35,251,34,251,34" href="/Genes/GeneInfo?ORG=Mm&BCID=calmodulin"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=calmodulin">
+<area shape="poly" coords="181,145,184,142,188,141,192,144,194,151,192,158,188,161,184,160,181,156,169,158,156,158,146,155,143,153,142,150,146,146,157,143,169,142,181,145,181,145" href="/Genes/GeneInfo?ORG=Mm&BCID=camkii"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=camkii">
+<area shape="poly" coords="173,125,189,128,193,125,198,124,202,125,203,127,203,133,203,140,202,142,198,143,193,142,189,139,173,142,157,139,153,137,151,133,153,130,157,128,173,125,173,125" href="/Genes/GeneInfo?ORG=Mm&BCID=camki"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=camki">
+<area shape="poly" coords="160,159,176,162,180,159,185,158,189,159,190,161,190,167,190,174,189,176,185,177,180,176,176,173,160,176,144,173,140,171,138,167,140,164,144,162,160,159,160,159" href="/Genes/GeneInfo?ORG=Mm&BCID=camk4"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=camk4">
+<area shape="poly" coords="54,226,62,225,67,223,71,219,73,215,71,211,67,207,62,205,54,204,47,205,41,207,37,211,36,215,37,219,41,223,47,225,54,226,54,226" href="/Genes/GeneInfo?ORG=Mm&BCID=calmodulin"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=calmodulin">
+<area shape="poly" coords="271,166,262,161,259,157,258,153,259,147,262,142,267,138,269,132,271,129,274,127,278,128,280,131,282,136,286,141,291,149,292,154,291,159,286,162,281,165,275,166,271,166,271,166" href="/Genes/GeneInfo?ORG=Mm&BCID=1433"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=1433">
+<area shape="poly" coords="122,205,130,206,135,208,139,212,141,216,139,220,135,224,130,226,122,227,115,226,109,224,105,220,104,216,105,212,109,208,115,206,122,205,122,205" href="/Genes/GeneInfo?ORG=Mm&BCID=calmodulin"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=calmodulin">
+<area shape="poly" coords="143,259,148,257,153,257,157,258,160,260,148,267,160,273,157,276,153,276,148,276,143,274,94,274,88,272,86,268,86,266,88,261,94,259,143,259,143,259" href="/Genes/GeneInfo?ORG=Mm&BCID=calcineurin"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=calcineurin">
+<area shape="poly" coords="318,223,327,224,333,227,338,231,340,237,339,239,338,241,329,239,323,239,317,241,316,244,316,247,317,251,303,246,299,242,297,237,299,232,303,227,310,224,318,223,318,223" href="/Genes/GeneInfo?ORG=Mm&BCID=pgc1"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=pgc1">
+<area shape="poly" coords="420,223,415,219,413,213,415,210,422,211,428,212,433,210,434,205,433,201,445,205,449,209,451,213,448,220,441,224,439,225,437,227,437,246,440,252,441,259,439,269,435,272,431,274,428,272,424,269,422,259,423,251,426,246,426,227,423,225,420,223,420,223" href="/Genes/GeneInfo?ORG=Mm&BCID=ppara"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=ppara">
+<area shape="poly" coords="230,224,239,225,247,228,252,233,254,239,253,242,251,243,242,241,235,241,229,243,228,246,228,250,229,254,221,253,214,249,209,245,207,239,209,233,214,228,221,225,230,224,230,224" href="/Genes/GeneInfo?ORG=Mm&BCID=mef2"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=mef2">
+<area shape="poly" coords="203,59,195,54,192,51,191,46,192,41,195,36,199,32,202,27,206,22,209,23,212,26,214,30,218,35,222,43,223,48,222,52,218,55,213,58,207,59,203,59,203,59" href="/Genes/GeneInfo?ORG=Mm&BCID=1433"   alt="Go to /Genes/GeneInfo?ORG=Mm&BCID=1433">
+<area shape="poly" coords="221,76,224,79,224,85,221,88,145,88,142,85,142,79,145,76,221,76,221,76" href="/Pathways/BioCarta/m_hdacPathway"   alt="Go to /Pathways/BioCarta/m_hdacPathway">
+</map>
+</TD><TD VALIGN=TOP ALIGN=RIGHT>
+<A><IMG SRC="/images/BioCarta/mouse.gif" alt="mouse" BORDER=0><BR><FONT face="arial" color=#009999 size=1>This<BR>Pathway</FONT></A>
+<P>
+<A href="/Pathways/BioCarta/h_pgc1aPathway"><IMG SRC="/images/BioCarta/people.gif" alt="people" BORDER=0><BR><FONT face="arial" color=#009999 size=1>Human<BR>Pathway</FONT></A>
+</TD></TR></TABLE>
+<!--End pathway image-->
+
+</CENTER>
+	</div>
+	</td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="footer">
+     <table cellpadding="0" cellspacing="0" width="150" border="0" align="center">
+      <tr>
+        <td nowrap>Download Plugin:</td>
+        <td align=left><a title="Download Plugin Adobe SVG Viewer" href="http://www.adobe.com/svg/viewer/install/main.html" target="_blank"><img
+    src="/CMAP/images/tmpSVGlogo.png" width="20"
+    height="20" border="0"
+    alt="Download Plugin Adobe SVG Viewer"/></a></td>
+      </tr>
+       </table>
+
+	<ul id="footer-internal">
+		<li class="first"><a href="/">Home</a></li><!--
+		--><li><a href="support.htm">Application Support</a></li><!--
+		--><li><a href="http://www.nih.gov/about/privacy.htm" target="_blank">Policies</a></li><!--
+		--><li><a href="http://www3.cancer.gov/accessibility/nci508.htm" target="_blank">Accessibility</a></li><!--
+		--><li><a href="http://www.nih.gov/about/disclaim.htm" target="_blank">Disclaimer</a></li><!--
+		-->
+	</ul>
+	<p>A Service of the National Cancer Institute</p>
+	<ul id="footer-external">
+		<li><a href="http://www.cancer.gov/" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-nci.png" alt="NCI" height="38" width="48" /></a></li><!--
+		--><li><a href="http://www.dhhs.gov" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-hhs.png" alt="HHS" height="38" width="38" /></a></li><!--
+		--><li><a href="http://www.nih.gov/" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-nih.png" alt="NIH" height="38" width="36" /></a></li><!--
+		--><li><a href="http://www.usa.gov/" target="_blank"><img src="http://cgap.nci.nih.gov/images/footer-firstgov.png" alt="First.Gov" height="38" width="90" /></a></li>
+	</ul>
+</div>
+
+</body>
+</html>
+
