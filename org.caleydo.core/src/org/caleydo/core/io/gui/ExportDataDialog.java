@@ -214,11 +214,9 @@ public class ExportDataDialog
 
 		DataTableExporter exporter = new DataTableExporter();
 
-		IDType targetIDType =
-			dataChooserComposite.getDataDomain().getRecordIDCategory().getPrimaryMappingType();
 		exporter.export(dataChooserComposite.getDataDomain(), sFileName,
 			dataChooserComposite.getRecordPerspective(), dataChooserComposite.getDimensionPerspective(),
-			targetIDType);
+			null, null, false);
 
 		super.okPressed();
 	}
@@ -227,9 +225,5 @@ public class ExportDataDialog
 		new ExportDataDialog(new Shell()).open();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.io.gui.INotifiedOnOK#dataOK()
-	 */
 
 }

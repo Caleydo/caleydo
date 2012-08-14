@@ -20,12 +20,9 @@
 package org.caleydo.core.data.collection.table;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataTransformation;
@@ -43,7 +40,6 @@ import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
-import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.AUniqueObject;
@@ -201,6 +197,7 @@ public class DataTable extends AUniqueObject {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public <RawType> RawType getRaw(Integer dimensionID, Integer recordID) {
 		Integer columnID = dimensionID;
 		Integer rowID = recordID;
