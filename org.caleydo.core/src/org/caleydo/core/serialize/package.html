@@ -1,0 +1,97 @@
+<html>
+<head>
+<title>org.caledyo.core.serialize package</title>
+</head>
+<body>
+<p>
+The serialize-package provides manager and base-classes for JAXB based XML-serialization.  
+</p>
+<h2>View-Serialization:</h2>
+<p>
+View-Serialization consists of 3 implementation steps.
+</p>
+<h3>Step 1: Create class inherited from {@see org.caleydo.core.serialize.ASerializedView}</h3>
+<p>
+This class should contain all fields that characterize the state of the view (e.g.: URL of a browser-view or text and cursor-position of an editor-view). 
+In its no-argument default constructor it must initialize the view with its default parameters. 
+These default parameters are used when creating the view on initial startups or when the user opens the view during his work with a project.
+</p>
+<p>
+The related ID of the gui framework (e.g. the RCP-view-ID as used in the RCP's plugin.xml) should be stored in a constant and the <code>getViewGUIID()</code> method should return the value of this constant.
+</p>
+<p>
+To make the view JAXB-serializable, add the{@see javax.xml.bind.annotation.XmlRootElement} and {@see javax.xml.bind.annotation.XmlType} annotations to the class.
+Furthermore the class <b>must</b> have a no-argument constructor and getter and setter methods for each of the attributes.
+</p>
+
+<p>
+Example of a serialized browser-view:
+</p>
+
+<code>
+&#64;XmlType<br>
+&#64;XmlRootElement<br>
+public class SerializedBrowserView {<br>
+<br>
+&nbsp;&nbsp;public static final String GUI_ID = "org.caleydo.core.views.swt.HTMLBrowserView";<br>
+<br>
+&nbsp;&nbsp;private String url;<br>
+<br>
+&nbsp;&nbsp;public SerializedBrowserView() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;url = "http://www.caleydo.org";<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;public String getUrl() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return url;<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;public void setUrl(String url) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;this.url = url;<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;&#64;Override<br>
+&nbsp;&nbsp;public String getViewGUIID() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return GUI_ID;<br>
+&nbsp;&nbsp;}<br>
+<br>	
+}<br>
+</code>
+
+<p>
+Then add the class to the list of classes in the {@see org.caleydo.core.serialize.ASerializedView}'s{@see javax.xml.bind.annotation.XmlSeeAlso}-annotation.
+</p>
+<p>
+Further JAXB annotations that could be of interest during implementation of more complex serialized-views are {@see javax.xml.bind.annotation.XmlSeeAlso} for abstract bases and {@see javax.xml.bind.annotation.XmlElementWrapper} for {@see java.util.Collection} type fields.
+</p
+
+<h3>Step 2: Implementation of <code>getSerializableRepresentation()</code></h3>
+<p>
+The <code>getSerializedRepresentation()</code>-method in the {@see org.caleydo.core.view.opengl.canvas.AGLEventListener} implementation of the view must return a fully initialized instance of the related implementation of the {@see org.caleydo.core.serialize.ASerializedView} as described above. Furthermore the id and gui-id of the view should be stored within created serializeable view. For a browser-view the method might look like this:
+</p>
+
+<code>
+public ASerializedView getSerializableRepresentation() {<br>
+&nbsp;&nbsp;SerializedBrowserView serializedView = new SerializedBrowserView();<br>
+&nbsp;&nbsp;serializedView.setViewID(this.getID());<br>
+&nbsp;&nbsp;serializedView.setUrl(this.getUrl());<br>
+&nbsp;&nbsp;return serializedView;<br>
+}<br><br>
+</code>
+
+<h3>Step 3: Implementation of <code>initFromSerializableRepresentation(ASerializedView ser)</h3>
+<p>
+The <code>initFromSerializableRepresentation(ASerializedView ser)</code>-method should restore the view-state from the data stored in an instance of its {@see org.caleydo.core.serialize.ASerializedView}-implementating class. The method might be called anytime in a view's lifetime. This means that nothing might be done, that only allowed to execute once or not directly after view creation.
+</p>
+<p>
+For the browser-view example the method might look like this:
+</p>
+
+<code>
+public void initFromSerializableRepresentation(ASerializedView ser) {<br>
+&nbsp;&nbsp;SerializedBrowserView serializedView = (SerializedBrowserView) ser;<br>
+&nbsp;&nbsp;loadUrl(serializedView.getUrl());<br>
+}<br>
+</code>
+
+</body>
+</html>
