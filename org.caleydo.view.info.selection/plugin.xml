@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="org.caleydo.view.info.selection.RcpSelectionInfoView"
+            icon="resources/icons/info.png"
+            id="org.caleydo.view.info.selection"
+            name="Selection Info">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.caleydo.menu.view"
+               label="View">
+            <menu
+                  id="org.caleydo.menu.view.tool"
+                  label="Tools">
+               <command
+                     commandId="org.caleydo.view.info.selection.command.openselectioninfo"
+                     icon="resources/icons/info.png"
+                     style="push">
+               </command>
+            </menu>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.info.selection.command.handler.OpenSelectionInfoHandler"
+            id="org.caleydo.view.info.selection.command.openselectioninfo"
+            name="Selection Info">
+      </command>
+   </extension>
+   <extension
+         id="org.caleydo.view.info"
+         name="InfoViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="SelectionInfoViewCreator"
+          class="org.caleydo.view.info.selection.creator.ViewCreator" />
+   </extension>
+</plugin>
