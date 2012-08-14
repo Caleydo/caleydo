@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="org.caleydo.view.parcoords.RcpGLParCoordsView"
+            icon="resources/icons/parcoords.png"
+            id="org.caleydo.view.parcoords"
+            name="Parallel Coordinates">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.caleydo.menu.view"
+               label="View">
+            <menu
+                  id="org.caleydo.menu.view.visualization"
+                  label="Visualizations">
+               <command
+                     commandId="org.caleydo.view.parcoords.command.openparcoords"
+                     icon="resources/icons/parcoords.png"
+                     style="push">
+               </command>
+            </menu>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.parcoords.command.handler.OpenParCoordsHandler"
+            id="org.caleydo.view.parcoords.command.openparcoords"
+            name="Parallel Coordinates">
+      </command>
+   </extension>
+   <extension
+         id="org.caleydo.view.parcoords"
+         name="ParCoordsViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="ParCoordsViewCreator"
+          class="org.caleydo.view.parcoords.creator.ViewCreator" />
+   </extension>
+   <extension
+         point="org.caleydo.view.ViewCategory">
+      <ViewCategory
+            isDataView="true"
+            isReleaseView="true"
+            viewID="org.caleydo.view.parcoords">
+      </ViewCategory>
+   </extension>
+</plugin>
