@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="org.caleydo.view.browser.RcpHTMLBrowserView"
+            icon="resources/icons/browser.png"
+            id="org.caleydo.view.browser"
+            name="Browser">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.caleydo.menu.view"
+               label="View">
+            <menu
+                  id="org.caleydo.menu.view.tool"
+                  label="Tools">
+               <command
+                     commandId="org.caleydo.view.browser.command.openbrowser"
+                     icon="resources/icons/browser.png"
+                     style="push">
+               </command>
+            </menu>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.browser.command.handler.OpenBrowserHandler"
+            id="org.caleydo.view.browser.command.openbrowser"
+            name="Browser">
+      </command>
+   </extension>
+   <extension
+         id="org.caleydo.view.browser"
+         name="BrowserViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="BrowserViewCreator"
+          class="org.caleydo.view.browser.creator.ViewCreator" />
+   </extension>
+</plugin>
