@@ -19,14 +19,30 @@
  *******************************************************************************/
 package org.caleydo.view.dvi.contextmenu;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.view.dvi.event.AddTablePerspectiveEvent;
 
-public class AddTablePerspectiveItem extends AContextMenuItem {
+/**
+ * Item container that is used to show a {@link TablePerspective} in a newly
+ * created view.
+ * 
+ * @author Christian Partl
+ * 
+ */
+public class ShowTablePerspectiveInViewsItemContainer extends AContextMenuItem {
 
-	public AddTablePerspectiveItem(AddTablePerspectiveEvent event) {
-		setLabel("Create Data Container");
-		event.setSender(this);
-		registerEvent(event);
+	public ShowTablePerspectiveInViewsItemContainer(TablePerspective tablePerspective,
+			List<Pair<String, String>> finalViewTypes) {
+
+		setLabel("Show " + tablePerspective.getLabel() + " in...");
+
+		for (Pair<String, String> viewType : finalViewTypes) {
+			addSubItem(new ShowTablePerspectiveInViewItem(viewType.getFirst(), viewType.getSecond(),
+					tablePerspective.getDataDomain(), tablePerspective));
+		}
 	}
 }

@@ -19,21 +19,30 @@
  *******************************************************************************/
 package org.caleydo.view.dvi.contextmenu;
 
-import org.caleydo.core.data.datadomain.IDataDomain;
+import java.util.List;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.view.dvi.event.CreateViewFromTablePerspectiveEvent;
 
-public class CreateViewItem extends AContextMenuItem {
+/**
+ * Item container that is used to add a {@link TablePerspective} to
+ * {@link IMultiTablePerspectiveBasedView}s.
+ * 
+ * @author Christian Partl
+ * 
+ */
+public class AddTablePerspectiveToViewsItemContainer extends AContextMenuItem {
 
-	public CreateViewItem(String viewName, String viewType, IDataDomain dataDomain,
+	public AddTablePerspectiveToViewsItemContainer(List<IMultiTablePerspectiveBasedView> views,
 			TablePerspective tablePerspective) {
 
-		setLabel(viewName);
-
-		CreateViewFromTablePerspectiveEvent event = new CreateViewFromTablePerspectiveEvent(
-				viewType, dataDomain, tablePerspective);
-		event.setSender(this);
-		registerEvent(event);
+		setLabel("Add " + tablePerspective.getLabel() + "to...");
+		
+		for (IMultiTablePerspectiveBasedView view : views) {
+			
+			addSubItem(new AddTablePerspectiveToViewItem(tablePerspective, view));
+		}
 	}
+
 }

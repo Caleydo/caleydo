@@ -23,6 +23,12 @@ import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.dvi.event.OpenViewEvent;
 
+/**
+ * Item to open an existing view, i.e. to bring it to the foreground.
+ * 
+ * @author Christian Partl
+ * 
+ */
 public class OpenViewItem extends AContextMenuItem {
 
 	public OpenViewItem(AGLView view) {

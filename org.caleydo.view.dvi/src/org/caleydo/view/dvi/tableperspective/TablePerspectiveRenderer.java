@@ -29,7 +29,7 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.dvi.node.IDVINode;
 
-public class DimensionGroupRenderer extends ADraggableColorRenderer {
+public class TablePerspectiveRenderer extends ADraggableColorRenderer {
 
 	private static final int TEXT_SPACING_PIXELS = 2;
 
@@ -45,7 +45,7 @@ public class DimensionGroupRenderer extends ADraggableColorRenderer {
 	protected int textRotation = 0;
 	protected int textHeightPixels;
 
-	public DimensionGroupRenderer(TablePerspective tablePerspective, AGLView view,
+	public TablePerspectiveRenderer(TablePerspective tablePerspective, AGLView view,
 			IDVINode node, float[] color) {
 		super(color,
 				new float[] { color[0] - 0.2f, color[1] - 0.2f, color[2] - 0.2f, 1f }, 2,

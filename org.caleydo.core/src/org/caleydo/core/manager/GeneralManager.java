@@ -47,7 +47,7 @@ public class GeneralManager {
 	 * In release mode non-stable or student views are automatically removed
 	 * from the workbench.
 	 */
-	public static final boolean RELEASE_MODE = true;
+	public static final boolean RELEASE_MODE = false;
 
 	/**
 	 * This is the current version of Caleydo. The value must be the same as

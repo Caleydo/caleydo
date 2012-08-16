@@ -24,7 +24,10 @@ import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+
+import com.martiansoftware.jsap.IllegalMultipleDeclarationException;
 
 /**
  * Event that triggers adding a list of {@link TablePerspective}s to a specific
@@ -39,7 +42,7 @@ public class AddTablePerspectivesEvent extends AEvent {
 	private List<TablePerspective> tablePerspectives;
 
 	/** The view which is the receiver of the data containers */
-	private AGLView receiver;
+	private IMultiTablePerspectiveBasedView receiver;
 
 	/**
 	 * Default constructor.
@@ -72,14 +75,14 @@ public class AddTablePerspectivesEvent extends AEvent {
 	 * @param receiver
 	 *            setter, see {@link #receiver}
 	 */
-	public void setReceiver(AGLView receiver) {
+	public void setReceiver(IMultiTablePerspectiveBasedView receiver) {
 		this.receiver = receiver;
 	}
 
 	/**
 	 * @return the receiver, see {@link #receiver}
 	 */
-	public AGLView getReceiver() {
+	public IMultiTablePerspectiveBasedView getReceiver() {
 		return receiver;
 	}
 

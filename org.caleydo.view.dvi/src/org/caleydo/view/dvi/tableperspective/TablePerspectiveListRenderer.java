@@ -37,7 +37,7 @@ import org.caleydo.view.dvi.PickingType;
 import org.caleydo.view.dvi.node.IDVINode;
 
 public class TablePerspectiveListRenderer
-	extends ATablePerspectiveRenderer
+	extends AMultiTablePerspectiveRenderer
 {
 
 	private final static int SPACING_PIXELS = 4;
@@ -46,14 +46,14 @@ public class TablePerspectiveListRenderer
 	private final static int TEXT_HEIGHT_PIXELS = 13;
 	private final static int SIDE_SPACING_PIXELS = 20;
 
-	private List<DimensionGroupRenderer> dimensionGroupRenderers;
+	private List<TablePerspectiveRenderer> dimensionGroupRenderers;
 
 	public TablePerspectiveListRenderer(IDVINode node, GLDataViewIntegrator view,
 			DragAndDropController dragAndDropController, List<TablePerspective> tablePerspectives)
 	{
 		super(node, view, dragAndDropController);
 
-		dimensionGroupRenderers = new ArrayList<DimensionGroupRenderer>();
+		dimensionGroupRenderers = new ArrayList<TablePerspectiveRenderer>();
 		setTablePerspectives(tablePerspectives);
 		registerPickingListeners();
 	}
@@ -81,12 +81,12 @@ public class TablePerspectiveListRenderer
 						.getColor().getRGBA();
 			}
 
-			DimensionGroupRenderer dimensionGroupRenderer = new DimensionGroupRenderer(
+			TablePerspectiveRenderer dimensionGroupRenderer = new TablePerspectiveRenderer(
 					tablePerspective, view, node, color);
 			dimensionGroupRenderer.setTextHeightPixels(TEXT_HEIGHT_PIXELS);
 			dimensionGroupRenderer
-					.setTextRotation(isUpsideDown ? DimensionGroupRenderer.TEXT_ROTATION_90
-							: DimensionGroupRenderer.TEXT_ROTATION_270);
+					.setTextRotation(isUpsideDown ? TablePerspectiveRenderer.TEXT_ROTATION_90
+							: TablePerspectiveRenderer.TEXT_ROTATION_270);
 			dimensionGroupRenderers.add(dimensionGroupRenderer);
 		}
 	}
@@ -109,7 +109,7 @@ public class TablePerspectiveListRenderer
 		bottomDimensionGroupPositions.clear();
 		topDimensionGroupPositions.clear();
 
-		for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers)
+		for (TablePerspectiveRenderer dimensionGroupRenderer : dimensionGroupRenderers)
 		{
 
 			int pickingID = view.getPickingManager().getPickingID(view.getID(),
@@ -117,14 +117,14 @@ public class TablePerspectiveListRenderer
 					dimensionGroupRenderer.getTablePerspective().getID());
 
 			gl.glPushName(pickingID);
-			if (pickingIDsToBePushed != null)
-			{
-				for (Pair<String, Integer> pickingPair : pickingIDsToBePushed)
-				{
-					gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-							pickingPair.getFirst(), pickingPair.getSecond()));
-				}
-			}
+//			if (pickingIDsToBePushed != null)
+//			{
+//				for (Pair<String, Integer> pickingPair : pickingIDsToBePushed)
+//				{
+//					gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+//							pickingPair.getFirst(), pickingPair.getSecond()));
+//				}
+//			}
 
 			dimensionGroupRenderer.setLimits(dimensionGroupWidth, y);
 			gl.glPushMatrix();
@@ -134,13 +134,13 @@ public class TablePerspectiveListRenderer
 			gl.glPopMatrix();
 
 			gl.glPopName();
-			if (pickingIDsToBePushed != null)
-			{
-				for (int i = 0; i < pickingIDsToBePushed.size(); i++)
-				{
-					gl.glPopName();
-				}
-			}
+//			if (pickingIDsToBePushed != null)
+//			{
+//				for (int i = 0; i < pickingIDsToBePushed.size(); i++)
+//				{
+//					gl.glPopName();
+//				}
+//			}
 
 			Point2D bottomPosition1 = new Point2D.Float(currentPosX, 0);
 			Point2D bottomPosition2 = new Point2D.Float(currentPosX + dimensionGroupWidth, 0);
@@ -202,10 +202,10 @@ public class TablePerspectiveListRenderer
 	{
 		this.isUpsideDown = isUpsideDown;
 
-		for (DimensionGroupRenderer renderer : dimensionGroupRenderers)
+		for (TablePerspectiveRenderer renderer : dimensionGroupRenderers)
 		{
-			renderer.setTextRotation(isUpsideDown ? DimensionGroupRenderer.TEXT_ROTATION_90
-					: DimensionGroupRenderer.TEXT_ROTATION_270);
+			renderer.setTextRotation(isUpsideDown ? TablePerspectiveRenderer.TEXT_ROTATION_90
+					: TablePerspectiveRenderer.TEXT_ROTATION_270);
 		}
 
 	}
@@ -218,7 +218,7 @@ public class TablePerspectiveListRenderer
 	}
 
 	@Override
-	protected Collection<DimensionGroupRenderer> getDimensionGroupRenderers()
+	protected Collection<TablePerspectiveRenderer> getDimensionGroupRenderers()
 	{
 		return dimensionGroupRenderers;
 	}

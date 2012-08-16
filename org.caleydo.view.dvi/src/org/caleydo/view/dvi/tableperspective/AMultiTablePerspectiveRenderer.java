@@ -32,7 +32,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.node.IDVINode;
 
-public abstract class ATablePerspectiveRenderer extends LayoutRenderer {
+public abstract class AMultiTablePerspectiveRenderer extends LayoutRenderer {
 
 	protected IDVINode node;
 	protected GLDataViewIntegrator view;
@@ -43,7 +43,7 @@ public abstract class ATablePerspectiveRenderer extends LayoutRenderer {
 	protected boolean isUpsideDown = false;
 	protected boolean arePickingListenersRegistered = false;
 
-	public ATablePerspectiveRenderer(IDVINode node, GLDataViewIntegrator view,
+	public AMultiTablePerspectiveRenderer(IDVINode node, GLDataViewIntegrator view,
 			DragAndDropController dragAndDropController) {
 		this.node = node;
 		this.view = view;
@@ -100,7 +100,7 @@ public abstract class ATablePerspectiveRenderer extends LayoutRenderer {
 		this.pickingIDsToBePushed = pickingIDsToBePushed;
 	}
 
-	protected abstract Collection<DimensionGroupRenderer> getDimensionGroupRenderers();
+	protected abstract Collection<TablePerspectiveRenderer> getDimensionGroupRenderers();
 
 	public boolean arePickingListenersRegistered() {
 		return arePickingListenersRegistered;

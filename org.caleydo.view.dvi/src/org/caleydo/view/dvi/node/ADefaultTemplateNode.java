@@ -40,7 +40,7 @@ import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.layout.AGraphLayout;
-import org.caleydo.view.dvi.tableperspective.ATablePerspectiveRenderer;
+import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
 
 public abstract class ADefaultTemplateNode
 	extends ADraggableDataGraphNode
@@ -478,7 +478,7 @@ public abstract class ADefaultTemplateNode
 
 	protected abstract ElementLayout setupLayout();
 
-	protected abstract ATablePerspectiveRenderer getTablePerspectiveRenderer();
+	protected abstract AMultiTablePerspectiveRenderer getTablePerspectiveRenderer();
 
 	protected abstract int getMinTitleBarWidthPixels();
 

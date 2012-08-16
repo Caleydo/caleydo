@@ -47,19 +47,19 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.PickingType;
-import org.caleydo.view.dvi.contextmenu.AddTablePerspectiveItem;
-import org.caleydo.view.dvi.event.AddTablePerspectiveEvent;
+import org.caleydo.view.dvi.contextmenu.CreateTablePerspectiveItem;
+import org.caleydo.view.dvi.event.CreateTablePerspectiveEvent;
 import org.caleydo.view.dvi.node.IDVINode;
-import org.caleydo.view.dvi.tableperspective.ATablePerspectiveRenderer;
-import org.caleydo.view.dvi.tableperspective.DimensionGroupRenderer;
+import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
+import org.caleydo.view.dvi.tableperspective.TablePerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.TablePerspectivePickingListener;
 
-public class TablePerspectiveMatrixRenderer extends ATablePerspectiveRenderer {
+public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRenderer {
 
 	protected ATableBasedDataDomain dataDomain;
 	// private List<ADimensionGroupData> dimensionGroupDatas;
-	protected Map<DimensionGroupRenderer, Pair<CellContainer, CellContainer>> dimensionGroupRenderers = new HashMap<DimensionGroupRenderer, Pair<CellContainer, CellContainer>>();
+	protected Map<TablePerspectiveRenderer, Pair<CellContainer, CellContainer>> dimensionGroupRenderers = new HashMap<TablePerspectiveRenderer, Pair<CellContainer, CellContainer>>();
 	protected Map<EmptyCellRenderer, Pair<CellContainer, CellContainer>> emptyCellRenderers = new HashMap<EmptyCellRenderer, Pair<CellContainer, CellContainer>>();
 	/**
 	 * Map containing all cells of the table identified by the concatenation of
@@ -201,13 +201,13 @@ public class TablePerspectiveMatrixRenderer extends ATablePerspectiveRenderer {
 
 					}
 
-					AddTablePerspectiveEvent event = new AddTablePerspectiveEvent(
+					CreateTablePerspectiveEvent event = new CreateTablePerspectiveEvent(
 							dataDomain, recordPerspectiveID, createRecordPerspective,
 							recordVA, rowGroup, dimensionPerspectiveID,
 							createDimensionPerspective, dimensionVA, columnGroup);
 					if (useContextMenu) {
 						view.getContextMenuCreator().addContextMenuItem(
-								new AddTablePerspectiveItem(event));
+								new CreateTablePerspectiveItem(event));
 					} else {
 						event.setSender(this);
 						GeneralManager.get().getEventPublisher().triggerEvent(event);
@@ -241,7 +241,7 @@ public class TablePerspectiveMatrixRenderer extends ATablePerspectiveRenderer {
 				for (CellContainer child : container.childContainers) {
 
 					boolean isAlwaysVisible = false;
-					for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers
+					for (TablePerspectiveRenderer dimensionGroupRenderer : dimensionGroupRenderers
 							.keySet()) {
 						Pair<CellContainer, CellContainer> rowAndColumn = dimensionGroupRenderers
 								.get(dimensionGroupRenderer);
@@ -540,7 +540,7 @@ public class TablePerspectiveMatrixRenderer extends ATablePerspectiveRenderer {
 							numSubdivisions = rows.size();
 						}
 						dimensionGroupExists = true;
-						DimensionGroupRenderer dimensionGroupRenderer = new DimensionGroupRenderer(
+						TablePerspectiveRenderer dimensionGroupRenderer = new TablePerspectiveRenderer(
 								tablePerspective, view, node, dataDomain.getColor()
 										.getRGBA());
 						dimensionGroupRenderer.setShowText(false);
@@ -616,7 +616,7 @@ public class TablePerspectiveMatrixRenderer extends ATablePerspectiveRenderer {
 	}
 
 	@Override
-	protected Collection<DimensionGroupRenderer> getDimensionGroupRenderers() {
+	protected Collection<TablePerspectiveRenderer> getDimensionGroupRenderers() {
 		return dimensionGroupRenderers.keySet();
 	}
 

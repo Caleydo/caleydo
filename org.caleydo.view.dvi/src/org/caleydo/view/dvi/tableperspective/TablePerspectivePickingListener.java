@@ -30,16 +30,15 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
-import org.caleydo.view.dvi.contextmenu.AddGroupToStratomexItem;
-import org.caleydo.view.dvi.contextmenu.CreateViewItem;
-import org.caleydo.view.dvi.contextmenu.ShowTablePerspectiveInViewsItem;
+import org.caleydo.view.dvi.contextmenu.AddTablePerspectiveToViewsItemContainer;
+import org.caleydo.view.dvi.contextmenu.ShowTablePerspectiveInViewsItemContainer;
 import org.caleydo.view.dvi.node.ViewNode;
-import org.caleydo.view.stratomex.GLStratomex;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
@@ -50,22 +49,22 @@ public class TablePerspectivePickingListener extends APickingListener {
 
 	private GLDataViewIntegrator view;
 	private DragAndDropController dragAndDropController;
-	private ATablePerspectiveRenderer tablePerspectiveRenderer;
+	private AMultiTablePerspectiveRenderer tablePerspectiveRenderer;
 
 	public TablePerspectivePickingListener(GLDataViewIntegrator view,
 			DragAndDropController dragAndDropController,
-			ATablePerspectiveRenderer tablePerspectiveRenderer) {
+			AMultiTablePerspectiveRenderer tablePerspectiveRenderer) {
 		this.view = view;
 		this.dragAndDropController = dragAndDropController;
 		this.tablePerspectiveRenderer = tablePerspectiveRenderer;
 	}
 
-	private DimensionGroupRenderer getDimensionGroupRenderer(int id) {
+	private TablePerspectiveRenderer getDimensionGroupRenderer(int id) {
 
-		Collection<DimensionGroupRenderer> dimensionGroupRenderers = tablePerspectiveRenderer
+		Collection<TablePerspectiveRenderer> dimensionGroupRenderers = tablePerspectiveRenderer
 				.getDimensionGroupRenderers();
 
-		for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers) {
+		for (TablePerspectiveRenderer dimensionGroupRenderer : dimensionGroupRenderers) {
 			if (dimensionGroupRenderer.getTablePerspective().getID() == id) {
 				return dimensionGroupRenderer;
 			}
@@ -77,7 +76,7 @@ public class TablePerspectivePickingListener extends APickingListener {
 	public void clicked(Pick pick) {
 		int dimensionGroupID = pick.getObjectID();
 
-		DimensionGroupRenderer draggedComparisonGroupRenderer = getDimensionGroupRenderer(dimensionGroupID);
+		TablePerspectiveRenderer draggedComparisonGroupRenderer = getDimensionGroupRenderer(dimensionGroupID);
 		if (draggedComparisonGroupRenderer == null)
 			return;
 		//
@@ -97,7 +96,7 @@ public class TablePerspectivePickingListener extends APickingListener {
 
 	@Override
 	public void mouseOver(Pick pick) {
-		DimensionGroupRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick
+		TablePerspectiveRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick
 				.getObjectID());
 		if (dimensionGroupRenderer == null)
 			return;
@@ -108,7 +107,7 @@ public class TablePerspectivePickingListener extends APickingListener {
 
 	@Override
 	public void mouseOut(Pick pick) {
-		DimensionGroupRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick
+		TablePerspectiveRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick
 				.getObjectID());
 		if (dimensionGroupRenderer == null)
 			return;
@@ -141,7 +140,7 @@ public class TablePerspectivePickingListener extends APickingListener {
 	public void rightClicked(Pick pick) {
 
 		int dimensionGroupID = pick.getObjectID();
-		DimensionGroupRenderer dimensionGroupRenderer = getDimensionGroupRenderer(dimensionGroupID);
+		TablePerspectiveRenderer dimensionGroupRenderer = getDimensionGroupRenderer(dimensionGroupID);
 		if (dimensionGroupRenderer == null)
 			return;
 		TablePerspective tablePerspective = dimensionGroupRenderer.getTablePerspective();
@@ -213,28 +212,27 @@ public class TablePerspectivePickingListener extends APickingListener {
 
 		Collections.sort(finalViewTypes);
 
-		List<CreateViewItem> createViewItems = new ArrayList<CreateViewItem>();
-
-		for (Pair<String, String> viewType : viewTypes) {
-			createViewItems.add(new CreateViewItem(viewType.getFirst(), viewType
-					.getSecond(), tablePerspective.getDataDomain(), tablePerspective));
-		}
-
-		if (createViewItems.size() > 0) {
+		if (finalViewTypes.size() > 0) {
 			view.getContextMenuCreator().addContextMenuItem(
-					new ShowTablePerspectiveInViewsItem(createViewItems));
+					new ShowTablePerspectiveInViewsItemContainer(tablePerspective,
+							finalViewTypes));
 		}
 
 		Set<ViewNode> viewNodes = view.getViewNodes();
 
+		List<IMultiTablePerspectiveBasedView> multiTablePerspectiveViews = new ArrayList<IMultiTablePerspectiveBasedView>();
+
 		if (viewNodes != null) {
 			for (ViewNode node : viewNodes) {
-				if (node.getRepresentedView() instanceof GLStratomex) {
-					view.getContextMenuCreator().addContextMenuItem(
-							new AddGroupToStratomexItem((GLStratomex) node
-									.getRepresentedView(), tablePerspective));
+				if (node.getRepresentedView() instanceof IMultiTablePerspectiveBasedView) {
+					multiTablePerspectiveViews.add((IMultiTablePerspectiveBasedView) node
+							.getRepresentedView());
 				}
 			}
 		}
+
+		view.getContextMenuCreator().addContextMenuItem(
+				new AddTablePerspectiveToViewsItemContainer(multiTablePerspectiveViews,
+						tablePerspective));
 	}
 }

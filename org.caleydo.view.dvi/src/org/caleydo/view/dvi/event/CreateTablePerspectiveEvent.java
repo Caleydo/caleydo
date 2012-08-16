@@ -25,7 +25,7 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 
-public class AddTablePerspectiveEvent extends AEvent {
+public class CreateTablePerspectiveEvent extends AEvent {
 
 	private String recordPerspectiveID;
 	private String dimensionPerspectiveID;
@@ -37,7 +37,7 @@ public class AddTablePerspectiveEvent extends AEvent {
 	private Group dimensionGroup;
 	private DimensionVirtualArray dimensionVA;
 
-	public AddTablePerspectiveEvent(ATableBasedDataDomain dataDomain,
+	public CreateTablePerspectiveEvent(ATableBasedDataDomain dataDomain,
 			String recordPerspectiveID, boolean createRecordPerspective,
 			RecordVirtualArray recordVA, Group recordGroup,
 			String dimensionPerspectiveID, boolean createDimensionPerspective,

@@ -35,14 +35,14 @@ import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.layout.AGraphLayout;
-import org.caleydo.view.dvi.tableperspective.ATablePerspectiveRenderer;
+import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.TablePerspectiveListRenderer;
 
 public class PathwayDataNode
 	extends ADataNode
 {
 
-	private ATablePerspectiveRenderer tablePerspectiveRenderer;
+	private AMultiTablePerspectiveRenderer tablePerspectiveRenderer;
 	private PathwayDataDomain dataDomain;
 	private Row bodyRow;
 
@@ -133,7 +133,7 @@ public class PathwayDataNode
 	}
 
 	@Override
-	protected ATablePerspectiveRenderer getTablePerspectiveRenderer()
+	protected AMultiTablePerspectiveRenderer getTablePerspectiveRenderer()
 	{
 		return tablePerspectiveRenderer;
 	}

@@ -42,7 +42,7 @@ import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.ViewNodeBackGroundRenderer;
 import org.caleydo.view.dvi.contextmenu.OpenViewItem;
 import org.caleydo.view.dvi.layout.AGraphLayout;
-import org.caleydo.view.dvi.tableperspective.ATablePerspectiveRenderer;
+import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -242,7 +242,7 @@ public class ViewNode extends ADefaultTemplateNode {
 	}
 
 	@Override
-	protected ATablePerspectiveRenderer getTablePerspectiveRenderer() {
+	protected AMultiTablePerspectiveRenderer getTablePerspectiveRenderer() {
 		return null;
 	}
 

@@ -22,14 +22,14 @@ package org.caleydo.view.dvi.listener;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
-import org.caleydo.view.dvi.event.AddTablePerspectiveEvent;
+import org.caleydo.view.dvi.event.CreateTablePerspectiveEvent;
 
-public class AddTablePerspectiveEventListener extends AEventListener<GLDataViewIntegrator> {
+public class CreateTablePerspectiveEventListener extends AEventListener<GLDataViewIntegrator> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if (event instanceof AddTablePerspectiveEvent) {
-			AddTablePerspectiveEvent e = (AddTablePerspectiveEvent) event;
+		if (event instanceof CreateTablePerspectiveEvent) {
+			CreateTablePerspectiveEvent e = (CreateTablePerspectiveEvent) event;
 			handler.createTablePerspective(e.getDataDomain(), e.getRecordPerspectiveID(),
 					e.isCreateRecordPerspective(), e.getRecordVA(), e.getRecordGroup(),
 					e.getDimensionPerspectiveID(), e.isCreateDimensionPerspective(),

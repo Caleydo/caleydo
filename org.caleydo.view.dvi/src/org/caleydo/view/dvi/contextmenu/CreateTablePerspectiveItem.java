@@ -19,17 +19,14 @@
  *******************************************************************************/
 package org.caleydo.view.dvi.contextmenu;
 
-import java.util.List;
-
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.view.dvi.event.CreateTablePerspectiveEvent;
 
-public class ShowTablePerspectiveInViewsItem extends AContextMenuItem {
+public class CreateTablePerspectiveItem extends AContextMenuItem {
 
-	public ShowTablePerspectiveInViewsItem(List<CreateViewItem> createViewItems) {
-
-		setLabel("Show in...");
-		for (CreateViewItem item : createViewItems) {
-			addSubItem(item);
-		}
+	public CreateTablePerspectiveItem(CreateTablePerspectiveEvent event) {
+		setLabel("Create Data Container");
+		event.setSender(this);
+		registerEvent(event);
 	}
 }

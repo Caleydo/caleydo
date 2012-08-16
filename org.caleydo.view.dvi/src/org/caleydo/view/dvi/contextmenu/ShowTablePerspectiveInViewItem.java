@@ -19,21 +19,21 @@
  *******************************************************************************/
 package org.caleydo.view.dvi.contextmenu;
 
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
+import org.caleydo.view.dvi.event.CreateViewFromTablePerspectiveEvent;
 
-public class AddGroupToStratomexItem extends AContextMenuItem {
+public class ShowTablePerspectiveInViewItem extends AContextMenuItem {
 
-	public AddGroupToStratomexItem(GLStratomex view, TablePerspective tablePerspective) {
+	public ShowTablePerspectiveInViewItem(String viewName, String viewType, IDataDomain dataDomain,
+			TablePerspective tablePerspective) {
 
-		setLabel("Add to " + view.getViewName());
+		setLabel(viewName);
 
-		AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(tablePerspective);
-		event.setReceiver(view);
+		CreateViewFromTablePerspectiveEvent event = new CreateViewFromTablePerspectiveEvent(
+				viewType, dataDomain, tablePerspective);
 		event.setSender(this);
 		registerEvent(event);
 	}
-
 }

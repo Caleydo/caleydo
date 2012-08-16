@@ -71,6 +71,7 @@ import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.RCPViewInitializationData;
 import org.caleydo.core.view.RCPViewManager;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -85,9 +86,9 @@ import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.view.dvi.event.AddTablePerspectiveEvent;
 import org.caleydo.view.dvi.event.ApplySpecificGraphLayoutEvent;
 import org.caleydo.view.dvi.event.CreateClusteringEvent;
+import org.caleydo.view.dvi.event.CreateTablePerspectiveEvent;
 import org.caleydo.view.dvi.event.CreateViewFromTablePerspectiveEvent;
 import org.caleydo.view.dvi.event.LoadGroupingEvent;
 import org.caleydo.view.dvi.event.OpenViewEvent;
@@ -96,9 +97,9 @@ import org.caleydo.view.dvi.event.ShowViewWithoutDataEvent;
 import org.caleydo.view.dvi.layout.AGraphLayout;
 import org.caleydo.view.dvi.layout.TwoLayeredGraphLayout;
 import org.caleydo.view.dvi.layout.edge.rendering.AEdgeRenderer;
-import org.caleydo.view.dvi.listener.AddTablePerspectiveEventListener;
 import org.caleydo.view.dvi.listener.ApplySpecificGraphLayoutEventListener;
 import org.caleydo.view.dvi.listener.CreateClusteringEventListener;
+import org.caleydo.view.dvi.listener.CreateTablePerspectiveEventListener;
 import org.caleydo.view.dvi.listener.CreateViewFromTablePerspectiveEventListener;
 import org.caleydo.view.dvi.listener.DataDomainChangedListener;
 import org.caleydo.view.dvi.listener.DimensionVAUpdateEventListener;
@@ -165,7 +166,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	private ViewClosedEventListener viewClosedEventListener;
 	private TablePerspectivesCangedListener tablePerspectivesChangedListener;
 	private DataDomainChangedListener dataDomainChangedListener;
-	private AddTablePerspectiveEventListener addTablePerspectiveEventListener;
+	private CreateTablePerspectiveEventListener addTablePerspectiveEventListener;
 	private OpenViewEventListener openViewEventListener;
 	private CreateViewFromTablePerspectiveEventListener createViewFromTablePerspectiveEventListener;
 	private ApplySpecificGraphLayoutEventListener applySpecificGraphLayoutEventListener;
@@ -537,9 +538,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		newDataDomainEventListener.setHandler(this);
 		eventPublisher.addListener(NewDataDomainEvent.class, newDataDomainEventListener);
 
-		addTablePerspectiveEventListener = new AddTablePerspectiveEventListener();
+		addTablePerspectiveEventListener = new CreateTablePerspectiveEventListener();
 		addTablePerspectiveEventListener.setHandler(this);
-		eventPublisher.addListener(AddTablePerspectiveEvent.class,
+		eventPublisher.addListener(CreateTablePerspectiveEvent.class,
 				addTablePerspectiveEventListener);
 
 		openViewEventListener = new OpenViewEventListener();
@@ -1027,7 +1028,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 					if (isRenderedRemote()) {
 						AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(
 								tablePerspective);
-						event.setReceiver((AGLView) getRemoteRenderingGLView());
+						event.setReceiver((IMultiTablePerspectiveBasedView) getRemoteRenderingGLView());
 						event.setSender(this);
 						GeneralManager.get().getEventPublisher().triggerEvent(event);
 					}

@@ -18,14 +18,7 @@ import org.caleydo.view.dvi.event.CreateClusteringEvent;
  */
 public class CreateClusteringItem extends AContextMenuItem {
 
-	/**
-	 * @param dataDomain
-	 * 
-	 */
-	/**
-	 * @param dataDomain
-	 * @param idCategory
-	 */
+
 	public CreateClusteringItem(ATableBasedDataDomain dataDomain,
 			boolean isDimensionClustering) {
 

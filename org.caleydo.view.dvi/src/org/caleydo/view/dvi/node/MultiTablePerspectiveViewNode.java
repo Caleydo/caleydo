@@ -31,6 +31,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -44,8 +45,8 @@ import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.contextmenu.OpenViewItem;
 import org.caleydo.view.dvi.layout.AGraphLayout;
-import org.caleydo.view.dvi.tableperspective.ATablePerspectiveRenderer;
-import org.caleydo.view.dvi.tableperspective.DimensionGroupRenderer;
+import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
+import org.caleydo.view.dvi.tableperspective.TablePerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.TablePerspectiveListRenderer;
 
 public class MultiTablePerspectiveViewNode extends ViewNode implements IDropArea {
@@ -124,7 +125,7 @@ public class MultiTablePerspectiveViewNode extends ViewNode implements IDropArea
 	}
 
 	@Override
-	protected ATablePerspectiveRenderer getTablePerspectiveRenderer() {
+	protected AMultiTablePerspectiveRenderer getTablePerspectiveRenderer() {
 		return tablePerspectiveListRenderer;
 	}
 
@@ -162,8 +163,8 @@ public class MultiTablePerspectiveViewNode extends ViewNode implements IDropArea
 
 		for (TablePerspective container : tablePerspectives) {
 			if (container instanceof PathwayTablePerspective) {
-				dataDomains
-						.add(((PathwayTablePerspective) container).getPathwayDataDomain());
+				dataDomains.add(((PathwayTablePerspective) container)
+						.getPathwayDataDomain());
 			} else {
 				dataDomains.add(container.getDataDomain());
 			}
@@ -174,7 +175,8 @@ public class MultiTablePerspectiveViewNode extends ViewNode implements IDropArea
 	}
 
 	private void sortTablePerspectives() {
-		List<TablePerspective> containers = new ArrayList<TablePerspective>(tablePerspectives);
+		List<TablePerspective> containers = new ArrayList<TablePerspective>(
+				tablePerspectives);
 
 		List<Pair<Float, ADataNode>> sortedDataNodes = new ArrayList<Pair<Float, ADataNode>>();
 
@@ -192,7 +194,8 @@ public class MultiTablePerspectiveViewNode extends ViewNode implements IDropArea
 		for (Pair<Float, ADataNode> dataNodePair : sortedDataNodes) {
 			ADataNode dataNode = dataNodePair.getSecond();
 
-			List<TablePerspective> sortedNodeTablePerspectives = dataNode.getTablePerspectives();
+			List<TablePerspective> sortedNodeTablePerspectives = dataNode
+					.getTablePerspectives();
 
 			for (TablePerspective nodeContainer : sortedNodeTablePerspectives) {
 				TablePerspective addedContainer = null;
@@ -214,8 +217,8 @@ public class MultiTablePerspectiveViewNode extends ViewNode implements IDropArea
 			float mouseCoordinateY, DragAndDropController dragAndDropController) {
 		ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>();
 		for (IDraggable draggable : draggables) {
-			if (draggable instanceof DimensionGroupRenderer) {
-				DimensionGroupRenderer dimensionGroupRenderer = (DimensionGroupRenderer) draggable;
+			if (draggable instanceof TablePerspectiveRenderer) {
+				TablePerspectiveRenderer dimensionGroupRenderer = (TablePerspectiveRenderer) draggable;
 				tablePerspectives.add(dimensionGroupRenderer.getTablePerspective());
 			}
 		}
@@ -224,8 +227,9 @@ public class MultiTablePerspectiveViewNode extends ViewNode implements IDropArea
 			// FIXME: this needs to be looked at again
 			// System.out.println("Drop");
 			TablePerspective tablePerspective = tablePerspectives.get(0);
-			AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(tablePerspective);
-			event.setReceiver(representedView);
+			AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(
+					tablePerspective);
+			event.setReceiver((IMultiTablePerspectiveBasedView) representedView);
 			event.setSender(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 

@@ -36,7 +36,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.PickingType;
 import org.caleydo.view.dvi.node.IDVINode;
-import org.caleydo.view.dvi.tableperspective.DimensionGroupRenderer;
+import org.caleydo.view.dvi.tableperspective.TablePerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
 
 public class BottomUpTablePerspectiveMatrixRenderingStrategy
@@ -370,11 +370,11 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 
 				gl.glPushMatrix();
 				int pickingID = 0;
-				if (cell instanceof DimensionGroupRenderer) {
+				if (cell instanceof TablePerspectiveRenderer) {
 
 					pickingID = view.getPickingManager().getPickingID(view.getID(),
 							PickingType.DATA_CONTAINER.name() + node.getID(),
-							((DimensionGroupRenderer) cell).getTablePerspective().getID());
+							((TablePerspectiveRenderer) cell).getTablePerspective().getID());
 
 					gl.glTranslatef(currentDimGroupPositionX + cellSpacingX, row.position
 							+ cellSpacingY, 0);
@@ -389,10 +389,10 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 					Point2D bottomPosition2 = new Point2D.Float((float) topPosition2.getX(),
 							(float) bottomPosition1.getY());
 
-					bottomDimensionGroupPositions.put(((DimensionGroupRenderer) cell)
+					bottomDimensionGroupPositions.put(((TablePerspectiveRenderer) cell)
 							.getTablePerspective().getID(), new Pair<Point2D, Point2D>(
 							bottomPosition1, bottomPosition2));
-					topDimensionGroupPositions.put(((DimensionGroupRenderer) cell)
+					topDimensionGroupPositions.put(((TablePerspectiveRenderer) cell)
 							.getTablePerspective().getID(), new Pair<Point2D, Point2D>(
 							topPosition1, topPosition2));
 
@@ -410,9 +410,9 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 				cell.setLimits(pixelGLConverter.getGLWidthForPixelWidth(CELL_SIZE_PIXELS),
 						pixelGLConverter.getGLHeightForPixelHeight(CELL_SIZE_PIXELS));
 				gl.glPushName(pickingID);
-				pushPickingIDs(gl, view, pickingIDsToBePushed);
+//				pushPickingIDs(gl, view, pickingIDsToBePushed);
 				cell.render(gl);
-				popPickingIDs(gl, pickingIDsToBePushed);
+//				popPickingIDs(gl, pickingIDsToBePushed);
 				gl.glPopName();
 				gl.glPopMatrix();
 			}

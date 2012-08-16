@@ -59,7 +59,7 @@ import org.caleydo.view.dvi.contextmenu.LoadGroupingItem;
 import org.caleydo.view.dvi.contextmenu.ShowViewWithoutDataItem;
 import org.caleydo.view.dvi.event.OpenVendingMachineEvent;
 import org.caleydo.view.dvi.layout.AGraphLayout;
-import org.caleydo.view.dvi.tableperspective.ATablePerspectiveRenderer;
+import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.TablePerspectiveListRenderer;
 import org.caleydo.view.dvi.tableperspective.matrix.TablePerspectiveMatrixRenderer;
@@ -87,12 +87,12 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 	private OverviewState overviewState;
 	private DetailState detailState;
 	private ElementLayout tablePerspectiveLayout;
-	private ATablePerspectiveRenderer tablePerspectiveRenderer;
+	private AMultiTablePerspectiveRenderer tablePerspectiveRenderer;
 	private Row bodyRow;
 	private List<TablePerspective> tablePerspectives;
 
 	private abstract class ALayoutState {
-		protected ATablePerspectiveRenderer tablePerspectiveRenderer;
+		protected AMultiTablePerspectiveRenderer tablePerspectiveRenderer;
 		protected int textureRotation;
 
 		public void apply() {
@@ -415,7 +415,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 	}
 
 	@Override
-	protected ATablePerspectiveRenderer getTablePerspectiveRenderer() {
+	protected AMultiTablePerspectiveRenderer getTablePerspectiveRenderer() {
 		return tablePerspectiveRenderer;
 	}
 
