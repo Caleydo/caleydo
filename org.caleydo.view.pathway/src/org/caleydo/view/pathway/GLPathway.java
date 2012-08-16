@@ -23,10 +23,12 @@ import gleem.linalg.Vec3f;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.image.PixelGrabber;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -471,6 +473,56 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			}
 
 		}, PickingType.PATHWAY_PATH_SELECTION.name());
+		
+		addTypePickingListener(new APickingListener() 
+		{
+			@Override
+			public void clicked(Pick pick) 
+			{				
+				int pickX= (int)pick.getPickedPoint().getX();
+				int pickY= (int)pick.getPickedPoint().getY();
+				System.out.println("\nDENIS_DEBUG::UnScaled pickX:"+pickX+" pickY:"+pickY);
+				//
+				//code adapted from documentation at http://docs.oracle.com/javase/6/docs/api/java/awt/image/PixelGrabber.html
+				int[] pixels = new int[1];
+				Image img = texRenderer.getImage();
+				PixelGrabber pxlGrabber = new PixelGrabber(img, pickX, pickY, 1, 1, pixels, 0, 1);
+				try {
+					pxlGrabber.grabPixels();
+				} catch (InterruptedException e) {
+		            System.err.println("interrupted waiting for pixels!");
+		            return;
+		        }         	
+                int alpha = (pixels[0] >> 24) & 0xff;
+                int red   = (pixels[0] >> 16) & 0xff;
+                int green = (pixels[0] >>  8) & 0xff;
+                int blue  = (pixels[0]      ) & 0xff;              
+                System.out.println("DENIS_DEBUG:: pickedRed:"+red+" pickedGreen:"+green+" pickedBlue:"+blue+" pickedAlpha:"+alpha);
+                //look up color 
+                List<org.caleydo.core.util.color.Color> colorTable = (ColorManager.get()).getColorList("qualitativeColors");
+                float[] cComponents=new float[4];
+                for(int i=0;i<colorTable.size()-2;i++){
+                	org.caleydo.core.util.color.Color c = colorTable.get(i);
+                	//
+                	int threshold=10;
+                	cComponents=c.getRGB();
+                	if(red>(int)(cComponents[0]*255f)-threshold && red<(int)(cComponents[0]*255f)+threshold)
+                	{
+                		 System.out.println("DENIS_DEBUG:: found usedColor id="+i);
+                		 //select
+                		 selectedPathID=i;
+             			 	 selectedPath = allPaths.get(selectedPathID);
+                		 isBubbleTextureDirty = true;
+                		 setDisplayListDirty();
+                		 triggerPathUpdate();
+                		 i=colorTable.size();
+                	}
+                }
+		      			  
+			};
+		}, PickingType.PATHWAY_TEXTURE_SELECTION.name());
+		
+		
 	}
 
 	@Override
@@ -718,6 +770,12 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		float textureWidth = PathwayRenderStyle.SCALING_FACTOR_X * pathway.getWidth();
 		float textureHeight = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
 
+		
+		gl.glPushName(generalManager
+				.getViewManager()
+				.getPickingManager()
+				.getPickingID(uniqueID, PickingType.PATHWAY_TEXTURE_SELECTION.name(),0));
+		
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -736,6 +794,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		gl.glEnd();
 		bubbleSetsTexture.disable(gl);
+		gl.glPopName();
 
 	}
 
