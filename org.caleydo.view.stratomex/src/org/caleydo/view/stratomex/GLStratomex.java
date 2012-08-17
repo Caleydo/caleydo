@@ -20,6 +20,7 @@
 package org.caleydo.view.stratomex;
 
 import gleem.linalg.Vec3f;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,9 +30,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;

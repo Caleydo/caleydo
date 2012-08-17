@@ -349,7 +349,8 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 					@Override
 					public void run() {
 						RemoveTablePerspectiveEvent event = new RemoveTablePerspectiveEvent(
-								brick.getBrickColumn().getTablePerspective().getID());
+								brick.getBrickColumn().getTablePerspective().getID(),
+								brick.getStratomex());
 						event.setSender(this);
 						GeneralManager.get().getEventPublisher().triggerEvent(event);
 					}

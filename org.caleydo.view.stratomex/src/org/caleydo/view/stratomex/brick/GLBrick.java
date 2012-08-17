@@ -854,17 +854,19 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 					contextMenuCreator
 							.addContextMenuItem(new CreateKaplanMeierSmallMultiplesGroupItem(
 									brickColumn.getTablePerspective(), brickColumn
-											.getTablePerspective().getDimensionPerspective()));
+											.getTablePerspective()
+											.getDimensionPerspective()));
 				} else
 					contextMenuCreator
 							.addContextMenuItem(new CreatePathwayGroupFromDataItem(
 									dataDomain, tablePerspective.getRecordPerspective()
 											.getVirtualArray(), brickColumn
-											.getTablePerspective().getDimensionPerspective()));
+											.getTablePerspective()
+											.getDimensionPerspective()));
 
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
 
-				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(
+				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(stratomex,
 						getBrickColumn().getTablePerspective().getID()));
 			}
 
@@ -1186,8 +1188,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 								kaplanMeierDimensionGroupData);
 
 						ClinicalDataConfigurer dataConfigurer = new ClinicalDataConfigurer();
-//						dataConfigurer
-//								.setMaxTimeValue(calculateMaxTimeValue(kaplanMeierDimensionGroupData));
+						// dataConfigurer
+						// .setMaxTimeValue(calculateMaxTimeValue(kaplanMeierDimensionGroupData));
 						ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
 						sortingStrategy.setExternalBricks(brickColumn.getBricks());
 						sortingStrategy
@@ -1408,5 +1410,12 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	protected void destroyViewSpecificContent(GL2 gl) {
 		if (layoutManager != null)
 			layoutManager.destroy(gl);
+	}
+
+	/**
+	 * @return the stratomex, see {@link #stratomex}
+	 */
+	public GLStratomex getStratomex() {
+		return stratomex;
 	}
 }

@@ -36,7 +36,9 @@ public class RemoveTablePerspectiveListener extends
 	public void handleEvent(AEvent event) {
 		if (event instanceof RemoveTablePerspectiveEvent) {
 			RemoveTablePerspectiveEvent rEvent = (RemoveTablePerspectiveEvent) event;
-			handler.removeTablePerspective(rEvent.getTablePerspectiveID());
+			if (rEvent.getReceiver() == handler) {
+				handler.removeTablePerspective(rEvent.getTablePerspectiveID());
+			}
 		}
 	}
 

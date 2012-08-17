@@ -20,6 +20,7 @@
 package org.caleydo.view.enroute;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,10 +28,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -1361,7 +1364,30 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	@Override
 	public void removeTablePerspective(int tablePerspectiveID) {
+
+		for (TablePerspective tablePerspective : mappedDataRenderer
+				.getTablePerspectives()) {
+			if (tablePerspective.getID() == tablePerspectiveID) {
+				IDataDomain dataDomain = tablePerspective.getDataDomain();
+				boolean removeDataDomain = true;
+				for (TablePerspective tp : mappedDataRenderer.getTablePerspectives()) {
+					if (tp != tablePerspective && tp.getDataDomain() == dataDomain) {
+						removeDataDomain = false;
+						break;
+					}
+				}
+
+				if (removeDataDomain) {
+					dataDomains.remove(dataDomain);
+				}
+				break;
+			}
+		}
 		mappedDataRenderer.removeTablePerspective(tablePerspectiveID);
+
+		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
 	@Override

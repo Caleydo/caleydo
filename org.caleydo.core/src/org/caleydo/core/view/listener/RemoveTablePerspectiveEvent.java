@@ -20,6 +20,7 @@
 package org.caleydo.core.view.listener;
 
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 
 /**
  * Event that triggers the removal of a data container with the specified
@@ -30,8 +31,13 @@ import org.caleydo.core.event.AEvent;
  */
 public class RemoveTablePerspectiveEvent extends AEvent {
 
-	/** The ID of the data container to be removed */
+	/** The ID of the table perspective to be removed */
 	int tablePerspectiveID = -1;
+
+	/**
+	 * The view that is intended to remove the specified table perspective
+	 */
+	private IMultiTablePerspectiveBasedView receiver;
 
 	/**
 	 * 
@@ -39,8 +45,10 @@ public class RemoveTablePerspectiveEvent extends AEvent {
 	public RemoveTablePerspectiveEvent() {
 	}
 
-	public RemoveTablePerspectiveEvent(int tablePerspectiveID) {
+	public RemoveTablePerspectiveEvent(int tablePerspectiveID,
+			IMultiTablePerspectiveBasedView receiver) {
 		this.tablePerspectiveID = tablePerspectiveID;
+		this.receiver = receiver;
 	}
 
 	/**
@@ -60,9 +68,24 @@ public class RemoveTablePerspectiveEvent extends AEvent {
 
 	@Override
 	public boolean checkIntegrity() {
-		if (tablePerspectiveID < 0)
+		if (tablePerspectiveID < 0 || receiver == null)
 			return false;
 		return true;
+	}
+
+	/**
+	 * @param receiver
+	 *            setter, see {@link #receiver}
+	 */
+	public void setReceiver(IMultiTablePerspectiveBasedView receiver) {
+		this.receiver = receiver;
+	}
+
+	/**
+	 * @return the receiver, see {@link #receiver}
+	 */
+	public IMultiTablePerspectiveBasedView getReceiver() {
+		return receiver;
 	}
 
 }
