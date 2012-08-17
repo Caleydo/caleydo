@@ -20,8 +20,12 @@
 package org.caleydo.view.dvi.node;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
+import org.caleydo.view.dvi.contextmenu.RenameDataDomainItem;
 import org.caleydo.view.dvi.layout.AGraphLayout;
 
 public abstract class ADataNode extends ADefaultTemplateNode {
@@ -37,6 +41,22 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 
 	}
 
+	@Override
+	protected void registerPickingListeners() {
+		super.registerPickingListeners();
+
+		view.addIDPickingListener(new APickingListener() {
+
+			@Override
+			public void rightClicked(Pick pick) {
+				ContextMenuCreator contextMenuCreator = view.getContextMenuCreator();
+				contextMenuCreator
+						.addContextMenuItem(new RenameDataDomainItem(dataDomain));
+			}
+
+		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
+	}
+
 	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
@@ -48,6 +68,16 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 	@Override
 	public boolean showsTablePerspectives() {
 		return true;
+	}
+
+	@Override
+	public String getLabel() {
+		return dataDomain.getLabel();
+	}
+
+	@Override
+	public boolean isLabelDefault() {
+		return false;
 	}
 
 }

@@ -26,11 +26,12 @@ import java.util.List;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.view.dvi.layout.AGraphLayout;
 
-public interface IDVINode extends IDraggable {
+public interface IDVINode extends IDraggable, ILabelProvider {
 
 	public List<TablePerspective> getTablePerspectives();
 
@@ -70,6 +71,10 @@ public interface IDVINode extends IDraggable {
 
 	public Rectangle2D getBoundingBox();
 
+	/**
+	 * Initializes the node. This method is intended to be called right after
+	 * object construction.
+	 */
 	public void init();
 
 	public void setUpsideDown(boolean isUpsideDown);
@@ -88,11 +93,6 @@ public interface IDVINode extends IDraggable {
 	public float getSpacingX(IDVINode node);
 
 	public float getSpacingY(IDVINode node);
-
-	/**
-	 * @return The caption of this node.
-	 */
-	public String getCaption();
 
 	/**
 	 * This method should be called whenever there are changes to a node that

@@ -42,9 +42,7 @@ import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.layout.AGraphLayout;
 import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
 
-public abstract class ADefaultTemplateNode
-	extends ADraggableDataGraphNode
-{
+public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 
 	protected final static int SPACING_PIXELS = 4;
 	protected final static int CAPTION_HEIGHT_PIXELS = 16;
@@ -61,15 +59,14 @@ public abstract class ADefaultTemplateNode
 	protected int widthPixels = -1;
 
 	public ADefaultTemplateNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
-			DragAndDropController dragAndDropController, int id)
-	{
+			DragAndDropController dragAndDropController, int id) {
 		super(graphLayout, view, dragAndDropController, id);
 
 	}
 
 	@Override
-	public void init()
-	{
+	public void init() {
+		super.init();
 		// layout = nodeLayout;
 		layoutManager = new LayoutManager(new ViewFrustum(), view.getPixelGLConverter());
 
@@ -81,8 +78,7 @@ public abstract class ADefaultTemplateNode
 
 	@Override
 	public Pair<Point2D, Point2D> getBottomTablePerspectiveAnchorPoints(
-			TablePerspective tablePerspective)
-	{
+			TablePerspective tablePerspective) {
 
 		if (getTablePerspectiveRenderer() == null)
 			return null;
@@ -98,8 +94,8 @@ public abstract class ADefaultTemplateNode
 	}
 
 	@Override
-	public Pair<Point2D, Point2D> getTopTablePerspectiveAnchorPoints(TablePerspective tablePerspective)
-	{
+	public Pair<Point2D, Point2D> getTopTablePerspectiveAnchorPoints(
+			TablePerspective tablePerspective) {
 
 		if (getTablePerspectiveRenderer() == null)
 			return null;
@@ -115,8 +111,7 @@ public abstract class ADefaultTemplateNode
 	}
 
 	public Point2D getAbsolutPositionOfRelativeTablePerspectiveRendererCoordinates(
-			Point2D coordinates)
-	{
+			Point2D coordinates) {
 		Point2D position = graphLayout.getNodePosition(this);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position.getX());
 		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position.getY());
@@ -127,14 +122,14 @@ public abstract class ADefaultTemplateNode
 				* SPACING_PIXELS + CAPTION_HEIGHT_PIXELS + LINE_SEPARATOR_HEIGHT_PIXELS)
 				: (SPACING_PIXELS));
 
-		return new Point2D.Float((float) coordinates.getX() + x + spacingX - width / 2.0f,
+		return new Point2D.Float(
+				(float) coordinates.getX() + x + spacingX - width / 2.0f,
 				(float) coordinates.getY() + y + spacingY - height / 2.0f);
 
 	}
 
 	protected Pair<Point2D, Point2D> getAbsoluteDimensionGroupAnchorPoints(
-			Pair<Point2D, Point2D> anchorPoints, int spacingXPixels, int spacingYPixels)
-	{
+			Pair<Point2D, Point2D> anchorPoints, int spacingXPixels, int spacingYPixels) {
 		Point2D position = graphLayout.getNodePosition(this);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position.getX());
 		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position.getY());
@@ -155,8 +150,7 @@ public abstract class ADefaultTemplateNode
 	}
 
 	@Override
-	public Pair<Point2D, Point2D> getTopAnchorPoints()
-	{
+	public Pair<Point2D, Point2D> getTopAnchorPoints() {
 		Point2D position = graphLayout.getNodePosition(this);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position.getX());
 		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position.getY());
@@ -172,8 +166,7 @@ public abstract class ADefaultTemplateNode
 	}
 
 	@Override
-	public Pair<Point2D, Point2D> getBottomAnchorPoints()
-	{
+	public Pair<Point2D, Point2D> getBottomAnchorPoints() {
 		Point2D position = graphLayout.getNodePosition(this);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position.getX());
 		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position.getY());
@@ -189,8 +182,7 @@ public abstract class ADefaultTemplateNode
 	}
 
 	@Override
-	public Pair<Point2D, Point2D> getLeftAnchorPoints()
-	{
+	public Pair<Point2D, Point2D> getLeftAnchorPoints() {
 		Point2D position = graphLayout.getNodePosition(this);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position.getX());
 		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position.getY());
@@ -206,8 +198,7 @@ public abstract class ADefaultTemplateNode
 	}
 
 	@Override
-	public Pair<Point2D, Point2D> getRightAnchorPoints()
-	{
+	public Pair<Point2D, Point2D> getRightAnchorPoints() {
 		Point2D position = graphLayout.getNodePosition(this);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position.getX());
 		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position.getY());
@@ -223,8 +214,7 @@ public abstract class ADefaultTemplateNode
 	}
 
 	@Override
-	public Point2D getPosition()
-	{
+	public Point2D getPosition() {
 		Point2D position = graphLayout.getNodePosition(this);
 		if (position == null)
 			return new Point2D.Float(0, 0);
@@ -234,20 +224,17 @@ public abstract class ADefaultTemplateNode
 	}
 
 	@Override
-	public float getHeight()
-	{
+	public float getHeight() {
 		return pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
 	}
 
 	@Override
-	public float getWidth()
-	{
+	public float getWidth() {
 		return pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
 	}
 
 	@Override
-	public int getHeightPixels()
-	{
+	public int getHeightPixels() {
 
 		// heightPixels = 4
 		// * SPACING_PIXELS
@@ -266,8 +253,7 @@ public abstract class ADefaultTemplateNode
 	}
 
 	@Override
-	public int getWidthPixels()
-	{
+	public int getWidthPixels() {
 
 		// widthPixels = 2
 		// * SPACING_PIXELS
@@ -282,8 +268,7 @@ public abstract class ADefaultTemplateNode
 		// return layout.getWidthPixels();
 	}
 
-	protected Row createDefaultBaseRow(float[] color, int pickingID)
-	{
+	protected Row createDefaultBaseRow(float[] color, int pickingID) {
 		Row baseRow = new Row("baseRow");
 		baseRow.setFrameColor(0, 0, 1, 0);
 
@@ -296,44 +281,39 @@ public abstract class ADefaultTemplateNode
 		return baseRow;
 	}
 
-	protected List<Pair<String, Integer>> createNodePickingTypeList()
-	{
+	protected List<Pair<String, Integer>> createNodePickingTypeList() {
 		List<Pair<String, Integer>> pickingIDs = new ArrayList<Pair<String, Integer>>(2);
 		pickingIDs.add(new Pair<String, Integer>(DATA_GRAPH_NODE_PICKING_TYPE, id));
-		pickingIDs
-				.add(new Pair<String, Integer>(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
+		pickingIDs.add(new Pair<String, Integer>(
+				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
 		return pickingIDs;
 	}
 
-	protected ElementLayout createDefaultSpacingX()
-	{
+	protected ElementLayout createDefaultSpacingX() {
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
 		spacingLayoutX.setRatioSizeY(0);
 		return spacingLayoutX;
 	}
 
-	protected ElementLayout createDefaultSpacingY()
-	{
+	protected ElementLayout createDefaultSpacingY() {
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setRatioSizeX(0);
 		spacingLayoutX.setPixelSizeY(SPACING_PIXELS);
 		return spacingLayoutX;
 	}
 
-	protected ElementLayout createDefaultCaptionLayout(String caption, int pickingID)
-	{
+	protected ElementLayout createDefaultCaptionLayout(int pickingID) {
 		ElementLayout captionLayout = new ElementLayout("caption");
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setRatioSizeX(1);
-		captionLayout
-				.setRenderer(new LabelRenderer(view, caption, createNodePickingTypeList()));
+		captionLayout.setRenderer(new LabelRenderer(view, this,
+				createNodePickingTypeList()));
 
 		return captionLayout;
 	}
 
-	protected ElementLayout createDefaultLineSeparatorLayout()
-	{
+	protected ElementLayout createDefaultLineSeparatorLayout() {
 		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 		lineSeparatorLayout.setPixelSizeY(LINE_SEPARATOR_HEIGHT_PIXELS);
 		lineSeparatorLayout.setRatioSizeX(1);
@@ -343,15 +323,12 @@ public abstract class ADefaultTemplateNode
 	}
 
 	@Override
-	public void render(GL2 gl)
-	{
+	public void render(GL2 gl) {
 		Point2D position = graphLayout.getNodePosition(this);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position.getX());
 		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position.getY());
 		float width = pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
 		float height = pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
-		
-	
 
 		gl.glPushMatrix();
 		gl.glTranslatef(x - width / 2.0f, y - height / 2.0f, 0f);
@@ -359,10 +336,8 @@ public abstract class ADefaultTemplateNode
 		// ECameraProjectionMode.ORTHOGRAPHIC, x - spacingWidth, x
 		// + spacingWidth, y - spacingHeight, y + spacingHeight,
 		// -1, 20));
-		layoutManager.setViewFrustum(new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
-				width, 0, height, -1, 20));
-		
-		
+		layoutManager.setViewFrustum(new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC,
+				0, width, 0, height, -1, 20));
 
 		layoutManager.render(gl);
 		gl.glPopMatrix();
@@ -381,8 +356,7 @@ public abstract class ADefaultTemplateNode
 	}
 
 	@Override
-	public Rectangle2D getBoundingBox()
-	{
+	public Rectangle2D getBoundingBox() {
 		float boundingBoxSpacingX = pixelGLConverter
 				.getGLWidthForPixelWidth(BOUNDING_BOX_SPACING_PIXELS);
 		float boundingBoxSpacingY = pixelGLConverter
@@ -398,39 +372,32 @@ public abstract class ADefaultTemplateNode
 	}
 
 	@Override
-	public boolean isUpsideDown()
-	{
+	public boolean isUpsideDown() {
 		return isUpsideDown;
 	}
 
 	@Override
-	public void setUpsideDown(boolean isUpsideDown)
-	{
+	public void setUpsideDown(boolean isUpsideDown) {
 		this.isUpsideDown = isUpsideDown;
 
 		baseColumn.setBottomUp(!isUpsideDown);
 		bodyColumn.setBottomUp(!isUpsideDown);
 
 		view.setDisplayListDirty();
-		if (getTablePerspectiveRenderer() != null)
-		{
+		if (getTablePerspectiveRenderer() != null) {
 			getTablePerspectiveRenderer().setUpsideDown(isUpsideDown);
 		}
 	}
 
-	public float getSpacingX(IDVINode node)
-	{
+	public float getSpacingX(IDVINode node) {
 
 		IDVINode leftNode = null;
 		IDVINode rightNode = null;
 
-		if (getPosition().getX() < node.getPosition().getX())
-		{
+		if (getPosition().getX() < node.getPosition().getX()) {
 			leftNode = this;
 			rightNode = node;
-		}
-		else
-		{
+		} else {
 			leftNode = node;
 			rightNode = this;
 		}
@@ -439,18 +406,14 @@ public abstract class ADefaultTemplateNode
 				.getPosition().getX() + leftNode.getWidth() / 2.0f));
 	}
 
-	public float getSpacingY(IDVINode node)
-	{
+	public float getSpacingY(IDVINode node) {
 		IDVINode topNode = null;
 		IDVINode bottomNode = null;
 
-		if (getPosition().getY() < node.getPosition().getY())
-		{
+		if (getPosition().getY() < node.getPosition().getY()) {
 			topNode = this;
 			bottomNode = node;
-		}
-		else
-		{
+		} else {
 			topNode = node;
 			bottomNode = this;
 		}
@@ -459,21 +422,20 @@ public abstract class ADefaultTemplateNode
 				.getPosition().getY() + bottomNode.getHeight() / 2.0f));
 	}
 
-	public void recalculateNodeSize()
-	{
+	public void recalculateNodeSize() {
 		heightPixels = 4
 				* SPACING_PIXELS
 				+ CAPTION_HEIGHT_PIXELS
 				+ LINE_SEPARATOR_HEIGHT_PIXELS
 				+ Math.max(MIN_DATA_CONTAINER_HEIGHT_PIXELS,
-						((getTablePerspectiveRenderer() == null) ? 0 : getTablePerspectiveRenderer()
-								.getMinHeightPixels()));
+						((getTablePerspectiveRenderer() == null) ? 0
+								: getTablePerspectiveRenderer().getMinHeightPixels()));
 
 		widthPixels = 2
 				* SPACING_PIXELS
 				+ Math.max(getMinTitleBarWidthPixels(),
-						((getTablePerspectiveRenderer() == null) ? 0 : getTablePerspectiveRenderer()
-								.getMinWidthPixels()));
+						((getTablePerspectiveRenderer() == null) ? 0
+								: getTablePerspectiveRenderer().getMinWidthPixels()));
 	}
 
 	protected abstract ElementLayout setupLayout();

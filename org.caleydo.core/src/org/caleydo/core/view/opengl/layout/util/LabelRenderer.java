@@ -124,6 +124,9 @@ public class LabelRenderer extends APickableLayoutRenderer {
 
 	@Override
 	protected void prepare() {
+		if(labelProvider != null)
+			label = labelProvider.getLabel();
+		
 		if(!prevLabel.equals(label)) {
 			setDisplayListDirty();
 		}

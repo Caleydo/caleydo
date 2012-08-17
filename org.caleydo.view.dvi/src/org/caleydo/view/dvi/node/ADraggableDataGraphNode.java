@@ -35,9 +35,7 @@ import org.caleydo.view.dvi.Graph;
 import org.caleydo.view.dvi.layout.AGraphLayout;
 import org.caleydo.view.dvi.layout.edge.rendering.AEdgeRenderer;
 
-public abstract class ADraggableDataGraphNode
-	implements IDVINode
-{
+public abstract class ADraggableDataGraphNode implements IDVINode {
 
 	protected final static String DATA_GRAPH_NODE_PICKING_TYPE = "org.caleydo.view.dvi.node";
 	protected final static String DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE = "org.caleydo.view.dvi.node_penetrating";
@@ -54,65 +52,52 @@ public abstract class ADraggableDataGraphNode
 	private float prevDraggingMouseY;
 
 	public ADraggableDataGraphNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
-			final DragAndDropController dragAndDropController, int id)
-	{
+			final DragAndDropController dragAndDropController, int id) {
 		this.graphLayout = graphLayout;
 		this.view = view;
 		this.pixelGLConverter = view.getPixelGLConverter();
 		this.id = id;
 
 		this.dragAndDropController = dragAndDropController;
-
-		createPickingListeners();
 	}
 
-	protected void createPickingListeners()
-	{
-		pickingListener = new APickingListener()
-		{
+	@Override
+	public void init() {
+		registerPickingListeners();
+	}
+
+	/**
+	 * Concrete subclasses that need to register their own
+	 * {@link IPickingListener} objects, are supposed to override this method.
+	 * Subclasses must call the super implementation of this method in order to
+	 * register their picking listeners.
+	 */
+	protected void registerPickingListeners() {
+		pickingListener = new APickingListener() {
 
 			@Override
-			public void clicked(Pick pick)
-			{
+			public void clicked(Pick pick) {
 				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingProperties(pick.getPickedPoint(), "NodeDrag");
+				dragAndDropController.setDraggingProperties(pick.getPickedPoint(),
+						"NodeDrag");
 				dragAndDropController.addDraggable(ADraggableDataGraphNode.this);
-//				dragAndDropController.setDraggingMode("NodeDrag");
 			}
-
-//			@Override
-//			public void dragged(Pick pick)
-//			{
-//				String draggingMode = dragAndDropController.getDraggingMode();
-//				if (!dragAndDropController.isDragging()
-//						&& dragAndDropController.hasDraggables() && draggingMode != null
-//						&& draggingMode.equals("NodeDrag"))
-//				{
-//					dragAndDropController.startDragging();
-//				}
-//			}
-
 		};
 
-		pickingListenerPenetrating = new APickingListener()
-		{
+		pickingListenerPenetrating = new APickingListener() {
 
 			@Override
-			public void mouseOver(Pick pick)
-			{
-				if (!dragAndDropController.isDragging())
-				{
+			public void mouseOver(Pick pick) {
+				if (!dragAndDropController.isDragging()) {
 					view.setCurrentMouseOverNode(ADraggableDataGraphNode.this);
 					view.setDisplayListDirty();
 				}
 			}
 
 			@Override
-			public void mouseOut(Pick pick)
-			{
+			public void mouseOut(Pick pick) {
 				if (view.getCurrentMouseOverNode() == ADraggableDataGraphNode.this
-						&& !dragAndDropController.isDragging())
-				{
+						&& !dragAndDropController.isDragging()) {
 					view.setCurrentMouseOverNode(null);
 					view.setDisplayListDirty();
 				}
@@ -123,20 +108,17 @@ public abstract class ADraggableDataGraphNode
 		view.addIDPickingListener(pickingListener, DATA_GRAPH_NODE_PICKING_TYPE, id);
 		view.addIDPickingListener(pickingListenerPenetrating,
 				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
-//		view.addIDPickingListener(new ToolTipPickingListener(view, "Node", "Node in DVI"), DATA_GRAPH_NODE_PICKING_TYPE, id);
 	}
 
 	@Override
-	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY)
-	{
+	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
 		prevDraggingMouseX = mouseCoordinateX;
 		prevDraggingMouseY = mouseCoordinateY;
 
 	}
 
 	@Override
-	public void handleDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY)
-	{
+	public void handleDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 		if ((prevDraggingMouseX >= mouseCoordinateX - 0.01 && prevDraggingMouseX <= mouseCoordinateX + 0.01)
 				&& (prevDraggingMouseY >= mouseCoordinateY - 0.01 && prevDraggingMouseY <= mouseCoordinateY + 0.01))
 			return;
@@ -159,17 +141,15 @@ public abstract class ADraggableDataGraphNode
 		view.setDisplayListDirty();
 		view.setApplyAutomaticLayout(false);
 
-		if (!isCustomPosition)
-		{
+		if (!isCustomPosition) {
 			Graph graph = graphLayout.getGraph();
 
 			Set<Edge> edges = graph.getEdgesOfNode(this);
 
-			if (edges != null)
-			{
-				for (Edge edge : edges)
-				{
-					AEdgeRenderer edgeRenderer = graphLayout.getCustomLayoutEdgeRenderer(edge);
+			if (edges != null) {
+				for (Edge edge : edges) {
+					AEdgeRenderer edgeRenderer = graphLayout
+							.getCustomLayoutEdgeRenderer(edge);
 					edge.setEdgeRenderer(edgeRenderer);
 				}
 			}
@@ -179,41 +159,35 @@ public abstract class ADraggableDataGraphNode
 	}
 
 	@Override
-	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY)
-	{
+	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 		dragAndDropController.clearDraggables();
 		view.updateMinWindowSize(true);
 	}
 
 	@Override
-	public int getID()
-	{
+	public int getID() {
 		return id;
 	}
 
 	@Override
-	public void destroy()
-	{
+	public void destroy() {
 		view.removeIDPickingListener(pickingListener, DATA_GRAPH_NODE_PICKING_TYPE, id);
 		view.removeIDPickingListener(pickingListenerPenetrating,
 				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 	}
 
 	@Override
-	public boolean isCustomPosition()
-	{
+	public boolean isCustomPosition() {
 		return isCustomPosition;
 	}
 
 	@Override
-	public void setCustomPosition(boolean isCustomPosition)
-	{
+	public void setCustomPosition(boolean isCustomPosition) {
 		this.isCustomPosition = isCustomPosition;
 	}
 
 	@Override
-	public void setGraphLayout(AGraphLayout graphLayout)
-	{
+	public void setGraphLayout(AGraphLayout graphLayout) {
 		this.graphLayout = graphLayout;
 	}
 

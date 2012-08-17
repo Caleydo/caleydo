@@ -37,6 +37,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.contextmenu.AddTablePerspectiveToViewsItemContainer;
+import org.caleydo.view.dvi.contextmenu.RenameTablePerspectiveItem;
 import org.caleydo.view.dvi.contextmenu.ShowTablePerspectiveInViewsItemContainer;
 import org.caleydo.view.dvi.node.ViewNode;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -234,5 +235,8 @@ public class TablePerspectivePickingListener extends APickingListener {
 		view.getContextMenuCreator().addContextMenuItem(
 				new AddTablePerspectiveToViewsItemContainer(multiTablePerspectiveViews,
 						tablePerspective));
+
+		view.getContextMenuCreator().addContextMenuItem(
+				new RenameTablePerspectiveItem(tablePerspective));
 	}
 }

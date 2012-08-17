@@ -178,11 +178,12 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		detailState = new DetailState();
 		currentState = overviewState;
 		tablePerspectiveRenderer = currentState.tablePerspectiveRenderer;
-
-		addPickingListeners();
 	}
 
-	private void addPickingListeners() {
+	@Override
+	protected void registerPickingListeners() {
+		super.registerPickingListeners();
+
 		view.addIDPickingListener(new APickingListener() {
 
 			@Override
@@ -305,8 +306,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 		Row titleRow = new Row("titleRow");
 
-		ElementLayout captionLayout = createDefaultCaptionLayout(dataDomain.getLabel(),
-				getID());
+		ElementLayout captionLayout = createDefaultCaptionLayout(getID());
 
 		titleRow.append(captionLayout);
 		titleRow.setYDynamic(true);
@@ -638,8 +638,4 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 	}
 
-	@Override
-	public String getCaption() {
-		return dataDomain.getLabel();
-	}
 }

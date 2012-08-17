@@ -25,7 +25,7 @@ public class LoadGroupingItem extends AContextMenuItem {
 	 *            The {@link IDCategory} a grouping is loaded for.
 	 */
 	public LoadGroupingItem(ATableBasedDataDomain dataDomain, IDCategory idCategory) {
-		setLabel("Load grouping for " + idCategory.getCategoryName());
+		setLabel("Load Grouping for " + idCategory.getCategoryName());
 		LoadGroupingEvent event = new LoadGroupingEvent(dataDomain, idCategory);
 		event.setSender(this);
 		registerEvent(event);

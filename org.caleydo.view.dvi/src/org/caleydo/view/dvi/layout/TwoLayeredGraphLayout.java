@@ -133,7 +133,7 @@ public class TwoLayeredGraphLayout extends AGraphLayout {
 
 		List<Pair<String, IDVINode>> dataNodeSortingList = new ArrayList<Pair<String, IDVINode>>();
 		for (IDVINode dataNode : dataNodes) {
-			dataNodeSortingList.add(new Pair<String, IDVINode>(dataNode.getCaption()
+			dataNodeSortingList.add(new Pair<String, IDVINode>(dataNode.getLabel()
 					.toUpperCase(), dataNode));
 		}
 		Collections.sort(dataNodeSortingList);

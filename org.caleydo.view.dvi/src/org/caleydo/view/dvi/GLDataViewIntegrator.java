@@ -92,6 +92,8 @@ import org.caleydo.view.dvi.event.CreateTablePerspectiveEvent;
 import org.caleydo.view.dvi.event.CreateViewFromTablePerspectiveEvent;
 import org.caleydo.view.dvi.event.LoadGroupingEvent;
 import org.caleydo.view.dvi.event.OpenViewEvent;
+import org.caleydo.view.dvi.event.RenameDataDomainEvent;
+import org.caleydo.view.dvi.event.RenameTablePerspectiveEvent;
 import org.caleydo.view.dvi.event.ShowDataConnectionsEvent;
 import org.caleydo.view.dvi.event.ShowViewWithoutDataEvent;
 import org.caleydo.view.dvi.layout.AGraphLayout;
@@ -110,6 +112,8 @@ import org.caleydo.view.dvi.listener.NewDataDomainEventListener;
 import org.caleydo.view.dvi.listener.NewViewEventListener;
 import org.caleydo.view.dvi.listener.OpenViewEventListener;
 import org.caleydo.view.dvi.listener.RecordVAUpdateEventListener;
+import org.caleydo.view.dvi.listener.RenameDataDomainEventListener;
+import org.caleydo.view.dvi.listener.RenameTablePerspectiveEventListener;
 import org.caleydo.view.dvi.listener.ShowDataConnectionsEventListener;
 import org.caleydo.view.dvi.listener.ShowViewWithoutDataEventListener;
 import org.caleydo.view.dvi.listener.TablePerspectivesCangedListener;
@@ -177,6 +181,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	private ShowViewWithoutDataEventListener showViewWithoutDataEventListener;
 	private LoadGroupingEventListener loadGroupingEventListener;
 	private CreateClusteringEventListener createClusteringEventListener;
+	private RenameTablePerspectiveEventListener renameTablePerspectiveEventListener;
+	private RenameDataDomainEventListener renameDataDomainEventListener;
 
 	private IDVINode currentMouseOverNode;
 
@@ -201,7 +207,6 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		connectionBandRenderer = new ConnectionBandRenderer();
-		VIEW_TYPE = GLDataViewIntegrator.VIEW_TYPE;
 
 		glKeyListener = new GLDVIKeyListener();
 		// graphLayout = new ForceDirectedGraphLayout(this, dataGraph);
@@ -590,6 +595,16 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		createClusteringEventListener.setHandler(this);
 		eventPublisher.addListener(CreateClusteringEvent.class,
 				createClusteringEventListener);
+
+		renameTablePerspectiveEventListener = new RenameTablePerspectiveEventListener();
+		renameTablePerspectiveEventListener.setHandler(this);
+		eventPublisher.addListener(RenameTablePerspectiveEvent.class,
+				renameTablePerspectiveEventListener);
+
+		renameDataDomainEventListener = new RenameDataDomainEventListener();
+		renameDataDomainEventListener.setHandler(this);
+		eventPublisher.addListener(RenameDataDomainEvent.class,
+				renameDataDomainEventListener);
 	}
 
 	@Override
@@ -674,6 +689,16 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		if (createClusteringEventListener != null) {
 			eventPublisher.removeListener(createClusteringEventListener);
 			createClusteringEventListener = null;
+		}
+
+		if (renameTablePerspectiveEventListener != null) {
+			eventPublisher.removeListener(renameTablePerspectiveEventListener);
+			renameTablePerspectiveEventListener = null;
+		}
+
+		if (renameDataDomainEventListener != null) {
+			eventPublisher.removeListener(renameDataDomainEventListener);
+			renameDataDomainEventListener = null;
 		}
 	}
 
@@ -961,14 +986,14 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 					@Override
 					public String isValid(String newText) {
 						if (newText.equalsIgnoreCase(""))
-							return "Please enter a name for the data container.";
+							return "Please enter a name for the table perspective.";
 						else
 							return null;
 					}
 				};
 
 				InputDialog dialog = new InputDialog(new Shell(),
-						"Create Data Container", "Name", dataDomain.getLabel() + " - "
+						"Create Table Perspective", "Name", dataDomain.getLabel() + " - "
 								+ recordPerspectiveLabel + "/"
 								+ dimensionPerspectiveLabel, validator);
 
@@ -1272,9 +1297,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 	/**
 	 * Creates a new perspective for the specified data domain through
-	 * clustering via the {@link ClusterDialog}. The default
-	 * perspectives of the data domain are used to specify the data to be
-	 * clustered.
+	 * clustering via the {@link ClusterDialog}. The default perspectives of the
+	 * data domain are used to specify the data to be clustered.
 	 * 
 	 * @param dataDomain
 	 * @param isDimensionClustering
@@ -1302,11 +1326,77 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 					clusterConfiguration
 							.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
 
-				ClusterDialog dialog = new ClusterDialog(new Shell(),
-						dataDomain, clusterConfiguration);
+				ClusterDialog dialog = new ClusterDialog(new Shell(), dataDomain,
+						clusterConfiguration);
 
 				dialog.open();
 
+			}
+		});
+	}
+
+	/**
+	 * Opens an input dialog allowing the user to specify the name (label) for a
+	 * {@link TablePerspective}.
+	 * 
+	 * @param tablePerspective
+	 */
+	public void renameTablePerspective(final TablePerspective tablePerspective) {
+
+		parentComposite.getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+
+				IInputValidator validator = new IInputValidator() {
+					@Override
+					public String isValid(String newText) {
+						if (newText.equalsIgnoreCase(""))
+							return "Please enter a name for the table perspective.";
+						else
+							return null;
+					}
+				};
+
+				InputDialog dialog = new InputDialog(new Shell(),
+						"Rename Table Perspective", "Name", tablePerspective.getLabel(),
+						validator);
+
+				if (dialog.open() == Window.OK) {
+					tablePerspective.setLabel(dialog.getValue(), false);
+					dataNodesOfDataDomains.get(tablePerspective.getDataDomain()).update();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Opens an input dialog allowing the user to specify the name (label) for
+	 * an {@link IDataDomain}.
+	 * 
+	 * @param dataDomain
+	 */
+	public void renameDataDomain(final IDataDomain dataDomain) {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+
+				IInputValidator validator = new IInputValidator() {
+					@Override
+					public String isValid(String newText) {
+						if (newText.equalsIgnoreCase(""))
+							return "Please enter a name for the dataset.";
+						else
+							return null;
+					}
+				};
+
+				InputDialog dialog = new InputDialog(new Shell(), "Rename Dataset",
+						"Name", dataDomain.getLabel(), validator);
+
+				if (dialog.open() == Window.OK) {
+					dataDomain.setLabel(dialog.getValue());
+					dataNodesOfDataDomains.get(dataDomain).update();
+				}
 			}
 		});
 	}

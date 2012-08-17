@@ -95,6 +95,8 @@ public class PathwayDataDomain
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 
 		this.dataSetDescription = new DataSetDescription();
+		
+		dataSetDescription.setDataSetName("Pathways: KEGG & BioCarta");
 
 		// set a neutral gray as the pathway color
 		dataSetDescription.setColor(new Color(0.8f, 0.8f, 0.8f));
@@ -195,10 +197,5 @@ public class PathwayDataDomain
 		DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
-	}
-
-	@Override
-	public String getLabel() {
-		return "Pathways: KEGG & BioCarta";
 	}
 }

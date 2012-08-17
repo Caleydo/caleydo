@@ -38,25 +38,22 @@ import org.caleydo.view.dvi.layout.AGraphLayout;
 import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.TablePerspectiveListRenderer;
 
-public class PathwayDataNode
-	extends ADataNode
-{
+public class PathwayDataNode extends ADataNode {
 
 	private AMultiTablePerspectiveRenderer tablePerspectiveRenderer;
 	private PathwayDataDomain dataDomain;
 	private Row bodyRow;
 
 	public PathwayDataNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
-			DragAndDropController dragAndDropController, Integer id, IDataDomain dataDomain)
-	{
+			DragAndDropController dragAndDropController, Integer id,
+			IDataDomain dataDomain) {
 		super(graphLayout, view, dragAndDropController, id, dataDomain);
 		this.dataDomain = (PathwayDataDomain) dataDomain;
 
 	}
 
 	@Override
-	public ElementLayout setupLayout()
-	{
+	public ElementLayout setupLayout() {
 
 		Row baseRow = createDefaultBaseRow(dataDomain.getColor().getRGBA(), getID());
 
@@ -68,15 +65,13 @@ public class PathwayDataNode
 		baseRow.append(baseColumn);
 		baseRow.append(spacingLayoutX);
 
-		ElementLayout captionLayout = createDefaultCaptionLayout(dataDomain.getLabel(),
-				getID());
+		ElementLayout captionLayout = createDefaultCaptionLayout(getID());
 
 		ElementLayout lineSeparatorLayout = createDefaultLineSeparatorLayout();
 
 		bodyRow = new Row("bodyRow");
 
-		if (getTablePerspectives().size() > 0)
-		{
+		if (getTablePerspectives().size() > 0) {
 			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 		}
 
@@ -116,47 +111,41 @@ public class PathwayDataNode
 	}
 
 	@Override
-	public void update()
-	{
+	public void update() {
 		tablePerspectiveRenderer.setTablePerspectives(getTablePerspectives());
 		recalculateNodeSize();
-		if (getTablePerspectives().size() > 0)
-		{
+		if (getTablePerspectives().size() > 0) {
 			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 		}
 	}
 
 	@Override
-	public void destroy()
-	{
+	public void destroy() {
 		tablePerspectiveRenderer.destroy();
 	}
 
 	@Override
-	protected AMultiTablePerspectiveRenderer getTablePerspectiveRenderer()
-	{
+	protected AMultiTablePerspectiveRenderer getTablePerspectiveRenderer() {
 		return tablePerspectiveRenderer;
 	}
 
 	@Override
-	public List<TablePerspective> getTablePerspectives()
-	{
+	public List<TablePerspective> getTablePerspectives() {
 		List<PathwayTablePerspective> containers = dataDomain.getTablePerspectives();
 
 		List<Pair<String, TablePerspective>> sortedContainers = new ArrayList<Pair<String, TablePerspective>>(
 				containers.size());
 
-		for (PathwayTablePerspective container : containers)
-		{
+		for (PathwayTablePerspective container : containers) {
 			sortedContainers.add(new Pair<String, TablePerspective>(container.getLabel(),
 					container));
 		}
 
 		Collections.sort(sortedContainers);
 
-		List<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>(containers.size());
-		for (Pair<String, TablePerspective> containerPair : sortedContainers)
-		{
+		List<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>(
+				containers.size());
+		for (Pair<String, TablePerspective> containerPair : sortedContainers) {
 			tablePerspectives.add(containerPair.getSecond());
 		}
 
@@ -166,8 +155,7 @@ public class PathwayDataNode
 	}
 
 	@Override
-	protected int getMinTitleBarWidthPixels()
-	{
+	protected int getMinTitleBarWidthPixels() {
 
 		float textWidth = view.getTextRenderer().getRequiredTextWidthWithMax(
 				dataDomain.getLabel(),
@@ -175,11 +163,6 @@ public class PathwayDataNode
 				MIN_TITLE_BAR_WIDTH_PIXELS);
 
 		return pixelGLConverter.getPixelWidthForGLWidth(textWidth);
-	}
-
-	@Override
-	public String getCaption() {
-		return dataDomain.getLabel();
 	}
 
 }

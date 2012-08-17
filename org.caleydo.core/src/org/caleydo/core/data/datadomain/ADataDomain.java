@@ -40,9 +40,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  */
 @XmlType
 @XmlRootElement
-public abstract class ADataDomain
-	extends AEventHandler
-	implements IDataDomain {
+public abstract class ADataDomain extends AEventHandler implements IDataDomain {
 
 	protected String dataDomainType;
 
@@ -168,9 +166,11 @@ public abstract class ADataDomain
 		return dataSetDescription.getColor();
 	}
 
-	/**
-	 * @return the label, see {@link #viewLabel}
-	 */
+	@Override
+	public void setLabel(String label) {
+		dataSetDescription.setDataSetName(label);
+	}
+
 	@Override
 	public String getLabel() {
 		if (dataSetDescription == null || dataSetDescription.getDataSetName() == null)

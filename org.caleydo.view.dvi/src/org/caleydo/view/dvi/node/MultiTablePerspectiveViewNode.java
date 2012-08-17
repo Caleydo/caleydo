@@ -63,6 +63,8 @@ public class MultiTablePerspectiveViewNode extends ViewNode implements IDropArea
 
 	@Override
 	protected void registerPickingListeners() {
+		
+		super.registerPickingListeners();
 
 		view.addIDPickingListener(new APickingListener() {
 
@@ -78,21 +80,6 @@ public class MultiTablePerspectiveViewNode extends ViewNode implements IDropArea
 
 			}
 		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
-
-		view.addIDPickingListener(new APickingListener() {
-
-			@Override
-			public void rightClicked(Pick pick) {
-				view.getContextMenuCreator().addContextMenuItem(
-						new OpenViewItem(representedView));
-			}
-
-			@Override
-			public void doubleClicked(Pick pick) {
-				view.openView(representedView);
-			}
-
-		}, DATA_GRAPH_NODE_PICKING_TYPE, id);
 
 	}
 

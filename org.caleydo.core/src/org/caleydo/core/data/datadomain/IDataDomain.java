@@ -66,8 +66,8 @@ public interface IDataDomain {
 	 * Sets the parameters for loading the data-{@link Set} contained in this
 	 * use case
 	 * 
-	 * @param dataSetDescription parameters for loading the data-{@link Set} of
-	 *            this use case
+	 * @param dataSetDescription
+	 *            parameters for loading the data-{@link Set} of this use case
 	 */
 	public void setDataSetDescription(DataSetDescription dataSetDescription);
 
@@ -115,6 +115,16 @@ public interface IDataDomain {
 	 */
 	public void addIDCategory(IDCategory category);
 
+	/**
+	 * Set the label displayed in the GUI for this datadomain.
+	 * 
+	 * @param label
+	 */
+	public void setLabel(String label);
+
+	/**
+	 * @return The label to be displayed in the GUI of this datadomain.
+	 */
 	public String getLabel();
 
 	/**

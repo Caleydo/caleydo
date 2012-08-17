@@ -57,7 +57,6 @@ public class ViewNode extends ADefaultTemplateNode {
 	// private TablePerspectiveListRenderer overviewTablePerspectiveRenderer;
 	protected AGLView representedView;
 	protected Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
-	protected String viewName;
 	protected String iconPath;
 
 	public ViewNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
@@ -68,12 +67,14 @@ public class ViewNode extends ADefaultTemplateNode {
 		this.representedView = representedView;
 		dataDomains = representedView.getDataDomains();
 
-		registerPickingListeners();
 		setRepresentedViewInfo();
 		// setupLayout();
 	}
 
+	@Override
 	protected void registerPickingListeners() {
+
+		super.registerPickingListeners();
 
 		view.addIDPickingListener(new APickingListener() {
 
@@ -97,7 +98,6 @@ public class ViewNode extends ADefaultTemplateNode {
 		IExtensionPoint point = registry.getExtensionPoint("org.eclipse.ui.views");
 		IExtension[] extensions = point.getExtensions();
 		String viewID = representedView.getViewType();
-		viewName = viewID;
 		iconPath = null;
 		boolean viewNameObtained = false;
 
@@ -105,7 +105,6 @@ public class ViewNode extends ADefaultTemplateNode {
 			IConfigurationElement[] elements = extension.getConfigurationElements();
 			for (IConfigurationElement element : elements) {
 				if (element.getAttribute("id").equals(viewID)) {
-					viewName = representedView.getViewName();
 					// element.getAttribute("name");
 					iconPath = element.getAttribute("icon");
 					viewNameObtained = true;
@@ -158,7 +157,7 @@ public class ViewNode extends ADefaultTemplateNode {
 			titleRow.append(spacingLayoutX);
 		}
 
-		ElementLayout captionLayout = createDefaultCaptionLayout(viewName, id);
+		ElementLayout captionLayout = createDefaultCaptionLayout(id);
 
 		titleRow.append(captionLayout);
 
@@ -172,10 +171,12 @@ public class ViewNode extends ADefaultTemplateNode {
 
 		ElementLayout bodySpacingLayoutY = new ElementLayout("compGroupOverview");
 		// if (representedView instanceof ATableBasedView) {
-		// overviewTablePerspectiveRenderer = new TablePerspectiveListRenderer(this,
+		// overviewTablePerspectiveRenderer = new
+		// TablePerspectiveListRenderer(this,
 		// view, dragAndDropController, new ArrayList<TablePerspective>());
 		// } else {
-		// overviewTablePerspectiveRenderer = new TablePerspectiveListRenderer(this,
+		// overviewTablePerspectiveRenderer = new
+		// TablePerspectiveListRenderer(this,
 		// view, dragAndDropController, getTablePerspectives());
 		// }
 
@@ -205,9 +206,11 @@ public class ViewNode extends ADefaultTemplateNode {
 
 		if (representedView instanceof ITablePerspectiveBasedView) {
 			return ((ITablePerspectiveBasedView) representedView).getTablePerspectives();
-			// TablePerspective tablePerspective = ((ATableBasedView) representedView)
+			// TablePerspective tablePerspective = ((ATableBasedView)
+			// representedView)
 			// .getTablePerspectives();
-			// List<TablePerspective> containers = new ArrayList<TablePerspective>();
+			// List<TablePerspective> containers = new
+			// ArrayList<TablePerspective>();
 			// containers.add(tablePerspective);
 			// return containers;
 		}
@@ -218,7 +221,6 @@ public class ViewNode extends ADefaultTemplateNode {
 		// }
 		// return new ArrayList<TablePerspective>(groups);
 	}
-
 
 	public Set<IDataDomain> getDataDomains() {
 		return dataDomains;
@@ -261,7 +263,7 @@ public class ViewNode extends ADefaultTemplateNode {
 	@Override
 	protected int getMinTitleBarWidthPixels() {
 		float textWidth = view.getTextRenderer().getRequiredTextWidthWithMax(
-				representedView.getViewName(),
+				representedView.getLabel(),
 				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS),
 				MIN_TITLE_BAR_WIDTH_PIXELS);
 
@@ -270,8 +272,13 @@ public class ViewNode extends ADefaultTemplateNode {
 	}
 
 	@Override
-	public String getCaption() {
-		return viewName;
+	public String getLabel() {
+		return representedView.getLabel();
+	}
+
+	@Override
+	public boolean isLabelDefault() {
+		return false;
 	}
 
 }
