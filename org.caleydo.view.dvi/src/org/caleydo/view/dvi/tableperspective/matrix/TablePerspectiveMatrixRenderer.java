@@ -46,6 +46,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.PickingType;
 import org.caleydo.view.dvi.contextmenu.CreateTablePerspectiveItem;
+import org.caleydo.view.dvi.contextmenu.RenameVariablePerspectiveItem;
 import org.caleydo.view.dvi.event.CreateTablePerspectiveEvent;
 import org.caleydo.view.dvi.node.IDVINode;
 import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
@@ -270,31 +271,15 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 						.getObjectID());
 				if (perspectiveRenderer == null)
 					return;
-				//
-				// draggedComparisonGroupRenderer
-				// .setSelectionType(SelectionType.SELECTION);
+
 				Point point = pick.getPickedPoint();
 				dragAndDropController.clearDraggables();
 				dragAndDropController.setDraggingProperties(new Point(point.x, point.y),
 						"PerspectiveDrag");
-				// dragAndDropController.setDraggingStartPosition(new
-				// Point(point.x, point.y));
+
 				dragAndDropController.addDraggable(perspectiveRenderer);
-				// dragAndDropController.setDraggingMode("PerspectiveDrag");
 				view.setDisplayListDirty();
 			}
-
-			// @Override
-			// public void dragged(Pick pick) {
-			//
-			// String draggingMode = dragAndDropController.getDraggingMode();
-			//
-			// if (!dragAndDropController.isDragging()
-			// && dragAndDropController.hasDraggables() && draggingMode != null
-			// && draggingMode.equals("PerspectiveDrag")) {
-			// dragAndDropController.startDragging();
-			// }
-			// }
 
 			private PerspectiveRenderer getPerspectiveRenderer(int id) {
 				CellContainer container = getCellContainerWithHashID(id);
@@ -303,6 +288,20 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 					return null;
 
 				return perspectiveRenderers.get(container.id);
+
+			}
+
+			@Override
+			public void rightClicked(Pick pick) {
+				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick
+						.getObjectID());
+				if (perspectiveRenderer == null)
+					return;
+
+				view.getContextMenuCreator().addContextMenuItem(
+						new RenameVariablePerspectiveItem(perspectiveRenderer
+								.getPerspectiveID(), dataDomain, perspectiveRenderer
+								.isRecordPerspective()));
 
 			}
 
@@ -377,7 +376,7 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 			if (row == null) {
 				row = new CellContainer();
 				row.id = id;
-				row.caption = perspective.getLabel();
+				row.labelProvider = perspective;
 				row.numSubdivisions = 1;
 				row.isVisible = true;
 				row.isCollapsed = true;
@@ -405,7 +404,7 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 					CellContainer subRow = rowMap.get(subRowID);
 					if (subRow == null) {
 						subRow = new CellContainer();
-						subRow.caption = group.getLabel();
+						subRow.labelProvider = group;
 						subRow.id = subRowID;
 						subRow.numSubdivisions = 1;
 						subRow.isVisible = false;
@@ -452,7 +451,7 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 			if (column == null) {
 				column = new CellContainer();
 				column.id = id;
-				column.caption = perspective.getLabel();
+				column.labelProvider = perspective;
 				column.numSubdivisions = 1;
 				column.isVisible = true;
 				column.isCollapsed = true;
@@ -482,7 +481,7 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 
 					if (subColumn == null) {
 						subColumn = new CellContainer();
-						subColumn.caption = group.getLabel();
+						subColumn.labelProvider = group;
 						subColumn.id = subColumnID;
 						subColumn.numSubdivisions = 1;
 						subColumn.isVisible = false;

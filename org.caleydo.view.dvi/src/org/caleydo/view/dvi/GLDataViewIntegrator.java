@@ -39,6 +39,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.graph.DataDomainGraph;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
@@ -89,6 +90,7 @@ import org.caleydo.view.dvi.event.LoadGroupingEvent;
 import org.caleydo.view.dvi.event.OpenViewEvent;
 import org.caleydo.view.dvi.event.RenameDataDomainEvent;
 import org.caleydo.view.dvi.event.RenameTablePerspectiveEvent;
+import org.caleydo.view.dvi.event.RenameVariablePerspectiveEvent;
 import org.caleydo.view.dvi.event.ShowDataConnectionsEvent;
 import org.caleydo.view.dvi.event.ShowViewWithoutDataEvent;
 import org.caleydo.view.dvi.layout.AGraphLayout;
@@ -109,6 +111,7 @@ import org.caleydo.view.dvi.listener.OpenViewEventListener;
 import org.caleydo.view.dvi.listener.RecordVAUpdateEventListener;
 import org.caleydo.view.dvi.listener.RenameDataDomainEventListener;
 import org.caleydo.view.dvi.listener.RenameTablePerspectiveEventListener;
+import org.caleydo.view.dvi.listener.RenameVariablePerspectiveEventListener;
 import org.caleydo.view.dvi.listener.ShowDataConnectionsEventListener;
 import org.caleydo.view.dvi.listener.ShowViewWithoutDataEventListener;
 import org.caleydo.view.dvi.listener.TablePerspectivesCangedListener;
@@ -178,6 +181,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	private CreateClusteringEventListener createClusteringEventListener;
 	private RenameTablePerspectiveEventListener renameTablePerspectiveEventListener;
 	private RenameDataDomainEventListener renameDataDomainEventListener;
+	private RenameVariablePerspectiveEventListener renameVariablePerspectiveEventListener;
 
 	private IDVINode currentMouseOverNode;
 
@@ -591,6 +595,11 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		renameDataDomainEventListener.setHandler(this);
 		eventPublisher.addListener(RenameDataDomainEvent.class,
 				renameDataDomainEventListener);
+
+		renameVariablePerspectiveEventListener = new RenameVariablePerspectiveEventListener();
+		renameVariablePerspectiveEventListener.setHandler(this);
+		eventPublisher.addListener(RenameVariablePerspectiveEvent.class,
+				renameVariablePerspectiveEventListener);
 	}
 
 	@Override
@@ -685,6 +694,11 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		if (renameDataDomainEventListener != null) {
 			eventPublisher.removeListener(renameDataDomainEventListener);
 			renameDataDomainEventListener = null;
+		}
+
+		if (renameVariablePerspectiveEventListener != null) {
+			eventPublisher.removeListener(renameVariablePerspectiveEventListener);
+			renameVariablePerspectiveEventListener = null;
 		}
 	}
 
@@ -1350,6 +1364,53 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 				if (dialog.open() == Window.OK) {
 					tablePerspective.setLabel(dialog.getValue(), false);
 					dataNodesOfDataDomains.get(tablePerspective.getDataDomain()).update();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Opens an input dialog allowing the user to specify the name (label) for a
+	 * {@link AVariablePerspective}.
+	 * 
+	 * @param perspectiveID
+	 *            ID of the perspective to rename.
+	 * @param dataDomain
+	 *            Datadomain the perspective belongs to.
+	 * @param isRecordPerspective
+	 *            Determines, whether the perspective is a
+	 *            {@link RecordPerspective} or a {@link DimensionPerspective}.
+	 */
+	public void renameVariablePerspective(final String perspectiveID,
+			final ATableBasedDataDomain dataDomain, final boolean isRecordPerspective) {
+
+		parentComposite.getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+
+				IInputValidator validator = new IInputValidator() {
+					@Override
+					public String isValid(String newText) {
+						if (newText.equalsIgnoreCase(""))
+							return "Please enter a name for the grouping.";
+						else
+							return null;
+					}
+				};
+				
+				AVariablePerspective<?, ?, ?, ?> perspective = null;
+				if(isRecordPerspective) {
+					perspective = dataDomain.getTable().getRecordPerspective(perspectiveID);
+				} else {
+					perspective = dataDomain.getTable().getDimensionPerspective(perspectiveID);
+				}
+
+				InputDialog dialog = new InputDialog(new Shell(), "Rename Grouping",
+						"Name", perspective.getLabel(), validator);
+
+				if (dialog.open() == Window.OK) {
+					perspective.setLabel(dialog.getValue(), false);
+					dataNodesOfDataDomains.get(dataDomain).update();
 				}
 			}
 		});

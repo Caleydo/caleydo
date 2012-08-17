@@ -1070,7 +1070,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		localRecordPerspective.setIDType(recordIDType);
 		localRecordPerspective.init(data);
 		localRecordPerspective.setLabel(foreignPerspective.getLabel(),
-				foreignPerspective.isDefaultLabel());
+				foreignPerspective.isLabelDefault());
 		return localRecordPerspective;
 
 	}

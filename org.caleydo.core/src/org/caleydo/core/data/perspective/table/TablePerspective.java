@@ -412,7 +412,7 @@ public class TablePerspective {
 					recordPerspective, dimensionPerspective);
 			subTablePerspective.setRecordGroup(group);
 			subTablePerspective.setLabel(recordPerspective.getLabel(),
-					recordPerspective.isDefaultLabel());
+					recordPerspective.isLabelDefault());
 			recordSubTablePerspectives.add(subTablePerspective);
 
 		}

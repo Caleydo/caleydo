@@ -40,6 +40,7 @@ import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
@@ -76,7 +77,7 @@ import org.eclipse.core.runtime.Status;
 @XmlSeeAlso({ RecordPerspective.class, DimensionPerspective.class,
 		RecordVirtualArray.class, DimensionVirtualArray.class })
 @XmlRootElement
-public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType, GroupType>, GroupType extends GroupList<GroupType, VA, DeltaType>, DeltaType extends VirtualArrayDelta<DeltaType>, FilterManagerType extends FilterManager<?, DeltaType, ?, VA>> {
+public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType, GroupType>, GroupType extends GroupList<GroupType, VA, DeltaType>, DeltaType extends VirtualArrayDelta<DeltaType>, FilterManagerType extends FilterManager<?, DeltaType, ?, VA>> implements ILabelProvider {
 
 	/** The unique ID of the perspective */
 	@XmlElement
@@ -173,6 +174,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	 * @return the label, see {@link #label}, or if the label is null, the
 	 *         perspectiveID is returned.
 	 */
+	@Override
 	public String getLabel() {
 		if (label == null || label.isEmpty())
 			return perspectiveID;
@@ -182,7 +184,8 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	/**
 	 * @return the isDefaultLabel, see {@link #isDefaultLabel}
 	 */
-	public boolean isDefaultLabel() {
+	@Override
+	public boolean isLabelDefault() {
 		return isDefaultLabel;
 	}
 

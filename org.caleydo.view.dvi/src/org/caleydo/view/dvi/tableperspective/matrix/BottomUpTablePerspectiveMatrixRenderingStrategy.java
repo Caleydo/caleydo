@@ -37,8 +37,8 @@ import org.caleydo.view.dvi.node.IDVINode;
 import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.TablePerspectiveRenderer;
 
-public class BottomUpTablePerspectiveMatrixRenderingStrategy
-	extends ATablePerspectiveMatrixRenderingStrategy {
+public class BottomUpTablePerspectiveMatrixRenderingStrategy extends
+		ATablePerspectiveMatrixRenderingStrategy {
 
 	public BottomUpTablePerspectiveMatrixRenderingStrategy(
 			TablePerspectiveMatrixRenderer matrixRenderer) {
@@ -48,8 +48,8 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 	@Override
 	public void render(GL2 gl,
 			Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions,
-			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions, float x, float y,
-			IDVINode node, GLDataViewIntegrator view,
+			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions, float x,
+			float y, IDVINode node, GLDataViewIntegrator view,
 			List<Pair<String, Integer>> pickingIDsToBePushed, String rowsCaption,
 			String columnsCaption) {
 
@@ -57,7 +57,8 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 		Map<String, ColorRenderer> cells = matrixRenderer.cells;
 		Map<String, PerspectiveRenderer> perspectiveRenderers = matrixRenderer.perspectiveRenderers;
 
-		List<CellContainer> reversedRows = new ArrayList<CellContainer>(matrixRenderer.rows);
+		List<CellContainer> reversedRows = new ArrayList<CellContainer>(
+				matrixRenderer.rows);
 		// Collections.reverse(reversedRows);
 
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
@@ -86,13 +87,10 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 		float textHeight = pixelGLConverter.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS);
 
 		textRenderer.setColor(new float[] { 0, 0, 0 });
-		textRenderer.renderTextInBounds(
-				gl,
-				rowsCaption,
-				currentPositionX + captionSpacingX,
-				captionRowHeight - captionSpacingY - textHeight
-						+ pixelGLConverter.getGLHeightForPixelHeight(3), 0, captionColumnWidth
-						- textHeight, textHeight);
+		textRenderer.renderTextInBounds(gl, rowsCaption, currentPositionX
+				+ captionSpacingX, captionRowHeight - captionSpacingY - textHeight
+				+ pixelGLConverter.getGLHeightForPixelHeight(3), 0, captionColumnWidth
+				- textHeight, textHeight);
 
 		gl.glPushMatrix();
 		gl.glTranslatef(currentPositionX + captionColumnWidth - captionSpacingX,
@@ -114,11 +112,13 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 			float childIndent = 0;
 			float parentIndent = 0;
 			if (row.parentContainer == null) {
-				PerspectiveRenderer perspectiveRenderer = perspectiveRenderers.get(row.id);
+				PerspectiveRenderer perspectiveRenderer = perspectiveRenderers
+						.get(row.id);
 
 				gl.glPushMatrix();
 				gl.glTranslatef(currentPositionX, currentPositionY, 0.1f);
-				perspectiveRenderer.setLimits(captionColumnWidth + captionSpacingX, rowHeight);
+				perspectiveRenderer.setLimits(captionColumnWidth + captionSpacingX,
+						rowHeight);
 				Point2D absolutePosition = node
 						.getAbsolutPositionOfRelativeTablePerspectiveRendererCoordinates(new Point2D.Float(
 								currentPositionX, currentPositionY));
@@ -154,7 +154,8 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 
 					gl.glPushMatrix();
 					gl.glTranslatef(
-							currentPositionX + pixelGLConverter.getGLWidthForPixelWidth(2),
+							currentPositionX
+									+ pixelGLConverter.getGLWidthForPixelWidth(2),
 							currentPositionY + rowHeight / 2.0f - captionSpacingX, 0.1f);
 					collapsePerspectiveButtonRenderer.render(gl);
 					gl.glPopMatrix();
@@ -162,8 +163,7 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 					parentIndent = captionSpacingX * 2
 							+ pixelGLConverter.getGLHeightForPixelHeight(2);
 				}
-			}
-			else {
+			} else {
 				childIndent = captionSpacingY * 2;
 
 				gl.glColor4fv(groupColor, 0);
@@ -180,8 +180,8 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 
 				gl.glVertex3f(currentPositionX, currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + childIndent, currentPositionY, 0.1f);
-				gl.glVertex3f(currentPositionX + childIndent, currentPositionY + rowHeight,
-						0.1f);
+				gl.glVertex3f(currentPositionX + childIndent, currentPositionY
+						+ rowHeight, 0.1f);
 				gl.glVertex3f(currentPositionX, currentPositionY + rowHeight, 0.1f);
 
 				gl.glEnd();
@@ -193,10 +193,10 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 					+ pixelGLConverter.getGLHeightForPixelHeight(2);
 
 			textRenderer.setColor(new float[] { 0, 0, 0 });
-			textRenderer.renderTextInBounds(gl, row.caption, currentPositionX
-					+ captionSpacingX + parentIndent + childIndent, textPositionY, 0.1f,
-					captionColumnWidth - childIndent - parentIndent - 2 * captionSpacingX,
-					textHeight);
+			textRenderer.renderTextInBounds(gl, row.labelProvider.getLabel(),
+					currentPositionX + captionSpacingX + parentIndent + childIndent,
+					textPositionY, 0.1f, captionColumnWidth - childIndent - parentIndent
+							- 2 * captionSpacingX, textHeight);
 
 			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
 			gl.glColor3f(0, 0, 0);
@@ -236,7 +236,8 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 			// gl.glColor3f(0.7f, 0.7f, 0.7f);
 			if (column.parentContainer == null) {
 
-				PerspectiveRenderer perspectiveRenderer = perspectiveRenderers.get(column.id);
+				PerspectiveRenderer perspectiveRenderer = perspectiveRenderers
+						.get(column.id);
 
 				gl.glPushMatrix();
 				gl.glTranslatef(currentPositionX, 0, 0.1f);
@@ -247,7 +248,8 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 								currentPositionX, 0));
 				perspectiveRenderer.setPosition(absolutePosition);
 				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-						PickingType.PERSPECTIVE.name() + node.getID(), column.id.hashCode()));
+						PickingType.PERSPECTIVE.name() + node.getID(),
+						column.id.hashCode()));
 				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
 						PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(),
 						column.id.hashCode()));
@@ -257,16 +259,6 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 				gl.glPopName();
 				gl.glPopName();
 				gl.glPopMatrix();
-
-				// gl.glBegin(GL2.GL_QUADS);
-				// gl.glVertex3f(currentPositionX, captionRowHeight +
-				// captionSpacingY, 0);
-				// gl.glVertex3f(currentPositionX + currentColumnWidth,
-				// captionRowHeight
-				// + captionSpacingY, 0);
-				// gl.glVertex3f(currentPositionX + currentColumnWidth, 0, 0);
-				// gl.glVertex3f(currentPositionX, 0, 0);
-				// gl.glEnd();
 
 				if (column.childContainers != null && column.childContainers.size() > 1) {
 					Button collapsePerspectiveButton = new Button(
@@ -287,8 +279,8 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 
 					gl.glPushMatrix();
 					gl.glTranslatef(currentPositionX + currentColumnWidth / 2.0f
-							- captionSpacingY, pixelGLConverter.getGLHeightForPixelHeight(2),
-							0.1f);
+							- captionSpacingY,
+							pixelGLConverter.getGLHeightForPixelHeight(2), 0.1f);
 					collapsePerspectiveButtonRenderer.render(gl);
 					gl.glPopMatrix();
 
@@ -296,8 +288,7 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 							+ pixelGLConverter.getGLHeightForPixelHeight(2);
 
 				}
-			}
-			else {
+			} else {
 
 				childIndent = captionSpacingY * 2;
 
@@ -325,12 +316,14 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 					- pixelGLConverter.getGLHeightForPixelHeight(2);
 
 			gl.glPushMatrix();
-			gl.glTranslatef(textPositionX, parentIndent + childIndent + captionSpacingY, 0.1f);
+			gl.glTranslatef(textPositionX, parentIndent + childIndent + captionSpacingY,
+					0.1f);
 			gl.glRotatef(90, 0, 0, 1);
 			// gl.glColor3f(0, 0, 0);
 			textRenderer.setColor(new float[] { 0, 0, 0 });
-			textRenderer.renderTextInBounds(gl, column.caption, 0, 0, 0, captionRowHeight
-					- parentIndent - childIndent - 2 * captionSpacingY, textHeight);
+			textRenderer.renderTextInBounds(gl, column.labelProvider.getLabel(), 0, 0, 0,
+					captionRowHeight - parentIndent - childIndent - 2 * captionSpacingY,
+					textHeight);
 			gl.glPopMatrix();
 
 			gl.glColor3f(0, 0, 0);
@@ -360,7 +353,8 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 				float cellSpacingY = pixelGLConverter
 						.getGLHeightForPixelHeight(CELL_SPACING_PIXELS);
 
-				float emptyCellPositionX = currentPositionX + currentColumnWidth - columnWidth;
+				float emptyCellPositionX = currentPositionX + currentColumnWidth
+						- columnWidth;
 
 				// boolean dimensionGroupExists = false;
 
@@ -370,9 +364,11 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 				int pickingID = 0;
 				if (cell instanceof TablePerspectiveRenderer) {
 
-					pickingID = view.getPickingManager().getPickingID(view.getID(),
+					pickingID = view.getPickingManager().getPickingID(
+							view.getID(),
 							PickingType.DATA_CONTAINER.name() + node.getID(),
-							((TablePerspectiveRenderer) cell).getTablePerspective().getID());
+							((TablePerspectiveRenderer) cell).getTablePerspective()
+									.getID());
 
 					gl.glTranslatef(currentDimGroupPositionX + cellSpacingX, row.position
 							+ cellSpacingY, 0);
@@ -382,10 +378,10 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 					Point2D topPosition2 = new Point2D.Float((float) topPosition1.getX()
 							+ pixelGLConverter.getGLWidthForPixelWidth(CELL_SIZE_PIXELS),
 							(float) topPosition1.getY());
-					Point2D bottomPosition1 = new Point2D.Float((float) topPosition1.getX(),
-							row.position + cellSpacingY);
-					Point2D bottomPosition2 = new Point2D.Float((float) topPosition2.getX(),
-							(float) bottomPosition1.getY());
+					Point2D bottomPosition1 = new Point2D.Float(
+							(float) topPosition1.getX(), row.position + cellSpacingY);
+					Point2D bottomPosition2 = new Point2D.Float(
+							(float) topPosition2.getX(), (float) bottomPosition1.getY());
 
 					bottomDimensionGroupPositions.put(((TablePerspectiveRenderer) cell)
 							.getTablePerspective().getID(), new Pair<Point2D, Point2D>(
@@ -395,8 +391,7 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 							topPosition1, topPosition2));
 
 					currentDimGroupPositionX += columnWidth;
-				}
-				else {
+				} else {
 
 					pickingID = view.getPickingManager().getPickingID(view.getID(),
 							PickingType.EMPTY_CELL.name() + node.getID(),
@@ -405,12 +400,13 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy
 					gl.glTranslatef(emptyCellPositionX + cellSpacingX, row.position
 							+ cellSpacingY, 0);
 				}
-				cell.setLimits(pixelGLConverter.getGLWidthForPixelWidth(CELL_SIZE_PIXELS),
+				cell.setLimits(
+						pixelGLConverter.getGLWidthForPixelWidth(CELL_SIZE_PIXELS),
 						pixelGLConverter.getGLHeightForPixelHeight(CELL_SIZE_PIXELS));
 				gl.glPushName(pickingID);
-//				pushPickingIDs(gl, view, pickingIDsToBePushed);
+				// pushPickingIDs(gl, view, pickingIDsToBePushed);
 				cell.render(gl);
-//				popPickingIDs(gl, pickingIDsToBePushed);
+				// popPickingIDs(gl, pickingIDsToBePushed);
 				gl.glPopName();
 				gl.glPopMatrix();
 			}
