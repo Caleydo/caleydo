@@ -19,9 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.dvi.contextmenu;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;

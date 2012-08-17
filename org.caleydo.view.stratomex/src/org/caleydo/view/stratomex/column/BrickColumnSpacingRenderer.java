@@ -23,9 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -63,7 +61,9 @@ import org.eclipse.core.runtime.Status;
  * @author Alexander Lex
  * 
  */
-public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropArea {
+public class BrickColumnSpacingRenderer
+	extends LayoutRenderer
+	implements IDropArea {
 
 	public static float[] DRAG_AND_DROP_MARKER_COLOR = { 0.5f, 0.5f, 0.5f };
 
@@ -153,13 +153,12 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 			hashGroupID2GroupMatches.put(leftBrick.getTablePerspective().getRecordGroup()
 					.getGroupIndex(), groupMatch);
 
-			RectangleCoordinates leftBrickElementLayout = leftBrick
-					.getLayoutForConnections();
+			RectangleCoordinates leftBrickElementLayout = leftBrick.getLayoutForConnections();
 
 			GroupSimilarity<RecordVirtualArray, RecordGroupList> leftGroupSimilarity = vaSimilarityMap
 					.getGroupSimilarity(leftDimGroup.getTablePerspective()
-							.getRecordPerspective().getPerspectiveID(), leftBrick.getTablePerspective()
-							.getRecordGroup().getGroupIndex());
+							.getRecordPerspective().getPerspectiveID(), leftBrick
+							.getTablePerspective().getRecordGroup().getGroupIndex());
 
 			float[] leftSimilarities = leftGroupSimilarity.getSimilarities();
 			float leftSimilarityOffsetY = 0;
@@ -169,8 +168,8 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 					continue;
 				SubGroupMatch subGroupMatch = new SubGroupMatch(
 						glVisBricks.getNextConnectionBandID(), rightBrick);
-				groupMatch.addSubGroupMatch(rightBrick.getTablePerspective()
-						.getRecordGroup().getGroupIndex(), subGroupMatch);
+				groupMatch.addSubGroupMatch(rightBrick.getTablePerspective().getRecordGroup()
+						.getGroupIndex(), subGroupMatch);
 
 				RecordVirtualArray similarityVA = leftGroupSimilarity
 						.getSimilarityVAs(rightBrick.getTablePerspective().getRecordGroup()
@@ -187,8 +186,8 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 
 				calculateSubMatchSelections(subGroupMatch, similarityVA);
 
-				float leftSimilarityRatioY = leftSimilarities[rightBrick
-						.getTablePerspective().getRecordGroup().getGroupIndex()];
+				float leftSimilarityRatioY = leftSimilarities[rightBrick.getTablePerspective()
+						.getRecordGroup().getGroupIndex()];
 				leftSimilarityOffsetY += leftSimilarityRatioY;
 
 				subGroupMatch.setSimilarityRatioLeft(leftSimilarityRatioY);
@@ -264,8 +263,7 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 			Set<Integer> selectedByGroupSelections = recordSelectionManager
 					.getElements(selectionType);
 
-			if (selectedByGroupSelections == null
-					|| selectedByGroupSelections.size() == 0) {
+			if (selectedByGroupSelections == null || selectedByGroupSelections.size() == 0) {
 
 				ratio = 1;// (float) recordVA.size()
 				// / subGroupMatch.getBrick().getRecordVA().size();
@@ -281,9 +279,9 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 				if (recordVA.getIdType() != recordSelectionManager.getIDType()) {
 					IDType destIDType = recordSelectionManager.getIDType();
 
-					Set<Integer> recordIDs = mappingManager.getIDAsSet(
-							recordVA.getIdType(), destIDType, recordID);
-					if(recordIDs == null)
+					Set<Integer> recordIDs = mappingManager.getIDAsSet(recordVA.getIdType(),
+							destIDType, recordID);
+					if (recordIDs == null)
 						continue;
 					recordID = recordIDs.iterator().next();
 					if (recordIDs.size() > 1) {
@@ -310,8 +308,19 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 		renderFlexibleArch(gl);
 		renderDimensionGroupConnections(gl);
 		renderDragAndDropMarker(gl);
+
+		// Just for score testing
+		// if (leftDimGroup != null && rightDimGroup != null) {
+		// float score =
+		// leftDimGroup.getTablePerspective().getContainerStatistics()
+		// .adjustedRandIndex().getScore(rightDimGroup.getTablePerspective(),
+		// false);
+		//
+		// glVisBricks.getTextRenderer().renderText(gl, "Score: " + score, 0, 0,
+		// 0, 0.005f, 50);
+		// }
 	}
-	
+
 	@Override
 	protected boolean permitsDisplayLists() {
 		return false;
@@ -321,7 +330,6 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 
 		int pickingID = glVisBricks.getPickingManager().getPickingID(glVisBricks.getID(),
 				EPickingType.DIMENSION_GROUP_SPACER.name(), ID);
-		
 
 		gl.glPushName(pickingID);
 		gl.glColor4f(1, 1, 1, 0);
@@ -344,7 +352,8 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 			if (isVertical) {
 				gl.glVertex3f(x / 2f, 0, 1f);
 				gl.glVertex3f(x / 2f, y, 1f);
-			} else {
+			}
+			else {
 				gl.glVertex3f(0, y / 2f, 1f);
 				gl.glVertex3f(x, y / 2f, 1f);
 			}
@@ -404,13 +413,14 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 			// the LEFT
 			if (xStart != 0) {
 				connectionRenderer.renderStraightBand(gl, new float[] { xStart,
-						leftCenterBrickTop, 0 }, new float[] { xStart,
-						leftCenterBrickBottom, 0 }, new float[] { 0, leftCenterBrickTop,
-						0 }, new float[] { 0, leftCenterBrickBottom, 0 }, false, 0,
-						GLStratomex.ARCH_COLOR, GLStratomex.ARCH_COLOR[3], true);
+						leftCenterBrickTop, 0 }, new float[] { xStart, leftCenterBrickBottom,
+						0 }, new float[] { 0, leftCenterBrickTop, 0 }, new float[] { 0,
+						leftCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR,
+						GLStratomex.ARCH_COLOR[3], true);
 			}
 
-		} else {
+		}
+		else {
 			if (rightDimGroup != null) {
 				leftCenterBrickBottom = glVisBricks.getArchBottomY();
 				leftCenterBrickTop = glVisBricks.getArchTopY();
@@ -441,15 +451,16 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 				// gl.glPushMatrix();
 				// gl.glTranslatef(0, 0, 0.1f);
 				connectionRenderer.renderStraightBand(gl, new float[] { x,
-						rightCenterBrickTop, 0 }, new float[] { x,
-						rightCenterBrickBottom, 0 }, new float[] { xEnd,
-						rightCenterBrickTop, 0 }, new float[] { xEnd,
-						rightCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR,
+						rightCenterBrickTop, 0 },
+						new float[] { x, rightCenterBrickBottom, 0 }, new float[] { xEnd,
+								rightCenterBrickTop, 0 }, new float[] { xEnd,
+								rightCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR,
 						GLStratomex.ARCH_COLOR[3], true);
 				// gl.glPopMatrix();
 			}
 
-		} else {
+		}
+		else {
 			if (leftDimGroup != null) {
 				rightCenterBrickBottom = glVisBricks.getArchBottomY();
 				rightCenterBrickTop = glVisBricks.getArchTopY();
@@ -464,8 +475,8 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 		// gl.glTranslatef(0, 0, 0.1f);
 		connectionRenderer.renderSingleBand(gl, new float[] { 0, leftCenterBrickTop, 0 },
 				new float[] { 0, leftCenterBrickBottom, 0 }, new float[] { x,
-						rightCenterBrickTop, 0 }, new float[] { x,
-						rightCenterBrickBottom, 0 }, false, curveOffset, 0,
+						rightCenterBrickTop, 0 },
+				new float[] { x, rightCenterBrickBottom, 0 }, false, curveOffset, 0,
 				GLStratomex.ARCH_COLOR, true);
 		// gl.glPopMatrix();
 	}
@@ -540,12 +551,14 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 							// {
 							trendRatio = 0.15f;
 							// }
-						} else {
+						}
+						else {
 
 							trendRatio = 0.5f;
 
 						}
-					} else {
+					}
+					else {
 
 						float maxRatio = Math.max(subGroupMatch.getLeftSimilarityRatio(),
 								subGroupMatch.getRightSimilarityRatio());
@@ -557,7 +570,8 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 						if (glVisBricks.getSelectedConnectionBandID() == subGroupMatch
 								.getConnectionBandID()) {
 							trendRatio = 0.8f;
-						} else {
+						}
+						else {
 							// it would be too opaque if we use the factor
 							// determined by the slider
 							trendRatio /= 2f;
@@ -581,35 +595,35 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 					// gl.glPushMatrix();
 					// gl.glTranslatef(0, 0, 0.1f);
 
-					connectionRenderer.renderSingleBand(gl, new float[] { 0,
-							subGroupMatch.getLeftAnchorYTop(), 0.0f },
-							new float[] {
-									0,
-									subGroupMatch.getLeftAnchorYTop()
-											- leftYDiffSelection, 0.0f }, new float[] {
-									x, subGroupMatch.getRightAnchorYTop(), 0.0f },
-							new float[] {
-									x,
-									subGroupMatch.getRightAnchorYTop()
-											- rightYDiffSelection, 0.0f }, true,
-							curveOffset, 0, color);// 0.15f);
+					connectionRenderer.renderSingleBand(gl,
+							new float[] { 0, subGroupMatch.getLeftAnchorYTop(), 0.0f },
+							new float[] { 0,
+									subGroupMatch.getLeftAnchorYTop() - leftYDiffSelection,
+									0.0f },
+							new float[] { x, subGroupMatch.getRightAnchorYTop(), 0.0f },
+							new float[] { x,
+									subGroupMatch.getRightAnchorYTop() - rightYDiffSelection,
+									0.0f }, true, curveOffset, 0, color);// 0.15f);
 
 					// Render straight band connection from brick to dimension
 					// group on the LEFT. This is for the smaller bricks when
 					// the bricks are not of equal size
 					if (xStart != 0) {
-						connectionRenderer.renderStraightBand(gl, new float[] { xStart,
-								subGroupMatch.getLeftAnchorYTop(), 0 },
-								new float[] {
-										xStart,
-										subGroupMatch.getLeftAnchorYTop()
-												- leftYDiffSelection, 0 }, new float[] {
-										0, subGroupMatch.getLeftAnchorYTop(), 0 },
-								new float[] {
-										0,
-										subGroupMatch.getLeftAnchorYTop()
-												- leftYDiffSelection, 0 }, false, 0,
-								color, trendRatio);// 0.5f);
+						connectionRenderer
+								.renderStraightBand(
+										gl,
+										new float[] { xStart,
+												subGroupMatch.getLeftAnchorYTop(), 0 },
+										new float[] {
+												xStart,
+												subGroupMatch.getLeftAnchorYTop()
+														- leftYDiffSelection, 0 },
+										new float[] { 0, subGroupMatch.getLeftAnchorYTop(), 0 },
+										new float[] {
+												0,
+												subGroupMatch.getLeftAnchorYTop()
+														- leftYDiffSelection, 0 }, false, 0,
+										color, trendRatio);// 0.5f);
 					}
 
 					// Render straight band connection from brick to dimension
@@ -617,22 +631,15 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 					// the bricks are not of equal size
 					if (xEnd != 0) {
 
-						connectionRenderer
-								.renderStraightBand(
-										gl,
-										new float[] { x,
-												subGroupMatch.getRightAnchorYTop(), 0 },
-										new float[] {
-												x,
-												subGroupMatch.getRightAnchorYTop()
-														- rightYDiffSelection, 0 },
-										new float[] { xEnd,
-												subGroupMatch.getRightAnchorYTop(), 0 },
-										new float[] {
-												xEnd,
-												subGroupMatch.getRightAnchorYTop()
-														- rightYDiffSelection, 0 },
-										false, 0, color, trendRatio);// 0.5f);
+						connectionRenderer.renderStraightBand(gl, new float[] { x,
+								subGroupMatch.getRightAnchorYTop(), 0 }, new float[] { x,
+								subGroupMatch.getRightAnchorYTop() - rightYDiffSelection, 0 },
+								new float[] { xEnd, subGroupMatch.getRightAnchorYTop(), 0 },
+								new float[] {
+										xEnd,
+										subGroupMatch.getRightAnchorYTop()
+												- rightYDiffSelection, 0 }, false, 0, color,
+								trendRatio);// 0.5f);
 					}
 					// gl.glPopMatrix();
 				}
@@ -678,8 +685,7 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 				System.out.println("CHRISTIAN HEEEEELP!!");
 				break;
 			}
-			glVisBricks
-					.moveDimensionGroup(this, (BrickColumn) draggable, leftDimGroup);
+			glVisBricks.moveDimensionGroup(this, (BrickColumn) draggable, leftDimGroup);
 		}
 
 		draggables.clear();

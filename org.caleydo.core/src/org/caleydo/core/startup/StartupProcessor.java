@@ -22,7 +22,6 @@ package org.caleydo.core.startup;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
-
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.PreferenceManager;
 import org.caleydo.core.startup.gui.CaleydoProjectWizard;
@@ -36,7 +35,6 @@ import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
-
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;

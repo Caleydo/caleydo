@@ -23,7 +23,6 @@
 package org.caleydo.core.data.perspective.table;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;

@@ -20,7 +20,6 @@
 package org.caleydo.core.event;
 
 import java.util.Date;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 

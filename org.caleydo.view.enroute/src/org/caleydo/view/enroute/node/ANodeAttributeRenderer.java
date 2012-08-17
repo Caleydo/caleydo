@@ -4,7 +4,6 @@
 package org.caleydo.view.enroute.node;
 
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;

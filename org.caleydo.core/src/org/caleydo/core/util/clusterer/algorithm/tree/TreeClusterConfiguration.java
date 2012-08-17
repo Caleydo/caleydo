@@ -20,7 +20,6 @@
 package org.caleydo.core.util.clusterer.algorithm.tree;
 
 import org.caleydo.core.util.clusterer.initialization.AClusterAlgorithmConfiguration;
-import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 
 /**
  * @author Alexander Lex

@@ -21,7 +21,6 @@ package org.caleydo.core.event.data;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.id.IDType;
 

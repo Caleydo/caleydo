@@ -4,7 +4,6 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.Set;
-
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;

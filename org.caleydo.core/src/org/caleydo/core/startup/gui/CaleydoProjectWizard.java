@@ -20,7 +20,6 @@
 package org.caleydo.core.startup.gui;
 
 import java.io.IOException;
-
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.startup.ApplicationMode;

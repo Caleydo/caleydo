@@ -2,7 +2,6 @@ package setvis.gui;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import setvis.shape.AbstractShapeGenerator;
 import setvis.shape.BSplineShapeGenerator;
 import setvis.shape.BezierShapeGenerator;

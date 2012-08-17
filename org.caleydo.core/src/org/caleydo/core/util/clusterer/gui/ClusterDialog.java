@@ -20,7 +20,6 @@
 package org.caleydo.core.util.clusterer.gui;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.configuration.DataChooserComposite;
 import org.caleydo.core.data.configuration.DataConfiguration;
 import org.caleydo.core.data.configuration.DataConfigurationChooser;

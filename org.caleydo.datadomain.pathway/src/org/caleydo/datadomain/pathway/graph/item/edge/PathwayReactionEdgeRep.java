@@ -20,7 +20,6 @@
 package org.caleydo.datadomain.pathway.graph.item.edge;
 
 import java.io.Serializable;
-
 import org.jgrapht.graph.DefaultEdge;
 
 /**

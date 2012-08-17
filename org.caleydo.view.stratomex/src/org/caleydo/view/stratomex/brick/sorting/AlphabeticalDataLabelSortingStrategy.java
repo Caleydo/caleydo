@@ -22,7 +22,6 @@ package org.caleydo.view.stratomex.brick.sorting;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.caleydo.view.stratomex.brick.GLBrick;
 
 /**

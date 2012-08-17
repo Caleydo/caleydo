@@ -17,25 +17,18 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.event.view.radial;
-
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import org.caleydo.core.event.AEvent;
+package org.caleydo.view.pathway;
 
 /**
- * This event signals that the one step back shall be taken in the navigation history of RadialHierarchy.
  * 
- * @author Christian Partl
+ * Picking types for pathways.
+ * 
+ * @author Marc Streit
+ * 
  */
-@XmlRootElement
-@XmlType
-public class GoBackInHistoryEvent
-	extends AEvent {
+public enum EPickingType {
 
-	@Override
-	public boolean checkIntegrity() {
-		return true;
-	}
-
+	PATHWAY_ELEMENT_SELECTION,
+	PATHWAY_TEXTURE_SELECTION,
+	PATHWAY_PATH_SELECTION;
 }

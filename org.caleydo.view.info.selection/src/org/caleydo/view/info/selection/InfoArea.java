@@ -20,7 +20,6 @@
 package org.caleydo.view.info.selection;
 
 import java.util.Set;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;

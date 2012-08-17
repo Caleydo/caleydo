@@ -23,9 +23,7 @@
 package org.caleydo.core.view.opengl.util.connectionline;
 
 import gleem.linalg.Vec3f;
-
 import java.util.List;
-
 import javax.media.opengl.GL2;
 
 /**

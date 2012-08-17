@@ -20,7 +20,6 @@
 package org.caleydo.core.view.opengl.layout.util;
 
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 public class SpacerRenderer extends LayoutRenderer {

@@ -21,9 +21,7 @@ package org.caleydo.core.data.perspective.variable;
 
 import java.util.List;
 import java.util.UUID;
-
 import javax.xml.bind.annotation.XmlRootElement;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.RecordFilterManager;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;

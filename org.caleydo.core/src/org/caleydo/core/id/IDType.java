@@ -21,7 +21,6 @@ package org.caleydo.core.id;
 
 import java.util.HashMap;
 import java.util.List;
-
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.util.logging.Logger;

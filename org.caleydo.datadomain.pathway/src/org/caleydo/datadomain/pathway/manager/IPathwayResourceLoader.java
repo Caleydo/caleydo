@@ -20,9 +20,7 @@
 package org.caleydo.datadomain.pathway.manager;
 
 import java.io.BufferedReader;
-
 import org.xml.sax.InputSource;
-
 import com.jogamp.opengl.util.texture.Texture;
 
 public interface IPathwayResourceLoader {

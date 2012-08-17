@@ -23,9 +23,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
@@ -36,8 +34,8 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.PickingType;
 import org.caleydo.view.dvi.node.IDVINode;
-import org.caleydo.view.dvi.tableperspective.TablePerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
+import org.caleydo.view.dvi.tableperspective.TablePerspectiveRenderer;
 
 public class BottomUpTablePerspectiveMatrixRenderingStrategy
 	extends ATablePerspectiveMatrixRenderingStrategy {

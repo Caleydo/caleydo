@@ -20,11 +20,8 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
-
 import java.util.ArrayList;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;

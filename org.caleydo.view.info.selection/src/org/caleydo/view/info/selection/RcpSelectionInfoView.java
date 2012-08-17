@@ -21,7 +21,6 @@ package org.caleydo.view.info.selection;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;

@@ -20,9 +20,7 @@
 package org.caleydo.view.dvi.tableperspective;
 
 import java.awt.geom.Point2D;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;

@@ -20,9 +20,7 @@
 package org.caleydo.core.view.opengl.layout.util;
 
 import java.util.List;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 

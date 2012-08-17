@@ -21,7 +21,6 @@ package org.caleydo.data.importer;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 

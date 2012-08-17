@@ -21,7 +21,6 @@ package org.caleydo.core.util.clusterer.algorithm.tree;
 
 import org.caleydo.core.util.clusterer.gui.AClusterTab;
 import org.caleydo.core.util.clusterer.initialization.AClusterAlgorithmConfiguration;
-import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

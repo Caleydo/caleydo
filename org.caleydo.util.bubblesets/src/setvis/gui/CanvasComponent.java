@@ -23,9 +23,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.swing.JComponent;
-
 import setvis.SetOutline;
 import setvis.bubbleset.BubbleSet;
 import setvis.ch.ConvexHull;

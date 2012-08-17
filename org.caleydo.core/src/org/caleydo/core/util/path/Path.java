@@ -21,7 +21,6 @@ package org.caleydo.core.util.path;
 
 import java.util.ArrayList;
 import java.util.Set;
-
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 

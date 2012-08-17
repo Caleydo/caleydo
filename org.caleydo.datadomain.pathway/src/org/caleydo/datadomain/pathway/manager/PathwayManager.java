@@ -31,7 +31,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;

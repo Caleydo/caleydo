@@ -26,12 +26,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
 import javax.media.opengl.GLProfile;
-
 import org.caleydo.datadomain.pathway.manager.IPathwayResourceLoader;
 import org.xml.sax.InputSource;
-
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
 

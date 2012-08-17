@@ -21,7 +21,6 @@ package org.caleydo.core.util.clusterer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.ClusterNode;

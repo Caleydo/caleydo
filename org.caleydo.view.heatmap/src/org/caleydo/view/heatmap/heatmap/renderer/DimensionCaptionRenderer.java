@@ -20,7 +20,6 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
@@ -34,7 +33,7 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
  */
 public class DimensionCaptionRenderer extends AHeatMapRenderer {
 
-	private float fFontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR / 1.2f;
+	private float fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR / 1.2f;
 
 	public DimensionCaptionRenderer(GLHeatMap heatMap) {
 		super(heatMap);
@@ -54,7 +53,7 @@ public class DimensionCaptionRenderer extends AHeatMapRenderer {
 
 		float height = (float) heatMap
 				.getTextRenderer()
-				.getScaledBounds(gl, "TEST", fFontScaling,
+				.getScaledBounds(gl, "TEST", fontScaling,
 						HeatMapRenderStyle.LABEL_TEXT_MIN_SIZE).getHeight();
 
 		if (fieldWidth > height)
@@ -67,7 +66,7 @@ public class DimensionCaptionRenderer extends AHeatMapRenderer {
 
 			gl.glTranslatef(xPosition + xOffset, yOffset, 0);
 			gl.glRotatef(fRotation, 0, 0, 1);
-			heatMap.getTextRenderer().renderText(gl, label, 0, 0f, 0, fFontScaling,
+			heatMap.getTextRenderer().renderText(gl, label, 0, 0f, 0, fontScaling,
 					HeatMapRenderStyle.LABEL_TEXT_MIN_SIZE);
 			gl.glRotatef(-fRotation, 0, 0, 1);
 			gl.glTranslatef(-xPosition - xOffset, -yOffset, 0);

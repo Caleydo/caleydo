@@ -20,7 +20,6 @@
 package org.caleydo.core.data.collection.container;
 
 import java.util.NoSuchElementException;
-
 import org.caleydo.core.data.virtualarray.VirtualArray;
 
 /**

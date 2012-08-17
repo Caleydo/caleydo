@@ -20,7 +20,6 @@
 package org.caleydo.core.io;
 
 import java.io.BufferedReader;
-
 import javax.xml.bind.annotation.XmlType;
 
 /**

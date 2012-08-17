@@ -20,7 +20,6 @@
 package org.caleydo.core.id;
 
 import java.util.HashMap;
-
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 /**

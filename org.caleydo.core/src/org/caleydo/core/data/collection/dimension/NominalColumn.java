@@ -21,7 +21,6 @@ package org.caleydo.core.data.collection.dimension;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.container.NominalContainer;
 import org.caleydo.core.id.object.ManagedObjectType;

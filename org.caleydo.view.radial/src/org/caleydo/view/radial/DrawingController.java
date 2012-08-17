@@ -20,10 +20,8 @@
 package org.caleydo.view.radial;
 
 import java.util.HashMap;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
-
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 
 /**

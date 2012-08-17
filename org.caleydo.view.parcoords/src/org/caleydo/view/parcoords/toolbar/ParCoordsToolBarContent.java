@@ -21,7 +21,6 @@ package org.caleydo.view.parcoords.toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.ActionToolBarContainer;
 import org.caleydo.core.gui.toolbar.IToolBarItem;

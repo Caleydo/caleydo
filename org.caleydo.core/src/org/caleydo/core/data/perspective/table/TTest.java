@@ -24,7 +24,6 @@ package org.caleydo.core.data.perspective.table;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.caleydo.core.data.collection.table.DataTable;
 
 /**

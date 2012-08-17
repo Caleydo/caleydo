@@ -22,7 +22,6 @@ package org.caleydo.view.dvi.node;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;

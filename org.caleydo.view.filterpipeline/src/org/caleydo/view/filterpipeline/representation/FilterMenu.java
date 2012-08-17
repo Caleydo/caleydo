@@ -23,9 +23,7 @@
 package org.caleydo.view.filterpipeline.representation;
 
 import gleem.linalg.Vec3f;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;

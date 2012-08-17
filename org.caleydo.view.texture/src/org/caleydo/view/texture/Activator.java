@@ -20,7 +20,6 @@
 package org.caleydo.view.texture;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.view.opengl.canvas.GLTexture;
 import org.eclipse.core.runtime.Plugin;

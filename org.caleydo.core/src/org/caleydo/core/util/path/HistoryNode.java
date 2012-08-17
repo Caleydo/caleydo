@@ -20,9 +20,7 @@
 package org.caleydo.core.util.path;
 
 import gleem.linalg.open.Transform;
-
 import java.util.HashMap;
-
 import org.caleydo.core.data.datadomain.AssociationManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;

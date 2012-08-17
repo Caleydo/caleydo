@@ -20,11 +20,8 @@
 package org.caleydo.core.view.opengl.util.vislink;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;

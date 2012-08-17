@@ -21,7 +21,6 @@ package org.caleydo.core.data.virtualarray.events;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.event.AEvent;
 

@@ -22,11 +22,9 @@ package org.caleydo.core.view.vislink;
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
-
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;

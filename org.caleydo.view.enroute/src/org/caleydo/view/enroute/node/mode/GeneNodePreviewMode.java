@@ -4,7 +4,6 @@
 package org.caleydo.view.enroute.node.mode;
 
 import java.util.List;
-
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;

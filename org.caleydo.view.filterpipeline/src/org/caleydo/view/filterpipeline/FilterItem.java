@@ -20,9 +20,7 @@
 package org.caleydo.view.filterpipeline;
 
 import java.util.Set;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.filter.DimensionFilter;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.RecordFilter;

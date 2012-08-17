@@ -22,9 +22,7 @@ package org.caleydo.core.view.opengl.util.draganddrop;
 import java.awt.Point;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;

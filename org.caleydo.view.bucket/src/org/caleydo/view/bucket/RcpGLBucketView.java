@@ -21,10 +21,8 @@ package org.caleydo.view.bucket;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.ARcpGLViewPart;

@@ -21,7 +21,6 @@ package org.caleydo.view.stratomex.dialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;

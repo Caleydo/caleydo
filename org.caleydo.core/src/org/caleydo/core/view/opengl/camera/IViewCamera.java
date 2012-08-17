@@ -22,7 +22,6 @@ package org.caleydo.core.view.opengl.camera;
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
-
 import org.caleydo.core.util.base.IUniqueObject;
 
 /**

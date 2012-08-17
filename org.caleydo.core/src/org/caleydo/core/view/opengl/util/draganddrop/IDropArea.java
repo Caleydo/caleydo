@@ -20,7 +20,6 @@
 package org.caleydo.core.view.opengl.util.draganddrop;
 
 import java.util.Set;
-
 import javax.media.opengl.GL2;
 
 public interface IDropArea

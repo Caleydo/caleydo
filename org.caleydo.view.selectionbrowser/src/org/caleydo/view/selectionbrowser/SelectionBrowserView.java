@@ -20,7 +20,6 @@
 package org.caleydo.view.selectionbrowser;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;

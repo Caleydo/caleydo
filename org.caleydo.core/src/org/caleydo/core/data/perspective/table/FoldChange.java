@@ -23,7 +23,6 @@
 package org.caleydo.core.data.perspective.table;
 
 import java.util.HashMap;
-
 import org.caleydo.core.data.perspective.table.FoldChangeSettings.FoldChangeEvaluator;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.conversion.ConversionTools;

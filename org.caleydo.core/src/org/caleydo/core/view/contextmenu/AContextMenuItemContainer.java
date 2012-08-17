@@ -21,7 +21,6 @@ package org.caleydo.core.view.contextmenu;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 

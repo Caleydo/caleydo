@@ -20,7 +20,6 @@
 package org.caleydo.view.dvi.contextmenu;
 
 import java.util.List;
-
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;

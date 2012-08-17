@@ -21,7 +21,6 @@ package org.caleydo.core.manager;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.specialized.Organism;
 
 @XmlRootElement

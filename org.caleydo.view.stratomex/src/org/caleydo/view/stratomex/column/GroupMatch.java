@@ -21,7 +21,6 @@ package org.caleydo.view.stratomex.column;
 
 import java.util.Collection;
 import java.util.HashMap;
-
 import org.caleydo.view.stratomex.brick.GLBrick;
 
 /**

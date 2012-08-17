@@ -22,9 +22,7 @@ package org.caleydo.core.event;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-
 import javax.xml.bind.annotation.XmlTransient;
-
 import org.caleydo.core.util.collection.Pair;
 
 /**

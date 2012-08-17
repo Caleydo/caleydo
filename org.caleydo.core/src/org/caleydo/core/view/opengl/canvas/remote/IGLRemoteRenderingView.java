@@ -20,9 +20,7 @@
 package org.caleydo.core.view.opengl.canvas.remote;
 
 import java.util.List;
-
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;

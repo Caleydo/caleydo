@@ -20,10 +20,8 @@
 package org.caleydo.core.event.view;
 
 import java.util.ArrayList;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.data.collection.table.DataTable;
 
 /**

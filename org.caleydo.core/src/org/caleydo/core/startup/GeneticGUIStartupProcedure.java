@@ -20,7 +20,6 @@
 package org.caleydo.core.startup;
 
 import java.io.File;
-
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.gui.util.HelpButtonWizardDialog;
 import org.caleydo.core.io.DataSetDescription;

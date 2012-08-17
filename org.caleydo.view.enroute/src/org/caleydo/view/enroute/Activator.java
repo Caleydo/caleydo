@@ -20,7 +20,6 @@
 package org.caleydo.view.enroute;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

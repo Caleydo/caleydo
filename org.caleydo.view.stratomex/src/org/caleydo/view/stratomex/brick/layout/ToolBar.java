@@ -20,7 +20,6 @@
 package org.caleydo.view.stratomex.brick.layout;
 
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;

@@ -23,7 +23,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 
 /**

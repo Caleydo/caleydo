@@ -5,7 +5,6 @@ package setvis.shape;
 
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
-
 import setvis.SetOutline;
 
 /**

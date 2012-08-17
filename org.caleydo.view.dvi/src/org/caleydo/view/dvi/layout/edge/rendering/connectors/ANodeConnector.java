@@ -20,12 +20,9 @@
 package org.caleydo.view.dvi.layout.edge.rendering.connectors;
 
 import gleem.linalg.Vec3f;
-
 import java.awt.geom.Point2D;
 import java.util.List;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;

@@ -21,7 +21,6 @@ package org.caleydo.core.util.clusterer.algorithm.nominal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;

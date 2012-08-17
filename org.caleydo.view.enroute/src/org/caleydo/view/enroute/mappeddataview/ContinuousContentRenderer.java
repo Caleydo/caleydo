@@ -20,10 +20,8 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspective;

@@ -22,7 +22,6 @@ package org.caleydo.datadomain.pathway.graph.item.vertex;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.IUniqueObject;

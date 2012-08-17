@@ -20,9 +20,7 @@
 package org.caleydo.view.grouper.drawingstrategies.group;
 
 import javax.media.opengl.GL2;
-
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
-
 import com.jogamp.opengl.util.awt.TextRenderer;
 
 public interface IGroupDrawingStrategy {

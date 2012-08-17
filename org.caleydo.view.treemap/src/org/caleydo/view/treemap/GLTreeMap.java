@@ -23,11 +23,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
-
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;

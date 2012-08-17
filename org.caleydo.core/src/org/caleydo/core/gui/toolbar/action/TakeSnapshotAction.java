@@ -22,7 +22,6 @@ package org.caleydo.core.gui.toolbar.action;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.data.loader.ResourceLoader;

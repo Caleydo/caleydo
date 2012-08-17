@@ -22,11 +22,8 @@ package org.caleydo.core.view.opengl.util.text;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.nio.IntBuffer;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-
 import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**

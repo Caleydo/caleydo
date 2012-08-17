@@ -4,10 +4,8 @@
 package org.caleydo.view.enroute.node.mode;
 
 import gleem.linalg.Vec3f;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
-
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;

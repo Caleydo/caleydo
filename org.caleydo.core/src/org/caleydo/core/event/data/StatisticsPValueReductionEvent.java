@@ -20,7 +20,6 @@
 package org.caleydo.core.event.data;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 

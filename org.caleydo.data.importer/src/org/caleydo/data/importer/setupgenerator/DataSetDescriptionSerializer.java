@@ -20,11 +20,9 @@
 package org.caleydo.data.importer.setupgenerator;
 
 import java.io.File;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.ProjectDescription;
 

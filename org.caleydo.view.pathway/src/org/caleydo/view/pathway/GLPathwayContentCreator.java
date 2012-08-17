@@ -23,9 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
@@ -42,7 +40,6 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
@@ -372,7 +369,7 @@ public class GLPathwayContentCreator {
 				.getViewManager()
 				.getPickingManager()
 				.getPickingID(containingView.getID(),
-						PickingType.PATHWAY_ELEMENT_SELECTION.name(), vertexRep.getID()));
+						EPickingType.PATHWAY_ELEMENT_SELECTION.name(), vertexRep.getID()));
 
 		EPathwayVertexShape shape = vertexRep.getShapeType();
 

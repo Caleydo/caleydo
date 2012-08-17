@@ -20,9 +20,7 @@
 package org.caleydo.view.stratomex.brick.ui;
 
 import java.util.ArrayList;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspective;

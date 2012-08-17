@@ -1,7 +1,6 @@
 package setvis.gui;
 
 import java.util.List;
-
 import setvis.SetOutline;
 import setvis.gui.CanvasComponent.Position;
 import setvis.shape.AbstractShapeGenerator;

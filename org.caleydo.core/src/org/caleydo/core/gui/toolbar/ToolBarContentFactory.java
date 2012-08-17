@@ -22,7 +22,6 @@ package org.caleydo.core.gui.toolbar;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.caleydo.core.view.IView;
 
 /**

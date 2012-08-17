@@ -20,13 +20,10 @@
 package org.caleydo.view.grouper.drawingstrategies.group;
 
 import gleem.linalg.Vec3f;
-
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -34,7 +31,6 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.grouper.GrouperRenderStyle;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 import org.caleydo.view.grouper.compositegraphic.ICompositeGraphic;
-
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;

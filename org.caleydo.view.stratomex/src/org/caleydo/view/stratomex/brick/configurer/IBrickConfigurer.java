@@ -20,7 +20,6 @@
 package org.caleydo.view.stratomex.brick.configurer;
 
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;

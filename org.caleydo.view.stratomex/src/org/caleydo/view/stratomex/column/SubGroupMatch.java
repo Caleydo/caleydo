@@ -20,7 +20,6 @@
 package org.caleydo.view.stratomex.column;
 
 import java.util.HashMap;
-
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 

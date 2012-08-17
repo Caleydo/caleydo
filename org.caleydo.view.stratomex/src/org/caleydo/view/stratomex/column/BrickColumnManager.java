@@ -22,7 +22,6 @@ package org.caleydo.view.stratomex.column;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
 import org.caleydo.core.view.ViewManager;
 
 public class BrickColumnManager {

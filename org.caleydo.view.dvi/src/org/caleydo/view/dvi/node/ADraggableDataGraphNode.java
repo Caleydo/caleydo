@@ -21,9 +21,7 @@ package org.caleydo.view.dvi.node;
 
 import java.awt.geom.Point2D;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;

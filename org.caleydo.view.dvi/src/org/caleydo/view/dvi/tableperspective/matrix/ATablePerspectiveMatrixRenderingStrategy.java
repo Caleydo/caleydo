@@ -22,9 +22,7 @@ package org.caleydo.view.dvi.tableperspective.matrix;
 import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Map;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;

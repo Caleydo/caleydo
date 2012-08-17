@@ -20,18 +20,15 @@
 package org.caleydo.view.filterpipeline;
 
 import gleem.linalg.Vec2f;
-
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
@@ -78,7 +75,6 @@ import org.caleydo.view.filterpipeline.representation.FilterRepresentation;
 import org.caleydo.view.filterpipeline.representation.FilterRepresentationMetaOrAdvanced;
 import org.caleydo.view.filterpipeline.representation.FilterRepresentationSNR;
 import org.eclipse.swt.widgets.Composite;
-
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 

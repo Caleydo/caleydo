@@ -27,9 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
@@ -51,9 +49,9 @@ import org.caleydo.view.dvi.contextmenu.CreateTablePerspectiveItem;
 import org.caleydo.view.dvi.event.CreateTablePerspectiveEvent;
 import org.caleydo.view.dvi.node.IDVINode;
 import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
-import org.caleydo.view.dvi.tableperspective.TablePerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.TablePerspectivePickingListener;
+import org.caleydo.view.dvi.tableperspective.TablePerspectiveRenderer;
 
 public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRenderer {
 

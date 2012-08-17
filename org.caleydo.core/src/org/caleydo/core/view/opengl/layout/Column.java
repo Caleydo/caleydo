@@ -20,7 +20,6 @@
 package org.caleydo.core.view.opengl.layout;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionEvent;
 

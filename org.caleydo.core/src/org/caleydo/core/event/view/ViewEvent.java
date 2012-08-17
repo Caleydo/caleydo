@@ -20,7 +20,6 @@
 package org.caleydo.core.event.view;
 
 import java.util.List;
-
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.view.IView;
 
