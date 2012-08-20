@@ -27,6 +27,8 @@ public interface IStatisticsPerformer {
 
 	public void performTest();
 
+	public float adjustedRandIndex(TablePerspective container1, TablePerspective container2);
+	
 	public void twoSidedTTest(ArrayList<TablePerspective> setsToCompare);
 
 	public void foldChange(TablePerspective container1, TablePerspective container2, boolean betweenRecords);

@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Random;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Adjusted Rand Index for comparing clustering results. See:
@@ -55,86 +56,16 @@ public class AdjustedRandIndex {
 			return tablePerspectiveToScore.get(tablePerspective);
 
 		float score = 1;
-		score = new Random().nextFloat();
-
-		int a = 0;
-
-		RecordVirtualArray va1 = tablePerspective.getRecordPerspective().getVirtualArray();
-
-		RecordVirtualArray va2 = referenceTablePerspective.getRecordPerspective().getVirtualArray();
- 
-		for (Group group1 : va1.getGroupList()) {
-
-			// System.out.println("Group 1: " + group1.getLabel());
-
-			for (int vaIndex = group1.getStartIndex(); vaIndex < group1.getEndIndex(); vaIndex++) {
-
-				int id1_1 = va1.get(vaIndex);
-				int id1_2 = va1.get(vaIndex + 1);
-
-				// System.out.println("Pair: " + id1_1 + " " + id1_2);
-
-				for (Group group2 : va2.getGroupList()) {
-
-					boolean matchId1_1 = false;
-					boolean matchId1_2 = false;
-
-					// System.out.println("Group 2: " + group2.getLabel());
-
-					for (int va2Index = group2.getStartIndex(); va2Index < group2
-							.getEndIndex(); va2Index++) {
-
-						int id2 = va2.get(va2Index);
-						// System.out.println("Match ID: " + id2);
-
-						if (id2 == id1_1) {
-							// System.out.println("1 Match found");
-							matchId1_1 = true;
-						}
-
-						if (id2 == id1_2) {
-							// System.out.println("2 Match found");
-							matchId1_2 = true;
-						}
-
-						if (matchId1_1 && matchId1_2) {
-							// System.out.println("Match found for id " +id2);
-							a++;
-							break;
-						}
-					}
-
-					// remove this for fuzzy clusters
-					if (matchId1_1 && matchId1_2) {
-						break;
-					}
-				}
-			}
-		}
-
-		System.out.println("a: " + a);
-
-		score = a;
-		// for (TablePerspective recordGroupTablePerspective : tablePerspective
-		// .getRecordSubTablePerspectives()) {
-		//
-		// Group recordGroup = recordGroupTablePerspective.getRecordGroup();
-		// for (int vaIndex = recordGroup.getStartIndex(); vaIndex < recordGroup
-		// .getEndIndex(); vaIndex++) {
-		//
-		// Integer id1 = va1.get(vaIndex);
-		// Integer id2 = va1.get(vaIndex + 1);
-		//
-		// }
-		//
-		// System.out.println(recordGroupTablePerspective);
-		// }
-		//
-
-		// TODO calculate rand index
-
-		System.out.println("Calculate Adjusted Rand Index");
-
+		// score = new Random().nextFloat();#
+		
+		long startTime = System.currentTimeMillis();
+		
+		score = GeneralManager.get().getRStatisticsPerformer()
+				.adjustedRandIndex(tablePerspective, referenceTablePerspective);
+		
+		long endTime = System.currentTimeMillis();
+		System.out.println("Calculation took " + (endTime - startTime) + "ms");
+		
 		if (storeResult) {
 			tablePerspectiveToScore.put(tablePerspective, score);
 			referenceTablePerspective.getContainerStatistics().adjustedRandIndex()

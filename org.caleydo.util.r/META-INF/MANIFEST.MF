@@ -28,7 +28,8 @@ Bundle-NativeCode:
  processor=ppc
 Bundle-Vendor: www.caleydo.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/JRI.jar
 Require-Bundle: org.caleydo.core;bundle-version="2.0.2",
  org.caleydo.view.histogram;bundle-version="2.0.2",
  de.walware.statet.base.core;bundle-version="2.0.1",

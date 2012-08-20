@@ -1,41 +1,44 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.util.r;
 
 import java.util.ArrayList;
+import java.util.Set;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.container.Average;
-import org.caleydo.core.data.container.TablePerspective;
 import org.caleydo.core.data.filter.RecordFilter;
+import org.caleydo.core.data.perspective.table.Average;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.data.StatisticsFoldChangeReductionEvent;
 import org.caleydo.core.event.data.StatisticsPValueReductionEvent;
 import org.caleydo.core.event.data.StatisticsTwoSidedTTestReductionEvent;
-import org.caleydo.core.event.view.OpenViewEvent;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
@@ -50,7 +53,8 @@ import org.eclipse.core.runtime.Status;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
 
-public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwner {
+public class RStatisticsPerformer
+	implements IStatisticsPerformer, IListenerOwner {
 
 	private Rengine engine;
 
@@ -154,28 +158,130 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		try {
 			REXP test;
 			int[] array = new int[] { 223, 259, 248, 220, 287, 191, 229, 270, 245, 201 };// 5,
-			// 6,
-			// 7};
 			int[] array_2 = new int[] { 220, 244, 243, 211, 299, 170, 210, 276, 252, 189 };// 1,
-			// 2,
-			// 3};
+
 			engine.assign("my_array", array);
 			engine.assign("my_array_2", array_2);
 
 			System.out.println("Array: " + engine.eval("my_array"));
 			System.out.println("Array 2: " + engine.eval("my_array_2"));
+
 			test = engine.eval("t.test(my_array,my_array_2)");
 			System.out.println("T-Test result: " + test);
-		} catch (Exception e) {
-			Logger.log(new Status(IStatus.ERROR, toString(), "Could not run R commands",
-					e));
+
+		}
+		catch (Exception e) {
+			Logger.log(new Status(IStatus.ERROR, toString(), "Could not run R commands", e));
 		}
 
-		OpenViewEvent openViewEvent = new OpenViewEvent();
-		openViewEvent.setViewType("org.caleydo.view.statistics");
-		openViewEvent.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(openViewEvent);
+		// OpenViewEvent openViewEvent = new OpenViewEvent();
+		// openViewEvent.setViewType("org.caleydo.view.statistics");
+		// openViewEvent.setSender(this);
+		// GeneralManager.get().getEventPublisher().triggerEvent(openViewEvent);
+	}
 
+	public float adjustedRandIndex(TablePerspective container1, TablePerspective container2) {
+		try {
+
+//			 int[] array = new int[] { 1, 1, 1, 2, 2, 2, 2, 2 };
+//			 int[] array_2 = new int[] { 1, 1, 1, 0, 2, 2, 3, 2};
+
+			REXP scores;
+
+			RecordVirtualArray va1 = container1.getRecordPerspective().getVirtualArray();
+			RecordVirtualArray va2 = container2.getRecordPerspective().getVirtualArray();
+
+			int[] array = new int[va1.size()];
+			int[] array_2 = new int[va1.size()];
+
+			int globalVAIndex = 0;
+			boolean isMatchingGroupFound = false;
+
+			//System.out.println("group list 1: "+ va1.getGroupList());
+			//System.out.println("group list 2: "+ va2.getGroupList());
+			
+			//System.out.println("Size left table " +va1.size());
+			
+			for (Group group : va1.getGroupList()) {
+
+				for (int vaIndex = group.getStartIndex(); vaIndex < group.getEndIndex(); vaIndex++) {
+
+					int id = va1.get(vaIndex);
+
+					for (Group group2 : va2.getGroupList()) {
+
+						for (int vaIndex2 = group2.getStartIndex(); vaIndex2 < group2
+								.getEndIndex(); vaIndex2++) {
+							{
+								int id2 = va2.get(vaIndex2);
+								
+								if (va1.getIdType() != va2.getIdType()) {
+									IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
+											.getIDMappingManager(va1.getIdType().getIDCategory());
+									Set<Integer> ids = idMappingManager.getIDAsSet(va2.getIdType(),va1.getIdType(), id2);
+								
+									if (ids != null) {
+										id2 = ids.iterator().next();
+										if (ids.size() > 2) {
+											System.out.println("Multi-Mapping");
+										}
+									}
+								}
+								
+								if (id == id2) {
+									array_2[globalVAIndex] = group2.getID();
+									isMatchingGroupFound = true;
+									break;
+								}
+							}
+						}
+
+						if (isMatchingGroupFound) {
+							break;
+						}
+					}
+					
+					if (isMatchingGroupFound) {
+						isMatchingGroupFound = false;
+						globalVAIndex++;
+						array[globalVAIndex] = group.getID();
+					}
+				}
+			}
+			
+			int[] finalArray = new int[globalVAIndex];
+			int[] finalArray2 = new int[globalVAIndex];
+			
+			// we need to cut the array to only include the found matches
+			for (int index = 0; index < globalVAIndex; index++)
+			{
+				finalArray[index] = array[index];
+				finalArray2[index] = array_2[index];
+			}
+			
+			//System.out.println("Matches found " +globalVAIndex);
+
+			//System.out.println("Array: " + engine.eval("my_array"));
+			//System.out.println("Array 2: " + engine.eval("my_array_2"));
+
+			engine.assign("my_array", finalArray);
+			engine.assign("my_array_2", finalArray2);
+
+			engine.eval("library(clues)");
+			scores = engine.eval("adjustedRand(my_array,my_array_2)");
+			//System.out.println("Adjusted rand index result: " + scores);
+			
+			//double[] result = scores.asDoubleArray();
+//			System.out.println(result);
+			
+			return (float)(scores.asDoubleArray()[0]);
+
+		}
+		catch (Exception e) {
+			Logger.log(new Status(IStatus.ERROR, toString(), "Could not run R commands", e));
+		}
+		
+		return -1;
 	}
 
 	/**
@@ -199,8 +305,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		// return;
 
 		if (!container1.getRecordPerspective().equals(container2.getRecordPerspective())) {
-			throw new IllegalArgumentException(
-					"The RecordPerspectives have to be the same");
+			throw new IllegalArgumentException("The RecordPerspectives have to be the same");
 		}
 
 		ArrayList<Average> averageRecords1 = container1.getContainerStatistics()
@@ -252,7 +357,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		// table.getStatisticsResult().setResult(table1, resultVec);
 
 		RecordFilter contentFilter = new RecordFilter(container1.getRecordPerspective()
-				.getID());
+				.getPerspectiveID());
 		contentFilter.setDataDomain(container1.getDataDomain());
 		contentFilter.setLabel("Fold change " + container1.getLabel() + " and "
 				+ container2.getLabel());
@@ -298,8 +403,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 		for (TablePerspective container : tablePerspectives) {
 
-			RecordVirtualArray recordVA = container.getRecordPerspective()
-					.getVirtualArray();
+			RecordVirtualArray recordVA = container.getRecordPerspective().getVirtualArray();
 			DimensionVirtualArray dimensionVA1 = container.getDimensionPerspective()
 					.getVirtualArray();
 			DataTable table = container.getDataDomain().getTable();
@@ -314,8 +418,8 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 				int dimensionCount = 0;
 				for (Integer dimensionIndex : dimensionVA1) {
-					compareVec1[dimensionCount++] = table.getFloat(
-							DataRepresentation.RAW, recordIndex, dimensionIndex);
+					compareVec1[dimensionCount++] = table.getFloat(DataRepresentation.RAW,
+							recordIndex, dimensionIndex);
 				}
 
 				engine.assign("set", compareVec1);
@@ -335,11 +439,10 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 				}
 			}
 
-			container.getContainerStatistics().tTest()
-					.setOneSiddedTTestResult(pValueVector);
+			container.getContainerStatistics().tTest().setOneSiddedTTestResult(pValueVector);
 
-			RecordFilter contentFilter = new RecordFilter(container
-					.getRecordPerspective().getID());
+			RecordFilter contentFilter = new RecordFilter(container.getRecordPerspective()
+					.getPerspectiveID());
 			contentFilter.setDataDomain(container.getDataDomain());
 			contentFilter.setLabel("p-Value Reduction of " + container.getLabel());
 
@@ -379,8 +482,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 		if (!tablePerspective1.getRecordPerspective().equals(
 				tablePerspective2.getRecordPerspective()))
-			throw new IllegalStateException(
-					"data containers have to share record prespective");
+			throw new IllegalStateException("data containers have to share record prespective");
 
 		DataTable table = tablePerspective1.getDataDomain().getTable();
 
@@ -425,11 +527,11 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		tablePerspective2.getContainerStatistics().tTest()
 				.setTwoSiddedTTestResult(tablePerspective1, pValueVector);
 
-		RecordFilter contentFilter = new RecordFilter(tablePerspective1
-				.getRecordPerspective().getID());
+		RecordFilter contentFilter = new RecordFilter(tablePerspective1.getRecordPerspective()
+				.getPerspectiveID());
 		contentFilter.setDataDomain(tablePerspective1.getDataDomain());
-		contentFilter.setLabel("Two sided t-test of " + tablePerspective1.getLabel()
-				+ " and " + tablePerspective2.getLabel());
+		contentFilter.setLabel("Two sided t-test of " + tablePerspective1.getLabel() + " and "
+				+ tablePerspective2.getLabel());
 
 		FilterRepresentationTwoSidedTTest filterRep = new FilterRepresentationTwoSidedTTest();
 		filterRep.setFilter(contentFilter);
@@ -440,8 +542,8 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 	}
 
 	@Override
-	public synchronized void queueEvent(
-			AEventListener<? extends IListenerOwner> listener, AEvent event) {
+	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener,
+			AEvent event) {
 
 		if (event instanceof StatisticsPValueReductionEvent)
 			statisticsPValueReductionListener.handleEvent(event);

@@ -309,16 +309,15 @@ public class BrickColumnSpacingRenderer
 		renderDimensionGroupConnections(gl);
 		renderDragAndDropMarker(gl);
 
-		// Just for score testing
-		// if (leftDimGroup != null && rightDimGroup != null) {
-		// float score =
-		// leftDimGroup.getTablePerspective().getContainerStatistics()
-		// .adjustedRandIndex().getScore(rightDimGroup.getTablePerspective(),
-		// false);
-		//
-		// glVisBricks.getTextRenderer().renderText(gl, "Score: " + score, 0, 0,
-		// 0, 0.005f, 50);
-		// }
+		// FIXME Stratomex 2.0 testing
+//		if (leftDimGroup != null && rightDimGroup != null) {
+//			float score = leftDimGroup.getTablePerspective().getContainerStatistics()
+//					.adjustedRandIndex().getScore(rightDimGroup.getTablePerspective(), true);
+//
+//			glVisBricks.getTextRenderer().renderText(gl,
+//					"Score: " + new Float(score).toString().substring(0, 4), 0, 0, 0, 0.004f,
+//					50);
+//		}
 	}
 
 	@Override
@@ -641,7 +640,17 @@ public class BrickColumnSpacingRenderer
 												- rightYDiffSelection, 0 }, false, 0, color,
 								trendRatio);// 0.5f);
 					}
-					// gl.glPopMatrix();
+
+					// FIXME Stratomex 2.0 testing
+//					glVisBricks.getTextRenderer().begin3DRendering();
+//					glVisBricks.getTextRenderer().draw3D(gl,
+//							Float.toString(subGroupMatch.getLeftSimilarityRatio()), xStart,
+//							subGroupMatch.getLeftAnchorYTop(), 0.5f, 0.003f, 50);
+//
+//					glVisBricks.getTextRenderer().draw3D(gl,
+//							Float.toString(subGroupMatch.getRightSimilarityRatio()), xEnd-.3f,
+//							subGroupMatch.getLeftAnchorYTop(), 0.5f, 0.003f, 50);
+//					glVisBricks.getTextRenderer().end3DRendering();
 				}
 
 				gl.glPopName();
