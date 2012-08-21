@@ -169,7 +169,7 @@ public class GLPathwayContentCreator {
 		List<Integer> selectedSamplesArray = new ArrayList<Integer>();
 
 		// Only add selected samples for single pathway
-		if (!glPathwayView.isRenderedRemote()) {
+		if (!glPathwayView.isRenderedRemote() && selectedSamples != null && !selectedSamples.isEmpty()) {
 			selectedSamplesArray.addAll(selectedSamples);
 		}
 		else {

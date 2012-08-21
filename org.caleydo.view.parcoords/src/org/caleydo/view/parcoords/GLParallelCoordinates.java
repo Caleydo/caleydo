@@ -437,7 +437,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
-		if (tablePerspective.getNrRecords() == 0 || tablePerspective.getNrDimensions() == 0) {
+		if (tablePerspective.getNrRecords() == 0
+				|| tablePerspective.getNrDimensions() == 0) {
 			gl.glTranslatef(-xSideSpacing, -fYTranslation, 0.0f);
 			renderSymbol(gl, EIconTextures.PAR_COORDS_SYMBOL, 2);
 			gl.glTranslatef(+xSideSpacing, fYTranslation, 0.0f);
@@ -512,7 +513,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		renderState.updateOcclusionPrev(nrVisibleLines);
 		for (Integer recordID : lines) {
 
-			if (tablePerspective.getRecordPerspective().getVirtualArray().contains(recordID))
+			if (tablePerspective.getRecordPerspective().getVirtualArray()
+					.contains(recordID))
 				renderSingleLine(gl, recordID, selectionType, renderState,
 						renderAsSelection);
 		}
@@ -1667,8 +1669,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
-		if (idType == dimensionIDType
-				&& dataDomain.getDataDomainID().equals("org.caleydo.datadomain.genetic")) {
+		if (idType.equals(dimensionIDType)) {
 
 			int axisCount = dimensionVA.indexOf(id);
 			// for (int iAxisID : dimensionVA) {
@@ -1681,7 +1682,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			alElementReps.add(new ElementConnectionInformation(idType, uniqueID, x, y,
 					0.0f));
 
-		} else {
+		} else if (idType.equals(recordIDType)) {
 
 			x = viewFrustum.getLeft() + renderStyle.getXSpacing();
 			y = dataDomain.getTable().getFloat(DataRepresentation.NORMALIZED, id,
@@ -1702,6 +1703,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 					0.0f));
 		}
 
+		else {
+			throw new IllegalStateException("Unkown ID Type: " + idType);
+		}
 		return alElementReps;
 	}
 

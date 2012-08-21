@@ -18,7 +18,7 @@
             class="org.caleydo.view.pathway.RcpGLPathwayView"
             icon="resources/icons/pathway.png"
             id="org.caleydo.view.pathway"
-            name="Single Pathway">
+            name="Pathway">
       </view>
    </extension>
    <extension
@@ -26,7 +26,7 @@
       <command
             defaultHandler="org.caleydo.view.pathway.command.handler.OpenPathwayHandler"
             id="org.caleydo.view.pathway.command.openpathway"
-            name="Single Pathway">
+            name="Pathway">
       </command>
    </extension>
    <extension
