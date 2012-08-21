@@ -22,6 +22,7 @@
  */
 package org.caleydo.view.enroute.node;
 
+import org.caleydo.core.util.base.ILabelHolder;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -36,7 +37,7 @@ import org.caleydo.view.enroute.node.mode.GeneNodePreviewMode;
  * @author Christian
  * 
  */
-public class GeneNode extends ALinearizableNode  {
+public class GeneNode extends ALinearizableNode implements ILabelHolder {
 
 	public static final int TEXT_SPACING_PIXELS = 3;
 
@@ -45,7 +46,7 @@ public class GeneNode extends ALinearizableNode  {
 	/**
 	 * The caption displayed on the node.
 	 */
-	protected String caption = "";
+	protected String label = "";
 
 	/**
 	 * @param pixelGLConverter
@@ -69,30 +70,29 @@ public class GeneNode extends ALinearizableNode  {
 		return pathwayVertexRep;
 	}
 
-	/**
-	 * @param caption
-	 *            setter, see {@link #caption}
-	 */
-	public void setCaption(String caption) {
-		this.caption = caption;
-	}
-
-	/**
-	 * @return the caption, see {@link #caption}
-	 */
-	public String getCaption() {
-		return caption;
-	}
-
 	@Override
 	protected ALinearizeableNodeMode getLinearizedMode() {
 		return new GeneNodeLinearizedMode(view);
 	}
 
-
 	@Override
 	protected ALinearizeableNodeMode getPreviewMode() {
 		return new GeneNodePreviewMode(view);
+	}
+
+	@Override
+	public String getProviderName() {
+		return "Gene Node";
+	}
+
+	@Override
+	public void setLabel(String label, boolean isLabelDefault) {
+		this.label = label;
+	}
+
+	@Override
+	public String getLabel() {
+		return label;
 	}
 
 }

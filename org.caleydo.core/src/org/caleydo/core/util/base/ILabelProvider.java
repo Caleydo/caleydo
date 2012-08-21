@@ -32,7 +32,7 @@ package org.caleydo.core.util.base;
 public interface ILabelProvider {
 
 	/**
-	 * Callback method that provides label.
+	 * Callback method that provides a label.
 	 * 
 	 * @return
 	 */
@@ -43,6 +43,9 @@ public interface ILabelProvider {
 	 */
 	public boolean isLabelDefault();
 
-		
+	/**
+	 * @return A human-readable name of the concrete label provider.
+	 */
+	public String getProviderName();
 	
 }

@@ -366,10 +366,10 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 						lastNodeId++);
 				int commaIndex = currentVertexRep.getName().indexOf(',');
 				if (commaIndex > 0) {
-					geneNode.setCaption(currentVertexRep.getName().substring(0,
-							commaIndex));
+					geneNode.setLabel(
+							currentVertexRep.getName().substring(0, commaIndex), false);
 				} else {
-					geneNode.setCaption(currentVertexRep.getName());
+					geneNode.setLabel(currentVertexRep.getName(), false);
 				}
 				geneNode.setPathwayVertexRep(currentVertexRep);
 

@@ -239,4 +239,9 @@ public class Group extends AUniqueObject implements ILabelHolder {
 		this.isDefaultLabel = isDefaultLabel;
 
 	}
+
+	@Override
+	public String getProviderName() {
+		return "Group";
+	}
 }

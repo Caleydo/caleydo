@@ -212,16 +212,6 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 		return davidIDs.size();
 	}
 
-	// @Override
-	// public int getMinRequiredHeightPixels() {
-	// return mode.getMinHeightPixels();
-	// }
-	//
-	// @Override
-	// public int getMinRequiredWidthPixels() {
-	// return mode.getMinWidthPixels();
-	// }
-
 	@Override
 	protected void registerPickingListeners() {
 		ToolTipPickingListener toolTipPickingListener = new ToolTipPickingListener(view, this);
@@ -239,12 +229,6 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 		unregisterPickingListeners();
 		registerPickingListeners();
 		mode.apply(this);
-	}
-	
-
-	@Override
-	public String getLabel() {
-		return pathwayVertexRep.getName();
 	}
 	
 	@Override

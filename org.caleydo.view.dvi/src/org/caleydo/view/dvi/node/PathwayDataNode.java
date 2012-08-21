@@ -163,5 +163,10 @@ public class PathwayDataNode extends ADataNode {
 
 		return pixelGLConverter.getPixelWidthForGLWidth(textWidth);
 	}
+	
+	@Override
+	public String getProviderName() {
+		return "Pathway Data Node";
+	}
 
 }

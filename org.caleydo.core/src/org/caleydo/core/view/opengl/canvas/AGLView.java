@@ -275,7 +275,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 		if (glRemoteRenderingView == null)
 			viewManager.registerGLEventListenerByGLCanvas(parentGLCanvas, this);
-		
+
 		viewManager.initializeUnserializedViews();
 	}
 
@@ -1376,5 +1376,15 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 */
 	public void toggleFPSCounter() {
 		this.showFPSCounter = !showFPSCounter;
+	}
+
+	@Override
+	public void setLabel(String label, boolean isLabelDefault) {
+		if (isRenderedRemote()) {
+			this.label = label;
+			this.isLabelDefault = isLabelDefault;
+		} else {
+			super.setLabel(label, isLabelDefault);
+		}
 	}
 }

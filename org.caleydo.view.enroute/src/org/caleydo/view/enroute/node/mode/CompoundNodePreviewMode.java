@@ -78,7 +78,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 		gl.glVertex3f(leftX, bottomY + height, nodePosition.z());
 		gl.glEnd();
 
-		textRenderer.renderTextInBounds(gl, node.getCaption(), leftX + spacing, bottomY
+		textRenderer.renderTextInBounds(gl, node.getLabel(), leftX + spacing, bottomY
 				+ spacing + pixelGLConverter.getGLHeightForPixelHeight(2),
 				nodePosition.z(), width - height, textHeight);
 		gl.glPopName();

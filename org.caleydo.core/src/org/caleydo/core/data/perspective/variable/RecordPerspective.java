@@ -77,5 +77,11 @@ public class RecordPerspective
 	protected List<Integer> getIDList() {
 		return dataDomain.getTable().getRowIDList();
 	}
+	
+
+	@Override
+	public String getProviderName() {
+		return "Row Perspective";
+	}
 
 }

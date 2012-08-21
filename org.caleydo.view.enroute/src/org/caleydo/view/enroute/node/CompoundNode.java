@@ -76,8 +76,13 @@ public class CompoundNode extends ALinearizableNode {
 	}
 
 	@Override
-	public String getCaption() {
+	public String getLabel() {
 		return pathwayVertexRep.getName();
+	}
+
+	@Override
+	public String getProviderName() {
+		return "Compound Node";
 	}
 
 }

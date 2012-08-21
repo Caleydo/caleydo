@@ -42,8 +42,6 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 		ISingleTablePerspectiveBasedView {
 
 	
-//	protected SelectionCommandListener clearSelectionsListener;
-
 	protected Composite histoComposite;
 
 	protected ATableBasedDataDomain dataDomain;
@@ -192,6 +190,9 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 		return view.isLabelDefault();
 	}
 
-	
+	@Override
+	public String getProviderName() {
+		return "Histogram";
+	}
 
 }

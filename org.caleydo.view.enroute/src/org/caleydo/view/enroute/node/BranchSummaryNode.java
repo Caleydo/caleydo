@@ -51,7 +51,7 @@ import org.caleydo.view.enroute.node.layout.BranchNodeLabelRenderer;
  * @author Christian
  * 
  */
-public class BranchSummaryNode extends ANode implements ILabelProvider {
+public class BranchSummaryNode extends ANode {
 
 	protected static final int MIN_NODE_WIDTH_PIXELS = 90;
 	protected static final int SPACING_PIXELS = 2;
@@ -249,11 +249,6 @@ public class BranchSummaryNode extends ANode implements ILabelProvider {
 	}
 
 	@Override
-	public String getCaption() {
-		return " " + branchNodes.size();
-	}
-
-	@Override
 	public void render(GL2 gl, GLU glu) {
 		float width = pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
 		float height = pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
@@ -315,7 +310,7 @@ public class BranchSummaryNode extends ANode implements ILabelProvider {
 
 	@Override
 	public String getLabel() {
-		return getCaption();
+		return " " + branchNodes.size();
 	}
 
 	@Override
@@ -332,6 +327,11 @@ public class BranchSummaryNode extends ANode implements ILabelProvider {
 	@Override
 	public boolean isLabelDefault() {
 		return false;
+	}
+	
+	@Override
+	public String getProviderName() {
+		return "Branch Summary Node";
 	}
 
 }

@@ -4,11 +4,13 @@
 package org.caleydo.view.enroute.node.mode;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
-import org.caleydo.core.util.base.ILabelProvider;
+
 import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.node.ALinearizableNode;
 import org.caleydo.view.enroute.node.ANodeAttributeRenderer;
@@ -21,8 +23,7 @@ import org.caleydo.view.enroute.node.RemoveNodeButtonAttributeRenderer;
  * @author Christian
  * 
  */
-public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
-		ILabelProvider {
+public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode {
 
 	/**
 	 * @param view
@@ -122,10 +123,10 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
 		super.unregisterPickingListeners();
 	}
 
-	@Override
-	public String getLabel() {
-		return node.getCaption();
-	}
+//	@Override
+//	public String getLabel() {
+//		return node.getCaption();
+//	}
 
 	@Override
 	public void render(GL2 gl, GLU glu) {
@@ -147,9 +148,9 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
 
 	}
 
-	@Override
-	public boolean isLabelDefault() {
-		return false;
-	}
+//	@Override
+//	public boolean isLabelDefault() {
+//		return false;
+//	}
 
 }

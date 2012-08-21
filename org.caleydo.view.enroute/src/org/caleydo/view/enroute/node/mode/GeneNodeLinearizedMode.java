@@ -5,7 +5,6 @@ package org.caleydo.view.enroute.node.mode;
 
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -26,7 +25,7 @@ import org.caleydo.view.enroute.node.RemoveNodeButtonAttributeRenderer;
  * @author Christian
  * 
  */
-public class GeneNodeLinearizedMode extends AGeneNodeMode implements ILabelProvider {
+public class GeneNodeLinearizedMode extends AGeneNodeMode {
 
 	protected ColorRenderer colorRenderer;
 
@@ -61,7 +60,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode implements ILabelProvi
 		baseColumn.addBackgroundRenderer(colorRenderer);
 
 		ElementLayout labelLayout = new ElementLayout("label");
-		LabelRenderer labelRenderer = new LabelRenderer(view, this);
+		LabelRenderer labelRenderer = new LabelRenderer(view, node);
 		labelRenderer.setAlignment(LabelRenderer.ALIGN_CENTER);
 
 		labelLayout.setRenderer(labelRenderer);
@@ -159,11 +158,6 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode implements ILabelProvi
 		super.unregisterPickingListeners();
 		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(),
 				node.getNodeId());
-	}
-
-	@Override
-	public String getLabel() {
-		return node.getCaption();
 	}
 
 }

@@ -352,12 +352,12 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 				.setRenderer(toggleTablePerspectiveButtonRenderer);
 
 		// FIXME: Very bad hack
-		if ((!dataDomain.getLabel().toLowerCase().contains("copy"))
-				&& (!dataDomain.getLabel().toLowerCase().contains("clinical"))
-				&& (!dataDomain.getLabel().toLowerCase().contains("mutation"))) {
+//		if ((!dataDomain.getLabel().toLowerCase().contains("copy"))
+//				&& (!dataDomain.getLabel().toLowerCase().contains("clinical"))
+//				&& (!dataDomain.getLabel().toLowerCase().contains("mutation"))) {
 			titleRow.append(spacingLayoutX);
 			titleRow.append(toggleTablePerspectiveButtonLayout);
-		}
+//		}
 
 		bodyRow = new Row("bodyRow");
 
@@ -634,6 +634,12 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 	public void handleDropAreaReplaced() {
 		// TODO Auto-generated method stub
 
+	}
+	
+
+	@Override
+	public String getProviderName() {
+		return "Tabular Data Node";
 	}
 
 }

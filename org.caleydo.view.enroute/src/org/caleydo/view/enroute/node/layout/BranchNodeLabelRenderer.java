@@ -53,7 +53,7 @@ public class BranchNodeLabelRenderer extends LayoutRenderer {
 
 		for (int i = 0; i < branchNodes.size(); i++) {
 			ANode branchNode = branchNodes.get(i);
-			String branchNodeCaption = branchNode.getCaption();
+			String branchNodeCaption = branchNode.getLabel();
 			float captionWidth = textRenderer.getRequiredTextWidth(branchNodeCaption,
 					textHeight);
 

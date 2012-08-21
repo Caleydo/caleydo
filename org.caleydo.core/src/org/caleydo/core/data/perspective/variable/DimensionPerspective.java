@@ -78,4 +78,9 @@ public class DimensionPerspective
 	protected List<Integer> getIDList() {
 		return dataDomain.getTable().getColumnIDList();
 	}
+	
+	@Override
+	public String getProviderName() {
+		return "Column Perspective";
+	}
 }

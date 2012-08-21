@@ -25,6 +25,8 @@ package org.caleydo.view.enroute.node;
 import gleem.linalg.Vec3f;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
+
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.view.enroute.GLEnRoutePathway;
@@ -36,7 +38,7 @@ import org.caleydo.view.enroute.GLEnRoutePathway;
  * @author Christian
  * 
  */
-public abstract class ANode {
+public abstract class ANode implements ILabelProvider {
 
 	public final static int DEFAULT_HEIGHT_PIXELS = 20;
 	public final static int DEFAULT_WIDTH_PIXELS = 70;
@@ -49,16 +51,6 @@ public abstract class ANode {
 	 * Position of the node center.
 	 */
 	protected Vec3f position;
-
-	// /**
-	// * Height of the node in Pixels.
-	// */
-	// protected int heightPixels = DEFAULT_HEIGHT_PIXELS;
-	//
-	// /**
-	// * Width of the node in Pixels.
-	// */
-	// protected int widthPixels = DEFAULT_WIDTH_PIXELS;
 
 	protected GLEnRoutePathway view;
 
@@ -137,44 +129,16 @@ public abstract class ANode {
 	public Vec3f getPosition() {
 		return position;
 	}
-
-	// /**
-	// * @param heightPixels
-	// * setter, see {@link #heightPixels}
-	// */
-	// public void setHeightPixels(int heightPixels) {
-	// this.heightPixels = heightPixels;
-	// }
-	//
+	
 	/**
 	 * @return the height of the node in pixels.
 	 */
 	public abstract int getHeightPixels();
 
-	// /**
-	// * @param widthPixels
-	// * setter, see {@link #widthPixels}
-	// */
-	// public void setWidthPixels(int widthPixels) {
-	// this.widthPixels = widthPixels;
-	// }
-
 	/**
 	 * @return the width of the node in pixels.
 	 */
 	public abstract int getWidthPixels();
-
-	// /**
-	// * @return The minimum height that is required to render this node
-	// properly.
-	// */
-	// public abstract int getMinRequiredHeightPixels();
-	//
-	// /**
-	// * @return The minimum width that is required to render this node
-	// properly.
-	// */
-	// public abstract int getMinRequiredWidthPixels();
 
 	/**
 	 * @return GL height of the nodes.
@@ -194,9 +158,5 @@ public abstract class ANode {
 		return nodeId;
 	}
 
-	/**
-	 * @return The caption of this node.
-	 */
-	public abstract String getCaption();
 
 }

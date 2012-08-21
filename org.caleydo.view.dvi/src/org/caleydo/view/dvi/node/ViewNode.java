@@ -279,5 +279,10 @@ public class ViewNode extends ADefaultTemplateNode {
 	public boolean isLabelDefault() {
 		return false;
 	}
+	
+	@Override
+	public String getProviderName() {
+		return "View Node";
+	}
 
 }

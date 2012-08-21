@@ -3,7 +3,6 @@
  */
 package org.caleydo.view.enroute.node.mode;
 
-import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -23,8 +22,7 @@ import org.caleydo.view.enroute.node.ComplexNode;
  * @author Christian
  * 
  */
-public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements
-		ILabelProvider {
+public class ComplexNodePreviewMode extends ALayoutBasedNodeMode {
 
 	public static final int MIN_NODE_WIDTH_PIXELS = 70;
 
@@ -52,7 +50,7 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements
 		baseColumn.addBackgroundRenderer(colorRenderer);
 
 		ElementLayout labelLayout = new ElementLayout("label");
-		LabelRenderer labelRenderer = new LabelRenderer(view, this);
+		LabelRenderer labelRenderer = new LabelRenderer(view, node);
 		labelRenderer.setAlignment(LabelRenderer.ALIGN_CENTER);
 
 		labelLayout.setRenderer(labelRenderer);
@@ -108,14 +106,5 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements
 				node.getNodeId());
 	}
 
-	@Override
-	public String getLabel() {
-		return node.getCaption();
-	}
-	
-	@Override
-	public boolean isLabelDefault() {
-		return false;
-	}
 
 }

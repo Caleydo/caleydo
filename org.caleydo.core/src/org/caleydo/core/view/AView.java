@@ -29,6 +29,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.AUniqueObject;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Abstract class that is the base of all view representations. It holds the the
@@ -154,15 +155,32 @@ public abstract class AView extends AUniqueObject implements IView {
 		this.label = label;
 		this.isLabelDefault = isLabelDefault;
 
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				ARcpGLViewPart viewPart = ViewManager.get().getViewPartFromView(
+						AView.this);
+				if (viewPart != null) {
+					viewPart.setPartName(AView.this.label);
+				}
+			}
+		});
+
 	}
 
 	@Override
 	public String getLabel() {
 		return label;
 	}
-		
+
 	@Override
 	public boolean isLabelDefault() {
 		return isLabelDefault;
+	}
+	
+	@Override
+	public String getProviderName() {
+		return viewName;
 	}
 }

@@ -43,6 +43,7 @@ public class RcpGLEnRoutePathwayView extends ARcpGLViewPart {
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
+		
 	}
 
 	@Override

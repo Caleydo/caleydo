@@ -101,6 +101,12 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 		parentComposite = new Composite(parent, SWT.NONE);
 		parentComposite.setLayout(new GridLayout(1, false));
 	}
+	
+
+	@Override
+	public void setPartName(String partName) {
+		super.setPartName(partName);
+	}
 
 	/**
 	 * Generates and returns a list of all views, caleydo-view-parts and

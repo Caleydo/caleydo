@@ -4,6 +4,7 @@
 package org.caleydo.view.enroute.node.mode;
 
 import java.util.List;
+
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -75,7 +76,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 		baseColumn.addBackgroundRenderer(colorRenderer);
 
 		ElementLayout labelLayout = new ElementLayout("label");
-		LabelRenderer labelRenderer = new LabelRenderer(view, this);
+		LabelRenderer labelRenderer = new LabelRenderer(view, node);
 		labelRenderer.setAlignment(LabelRenderer.ALIGN_CENTER);
 
 		labelLayout.setRenderer(labelRenderer);
@@ -103,8 +104,6 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 		heightPixels += 2 * SPACING_PIXELS + CAPTION_HEIGHT_PIXELS;
 		if (previewRow != null) {
 			baseColumn.append(previewRow);
-			// baseColumn.append(verticalSpacing);
-			// heightPixels += SPACING_PIXELS;
 		}
 
 		layoutManager.setBaseElementLayout(baseColumn);
@@ -115,11 +114,6 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 
 		List<TablePerspective> tablePerspectives = view.getResolvedTablePerspectives();
 		List<Integer> davidIds = node.getMappedDavidIDs();
-
-		// Row previewRow = new Row("previewRow");
-		// previewRow.setFrameColor(1, 0, 0, 1);
-		// previewRow.setYDynamic(true);
-		// previewRow.setPixelSizeY(100);
 
 		Column geneColumn = new Column("geneColumn");
 		geneColumn.append(verticalSpacing);
@@ -183,134 +177,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 			geneRow.append(columnSpacingLayout);
 		}
 
-		// geneColumn.append(verticalSpacing);
-
-		// PathwayVertexRep vertexRep = node.getPathwayVertexRep();
-		//
-		// List<IDataDomain> dataDomains =
-		// DataDomainManager.get().getDataDomainsByType(
-		// "org.caleydo.datadomain.genetic");
-		// List<GeneticDataDomain> geneticDataDomains = new
-		// ArrayList<GeneticDataDomain>();
-		// for (IDataDomain dataDomain : dataDomains) {
-		// geneticDataDomains.add((GeneticDataDomain) dataDomain);
-		// }
-		// PathwayDataDomain pathwayDataDomain = (PathwayDataDomain)
-		// DataDomainManager.get()
-		// .getDataDomainByType("org.caleydo.datadomain.pathway");
-		//
-		// Map<Integer, Set<GeneticDataDomain>> geneIDsToDataDomains = new
-		// HashMap<Integer, Set<GeneticDataDomain>>();
-		// Set<GeneticDataDomain> dataDomainsWithMappedGenes = new
-		// HashSet<GeneticDataDomain>();
-		//
-		// List<Integer> davidIDs = vertexRep.getDavidIDs();
-		//
-		// for (Integer davidID : davidIDs) {
-		//
-		// for (GeneticDataDomain dataDomain : geneticDataDomains) {
-		// Set<Integer> ids = dataDomain.getGeneIDMappingManager().getIDAsSet(
-		// pathwayDataDomain.getDavidIDType(), dataDomain.getGeneIDType(),
-		// davidID);
-		//
-		// // TODO: This is only true if the davidID maps to one id of
-		// // the
-		// // genetic
-		// // datadomain. However, matching multiple ids from different
-		// // genetic
-		// // datadomains is difficult.
-		// if (ids != null && !ids.isEmpty()) {
-		// // for (Integer id : ids) {
-		// Set<GeneticDataDomain> set = geneIDsToDataDomains.get(davidID);
-		// if (set == null) {
-		// set = new HashSet<GeneticDataDomain>();
-		//
-		// geneIDsToDataDomains.put(davidID, set);
-		// }
-		// set.add(dataDomain);
-		// dataDomainsWithMappedGenes.add(dataDomain);
-		// // }
-		//
-		// }
-		// }
-		// }
-		//
-
-		// previewRow.setDebug(true);
-
-		// List<GeneticDataDomain> mappedGeneticDataDomainList = new
-		// ArrayList<GeneticDataDomain>(
-		// dataDomainsWithMappedGenes.size());
-		// List<Column> dataDomainColumns = new ArrayList<Column>(
-		// dataDomainsWithMappedGenes.size());
-		//
-		// previewRow.append(horizontalSpacing);
-		// for (GeneticDataDomain dataDomain : geneticDataDomains) {
-		// if (dataDomainsWithMappedGenes.contains(dataDomain)) {
-		// mappedGeneticDataDomainList.add(dataDomain);
-		// Column column = new Column("dataDomainColumn");
-		// column.setBottomUp(false);
-		// dataDomainColumns.add(column);
-		//
-		// ElementLayout labelLayout = new ElementLayout("label");
-		// LabelRenderer labelRenderer = new LabelRenderer(view,
-		// dataDomain.getLabel());
-		// labelRenderer.setAlignment(LabelRenderer.ALIGN_CENTER);
-		//
-		// labelLayout.setRenderer(labelRenderer);
-		// labelLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-		// column.append(labelLayout);
-		// column.append(verticalSpacing);
-		// column.append(verticalSpacing);
-		//
-		// previewRow.append(column);
-		// previewRow.append(horizontalSpacing);
-		// }
-		// }
-		//
-		// List<Integer> davidIdList = new
-		// ArrayList<Integer>(geneIDsToDataDomains.keySet());
-		// Collections.sort(davidIdList);
-		//
-		// for (int i = 0; i < mappedGeneticDataDomainList.size(); i++) {
-		// GeneticDataDomain currentDataDomain =
-		// mappedGeneticDataDomainList.get(i);
-		// Column column = dataDomainColumns.get(i);
-		//
-		// column.setRatioSizeX(1.0f / (float) dataDomainColumns.size());
-		//
-		// if (i == 0) {
-		// heightPixels += CAPTION_HEIGHT_PIXELS + SPACING_PIXELS +
-		// SPACING_PIXELS;
-		// }
-		//
-		// for (int j = 0; j < davidIdList.size(); j++) {
-		// Integer davidId = davidIdList.get(j);
-		// Set<GeneticDataDomain> mappedDataDomains = geneIDsToDataDomains
-		// .get(davidId);
-		// if (mappedDataDomains.contains(currentDataDomain)) {
-		// Row geneRow = new Row("dataDomain" + i + "geneRow");
-		// ColorRenderer geneRowColorRenderer = new ColorRenderer(new float[] {
-		// 1, 1, 1, 1 }, new float[] { 0, 0, 0, 1 }, 1);
-		// geneRow.setRenderer(geneRowColorRenderer);
-		// geneRow.setPixelSizeY(GENE_ROW_HEIGHT_PIXELS);
-		// column.append(geneRow);
-		// } else {
-		// Row emptyRow = new Row("dataDomain" + i + "emptyRow");
-		// emptyRow.setPixelSizeY(GENE_ROW_HEIGHT_PIXELS);
-		// column.append(emptyRow);
-		// }
-		//
-		// if (i == 0)
-		// heightPixels += GENE_ROW_HEIGHT_PIXELS;
-		//
-		// if (j != davidIdList.size()) {
-		// column.append(verticalSpacing);
-		// if (i == 0)
-		// heightPixels += SPACING_PIXELS;
-		// }
-		// }
-		// }
+		
 
 		return geneColumn;
 	}
