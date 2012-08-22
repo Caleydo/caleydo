@@ -21,18 +21,19 @@ package org.caleydo.core.data.virtualarray.group;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
+
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.AUniqueObject;
-import org.caleydo.core.util.base.ILabelHolder;
+import org.caleydo.core.util.base.IDefaultLabelHolder;
 
 /**
  * @author Bernhard Schlegl
  * @author Alexander Lex
  */
-public class Group extends AUniqueObject implements ILabelHolder {
+public class Group extends AUniqueObject implements IDefaultLabelHolder {
 
 	/** number of elements in the group/cluster */
 	private int size = 0;
@@ -74,7 +75,7 @@ public class Group extends AUniqueObject implements ILabelHolder {
 	 */
 	private float[] meanValuesRepresentativeElement;
 
-	@XmlElement
+
 	private String label;
 	@XmlElement
 	private boolean isDefaultLabel = true;
@@ -243,5 +244,10 @@ public class Group extends AUniqueObject implements ILabelHolder {
 	@Override
 	public String getProviderName() {
 		return "Group";
+	}
+
+	@Override
+	public void setLabel(String label) {
+		this.label = label;
 	}
 }

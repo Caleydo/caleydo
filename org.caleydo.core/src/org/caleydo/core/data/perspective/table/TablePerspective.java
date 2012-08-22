@@ -44,6 +44,7 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.base.IDefaultLabelHolder;
 
 /**
  * <p>
@@ -90,7 +91,7 @@ import org.caleydo.core.id.IDType;
  */
 @XmlType
 @XmlRootElement
-public class TablePerspective {
+public class TablePerspective implements IDefaultLabelHolder {
 
 	/** The static counter used to create unique ids */
 	private static int idCounter;
@@ -123,7 +124,6 @@ public class TablePerspective {
 	protected DimensionPerspective dimensionPerspective;
 
 	/** A human-readable label */
-	@XmlElement
 	protected String label;
 
 	/**
@@ -314,17 +314,12 @@ public class TablePerspective {
 		return label;
 	}
 
-	/**
-	 * @return the isDefaultLabel, see {@link #isDefaultLabel}
-	 */
-	public boolean isDefaultLabel() {
-		return isDefaultLabel;
-	}
 
 	/**
 	 * @param label
 	 *            setter, see {@link #label}
 	 */
+	@Override
 	public void setLabel(String label, boolean isDefaultLabel) {
 		this.label = label;
 		this.isDefaultLabel = isDefaultLabel;
@@ -398,7 +393,7 @@ public class TablePerspective {
 
 		for (Group group : groupList) {
 			if (groupList.size() == 1 && group.isLabelDefault())
-				group.setLabel(getLabel(), isDefaultLabel());
+				group.setLabel(getLabel(), isLabelDefault());
 
 			List<Integer> indices = recordVA.getIDsOfGroup(group.getGroupIndex());
 
@@ -443,7 +438,7 @@ public class TablePerspective {
 
 		for (Group group : groupList) {
 			if (groupList.size() == 1 && group.isLabelDefault())
-				group.setLabel(getLabel(), isDefaultLabel());
+				group.setLabel(getLabel(), isLabelDefault());
 			List<Integer> indices = dimensionVA.getIDsOfGroup(group.getGroupIndex());
 
 			DimensionPerspective dimensionPerspective = new DimensionPerspective(
@@ -497,5 +492,22 @@ public class TablePerspective {
 				dimensionPerspectiveID);
 		createKey();
 
+	}
+
+	@Override
+	public void setLabel(String label) {
+		this.label = label;
+		
+	}
+
+	@Override
+	public String getProviderName() {
+		return "Table Perspective";
+	}
+
+
+	@Override
+	public boolean isLabelDefault() {
+		return isDefaultLabel;
 	}
 }

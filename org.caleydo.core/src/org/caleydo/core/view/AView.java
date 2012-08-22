@@ -155,18 +155,7 @@ public abstract class AView extends AUniqueObject implements IView {
 		this.label = label;
 		this.isLabelDefault = isLabelDefault;
 
-		Display.getDefault().asyncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				ARcpGLViewPart viewPart = ViewManager.get().getViewPartFromView(
-						AView.this);
-				if (viewPart != null) {
-					viewPart.setPartName(AView.this.label);
-				}
-			}
-		});
-
+		updateRCPViewPartName();
 	}
 
 	@Override
@@ -178,9 +167,31 @@ public abstract class AView extends AUniqueObject implements IView {
 	public boolean isLabelDefault() {
 		return isLabelDefault;
 	}
-	
+
 	@Override
 	public String getProviderName() {
-		return viewName;
+		return viewName + " View";
+	}
+
+	@Override
+	public void setLabel(String label) {
+		this.label = label;
+
+		updateRCPViewPartName();
+	}
+	
+	private void updateRCPViewPartName() {
+		
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				ARcpGLViewPart viewPart = ViewManager.get().getViewPartFromView(
+						AView.this);
+				if (viewPart != null) {
+					viewPart.setPartName(AView.this.label);
+				}
+			}
+		});
 	}
 }

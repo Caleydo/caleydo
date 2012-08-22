@@ -71,6 +71,11 @@ public abstract class ADataDomain extends AEventHandler implements IDataDomain {
 	protected boolean isSerializeable = true;
 
 	/**
+	 * determines whether the label of this datadomain is the default label.
+	 */
+	protected boolean isLabelDefault = false;
+
+	/**
 	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
 	 */
 	public ADataDomain() {
@@ -134,30 +139,6 @@ public abstract class ADataDomain extends AEventHandler implements IDataDomain {
 		return getLabel();
 	}
 
-	// @Override
-	// @XmlTransient
-	// public List<ADimensionGroupData> getDimensionGroups() {
-	// return dimensionGroups;
-	// }
-
-	// @Override
-	// public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups)
-	// {
-	// this.dimensionGroups = dimensionGroups;
-	// DimensionGroupsChangedEvent event = new
-	// DimensionGroupsChangedEvent(this);
-	// event.setSender(this);
-	// GeneralManager.get().getEventPublisher().triggerEvent(event);
-	// }
-	//
-	// @Override
-	// public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
-	// dimensionGroups.add(dimensionGroup);
-	// DimensionGroupsChangedEvent event = new
-	// DimensionGroupsChangedEvent(this);
-	// event.setSender(this);
-	// GeneralManager.get().getEventPublisher().triggerEvent(event);
-	// }
 
 	@Override
 	public Color getColor() {
@@ -199,4 +180,10 @@ public abstract class ADataDomain extends AEventHandler implements IDataDomain {
 	public boolean isSerializeable() {
 		return isSerializeable;
 	}
+	
+	@Override
+	public String getProviderName() {
+		return "Dataset";
+	}
+
 }

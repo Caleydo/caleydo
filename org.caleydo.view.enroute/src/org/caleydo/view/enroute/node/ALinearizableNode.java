@@ -230,10 +230,5 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 		registerPickingListeners();
 		mode.apply(this);
 	}
-	
-	@Override
-	public boolean isLabelDefault() {
-		return false;
-	}
 
 }

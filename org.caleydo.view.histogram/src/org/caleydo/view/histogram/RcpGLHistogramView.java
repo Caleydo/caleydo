@@ -38,10 +38,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-public class RcpGLHistogramView extends ARcpGLViewPart implements IView,   
+public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 		ISingleTablePerspectiveBasedView {
 
-	
 	protected Composite histoComposite;
 
 	protected ATableBasedDataDomain dataDomain;
@@ -96,8 +95,6 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 		alToolbar = new ArrayList<IAction>();
 	}
 
-	
-
 	@Override
 	public void createDefaultSerializedView() {
 
@@ -106,8 +103,8 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 		if (dataDomain == null)
 			determineDataConfiguration(serializedView);
 		else
-			((ASerializedSingleTablePerspectiveBasedView) serializedView).setDataDomainID(dataDomain
-					.getDataDomainID());
+			((ASerializedSingleTablePerspectiveBasedView) serializedView)
+					.setDataDomainID(dataDomain.getDataDomainID());
 	}
 
 	@Override
@@ -161,7 +158,6 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 		return dataDomain;
 	}
 
-
 	@Override
 	public List<TablePerspective> getTablePerspectives() {
 		return ((ISingleTablePerspectiveBasedView) view).getTablePerspectives();
@@ -171,8 +167,6 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 	public TablePerspective getTablePerspective() {
 		return ((ISingleTablePerspectiveBasedView) view).getTablePerspective();
 	}
-
-	
 
 	@Override
 	public void setLabel(String label, boolean isLabelDefault) {
@@ -193,6 +187,11 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 	@Override
 	public String getProviderName() {
 		return "Histogram";
+	}
+
+	@Override
+	public void setLabel(String label) {
+		view.setLabel(label);
 	}
 
 }

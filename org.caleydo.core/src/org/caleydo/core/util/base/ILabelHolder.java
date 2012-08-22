@@ -28,10 +28,8 @@ package org.caleydo.core.util.base;
 public interface ILabelHolder extends ILabelProvider {
 
 	/**
-	 * Sets the label of this labelHolder and specifies whether it is a
-	 * default-label (so that it can be hidden under certain circumstances) or
-	 * not
+	 * Sets the label of this labelHolder.
 	 */
-	public void setLabel(String label, boolean isLabelDefault);
+	public void setLabel(String label);
 
 }

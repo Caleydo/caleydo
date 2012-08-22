@@ -22,6 +22,7 @@ package org.caleydo.core.data.datadomain;
 import java.util.Set;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.util.base.ILabelHolder;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -34,7 +35,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public interface IDataDomain {
+public interface IDataDomain extends ILabelHolder {
 
 	/**
 	 * Returns the qualified name of the concrete data domain
@@ -70,26 +71,6 @@ public interface IDataDomain {
 	 */
 	public void setDataSetDescription(DataSetDescription dataSetDescription);
 
-	// /**
-	// * @return The dimension groups that have been created for this
-	// IDataDomain object (data set).
-	// */
-	// public List<TablePerspective> getDimensionGroups();
-	//
-	// /**
-	// * Sets the dimension groups for this IDataDomain object (data set).
-	// *
-	// * @param dimensionGroups
-	// */
-	// public void setDimensionGroups(List<TablePerspective> dimensionGroups);
-	//
-	// /**
-	// * Adds a dimension group to this IDataDomain object (data set).
-	// *
-	// * @param dimensionGroup
-	// */
-	// public void addDimensionGroup(TablePerspective dimensionGroup);
-
 	public String getDataDomainType();
 
 	public void setDataDomainType(String dataDomainType);
@@ -113,18 +94,6 @@ public interface IDataDomain {
 	 * @param category
 	 */
 	public void addIDCategory(IDCategory category);
-
-	/**
-	 * Set the label displayed in the GUI for this datadomain.
-	 * 
-	 * @param label
-	 */
-	public void setLabel(String label);
-
-	/**
-	 * @return The label to be displayed in the GUI of this datadomain.
-	 */
-	public String getLabel();
 
 	/**
 	 * @return Returns if a data domain should be serialized

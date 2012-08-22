@@ -20,7 +20,7 @@
 package org.caleydo.core.view;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.base.ILabelHolder;
+import org.caleydo.core.util.base.IDefaultLabelHolder;
 import org.caleydo.core.util.base.IUniqueObject;
 
 /**
@@ -30,7 +30,7 @@ import org.caleydo.core.util.base.IUniqueObject;
  * @author Alexander Lex
  */
 public interface IView
-	extends IUniqueObject, ILabelHolder {
+	extends IUniqueObject, IDefaultLabelHolder {
 
 	/**
 	 * Initializes the view after setting all required parameters.

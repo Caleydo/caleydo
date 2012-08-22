@@ -39,11 +39,6 @@ public interface ILabelProvider {
 	public String getLabel();
 
 	/**
-	 * @return True, if the label provided is a default label, false otherwise.
-	 */
-	public boolean isLabelDefault();
-
-	/**
 	 * @return A human-readable name of the concrete label provider.
 	 */
 	public String getProviderName();

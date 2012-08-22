@@ -1294,10 +1294,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	}
 
 	/**
-	 * @return the isDefaultLabel, see {@link #isDefaultLabel}
+	 * @return 
 	 */
+	@Override
 	public boolean isLabelDefault() {
-		return tablePerspective.isDefaultLabel();
+		return tablePerspective.isLabelDefault();
 	}
 
 	/**

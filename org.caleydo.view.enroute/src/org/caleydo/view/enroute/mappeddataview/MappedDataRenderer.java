@@ -431,14 +431,14 @@ public class MappedDataRenderer {
 			if (group == null) {
 				group = tablePerspective.getDimensionPerspective().getVirtualArray()
 						.getGroupList().get(0);
-				group.setLabel(tablePerspective.getLabel(), tablePerspective.isDefaultLabel());
+				group.setLabel(tablePerspective.getLabel(), tablePerspective.isLabelDefault());
 			}
 		} else {
 			group = tablePerspective.getRecordGroup();
 			if (group == null) {
 				group = tablePerspective.getRecordPerspective().getVirtualArray()
 						.getGroupList().get(0);
-				group.setLabel(tablePerspective.getLabel(), tablePerspective.isDefaultLabel());
+				group.setLabel(tablePerspective.getLabel(), tablePerspective.isLabelDefault());
 			}
 		}
 		topCaptionLayout.init(group, experimentPerspective, dataDomain);

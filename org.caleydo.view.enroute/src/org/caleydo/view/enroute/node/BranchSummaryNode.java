@@ -23,11 +23,13 @@
 package org.caleydo.view.enroute.node;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
-import org.caleydo.core.util.base.ILabelProvider;
+
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -322,11 +324,6 @@ public class BranchSummaryNode extends ANode {
 	@Override
 	public int getWidthPixels() {
 		return MIN_NODE_WIDTH_PIXELS;
-	}
-
-	@Override
-	public boolean isLabelDefault() {
-		return false;
 	}
 	
 	@Override

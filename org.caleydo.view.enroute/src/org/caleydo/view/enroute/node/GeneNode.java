@@ -86,7 +86,7 @@ public class GeneNode extends ALinearizableNode implements ILabelHolder {
 	}
 
 	@Override
-	public void setLabel(String label, boolean isLabelDefault) {
+	public void setLabel(String label) {
 		this.label = label;
 	}
 

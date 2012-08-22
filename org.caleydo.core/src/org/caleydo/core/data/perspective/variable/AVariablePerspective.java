@@ -21,12 +21,14 @@ package org.caleydo.core.data.perspective.variable;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.FilterManager;
@@ -40,17 +42,17 @@ import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.util.base.IDefaultLabelHolder;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
- * A {@link AVariablePerspective} holds all relevant meta data for either records
- * through the {@link RecordPerspective} or dimensions through the
+ * A {@link AVariablePerspective} holds all relevant meta data for either
+ * records through the {@link RecordPerspective} or dimensions through the
  * {@link DimensionPerspective}. For many uses both, a RecordPerspective and a
- * DimsenionPerspective are necessary. {@link TablePerspective} is designed to hold
- * combinations of Record- and DimensionPerspectives.
+ * DimsenionPerspective are necessary. {@link TablePerspective} is designed to
+ * hold combinations of Record- and DimensionPerspectives.
  * </p>
  * <p>
  * Among the information the DataPerspectives holds are:
@@ -77,14 +79,14 @@ import org.eclipse.core.runtime.Status;
 @XmlSeeAlso({ RecordPerspective.class, DimensionPerspective.class,
 		RecordVirtualArray.class, DimensionVirtualArray.class })
 @XmlRootElement
-public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType, GroupType>, GroupType extends GroupList<GroupType, VA, DeltaType>, DeltaType extends VirtualArrayDelta<DeltaType>, FilterManagerType extends FilterManager<?, DeltaType, ?, VA>> implements ILabelProvider {
+public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType, GroupType>, GroupType extends GroupList<GroupType, VA, DeltaType>, DeltaType extends VirtualArrayDelta<DeltaType>, FilterManagerType extends FilterManager<?, DeltaType, ?, VA>>
+		implements IDefaultLabelHolder {
 
 	/** The unique ID of the perspective */
 	@XmlElement
 	protected String perspectiveID;
 
 	/** A human-readable description of the perspective */
-	@XmlElement
 	private String label;
 
 	/**
@@ -163,6 +165,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	 * @param label
 	 *            setter, see {@link #label}
 	 */
+	@Override
 	public void setLabel(String label, boolean isDefaultLabel) {
 		if (label == null)
 			throw new IllegalArgumentException("Label was null");
@@ -571,6 +574,11 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	@Override
 	public String toString() {
 		return perspectiveID + ", size: " + virtualArray.size();
+	}
+	
+	@Override
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 }

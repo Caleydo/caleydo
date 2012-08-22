@@ -25,7 +25,7 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
-import org.caleydo.view.dvi.contextmenu.RenameDataDomainItem;
+import org.caleydo.view.dvi.contextmenu.RenameLabelHolderItem;
 import org.caleydo.view.dvi.layout.AGraphLayout;
 
 public abstract class ADataNode extends ADefaultTemplateNode {
@@ -51,7 +51,7 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 			public void rightClicked(Pick pick) {
 				ContextMenuCreator contextMenuCreator = view.getContextMenuCreator();
 				contextMenuCreator
-						.addContextMenuItem(new RenameDataDomainItem(dataDomain));
+						.addContextMenuItem(new RenameLabelHolderItem(dataDomain));
 			}
 
 		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
@@ -73,11 +73,6 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 	@Override
 	public String getLabel() {
 		return dataDomain.getLabel();
-	}
-
-	@Override
-	public boolean isLabelDefault() {
-		return false;
 	}
 
 }

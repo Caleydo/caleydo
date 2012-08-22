@@ -558,10 +558,6 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			}
 		}
 
-		// for (Pair<String, TablePerspective> pair :
-		// sortedParentTablePerspectives) {
-		// tablePerspectives.add(pair.getSecond());
-		// }
 	}
 
 	@Override
@@ -583,8 +579,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 	@Override
 	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
 			float mouseCoordinateY, DragAndDropController dragAndDropController) {
-		// ArrayList<TablePerspective> tablePerspectives = new
-		// ArrayList<TablePerspective>();
+
 		for (IDraggable draggable : draggables) {
 			if (draggable instanceof PerspectiveRenderer) {
 				PerspectiveRenderer perspectiveRenderer = (PerspectiveRenderer) draggable;
@@ -606,17 +601,6 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 				// tablePerspectives.add(dimensionGroupRenderer.getTablePerspective());
 			}
 		}
-
-		// if (!tablePerspectives.isEmpty())
-		// {
-		// // FIXME: this needs to be looked at again
-		// // System.out.println("Drop");
-		// AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
-		// tablePerspectives.get(0));
-		// event.setReceiver((GLVisBricks) representedView);
-		// event.setSender(this);
-		// GeneralManager.get().getEventPublisher().triggerEvent(event);
-		// }
 
 	}
 

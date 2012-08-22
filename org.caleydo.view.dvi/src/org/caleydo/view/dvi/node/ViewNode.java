@@ -40,6 +40,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.ViewNodeBackGroundRenderer;
 import org.caleydo.view.dvi.contextmenu.OpenViewItem;
+import org.caleydo.view.dvi.contextmenu.RenameLabelHolderItem;
 import org.caleydo.view.dvi.layout.AGraphLayout;
 import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
 import org.eclipse.core.runtime.FileLocator;
@@ -81,6 +82,9 @@ public class ViewNode extends ADefaultTemplateNode {
 			public void rightClicked(Pick pick) {
 				view.getContextMenuCreator().addContextMenuItem(
 						new OpenViewItem(representedView));
+				
+				view.getContextMenuCreator().addContextMenuItem(
+						new RenameLabelHolderItem(representedView));
 			}
 
 			@Override
@@ -169,15 +173,6 @@ public class ViewNode extends ADefaultTemplateNode {
 		bodyColumn = new Column("bodyColumn");
 
 		ElementLayout bodySpacingLayoutY = new ElementLayout("compGroupOverview");
-		// if (representedView instanceof ATableBasedView) {
-		// overviewTablePerspectiveRenderer = new
-		// TablePerspectiveListRenderer(this,
-		// view, dragAndDropController, new ArrayList<TablePerspective>());
-		// } else {
-		// overviewTablePerspectiveRenderer = new
-		// TablePerspectiveListRenderer(this,
-		// view, dragAndDropController, getTablePerspectives());
-		// }
 
 		bodySpacingLayoutY.setRatioSizeY(1);
 
@@ -205,20 +200,10 @@ public class ViewNode extends ADefaultTemplateNode {
 
 		if (representedView instanceof ITablePerspectiveBasedView) {
 			return ((ITablePerspectiveBasedView) representedView).getTablePerspectives();
-			// TablePerspective tablePerspective = ((ATableBasedView)
-			// representedView)
-			// .getTablePerspectives();
-			// List<TablePerspective> containers = new
-			// ArrayList<TablePerspective>();
-			// containers.add(tablePerspective);
-			// return containers;
+
 		}
 
-		// List<ADimensionGroupData> groups = representedView.get();
-		// if (groups == null) {
 		return new ArrayList<TablePerspective>();
-		// }
-		// return new ArrayList<TablePerspective>(groups);
 	}
 
 	public Set<IDataDomain> getDataDomains() {
@@ -231,13 +216,7 @@ public class ViewNode extends ADefaultTemplateNode {
 
 	@Override
 	public void update() {
-		// if (representedView instanceof ATableBasedView) {
-		// overviewTablePerspectiveRenderer
-		// .setTablePerspectives(new ArrayList<TablePerspective>());
-		// } else {
-		// overviewTablePerspectiveRenderer
-		// .setTablePerspectives(getTablePerspectives());
-		// }
+
 		dataDomains = representedView.getDataDomains();
 		recalculateNodeSize();
 	}
@@ -250,7 +229,6 @@ public class ViewNode extends ADefaultTemplateNode {
 	@Override
 	public void destroy() {
 		super.destroy();
-		// overviewTablePerspectiveRenderer.destroy();
 		view.removeAllIDPickingListeners(DATA_GRAPH_NODE_PICKING_TYPE, id);
 	}
 
@@ -273,11 +251,6 @@ public class ViewNode extends ADefaultTemplateNode {
 	@Override
 	public String getLabel() {
 		return representedView.getLabel();
-	}
-
-	@Override
-	public boolean isLabelDefault() {
-		return false;
 	}
 	
 	@Override

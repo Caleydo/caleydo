@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
@@ -37,7 +38,7 @@ import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.contextmenu.AddTablePerspectiveToViewsItemContainer;
 import org.caleydo.view.dvi.contextmenu.RemoveTablePerspectiveFromViewItem;
-import org.caleydo.view.dvi.contextmenu.RenameTablePerspectiveItem;
+import org.caleydo.view.dvi.contextmenu.RenameLabelHolderItem;
 import org.caleydo.view.dvi.contextmenu.ShowTablePerspectiveInViewsItemContainer;
 import org.caleydo.view.dvi.node.MultiTablePerspectiveViewNode;
 import org.caleydo.view.dvi.node.ViewNode;
@@ -238,7 +239,7 @@ public class TablePerspectivePickingListener extends APickingListener {
 						tablePerspective));
 
 		view.getContextMenuCreator().addContextMenuItem(
-				new RenameTablePerspectiveItem(tablePerspective));
+				new RenameLabelHolderItem(tablePerspective));
 
 		if (tablePerspectiveRenderer.node instanceof MultiTablePerspectiveViewNode) {
 			view.getContextMenuCreator()

@@ -27,9 +27,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
@@ -46,7 +49,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.PickingType;
 import org.caleydo.view.dvi.contextmenu.CreateTablePerspectiveItem;
-import org.caleydo.view.dvi.contextmenu.RenameVariablePerspectiveItem;
+import org.caleydo.view.dvi.contextmenu.RenameLabelHolderItem;
 import org.caleydo.view.dvi.event.CreateTablePerspectiveEvent;
 import org.caleydo.view.dvi.node.IDVINode;
 import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
@@ -298,10 +301,21 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 				if (perspectiveRenderer == null)
 					return;
 
+				AVariablePerspective<?, ?, ?, ?> perspective = null;
+				if (perspectiveRenderer.isRecordPerspective()) {
+					perspective = dataDomain.getTable().getRecordPerspective(
+							perspectiveRenderer.getPerspectiveID());
+				} else {
+					perspective = dataDomain.getTable().getDimensionPerspective(
+							perspectiveRenderer.getPerspectiveID());
+				}
+
+				// view.getContextMenuCreator().addContextMenuItem(
+				// new RenameVariablePerspectiveItem(perspectiveRenderer
+				// .getPerspectiveID(), dataDomain, perspectiveRenderer
+				// .isRecordPerspective()));
 				view.getContextMenuCreator().addContextMenuItem(
-						new RenameVariablePerspectiveItem(perspectiveRenderer
-								.getPerspectiveID(), dataDomain, perspectiveRenderer
-								.isRecordPerspective()));
+						new RenameLabelHolderItem(perspective));
 
 			}
 
