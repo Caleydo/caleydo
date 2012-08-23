@@ -3,7 +3,7 @@
 <schema targetNamespace="org.caleydo.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.caleydo.core" id="org.caleydo.datadomain.DataDomain" name="DataDomain"/>
+         <meta.schema plugin="org.caleydo.core" id="org.caleydo.datadomain.DataDomainInitialization.exsd" name="DataDomainInitialization"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -44,7 +44,7 @@
       </complexType>
    </element>
 
-   <element name="DataDomain">
+   <element name="DataDomainInitialization">
       <complexType>
          <attribute name="id" type="string" use="required">
             <annotation>
@@ -66,7 +66,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.caleydo.core.data.datadomain.IDataDomain"/>
+                  <meta.attribute kind="java" basedOn=":org.caleydo.core.data.datadomain.IDataDomainInitialization"/>
                </appInfo>
             </annotation>
          </attribute>

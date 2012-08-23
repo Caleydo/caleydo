@@ -8,6 +8,7 @@
    <extension-point id="org.caleydo.view.ViewCreator" name="ViewCreator" schema="schema/org.caleydo.view.ViewCreator.exsd"/>
    <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
    <extension-point id="org.caleydo.view.ViewCategory" name="ViewCategory" schema="schema/org.caleydo.view.ViewCategory.exsd"/>
+   <extension-point id="org.caleydo.datadomain.DataDomainInitialization" name="DataDomainInitialization" schema="schema/org.caleydo.datadomain.DataDomainInitialization.exsd"/>
 
    <extension
          id="application"

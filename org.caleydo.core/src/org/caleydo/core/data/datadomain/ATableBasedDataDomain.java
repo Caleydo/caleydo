@@ -206,7 +206,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	{
 		defaultStartViewType = "org.caleydo.view.heatmap.hierarchical";
 	}
-
+	
 	/**
 	 * @return the isColumnDimension, see {@link #isColumnDimension}
 	 */
@@ -216,20 +216,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 	@Override
 	public void init() {
-		//
-		// if (dataSetDescription != null &&
-		// dataSetDescription.isTransposeMatrix()) {
-		// if (configuration.isDefaultConfiguration()) {
-		// IDType.unregisterType(recordIDType);
-		// IDType.unregisterType(dimensionIDType);
-		// IDType.unregisterType(recordGroupIDType);
-		// IDType.unregisterType(dimensionGroupIDType);
-		// }
-		// createDefaultConfigurationWithColumnsAsRecords();
-		//
-		// } else
-		// createDefaultConfiguration();
-		// }
 
 		if (dataSetDescription.isTransposeMatrix()) {
 			recordIDCategory = IDCategory.getIDCategory(dataSetDescription
@@ -280,19 +266,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		super.init();
 
 	}
-
-	// /**
-	// * Create a default {@link DataDomainConfiguration} where the columns are
-	// * the dimensions
-	// */
-	// public abstract void createDefaultConfiguration();
-	//
-	// /**
-	// * Create a default {@link DataDomainConfiguration} where the columns are
-	// * the records (i.e. perceived swapped compared to the data source)
-	// */
-	// public abstract void createDefaultConfigurationWithColumnsAsRecords();
-
+	
 	/**
 	 * Sets the {@link #table} of this dataDomain. The table may not be null.
 	 * Initializes {@link #recordPerspectiveIDs} and

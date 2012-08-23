@@ -27,7 +27,7 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
- * Use cases are the unique points of coordinations for views and its data.
+ * Data domains are the unique points of coordinations for views and its data.
  * Genetic data is one example - another is a more generic one where Caleydo can
  * load arbitrary tabular data but without any special features of genetic
  * analysis.
@@ -35,7 +35,8 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public interface IDataDomain extends ILabelHolder {
+public interface IDataDomain
+	extends ILabelHolder {
 
 	/**
 	 * Returns the qualified name of the concrete data domain
@@ -66,8 +67,8 @@ public interface IDataDomain extends ILabelHolder {
 	 * Sets the parameters for loading the data-{@link Set} contained in this
 	 * use case
 	 * 
-	 * @param dataSetDescription
-	 *            parameters for loading the data-{@link Set} of this use case
+	 * @param dataSetDescription parameters for loading the data-{@link Set} of
+	 *            this use case
 	 */
 	public void setDataSetDescription(DataSetDescription dataSetDescription);
 

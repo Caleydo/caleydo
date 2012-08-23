@@ -57,12 +57,6 @@ public class Activator
 		super.start(context);
 		plugin = this;
 
-		GeneticIDMappingCreator.createIDTypesAndMapping();
-
-		// Trigger pathway loading
-		if (!GeneralManager.get().isDryMode())
-			DataDomainManager.get().createDataDomain("org.caleydo.datadomain.pathway");
-
 		SerializationManager.get().registerSerializableTypes(GeneticDataDomain.class);
 	}
 

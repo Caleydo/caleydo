@@ -21,30 +21,27 @@ package org.caleydo.core.startup;
 
 import java.io.File;
 import org.caleydo.core.data.collection.EDataTransformation;
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.util.HelpButtonWizardDialog;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.specialized.Organism;
-import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.WorkbenchPlugin;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleException;
 
 /**
  * Startup procedure for project wizard.
  * 
  * @author Marc Streit
  */
-public class GeneticGUIStartupProcedure extends AStartupProcedure {
+public class GeneticGUIStartupProcedure
+	extends AStartupProcedure {
 
 	private boolean loadSampleData = false;
 
@@ -64,15 +61,8 @@ public class GeneticGUIStartupProcedure extends AStartupProcedure {
 			GeneralManager.get().getBasicInfo().setOrganism(Organism.HOMO_SAPIENS);
 		}
 
-		// Start the genetic plugin bundle to trigger mapping loading
-		try {
-			Bundle bundle = Platform.getBundle("org.caleydo.datadomain.genetic");
-			bundle.start();
-		} catch (BundleException e) {
-			Logger.log(new Status(Status.ERROR, this.toString(),
-					"Failed to initalize genetic data domain", e));
-			throw new IllegalStateException("Failed to initalize genetic data domain");
-		}
+		DataDomainManager.get().initalizeDataDomain(
+				"org.caleydo.datadomain.genetic");
 
 		super.init();
 	}
@@ -90,7 +80,8 @@ public class GeneticGUIStartupProcedure extends AStartupProcedure {
 			dataSetDescription.setMathFilterMode(EDataTransformation.LOG2
 					.getHumanReadableRep());
 			dataImportWizard = new DataImportWizard(dataSetDescription);
-		} else {
+		}
+		else {
 			dataImportWizard = new DataImportWizard();
 		}
 		// clear old workbench file
@@ -119,7 +110,8 @@ public class GeneticGUIStartupProcedure extends AStartupProcedure {
 		try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 					.showView("org.caleydo.view.dvi");
-		} catch (PartInitException e) {
+		}
+		catch (PartInitException e) {
 			// do nothing if DVI does not exist
 		}
 	}

@@ -10,4 +10,13 @@
           name="GeneticDataDomain"
           class="org.caleydo.datadomain.genetic.GeneticDataDomain" />
    </extension>
+   <extension
+        id="org.caleydo.datadomain.genetic"
+        name="GeneticDataDomainInitialization"
+        point="org.caleydo.datadomain.DataDomainInitialization">
+        <DataDomainInitialization
+          id="org.caleydo.datadomain.DataDomainInitialization"
+          name="GeneticDataDomainInitialization"
+          class="org.caleydo.datadomain.genetic.GeneticDataDomainInitialization" />
+   </extension>
 </plugin>

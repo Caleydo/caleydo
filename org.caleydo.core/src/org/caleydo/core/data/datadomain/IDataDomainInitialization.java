@@ -17,46 +17,22 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.datadomain.generic;
-
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+package org.caleydo.core.data.datadomain;
 
 /**
- * Use case for generic set-based data which is not further specified.
+ * Extension point interface class that triggers the initialization of data
+ * domains. The initialization concerns the creation of ID types and ID
+ * mappings. Note that this method is intended for initialization of the data
+ * domain in general. It does not create an data domain instance.
  * 
  * @author Marc Streit
- * @author Alexander lex
  */
-@XmlType
-@XmlRootElement
-public class GenericDataDomain
-	extends ATableBasedDataDomain {
-
-	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.generic";
+public interface IDataDomainInitialization {
 
 	/**
-	 * Counter used for determining the extension that together with the type
-	 * builds the data domain ID.
+	 * Initialization of any {@link IDType}s and ID mapping tables that are
+	 * required for a data domain.
 	 */
-	private static int extensionID = 0;
+	public void createIDTypesAndMapping();
 
-	/**
-	 * Constructor.
-	 */
-	public GenericDataDomain() {
-
-		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE
-				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
-	}
-
-	@Override
-	public void init() {
-		icon = EIconTextures.DATA_DOMAIN_CLINICAL;
-
-		super.init();
-	}
 }

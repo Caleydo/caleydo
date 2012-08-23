@@ -71,6 +71,32 @@ public class DataDomainManager {
 	}
 
 	/**
+	 * This method is intended for initialization of the data domain in general.
+	 * It does not create an data domain instance.
+	 * 
+	 * @param dataDomainType the plug-in id of the data domain
+	 */
+	public void initalizeDataDomain(String dataDomainType) {
+
+		IExtensionRegistry reg = Platform.getExtensionRegistry();
+
+		IExtensionPoint ep = reg
+				.getExtensionPoint("org.caleydo.datadomain.DataDomainInitialization");
+		IExtension ext = ep.getExtension(dataDomainType);
+		IConfigurationElement[] ce = ext.getConfigurationElements();
+
+		try {
+			IDataDomainInitialization dataDomain = (IDataDomainInitialization) ce[0]
+					.createExecutableExtension("class");
+			dataDomain.createIDTypesAndMapping();
+		}
+		catch (Exception ex) {
+			throw new RuntimeException("Could not instantiate data domain " + dataDomainType,
+					ex);
+		}
+	}
+
+	/**
 	 * <p>
 	 * Create a new {@link ADataDomain} of the type specified through
 	 * <code>dataDomainType</code>. The created dataDomain is also registered
