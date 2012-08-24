@@ -20,9 +20,6 @@
 package org.caleydo.core.data.perspective.table;
 
 import java.util.HashMap;
-import java.util.Random;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
@@ -57,25 +54,19 @@ public class AdjustedRandIndex {
 
 		float score = 1;
 		// score = new Random().nextFloat();#
-		
+
 		long startTime = System.currentTimeMillis();
-		
+
 		score = GeneralManager.get().getRStatisticsPerformer()
 				.adjustedRandIndex(tablePerspective, referenceTablePerspective);
-		
+
 		long endTime = System.currentTimeMillis();
 		System.out.println("Calculation took " + (endTime - startTime) + "ms");
-		
+
 		if (storeResult) {
 			tablePerspectiveToScore.put(tablePerspective, score);
-			referenceTablePerspective.getContainerStatistics().adjustedRandIndex()
-					.setScore(tablePerspective, score);
 		}
 
 		return score;
-	}
-
-	public void setScore(TablePerspective tablePerspective, float score) {
-		tablePerspectiveToScore.put(tablePerspective, score);
 	}
 }

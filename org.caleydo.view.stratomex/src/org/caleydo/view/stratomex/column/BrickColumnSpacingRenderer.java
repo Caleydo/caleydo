@@ -27,6 +27,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.similarity.GroupSimilarity;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
@@ -147,11 +148,13 @@ public class BrickColumnSpacingRenderer
 			return;
 
 		for (GLBrick leftBrick : leftBricks) {
+
 			if (leftBrick.isHeaderBrick())
 				continue;
-			GroupMatch groupMatch = new GroupMatch(leftBrick);
-			hashGroupID2GroupMatches.put(leftBrick.getTablePerspective().getRecordGroup()
-					.getGroupIndex(), groupMatch);
+
+			Group group = leftBrick.getTablePerspective().getRecordGroup();
+			GroupMatch groupMatch = new GroupMatch(leftBrick, group);
+			hashGroupID2GroupMatches.put(group.getGroupIndex(), groupMatch);
 
 			RectangleCoordinates leftBrickElementLayout = leftBrick.getLayoutForConnections();
 
@@ -164,12 +167,14 @@ public class BrickColumnSpacingRenderer
 			float leftSimilarityOffsetY = 0;
 
 			for (GLBrick rightBrick : rightBricks) {
+
 				if (rightBrick.isHeaderBrick())
 					continue;
+
+				Group subGroup = rightBrick.getTablePerspective().getRecordGroup();
 				SubGroupMatch subGroupMatch = new SubGroupMatch(
-						glVisBricks.getNextConnectionBandID(), rightBrick);
-				groupMatch.addSubGroupMatch(rightBrick.getTablePerspective().getRecordGroup()
-						.getGroupIndex(), subGroupMatch);
+						glVisBricks.getNextConnectionBandID(), rightBrick, subGroup);
+				groupMatch.addSubGroupMatch(subGroup.getGroupIndex(), subGroupMatch);
 
 				RecordVirtualArray similarityVA = leftGroupSimilarity
 						.getSimilarityVAs(rightBrick.getTablePerspective().getRecordGroup()
@@ -312,11 +317,12 @@ public class BrickColumnSpacingRenderer
 		// FIXME Stratomex 2.0 testing
 //		if (leftDimGroup != null && rightDimGroup != null) {
 //			float score = leftDimGroup.getTablePerspective().getContainerStatistics()
-//					.adjustedRandIndex().getScore(rightDimGroup.getTablePerspective(), true);
-//
-//			glVisBricks.getTextRenderer().renderText(gl,
-//					"Score: " + new Float(score).toString().substring(0, 4), 0, 0, 0, 0.004f,
-//					50);
+//					.getAdjustedRandIndex()
+//					.getScore(rightDimGroup.getTablePerspective(), true);
+
+			// glVisBricks.getTextRenderer().renderText(gl,
+			// new Float(score).toString().substring(0, 4), 0, 0, 0, 0.004f,
+			// 50);
 //		}
 	}
 
@@ -642,15 +648,47 @@ public class BrickColumnSpacingRenderer
 					}
 
 					// FIXME Stratomex 2.0 testing
-//					glVisBricks.getTextRenderer().begin3DRendering();
-//					glVisBricks.getTextRenderer().draw3D(gl,
-//							Float.toString(subGroupMatch.getLeftSimilarityRatio()), xStart,
-//							subGroupMatch.getLeftAnchorYTop(), 0.5f, 0.003f, 50);
-//
-//					glVisBricks.getTextRenderer().draw3D(gl,
-//							Float.toString(subGroupMatch.getRightSimilarityRatio()), xEnd-.3f,
-//							subGroupMatch.getLeftAnchorYTop(), 0.5f, 0.003f, 50);
-//					glVisBricks.getTextRenderer().end3DRendering();
+
+					// glVisBricks.getTextRenderer().begin3DRendering();
+
+					// String similarity =
+					// Float.toString(subGroupMatch.getLeftSimilarityRatio());
+					// if (similarity.length() >= 4)
+					// similarity = similarity.substring(0, 4);
+					//
+					// glVisBricks.getTextRenderer().draw3D(gl, similarity,
+					// xStart,
+					// subGroupMatch.getLeftAnchorYTop(), 0.5f, 0.003f, 50);
+					//
+					// similarity =
+					// Float.toString(subGroupMatch.getRightSimilarityRatio());
+					// if (similarity.length() >= 4)
+					// similarity = similarity.substring(0, 4);
+					//
+					// glVisBricks.getTextRenderer().draw3D(gl, similarity, xEnd
+					// - .2f,
+					// subGroupMatch.getLeftAnchorYTop(), 0.5f, 0.003f, 50);
+
+					// HashMap<Group, HashMap<Group, Float>> groupToSubGroup =
+					// leftDimGroup.getTablePerspective()
+					// .getContainerStatistics().getJaccardIndex()
+					// .getScore(rightDimGroup.getTablePerspective(), true);
+					//
+					// HashMap<Group, Float> subGroupToScore = groupToSubGroup
+					// .get(subGroupMatch.getSubGroup());
+					//
+					// float jacc = subGroupToScore.get(groupMatch.getGroup());
+					//
+					// String jaccardIndex = Float.toString(jacc);
+					//
+					// if (jaccardIndex.length() >= 4)
+					// jaccardIndex = jaccardIndex.substring(0, 4);
+					//
+					// glVisBricks.getTextRenderer().draw3D(gl, jaccardIndex,
+					// xStart,
+					// subGroupMatch.getLeftAnchorYTop(), 0.5f, 0.003f, 50);
+					//
+					// glVisBricks.getTextRenderer().end3DRendering();
 				}
 
 				gl.glPopName();

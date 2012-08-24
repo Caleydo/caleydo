@@ -63,8 +63,6 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 	float[] similarities;
 	GLBrick brick;
 
-	int[] scores;
-
 	public RelationIndicatorRenderer(GLBrick brick, GLStratomex stratomex, boolean isLeft) {
 		this.brick = brick;
 		// this.dataDomain = brick.getDataDomain();
@@ -132,7 +130,6 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 				.getGroupSimilarity(perspectiveID, groupID);
 
 		similarities = groupSimilarity.getSimilarities();
-		scores = groupSimilarity.getScores();
 
 	}
 

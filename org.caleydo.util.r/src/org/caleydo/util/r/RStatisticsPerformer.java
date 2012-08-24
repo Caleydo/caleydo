@@ -183,25 +183,25 @@ public class RStatisticsPerformer
 	public float adjustedRandIndex(TablePerspective container1, TablePerspective container2) {
 		try {
 
-//			 int[] array = new int[] { 1, 1, 1, 2, 2, 2, 2, 2 };
-//			 int[] array_2 = new int[] { 1, 1, 1, 0, 2, 2, 3, 2};
+			// int[] array = new int[] { 1, 1, 1, 2, 2, 2, 2, 2 };
+			// int[] array_2 = new int[] { 1, 1, 1, 0, 2, 2, 3, 2};
 
 			REXP scores;
 
 			RecordVirtualArray va1 = container1.getRecordPerspective().getVirtualArray();
 			RecordVirtualArray va2 = container2.getRecordPerspective().getVirtualArray();
 
-			int[] array = new int[va1.size()];
-			int[] array_2 = new int[va1.size()];
+			int[] set1 = new int[va1.size()];
+			int[] set2 = new int[va1.size()];
 
 			int globalVAIndex = 0;
 			boolean isMatchingGroupFound = false;
 
-			//System.out.println("group list 1: "+ va1.getGroupList());
-			//System.out.println("group list 2: "+ va2.getGroupList());
-			
-			//System.out.println("Size left table " +va1.size());
-			
+			// System.out.println("group list 1: "+ va1.getGroupList());
+			// System.out.println("group list 2: "+ va2.getGroupList());
+
+			// System.out.println("Size left table " +va1.size());
+
 			for (Group group : va1.getGroupList()) {
 
 				for (int vaIndex = group.getStartIndex(); vaIndex < group.getEndIndex(); vaIndex++) {
@@ -214,12 +214,14 @@ public class RStatisticsPerformer
 								.getEndIndex(); vaIndex2++) {
 							{
 								int id2 = va2.get(vaIndex2);
-								
+
 								if (va1.getIdType() != va2.getIdType()) {
-									IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
-											.getIDMappingManager(va1.getIdType().getIDCategory());
-									Set<Integer> ids = idMappingManager.getIDAsSet(va2.getIdType(),va1.getIdType(), id2);
-								
+									IDMappingManager idMappingManager = IDMappingManagerRegistry
+											.get().getIDMappingManager(
+													va1.getIdType().getIDCategory());
+									Set<Integer> ids = idMappingManager.getIDAsSet(
+											va2.getIdType(), va1.getIdType(), id2);
+
 									if (ids != null) {
 										id2 = ids.iterator().next();
 										if (ids.size() > 2) {
@@ -227,9 +229,9 @@ public class RStatisticsPerformer
 										}
 									}
 								}
-								
+
 								if (id == id2) {
-									array_2[globalVAIndex] = group2.getID();
+									set2[globalVAIndex] = group2.getID();
 									isMatchingGroupFound = true;
 									break;
 								}
@@ -240,47 +242,46 @@ public class RStatisticsPerformer
 							break;
 						}
 					}
-					
+
 					if (isMatchingGroupFound) {
 						isMatchingGroupFound = false;
 						globalVAIndex++;
-						array[globalVAIndex] = group.getID();
+						set1[globalVAIndex] = group.getID();
 					}
 				}
 			}
-			
-			int[] finalArray = new int[globalVAIndex];
-			int[] finalArray2 = new int[globalVAIndex];
-			
+
+			int[] finalSet1 = new int[globalVAIndex];
+			int[] finalSet2 = new int[globalVAIndex];
+
 			// we need to cut the array to only include the found matches
-			for (int index = 0; index < globalVAIndex; index++)
-			{
-				finalArray[index] = array[index];
-				finalArray2[index] = array_2[index];
+			for (int index = 0; index < globalVAIndex; index++) {
+				finalSet1[index] = set1[index];
+				finalSet2[index] = set2[index];
 			}
-			
-			//System.out.println("Matches found " +globalVAIndex);
 
-			//System.out.println("Array: " + engine.eval("my_array"));
-			//System.out.println("Array 2: " + engine.eval("my_array_2"));
+			// System.out.println("Matches found " +globalVAIndex);
 
-			engine.assign("my_array", finalArray);
-			engine.assign("my_array_2", finalArray2);
+			// System.out.println("Array: " + engine.eval("my_array"));
+			// System.out.println("Array 2: " + engine.eval("my_array_2"));
+
+			engine.assign("set1", finalSet1);
+			engine.assign("set2", finalSet2);
 
 			engine.eval("library(clues)");
-			scores = engine.eval("adjustedRand(my_array,my_array_2)");
-			//System.out.println("Adjusted rand index result: " + scores);
-			
-			//double[] result = scores.asDoubleArray();
-//			System.out.println(result);
-			
-			return (float)(scores.asDoubleArray()[0]);
+			scores = engine.eval("adjustedRand(set1,set2)");
+			// System.out.println("Adjusted rand index result: " + scores);
+
+			// double[] result = scores.asDoubleArray();
+			// System.out.println(result);
+
+			return (float) (scores.asDoubleArray()[0]);
 
 		}
 		catch (Exception e) {
 			Logger.log(new Status(IStatus.ERROR, toString(), "Could not run R commands", e));
 		}
-		
+
 		return -1;
 	}
 
@@ -323,8 +324,8 @@ public class RStatisticsPerformer
 				resultVec[count] = mean2 * -1 / mean1;
 		}
 
-		container1.getContainerStatistics().foldChange().setResult(container2, resultVec);
-		container2.getContainerStatistics().foldChange().setResult(container1, resultVec);
+		container1.getContainerStatistics().getFoldChange().setResult(container2, resultVec);
+		container2.getContainerStatistics().getFoldChange().setResult(container1, resultVec);
 
 		// double[] meanDimension1 = new double[meanDimensionVec1.size()];
 		// for (int recordIndex = 0; recordIndex < meanDimensionVec1.size();
@@ -439,7 +440,8 @@ public class RStatisticsPerformer
 				}
 			}
 
-			container.getContainerStatistics().tTest().setOneSiddedTTestResult(pValueVector);
+			container.getContainerStatistics().getTTest()
+					.setOneSiddedTTestResult(pValueVector);
 
 			RecordFilter contentFilter = new RecordFilter(container.getRecordPerspective()
 					.getPerspectiveID());
@@ -522,9 +524,9 @@ public class RStatisticsPerformer
 			// System.out.println(pValue.asDouble());
 		}
 
-		tablePerspective1.getContainerStatistics().tTest()
+		tablePerspective1.getContainerStatistics().getTTest()
 				.setTwoSiddedTTestResult(tablePerspective2, pValueVector);
-		tablePerspective2.getContainerStatistics().tTest()
+		tablePerspective2.getContainerStatistics().getTTest()
 				.setTwoSiddedTTestResult(tablePerspective1, pValueVector);
 
 		RecordFilter contentFilter = new RecordFilter(tablePerspective1.getRecordPerspective()

@@ -154,7 +154,7 @@ public class FilterRepresentationFoldChange extends
 
 				try {
 					FoldChangeSettings settings = tablePerspective1.getContainerStatistics()
-							.foldChange().getResult(tablePerspective2).getSecond();
+							.getFoldChange().getResult(tablePerspective2).getSecond();
 					switch (settings.getEvaluator()) {
 					case GREATER:
 						evaluatorCheckBox[1].setSelection(true);
@@ -228,7 +228,7 @@ public class FilterRepresentationFoldChange extends
 						// parentComposite.layout();
 					}
 				});
-				tablePerspective1.getContainerStatistics().foldChange()
+				tablePerspective1.getContainerStatistics().getFoldChange()
 						.getResult(tablePerspective2).getFirst();
 
 				Composite histoComposite = new Composite(parentComposite, SWT.NULL);
@@ -310,10 +310,10 @@ public class FilterRepresentationFoldChange extends
 		RecordVirtualArray recordVA = subFilter.getDataDomain().getTable()
 				.getRecordPerspective(filter.getPerspectiveID()).getVirtualArray();
 
-		double[] resultVector = tablePerspective1.getContainerStatistics().foldChange()
+		double[] resultVector = tablePerspective1.getContainerStatistics().getFoldChange()
 				.getResult(tablePerspective2).getFirst();
 		FoldChangeSettings settings = tablePerspective1.getContainerStatistics()
-				.foldChange().getResult(tablePerspective2).getSecond();
+				.getFoldChange().getResult(tablePerspective2).getSecond();
 
 		double foldChangeRatio = settings.getRatio();
 		double foldChangeRatioUncertainty = settings.getRatioUncertainty();
@@ -398,9 +398,9 @@ public class FilterRepresentationFoldChange extends
 			FoldChangeSettings foldChangeSettings = new FoldChangeSettings(foldChange,
 					foldChangeUncertainty, foldChangeEvaluator);
 
-			tablePerspective1.getContainerStatistics().foldChange()
+			tablePerspective1.getContainerStatistics().getFoldChange()
 					.setFoldChangeSettings(tablePerspective2, foldChangeSettings);
-			tablePerspective2.getContainerStatistics().foldChange()
+			tablePerspective2.getContainerStatistics().getFoldChange()
 					.setFoldChangeSettings(tablePerspective1, foldChangeSettings);
 
 			createVADelta();

@@ -200,7 +200,7 @@ public class FilterRepresentationPValue extends
 		RecordVirtualArray recordVA = tablePerspective1.getRecordPerspective()
 				.getVirtualArray();
 
-		double[] tTestResult = tablePerspective1.getContainerStatistics().tTest()
+		double[] tTestResult = tablePerspective1.getContainerStatistics().getTTest()
 				.getOneSidedTTestResult();// ((FilterRepresentationPValue)
 											// subFilter.getFilterRep())
 

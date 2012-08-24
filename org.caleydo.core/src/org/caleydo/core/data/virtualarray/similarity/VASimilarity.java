@@ -128,7 +128,7 @@ public class VASimilarity<VAType extends VirtualArray<VAType, ?, GroupListType>,
 		GroupListType groupList1 = va1.getGroupList();
 		GroupListType groupList2 = va2.getGroupList();
 
-		// ------ first we calculate the similariteis from 1 to 2 ------
+		// ------ first we calculate the similarities from 1 to 2 ------
 
 		// the list of all similarities from group 1 to group 2
 		ArrayList<GroupSimilarity<VAType, GroupListType>> groupSimilarities1 = new ArrayList<GroupSimilarity<VAType, GroupListType>>(

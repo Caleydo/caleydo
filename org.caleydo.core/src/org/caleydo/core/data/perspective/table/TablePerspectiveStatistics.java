@@ -47,7 +47,9 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
  * @author Alexander Lex
  */
 public class TablePerspectiveStatistics {
-	private TablePerspective container;
+
+	/** The table perspective to which we compare **/
+	private TablePerspective referenceTablePerspective;
 
 	/** The average of all cells in the container */
 	private float averageValue = Float.NEGATIVE_INFINITY;
@@ -61,6 +63,8 @@ public class TablePerspectiveStatistics {
 	private TTest tTest;
 
 	private AdjustedRandIndex adjustedRandIndex;
+
+	private JaccardIndex jaccardIndex;
 
 	/**
 	 * Optionally it is possible to specify the number of bins for the histogram
@@ -77,8 +81,8 @@ public class TablePerspectiveStatistics {
 	/** Same as {@link #averageRecords} for dimensions */
 	private ArrayList<Average> averageDimensions;
 
-	public TablePerspectiveStatistics(TablePerspective container) {
-		this.container = container;
+	public TablePerspectiveStatistics(TablePerspective referenceTablePerspective) {
+		this.referenceTablePerspective = referenceTablePerspective;
 	}
 
 	/**
@@ -93,17 +97,18 @@ public class TablePerspectiveStatistics {
 	private void calculateAverageValue() {
 		averageValue = 0;
 		int count = 0;
-		for (Integer recordID : container.getRecordPerspective().getVirtualArray()) {
+		for (Integer recordID : referenceTablePerspective.getRecordPerspective()
+				.getVirtualArray()) {
 
-			DimensionVirtualArray dimensionVA = container.getDimensionPerspective()
-					.getVirtualArray();
+			DimensionVirtualArray dimensionVA = referenceTablePerspective
+					.getDimensionPerspective().getVirtualArray();
 
 			if (dimensionVA == null) {
 				averageValue = 0;
 				return;
 			}
 			for (Integer dimensionID : dimensionVA) {
-				float value = container.getDataDomain().getTable()
+				float value = referenceTablePerspective.getDataDomain().getTable()
 						.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
 				if (!Float.isNaN(value)) {
 					averageValue += value;
@@ -117,19 +122,22 @@ public class TablePerspectiveStatistics {
 	/**
 	 * This is optional! Read more: {@link #numberOfBucketsForHistogram}
 	 * 
-	 * @param numberOfBucketsForHistogram
-	 *            setter, see {@link #numberOfBucketsForHistogram}
+	 * @param numberOfBucketsForHistogram setter, see
+	 *            {@link #numberOfBucketsForHistogram}
 	 */
 	public void setNumberOfBucketsForHistogram(int numberOfBucketsForHistogram) {
 		this.numberOfBucketsForHistogram = numberOfBucketsForHistogram;
 	}
 
+	/**
+	 * @return the histogram, see {@link #histogram}
+	 */
 	public Histogram getHistogram() {
 		if (histogram == null)
-			histogram = calculateHistogram(container.getDataDomain().getTable(),
-					container.getRecordPerspective().getVirtualArray(), container
-							.getDimensionPerspective().getVirtualArray(),
-					numberOfBucketsForHistogram);
+			histogram = calculateHistogram(referenceTablePerspective.getDataDomain()
+					.getTable(), referenceTablePerspective.getRecordPerspective()
+					.getVirtualArray(), referenceTablePerspective.getDimensionPerspective()
+					.getVirtualArray(), numberOfBucketsForHistogram);
 		return histogram;
 	}
 
@@ -148,7 +156,6 @@ public class TablePerspectiveStatistics {
 		else
 			numberOfBuckets = (int) Math.sqrt(recordVA.size());
 		Histogram histogram = new Histogram(numberOfBuckets);
-		
 
 		// FloatCContainerIterator iterator =
 		// ((FloatCContainer)
@@ -156,8 +163,8 @@ public class TablePerspectiveStatistics {
 		for (Integer dimensionID : dimensionVA) {
 			{
 				for (Integer recordID : recordVA) {
-					float value = dataTable.getFloat(DataRepresentation.NORMALIZED,
-							recordID, dimensionID);
+					float value = dataTable.getFloat(DataRepresentation.NORMALIZED, recordID,
+							dimensionID);
 
 					// this works because the values in the container are
 					// already noramlized
@@ -173,31 +180,27 @@ public class TablePerspectiveStatistics {
 	}
 
 	/**
-	 * Access anything related to fold-changes between this container and others
+	 * @return the foldChange, see {@link #foldChange}
 	 */
-	public FoldChange foldChange() {
+	public FoldChange getFoldChange() {
 		if (foldChange == null)
 			foldChange = new FoldChange();
 		return foldChange;
 	}
 
 	/**
-	 * Access anything related to Adjusted Rand Index scores.
-	 * 
-	 * @return
+	 * @return the adjustedRandIndex, see {@link #adjustedRandIndex}
 	 */
-	public AdjustedRandIndex adjustedRandIndex() {
+	public AdjustedRandIndex getAdjustedRandIndex() {
 		if (adjustedRandIndex == null)
-			adjustedRandIndex = new AdjustedRandIndex(container);
+			adjustedRandIndex = new AdjustedRandIndex(referenceTablePerspective);
 		return adjustedRandIndex;
 	}
 
 	/**
-	 * Access anything related to t-tests
-	 * 
-	 * @return
+	 * @return the tTest, see {@link #tTest}
 	 */
-	public TTest tTest() {
+	public TTest getTTest() {
 		if (tTest == null)
 			tTest = new TTest();
 		return tTest;
@@ -219,13 +222,14 @@ public class TablePerspectiveStatistics {
 	private void calculateAverageRecords() {
 		averageRecords = new ArrayList<Average>();
 
-		DimensionVirtualArray dimensionVA = container.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = referenceTablePerspective
+				.getDimensionPerspective().getVirtualArray();
+		RecordVirtualArray recordVA = referenceTablePerspective.getRecordPerspective()
 				.getVirtualArray();
-		RecordVirtualArray recordVA = container.getRecordPerspective().getVirtualArray();
 
 		for (Integer recordID : recordVA) {
 
-			Average averageRecord = calculateAverage(dimensionVA, container
+			Average averageRecord = calculateAverage(dimensionVA, referenceTablePerspective
 					.getDataDomain().getTable(), recordID);
 
 			averageRecords.add(averageRecord);
@@ -248,12 +252,13 @@ public class TablePerspectiveStatistics {
 	private void calculateAverageDimensions() {
 		averageDimensions = new ArrayList<Average>();
 
-		DimensionVirtualArray dimensionVA = container.getDimensionPerspective()
+		DimensionVirtualArray dimensionVA = referenceTablePerspective
+				.getDimensionPerspective().getVirtualArray();
+		RecordVirtualArray recordVA = referenceTablePerspective.getRecordPerspective()
 				.getVirtualArray();
-		RecordVirtualArray recordVA = container.getRecordPerspective().getVirtualArray();
 
 		for (Integer dimensionID : dimensionVA) {
-			Average averageDimension = calculateAverage(recordVA, container
+			Average averageDimension = calculateAverage(recordVA, referenceTablePerspective
 					.getDataDomain().getTable(), dimensionID);
 			averageDimensions.add(averageDimension);
 		}
@@ -285,11 +290,12 @@ public class TablePerspectiveStatistics {
 		for (Integer virtualArrayID : virtualArray) {
 			Float value;
 			if (virtualArray instanceof RecordVirtualArray) {
-				value = table.getFloat(DataRepresentation.NORMALIZED, virtualArrayID,
-						objectID);
-			} else {
-				value = table.getFloat(DataRepresentation.NORMALIZED, objectID,
-						virtualArrayID);
+				value = table
+						.getFloat(DataRepresentation.NORMALIZED, virtualArrayID, objectID);
+			}
+			else {
+				value = table
+						.getFloat(DataRepresentation.NORMALIZED, objectID, virtualArrayID);
 			}
 			if (!value.isNaN()) {
 				sumOfValues += value;
@@ -302,7 +308,8 @@ public class TablePerspectiveStatistics {
 			Float value;
 			if (virtualArray instanceof RecordVirtualArray) {
 				value = table.getFloat(DataRepresentation.NORMALIZED, recordID, objectID);
-			} else {
+			}
+			else {
 				value = table.getFloat(DataRepresentation.NORMALIZED, objectID, recordID);
 			}
 			if (!value.isNaN()) {
@@ -311,6 +318,15 @@ public class TablePerspectiveStatistics {
 		}
 		averageDimension.standardDeviation = Math.sqrt(sumDeviation / nrValidValues);
 		return averageDimension;
+	}
+
+	/**
+	 * @return the jaccardIndex, see {@link #jaccardIndex}
+	 */
+	public JaccardIndex getJaccardIndex() {
+		if (jaccardIndex == null)
+			jaccardIndex = new JaccardIndex(referenceTablePerspective);
+		return jaccardIndex;
 	}
 
 }

@@ -182,7 +182,7 @@ public class GLVendingMachine
 			for (TablePerspective fixedTablePerspective : fixedTablePerspectives) {
 
 				scoreSum += referenceTablePerspective.getContainerStatistics()
-						.adjustedRandIndex().getScore(fixedTablePerspective, false);
+						.getAdjustedRandIndex().getScore(fixedTablePerspective, false);
 				scoreCount++;
 			}
 			score2TablePerspectiveList

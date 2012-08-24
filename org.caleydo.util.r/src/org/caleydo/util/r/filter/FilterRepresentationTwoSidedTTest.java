@@ -1,26 +1,25 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.util.r.filter;
 
 import java.util.ArrayList;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.RecordMetaFilter;
 import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
@@ -41,12 +40,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Slider;
 
-public class FilterRepresentationTwoSidedTTest extends
-		AFilterRepresentation<RecordVADelta, RecordFilter> {
+public class FilterRepresentationTwoSidedTTest
+	extends AFilterRepresentation<RecordVADelta, RecordFilter> {
 
 	private final static String TITLE = "Two-sided T-Test Filter";
 
-	private ATableBasedDataDomain dataDomain;
 	private TablePerspective tablePerspective1;
 	private TablePerspective tablePerspective2;
 
@@ -116,7 +114,8 @@ public class FilterRepresentationTwoSidedTTest extends
 
 				createVADelta(subFilter);
 			}
-		} else
+		}
+		else
 			createVADelta(filter);
 	}
 
@@ -132,7 +131,7 @@ public class FilterRepresentationTwoSidedTTest extends
 				.getFilterRep())
 				.getTablePerspective1()
 				.getContainerStatistics()
-				.tTest()
+				.getTTest()
 				.getTwoSidedTTestResult(
 						((FilterRepresentationTwoSidedTTest) subFilter.getFilterRep())
 								.getTablePerspective2());
@@ -160,14 +159,6 @@ public class FilterRepresentationTwoSidedTTest extends
 			filter.updateFilterManager();
 		}
 		isDirty = false;
-	}
-
-	/**
-	 * @param dataDomain
-	 *            setter, see {@link #dataDomain}
-	 */
-	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
 	}
 
 	public void setTablePerspective1(TablePerspective tablePerspective1) {
