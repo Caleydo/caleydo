@@ -31,11 +31,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -59,6 +57,7 @@ import org.caleydo.core.event.data.NewDataDomainEvent;
 import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
+import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataLoader;
 import org.caleydo.core.io.DataSetDescription;
@@ -136,7 +135,9 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Christian Partl
  */
-public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler {
+public class GLDataViewIntegrator
+	extends AGLView
+	implements IViewCommandHandler {
 	public static String VIEW_TYPE = "org.caleydo.view.dvi";
 
 	public static String VIEW_NAME = "Data-View Integrator";
@@ -321,10 +322,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	/**
 	 * Builds the display list for a given display list index.
 	 * 
-	 * @param gl
-	 *            Instance of GL2.
-	 * @param iGLDisplayListIndex
-	 *            Index of the display list.
+	 * @param gl Instance of GL2.
+	 * @param iGLDisplayListIndex Index of the display list.
 	 */
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
@@ -336,8 +335,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 				node.setCustomPosition(false);
 			}
 			for (Edge edge : dataGraph.getAllEdges()) {
-				AEdgeRenderer edgeRenderer = graphLayout
-						.getLayoutSpecificEdgeRenderer(edge);
+				AEdgeRenderer edgeRenderer = graphLayout.getLayoutSpecificEdgeRenderer(edge);
 				edge.setEdgeRenderer(edgeRenderer);
 			}
 			// graphLayout.setGraph(dataGraph);
@@ -345,7 +343,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			graphLayout.clearNodePositions();
 			graphLayout.layout(drawingArea);
 			updateMinWindowSize(true);
-		} else {
+		}
+		else {
 
 		}
 		for (IDVINode node : dataGraph.getNodes()) {
@@ -376,15 +375,15 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	}
 
 	public Rectangle2D calculateGraphDrawingArea() {
-		int drawingAreaWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum
-				.getWidth()) - 2 * BOUNDS_SPACING_PIXELS;
+		int drawingAreaWidth = pixelGLConverter
+				.getPixelWidthForGLWidth(viewFrustum.getWidth()) - 2 * BOUNDS_SPACING_PIXELS;
 		int drawingAreaHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
 				.getHeight()) - 2 * BOUNDS_SPACING_PIXELS;
 
 		Rectangle2D drawingArea = new Rectangle();
 
-		drawingArea.setFrame(BOUNDS_SPACING_PIXELS, BOUNDS_SPACING_PIXELS,
-				drawingAreaWidth, drawingAreaHeight);
+		drawingArea.setFrame(BOUNDS_SPACING_PIXELS, BOUNDS_SPACING_PIXELS, drawingAreaWidth,
+				drawingAreaHeight);
 
 		return drawingArea;
 	}
@@ -418,8 +417,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		int minHeight = maxY - minY + 2 * BOUNDS_SPACING_PIXELS;
 
 		if (minWidth > minViewWidthPixels + 2 || minWidth < minViewWidthPixels - 2
-				|| minHeight > minViewHeightPixels + 2
-				|| minHeight < minViewHeightPixels - 2) {
+				|| minHeight > minViewHeightPixels + 2 || minHeight < minViewHeightPixels - 2) {
 
 			minViewWidthPixels = minWidth;
 			minViewHeightPixels = minHeight;
@@ -448,11 +446,11 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		for (Edge edge : dataGraph.getAllEdges()) {
 
 			// Works because there are no edges between view nodes
-			if ((edge.getNode1() instanceof ViewNode)
-					|| (edge.getNode2() instanceof ViewNode)) {
+			if ((edge.getNode1() instanceof ViewNode) || (edge.getNode2() instanceof ViewNode)) {
 				// Render later transparent in foreground
 				bandConnectedNodes.add(edge);
-			} else {
+			}
+			else {
 				renderEdge(gl, edge, connectionBandRenderer);
 			}
 		}
@@ -463,11 +461,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 	}
 
-	private void renderEdge(GL2 gl, Edge edge,
-			ConnectionBandRenderer connectionBandRenderer) {
+	private void renderEdge(GL2 gl, Edge edge, ConnectionBandRenderer connectionBandRenderer) {
 		boolean highlight = false;
-		if (edge.getNode1() == currentMouseOverNode
-				|| edge.getNode2() == currentMouseOverNode) {
+		if (edge.getNode1() == currentMouseOverNode || edge.getNode2() == currentMouseOverNode) {
 			highlight = true;
 		}
 		edge.getEdgeRenderer().renderEdge(gl, connectionBandRenderer, highlight);
@@ -523,8 +519,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		dataDomainChangedListener = new DataDomainChangedListener();
 		dataDomainChangedListener.setHandler(this);
-		eventPublisher
-				.addListener(DataDomainUpdateEvent.class, dataDomainChangedListener);
+		eventPublisher.addListener(DataDomainUpdateEvent.class, dataDomainChangedListener);
 
 		newDataDomainEventListener = new NewDataDomainEventListener();
 		newDataDomainEventListener.setHandler(this);
@@ -551,8 +546,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		minSizeAppliedEventListener = new MinSizeAppliedEventListener();
 		minSizeAppliedEventListener.setHandler(this);
-		eventPublisher
-				.addListener(MinSizeAppliedEvent.class, minSizeAppliedEventListener);
+		eventPublisher.addListener(MinSizeAppliedEvent.class, minSizeAppliedEventListener);
 
 		showDataConnectionsEventListener = new ShowDataConnectionsEventListener();
 		showDataConnectionsEventListener.setHandler(this);
@@ -561,8 +555,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		recordVAUpdateEventListener = new RecordVAUpdateEventListener();
 		recordVAUpdateEventListener.setHandler(this);
-		eventPublisher
-				.addListener(RecordVAUpdateEvent.class, recordVAUpdateEventListener);
+		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateEventListener);
 
 		dimensionVAUpdateEventListener = new DimensionVAUpdateEventListener();
 		dimensionVAUpdateEventListener.setHandler(this);
@@ -580,8 +573,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		createClusteringEventListener = new CreateClusteringEventListener();
 		createClusteringEventListener.setHandler(this);
-		eventPublisher.addListener(CreateClusteringEvent.class,
-				createClusteringEventListener);
+		eventPublisher.addListener(CreateClusteringEvent.class, createClusteringEventListener);
 
 		renameLabelHolderEventListener = new RenameLabelHolderEventListener();
 		renameLabelHolderEventListener.setHandler(this);
@@ -816,7 +808,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 							.getLayoutSpecificEdgeRenderer(edge);
 					edge.setEdgeRenderer(edgeRenderer);
 				}
-			} else {
+			}
+			else {
 				if (viewNodes != null) {
 					viewNodes.remove(viewNode);
 				}
@@ -847,8 +840,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			}
 		}
 		if (!nodeAdded) {
-			dataNode = nodeCreator.createDataNode(graphLayout, this,
-					dragAndDropController, lastNodeID++, dataDomain);
+			dataNode = nodeCreator.createDataNode(graphLayout, this, dragAndDropController,
+					lastNodeID++, dataDomain);
 			if (dataNode == null)
 				return;
 			dataGraph.addNode(dataNode);
@@ -881,8 +874,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 				dataNodes.add(node);
 				dataNodesOfDataDomains.put(node.getDataDomain(), node);
 				Edge edge = dataGraph.addEdge(dataNode, node);
-				AEdgeRenderer edgeRenderer = graphLayout
-						.getLayoutSpecificEdgeRenderer(edge);
+				AEdgeRenderer edgeRenderer = graphLayout.getLayoutSpecificEdgeRenderer(edge);
 				edge.setEdgeRenderer(edgeRenderer);
 			}
 		}
@@ -903,8 +895,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		DataDomainGraph dataDomainGraph = DataDomainManager.get().getDataDomainGraph();
 
-		Set<org.caleydo.core.data.datadomain.graph.Edge> edges = dataDomainGraph
-				.getEdges(node1.getDataDomain(), node2.getDataDomain());
+		Set<org.caleydo.core.data.datadomain.graph.Edge> edges = dataDomainGraph.getEdges(
+				node1.getDataDomain(), node2.getDataDomain());
 
 		StringBuffer stringBuffer = new StringBuffer();
 
@@ -914,7 +906,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			IDCategory category = e.getIdCategory();
 			if (category != null) {
 				stringBuffer.append(e.getIdCategory().getCategoryName());
-			} else {
+			}
+			else {
 				stringBuffer.append("Unknown Mapping");
 			}
 			if (iterator.hasNext()) {
@@ -943,13 +936,12 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	public void createTablePerspective(final ATableBasedDataDomain dataDomain,
 			final String recordPerspectiveID, final boolean createRecordPerspective,
 			final RecordVirtualArray recordVA, final Group recordGroup,
-			final String dimensionPerspectiveID,
-			final boolean createDimensionPerspective,
+			final String dimensionPerspectiveID, final boolean createDimensionPerspective,
 			final DimensionVirtualArray dimensionVA, final Group dimensionGroup) {
 
 		final String recordPerspectiveLabel = (createRecordPerspective) ? (recordGroup
-				.getLabel()) : dataDomain.getTable()
-				.getRecordPerspective(recordPerspectiveID).getLabel();
+				.getLabel()) : dataDomain.getTable().getRecordPerspective(recordPerspectiveID)
+				.getLabel();
 
 		final String dimensionPerspectiveLabel = (createDimensionPerspective) ? (dimensionGroup
 				.getLabel()) : dataDomain.getTable()
@@ -969,71 +961,81 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 					}
 				};
 
-				InputDialog dialog = new InputDialog(new Shell(),
-						"Create Table Perspective", "Name", dataDomain.getLabel() + " - "
-								+ recordPerspectiveLabel + "/"
-								+ dimensionPerspectiveLabel, validator);
+				String tablePerspectiveLabel = dataDomain.getLabel() + " - "
+						+ recordPerspectiveLabel + "/" + dimensionPerspectiveLabel;
+
+				boolean alwaysUseDefaultNameButton = GeneralManager
+						.get()
+						.getPreferenceStore()
+						.getBoolean(
+								PreferenceConstants.DVI_ALWAYS_USE_TABLE_PERSPECTIVE_DEFAULT_NAME);
+
+				if (!alwaysUseDefaultNameButton) {
+					TablePerspectiveNameInputDialog dialog = new TablePerspectiveNameInputDialog(
+							new Shell(), "Create Table Perspective", "Name", tablePerspectiveLabel,
+							validator);
+
+					if (dialog.open() != Window.OK)
+						return;
+
+					tablePerspectiveLabel = dialog.getValue();
+				}
 
 				String currentDimensionPerspeciveID = dimensionPerspectiveID;
 				String currentRecordPerspeciveID = recordPerspectiveID;
 
-				if (dialog.open() == Window.OK) {
-					DimensionPerspective dimensionPerspective = null;
+				DimensionPerspective dimensionPerspective = null;
 
-					if (createDimensionPerspective) {
-						dimensionPerspective = new DimensionPerspective(dataDomain);
-						List<Integer> indices = dimensionVA.getIDsOfGroup(dimensionGroup
-								.getGroupIndex());
-						PerspectiveInitializationData data = new PerspectiveInitializationData();
-						data.setData(indices);
-						dimensionPerspective.init(data);
-						dimensionPerspective.setLabel(dimensionPerspectiveLabel, true);
-						// TODO: Shall we really set it private?
-						dimensionPerspective.setPrivate(true);
-						dimensionGroup.setPerspectiveID(dimensionPerspective
-								.getPerspectiveID());
-						dataDomain.getTable().registerDimensionPerspective(
-								dimensionPerspective);
-						currentDimensionPerspeciveID = dimensionPerspective
-								.getPerspectiveID();
-					} else {
-						dimensionPerspective = dataDomain.getTable()
-								.getDimensionPerspective(dimensionPerspectiveID);
-					}
+				if (createDimensionPerspective) {
+					dimensionPerspective = new DimensionPerspective(dataDomain);
+					List<Integer> indices = dimensionVA.getIDsOfGroup(dimensionGroup
+							.getGroupIndex());
+					PerspectiveInitializationData data = new PerspectiveInitializationData();
+					data.setData(indices);
+					dimensionPerspective.init(data);
+					dimensionPerspective.setLabel(dimensionPerspectiveLabel, true);
+					// TODO: Shall we really set it private?
+					dimensionPerspective.setPrivate(true);
+					dimensionGroup.setPerspectiveID(dimensionPerspective.getPerspectiveID());
+					dataDomain.getTable().registerDimensionPerspective(dimensionPerspective);
+					currentDimensionPerspeciveID = dimensionPerspective.getPerspectiveID();
+				}
+				else {
+					dimensionPerspective = dataDomain.getTable().getDimensionPerspective(
+							dimensionPerspectiveID);
+				}
 
-					RecordPerspective recordPerspective = null;
+				RecordPerspective recordPerspective = null;
 
-					if (createRecordPerspective) {
-						recordPerspective = new RecordPerspective(dataDomain);
-						List<Integer> indices = recordVA.getIDsOfGroup(recordGroup
-								.getGroupIndex());
-						PerspectiveInitializationData data = new PerspectiveInitializationData();
-						data.setData(indices);
-						recordPerspective.init(data);
-						recordPerspective.setLabel(recordPerspectiveLabel, true);
-						// TODO: Shall we really set it private?
-						recordPerspective.setPrivate(true);
-						recordGroup.setPerspectiveID(recordPerspective.getPerspectiveID());
-						dataDomain.getTable()
-								.registerRecordPerspective(recordPerspective);
-						currentRecordPerspeciveID = recordPerspective.getPerspectiveID();
-					} else {
-						recordPerspective = dataDomain.getTable().getRecordPerspective(
-								recordPerspectiveID);
-					}
+				if (createRecordPerspective) {
+					recordPerspective = new RecordPerspective(dataDomain);
+					List<Integer> indices = recordVA.getIDsOfGroup(recordGroup.getGroupIndex());
+					PerspectiveInitializationData data = new PerspectiveInitializationData();
+					data.setData(indices);
+					recordPerspective.init(data);
+					recordPerspective.setLabel(recordPerspectiveLabel, true);
+					// TODO: Shall we really set it private?
+					recordPerspective.setPrivate(true);
+					recordGroup.setPerspectiveID(recordPerspective.getPerspectiveID());
+					dataDomain.getTable().registerRecordPerspective(recordPerspective);
+					currentRecordPerspeciveID = recordPerspective.getPerspectiveID();
+				}
+				else {
+					recordPerspective = dataDomain.getTable().getRecordPerspective(
+							recordPerspectiveID);
+				}
 
-					TablePerspective tablePerspective = dataDomain.getTablePerspective(
-							currentRecordPerspeciveID, currentDimensionPerspeciveID);
-					tablePerspective.setLabel(dialog.getValue(), false);
-					tablePerspective.setPrivate(false);
+				TablePerspective tablePerspective = dataDomain.getTablePerspective(
+						currentRecordPerspeciveID, currentDimensionPerspeciveID);
+				tablePerspective.setLabel(tablePerspectiveLabel, false);
+				tablePerspective.setPrivate(false);
 
-					if (isRenderedRemote()) {
-						AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(
-								tablePerspective);
-						event.setReceiver((IMultiTablePerspectiveBasedView) getRemoteRenderingGLView());
-						event.setSender(this);
-						GeneralManager.get().getEventPublisher().triggerEvent(event);
-					}
+				if (isRenderedRemote()) {
+					AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(
+							tablePerspective);
+					event.setReceiver((IMultiTablePerspectiveBasedView) getRemoteRenderingGLView());
+					event.setSender(this);
+					GeneralManager.get().getEventPublisher().triggerEvent(event);
 				}
 			}
 		});
@@ -1067,10 +1069,11 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 				try {
 					if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
-						PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-								.getActivePage().showView(viewID);
+						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+								.showView(viewID);
 					}
-				} catch (PartInitException e) {
+				}
+				catch (PartInitException e) {
 					e.printStackTrace();
 				}
 			}
@@ -1093,15 +1096,12 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 					RCPViewManager.get().addRCPView(secondaryID, rcpViewInitData);
 
 					if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
-						PlatformUI
-								.getWorkbench()
-								.getActiveWorkbenchWindow()
-								.getActivePage()
-								.showView(viewID, secondaryID,
-										IWorkbenchPage.VIEW_ACTIVATE);
+						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+								.showView(viewID, secondaryID, IWorkbenchPage.VIEW_ACTIVATE);
 
 					}
-				} catch (PartInitException e) {
+				}
+				catch (PartInitException e) {
 					e.printStackTrace();
 				}
 			}
@@ -1125,7 +1125,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			for (IDVINode node : dataGraph.getNodes()) {
 				node.setGraphLayout(graphLayout);
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			Logger.log(new Status(Status.ERROR, this.toString(),
 					"Failed to create Graph Layout", e));
 		}
@@ -1199,8 +1200,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	}
 
 	/**
-	 * @param isVendingMachineMode
-	 *            setter, see {@link #isVendingMachineMode}
+	 * @param isVendingMachineMode setter, see {@link #isVendingMachineMode}
 	 */
 	public void setVendingMachineMode(boolean isVendingMachineMode) {
 		this.isVendingMachineMode = isVendingMachineMode;
@@ -1222,11 +1222,10 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	/**
 	 * Triggers group loading by opening the {@link ImportGroupingDialog}.
 	 * 
-	 * @param dataDomain
-	 *            The datadomain a grouping shall be loaded for.
-	 * @param idCategory
-	 *            Determines for which {@link IDCategory} the grouping should be
-	 *            loaded, i.e. whether rows or columns should be grouped.
+	 * @param dataDomain The datadomain a grouping shall be loaded for.
+	 * @param idCategory Determines for which {@link IDCategory} the grouping
+	 *            should be loaded, i.e. whether rows or columns should be
+	 *            grouped.
 	 */
 	public void loadGrouping(final ATableBasedDataDomain dataDomain,
 			final IDCategory idCategory) {
@@ -1234,29 +1233,30 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 			@Override
 			public void run() {
-				ImportGroupingDialog dialog = new ImportGroupingDialog(new Shell(),
-						idCategory);
+				ImportGroupingDialog dialog = new ImportGroupingDialog(new Shell(), idCategory);
 				// dialog.setRowIDCategory(idCategory);
 				int status = dialog.open();
 
 				if (status == Dialog.OK) {
 					GroupingParseSpecification groupingParseSpecification = dialog
 							.getGroupingParseSpecification();
-					DataSetDescription dataSetDescription = dataDomain
-							.getDataSetDescription();
+					DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
 					if (dataDomain.getRecordIDCategory() == idCategory) {
 						if (dataDomain.isColumnDimension()) {
 							dataSetDescription
 									.addRowGroupingSpecification(groupingParseSpecification);
-						} else {
+						}
+						else {
 							dataSetDescription
 									.addColumnGroupingSpecification(groupingParseSpecification);
 						}
-					} else {
+					}
+					else {
 						if (dataDomain.isColumnDimension()) {
 							dataSetDescription
 									.addColumnGroupingSpecification(groupingParseSpecification);
-						} else {
+						}
+						else {
 							dataSetDescription
 									.addRowGroupingSpecification(groupingParseSpecification);
 						}
@@ -1278,9 +1278,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	 * data domain are used to specify the data to be clustered.
 	 * 
 	 * @param dataDomain
-	 * @param isDimensionClustering
-	 *            Specifies whether a {@link DimensionPerspective} or a
-	 *            {@link RecordPerspective} shall be created.
+	 * @param isDimensionClustering Specifies whether a
+	 *            {@link DimensionPerspective} or a {@link RecordPerspective}
+	 *            shall be created.
 	 */
 	public void createClustering(final ATableBasedDataDomain dataDomain,
 			final boolean isDimensionClustering) {
@@ -1300,8 +1300,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 					clusterConfiguration
 							.setClusterTarget(EClustererTarget.DIMENSION_CLUSTERING);
 				else
-					clusterConfiguration
-							.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
+					clusterConfiguration.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
 
 				ClusterDialog dialog = new ClusterDialog(new Shell(), dataDomain,
 						clusterConfiguration);
@@ -1311,7 +1310,6 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			}
 		});
 	}
-
 
 	/**
 	 * Opens an input dialog in order to rename the specified
@@ -1340,9 +1338,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 				if (dialog.open() == Window.OK) {
 					if (labelHolder instanceof IDefaultLabelHolder) {
-						((IDefaultLabelHolder) labelHolder).setLabel(dialog.getValue(),
-								false);
-					} else {
+						((IDefaultLabelHolder) labelHolder).setLabel(dialog.getValue(), false);
+					}
+					else {
 						labelHolder.setLabel(dialog.getValue());
 					}
 					for (IDVINode node : dataGraph.getNodes()) {

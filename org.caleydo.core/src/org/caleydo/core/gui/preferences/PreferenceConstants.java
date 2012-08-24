@@ -52,6 +52,8 @@ public class PreferenceConstants {
 
 	public static final String BROWSER_QUERY_DATABASE = "browserQueryDatabase";
 
+	public static final String DVI_ALWAYS_USE_TABLE_PERSPECTIVE_DEFAULT_NAME = "alwaysUseTablePerspectiveDefaultName";
+
 	// Heat Map
 	public static final String HM_NUM_RANDOM_SAMPLING_POINT = "hmNumRandomSamplinPoints";
 	public static final String HM_LIMIT_REMOTE_TO_CONTEXT = "hmLimitRemoteToContext";

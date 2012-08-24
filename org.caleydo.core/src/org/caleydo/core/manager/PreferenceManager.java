@@ -142,6 +142,9 @@ public class PreferenceManager {
 		store.setDefault(PreferenceConstants.TREEMAP_DRAW_CLUSTER_FRAME, true);
 		store.setDefault(PreferenceConstants.TREEMAP_LAYOUT_ALGORITHM, 1);
 		store.setDefault(PreferenceConstants.TREEMAP_MAX_DEPTH, 0);
+		
+		// DVI
+		store.setDefault(PreferenceConstants.DVI_ALWAYS_USE_TABLE_PERSPECTIVE_DEFAULT_NAME, false);
 	}
 
 	private void initCaleydoFolder() {

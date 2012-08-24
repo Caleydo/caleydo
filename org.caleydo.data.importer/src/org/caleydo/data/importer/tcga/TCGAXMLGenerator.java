@@ -311,7 +311,7 @@ public class TCGAXMLGenerator
 				cnmfGroupingFile);
 		firehoseCnmfClustering.setContainsColumnIDs(false);
 		firehoseCnmfClustering.setRowIDSpecification(columnIDSpecification);
-		firehoseCnmfClustering.setGroupingName("CNMF Cluster");
+		firehoseCnmfClustering.setGroupingName("CNMF Clustering");
 		matrixData.addColumnGroupingSpecification(firehoseCnmfClustering);
 
 		try {
@@ -324,7 +324,7 @@ public class TCGAXMLGenerator
 					hierarchicalGroupingFile);
 			firehoseHierarchicalClustering.setContainsColumnIDs(false);
 			firehoseHierarchicalClustering.setRowIDSpecification(columnIDSpecification);
-			firehoseHierarchicalClustering.setGroupingName("Hier. Cluster");
+			firehoseHierarchicalClustering.setGroupingName("Hierchical Clustering");
 			matrixData.addColumnGroupingSpecification(firehoseHierarchicalClustering);
 		}
 		catch (RuntimeException e) {

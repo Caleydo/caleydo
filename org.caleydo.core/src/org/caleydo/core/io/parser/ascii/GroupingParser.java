@@ -207,7 +207,7 @@ public class GroupingParser extends ATextParser {
 				}
 			}
 
-			// Create the initialization datas
+			// Create the initialization data
 			perspectiveInitializationDatas = new ArrayList<PerspectiveInitializationData>();
 
 			for (int groupListCount = 0; groupListCount < listOfGroupLists.size(); groupListCount++) {
@@ -233,7 +233,7 @@ public class GroupingParser extends ATextParser {
 				String groupLabel = listOfGroupNames.get(groupListCount);
 				if (groupLabel.equals(DEFAULT_GROUP_NAME)) {
 					if (groupingSpecifications.getGroupingName() != null) {
-						groupLabel = clusterSizes.size() + "_"
+						groupLabel = clusterSizes.size() + " "
 								+ groupingSpecifications.getGroupingName();
 					} else {
 						groupLabel = clusterSizes.size() + " Clusters";
