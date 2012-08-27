@@ -23,6 +23,7 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
@@ -73,7 +74,7 @@ public class SerializationStartupProcedure
 		}
 
 		ApplicationWorkbenchWindowAdvisor.setWindowTitle("Caleydo - "
-				+ projectLocation.substring(projectLocation.lastIndexOf("/")+1));
+				+ projectLocation.substring(projectLocation.lastIndexOf("/") + 1));
 	}
 
 	@Override
@@ -86,7 +87,7 @@ public class SerializationStartupProcedure
 		// not calling super.init() on purpose
 
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Load serialized project"));
-
+		
 		if (loadSampleProject) {
 			serializationDataList = loader
 					.loadProjectData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);

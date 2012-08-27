@@ -164,6 +164,10 @@ public class ProjectLoader {
 
 		for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
 			DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
+
+			if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
+				DataDomainManager.get().initalizeDataDomain("org.caleydo.datadomain.genetic");
+
 			IDTypeInitializer.initIDs(dataSetDescription);
 			dataDomain.init();
 			// Register data domain by hand because it restored from the

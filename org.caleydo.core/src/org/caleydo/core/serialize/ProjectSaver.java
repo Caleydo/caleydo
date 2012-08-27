@@ -392,11 +392,11 @@ public class ProjectSaver {
 		// Save the workbench windows.
 		IWorkbench workbench = PlatformUI.getWorkbench();
 		IWorkbenchWindow[] windows = workbench.getWorkbenchWindows();
-		for (int nX = 0; nX < windows.length; nX++) {
-			WorkbenchWindow window = (WorkbenchWindow) windows[nX];
-			IMemento childMem = memento.createChild(IWorkbenchConstants.TAG_WINDOW);
-			result.merge(window.saveState(childMem));
-		}
+//		for (int nX = 0; nX < windows.length; nX++) {
+//			WorkbenchWindow window = (WorkbenchWindow) windows[nX];
+//			IMemento childMem = memento.createChild(IWorkbenchConstants.TAG_WINDOW);
+//			result.merge(window.saveState(childMem));
+//		}
 		result.add(((Workbench) workbench).getEditorHistory().saveState(
 				memento.createChild(IWorkbenchConstants.TAG_MRU_LIST)));
 		return result;

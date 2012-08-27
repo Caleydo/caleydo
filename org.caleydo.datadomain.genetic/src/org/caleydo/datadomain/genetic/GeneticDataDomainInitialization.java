@@ -38,8 +38,16 @@ import org.caleydo.core.specialized.Organism;
 public class GeneticDataDomainInitialization
 	implements IDataDomainInitialization {
 
+	private static boolean isAlreadyInitialized = false;
+	
 	@Override
 	public void createIDTypesAndMapping() {
+		
+		if (isAlreadyInitialized)
+			return;
+		
+		isAlreadyInitialized = true;
+		
 		IDCategory geneIDCategory = IDCategory.registerCategory(EGeneIDTypes.GENE.name());
 
 		IDType david = IDType.registerType(EGeneIDTypes.DAVID.name(), geneIDCategory,
