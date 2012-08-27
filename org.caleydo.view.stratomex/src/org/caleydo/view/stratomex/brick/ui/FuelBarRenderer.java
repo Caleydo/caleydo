@@ -104,6 +104,6 @@ public class FuelBarRenderer extends LayoutRenderer {
 	
 	@Override
 	protected boolean permitsDisplayLists() {
-		return false;
+		return true;
 	}
 }

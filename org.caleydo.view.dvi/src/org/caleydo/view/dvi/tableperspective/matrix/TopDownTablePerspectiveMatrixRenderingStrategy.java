@@ -36,7 +36,7 @@ import org.caleydo.view.dvi.node.IDVINode;
 import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.TablePerspectiveRenderer;
 
-public class TopDownTablePerspectiveMatrixRenderingStrategy extends
+class TopDownTablePerspectiveMatrixRenderingStrategy extends
 		ATablePerspectiveMatrixRenderingStrategy {
 
 	public TopDownTablePerspectiveMatrixRenderingStrategy(
@@ -126,7 +126,7 @@ public class TopDownTablePerspectiveMatrixRenderingStrategy extends
 				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
 						PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(),
 						row.id.hashCode()));
-				perspectiveRenderer.render(gl);
+				perspectiveRenderer.renderContent(gl);
 				popPickingIDs(gl, pickingIDsToBePushed);
 				gl.glPopName();
 				gl.glPopName();
@@ -252,16 +252,6 @@ public class TopDownTablePerspectiveMatrixRenderingStrategy extends
 				gl.glPopName();
 				gl.glPopName();
 				gl.glPopMatrix();
-				// gl.glColor3f(0.7f, 0.7f, 0.7f);
-				// gl.glBegin(GL2.GL_QUADS);
-				// gl.glVertex3f(currentPositionX, y - captionRowHeight -
-				// captionSpacingY, 0);
-				// gl.glVertex3f(currentPositionX + currentColumnWidth, y -
-				// captionRowHeight
-				// - captionSpacingY, 0);
-				// gl.glVertex3f(currentPositionX + currentColumnWidth, y, 0);
-				// gl.glVertex3f(currentPositionX, y, 0);
-				// gl.glEnd();
 
 				if (column.childContainers != null && column.childContainers.size() > 1) {
 					Button collapsePerspectiveButton = new Button(

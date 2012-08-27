@@ -20,8 +20,10 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -33,7 +35,9 @@ import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.view.enroute.EPickingType;
 
 /**
  * @author Alexander Lex
@@ -147,7 +151,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 						dataDomain.getSampleIDType(), parent.sampleIDType, sampleID);
 				if (resolvedSampleID != null) {
 					gl.glPushName(parentView.getPickingManager().getPickingID(
-							parentView.getID(), PickingType.SAMPLE.name(),
+							parentView.getID(), EPickingType.SAMPLE.name(),
 							resolvedSampleID));
 				}
 
@@ -191,7 +195,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		// bottomBarColor = topBarColor;
 
 		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
-				PickingType.SAMPLE_GROUP_RENDERER.name(), rendererID));
+				EPickingType.SAMPLE_GROUP_RENDERER.name(), rendererID));
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor4fv(bottomBarColor, 0);
 		gl.glVertex3f(0, y / 3, z);
@@ -269,7 +273,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		};
 
 		parentView.addIDPickingListener(pickingListener,
-				PickingType.SAMPLE_GROUP_RENDERER.name(), rendererID);
+				EPickingType.SAMPLE_GROUP_RENDERER.name(), rendererID);
 
 	}
 

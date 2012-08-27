@@ -20,7 +20,9 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -36,6 +38,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.view.enroute.EPickingType;
 
 /**
  * @author Alexander Lex
@@ -100,10 +103,6 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 			topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
 			bottomBarColor = topBarColor;
 
-			// ArrayList<ArrayList<SelectionType>> selectionLists = new
-			// ArrayList<ArrayList<SelectionType>>();
-			// selectionLists.add(geneSelectionTypes);
-
 			renderAverageBar(gl, selectionTypes);
 		} else {
 			renderAllBars(gl, geneSelectionTypes);
@@ -144,7 +143,8 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 				ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager
 						.getSelectionTypes(sampleIDType, sampleID);
 
-				topBarColor = dataDomain.getColorMapper().getColor(value);
+				baseColor = dataDomain.getColorMapper().getColor(value);
+				topBarColor = baseColor;
 				bottomBarColor = topBarColor;
 
 				calculateColors(Algorithms.mergeListsToUniqueList(
@@ -160,7 +160,7 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 				Integer resolvedSampleID = sampleIDMappingManager.getID(
 						dataDomain.getSampleIDType(), parent.sampleIDType, sampleID);
 				gl.glPushName(parentView.getPickingManager().getPickingID(
-						parentView.getID(), PickingType.SAMPLE.name(), resolvedSampleID));
+						parentView.getID(), EPickingType.SAMPLE.name(), resolvedSampleID));
 
 				gl.glColor3fv(bottomBarColor, 0);
 				gl.glBegin(GL2.GL_QUADS);
@@ -182,21 +182,6 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 				gl.glColor3fv(topBarColor, 0);
 
 				gl.glVertex3f(leftEdge, upperEdge, z);
-				// gl.glColor4fv(topBarColor, 0);
-				// gl.glBegin(GL2.GL_QUADS);
-				// gl.glVertex3f(leftEdge, 0, z);
-				// gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] *
-				// 0.9f,
-				// topBarColor[2] * 0.9f);
-				// gl.glVertex3f(leftEdge + xIncrement, 0, z);
-				// gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1]
-				// * 0.9f,
-				// bottomBarColor[2] * 0.9f);
-				//
-				// gl.glVertex3f(leftEdge + xIncrement, upperEdge, z);
-				// gl.glColor4fv(bottomBarColor, 0);
-				//
-				// gl.glVertex3f(leftEdge, upperEdge, z);
 
 				gl.glEnd();
 
@@ -217,25 +202,15 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 		float renderWith = x
 				- parentView.getPixelGLConverter().getGLWidthForPixelWidth(20);
 		for (int bucketNumber = 0; bucketNumber < histogram.size(); bucketNumber++) {
-			// ArrayList<SelectionType> sampleSelectionTypes = new
-			// ArrayList<SelectionType>();
-			// for (Integer sampleID : histogram.getIDsForBucket(bucketNumber))
-			// {
-			// // Integer resolvedSampleID = sampleIDMappingManager.getID(
-			// // dataDomain.getSampleIDType(), parent.sampleIDType, sampleID);
-			// sampleSelectionTypes.addAll(parent.sampleSelectionManager
-			// .getSelectionTypes(sampleIDType, sampleID));
-			// }
 
 			if (parent.selectedBucketID == histogram.getBucketID(bucketNumber)) {
 				selectionTypes.add(SelectionType.SELECTION);
 			}
 
-			topBarColor = dataDomain.getColorMapper().getColor(
+			baseColor = dataDomain.getColorMapper().getColor(
 					(float) bucketCount / (histogram.size() - 1));
+			topBarColor = baseColor;
 			bottomBarColor = topBarColor;
-			// calculateColors(Algorithms.mergeListsToUniqueList(selectionTypes,
-			// sampleSelectionTypes));
 			calculateColors(Algorithms.mergeListsToUniqueList(selectionTypes));
 			float lowerEdge = barWidth * bucketCount;
 			float value = 0;
@@ -247,7 +222,7 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 
 			float barHeight = value * renderWith;
 			gl.glPushName(parentView.getPickingManager()
-					.getPickingID(parentView.getID(), PickingType.HISTOGRAM_BAR.name(),
+					.getPickingID(parentView.getID(), EPickingType.HISTOGRAM_BAR.name(),
 							histogram.getBucketID(bucketNumber)));
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glColor3fv(bottomBarColor, 0);
@@ -303,7 +278,7 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 
 		for (int bucketCount = 0; bucketCount < histogram.size(); bucketCount++) {
 			parentView.addIDPickingListener(pickingListener,
-					PickingType.HISTOGRAM_BAR.name(), histogram.getBucketID(bucketCount));
+					EPickingType.HISTOGRAM_BAR.name(), histogram.getBucketID(bucketCount));
 		}
 	}
 

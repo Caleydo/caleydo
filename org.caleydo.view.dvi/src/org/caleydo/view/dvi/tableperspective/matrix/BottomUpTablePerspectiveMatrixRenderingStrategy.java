@@ -37,7 +37,7 @@ import org.caleydo.view.dvi.node.IDVINode;
 import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.TablePerspectiveRenderer;
 
-public class BottomUpTablePerspectiveMatrixRenderingStrategy extends
+class BottomUpTablePerspectiveMatrixRenderingStrategy extends
 		ATablePerspectiveMatrixRenderingStrategy {
 
 	public BottomUpTablePerspectiveMatrixRenderingStrategy(
@@ -129,7 +129,7 @@ public class BottomUpTablePerspectiveMatrixRenderingStrategy extends
 				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
 						PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(),
 						row.id.hashCode()));
-				perspectiveRenderer.render(gl);
+				perspectiveRenderer.renderContent(gl);
 				popPickingIDs(gl, pickingIDsToBePushed);
 				gl.glPopName();
 				gl.glPopName();

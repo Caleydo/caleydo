@@ -69,6 +69,12 @@ public abstract class AView extends AUniqueObject implements IView {
 	protected Composite parentComposite;
 
 	/**
+	 * The number that identifies the concrete view among all instances of its
+	 * class. This number is used among others int automatic view labels.
+	 */
+	protected int instanceNumber = -1;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param viewType
@@ -150,6 +156,14 @@ public abstract class AView extends AUniqueObject implements IView {
 		return viewType;
 	}
 
+	/**
+	 * @return Label containing the view name and the instance number, if that
+	 *         number is greater than 0
+	 */
+	protected String getDefaultLabel() {
+		return viewName + ((instanceNumber > 0) ? " (" + instanceNumber + ")" : "");
+	}
+
 	@Override
 	public void setLabel(String label, boolean isLabelDefault) {
 		this.label = label;
@@ -179,9 +193,9 @@ public abstract class AView extends AUniqueObject implements IView {
 
 		updateRCPViewPartName();
 	}
-	
+
 	private void updateRCPViewPartName() {
-		
+
 		Display.getDefault().asyncExec(new Runnable() {
 
 			@Override
@@ -193,5 +207,20 @@ public abstract class AView extends AUniqueObject implements IView {
 				}
 			}
 		});
+	}
+
+	/**
+	 * @return the instanceNumber, see {@link #instanceNumber}
+	 */
+	public int getInstanceNumber() {
+		return instanceNumber;
+	}
+
+	/**
+	 * @param instanceNumber
+	 *            setter, see {@link #instanceNumber}
+	 */
+	public void setInstanceNumber(int instanceNumber) {
+		this.instanceNumber = instanceNumber;
 	}
 }

@@ -330,26 +330,11 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 
 		gl.glPushMatrix();
 		gl.glTranslatef(x - width / 2.0f, y - height / 2.0f, 0f);
-		// layoutManager.setViewFrustum(new ViewFrustum(
-		// ECameraProjectionMode.ORTHOGRAPHIC, x - spacingWidth, x
-		// + spacingWidth, y - spacingHeight, y + spacingHeight,
-		// -1, 20));
 		layoutManager.setViewFrustum(new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC,
 				0, width, 0, height, -1, 20));
 
 		layoutManager.render(gl);
 		gl.glPopMatrix();
-		// GLHelperFunctions.drawPointAt(gl, x, y, 0);
-
-		// Rectangle2D boundingBox = getBoundingBox();
-		//
-		// gl.glColor3f(1, 0, 1);
-		// gl.glBegin(GL2.GL_LINE_LOOP);
-		// gl.glVertex2d(boundingBox.getMinX(), boundingBox.getMinY());
-		// gl.glVertex2d(boundingBox.getMinX(), boundingBox.getMaxY());
-		// gl.glVertex2d(boundingBox.getMaxX(), boundingBox.getMaxY());
-		// gl.glVertex2d(boundingBox.getMaxX(), boundingBox.getMinY());
-		// gl.glEnd();
 
 	}
 

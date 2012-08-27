@@ -22,13 +22,17 @@ package org.caleydo.core.view;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.manager.AManager;
@@ -49,6 +53,7 @@ import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+
 import com.jogamp.opengl.util.FPSAnimator;
 
 /**
@@ -144,12 +149,52 @@ public class ViewManager extends AManager<IView> {
 		return true;
 	}
 
-	public void registerGLView(AGLView glView) {
+	/**
+	 * Registers the specified {@link AGLView}.
+	 * 
+	 * @param glView
+	 * @param assignInstanceNumber
+	 *            If true, a number that is unique among all instances of the
+	 *            class of the specified view is assigned to the view. Otherwise
+	 *            -1 is assigned.
+	 */
+	public void registerGLView(AGLView glView, boolean assignInstanceNumber) {
+
+		int instanceNumber = 0;
+
+		if (assignInstanceNumber) {
+			Class<? extends AView> viewClass = glView.getClass();
+
+			// Extract instance numbers from views of the same class that have a
+			// unique instance number
+			List<Integer> existingInstanceNumbers = new ArrayList<Integer>();
+			for (AGLView view : hashGLViewID2GLView.values()) {
+				if (view.getClass().equals(viewClass)) {
+					if (view.getInstanceNumber() != -1) {
+						existingInstanceNumbers.add(view.getInstanceNumber());
+					}
+				}
+			}
+
+			// Pick lowest available positive number
+			Collections.sort(existingInstanceNumbers);
+			for (int number : existingInstanceNumbers) {
+				if (number == instanceNumber) {
+					instanceNumber++;
+				}
+			}
+
+			glView.setInstanceNumber(instanceNumber);
+		} else {
+			glView.setInstanceNumber(-1);
+		}
+
 		hashGLViewID2GLView.put(glView.getID(), glView);
 		Logger.log(new Status(Status.INFO, this.toString(), "Registering view: " + glView));
 		NewViewEvent event = new NewViewEvent(glView);
 		event.setSender(this);
 		generalManager.getEventPublisher().triggerEvent(event);
+
 	}
 
 	/**
@@ -555,7 +600,7 @@ public class ViewManager extends AManager<IView> {
 
 				@Override
 				public void run() {
-//					System.out.println("unserialized view initialization");
+					// System.out.println("unserialized view initialization");
 					IViewReference[] views = PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow().getActivePage()
 							.getViewReferences();

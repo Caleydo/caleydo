@@ -46,8 +46,8 @@ public class ContinuousContentPreviewRenderer extends ContentRenderer {
 			return;
 		ArrayList<SelectionType> geneSelectionTypes = parent.geneSelectionManager
 				.getSelectionTypes(davidID);
-		ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager
-				.getSelectionTypes(group.getID());
+//		ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager
+//				.getSelectionTypes(group.getID());
 		// if (selectionTypes.size() > 0
 		// && selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
 		topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;

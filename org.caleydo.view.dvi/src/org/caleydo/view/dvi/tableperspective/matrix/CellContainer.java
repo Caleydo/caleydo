@@ -30,7 +30,7 @@ import org.caleydo.core.util.base.ILabelProvider;
  * @author Christian Partl
  * 
  */
-public class CellContainer implements Comparable<CellContainer> {
+class CellContainer implements Comparable<CellContainer> {
 	protected String id;
 	protected int numSubdivisions;
 	protected float position;

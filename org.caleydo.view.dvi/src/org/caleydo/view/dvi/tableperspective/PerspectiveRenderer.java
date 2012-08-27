@@ -45,9 +45,9 @@ public class PerspectiveRenderer
 	
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 		//This specific renderer is used not in a regular layout.
-		renderContent(gl);
+		super.renderContent(gl);
 	}
 
 	public String getPerspectiveID()

@@ -21,7 +21,9 @@ package org.caleydo.core.view.opengl.layout;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -124,6 +126,13 @@ public class LayoutManager {
 	}
 
 	/**
+	 * Sets the display lists of all associated {@link LayoutRenderer}s dirty.
+	 */
+	public void setRenderingDirty() {
+		baseElementLayout.setRenderingDirty();
+	}
+
+	/**
 	 * Recursively render the layout of all elements
 	 * 
 	 * @param gl
@@ -151,7 +160,8 @@ public class LayoutManager {
 
 	/**
 	 * Deletes the display lists of all {@link LayoutRenderer}s of this
-	 * LayoutManager.
+	 * LayoutManager. This method must be called when the
+	 * <code>LayoutManager</code> is no longer used.
 	 * 
 	 * @param gl
 	 */

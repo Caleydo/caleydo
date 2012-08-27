@@ -50,7 +50,15 @@ import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
  * not take care of any spacings on the sides.
  * </p>
  * 
+ * <p>
+ * If a specific LayoutRenderer wants its content to be rendered in a display
+ * list, {@link #permitsDisplayLists()} must return true. However, the use of
+ * display lists also depends on whether the {@link LayoutManager} of the
+ * associated <code>ElementLayout</code> permits display lists.
+ * </p>
+ * 
  * @author Alexander Lex
+ * @author Christian Partl
  */
 public abstract class LayoutRenderer {
 	protected float x;
@@ -84,7 +92,7 @@ public abstract class LayoutRenderer {
 	 * 
 	 * @param gl
 	 */
-	public void render(GL2 gl) {
+	public final void render(GL2 gl) {
 		boolean displayListsAllowedByLayoutManager = false;
 		if (layoutManager != null) {
 			displayListsAllowedByLayoutManager = layoutManager.isUseDisplayLists();

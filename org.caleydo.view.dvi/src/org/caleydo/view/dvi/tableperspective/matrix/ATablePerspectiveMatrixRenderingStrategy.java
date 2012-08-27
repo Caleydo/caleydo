@@ -30,7 +30,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.node.IDVINode;
 
-public abstract class ATablePerspectiveMatrixRenderingStrategy {
+abstract class ATablePerspectiveMatrixRenderingStrategy {
 
 	protected static final int MAX_TEXT_WIDTH_PIXELS = 90;
 	protected static final int TEXT_HEIGHT_PIXELS = 12;

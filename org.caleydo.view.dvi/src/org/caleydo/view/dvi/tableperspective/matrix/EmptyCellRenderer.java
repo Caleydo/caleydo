@@ -22,7 +22,7 @@ package org.caleydo.view.dvi.tableperspective.matrix;
 import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 
-public class EmptyCellRenderer extends ColorRenderer {
+class EmptyCellRenderer extends ColorRenderer {
 
 	public static final float[] DEFAULT_COLOR = { 0.9f, 0.9f, 0.9f, 1f };
 	public static final float[] DEFAULT_BORDER_COLOR = { 0.7f, 0.7f, 0.7f, 1f };

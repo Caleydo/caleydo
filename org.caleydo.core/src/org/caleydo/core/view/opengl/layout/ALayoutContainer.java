@@ -203,6 +203,17 @@ public abstract class ALayoutContainer
 		this.top = top;
 		this.right = right;
 	}
+	
+
+	@Override
+	void setRenderingDirty() {
+		if(isHidden)
+			return;
+		super.setRenderingDirty();
+		for (ElementLayout element : elements) {
+			element.setRenderingDirty();
+		}
+	}
 
 	@Override
 	protected void updateSpacings() {

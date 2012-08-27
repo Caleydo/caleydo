@@ -186,6 +186,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 */
 	private int maxBranchSwitchingPathLength = DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH;
 
+	/**
+	 * Determines whether the layout needs to be updated. This is a more severe
+	 * update than only the display list update.
+	 */
+	private boolean isLayoutDirty = true;
+
 	private EventBasedSelectionManager geneSelectionManager;
 	private EventBasedSelectionManager metaboliteSelectionManager;
 
@@ -227,7 +233,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		detailLevel = EDetailLevel.HIGH;
 
 		path = new ArrayList<PathwayVertexRep>();
-
+		// Create sample path
 		for (PathwayGraph graph : PathwayManager.get().getAllItems()) {
 			if (graph.getType() == EPathwayDatabaseType.KEGG
 					&& graph.getTitle().startsWith("Glioma")) {
@@ -366,8 +372,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 						lastNodeId++);
 				int commaIndex = currentVertexRep.getName().indexOf(',');
 				if (commaIndex > 0) {
-					geneNode.setLabel(
-							currentVertexRep.getName().substring(0, commaIndex));
+					geneNode.setLabel(currentVertexRep.getName().substring(0, commaIndex));
 				} else {
 					geneNode.setLabel(currentVertexRep.getName());
 				}
@@ -447,6 +452,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		if (isDisplayListDirty) {
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
+			isLayoutDirty = false;
 		}
 		gl.glCallList(displayListIndex);
 
@@ -481,8 +487,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			float currentAnchorNodeSpacing = spacing.getCurrentAnchorNodeSpacing();
 
 			float nodeSpacing = (Float.isNaN(currentAnchorNodeSpacing) ? minNodeSpacing
-					: (spacing.getCurrentAnchorNodeSpacing() - spacing
-							.getTotalNodeHeight())
+					: (currentAnchorNodeSpacing - spacing.getTotalNodeHeight())
 							/ ((float) spacing.getNodesInbetween().size() + 1));
 			ANode startAnchorNode = spacing.getStartNode();
 
@@ -543,8 +548,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		gl.glPushMatrix();
 
 		// TODO do this only when necessary - cause re-initialization
-		mappedDataRenderer.setLinearizedNodes(linearizedNodes);
-
+		if (isLayoutDirty) {
+			mappedDataRenderer.setLinearizedNodes(linearizedNodes);
+		}
 		gl.glTranslatef(dataRowPositionX, topSpacing, 0);
 		mappedDataRenderer.render(gl);
 		gl.glPopMatrix();
@@ -1032,7 +1038,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		setMinSize(0);
 
 		createNodes();
-		setDisplayListDirty();
+		setLayoutDirty();
 
 	}
 
@@ -1269,7 +1275,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		}
 		dataDomains.add(newTablePerspective.getDataDomain());
 		setMappedDataRendererGeometry();
-		setDisplayListDirty();
+		setLayoutDirty();
 	}
 
 	@Override
@@ -1293,7 +1299,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
-		setDisplayListDirty();
+		setLayoutDirty();
 	}
 
 	@Override
@@ -1388,6 +1394,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
+
+		setLayoutDirty();
 	}
 
 	@Override
@@ -1395,6 +1403,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		gl.glDeleteLists(displayListIndex, 1);
 		// TODO: Destroy all the layoutManagers
 
+	}
+
+	public void setLayoutDirty() {
+		isLayoutDirty = true;
+		setDisplayListDirty();
 	}
 
 }

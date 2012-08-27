@@ -20,7 +20,9 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
@@ -29,6 +31,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.view.enroute.EPickingType;
 
 /**
  * Renders a row caption based on david IDs
@@ -60,6 +63,7 @@ public class RowCaptionRenderer extends SelectableRenderer {
 		this.davidID = davidID;
 		textRenderer = parentView.getTextRenderer();
 		pixelGLConverter = parentView.getPixelGLConverter();
+		baseColor = backgroundColor;
 		topBarColor = backgroundColor;
 		bottomBarColor = backgroundColor;
 
@@ -75,7 +79,7 @@ public class RowCaptionRenderer extends SelectableRenderer {
 		float frameZ = 0.3f;
 
 		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
-				PickingType.GENE.name(), davidID));
+				EPickingType.GENE.name(), davidID));
 
 		gl.glBegin(GL2.GL_QUADS);
 		

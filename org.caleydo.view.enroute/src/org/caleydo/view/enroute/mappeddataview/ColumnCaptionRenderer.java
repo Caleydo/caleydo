@@ -20,7 +20,9 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.selection.SelectionType;
@@ -30,6 +32,7 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.view.enroute.EPickingType;
 
 /**
  * @author Alexander Lex
@@ -43,6 +46,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 	private String label;
 	AVariablePerspective<?, ?, ?, ?> samplePerspective;
 	APickingListener groupPickingListener;
+	
 
 	public ColumnCaptionRenderer(AGLView parentView, MappedDataRenderer parent,
 			Group group, AVariablePerspective<?, ?, ?, ?> samplePerspective,
@@ -54,7 +58,8 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 		this.label = group.getLabel();
 		this.samplePerspective = samplePerspective;
 
-		topBarColor = dataDomain.getColor().getRGB();
+		baseColor = dataDomain.getColor().getRGB();
+		topBarColor = baseColor;
 		bottomBarColor = topBarColor;
 		registerPickingListener();
 
@@ -79,7 +84,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 		calculateColors(selectionTypes);
 
 		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
-				PickingType.SAMPLE_GROUP.name(), group.getID()));
+				EPickingType.SAMPLE_GROUP.name(), group.getID()));
 
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor3fv(bottomBarColor, 0);
@@ -108,22 +113,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 
 	}
 
-	protected void calculateColors(ArrayList<SelectionType> selectionTypes) {
-
-		if (selectionTypes.size() != 0
-				&& !selectionTypes.get(0).equals(SelectionType.NORMAL)
-				&& selectionTypes.get(0).isVisible()) {
-			topBarColor = selectionTypes.get(0).getColor();
-
-			if (selectionTypes.size() > 1
-					&& !selectionTypes.get(1).equals(SelectionType.NORMAL)
-					&& selectionTypes.get(1).isVisible()) {
-				bottomBarColor = selectionTypes.get(1).getColor();
-			} else {
-				bottomBarColor = topBarColor;
-			}
-		}
-	}
+	
 
 	private void registerPickingListener() {
 		groupPickingListener = new APickingListener() {
@@ -168,7 +158,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 		};
 
 		parentView.addIDPickingListener(groupPickingListener,
-				PickingType.SAMPLE_GROUP.name(), group.getID());
+				EPickingType.SAMPLE_GROUP.name(), group.getID());
 	}
 
 	private void unregisterPickingListener() {

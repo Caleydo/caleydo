@@ -647,6 +647,30 @@ public class ElementLayout {
 	void setTranslateY(float translateY) {
 		this.translateY = translateY;
 	}
+	
+	
+	/**
+	 * Sets the display lists of all renderers of this layout dirty.
+	 */
+	void setRenderingDirty() {
+		if(isHidden)
+			return;
+		
+		if (foregroundRenderers != null) {
+			for (LayoutRenderer renderer : foregroundRenderers) {
+				renderer.setDisplayListDirty();
+			}
+		}
+		if (backgroundRenderers != null) {
+			for (LayoutRenderer renderer : backgroundRenderers) {
+				renderer.setDisplayListDirty();
+			}
+		}
+		if (renderer != null) {
+			renderer.setDisplayListDirty();
+		}
+		
+	}
 
 	protected void updateSpacings() {
 		if (isHidden)
@@ -675,18 +699,18 @@ public class ElementLayout {
 
 		if (renderer != null)
 			renderer.updateSpacing();
-		if (backgroundRenderers != null) {
-			for (LayoutRenderer renderer : backgroundRenderers) {
-				renderer.setLimits(getSizeScaledX(), getSizeScaledY());
-			}
-		}
-		if (foregroundRenderers != null)
-
-		{
-			for (LayoutRenderer renderer : foregroundRenderers) {
-				renderer.setLimits(getSizeScaledX(), getSizeScaledY());
-			}
-		}
+//		if (backgroundRenderers != null) {
+//			for (LayoutRenderer renderer : backgroundRenderers) {
+//				renderer.setLimits(getSizeScaledX(), getSizeScaledY());
+//			}
+//		}
+//		if (foregroundRenderers != null)
+//
+//		{
+//			for (LayoutRenderer renderer : foregroundRenderers) {
+//				renderer.setLimits(getSizeScaledX(), getSizeScaledY());
+//			}
+//		}
 
 	}
 

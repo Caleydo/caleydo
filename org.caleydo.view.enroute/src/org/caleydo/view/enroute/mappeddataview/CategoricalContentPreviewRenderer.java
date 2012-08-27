@@ -87,8 +87,9 @@ public class CategoricalContentPreviewRenderer extends ContentRenderer {
 						.getSelectionTypes(sampleIDType, sampleID));
 			}
 
-			topBarColor = dataDomain.getColorMapper().getColor(
+			baseColor = dataDomain.getColorMapper().getColor(
 					(float) bucketCount / (histogram.size() - 1));
+			topBarColor = baseColor;
 			bottomBarColor = topBarColor;
 			calculateColors(Algorithms.mergeListsToUniqueList(selectionTypes,
 					sampleSelectionTypes));

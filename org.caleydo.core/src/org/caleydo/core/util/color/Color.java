@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author Partl
  */
 @XmlType
-public class Color {
+public final class Color {
 	public float r;
 	public float g;
 	public float b;
@@ -38,17 +38,26 @@ public class Color {
 	}
 
 	public Color(float r, float g, float b, float a) {
+		setRGBA(r, g, b, a);
+	}
+
+	public Color(float r, float g, float b) {
+		setRGBA(r, g, b, 1);
+	}
+
+	public void setRGBA(float r, float g, float b, float a) {
 		this.r = r;
 		this.g = g;
 		this.b = b;
 		this.a = a;
 	}
 
-	public Color(float r, float g, float b) {
-		this.r = r;
-		this.g = g;
-		this.b = b;
-		this.a = 1;
+	public Color(float[] rgba) {
+		setRGBA(rgba);
+	}
+
+	public void setRGBA(float[] rgba) {
+		setRGBA(rgba[0], rgba[1], rgba[2], rgba[3]);
 	}
 
 	public float[] getRGB() {

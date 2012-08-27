@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
@@ -43,6 +45,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.node.ALinearizableNode;
 import org.caleydo.view.enroute.node.ComplexNode;
@@ -609,7 +612,7 @@ public class MappedDataRenderer {
 				parentView.setDisplayListDirty();
 
 			}
-		}, PickingType.GENE.name());
+		}, EPickingType.GENE.name());
 
 		parentView.addTypePickingListener(new APickingListener() {
 
@@ -641,7 +644,7 @@ public class MappedDataRenderer {
 				parentView.setDisplayListDirty();
 
 			}
-		}, PickingType.SAMPLE.name());
+		}, EPickingType.SAMPLE.name());
 
 		parentView.addTypePickingListener(new APickingListener() {
 
@@ -655,11 +658,11 @@ public class MappedDataRenderer {
 					sampleGroupSelectionManager.addToType(abstractGroupType,
 							pick.getObjectID());
 				sampleGroupSelectionManager.triggerSelectionUpdateEvent();
-				parentView.setDisplayListDirty();
+				parentView.setLayoutDirty();
 
 			}
 
-		}, PickingType.SAMPLE_GROUP_VIEW_MODE.name());
+		}, EPickingType.SAMPLE_GROUP_VIEW_MODE.name());
 	}
 
 	public void unregisterPickingListeners() {

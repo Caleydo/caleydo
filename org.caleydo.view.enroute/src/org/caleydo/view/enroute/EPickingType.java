@@ -35,5 +35,17 @@ public enum EPickingType {
 	COMPOUND_NODE,
 	LINEARIZABLE_NODE,
 	REMOVABLE_NODE,
-	REMOVE_NODE_BUTTON
+	REMOVE_NODE_BUTTON,
+	/** Picking type for genes */
+	GENE,
+	/** Picking type for samples */
+	SAMPLE,
+	/** Picking type for sample groups */
+	SAMPLE_GROUP,
+	/** The view mode for the sample group */
+	SAMPLE_GROUP_VIEW_MODE,
+	/** Picking type for abstract bars */
+	SAMPLE_GROUP_RENDERER,
+	/** A bar in a histogram which can be resolved to samples */
+	HISTOGRAM_BAR
 }

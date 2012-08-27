@@ -32,7 +32,7 @@ import org.caleydo.view.enroute.node.ANode;
  * @author Christian
  * 
  */
-public class AnchorNodeSpacing {
+class AnchorNodeSpacing {
 
 	/**
 	 * First anchor node.

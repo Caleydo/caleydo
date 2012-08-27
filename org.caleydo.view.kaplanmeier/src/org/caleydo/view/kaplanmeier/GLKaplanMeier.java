@@ -408,7 +408,9 @@ public class GLKaplanMeier extends ATableBasedView {
 			// We cannot use transparency here because of artifacts. Hence, we
 			// need
 			// to brighten the color by multiplying it with a factor
-			gl.glColor3f(color.r * 1.3f, color.g * 1.3f, color.b * 1.3f);
+			// TODO: Use correct brightening of HSV color model in the future.
+			gl.glColor3f(color.r * 1.3f, color.g * 1.3f,
+					color.b * 1.3f);
 			drawFilledCurve(gl, dataVector);
 
 			dataVector.clear();
@@ -633,6 +635,6 @@ public class GLKaplanMeier extends ATableBasedView {
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		gl.glDeleteLists(displayListIndex, 1);
-		
+
 	}
 }

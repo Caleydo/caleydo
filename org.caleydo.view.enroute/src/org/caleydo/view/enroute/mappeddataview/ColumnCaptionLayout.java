@@ -28,6 +28,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.view.enroute.EPickingType;
 
 /**
  * @author alexsb
@@ -39,9 +40,9 @@ public class ColumnCaptionLayout extends Column {
 	MappedDataRenderer parent;
 	Group group;
 
-	private static final int abstractModePixelWidth = 40;
-
-	private float dymanicWidth;
+//	private static final int abstractModePixelWidth = 40;
+//
+//	private float dymanicWidth;
 
 	/**
 	 * 
@@ -50,7 +51,7 @@ public class ColumnCaptionLayout extends Column {
 		this.parentView = parentView;
 		this.parent = parent;
 		this.isBottomUp = false;
-		dymanicWidth = ratioSizeX;
+//		dymanicWidth = ratioSizeX;
 
 	}
 
@@ -63,7 +64,7 @@ public class ColumnCaptionLayout extends Column {
 				group, samplePerspective, dataDomain);
 		caption.setRenderer(renderer);
 
-		Button button = new Button(PickingType.SAMPLE_GROUP_VIEW_MODE.name(),
+		Button button = new Button(EPickingType.SAMPLE_GROUP_VIEW_MODE.name(),
 				group.getID(), EIconTextures.ABSTRACT_BAR_ICON);
 		ButtonRenderer buttonRender = new ButtonRenderer(button, parentView);
 
