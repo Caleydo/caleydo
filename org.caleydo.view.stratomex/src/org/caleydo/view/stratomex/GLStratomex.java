@@ -97,6 +97,7 @@ import org.caleydo.view.stratomex.listener.ConnectionsModeListener;
 import org.caleydo.view.stratomex.listener.GLStratomexKeyListener;
 import org.caleydo.view.stratomex.listener.ReplaceTablePerspectiveListener;
 import org.caleydo.view.stratomex.listener.SplitBrickListener;
+import org.caleydo.view.stratomex.vendingmachine.VendingMachine;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
@@ -221,6 +222,8 @@ public class GLStratomex
 	// private Set<IDataDomain> dataDomains;
 	private List<TablePerspective> tablePerspectives;
 
+	private VendingMachine vendingMachine;
+
 	private boolean isVendingMachineMode = false;
 
 	private boolean showArchSides = true;
@@ -273,6 +276,8 @@ public class GLStratomex
 			initLeftLayout();
 			initRightLayout();
 		}
+
+		initVendingMachine();
 
 		updateConnectionLinesBetweenDimensionGroups();
 	}
@@ -1843,21 +1848,6 @@ public class GLStratomex
 		return dragAndDropController;
 	}
 
-	/**
-	 * @param isVendingMachineMode setter, see {@link #isVendingMachineMode}
-	 */
-	public void setVendingMachineMode(boolean isVendingMachineMode) {
-		this.isVendingMachineMode = isVendingMachineMode;
-		showArchSides = false;
-	}
-
-	/**
-	 * @return the isVendingMachineMode, see {@link #isVendingMachineMode}
-	 */
-	public boolean isVendingMachineMode() {
-		return isVendingMachineMode;
-	}
-
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		gl.glDeleteLists(displayListIndex, 1);
@@ -1869,4 +1859,30 @@ public class GLStratomex
 			rightLayoutManager.destroy(gl);
 	}
 
+	private void initVendingMachine() {
+		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+				-4, 4);
+		vendingMachine = (VendingMachine) GeneralManager.get().getViewManager()
+				.createGLView(VendingMachine.class, parentGLCanvas, parentComposite, frustum);
+
+		vendingMachine.setRemoteRenderingGLView(this);
+		vendingMachine.initialize();
+		vendingMachine.setStratomex(this);
+		vendingMachine.initLayouts();
+
+	}
+
+	/**
+	 * @return the isVendingMachineMode, see {@link #isVendingMachineMode}
+	 */
+	public boolean isVendingMachineMode() {
+		return isVendingMachineMode;
+	}
+
+	/**
+	 * @return the vendingMachine, see {@link #vendingMachine}
+	 */
+	public VendingMachine getVendingMachine() {
+		return vendingMachine;
+	}
 }

@@ -35,7 +35,6 @@ import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -55,7 +54,6 @@ import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.contextmenu.CreateClusteringItem;
 import org.caleydo.view.dvi.contextmenu.LoadGroupingItem;
 import org.caleydo.view.dvi.contextmenu.ShowViewWithoutDataItem;
-import org.caleydo.view.dvi.event.OpenVendingMachineEvent;
 import org.caleydo.view.dvi.layout.AGraphLayout;
 import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
@@ -65,13 +63,12 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
-public class TableBasedDataNode extends ADataNode implements IDropArea {
+public class TableBasedDataNode
+	extends ADataNode
+	implements IDropArea {
 
 	private final static String TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_TYPE = "org.caleydo.view.dvi.toggletableperspectivebutton";
 	private final static int TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_ID = 0;
-
-	private final static String TRIGGER_VENDING_MACHINE_BUTTON_PICKING_TYPE = "org.caleydo.view.dvi.triggervendingmachinebutton";
-	private final static int TRIGGER_VENDING_MACHINE_BUTTON_PICKING_ID = 1;
 
 	private ATableBasedDataDomain dataDomain;
 
@@ -110,7 +107,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		public abstract ALayoutState getNextState();
 	}
 
-	private class OverviewState extends ALayoutState {
+	private class OverviewState
+		extends ALayoutState {
 
 		public OverviewState() {
 			tablePerspectiveRenderer = new TablePerspectiveListRenderer(
@@ -134,17 +132,17 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			super.apply();
 			bodyRow.clearBackgroundRenderers();
 			if (getTablePerspectives().size() > 0) {
-				bodyRow.addBackgroundRenderer(new ColorRenderer(
-						new float[] { 1, 1, 1, 1 }));
+				bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 			}
 		}
 	}
 
-	private class DetailState extends ALayoutState {
+	private class DetailState
+		extends ALayoutState {
 
 		public DetailState() {
-			tablePerspectiveRenderer = new TablePerspectiveMatrixRenderer(dataDomain,
-					view, TableBasedDataNode.this, dragAndDropController);
+			tablePerspectiveRenderer = new TablePerspectiveMatrixRenderer(dataDomain, view,
+					TableBasedDataNode.this, dragAndDropController);
 			List<Pair<String, Integer>> pickingIDsToBePushed = new ArrayList<Pair<String, Integer>>();
 			pickingIDsToBePushed.add(new Pair<String, Integer>(
 					DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
@@ -167,8 +165,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 	}
 
 	public TableBasedDataNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
-			DragAndDropController dragAndDropController, Integer id,
-			IDataDomain dataDomain) {
+			DragAndDropController dragAndDropController, Integer id, IDataDomain dataDomain) {
 		super(graphLayout, view, dragAndDropController, id, dataDomain);
 		this.dataDomain = (ATableBasedDataDomain) dataDomain;
 
@@ -200,24 +197,12 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		view.addIDPickingListener(new APickingListener() {
 
 			@Override
-			public void clicked(Pick pick) {
-				OpenVendingMachineEvent event = new OpenVendingMachineEvent(dataDomain);
-				event.setSender(view);
-				GeneralManager.get().getEventPublisher().triggerEvent(event);
-			}
-		}, TRIGGER_VENDING_MACHINE_BUTTON_PICKING_TYPE + getID(),
-				TRIGGER_VENDING_MACHINE_BUTTON_PICKING_ID);
-
-		view.addIDPickingListener(new APickingListener() {
-
-			@Override
 			public void dragged(Pick pick) {
 
 				// DragAndDropController dragAndDropController =
 				// dragAndDropController;
 				if (dragAndDropController.isDragging()
-						&& dragAndDropController.getDraggingMode().equals(
-								"PerspectiveDrag")) {
+						&& dragAndDropController.getDraggingMode().equals("PerspectiveDrag")) {
 					dragAndDropController.setDropArea(TableBasedDataNode.this);
 				}
 
@@ -231,10 +216,10 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 				contextMenuCreator.addContextMenuItem(new LoadGroupingItem(dataDomain,
 						dataDomain.getRecordIDCategory()));
 
-				contextMenuCreator.addContextMenuItem(new CreateClusteringItem(
-						dataDomain, true));
-				contextMenuCreator.addContextMenuItem(new CreateClusteringItem(
-						dataDomain, false));
+				contextMenuCreator.addContextMenuItem(new CreateClusteringItem(dataDomain,
+						true));
+				contextMenuCreator.addContextMenuItem(new CreateClusteringItem(dataDomain,
+						false));
 			}
 
 		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
@@ -242,8 +227,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		// FIXME: Bad hack
 		if (dataDomain.getLabel().toLowerCase().contains("copy")
 				|| dataDomain.getLabel().toLowerCase().contains("mutation")) {
-			final boolean isCopyNumber = dataDomain.getLabel().toLowerCase()
-					.contains("copy");
+			final boolean isCopyNumber = dataDomain.getLabel().toLowerCase().contains("copy");
 
 			view.addIDPickingListener(new ToolTipPickingListener(view, "To create a "
 					+ (isCopyNumber ? "copy number" : "mutation status")
@@ -272,8 +256,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 						view.getContextMenuCreator().addContextMenuItem(
 								new ShowViewWithoutDataItem("org.caleydo.view.search",
 										"Create Categorization of a Gene's "
-												+ (isCopyNumber ? "Copy Number"
-														: "Mutation") + " Status"));
+												+ (isCopyNumber ? "Copy Number" : "Mutation")
+												+ " Status"));
 
 					}
 
@@ -309,32 +293,12 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 		ElementLayout lineSeparatorLayout = createDefaultLineSeparatorLayout();
 
-		if (view.isVendingMachineMode()) {
-			ElementLayout vendingMachineButtonLayout = new ElementLayout(
-					"vendingMachineButtonLayout");
-			vendingMachineButtonLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-			vendingMachineButtonLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
-			triggerVendingMachineButton = new Button(
-					TRIGGER_VENDING_MACHINE_BUTTON_PICKING_TYPE + getID(),
-					TRIGGER_VENDING_MACHINE_BUTTON_PICKING_ID,
-					EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
-			triggerVendingMachineButtonRenderer = new ButtonRenderer(
-					triggerVendingMachineButton, view);
-			triggerVendingMachineButtonRenderer.addPickingID(
-					DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
-			triggerVendingMachineButtonRenderer.setZCoordinate(1);
-			vendingMachineButtonLayout.setRenderer(triggerVendingMachineButtonRenderer);
-			titleRow.append(spacingLayoutX);
-			titleRow.append(vendingMachineButtonLayout);
-		}
-
 		ElementLayout toggleTablePerspectiveButtonLayout = new ElementLayout(
 				"toggleTablePerspectiveLayout");
 		toggleTablePerspectiveButtonLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		toggleTablePerspectiveButtonLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
-		toggleTablePerspectiveButton = new Button(
-				TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_TYPE + getID(),
-				TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_ID,
+		toggleTablePerspectiveButton = new Button(TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_TYPE
+				+ getID(), TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_ID,
 				EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
 
 		if (dataDomain.getRecordPerspectiveIDs().size() < 1
@@ -346,16 +310,15 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		toggleTablePerspectiveButtonRenderer.addPickingID(
 				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 		toggleTablePerspectiveButtonRenderer.setZCoordinate(1);
-		toggleTablePerspectiveButtonLayout
-				.setRenderer(toggleTablePerspectiveButtonRenderer);
+		toggleTablePerspectiveButtonLayout.setRenderer(toggleTablePerspectiveButtonRenderer);
 
 		// FIXME: Very bad hack
-//		if ((!dataDomain.getLabel().toLowerCase().contains("copy"))
-//				&& (!dataDomain.getLabel().toLowerCase().contains("clinical"))
-//				&& (!dataDomain.getLabel().toLowerCase().contains("mutation"))) {
-			titleRow.append(spacingLayoutX);
-			titleRow.append(toggleTablePerspectiveButtonLayout);
-//		}
+		// if ((!dataDomain.getLabel().toLowerCase().contains("copy"))
+		// && (!dataDomain.getLabel().toLowerCase().contains("clinical"))
+		// && (!dataDomain.getLabel().toLowerCase().contains("mutation"))) {
+		titleRow.append(spacingLayoutX);
+		titleRow.append(toggleTablePerspectiveButtonLayout);
+		// }
 
 		bodyRow = new Row("bodyRow");
 
@@ -392,8 +355,6 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 	public void destroy() {
 		view.removeAllIDPickingListeners(TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_TYPE
 				+ getID(), TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_ID);
-		view.removeAllIDPickingListeners(TRIGGER_VENDING_MACHINE_BUTTON_PICKING_TYPE
-				+ getID(), TRIGGER_VENDING_MACHINE_BUTTON_PICKING_ID);
 		view.removeAllIDPickingListeners(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 		tablePerspectiveRenderer.destroy();
 	}
@@ -459,8 +420,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 						RecordPerspective childPerspective = dataDomain.getTable()
 								.getRecordPerspective(group.getPerspectiveID());
-						childList.add(new Pair<String, RecordPerspective>(
-								childPerspective.getLabel(), childPerspective));
+						childList.add(new Pair<String, RecordPerspective>(childPerspective
+								.getLabel(), childPerspective));
 					}
 				}
 
@@ -493,15 +454,15 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		Map<DimensionPerspective, List<Pair<String, DimensionPerspective>>> childDimensionPerspectiveLists = new HashMap<DimensionPerspective, List<Pair<String, DimensionPerspective>>>();
 
 		for (String perspectiveID : dimensionPerspectiveIDs) {
-			DimensionPerspective perspective = dataDomain.getTable()
-					.getDimensionPerspective(perspectiveID);
+			DimensionPerspective perspective = dataDomain.getTable().getDimensionPerspective(
+					perspectiveID);
 
 			if (perspective.isPrivate()) {
 				continue;
 			}
 
-			parentDimensionPerspectives.add(new Pair<String, DimensionPerspective>(
-					perspective.getLabel(), perspective));
+			parentDimensionPerspectives.add(new Pair<String, DimensionPerspective>(perspective
+					.getLabel(), perspective));
 
 			DimensionGroupList groupList = perspective.getVirtualArray().getGroupList();
 
@@ -515,8 +476,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 						DimensionPerspective childPerspective = dataDomain.getTable()
 								.getDimensionPerspective(group.getPerspectiveID());
-						childList.add(new Pair<String, DimensionPerspective>(
-								childPerspective.getLabel(), childPerspective));
+						childList.add(new Pair<String, DimensionPerspective>(childPerspective
+								.getLabel(), childPerspective));
 					}
 				}
 
@@ -568,8 +529,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 	}
 
 	@Override
-	public void handleDragOver(GL2 gl, Set<IDraggable> draggables,
-			float mouseCoordinateX, float mouseCoordinateY) {
+	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
+			float mouseCoordinateY) {
 		// TODO Auto-generated method stub
 
 	}
@@ -581,13 +542,11 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		for (IDraggable draggable : draggables) {
 			if (draggable instanceof PerspectiveRenderer) {
 				PerspectiveRenderer perspectiveRenderer = (PerspectiveRenderer) draggable;
-				ATableBasedDataDomain foreignDataDomain = perspectiveRenderer
-						.getDataDomain();
+				ATableBasedDataDomain foreignDataDomain = perspectiveRenderer.getDataDomain();
 				if (foreignDataDomain != this.dataDomain) {
 					if (perspectiveRenderer.isRecordPerspective()) {
-						RecordPerspective recordPerspective = foreignDataDomain
-								.getTable().getRecordPerspective(
-										perspectiveRenderer.getPerspectiveID());
+						RecordPerspective recordPerspective = foreignDataDomain.getTable()
+								.getRecordPerspective(perspectiveRenderer.getPerspectiveID());
 
 						RecordPerspective convertedPerspective = this.dataDomain
 								.convertForeignRecordPerspective(recordPerspective);
@@ -604,12 +563,11 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 	@Override
 	protected int getMinTitleBarWidthPixels() {
-		float textWidth = view.getTextRenderer().getRequiredTextWidth(
-				dataDomain.getLabel(),
+		float textWidth = view.getTextRenderer().getRequiredTextWidth(dataDomain.getLabel(),
 				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS));
 
-		return pixelGLConverter.getPixelWidthForGLWidth(textWidth)
-				+ CAPTION_HEIGHT_PIXELS + SPACING_PIXELS;
+		return pixelGLConverter.getPixelWidthForGLWidth(textWidth) + CAPTION_HEIGHT_PIXELS
+				+ SPACING_PIXELS;
 	}
 
 	@Override
@@ -617,7 +575,6 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		// TODO Auto-generated method stub
 
 	}
-	
 
 	@Override
 	public String getProviderName() {

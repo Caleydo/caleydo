@@ -26,7 +26,7 @@ import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.stratomex.event.SplitBrickEvent;
 
 /**
- * @author alexsb
+ * @author Alexander Lex
  * 
  */
 public class SplitBrickItem extends AContextMenuItem {

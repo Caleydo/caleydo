@@ -39,9 +39,6 @@ public class RemoveTablePerspectiveEvent extends AEvent {
 	 */
 	private IMultiTablePerspectiveBasedView receiver;
 
-	/**
-	 * 
-	 */
 	public RemoveTablePerspectiveEvent() {
 	}
 

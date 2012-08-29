@@ -300,15 +300,15 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 					.getPathwayDataDomain().getColor().getRGBA();
 		}
 
-		mainColumn.addBackgroundRenderer(new BrickColumnGlowRenderer(glowColor, this,
-				false));
+//		mainColumn.addBackgroundRenderer(new BrickColumnGlowRenderer(glowColor, this,
+//				false));
 
 		ElementLayout innerHeaderBrickLayout = new ElementLayout();
 
 		// headerBrickLayout2.setRenderingPriority(1);
 
-		innerHeaderBrickLayout.addBackgroundRenderer(new BrickColumnGlowRenderer(
-				glowColor, this, true));
+//		innerHeaderBrickLayout.addBackgroundRenderer(new BrickColumnGlowRenderer(
+//				glowColor, this, true));
 
 		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
 		brickSpacingLayout.setPixelSizeY(BETWEEN_BRICKS_SPACING);

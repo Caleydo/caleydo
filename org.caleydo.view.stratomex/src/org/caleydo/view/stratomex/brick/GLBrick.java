@@ -78,6 +78,7 @@ import org.caleydo.view.stratomex.brick.contextmenu.CreatePathwayGroupFromDataIt
 import org.caleydo.view.stratomex.brick.contextmenu.CreatePathwaySmallMultiplesGroupItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RemoveColumnItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RenameBrickItem;
+import org.caleydo.view.stratomex.brick.contextmenu.ScoreColumnItem;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.stratomex.brick.layout.CollapsedBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.CompactHeaderBrickLayoutTemplate;
@@ -867,6 +868,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
 
 				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(stratomex,
+						getBrickColumn().getTablePerspective().getID()));
+				
+				contextMenuCreator.addContextMenuItem(new ScoreColumnItem(stratomex.getVendingMachine(),
 						getBrickColumn().getTablePerspective().getID()));
 			}
 

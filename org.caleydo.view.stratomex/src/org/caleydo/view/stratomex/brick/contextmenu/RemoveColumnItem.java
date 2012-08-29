@@ -29,9 +29,6 @@ import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
  */
 public class RemoveColumnItem extends AContextMenuItem {
 
-	/**
-	 * 
-	 */
 	public RemoveColumnItem(IMultiTablePerspectiveBasedView view, int tablePerspectiveID) {
 
 		setLabel("Remove column");
