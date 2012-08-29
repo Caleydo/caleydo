@@ -188,6 +188,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 */
 	private boolean isLayoutDirty = true;
 
+	/**
+	 * Determines whether a new path was set and has not been rendered yet.
+	 */
+	private boolean isNewPath = true;
+
 	private EventBasedSelectionManager geneSelectionManager;
 	private EventBasedSelectionManager metaboliteSelectionManager;
 
@@ -446,7 +451,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		// setMappedDataRendererGeometry();
 		if (isDisplayListDirty) {
-			
+
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
 			isLayoutDirty = false;
@@ -476,9 +481,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 			Vec3f currentPosition = new Vec3f(branchColumnWidth + pathwayColumnWidth
 					/ 2.0f, viewFrustum.getHeight(), 0.2f);
-		
+
 			float minNodeSpacing = pixelGLConverter
 					.getGLHeightForPixelHeight(MIN_NODE_SPACING_PIXELS);
+
+			int minViewHeightRequiredByBranchNodes = 0;
 
 			for (AnchorNodeSpacing spacing : anchorNodeSpacings) {
 
@@ -493,6 +500,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 						- ((startAnchorNode != null) ? startAnchorNode.getHeight() / 2.0f
 								: 0);
 
+				int minViewHeight = calculatePositionsOfBranchNodes(startAnchorNode);
+				if (minViewHeight > minViewHeightRequiredByBranchNodes) {
+					minViewHeightRequiredByBranchNodes = minViewHeight;
+				}
+
 				for (int i = 0; i < spacing.getNodesInbetween().size(); i++) {
 					ANode node = spacing.getNodesInbetween().get(i);
 
@@ -501,6 +513,10 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 									- node.getHeight() / 2.0f, currentPosition.z()));
 					currentInbetweenNodePositionY -= (nodeSpacing + node.getHeight());
 
+					minViewHeight = calculatePositionsOfBranchNodes(node);
+					if (minViewHeight > minViewHeightRequiredByBranchNodes) {
+						minViewHeightRequiredByBranchNodes = minViewHeight;
+					}
 				}
 
 				currentPosition.setY(currentPosition.y()
@@ -509,20 +525,34 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				ANode endAnchorNode = spacing.getEndNode();
 				if (endAnchorNode != null) {
 					endAnchorNode.setPosition(new Vec3f(currentPosition));
+					minViewHeight = calculatePositionsOfBranchNodes(endAnchorNode);
+					if (minViewHeight > minViewHeightRequiredByBranchNodes) {
+						minViewHeightRequiredByBranchNodes = minViewHeight;
+					}
 				}
 
 				pathwayHeight += spacing.getCurrentAnchorNodeSpacing();
 			}
-		}
-		
-		int minViewHeightPixels = pixelGLConverter
-				.getPixelHeightForGLHeight(pathwayHeight);
 
-		if (minViewHeightPixels > parentGLCanvas.getHeight()) {
-			setMinSize(minViewHeightPixels);
+			if (expandedBranchSummaryNode != null) {
+				int minViewHeight = calculateBranchNodePosition(expandedBranchSummaryNode);
+				if (minViewHeight > minViewHeightRequiredByBranchNodes) {
+					minViewHeightRequiredByBranchNodes = minViewHeight;
+				}
+			}
+
+			int minViewHeightPixels = Math.max(minViewHeightRequiredByBranchNodes,
+					pixelGLConverter.getPixelHeightForGLHeight(pathwayHeight));
+			System.out.println("calculated min height:" + minViewHeightPixels);
+
+			if (isNewPath) {
+				System.out.println("setting min height:" + minViewHeightPixels);
+				setMinSize(minViewHeightPixels + 3);
+				isNewPath = false;
+			}
 		}
-		
-		for(ALinearizableNode node : linearizedNodes) {
+
+		for (ALinearizableNode node : linearizedNodes) {
 			node.render(gl, glu);
 			renderBranchNodes(gl, glu, node);
 		}
@@ -548,14 +578,13 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
 		gl.glPushMatrix();
 
-		setMappedDataRendererGeometry();
-
-		// TODO do this only when necessary - cause re-initialization
 		if (isLayoutDirty) {
 			mappedDataRenderer.setLinearizedNodes(linearizedNodes);
 		}
+		setMappedDataRendererGeometry();
+
 		gl.glTranslatef(dataRowPositionX, topSpacing, 0);
-		mappedDataRenderer.render(gl);
+		mappedDataRenderer.render(gl, isLayoutDirty);
 		gl.glPopMatrix();
 
 		renderEdgesOfLinearizedNodes(gl);
@@ -570,6 +599,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				+ DATA_COLUMN_WIDTH_PIXELS, minHeightPixels);
 		event.setView(this);
 		eventPublisher.triggerEvent(event);
+		System.out.println("minsize: " + minHeightPixels);
 		setLayoutDirty();
 	}
 
@@ -704,7 +734,35 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		}
 	}
 
-	private void renderBranchSummaryNode(GL2 gl, GLU glu, BranchSummaryNode summaryNode) {
+	/**
+	 * @param node
+	 *            The node for which the positions of associated branch nodes
+	 *            shall be calculated
+	 * @return the minimum view height in pixels that would be required by the
+	 *         nodes to be displayed.
+	 */
+	private int calculatePositionsOfBranchNodes(ANode node) {
+		int minViewHeightPixelsIncoming = 0;
+		int minViewHeightPixelsOutgoing = 0;
+		ANode incomingNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(node);
+		if ((incomingNode != null) && (incomingNode != expandedBranchSummaryNode)) {
+			minViewHeightPixelsIncoming = calculateBranchNodePosition((BranchSummaryNode) incomingNode);
+		}
+
+		ANode outgoingNode = linearizedNodesToOutgoingBranchSummaryNodesMap.get(node);
+		if ((outgoingNode != null) && (outgoingNode != expandedBranchSummaryNode)) {
+			minViewHeightPixelsOutgoing = calculateBranchNodePosition((BranchSummaryNode) outgoingNode);
+		}
+		return Math.max(minViewHeightPixelsIncoming, minViewHeightPixelsOutgoing);
+	}
+
+	/**
+	 * Calculates the position for a single branch node.
+	 * 
+	 * @param summaryNode
+	 * @return
+	 */
+	private int calculateBranchNodePosition(BranchSummaryNode summaryNode) {
 		boolean isIncomingNode = linearizedNodesToIncomingBranchSummaryNodesMap
 				.get(summaryNode.getAssociatedLinearizedNode()) == summaryNode;
 		ALinearizableNode linearizedNode = summaryNode.getAssociatedLinearizedNode();
@@ -726,6 +784,22 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		summaryNode.setPosition(new Vec3f(sideSpacing + width / 2.0f, nodePositionY,
 				(summaryNode.isCollapsed() ? 0 : 0.2f)));
 
+		float bottomPositionY = nodePositionY - (summaryNode.getHeight() / 2.0f);
+		int minViewHeightPixels = 0;
+		if (viewFrustum.getBottom() > bottomPositionY) {
+			minViewHeightPixels = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
+					.getBottom() - bottomPositionY)
+					+ parentGLCanvas.getHeight();
+			setMinSize(minViewHeightPixels + 3);
+		}
+
+		return minViewHeightPixels;
+
+	}
+
+	private void renderBranchSummaryNode(GL2 gl, GLU glu, BranchSummaryNode summaryNode) {
+
+		ALinearizableNode linearizedNode = summaryNode.getAssociatedLinearizedNode();
 		summaryNode.render(gl, glu);
 
 		if (!summaryNode.isCollapsed()) {
@@ -736,14 +810,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			}
 		}
 
-		float bottomPositionY = nodePositionY - (summaryNode.getHeight() / 2.0f);
-
-		if (viewFrustum.getBottom() > bottomPositionY) {
-			int minViewHeightPixels = pixelGLConverter
-					.getPixelHeightForGLHeight(viewFrustum.getBottom() - bottomPositionY)
-					+ parentGLCanvas.getHeight();
-			setMinSize(minViewHeightPixels);
-		}
 	}
 
 	private void renderEdgesOfLinearizedNodes(GL2 gl) {
@@ -1032,9 +1098,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			node.unregisterPickingListeners();
 		}
 
-		setMinSize(0);
-
 		createNodes();
+		// setMinSize(0);
+		isNewPath = true;
 		setLayoutDirty();
 
 	}
@@ -1241,7 +1307,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
 		setLayoutDirty();
-//		setMappedDataRendererGeometry();
+		System.out.println("reshape: " + x + ", " + y + ", " + width + "x" + height);
+		setMappedDataRendererGeometry();
 	}
 
 	/**

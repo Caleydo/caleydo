@@ -155,7 +155,7 @@ public class BranchSummaryNode extends ANode {
 					// colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
 					view.setExpandedBranchSummaryNode(null);
 				}
-				view.setDisplayListDirty();
+				view.setLayoutDirty();
 			}
 		}, EPickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId);
 

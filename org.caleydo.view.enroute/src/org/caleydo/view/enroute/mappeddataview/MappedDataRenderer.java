@@ -172,8 +172,11 @@ public class MappedDataRenderer {
 		geneSelectionManager = null;
 	}
 
-	public void render(GL2 gl) {
-		layoutManger.updateLayout();
+	public void render(GL2 gl, boolean isLayoutDirty) {
+		
+		if(isLayoutDirty)
+			layoutManger.updateLayout();
+		
 		layoutManger.render(gl);
 
 		for (RelationshipRenderer relationshipRenderer : relationShipRenderers) {
@@ -204,7 +207,7 @@ public class MappedDataRenderer {
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 		this.rowHeight = rowHeight;
-
+		
 		// layoutManger.updateLayout();
 
 	}
