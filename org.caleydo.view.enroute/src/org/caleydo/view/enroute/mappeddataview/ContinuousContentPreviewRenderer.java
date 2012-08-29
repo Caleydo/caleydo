@@ -9,6 +9,7 @@ import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.collection.Algorithms;
+import org.caleydo.core.util.color.Color;
 
 /**
  * Preview renderer for continuous content.
@@ -26,6 +27,7 @@ public class ContinuousContentPreviewRenderer extends ContentRenderer {
 	public ContinuousContentPreviewRenderer(
 			IContentRendererInitializor contentRendererInitializor) {
 		super(contentRendererInitializor);
+		colorCalculator.setBaseColor(new Color(MappedDataRenderer.SUMMARY_BAR_COLOR));
 	}
 
 	@Override
@@ -50,8 +52,8 @@ public class ContinuousContentPreviewRenderer extends ContentRenderer {
 //				.getSelectionTypes(group.getID());
 		// if (selectionTypes.size() > 0
 		// && selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
-		topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
-		bottomBarColor = topBarColor;
+//		topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
+//		bottomBarColor = topBarColor;
 		// }
 
 		ArrayList<ArrayList<SelectionType>> selectionLists = new ArrayList<ArrayList<SelectionType>>();
@@ -66,7 +68,9 @@ public class ContinuousContentPreviewRenderer extends ContentRenderer {
 					sampleIDType, sampleID));
 		}
 
-		calculateColors(Algorithms.mergeListsToUniqueList(selectionLists));
+		colorCalculator.calculateColors(Algorithms.mergeListsToUniqueList(selectionLists));
+		float[] topBarColor = colorCalculator.getPrimaryColor().getRGBA();
+		float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
 		// gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
 		// PickingType.SAMPLE_GROUP_RENDERER.name(), rendererID));
 

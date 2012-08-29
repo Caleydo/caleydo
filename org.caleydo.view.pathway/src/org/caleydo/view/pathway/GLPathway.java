@@ -598,6 +598,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, pathway,
 					fPathwayTransparency, false);
 			overlayBubbleSets(gl);
+			
 		}
 
 		float tmp = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();

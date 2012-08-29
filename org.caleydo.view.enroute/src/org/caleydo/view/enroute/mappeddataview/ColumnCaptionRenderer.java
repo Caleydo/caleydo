@@ -46,21 +46,17 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 	private String label;
 	AVariablePerspective<?, ?, ?, ?> samplePerspective;
 	APickingListener groupPickingListener;
-	
 
 	public ColumnCaptionRenderer(AGLView parentView, MappedDataRenderer parent,
 			Group group, AVariablePerspective<?, ?, ?, ?> samplePerspective,
 			ATableBasedDataDomain dataDomain) {
-		super(parentView, parent);
+		super(parentView, parent, dataDomain.getColor());
 		this.textRenderer = parentView.getTextRenderer();
 		this.pixelGLConverter = parentView.getPixelGLConverter();
 		this.group = group;
 		this.label = group.getLabel();
 		this.samplePerspective = samplePerspective;
 
-		baseColor = dataDomain.getColor().getRGB();
-		topBarColor = baseColor;
-		bottomBarColor = topBarColor;
 		registerPickingListener();
 
 	}
@@ -81,7 +77,9 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 
 		ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager
 				.getSelectionTypes(group.getID());
-		calculateColors(selectionTypes);
+		colorCalculator.calculateColors(selectionTypes);
+		float[] topBarColor = colorCalculator.getPrimaryColor().getRGB();
+		float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGB();
 
 		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
 				EPickingType.SAMPLE_GROUP.name(), group.getID()));
@@ -112,8 +110,6 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 				x, height);
 
 	}
-
-	
 
 	private void registerPickingListener() {
 		groupPickingListener = new APickingListener() {

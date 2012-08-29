@@ -19,8 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview;
 
-import java.util.ArrayList;
-import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
@@ -33,17 +32,34 @@ public abstract class SelectableRenderer extends LayoutRenderer {
 	protected AGLView parentView;
 	protected MappedDataRenderer parent;
 
-	float[] topBarColor;
-	float[] bottomBarColor;
-	float[] baseColor;
+	SelectionColorCalculator colorCalculator;
 
 	/**
 	 * 
 	 */
-	public SelectableRenderer(AGLView parentView, MappedDataRenderer parent) {
+	public SelectableRenderer(AGLView parentView, MappedDataRenderer parent,
+			Color baseColor) {
 		this.parentView = parentView;
 		this.parent = parent;
+		colorCalculator = new SelectionColorCalculator(baseColor);
 	}
+
+	// protected void calculateColors(ArrayList<SelectionType> selectionTypes) {
+	//
+	// if (selectionTypes.size() != 0
+	// && !selectionTypes.get(0).equals(SelectionType.NORMAL)
+	// && selectionTypes.get(0).isVisible()) {
+	// topBarColor = selectionTypes.get(0).getColor();
+	//
+	// if (selectionTypes.size() > 1
+	// && !selectionTypes.get(1).equals(SelectionType.NORMAL)
+	// && selectionTypes.get(1).isVisible()) {
+	// bottomBarColor = selectionTypes.get(1).getColor();
+	// } else {
+	// bottomBarColor = topBarColor;
+	// }
+	// }
+	// }
 
 //	protected void calculateColors(ArrayList<SelectionType> selectionTypes) {
 //
@@ -59,26 +75,9 @@ public abstract class SelectableRenderer extends LayoutRenderer {
 //			} else {
 //				bottomBarColor = topBarColor;
 //			}
+//		} else {
+//			topBarColor = baseColor;
+//			bottomBarColor = baseColor;
 //		}
 //	}
-	
-	protected void calculateColors(ArrayList<SelectionType> selectionTypes) {
-
-		if (selectionTypes.size() != 0
-				&& !selectionTypes.get(0).equals(SelectionType.NORMAL)
-				&& selectionTypes.get(0).isVisible()) {
-			topBarColor = selectionTypes.get(0).getColor();
-
-			if (selectionTypes.size() > 1
-					&& !selectionTypes.get(1).equals(SelectionType.NORMAL)
-					&& selectionTypes.get(1).isVisible()) {
-				bottomBarColor = selectionTypes.get(1).getColor();
-			} else {
-				bottomBarColor = topBarColor;
-			}
-		} else {
-			topBarColor = baseColor;
-			bottomBarColor = baseColor;
-		}
-	}
 }

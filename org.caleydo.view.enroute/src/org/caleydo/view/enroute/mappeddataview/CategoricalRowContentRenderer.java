@@ -34,6 +34,7 @@ import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Algorithms;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -48,7 +49,6 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 
 	Histogram histogram;
 	boolean useShading = true;
-
 
 	/**
 	 * 
@@ -75,14 +75,15 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 
 			DimensionVirtualArray dimensionVirtualArray = new DimensionVirtualArray();
 			dimensionVirtualArray.append(geneID);
-			histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
+			histogram = TablePerspectiveStatistics.calculateHistogram(
+					dataDomain.getTable(),
 					(RecordVirtualArray) experimentPerspective.getVirtualArray(),
 					dimensionVirtualArray, 5);
 		} else {
 			RecordVirtualArray recordVirtualArray = new RecordVirtualArray();
 			recordVirtualArray.append(geneID);
-			histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
-					recordVirtualArray,
+			histogram = TablePerspectiveStatistics.calculateHistogram(
+					dataDomain.getTable(), recordVirtualArray,
 					(DimensionVirtualArray) experimentPerspective.getVirtualArray(), 5);
 		}
 		registerPickingListener();
@@ -100,8 +101,8 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 				.getSelectionTypes(group.getID());
 		if (selectionTypes.size() > 0
 				&& selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
-			topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
-			bottomBarColor = topBarColor;
+			// topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
+			// bottomBarColor = topBarColor;
 
 			renderAverageBar(gl, selectionTypes);
 		} else {
@@ -143,12 +144,15 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 				ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager
 						.getSelectionTypes(sampleIDType, sampleID);
 
-				baseColor = dataDomain.getColorMapper().getColor(value);
-				topBarColor = baseColor;
-				bottomBarColor = topBarColor;
+				float[] baseColor = dataDomain.getColorMapper().getColor(value);
+				colorCalculator.setBaseColor(new Color(baseColor[0], baseColor[1],
+						baseColor[2]));
 
-				calculateColors(Algorithms.mergeListsToUniqueList(
+				colorCalculator.calculateColors(Algorithms.mergeListsToUniqueList(
 						experimentSelectionTypes, geneSelectionTypes));
+
+				float[] topBarColor = colorCalculator.getPrimaryColor().getRGB();
+				float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGB();
 
 				float leftEdge = xIncrement * experimentCount;
 
@@ -205,25 +209,33 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 
 			if (parent.selectedBucketID == histogram.getBucketID(bucketNumber)) {
 				selectionTypes.add(SelectionType.SELECTION);
+			} else {
+				selectionTypes.remove(SelectionType.SELECTION);
 			}
 
-			baseColor = dataDomain.getColorMapper().getColor(
+			float[] baseColor = dataDomain.getColorMapper().getColor(
 					(float) bucketCount / (histogram.size() - 1));
-			topBarColor = baseColor;
-			bottomBarColor = topBarColor;
-			calculateColors(Algorithms.mergeListsToUniqueList(selectionTypes));
+
+			colorCalculator.setBaseColor(new Color(baseColor[0], baseColor[1],
+					baseColor[2]));
+
+			// calculateColors(Algorithms.mergeListsToUniqueList(selectionTypes));
 			float lowerEdge = barWidth * bucketCount;
 			float value = 0;
 			int nrValues = histogram.get(bucketNumber);
 			if (nrValues != 0)
 				value = ((float) nrValues) / histogram.getLargestValue();
 
-			calculateColors(selectionTypes);
+			colorCalculator.calculateColors(Algorithms
+					.mergeListsToUniqueList(selectionTypes));
+
+			float[] topBarColor = colorCalculator.getPrimaryColor().getRGBA();
+			float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
 
 			float barHeight = value * renderWith;
-			gl.glPushName(parentView.getPickingManager()
-					.getPickingID(parentView.getID(), EPickingType.HISTOGRAM_BAR.name(),
-							histogram.getBucketID(bucketNumber)));
+			gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
+					EPickingType.HISTOGRAM_BAR.name(),
+					histogram.getBucketID(bucketNumber)));
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glColor3fv(bottomBarColor, 0);
 			gl.glVertex3f(0, lowerEdge, z);
@@ -252,8 +264,8 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 			gl.glEnd();
 			gl.glPopName();
 			bucketCount++;
-		
-//			parent.selectedBucketID = 0;
+
+			// parent.selectedBucketID = 0;
 		}
 	}
 
@@ -262,7 +274,7 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 
 			@Override
 			public void clicked(Pick pick) {
-//				System.out.println("Bucket: " + pick.getObjectID());
+				// System.out.println("Bucket: " + pick.getObjectID());
 
 				parent.sampleSelectionManager.clearSelection(SelectionType.SELECTION);
 				parent.sampleSelectionManager.addToType(SelectionType.SELECTION,
@@ -277,8 +289,10 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 		};
 
 		for (int bucketCount = 0; bucketCount < histogram.size(); bucketCount++) {
-			parentView.addIDPickingListener(pickingListener,
-					EPickingType.HISTOGRAM_BAR.name(), histogram.getBucketID(bucketCount));
+			parentView
+					.addIDPickingListener(pickingListener,
+							EPickingType.HISTOGRAM_BAR.name(),
+							histogram.getBucketID(bucketCount));
 		}
 	}
 

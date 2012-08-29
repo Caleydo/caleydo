@@ -4,14 +4,16 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.util.collection.Algorithms;
+import org.caleydo.core.util.color.Color;
 
 /**
  * @author Christian
@@ -37,14 +39,15 @@ public class CategoricalContentPreviewRenderer extends ContentRenderer {
 
 			DimensionVirtualArray dimensionVirtualArray = new DimensionVirtualArray();
 			dimensionVirtualArray.append(geneID);
-			histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
+			histogram = TablePerspectiveStatistics.calculateHistogram(
+					dataDomain.getTable(),
 					(RecordVirtualArray) experimentPerspective.getVirtualArray(),
 					dimensionVirtualArray, 5);
 		} else {
 			RecordVirtualArray recordVirtualArray = new RecordVirtualArray();
 			recordVirtualArray.append(geneID);
-			histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
-					recordVirtualArray,
+			histogram = TablePerspectiveStatistics.calculateHistogram(
+					dataDomain.getTable(), recordVirtualArray,
 					(DimensionVirtualArray) experimentPerspective.getVirtualArray(), 5);
 		}
 	}
@@ -57,11 +60,11 @@ public class CategoricalContentPreviewRenderer extends ContentRenderer {
 
 		ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager
 				.getSelectionTypes(group.getID());
-		if (selectionTypes.size() > 0
-				&& selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
-			topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
-			bottomBarColor = topBarColor;
-		}
+//		if (selectionTypes.size() > 0
+//				&& selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
+//			topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
+//			bottomBarColor = topBarColor;
+//		}
 
 		int bucketCount = 0;
 		// float barWidth = y / histogram.size();
@@ -86,17 +89,19 @@ public class CategoricalContentPreviewRenderer extends ContentRenderer {
 				sampleSelectionTypes.addAll(parent.sampleSelectionManager
 						.getSelectionTypes(sampleIDType, sampleID));
 			}
-
-			baseColor = dataDomain.getColorMapper().getColor(
+			float[] baseColor = dataDomain.getColorMapper().getColor(
 					(float) bucketCount / (histogram.size() - 1));
-			topBarColor = baseColor;
-			bottomBarColor = topBarColor;
-			calculateColors(Algorithms.mergeListsToUniqueList(selectionTypes,
-					sampleSelectionTypes));
+			colorCalculator.setBaseColor(new Color(baseColor[0], baseColor[1],  baseColor[2]));
+
+//			colorCalculator.calculateColors(Algorithms.mergeListsToUniqueList(selectionTypes,
+//					sampleSelectionTypes));
 
 			float currentBarHeight = histogram.get(bucketNumber) * step;
 
-			calculateColors(selectionTypes);
+			colorCalculator.calculateColors(selectionTypes);
+			
+			float[] topBarColor = colorCalculator.getPrimaryColor().getRGBA();
+			float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
 
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glColor3fv(topBarColor, 0);

@@ -25,6 +25,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
@@ -52,13 +53,10 @@ public abstract class ContentRenderer extends SelectableRenderer {
 			TablePerspective tablePerspective,
 			AVariablePerspective<?, ?, ?, ?> experimentPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group) {
-		super(parentView, parent);
+		super(parentView, parent, new Color(MappedDataRenderer.BAR_COLOR));
 		this.davidID = davidID;
 		this.geneID = geneID;
 
-		topBarColor = MappedDataRenderer.BAR_COLOR;
-		bottomBarColor = topBarColor;
-		baseColor = topBarColor;
 		this.dataDomain = dataDomain;
 		this.tablePerspective = tablePerspective;
 		this.experimentPerspective = experimentPerspective;
@@ -71,12 +69,10 @@ public abstract class ContentRenderer extends SelectableRenderer {
 
 	public ContentRenderer(IContentRendererInitializor contentRendererInitializor) {
 		super(contentRendererInitializor.getView(), contentRendererInitializor
-				.getMappedDataRenderer());
+				.getMappedDataRenderer(), new Color(MappedDataRenderer.BAR_COLOR));
 		this.davidID = contentRendererInitializor.getDavidID();
 		this.geneID = contentRendererInitializor.getGeneID();
 
-		topBarColor = MappedDataRenderer.BAR_COLOR;
-		bottomBarColor = topBarColor;
 		this.dataDomain = contentRendererInitializor.getDataDomain();
 		this.tablePerspective = contentRendererInitializor.getTablePerspective();
 		this.experimentPerspective = contentRendererInitializor

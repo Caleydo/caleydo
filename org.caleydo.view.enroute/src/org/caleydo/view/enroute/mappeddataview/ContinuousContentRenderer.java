@@ -32,6 +32,7 @@ import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Algorithms;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -61,8 +62,6 @@ public class ContinuousContentRenderer extends ContentRenderer {
 			rendererID = rendererIDCounter++;
 		}
 
-		topBarColor = MappedDataRenderer.BAR_COLOR;
-		bottomBarColor = topBarColor;
 		init();
 	}
 
@@ -76,7 +75,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 			return;
 		average = TablePerspectiveStatistics.calculateAverage(
 				experimentPerspective.getVirtualArray(), dataDomain.getTable(), geneID);
-		
+
 		registerPickingListener();
 	}
 
@@ -86,7 +85,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 				.getPixelGLConverter().getGLWidthForPixelWidth(3)) {
 			useShading = false;
 		}
-		
+
 		if (geneID == null)
 			return;
 		ArrayList<SelectionType> geneSelectionTypes = parent.geneSelectionManager
@@ -96,24 +95,8 @@ public class ContinuousContentRenderer extends ContentRenderer {
 				.getSelectionTypes(group.getID());
 		if (selectionTypes.size() > 0
 				&& selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
-			topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
-			bottomBarColor = topBarColor;
 
-//			ArrayList<ArrayList<SelectionType>> selectionLists = new ArrayList<ArrayList<SelectionType>>();
-//			selectionLists.add(geneSelectionTypes);
-
-//			for (Integer sampleID : experimentPerspective.getVirtualArray()) {
-//				// Integer resolvedSampleID = sampleIDMappingManager.getID(
-//				// dataDomain.getSampleIDType(), parent.sampleIDType,
-//				// experimentID);
-//
-//				selectionLists.add(parent.sampleSelectionManager.getSelectionTypes(
-//						sampleIDType, sampleID));
-//			}
-
-//			calculateColors(Algorithms.mergeListsToUniqueList(selectionLists));
-
-			renderAverageBar(gl);
+			renderAverageBar(gl, geneSelectionTypes);
 		} else {
 			renderAllBars(gl, geneSelectionTypes);
 		}
@@ -125,9 +108,6 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		float xIncrement = x / experimentPerspective.getVirtualArray().size();
 		int experimentCount = 0;
 
-		float[] tempTopBarColor = topBarColor;
-		float[] tempBottomBarColor = bottomBarColor;
-
 		for (Integer sampleID : experimentPerspective.getVirtualArray()) {
 
 			float value;
@@ -138,8 +118,13 @@ public class ContinuousContentRenderer extends ContentRenderer {
 				ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager
 						.getSelectionTypes(sampleIDType, sampleID);
 
-				calculateColors(Algorithms.mergeListsToUniqueList(
+				colorCalculator.setBaseColor(new Color(MappedDataRenderer.BAR_COLOR));
+
+				colorCalculator.calculateColors(Algorithms.mergeListsToUniqueList(
 						experimentSelectionTypes, geneSelectionTypes));
+
+				float[] topBarColor = colorCalculator.getPrimaryColor().getRGBA();
+				float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
 
 				float leftEdge = xIncrement * experimentCount;
 				float upperEdge = value * y;
@@ -183,16 +168,33 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 				// gl.glPopName();
 				experimentCount++;
-				topBarColor = tempTopBarColor;
-				bottomBarColor = tempBottomBarColor;
 			}
 
 		}
 	}
 
-	public void renderAverageBar(GL2 gl) {
+	public void renderAverageBar(GL2 gl, ArrayList<SelectionType> geneSelectionTypes) {
 		// topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
 		// bottomBarColor = topBarColor;
+
+		colorCalculator.setBaseColor(new Color(MappedDataRenderer.SUMMARY_BAR_COLOR));
+
+		ArrayList<ArrayList<SelectionType>> selectionLists = new ArrayList<ArrayList<SelectionType>>();
+		selectionLists.add(geneSelectionTypes);
+
+		for (Integer sampleID : experimentPerspective.getVirtualArray()) {
+			// Integer resolvedSampleID = sampleIDMappingManager.getID(
+			// dataDomain.getSampleIDType(), parent.sampleIDType,
+			// experimentID);
+
+			selectionLists.add(parent.sampleSelectionManager.getSelectionTypes(
+					sampleIDType, sampleID));
+		}
+
+		colorCalculator
+				.calculateColors(Algorithms.mergeListsToUniqueList(selectionLists));
+		float[] topBarColor = colorCalculator.getPrimaryColor().getRGBA();
+		float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
 
 		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
 				EPickingType.SAMPLE_GROUP_RENDERER.name(), rendererID));

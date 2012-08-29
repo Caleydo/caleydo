@@ -22,17 +22,17 @@ class SelectionColorCalculator {
 	 * priority. If {@link SelectionType#NORMAL} has the highest priority,
 	 * {@link #baseColor} is used.
 	 */
-	Color primaryColor;
+	private Color primaryColor;
 	/**
 	 * The color that is used for the {@link SelectionType} with the second
 	 * highest priority. If there is no second <code>SelectionType</code>,
 	 * {@link #primaryColor} is used.
 	 */
-	Color secondaryColor;
+	private Color secondaryColor;
 	/**
 	 * The color that is used for {@link SelectionType#NORMAL}.
 	 */
-	Color baseColor;
+	private Color baseColor;
 
 	/**
 	 * 
@@ -64,6 +64,35 @@ class SelectionColorCalculator {
 			primaryColor.setRGBA(baseColor.getRGBA());
 			secondaryColor.setRGBA(baseColor.getRGBA());
 		}
+	}
+
+	/**
+	 * @param baseColor
+	 *            setter, see {@link #baseColor}
+	 */
+	public void setBaseColor(Color baseColor) {
+		this.baseColor = baseColor;
+	}
+
+	/**
+	 * @return the baseColor, see {@link #baseColor}
+	 */
+	public Color getBaseColor() {
+		return baseColor;
+	}
+
+	/**
+	 * @return the primaryColor, see {@link #primaryColor}
+	 */
+	public Color getPrimaryColor() {
+		return primaryColor;
+	}
+
+	/**
+	 * @return the secondaryColor, see {@link #secondaryColor}
+	 */
+	public Color getSecondaryColor() {
+		return secondaryColor;
 	}
 
 }

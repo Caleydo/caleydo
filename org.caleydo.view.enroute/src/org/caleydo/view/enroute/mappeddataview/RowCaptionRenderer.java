@@ -28,6 +28,7 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -56,16 +57,15 @@ public class RowCaptionRenderer extends SelectableRenderer {
 	 * @param davidID
 	 *            the id used for the resolution of the human readable id type
 	 *            that is rendered
+	 * @param backgroundColor
+	 *            RGBA value of the background color.
 	 */
 	public RowCaptionRenderer(Integer davidID, AGLView parentView,
 			MappedDataRenderer parent, float[] backgroundColor) {
-		super(parentView, parent);
+		super(parentView, parent, new Color(backgroundColor));
 		this.davidID = davidID;
 		textRenderer = parentView.getTextRenderer();
 		pixelGLConverter = parentView.getPixelGLConverter();
-		baseColor = backgroundColor;
-		topBarColor = backgroundColor;
-		bottomBarColor = backgroundColor;
 
 	}
 
@@ -74,7 +74,9 @@ public class RowCaptionRenderer extends SelectableRenderer {
 		ArrayList<SelectionType> selectionTypes = parent.geneSelectionManager
 				.getSelectionTypes(davidID);
 
-		calculateColors(selectionTypes);
+		colorCalculator.calculateColors(selectionTypes);
+		float[] topBarColor = colorCalculator.getPrimaryColor().getRGBA();
+		float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
 		float backgroundZ = 0;
 		float frameZ = 0.3f;
 
@@ -82,18 +84,18 @@ public class RowCaptionRenderer extends SelectableRenderer {
 				EPickingType.GENE.name(), davidID));
 
 		gl.glBegin(GL2.GL_QUADS);
-		
+
 		gl.glColor3f(bottomBarColor[0], bottomBarColor[1], bottomBarColor[2]);
-		
+
 		gl.glVertex3f(0, 0, backgroundZ);
 		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
 				bottomBarColor[2] * 0.9f);
 		gl.glVertex3f(x, 0, backgroundZ);
 		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
-		
+
 		gl.glVertex3f(x, y, backgroundZ);
 		gl.glColor4fv(topBarColor, 0);
-		
+
 		gl.glVertex3f(0, y, backgroundZ);
 
 		gl.glEnd();
@@ -119,7 +121,6 @@ public class RowCaptionRenderer extends SelectableRenderer {
 
 		gl.glPopName();
 	}
-
 
 	@Override
 	protected boolean permitsDisplayLists() {

@@ -446,6 +446,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		// setMappedDataRendererGeometry();
 		if (isDisplayListDirty) {
+			
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
 			isLayoutDirty = false;
@@ -459,7 +460,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		dataRowHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(DEFAULT_DATA_ROW_HEIGHT_PIXELS);
-		setMappedDataRendererGeometry();
 
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
@@ -469,50 +469,62 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
 
 		GLU glu = new GLU();
-
-		List<AnchorNodeSpacing> anchorNodeSpacings = calcAnchorNodeSpacings();
-
-		Vec3f currentPosition = new Vec3f(branchColumnWidth + pathwayColumnWidth / 2.0f,
-				viewFrustum.getHeight(), 0.2f);
 		float pathwayHeight = 0;
-		float minNodeSpacing = pixelGLConverter
-				.getGLHeightForPixelHeight(MIN_NODE_SPACING_PIXELS);
+		if (isLayoutDirty) {
 
-		for (AnchorNodeSpacing spacing : anchorNodeSpacings) {
+			List<AnchorNodeSpacing> anchorNodeSpacings = calcAnchorNodeSpacings();
 
-			float currentAnchorNodeSpacing = spacing.getCurrentAnchorNodeSpacing();
+			Vec3f currentPosition = new Vec3f(branchColumnWidth + pathwayColumnWidth
+					/ 2.0f, viewFrustum.getHeight(), 0.2f);
+		
+			float minNodeSpacing = pixelGLConverter
+					.getGLHeightForPixelHeight(MIN_NODE_SPACING_PIXELS);
 
-			float nodeSpacing = (Float.isNaN(currentAnchorNodeSpacing) ? minNodeSpacing
-					: (currentAnchorNodeSpacing - spacing.getTotalNodeHeight())
-							/ ((float) spacing.getNodesInbetween().size() + 1));
-			ANode startAnchorNode = spacing.getStartNode();
+			for (AnchorNodeSpacing spacing : anchorNodeSpacings) {
 
-			float currentInbetweenNodePositionY = currentPosition.y()
-					- ((startAnchorNode != null) ? startAnchorNode.getHeight() / 2.0f : 0);
+				float currentAnchorNodeSpacing = spacing.getCurrentAnchorNodeSpacing();
 
-			for (int i = 0; i < spacing.getNodesInbetween().size(); i++) {
-				ANode node = spacing.getNodesInbetween().get(i);
+				float nodeSpacing = (Float.isNaN(currentAnchorNodeSpacing) ? minNodeSpacing
+						: (currentAnchorNodeSpacing - spacing.getTotalNodeHeight())
+								/ ((float) spacing.getNodesInbetween().size() + 1));
+				ANode startAnchorNode = spacing.getStartNode();
 
-				node.setPosition(new Vec3f(currentPosition.x(),
-						currentInbetweenNodePositionY - nodeSpacing - node.getHeight()
-								/ 2.0f, currentPosition.z()));
-				node.render(gl, glu);
-				currentInbetweenNodePositionY -= (nodeSpacing + node.getHeight());
+				float currentInbetweenNodePositionY = currentPosition.y()
+						- ((startAnchorNode != null) ? startAnchorNode.getHeight() / 2.0f
+								: 0);
 
-				renderBranchNodes(gl, glu, node);
+				for (int i = 0; i < spacing.getNodesInbetween().size(); i++) {
+					ANode node = spacing.getNodesInbetween().get(i);
+
+					node.setPosition(new Vec3f(currentPosition.x(),
+							currentInbetweenNodePositionY - nodeSpacing
+									- node.getHeight() / 2.0f, currentPosition.z()));
+					currentInbetweenNodePositionY -= (nodeSpacing + node.getHeight());
+
+				}
+
+				currentPosition.setY(currentPosition.y()
+						- spacing.getCurrentAnchorNodeSpacing());
+
+				ANode endAnchorNode = spacing.getEndNode();
+				if (endAnchorNode != null) {
+					endAnchorNode.setPosition(new Vec3f(currentPosition));
+				}
+
+				pathwayHeight += spacing.getCurrentAnchorNodeSpacing();
 			}
+		}
+		
+		int minViewHeightPixels = pixelGLConverter
+				.getPixelHeightForGLHeight(pathwayHeight);
 
-			currentPosition.setY(currentPosition.y()
-					- spacing.getCurrentAnchorNodeSpacing());
-
-			ANode endAnchorNode = spacing.getEndNode();
-			if (endAnchorNode != null) {
-				endAnchorNode.setPosition(new Vec3f(currentPosition));
-				endAnchorNode.render(gl, glu);
-				renderBranchNodes(gl, glu, endAnchorNode);
-			}
-
-			pathwayHeight += spacing.getCurrentAnchorNodeSpacing();
+		if (minViewHeightPixels > parentGLCanvas.getHeight()) {
+			setMinSize(minViewHeightPixels);
+		}
+		
+		for(ALinearizableNode node : linearizedNodes) {
+			node.render(gl, glu);
+			renderBranchNodes(gl, glu, node);
 		}
 
 		if (expandedBranchSummaryNode != null) {
@@ -530,18 +542,13 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			gl.glEnd();
 		}
 
-		int minViewHeightPixels = pixelGLConverter
-				.getPixelHeightForGLHeight(pathwayHeight);
-
-		if (minViewHeightPixels > parentGLCanvas.getHeight()) {
-			setMinSize(minViewHeightPixels);
-		}
-
 		float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
 
 		float topSpacing = pixelGLConverter
 				.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
 		gl.glPushMatrix();
+
+		setMappedDataRendererGeometry();
 
 		// TODO do this only when necessary - cause re-initialization
 		if (isLayoutDirty) {
@@ -563,7 +570,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				+ DATA_COLUMN_WIDTH_PIXELS, minHeightPixels);
 		event.setView(this);
 		eventPublisher.triggerEvent(event);
-		setDisplayListDirty();
+		setLayoutDirty();
 	}
 
 	/**
@@ -1233,7 +1240,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
-		setMappedDataRendererGeometry();
+		setLayoutDirty();
+//		setMappedDataRendererGeometry();
 	}
 
 	/**
