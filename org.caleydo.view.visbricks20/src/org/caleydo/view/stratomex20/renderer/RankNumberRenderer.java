@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks20.renderer;
+package org.caleydo.view.stratomex20.renderer;
 
 import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -22,7 +22,7 @@ public class RankNumberRenderer
 	public void renderContent(GL2 gl) {
 
 		textRenderer.setColor(RANK_NUMBER_COLOR);
-		textRenderer.renderText(gl, rankNumber, x/2f, y-y/6f, 0, 0.007f, 3);
+		textRenderer.renderText(gl, rankNumber, 0.3f, 0, 0, 0.007f, 3);
 	}
 	
 	@Override

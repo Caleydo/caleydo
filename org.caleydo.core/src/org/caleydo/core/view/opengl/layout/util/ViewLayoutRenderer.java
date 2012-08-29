@@ -50,6 +50,7 @@ public class ViewLayoutRenderer
 	@Override
 	public void setLimits(float x, float y) {
 		super.setLimits(x, y);
+		
 		ViewFrustum viewFrustum = view.getViewFrustum();
 
 		if (viewFrustum == null) {

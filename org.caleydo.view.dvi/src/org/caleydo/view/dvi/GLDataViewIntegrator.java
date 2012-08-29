@@ -138,6 +138,7 @@ import org.eclipse.ui.PlatformUI;
 public class GLDataViewIntegrator
 	extends AGLView
 	implements IViewCommandHandler {
+	
 	public static String VIEW_TYPE = "org.caleydo.view.dvi";
 
 	public static String VIEW_NAME = "Data-View Integrator";
@@ -483,12 +484,6 @@ public class GLDataViewIntegrator
 	}
 
 	@Override
-	public int getNumberOfSelections(SelectionType selectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDVIView serializedForm = new SerializedDVIView();
 		serializedForm.setViewID(this.getID());
@@ -701,7 +696,7 @@ public class GLDataViewIntegrator
 	public void addView(AGLView view) {
 
 		for (ViewNode node : viewNodes) {
-			if (node.getRepresentedView() == view)
+			if (node != null && node.getRepresentedView() == view)
 				return;
 		}
 
@@ -972,8 +967,8 @@ public class GLDataViewIntegrator
 
 				if (!alwaysUseDefaultNameButton) {
 					TablePerspectiveNameInputDialog dialog = new TablePerspectiveNameInputDialog(
-							new Shell(), "Create Table Perspective", "Name", tablePerspectiveLabel,
-							validator);
+							new Shell(), "Create Table Perspective", "Name",
+							tablePerspectiveLabel, validator);
 
 					if (dialog.open() != Window.OK)
 						return;
@@ -1030,12 +1025,23 @@ public class GLDataViewIntegrator
 				tablePerspective.setLabel(tablePerspectiveLabel, false);
 				tablePerspective.setPrivate(false);
 
-				if (isRenderedRemote()) {
-					AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(
-							tablePerspective);
-					event.setReceiver((IMultiTablePerspectiveBasedView) getRemoteRenderingGLView());
-					event.setSender(this);
-					GeneralManager.get().getEventPublisher().triggerEvent(event);
+				if (isVendingMachineMode) {
+
+					for (AGLView glView : getRemoteRenderingGLView().getRemoteRenderedViews()) {
+						// FIXME: find a better way to send table perspective
+						// only to vending machine stratomeX
+						if (glView != null
+								&& glView.getViewType().equals("org.caleydo.view.stratomex")
+								&& glView.isRenderedRemote()) {
+							AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(
+									tablePerspective);
+							event.setReceiver((IMultiTablePerspectiveBasedView) glView);
+							event.setSender(this);
+							GeneralManager.get().getEventPublisher().triggerEvent(event);
+
+							break;
+						}
+					}
 				}
 			}
 		});

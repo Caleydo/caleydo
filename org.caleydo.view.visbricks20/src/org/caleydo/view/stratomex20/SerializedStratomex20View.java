@@ -1,8 +1,8 @@
-package org.caleydo.view.visbricks20;
+package org.caleydo.view.stratomex20;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.serialize.ASerializedMultiTablePerspectiveBasedView;
 
 /**
  * Serialized <INSERT VIEW NAME> view.
@@ -11,16 +11,16 @@ import org.caleydo.core.serialize.ASerializedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedVisBricks20View extends ASerializedView {
+public class SerializedStratomex20View extends ASerializedMultiTablePerspectiveBasedView {
 
 	/**
 	 * Default constructor with default initialization
 	 */
-	public SerializedVisBricks20View() {
+	public SerializedStratomex20View() {
 	}
 
 	@Override
 	public String getViewType() {
-		return GLVisBricks20.VIEW_TYPE;
+		return GLStratomex20.VIEW_TYPE;
 	}
 }

@@ -1,9 +1,9 @@
-package org.caleydo.view.visbricks20.listener;
+package org.caleydo.view.stratomex20.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.view.dvi.event.OpenVendingMachineEvent;
-import org.caleydo.view.visbricks20.GLVisBricks20;
+import org.caleydo.view.stratomex20.GLStratomex20;
 
 /**
  * Listener for the event {@link OpenVendingMachineEvent}.
@@ -12,7 +12,7 @@ import org.caleydo.view.visbricks20.GLVisBricks20;
  * 
  */
 public class OpenVendingMachineListener
-	extends AEventListener<GLVisBricks20> {
+	extends AEventListener<GLStratomex20> {
 
 	@Override
 	public void handleEvent(AEvent event) {

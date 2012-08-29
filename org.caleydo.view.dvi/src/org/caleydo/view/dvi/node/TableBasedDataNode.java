@@ -201,12 +201,10 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 			@Override
 			public void clicked(Pick pick) {
-
 				OpenVendingMachineEvent event = new OpenVendingMachineEvent(dataDomain);
 				event.setSender(view);
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 			}
-
 		}, TRIGGER_VENDING_MACHINE_BUTTON_PICKING_TYPE + getID(),
 				TRIGGER_VENDING_MACHINE_BUTTON_PICKING_ID);
 

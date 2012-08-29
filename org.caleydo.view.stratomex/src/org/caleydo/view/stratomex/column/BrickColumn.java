@@ -29,7 +29,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
 import org.caleydo.core.event.EventPublisher;
@@ -881,11 +880,6 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	}
 
 	@Override
-	public int getNumberOfSelections(SelectionType SelectionType) {
-		return 0;
-	}
-
-	@Override
 	public Row getLayout() {
 		return mainRow;
 	}
@@ -962,47 +956,6 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	// brick.hideHandles();
 	// }
 	// }
-
-	/**
-	 * TODO
-	 * 
-	 * @param view
-	 *            The GL view for which a detailed version shall be shown.
-	 * @param expandLeft
-	 *            Specifies, whether the detail brick shall be expanded on the
-	 *            left or on the right.
-	 */
-	public void showDetailedBrick(AGLView view, boolean expandLeft) {
-
-		if (detailBrick != null) {
-			GeneralManager.get().getViewManager().unregisterGLView(detailBrick);
-			detailBrick.unregisterEventListeners();
-			detailBrick = null;
-		}
-
-		detailBrickLayout = new Column("detailBrickWrappingLayout");
-
-		ViewLayoutRenderer vendingMachineRenderer = new ViewLayoutRenderer(view);
-		detailBrickLayout.setRenderer(vendingMachineRenderer);
-		detailBrickLayout.setDebug(false);
-		detailBrickLayout.setGrabY(true);
-
-		int detailBrickWidth = getDetailBrickWidthPixels(!expandLeft);
-
-		overviewDetailGapLayout = new ElementLayout("brickSpacingLayout");
-		overviewDetailGapLayout.setPixelSizeX(OVERVIEW_DETAIL_GAP_PIXEL);
-		overviewDetailGapLayout.setRatioSizeY(1);
-
-		BrickColumn otherDetailDimensionGroup = getOtherDetailDimensionGroup(!expandLeft);
-
-		if (otherDetailDimensionGroup != null
-				&& otherDetailDimensionGroup.isDetailBrickShown()) {
-			otherDetailDimensionGroup.setDetailBrickWidth(detailBrickWidth);
-		}
-
-		showDetailBrick = true;
-		this.expandLeft = expandLeft;
-	}
 
 	/**
 	 * Shows a detailed brick.

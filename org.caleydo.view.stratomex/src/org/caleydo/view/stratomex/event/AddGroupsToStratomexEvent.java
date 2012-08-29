@@ -46,7 +46,7 @@ public class AddGroupsToStratomexEvent extends AddTablePerspectivesEvent {
 
 	/**
 	 * Optional member for determining a specialized data configurer that will
-	 * be used in visbricks. If not specified, visbricks will use the
+	 * be used in stratomex. If not specified, stratomex will use the
 	 * {@link NumericalDataConfigurer}.
 	 */
 	private IBrickConfigurer dataConfigurer;

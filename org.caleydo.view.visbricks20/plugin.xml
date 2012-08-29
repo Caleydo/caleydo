@@ -6,10 +6,10 @@
       <view
             allowMultiple="true"
             category="org.caleydo.core.views"
-            class="org.caleydo.view.visbricks20.RcpGLVisBricks20View"
+            class="org.caleydo.view.stratomex20.RcpGLStratomex20View"
             icon="resources/icons/icon.png"
-            id="org.caleydo.view.visbricks20"
-            name="VisBricks 2.0">
+            id="org.caleydo.view.stratomex20"
+            name="Stratomex 2.0">
       </view>
    </extension>
    <extension
@@ -23,7 +23,7 @@
                   id="org.caleydo.menu.view.experimental"
                   label="Experimental">
                <command
-                     commandId="org.caleydo.view.visbricks20.command.openvisbricks20"
+                     commandId="org.caleydo.view.stratomex20.command.openstratomex20"
                      icon="resources/icons/icon.png"
                      style="push">
                   <visibleWhen
@@ -43,18 +43,18 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.visbricks20.command.handler.OpenVisBricks20Handler"
-            id="org.caleydo.view.visbricks20.command.openvisbricks20"
-            name="VisBricks 2.0">
+            defaultHandler="org.caleydo.view.stratomex20.command.handler.OpenStratomex20Handler"
+            id="org.caleydo.view.stratomex20.command.openstratomex20"
+            name="Stratomex 2.0">
       </command>
    </extension>
    <extension
-         id="org.caleydo.view.visbricks20"
-         name="VisBricks20ViewCreator"
+         id="org.caleydo.view.stratomex20"
+         name="Stratomex20ViewCreator"
          point="org.caleydo.view.ViewCreator">
          <ViewCreator
           id="org.caleydo.view.ViewCreator"
-          name="VisBricks20ViewCreator"
-          class="org.caleydo.view.visbricks20.creator.ViewCreator" />
+          name="Stratomex20ViewCreator"
+          class="org.caleydo.view.stratomex20.creator.ViewCreator" />
    </extension>
 </plugin>

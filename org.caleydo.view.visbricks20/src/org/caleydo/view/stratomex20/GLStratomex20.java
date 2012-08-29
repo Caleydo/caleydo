@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks20;
+package org.caleydo.view.stratomex20;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +8,9 @@ import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -28,40 +28,42 @@ import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
-import org.caleydo.view.visbricks20.listener.AddGroupsToStratomexListener;
-import org.caleydo.view.visbricks20.listener.OpenVendingMachineListener;
-import org.caleydo.view.visbricks20.renderstyle.VisBricks20RenderStyle;
+import org.caleydo.view.stratomex20.listener.AddGroupsToStratomexListener;
+import org.caleydo.view.stratomex20.listener.OpenVendingMachineListener;
+import org.caleydo.view.stratomex20.renderstyle.Stratomex20RenderStyle;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * <p>
- * VisBricks 2.0 view.
+ * StreomeX 2.0 experimental view.
  * </p>
  * 
  * @author Marc Streit
  */
 
-public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
+public class GLStratomex20
+	extends AGLView
+	implements IGLRemoteRenderingView, IMultiTablePerspectiveBasedView {
 
-	public static String VIEW_TYPE = "org.caleydo.view.visbricks20";
+	public static String VIEW_TYPE = "org.caleydo.view.stratomex20";
 
-	public static String VIEW_NAME = "VisBricks 2.0";
+	public static String VIEW_NAME = "StratomeX 2.0";
 
-	private VisBricks20RenderStyle renderStyle;
+	private Stratomex20RenderStyle renderStyle;
 
 	private LayoutManager layoutManager;
 	private Column mainColumn;
+	private Row mainRow;
 
 	private GLDataViewIntegrator dvi;
 	private ElementLayout dviElementLayout;
 
-	private GLStratomex visBricks;
-	private ElementLayout visBricksElementLayout;
+	private GLStratomex stratomex;
+	private ElementLayout stratomexElementLayout;
 
 	private GLVendingMachine vendingMachine;
-	private ElementLayout vendingMachineElementLayout;
 
-	private AddGroupsToStratomexListener addGroupsToVisBricksListener;
+	private AddGroupsToStratomexListener addGroupsToStratomexListener;
 
 	private OpenVendingMachineListener openVendingMachineListener;
 
@@ -74,8 +76,7 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 	 * @param viewLabel
 	 * @param viewFrustum
 	 */
-	public GLVisBricks20(GLCanvas glCanvas, Composite parentComposite,
-			ViewFrustum viewFrustum) {
+	public GLStratomex20(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -84,7 +85,7 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 	@Override
 	public void init(GL2 gl) {
 		displayListIndex = gl.glGenLists(1);
-		renderStyle = new VisBricks20RenderStyle(viewFrustum);
+		renderStyle = new Stratomex20RenderStyle(viewFrustum);
 
 		super.renderStyle = renderStyle;
 		detailLevel = EDetailLevel.HIGH;
@@ -92,7 +93,7 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 		initLayouts();
 
 		dvi.initRemote(gl, this, glMouseListener);
-		visBricks.initRemote(gl, this, glMouseListener);
+		stratomex.initRemote(gl, this, glMouseListener);
 		vendingMachine.initRemote(gl, this, glMouseListener);
 	}
 
@@ -122,7 +123,7 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 	public void displayLocal(GL2 gl) {
 
 		dvi.processEvents();
-		visBricks.processEvents();
+		stratomex.processEvents();
 		vendingMachine.processEvents();
 
 		pickingManager.handlePicking(this, gl);
@@ -146,21 +147,20 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 		dviElementLayout = new Row("dviElementLayoutRow");
 		createDVI(dviElementLayout);
 
-		visBricksElementLayout = new Row("visBricksElementLayoutRow");
-		// visBricksElementLayout.setDebug(true);
-		createVisBricks(visBricksElementLayout);
-
-		// Just for testing vending machine
-		// vendingMachineElementLayout = new
-		// Row("vendingMachineElementLayoutRow");
-		// vendingMachineElementLayout.setDebug(true);
-		createVendingMachine(vendingMachineElementLayout);
-
 		mainColumn.append(dviElementLayout);
-		mainColumn.append(visBricksElementLayout);
-		// mainColumn.append(vendingMachineElementLayout);
 
-		layoutManager.updateLayout();
+		mainRow = new Row("rowLayout");
+		//mainRow.setDebug(true);
+		mainColumn.append(mainRow);
+
+		stratomexElementLayout = new Row("stratomexElementLayoutRow");
+		//stratomexElementLayout.setDebug(true);
+		stratomexElementLayout.setRatioSizeX(0.7f);
+		createStratomex(stratomexElementLayout);
+		createVendingMachine();
+		vendingMachine.initLayouts();
+		mainRow.append(stratomexElementLayout);
+		mainRow.append(vendingMachine.getLayout());
 	}
 
 	/**
@@ -170,13 +170,13 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 	 * @return
 	 */
 	private GLDataViewIntegrator createDVI(ElementLayout wrappingLayout) {
-		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
-				1, -4, 4);
+		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+				-4, 4);
 		dvi = (GLDataViewIntegrator) GeneralManager
 				.get()
 				.getViewManager()
-				.createGLView(GLDataViewIntegrator.class, parentGLCanvas,
-						parentComposite, frustum);
+				.createGLView(GLDataViewIntegrator.class, parentGLCanvas, parentComposite,
+						frustum);
 
 		dvi.setVendingMachineMode(true);
 		dvi.setRemoteRenderingGLView(this);
@@ -190,26 +190,24 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 	}
 
 	/**
-	 * Creates VisBricks view
+	 * Creates Stratomex view
 	 * 
 	 * @param wrappingLayout
 	 * @return
 	 */
-	private GLStratomex createVisBricks(ElementLayout wrappingLayout) {
-		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
-				1, -4, 4);
-		visBricks = (GLStratomex) GeneralManager
-				.get()
-				.getViewManager()
+	private GLStratomex createStratomex(ElementLayout wrappingLayout) {
+		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+				-4, 4);
+		stratomex = (GLStratomex) GeneralManager.get().getViewManager()
 				.createGLView(GLStratomex.class, parentGLCanvas, parentComposite, frustum);
 
-		visBricks.setRemoteRenderingGLView(this);
-		visBricks.initialize();
+		stratomex.setRemoteRenderingGLView(this);
+		stratomex.initialize();
 
-		ViewLayoutRenderer visBricksRenderer = new ViewLayoutRenderer(visBricks);
-		wrappingLayout.setRenderer(visBricksRenderer);
+		ViewLayoutRenderer stratomexRenderer = new ViewLayoutRenderer(stratomex);
+		wrappingLayout.setRenderer(stratomexRenderer);
 
-		return visBricks;
+		return stratomex;
 	}
 
 	/**
@@ -218,26 +216,17 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 	 * @param wrappingLayout
 	 * @return
 	 */
-	private GLVendingMachine createVendingMachine(ElementLayout wrappingLayout) {
-		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
-				1, -4, 4);
+	private GLVendingMachine createVendingMachine() {
+		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+				-4, 4);
 		vendingMachine = (GLVendingMachine) GeneralManager
 				.get()
 				.getViewManager()
-				.createGLView(GLVendingMachine.class, parentGLCanvas, parentComposite,
-						frustum);
+				.createGLView(GLVendingMachine.class, parentGLCanvas, parentComposite, frustum);
 
 		vendingMachine.setRemoteRenderingGLView(this);
 		vendingMachine.initialize();
-		vendingMachine.setDimensionGroupManager(visBricks.getDimensionGroupManager());
-
-		// ViewLayoutRenderer vendingMachineRenderer = new
-		// ViewLayoutRenderer(vendingMachine);
-		// wrappingLayout.setRenderer(vendingMachineRenderer);
-
-		// Zoomer zoomer = new Zoomer(vendingMachine, wrappingLayout);
-		// wrappingLayout.setZoomer(zoomer);
-
+		vendingMachine.setStratomex(stratomex);
 		return vendingMachine;
 	}
 
@@ -254,7 +243,7 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedVisBricks20View serializedForm = new SerializedVisBricks20View();
+		SerializedStratomex20View serializedForm = new SerializedStratomex20View();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -268,24 +257,23 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		addGroupsToVisBricksListener = new AddGroupsToStratomexListener();
-		addGroupsToVisBricksListener.setHandler(this);
+		addGroupsToStratomexListener = new AddGroupsToStratomexListener();
+		addGroupsToStratomexListener.setHandler(this);
 		eventPublisher.addListener(AddGroupsToStratomexEvent.class,
-				addGroupsToVisBricksListener);
+				addGroupsToStratomexListener);
 
 		openVendingMachineListener = new OpenVendingMachineListener();
 		openVendingMachineListener.setHandler(this);
-		eventPublisher.addListener(OpenVendingMachineEvent.class,
-				openVendingMachineListener);
+		eventPublisher.addListener(OpenVendingMachineEvent.class, openVendingMachineListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
-		if (addGroupsToVisBricksListener != null) {
-			eventPublisher.removeListener(addGroupsToVisBricksListener);
-			addGroupsToVisBricksListener = null;
+		if (addGroupsToStratomexListener != null) {
+			eventPublisher.removeListener(addGroupsToStratomexListener);
+			addGroupsToStratomexListener = null;
 		}
 
 		if (openVendingMachineListener != null) {
@@ -299,20 +287,19 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 		super.reshape(drawable, x, y, width, height);
 
 		layoutManager.updateLayout();
-		visBricks.initLayouts();
-		visBricks.updateLayout();
+		stratomex.initLayouts();
+		stratomex.updateLayout();
+		vendingMachine.updateLayout();
 	}
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
 
-		return null;
-	}
-
-	@Override
-	public int getNumberOfSelections(SelectionType SelectionType) {
-		// TODO Auto-generated method stub
-		return 0;
+		ArrayList<AGLView> remoteRenderedViews = new ArrayList<AGLView>();
+		remoteRenderedViews.add(dvi);
+		remoteRenderedViews.add(vendingMachine);
+		remoteRenderedViews.add(stratomex);
+		return remoteRenderedViews;
 	}
 
 	public void handleOpenVendingMachineEvent(IDataDomain dataDomain) {
@@ -322,13 +309,12 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 		// For the vending machine it does not matter which record perspective
 		// we take
 		TablePerspective tablePerspective = tableBasedDataDomain.getTablePerspective(
-				tableBasedDataDomain.getTable().getDefaultRecordPerspective().getPerspectiveID(),
-				tableBasedDataDomain.getTable().getDefaultDimensionPerspective().getPerspectiveID());
+				tableBasedDataDomain.getTable().getDefaultRecordPerspective()
+						.getPerspectiveID(), tableBasedDataDomain.getTable()
+						.getDefaultDimensionPerspective().getPerspectiveID());
 
 		List<TablePerspective> tablePerspectiveWrapper = new ArrayList<TablePerspective>();
 		tablePerspectiveWrapper.add(tablePerspective);
-		addDimensionGroups(tablePerspectiveWrapper, null);
-		visBricks.addTablePerspectives(tablePerspectiveWrapper, null);
 
 		vendingMachine.setTablePerspective(tablePerspective);
 	}
@@ -336,35 +322,54 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 	public void addDimensionGroups(List<TablePerspective> tablePerspectives,
 			IBrickConfigurer dataConfigurer) {
 
-		visBricks.addTablePerspectives(tablePerspectives, dataConfigurer);
-
-		// Show dimension group as detail brick
-		for (BrickColumn dimGroup : visBricks.getDimensionGroupManager()
-				.getBrickColumns()) {
-			if (tablePerspectives.get(0) == dimGroup.getTablePerspective()) {
-				detailDimensionGroup = dimGroup;
-				detailDimensionGroup.showDetailedBrick(vendingMachine, false);
-				break;
-			}
-		}
+		stratomex.addTablePerspectives(tablePerspectives, dataConfigurer);
 		layoutManager.updateLayout();
 	}
 
-	public void vendingMachineSelectionFinished() {
-
-		detailDimensionGroup.hideDetailedBrick();
-		visBricks.updateLayout();
-	}
-
 	/**
-	 * @return the visBricks, see {@link #visBricks}
+	 * @return the visBricks, see {@link #stratomex}
 	 */
 	public GLStratomex getVisBricks() {
-		return visBricks;
+		return stratomex;
 	}
 
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		layoutManager.destroy(gl);
+	}
+	
+	@Override
+	public boolean isDataView() {
+		return true;
+	}
+
+
+	@Override
+	public void addTablePerspective(TablePerspective newTablePerspective) {
+		stratomex.addTablePerspective(newTablePerspective);
+		layoutManager.updateLayout();
+	}
+
+	@Override
+	public void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
+		stratomex.addTablePerspectives(newTablePerspectives);
+		layoutManager.updateLayout();
+	}
+
+	@Override
+	public List<TablePerspective> getTablePerspectives() {
+
+		return new ArrayList<TablePerspective>();
+	}
+
+	@Override
+	public void removeTablePerspective(int tablePerspectiveID) {
+		stratomex.removeTablePerspective(tablePerspectiveID);
+	}
+
+
+	public void addTablePerspectives(List<TablePerspective> tablePerspectives, IBrickConfigurer dataConfigurer) {
+		stratomex.addTablePerspectives(tablePerspectives);
+		layoutManager.updateLayout();
 	}
 }

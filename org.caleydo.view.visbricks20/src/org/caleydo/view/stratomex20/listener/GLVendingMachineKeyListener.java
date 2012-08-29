@@ -1,8 +1,8 @@
-package org.caleydo.view.visbricks20.listener;
+package org.caleydo.view.stratomex20.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
-import org.caleydo.view.visbricks20.GLVendingMachine;
+import org.caleydo.view.stratomex20.GLVendingMachine;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 
@@ -32,8 +32,7 @@ public class GLVendingMachineKeyListener extends GLKeyListener<GLVendingMachine>
 			vendingMachine.highlightNextPreviousVisBrick(true);
 			break;
 		case SWT.CR:
-			vendingMachine.getVisBricks20View().vendingMachineSelectionFinished();
-			vendingMachine.selectVisBricksChoice();
+			vendingMachine.selectChoice();
 			break;
 		}
 

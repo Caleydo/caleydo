@@ -1098,9 +1098,6 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		}
 	}
 
-	@Deprecated
-	public abstract int getNumberOfSelections(SelectionType SelectionType);
-
 	public final float getAspectRatio() {
 		return fAspectRatio;
 	}

@@ -178,7 +178,7 @@ public class TwoLayeredGraphLayout extends AGraphLayout {
 		float expandDirectorFactor = 1;
 
 		if (view.isRenderedRemote()) {
-			// VisBricks 2.0 case where data nodes will be rendered on top and
+			// StratomeX 2.0 case where data nodes will be rendered on top and
 			// expand to the bottom
 			isUpsideDown = false;
 			dataNodesBottomY = (float) area.getMaxY();

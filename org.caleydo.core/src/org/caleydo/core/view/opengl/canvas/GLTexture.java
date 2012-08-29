@@ -28,9 +28,6 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingMode;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -142,32 +139,8 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 
 	}
 
-	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int externalID, Pick pick) {
-		// if (detailLevel == EDetailLevel.VERY_LOW) {
-		// return;
-		// }
-
-		// switch (ePickingType) {
-		// case TISSUE_SELECTION:
-		// switch (pickingMode) {
-		// case MOUSE_OVER: {
-		//
-		// break;
-		// }
-		// }
-		// }
-	}
-
 	public void setCurrentSelectionType(SelectionType currentSelectionType) {
 		this.currentSelectionType = currentSelectionType;
-	}
-
-	@Override
-	public int getNumberOfSelections(SelectionType selectionType) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override

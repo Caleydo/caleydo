@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks20;
+package org.caleydo.view.stratomex20;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -10,16 +10,16 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author <INSERT_YOUR_NAME>
  */
-public class RcpGLVisBricks20View extends ARcpGLViewPart {
+public class RcpGLStratomex20View extends ARcpGLViewPart {
 
 	/**
 	 * Constructor.
 	 */
-	public RcpGLVisBricks20View() {
+	public RcpGLStratomex20View() {
 		super();
 
 		try {
-			viewContext = JAXBContext.newInstance(SerializedVisBricks20View.class);
+			viewContext = JAXBContext.newInstance(SerializedStratomex20View.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
@@ -30,7 +30,7 @@ public class RcpGLVisBricks20View extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		view = new GLVisBricks20(glCanvas, parentComposite,
+		view = new GLStratomex20(glCanvas, parentComposite,
 				serializedView.getViewFrustum());
 		initializeView();
 		createPartControlGL();
@@ -38,13 +38,13 @@ public class RcpGLVisBricks20View extends ARcpGLViewPart {
 
 	@Override
 	public void createDefaultSerializedView() {
-		serializedView = new SerializedVisBricks20View();
+		serializedView = new SerializedStratomex20View();
 		determineDataConfiguration(serializedView);
 	}
 
 	@Override
 	public String getViewGUIID() {
-		return GLVisBricks20.VIEW_TYPE;
+		return GLStratomex20.VIEW_TYPE;
 	}
 
 }

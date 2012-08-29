@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks20.renderstyle;
+package org.caleydo.view.stratomex20.renderstyle;
 
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -8,9 +8,9 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
  * 
  * @author <INSERT_YOUR_NAME>
  */
-public class VisBricks20RenderStyle extends GeneralRenderStyle {
+public class Stratomex20RenderStyle extends GeneralRenderStyle {
 
-	public VisBricks20RenderStyle(ViewFrustum viewFrustum) {
+	public Stratomex20RenderStyle(ViewFrustum viewFrustum) {
 		super(viewFrustum);
 	}
 }

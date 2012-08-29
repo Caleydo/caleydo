@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view;
 
+import java.util.HashSet;
 import java.util.Set;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -125,7 +126,7 @@ public abstract class AView extends AUniqueObject implements IView {
 	}
 
 	public Set<IDataDomain> getDataDomains() {
-		return null;
+		return new HashSet<IDataDomain>();
 	}
 
 	/**

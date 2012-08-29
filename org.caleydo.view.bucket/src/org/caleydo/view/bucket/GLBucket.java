@@ -616,10 +616,11 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 				fTextXPosition = 9.5f;
 			}
 
-			int iNumberOfGenesSelected = glView
-					.getNumberOfSelections(SelectionType.SELECTION);
-			int iNumberOfGenesMouseOver = glView
-					.getNumberOfSelections(SelectionType.MOUSE_OVER);
+			int iNumberOfGenesSelected = 0;
+			//FIXME implement as events if bucket reactivated
+			//glView.getNumberOfSelections(SelectionType.SELECTION);
+			int iNumberOfGenesMouseOver = 0;
+			//glView.getNumberOfSelections(SelectionType.MOUSE_OVER);
 
 			textRenderer.begin3DRendering();
 
@@ -2573,11 +2574,6 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			parentGLCanvas.addMouseListener(bucketMouseWheelListener);
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 		}
-	}
-
-	@Override
-	public int getNumberOfSelections(SelectionType SelectionType) {
-		return 0;
 	}
 
 	private void compactPoolLevel() {

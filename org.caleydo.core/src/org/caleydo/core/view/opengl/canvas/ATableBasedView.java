@@ -414,11 +414,6 @@ public abstract class ATableBasedView extends AGLView implements
 	}
 
 	@Override
-	public int getNumberOfSelections(SelectionType SelectionType) {
-		return recordSelectionManager.getElements(SelectionType).size();
-	}
-
-	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
 

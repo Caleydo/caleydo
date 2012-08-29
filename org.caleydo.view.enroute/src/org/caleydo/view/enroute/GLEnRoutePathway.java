@@ -20,7 +20,6 @@
 package org.caleydo.view.enroute;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,17 +27,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
-
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.SetMinViewSizeEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.id.IDType;
@@ -1005,12 +1001,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		geneSelectionManager.unregisterEventListeners();
 		metaboliteSelectionManager.unregisterEventListeners();
-	}
-
-	@Override
-	public int getNumberOfSelections(SelectionType SelectionType) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	/**

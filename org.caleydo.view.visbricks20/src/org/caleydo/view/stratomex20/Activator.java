@@ -1,7 +1,7 @@
-package org.caleydo.view.visbricks20;
+package org.caleydo.view.stratomex20;
 
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
-import org.caleydo.view.visbricks20.toolbar.VisBricks20ToolBarContent;
+import org.caleydo.view.stratomex20.toolbar.VisBricks20ToolBarContent;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -24,7 +24,7 @@ public class Activator extends Plugin {
 		super.start(context);
 		plugin = this;
 
-		ToolBarContentFactory.get().addToolBarContent(GLVisBricks20.VIEW_TYPE, false,
+		ToolBarContentFactory.get().addToolBarContent(GLStratomex20.VIEW_TYPE, false,
 				new VisBricks20ToolBarContent());
 	}
 

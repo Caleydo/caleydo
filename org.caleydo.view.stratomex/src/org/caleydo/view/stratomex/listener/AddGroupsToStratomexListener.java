@@ -37,10 +37,10 @@ public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof AddGroupsToStratomexEvent) {
-			AddGroupsToStratomexEvent addGroupsToVisBricksEvent = (AddGroupsToStratomexEvent) event;
-			if (addGroupsToVisBricksEvent.getReceiver() == handler) {
-				handler.addTablePerspectives(addGroupsToVisBricksEvent.getTablePerspectives(),
-						addGroupsToVisBricksEvent.getDataConfigurer());
+			AddGroupsToStratomexEvent addGroupsToStratomexEvent = (AddGroupsToStratomexEvent) event;
+			if (addGroupsToStratomexEvent.getReceiver() == handler) {
+				handler.addTablePerspectives(addGroupsToStratomexEvent.getTablePerspectives(),
+						addGroupsToStratomexEvent.getDataConfigurer());
 			}
 		}
 

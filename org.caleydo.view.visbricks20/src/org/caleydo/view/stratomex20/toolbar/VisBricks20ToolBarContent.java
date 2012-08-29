@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks20.toolbar;
+package org.caleydo.view.stratomex20.toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.ActionToolBarContainer;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
-import org.caleydo.view.visbricks20.GLVisBricks20;
+import org.caleydo.view.stratomex20.GLStratomex20;
 
 /**
  * Tool bar content.
@@ -21,7 +21,7 @@ public class VisBricks20ToolBarContent extends AToolBarContent {
 
 	@Override
 	public Class<?> getViewClass() {
-		return GLVisBricks20.class;
+		return GLStratomex20.class;
 	}
 
 	@Override
