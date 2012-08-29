@@ -251,5 +251,4 @@ public class Row extends ALayoutContainer {
 		}
 		return sumDynamicUnits;
 	}
-
 }

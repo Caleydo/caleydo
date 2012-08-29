@@ -67,9 +67,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		super.init();
 		// layout = nodeLayout;
 		layoutManager = new LayoutManager(new ViewFrustum(), view.getPixelGLConverter());
-
 		ElementLayout baseLayout = setupLayout();
-
 		layoutManager.setBaseElementLayout(baseLayout);
 
 	}

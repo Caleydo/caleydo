@@ -117,6 +117,7 @@ public class GLStratomex
 	public static String VIEW_NAME = "StratomeX";
 
 	private final static int ARCH_PIXEL_HEIGHT = 100;
+	private final static int ARCH_PIXEL_WIDTH = 80;
 	private final static float ARCH_BOTTOM_PERCENT = 1f;
 	private final static float ARCH_STAND_WIDTH_PERCENT = 0.05f;
 
@@ -136,10 +137,9 @@ public class GLStratomex
 
 	private ConnectionBandRenderer connectionRenderer;
 
-	private LayoutManager centerLayoutManager;
-	private LayoutManager leftLayoutManager;
-	private LayoutManager rightLayoutManager;
+	private LayoutManager layoutManager;
 
+	private Row mainRow;
 	private Row centerRowLayout;
 	private Column leftColumnLayout;
 	private Column rightColumnLayout;
@@ -162,7 +162,7 @@ public class GLStratomex
 	/** Same as {@link #isLeftDetailShown} for right */
 	private boolean isRightDetailShown = false;
 
-	private Queue<BrickColumn> uninitializedBrickColumns = new LinkedList<BrickColumn>();
+	private Queue<AGLView> uninitializedSubViews = new LinkedList<AGLView>();
 
 	private DragAndDropController dragAndDropController;
 
@@ -219,14 +219,11 @@ public class GLStratomex
 
 	private boolean isConnectionLinesDirty = true;
 
-	// private Set<IDataDomain> dataDomains;
 	private List<TablePerspective> tablePerspectives;
 
 	private VendingMachine vendingMachine;
 
 	private boolean isVendingMachineMode = false;
-
-	private boolean showArchSides = true;
 
 	/**
 	 * Constructor.
@@ -246,7 +243,6 @@ public class GLStratomex
 
 		relationAnalyzer = new RelationAnalyzer();
 
-		// dataDomains = new HashSet<IDataDomain>();
 		tablePerspectives = new ArrayList<TablePerspective>();
 
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
@@ -264,42 +260,41 @@ public class GLStratomex
 		textRenderer = new CaleydoTextRenderer(24);
 
 		connectionRenderer.init(gl);
+		initVendingMachine();
 	}
 
 	public void initLayouts() {
 
 		brickColumnManager.getBrickColumnSpacers().clear();
 
+		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
+		mainRow = new Row();
+		layoutManager.setBaseElementLayout(mainRow);
+
+		initLeftLayout();
 		initCenterLayout();
+		initRightLayout();
 
-		if (showArchSides) {
-			initLeftLayout();
-			initRightLayout();
-		}
+		// mainRow.append(vendingMachine.getLayout());
 
-		initVendingMachine();
+		layoutManager.updateLayout();
 
 		updateConnectionLinesBetweenDimensionGroups();
 	}
 
 	private void initLeftLayout() {
-		ViewFrustum leftArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(), 0,
-				archSideThickness, 0, archBottomY, 0, 1);
-		leftLayoutManager = new LayoutManager(leftArchFrustum, pixelGLConverter);
 		leftColumnLayout = new Column("leftArchColumn");
+		leftColumnLayout.setPixelSizeX(ARCH_PIXEL_WIDTH);
 
-		initSideLayout(leftColumnLayout, leftLayoutManager, 0,
-				brickColumnManager.getCenterGroupStartIndex());
+		initSideLayout(leftColumnLayout, 0, brickColumnManager.getCenterGroupStartIndex());
 	}
 
 	private void initRightLayout() {
-		ViewFrustum rightArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(), 0,
-				archSideThickness, 0, archBottomY, 0, 1);
 		rightColumnLayout = new Column("rightArchColumn");
-		rightLayoutManager = new LayoutManager(rightArchFrustum, pixelGLConverter);
-		initSideLayout(rightColumnLayout, rightLayoutManager,
-				brickColumnManager.getRightGroupStartIndex(), brickColumnManager
-						.getBrickColumns().size());
+		rightColumnLayout.setPixelSizeX(ARCH_PIXEL_WIDTH);
+
+		initSideLayout(rightColumnLayout, brickColumnManager.getRightGroupStartIndex(),
+				brickColumnManager.getBrickColumns().size());
 	}
 
 	public int getSideArchWidthPixels() {
@@ -313,12 +308,12 @@ public class GLStratomex
 	 */
 	private void initCenterLayout() {
 
-		if (showArchSides)
-			archSideThickness = viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT;
-		else
-			archSideThickness = 0;
-
-		if (!showArchSides || isRightDetailShown || isLeftDetailShown) {
+		// if (showArchSides)
+		archSideThickness = viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT;
+		// else
+		// archSideThickness = 0;
+		//
+		if (isRightDetailShown || isLeftDetailShown) {
 			archInnerWidth = 0;
 		}
 		else {
@@ -332,9 +327,6 @@ public class GLStratomex
 
 		int dimensionGroupCountInCenter = brickColumnManager.getRightGroupStartIndex()
 				- brickColumnManager.getCenterGroupStartIndex();
-
-		float centerLayoutWidth = viewFrustum.getWidth() - 2 * (archInnerWidth);
-		// float centerLayoutWidth = viewFrustum.getWidth();
 
 		centerRowLayout = new Row("centerRowLayout");
 
@@ -403,11 +395,7 @@ public class GLStratomex
 			// dimensionGroupSpacingRenderer.setLineLength(archHeight);
 		}
 
-		ViewFrustum centerArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(), 0,
-				centerLayoutWidth, 0, viewFrustum.getHeight(), 0, 1);
-		centerLayoutManager = new LayoutManager(centerArchFrustum, pixelGLConverter);
-		centerLayoutManager.setBaseElementLayout(centerRowLayout);
-		centerLayoutManager.updateLayout();
+		mainRow.append(centerRowLayout);
 	}
 
 	/**
@@ -419,10 +407,8 @@ public class GLStratomex
 	 * @param dimensinoGroupStartIndex
 	 * @param dimensionGroupEndIndex
 	 */
-	private void initSideLayout(Column columnLayout, LayoutManager layoutManager,
-			int dimensinoGroupStartIndex, int dimensionGroupEndIndex) {
-
-		layoutManager.setBaseElementLayout(columnLayout);
+	private void initSideLayout(Column columnLayout, int dimensinoGroupStartIndex,
+			int dimensionGroupEndIndex) {
 
 		columnLayout.setFrameColor(1, 1, 0, 1);
 		columnLayout.setBottomUp(true);
@@ -474,8 +460,7 @@ public class GLStratomex
 			// dimensionGroupSpacingRenderer.setLineLength(archSideThickness);
 
 		}
-
-		layoutManager.updateLayout();
+		mainRow.append(columnLayout);
 
 	}
 
@@ -521,9 +506,9 @@ public class GLStratomex
 	@Override
 	public void display(GL2 gl) {
 
-		if (!uninitializedBrickColumns.isEmpty()) {
-			while (uninitializedBrickColumns.peek() != null) {
-				uninitializedBrickColumns.poll().initRemote(gl, this, glMouseListener);
+		if (!uninitializedSubViews.isEmpty()) {
+			while (uninitializedSubViews.peek() != null) {
+				uninitializedSubViews.poll().initRemote(gl, this, glMouseListener);
 			}
 			initLayouts();
 		}
@@ -539,7 +524,7 @@ public class GLStratomex
 		handleHorizontalColumnMove(gl);
 		if (isLayoutDirty) {
 			isLayoutDirty = false;
-			centerLayoutManager.updateLayout();
+			layoutManager.updateLayout();
 			float minWidth = pixelGLConverter
 					.getGLWidthForPixelWidth(BRICK_COLUMN_SPACING_MIN_PIXEL_WIDTH);
 			for (ElementLayout layout : centerRowLayout) {
@@ -606,10 +591,6 @@ public class GLStratomex
 			// centerLayoutManager.updateLayout();
 			resizeNecessary = false;
 		}
-		// float angle = 70f;
-		// viewCamera.setCameraRotation(new Rotf());
-
-		// gl.glRotatef(angle, 1, 0, 0);
 
 		for (BrickColumn dimensionGroup : brickColumnManager.getBrickColumns()) {
 			dimensionGroup.display(gl);
@@ -618,26 +599,11 @@ public class GLStratomex
 		if (isConnectionLinesDirty)
 			performConnectionLinesUpdate();
 
-		if (showArchSides && !isRightDetailShown && !isLeftDetailShown) {
-			leftLayoutManager.render(gl);
-		}
+		layoutManager.render(gl);
 
-		gl.glTranslatef(archInnerWidth, 0, 0);
-		centerLayoutManager.render(gl);
-		gl.glTranslatef(-archInnerWidth, 0, 0);
-
-		if (showArchSides && !isRightDetailShown && !isLeftDetailShown) {
-			float rightArchStand = (1 - ARCH_STAND_WIDTH_PERCENT) * viewFrustum.getWidth();
-			gl.glTranslatef(rightArchStand, 0, 0);
-			rightLayoutManager.render(gl);
-			gl.glTranslatef(-rightArchStand, 0, 0);
-		}
-
-		if (showArchSides && !isRightDetailShown && !isLeftDetailShown) {
+		if (!isRightDetailShown && !isLeftDetailShown) {
 			renderArch(gl);
 		}
-
-		// gl.glRotatef(-angle, 1, 0, 0);
 
 		// call after all other rendering because it calls the onDrag methods
 		// which need alpha blending...
@@ -664,10 +630,9 @@ public class GLStratomex
 		}
 
 		isRightDetailShown = true;
-
-		initLeftLayout();
-		initCenterLayout();
-		initRightLayout();
+		mainRow.remove(rightColumnLayout);
+		mainRow.remove(leftColumnLayout);
+		layoutManager.updateLayout();
 	}
 
 	/**
@@ -687,11 +652,11 @@ public class GLStratomex
 		if (dimensionGroupIndex != brickColumnManager.getRightGroupStartIndex() - 1) {
 			brickColumnManager.setRightGroupStartIndex(dimensionGroupIndex + 1);
 		}
+		
 		isLeftDetailShown = true;
-
-		initLeftLayout();
-		initCenterLayout();
-		initRightLayout();
+		mainRow.remove(rightColumnLayout);
+		mainRow.remove(leftColumnLayout);
+		layoutManager.updateLayout();
 	}
 
 	/**
@@ -699,9 +664,7 @@ public class GLStratomex
 	 */
 	public void switchToOverviewModeRight() {
 		isRightDetailShown = false;
-		initLeftLayout();
-		initCenterLayout();
-		initRightLayout();
+		initLayouts();
 	}
 
 	/**
@@ -709,9 +672,7 @@ public class GLStratomex
 	 */
 	public void switchToOverviewModeLeft() {
 		isLeftDetailShown = false;
-		initLeftLayout();
-		initCenterLayout();
-		initRightLayout();
+		initLayouts();
 	}
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
@@ -1353,7 +1314,7 @@ public class GLStratomex
 				brickColumns.add(brickColumn);
 				tablePerspectives.add(tablePerspective);
 
-				uninitializedBrickColumns.add(brickColumn);
+				uninitializedSubViews.add(brickColumn);
 				// if (tablePerspective instanceof PathwayTablePerspective) {
 				// dataDomains.add(((PathwayTablePerspective) tablePerspective)
 				// .getPathwayDataDomain());
@@ -1851,12 +1812,15 @@ public class GLStratomex
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		gl.glDeleteLists(displayListIndex, 1);
-		if (centerLayoutManager != null)
-			centerLayoutManager.destroy(gl);
-		if (leftLayoutManager != null)
-			leftLayoutManager.destroy(gl);
-		if (rightLayoutManager != null)
-			rightLayoutManager.destroy(gl);
+		// if (centerLayoutManager != null)
+		// centerLayoutManager.destroy(gl);
+		// if (leftLayoutManager != null)
+		// leftLayoutManager.destroy(gl);
+		// if (rightLayoutManager != null)
+		// rightLayoutManager.destroy(gl);
+
+		if (layoutManager != null)
+			layoutManager.destroy(gl);
 	}
 
 	private void initVendingMachine() {
@@ -1868,8 +1832,8 @@ public class GLStratomex
 		vendingMachine.setRemoteRenderingGLView(this);
 		vendingMachine.initialize();
 		vendingMachine.setStratomex(this);
-		vendingMachine.initLayouts();
 
+		uninitializedSubViews.add(vendingMachine);
 	}
 
 	/**
