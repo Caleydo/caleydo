@@ -89,18 +89,20 @@ public class MappedDataRenderer {
 	 * The top-level data containers as set externally through the
 	 * {@link IMultiTablePerspectiveBasedView} interface of {@link #parentView}
 	 */
-	private ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>(5);
+	private ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>(
+			5);
 
 	/**
 	 * The data containers resolved based on the {@link GroupList}s of the
 	 * {@link #tablePerspectives}. That means that this list contains a
-	 * tablePerspective for every experiment group in one of the TablePerspectives in
-	 * {@link #tablePerspectives}.
+	 * tablePerspective for every experiment group in one of the
+	 * TablePerspectives in {@link #tablePerspectives}.
 	 */
 	private ArrayList<TablePerspective> resolvedTablePerspectives = new ArrayList<TablePerspective>();
 
 	/**
-	 * Set to either {@link #tablePerspectives} or {@link #resolvedTablePerspectives}
+	 * Set to either {@link #tablePerspectives} or
+	 * {@link #resolvedTablePerspectives}
 	 */
 	private ArrayList<TablePerspective> usedTablePerspectives;
 
@@ -173,10 +175,10 @@ public class MappedDataRenderer {
 	}
 
 	public void render(GL2 gl, boolean isLayoutDirty) {
-		
-		if(isLayoutDirty)
+
+		if (isLayoutDirty)
 			layoutManger.updateLayout();
-		
+
 		layoutManger.render(gl);
 
 		for (RelationshipRenderer relationshipRenderer : relationShipRenderers) {
@@ -207,7 +209,7 @@ public class MappedDataRenderer {
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 		this.rowHeight = rowHeight;
-		
+
 		// layoutManger.updateLayout();
 
 	}
@@ -353,8 +355,8 @@ public class MappedDataRenderer {
 					ElementLayout tablePerspectiveLayout = new ElementLayout(
 							"TablePerspective " + tablePerspectiveCount + " / " + idCount);
 					// tablePerspectiveRow.setPixelSizeX(5);
-					tablePerspectiveLayout.addBackgroundRenderer(new RowBackgroundRenderer(
-							color));
+					tablePerspectiveLayout
+							.addBackgroundRenderer(new RowBackgroundRenderer(color));
 
 					row.append(tablePerspectiveLayout);
 					rowListForTablePerspectives.get(tablePerspectiveCount).add(
@@ -398,7 +400,8 @@ public class MappedDataRenderer {
 		// dataSetColumn.add(0, captionRow);
 		dataSetColumn.append(bottomCaptionRow);
 
-		for (int tablePerspectiveCount = 0; tablePerspectiveCount < usedTablePerspectives.size(); tablePerspectiveCount++) {
+		for (int tablePerspectiveCount = 0; tablePerspectiveCount < usedTablePerspectives
+				.size(); tablePerspectiveCount++) {
 
 			ColumnCaptionLayout topCaptionLayout = new ColumnCaptionLayout(parentView,
 					this);
@@ -412,8 +415,8 @@ public class MappedDataRenderer {
 				topCaptionRow.append(xSpacing);
 			}
 			prepareData(usedTablePerspectives.get(tablePerspectiveCount),
-					rowListForTablePerspectives.get(tablePerspectiveCount), topCaptionLayout,
-					bottomCaptionLayout, davidIDs);
+					rowListForTablePerspectives.get(tablePerspectiveCount),
+					topCaptionLayout, bottomCaptionLayout, davidIDs);
 		}
 
 	}
@@ -422,7 +425,8 @@ public class MappedDataRenderer {
 	private void prepareData(TablePerspective tablePerspective,
 			ArrayList<ElementLayout> rowLayouts, ColumnCaptionLayout topCaptionLayout,
 			ColumnCaptionLayout bottomCaptionLayout, ArrayList<Integer> davidIDs) {
-		GeneticDataDomain dataDomain = (GeneticDataDomain) tablePerspective.getDataDomain();
+		GeneticDataDomain dataDomain = (GeneticDataDomain) tablePerspective
+				.getDataDomain();
 
 		AVariablePerspective<?, ?, ?, ?> experimentPerspective;
 		if (dataDomain.isGeneRecord()) {
@@ -437,14 +441,16 @@ public class MappedDataRenderer {
 			if (group == null) {
 				group = tablePerspective.getDimensionPerspective().getVirtualArray()
 						.getGroupList().get(0);
-				group.setLabel(tablePerspective.getLabel(), tablePerspective.isLabelDefault());
+				group.setLabel(tablePerspective.getLabel(),
+						tablePerspective.isLabelDefault());
 			}
 		} else {
 			group = tablePerspective.getRecordGroup();
 			if (group == null) {
 				group = tablePerspective.getRecordPerspective().getVirtualArray()
 						.getGroupList().get(0);
-				group.setLabel(tablePerspective.getLabel(), tablePerspective.isLabelDefault());
+				group.setLabel(tablePerspective.getLabel(),
+						tablePerspective.isLabelDefault());
 			}
 		}
 		topCaptionLayout.init(group, experimentPerspective, dataDomain);
@@ -501,9 +507,9 @@ public class MappedDataRenderer {
 						davidID, dataDomain, tablePerspective, experimentPerspective,
 						parentView, this, group));
 			} else {
-				tablePerspectiveLayout.setRenderer(new CategoricalRowContentRenderer(geneID,
-						davidID, dataDomain, tablePerspective, experimentPerspective,
-						parentView, this, group));
+				tablePerspectiveLayout.setRenderer(new CategoricalRowContentRenderer(
+						geneID, davidID, dataDomain, tablePerspective,
+						experimentPerspective, parentView, this, group));
 			}
 
 		}
@@ -518,14 +524,15 @@ public class MappedDataRenderer {
 	 */
 	public void addTablePerspective(TablePerspective newTablePerspective) {
 		tablePerspectives.add(newTablePerspective);
-		ArrayList<TablePerspective> newTablePerspectives = new ArrayList<TablePerspective>(1);
+		ArrayList<TablePerspective> newTablePerspectives = new ArrayList<TablePerspective>(
+				1);
 		newTablePerspectives.add(newTablePerspective);
 		resolveSubTablePerspectives(newTablePerspectives);
 	}
 
 	/**
-	 * Same as {@link #addTablePerspective(TablePerspective)} but for multiple data
-	 * containers
+	 * Same as {@link #addTablePerspective(TablePerspective)} but for multiple
+	 * data containers
 	 */
 	public void addTablePerspectives(List<TablePerspective> newTablePerspectives) {
 		tablePerspectives.addAll(newTablePerspectives);
@@ -540,7 +547,8 @@ public class MappedDataRenderer {
 	}
 
 	public void removeTablePerspective(int tablePerspectiveID) {
-		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives.iterator();
+		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives
+				.iterator();
 
 		while (tablePerspectiveIterator.hasNext()) {
 			TablePerspective container = tablePerspectiveIterator.next();
@@ -569,7 +577,8 @@ public class MappedDataRenderer {
 				newlyResovedTablePerspectives = tablePerspective
 						.getDimensionSubTablePerspectives();
 			} else {
-				newlyResovedTablePerspectives = tablePerspective.getRecordSubTablePerspectives();
+				newlyResovedTablePerspectives = tablePerspective
+						.getRecordSubTablePerspectives();
 			}
 
 			if (newlyResovedTablePerspectives != null) {
@@ -672,7 +681,8 @@ public class MappedDataRenderer {
 	}
 
 	/**
-	 * @return the resolvedTablePerspectives, see {@link #resolvedTablePerspectives}
+	 * @return the resolvedTablePerspectives, see
+	 *         {@link #resolvedTablePerspectives}
 	 */
 	public ArrayList<TablePerspective> getResolvedTablePerspectives() {
 		return resolvedTablePerspectives;
