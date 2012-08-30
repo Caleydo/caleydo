@@ -103,7 +103,7 @@ public class BrickColumnSpacingRenderer
 		this.connectionRenderer = connectionRenderer;
 		this.glVisBricks = glVisBricksView;
 
-		glVisBricks.getDimensionGroupManager().getBrickColumnSpacers().put(ID, this);
+		glVisBricks.getBrickColumnManager().getBrickColumnSpacers().put(ID, this);
 	}
 
 	{

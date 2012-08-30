@@ -1096,7 +1096,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 */
 	private BrickColumn getOtherDetailDimensionGroup(boolean isCurrentDimensionGroupLeft) {
 
-		BrickColumnManager dimensionGroupManager = stratomex.getDimensionGroupManager();
+		BrickColumnManager dimensionGroupManager = stratomex.getBrickColumnManager();
 
 		ArrayList<BrickColumn> dimensionGroups = dimensionGroupManager.getBrickColumns();
 		int dimensionGroupIndex = dimensionGroups.indexOf(this);
@@ -1122,7 +1122,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 * @return True if this dimension group is the leftmost dimension group.
 	 */
 	public boolean isLeftmost() {
-		BrickColumnManager dimensionGroupManager = stratomex.getDimensionGroupManager();
+		BrickColumnManager dimensionGroupManager = stratomex.getBrickColumnManager();
 		int index = dimensionGroupManager.indexOfBrickColumn(this);
 		return (index == dimensionGroupManager.getCenterGroupStartIndex());
 	}
@@ -1131,7 +1131,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 * @return True if this dimension group is the rightmost dimension group.
 	 */
 	public boolean isRightmost() {
-		BrickColumnManager dimensionGroupManager = stratomex.getDimensionGroupManager();
+		BrickColumnManager dimensionGroupManager = stratomex.getBrickColumnManager();
 		int index = dimensionGroupManager.indexOfBrickColumn(this);
 		return (index == dimensionGroupManager.getRightGroupStartIndex() - 1);
 	}

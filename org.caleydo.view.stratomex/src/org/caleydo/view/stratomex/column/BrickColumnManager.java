@@ -22,6 +22,7 @@ package org.caleydo.view.stratomex.column;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.ViewManager;
 
 public class BrickColumnManager {
@@ -38,6 +39,22 @@ public class BrickColumnManager {
 
 	public ArrayList<BrickColumn> getBrickColumns() {
 		return brickColumns;
+	}
+
+	/**
+	 * Returns the first brick column that contains the given table perspective.
+	 * If not brick column is found, null is returned.
+	 * 
+	 * @param tablePerspective for which the brick column will be returned
+	 */
+	public BrickColumn getBrickColumn(TablePerspective tablePerspective) {
+
+		for (BrickColumn brickColumn : brickColumns) {
+			if (brickColumn.getTablePerspective() == tablePerspective)
+				return brickColumn;
+		}
+
+		return null;
 	}
 
 	public HashMap<Integer, BrickColumnSpacingRenderer> getBrickColumnSpacers() {
@@ -64,47 +81,23 @@ public class BrickColumnManager {
 		if (brickColumns.size() > MAX_CENTER_BRICK_COLUMNS) {
 			centerGroupStartIndex = (brickColumns.size() - MAX_CENTER_BRICK_COLUMNS) / 2;
 			rightGroupStartIndex = centerGroupStartIndex + MAX_CENTER_BRICK_COLUMNS;
-		} else {
+		}
+		else {
 			centerGroupStartIndex = 0;
 			rightGroupStartIndex = brickColumns.size();
 		}
 	}
 
-	// public void moveGroupDimension(BrickColumn referenceDimGroup,
-	// BrickColumnSpacingRenderer spacer) {
-
-	// int movedDimGroupIndex = dimensionGroups.indexOf(movedDimGroup);
-	// int refDimGroupIndex = dimensionGroups.indexOf(referenceDimGroup);
-	//
-	// if (refDimGroupIndex < centerGroupStartIndex) {
-	// centerGroupStartIndex++;
-	// } else if (refDimGroupIndex > centerGroupStartIndex
-	// && refDimGroupIndex < rightGroupStartIndex) {
-	//
-	// if (movedDimGroupIndex >= rightGroupStartIndex)
-	// rightGroupStartIndex++;
-	// else if (movedDimGroupIndex < centerGroupStartIndex)
-	// centerGroupStartIndex--;
-	//
-	// } else if (refDimGroupIndex >= rightGroupStartIndex
-	// && movedDimGroupIndex < rightGroupStartIndex) {
-	// rightGroupStartIndex--;
-	// }
-
-	// if (refDimGroupIndex < centerGroupStartIndex || refDimGroupIndex >=
-	// rightGroupStartIndex)
-	// hightlightOffset *= -1;
-
-	// dimensionGroups.remove(movedDimGroup);
-	// dimensionGroups.add(
-	// dimensionGroups.indexOf(referenceDimGroup) + hightlightOffset,
-	// movedDimGroup);
-	// }
-
 	public int indexOfBrickColumn(BrickColumn brickColumn) {
 		return brickColumns.indexOf(brickColumn);
 	}
-
+	
+	public void moveBrickColumn(BrickColumn brickColumn, int newPosIndex) {
+		
+		brickColumns.remove(indexOfBrickColumn(brickColumn));
+		brickColumns.add(newPosIndex, brickColumn);
+	}
+	
 	public void removeBrickColumn(int tablePerspectiveID) {
 		Iterator<BrickColumn> brickColumnIterator = brickColumns.iterator();
 

@@ -22,7 +22,7 @@ public class RankNumberRenderer
 	public void renderContent(GL2 gl) {
 
 		textRenderer.setColor(RANK_NUMBER_COLOR);
-		textRenderer.renderText(gl, rankNumber, 0.3f, 0, 0, 0.007f, 3);
+		textRenderer.renderText(gl, rankNumber, 0.03f, 0, 0, 0.007f, 3);
 	}
 	
 	@Override

@@ -85,7 +85,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		neighborBrickOrder = null;
 		neighborPerspectiveID = null;
 		similarities = null;
-		ArrayList<BrickColumn> dimensionGroups = stratomex.getDimensionGroupManager()
+		ArrayList<BrickColumn> dimensionGroups = stratomex.getBrickColumnManager()
 				.getBrickColumns();
 
 		String currentID;

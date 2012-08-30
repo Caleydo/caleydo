@@ -856,7 +856,7 @@ public class GLBrick
 						getBrickColumn().getTablePerspective().getID()));
 
 				contextMenuCreator.addContextMenuItem(new ScoreColumnItem(stratomex
-						.getVendingMachine(), getBrickColumn().getTablePerspective().getID()));
+						.getVendingMachine(), getBrickColumn().getTablePerspective()));
 			}
 
 		}, EPickingType.BRICK.name(), getID());

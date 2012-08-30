@@ -275,8 +275,9 @@ public class GLStratomex
 		initCenterLayout();
 		initRightLayout();
 
-		// mainRow.append(vendingMachine.getLayout());
-
+		if (vendingMachine.isActive())
+			mainRow.append(vendingMachine.getLayout());
+		
 		layoutManager.updateLayout();
 
 		updateConnectionLinesBetweenDimensionGroups();
@@ -308,11 +309,8 @@ public class GLStratomex
 	 */
 	private void initCenterLayout() {
 
-		// if (showArchSides)
 		archSideThickness = viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT;
-		// else
-		// archSideThickness = 0;
-		//
+
 		if (isRightDetailShown || isLeftDetailShown) {
 			archInnerWidth = 0;
 		}
@@ -1198,7 +1196,6 @@ public class GLStratomex
 		return new ArrayList<AGLView>(brickColumnManager.getBrickColumns());
 	}
 
-	// /** Adds the specified data container to the view */
 	@Override
 	public void addTablePerspective(TablePerspective tablePerspective) {
 
@@ -1522,7 +1519,7 @@ public class GLStratomex
 		}
 	}
 
-	public BrickColumnManager getDimensionGroupManager() {
+	public BrickColumnManager getBrickColumnManager() {
 		return brickColumnManager;
 	}
 
@@ -1848,5 +1845,9 @@ public class GLStratomex
 	 */
 	public VendingMachine getVendingMachine() {
 		return vendingMachine;
+	}
+	
+	public Row getLayout() {
+		return mainRow;
 	}
 }
