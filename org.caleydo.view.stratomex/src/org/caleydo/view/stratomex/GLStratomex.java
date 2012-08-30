@@ -260,6 +260,11 @@ public class GLStratomex
 		textRenderer = new CaleydoTextRenderer(24);
 
 		connectionRenderer.init(gl);
+		
+		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
+		mainRow = new Row();
+		layoutManager.setBaseElementLayout(mainRow);
+		
 		initVendingMachine();
 	}
 
@@ -267,10 +272,8 @@ public class GLStratomex
 
 		brickColumnManager.getBrickColumnSpacers().clear();
 
-		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
-		mainRow = new Row();
-		layoutManager.setBaseElementLayout(mainRow);
-
+		mainRow.clear();
+		
 		initLeftLayout();
 		initCenterLayout();
 		initRightLayout();
@@ -515,6 +518,8 @@ public class GLStratomex
 			isDisplayListDirty = false;
 		}
 
+		vendingMachine.processEvents();
+		
 		for (BrickColumn group : brickColumnManager.getBrickColumns()) {
 			group.processEvents();
 		}

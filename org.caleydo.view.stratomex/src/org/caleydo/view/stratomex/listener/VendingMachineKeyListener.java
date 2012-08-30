@@ -1,7 +1,8 @@
-package org.caleydo.view.stratomex.vendingmachine;
+package org.caleydo.view.stratomex.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
+import org.caleydo.view.stratomex.vendingmachine.VendingMachine;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 

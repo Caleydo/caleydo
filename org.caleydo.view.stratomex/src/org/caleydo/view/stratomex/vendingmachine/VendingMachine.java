@@ -30,6 +30,9 @@ import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnGlowRenderer;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
+import org.caleydo.view.stratomex.event.OpenVendingMachineEvent;
+import org.caleydo.view.stratomex.listener.OpenVendingMachineListener;
+import org.caleydo.view.stratomex.listener.VendingMachineKeyListener;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -48,7 +51,7 @@ public class VendingMachine
 
 	public static String VIEW_NAME = "Vending Machine";
 
-	public static int VENDING_MACHINE_PIXEL_WIDTH = 300;
+	public static int VENDING_MACHINE_PIXEL_WIDTH = 320;
 
 	private Column mainRankColumn;
 
@@ -69,6 +72,8 @@ public class VendingMachine
 	private boolean isActive;
 
 	private BrickColumnManager brickColumnManager;
+	
+	private OpenVendingMachineListener openVendingMachineListener;
 
 	/**
 	 * Constructor.
@@ -96,7 +101,7 @@ public class VendingMachine
 		super.renderStyle = renderStyle;
 		detailLevel = EDetailLevel.HIGH;
 
-		textRenderer = new CaleydoTextRenderer(12);
+		textRenderer = new CaleydoTextRenderer(10);
 		highlightRankBackgroundRenderer = new ColorRenderer(new float[] { 1, 1, 0, 1 });
 	}
 
@@ -207,8 +212,6 @@ public class VendingMachine
 				brickColumnManager.getBrickColumn(tablePerspective), brickColumnManager
 						.indexOfBrickColumn(brickColumnManager
 								.getBrickColumn(referenceTablePerspective)) + 1);
-
-		stratomex.getLayout().getLayoutManager().updateLayout();
 	}
 
 	@Override
@@ -234,11 +237,20 @@ public class VendingMachine
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
+		
+		openVendingMachineListener = new OpenVendingMachineListener();
+		openVendingMachineListener.setHandler(this);
+		eventPublisher.addListener(OpenVendingMachineEvent.class, openVendingMachineListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
+		
+		if (openVendingMachineListener != null) {
+			eventPublisher.removeListener(openVendingMachineListener);
+			openVendingMachineListener = null;
+		}
 	}
 
 	@Override
@@ -254,6 +266,8 @@ public class VendingMachine
 
 	public void setTablePerspective(TablePerspective referenceTablePerspective) {
 
+		tablePerspectives.clear();
+		selectedTablePerspectiveIndex = 0;
 		isActive = true;
 		stratomex.getLayout().getLayoutManager().updateLayout();
 
@@ -295,7 +309,9 @@ public class VendingMachine
 		tablePerspectiveToRankElementLayout.get(scoreToTablePerspective.get(0).getSecond())
 				.addBackgroundRenderer(highlightRankBackgroundRenderer);
 
-		stratomex.getLayout().getLayoutManager().updateLayout();
+		//stratomex.initLayouts();
+		stratomex.updateLayout();
+		stratomex.setLayoutDirty();
 	}
 
 	public List<TablePerspective> getTablePerspectives() {
@@ -349,9 +365,20 @@ public class VendingMachine
 
 	public void selectChoice() {
 
-		tablePerspectives.get(selectedTablePerspectiveIndex).setPrivate(false);
-		tablePerspectives.clear();
-		mainRankColumn.setPixelSizeX(0);
+		scoreToTablePerspective.get(selectedTablePerspectiveIndex).getSecond()
+				.setPrivate(false);
+		isActive = false;
+
+		brickColumnManager
+				.getBrickColumn(
+						scoreToTablePerspective.get(selectedTablePerspectiveIndex).getSecond())
+				.getLayout().clearBackgroundRenderers();
+		brickColumnManager.getBrickColumn(referenceTablePerspective).getLayout()
+				.clearBackgroundRenderers();
+
+		stratomex.initLayouts();
+		stratomex.updateLayout();
+		stratomex.setLayoutDirty();
 	}
 
 	@Override

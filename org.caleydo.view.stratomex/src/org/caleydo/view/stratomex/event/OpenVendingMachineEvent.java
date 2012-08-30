@@ -17,26 +17,52 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.brick.contextmenu;
+package org.caleydo.view.stratomex.event;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.view.stratomex.event.OpenVendingMachineEvent;
-import org.caleydo.view.stratomex.vendingmachine.VendingMachine;
+import org.caleydo.core.event.AEvent;
 
 /**
+ * Event for opening the vending machine within Stratomex with a specified
+ * reference table perspective.
+ * 
  * @author Marc Streit
  * 
  */
-public class ScoreColumnItem
-	extends AContextMenuItem {
+public class OpenVendingMachineEvent
+	extends AEvent {
 
-	public ScoreColumnItem(VendingMachine vendingMachine, TablePerspective tablePerspective) {
+	private TablePerspective referenceTablePerspective;
 
-		setLabel("Score column");
+	/**
+	 * Constructor.
+	 * 
+	 * @param referenceTablePerspective TablePerspective to which the scoring
+	 *            will be calculated.
+	 */
+	public OpenVendingMachineEvent(TablePerspective referenceTablePerspective) {
 
-		OpenVendingMachineEvent event = new OpenVendingMachineEvent(tablePerspective);
-		event.setSender(this);
-		registerEvent(event);
+		this.referenceTablePerspective = referenceTablePerspective;
+	}
+
+	@Override
+	public boolean checkIntegrity() {
+		return true;
+	}
+
+	/**
+	 * @param referenceTablePerspective setter, see
+	 *            {@link #referenceTablePerspective}
+	 */
+	public void setReferenceTablePerspective(TablePerspective referenceTablePerspective) {
+		this.referenceTablePerspective = referenceTablePerspective;
+	}
+
+	/**
+	 * @return the referenceTablePerspective, see
+	 *         {@link #referenceTablePerspective}
+	 */
+	public TablePerspective getReferenceTablePerspective() {
+		return referenceTablePerspective;
 	}
 }
