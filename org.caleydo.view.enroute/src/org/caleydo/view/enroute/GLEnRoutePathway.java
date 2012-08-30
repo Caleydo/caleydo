@@ -193,6 +193,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 */
 	private boolean isNewPath = true;
 
+	/**
+	 * Determines whether the linearized path or branch nodes determine the
+	 * total view height.
+	 */
+	private boolean isViewHeightDeterminedByPath = true;
+
 	private EventBasedSelectionManager geneSelectionManager;
 	private EventBasedSelectionManager metaboliteSelectionManager;
 
@@ -540,16 +546,28 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 					minViewHeightRequiredByBranchNodes = minViewHeight;
 				}
 			}
+			int minViewHeightRequiredByPath = pixelGLConverter
+					.getPixelHeightForGLHeight(pathwayHeight);
+			int minViewHeightPixels = 0;
 
-			int minViewHeightPixels = Math.max(minViewHeightRequiredByBranchNodes,
-					pixelGLConverter.getPixelHeightForGLHeight(pathwayHeight));
+			boolean isViewHeightCurrentlyDeterminedByPath;
+			if (minViewHeightRequiredByBranchNodes > minViewHeightRequiredByPath) {
+				minViewHeightPixels = minViewHeightRequiredByBranchNodes;
+				isViewHeightCurrentlyDeterminedByPath = false;
+			} else {
+				minViewHeightPixels = minViewHeightRequiredByPath;
+				isViewHeightCurrentlyDeterminedByPath = true;
+			}
+
 			System.out.println("calculated min height:" + minViewHeightPixels);
 
-			if (isNewPath) {
+			if (isNewPath
+					|| (isViewHeightCurrentlyDeterminedByPath != isViewHeightDeterminedByPath)) {
 				System.out.println("setting min height:" + minViewHeightPixels);
 				setMinSize(minViewHeightPixels + 3);
 				isNewPath = false;
 			}
+			isViewHeightDeterminedByPath = isViewHeightCurrentlyDeterminedByPath;
 		}
 
 		for (ALinearizableNode node : linearizedNodes) {
@@ -786,12 +804,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		float bottomPositionY = nodePositionY - (summaryNode.getHeight() / 2.0f);
 		int minViewHeightPixels = 0;
-		if (viewFrustum.getBottom() > bottomPositionY) {
+//		if (viewFrustum.getBottom() > bottomPositionY) {
 			minViewHeightPixels = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
 					.getBottom() - bottomPositionY)
 					+ parentGLCanvas.getHeight();
-			setMinSize(minViewHeightPixels + 3);
-		}
+//			setMinSize(minViewHeightPixels + 3);
+//		}
 
 		return minViewHeightPixels;
 
