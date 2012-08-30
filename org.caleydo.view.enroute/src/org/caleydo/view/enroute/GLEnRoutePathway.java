@@ -481,6 +481,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		GLU glu = new GLU();
 		float pathwayHeight = 0;
+		int minViewHeightRequiredByBranchNodes = 0;
 		if (isLayoutDirty) {
 
 			List<AnchorNodeSpacing> anchorNodeSpacings = calcAnchorNodeSpacings();
@@ -490,8 +491,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 			float minNodeSpacing = pixelGLConverter
 					.getGLHeightForPixelHeight(MIN_NODE_SPACING_PIXELS);
-
-			int minViewHeightRequiredByBranchNodes = 0;
 
 			for (AnchorNodeSpacing spacing : anchorNodeSpacings) {
 
@@ -546,10 +545,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 					minViewHeightRequiredByBranchNodes = minViewHeight;
 				}
 			}
-			int minViewHeightRequiredByPath = pixelGLConverter
-					.getPixelHeightForGLHeight(pathwayHeight);
 
-			adaptViewSize(minViewHeightRequiredByPath, minViewHeightRequiredByBranchNodes);
 		}
 
 		for (ALinearizableNode node : linearizedNodes) {
@@ -573,14 +569,24 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		}
 
 		float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
-
 		float topSpacing = pixelGLConverter
 				.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
+		float sideSpacing = pixelGLConverter
+				.getGLHeightForPixelHeight(SIDE_SPACING_MAPPED_DATA);
 
-		setMappedDataRendererGeometry();
+		mappedDataRenderer.setGeometry(viewFrustum.getWidth() - dataRowPositionX
+				- sideSpacing, viewFrustum.getHeight() - 2 * topSpacing,
+				dataRowPositionX, topSpacing, dataRowHeight);
 
 		if (isLayoutDirty) {
 			mappedDataRenderer.setLinearizedNodes(linearizedNodes);
+			int minMappedDataRendererWidthPixels = mappedDataRenderer.getMinWidthPixels();
+			int minViewHeightRequiredByPath = pixelGLConverter
+					.getPixelHeightForGLHeight(pathwayHeight);
+
+			adaptViewSize(minMappedDataRendererWidthPixels + BRANCH_COLUMN_WIDTH_PIXELS
+					+ PATHWAY_COLUMN_WIDTH_PIXELS + SIDE_SPACING_MAPPED_DATA,
+					minViewHeightRequiredByPath, minViewHeightRequiredByBranchNodes);
 		}
 
 		gl.glPushMatrix();
@@ -598,13 +604,15 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 * Adapts the view height to the maximum of the specified minimum view
 	 * heights, if necessary.
 	 * 
+	 * @param minViewWidth
+	 *            Minimum width required.
 	 * @param minViewHeightRequiredByPath
 	 *            View height in pixels required by the linearized path and its
 	 *            rows.
 	 * @param minViewHeightRequiredByBranchNodes
 	 *            View height in pixels required by branch nodes.
 	 */
-	private void adaptViewSize(int minViewHeightRequiredByPath,
+	private void adaptViewSize(int minViewWidth, int minViewHeightRequiredByPath,
 			int minViewHeightRequiredByBranchNodes) {
 		int minViewHeightPixels = 0;
 
@@ -616,23 +624,34 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			minViewHeightPixels = minViewHeightRequiredByPath;
 			isViewHeightCurrentlyDeterminedByPath = true;
 		}
-
-		// System.out.println("calculated min height:" + minViewHeightPixels);
+//		System.out.println("min width: " + minViewWidth + ", currentWidth: "
+//				+ parentGLCanvas.getWidth());
+		boolean updateWidth = minViewWidth > parentGLCanvas.getWidth();
+		boolean updateHeight = false;
 
 		if (isNewPath
 				|| (isViewHeightCurrentlyDeterminedByPath != isViewHeightDeterminedByPath)
 				|| parentGLCanvas.getHeight() < minViewHeightPixels) {
 			// System.out.println("setting min height:" + minViewHeightPixels);
-			setMinSize(minViewHeightPixels + 3);
 			isNewPath = false;
+			updateHeight = true;
 		}
 		isViewHeightDeterminedByPath = isViewHeightCurrentlyDeterminedByPath;
+
+		if (updateWidth || updateHeight) {
+
+//			System.out.println("setting min width:" + minViewWidth);
+
+			setMinViewSize(updateWidth ? minViewWidth + 3 : BRANCH_COLUMN_WIDTH_PIXELS
+					+ PATHWAY_COLUMN_WIDTH_PIXELS + DATA_COLUMN_WIDTH_PIXELS,
+					minViewHeightPixels + 3);
+		}
+
 	}
 
-	private void setMinSize(int minHeightPixels) {
+	private void setMinViewSize(int minWidthPixels, int minHeightPixels) {
 		SetMinViewSizeEvent event = new SetMinViewSizeEvent();
-		event.setMinViewSize(BRANCH_COLUMN_WIDTH_PIXELS + PATHWAY_COLUMN_WIDTH_PIXELS
-				+ DATA_COLUMN_WIDTH_PIXELS, minHeightPixels);
+		event.setMinViewSize(minWidthPixels, minHeightPixels);
 		event.setView(this);
 		eventPublisher.triggerEvent(event);
 		// System.out.println("minsize: " + minHeightPixels);
@@ -1138,22 +1157,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		// setMinSize(0);
 		isNewPath = true;
 		setLayoutDirty();
-
-	}
-
-	private void setMappedDataRendererGeometry() {
-
-		float topSpacing = pixelGLConverter
-				.getGLHeightForPixelHeight(TOP_SPACING_MAPPED_DATA);
-		float branchColumnWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
-		float pathwayColumnWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
-		float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
-
-		mappedDataRenderer.setGeometry(viewFrustum.getWidth() - dataRowPositionX
-				- topSpacing, viewFrustum.getHeight() - 2 * topSpacing, dataRowPositionX,
-				topSpacing, dataRowHeight);
 
 	}
 

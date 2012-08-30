@@ -38,6 +38,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
@@ -77,7 +78,13 @@ public class MappedDataRenderer {
 	public static final SelectionType abstractGroupType = new SelectionType(
 			"AbstactGroup", new int[] { 0, 0, 0 }, 1, false, false, 0);
 
-	public static int ABSTRACT_GROUP_PIXEL_SIZE = 100;
+	public static final int ABSTRACT_GROUP_PIXEL_WIDTH = 100;
+
+	public static final int MIN_SAMPLE_PIXEL_WIDTH = 2;
+
+	public static final int CAPTION_COLUMN_PIXEL_WIDTH = 100;
+
+	public static final int SPACING_PIXEL_WIDTH = 1;
 
 	private GLEnRoutePathway parentView;
 
@@ -119,6 +126,12 @@ public class MappedDataRenderer {
 	private float yOffset = 0;
 
 	private float rowHeight;
+
+	/**
+	 * Specifies the minimum width required by this mapped data renderer for
+	 * display.
+	 */
+	private int minWidthPixels = 0;
 
 	private LayoutManager layoutManger;
 	private ViewFrustum viewFrustum;
@@ -231,14 +244,16 @@ public class MappedDataRenderer {
 		Row baseRow = new Row("baseRow");
 		layoutManger.setBaseElementLayout(baseRow);
 
+		// baseRow.setDebug(true);
 		Column dataSetColumn = new Column("dataSetColumn");
 		dataSetColumn.setBottomUp(false);
 		// dataSetColumn.setDebug(true);
 		baseRow.append(dataSetColumn);
 		Column captionColumn = new Column("captionColumn");
 		captionColumn.setBottomUp(false);
+		// captionColumn.setDebug(true);
 
-		captionColumn.setPixelSizeX(100);
+		captionColumn.setPixelSizeX(CAPTION_COLUMN_PIXEL_WIDTH);
 		ElementLayout columnCaptionSpacing = new ElementLayout();
 		columnCaptionSpacing.setPixelSizeY(50);
 		captionColumn.append(columnCaptionSpacing);
@@ -265,7 +280,7 @@ public class MappedDataRenderer {
 		ArrayList<Integer> davidIDs = new ArrayList<Integer>(linearizedNodes.size() * 2);
 
 		ElementLayout xSpacing = new ElementLayout();
-		xSpacing.setPixelSizeX(1);
+		xSpacing.setPixelSizeX(SPACING_PIXEL_WIDTH);
 
 		ArrayList<ALinearizableNode> resolvedNodes = new ArrayList<ALinearizableNode>();
 
@@ -418,7 +433,46 @@ public class MappedDataRenderer {
 					rowListForTablePerspectives.get(tablePerspectiveCount),
 					topCaptionLayout, bottomCaptionLayout, davidIDs);
 		}
+		calcMinWidthPixels();
+		
+		PixelGLConverter pixelGLConverter = parentView.getPixelGLConverter();
+		float minWidth = pixelGLConverter.getGLWidthForPixelWidth(minWidthPixels);
+		if(viewFrustum.getWidth() < minWidth) {
+			viewFrustum.setRight(minWidth);
+		}
+	}
 
+	private void calcMinWidthPixels() {
+
+		minWidthPixels = 0;
+
+		// Calculate content specific width
+		for (int i = 0; i < usedTablePerspectives.size(); i++) {
+
+			TablePerspective tablePerspective = usedTablePerspectives.get(i);
+			AVariablePerspective<?, ?, ?, ?> experimentPerspective;
+			GeneticDataDomain dataDomain = (GeneticDataDomain) tablePerspective
+					.getDataDomain();
+			Group group = null;
+
+			if (dataDomain.isGeneRecord()) {
+				experimentPerspective = tablePerspective.getDimensionPerspective();
+				group = tablePerspective.getDimensionGroup();
+			} else {
+				experimentPerspective = tablePerspective.getRecordPerspective();
+				group = tablePerspective.getRecordGroup();
+			}
+
+			if (sampleGroupSelectionManager.checkStatus(abstractGroupType, group.getID())) {
+				minWidthPixels += ABSTRACT_GROUP_PIXEL_WIDTH;
+			} else {
+				minWidthPixels += experimentPerspective.getVirtualArray().size()
+						* MIN_SAMPLE_PIXEL_WIDTH;
+			}
+		}
+
+		minWidthPixels += (usedTablePerspectives.size() - 1) * SPACING_PIXEL_WIDTH;
+		minWidthPixels += CAPTION_COLUMN_PIXEL_WIDTH;
 	}
 
 	/** Fills the layout with data specific for the data containers */
@@ -482,9 +536,9 @@ public class MappedDataRenderer {
 			ElementLayout tablePerspectiveLayout = rowLayouts.get(rowCount);
 
 			if (sampleGroupSelectionManager.checkStatus(abstractGroupType, group.getID())) {
-				tablePerspectiveLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_SIZE);
-				bottomCaptionLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_SIZE);
-				topCaptionLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_SIZE);
+				tablePerspectiveLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_WIDTH);
+				bottomCaptionLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_WIDTH);
+				topCaptionLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_WIDTH);
 			} else {
 				// float width = 1.0f / usedTablePerspectives.size();
 				// tablePerspectiveLayout.setRatioSizeX(0.2);
@@ -686,6 +740,13 @@ public class MappedDataRenderer {
 	 */
 	public ArrayList<TablePerspective> getResolvedTablePerspectives() {
 		return resolvedTablePerspectives;
+	}
+
+	/**
+	 * @return the minWidthPixels, see {@link #minWidthPixels}
+	 */
+	public int getMinWidthPixels() {
+		return minWidthPixels;
 	}
 
 }
