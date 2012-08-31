@@ -37,7 +37,8 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * <p>
- * A view that renders a stacked list of VisBricks views.
+ * The vending machine for stratification and cluster comparisons using scoring
+ * approach.
  * </p>
  * 
  * @author Marc Streit
@@ -72,7 +73,7 @@ public class VendingMachine
 	private boolean isActive;
 
 	private BrickColumnManager brickColumnManager;
-	
+
 	private OpenVendingMachineListener openVendingMachineListener;
 
 	/**
@@ -237,7 +238,7 @@ public class VendingMachine
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-		
+
 		openVendingMachineListener = new OpenVendingMachineListener();
 		openVendingMachineListener.setHandler(this);
 		eventPublisher.addListener(OpenVendingMachineEvent.class, openVendingMachineListener);
@@ -246,7 +247,7 @@ public class VendingMachine
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
-		
+
 		if (openVendingMachineListener != null) {
 			eventPublisher.removeListener(openVendingMachineListener);
 			openVendingMachineListener = null;
@@ -309,7 +310,6 @@ public class VendingMachine
 		tablePerspectiveToRankElementLayout.get(scoreToTablePerspective.get(0).getSecond())
 				.addBackgroundRenderer(highlightRankBackgroundRenderer);
 
-		//stratomex.initLayouts();
 		stratomex.updateLayout();
 		stratomex.setLayoutDirty();
 	}
@@ -376,7 +376,6 @@ public class VendingMachine
 		brickColumnManager.getBrickColumn(referenceTablePerspective).getLayout()
 				.clearBackgroundRenderers();
 
-		stratomex.initLayouts();
 		stratomex.updateLayout();
 		stratomex.setLayoutDirty();
 	}
@@ -403,5 +402,12 @@ public class VendingMachine
 	 */
 	public boolean isActive() {
 		return isActive;
+	}
+
+	public void updatLayout() {
+		if (isActive)
+			mainRankColumn.setPixelSizeX(300);
+		else
+			mainRankColumn.setAbsoluteSizeX(0);
 	}
 }

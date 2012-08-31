@@ -278,7 +278,7 @@ public class GLStratomex
 		initCenterLayout();
 		initRightLayout();
 
-		if (vendingMachine.isActive())
+//		if (vendingMachine.isActive())
 			mainRow.append(vendingMachine.getLayout());
 		
 		layoutManager.updateLayout();
@@ -527,6 +527,9 @@ public class GLStratomex
 		handleHorizontalColumnMove(gl);
 		if (isLayoutDirty) {
 			isLayoutDirty = false;
+			
+			vendingMachine.updatLayout();
+			
 			layoutManager.updateLayout();
 			float minWidth = pixelGLConverter
 					.getGLWidthForPixelWidth(BRICK_COLUMN_SPACING_MIN_PIXEL_WIDTH);
