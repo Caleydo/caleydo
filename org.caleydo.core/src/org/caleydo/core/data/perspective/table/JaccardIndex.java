@@ -26,7 +26,6 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
-import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Jaccard index for comparing individual clusters. See:
@@ -37,7 +36,7 @@ import org.caleydo.core.manager.GeneralManager;
 public class JaccardIndex {
 
 	/**
-	 * The data container to which the score belongs to.
+	 * The table perspective to which the score belongs to.
 	 */
 	TablePerspective referenceTablePerspective;
 
@@ -49,7 +48,7 @@ public class JaccardIndex {
 
 	/**
 	 * 
-	 * @param tablePerspective The data container to compare
+	 * @param tablePerspective The table perspective to compare
 	 * @return the calculation result
 	 */
 	public HashMap<Group, HashMap<Group, Float>> getScore(TablePerspective tablePerspective,

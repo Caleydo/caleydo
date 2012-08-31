@@ -79,6 +79,7 @@ import org.caleydo.view.stratomex.brick.contextmenu.CreatePathwaySmallMultiplesG
 import org.caleydo.view.stratomex.brick.contextmenu.RemoveColumnItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RenameBrickItem;
 import org.caleydo.view.stratomex.brick.contextmenu.ScoreColumnItem;
+import org.caleydo.view.stratomex.brick.contextmenu.ScoreGroupItem;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.stratomex.brick.layout.CollapsedBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.CompactHeaderBrickLayoutTemplate;
@@ -829,6 +830,7 @@ public class GLBrick
 			@Override
 			public void rightClicked(Pick pick) {
 
+				// Differentiate between cases where user selects header brick or a brick
 				if (brickColumn.getTablePerspective() == tablePerspective) {
 
 					if (dataDomain instanceof GeneticDataDomain
@@ -844,11 +846,15 @@ public class GLBrick
 									brickColumn.getTablePerspective(), brickColumn
 											.getTablePerspective().getDimensionPerspective()));
 				}
-				else
+				else {
 					contextMenuCreator.addContextMenuItem(new CreatePathwayGroupFromDataItem(
 							dataDomain, tablePerspective.getRecordPerspective()
 									.getVirtualArray(), brickColumn.getTablePerspective()
 									.getDimensionPerspective()));
+					
+					contextMenuCreator.addContextMenuItem(new ScoreGroupItem(stratomex
+							.getVendingMachine(), brickColumn.getTablePerspective(), tablePerspective));
+				}
 
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
 

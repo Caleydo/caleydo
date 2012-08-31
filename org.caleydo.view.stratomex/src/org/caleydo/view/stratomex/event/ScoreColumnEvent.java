@@ -29,7 +29,7 @@ import org.caleydo.core.event.AEvent;
  * @author Marc Streit
  * 
  */
-public class OpenVendingMachineEvent
+public class ScoreColumnEvent
 	extends AEvent {
 
 	private TablePerspective referenceTablePerspective;
@@ -40,7 +40,7 @@ public class OpenVendingMachineEvent
 	 * @param referenceTablePerspective TablePerspective to which the scoring
 	 *            will be calculated.
 	 */
-	public OpenVendingMachineEvent(TablePerspective referenceTablePerspective) {
+	public ScoreColumnEvent(TablePerspective referenceTablePerspective) {
 
 		this.referenceTablePerspective = referenceTablePerspective;
 	}

@@ -21,25 +21,25 @@ package org.caleydo.view.stratomex.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.view.stratomex.event.OpenVendingMachineEvent;
+import org.caleydo.view.stratomex.event.ScoreColumnEvent;
 import org.caleydo.view.stratomex.vendingmachine.VendingMachine;
 
 /**
  * Listener for the event
- * {@link OpenVendingMachineEvent}.
+ * {@link ScoreGroupEvent}.
  * 
  * @author Marc Streit
  * 
  */
-public class OpenVendingMachineListener extends
+public class ScoreColumnListener extends
 		AEventListener<VendingMachine> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if (event instanceof OpenVendingMachineEvent) {
+		if (event instanceof ScoreColumnEvent) {
 
-			OpenVendingMachineEvent openVendingMachineEvent = (OpenVendingMachineEvent) event;
-			handler.setTablePerspective(openVendingMachineEvent.getReferenceTablePerspective());
+			ScoreColumnEvent scoreColumnEvent = (ScoreColumnEvent) event;
+			handler.setColumnTablePerspective(scoreColumnEvent.getReferenceTablePerspective());
 		}
 	}
 }

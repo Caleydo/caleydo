@@ -30,8 +30,10 @@ import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnGlowRenderer;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
-import org.caleydo.view.stratomex.event.OpenVendingMachineEvent;
-import org.caleydo.view.stratomex.listener.OpenVendingMachineListener;
+import org.caleydo.view.stratomex.event.ScoreColumnEvent;
+import org.caleydo.view.stratomex.event.ScoreGroupEvent;
+import org.caleydo.view.stratomex.listener.ScoreColumnListener;
+import org.caleydo.view.stratomex.listener.ScoreGroupListener;
 import org.caleydo.view.stratomex.listener.VendingMachineKeyListener;
 import org.eclipse.swt.widgets.Composite;
 
@@ -74,7 +76,11 @@ public class VendingMachine
 
 	private BrickColumnManager brickColumnManager;
 
-	private OpenVendingMachineListener openVendingMachineListener;
+	private BrickColumn referenceBrickColumn;
+
+	private ScoreColumnListener scoreColumnListener;
+
+	private ScoreGroupListener scoreGroupListener;
 
 	/**
 	 * Constructor.
@@ -239,18 +245,27 @@ public class VendingMachine
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		openVendingMachineListener = new OpenVendingMachineListener();
-		openVendingMachineListener.setHandler(this);
-		eventPublisher.addListener(OpenVendingMachineEvent.class, openVendingMachineListener);
+		scoreColumnListener = new ScoreColumnListener();
+		scoreColumnListener.setHandler(this);
+		eventPublisher.addListener(ScoreColumnEvent.class, scoreColumnListener);
+
+		scoreGroupListener = new ScoreGroupListener();
+		scoreGroupListener.setHandler(this);
+		eventPublisher.addListener(ScoreGroupEvent.class, scoreGroupListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
-		if (openVendingMachineListener != null) {
-			eventPublisher.removeListener(openVendingMachineListener);
-			openVendingMachineListener = null;
+		if (scoreColumnListener != null) {
+			eventPublisher.removeListener(scoreColumnListener);
+			scoreColumnListener = null;
+		}
+
+		if (scoreGroupListener != null) {
+			eventPublisher.removeListener(scoreGroupListener);
+			scoreGroupListener = null;
 		}
 	}
 
@@ -265,6 +280,20 @@ public class VendingMachine
 		return null;
 	}
 
+	public void setColumnTablePerspective(TablePerspective referenceTablePerspective) {
+
+		referenceBrickColumn = brickColumnManager.getBrickColumn(referenceTablePerspective);
+		setTablePerspective(referenceTablePerspective);
+	}
+
+	public void setGroupTablePerspective(TablePerspective referenceColumnTablePerspective,
+			TablePerspective referenceGroupTablePerspective) {
+
+		referenceBrickColumn = brickColumnManager
+				.getBrickColumn(referenceColumnTablePerspective);
+		setTablePerspective(referenceGroupTablePerspective);
+	}
+
 	public void setTablePerspective(TablePerspective referenceTablePerspective) {
 
 		tablePerspectives.clear();
@@ -275,9 +304,9 @@ public class VendingMachine
 		this.referenceTablePerspective = referenceTablePerspective;
 
 		// Highlight reference table
-		BrickColumn brickColumn = brickColumnManager.getBrickColumn(referenceTablePerspective);
-		brickColumn.getLayout().addBackgroundRenderer(
-				new BrickColumnGlowRenderer(new float[] { 1, 0, 0 }, brickColumn, false));
+		referenceBrickColumn.getLayout().addBackgroundRenderer(
+				new BrickColumnGlowRenderer(new float[] { 1, 0, 0 }, referenceBrickColumn,
+						false));
 
 		ATableBasedDataDomain dataDomain = referenceTablePerspective.getDataDomain();
 
