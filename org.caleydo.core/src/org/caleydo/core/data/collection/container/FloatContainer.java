@@ -21,6 +21,8 @@ package org.caleydo.core.data.collection.container;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.conversion.ConversionTools;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.Status;
 
 /**
  * A container for floats. Initialized with a float array. The length can not be
@@ -28,8 +30,7 @@ import org.caleydo.core.util.conversion.ConversionTools;
  * 
  * @author Alexander Lex
  */
-public class FloatContainer
-	implements INumericalContainer {
+public class FloatContainer implements INumericalContainer {
 
 	private float[] container;
 
@@ -41,7 +42,8 @@ public class FloatContainer
 	 * Constructor Pass a float array. The length of the array can not be
 	 * modified after initialization
 	 * 
-	 * @param container the float array
+	 * @param container
+	 *            the float array
 	 */
 	public FloatContainer(final float[] container) {
 
@@ -56,8 +58,10 @@ public class FloatContainer
 	/**
 	 * Returns the value associated with the index
 	 * 
-	 * @throws IndexOutOfBoundsException if index out of range
-	 * @param index index of element to return
+	 * @throws IndexOutOfBoundsException
+	 *             if index out of range
+	 * @param index
+	 *            index of element to return
 	 * @return the element at the specified position in this list
 	 */
 	public float get(final int index) {
@@ -158,11 +162,19 @@ public class FloatContainer
 	private void calculateMinMax() {
 		min = Float.MAX_VALUE;
 		max = Float.MIN_VALUE;
+		int counter = -1;
 		for (float current : container) {
+			counter++;
 			if (Float.isNaN(current)) {
 				continue;
 			}
 
+			if (Float.isInfinite(current)) {
+				Logger.log(new Status(Status.WARNING, this.toString(),
+						"Value for normalization was infinity at index " + counter + ": "
+								+ current));
+				continue;
+			}
 			if (current < min) {
 				min = current;
 				continue;

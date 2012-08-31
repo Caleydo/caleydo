@@ -295,11 +295,11 @@ public class TabularDataParser extends ATextParser {
 					ArrayList<String> targetColumn = (ArrayList<String>) targetColumns
 							.get(count);
 					targetColumn.add(splitLine[column.getColumn()]);
-				}
-				if (lineCounter % 100 == 0) {
-					swtGuiManager
-							.setProgressBarPercentage((int) (progressBarFactor * lineCounter));
-				}
+				}				
+			}
+			if (lineCounter % 100 == 0) {
+				swtGuiManager
+						.setProgressBarPercentage((int) (progressBarFactor * lineCounter));
 			}
 			lineCounter++;
 		}
