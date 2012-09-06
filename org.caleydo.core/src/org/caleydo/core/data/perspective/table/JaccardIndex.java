@@ -40,7 +40,7 @@ public class JaccardIndex {
 	 */
 	TablePerspective referenceTablePerspective;
 
-	HashMap<TablePerspective, HashMap<Group, HashMap<Group, Float>>> tablePerspectiveToScore = new HashMap<TablePerspective, HashMap<Group, HashMap<Group, Float>>>();
+	HashMap<TablePerspective, HashMap<TablePerspective, Float>> tablePerspectiveToScore = new HashMap<TablePerspective, HashMap<TablePerspective, Float>>();
 
 	public JaccardIndex(TablePerspective referenceTablePerspective) {
 		this.referenceTablePerspective = referenceTablePerspective;
@@ -51,7 +51,7 @@ public class JaccardIndex {
 	 * @param tablePerspective The table perspective to compare
 	 * @return the calculation result
 	 */
-	public HashMap<Group, HashMap<Group, Float>> getScore(TablePerspective tablePerspective,
+	public HashMap<TablePerspective, Float> getScore(TablePerspective tablePerspective,
 			boolean storeResult) {
 
 		// check if calculation result is already available
@@ -60,89 +60,94 @@ public class JaccardIndex {
 
 		long startTime = System.currentTimeMillis();
 
-		RecordVirtualArray va1 = tablePerspective.getRecordPerspective().getVirtualArray();
-		RecordVirtualArray va2 = referenceTablePerspective.getRecordPerspective()
+		RecordVirtualArray referenceVA = referenceTablePerspective.getRecordPerspective()
 				.getVirtualArray();
+		RecordVirtualArray va = tablePerspective.getRecordPerspective().getVirtualArray();
 
-		HashMap<Group, HashMap<Group, Float>> groupToSubGroup = new HashMap<Group, HashMap<Group, Float>>();
-		tablePerspectiveToScore.put(tablePerspective, groupToSubGroup);
+		HashMap<TablePerspective, Float> subTablePerspetiveToScore = new HashMap<TablePerspective, Float>();
+		tablePerspectiveToScore.put(tablePerspective, subTablePerspetiveToScore);
 
 		// System.out.println("group list 1: "+ va1.getGroupList());
 		// System.out.println("group list 2: "+ va2.getGroupList());
 
 		// System.out.println("Size left table " +va1.size());
 		Set<Integer> unionCounter = new HashSet<Integer>();
-		for (Group group : va1.getGroupList()) {
+		Group referenceGroup = referenceTablePerspective.getRecordGroup();
 
-			HashMap<Group, Float> subGroupToScore = new HashMap<Group, Float>();
-			groupToSubGroup.put(group, subGroupToScore);
-			
-			for (Group group2 : va2.getGroupList()) {
+		for (TablePerspective subTablePerspective : tablePerspective
+				.getRecordSubTablePerspectives()) {
 
-				int intersectionCount = 0;
+			int intersectionCount = 0;
 
-				//System.out.println("Group1: " + (group.getEndIndex() - group.getStartIndex()));
+			// System.out.println("Group1: " + (group.getEndIndex() -
+			// group.getStartIndex()));
 
-//				System.out.println("Group2: "
-//						+ (group2.getEndIndex() - group2.getStartIndex()));
+			// System.out.println("Group2: "
+			// + (group2.getEndIndex() - group2.getStartIndex()));
 
-				for (int vaIndex = group.getStartIndex(); vaIndex < group.getEndIndex(); vaIndex++) {
+			Group subGroup = subTablePerspective.getRecordGroup();
 
-					int id = va1.get(vaIndex);
-					unionCounter.add(id);
+			for (int vaIndex = 0; vaIndex < referenceGroup.getSize(); vaIndex++) {
 
-					for (int vaIndex2 = group2.getStartIndex(); vaIndex2 < group2
-							.getEndIndex(); vaIndex2++) {
+				int id = referenceVA.get(vaIndex);
+				unionCounter.add(id);
 
-						int id2 = va2.get(vaIndex2);
+				for (int vaIndex2 = subGroup.getStartIndex(); vaIndex2 < subGroup
+						.getEndIndex(); vaIndex2++) {
+
+					int id2 = 0;
+					try {
+						id2 = va.get(vaIndex2);
 						unionCounter.add(id2);
+					}
+					catch (Exception e) {
+						System.out.println("BLA");
+					}
 
-						if (va1.getIdType() != va2.getIdType()) {
-							IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
-									.getIDMappingManager(va1.getIdType().getIDCategory());
-							Set<Integer> ids = idMappingManager.getIDAsSet(va2.getIdType(),
-									va1.getIdType(), id2);
+					if (referenceVA.getIdType() != va.getIdType()) {
+						IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
+								.getIDMappingManager(referenceVA.getIdType().getIDCategory());
+						Set<Integer> ids = idMappingManager.getIDAsSet(va.getIdType(),
+								referenceVA.getIdType(), id2);
 
-							if (ids != null) {
-								id2 = ids.iterator().next();
-								if (ids.size() > 2) {
-									System.out.println("Multi-Mapping");
-								}
+						if (ids != null) {
+							id2 = ids.iterator().next();
+							if (ids.size() > 2) {
+								System.out.println("Multi-Mapping");
 							}
 						}
+					}
 
-						if (id == id2) {
-							intersectionCount++;
-							continue;
-						}
+					if (id == id2) {
+						intersectionCount++;
+						continue;
 					}
 				}
-
-				int unionCount = unionCounter.size();
-//				System.out.println("Union count: " + unionCount);
-//				System.out.println("Intersection count: " + intersectionCount);
-
-				float jaccardIndex = 0;
-				if (unionCount > 0)
-					jaccardIndex = (float) intersectionCount
-							/ unionCount;
-				
-
-//				System.out.println("Jaccard index: " + jaccardIndex);
-				
-				subGroupToScore.put(group2, jaccardIndex);
-
-				unionCounter.clear();
 			}
+
+			int unionCount = unionCounter.size();
+			// System.out.println("Union count: " + unionCount);
+			// System.out.println("Intersection count: " +
+			// intersectionCount);
+
+			float jaccardIndex = 0;
+			if (unionCount > 0)
+				jaccardIndex = (float) intersectionCount / unionCount;
+
+			// System.out.println("Jaccard index: " + jaccardIndex);
+
+			subTablePerspetiveToScore.put(subTablePerspective, jaccardIndex);
+
+			unionCounter.clear();
 		}
 
 		long endTime = System.currentTimeMillis();
 		System.out.println("Calculation took " + (endTime - startTime) + "ms");
 
 		if (storeResult) {
-			tablePerspectiveToScore.put(tablePerspective, groupToSubGroup);
+			tablePerspectiveToScore.put(tablePerspective, subTablePerspetiveToScore);
 		}
 
-		return groupToSubGroup;
+		return subTablePerspetiveToScore;
 	}
 }

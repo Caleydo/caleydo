@@ -288,7 +288,7 @@ public class RStatisticsPerformer
 	/**
 	 * <p>
 	 * Computation of fold change between two data containers. Implemented to
-	 * imitate R behaviour:
+	 * imitate R behavior:
 	 * </p>
 	 * <p>
 	 * Fold changes are commonly used in the biological sciences as a mechanism

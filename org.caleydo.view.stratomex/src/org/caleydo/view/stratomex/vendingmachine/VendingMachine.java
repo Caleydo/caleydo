@@ -1,3 +1,22 @@
+/*******************************************************************************
+ * Caleydo - visualization for molecular biology - http://caleydo.org
+ * 
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
+ * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * 
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>
+ *******************************************************************************/
 package org.caleydo.view.stratomex.vendingmachine;
 
 import java.math.BigDecimal;
@@ -14,7 +33,6 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -62,13 +80,13 @@ public class VendingMachine
 
 	private List<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>();
 
-	private HashMap<TablePerspective, ElementLayout> tablePerspectiveToRankElementLayout = new HashMap<TablePerspective, ElementLayout>();
+	private HashMap<RankedElement, ElementLayout> rankedElementToElementLayout = new HashMap<RankedElement, ElementLayout>();
 
 	private int selectedTablePerspectiveIndex = 0;
 
 	private ColorRenderer highlightRankBackgroundRenderer;
 
-	private List<Pair<Float, TablePerspective>> scoreToTablePerspective;
+	private List<RankedElement> rankedElements;
 
 	private GLStratomex stratomex;
 
@@ -166,51 +184,69 @@ public class VendingMachine
 		mainRankColumn.updateSubLayout();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void createRankedStratomexViews() {
 
 		mainRankColumn.clear();
-		tablePerspectiveToRankElementLayout.clear();
+		rankedElementToElementLayout.clear();
 
 		// Trigger ranking of data containers
-		scoreToTablePerspective = new ArrayList<Pair<Float, TablePerspective>>();
+		rankedElements = new ArrayList<RankedElement>();
 		for (TablePerspective scoredTablePerspective : tablePerspectives) {
 
-			float score = scoredTablePerspective.getContainerStatistics()
-					.getAdjustedRandIndex().getScore(referenceTablePerspective, true);
+			// Check if we compare whole stratifications or only single groups
+			if (referenceTablePerspective.getRecordSubTablePerspectives().size() > 1) {
+				float score = scoredTablePerspective.getContainerStatistics()
+						.getAdjustedRandIndex().getScore(referenceTablePerspective, true);
 
-			scoreToTablePerspective.add(new Pair(score, scoredTablePerspective));
+				RankedElement rankedElement = new RankedElement(score, scoredTablePerspective,
+						null);
+				rankedElements.add(rankedElement);
+			}
+			else {
+				HashMap<TablePerspective, Float> subTablePerspectiveToScore = referenceTablePerspective
+						.getContainerStatistics().getJaccardIndex()
+						.getScore(scoredTablePerspective, true);
+
+				for (TablePerspective subTablePerspective : subTablePerspectiveToScore
+						.keySet()) {
+
+					RankedElement rankedElement = new RankedElement(
+							subTablePerspectiveToScore.get(subTablePerspective),
+							scoredTablePerspective, subTablePerspective);
+					rankedElements.add(rankedElement);
+				}
+			}
 		}
 
-		Collections.sort(scoreToTablePerspective);
-		Collections.reverse(scoreToTablePerspective);
+		Collections.sort(rankedElements);
+		// Collections.reverse(rankedElements);
 
 		int rank = 0;
 
-		for (Pair<Float, TablePerspective> score2TablePerspective : scoreToTablePerspective) {
+		for (RankedElement rankedElement : rankedElements) {
 
-			TablePerspective tablePerspective = score2TablePerspective.getSecond();
-
-			BigDecimal bd = new BigDecimal(score2TablePerspective.getFirst()).setScale(2,
+			BigDecimal bd = new BigDecimal(rankedElement.getScore()).setScale(2,
 					RoundingMode.HALF_EVEN);
 			float score = bd.floatValue();
 
-			Row rankElementLayout = new Row("rankElementLayout");
-			rankElementLayout.setGrabX(true);
-			rankElementLayout.setPixelSizeY(30);
+			Row rankedElementLayout = new Row("rankElementLayout");
+			rankedElementLayout.setGrabX(true);
+			rankedElementLayout.setPixelSizeY(30);
 			RankNumberRenderer rankNumberRenderer = new RankNumberRenderer("[" + (++rank)
-					+ ".] " + score + " " + tablePerspective.getLabel(), getTextRenderer());
-			rankElementLayout.setRenderer(rankNumberRenderer);
+					+ ".] " + score + " "
+					+ rankedElement.getColumnTablePerspective().getLabel() + " - "
+					+ rankedElement.getGroupTablePerspective().getLabel(), getTextRenderer());
+			rankedElementLayout.setRenderer(rankNumberRenderer);
 
-			tablePerspectiveToRankElementLayout.put(tablePerspective, rankElementLayout);
+			rankedElementToElementLayout.put(rankedElement, rankedElementLayout);
 
-			mainRankColumn.append(rankElementLayout);
+			mainRankColumn.append(rankedElementLayout);
 		}
 
 		// Add first ranked table perspective as the currently selected one to
 		// stratomex
-		TablePerspective tablePerspective = scoreToTablePerspective.get(
-				selectedTablePerspectiveIndex).getSecond();
+		TablePerspective tablePerspective = rankedElements.get(selectedTablePerspectiveIndex)
+				.getColumnTablePerspective();
 		addTablePerspectiveToStratomex(tablePerspective);
 
 		// Move newly added table perspective to be right of the reference table
@@ -310,13 +346,9 @@ public class VendingMachine
 
 		ATableBasedDataDomain dataDomain = referenceTablePerspective.getDataDomain();
 
-		tablePerspectives.clear();
-
 		Set<String> rowIDs = dataDomain.getRecordPerspectiveIDs();
 
-		int count = 0;
 		for (String id : rowIDs) {
-			count++;
 			RecordPerspective perspective = dataDomain.getTable().getRecordPerspective(id);
 			if (perspective.isPrivate()) {
 				continue;
@@ -327,7 +359,8 @@ public class VendingMachine
 			newTablePerspective.setPrivate(true);
 
 			// Do not add the current reference table perspectives to scoring
-			if (referenceTablePerspective == newTablePerspective)
+			if (referenceTablePerspective == newTablePerspective
+					|| referenceBrickColumn.getTablePerspective() == newTablePerspective)
 				continue;
 
 			tablePerspectives.add(newTablePerspective);
@@ -336,8 +369,8 @@ public class VendingMachine
 		if (tablePerspectives != null || tablePerspectives.size() == 0)
 			createRankedStratomexViews();
 
-		tablePerspectiveToRankElementLayout.get(scoreToTablePerspective.get(0).getSecond())
-				.addBackgroundRenderer(highlightRankBackgroundRenderer);
+		rankedElementToElementLayout.get(rankedElements.get(0)).addBackgroundRenderer(
+				highlightRankBackgroundRenderer);
 
 		stratomex.updateLayout();
 		stratomex.setLayoutDirty();
@@ -349,33 +382,35 @@ public class VendingMachine
 
 	public void highlightNextPreviousVisBrick(boolean next) {
 
-		TablePerspective prevSelectedTablePerspective = scoreToTablePerspective.get(
-				selectedTablePerspectiveIndex).getSecond();
+		RankedElement prevSelectedRankedElement = rankedElements
+				.get(selectedTablePerspectiveIndex);
 
-		if (next && selectedTablePerspectiveIndex < (tablePerspectives.size() - 1))
+		if (next && selectedTablePerspectiveIndex < (rankedElements.size() - 1))
 			selectedTablePerspectiveIndex++;
 		else if (!next && selectedTablePerspectiveIndex > 0)
 			selectedTablePerspectiveIndex--;
 
-		TablePerspective newlySelectedTablePerspective = scoreToTablePerspective.get(
-				selectedTablePerspectiveIndex).getSecond();
+		RankedElement newlySelectedRankedElement = rankedElements
+				.get(selectedTablePerspectiveIndex);
 
-		if (prevSelectedTablePerspective != newlySelectedTablePerspective) {
+		if (prevSelectedRankedElement != newlySelectedRankedElement) {
 
 			int replaceIndex = brickColumnManager.indexOfBrickColumn(brickColumnManager
-					.getBrickColumn(prevSelectedTablePerspective));
+					.getBrickColumn(prevSelectedRankedElement.getColumnTablePerspective()));
 
-			stratomex.removeTablePerspective(prevSelectedTablePerspective.getID());
+			stratomex.removeTablePerspective(prevSelectedRankedElement
+					.getColumnTablePerspective().getID());
 
-			tablePerspectiveToRankElementLayout.get(prevSelectedTablePerspective)
+			rankedElementToElementLayout.get(prevSelectedRankedElement)
 					.clearBackgroundRenderers();
 
-			tablePerspectiveToRankElementLayout.get(newlySelectedTablePerspective)
+			rankedElementToElementLayout.get(newlySelectedRankedElement)
 					.addBackgroundRenderer(highlightRankBackgroundRenderer);
 
-			addTablePerspectiveToStratomex(newlySelectedTablePerspective);
-			brickColumnManager.moveBrickColumn(
-					brickColumnManager.getBrickColumn(newlySelectedTablePerspective),
+			addTablePerspectiveToStratomex(newlySelectedRankedElement
+					.getColumnTablePerspective());
+			brickColumnManager.moveBrickColumn(brickColumnManager
+					.getBrickColumn(newlySelectedRankedElement.getColumnTablePerspective()),
 					replaceIndex);
 
 			mainRankColumn.getLayoutManager().updateLayout();
@@ -394,16 +429,16 @@ public class VendingMachine
 
 	public void selectChoice() {
 
-		scoreToTablePerspective.get(selectedTablePerspectiveIndex).getSecond()
+		rankedElements.get(selectedTablePerspectiveIndex).getColumnTablePerspective()
 				.setPrivate(false);
 		isActive = false;
 
 		brickColumnManager
 				.getBrickColumn(
-						scoreToTablePerspective.get(selectedTablePerspectiveIndex).getSecond())
-				.getLayout().clearBackgroundRenderers();
-		brickColumnManager.getBrickColumn(referenceTablePerspective).getLayout()
+						rankedElements.get(selectedTablePerspectiveIndex)
+								.getColumnTablePerspective()).getLayout()
 				.clearBackgroundRenderers();
+		referenceBrickColumn.getLayout().clearBackgroundRenderers();
 
 		stratomex.updateLayout();
 		stratomex.setLayoutDirty();
