@@ -43,7 +43,12 @@ import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.util.button.Button;
+import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnGlowRenderer;
@@ -71,6 +76,9 @@ public class VendingMachine
 	public static String VIEW_TYPE = "org.caleydo.view.vendingmachine";
 
 	public static String VIEW_NAME = "Vending Machine";
+
+	private final static String TEST_BUTTON_PICKING_TYPE = "org.caleydo.view.stratomex.vendingmachine.testbutton";
+	private final static int TEST_BUTTON_PICKING_ID = 0;
 
 	public static int VENDING_MACHINE_PIXEL_WIDTH = 320;
 
@@ -100,6 +108,9 @@ public class VendingMachine
 
 	private ScoreGroupListener scoreGroupListener;
 
+	private ButtonRenderer testButtonRenderer;
+	private Button testButton;
+
 	/**
 	 * Constructor.
 	 * 
@@ -116,6 +127,8 @@ public class VendingMachine
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
 		parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
 
+		registerPickingListeners();
+		
 		initLayouts();
 	}
 
@@ -152,6 +165,17 @@ public class VendingMachine
 		init(gl);
 	}
 
+	protected void registerPickingListeners() {
+
+		addIDPickingListener(new APickingListener() {
+			@Override
+			public void clicked(Pick pick) {
+				System.out.println("PICKED");
+			}
+
+		}, TEST_BUTTON_PICKING_TYPE, TEST_BUTTON_PICKING_ID);
+	}
+	
 	@Override
 	public void displayLocal(GL2 gl) {
 
@@ -173,7 +197,6 @@ public class VendingMachine
 		mainRankColumn = new Column("mainRankColum");
 		mainRankColumn.setBottomUp(false);
 		mainRankColumn.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH);
-		mainRankColumn.setFrameColor(1, 0, 0, 1);
 	}
 
 	/**
@@ -186,7 +209,6 @@ public class VendingMachine
 
 	private void createRankedStratomexViews() {
 
-		mainRankColumn.clear();
 		rankedElementToElementLayout.clear();
 
 		// Trigger ranking of data containers
@@ -366,14 +388,34 @@ public class VendingMachine
 			tablePerspectives.add(newTablePerspective);
 		}
 
+		mainRankColumn.clear();
 		if (tablePerspectives != null || tablePerspectives.size() == 0)
 			createRankedStratomexViews();
 
 		rankedElementToElementLayout.get(rankedElements.get(0)).addBackgroundRenderer(
 				highlightRankBackgroundRenderer);
 
+		createDataSetButtons();
+		
 		stratomex.updateLayout();
 		stratomex.setLayoutDirty();
+	}
+	
+	private void createDataSetButtons() {
+		ElementLayout testButtonLayout = new ElementLayout(
+				"testButtonLayout");
+		testButtonLayout.setPixelSizeY(30);
+		//testButtonLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
+		testButton = new Button(TEST_BUTTON_PICKING_TYPE + getID(), TEST_BUTTON_PICKING_ID,
+				EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
+
+		testButtonRenderer = new ButtonRenderer(testButton, this);
+		 //testButtonRenderer.addPickingID(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE,
+		// id);
+		testButtonRenderer.setZCoordinate(1);
+		testButtonLayout.setRenderer(testButtonRenderer);
+		
+		mainRankColumn.append(testButtonLayout);
 	}
 
 	public List<TablePerspective> getTablePerspectives() {
@@ -443,9 +485,12 @@ public class VendingMachine
 		stratomex.updateLayout();
 		stratomex.setLayoutDirty();
 	}
-
+	
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
+
+		this.removeAllIDPickingListeners(TEST_BUTTON_PICKING_TYPE + getID(),
+				TEST_BUTTON_PICKING_ID);
 	}
 
 	@Override

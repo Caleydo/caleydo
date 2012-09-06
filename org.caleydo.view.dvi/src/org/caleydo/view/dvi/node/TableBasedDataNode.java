@@ -75,9 +75,6 @@ public class TableBasedDataNode
 	private ButtonRenderer toggleTablePerspectiveButtonRenderer;
 	private Button toggleTablePerspectiveButton;
 
-	private ButtonRenderer triggerVendingMachineButtonRenderer;
-	private Button triggerVendingMachineButton;
-
 	private ALayoutState currentState;
 	private OverviewState overviewState;
 	private DetailState detailState;
