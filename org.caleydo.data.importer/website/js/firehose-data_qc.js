@@ -43,7 +43,7 @@ function getCurrentUrl()
 {
     var base = getBaseUrl();
 
-    return base + "/index.html"
+    return base + "/index_qc.html"
     			+ "?" + "analysis=" + analysis
     			+ "&" + "tumor=" + tumor;
 }   
@@ -57,13 +57,13 @@ function initialize() {
 		runs = data;
 		analysisIndex = renderAnalysisSelection( data, "#analysis-selection-container" );
 		
-		loadRun( getBaseUrl() + "/data/" + runs[analysisIndex].json, renderContent );
+		loadRun( getBaseUrl() + "/data_qc/" + runs[analysisIndex].json, renderContent );
 	});	
 }
 
 
 function loadRuns( callback ) {
-	$.getJSON( getBaseUrl() + "/data/" + "tcga_analysis_runs.json", callback );
+	$.getJSON( getBaseUrl() + "/data_qc/" + "tcga_analysis_runs_qc.json", callback );
 }
 
 
@@ -168,7 +168,7 @@ function renderAnalysisSelection( runs, element ) {
 	
 	$( "#analysis-selection" ).on( "change", function() {
 		clearTumorType();
-		loadRun( getBaseUrl() + "/data/" + runs[this.value].json, renderContent );		
+		loadRun( getBaseUrl() + "/data_qc/" + runs[this.value].json, renderContent );		
 	});	
 	
 	return analysisIndex;
@@ -254,26 +254,6 @@ function renderControls( data, tumorIndex, element ) {
 		"class": "",
 		"html": "<i class=\"icon-download\"></i>&nbsp;Download Data Set"
 	}).appendTo( "#download-button-container" );
-
-	$( "<a/>", {
-		"href": data.details[tumorIndex]["Firehose Report"], 
-		"class": "",
-		target: "_new",
-		"html": "<i class=\"icon-file\"></i>&nbsp;View Nozzle Report"
-	}).appendTo( "#report-button-container" );
-
-	$( "<div/>", {
-		"class": "",
-		"html": "<i class=\"icon-retweet\"></i>&nbsp;<a id=\"direct-link\" href=\"#\">Get direct link</a>"
-	}).appendTo(  "#direct-link-container"  );
-	
-	$( "#direct-link" ).on( "click", function() {
-		$( "#direct-link-url-container" ).html( "" );		
-		$( "<div/>", {
-			"class": "alert alert-info",
-			"html": "<a class=\"close\" data-dismiss=\"alert\" href=\"#\">x</a>" + getCurrentUrl()
-		}).appendTo(  "#direct-link-url-container"  );
-	});		
 }
 
 
@@ -295,16 +275,6 @@ function renderTable( data, tumorIndex, element ) {
 		"width": "100%",
 		"class": "table table-striped table-condensed",
 		"html": _genomicHeaderRender() + _.map( data.details[tumorIndex].genomic, _genomicRowRender ).join("\n"),
-	}).appendTo( element );
-
-	$( "<h3/>", {
-		"html": "Other Data Types",
-	}).appendTo( element );
-	
-	$( "<table/>", {
-		"width": "100%",
-		"class": "table table-striped",
-		"html": _nonGenomicHeaderRender() + _.map( data.details[tumorIndex].nonGenomic, _nonGenomicRowRender ).join("\n"),
 	}).appendTo( element );
 
 }
