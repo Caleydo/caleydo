@@ -30,6 +30,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.serialize.ASerializedView;
@@ -42,6 +43,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
+import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -59,6 +61,7 @@ import org.caleydo.view.stratomex.listener.ScoreColumnListener;
 import org.caleydo.view.stratomex.listener.ScoreGroupListener;
 import org.caleydo.view.stratomex.listener.VendingMachineKeyListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.internal.handlers.WizardHandler.New;
 
 /**
  * <p>
@@ -80,7 +83,9 @@ public class VendingMachine
 	private final static String TEST_BUTTON_PICKING_TYPE = "org.caleydo.view.stratomex.vendingmachine.testbutton";
 	private final static int TEST_BUTTON_PICKING_ID = 0;
 
-	public static int VENDING_MACHINE_PIXEL_WIDTH = 320;
+	private static int VENDING_MACHINE_PIXEL_WIDTH = 350;
+
+	private static int MAX_RANKED_ELEMENTS = 15;
 
 	private Column mainRankColumn;
 
@@ -108,8 +113,7 @@ public class VendingMachine
 
 	private ScoreGroupListener scoreGroupListener;
 
-	private ButtonRenderer testButtonRenderer;
-	private Button testButton;
+	private ArrayList<Button> dataDomainButtons = new ArrayList<Button>();
 
 	/**
 	 * Constructor.
@@ -128,7 +132,7 @@ public class VendingMachine
 		parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
 
 		registerPickingListeners();
-		
+
 		initLayouts();
 	}
 
@@ -167,15 +171,8 @@ public class VendingMachine
 
 	protected void registerPickingListeners() {
 
-		addIDPickingListener(new APickingListener() {
-			@Override
-			public void clicked(Pick pick) {
-				System.out.println("PICKED");
-			}
-
-		}, TEST_BUTTON_PICKING_TYPE, TEST_BUTTON_PICKING_ID);
 	}
-	
+
 	@Override
 	public void displayLocal(GL2 gl) {
 
@@ -188,8 +185,6 @@ public class VendingMachine
 		if (busyState != EBusyState.OFF) {
 			renderBusyMode(gl);
 		}
-
-		checkForHits(gl);
 	}
 
 	public void initLayouts() {
@@ -207,7 +202,7 @@ public class VendingMachine
 		mainRankColumn.updateSubLayout();
 	}
 
-	private void createRankedStratomexViews() {
+	private void addRankedList() {
 
 		rankedElementToElementLayout.clear();
 
@@ -256,6 +251,7 @@ public class VendingMachine
 			rankedElementLayout.setPixelSizeY(30);
 			RankNumberRenderer rankNumberRenderer = new RankNumberRenderer("[" + (++rank)
 					+ ".] " + score + " "
+					+ rankedElement.getColumnTablePerspective().getDataDomain().getLabel()
 					+ rankedElement.getColumnTablePerspective().getLabel() + " - "
 					+ rankedElement.getGroupTablePerspective().getLabel(), getTextRenderer());
 			rankedElementLayout.setRenderer(rankNumberRenderer);
@@ -263,6 +259,9 @@ public class VendingMachine
 			rankedElementToElementLayout.put(rankedElement, rankedElementLayout);
 
 			mainRankColumn.append(rankedElementLayout);
+
+			if (rank >= MAX_RANKED_ELEMENTS)
+				break;
 		}
 
 		// Add first ranked table perspective as the currently selected one to
@@ -286,7 +285,8 @@ public class VendingMachine
 
 	@Override
 	public void display(GL2 gl) {
-
+		checkForHits(gl);
+		processEvents();
 	}
 
 	@Override
@@ -366,56 +366,89 @@ public class VendingMachine
 				new BrickColumnGlowRenderer(new float[] { 1, 0, 0 }, referenceBrickColumn,
 						false));
 
-		ATableBasedDataDomain dataDomain = referenceTablePerspective.getDataDomain();
+		mainRankColumn.clear();
 
-		Set<String> rowIDs = dataDomain.getRecordPerspectiveIDs();
+		// FIXME: create only once and not every time the ranked list gets
+		// updated
+		addDataSetButtons();
 
-		for (String id : rowIDs) {
-			RecordPerspective perspective = dataDomain.getTable().getRecordPerspective(id);
-			if (perspective.isPrivate()) {
-				continue;
+		for (Button dataDomainButton : dataDomainButtons) {
+			ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
+					.getDataDomainByID(dataDomainButton.getPickingType());
+
+			// We take the first dimension perspective we find
+			String dimensionPerspectiveID = (String) dataDomain.getDimensionPerspectiveIDs()
+					.toArray()[0];
+
+			Set<String> rowIDs = dataDomain.getRecordPerspectiveIDs();
+
+			for (String id : rowIDs) {
+				RecordPerspective perspective = dataDomain.getTable().getRecordPerspective(id);
+				if (perspective.isPrivate()) {
+					continue;
+				}
+
+				TablePerspective newTablePerspective = dataDomain.getTablePerspective(id,
+						dimensionPerspectiveID);
+				newTablePerspective.setPrivate(true);
+
+				// Do not add the current reference table perspectives to
+				// scoring
+				if (referenceTablePerspective == newTablePerspective
+						|| referenceBrickColumn.getTablePerspective() == newTablePerspective)
+					continue;
+
+				tablePerspectives.add(newTablePerspective);
 			}
-
-			TablePerspective newTablePerspective = dataDomain.getTablePerspective(id,
-					referenceTablePerspective.getDimensionPerspective().getPerspectiveID());
-			newTablePerspective.setPrivate(true);
-
-			// Do not add the current reference table perspectives to scoring
-			if (referenceTablePerspective == newTablePerspective
-					|| referenceBrickColumn.getTablePerspective() == newTablePerspective)
-				continue;
-
-			tablePerspectives.add(newTablePerspective);
 		}
 
-		mainRankColumn.clear();
 		if (tablePerspectives != null || tablePerspectives.size() == 0)
-			createRankedStratomexViews();
+			addRankedList();
 
 		rankedElementToElementLayout.get(rankedElements.get(0)).addBackgroundRenderer(
 				highlightRankBackgroundRenderer);
 
-		createDataSetButtons();
-		
 		stratomex.updateLayout();
 		stratomex.setLayoutDirty();
 	}
-	
-	private void createDataSetButtons() {
-		ElementLayout testButtonLayout = new ElementLayout(
-				"testButtonLayout");
-		testButtonLayout.setPixelSizeY(30);
-		//testButtonLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
-		testButton = new Button(TEST_BUTTON_PICKING_TYPE + getID(), TEST_BUTTON_PICKING_ID,
-				EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
 
-		testButtonRenderer = new ButtonRenderer(testButton, this);
-		 //testButtonRenderer.addPickingID(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE,
-		// id);
-		testButtonRenderer.setZCoordinate(1);
-		testButtonLayout.setRenderer(testButtonRenderer);
-		
-		mainRankColumn.append(testButtonLayout);
+	private void addDataSetButtons() {
+
+		dataDomainButtons.clear();
+
+		for (ATableBasedDataDomain dataDomain : DataDomainManager.get().getDataDomainsByType(
+				ATableBasedDataDomain.class)) {
+
+			ElementLayout labelLayout = new ElementLayout("labelLayout");
+			labelLayout.setPixelSizeY(30);
+			labelLayout.setRenderer(new LabelRenderer(this, dataDomain.getLabel()));
+			mainRankColumn.append(labelLayout);
+
+			ElementLayout dataDomainButtonLayout = new ElementLayout("testButtonLayout");
+			dataDomainButtonLayout.setPixelSizeY(30);
+			dataDomainButtonLayout.setPixelSizeX(30);
+			// testButtonLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
+			final Button dataDomainButton = new Button(dataDomain.getDataDomainID(),
+					TEST_BUTTON_PICKING_ID, EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
+			dataDomainButtons.add(dataDomainButton);
+
+			ButtonRenderer dataDomainButtonRenderer = new ButtonRenderer(dataDomainButton,
+					this);
+			// testButtonRenderer.addPickingID(TEST_BUTTON_PICKING_TYPE,
+			// TEST_BUTTON_PICKING_ID);
+			dataDomainButtonRenderer.setZCoordinate(1);
+			dataDomainButtonLayout.setRenderer(dataDomainButtonRenderer);
+
+			addTypePickingListener(new APickingListener() {
+				@Override
+				public void clicked(Pick pick) {
+					dataDomainButton.setSelected(!dataDomainButton.isSelected());
+				}
+
+			}, dataDomain.getDataDomainID());
+
+			mainRankColumn.append(dataDomainButtonLayout);
+		}
 	}
 
 	public List<TablePerspective> getTablePerspectives() {
@@ -485,12 +518,11 @@ public class VendingMachine
 		stratomex.updateLayout();
 		stratomex.setLayoutDirty();
 	}
-	
+
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 
-		this.removeAllIDPickingListeners(TEST_BUTTON_PICKING_TYPE + getID(),
-				TEST_BUTTON_PICKING_ID);
+		this.removeAllIDPickingListeners(TEST_BUTTON_PICKING_TYPE, TEST_BUTTON_PICKING_ID);
 	}
 
 	@Override

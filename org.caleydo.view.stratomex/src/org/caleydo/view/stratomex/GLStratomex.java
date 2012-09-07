@@ -601,6 +601,8 @@ public class GLStratomex
 		for (BrickColumn dimensionGroup : brickColumnManager.getBrickColumns()) {
 			dimensionGroup.display(gl);
 		}
+		
+		vendingMachine.displayRemote(gl);
 
 		if (isConnectionLinesDirty)
 			performConnectionLinesUpdate();

@@ -53,8 +53,6 @@ public class RcpDatasetInfoView
 
 	private ATableBasedDataDomain dataDomain;
 
-	private Composite parent;
-
 	private Label nameLabel;
 
 	private Label recordLabel;
@@ -91,7 +89,6 @@ public class RcpDatasetInfoView
 							.getDataDomainID());
 		}
 
-		this.parent = parent;
 		parentComposite = new Composite(parent, SWT.NULL);
 		parentComposite.setLayout(new GridLayout(1, false));
 

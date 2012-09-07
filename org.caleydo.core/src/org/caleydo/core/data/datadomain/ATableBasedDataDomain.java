@@ -311,7 +311,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		if (container == null) {
 			RecordPerspective recordPerspective = table
 					.getRecordPerspective(recordPerspectiveID);
-			if (recordPerspective == null)
+			if (recordPerspective == null) 
 				throw new IllegalArgumentException(
 						"No record perspective registered with this datadomain for "
 								+ recordPerspectiveID);
