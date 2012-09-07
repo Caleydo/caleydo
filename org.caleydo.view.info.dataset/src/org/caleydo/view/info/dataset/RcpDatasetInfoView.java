@@ -29,6 +29,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IDataDomainBasedView;
+import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.histogram.RcpGLColorMapperHistogramView;
 import org.caleydo.view.histogram.SerializedHistogramView;
 import org.eclipse.swt.SWT;
@@ -45,14 +46,23 @@ import org.eclipse.swt.widgets.Label;
  * 
  * @author Marc Streit
  */
-public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
-		IDataDomainBasedView<ATableBasedDataDomain> {
+public class RcpDatasetInfoView
+	extends CaleydoRCPViewPart
+	implements IDataDomainBasedView<ATableBasedDataDomain> {
 
 	public static String VIEW_TYPE = "org.caleydo.view.info.dataset";
 
 	private ATableBasedDataDomain dataDomain;
 
-	private Composite parent;
+	private Label nameLabel;
+
+	private Label recordLabel;
+
+	private Label dimensionLabel;
+
+	private Label sourceLabel;
+
+	private RcpGLColorMapperHistogramView histogramView;
 
 	/**
 	 * Constructor.
@@ -65,7 +75,8 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 
 		try {
 			viewContext = JAXBContext.newInstance(SerializedDatasetInfoView.class);
-		} catch (JAXBException ex) {
+		}
+		catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
 	}
@@ -74,17 +85,13 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 	public void createPartControl(Composite parent) {
 
 		if (dataDomain == null) {
-			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
-					.getDataDomainByID(
-							((ASerializedSingleTablePerspectiveBasedView) serializedView)
-									.getDataDomainID());
+			dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+					((ASerializedSingleTablePerspectiveBasedView) serializedView)
+							.getDataDomainID());
 		}
 
-		this.parent = parent;
 		parentComposite = new Composite(parent, SWT.NULL);
 		parentComposite.setLayout(new GridLayout(1, false));
-		// parentComposite.setBackground(new Color(parentComposite.getDisplay()
-		// ,127,178,127));
 
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 
@@ -93,58 +100,24 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 		infoComposite.setLayoutData(gridData);
 
 		if (dataDomain == null) {
-			Label label = new Label(infoComposite, SWT.NONE);
-			label.setText("No data set active");
-		} else {
-			Label label = new Label(infoComposite, SWT.NONE);
-			label.setText("Name: " + dataDomain.getLabel());
-
-			label = new Label(infoComposite, SWT.NONE);
-			label.setText(dataDomain.getRecordDenomination(true, true) + ": "
-					+ dataDomain.getTable().getMetaData().depth());
-
-			label = new Label(infoComposite, SWT.NONE);
-			label.setText(dataDomain.getDimensionDenomination(true, true) + ": "
-					+ dataDomain.getTable().getMetaData().size());
-
-			label = new Label(infoComposite, SWT.NONE);
-			label.setText("Source: "
-					+ dataDomain.getDataSetDescription().getDataSourcePath());
-
-			// Tree<ClusterNode> dimensionTree =
-			// dataDomain.getTable().getDimensionData(DimensionVAType.STORAGE).getDimensionTree();
-
-			// label = new Label(parent, SWT.NONE);
-			// label.setText("Experiments clustered: "+dimensionTree == null ?
-			// "false"
-			// : "true");
-			//
-			// if
-			// (dataDomain.getTable().getDimensionData(DimensionVAType.STORAGE).getDimensionClusterSizes()
-			// != null) {
-			// label = new Label(parent, SWT.NONE);
-			// label.setText("Number of clusters: "+dataDomain.getTable().getDimensionData(DimensionVAType.STORAGE).getDimensionClusterSizes().size());
-			// }
-
-			// label = new Label(parent, SWT.NONE);
-			// label.setText(": "+dataDomain);
+			nameLabel = new Label(infoComposite, SWT.NONE);
+			nameLabel.setText("No data set active");
+		}
+		else {
+			nameLabel = new Label(infoComposite, SWT.NONE);
+			recordLabel = new Label(infoComposite, SWT.NONE);
+			dimensionLabel = new Label(infoComposite, SWT.NONE);
+			sourceLabel = new Label(infoComposite, SWT.NONE);
 
 			ExpandBar bar = new ExpandBar(parentComposite, SWT.V_SCROLL);
 			gridData = new GridData(GridData.FILL_BOTH);
 			bar.setLayoutData(gridData);
-			// Display display = parentComposite.getDisplay();
-			// Image image = display.getSystemImage(SWT.ICON_QUESTION);
 
 			// Third item
 			Composite composite = new Composite(bar, SWT.NONE);
 			composite.setLayout(new FillLayout());
-			// layout = new GridLayout (1, true);
-			// layout.marginLeft = layout.marginTop = layout.marginRight =
-			// layout.marginBottom = 10;
-			// layout.verticalSpacing = 10;
-			// composite.setLayout(layout);
 
-			RcpGLColorMapperHistogramView histogramView = new RcpGLColorMapperHistogramView();
+			histogramView = new RcpGLColorMapperHistogramView();
 			histogramView.setDataDomain(dataDomain);
 			SerializedHistogramView serializedHistogramView = new SerializedHistogramView();
 			serializedHistogramView.setDataDomainID(dataDomain.getDataDomainID());
@@ -155,20 +128,19 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 			histogramView.setExternalSerializedView(serializedHistogramView);
 			histogramView.createPartControl(composite);
 			// Usually the canvas is registered to the GL2 animator in the
-			// PartListener.
-			// Because the GL2 histogram is no usual RCP view we have to do it
-			// on
-			// our own
+			// PartListener. Because the GL2 histogram is no usual RCP view we
+			// have to do it on our own
 			GeneralManager.get().getViewManager()
 					.registerGLCanvasToAnimator(histogramView.getGLCanvas());
 			ExpandItem item2 = new ExpandItem(bar, SWT.NONE, 0);
 			item2.setText("Histogram");
 			item2.setHeight(200);
 			item2.setControl(composite);
-
 			item2.setExpanded(true);
 
 			bar.setSpacing(2);
+		
+			updateDataSetInfo();
 		}
 
 		parent.layout();
@@ -187,8 +159,23 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 		TablePerspective container = dataDomain.getDefaultTablePerspective();
 		dcSerializedView.setTablePerspectiveKey(container.getTablePerspectiveKey());
 
-		parentComposite.dispose();
-		createPartControl(parent);
+		updateDataSetInfo();
+	}
+	
+	private void updateDataSetInfo() {
+		nameLabel.setText("Name: " + dataDomain.getLabel());
+
+		recordLabel.setText(dataDomain.getRecordDenomination(true, true) + ": "
+				+ dataDomain.getTable().getMetaData().depth());
+
+		dimensionLabel.setText(dataDomain.getDimensionDenomination(true, true) + ": "
+				+ dataDomain.getTable().getMetaData().size());
+
+		sourceLabel.setText("Source: "
+				+ dataDomain.getDataSetDescription().getDataSourcePath());
+		
+		((GLHistogram)histogramView.getGLView()).setHistogram(dataDomain.getDefaultTablePerspective().getContainerStatistics().getHistogram());
+		((GLHistogram)histogramView.getGLView()).setDisplayListDirty();
 	}
 
 	@Override
