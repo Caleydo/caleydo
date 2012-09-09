@@ -857,6 +857,8 @@ public class GLBrick
 						contextMenuCreator.addContextMenuItem(new ScoreGroupItem(stratomex
 								.getVendingMachine(), brickColumn.getTablePerspective(),
 								tablePerspective));
+						
+						selectElementsByGroup();
 					}
 				}
 
