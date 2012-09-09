@@ -285,13 +285,12 @@ public class VendingMachine
 		TablePerspective tablePerspective = rankedElements.get(selectedTablePerspectiveIndex)
 				.getColumnTablePerspective();
 		addTablePerspectiveToStratomex(tablePerspective);
-
+		
 		// Move newly added table perspective to be right of the reference table
 		// perspective
 		brickColumnManager.moveBrickColumn(
 				brickColumnManager.getBrickColumn(tablePerspective), brickColumnManager
-						.indexOfBrickColumn(brickColumnManager
-								.getBrickColumn(referenceTablePerspective)) + 1);
+						.indexOfBrickColumn(referenceBrickColumn)+1);
 		
 		rankedElementToElementLayout.get(rankedElements.get(0)).addBackgroundRenderer(
 				highlightRankBackgroundRenderer);

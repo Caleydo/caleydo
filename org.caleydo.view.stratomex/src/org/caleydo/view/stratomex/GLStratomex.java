@@ -1274,6 +1274,7 @@ public class GLStratomex
 								+ "does not match the recordIDCategory of Visbricks - no mapping possible."));
 				continue;
 			}
+
 			boolean dimensionGroupExists = false;
 			for (BrickColumn brickColumn : brickColumns) {
 				if (brickColumn.getTablePerspective().getID() == tablePerspective.getID()) {
