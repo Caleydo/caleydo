@@ -33,22 +33,18 @@ public class BorderedAreaRenderer extends APickableLayoutRenderer {
 
 	public final static float[] DEFAULT_COLOR = { 0.5f, 0.5f, 0.5f, 1.0f };
 
-	private float[] color;
+	private float[] color = DEFAULT_COLOR;
 
 	public BorderedAreaRenderer() {
 		super();
-		color = DEFAULT_COLOR;
 	}
 
 	public BorderedAreaRenderer(AGLView view, String pickingType, int id) {
 		super(view, pickingType, id);
-		color = DEFAULT_COLOR;
 	}
 
 	public BorderedAreaRenderer(AGLView view, List<Pair<String, Integer>> pickingIDs) {
 		super(view, pickingIDs);
-		color = DEFAULT_COLOR;
-
 	}
 
 	/**
