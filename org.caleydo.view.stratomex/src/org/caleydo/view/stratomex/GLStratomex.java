@@ -260,11 +260,11 @@ public class GLStratomex
 		textRenderer = new CaleydoTextRenderer(24);
 
 		connectionRenderer.init(gl);
-		
+
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 		mainRow = new Row();
 		layoutManager.setBaseElementLayout(mainRow);
-		
+
 		initVendingMachine();
 	}
 
@@ -273,14 +273,13 @@ public class GLStratomex
 		brickColumnManager.getBrickColumnSpacers().clear();
 
 		mainRow.clear();
-		
+
 		initLeftLayout();
 		initCenterLayout();
 		initRightLayout();
 
-//		if (vendingMachine.isActive())
-			mainRow.append(vendingMachine.getLayout());
-		
+		mainRow.append(vendingMachine.getLayout());
+
 		layoutManager.updateLayout();
 
 		updateConnectionLinesBetweenDimensionGroups();
@@ -519,7 +518,7 @@ public class GLStratomex
 		}
 
 		vendingMachine.processEvents();
-		
+
 		for (BrickColumn group : brickColumnManager.getBrickColumns()) {
 			group.processEvents();
 		}
@@ -527,9 +526,9 @@ public class GLStratomex
 		handleHorizontalColumnMove(gl);
 		if (isLayoutDirty) {
 			isLayoutDirty = false;
-			
+
 			vendingMachine.updatLayout();
-			
+
 			layoutManager.updateLayout();
 			float minWidth = pixelGLConverter
 					.getGLWidthForPixelWidth(BRICK_COLUMN_SPACING_MIN_PIXEL_WIDTH);
@@ -601,7 +600,7 @@ public class GLStratomex
 		for (BrickColumn dimensionGroup : brickColumnManager.getBrickColumns()) {
 			dimensionGroup.display(gl);
 		}
-		
+
 		vendingMachine.displayRemote(gl);
 
 		if (isConnectionLinesDirty)
@@ -660,7 +659,7 @@ public class GLStratomex
 		if (dimensionGroupIndex != brickColumnManager.getRightGroupStartIndex() - 1) {
 			brickColumnManager.setRightGroupStartIndex(dimensionGroupIndex + 1);
 		}
-		
+
 		isLeftDetailShown = true;
 		mainRow.remove(rightColumnLayout);
 		mainRow.remove(leftColumnLayout);
@@ -1856,7 +1855,7 @@ public class GLStratomex
 	public VendingMachine getVendingMachine() {
 		return vendingMachine;
 	}
-	
+
 	public Row getLayout() {
 		return mainRow;
 	}

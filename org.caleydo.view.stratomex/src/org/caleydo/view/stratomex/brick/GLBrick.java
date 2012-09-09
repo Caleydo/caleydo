@@ -830,7 +830,8 @@ public class GLBrick
 			@Override
 			public void rightClicked(Pick pick) {
 
-				// Differentiate between cases where user selects header brick or a brick
+				// Differentiate between cases where user selects header brick
+				// or a brick
 				if (brickColumn.getTablePerspective() == tablePerspective) {
 
 					if (dataDomain instanceof GeneticDataDomain
@@ -851,9 +852,12 @@ public class GLBrick
 							dataDomain, tablePerspective.getRecordPerspective()
 									.getVirtualArray(), brickColumn.getTablePerspective()
 									.getDimensionPerspective()));
-					
-					contextMenuCreator.addContextMenuItem(new ScoreGroupItem(stratomex
-							.getVendingMachine(), brickColumn.getTablePerspective(), tablePerspective));
+
+					if (!GeneralManager.RELEASE_MODE) {
+						contextMenuCreator.addContextMenuItem(new ScoreGroupItem(stratomex
+								.getVendingMachine(), brickColumn.getTablePerspective(),
+								tablePerspective));
+					}
 				}
 
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
@@ -861,8 +865,11 @@ public class GLBrick
 				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(stratomex,
 						getBrickColumn().getTablePerspective().getID()));
 
-				contextMenuCreator.addContextMenuItem(new ScoreColumnItem(stratomex
-						.getVendingMachine(), getBrickColumn().getTablePerspective()));
+				if (!GeneralManager.RELEASE_MODE) {
+					contextMenuCreator.addContextMenuItem(new ScoreColumnItem(stratomex
+							.getVendingMachine(), getBrickColumn().getTablePerspective()));
+
+				}
 			}
 
 		}, EPickingType.BRICK.name(), getID());

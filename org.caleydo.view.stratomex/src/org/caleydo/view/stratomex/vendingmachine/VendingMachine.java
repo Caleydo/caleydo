@@ -87,7 +87,11 @@ public class VendingMachine
 
 	private static int MAX_RANKED_ELEMENTS = 15;
 
-	private Column mainRankColumn;
+	private Column mainColumn;
+
+	private Column dataSetButtonListColumn;
+
+	private Column rankColumn;
 
 	private TablePerspective referenceTablePerspective;
 
@@ -189,9 +193,19 @@ public class VendingMachine
 
 	public void initLayouts() {
 
-		mainRankColumn = new Column("mainRankColum");
-		mainRankColumn.setBottomUp(false);
-		mainRankColumn.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH);
+		mainColumn = new Column("mainRow");
+		mainColumn.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH);
+
+		dataSetButtonListColumn = new Column("dataSetButtonColum");
+		dataSetButtonListColumn.setBottomUp(false);
+		dataSetButtonListColumn.setPixelSizeY(200);
+		mainColumn.append(dataSetButtonListColumn);
+
+		rankColumn = new Column("rankColum");
+		rankColumn.setBottomUp(false);
+		mainColumn.append(rankColumn);
+
+		addDataSetButtons();
 	}
 
 	/**
@@ -199,11 +213,14 @@ public class VendingMachine
 	 */
 	public void updateLayout() {
 
-		mainRankColumn.updateSubLayout();
+		mainColumn.updateSubLayout();
 	}
 
-	private void addRankedList() {
+	private void updateRankedList() {
 
+		updateScoredTablePerspectives();
+		
+		rankColumn.clear();
 		rankedElementToElementLayout.clear();
 
 		// Trigger ranking of data containers
@@ -236,7 +253,6 @@ public class VendingMachine
 		}
 
 		Collections.sort(rankedElements);
-		// Collections.reverse(rankedElements);
 
 		int rank = 0;
 
@@ -247,7 +263,7 @@ public class VendingMachine
 			float score = bd.floatValue();
 
 			Row rankedElementLayout = new Row("rankElementLayout");
-			rankedElementLayout.setGrabX(true);
+			rankedElementLayout.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH);
 			rankedElementLayout.setPixelSizeY(30);
 			RankNumberRenderer rankNumberRenderer = new RankNumberRenderer("[" + (++rank)
 					+ ".] " + score + " "
@@ -258,7 +274,7 @@ public class VendingMachine
 
 			rankedElementToElementLayout.put(rankedElement, rankedElementLayout);
 
-			mainRankColumn.append(rankedElementLayout);
+			rankColumn.append(rankedElementLayout);
 
 			if (rank >= MAX_RANKED_ELEMENTS)
 				break;
@@ -276,6 +292,12 @@ public class VendingMachine
 				brickColumnManager.getBrickColumn(tablePerspective), brickColumnManager
 						.indexOfBrickColumn(brickColumnManager
 								.getBrickColumn(referenceTablePerspective)) + 1);
+		
+		rankedElementToElementLayout.get(rankedElements.get(0)).addBackgroundRenderer(
+				highlightRankBackgroundRenderer);
+
+		stratomex.updateLayout();
+		stratomex.setLayoutDirty();
 	}
 
 	@Override
@@ -354,7 +376,6 @@ public class VendingMachine
 
 	public void setTablePerspective(TablePerspective referenceTablePerspective) {
 
-		tablePerspectives.clear();
 		selectedTablePerspectiveIndex = 0;
 		isActive = true;
 		stratomex.getLayout().getLayoutManager().updateLayout();
@@ -366,13 +387,17 @@ public class VendingMachine
 				new BrickColumnGlowRenderer(new float[] { 1, 0, 0 }, referenceBrickColumn,
 						false));
 
-		mainRankColumn.clear();
+		updateRankedList();
+	}
 
-		// FIXME: create only once and not every time the ranked list gets
-		// updated
-		addDataSetButtons();
-
+	private void updateScoredTablePerspectives() {
+	
+		tablePerspectives.clear();
 		for (Button dataDomainButton : dataDomainButtons) {
+
+			if (!dataDomainButton.isSelected())
+				continue;
+			
 			ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID(dataDomainButton.getPickingType());
 
@@ -401,15 +426,6 @@ public class VendingMachine
 				tablePerspectives.add(newTablePerspective);
 			}
 		}
-
-		if (tablePerspectives != null || tablePerspectives.size() == 0)
-			addRankedList();
-
-		rankedElementToElementLayout.get(rankedElements.get(0)).addBackgroundRenderer(
-				highlightRankBackgroundRenderer);
-
-		stratomex.updateLayout();
-		stratomex.setLayoutDirty();
 	}
 
 	private void addDataSetButtons() {
@@ -419,23 +435,20 @@ public class VendingMachine
 		for (ATableBasedDataDomain dataDomain : DataDomainManager.get().getDataDomainsByType(
 				ATableBasedDataDomain.class)) {
 
-			ElementLayout labelLayout = new ElementLayout("labelLayout");
-			labelLayout.setPixelSizeY(30);
-			labelLayout.setRenderer(new LabelRenderer(this, dataDomain.getLabel()));
-			mainRankColumn.append(labelLayout);
+			Row singleDataSetRow = new Row("singleDataSetRow");
+			singleDataSetRow.setGrabX(true);
+			singleDataSetRow.setPixelSizeY(20);
 
-			ElementLayout dataDomainButtonLayout = new ElementLayout("testButtonLayout");
-			dataDomainButtonLayout.setPixelSizeY(30);
-			dataDomainButtonLayout.setPixelSizeX(30);
-			// testButtonLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
+			ElementLayout dataDomainButtonLayout = new ElementLayout("dataSetButtonLayout");
+			dataDomainButtonLayout.setPixelSizeX(20);
+
 			final Button dataDomainButton = new Button(dataDomain.getDataDomainID(),
 					TEST_BUTTON_PICKING_ID, EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
+			dataDomainButton.setSelected(true);
 			dataDomainButtons.add(dataDomainButton);
 
 			ButtonRenderer dataDomainButtonRenderer = new ButtonRenderer(dataDomainButton,
 					this);
-			// testButtonRenderer.addPickingID(TEST_BUTTON_PICKING_TYPE,
-			// TEST_BUTTON_PICKING_ID);
 			dataDomainButtonRenderer.setZCoordinate(1);
 			dataDomainButtonLayout.setRenderer(dataDomainButtonRenderer);
 
@@ -443,11 +456,19 @@ public class VendingMachine
 				@Override
 				public void clicked(Pick pick) {
 					dataDomainButton.setSelected(!dataDomainButton.isSelected());
+					updateRankedList();
 				}
 
 			}, dataDomain.getDataDomainID());
 
-			mainRankColumn.append(dataDomainButtonLayout);
+			singleDataSetRow.append(dataDomainButtonLayout);
+
+			ElementLayout labelLayout = new ElementLayout("labelLayout");
+			labelLayout.setRenderer(new LabelRenderer(this, dataDomain.getLabel()));
+			labelLayout.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH - 20);
+			singleDataSetRow.append(labelLayout);
+
+			dataSetButtonListColumn.append(singleDataSetRow);
 		}
 	}
 
@@ -488,7 +509,7 @@ public class VendingMachine
 					.getBrickColumn(newlySelectedRankedElement.getColumnTablePerspective()),
 					replaceIndex);
 
-			mainRankColumn.getLayoutManager().updateLayout();
+			rankColumn.getLayoutManager().updateLayout();
 		}
 	}
 
@@ -527,7 +548,7 @@ public class VendingMachine
 
 	@Override
 	public ElementLayout getLayout() {
-		return mainRankColumn;
+		return mainColumn;
 	}
 
 	/**
@@ -547,8 +568,8 @@ public class VendingMachine
 
 	public void updatLayout() {
 		if (isActive)
-			mainRankColumn.setPixelSizeX(300);
+			mainColumn.setPixelSizeX(300);
 		else
-			mainRankColumn.setAbsoluteSizeX(0);
+			mainColumn.setAbsoluteSizeX(0);
 	}
 }
