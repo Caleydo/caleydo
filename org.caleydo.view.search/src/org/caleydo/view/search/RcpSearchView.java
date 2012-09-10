@@ -28,6 +28,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.perspective.table.CategoricalTablePerspectiveCreator;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
@@ -76,7 +77,6 @@ import org.eclipse.ui.PlatformUI;
  */
 public class RcpSearchView extends CaleydoRCPViewPart {
 
-	// private GeneticDataDomain dataDomain;
 	private ArrayList<GeneticDataDomain> geneticDataDomains;
 
 	public static String VIEW_TYPE = "org.caleydo.view.search";
@@ -745,11 +745,11 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 		makeCategoryOfGene.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+	
+				CategoricalTablePerspectiveCreator.createTablePerspeciveByRowID(dataDomain,
+						(Integer) tableItem.getData(), davidIDType, false);
 
-				searchViewMediator.createPerspecive(dataDomain,
-						(Integer) tableItem.getData());
-
-				// Switch to browser view
+				// Switch to DVI view
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 							.showView("org.caleydo.view.dvi");
@@ -825,13 +825,13 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 		});
 	}
 
-	private Set<PathwayGraph> getPathwaysContainingGene(int iDavidID) {
+	private Set<PathwayGraph> getPathwaysContainingGene(int davidID) {
 
 		// set to avoid duplicate pathwaysserializedView
 		Set<PathwayGraph> pathwaysContainingGene = new HashSet<PathwayGraph>();
 
 		PathwayVertex vertex = PathwayItemManager.get()
-				.getPathwayVertexByDavidId(iDavidID);
+				.getPathwayVertexByDavidId(davidID);
 
 		// Only handle David IDs that does exist in any pathway
 		if (vertex != null) {

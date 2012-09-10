@@ -87,6 +87,11 @@ public class JaccardIndex {
 
 			Group subGroup = subTablePerspective.getRecordGroup();
 
+//			System.out.println("subtable perspective " + subGroup.getLabel());
+
+			if (subGroup.getSize() == 0)
+				continue;
+
 			for (int vaIndex = 0; vaIndex < referenceGroup.getSize(); vaIndex++) {
 
 				int id = referenceVA.get(vaIndex);
@@ -95,14 +100,8 @@ public class JaccardIndex {
 				for (int vaIndex2 = subGroup.getStartIndex(); vaIndex2 < subGroup
 						.getEndIndex(); vaIndex2++) {
 
-					int id2 = 0;
-					try {
-						id2 = va.get(vaIndex2);
-						unionCounter.add(id2);
-					}
-					catch (Exception e) {
-						System.out.println("BLA");
-					}
+					int id2 = va.get(vaIndex2);
+					unionCounter.add(id2);
 
 					if (referenceVA.getIdType() != va.getIdType()) {
 						IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
@@ -142,7 +141,8 @@ public class JaccardIndex {
 		}
 
 		long endTime = System.currentTimeMillis();
-		System.out.println("Calculation took " + (endTime - startTime) + "ms");
+		System.out.println("Calculation of Jaccard index of " + tablePerspective.getLabel()
+				+ " took " + (endTime - startTime) + "ms");
 
 		if (storeResult) {
 			tablePerspectiveToScore.put(tablePerspective, subTablePerspetiveToScore);

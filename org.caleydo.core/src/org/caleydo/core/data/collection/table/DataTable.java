@@ -331,7 +331,7 @@ public class DataTable extends AUniqueObject {
 	}
 
 	/**
-	 * @return Returns a new list of all record ids in the order they were
+	 * @return Returns a new list of all record IDs in the order they were
 	 *         initialized
 	 */
 	public List<Integer> getRowIDList() {

@@ -31,6 +31,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.perspective.table.CategoricalTablePerspectiveCreator;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.serialize.ASerializedView;
@@ -61,7 +62,6 @@ import org.caleydo.view.stratomex.listener.ScoreColumnListener;
 import org.caleydo.view.stratomex.listener.ScoreGroupListener;
 import org.caleydo.view.stratomex.listener.VendingMachineKeyListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.internal.handlers.WizardHandler.New;
 
 /**
  * <p>
@@ -219,7 +219,7 @@ public class VendingMachine
 	private void updateRankedList() {
 
 		updateScoredTablePerspectives();
-		
+
 		rankColumn.clear();
 		rankedElementToElementLayout.clear();
 
@@ -285,13 +285,13 @@ public class VendingMachine
 		TablePerspective tablePerspective = rankedElements.get(selectedTablePerspectiveIndex)
 				.getColumnTablePerspective();
 		addTablePerspectiveToStratomex(tablePerspective);
-		
+
 		// Move newly added table perspective to be right of the reference table
 		// perspective
 		brickColumnManager.moveBrickColumn(
-				brickColumnManager.getBrickColumn(tablePerspective), brickColumnManager
-						.indexOfBrickColumn(referenceBrickColumn)+1);
-		
+				brickColumnManager.getBrickColumn(tablePerspective),
+				brickColumnManager.indexOfBrickColumn(referenceBrickColumn) + 1);
+
 		rankedElementToElementLayout.get(rankedElements.get(0)).addBackgroundRenderer(
 				highlightRankBackgroundRenderer);
 
@@ -375,7 +375,6 @@ public class VendingMachine
 
 	public void setTablePerspective(TablePerspective referenceTablePerspective) {
 
-		selectedTablePerspectiveIndex = 0;
 		isActive = true;
 		stratomex.getLayout().getLayoutManager().updateLayout();
 
@@ -390,39 +389,45 @@ public class VendingMachine
 	}
 
 	private void updateScoredTablePerspectives() {
-	
+
 		tablePerspectives.clear();
 		for (Button dataDomainButton : dataDomainButtons) {
 
 			if (!dataDomainButton.isSelected())
 				continue;
-			
+
 			ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID(dataDomainButton.getPickingType());
 
-			// We take the first dimension perspective we find
-			String dimensionPerspectiveID = (String) dataDomain.getDimensionPerspectiveIDs()
-					.toArray()[0];
+			if (dataDomain.getLabel().contains("Mutation") || dataDomain.getLabel().contains("Copy")) {
+				tablePerspectives.addAll(dataDomain.getAllTablePerspectives());
+			}
+			else {
+				// We take the first dimension perspective we find
+				String dimensionPerspectiveID = (String) dataDomain
+						.getDimensionPerspectiveIDs().toArray()[0];
 
-			Set<String> rowIDs = dataDomain.getRecordPerspectiveIDs();
+				Set<String> rowIDs = dataDomain.getRecordPerspectiveIDs();
 
-			for (String id : rowIDs) {
-				RecordPerspective perspective = dataDomain.getTable().getRecordPerspective(id);
-				if (perspective.isPrivate()) {
-					continue;
+				for (String id : rowIDs) {
+//					RecordPerspective perspective = dataDomain.getTable()
+//							.getRecordPerspective(id);
+//					if (perspective.isPrivate()) {
+//						continue;
+//					}
+
+					TablePerspective newTablePerspective = dataDomain.getTablePerspective(id,
+							dimensionPerspectiveID);
+					newTablePerspective.setPrivate(true);
+
+					// Do not add the current reference table perspectives to
+					// scoring
+					if (referenceTablePerspective == newTablePerspective
+							|| referenceBrickColumn.getTablePerspective() == newTablePerspective)
+						continue;
+
+					tablePerspectives.add(newTablePerspective);
 				}
-
-				TablePerspective newTablePerspective = dataDomain.getTablePerspective(id,
-						dimensionPerspectiveID);
-				newTablePerspective.setPrivate(true);
-
-				// Do not add the current reference table perspectives to
-				// scoring
-				if (referenceTablePerspective == newTablePerspective
-						|| referenceBrickColumn.getTablePerspective() == newTablePerspective)
-					continue;
-
-				tablePerspectives.add(newTablePerspective);
 			}
 		}
 	}
@@ -434,6 +439,10 @@ public class VendingMachine
 		for (ATableBasedDataDomain dataDomain : DataDomainManager.get().getDataDomainsByType(
 				ATableBasedDataDomain.class)) {
 
+			// FIXME: make sure that this will be done only once - even if stratomex is opened multiple times
+			if (dataDomain.getLabel().contains("Mutation") || dataDomain.getLabel().contains("Copy"))
+				CategoricalTablePerspectiveCreator.createAllTablePerspectives(dataDomain);
+			
 			Row singleDataSetRow = new Row("singleDataSetRow");
 			singleDataSetRow.setGrabX(true);
 			singleDataSetRow.setPixelSizeY(20);
