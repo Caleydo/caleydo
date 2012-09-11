@@ -335,7 +335,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 		return container;
 	}
-
+	
 	/**
 	 * Returns a data container based on its key
 	 * 
@@ -363,8 +363,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 */
 	public boolean hasTablePerspective(String recordPerspectiveID,
 			String dimensionPerspectiveID) {
-		return tablePerspectives.get(TablePerspective.createKey(recordPerspectiveID,
-				dimensionPerspectiveID)) != null;
+		return tablePerspectives.containsKey(TablePerspective.createKey(recordPerspectiveID,
+				dimensionPerspectiveID));
 	}
 
 	/**

@@ -2,6 +2,7 @@
  * 
  */
 package org.caleydo.core.data.perspective.table;
+
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  * 
@@ -51,7 +52,7 @@ public class CategoricalTablePerspectiveCreator {
 			rowPerspectiveID = dataDomain.getDefaultTablePerspective().getRecordPerspective()
 					.getPerspectiveID();
 			rowIDType = dataDomain.getRecordIDType();
-			
+
 			for (int rowID : dataDomain.getRecordVA(rowPerspectiveID)) {
 				createTablePerspeciveByRowID(dataDomain, rowID, rowIDType, true);
 			}
@@ -60,7 +61,7 @@ public class CategoricalTablePerspectiveCreator {
 			rowPerspectiveID = dataDomain.getDefaultTablePerspective()
 					.getDimensionPerspective().getPerspectiveID();
 			rowIDType = dataDomain.getDimensionIDType();
-			
+
 			for (int rowID : dataDomain.getDimensionVA(rowPerspectiveID)) {
 				createTablePerspeciveByRowID(dataDomain, rowID, rowIDType, true);
 			}
@@ -146,10 +147,19 @@ public class CategoricalTablePerspectiveCreator {
 		}
 
 		if (binnedPerspective != null) {
+			
+			boolean existsAlready = false;
+			if (dataDomain.hasTablePerspective(binnedPerspective.getPerspectiveID(), perspective.getPerspectiveID()))
+				existsAlready = true;
+			
 			TablePerspective tablePerspective = dataDomain.getTablePerspective(
 					binnedPerspective.getPerspectiveID(), perspective.getPerspectiveID());
 			tablePerspective.setLabel(label, false);
-			tablePerspective.setPrivate(isTablePerspectivePrivate);
+
+			// We do not want to overwrite the state of already existing public table perspectives.
+			if (!existsAlready)
+				tablePerspective.setPrivate(true);
+
 			tablePerspective.getContainerStatistics().setNumberOfBucketsForHistogram(
 					numberOfBins);
 		}
@@ -168,7 +178,7 @@ public class CategoricalTablePerspectiveCreator {
 		for (Integer recordID : recordPerspective.getVirtualArray()) {
 			float value = table.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
 
-			//System.out.println(value);
+			// System.out.println(value);
 
 			// this works because value is normalized
 			int bin = (int) (value * nrBins);

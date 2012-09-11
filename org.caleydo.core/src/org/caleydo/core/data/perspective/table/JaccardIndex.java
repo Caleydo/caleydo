@@ -79,18 +79,15 @@ public class JaccardIndex {
 
 			int intersectionCount = 0;
 
-			// System.out.println("Group1: " + (group.getEndIndex() -
-			// group.getStartIndex()));
-
-			// System.out.println("Group2: "
-			// + (group2.getEndIndex() - group2.getStartIndex()));
-
 			Group subGroup = subTablePerspective.getRecordGroup();
-
-//			System.out.println("subtable perspective " + subGroup.getLabel());
-
+			
+			if (subGroup.getLabel().equals("Not Mutated") || subGroup.getLabel().equals("Normal"))
+				continue;
+			
 			if (subGroup.getSize() == 0)
 				continue;
+
+//			System.out.println("subtable perspective " + subGroup.getLabel());
 
 			for (int vaIndex = 0; vaIndex < referenceGroup.getSize(); vaIndex++) {
 

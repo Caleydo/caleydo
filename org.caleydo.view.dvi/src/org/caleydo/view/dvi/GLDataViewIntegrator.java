@@ -42,7 +42,6 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -72,10 +71,8 @@ import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ARcpGLViewPart;
-import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.RCPViewInitializationData;
 import org.caleydo.core.view.RCPViewManager;
-import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -138,7 +135,7 @@ import org.eclipse.ui.PlatformUI;
 public class GLDataViewIntegrator
 	extends AGLView
 	implements IViewCommandHandler {
-	
+
 	public static String VIEW_TYPE = "org.caleydo.view.dvi";
 
 	public static String VIEW_NAME = "Data-View Integrator";
@@ -193,8 +190,6 @@ public class GLDataViewIntegrator
 	private boolean waitForMinSizeApplication = false;
 	private boolean isRendered = false;
 	private boolean showDataConnections = false;
-
-	private boolean isVendingMachineMode = false;
 
 	/**
 	 * Constructor.
@@ -1023,25 +1018,15 @@ public class GLDataViewIntegrator
 				TablePerspective tablePerspective = dataDomain.getTablePerspective(
 						currentRecordPerspeciveID, currentDimensionPerspeciveID);
 				tablePerspective.setLabel(tablePerspectiveLabel, false);
-				tablePerspective.setPrivate(false);
-
-				if (isVendingMachineMode) {
-
-					for (AGLView glView : getRemoteRenderingGLView().getRemoteRenderedViews()) {
-						// FIXME: find a better way to send table perspective
-						// only to vending machine stratomeX
-						if (glView != null
-								&& glView.getViewType().equals("org.caleydo.view.stratomex")
-								&& glView.isRenderedRemote()) {
-							AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(
-									tablePerspective);
-							event.setReceiver((IMultiTablePerspectiveBasedView) glView);
-							event.setSender(this);
-							GeneralManager.get().getEventPublisher().triggerEvent(event);
-
-							break;
-						}
-					}
+				
+				if (tablePerspective.isPrivate())
+				{
+					tablePerspective.setPrivate(false);
+					
+					DataDomainUpdateEvent event = new DataDomainUpdateEvent(
+							(IDataDomain) dataDomain);
+					event.setSender(this);
+					GeneralManager.get().getEventPublisher().triggerEvent(event);
 				}
 			}
 		});
@@ -1203,20 +1188,6 @@ public class GLDataViewIntegrator
 
 	public boolean isShowDataConnections() {
 		return showDataConnections;
-	}
-
-	/**
-	 * @param isVendingMachineMode setter, see {@link #isVendingMachineMode}
-	 */
-	public void setVendingMachineMode(boolean isVendingMachineMode) {
-		this.isVendingMachineMode = isVendingMachineMode;
-	}
-
-	/**
-	 * @return the isVendingMachineMode, see {@link #isVendingMachineMode}
-	 */
-	public boolean isVendingMachineMode() {
-		return isVendingMachineMode;
 	}
 
 	@Override

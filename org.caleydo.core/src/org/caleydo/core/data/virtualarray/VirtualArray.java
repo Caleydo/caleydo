@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -32,10 +32,6 @@ import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.id.object.ManagedObjectType;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.base.AUniqueObject;
-import org.caleydo.core.util.base.IUniqueObject;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
@@ -52,12 +48,17 @@ import org.eclipse.core.runtime.Status;
  * </p>
  * 
  * @author Alexander Lex
+ * @author Marc Streit
  */
 @XmlType
 public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteType, VADelta, GroupType>, VADelta extends VirtualArrayDelta<?>, GroupType extends GroupList<GroupType, ConcreteType, VADelta>>
-	extends AUniqueObject
-	implements Iterable<Integer>, IUniqueObject, Cloneable {
+	implements Iterable<Integer>, Cloneable {
 
+	private static int VIRTUAL_ARRAY_ID_COUNTER = 0;
+	
+	/** unique ID */	
+	private int id = 0;
+	
 	@XmlTransient
 	protected IDType idType;
 
@@ -68,15 +69,14 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	GroupType groupList = null;
 
 	public VirtualArray() {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIRTUAL_ARRAY));
 	}
 
 	public VirtualArray(IDType idType) {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIRTUAL_ARRAY));
 		setIdType(idType);
 	}
 
 	{
+		id = VIRTUAL_ARRAY_ID_COUNTER++;
 		this.virtualArrayList = new ArrayList<Integer>();
 		idMap = new IDMap(virtualArrayList);
 	}
@@ -89,7 +89,6 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * @param initialList
 	 */
 	public VirtualArray(IDType idType, List<Integer> initialList) {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIRTUAL_ARRAY));
 		setIdType(idType);
 		if (initialList != null)
 			virtualArrayList.addAll(initialList);
@@ -358,8 +357,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	}
 
 	/**
-	 * Returns the array list which contains the list of vaIDs. DO
-	 * NOT EDIT THIS LIST
+	 * Returns the array list which contains the list of vaIDs. DO NOT EDIT THIS
+	 * LIST
 	 * 
 	 * @return the list containing the dimension indices
 	 */
@@ -496,10 +495,10 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * Replace the internally created ID with the specified. Used when this VA
 	 * replaces another VA
 	 * 
-	 * @param uniqueID
+	 * @param id
 	 */
-	public void tableID(int iUniqueID) {
-		this.uniqueID = iUniqueID;
+	public void tableID(int id) {
+		this.id = id;
 	}
 
 	@Override
@@ -527,5 +526,12 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 			sampleElementIndex += node.getNrLeaves();
 		}
 		return groupList;
+	}
+	
+	/**
+	 * @return the id, see {@link #id}
+	 */
+	public int getID() {
+		return id;
 	}
 }

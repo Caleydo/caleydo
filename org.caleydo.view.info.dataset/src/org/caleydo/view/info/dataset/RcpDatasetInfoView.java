@@ -54,14 +54,15 @@ public class RcpDatasetInfoView
 	private ATableBasedDataDomain dataDomain;
 
 	private Label nameLabel;
-
 	private Label recordLabel;
-
 	private Label dimensionLabel;
-
 	private Label sourceLabel;
+	
+	private Composite infoComposite;
 
 	private RcpGLColorMapperHistogramView histogramView;
+
+	private boolean isGUIInitialized = false;
 
 	/**
 	 * Constructor.
@@ -94,53 +95,12 @@ public class RcpDatasetInfoView
 
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 
-		Composite infoComposite = new Composite(parentComposite, SWT.NULL);
+		infoComposite = new Composite(parentComposite, SWT.NULL);
 		infoComposite.setLayout(new GridLayout(1, false));
 		infoComposite.setLayoutData(gridData);
 
-		if (dataDomain == null) {
-			nameLabel = new Label(infoComposite, SWT.NONE);
-			nameLabel.setText("No data set active");
-		}
-		else {
-			nameLabel = new Label(infoComposite, SWT.NONE);
-			recordLabel = new Label(infoComposite, SWT.NONE);
-			dimensionLabel = new Label(infoComposite, SWT.NONE);
-			sourceLabel = new Label(infoComposite, SWT.NONE);
-
-			ExpandBar bar = new ExpandBar(parentComposite, SWT.V_SCROLL);
-			gridData = new GridData(GridData.FILL_BOTH);
-			bar.setLayoutData(gridData);
-
-			// Third item
-			Composite composite = new Composite(bar, SWT.NONE);
-			composite.setLayout(new FillLayout());
-
-			histogramView = new RcpGLColorMapperHistogramView();
-			histogramView.setDataDomain(dataDomain);
-			SerializedHistogramView serializedHistogramView = new SerializedHistogramView();
-			serializedHistogramView.setDataDomainID(dataDomain.getDataDomainID());
-			serializedHistogramView
-					.setTablePerspectiveKey(((ASerializedSingleTablePerspectiveBasedView) serializedView)
-							.getTablePerspectiveKey());
-
-			histogramView.setExternalSerializedView(serializedHistogramView);
-			histogramView.createPartControl(composite);
-			// Usually the canvas is registered to the GL2 animator in the
-			// PartListener. Because the GL2 histogram is no usual RCP view we
-			// have to do it on our own
-			GeneralManager.get().getViewManager()
-					.registerGLCanvasToAnimator(histogramView.getGLCanvas());
-			ExpandItem item2 = new ExpandItem(bar, SWT.NONE, 0);
-			item2.setText("Histogram");
-			item2.setHeight(200);
-			item2.setControl(composite);
-			item2.setExpanded(true);
-
-			bar.setSpacing(2);
-		
-			updateDataSetInfo();
-		}
+		nameLabel = new Label(infoComposite, SWT.NONE);
+		nameLabel.setText("No data set active                       ");
 
 		parent.layout();
 	}
@@ -162,6 +122,11 @@ public class RcpDatasetInfoView
 	}
 	
 	private void updateDataSetInfo() {
+		
+		if (!isGUIInitialized ) {
+			initGUI();
+		}
+		
 		nameLabel.setText("Name: " + dataDomain.getLabel());
 
 		recordLabel.setText(dataDomain.getRecordDenomination(true, true) + ": "
@@ -175,6 +140,45 @@ public class RcpDatasetInfoView
 		
 		((GLHistogram)histogramView.getGLView()).setHistogram(dataDomain.getDefaultTablePerspective().getContainerStatistics().getHistogram());
 		((GLHistogram)histogramView.getGLView()).setDisplayListDirty();
+	}
+
+	private void initGUI() {
+		recordLabel = new Label(infoComposite, SWT.NONE);
+		dimensionLabel = new Label(infoComposite, SWT.NONE);
+		sourceLabel = new Label(infoComposite, SWT.NONE);
+		
+		ExpandBar bar = new ExpandBar(parentComposite, SWT.V_SCROLL);
+		GridData gridData = new GridData(GridData.FILL_BOTH);
+		bar.setLayoutData(gridData);
+
+		// Third item
+		Composite composite = new Composite(bar, SWT.NONE);
+		composite.setLayout(new FillLayout());
+
+		histogramView = new RcpGLColorMapperHistogramView();
+		histogramView.setDataDomain(dataDomain);
+		SerializedHistogramView serializedHistogramView = new SerializedHistogramView();
+		serializedHistogramView.setDataDomainID(dataDomain.getDataDomainID());
+		serializedHistogramView
+				.setTablePerspectiveKey(((ASerializedSingleTablePerspectiveBasedView) serializedView)
+						.getTablePerspectiveKey());
+
+		histogramView.setExternalSerializedView(serializedHistogramView);
+		histogramView.createPartControl(composite);
+		// Usually the canvas is registered to the GL2 animator in the
+		// PartListener. Because the GL2 histogram is no usual RCP view we
+		// have to do it on our own
+		GeneralManager.get().getViewManager()
+				.registerGLCanvasToAnimator(histogramView.getGLCanvas());
+		ExpandItem item2 = new ExpandItem(bar, SWT.NONE, 0);
+		item2.setText("Histogram");
+		item2.setHeight(200);
+		item2.setControl(composite);
+		item2.setExpanded(true);
+
+		bar.setSpacing(2);
+		
+		isGUIInitialized = true;
 	}
 
 	@Override

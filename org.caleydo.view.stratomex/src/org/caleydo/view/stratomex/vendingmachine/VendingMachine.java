@@ -218,6 +218,8 @@ public class VendingMachine
 
 	private void updateRankedList() {
 
+		selectedTablePerspectiveIndex = 0;
+
 		updateScoredTablePerspectives();
 
 		rankColumn.clear();
@@ -399,7 +401,8 @@ public class VendingMachine
 			ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID(dataDomainButton.getPickingType());
 
-			if (dataDomain.getLabel().contains("Mutation") || dataDomain.getLabel().contains("Copy")) {
+			if (dataDomain.getLabel().contains("Mutation")
+					|| dataDomain.getLabel().contains("Copy")) {
 				tablePerspectives.addAll(dataDomain.getAllTablePerspectives());
 			}
 			else {
@@ -410,16 +413,19 @@ public class VendingMachine
 				Set<String> rowIDs = dataDomain.getRecordPerspectiveIDs();
 
 				for (String id : rowIDs) {
-//					RecordPerspective perspective = dataDomain.getTable()
-//							.getRecordPerspective(id);
-//					if (perspective.isPrivate()) {
-//						continue;
-//					}
+					
+					boolean existsAlready = false;
+					if (dataDomain.hasTablePerspective(id,
+							dimensionPerspectiveID))
+						existsAlready = true;
 
 					TablePerspective newTablePerspective = dataDomain.getTablePerspective(id,
 							dimensionPerspectiveID);
-					newTablePerspective.setPrivate(true);
-
+					
+					// We do not want to overwrite the state of already existing public table perspectives.
+					if (!existsAlready)
+						newTablePerspective.setPrivate(true);
+					
 					// Do not add the current reference table perspectives to
 					// scoring
 					if (referenceTablePerspective == newTablePerspective
@@ -439,10 +445,6 @@ public class VendingMachine
 		for (ATableBasedDataDomain dataDomain : DataDomainManager.get().getDataDomainsByType(
 				ATableBasedDataDomain.class)) {
 
-			// FIXME: make sure that this will be done only once - even if stratomex is opened multiple times
-			if (dataDomain.getLabel().contains("Mutation") || dataDomain.getLabel().contains("Copy"))
-				CategoricalTablePerspectiveCreator.createAllTablePerspectives(dataDomain);
-			
 			Row singleDataSetRow = new Row("singleDataSetRow");
 			singleDataSetRow.setGrabX(true);
 			singleDataSetRow.setPixelSizeY(20);
@@ -452,7 +454,13 @@ public class VendingMachine
 
 			final Button dataDomainButton = new Button(dataDomain.getDataDomainID(),
 					TEST_BUTTON_PICKING_ID, EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
-			dataDomainButton.setSelected(true);
+
+			if ((dataDomain.getLabel().contains("Mutation") || dataDomain.getLabel().contains(
+					"Copy")))
+				dataDomainButton.setSelected(false);
+			else
+				dataDomainButton.setSelected(true);
+
 			dataDomainButtons.add(dataDomainButton);
 
 			ButtonRenderer dataDomainButtonRenderer = new ButtonRenderer(dataDomainButton,
@@ -464,6 +472,17 @@ public class VendingMachine
 				@Override
 				public void clicked(Pick pick) {
 					dataDomainButton.setSelected(!dataDomainButton.isSelected());
+
+					if (dataDomainButton.isSelected()) {
+
+						// FIXME make sure that this happens only once
+						ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
+								.get().getDataDomainByID(dataDomainButton.getPickingType());
+						if ((dataDomain.getLabel().contains("Mutation") || dataDomain
+								.getLabel().contains("Copy")))
+							CategoricalTablePerspectiveCreator.createAllTablePerspectives(dataDomain);
+					}
+
 					updateRankedList();
 				}
 

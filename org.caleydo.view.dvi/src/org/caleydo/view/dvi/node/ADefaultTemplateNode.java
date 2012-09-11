@@ -134,6 +134,10 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		float spacingX = pixelGLConverter.getGLWidthForPixelWidth(spacingXPixels);
 		float spacingY = pixelGLConverter.getGLHeightForPixelHeight(spacingYPixels);
 
+		// FIXME Why is this null in some cases??
+		if (anchorPoints == null)
+			return new Pair<Point2D, Point2D>(new Point2D.Float(0,0), new Point2D.Float(0,0));
+		
 		Point2D first = (Point2D) anchorPoints.getFirst().clone();
 		Point2D second = (Point2D) anchorPoints.getSecond().clone();
 

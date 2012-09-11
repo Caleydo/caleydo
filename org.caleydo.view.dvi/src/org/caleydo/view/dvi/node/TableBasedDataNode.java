@@ -507,9 +507,13 @@ public class TableBasedDataNode
 			for (RecordPerspective recordPerspective : sortedRecordPerspectives) {
 				if (dataDomain.hasTablePerspective(recordPerspective.getPerspectiveID(),
 						dimensionPerspective.getPerspectiveID())) {
-					tablePerspectives.add(dataDomain.getTablePerspective(
+
+					TablePerspective tablePerspective = dataDomain.getTablePerspective(
 							recordPerspective.getPerspectiveID(),
-							dimensionPerspective.getPerspectiveID()));
+							dimensionPerspective.getPerspectiveID());
+
+					if (!tablePerspective.isPrivate())
+						tablePerspectives.add(tablePerspective);
 				}
 			}
 		}

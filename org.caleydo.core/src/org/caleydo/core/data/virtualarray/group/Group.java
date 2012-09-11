@@ -21,20 +21,22 @@ package org.caleydo.core.data.virtualarray.group;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.id.object.ManagedObjectType;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.base.AUniqueObject;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
 
 /**
  * @author Bernhard Schlegl
  * @author Alexander Lex
+ * @author Marc Streit
  */
-public class Group extends AUniqueObject implements IDefaultLabelHolder {
+public class Group implements IDefaultLabelHolder {
 
+	private static int GROUP_ID_COUNTER = 0;
+	
+	/** unique ID */	
+	private int id = 0;
+	
 	/** number of elements in the group/cluster */
 	private int size = 0;
 
@@ -91,8 +93,8 @@ public class Group extends AUniqueObject implements IDefaultLabelHolder {
 	}
 
 	{
-		uniqueID = GeneralManager.get().getIDCreator().createID(ManagedObjectType.GROUP);
-		label = "Group " + uniqueID;
+		id = GROUP_ID_COUNTER++;
+		label = "Group " + id;
 	}
 
 	/**
@@ -249,5 +251,12 @@ public class Group extends AUniqueObject implements IDefaultLabelHolder {
 	@Override
 	public void setLabel(String label) {
 		this.label = label;
+	}
+	
+	/**
+	 * @return the id, see {@link #id}
+	 */
+	public int getID() {
+		return id;
 	}
 }

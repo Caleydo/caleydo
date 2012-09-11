@@ -95,6 +95,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 
 	/** The static counter used to create unique ids */
 	private static int idCounter;
+	
 	/** The unique id of the data container */
 	private int id;
 
