@@ -107,7 +107,7 @@ public class CategoricalTablePerspectiveCreator {
 			dataDomain.getTable().registerDimensionPerspective(
 					(DimensionPerspective) perspective, false);
 		}
-		perspective.setPrivate(true);
+		perspective.setPrivate(isTablePerspectivePrivate);
 		
 		String label = idMappingManager.getID(sourceRowIDType, rowIDType.getIDCategory()
 				.getHumanReadableIDType(), rowID);
@@ -135,7 +135,7 @@ public class CategoricalTablePerspectiveCreator {
 				groupLabels.add("High level amplification");
 				numberOfBins = 5;
 				binnedPerspective = binRecords(numberOfBins, convertedID, recordPerspective,
-						dataDomain, label, groupLabels);
+						dataDomain, label, groupLabels, isTablePerspectivePrivate);
 				break;
 			}
 		}
@@ -148,7 +148,7 @@ public class CategoricalTablePerspectiveCreator {
 				groupLabels.add("Mutated");
 				numberOfBins = 2;
 				binnedPerspective = binRecords(numberOfBins, convertedID, recordPerspective,
-						dataDomain, label, groupLabels);
+						dataDomain, label, groupLabels, isTablePerspectivePrivate);
 				break;
 
 			}
@@ -166,7 +166,7 @@ public class CategoricalTablePerspectiveCreator {
 
 			// We do not want to overwrite the state of already existing public table perspectives.
 			if (!existsAlready)
-				tablePerspective.setPrivate(true);
+				tablePerspective.setPrivate(isTablePerspectivePrivate);
 
 			tablePerspective.getContainerStatistics().setNumberOfBucketsForHistogram(
 					numberOfBins);
@@ -175,7 +175,7 @@ public class CategoricalTablePerspectiveCreator {
 
 	private static RecordPerspective binRecords(int nrBins, Integer dimensionID,
 			RecordPerspective recordPerspective, ATableBasedDataDomain dataDomain,
-			String label, ArrayList<String> groupLabels) {
+			String label, ArrayList<String> groupLabels, boolean isTablePerspectivePrivate) {
 
 		ArrayList<ArrayList<Integer>> bins = new ArrayList<ArrayList<Integer>>(nrBins);
 		for (int count = 0; count < nrBins; count++) {
@@ -212,7 +212,7 @@ public class CategoricalTablePerspectiveCreator {
 		RecordPerspective binnedPerspective = new RecordPerspective(dataDomain);
 		binnedPerspective.init(data);
 		binnedPerspective.setLabel(label, false);
-		binnedPerspective.setPrivate(true);
+		binnedPerspective.setPrivate(isTablePerspectivePrivate);
 		table.registerRecordPerspective(binnedPerspective, false);
 
 		return binnedPerspective;

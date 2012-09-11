@@ -29,6 +29,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.CategoricalTablePerspectiveCreator;
+import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
@@ -749,6 +750,10 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 				new CategoricalTablePerspectiveCreator().createTablePerspeciveByRowID(dataDomain,
 						(Integer) tableItem.getData(), davidIDType, false);
 
+				DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
+				event.setSender(this);
+				GeneralManager.get().getEventPublisher().triggerEvent(event);
+				
 				// Switch to DVI view
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
