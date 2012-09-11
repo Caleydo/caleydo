@@ -746,7 +746,7 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 	
-				CategoricalTablePerspectiveCreator.createTablePerspeciveByRowID(dataDomain,
+				new CategoricalTablePerspectiveCreator().createTablePerspeciveByRowID(dataDomain,
 						(Integer) tableItem.getData(), davidIDType, false);
 
 				// Switch to DVI view

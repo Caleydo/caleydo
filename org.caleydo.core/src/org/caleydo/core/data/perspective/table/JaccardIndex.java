@@ -138,8 +138,7 @@ public class JaccardIndex {
 		}
 
 		long endTime = System.currentTimeMillis();
-		System.out.println("Calculation of Jaccard index of " + tablePerspective.getLabel()
-				+ " took " + (endTime - startTime) + "ms");
+		System.out.println((endTime - startTime) + "ms for calculating Jaccard index of " + tablePerspective.getLabel());
 
 		if (storeResult) {
 			tablePerspectiveToScore.put(tablePerspective, subTablePerspetiveToScore);

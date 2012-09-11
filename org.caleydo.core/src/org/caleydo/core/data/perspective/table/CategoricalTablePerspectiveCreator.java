@@ -31,9 +31,11 @@ import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Helper class that generates table perspectives for categorical datasets.
@@ -43,7 +45,7 @@ import org.caleydo.core.id.IDType;
  */
 public class CategoricalTablePerspectiveCreator {
 
-	public static void createAllTablePerspectives(ATableBasedDataDomain dataDomain) {
+	public void createAllTablePerspectives(ATableBasedDataDomain dataDomain) {
 
 		String rowPerspectiveID = null;
 		IDType rowIDType = null;
@@ -66,9 +68,13 @@ public class CategoricalTablePerspectiveCreator {
 				createTablePerspeciveByRowID(dataDomain, rowID, rowIDType, true);
 			}
 		}
+		
+		DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
-	public static void createTablePerspeciveByRowID(ATableBasedDataDomain dataDomain,
+	public void createTablePerspeciveByRowID(ATableBasedDataDomain dataDomain,
 			int rowID, IDType sourceRowIDType, boolean isTablePerspectivePrivate) {
 
 		IDType rowIDType = null;
@@ -94,13 +100,15 @@ public class CategoricalTablePerspectiveCreator {
 
 		if (dataDomain.isColumnDimension()) {
 			perspective = new RecordPerspective(dataDomain);
-			dataDomain.getTable().registerRecordPerspective((RecordPerspective) perspective);
+			dataDomain.getTable().registerRecordPerspective((RecordPerspective) perspective, false);
 		}
 		else {
 			perspective = new DimensionPerspective(dataDomain);
 			dataDomain.getTable().registerDimensionPerspective(
-					(DimensionPerspective) perspective);
+					(DimensionPerspective) perspective, false);
 		}
+		perspective.setPrivate(true);
+		
 		String label = idMappingManager.getID(sourceRowIDType, rowIDType.getIDCategory()
 				.getHumanReadableIDType(), rowID);
 		perspective.setLabel(label, false);
@@ -153,7 +161,7 @@ public class CategoricalTablePerspectiveCreator {
 				existsAlready = true;
 			
 			TablePerspective tablePerspective = dataDomain.getTablePerspective(
-					binnedPerspective.getPerspectiveID(), perspective.getPerspectiveID());
+					binnedPerspective.getPerspectiveID(), perspective.getPerspectiveID(), false);
 			tablePerspective.setLabel(label, false);
 
 			// We do not want to overwrite the state of already existing public table perspectives.
@@ -204,7 +212,8 @@ public class CategoricalTablePerspectiveCreator {
 		RecordPerspective binnedPerspective = new RecordPerspective(dataDomain);
 		binnedPerspective.init(data);
 		binnedPerspective.setLabel(label, false);
-		table.registerRecordPerspective(binnedPerspective);
+		binnedPerspective.setPrivate(true);
+		table.registerRecordPerspective(binnedPerspective, false);
 
 		return binnedPerspective;
 	}

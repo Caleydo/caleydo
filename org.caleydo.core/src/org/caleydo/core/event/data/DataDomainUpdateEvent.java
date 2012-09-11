@@ -25,7 +25,7 @@ import org.caleydo.core.event.AEvent;
 /**
  * This Event should be triggered when the dimension groups of a data domain change.
  * 
- * @author Partl
+ * @author Christian Partl
  */
 public class DataDomainUpdateEvent
 	extends AEvent {

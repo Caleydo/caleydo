@@ -106,9 +106,10 @@ import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
  */
 @XmlType
 @XmlRootElement
-public abstract class ATableBasedDataDomain extends ADataDomain implements
-		IRecordVADeltaHandler, IDimensionChangeHandler, ISelectionUpdateHandler,
-		ISelectionCommandHandler {
+public abstract class ATableBasedDataDomain
+	extends ADataDomain
+	implements IRecordVADeltaHandler, IDimensionChangeHandler, ISelectionUpdateHandler,
+	ISelectionCommandHandler {
 
 	/** The raw data for this data domain. */
 	protected DataTable table;
@@ -192,8 +193,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	/**
-	 * @param tablePerspectives
-	 *            setter, see {@link #tablePerspectives}
+	 * @param tablePerspectives setter, see {@link #tablePerspectives}
 	 */
 	public void setTablePerspectives(HashMap<String, TablePerspective> tablePerspectives) {
 		this.tablePerspectives = tablePerspectives;
@@ -206,7 +206,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	{
 		defaultStartViewType = "org.caleydo.view.heatmap.hierarchical";
 	}
-	
+
 	/**
 	 * @return the isColumnDimension, see {@link #isColumnDimension}
 	 */
@@ -222,7 +222,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 					.getColumnIDSpecification().getIdCategory());
 			dimensionIDCategory = IDCategory.getIDCategory(dataSetDescription
 					.getRowIDSpecification().getIdCategory());
-		} else {
+		}
+		else {
 			recordIDCategory = IDCategory.getIDCategory(dataSetDescription
 					.getRowIDSpecification().getIdCategory());
 			dimensionIDCategory = IDCategory.getIDCategory(dataSetDescription
@@ -233,12 +234,12 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		recordIDType = IDType.registerType("record_" + dataDomainID + "_" + hashCode(),
 				recordIDCategory, EDataType.INT);
 		recordIDType.setInternalType(true);
-		dimensionIDType = IDType.registerType("dimension_" + dataDomainID + "_"
-				+ hashCode(), dimensionIDCategory, EDataType.INT);
+		dimensionIDType = IDType.registerType("dimension_" + dataDomainID + "_" + hashCode(),
+				dimensionIDCategory, EDataType.INT);
 		dimensionIDType.setInternalType(true);
 
-		recordGroupIDCategory = IDCategory.registerCategory(recordIDCategory
-				.getCategoryName() + "_GROUP");
+		recordGroupIDCategory = IDCategory.registerCategory(recordIDCategory.getCategoryName()
+				+ "_GROUP");
 		recordGroupIDCategory.setInternalCategory(true);
 		recordGroupIDType = IDType.registerType("group_record_" + dataDomainID + "_"
 				+ hashCode(), recordGroupIDCategory, EDataType.INT);
@@ -247,8 +248,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		dimensionGroupIDCategory = IDCategory.registerCategory(dimensionIDCategory
 				.getCategoryName() + "_GROUP");
 		dimensionGroupIDCategory.setInternalCategory(true);
-		dimensionGroupIDType = IDType.registerType("group_dimension_" + dataDomainID
-				+ "_" + hashCode(), dimensionGroupIDCategory, EDataType.INT);
+		dimensionGroupIDType = IDType.registerType("group_dimension_" + dataDomainID + "_"
+				+ hashCode(), dimensionGroupIDCategory, EDataType.INT);
 		dimensionGroupIDType.setInternalType(true);
 
 		recordIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
@@ -266,14 +267,13 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		super.init();
 
 	}
-	
+
 	/**
 	 * Sets the {@link #table} of this dataDomain. The table may not be null.
 	 * Initializes {@link #recordPerspectiveIDs} and
 	 * {@link #dimensionPerspectiveIDs}.
 	 * 
-	 * @param table
-	 *            The new set which replaced the currently loaded one.
+	 * @param table The new set which replaced the currently loaded one.
 	 */
 	public void setTable(DataTable table) {
 		if (table == null)
@@ -297,7 +297,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * and the {@link DimensionPerspective} specified. </p>
 	 * <p>
 	 * If such a container exists already, the existing container is returned.
-	 * If not, a new container is created.
+	 * If not, a new container is created and the datadomain will be notified.
+	 * 
 	 * </p>
 	 * 
 	 * @param recordPerspectiveID
@@ -306,12 +307,32 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 */
 	public TablePerspective getTablePerspective(String recordPerspectiveID,
 			String dimensionPerspectiveID) {
+		return getTablePerspective(recordPerspectiveID, dimensionPerspectiveID, true);
+	}
+
+	/**
+	 * Returns the {@link TablePerspective} for the {@link RecordPerspective}
+	 * and the {@link DimensionPerspective} specified. </p>
+	 * <p>
+	 * If such a container exists already, the existing container is returned.
+	 * If not, a new container is created.
+	 * </p>
+	 * 
+	 * @param recordPerspectiveID
+	 * @param dimensionPerspectiveID
+	 * @param flag that determines whether a datadomain update event will be
+	 *            sent or not
+	 * @return
+	 */
+	public TablePerspective getTablePerspective(String recordPerspectiveID,
+			String dimensionPerspectiveID, boolean notifyDataDomain) {
+
 		TablePerspective container = tablePerspectives.get(TablePerspective.createKey(
 				recordPerspectiveID, dimensionPerspectiveID));
 		if (container == null) {
 			RecordPerspective recordPerspective = table
 					.getRecordPerspective(recordPerspectiveID);
-			if (recordPerspective == null) 
+			if (recordPerspective == null)
 				throw new IllegalArgumentException(
 						"No record perspective registered with this datadomain for "
 								+ recordPerspectiveID);
@@ -323,19 +344,22 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 						"No dimension perspective registered with this datadomain for "
 								+ dimensionPerspectiveID);
 
-			container = new TablePerspective(this, recordPerspective,
-					dimensionPerspective);
+			container = new TablePerspective(this, recordPerspective, dimensionPerspective);
 
-			tablePerspectives.put(TablePerspective.createKey(recordPerspectiveID,
-					dimensionPerspectiveID), container);
-			DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
-			event.setSender(this);
-			GeneralManager.get().getEventPublisher().triggerEvent(event);
+			tablePerspectives.put(
+					TablePerspective.createKey(recordPerspectiveID, dimensionPerspectiveID),
+					container);
+
+			if (notifyDataDomain) {
+				DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
+				event.setSender(this);
+				GeneralManager.get().getEventPublisher().triggerEvent(event);
+			}
 		}
 
 		return container;
 	}
-	
+
 	/**
 	 * Returns a data container based on its key
 	 * 
@@ -348,9 +372,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 	/** Returns the data container made up of the default perspectives */
 	public TablePerspective getDefaultTablePerspective() {
-		return getTablePerspective(
-				table.getDefaultRecordPerspective().getPerspectiveID(), table
-						.getDefaultDimensionPerspective().getPerspectiveID());
+		return getTablePerspective(table.getDefaultRecordPerspective().getPerspectiveID(),
+				table.getDefaultDimensionPerspective().getPerspectiveID());
 	}
 
 	/**
@@ -484,8 +507,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	/**
 	 * Returns the virtual array for the type
 	 * 
-	 * @param recordPerspectiveID
-	 *            the type of VA requested
+	 * @param recordPerspectiveID the type of VA requested
 	 * @return
 	 */
 	public RecordVirtualArray getRecordVA(String recordPerspectiveID) {
@@ -497,8 +519,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	/**
 	 * Returns the virtual array for the type
 	 * 
-	 * @param dimensionPerspectiveID
-	 *            the type of VA requested
+	 * @param dimensionPerspectiveID the type of VA requested
 	 * @return
 	 */
 	public DimensionVirtualArray getDimensionVA(String dimensionPerspectiveID) {
@@ -532,8 +553,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	/**
-	 * @param colorMapper
-	 *            setter, see {@link #colorMapper}
+	 * @param colorMapper setter, see {@link #colorMapper}
 	 */
 	public void setColorMapper(ColorMapper colorMapper) {
 		this.colorMapper = colorMapper;
@@ -543,15 +563,14 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * Initiates clustering based on the parameters passed. Sends out an event
 	 * to all affected views upon positive completion to replace their VA.
 	 * 
-	 * @param tableID
-	 *            ID of the set to cluster
+	 * @param tableID ID of the set to cluster
 	 * @param clusterState
 	 */
 	public ClusterResult startClustering(ClusterConfiguration clusterState) {
 		// FIXME this should be re-designed so that the clustering is a separate
 		// thread and communicates via
 		// events
-	
+
 		ClusterManager clusterManager = new ClusterManager(this);
 		ClusterResult result = clusterManager.cluster(clusterState);
 
@@ -565,7 +584,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 			boolean registerLater = false;
 			if (clusterState.isModifyExistingPerspective()) {
 				targetDimensionPerspective = clusterState.getSourceDimensionPerspective();
-			} else {
+			}
+			else {
 				targetDimensionPerspective = clusterState
 						.getOptionalTargetDimensionPerspective();
 				if (targetDimensionPerspective == null) {
@@ -593,9 +613,9 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 			boolean registerLater = false;
 			if (clusterState.isModifyExistingPerspective()) {
 				targetRecordPerspective = clusterState.getSourceRecordPerspective();
-			} else {
-				targetRecordPerspective = clusterState
-						.getOptionalTargetRecordPerspective();
+			}
+			else {
+				targetRecordPerspective = clusterState.getOptionalTargetRecordPerspective();
 				if (targetRecordPerspective == null) {
 					registerLater = true;
 					targetRecordPerspective = new RecordPerspective(this);
@@ -603,18 +623,17 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 				}
 			}
 			targetRecordPerspective.init(recordResult);
-			targetRecordPerspective.setLabel(clusterState
-					.getClusterAlgorithmConfiguration().getClusterAlgorithmName()
+			targetRecordPerspective.setLabel(clusterState.getClusterAlgorithmConfiguration()
+					.getClusterAlgorithmName()
 					+ " "
-					+ targetRecordPerspective.getVirtualArray().getGroupList().size(),
-					false);
+					+ targetRecordPerspective.getVirtualArray().getGroupList().size(), false);
 			if (registerLater) {
 				table.registerRecordPerspective(targetRecordPerspective);
 			}
 			eventPublisher.triggerEvent(new RecordVAUpdateEvent(dataDomainID,
 					targetRecordPerspective.getPerspectiveID(), this));
 		}
-		
+
 		eventPublisher.triggerEvent(new DataDomainUpdateEvent(this));
 		return result;
 	}
@@ -693,7 +712,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		if (recordIDMappingManager.hasMapping(selectionDelta.getIDType(),
 				recordSelectionManager.getIDType())) {
 			recordSelectionManager.setDelta(selectionDelta);
-		} else if (dimensionIDMappingManager.hasMapping(selectionDelta.getIDType(),
+		}
+		else if (dimensionIDMappingManager.hasMapping(selectionDelta.getIDType(),
 				dimensionSelectionManager.getIDType())) {
 			dimensionSelectionManager.setDelta(selectionDelta);
 		}
@@ -704,8 +724,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	@Override
-	public void handleSelectionCommand(IDCategory idCategory,
-			SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand) {
 		// TODO Auto-generated method stub
 	}
 
@@ -715,9 +734,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * possible, it is converted to be compatible with the local dataDomain and
 	 * then sent out via a {@link SelectionUpdateEvent}.
 	 * 
-	 * @param dataDomainType
-	 *            the type of the dataDomain for which this selectionUpdate is
-	 *            intended
+	 * @param dataDomainType the type of the dataDomain for which this
+	 *            selectionUpdate is intended
 	 * @param delta
 	 * @param scrollToSelection
 	 * @param info
@@ -731,8 +749,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * foreign selection commands. Can be implemented in concrete classes, has
 	 * no functionality in base class.
 	 */
-	public void handleForeignSelectionCommand(String dataDomainType,
-			IDCategory idCategory, SelectionCommand selectionCommand) {
+	public void handleForeignSelectionCommand(String dataDomainType, IDCategory idCategory,
+			SelectionCommand selectionCommand) {
 		// may be interesting to implement in sub-class
 	}
 
@@ -755,12 +773,10 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * Returns the denomination for the records. For genetic data for example
 	 * this would be "Gene"
 	 * 
-	 * @param capitalized
-	 *            if true, the label is returned capitalized, e.g., "Gene", if
-	 *            false it would be "gene"
-	 * @param plural
-	 *            if true, the label is returned in the plural form of the word,
-	 *            e.g., "genes" instead of the singular form, e.g., "gene"
+	 * @param capitalized if true, the label is returned capitalized, e.g.,
+	 *            "Gene", if false it would be "gene"
+	 * @param plural if true, the label is returned in the plural form of the
+	 *            word, e.g., "genes" instead of the singular form, e.g., "gene"
 	 * @return the denomination formatted according to the parameters passed
 	 */
 	public String getRecordDenomination(boolean capitalized, boolean plural) {
@@ -799,8 +815,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * Get the human readable record label for the id, which is of the
 	 * {@link #recordIDType}.
 	 * 
-	 * @param id
-	 *            the id to convert to a human readable label
+	 * @param id the id to convert to a human readable label
 	 * @return the readable label
 	 */
 	public String getRecordLabel(Object id) {
@@ -811,8 +826,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * Get the human readable dimension label for the id, which is of the
 	 * {@link #dimensionIDType}.
 	 * 
-	 * @param id
-	 *            the id to convert to a human readable label
+	 * @param id the id to convert to a human readable label
 	 * @return the readable label
 	 */
 	public String getDimensionLabel(Object id) {
@@ -823,14 +837,13 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * Get the human readable record label for the id, which is of the type
 	 * specified.
 	 * 
-	 * @param idType
-	 *            the IDType of the id passed
+	 * @param idType the IDType of the id passed
 	 * @param id
 	 * @return the readable label
 	 */
 	public String getRecordLabel(IDType idType, Object id) {
-		Set<String> ids = recordIDMappingManager.getIDAsSet(idType, idType
-				.getIDCategory().getHumanReadableIDType(), id);
+		Set<String> ids = recordIDMappingManager.getIDAsSet(idType, idType.getIDCategory()
+				.getHumanReadableIDType(), id);
 		String label = "No Mapping";
 		if (ids != null && ids.size() > 0) {
 			label = ids.iterator().next();
@@ -840,8 +853,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 	/** Same as {@link #getRecordLabel(IDType, Object)} for dimensions */
 	public String getDimensionLabel(IDType idType, Object id) {
-		Set<String> ids = dimensionIDMappingManager.getIDAsSet(idType, idType
-				.getIDCategory().getHumanReadableIDType(), id);
+		Set<String> ids = dimensionIDMappingManager.getIDAsSet(idType, idType.getIDCategory()
+				.getHumanReadableIDType(), id);
 		String label = "No Mapping";
 		if (ids != null && ids.size() > 0) {
 			label = ids.iterator().next();
@@ -850,8 +863,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	public void aggregateGroups(java.util.Set<Integer> groups) {
-		System.out
-				.println("Received command to aggregate experiments, not implemented yet");
+		System.out.println("Received command to aggregate experiments, not implemented yet");
 	}
 
 	// FIXME CONTEXT MENU
@@ -887,7 +899,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 			return 0;
 		try {
 			return table.getMetaData().size() * table.getMetaData().depth();
-		} catch (NoSuchElementException e) {
+		}
+		catch (NoSuchElementException e) {
 			return 0;
 		}
 	}

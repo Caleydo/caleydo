@@ -33,7 +33,6 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.CategoricalTablePerspectiveCreator;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -87,6 +86,9 @@ public class VendingMachine
 
 	private static int MAX_RANKED_ELEMENTS = 15;
 
+	private static float[] RANK_SELECTION_COLOR = new float[] { 1, 1, 0, 1 };
+	private static float[] REFERENCE_SELECTION_COLOR = new float[] { 1, 0, 0, 1 };
+
 	private Column mainColumn;
 
 	private Column dataSetButtonListColumn;
@@ -119,6 +121,8 @@ public class VendingMachine
 
 	private ArrayList<Button> dataDomainButtons = new ArrayList<Button>();
 
+	private CategoricalTablePerspectiveCreator categoricalTablePerspectiveCreator = new CategoricalTablePerspectiveCreator();
+
 	/**
 	 * Constructor.
 	 * 
@@ -148,7 +152,7 @@ public class VendingMachine
 		detailLevel = EDetailLevel.HIGH;
 
 		textRenderer = new CaleydoTextRenderer(10);
-		highlightRankBackgroundRenderer = new ColorRenderer(new float[] { 1, 1, 0, 1 });
+		highlightRankBackgroundRenderer = new ColorRenderer(RANK_SELECTION_COLOR);
 	}
 
 	@Override
@@ -384,7 +388,7 @@ public class VendingMachine
 
 		// Highlight reference table
 		referenceBrickColumn.getLayout().addBackgroundRenderer(
-				new BrickColumnGlowRenderer(new float[] { 1, 0, 0 }, referenceBrickColumn,
+				new BrickColumnGlowRenderer(REFERENCE_SELECTION_COLOR, referenceBrickColumn,
 						false));
 
 		updateRankedList();
@@ -413,19 +417,19 @@ public class VendingMachine
 				Set<String> rowIDs = dataDomain.getRecordPerspectiveIDs();
 
 				for (String id : rowIDs) {
-					
+
 					boolean existsAlready = false;
-					if (dataDomain.hasTablePerspective(id,
-							dimensionPerspectiveID))
+					if (dataDomain.hasTablePerspective(id, dimensionPerspectiveID))
 						existsAlready = true;
 
 					TablePerspective newTablePerspective = dataDomain.getTablePerspective(id,
 							dimensionPerspectiveID);
-					
-					// We do not want to overwrite the state of already existing public table perspectives.
+
+					// We do not want to overwrite the state of already existing
+					// public table perspectives.
 					if (!existsAlready)
 						newTablePerspective.setPrivate(true);
-					
+
 					// Do not add the current reference table perspectives to
 					// scoring
 					if (referenceTablePerspective == newTablePerspective
@@ -471,6 +475,12 @@ public class VendingMachine
 			addTypePickingListener(new APickingListener() {
 				@Override
 				public void clicked(Pick pick) {
+
+					// Remove current score column before adding the new one
+					stratomex.removeTablePerspective(rankedElements
+							.get(selectedTablePerspectiveIndex).getColumnTablePerspective()
+							.getID());
+
 					dataDomainButton.setSelected(!dataDomainButton.isSelected());
 
 					if (dataDomainButton.isSelected()) {
@@ -480,7 +490,7 @@ public class VendingMachine
 								.get().getDataDomainByID(dataDomainButton.getPickingType());
 						if ((dataDomain.getLabel().contains("Mutation") || dataDomain
 								.getLabel().contains("Copy")))
-							CategoricalTablePerspectiveCreator.createAllTablePerspectives(dataDomain);
+							categoricalTablePerspectiveCreator.createAllTablePerspectives(dataDomain);
 					}
 
 					updateRankedList();
@@ -546,7 +556,7 @@ public class VendingMachine
 		BrickColumn brickColumn = brickColumnManager
 				.getBrickColumn(newlySelectedTablePerspective);
 		brickColumn.getLayout().addBackgroundRenderer(
-				new BrickColumnGlowRenderer(new float[] { 0, 1, 0 }, brickColumn, false));
+				new BrickColumnGlowRenderer(RANK_SELECTION_COLOR, brickColumn, false));
 		brickColumn.getLayout().updateSubLayout();
 	}
 
