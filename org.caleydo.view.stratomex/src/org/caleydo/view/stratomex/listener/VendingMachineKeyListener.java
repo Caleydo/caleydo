@@ -26,10 +26,10 @@ public class VendingMachineKeyListener extends GLKeyListener<VendingMachine> {
 
 		switch (event.keyCode) {
 		case SWT.ARROW_UP:
-			vendingMachine.highlightNextPreviousVisBrick(false);
+			vendingMachine.highlightRankedElement(false);
 			break;
 		case SWT.ARROW_DOWN:
-			vendingMachine.highlightNextPreviousVisBrick(true);
+			vendingMachine.highlightRankedElement(true);
 			break;
 		case SWT.CR:
 			vendingMachine.selectChoice();

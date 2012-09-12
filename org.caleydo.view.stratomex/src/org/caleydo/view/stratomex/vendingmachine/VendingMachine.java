@@ -82,7 +82,7 @@ public class VendingMachine
 	private final static String TEST_BUTTON_PICKING_TYPE = "org.caleydo.view.stratomex.vendingmachine.testbutton";
 	private final static int TEST_BUTTON_PICKING_ID = 0;
 
-	private static int VENDING_MACHINE_PIXEL_WIDTH = 350;
+	private static int VENDING_MACHINE_PIXEL_WIDTH = 400;
 
 	private static int MAX_RANKED_ELEMENTS = 15;
 
@@ -271,11 +271,22 @@ public class VendingMachine
 			Row rankedElementLayout = new Row("rankElementLayout");
 			rankedElementLayout.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH);
 			rankedElementLayout.setPixelSizeY(30);
-			RankNumberRenderer rankNumberRenderer = new RankNumberRenderer("[" + (++rank)
-					+ ".] " + score + " "
+
+			String rankString = "["
+					+ (++rank)
+					+ ".] "
+					+ score
+					+ " "
 					+ rankedElement.getColumnTablePerspective().getDataDomain().getLabel()
-					+ rankedElement.getColumnTablePerspective().getLabel() + " - "
-					+ rankedElement.getGroupTablePerspective().getLabel(), getTextRenderer());
+					+ ": "
+					+ rankedElement.getColumnTablePerspective().getRecordPerspective()
+							.getLabel();
+
+			if (rankedElement.getGroupTablePerspective() != null)
+				rankString += " - " + rankedElement.getGroupTablePerspective().getLabel();
+
+			RankNumberRenderer rankNumberRenderer = new RankNumberRenderer(rankString,
+					getTextRenderer());
 			rankedElementLayout.setRenderer(rankNumberRenderer);
 
 			rankedElementToElementLayout.put(rankedElement, rankedElementLayout);
@@ -414,16 +425,17 @@ public class VendingMachine
 				String dimensionPerspectiveID = (String) dataDomain
 						.getDimensionPerspectiveIDs().toArray()[0];
 
-				Set<String> rowIDs = dataDomain.getRecordPerspectiveIDs();
+				Set<String> rowPerspectiveIDs = dataDomain.getRecordPerspectiveIDs();
 
-				for (String id : rowIDs) {
+				for (String rowPerspectiveID : rowPerspectiveIDs) {
 
 					boolean existsAlready = false;
-					if (dataDomain.hasTablePerspective(id, dimensionPerspectiveID))
+					if (dataDomain.hasTablePerspective(rowPerspectiveID,
+							dimensionPerspectiveID))
 						existsAlready = true;
 
-					TablePerspective newTablePerspective = dataDomain.getTablePerspective(id,
-							dimensionPerspectiveID);
+					TablePerspective newTablePerspective = dataDomain.getTablePerspective(
+							rowPerspectiveID, dimensionPerspectiveID);
 
 					// We do not want to overwrite the state of already existing
 					// public table perspectives.
@@ -513,12 +525,12 @@ public class VendingMachine
 		return tablePerspectives;
 	}
 
-	public void highlightNextPreviousVisBrick(boolean next) {
+	public void highlightRankedElement(boolean next) {
 
 		RankedElement prevSelectedRankedElement = rankedElements
 				.get(selectedTablePerspectiveIndex);
 
-		if (next && selectedTablePerspectiveIndex < (rankedElements.size() - 1))
+		if (next && selectedTablePerspectiveIndex < (rankedElementToElementLayout.size() - 1))
 			selectedTablePerspectiveIndex++;
 		else if (!next && selectedTablePerspectiveIndex > 0)
 			selectedTablePerspectiveIndex--;
