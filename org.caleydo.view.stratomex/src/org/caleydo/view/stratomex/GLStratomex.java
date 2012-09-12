@@ -223,8 +223,6 @@ public class GLStratomex
 
 	private VendingMachine vendingMachine;
 
-	private boolean isVendingMachineMode = false;
-
 	/**
 	 * Constructor.
 	 * 
@@ -1841,13 +1839,6 @@ public class GLStratomex
 		vendingMachine.setStratomex(this);
 
 		uninitializedSubViews.add(vendingMachine);
-	}
-
-	/**
-	 * @return the isVendingMachineMode, see {@link #isVendingMachineMode}
-	 */
-	public boolean isVendingMachineMode() {
-		return isVendingMachineMode;
 	}
 
 	/**

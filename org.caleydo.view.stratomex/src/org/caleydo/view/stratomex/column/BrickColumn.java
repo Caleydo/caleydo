@@ -326,9 +326,6 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		if (isCollapsed) {
 			layoutTemplate = new CompactHeaderBrickLayoutTemplate(headerBrick, this,
 					stratomex, headerBrick.getBrickConfigurer());
-		} else if (stratomex.isVendingMachineMode()) {
-			layoutTemplate = new TitleOnlyHeaderBrickLayoutTemplate(headerBrick, this,
-					stratomex, headerBrick.getBrickConfigurer());
 		} else {
 			layoutTemplate = new HeaderBrickLayoutTemplate(headerBrick, this, stratomex,
 					headerBrick.getBrickConfigurer());

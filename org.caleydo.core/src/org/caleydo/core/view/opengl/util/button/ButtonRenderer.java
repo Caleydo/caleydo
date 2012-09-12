@@ -38,7 +38,6 @@ public class ButtonRenderer extends APickableLayoutRenderer {
 	public static final int TEXTURE_ROTATION_270 = 3;
 
 	private TextureManager textureManager;
-	// private AGLView view;
 	private Button button;
 	private int textureRotation;
 	/** The z-coordinate of the button, defaults to 0.02 */
@@ -55,7 +54,6 @@ public class ButtonRenderer extends APickableLayoutRenderer {
 	 *            Texture for the button.
 	 */
 	public ButtonRenderer(Button button, AGLView view) {
-		// this.view = view;
 		this.view = view;
 		this.button = button;
 		this.textureManager = view.getTextureManager();
@@ -73,7 +71,6 @@ public class ButtonRenderer extends APickableLayoutRenderer {
 	 */
 	public ButtonRenderer(Button button, AGLView view, TextureManager textureManager,
 			float zCoordinate) {
-		// this.view = view;
 		this.view = view;
 		this.button = button;
 		this.textureManager = textureManager;

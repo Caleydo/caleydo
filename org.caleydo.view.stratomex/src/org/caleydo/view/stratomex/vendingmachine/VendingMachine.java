@@ -23,12 +23,14 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
+import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.CategoricalTablePerspectiveCreator;
@@ -44,6 +46,7 @@ import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
+import org.caleydo.core.view.opengl.layout.util.SpacerRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -79,10 +82,11 @@ public class VendingMachine
 
 	public static String VIEW_NAME = "Vending Machine";
 
-	private final static String TEST_BUTTON_PICKING_TYPE = "org.caleydo.view.stratomex.vendingmachine.testbutton";
-	private final static int TEST_BUTTON_PICKING_ID = 0;
+	// private final static String DATASET_BUTTON_PICKING_TYPE =
+	// "org.caleydo.view.stratomex.vendingmachine.testbutton";
+	private final static int DATASET_BUTTON_PICKING_ID = 0;
 
-	private static int VENDING_MACHINE_PIXEL_WIDTH = 400;
+	private static int VENDING_MACHINE_PIXEL_WIDTH = 320;
 
 	private static int MAX_RANKED_ELEMENTS = 15;
 
@@ -139,8 +143,6 @@ public class VendingMachine
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
 		parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
 
-		registerPickingListeners();
-
 		initLayouts();
 	}
 
@@ -175,10 +177,6 @@ public class VendingMachine
 		this.glMouseListener = glMouseListener;
 
 		init(gl);
-	}
-
-	protected void registerPickingListeners() {
-
 	}
 
 	@Override
@@ -416,8 +414,8 @@ public class VendingMachine
 			ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID(dataDomainButton.getPickingType());
 
-			if (dataDomain.getLabel().contains("Mutation")
-					|| dataDomain.getLabel().contains("Copy")) {
+			if (dataDomain.getLabel().toLowerCase().contains("mutation")
+					|| dataDomain.getLabel().toLowerCase().contains("copy")) {
 				tablePerspectives.addAll(dataDomain.getAllTablePerspectives());
 			}
 			else {
@@ -458,21 +456,36 @@ public class VendingMachine
 
 		dataDomainButtons.clear();
 
-		for (ATableBasedDataDomain dataDomain : DataDomainManager.get().getDataDomainsByType(
-				ATableBasedDataDomain.class)) {
+		List<ATableBasedDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(
+				ATableBasedDataDomain.class);
+		
+		// Sort data domains alphabetically
+		Collections.sort(dataDomains, new Comparator<ADataDomain>()
+                {
+            public int compare(ADataDomain dd1, ADataDomain dd2)
+            {
+                return dd1.toString().compareTo(dd2.toString());
+            }        
+        });
+		
+		for (ATableBasedDataDomain dataDomain : dataDomains) {
 
 			Row singleDataSetRow = new Row("singleDataSetRow");
 			singleDataSetRow.setGrabX(true);
 			singleDataSetRow.setPixelSizeY(20);
 
+			if (dataDomain.getLabel().toLowerCase().equals("clinical"))
+				continue;
+
 			ElementLayout dataDomainButtonLayout = new ElementLayout("dataSetButtonLayout");
 			dataDomainButtonLayout.setPixelSizeX(20);
 
 			final Button dataDomainButton = new Button(dataDomain.getDataDomainID(),
-					TEST_BUTTON_PICKING_ID, EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
+					DATASET_BUTTON_PICKING_ID,
+					EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
 
-			if ((dataDomain.getLabel().contains("Mutation") || dataDomain.getLabel().contains(
-					"Copy")))
+			if ((dataDomain.getLabel().toLowerCase().contains("mutation") || dataDomain
+					.getLabel().toLowerCase().contains("copy")))
 				dataDomainButton.setSelected(false);
 			else
 				dataDomainButton.setSelected(true);
@@ -500,9 +513,10 @@ public class VendingMachine
 						// FIXME make sure that this happens only once
 						ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
 								.get().getDataDomainByID(dataDomainButton.getPickingType());
-						if ((dataDomain.getLabel().contains("Mutation") || dataDomain
-								.getLabel().contains("Copy")))
-							categoricalTablePerspectiveCreator.createAllTablePerspectives(dataDomain);
+						if ((dataDomain.getLabel().toLowerCase().contains("mutation") || dataDomain
+								.getLabel().toLowerCase().contains("copy")))
+							categoricalTablePerspectiveCreator
+									.createAllTablePerspectives(dataDomain);
 					}
 
 					updateRankedList();
@@ -512,9 +526,14 @@ public class VendingMachine
 
 			singleDataSetRow.append(dataDomainButtonLayout);
 
+			ElementLayout spacerLayout = new ElementLayout("spacerLayout");
+			spacerLayout.setRenderer(new SpacerRenderer(false));
+			spacerLayout.setPixelSizeX(10);
+			singleDataSetRow.append(spacerLayout);
+
 			ElementLayout labelLayout = new ElementLayout("labelLayout");
 			labelLayout.setRenderer(new LabelRenderer(this, dataDomain.getLabel()));
-			labelLayout.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH - 20);
+			labelLayout.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH - 30);
 			singleDataSetRow.append(labelLayout);
 
 			dataSetButtonListColumn.append(singleDataSetRow);
@@ -530,7 +549,7 @@ public class VendingMachine
 		RankedElement prevSelectedRankedElement = rankedElements
 				.get(selectedTablePerspectiveIndex);
 
-		if (next && selectedTablePerspectiveIndex < (rankedElementToElementLayout.size() - 1))
+		if (next && selectedTablePerspectiveIndex < MAX_RANKED_ELEMENTS - 1)
 			selectedTablePerspectiveIndex++;
 		else if (!next && selectedTablePerspectiveIndex > 0)
 			selectedTablePerspectiveIndex--;
@@ -592,7 +611,9 @@ public class VendingMachine
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 
-		this.removeAllIDPickingListeners(TEST_BUTTON_PICKING_TYPE, TEST_BUTTON_PICKING_ID);
+		// TODO: remove button picking listeners
+		// this.removeAllIDPickingListeners(DATASET_BUTTON_PICKING_TYPE,
+		// DATASET_BUTTON_PICKING_ID);
 	}
 
 	@Override
@@ -617,7 +638,7 @@ public class VendingMachine
 
 	public void updatLayout() {
 		if (isActive)
-			mainColumn.setPixelSizeX(300);
+			mainColumn.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH);
 		else
 			mainColumn.setAbsoluteSizeX(0);
 	}
