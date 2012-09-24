@@ -84,12 +84,6 @@ public class RcpDatasetInfoView
 	@Override
 	public void createPartControl(Composite parent) {
 
-		if (dataDomain == null) {
-			dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
-					((ASerializedSingleTablePerspectiveBasedView) serializedView)
-							.getDataDomainID());
-		}
-
 		parentComposite = new Composite(parent, SWT.NULL);
 		parentComposite.setLayout(new GridLayout(1, false));
 
@@ -101,6 +95,12 @@ public class RcpDatasetInfoView
 
 		nameLabel = new Label(infoComposite, SWT.NONE);
 		nameLabel.setText("No data set active                       ");
+		
+		if (dataDomain == null) {
+			setDataDomain((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+					((ASerializedSingleTablePerspectiveBasedView) serializedView)
+							.getDataDomainID()));
+		}
 
 		parent.layout();
 	}
