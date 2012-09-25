@@ -50,6 +50,7 @@ public abstract class AProjectBuilderApplication
 	protected String[] dataRuns = null;
 	protected String outputPath = "";
 	protected String tcgaServerURL = "";
+	protected boolean sampleGenes = true;
 
 	protected String reportJSONGenomicData = "";
 

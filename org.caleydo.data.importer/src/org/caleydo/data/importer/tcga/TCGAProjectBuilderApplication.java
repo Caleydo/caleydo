@@ -104,6 +104,12 @@ public class TCGAProjectBuilderApplication
 			tcgaServerURLOpt.setHelp("TCGA Server URL that hosts TCGA Caleydo project files");
 			jsap.registerParameter(tcgaServerURLOpt);
 
+			FlaggedOption sampleGenesOpt = new FlaggedOption("sample_genes")
+					.setStringParser(JSAP.BOOLEAN_PARSER).setDefault("true")
+					.setRequired(false).setShortFlag('g').setLongFlag(JSAP.NO_LONGFLAG);
+			sampleGenesOpt.setHelp("TCGA Server URL that hosts TCGA Caleydo project files");
+			jsap.registerParameter(sampleGenesOpt);
+
 			JSAPResult config = jsap.parse(runConfigParameters);
 
 			// check whether the command line was valid, and if it wasn't,
@@ -113,9 +119,9 @@ public class TCGAProjectBuilderApplication
 			}
 
 			tumorTypes = config.getStringArray("tumor");
-
 			analysisRuns = config.getStringArray("analysis_runs");
 			dataRuns = config.getStringArray("data_runs");
+			sampleGenes = config.getBoolean("sample_genes");
 
 			if (analysisRuns.length != dataRuns.length) {
 				System.err
@@ -168,7 +174,7 @@ public class TCGAProjectBuilderApplication
 						+ " for analysis run " + analysisRun);
 
 				TCGAXMLGenerator generator = new TCGAXMLGenerator(tumorType, analysisRun,
-						dataRun, xmlFilePath, runSpecificOutputPath, tmpDataOutputPath, false);
+						dataRun, xmlFilePath, runSpecificOutputPath, tmpDataOutputPath, true);
 
 				generator.run();
 

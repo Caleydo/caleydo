@@ -144,7 +144,7 @@ public class TCGAXMLGenerator
 		try {
 
 			if (loadSampledGenes) {
-				matrixArchiveName = "mRNA_Clustering_Consensus";
+				matrixArchiveName = "mRNA_Clustering_CNMF";
 				matrixFileName = "cnmf.normalized.gct";
 			}
 			else {
@@ -170,7 +170,7 @@ public class TCGAXMLGenerator
 		try {
 
 			if (loadSampledGenes) {
-				matrixArchiveName = "miR_Clustering_Consensus";
+				matrixArchiveName = "miR_Clustering_CNMF";
 				matrixFileName = "cnmf.normalized.gct";
 			}
 			else {
@@ -201,7 +201,7 @@ public class TCGAXMLGenerator
 
 		try {
 			if (loadSampledGenes) {
-				matrixArchiveName = "mRNAseq_Clustering_Consensus";
+				matrixArchiveName = "mRNAseq_Clustering_CNMF";
 				matrixFileName = "cnmf.normalized.gct";
 			}
 			else {
@@ -223,7 +223,7 @@ public class TCGAXMLGenerator
 		try {
 
 			if (loadSampledGenes) {
-				matrixArchiveName = "miRseq_Clustering_Consensus";
+				matrixArchiveName = "miRseq_Clustering_CNMF";
 				matrixFileName = "cnmf.normalized.gct";
 			}
 			else {
