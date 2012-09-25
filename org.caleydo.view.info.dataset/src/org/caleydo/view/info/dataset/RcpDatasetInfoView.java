@@ -23,7 +23,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
@@ -47,22 +48,28 @@ import org.eclipse.swt.widgets.Label;
  */
 public class RcpDatasetInfoView
 	extends CaleydoRCPViewPart
-	implements IDataDomainBasedView<ATableBasedDataDomain> {
+	implements IDataDomainBasedView<IDataDomain> {
 
 	public static String VIEW_TYPE = "org.caleydo.view.info.dataset";
 
-	private ATableBasedDataDomain dataDomain;
+	private IDataDomain dataDomain;
 
 	private Label nameLabel;
 	private Label recordLabel;
 	private Label dimensionLabel;
 	private Label sourceLabel;
-	
+
 	private Composite infoComposite;
+
+	private Composite histogramComposite;
 
 	private RcpGLColorMapperHistogramView histogramView;
 
 	private boolean isGUIInitialized = false;
+
+	protected DataDomainChangedListener dataDomainChangedListener;
+
+	private ExpandBar histogramExpandBar;
 
 	/**
 	 * Constructor.
@@ -95,7 +102,7 @@ public class RcpDatasetInfoView
 
 		nameLabel = new Label(infoComposite, SWT.NONE);
 		nameLabel.setText("No data set active                       ");
-		
+
 		if (dataDomain == null) {
 			setDataDomain((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 					((ASerializedSingleTablePerspectiveBasedView) serializedView)
@@ -106,83 +113,106 @@ public class RcpDatasetInfoView
 	}
 
 	@Override
-	public void setDataDomain(ATableBasedDataDomain dataDomain) {
+	public void setDataDomain(IDataDomain dataDomain) {
 
 		// Do nothing if new datadomain is the same as the current one
 		if (dataDomain == this.dataDomain)
 			return;
 
 		this.dataDomain = dataDomain;
-		ASerializedSingleTablePerspectiveBasedView dcSerializedView = (ASerializedSingleTablePerspectiveBasedView) serializedView;
-		dcSerializedView.setDataDomainID(dataDomain.getDataDomainID());
-		TablePerspective container = dataDomain.getDefaultTablePerspective();
-		dcSerializedView.setTablePerspectiveKey(container.getTablePerspectiveKey());
 
 		updateDataSetInfo();
+
 	}
-	
+
 	private void updateDataSetInfo() {
-		
-		if (!isGUIInitialized ) {
+
+		if (!isGUIInitialized) {
 			initGUI();
 		}
-		
+
 		nameLabel.setText("Name: " + dataDomain.getLabel());
+		nameLabel.pack();
 
-		recordLabel.setText(dataDomain.getRecordDenomination(true, true) + ": "
-				+ dataDomain.getTable().getMetaData().depth());
+		if (dataDomain instanceof ATableBasedDataDomain) {
+			ATableBasedDataDomain tableBasedDD = (ATableBasedDataDomain) dataDomain;
 
-		dimensionLabel.setText(dataDomain.getDimensionDenomination(true, true) + ": "
-				+ dataDomain.getTable().getMetaData().size());
+			histogramExpandBar.setVisible(true);
+			recordLabel.setVisible(true);
+			dimensionLabel.setVisible(true);
+			sourceLabel.setVisible(true);
 
-		sourceLabel.setText("Source: "
-				+ dataDomain.getDataSetDescription().getDataSourcePath());
-		
-		((GLHistogram)histogramView.getGLView()).setHistogram(dataDomain.getDefaultTablePerspective().getContainerStatistics().getHistogram());
-		((GLHistogram)histogramView.getGLView()).setDisplayListDirty();
+			recordLabel.setText(tableBasedDD.getRecordDenomination(true, true) + ": "
+					+ tableBasedDD.getTable().getMetaData().depth());
+
+			dimensionLabel.setText(tableBasedDD.getDimensionDenomination(true, true) + ": "
+					+ tableBasedDD.getTable().getMetaData().size());
+
+			sourceLabel.setText("Source: "
+					+ dataDomain.getDataSetDescription().getDataSourcePath());
+
+			if (!tableBasedDD.getTable().isDataHomogeneous())
+			{
+				histogramExpandBar.setVisible(false);
+				return;
+			}
+
+			if (histogramView == null) {
+				histogramView = new RcpGLColorMapperHistogramView();
+				histogramView.setDataDomain(tableBasedDD);
+				SerializedHistogramView serializedHistogramView = new SerializedHistogramView();
+				serializedHistogramView.setDataDomainID(dataDomain.getDataDomainID());
+				serializedHistogramView
+						.setTablePerspectiveKey(((ASerializedSingleTablePerspectiveBasedView) serializedView)
+								.getTablePerspectiveKey());
+
+				histogramView.setExternalSerializedView(serializedHistogramView);
+				histogramView.createPartControl(histogramComposite);
+				// Usually the canvas is registered to the GL2 animator in the
+				// PartListener. Because the GL2 histogram is no usual RCP view
+				// we
+				// have to do it on our own
+				GeneralManager.get().getViewManager()
+						.registerGLCanvasToAnimator(histogramView.getGLCanvas());
+				ExpandItem item2 = new ExpandItem(histogramExpandBar, SWT.NONE, 0);
+				item2.setText("Histogram");
+				item2.setHeight(200);
+				item2.setControl(histogramComposite);
+				item2.setExpanded(true);
+
+				histogramExpandBar.setSpacing(2);
+			}
+			else {
+				((GLHistogram) histogramView.getGLView()).setHistogram(tableBasedDD
+						.getDefaultTablePerspective().getContainerStatistics().getHistogram());
+				((GLHistogram) histogramView.getGLView()).setDisplayListDirty();
+			}
+		}
+		else {
+			histogramExpandBar.setVisible(false);
+			recordLabel.setVisible(false);
+			dimensionLabel.setVisible(false);
+			sourceLabel.setVisible(false);
+		}
 	}
 
 	private void initGUI() {
 		recordLabel = new Label(infoComposite, SWT.NONE);
 		dimensionLabel = new Label(infoComposite, SWT.NONE);
 		sourceLabel = new Label(infoComposite, SWT.NONE);
-		
-		ExpandBar bar = new ExpandBar(parentComposite, SWT.V_SCROLL);
+
+		histogramExpandBar = new ExpandBar(parentComposite, SWT.V_SCROLL);
 		GridData gridData = new GridData(GridData.FILL_BOTH);
-		bar.setLayoutData(gridData);
+		histogramExpandBar.setLayoutData(gridData);
 
-		// Third item
-		Composite composite = new Composite(bar, SWT.NONE);
-		composite.setLayout(new FillLayout());
+		histogramComposite = new Composite(histogramExpandBar, SWT.NONE);
+		histogramComposite.setLayout(new FillLayout());
 
-		histogramView = new RcpGLColorMapperHistogramView();
-		histogramView.setDataDomain(dataDomain);
-		SerializedHistogramView serializedHistogramView = new SerializedHistogramView();
-		serializedHistogramView.setDataDomainID(dataDomain.getDataDomainID());
-		serializedHistogramView
-				.setTablePerspectiveKey(((ASerializedSingleTablePerspectiveBasedView) serializedView)
-						.getTablePerspectiveKey());
-
-		histogramView.setExternalSerializedView(serializedHistogramView);
-		histogramView.createPartControl(composite);
-		// Usually the canvas is registered to the GL2 animator in the
-		// PartListener. Because the GL2 histogram is no usual RCP view we
-		// have to do it on our own
-		GeneralManager.get().getViewManager()
-				.registerGLCanvasToAnimator(histogramView.getGLCanvas());
-		ExpandItem item2 = new ExpandItem(bar, SWT.NONE, 0);
-		item2.setText("Histogram");
-		item2.setHeight(200);
-		item2.setControl(composite);
-		item2.setExpanded(true);
-
-		bar.setSpacing(2);
-		
 		isGUIInitialized = true;
 	}
 
 	@Override
-	public ATableBasedDataDomain getDataDomain() {
+	public IDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
@@ -190,5 +220,26 @@ public class RcpDatasetInfoView
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedDatasetInfoView();
 		determineDataConfiguration(serializedView, false);
+	}
+
+	@Override
+	public void registerEventListeners() {
+
+		super.registerEventListeners();
+
+		dataDomainChangedListener = new DataDomainChangedListener();
+		dataDomainChangedListener.setHandler(this);
+		eventPublisher.addListener(DataDomainUpdateEvent.class, dataDomainChangedListener);
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+
+		super.unregisterEventListeners();
+
+		if (dataDomainChangedListener != null) {
+			eventPublisher.removeListener(dataDomainChangedListener);
+			selectionUpdateListener = null;
+		}
 	}
 }

@@ -168,7 +168,7 @@ public class TCGAProjectBuilderApplication
 						+ " for analysis run " + analysisRun);
 
 				TCGAXMLGenerator generator = new TCGAXMLGenerator(tumorType, analysisRun,
-						dataRun, xmlFilePath, runSpecificOutputPath, tmpDataOutputPath);
+						dataRun, xmlFilePath, runSpecificOutputPath, tmpDataOutputPath, false);
 
 				generator.run();
 

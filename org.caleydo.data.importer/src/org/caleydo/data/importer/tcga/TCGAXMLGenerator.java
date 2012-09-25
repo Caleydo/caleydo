@@ -69,9 +69,11 @@ public class TCGAXMLGenerator
 
 	private IDSpecification sampleIDSpecification;
 
+	private boolean loadSampledGenes = false;
+
 	public TCGAXMLGenerator(String tumorAbbreviation, String runIdentifierUnderscore,
 			String dataRunIdentifier, String outputXMLFilePath, String outputFolderPath,
-			String tmpOutputFolderPath) {
+			String tmpOutputFolderPath, boolean loadSampledGenes) {
 
 		super(null);
 
@@ -80,6 +82,7 @@ public class TCGAXMLGenerator
 		this.dataRunIdentifier = dataRunIdentifier;
 		this.outputXMLFilePath = outputXMLFilePath;
 		this.tmpOutputDirectoryPath = tmpOutputFolderPath;
+		this.loadSampledGenes = loadSampledGenes;
 
 		init();
 	}
@@ -120,6 +123,9 @@ public class TCGAXMLGenerator
 	@Override
 	protected void setUpDataSetDescriptions() {
 
+		String matrixArchiveName = null;
+		String matrixFileName = null;
+
 		sampleIDSpecification = new IDSpecification();
 		sampleIDSpecification.setIdCategory("TCGA_SAMPLE");
 		sampleIDSpecification.setIdType("TCGA_SAMPLE");
@@ -136,9 +142,20 @@ public class TCGAXMLGenerator
 
 		rowIDSpecification = null; // uses genes
 		try {
+
+			if (loadSampledGenes) {
+				matrixArchiveName = "mRNA_Clustering_Consensus";
+				matrixFileName = "cnmf.normalized.gct";
+			}
+			else {
+				matrixArchiveName = "mRNA_Preprocess_Median";
+				matrixFileName = tumorAbbreviation + ".medianexp.txt";
+			}
+
 			projectDescription.add(setUpClusteredMatrixData("mRNA_Clustering_CNMF",
-					"mRNA_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA",
+					"mRNA_Clustering_Consensus", matrixArchiveName, matrixFileName, "mRNA",
 					rowIDSpecification, sampleIDSpecification, true, getNextDataSetColor()));
+
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -151,9 +168,20 @@ public class TCGAXMLGenerator
 		rowIDSpecification.setIdCategory("microRNA");
 
 		try {
+			
+			if (loadSampledGenes) {
+				matrixArchiveName = "miR_Clustering_Consensus";
+				matrixFileName = "cnmf.normalized.gct";
+			}
+			else {
+				matrixArchiveName = "miR_Preprocess";
+				matrixFileName = tumorAbbreviation + ".medianexp.txt";
+			}
+			
 			projectDescription.add(setUpClusteredMatrixData("miR_Clustering_CNMF",
-					"miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA",
-					rowIDSpecification, sampleIDSpecification, false, getNextDataSetColor()));
+					"miR_Clustering_Consensus", matrixArchiveName, matrixFileName,
+					"microRNA", rowIDSpecification, sampleIDSpecification, false,
+					getNextDataSetColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -173,11 +201,19 @@ public class TCGAXMLGenerator
 		// ====== mRNAseq ======
 
 		try {
-			projectDescription
-					.add(setUpClusteredMatrixData("mRNAseq_Clustering_CNMF",
-							"mRNAseq_Clustering_Consensus", "outputprefix.expclu.gct",
-							"mRNA-seq", rowIDSpecification, seqSampleIDSpecification, true,
-							getNextDataSetColor()));
+			if (loadSampledGenes) {
+				matrixArchiveName = "mRNAseq_Clustering_Consensus";
+				matrixFileName = "cnmf.normalized.gct";
+			}
+			else {
+				matrixArchiveName = "mRNAseq_Preprocess";
+				matrixFileName = tumorAbbreviation + ".medianexp.txt";
+			}
+			
+			projectDescription.add(setUpClusteredMatrixData("mRNAseq_Clustering_CNMF",
+					"mRNAseq_Clustering_Consensus", matrixArchiveName,
+					matrixFileName, "mRNA-seq", rowIDSpecification,
+					seqSampleIDSpecification, true, getNextDataSetColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -186,11 +222,20 @@ public class TCGAXMLGenerator
 		// ====== microRNAseq ======
 
 		try {
-			projectDescription
-					.add(setUpClusteredMatrixData("miRseq_Clustering_CNMF",
-							"miRseq_Clustering_Consensus", "cnmf.normalized.gct",
-							"microRNA-seq", rowIDSpecification, seqSampleIDSpecification,
-							false, getNextDataSetColor()));
+			
+			if (loadSampledGenes) {
+				matrixArchiveName = "miRNAseq_Clustering_Consensus";
+				matrixFileName = "cnmf.normalized.gct";
+			}
+			else {
+				matrixArchiveName = "miRNAseq_Preprocess";
+				matrixFileName = tumorAbbreviation + ".medianexp.txt";
+			}
+			
+			projectDescription.add(setUpClusteredMatrixData("miRseq_Clustering_CNMF",
+					"miRseq_Clustering_Consensus",matrixArchiveName, matrixFileName,
+					"microRNA-seq", rowIDSpecification, seqSampleIDSpecification, false,
+					getNextDataSetColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -202,8 +247,9 @@ public class TCGAXMLGenerator
 
 		try {
 			projectDescription.add(setUpClusteredMatrixData("Methylation_Clustering_CNMF",
-					"Methylation_Clustering_Consensus", "cnmf.normalized.gct", "Methylation",
-					rowIDSpecification, sampleIDSpecification, true, getNextDataSetColor()));
+					"Methylation_Clustering_Consensus", "Methylation_Clustering_CNMF",
+					"cnmf.normalized.gct", "Methylation", rowIDSpecification,
+					sampleIDSpecification, true, getNextDataSetColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -217,8 +263,9 @@ public class TCGAXMLGenerator
 
 		try {
 			projectDescription.add(setUpClusteredMatrixData("RPPA_Clustering_CNMF",
-					"RPPA_Clustering_Consensus", "cnmf.normalized.gct", "RPPA",
-					rowIDSpecification, sampleIDSpecification, false, getNextDataSetColor()));
+					"RPPA_Clustering_Consensus", "RPPA_Clustering_CNMF",
+					"cnmf.normalized.gct", "RPPA", rowIDSpecification, sampleIDSpecification,
+					false, getNextDataSetColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -266,11 +313,11 @@ public class TCGAXMLGenerator
 	}
 
 	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName,
-			String hierarchicalArchiveName, String matrixFileName, String dataSetName,
-			IDSpecification rowIDSpecification, IDSpecification columnIDSpecification,
-			boolean isGeneIdType, Color color) {
+			String hierarchicalArchiveName, String matrixArchiveName, String matrixFileName,
+			String dataSetName, IDSpecification rowIDSpecification,
+			IDSpecification columnIDSpecification, boolean isGeneIdType, Color color) {
 
-		String matrixFile = this.extractFile(matrixFileName, cnmfArchiveName,
+		String matrixFile = this.extractFile(matrixFileName, matrixArchiveName,
 				analysisRunIdentifierWithoutUnderscore, remoteAnalysisRunArchiveDirectory, 4);
 		String cnmfGroupingFile = this.extractFile("cnmf.membership.txt", cnmfArchiveName,
 				analysisRunIdentifierWithoutUnderscore, remoteAnalysisRunArchiveDirectory, 4);

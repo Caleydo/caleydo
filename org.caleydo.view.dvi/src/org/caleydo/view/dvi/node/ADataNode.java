@@ -20,6 +20,8 @@
 package org.caleydo.view.dvi.node;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.event.data.DataDomainUpdateEvent;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -47,6 +49,13 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 
 		view.addIDPickingListener(new APickingListener() {
 
+			@Override
+			public void clicked(Pick pick) {
+				DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
+				event.setSender(view);
+				GeneralManager.get().getEventPublisher().triggerEvent(event);
+			}
+			
 			@Override
 			public void rightClicked(Pick pick) {
 				ContextMenuCreator contextMenuCreator = view.getContextMenuCreator();
