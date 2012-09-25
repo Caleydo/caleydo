@@ -168,20 +168,19 @@ public class TCGAXMLGenerator
 		rowIDSpecification.setIdCategory("microRNA");
 
 		try {
-			
+
 			if (loadSampledGenes) {
 				matrixArchiveName = "miR_Clustering_Consensus";
 				matrixFileName = "cnmf.normalized.gct";
 			}
 			else {
 				matrixArchiveName = "miR_Preprocess";
-				matrixFileName = tumorAbbreviation + ".medianexp.txt";
+				matrixFileName = tumorAbbreviation + ".miR_expression.txt";
 			}
-			
+
 			projectDescription.add(setUpClusteredMatrixData("miR_Clustering_CNMF",
-					"miR_Clustering_Consensus", matrixArchiveName, matrixFileName,
-					"microRNA", rowIDSpecification, sampleIDSpecification, false,
-					getNextDataSetColor()));
+					"miR_Clustering_Consensus", matrixArchiveName, matrixFileName, "microRNA",
+					rowIDSpecification, sampleIDSpecification, false, getNextDataSetColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -207,13 +206,13 @@ public class TCGAXMLGenerator
 			}
 			else {
 				matrixArchiveName = "mRNAseq_Preprocess";
-				matrixFileName = tumorAbbreviation + ".medianexp.txt";
+				matrixFileName = tumorAbbreviation + ".mRNAseq_RPKM_log2.txt";
 			}
-			
+
 			projectDescription.add(setUpClusteredMatrixData("mRNAseq_Clustering_CNMF",
-					"mRNAseq_Clustering_Consensus", matrixArchiveName,
-					matrixFileName, "mRNA-seq", rowIDSpecification,
-					seqSampleIDSpecification, true, getNextDataSetColor()));
+					"mRNAseq_Clustering_Consensus", matrixArchiveName, matrixFileName,
+					"mRNA-seq", rowIDSpecification, seqSampleIDSpecification, true,
+					getNextDataSetColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -222,18 +221,18 @@ public class TCGAXMLGenerator
 		// ====== microRNAseq ======
 
 		try {
-			
+
 			if (loadSampledGenes) {
-				matrixArchiveName = "miRNAseq_Clustering_Consensus";
+				matrixArchiveName = "miRseq_Clustering_Consensus";
 				matrixFileName = "cnmf.normalized.gct";
 			}
 			else {
-				matrixArchiveName = "miRNAseq_Preprocess";
-				matrixFileName = tumorAbbreviation + ".medianexp.txt";
+				matrixArchiveName = "miRseq_Preprocess";
+				matrixFileName = tumorAbbreviation + ".miRseq_RPKM_log2.txt";
 			}
-			
+
 			projectDescription.add(setUpClusteredMatrixData("miRseq_Clustering_CNMF",
-					"miRseq_Clustering_Consensus",matrixArchiveName, matrixFileName,
+					"miRseq_Clustering_Consensus", matrixArchiveName, matrixFileName,
 					"microRNA-seq", rowIDSpecification, seqSampleIDSpecification, false,
 					getNextDataSetColor()));
 		}
@@ -255,7 +254,7 @@ public class TCGAXMLGenerator
 			System.err.println(e.getMessage());
 		}
 
-		// ====== reverse-phase protein arrays ======
+		// ====== RPPA (reverse-phase protein arrays) ======
 
 		rowIDSpecification = new IDSpecification();
 		rowIDSpecification.setIdType("protein");
