@@ -94,7 +94,7 @@ public class PathwayDataDomain
 
 		this.dataSetDescription = new DataSetDescription();
 		
-		dataSetDescription.setDataSetName("Pathways: KEGG & BioCarta");
+		dataSetDescription.setDataSetName("Pathway Data");
 
 		// set a neutral gray as the pathway color
 		dataSetDescription.setColor(new Color(0.8f, 0.8f, 0.8f));

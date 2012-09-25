@@ -101,7 +101,8 @@ public class RcpDatasetInfoView
 		infoComposite.setLayoutData(gridData);
 
 		nameLabel = new Label(infoComposite, SWT.NONE);
-		nameLabel.setText("No data set active                       ");
+		nameLabel.setText("No data set active");
+		nameLabel.setLayoutData(gridData);
 
 		if (dataDomain == null) {
 			setDataDomain((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
@@ -132,7 +133,6 @@ public class RcpDatasetInfoView
 		}
 
 		nameLabel.setText("Name: " + dataDomain.getLabel());
-		nameLabel.pack();
 
 		if (dataDomain instanceof ATableBasedDataDomain) {
 			ATableBasedDataDomain tableBasedDD = (ATableBasedDataDomain) dataDomain;
@@ -194,6 +194,8 @@ public class RcpDatasetInfoView
 			dimensionLabel.setVisible(false);
 			sourceLabel.setVisible(false);
 		}
+		
+		parentComposite.layout();
 	}
 
 	private void initGUI() {
