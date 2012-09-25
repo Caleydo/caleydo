@@ -154,7 +154,8 @@ public class TCGAXMLGenerator
 
 			projectDescription.add(setUpClusteredMatrixData("mRNA_Clustering_CNMF",
 					"mRNA_Clustering_Consensus", matrixArchiveName, matrixFileName, "mRNA",
-					rowIDSpecification, sampleIDSpecification, true, getNextDataSetColor()));
+					rowIDSpecification, sampleIDSpecification, true,
+					EDataSetType.mRNA.getColor()));
 
 		}
 		catch (Exception e) {
@@ -180,7 +181,8 @@ public class TCGAXMLGenerator
 
 			projectDescription.add(setUpClusteredMatrixData("miR_Clustering_CNMF",
 					"miR_Clustering_Consensus", matrixArchiveName, matrixFileName, "microRNA",
-					rowIDSpecification, sampleIDSpecification, false, getNextDataSetColor()));
+					rowIDSpecification, sampleIDSpecification, false,
+					EDataSetType.microRNA.getColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -212,7 +214,7 @@ public class TCGAXMLGenerator
 			projectDescription.add(setUpClusteredMatrixData("mRNAseq_Clustering_CNMF",
 					"mRNAseq_Clustering_Consensus", matrixArchiveName, matrixFileName,
 					"mRNA-seq", rowIDSpecification, seqSampleIDSpecification, true,
-					getNextDataSetColor()));
+					EDataSetType.mRNAseq.getColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -234,7 +236,7 @@ public class TCGAXMLGenerator
 			projectDescription.add(setUpClusteredMatrixData("miRseq_Clustering_CNMF",
 					"miRseq_Clustering_Consensus", matrixArchiveName, matrixFileName,
 					"microRNA-seq", rowIDSpecification, seqSampleIDSpecification, false,
-					getNextDataSetColor()));
+					EDataSetType.microRNAseq.getColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -248,7 +250,7 @@ public class TCGAXMLGenerator
 			projectDescription.add(setUpClusteredMatrixData("Methylation_Clustering_CNMF",
 					"Methylation_Clustering_Consensus", "Methylation_Clustering_CNMF",
 					"cnmf.normalized.gct", "Methylation", rowIDSpecification,
-					sampleIDSpecification, true, getNextDataSetColor()));
+					sampleIDSpecification, true, EDataSetType.methylation.getColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -264,7 +266,7 @@ public class TCGAXMLGenerator
 			projectDescription.add(setUpClusteredMatrixData("RPPA_Clustering_CNMF",
 					"RPPA_Clustering_Consensus", "RPPA_Clustering_CNMF",
 					"cnmf.normalized.gct", "RPPA", rowIDSpecification, sampleIDSpecification,
-					false, getNextDataSetColor()));
+					false, EDataSetType.RPPA.getColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -274,7 +276,7 @@ public class TCGAXMLGenerator
 
 		try {
 			projectDescription.add(setUpCopyNumberData("CopyNumber_Gistic2", "Copy Number",
-					getNextDataSetColor()));
+					EDataSetType.copyNumber.getColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -284,7 +286,7 @@ public class TCGAXMLGenerator
 
 		try {
 			projectDescription.add(setUpMutationData("Mutation_Significance", "Mutations",
-					getNextDataSetColor()));
+					EDataSetType.mutation.getColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -294,21 +296,13 @@ public class TCGAXMLGenerator
 
 		try {
 			projectDescription.add(setUpClinicalData("Clinical_Pick_Tier1", "Clinical",
-					getNextDataSetColor()));
+					EDataSetType.clinical.getColor()));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
 
 		ColorManager.get().unmarkAllColors(ColorManager.QUALITATIVE_COLORS);
-	}
-
-	private Color getNextDataSetColor() {
-
-		Color color = ColorManager.get().getFirstMarkedColorOfList(
-				ColorManager.QUALITATIVE_COLORS, false);
-		ColorManager.get().markColor(ColorManager.QUALITATIVE_COLORS, color, true);
-		return color;
 	}
 
 	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName,

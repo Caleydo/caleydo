@@ -112,7 +112,7 @@ public class TCGAInterAnalysisRunXMLGenerator
 						projectDescription.add(setUpClusteredMatrixData(
 								"mRNA_Clustering_CNMF", "mRNA_Clustering_Consensus",
 								"outputprefix.expclu.gct", "mRNA", rowIDSpecification,
-								sampleIDSpecification, true, getNextDataSetColor(),
+								sampleIDSpecification, true, dataSetType.getColor(),
 								analysisRun, analysisRunWithoutUnderscore));
 						break;
 					case mRNAseq:
@@ -120,7 +120,7 @@ public class TCGAInterAnalysisRunXMLGenerator
 						projectDescription.add(setUpClusteredMatrixData(
 								"mRNAseq_Clustering_CNMF", "mRNAseq_Clustering_Consensus",
 								"outputprefix.expclu.gct", "mRNA-seq", rowIDSpecification,
-								seqSampleIDSpecification, true, getNextDataSetColor(),
+								seqSampleIDSpecification, true, dataSetType.getColor(),
 								analysisRun, analysisRunWithoutUnderscore));
 
 						break;
@@ -133,7 +133,7 @@ public class TCGAInterAnalysisRunXMLGenerator
 						projectDescription.add(setUpClusteredMatrixData("miR_Clustering_CNMF",
 								"miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA",
 								rowIDSpecification, sampleIDSpecification, false,
-								getNextDataSetColor(), analysisRun,
+								dataSetType.getColor(), analysisRun,
 								analysisRunWithoutUnderscore));
 
 						break;
@@ -146,7 +146,7 @@ public class TCGAInterAnalysisRunXMLGenerator
 						projectDescription.add(setUpClusteredMatrixData(
 								"miRseq_Clustering_CNMF", "miRseq_Clustering_Consensus",
 								"cnmf.normalized.gct", "microRNA-seq", rowIDSpecification,
-								seqSampleIDSpecification, false, getNextDataSetColor(),
+								seqSampleIDSpecification, false, dataSetType.getColor(),
 								analysisRun, analysisRunWithoutUnderscore));
 
 						break;
@@ -156,7 +156,7 @@ public class TCGAInterAnalysisRunXMLGenerator
 								"Methylation_Clustering_CNMF",
 								"Methylation_Clustering_Consensus", "cnmf.normalized.gct",
 								"Methylation", rowIDSpecification, sampleIDSpecification,
-								true, getNextDataSetColor(), analysisRun,
+								true, dataSetType.getColor(), analysisRun,
 								analysisRunWithoutUnderscore));
 
 						break;
@@ -169,7 +169,7 @@ public class TCGAInterAnalysisRunXMLGenerator
 						projectDescription.add(setUpClusteredMatrixData(
 								"RPPA_Clustering_CNMF", "RPPA_Clustering_Consensus",
 								"cnmf.normalized.gct", "RPPA", rowIDSpecification,
-								sampleIDSpecification, false, getNextDataSetColor(),
+								sampleIDSpecification, false, dataSetType.getColor(),
 								analysisRun, analysisRunWithoutUnderscore));
 
 						break;

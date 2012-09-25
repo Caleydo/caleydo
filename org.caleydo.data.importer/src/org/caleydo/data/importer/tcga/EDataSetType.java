@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.caleydo.data.importer.tcga;
 
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.ColorManager;
+
 /**
  * A list of different dataset types that we are able to load for TCGA and which
  * have a grouping. These are the dataset types that we want to compare between
@@ -29,10 +32,26 @@ package org.caleydo.data.importer.tcga;
  */
 public enum EDataSetType {
 
-	mRNA,
-	mRNAseq,
-	microRNA,
-	microRNAseq,
-	methylation,
-	RPPA
+	mRNA(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(0)),
+	mRNAseq(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(1)),
+	microRNA(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(2)),
+	microRNAseq(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(3)),
+	methylation(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(4)),
+	RPPA(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(5)),
+	copyNumber(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(6)),
+	mutation(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(7)),
+	clinical(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(7));
+
+	private Color color;
+
+	private EDataSetType(Color color) {
+		this.color = color;
+	}
+
+	/**
+	 * @return the color, see {@link #color}
+	 */
+	public Color getColor() {
+		return color;
+	}
 }
