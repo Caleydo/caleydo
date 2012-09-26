@@ -448,20 +448,17 @@ public class BrickColumnSpacingRenderer
 			else
 				xEnd = rightCenterBrick.getLayout().getTranslateX();
 
-			// Render straight band connection from center brick to dimension
+			// Render straight band connection from header brick to dimension
 			// group on
 			// the RIGHT
 			if (xEnd != 0 && !(xEnd < x + 0.000001f && xEnd > x - 0.000001f)) {
 
-				// gl.glPushMatrix();
-				// gl.glTranslatef(0, 0, 0.1f);
 				connectionRenderer.renderStraightBand(gl, new float[] { x,
 						rightCenterBrickTop, 0 },
 						new float[] { x, rightCenterBrickBottom, 0 }, new float[] { xEnd,
 								rightCenterBrickTop, 0 }, new float[] { xEnd,
 								rightCenterBrickBottom, 0 }, false, 0, GLStratomex.ARCH_COLOR,
 						GLStratomex.ARCH_COLOR[3], true);
-				// gl.glPopMatrix();
 			}
 
 		}
@@ -476,14 +473,11 @@ public class BrickColumnSpacingRenderer
 		if (leftCenterBrickBottom == 0 && rightCenterBrickBottom == 0)
 			return;
 
-		// gl.glPushMatrix();
-		// gl.glTranslatef(0, 0, 0.1f);
 		connectionRenderer.renderSingleBand(gl, new float[] { 0, leftCenterBrickTop, 0 },
 				new float[] { 0, leftCenterBrickBottom, 0 }, new float[] { x,
 						rightCenterBrickTop, 0 },
 				new float[] { x, rightCenterBrickBottom, 0 }, false, curveOffset, 0,
 				GLStratomex.ARCH_COLOR, true);
-		// gl.glPopMatrix();
 	}
 
 	private void renderDimensionGroupConnections(GL2 gl) {

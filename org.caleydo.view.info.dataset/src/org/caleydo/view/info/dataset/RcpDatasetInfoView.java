@@ -57,7 +57,6 @@ public class RcpDatasetInfoView
 	private Label nameLabel;
 	private Label recordLabel;
 	private Label dimensionLabel;
-	private Label sourceLabel;
 
 	private Composite infoComposite;
 
@@ -140,16 +139,12 @@ public class RcpDatasetInfoView
 			histogramExpandBar.setVisible(true);
 			recordLabel.setVisible(true);
 			dimensionLabel.setVisible(true);
-			sourceLabel.setVisible(true);
 
 			recordLabel.setText(tableBasedDD.getRecordDenomination(true, true) + ": "
 					+ tableBasedDD.getTable().getMetaData().depth());
 
 			dimensionLabel.setText(tableBasedDD.getDimensionDenomination(true, true) + ": "
 					+ tableBasedDD.getTable().getMetaData().size());
-
-			sourceLabel.setText("Source: "
-					+ dataDomain.getDataSetDescription().getDataSourcePath());
 
 			if (!tableBasedDD.getTable().isDataHomogeneous())
 			{
@@ -192,7 +187,6 @@ public class RcpDatasetInfoView
 			histogramExpandBar.setVisible(false);
 			recordLabel.setVisible(false);
 			dimensionLabel.setVisible(false);
-			sourceLabel.setVisible(false);
 		}
 		
 		parentComposite.layout();
@@ -201,7 +195,6 @@ public class RcpDatasetInfoView
 	private void initGUI() {
 		recordLabel = new Label(infoComposite, SWT.NONE);
 		dimensionLabel = new Label(infoComposite, SWT.NONE);
-		sourceLabel = new Label(infoComposite, SWT.NONE);
 
 		histogramExpandBar = new ExpandBar(parentComposite, SWT.V_SCROLL);
 		GridData gridData = new GridData(GridData.FILL_BOTH);

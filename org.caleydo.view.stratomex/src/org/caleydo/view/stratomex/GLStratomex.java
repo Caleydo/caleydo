@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex;
 
-import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,7 +79,6 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
@@ -145,7 +143,7 @@ public class GLStratomex
 	private Column rightColumnLayout;
 
 	/** thickness of the arch at the sides */
-	private float archSideThickness = 0;
+	private float archSideWidth = 0;
 	private float archInnerWidth = 0;
 	private float archTopY = 0;
 	private float archBottomY = 0;
@@ -309,7 +307,7 @@ public class GLStratomex
 	 */
 	private void initCenterLayout() {
 
-		archSideThickness = viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT;
+		archSideWidth = viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT;
 
 		if (isRightDetailShown || isLeftDetailShown) {
 			archInnerWidth = 0;
@@ -439,7 +437,7 @@ public class GLStratomex
 
 			BrickColumn group = brickColumnManager.getBrickColumns().get(dimensionGroupIndex);
 
-			group.getLayout().setAbsoluteSizeY(archSideThickness);
+			group.getLayout().setAbsoluteSizeY(archSideWidth);
 			group.setArchHeight(-1);
 			columnLayout.append(group.getLayout());
 
@@ -690,131 +688,19 @@ public class GLStratomex
 
 	private void renderArch(GL2 gl) {
 
-		// Left arch
-
 		gl.glLineWidth(1);
-
-		// gl.glColor4fv(ARCH_COLOR, 0);
-		//
-		// gl.glBegin(GL2.GL_POLYGON);
-		// gl.glVertex3f(0, 0, 0f);
-		// gl.glVertex3f(0, archBottomY, 0f);
-		// gl.glVertex3f(archSideThickness, archBottomY, 0f);
-		// gl.glVertex3f(archSideThickness, 0, 0f);
-		// gl.glEnd();
-
-		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
-		inputPoints.add(new Vec3f(0, archBottomY, 0));
-		inputPoints.add(new Vec3f(0, archTopY, 0));
-		inputPoints.add(new Vec3f(archInnerWidth * 0.9f, archTopY, 0));
-
-		NURBSCurve curve = new NURBSCurve(inputPoints, 10);
-
-		ArrayList<Vec3f> outputPointsTop = curve.getCurvePoints();
-		outputPointsTop.add(new Vec3f(archInnerWidth, archTopY, 0));
-
-		inputPoints.clear();
-		inputPoints.add(new Vec3f(archInnerWidth, archBottomY, 0));
-		inputPoints.add(new Vec3f(archSideThickness, archBottomY, 0));
-		inputPoints.add(new Vec3f(archSideThickness, archBottomY * 0.8f, 0));
-
-		curve = new NURBSCurve(inputPoints, 10);
-
-		ArrayList<Vec3f> outputPointsBottom = new ArrayList<Vec3f>();
-		outputPointsBottom.addAll(curve.getCurvePoints());
-
-		ArrayList<Vec3f> outputPoints = new ArrayList<Vec3f>();
-
-		outputPoints.addAll(outputPointsTop);
-		outputPoints.add(new Vec3f(archInnerWidth, archBottomY, 0));
-		outputPoints.addAll(outputPointsBottom);
-
-		// connectionRenderer.render(gl, outputPoints);
-
-		gl.glColor4f(ARCH_COLOR[0], ARCH_COLOR[1], ARCH_COLOR[2], ARCH_COLOR[3] * 2);
-		gl.glBegin(GL2.GL_LINE_STRIP);
-		for (Vec3f point : outputPointsTop)
-			gl.glVertex3f(point.x(), point.y(), point.z());
-		gl.glEnd();
-
-		gl.glBegin(GL2.GL_LINE_STRIP);
-		for (Vec3f point : outputPointsBottom)
-			gl.glVertex3f(point.x(), point.y(), point.z());
-		gl.glEnd();
-
 		gl.glColor4f(ARCH_COLOR[0], ARCH_COLOR[1], ARCH_COLOR[2], ARCH_COLOR[3] * 2);
 
+		// Left arch
 		gl.glBegin(GL2.GL_LINES);
-		gl.glVertex3f(0, archBottomY, 0f);
-		gl.glVertex3f(0, 0, 0f);
-		gl.glEnd();
-
-		gl.glBegin(GL2.GL_LINES);
-		gl.glVertex3f(archSideThickness, archBottomY * 0.8f, 0f);
-		gl.glVertex3f(archSideThickness, 0, 0f);
+		gl.glVertex3f(archSideWidth, archBottomY, 0f);
+		gl.glVertex3f(archSideWidth, 0, 0f);
 		gl.glEnd();
 
 		// Right arch
-
-		// gl.glColor4fv(ARCH_COLOR, 0);
-		// gl.glBegin(GL2.GL_POLYGON);
-		// gl.glVertex3f(viewFrustum.getWidth(), 0, 0f);
-		// gl.glVertex3f(viewFrustum.getWidth(), archBottomY, 0f);
-		// gl.glVertex3f(viewFrustum.getWidth() - archSideThickness,
-		// archBottomY, 0f);
-		// gl.glVertex3f(viewFrustum.getWidth() - archSideThickness, 0, 0f);
-		// gl.glEnd();
-
-		inputPoints.clear();
-		inputPoints.add(new Vec3f(viewFrustum.getWidth(), archBottomY, 0));
-		inputPoints.add(new Vec3f(viewFrustum.getWidth(), archTopY, 0));
-		inputPoints
-				.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth * 0.9f, archTopY, 0));
-
-		curve = new NURBSCurve(inputPoints, 10);
-		outputPointsTop.clear();
-		outputPointsTop = curve.getCurvePoints();
-		outputPointsTop.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archTopY, 0));
-
-		inputPoints.clear();
-		inputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archBottomY, 0));
-		inputPoints.add(new Vec3f(viewFrustum.getWidth() - archSideThickness, archBottomY, 0));
-		inputPoints.add(new Vec3f(viewFrustum.getWidth() - archSideThickness,
-				archBottomY * 0.8f, 0));
-
-		curve = new NURBSCurve(inputPoints, 10);
-
-		outputPointsBottom.clear();
-		outputPointsBottom = new ArrayList<Vec3f>();
-		outputPointsBottom.addAll(curve.getCurvePoints());
-
-		outputPoints.clear();
-
-		outputPoints.addAll(outputPointsTop);
-		outputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archBottomY, 0));
-		outputPoints.addAll(outputPointsBottom);
-
-		// connectionRenderer.render(gl, outputPoints);
-
-		gl.glColor4f(ARCH_COLOR[0], ARCH_COLOR[1], ARCH_COLOR[2], ARCH_COLOR[3] * 2);
-		gl.glBegin(GL2.GL_LINE_STRIP);
-		for (Vec3f point : outputPointsTop)
-			gl.glVertex3f(point.x(), point.y(), point.z());
-		gl.glEnd();
-
-		gl.glBegin(GL2.GL_LINE_STRIP);
-		for (Vec3f point : outputPointsBottom)
-			gl.glVertex3f(point.x(), point.y(), point.z());
-		gl.glEnd();
-
 		gl.glBegin(GL2.GL_LINES);
-		gl.glVertex3f(viewFrustum.getWidth(), 0, 0f);
-		gl.glVertex3f(viewFrustum.getWidth(), archBottomY, 0f);
-		gl.glEnd();
-
-		gl.glBegin(GL2.GL_LINES);
-		gl.glVertex3f(viewFrustum.getWidth() - archSideThickness, archBottomY * 0.8f, 0.01f);
-		gl.glVertex3f(viewFrustum.getWidth() - archSideThickness, 0, 0.1f);
+		gl.glVertex3f(viewFrustum.getWidth() - archSideWidth, archBottomY, 0.01f);
+		gl.glVertex3f(viewFrustum.getWidth() - archSideWidth, 0, 0.1f);
 		gl.glEnd();
 	}
 

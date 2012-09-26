@@ -30,7 +30,6 @@ import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfigurati
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.ColorManager;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 import org.caleydo.data.importer.tcga.EDataSetType;
 import org.caleydo.data.importer.tcga.utils.ArchiveExtractionUtils;
@@ -180,16 +179,6 @@ public class TCGAInterAnalysisRunXMLGenerator
 				System.err.println(e.getMessage());
 			}
 		}
-
-		ColorManager.get().unmarkAllColors(ColorManager.QUALITATIVE_COLORS);
-	}
-
-	private Color getNextDataSetColor() {
-
-		Color color = ColorManager.get().getFirstMarkedColorOfList(
-				ColorManager.QUALITATIVE_COLORS, false);
-		ColorManager.get().markColor(ColorManager.QUALITATIVE_COLORS, color, true);
-		return color;
 	}
 
 	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName,

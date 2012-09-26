@@ -34,7 +34,6 @@ import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfigurati
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.color.Color;
-import org.caleydo.core.util.color.ColorManager;
 import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 import org.caleydo.data.importer.tcga.utils.ArchiveExtractionUtils;
@@ -301,8 +300,6 @@ public class TCGAXMLGenerator
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
-
-		ColorManager.get().unmarkAllColors(ColorManager.QUALITATIVE_COLORS);
 	}
 
 	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName,
