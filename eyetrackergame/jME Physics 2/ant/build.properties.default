@@ -1,6 +1,0 @@
-module.jme.basedir=../jME/
-
-# Skip building the test classes. If you want to build the 
-# test classes comment this line and also compile jME using 
-# the build target 'compile-test'
-#skip.tests
