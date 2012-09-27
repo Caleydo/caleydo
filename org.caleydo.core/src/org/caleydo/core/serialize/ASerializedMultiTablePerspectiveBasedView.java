@@ -81,6 +81,4 @@ public abstract class ASerializedMultiTablePerspectiveBasedView extends ASeriali
 	public ArrayList<Pair<String, String>> getDataDomainAndTablePerspectiveKeys() {
 		return dataDomainAndTablePerspectiveKeys;
 	}
-	
-
 }

@@ -169,15 +169,15 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 					.get().getDataDomainByID(
 							serializedSingleTablePerspectiveBasedView.getDataDomainID());
 
-			TablePerspective container = tDataDomain
+			TablePerspective tablePerspective = tDataDomain
 					.getTablePerspective(serializedSingleTablePerspectiveBasedView
 							.getTablePerspectiveKey());
 			// In case the stored TablePerspective is not available in this run
-			if (container == null) {
+			if (tablePerspective == null) {
 				createDefaultSerializedView();
 				serializedSingleTablePerspectiveBasedView = (ASerializedSingleTablePerspectiveBasedView) serializedView;
 			} else {
-				singleTablePerspectiveBasedView.setTablePerspective(container);
+				singleTablePerspectiveBasedView.setTablePerspective(tablePerspective);
 			}
 
 		} else if (view instanceof IMultiTablePerspectiveBasedView) {

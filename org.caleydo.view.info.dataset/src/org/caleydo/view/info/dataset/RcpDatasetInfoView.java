@@ -146,8 +146,7 @@ public class RcpDatasetInfoView
 			dimensionLabel.setText(tableBasedDD.getDimensionDenomination(true, true) + ": "
 					+ tableBasedDD.getTable().getMetaData().size());
 
-			if (!tableBasedDD.getTable().isDataHomogeneous())
-			{
+			if (!tableBasedDD.getTable().isDataHomogeneous()) {
 				histogramExpandBar.setVisible(false);
 				return;
 			}
@@ -178,6 +177,16 @@ public class RcpDatasetInfoView
 				histogramExpandBar.setSpacing(2);
 			}
 			else {
+
+				// If the default table perspective does not exist yet, we
+				// create it and set it to private so that it does not show up
+				// in the DVI
+				if (!tableBasedDD.hasTablePerspective(tableBasedDD.getTable()
+						.getDefaultRecordPerspective().getPerspectiveID(), tableBasedDD
+						.getTable().getDefaultDimensionPerspective().getPerspectiveID())) {
+					tableBasedDD.getDefaultTablePerspective().setPrivate(true);
+				}
+
 				((GLHistogram) histogramView.getGLView()).setHistogram(tableBasedDD
 						.getDefaultTablePerspective().getContainerStatistics().getHistogram());
 				((GLHistogram) histogramView.getGLView()).setDisplayListDirty();
@@ -188,7 +197,7 @@ public class RcpDatasetInfoView
 			recordLabel.setVisible(false);
 			dimensionLabel.setVisible(false);
 		}
-		
+
 		parentComposite.layout();
 	}
 

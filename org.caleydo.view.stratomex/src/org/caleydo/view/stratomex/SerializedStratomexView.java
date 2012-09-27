@@ -35,9 +35,6 @@ public class SerializedStratomexView extends ASerializedMultiTablePerspectiveBas
 	/**
 	 * Default constructor with default initialization
 	 */
-	/**
-	 * 
-	 */
 	public SerializedStratomexView() {
 	}
 
