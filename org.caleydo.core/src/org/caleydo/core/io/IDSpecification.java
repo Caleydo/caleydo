@@ -67,7 +67,6 @@ import org.caleydo.core.id.IDTypeInitializer;
  * <li><code>ENSEMBL_GENE_ID</code></li>
  * <li><code>ENTREZ_GENE_ID</code></li>
  * <li><code>REFSEQ_MRNA</code></li>
- * <li><code>BIOCARTA_GENE_ID</code></li>
  * </ul>
  * 
  * <p>

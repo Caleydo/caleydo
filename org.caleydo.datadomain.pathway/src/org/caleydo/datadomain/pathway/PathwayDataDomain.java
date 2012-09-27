@@ -93,7 +93,7 @@ public class PathwayDataDomain
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 
 		this.dataSetDescription = new DataSetDescription();
-		
+
 		dataSetDescription.setDataSetName("Pathway Data");
 
 		// set a neutral gray as the pathway color
@@ -127,12 +127,15 @@ public class PathwayDataDomain
 	@Override
 	public void run() {
 
+		// Do not loa
+		// PathwayDatabase pathwayDatabase =
+		// PathwayManager.get().createPathwayDatabase(
+		// EPathwayDatabaseType.BIOCARTA, "data/html/", "data/images/",
+		// "data/html");
+		//
+		// PathwayManager.get().loadPathwaysByType(pathwayDatabase);
+
 		PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(
-				EPathwayDatabaseType.BIOCARTA, "data/html/", "data/images/", "data/html");
-
-		PathwayManager.get().loadPathwaysByType(pathwayDatabase);
-
-		pathwayDatabase = PathwayManager.get().createPathwayDatabase(
 				EPathwayDatabaseType.KEGG, "data/xml/", "data/images/", "");
 
 		PathwayManager.get().loadPathwaysByType(pathwayDatabase);

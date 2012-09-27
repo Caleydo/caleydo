@@ -323,7 +323,7 @@ public class ChooseProjectTypePage
 		Text geneticDataDescription = new Text(composite, SWT.MULTI | SWT.WRAP);
 		geneticDataDescription
 				.setText("Load tabular data wich contains identifiers to one of the following types of IDs: "
-						+ "DAVID IDs, gene names, RefSeq IDs, ENSEMBL IDs, ENTREZ IDs or Biocarta IDs \n \n"
+						+ "DAVID IDs, gene names, RefSeq IDs, ENSEMBL IDs or ENTREZ IDs \n \n"
 						+ "Other identifiers are currently not supported. Use the \"Load Other Data\" "
 						+ "option if you have other identifiers. ");
 		geneticDataDescription.setBackground(composite.getBackground());

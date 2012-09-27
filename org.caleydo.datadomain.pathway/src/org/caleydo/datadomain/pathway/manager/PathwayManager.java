@@ -124,8 +124,8 @@ public class PathwayManager
 
 		KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
 		xmlParserManager.registerAndInitSaxHandler(kgmlParser);
-		BioCartaPathwayImageMapSaxHandler biocartaPathwayParser = new BioCartaPathwayImageMapSaxHandler();
-		xmlParserManager.registerAndInitSaxHandler(biocartaPathwayParser);
+//		BioCartaPathwayImageMapSaxHandler biocartaPathwayParser = new BioCartaPathwayImageMapSaxHandler();
+//		xmlParserManager.registerAndInitSaxHandler(biocartaPathwayParser);
 	}
 
 	public PathwayDatabase createPathwayDatabase(final EPathwayDatabaseType type,
