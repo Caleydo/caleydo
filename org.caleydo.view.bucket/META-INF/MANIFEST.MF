@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Bucket View
 Bundle-SymbolicName: org.caleydo.view.bucket;singleton:=true
-Bundle-Version: 2.0.2
-Require-Bundle: org.caleydo.core;bundle-version="2.0.2",
- org.caleydo.data;bundle-version="2.0.2",
- org.caleydo.view.heatmap;bundle-version="2.0.2",
- org.caleydo.view.parcoords;bundle-version="2.0.2",
- org.caleydo.datadomain.pathway;bundle-version="2.0.2",
- org.caleydo.view.pathway;bundle-version="2.0.2"
+Bundle-Version: 2.1
+Require-Bundle: org.caleydo.core;bundle-version="2.1",
+ org.caleydo.data;bundle-version="2.1",
+ org.caleydo.view.heatmap;bundle-version="2.1",
+ org.caleydo.view.parcoords;bundle-version="2.1",
+ org.caleydo.datadomain.pathway;bundle-version="2.1",
+ org.caleydo.view.pathway;bundle-version="2.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.caleydo.view.bucket,
  org.caleydo.view.bucket.toolbar,

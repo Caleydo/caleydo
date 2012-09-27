@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jnlp 
     spec="1.0+" 
-    codebase="http://data.icg.tugraz.at/caleydo/download/webstart_2.0.2/" 
+    codebase="http://data.icg.tugraz.at/caleydo/download/webstart_2.1/" 
     href="JNLP_NAME">
   <information>
     <title>Caleydo - visualization for molecular biology</title>  
@@ -16,7 +16,7 @@
  
   <resources>
     <jar href="plugins/org.eclipse.equinox.launcher_1.2.0.v20110502.jar"/>
-    <extension name="Caleydo feature" href="features/org.caleydo.rcp.feature_2.0.2.jnlp"/>
+    <extension name="Caleydo feature" href="features/org.caleydo.rcp.feature_2.1.jnlp"/>
     <property name="osgi.instance.area" value="@user.home/.caleydo_2.0"/>
     <property name="osgi.configuration.area" value="@user.home/.caleydo_2.0/configuration"/>
     <property name="eclipse.product" value="org.caleydo.core.product"/> 

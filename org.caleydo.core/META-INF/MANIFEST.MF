@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Caleydo Core Plug-in
 Bundle-SymbolicName: org.caleydo.core;singleton:=true
-Bundle-Version: 2.0.2
+Bundle-Version: 2.1
 Export-Package: 
  org.caleydo.core.data.collection,
  org.caleydo.core.data.collection.container;uses:="org.caleydo.core.data.virtualarray",
@@ -415,11 +415,11 @@ Export-Package:
    org.eclipse.swt.widgets,
    org.caleydo.core.data.selection"
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0";visibility:=reexport,
- org.caleydo.data;bundle-version="2.0.2";visibility:=reexport,
- org.caleydo.util.gleem;bundle-version="2.0.2";visibility:=reexport,
+ org.caleydo.data;bundle-version="2.1";visibility:=reexport,
+ org.caleydo.util.gleem;bundle-version="2.1";visibility:=reexport,
  org.eclipse.jface;bundle-version="3.6.0";visibility:=reexport,
- org.caleydo.lib.jogl;bundle-version="2.0.2";visibility:=reexport,
- org.caleydo.lib.core;bundle-version="2.0.2";visibility:=reexport,
+ org.caleydo.lib.jogl;bundle-version="2.1";visibility:=reexport,
+ org.caleydo.lib.core;bundle-version="2.1";visibility:=reexport,
  org.eclipse.ui;bundle-version="3.6.0";visibility:=reexport,
  org.eclipse.core.resources;bundle-version="3.6.0"
 Bundle-ClassPath: .

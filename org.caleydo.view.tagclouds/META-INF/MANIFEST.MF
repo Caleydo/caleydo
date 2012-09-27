@@ -2,9 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tag Clouds
 Bundle-SymbolicName: org.caleydo.view.tagclouds;singleton:=true
-Bundle-Version: 2.0.2
-Require-Bundle: org.caleydo.core;bundle-version="2.0.2",
- org.caleydo.datadomain.genetic;bundle-version="2.0.2"
+Bundle-Version: 2.1
+Require-Bundle: org.caleydo.core;bundle-version="2.1",
+ org.caleydo.datadomain.genetic;bundle-version="2.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: gleem.linalg,
  javax.media.opengl,
