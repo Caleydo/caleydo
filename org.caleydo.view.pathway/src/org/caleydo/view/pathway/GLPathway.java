@@ -591,12 +591,14 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		gl.glPushMatrix();
 		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
 		gl.glScalef(vecScaling.x(), vecScaling.y(), vecScaling.z());
-
+		float textureOffset=0.0f;//to avoid z fighting 
 		if (enablePathwayTexture) {
 			float fPathwayTransparency = 1.0f;
 
 			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, pathway,
 					fPathwayTransparency, false);
+			textureOffset+=0.01f;
+			gl.glTranslatef(0.0f,0.0f,textureOffset);
 			overlayBubbleSets(gl);
 			
 		}
@@ -605,10 +607,11 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		// Pathway texture height is subtracted from Y to align pathways to
 		// front level
-		gl.glTranslatef(0, tmp, 0);
+		textureOffset+=0.01f;
+		gl.glTranslatef(0, tmp, textureOffset);		
 		gLPathwayContentCreator.renderPathway(gl, pathway, false);
 		renderPaths(gl);
-		gl.glTranslatef(0, -tmp, 0);
+		gl.glTranslatef(0, -tmp, -textureOffset);
 
 		gl.glScalef(1 / vecScaling.x(), 1 / vecScaling.y(), 1 / vecScaling.z());
 		gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(), -vecTranslation.z());
