@@ -636,6 +636,7 @@ public class GLStratomex
 		mainRow.remove(rightColumnLayout);
 		mainRow.remove(leftColumnLayout);
 		layoutManager.updateLayout();
+		setDisplayListDirty();
 	}
 
 	/**

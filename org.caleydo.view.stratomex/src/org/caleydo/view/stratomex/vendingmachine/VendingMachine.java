@@ -419,13 +419,23 @@ public class VendingMachine
 				tablePerspectives.addAll(dataDomain.getAllTablePerspectives());
 			}
 			else {
-				// We take the first dimension perspective we find
+				// We take the first dimension perspective we find - it does not
+				// matter
 				String dimensionPerspectiveID = (String) dataDomain
 						.getDimensionPerspectiveIDs().toArray()[0];
 
 				Set<String> rowPerspectiveIDs = dataDomain.getRecordPerspectiveIDs();
 
 				for (String rowPerspectiveID : rowPerspectiveIDs) {
+
+					System.out.println("ref: "
+							+ referenceBrickColumn.getTablePerspective()
+									.getRecordPerspective().getPerspectiveID() + " with "
+							+ rowPerspectiveID);
+
+					if (rowPerspectiveID.equals(referenceBrickColumn.getTablePerspective()
+							.getRecordPerspective().getPerspectiveID()))
+						continue;
 
 					boolean existsAlready = false;
 					if (dataDomain.hasTablePerspective(rowPerspectiveID,
@@ -440,12 +450,6 @@ public class VendingMachine
 					if (!existsAlready)
 						newTablePerspective.setPrivate(true);
 
-					// Do not add the current reference table perspectives to
-					// scoring
-					if (referenceTablePerspective == newTablePerspective
-							|| referenceBrickColumn.getTablePerspective() == newTablePerspective)
-						continue;
-
 					tablePerspectives.add(newTablePerspective);
 				}
 			}
@@ -456,18 +460,16 @@ public class VendingMachine
 
 		dataDomainButtons.clear();
 
-		List<ATableBasedDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(
-				ATableBasedDataDomain.class);
-		
+		List<ATableBasedDataDomain> dataDomains = DataDomainManager.get()
+				.getDataDomainsByType(ATableBasedDataDomain.class);
+
 		// Sort data domains alphabetically
-		Collections.sort(dataDomains, new Comparator<ADataDomain>()
-                {
-            public int compare(ADataDomain dd1, ADataDomain dd2)
-            {
-                return dd1.toString().compareTo(dd2.toString());
-            }        
-        });
-		
+		Collections.sort(dataDomains, new Comparator<ADataDomain>() {
+			public int compare(ADataDomain dd1, ADataDomain dd2) {
+				return dd1.toString().compareTo(dd2.toString());
+			}
+		});
+
 		for (ATableBasedDataDomain dataDomain : dataDomains) {
 
 			Row singleDataSetRow = new Row("singleDataSetRow");
