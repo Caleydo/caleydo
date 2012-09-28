@@ -131,13 +131,19 @@ public class DataSetDescription extends MatrixDefinition {
 	private boolean isDataHomogeneous = true;
 
 	/**
-	 * Flag determining whether the data is of the form that 0 is the neutral
-	 * value, lower values are in the negative and larger values are in the
-	 * positive range. If this flag is set to true, it will be assumed that the
-	 * extend into both, positive and negative direction is the same. Eg, for a
-	 * dataset [-0.5, 0.7] the value range will be set to -0.7 to 0.7.
+	 * <p>
+	 * Value that, if set, determines a neutral center point of the data, A
+	 * common example is that 0 is the neutral value, lower values are in the
+	 * negative and larger values are in the positive range. If this value is
+	 * set it is be assumed that the extend into both, positive and negative
+	 * direction is the same. Eg, for a dataset [-0.5, 0.7] with a center set at
+	 * 0, the value range will be set to -0.7 to 0.7.
+	 * </p>
+	 * <p>
+	 * Defaults to 0, i.e., data is not centered.
+	 * </p>
 	 */
-	private boolean isDataCenteredAtZero = false;
+	private Double dataCenter = null;
 
 	/**
 	 * An artificial min value used for normalization in the {@link DataTable}.
@@ -228,18 +234,18 @@ public class DataSetDescription extends MatrixDefinition {
 	}
 
 	/**
-	 * @param isDataCenteredAtZero
-	 *            setter, see {@link #isDataCenteredAtZero}
+	 * @param dataCenter
+	 *            setter, see {@link #dataCenter}
 	 */
-	public void setDataCenteredAtZero(boolean isDataCenteredAtZero) {
-		this.isDataCenteredAtZero = isDataCenteredAtZero;
+	public void setDataCenter(Double dataCenter) {
+		this.dataCenter = dataCenter;
 	}
 
 	/**
-	 * @return the isDataCenteredAtZero, see {@link #isDataCenteredAtZero}
+	 * @return the dataCenter, see {@link #dataCenter}
 	 */
-	public boolean isDataCenteredAtZero() {
-		return isDataCenteredAtZero;
+	public Double getDataCenter() {
+		return dataCenter;
 	}
 
 	/**

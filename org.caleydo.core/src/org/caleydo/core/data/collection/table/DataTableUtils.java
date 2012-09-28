@@ -175,8 +175,8 @@ public class DataTableUtils {
 		// TODO re-enable this
 		// loadTrees(loadDataParameters, set);
 
-		table.getMetaData().setDataCenteredAtZero(
-				dataSetDescription.isDataCenteredAtZero());
+		table.getMetaData().setDataCenter(
+				dataSetDescription.getDataCenter());
 
 		if (dataSetDescription.getMin() != null) {
 			table.getMetaData().setMin(dataSetDescription.getMin());

@@ -202,7 +202,7 @@ public class TCGAInterAnalysisRunXMLGenerator
 		matrixData.setDataSourcePath(matrixFile);
 		matrixData.setNumberOfHeaderLines(3);
 		matrixData.setColor(color);
-		matrixData.setDataCenteredAtZero(true);
+		matrixData.setDataCenter(0d);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);

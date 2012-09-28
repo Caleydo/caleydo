@@ -44,8 +44,8 @@ public class MetaData {
 	private boolean artificialMax = false;
 	double max = Double.MIN_VALUE;
 
-	/** same as {@link DataSetDescription#isDataCenteredAtZero()} */
-	private boolean isDataCenteredAtZero = false;
+	/** same as {@link DataSetDescription#getDataCenter()} */
+	private Double dataCenter = null;
 
 	public MetaData(DataTable table) {
 		this.table = table;
@@ -88,16 +88,18 @@ public class MetaData {
 	}
 
 	/**
-	 * @param isDataCenteredAtZero setter, see {@link #isDataCenteredAtZero}
+	 * @param dataCenter
+	 *            setter, see {@link #dataCenter}
 	 */
-	public void setDataCenteredAtZero(boolean isDataCenteredAtZero) {
-		this.isDataCenteredAtZero = isDataCenteredAtZero;
+	public void setDataCenter(Double dataCenter) {
+		this.dataCenter = dataCenter;
 	}
 
 	/**
 	 * Get the minimum value in the table.
 	 * 
-	 * @throws OperationNotSupportedException when executed on nominal data
+	 * @throws OperationNotSupportedException
+	 *             when executed on nominal data
 	 * @return the absolute minimum value in the set
 	 */
 	public double getMin() {
@@ -110,7 +112,8 @@ public class MetaData {
 	/**
 	 * Get the maximum value in the table.
 	 * 
-	 * @throws OperationNotSupportedException when executed on nominal data
+	 * @throws OperationNotSupportedException
+	 *             when executed on nominal data
 	 * @return the absolute minimum value in the set
 	 */
 	public double getMax() {
@@ -143,9 +146,10 @@ public class MetaData {
 	/**
 	 * Gets the minimum value in the set in the specified data representation.
 	 * 
-	 * @param dataRepresentation Data representation the minimum value shall be
-	 *            returned in.
-	 * @throws OperationNotSupportedException when executed on nominal data
+	 * @param dataRepresentation
+	 *            Data representation the minimum value shall be returned in.
+	 * @throws OperationNotSupportedException
+	 *             when executed on nominal data
 	 * @return The absolute minimum value in the set in the specified data
 	 *         representation.
 	 */
@@ -163,9 +167,10 @@ public class MetaData {
 	/**
 	 * Gets the maximum value in the set in the specified data representation.
 	 * 
-	 * @param dataRepresentation Data representation the maximum value shall be
-	 *            returned in.
-	 * @throws OperationNotSupportedException when executed on nominal data
+	 * @param dataRepresentation
+	 *            Data representation the maximum value shall be returned in.
+	 * @throws OperationNotSupportedException
+	 *             when executed on nominal data
 	 * @return The absolute maximum value in the set in the specified data
 	 *         representation.
 	 */
@@ -183,24 +188,25 @@ public class MetaData {
 	/**
 	 * Converts a raw value to the specified data representation.
 	 * 
-	 * @param dRaw Raw value that shall be converted
-	 * @param dataRepresentation Data representation the raw value shall be
-	 *            converted to.
+	 * @param dRaw
+	 *            Raw value that shall be converted
+	 * @param dataRepresentation
+	 *            Data representation the raw value shall be converted to.
 	 * @return Value in the specified data representation converted from the raw
 	 *         value.
 	 */
 	private double getDataRepFromRaw(double dRaw, EDataTransformation dataRepresentation) {
 		switch (dataRepresentation) {
-			case NONE:
-				return dRaw;
-			case LOG2:
-				return Math.log(dRaw) / Math.log(2);
-			case LOG10:
-				return Math.log10(dRaw);
-			default:
-				throw new IllegalStateException(
-						"Conversion to data rep not implemented for data rep"
-								+ dataRepresentation);
+		case NONE:
+			return dRaw;
+		case LOG2:
+			return Math.log(dRaw) / Math.log(2);
+		case LOG10:
+			return Math.log10(dRaw);
+		default:
+			throw new IllegalStateException(
+					"Conversion to data rep not implemented for data rep"
+							+ dataRepresentation);
 		}
 	}
 
@@ -208,21 +214,22 @@ public class MetaData {
 	 * Converts the specified value into raw using the current external data
 	 * representation.
 	 * 
-	 * @param dNumber Value in the current external data representation.
+	 * @param dNumber
+	 *            Value in the current external data representation.
 	 * @return Raw value converted from the specified value.
 	 */
 	private double getRawFromExternalDataRep(double dNumber) {
 		switch (table.externalDataTrans) {
-			case NONE:
-				return dNumber;
-			case LOG2:
-				return Math.pow(2, dNumber);
-			case LOG10:
-				return Math.pow(10, dNumber);
-			default:
-				throw new IllegalStateException(
-						"Conversion to raw not implemented for data rep"
-								+ table.externalDataTrans);
+		case NONE:
+			return dNumber;
+		case LOG2:
+			return Math.pow(2, dNumber);
+		case LOG10:
+			return Math.pow(10, dNumber);
+		default:
+			throw new IllegalStateException(
+					"Conversion to raw not implemented for data rep"
+							+ table.externalDataTrans);
 		}
 	}
 
@@ -241,34 +248,25 @@ public class MetaData {
 					max = temp;
 				}
 			}
-			if (isDataCenteredAtZero) {
-				if (min > 0 || max < 0) {
-					// FIXME: we need to think about a better solution than
-					// ignoring this. The dataset creator should not set this
-					// flag if for intance no negative values are contained.
-					// However, we don't always know the value
-					// range of a dataset during its creation.
-					return;
+			if (dataCenter != null) {
+				if (min > dataCenter || max < dataCenter) {
+					throw new IllegalStateException("DataCentered was set to "
+							+ dataCenter + ", but min (" + min + ") is larger or max ("
+							+ max + ") is smaller than data center");
 				}
-				// throw new IllegalStateException(
-				// "Flag isDataCenteredAtZero was set, but min is larger than 0: "
-				// + min + " or max is smaller than 0: " + max);
 
-				double absMin = Math.abs(min);
-				if (absMin > max) {
-					max = absMin;
-				}
-				else if (absMin < max) {
-					min = max * -1;
-				}
+				double lowerDelta = Math.abs(min - dataCenter);
+				double upperDelta = Math.abs(max - dataCenter);
+				double maxDelta;
+				maxDelta = (lowerDelta > upperDelta) ?  lowerDelta : upperDelta;
+				max = dataCenter + maxDelta;
+				min = dataCenter - maxDelta;
 
 			}
 
-		}
-		else if (table.hashColumns.get(0) instanceof NominalColumn<?>) {
-			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
-					+ "on nominal data");
+		} else if (table.hashColumns.get(0) instanceof NominalColumn<?>) {
+			throw new UnsupportedOperationException(
+					"No minimum or maximum can be calculated " + "on nominal data");
 		}
 	}
-
 }
