@@ -90,9 +90,11 @@ import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.pathway.event.EnRoutePathEvent;
+import org.caleydo.view.pathway.event.SelectPathModeEvent;
 import org.caleydo.view.pathway.listener.DisableGeneMappingListener;
 import org.caleydo.view.pathway.listener.EnRoutePathEventListener;
 import org.caleydo.view.pathway.listener.EnableGeneMappingListener;
+import org.caleydo.view.pathway.listener.SelectPathModeEventListener;
 import org.caleydo.view.pathway.listener.SwitchDataRepresentationListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -164,6 +166,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	protected DisableGeneMappingListener disableGeneMappingListener;
 	protected SwitchDataRepresentationListener switchDataRepresentationListener;
 	protected EnRoutePathEventListener enRoutePathEventListener;
+	protected SelectPathModeEventListener selectPathModeEventListener;
 
 	private IPickingListener pathwayElementPickingListener;
 
@@ -187,6 +190,11 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	private boolean isControlKeyDown = false;
 	private boolean isShiftKeyDown = false;
 	private int selectedPathID;
+
+	/**
+	 * Determines whether the paths should be selectable via mouse click.
+	 */
+	private boolean isPathSelectionMode = false;
 
 	/**
 	 * Constructor.
@@ -600,7 +608,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			textureOffset+=0.01f;
 			gl.glTranslatef(0.0f,0.0f,textureOffset);
 			overlayBubbleSets(gl);
-			
+
 		}
 
 		float tmp = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
@@ -669,8 +677,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 				org.caleydo.core.util.color.Color c = colorTable.get(colorID);
 				outlineThickness = 1;
 				// bubble sets do not allow to delete
-				bubblesetCanvas.addGroup(new Color(c.r,
-						c.g, c.b), outlineThickness, true);
+				bubblesetCanvas
+						.addGroup(new Color(c.r, c.g, c.b), outlineThickness, true);
 			}
 
 			DefaultEdge lastEdge = null;
@@ -1207,6 +1215,11 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		enRoutePathEventListener = new EnRoutePathEventListener();
 		enRoutePathEventListener.setHandler(this);
 		eventPublisher.addListener(EnRoutePathEvent.class, enRoutePathEventListener);
+
+		selectPathModeEventListener = new SelectPathModeEventListener();
+		selectPathModeEventListener.setHandler(this);
+		eventPublisher
+				.addListener(SelectPathModeEvent.class, selectPathModeEventListener);
 	}
 
 	@Override
@@ -1232,6 +1245,11 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		if (enRoutePathEventListener != null) {
 			eventPublisher.removeListener(enRoutePathEventListener);
 			enRoutePathEventListener = null;
+		}
+
+		if (selectPathModeEventListener != null) {
+			eventPublisher.removeListener(selectPathModeEventListener);
+			selectPathModeEventListener = null;
 		}
 
 		metaboliteSelectionManager.unregisterEventListeners();
@@ -1361,8 +1379,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			metaboliteSelectionManager.triggerSelectionUpdateEvent();
 		}
 		if (isShiftKeyDown) {
-			if (previouslySelectedVertexRep != null
-					&& selectionType == SelectionType.SELECTION) {
+			if (previouslySelectedVertexRep != null) {
 
 				if (!isControlKeyDown) {
 					System.out.println("!isControlKeyDown");
@@ -1490,5 +1507,19 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	 */
 	public EventBasedSelectionManager getMetaboliteSelectionManager() {
 		return metaboliteSelectionManager;
+	}
+	
+	/**
+	 * @param isPathSelectionMode setter, see {@link #isPathSelectionMode}
+	 */
+	public void setPathSelectionMode(boolean isPathSelectionMode) {
+		this.isPathSelectionMode = isPathSelectionMode;
+	}
+	
+	/**
+	 * @return the isPathSelectionMode, see {@link #isPathSelectionMode}
+	 */
+	public boolean isPathSelectionMode() {
+		return isPathSelectionMode;
 	}
 }

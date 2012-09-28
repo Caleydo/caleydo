@@ -27,6 +27,7 @@ import org.caleydo.core.gui.toolbar.action.TakeSnapshotAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.view.pathway.toolbar.actions.SelectPathAction;
 
 /**
  * Widget based toolbar container to display pathway related toolbar content.
@@ -48,6 +49,7 @@ public class PathwayToolBarContainer extends ToolBarContainer {
 	public List<IToolBarItem> getToolBarItems() {
 
 		List<IToolBarItem> elements = new ArrayList<IToolBarItem>();
+		elements.add(new SelectPathAction());
 
 		PathwaySearchBox pathwaySearchBox = new PathwaySearchBox("");
 		pathwaySearchBox.setPathwayToolBarMediator(pathwayToolBarMediator);
