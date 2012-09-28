@@ -21,7 +21,9 @@ package org.caleydo.view.stratomex.brick.contextmenu;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.view.stratomex.event.ScoreGroupEvent;
+import org.caleydo.view.stratomex.column.BrickColumn;
+import org.caleydo.view.stratomex.event.ScoreTablePerspectiveEvent;
+import org.caleydo.view.stratomex.vendingmachine.EScoreReferenceMode;
 import org.caleydo.view.stratomex.vendingmachine.VendingMachine;
 
 /**
@@ -32,13 +34,13 @@ public class ScoreGroupItem
 	extends AContextMenuItem {
 
 	public ScoreGroupItem(VendingMachine vendingMachine,
-			TablePerspective referenceTablePerspective,
-			TablePerspective referenceGroupTablePerspective) {
+			TablePerspective referenceTablePerspective, BrickColumn referenceBrickColumn) {
 
 		setLabel("Score group");
 
-		ScoreGroupEvent event = new ScoreGroupEvent(referenceTablePerspective,
-				referenceGroupTablePerspective);
+		ScoreTablePerspectiveEvent event = new ScoreTablePerspectiveEvent(
+				EScoreReferenceMode.SINGLE_GROUP, referenceTablePerspective,
+				referenceBrickColumn);
 		event.setSender(this);
 		registerEvent(event);
 	}

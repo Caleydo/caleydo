@@ -17,52 +17,30 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.event;
+package org.caleydo.view.stratomex.listener;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.view.stratomex.event.ScoreTablePerspectiveEvent;
+import org.caleydo.view.stratomex.vendingmachine.VendingMachine;
 
 /**
- * Event for opening the vending machine within Stratomex with a specified
- * reference table perspective.
+ * Listener for the event {@link ScoreTablePerspectiveEvent}.
  * 
  * @author Marc Streit
  * 
  */
-public class ScoreColumnEvent
-	extends AEvent {
-
-	private TablePerspective referenceTablePerspective;
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param referenceTablePerspective TablePerspective to which the scoring
-	 *            will be calculated.
-	 */
-	public ScoreColumnEvent(TablePerspective referenceTablePerspective) {
-
-		this.referenceTablePerspective = referenceTablePerspective;
-	}
+public class ScoreTablePerspectiveListener
+	extends AEventListener<VendingMachine> {
 
 	@Override
-	public boolean checkIntegrity() {
-		return true;
-	}
+	public void handleEvent(AEvent event) {
+		if (event instanceof ScoreTablePerspectiveEvent) {
 
-	/**
-	 * @param referenceTablePerspective setter, see
-	 *            {@link #referenceTablePerspective}
-	 */
-	public void setReferenceTablePerspective(TablePerspective referenceTablePerspective) {
-		this.referenceTablePerspective = referenceTablePerspective;
-	}
-
-	/**
-	 * @return the referenceTablePerspective, see
-	 *         {@link #referenceTablePerspective}
-	 */
-	public TablePerspective getReferenceTablePerspective() {
-		return referenceTablePerspective;
+			ScoreTablePerspectiveEvent scoreGroupEvent = (ScoreTablePerspectiveEvent) event;
+			handler.setScoringReference(scoreGroupEvent.getScoreReferenceMode(),
+					scoreGroupEvent.getReferenceTablePerspectives(),
+					scoreGroupEvent.getReferenceBrickColumn());
+		}
 	}
 }

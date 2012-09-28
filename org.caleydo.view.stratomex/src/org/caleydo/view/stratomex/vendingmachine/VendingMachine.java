@@ -48,7 +48,6 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -57,10 +56,8 @@ import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnGlowRenderer;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
-import org.caleydo.view.stratomex.event.ScoreColumnEvent;
-import org.caleydo.view.stratomex.event.ScoreGroupEvent;
-import org.caleydo.view.stratomex.listener.ScoreColumnListener;
-import org.caleydo.view.stratomex.listener.ScoreGroupListener;
+import org.caleydo.view.stratomex.event.ScoreTablePerspectiveEvent;
+import org.caleydo.view.stratomex.listener.ScoreTablePerspectiveListener;
 import org.caleydo.view.stratomex.listener.VendingMachineKeyListener;
 import org.eclipse.swt.widgets.Composite;
 
@@ -101,9 +98,9 @@ public class VendingMachine
 
 	private boolean isRankedListDirty = false;
 
-	private TablePerspective referenceTablePerspective;
+	private List<TablePerspective> referenceTablePerspectives;
 
-	private List<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>();
+	private List<TablePerspective> scoringTablePerspectives = new ArrayList<TablePerspective>();
 
 	private int selectedTablePerspectiveIndex = 0;
 
@@ -119,13 +116,13 @@ public class VendingMachine
 
 	private BrickColumn referenceBrickColumn;
 
-	private ScoreColumnListener scoreColumnListener;
-
-	private ScoreGroupListener scoreGroupListener;
+	private ScoreTablePerspectiveListener scoreGroupListener;
 
 	private ArrayList<Button> dataDomainButtons = new ArrayList<Button>();
 
 	private CategoricalTablePerspectiveCreator categoricalTablePerspectiveCreator = new CategoricalTablePerspectiveCreator();
+
+	private EScoreReferenceMode scoreReferenceMode;
 
 	/**
 	 * Constructor.
@@ -222,39 +219,47 @@ public class VendingMachine
 
 		// Trigger ranking of data containers
 		rankedElements = new ArrayList<RankedElement>();
-		for (TablePerspective scoredTablePerspective : tablePerspectives) {
+		for (TablePerspective scoredTablePerspective : scoringTablePerspectives) {
 
-			if (referenceTablePerspective == null) {
+			if (referenceTablePerspectives == null) {
 				RankedElement rankedElement = new RankedElement(0, scoredTablePerspective,
 						null, null);
 				rankedElements.add(rankedElement);
 			}
 			else {
 
-				// Check if we compare whole stratifications or only single
-				// groups
-				if (referenceTablePerspective.getRecordSubTablePerspectives().size() > 1) {
-					float score = scoredTablePerspective.getContainerStatistics()
-							.getAdjustedRandIndex().getScore(referenceTablePerspective, true);
+				switch (scoreReferenceMode) {
+					case COLUMN:
 
-					RankedElement rankedElement = new RankedElement(score,
-							scoredTablePerspective, null, referenceTablePerspective);
-					rankedElements.add(rankedElement);
-				}
-				else {
-					HashMap<TablePerspective, Float> subTablePerspectiveToScore = referenceTablePerspective
-							.getContainerStatistics().getJaccardIndex()
-							.getScore(scoredTablePerspective, true);
+						TablePerspective columnTablePerspective = referenceTablePerspectives
+								.get(0);
+						float score = scoredTablePerspective.getContainerStatistics()
+								.getAdjustedRandIndex().getScore(columnTablePerspective, true);
 
-					for (TablePerspective subTablePerspective : subTablePerspectiveToScore
-							.keySet()) {
-
-						RankedElement rankedElement = new RankedElement(
-								subTablePerspectiveToScore.get(subTablePerspective),
-								scoredTablePerspective, subTablePerspective,
-								referenceTablePerspective);
+						RankedElement rankedElement = new RankedElement(score,
+								scoredTablePerspective, null, columnTablePerspective);
 						rankedElements.add(rankedElement);
-					}
+
+						break;
+
+					case SINGLE_GROUP:
+
+						TablePerspective singleReferenceTablePerspective = referenceTablePerspectives
+								.get(0);
+
+						createSingleJaccardRankedElement(singleReferenceTablePerspective,
+								scoredTablePerspective);
+
+						break;
+
+					case ALL_GROUPS_IN_COLUMN:
+
+						for (TablePerspective referenceTablePerspective : referenceTablePerspectives) {
+							createSingleJaccardRankedElement(referenceTablePerspective,
+									scoredTablePerspective);
+						}
+
+						break;
 				}
 			}
 		}
@@ -305,6 +310,22 @@ public class VendingMachine
 		layoutManager.updateLayout();
 	}
 
+	private void createSingleJaccardRankedElement(TablePerspective referenceTablePerspective,
+			TablePerspective scoredTablePerspective) {
+
+		HashMap<TablePerspective, Float> subTablePerspectiveToScore = referenceTablePerspective
+				.getContainerStatistics().getJaccardIndex()
+				.getScore(scoredTablePerspective, true);
+
+		for (TablePerspective subTablePerspective : subTablePerspectiveToScore.keySet()) {
+
+			RankedElement tmpRankedElement = new RankedElement(
+					subTablePerspectiveToScore.get(subTablePerspective),
+					scoredTablePerspective, subTablePerspective, referenceTablePerspective);
+			rankedElements.add(tmpRankedElement);
+		}
+	}
+
 	@Override
 	public void displayRemote(GL2 gl) {
 		display(gl);
@@ -337,23 +358,14 @@ public class VendingMachine
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		scoreColumnListener = new ScoreColumnListener();
-		scoreColumnListener.setHandler(this);
-		eventPublisher.addListener(ScoreColumnEvent.class, scoreColumnListener);
-
-		scoreGroupListener = new ScoreGroupListener();
+		scoreGroupListener = new ScoreTablePerspectiveListener();
 		scoreGroupListener.setHandler(this);
-		eventPublisher.addListener(ScoreGroupEvent.class, scoreGroupListener);
+		eventPublisher.addListener(ScoreTablePerspectiveEvent.class, scoreGroupListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
-
-		if (scoreColumnListener != null) {
-			eventPublisher.removeListener(scoreColumnListener);
-			scoreColumnListener = null;
-		}
 
 		if (scoreGroupListener != null) {
 			eventPublisher.removeListener(scoreGroupListener);
@@ -372,25 +384,14 @@ public class VendingMachine
 		return null;
 	}
 
-	public void setColumnTablePerspective(TablePerspective referenceTablePerspective) {
+	public void setScoringReference(EScoreReferenceMode scoreReferenceMode,
+			List<TablePerspective> referenceTablePerspectives, BrickColumn referenceBrickColumn) {
 
-		referenceBrickColumn = brickColumnManager.getBrickColumn(referenceTablePerspective);
-		setTablePerspective(referenceTablePerspective);
-	}
-
-	public void setGroupTablePerspective(TablePerspective referenceColumnTablePerspective,
-			TablePerspective referenceGroupTablePerspective) {
-
-		referenceBrickColumn = brickColumnManager
-				.getBrickColumn(referenceColumnTablePerspective);
-		setTablePerspective(referenceGroupTablePerspective);
-	}
-
-	public void setTablePerspective(TablePerspective referenceTablePerspective) {
+		this.referenceBrickColumn = referenceBrickColumn;
+		this.referenceTablePerspectives = referenceTablePerspectives;
+		this.scoreReferenceMode = scoreReferenceMode;
 
 		isActive = true;
-
-		this.referenceTablePerspective = referenceTablePerspective;
 
 		// Highlight reference table
 		referenceBrickColumn.getLayout().addBackgroundRenderer(
@@ -403,7 +404,7 @@ public class VendingMachine
 
 	private void updateScoredTablePerspectives() {
 
-		tablePerspectives.clear();
+		scoringTablePerspectives.clear();
 		for (Button dataDomainButton : dataDomainButtons) {
 
 			if (!dataDomainButton.isSelected())
@@ -414,7 +415,7 @@ public class VendingMachine
 
 			if (dataDomain.getLabel().toLowerCase().contains("mutation")
 					|| dataDomain.getLabel().toLowerCase().contains("copy")) {
-				tablePerspectives.addAll(dataDomain.getAllTablePerspectives());
+				scoringTablePerspectives.addAll(dataDomain.getAllTablePerspectives());
 			}
 			else {
 				// We take the first dimension perspective we find - it does not
@@ -445,7 +446,7 @@ public class VendingMachine
 					if (!existsAlready)
 						newTablePerspective.setPrivate(true);
 
-					tablePerspectives.add(newTablePerspective);
+					scoringTablePerspectives.add(newTablePerspective);
 				}
 			}
 		}
@@ -513,6 +514,7 @@ public class VendingMachine
 
 					// Remove current score column before adding the new one
 					if (rankedElements != null
+							&& rankedElements.size() > 0
 							&& rankedElements.get(selectedTablePerspectiveIndex) != null
 							&& rankedElements.get(selectedTablePerspectiveIndex)
 									.getColumnTablePerspective() != null)
@@ -520,7 +522,7 @@ public class VendingMachine
 								.get(selectedTablePerspectiveIndex)
 								.getColumnTablePerspective().getID());
 
-					if (referenceTablePerspective != null) {
+					if (referenceTablePerspectives != null) {
 
 						if (dataDomainButton.isSelected()) {
 
@@ -562,7 +564,7 @@ public class VendingMachine
 	}
 
 	public List<TablePerspective> getTablePerspectives() {
-		return tablePerspectives;
+		return scoringTablePerspectives;
 	}
 
 	public void highlightRankedElement(boolean next) {
@@ -633,8 +635,8 @@ public class VendingMachine
 		if (referenceBrickColumn != null)
 			referenceBrickColumn.getLayout().clearBackgroundRenderers();
 
-		tablePerspectives.clear();
-		referenceTablePerspective = null;
+		scoringTablePerspectives.clear();
+		referenceTablePerspectives = null;
 		referenceBrickColumn = null;
 		isRankedListDirty = true;
 	}

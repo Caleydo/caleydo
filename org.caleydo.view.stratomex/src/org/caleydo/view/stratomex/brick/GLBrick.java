@@ -78,6 +78,7 @@ import org.caleydo.view.stratomex.brick.contextmenu.CreatePathwayGroupFromDataIt
 import org.caleydo.view.stratomex.brick.contextmenu.CreatePathwaySmallMultiplesGroupItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RemoveColumnItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RenameBrickItem;
+import org.caleydo.view.stratomex.brick.contextmenu.ScoreAllGroupsInColumnItem;
 import org.caleydo.view.stratomex.brick.contextmenu.ScoreColumnItem;
 import org.caleydo.view.stratomex.brick.contextmenu.ScoreGroupItem;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
@@ -855,9 +856,8 @@ public class GLBrick
 
 					if (!GeneralManager.RELEASE_MODE) {
 						contextMenuCreator.addContextMenuItem(new ScoreGroupItem(stratomex
-								.getVendingMachine(), brickColumn.getTablePerspective(),
-								tablePerspective));
-						
+								.getVendingMachine(), tablePerspective, brickColumn));
+
 						selectElementsByGroup();
 					}
 				}
@@ -869,8 +869,10 @@ public class GLBrick
 
 				if (!GeneralManager.RELEASE_MODE) {
 					contextMenuCreator.addContextMenuItem(new ScoreColumnItem(stratomex
-							.getVendingMachine(), getBrickColumn().getTablePerspective()));
+							.getVendingMachine(), brickColumn));
 
+					contextMenuCreator.addContextMenuItem(new ScoreAllGroupsInColumnItem(
+							stratomex.getVendingMachine(), brickColumn));
 				}
 			}
 

@@ -17,29 +17,16 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.listener;
-
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
-import org.caleydo.view.stratomex.event.ScoreGroupEvent;
-import org.caleydo.view.stratomex.vendingmachine.VendingMachine;
+package org.caleydo.view.stratomex.vendingmachine;
 
 /**
- * Listener for the event {@link ScoreGroupEvent}.
+ * Possible modes for scoring against a reference table perspective.
  * 
  * @author Marc Streit
  * 
  */
-public class ScoreGroupListener
-	extends AEventListener<VendingMachine> {
-
-	@Override
-	public void handleEvent(AEvent event) {
-		if (event instanceof ScoreGroupEvent) {
-
-			ScoreGroupEvent scoreGroupEvent = (ScoreGroupEvent) event;
-			handler.setGroupTablePerspective(scoreGroupEvent.getReferenceTablePerspective(),
-					scoreGroupEvent.getReferenceGroupTablePerspective());
-		}
-	}
+public enum EScoreReferenceMode {
+	COLUMN,
+	ALL_GROUPS_IN_COLUMN,
+	SINGLE_GROUP;
 }
