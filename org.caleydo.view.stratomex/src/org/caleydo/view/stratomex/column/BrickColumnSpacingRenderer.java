@@ -315,15 +315,16 @@ public class BrickColumnSpacingRenderer
 		renderDragAndDropMarker(gl);
 
 		// FIXME Stratomex 2.0 testing
-//		if (leftDimGroup != null && rightDimGroup != null) {
-//			float score = leftDimGroup.getTablePerspective().getContainerStatistics()
-//					.getAdjustedRandIndex()
-//					.getScore(rightDimGroup.getTablePerspective(), true);
+		// if (leftDimGroup != null && rightDimGroup != null) {
+		// float score =
+		// leftDimGroup.getTablePerspective().getContainerStatistics()
+		// .getAdjustedRandIndex()
+		// .getScore(rightDimGroup.getTablePerspective(), true);
 
-			// glVisBricks.getTextRenderer().renderText(gl,
-			// new Float(score).toString().substring(0, 4), 0, 0, 0, 0.004f,
-			// 50);
-//		}
+		// glVisBricks.getTextRenderer().renderText(gl,
+		// new Float(score).toString().substring(0, 4), 0, 0, 0, 0.004f,
+		// 50);
+		// }
 	}
 
 	@Override

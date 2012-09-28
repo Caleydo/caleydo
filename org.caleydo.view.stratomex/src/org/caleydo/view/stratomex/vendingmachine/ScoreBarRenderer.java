@@ -7,8 +7,6 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 public class ScoreBarRenderer
 	extends LayoutRenderer {
 	
-	
-	
 	private float score;
 	
 	private Color color;
@@ -16,8 +14,6 @@ public class ScoreBarRenderer
 	public ScoreBarRenderer(float score, Color color) {
 		this.score = score;
 		this.color = color;
-		
-		
 	}
 
 	@Override

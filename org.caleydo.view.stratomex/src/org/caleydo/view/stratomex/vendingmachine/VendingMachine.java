@@ -41,12 +41,14 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
+import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -83,7 +85,7 @@ public class VendingMachine
 	// "org.caleydo.view.stratomex.vendingmachine.testbutton";
 	private final static int DATASET_BUTTON_PICKING_ID = 0;
 
-	private static int VENDING_MACHINE_PIXEL_WIDTH = 500;
+	public static int VENDING_MACHINE_PIXEL_WIDTH = 500;
 
 	private static int MAX_RANKED_ELEMENTS = 35;
 	private static float SCORE_CUTOFF = 0.2f;
@@ -91,11 +93,13 @@ public class VendingMachine
 	private static float[] RANK_SELECTION_COLOR = new float[] { 1, 1, 0, 1 };
 	private static float[] REFERENCE_SELECTION_COLOR = new float[] { 1, 0, 0, 1 };
 
+	private LayoutManager layoutManager;
+
 	private Column mainColumn;
-
 	private Column dataSetButtonListColumn;
-
 	private Column rankColumn;
+
+	private boolean isRankedListDirty = false;
 
 	private TablePerspective referenceTablePerspective;
 
@@ -109,7 +113,7 @@ public class VendingMachine
 
 	private GLStratomex stratomex;
 
-	private boolean isActive;
+	private boolean isActive = true;
 
 	private BrickColumnManager brickColumnManager;
 
@@ -138,8 +142,6 @@ public class VendingMachine
 
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
 		parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
-
-		initLayouts();
 	}
 
 	@Override
@@ -151,6 +153,10 @@ public class VendingMachine
 
 		textRenderer = new CaleydoTextRenderer(10);
 		highlightRankBackgroundRenderer = new ColorRenderer(RANK_SELECTION_COLOR);
+
+		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
+
+		initLayouts();
 	}
 
 	@Override
@@ -191,8 +197,9 @@ public class VendingMachine
 
 	public void initLayouts() {
 
-		mainColumn = new Column("mainRow");
-		mainColumn.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH);
+		mainColumn = new Column("mainColumn");
+		layoutManager.setBaseElementLayout(mainColumn);
+		layoutManager.setUseDisplayLists(true);
 
 		rankColumn = new Column("rankColum");
 		rankColumn.setBottomUp(false);
@@ -204,49 +211,50 @@ public class VendingMachine
 		mainColumn.append(dataSetButtonListColumn);
 
 		addDataSetButtons();
-	}
 
-	/**
-	 * Updates the layout of this dimensionGroup
-	 */
-	public void updateLayout() {
-
-		mainColumn.updateSubLayout();
+		layoutManager.updateLayout();
 	}
 
 	private void updateRankedList() {
 
 		selectedTablePerspectiveIndex = 0;
-
-		updateScoredTablePerspectives();
-
 		rankColumn.clear();
 
 		// Trigger ranking of data containers
 		rankedElements = new ArrayList<RankedElement>();
 		for (TablePerspective scoredTablePerspective : tablePerspectives) {
 
-			// Check if we compare whole stratifications or only single groups
-			if (referenceTablePerspective.getRecordSubTablePerspectives().size() > 1) {
-				float score = scoredTablePerspective.getContainerStatistics()
-						.getAdjustedRandIndex().getScore(referenceTablePerspective, true);
-
-				RankedElement rankedElement = new RankedElement(score, scoredTablePerspective,
-						null, referenceTablePerspective);
+			if (referenceTablePerspective == null) {
+				RankedElement rankedElement = new RankedElement(0, scoredTablePerspective,
+						null, null);
 				rankedElements.add(rankedElement);
 			}
 			else {
-				HashMap<TablePerspective, Float> subTablePerspectiveToScore = referenceTablePerspective
-						.getContainerStatistics().getJaccardIndex()
-						.getScore(scoredTablePerspective, true);
 
-				for (TablePerspective subTablePerspective : subTablePerspectiveToScore
-						.keySet()) {
+				// Check if we compare whole stratifications or only single
+				// groups
+				if (referenceTablePerspective.getRecordSubTablePerspectives().size() > 1) {
+					float score = scoredTablePerspective.getContainerStatistics()
+							.getAdjustedRandIndex().getScore(referenceTablePerspective, true);
 
-					RankedElement rankedElement = new RankedElement(
-							subTablePerspectiveToScore.get(subTablePerspective),
-							scoredTablePerspective, subTablePerspective, referenceTablePerspective);
+					RankedElement rankedElement = new RankedElement(score,
+							scoredTablePerspective, null, referenceTablePerspective);
 					rankedElements.add(rankedElement);
+				}
+				else {
+					HashMap<TablePerspective, Float> subTablePerspectiveToScore = referenceTablePerspective
+							.getContainerStatistics().getJaccardIndex()
+							.getScore(scoredTablePerspective, true);
+
+					for (TablePerspective subTablePerspective : subTablePerspectiveToScore
+							.keySet()) {
+
+						RankedElement rankedElement = new RankedElement(
+								subTablePerspectiveToScore.get(subTablePerspective),
+								scoredTablePerspective, subTablePerspective,
+								referenceTablePerspective);
+						rankedElements.add(rankedElement);
+					}
 				}
 			}
 		}
@@ -264,33 +272,37 @@ public class VendingMachine
 
 			if (rank >= MAX_RANKED_ELEMENTS)
 				break;
-			
-//			if (rankedElement.getScore() < SCORE_CUTOFF)
-//				break;
+
+			// if (rankedElement.getScore() < SCORE_CUTOFF)
+			// break;
 
 			rankColumn.append(rankedElement);
-			
+
 			ElementLayout spacerLayout = new ElementLayout("spacerLayout");
 			spacerLayout.setPixelSizeY(3);
 			rankColumn.append(spacerLayout);
 		}
 
-		// Add first ranked table perspective as the currently selected one to
-		// stratomex
-		TablePerspective tablePerspective = rankedElements.get(selectedTablePerspectiveIndex)
-				.getColumnTablePerspective();
-		addTablePerspectiveToStratomex(tablePerspective);
+		if (rankedElements.size() > 0) {
 
-		// Move newly added table perspective to be right of the reference table
-		// perspective
-		brickColumnManager.moveBrickColumn(
-				brickColumnManager.getBrickColumn(tablePerspective),
-				brickColumnManager.indexOfBrickColumn(referenceBrickColumn) + 1);
+			// Add first ranked table perspective as the currently selected one
+			// to
+			// stratomex
+			TablePerspective tablePerspective = rankedElements.get(
+					selectedTablePerspectiveIndex).getColumnTablePerspective();
+			addTablePerspectiveToStratomex(tablePerspective);
 
-		rankedElements.get(0).addBackgroundRenderer(highlightRankBackgroundRenderer);
+			// Move newly added table perspective to be right of the reference
+			// table
+			// perspective
+			brickColumnManager.moveBrickColumn(
+					brickColumnManager.getBrickColumn(tablePerspective),
+					brickColumnManager.indexOfBrickColumn(referenceBrickColumn) + 1);
 
-		stratomex.updateLayout();
-		stratomex.setLayoutDirty();
+			rankedElements.get(0).addBackgroundRenderer(highlightRankBackgroundRenderer);
+		}
+
+		layoutManager.updateLayout();
 	}
 
 	@Override
@@ -302,6 +314,13 @@ public class VendingMachine
 	public void display(GL2 gl) {
 		checkForHits(gl);
 		processEvents();
+
+		if (isRankedListDirty) {
+			updateRankedList();
+			isRankedListDirty = false;
+		}
+
+		layoutManager.render(gl);
 	}
 
 	@Override
@@ -370,7 +389,6 @@ public class VendingMachine
 	public void setTablePerspective(TablePerspective referenceTablePerspective) {
 
 		isActive = true;
-		stratomex.getLayout().getLayoutManager().updateLayout();
 
 		this.referenceTablePerspective = referenceTablePerspective;
 
@@ -379,7 +397,8 @@ public class VendingMachine
 				new BrickColumnGlowRenderer(REFERENCE_SELECTION_COLOR, referenceBrickColumn,
 						false));
 
-		updateRankedList();
+		updateScoredTablePerspectives();
+		isRankedListDirty = true;
 	}
 
 	private void updateScoredTablePerspectives() {
@@ -407,13 +426,10 @@ public class VendingMachine
 
 				for (String rowPerspectiveID : rowPerspectiveIDs) {
 
-					System.out.println("ref: "
-							+ referenceBrickColumn.getTablePerspective()
-									.getRecordPerspective().getPerspectiveID() + " with "
-							+ rowPerspectiveID);
-
-					if (rowPerspectiveID.equals(referenceBrickColumn.getTablePerspective()
-							.getRecordPerspective().getPerspectiveID()))
+					if (referenceBrickColumn != null
+							&& rowPerspectiveID.equals(referenceBrickColumn
+									.getTablePerspective().getRecordPerspective()
+									.getPerspectiveID()))
 						continue;
 
 					boolean existsAlready = false;
@@ -451,14 +467,14 @@ public class VendingMachine
 
 		ElementLayout horizontalSpacerLayout = new ElementLayout("spacerLayout");
 		horizontalSpacerLayout.setPixelSizeY(3);
-		
+
 		ElementLayout verticalSpacerLayout = new ElementLayout("spacerLayout");
 		verticalSpacerLayout.setPixelSizeX(7);
-		
+
 		ElementLayout topSpacerLayout = new ElementLayout("spacerLayout");
 		topSpacerLayout.setPixelSizeY(20);
 		dataSetButtonListColumn.append(topSpacerLayout);
-		
+
 		for (ATableBasedDataDomain dataDomain : dataDomains) {
 
 			Row singleDataSetRow = new Row("singleDataSetRow");
@@ -475,11 +491,12 @@ public class VendingMachine
 					DATASET_BUTTON_PICKING_ID,
 					EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
 
-			if ((dataDomain.getLabel().toLowerCase().contains("mutation") || dataDomain
-					.getLabel().toLowerCase().contains("copy")))
-				dataDomainButton.setSelected(false);
-			else
-				dataDomainButton.setSelected(true);
+			// if ((dataDomain.getLabel().toLowerCase().contains("mutation") ||
+			// dataDomain
+			// .getLabel().toLowerCase().contains("copy")))
+			dataDomainButton.setSelected(false);
+			// else
+			// dataDomainButton.setSelected(true);
 
 			dataDomainButtons.add(dataDomainButton);
 
@@ -492,25 +509,34 @@ public class VendingMachine
 				@Override
 				public void clicked(Pick pick) {
 
-					// Remove current score column before adding the new one
-					stratomex.removeTablePerspective(rankedElements
-							.get(selectedTablePerspectiveIndex).getColumnTablePerspective()
-							.getID());
-
 					dataDomainButton.setSelected(!dataDomainButton.isSelected());
 
-					if (dataDomainButton.isSelected()) {
+					// Remove current score column before adding the new one
+					if (rankedElements != null
+							&& rankedElements.get(selectedTablePerspectiveIndex) != null
+							&& rankedElements.get(selectedTablePerspectiveIndex)
+									.getColumnTablePerspective() != null)
+						stratomex.removeTablePerspective(rankedElements
+								.get(selectedTablePerspectiveIndex)
+								.getColumnTablePerspective().getID());
 
-						// FIXME make sure that this happens only once
-						ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
-								.get().getDataDomainByID(dataDomainButton.getPickingType());
-						if ((dataDomain.getLabel().toLowerCase().contains("mutation") || dataDomain
-								.getLabel().toLowerCase().contains("copy")))
-							categoricalTablePerspectiveCreator
-									.createAllTablePerspectives(dataDomain);
+					if (referenceTablePerspective != null) {
+
+						if (dataDomainButton.isSelected()) {
+
+							// FIXME make sure that this happens only once
+							ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
+									.get()
+									.getDataDomainByID(dataDomainButton.getPickingType());
+							if ((dataDomain.getLabel().toLowerCase().contains("mutation") || dataDomain
+									.getLabel().toLowerCase().contains("copy")))
+								categoricalTablePerspectiveCreator
+										.createAllTablePerspectives(dataDomain);
+						}
 					}
 
-					updateRankedList();
+					updateScoredTablePerspectives();
+					isRankedListDirty = true;
 				}
 
 			}, dataDomain.getDataDomainID());
@@ -519,11 +545,12 @@ public class VendingMachine
 			singleDataSetRow.append(verticalSpacerLayout);
 
 			ElementLayout dataSetIndicatorLayout = new ElementLayout("dataSetIndicatorLayout");
-			dataSetIndicatorLayout.addBackgroundRenderer(new ColorRenderer(dataDomain.getColor().getRGBA()));
+			dataSetIndicatorLayout.addBackgroundRenderer(new ColorRenderer(dataDomain
+					.getColor().getRGBA()));
 			dataSetIndicatorLayout.setPixelSizeX(RankedElement.DATASET_COLOR_INDICATOR_WIDTH);
 			singleDataSetRow.append(dataSetIndicatorLayout);
 			singleDataSetRow.append(verticalSpacerLayout);
-			
+
 			ElementLayout labelLayout = new ElementLayout("labelLayout");
 			labelLayout.setRenderer(new LabelRenderer(this, dataDomain.getLabel()));
 			labelLayout.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH - 30);
@@ -594,17 +621,22 @@ public class VendingMachine
 
 		rankedElements.get(selectedTablePerspectiveIndex).getColumnTablePerspective()
 				.setPrivate(false);
-		isActive = false;
+		// FIXME: we need to think about the workflow
+		isActive = true;
 
 		brickColumnManager
 				.getBrickColumn(
 						rankedElements.get(selectedTablePerspectiveIndex)
 								.getColumnTablePerspective()).getLayout()
 				.clearBackgroundRenderers();
-		referenceBrickColumn.getLayout().clearBackgroundRenderers();
 
-		stratomex.updateLayout();
-		stratomex.setLayoutDirty();
+		if (referenceBrickColumn != null)
+			referenceBrickColumn.getLayout().clearBackgroundRenderers();
+
+		tablePerspectives.clear();
+		referenceTablePerspective = null;
+		referenceBrickColumn = null;
+		isRankedListDirty = true;
 	}
 
 	@Override
@@ -636,9 +668,9 @@ public class VendingMachine
 	}
 
 	public void updatLayout() {
-		if (isActive)
-			mainColumn.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH);
-		else
-			mainColumn.setAbsoluteSizeX(0);
+		// if (isActive)
+		// mainColumn.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH);
+		// else
+		// mainColumn.setAbsoluteSizeX(0);
 	}
 }

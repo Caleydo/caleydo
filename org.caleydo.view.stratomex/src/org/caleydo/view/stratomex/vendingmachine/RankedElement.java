@@ -88,14 +88,13 @@ public class RankedElement
 
 		ElementLayout rankNumberLayout = new ElementLayout("rankNumberLayout");
 		rankNumberLayout.setPixelSizeX(RANK_NUMBER_WIDTH);
-		LabelRenderer rankLabelRenderer = new LabelRenderer(vendingMachine, rank+".");
+		LabelRenderer rankLabelRenderer = new LabelRenderer(vendingMachine, rank + ".");
 		rankLabelRenderer.setAlignment(LabelRenderer.ALIGN_RIGHT);
-		rankNumberLayout
-				.setRenderer(rankLabelRenderer);
+		rankNumberLayout.setRenderer(rankLabelRenderer);
 		append(rankNumberLayout);
 
 		ElementLayout dataSetIndicatorLayout = new ElementLayout("dataSetIndicatorLayout");
-		dataSetIndicatorLayout.addBackgroundRenderer(new ColorRenderer(groupTablePerspective
+		dataSetIndicatorLayout.setRenderer(new ColorRenderer(columnTablePerspective
 				.getDataDomain().getColor().getRGBA()));
 		dataSetIndicatorLayout.setPixelSizeX(DATASET_COLOR_INDICATOR_WIDTH);
 		append(dataSetIndicatorLayout);
@@ -118,15 +117,18 @@ public class RankedElement
 		groupPerspectiveLayout.setPixelSizeX(GROUP_TABLE_PERSPECTIVE_WIDTH);
 		append(groupPerspectiveLayout);
 
-		ElementLayout scoreBarLayout = new ElementLayout("scoreBarLayout");
-		scoreBarLayout.setRenderer(new ScoreBarRenderer(score, referenceTablePerspective
-				.getDataDomain().getColor()));
-		LabelRenderer scoreNumberRenderer = new LabelRenderer(vendingMachine, "  "+score);
-		scoreNumberRenderer.usePaddingBottom(true);
-		scoreBarLayout.addForeGroundRenderer(scoreNumberRenderer);
-		// scoreBarLayout.setPixelSizeX(SCORE_BAR_WIDTH);
-		append(scoreBarLayout);
-		
+		if (referenceTablePerspective != null) {
+
+			ElementLayout scoreBarLayout = new ElementLayout("scoreBarLayout");
+			scoreBarLayout.setRenderer(new ScoreBarRenderer(score, referenceTablePerspective
+					.getDataDomain().getColor()));
+			LabelRenderer scoreNumberRenderer = new LabelRenderer(vendingMachine, "  " + score);
+			scoreNumberRenderer.usePaddingBottom(true);
+			scoreBarLayout.addForeGroundRenderer(scoreNumberRenderer);
+			// scoreBarLayout.setPixelSizeX(SCORE_BAR_WIDTH);
+			append(scoreBarLayout);
+		}
+
 		append(spacerLayout);
 	}
 }

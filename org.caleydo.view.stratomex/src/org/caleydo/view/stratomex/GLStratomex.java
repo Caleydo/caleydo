@@ -72,6 +72,7 @@ import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -221,6 +222,8 @@ public class GLStratomex
 
 	private VendingMachine vendingMachine;
 
+	private ElementLayout vendingMachineLayout;
+
 	/**
 	 * Constructor.
 	 * 
@@ -277,8 +280,8 @@ public class GLStratomex
 		if (!vendingMachine.isActive()) {
 			initRightLayout();
 		}
-		
-		mainRow.append(vendingMachine.getLayout());
+
+		mainRow.append(vendingMachineLayout);
 
 		layoutManager.updateLayout();
 
@@ -517,8 +520,6 @@ public class GLStratomex
 			isDisplayListDirty = false;
 		}
 
-		vendingMachine.processEvents();
-
 		for (BrickColumn group : brickColumnManager.getBrickColumns()) {
 			group.processEvents();
 		}
@@ -526,8 +527,6 @@ public class GLStratomex
 		handleHorizontalColumnMove(gl);
 		if (isLayoutDirty) {
 			isLayoutDirty = false;
-
-			vendingMachine.updatLayout();
 
 			layoutManager.updateLayout();
 			float minWidth = pixelGLConverter
@@ -600,8 +599,6 @@ public class GLStratomex
 		for (BrickColumn dimensionGroup : brickColumnManager.getBrickColumns()) {
 			dimensionGroup.display(gl);
 		}
-
-		vendingMachine.displayRemote(gl);
 
 		if (isConnectionLinesDirty)
 			performConnectionLinesUpdate();
@@ -1720,16 +1717,22 @@ public class GLStratomex
 	}
 
 	private void initVendingMachine() {
+
+		vendingMachineLayout = new ElementLayout("vendingMachineLayout");
+		vendingMachineLayout.setPixelSizeX(VendingMachine.VENDING_MACHINE_PIXEL_WIDTH);
+
 		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
 				-4, 4);
 		vendingMachine = (VendingMachine) GeneralManager.get().getViewManager()
 				.createGLView(VendingMachine.class, parentGLCanvas, parentComposite, frustum);
 
+		vendingMachine.setStratomex(this);
 		vendingMachine.setRemoteRenderingGLView(this);
 		vendingMachine.initialize();
-		vendingMachine.setStratomex(this);
 
 		uninitializedSubViews.add(vendingMachine);
+		ViewLayoutRenderer viewLayoutRenderer = new ViewLayoutRenderer(vendingMachine);
+		vendingMachineLayout.setRenderer(viewLayoutRenderer);
 	}
 
 	/**
