@@ -749,7 +749,7 @@ public class DataTable
 
 		// here we sample the list of dimensions to avoid problems with the heat
 		// map TODO: we should probably move this to some better place
-		dimensionIDs = Algorithms.sampleList(1600, dimensionIDs);
+		//dimensionIDs = Algorithms.sampleList(1600, dimensionIDs);
 
 		data.setData(dimensionIDs);
 		defaultDimensionPerspective.init(data);

@@ -281,7 +281,8 @@ public class GLStratomex
 			initRightLayout();
 		}
 
-		mainRow.append(vendingMachineLayout);
+		if (vendingMachine.isActive())
+			mainRow.append(vendingMachineLayout);
 
 		layoutManager.updateLayout();
 

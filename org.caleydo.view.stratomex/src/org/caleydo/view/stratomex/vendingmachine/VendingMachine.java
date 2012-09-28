@@ -110,7 +110,7 @@ public class VendingMachine
 
 	private GLStratomex stratomex;
 
-	private boolean isActive = true;
+	private boolean isActive = false;
 
 	private BrickColumnManager brickColumnManager;
 
@@ -415,6 +415,7 @@ public class VendingMachine
 
 			if (dataDomain.getLabel().toLowerCase().contains("mutation")
 					|| dataDomain.getLabel().toLowerCase().contains("copy")) {
+
 				scoringTablePerspectives.addAll(dataDomain.getAllTablePerspectives());
 			}
 			else {
@@ -424,6 +425,11 @@ public class VendingMachine
 						.getDimensionPerspectiveIDs().toArray()[0];
 
 				Set<String> rowPerspectiveIDs = dataDomain.getRecordPerspectiveIDs();
+
+				// we ignore stratifications with only one group, which is the
+				// ungrouped default
+				if (rowPerspectiveIDs.size() == 1)
+					continue;
 
 				for (String rowPerspectiveID : rowPerspectiveIDs) {
 
@@ -507,6 +513,9 @@ public class VendingMachine
 			dataSetButtonLayout.setRenderer(dataDomainButtonRenderer);
 
 			addTypePickingListener(new APickingListener() {
+				private boolean isCNVInitialized;
+				private boolean isMutationInitialized;
+
 				@Override
 				public void clicked(Pick pick) {
 
@@ -526,14 +535,21 @@ public class VendingMachine
 
 						if (dataDomainButton.isSelected()) {
 
-							// FIXME make sure that this happens only once
+							// FIND A BETTER PLACE FOR CREATING CAT DATA
 							ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
 									.get()
 									.getDataDomainByID(dataDomainButton.getPickingType());
-							if ((dataDomain.getLabel().toLowerCase().contains("mutation") || dataDomain
-									.getLabel().toLowerCase().contains("copy")))
+							if (dataDomain.getLabel().toLowerCase().contains("mutation")
+									&& !isMutationInitialized) {
+								categoricalTablePerspectiveCreator.createAllTablePerspectives(dataDomain);
+								isMutationInitialized = true;
+							}
+							else if (dataDomain.getLabel().toLowerCase().contains("copy")
+									&& !isCNVInitialized) {
 								categoricalTablePerspectiveCreator
 										.createAllTablePerspectives(dataDomain);
+								isCNVInitialized = true;
+							}
 						}
 					}
 

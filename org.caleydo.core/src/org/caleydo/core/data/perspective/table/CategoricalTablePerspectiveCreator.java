@@ -54,7 +54,7 @@ public class CategoricalTablePerspectiveCreator {
 			rowPerspectiveID = dataDomain.getDefaultTablePerspective().getRecordPerspective()
 					.getPerspectiveID();
 			rowIDType = dataDomain.getRecordIDType();
-
+			
 			for (int rowID : dataDomain.getRecordVA(rowPerspectiveID)) {
 				createTablePerspeciveByRowID(dataDomain, rowID, rowIDType, true);
 			}
