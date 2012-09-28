@@ -270,10 +270,14 @@ public class GLStratomex
 
 		mainRow.clear();
 
-		initLeftLayout();
+		if (!vendingMachine.isActive()) {
+			initLeftLayout();
+		}
 		initCenterLayout();
-		initRightLayout();
-
+		if (!vendingMachine.isActive()) {
+			initRightLayout();
+		}
+		
 		mainRow.append(vendingMachine.getLayout());
 
 		layoutManager.updateLayout();

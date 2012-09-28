@@ -11,8 +11,6 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
-import org.caleydo.core.view.opengl.layout.util.SpacerRenderer;
-import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * @author Marc Streit
@@ -22,23 +20,29 @@ public class RankedElement
 	extends Row
 	implements Comparable<RankedElement> {
 
+	private static final int RANK_NUMBER_WIDTH = 22;
+	public static final int DATASET_COLOR_INDICATOR_WIDTH = 20;
+	private static final int COLUMN_PRERSPECTIVE_WIDTH = 120;
+	private static final int GROUP_TABLE_PERSPECTIVE_WIDTH = 80;
+	private static final int SCORE_BAR_WIDTH = 150;
+
 	private float score;
 
 	private TablePerspective columnTablePerspective;
 
 	private TablePerspective groupTablePerspective;
 
+	private TablePerspective referenceTablePerspective;
+
 	private int rank;
 
-	private CaleydoTextRenderer textRenderer;
-
 	public RankedElement(float score, TablePerspective columnTablePerspective,
-			TablePerspective groupTablePerspective, CaleydoTextRenderer textRenderer) {
+			TablePerspective groupTablePerspective, TablePerspective referenceTablePerspective) {
 
 		this.score = score;
 		this.columnTablePerspective = columnTablePerspective;
 		this.groupTablePerspective = groupTablePerspective;
-		this.textRenderer = textRenderer;
+		this.referenceTablePerspective = referenceTablePerspective;
 	}
 
 	/**
@@ -83,36 +87,46 @@ public class RankedElement
 		float score = bd.floatValue();
 
 		ElementLayout rankNumberLayout = new ElementLayout("rankNumberLayout");
-		rankNumberLayout.setPixelSizeX(50);
+		rankNumberLayout.setPixelSizeX(RANK_NUMBER_WIDTH);
+		LabelRenderer rankLabelRenderer = new LabelRenderer(vendingMachine, rank+".");
+		rankLabelRenderer.setAlignment(LabelRenderer.ALIGN_RIGHT);
 		rankNumberLayout
-				.setRenderer(new LabelRenderer(vendingMachine, Integer.toString(rank)));
+				.setRenderer(rankLabelRenderer);
 		append(rankNumberLayout);
 
 		ElementLayout dataSetIndicatorLayout = new ElementLayout("dataSetIndicatorLayout");
-		dataSetIndicatorLayout.setRenderer(new SpacerRenderer(false));
 		dataSetIndicatorLayout.addBackgroundRenderer(new ColorRenderer(groupTablePerspective
 				.getDataDomain().getColor().getRGBA()));
-		dataSetIndicatorLayout.setPixelSizeX(30);
-
+		dataSetIndicatorLayout.setPixelSizeX(DATASET_COLOR_INDICATOR_WIDTH);
 		append(dataSetIndicatorLayout);
+
+		ElementLayout spacerLayout = new ElementLayout("spacerLayout");
+		spacerLayout.setPixelSizeX(7);
+		append(spacerLayout);
 
 		ElementLayout columnPerspectiveLayout = new ElementLayout("columnPerspectiveLayout");
 		if (columnTablePerspective != null)
 			columnPerspectiveLayout.setRenderer(new LabelRenderer(vendingMachine,
 					columnTablePerspective.getRecordPerspective().getLabel()));
-		columnPerspectiveLayout.setPixelSizeX(150);
+		columnPerspectiveLayout.setPixelSizeX(COLUMN_PRERSPECTIVE_WIDTH);
 		append(columnPerspectiveLayout);
 
 		ElementLayout groupPerspectiveLayout = new ElementLayout("columnPerspectiveLayout");
 		if (groupTablePerspective != null)
 			groupPerspectiveLayout.setRenderer(new LabelRenderer(vendingMachine,
 					groupTablePerspective.getLabel()));
-		groupPerspectiveLayout.setPixelSizeX(100);
+		groupPerspectiveLayout.setPixelSizeX(GROUP_TABLE_PERSPECTIVE_WIDTH);
 		append(groupPerspectiveLayout);
-		
+
 		ElementLayout scoreBarLayout = new ElementLayout("scoreBarLayout");
-			scoreBarLayout.setRenderer(new ScoreBarRenderer(score));
-		scoreBarLayout.setPixelSizeX(100);
+		scoreBarLayout.setRenderer(new ScoreBarRenderer(score, referenceTablePerspective
+				.getDataDomain().getColor()));
+		LabelRenderer scoreNumberRenderer = new LabelRenderer(vendingMachine, "  "+score);
+		scoreNumberRenderer.usePaddingBottom(true);
+		scoreBarLayout.addForeGroundRenderer(scoreNumberRenderer);
+		// scoreBarLayout.setPixelSizeX(SCORE_BAR_WIDTH);
 		append(scoreBarLayout);
+		
+		append(spacerLayout);
 	}
 }

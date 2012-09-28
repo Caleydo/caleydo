@@ -44,7 +44,6 @@ import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
-import org.caleydo.core.view.opengl.layout.util.SpacerRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -86,7 +85,8 @@ public class VendingMachine
 
 	private static int VENDING_MACHINE_PIXEL_WIDTH = 500;
 
-	private static int MAX_RANKED_ELEMENTS = 15;
+	private static int MAX_RANKED_ELEMENTS = 35;
+	private static float SCORE_CUTOFF = 0.2f;
 
 	private static float[] RANK_SELECTION_COLOR = new float[] { 1, 1, 0, 1 };
 	private static float[] REFERENCE_SELECTION_COLOR = new float[] { 1, 0, 0, 1 };
@@ -232,7 +232,7 @@ public class VendingMachine
 						.getAdjustedRandIndex().getScore(referenceTablePerspective, true);
 
 				RankedElement rankedElement = new RankedElement(score, scoredTablePerspective,
-						null, textRenderer);
+						null, referenceTablePerspective);
 				rankedElements.add(rankedElement);
 			}
 			else {
@@ -245,7 +245,7 @@ public class VendingMachine
 
 					RankedElement rankedElement = new RankedElement(
 							subTablePerspectiveToScore.get(subTablePerspective),
-							scoredTablePerspective, subTablePerspective, textRenderer);
+							scoredTablePerspective, subTablePerspective, referenceTablePerspective);
 					rankedElements.add(rankedElement);
 				}
 			}
@@ -259,13 +259,20 @@ public class VendingMachine
 
 			rankedElement.setRank(++rank);
 			rankedElement.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH);
-			rankedElement.setPixelSizeY(20);
+			rankedElement.setPixelSizeY(18);
 			rankedElement.createLayout(this);
 
 			if (rank >= MAX_RANKED_ELEMENTS)
 				break;
+			
+//			if (rankedElement.getScore() < SCORE_CUTOFF)
+//				break;
 
 			rankColumn.append(rankedElement);
+			
+			ElementLayout spacerLayout = new ElementLayout("spacerLayout");
+			spacerLayout.setPixelSizeY(3);
+			rankColumn.append(spacerLayout);
 		}
 
 		// Add first ranked table perspective as the currently selected one to
@@ -442,17 +449,27 @@ public class VendingMachine
 			}
 		});
 
+		ElementLayout horizontalSpacerLayout = new ElementLayout("spacerLayout");
+		horizontalSpacerLayout.setPixelSizeY(3);
+		
+		ElementLayout verticalSpacerLayout = new ElementLayout("spacerLayout");
+		verticalSpacerLayout.setPixelSizeX(7);
+		
+		ElementLayout topSpacerLayout = new ElementLayout("spacerLayout");
+		topSpacerLayout.setPixelSizeY(20);
+		dataSetButtonListColumn.append(topSpacerLayout);
+		
 		for (ATableBasedDataDomain dataDomain : dataDomains) {
 
 			Row singleDataSetRow = new Row("singleDataSetRow");
 			singleDataSetRow.setGrabX(true);
-			singleDataSetRow.setPixelSizeY(20);
+			singleDataSetRow.setPixelSizeY(18);
 
 			if (dataDomain.getLabel().toLowerCase().equals("clinical"))
 				continue;
 
-			ElementLayout dataDomainButtonLayout = new ElementLayout("dataSetButtonLayout");
-			dataDomainButtonLayout.setPixelSizeX(20);
+			ElementLayout dataSetButtonLayout = new ElementLayout("dataSetButtonLayout");
+			dataSetButtonLayout.setPixelSizeX(20);
 
 			final Button dataDomainButton = new Button(dataDomain.getDataDomainID(),
 					DATASET_BUTTON_PICKING_ID,
@@ -469,7 +486,7 @@ public class VendingMachine
 			ButtonRenderer dataDomainButtonRenderer = new ButtonRenderer(dataDomainButton,
 					this);
 			dataDomainButtonRenderer.setZCoordinate(1);
-			dataDomainButtonLayout.setRenderer(dataDomainButtonRenderer);
+			dataSetButtonLayout.setRenderer(dataDomainButtonRenderer);
 
 			addTypePickingListener(new APickingListener() {
 				@Override
@@ -498,21 +515,22 @@ public class VendingMachine
 
 			}, dataDomain.getDataDomainID());
 
-			singleDataSetRow.append(dataDomainButtonLayout);
+			singleDataSetRow.append(dataSetButtonLayout);
+			singleDataSetRow.append(verticalSpacerLayout);
 
-			ElementLayout spacerLayout = new ElementLayout("spacerLayout");
-			spacerLayout.setRenderer(new SpacerRenderer(false));
-			spacerLayout.setPixelSizeX(10);
-			singleDataSetRow.append(spacerLayout);
-
+			ElementLayout dataSetIndicatorLayout = new ElementLayout("dataSetIndicatorLayout");
+			dataSetIndicatorLayout.addBackgroundRenderer(new ColorRenderer(dataDomain.getColor().getRGBA()));
+			dataSetIndicatorLayout.setPixelSizeX(RankedElement.DATASET_COLOR_INDICATOR_WIDTH);
+			singleDataSetRow.append(dataSetIndicatorLayout);
+			singleDataSetRow.append(verticalSpacerLayout);
+			
 			ElementLayout labelLayout = new ElementLayout("labelLayout");
 			labelLayout.setRenderer(new LabelRenderer(this, dataDomain.getLabel()));
 			labelLayout.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH - 30);
-			labelLayout.addBackgroundRenderer(new ColorRenderer(dataDomain.getColor()
-					.getRGBA()));
 			singleDataSetRow.append(labelLayout);
 
 			dataSetButtonListColumn.append(singleDataSetRow);
+			dataSetButtonListColumn.append(horizontalSpacerLayout);
 		}
 	}
 

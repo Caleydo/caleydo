@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -32,7 +32,8 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * 
  * @author Partl
  */
-public class LabelRenderer extends APickableLayoutRenderer {
+public class LabelRenderer
+	extends APickableLayoutRenderer {
 
 	public static final int ALIGN_LEFT = 0;
 	public static final int ALIGN_CENTER = 1;
@@ -41,28 +42,31 @@ public class LabelRenderer extends APickableLayoutRenderer {
 	private boolean isPickable;
 	private ILabelProvider labelProvider;
 	private String label = "Not set";
+
 	/**
 	 * The text of the label that was rendered in the last frame. This variable
 	 * is used to detect whether a new display list has to be built.
 	 */
 	private String prevLabel = "";
+
 	/**
 	 * Specifies the alignment of the text.
 	 */
 	private int alignment = ALIGN_LEFT;
 
 	/**
-	 * @param view
-	 *            Rendering view.
-	 * @param text
-	 *            Text to render.
-	 * @param pickingType
-	 *            PickingType for the text.
-	 * @param id
-	 *            ID for picking.
+	 * Flag determines if text should rendered a little bit higher than the
+	 * baseline of the layout.
 	 */
-	public LabelRenderer(AGLView view, ILabelProvider labelProvider, String pickingType,
-			int id) {
+	private boolean usePaddingBottom = false;
+
+	/**
+	 * @param view Rendering view.
+	 * @param text Text to render.
+	 * @param pickingType PickingType for the text.
+	 * @param id ID for picking.
+	 */
+	public LabelRenderer(AGLView view, ILabelProvider labelProvider, String pickingType, int id) {
 		super(view, pickingType, id);
 
 		this.isPickable = true;
@@ -82,8 +86,7 @@ public class LabelRenderer extends APickableLayoutRenderer {
 		this.labelProvider = labelProvider;
 	}
 
-	public LabelRenderer(AGLView view, String label,
-			List<Pair<String, Integer>> pickingIDs) {
+	public LabelRenderer(AGLView view, String label, List<Pair<String, Integer>> pickingIDs) {
 		super(view, pickingIDs);
 		this.isPickable = true;
 		this.label = label;
@@ -95,10 +98,8 @@ public class LabelRenderer extends APickableLayoutRenderer {
 		this.label = label;
 	}
 
-
 	/**
-	 * @param label
-	 *            setter, see {@link #label}
+	 * @param label setter, see {@link #label}
 	 */
 	public void setLabel(String label) {
 		this.label = label;
@@ -112,20 +113,25 @@ public class LabelRenderer extends APickableLayoutRenderer {
 	}
 
 	/**
-	 * @param alignment
-	 *            setter, see {@link #alignment}
+	 * @param alignment setter, see {@link #alignment}
 	 */
 	public void setAlignment(int alignment) {
 		this.alignment = alignment;
 	}
-	
+
+	/**
+	 * @param paddingBottom setter, see {@link #usePaddingBottom}
+	 */
+	public void usePaddingBottom(boolean paddingBottom) {
+		this.usePaddingBottom = paddingBottom;
+	}
 
 	@Override
 	protected void prepare() {
-		if(labelProvider != null)
+		if (labelProvider != null)
 			label = labelProvider.getLabel();
-		
-		if(!prevLabel.equals(label)) {
+
+		if (!prevLabel.equals(label)) {
 			setDisplayListDirty();
 		}
 		prevLabel = label;
@@ -133,7 +139,7 @@ public class LabelRenderer extends APickableLayoutRenderer {
 
 	@Override
 	protected void renderContent(GL2 gl) {
-		
+
 		if (labelProvider != null)
 			label = labelProvider.getLabel();
 
@@ -150,25 +156,30 @@ public class LabelRenderer extends APickableLayoutRenderer {
 
 			popNames(gl);
 		}
-		
+
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 		float ySpacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
-		
+
 		textRenderer.setColor(0, 0, 0, 1);
-		float textWidth = textRenderer.getRequiredTextWidthWithMax(label, y - 2
-				* ySpacing, x);
+		float textWidth = textRenderer.getRequiredTextWidthWithMax(label, y - 2 * ySpacing, x);
+
+		float padding = 0;
+		if (usePaddingBottom)
+			padding = 0.01f;
+
 		switch (alignment) {
-		case ALIGN_CENTER:
-			textRenderer.renderTextInBounds(gl, label, x / 2.0f - textWidth / 2.0f
-					+ ySpacing, 2 * ySpacing, 0.1f, x, y - 2 * ySpacing);
-			break;
-		case ALIGN_RIGHT:
-			textRenderer.renderTextInBounds(gl, label, x - textWidth - 4 * ySpacing,
-					ySpacing, 0.1f, x, y - 2 * ySpacing);
-			break;
-		default:
-			textRenderer.renderTextInBounds(gl, label, 0, ySpacing, 0.1f, x, y - 2
-					* ySpacing);
+			case ALIGN_CENTER:
+				textRenderer.renderTextInBounds(gl, label, x / 2.0f - textWidth / 2.0f
+						+ ySpacing + padding, 2 * ySpacing + padding, 0.1f, x, y - 2
+						* ySpacing);
+				break;
+			case ALIGN_RIGHT:
+				textRenderer.renderTextInBounds(gl, label, x - textWidth - 4 * ySpacing,
+						ySpacing + padding, 0.1f, x, y - 2 * ySpacing + padding);
+				break;
+			default:
+				textRenderer.renderTextInBounds(gl, label, 0, ySpacing + padding, 0.1f, x, y
+						- 2 * ySpacing + padding);
 		}
 	}
 

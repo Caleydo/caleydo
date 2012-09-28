@@ -90,11 +90,12 @@ import org.caleydo.core.io.parser.ascii.GroupingParser;
  * 
  */
 @XmlType
-public class GroupingParseSpecification extends MatrixDefinition {
+public class GroupingParseSpecification
+	extends MatrixDefinition {
 
 	/**
-	 * Optional parameter to specify the columns of the grouping in the delimited
-	 * file. If no value is set, all columns are loaded.
+	 * Optional parameter to specify the columns of the grouping in the
+	 * delimited file. If no value is set, all columns are loaded.
 	 */
 	private ArrayList<Integer> columns;
 
@@ -122,8 +123,7 @@ public class GroupingParseSpecification extends MatrixDefinition {
 	/**
 	 * Sets the columns to be parsed. Overwrites everything previously set
 	 * 
-	 * @param columns
-	 *            setter, see {@link #columns}
+	 * @param columns setter, see {@link #columns}
 	 */
 	public void setColumns(ArrayList<Integer> columns) {
 		this.columns = columns;
@@ -145,8 +145,7 @@ public class GroupingParseSpecification extends MatrixDefinition {
 	}
 
 	/**
-	 * @param groupingName
-	 *            setter, see {@link #groupingName}
+	 * @param groupingName setter, see {@link #groupingName}
 	 */
 	public void setGroupingName(String groupingName) {
 		this.groupingName = groupingName;
