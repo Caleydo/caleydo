@@ -51,6 +51,7 @@ import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -60,7 +61,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
@@ -73,18 +73,18 @@ import org.eclipse.ui.PlatformUI;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
-		ISelectionUpdateHandler, IRecordVAUpdateHandler, IDimensionVAUpdateHandler,
-		ISelectionCommandHandler, IViewCommandHandler {
+public class InfoArea
+	implements IDataDomainBasedView<ATableBasedDataDomain>, ISelectionUpdateHandler,
+	IRecordVAUpdateHandler, IDimensionVAUpdateHandler, ISelectionCommandHandler,
+	IViewCommandHandler {
 
-	GeneralManager generalManager = null;
 	EventPublisher eventPublisher = null;
 
 	private Label lblViewInfoContent;
 
 	private Tree selectionTree;
 
-	private TreeItem contentTree;
+	private TreeItem recordTree;
 	private TreeItem dimensionTree;
 
 	private AGLView updateTriggeringView;
@@ -109,11 +109,10 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	 */
 	public InfoArea() {
 
-		generalManager = GeneralManager.get();
-		eventPublisher = generalManager.getEventPublisher();
+		eventPublisher = GeneralManager.get().getEventPublisher();
 	}
 
-	public Control createControl(final Composite parent) {
+	public void createControl(final Composite parent) {
 
 		recordSelectionManager = dataDomain.getRecordSelectionManager();
 		dimensionSelectionManager = dataDomain.getDimensionSelectionManager();
@@ -127,16 +126,15 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 		gridData.minimumHeight = 150;
 		selectionTree.setLayoutData(gridData);
 
-		contentTree = new TreeItem(selectionTree, SWT.NONE);
-		contentTree.setExpanded(true);
-		contentTree.setData(-1);
-
-		contentTree.setText(dataDomain.getRecordDenomination(true, true));
+		recordTree = new TreeItem(selectionTree, SWT.NONE);
+		recordTree.setExpanded(true);
+		recordTree.setData(-1);
 
 		dimensionTree = new TreeItem(selectionTree, SWT.NONE);
 		dimensionTree.setExpanded(true);
 		dimensionTree.setData(-1);
-		dimensionTree.setText(dataDomain.getDimensionDenomination(true, true));
+
+		updateSelectionCount();
 
 		lblViewInfoContent = new Label(parent, SWT.WRAP);
 		lblViewInfoContent.setText("");
@@ -144,30 +142,57 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 		gridData.grabExcessVerticalSpace = true;
 		gridData.minimumHeight = 100;
 		lblViewInfoContent.setLayoutData(gridData);
+	}
 
-		return parent;
+	private void updateSelectionCount() {
+
+		if (recordSelectionManager.getNumberOfElements() > 0 && !recordTree.isDisposed()) {
+			int numberRecords = dataDomain.getTable().getMetaData().depth();
+			int selectedRecords = recordSelectionManager
+					.getNumberOfElements(SelectionType.SELECTION);
+			float selectedRecordsPercentage = selectedRecords
+					/ (float)numberRecords * 100f;
+
+			recordTree.setText(dataDomain.getRecordDenomination(true, true) + " - "
+					+ selectedRecords + " of " + numberRecords
+					+ " (" + Formatter.formatNumber(selectedRecordsPercentage) + "%)");
+		}
+
+		if (dimensionSelectionManager.getNumberOfElements() > 0 && !dimensionTree.isDisposed()) {
+			int numberDimensions = dataDomain.getTable().getMetaData().size();
+			int selectedDimensions = dimensionSelectionManager
+					.getNumberOfElements(SelectionType.SELECTION);
+			float selectedDimensionsercentage = selectedDimensions
+					/ (float)numberDimensions * 100f;
+
+			dimensionTree.setText(dataDomain.getRecordDenomination(true, true) + " - "
+					+ selectedDimensions + " of "
+					+ numberDimensions + " ("
+					+ Formatter.formatNumber(selectedDimensionsercentage) + "%)");
+		}
 	}
 
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 
 		IDType recordIDType = dataDomain.getRecordIDType();
-		if (selectionDelta.getIDType().getIDCategory()
-				.equals(recordIDType.getIDCategory())) {
+		if (selectionDelta.getIDType().getIDCategory().equals(recordIDType.getIDCategory())) {
 			// Check for type that can be handled
 
 			recordSelectionManager.setDelta(selectionDelta);
-			updateTree(true, recordSelectionManager, contentTree);
-		} else if (selectionDelta.getIDType().getIDCategory()
+			updateTree(true, recordSelectionManager, recordTree);
+		}
+		else if (selectionDelta.getIDType().getIDCategory()
 				.equals(dimensionSelectionManager.getIDType().getIDCategory())) {
 			dimensionSelectionManager.setDelta(selectionDelta);
 			updateTree(false, dimensionSelectionManager, dimensionTree);
 		}
 
+		updateSelectionCount();
 	}
 
-	private void updateTree(final boolean isContent,
-			final SelectionManager selectionManager, final TreeItem tree) {
+	private void updateTree(final boolean isContent, final SelectionManager selectionManager,
+			final TreeItem tree) {
 
 		if (parentComposite.isDisposed())
 			return;
@@ -193,13 +218,12 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 		});
 	}
 
-	private void createItems(boolean isContent, TreeItem tree,
-			SelectionType selectionType, Set<Integer> ids) {
+	private void createItems(boolean isContent, TreeItem tree, SelectionType selectionType,
+			Set<Integer> ids) {
 		Color color;
 		int[] intColor = selectionType.getIntColor();
 
-		color = new Color(parentComposite.getDisplay(), intColor[0], intColor[1],
-				intColor[2]);
+		color = new Color(parentComposite.getDisplay(), intColor[0], intColor[1], intColor[2]);
 
 		for (Integer id : ids) {
 			String name;
@@ -235,7 +259,8 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 				if (cmdType == ESelectionCommandType.RESET
 						|| cmdType == ESelectionCommandType.CLEAR_ALL) {
 					selectionTree.removeAll();
-				} else if (cmdType == ESelectionCommandType.CLEAR) {
+				}
+				else if (cmdType == ESelectionCommandType.CLEAR) {
 					// Flush old items that become
 					// deselected/normal
 					for (TreeItem tmpItem : selectionTree.getItems()) {
@@ -261,8 +286,8 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 
 	@Override
 	public void handleClearSelections() {
-		if (!contentTree.isDisposed())
-			contentTree.removeAll();
+		if (!recordTree.isDisposed())
+			recordTree.removeAll();
 		if (!dimensionTree.isDisposed())
 			dimensionTree.removeAll();
 		recordSelectionManager.clearSelections();
@@ -273,8 +298,7 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	 * handling method for updates about the info text displayed in the this
 	 * info-area
 	 * 
-	 * @param info
-	 *            short-info of the sender to display
+	 * @param info short-info of the sender to display
 	 */
 	public void handleInfoAreaUpdate(final String info) {
 		parentComposite.getDisplay().asyncExec(new Runnable() {
@@ -304,14 +328,7 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 		dimensionVAUpdateListener = new DimensionVAUpdateListener();
 		dimensionVAUpdateListener.setHandler(this);
 		dimensionVAUpdateListener.setDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher
-				.addListener(DimensionVADeltaEvent.class, dimensionVAUpdateListener);
-
-		// replaceDimensionVAListener = new ReplaceDimensionVAListener();
-		// replaceDimensionVAListener.setHandler(this);
-		// replaceDimensionVAListener.setDataDomainID(dataDomain.getDataDomainID());
-		// eventPublisher.addListener(ReplaceDimensionVAEvent.class,
-		// replaceDimensionVAListener);
+		eventPublisher.addListener(DimensionVADeltaEvent.class, dimensionVAUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
@@ -386,7 +403,7 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
-		updateTree(true, recordSelectionManager, contentTree);
+		updateTree(true, recordSelectionManager, recordTree);
 	}
 
 	@Override

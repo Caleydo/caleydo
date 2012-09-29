@@ -2618,7 +2618,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		heatMapRemoteElement.getTransform().getTranslation().set(fleftOffset, 0, 0);
 		heatMapRemoteElement.getTransform().getScale()
-				.set(fright / 8, 1 * fAspectRatio, 1);
+				.set(fright / 8, 1 * aspectRatio, 1);
 		// heatMapRemoteElement.getTransform().getTranslation().set(0, 0, 0);
 		// heatMapRemoteElement.getTransform().getScale().set(1, 0.5f, 1);
 

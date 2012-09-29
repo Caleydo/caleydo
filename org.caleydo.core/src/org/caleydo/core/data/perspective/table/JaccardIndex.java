@@ -74,20 +74,26 @@ public class JaccardIndex {
 		Set<Integer> unionCounter = new HashSet<Integer>();
 		Group referenceGroup = referenceTablePerspective.getRecordGroup();
 
+		// Ingore the ungrouped default
+		if (tablePerspective.getRecordSubTablePerspectives().size() == 1)
+			return new HashMap<TablePerspective, Float>();
+
 		for (TablePerspective subTablePerspective : tablePerspective
 				.getRecordSubTablePerspectives()) {
 
 			int intersectionCount = 0;
 
 			Group subGroup = subTablePerspective.getRecordGroup();
-			
-			if (subGroup.getLabel().equals("Not Mutated") || subGroup.getLabel().equals("Normal"))
+
+			if (subGroup.getLabel().equals("Not Mutated")
+					|| subGroup.getLabel().equals("Normal"))
 				continue;
-			
+
 			if (subGroup.getSize() == 0)
 				continue;
 
-//			System.out.println("subtable perspective " + subGroup.getLabel());
+			// System.out.println("subtable perspective " +
+			// subGroup.getLabel());
 
 			for (int vaIndex = 0; vaIndex < referenceGroup.getSize(); vaIndex++) {
 
@@ -138,7 +144,8 @@ public class JaccardIndex {
 		}
 
 		long endTime = System.currentTimeMillis();
-		System.out.println((endTime - startTime) + "ms for calculating Jaccard index of " + tablePerspective.getLabel());
+		System.out.println((endTime - startTime) + "ms for calculating Jaccard index of "
+				+ tablePerspective.getLabel());
 
 		if (storeResult) {
 			tablePerspectiveToScore.put(tablePerspective, subTablePerspetiveToScore);

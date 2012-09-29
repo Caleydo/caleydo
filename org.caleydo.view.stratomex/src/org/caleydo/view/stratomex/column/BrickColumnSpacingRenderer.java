@@ -85,13 +85,7 @@ public class BrickColumnSpacingRenderer
 
 	private ConnectionBandRenderer connectionRenderer = new ConnectionBandRenderer();
 
-	private GLStratomex glVisBricks;
-
-	/**
-	 * Stores all created connectionBandIDs so that they can be removed once
-	 * this object is destroyed
-	 */
-	ArrayList<Integer> ribbonIDs = new ArrayList<Integer>();
+	private GLStratomex stratomex;
 
 	public BrickColumnSpacingRenderer(RelationAnalyzer relationAnalyzer,
 			ConnectionBandRenderer connectionRenderer, BrickColumn leftDimGroup,
@@ -101,9 +95,9 @@ public class BrickColumnSpacingRenderer
 		this.leftDimGroup = leftDimGroup;
 		this.rightDimGroup = rightDimGroup;
 		this.connectionRenderer = connectionRenderer;
-		this.glVisBricks = glVisBricksView;
+		this.stratomex = glVisBricksView;
 
-		glVisBricks.getBrickColumnManager().getBrickColumnSpacers().put(ID, this);
+		stratomex.getBrickColumnManager().getBrickColumnSpacers().put(ID, this);
 	}
 
 	{
@@ -114,12 +108,6 @@ public class BrickColumnSpacingRenderer
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
-		// remove the brick connections from visbricks
-		// HashMap<Integer, BrickConnection> brickConnections = glVisBricks
-		// .getHashConnectionBandIDToRecordVA();
-		// for (Integer ribbonID : ribbonIDs) {
-		// brickConnections.remove(ribbonID);
-		// }
 	}
 
 	public void init() {
@@ -173,20 +161,19 @@ public class BrickColumnSpacingRenderer
 
 				Group subGroup = rightBrick.getTablePerspective().getRecordGroup();
 				SubGroupMatch subGroupMatch = new SubGroupMatch(
-						glVisBricks.getNextConnectionBandID(), rightBrick, subGroup);
+						stratomex.getNextConnectionBandID(), rightBrick, subGroup);
 				groupMatch.addSubGroupMatch(subGroup.getGroupIndex(), subGroupMatch);
 
 				RecordVirtualArray similarityVA = leftGroupSimilarity
 						.getSimilarityVAs(rightBrick.getTablePerspective().getRecordGroup()
 								.getGroupIndex());
 
-				ribbonIDs.add(subGroupMatch.getConnectionBandID());
 				BrickConnection brickConnection = new BrickConnection();
 				brickConnection.setConnectionBandID(subGroupMatch.getConnectionBandID());
 				brickConnection.setLeftBrick(leftBrick);
 				brickConnection.setRightBrick(rightBrick);
 				brickConnection.setSharedRecordVirtualArray(similarityVA);
-				glVisBricks.getHashConnectionBandIDToRecordVA().put(
+				stratomex.getHashConnectionBandIDToRecordVA().put(
 						subGroupMatch.getConnectionBandID(), brickConnection);
 
 				calculateSubMatchSelections(subGroupMatch, similarityVA);
@@ -252,7 +239,7 @@ public class BrickColumnSpacingRenderer
 		if (recordVA.size() == 0)
 			return;
 
-		RecordSelectionManager recordSelectionManager = glVisBricks
+		RecordSelectionManager recordSelectionManager = stratomex
 				.getRecordSelectionManager();
 
 		float ratio = 0;
@@ -314,6 +301,8 @@ public class BrickColumnSpacingRenderer
 		renderDimensionGroupConnections(gl);
 		renderDragAndDropMarker(gl);
 
+		
+		
 		// FIXME Stratomex 2.0 testing
 		// if (leftDimGroup != null && rightDimGroup != null) {
 		// float score =
@@ -334,7 +323,7 @@ public class BrickColumnSpacingRenderer
 
 	private void renderBackground(GL2 gl) {
 
-		int pickingID = glVisBricks.getPickingManager().getPickingID(glVisBricks.getID(),
+		int pickingID = stratomex.getPickingManager().getPickingID(stratomex.getID(),
 				EPickingType.DIMENSION_GROUP_SPACER.name(), ID);
 
 		gl.glPushName(pickingID);
@@ -391,13 +380,13 @@ public class BrickColumnSpacingRenderer
 		float xEnd;
 
 		// handle situation where no group is contained in center arch
-		if (leftDimGroup == null && rightDimGroup == null && glVisBricks != null) {
+		if (leftDimGroup == null && rightDimGroup == null && stratomex != null) {
 
-			leftCenterBrickBottom = glVisBricks.getArchBottomY();
-			leftCenterBrickTop = glVisBricks.getArchTopY();
+			leftCenterBrickBottom = stratomex.getArchBottomY();
+			leftCenterBrickTop = stratomex.getArchTopY();
 
-			rightCenterBrickBottom = glVisBricks.getArchBottomY();
-			rightCenterBrickTop = glVisBricks.getArchTopY();
+			rightCenterBrickBottom = stratomex.getArchBottomY();
+			rightCenterBrickTop = stratomex.getArchTopY();
 		}
 
 		if (leftDimGroup != null) {
@@ -428,8 +417,8 @@ public class BrickColumnSpacingRenderer
 		}
 		else {
 			if (rightDimGroup != null) {
-				leftCenterBrickBottom = glVisBricks.getArchBottomY();
-				leftCenterBrickTop = glVisBricks.getArchTopY();
+				leftCenterBrickBottom = stratomex.getArchBottomY();
+				leftCenterBrickTop = stratomex.getArchTopY();
 				curveOffset = 0.1f;
 			}
 		}
@@ -465,8 +454,8 @@ public class BrickColumnSpacingRenderer
 		}
 		else {
 			if (leftDimGroup != null) {
-				rightCenterBrickBottom = glVisBricks.getArchBottomY();
-				rightCenterBrickTop = glVisBricks.getArchTopY();
+				rightCenterBrickBottom = stratomex.getArchBottomY();
+				rightCenterBrickTop = stratomex.getArchTopY();
 				curveOffset = 0.1f;
 			}
 		}
@@ -517,8 +506,8 @@ public class BrickColumnSpacingRenderer
 				float xEnd = x + subBrick.getLayout().getTranslateX()
 						- rightDimGroup.getLayout().getTranslateX();
 
-				gl.glPushName(glVisBricks.getPickingManager().getPickingID(
-						glVisBricks.getID(), EPickingType.BRICK_CONNECTION_BAND.name(),
+				gl.glPushName(stratomex.getPickingManager().getPickingID(
+						stratomex.getID(), EPickingType.BRICK_CONNECTION_BAND.name(),
 						subGroupMatch.getConnectionBandID()));
 
 				// Render selected portion
@@ -529,13 +518,13 @@ public class BrickColumnSpacingRenderer
 					float[] color = new float[] { 0, 0, 0, 1 };
 
 					if (selectionType == SelectionType.NORMAL
-							&& !glVisBricks.isConnectionsOn()) {
+							&& !stratomex.isConnectionsOn()) {
 						continue;
 					}
 
 					color = selectionType.getColor();
 
-					if (glVisBricks.isConnectionsHighlightDynamic() == false) {
+					if (stratomex.isConnectionsHighlightDynamic() == false) {
 
 						if (selectionType == SelectionType.NORMAL) {
 
@@ -563,11 +552,11 @@ public class BrickColumnSpacingRenderer
 						float maxRatio = Math.max(subGroupMatch.getLeftSimilarityRatio(),
 								subGroupMatch.getRightSimilarityRatio());
 						if (maxRatio < 0.3f)
-							trendRatio = (glVisBricks.getConnectionsFocusFactor() - maxRatio);
+							trendRatio = (stratomex.getConnectionsFocusFactor() - maxRatio);
 						else
-							trendRatio = 1 - (glVisBricks.getConnectionsFocusFactor() + (1 - maxRatio));
+							trendRatio = 1 - (stratomex.getConnectionsFocusFactor() + (1 - maxRatio));
 
-						if (glVisBricks.getSelectedConnectionBandID() == subGroupMatch
+						if (stratomex.getSelectedConnectionBandID() == subGroupMatch
 								.getConnectionBandID()) {
 							trendRatio = 0.8f;
 						}
@@ -716,7 +705,7 @@ public class BrickColumnSpacingRenderer
 			float mouseCoordinateX, float mouseCoordinateY,
 			DragAndDropController dragAndDropController) {
 
-		glVisBricks.clearDimensionGroupSpacerHighlight();
+		stratomex.clearDimensionGroupSpacerHighlight();
 
 		for (IDraggable draggable : draggables) {
 
@@ -727,7 +716,7 @@ public class BrickColumnSpacingRenderer
 				System.out.println("CHRISTIAN HEEEEELP!!");
 				break;
 			}
-			glVisBricks.moveDimensionGroup(this, (BrickColumn) draggable, leftDimGroup);
+			stratomex.moveDimensionGroup(this, (BrickColumn) draggable, leftDimGroup);
 		}
 
 		draggables.clear();

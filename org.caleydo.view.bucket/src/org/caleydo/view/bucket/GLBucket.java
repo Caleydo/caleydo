@@ -581,7 +581,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 					textWidth *= -1;
 				}
 
-				renderPoolSelection(gl, translation.x() - 0.4f / fAspectRatio,
+				renderPoolSelection(gl, translation.x() - 0.4f / aspectRatio,
 						translation.y() * scale.y() + 5.2f, textWidth, 6f, element,
 						leftSide);
 				gl.glTranslatef(0.8f, 1.3f, 0);
@@ -794,11 +794,11 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		element = stackLevel.getElementByPositionIndex(1);
 		if (element.getGLView() != null) {
 			if (!bucketMouseWheelListener.isZoomedIn()) {
-				gl.glTranslatef(-2f / fAspectRatio + 2 + 0.8f, -2, 4.02f);
+				gl.glTranslatef(-2f / aspectRatio + 2 + 0.8f, -2, 4.02f);
 				gl.glRotatef(90, 0, 0, 1);
 				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 2);
 				gl.glRotatef(-90, 0, 0, 1);
-				gl.glTranslatef(2f / fAspectRatio - 2 - 0.8f, 2, -4.02f);
+				gl.glTranslatef(2f / aspectRatio - 2 - 0.8f, 2, -4.02f);
 			} else {
 				renderStackViewHandleBarZoomedIn(gl, element);
 			}
@@ -808,11 +808,11 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		element = stackLevel.getElementByPositionIndex(3);
 		if (element.getGLView() != null) {
 			if (!bucketMouseWheelListener.isZoomedIn()) {
-				gl.glTranslatef(2f / fAspectRatio - 0.8f - 2, 2, 4.02f);
+				gl.glTranslatef(2f / aspectRatio - 0.8f - 2, 2, 4.02f);
 				gl.glRotatef(-90, 0, 0, 1);
 				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 2);
 				gl.glRotatef(90, 0, 0, 1);
-				gl.glTranslatef(-2f / fAspectRatio + 0.8f + 2, -2, -4.02f);
+				gl.glTranslatef(-2f / aspectRatio + 0.8f + 2, -2, -4.02f);
 			} else {
 				renderStackViewHandleBarZoomedIn(gl, element);
 			}
@@ -1392,7 +1392,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			fPanelSideWidth += 1f;
 		}
 
-		float backgroudX = fXOrigin + 1.65f / fAspectRatio * sideSwitchFactor
+		float backgroudX = fXOrigin + 1.65f / aspectRatio * sideSwitchFactor
 				+ fPanelSideWidth;
 
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
@@ -1414,16 +1414,16 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fXOrigin + 2 / fAspectRatio * sideSwitchFactor + fPanelSideWidth,
+		gl.glVertex3f(fXOrigin + 2 / aspectRatio * sideSwitchFactor + fPanelSideWidth,
 				fYOrigin - fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fXOrigin + 2 / fAspectRatio * sideSwitchFactor + fPanelSideWidth,
+		gl.glVertex3f(fXOrigin + 2 / aspectRatio * sideSwitchFactor + fPanelSideWidth,
 				fYOrigin + fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fXOrigin + 2f / fAspectRatio * sideSwitchFactor,
+		gl.glVertex3f(fXOrigin + 2f / aspectRatio * sideSwitchFactor,
 				fYOrigin + fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fXOrigin + 2f / fAspectRatio * sideSwitchFactor,
+		gl.glVertex3f(fXOrigin + 2f / aspectRatio * sideSwitchFactor,
 				fYOrigin - fHeight, -0.01f);
 		gl.glEnd();
 
@@ -1433,7 +1433,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		gl.glPopName();
 
 		int fHandleScaleFactor = 18;
-		gl.glTranslatef(fXOrigin + 2.5f / fAspectRatio * sideSwitchFactor, fYOrigin
+		gl.glTranslatef(fXOrigin + 2.5f / aspectRatio * sideSwitchFactor, fYOrigin
 				- fHeight / 2f + fHeight - 1f, 1.8f);
 		gl.glScalef(fHandleScaleFactor, fHandleScaleFactor, fHandleScaleFactor);
 		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_DRAG,
@@ -1444,7 +1444,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		gl.glTranslatef(0, 0.2f, 0);
 		gl.glScalef(1f / fHandleScaleFactor, 1f / fHandleScaleFactor,
 				1f / fHandleScaleFactor);
-		gl.glTranslatef(-fXOrigin - 2.5f / fAspectRatio * sideSwitchFactor, -fYOrigin
+		gl.glTranslatef(-fXOrigin - 2.5f / aspectRatio * sideSwitchFactor, -fYOrigin
 				+ fHeight / 2f - fHeight + 1f, -1.8f);
 
 		// gl.glColor3f(0.25f, 0.25f, 0.25f);
@@ -2242,7 +2242,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		super.reshape(drawable, x, y, width, height);
 
 		// Update aspect ratio and reinitialize stack and focus layer
-		layoutRenderStyle.setAspectRatio(fAspectRatio);
+		layoutRenderStyle.setAspectRatio(aspectRatio);
 
 		layoutRenderStyle.initFocusLevel();
 		layoutRenderStyle.initStackLevel();
@@ -2263,12 +2263,12 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		float fXScaling = 1;
 		float fYScaling = 1;
 
-		if (fAspectRatio < 1) {
-			fXScaling = 1 / fAspectRatio;
+		if (aspectRatio < 1) {
+			fXScaling = 1 / aspectRatio;
 			fYScaling = 1;
 		} else {
 			fXScaling = 1;
-			fYScaling = fAspectRatio;
+			fYScaling = aspectRatio;
 		}
 
 		float fLeftSceneBorder = (-2 - fXCorrection) * fXScaling;
@@ -2341,7 +2341,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		String sTmp = "POOL AREA";
 		textRenderer.begin3DRendering();
 		textRenderer.setColor(0.6f, 0.6f, 0.6f, 1.0f);
-		textRenderer.draw3D(sTmp, (-1.9f - fXCorrection) / fAspectRatio, -1.97f,
+		textRenderer.draw3D(sTmp, (-1.9f - fXCorrection) / aspectRatio, -1.97f,
 				fZ + 0.01f, 0.003f);
 		textRenderer.end3DRendering();
 	}

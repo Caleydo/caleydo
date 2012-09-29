@@ -142,7 +142,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 * The views current aspect ratio. Value gets updated when reshape is called
 	 * by the JOGL2 animator.
 	 */
-	protected float fAspectRatio = 1f;
+	protected float aspectRatio = 1f;
 
 	protected EDetailLevel detailLevel = EDetailLevel.HIGH;
 
@@ -418,13 +418,13 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 		GL2 gl = drawable.getGL().getGL2();
 
-		fAspectRatio = (float) height / (float) width;
+		aspectRatio = (float) height / (float) width;
 
 		gl.glViewport(x, y, width, height);
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 
-		viewFrustum.setProjectionMatrix(gl, fAspectRatio);
+		viewFrustum.setProjectionMatrix(gl, aspectRatio);
 		updateDetailMode();
 	}
 
@@ -1099,7 +1099,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	public final float getAspectRatio() {
-		return fAspectRatio;
+		return aspectRatio;
 	}
 
 	public final EDetailLevel getDetailLevel() {
