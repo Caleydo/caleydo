@@ -181,9 +181,6 @@ public class VendingMachine
 	@Override
 	public void displayLocal(GL2 gl) {
 
-		// TODO: iterate over visbricks views
-		// visBricks.processEvents();
-
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
@@ -419,10 +416,18 @@ public class VendingMachine
 				scoringTablePerspectives.addAll(dataDomain.getAllTablePerspectives());
 			}
 			else {
-				// We take the first dimension perspective we find - it does not
-				// matter
-				String dimensionPerspectiveID = (String) dataDomain
-						.getDimensionPerspectiveIDs().toArray()[0];
+				// Take the first non ungrouped dimension perspective
+				String dimensionPerspectiveID = null;
+				for (String tmpDimensionPerspectiveID : dataDomain
+						.getDimensionPerspectiveIDs()) {
+					
+					if (dataDomain.getTable()
+							.getDimensionPerspective(tmpDimensionPerspectiveID).getLabel()
+							.contains("Ungrouped"))
+						continue;
+
+					dimensionPerspectiveID = tmpDimensionPerspectiveID;
+				}
 
 				Set<String> rowPerspectiveIDs = dataDomain.getRecordPerspectiveIDs();
 
