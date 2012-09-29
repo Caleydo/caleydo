@@ -98,7 +98,7 @@ public class RankedElement
 	}
 
 	public void createLayout(AGLView vendingMachine) {
-
+		
 		BigDecimal bd = new BigDecimal(score).setScale(2, RoundingMode.HALF_EVEN);
 		float score = bd.floatValue();
 

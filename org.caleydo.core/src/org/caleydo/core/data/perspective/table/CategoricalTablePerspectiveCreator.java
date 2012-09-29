@@ -45,7 +45,19 @@ import org.caleydo.core.manager.GeneralManager;
  */
 public class CategoricalTablePerspectiveCreator {
 
+	/**
+	 * List holding all data domains for which we already have created the
+	 * categorial data.
+	 */
+	private List<ATableBasedDataDomain> initializedDataDomains = new ArrayList<ATableBasedDataDomain>();
+
 	public void createAllTablePerspectives(ATableBasedDataDomain dataDomain) {
+
+		// Make sure that the categorical initialized is only done once.
+		if (initializedDataDomains.contains(dataDomain))
+			return;
+
+		initializedDataDomains.add(dataDomain);
 
 		String rowPerspectiveID = null;
 		IDType rowIDType = null;
@@ -54,7 +66,7 @@ public class CategoricalTablePerspectiveCreator {
 			rowPerspectiveID = dataDomain.getDefaultTablePerspective().getRecordPerspective()
 					.getPerspectiveID();
 			rowIDType = dataDomain.getRecordIDType();
-			
+
 			for (int rowID : dataDomain.getRecordVA(rowPerspectiveID)) {
 				createTablePerspeciveByRowID(dataDomain, rowID, rowIDType, true);
 			}
@@ -68,14 +80,14 @@ public class CategoricalTablePerspectiveCreator {
 				createTablePerspeciveByRowID(dataDomain, rowID, rowIDType, true);
 			}
 		}
-		
+
 		DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
-	public void createTablePerspeciveByRowID(ATableBasedDataDomain dataDomain,
-			int rowID, IDType sourceRowIDType, boolean isTablePerspectivePrivate) {
+	public void createTablePerspeciveByRowID(ATableBasedDataDomain dataDomain, int rowID,
+			IDType sourceRowIDType, boolean isTablePerspectivePrivate) {
 
 		IDType rowIDType = null;
 
@@ -100,7 +112,8 @@ public class CategoricalTablePerspectiveCreator {
 
 		if (dataDomain.isColumnDimension()) {
 			perspective = new RecordPerspective(dataDomain);
-			dataDomain.getTable().registerRecordPerspective((RecordPerspective) perspective, false);
+			dataDomain.getTable().registerRecordPerspective((RecordPerspective) perspective,
+					false);
 		}
 		else {
 			perspective = new DimensionPerspective(dataDomain);
@@ -108,7 +121,7 @@ public class CategoricalTablePerspectiveCreator {
 					(DimensionPerspective) perspective, false);
 		}
 		perspective.setPrivate(isTablePerspectivePrivate);
-		
+
 		String label = idMappingManager.getID(sourceRowIDType, rowIDType.getIDCategory()
 				.getHumanReadableIDType(), rowID);
 		perspective.setLabel(label, false);
@@ -155,16 +168,19 @@ public class CategoricalTablePerspectiveCreator {
 		}
 
 		if (binnedPerspective != null) {
-			
+
 			boolean existsAlready = false;
-			if (dataDomain.hasTablePerspective(binnedPerspective.getPerspectiveID(), perspective.getPerspectiveID()))
+			if (dataDomain.hasTablePerspective(binnedPerspective.getPerspectiveID(),
+					perspective.getPerspectiveID()))
 				existsAlready = true;
-			
+
 			TablePerspective tablePerspective = dataDomain.getTablePerspective(
-					binnedPerspective.getPerspectiveID(), perspective.getPerspectiveID(), false);
+					binnedPerspective.getPerspectiveID(), perspective.getPerspectiveID(),
+					false);
 			tablePerspective.setLabel(label, false);
 
-			// We do not want to overwrite the state of already existing public table perspectives.
+			// We do not want to overwrite the state of already existing public
+			// table perspectives.
 			if (!existsAlready)
 				tablePerspective.setPrivate(isTablePerspectivePrivate);
 

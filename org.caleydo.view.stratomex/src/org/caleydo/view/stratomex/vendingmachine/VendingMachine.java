@@ -513,8 +513,6 @@ public class VendingMachine
 			dataSetButtonLayout.setRenderer(dataDomainButtonRenderer);
 
 			addTypePickingListener(new APickingListener() {
-				private boolean isCNVInitialized;
-				private boolean isMutationInitialized;
 
 				@Override
 				public void clicked(Pick pick) {
@@ -535,20 +533,16 @@ public class VendingMachine
 
 						if (dataDomainButton.isSelected()) {
 
-							// FIND A BETTER PLACE FOR CREATING CAT DATA
+							// FIND A BETTER PLACE FOR CREATING CATEGORICAL DATA
 							ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
 									.get()
 									.getDataDomainByID(dataDomainButton.getPickingType());
-							if (dataDomain.getLabel().toLowerCase().contains("mutation")
-									&& !isMutationInitialized) {
+							if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
 								categoricalTablePerspectiveCreator.createAllTablePerspectives(dataDomain);
-								isMutationInitialized = true;
 							}
-							else if (dataDomain.getLabel().toLowerCase().contains("copy")
-									&& !isCNVInitialized) {
+							else if (dataDomain.getLabel().toLowerCase().contains("copy")) {
 								categoricalTablePerspectiveCreator
 										.createAllTablePerspectives(dataDomain);
-								isCNVInitialized = true;
 							}
 						}
 					}
