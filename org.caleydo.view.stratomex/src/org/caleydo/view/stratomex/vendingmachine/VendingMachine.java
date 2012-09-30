@@ -110,7 +110,7 @@ public class VendingMachine
 
 	private GLStratomex stratomex;
 
-	private boolean isActive = true;
+	private boolean isActive = false;
 
 	private BrickColumnManager brickColumnManager;
 

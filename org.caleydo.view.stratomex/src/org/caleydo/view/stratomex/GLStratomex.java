@@ -107,10 +107,8 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  */
 
-public class GLStratomex
-	extends AGLView
-	implements IMultiTablePerspectiveBasedView, IGLRemoteRenderingView, IViewCommandHandler,
-	ISelectionUpdateHandler {
+public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedView,
+		IGLRemoteRenderingView, IViewCommandHandler, ISelectionUpdateHandler {
 
 	public static String VIEW_TYPE = "org.caleydo.view.stratomex";
 	public static String VIEW_NAME = "StratomeX";
@@ -228,7 +226,8 @@ public class GLStratomex
 	 * Constructor.
 	 * 
 	 */
-	public GLStratomex(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLStratomex(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -291,14 +290,14 @@ public class GLStratomex
 		leftColumnLayout = new Column("leftArchColumn");
 		leftColumnLayout.setPixelSizeX(ARCH_PIXEL_WIDTH);
 
-		initSideLayout(leftColumnLayout, 0, brickColumnManager.getCenterGroupStartIndex());
+		initSideLayout(leftColumnLayout, 0, brickColumnManager.getCenterColumnStartIndex());
 	}
 
 	private void initRightLayout() {
 		rightColumnLayout = new Column("rightArchColumn");
 		rightColumnLayout.setPixelSizeX(ARCH_PIXEL_WIDTH);
 
-		initSideLayout(rightColumnLayout, brickColumnManager.getRightGroupStartIndex(),
+		initSideLayout(rightColumnLayout, brickColumnManager.getRightColumnStartIndex(),
 				brickColumnManager.getBrickColumns().size());
 	}
 
@@ -317,8 +316,7 @@ public class GLStratomex
 
 		if (isRightDetailShown || isLeftDetailShown) {
 			archInnerWidth = 0;
-		}
-		else {
+		} else {
 			archInnerWidth = viewFrustum.getWidth() * (ARCH_STAND_WIDTH_PERCENT + 0.024f);
 		}
 
@@ -327,8 +325,8 @@ public class GLStratomex
 
 		archTopY = archBottomY + archHeight;
 
-		int dimensionGroupCountInCenter = brickColumnManager.getRightGroupStartIndex()
-				- brickColumnManager.getCenterGroupStartIndex();
+		int dimensionGroupCountInCenter = brickColumnManager.getRightColumnStartIndex()
+				- brickColumnManager.getCenterColumnStartIndex();
 
 		centerRowLayout = new Row("centerRowLayout");
 
@@ -343,11 +341,10 @@ public class GLStratomex
 		if (dimensionGroupCountInCenter < 1) {
 			dimensionGroupSpacingRenderer = new BrickColumnSpacingRenderer(null,
 					connectionRenderer, null, null, this);
-		}
-		else {
+		} else {
 			dimensionGroupSpacingRenderer = new BrickColumnSpacingRenderer(null,
 					connectionRenderer, null, brickColumnManager.getBrickColumns().get(
-							brickColumnManager.getCenterGroupStartIndex()), this);
+							brickColumnManager.getCenterColumnStartIndex()), this);
 		}
 
 		leftBrickColumnSpacing.setRenderer(dimensionGroupSpacingRenderer);
@@ -360,17 +357,18 @@ public class GLStratomex
 
 		centerRowLayout.append(leftBrickColumnSpacing);
 
-		for (int dimensionGroupIndex = brickColumnManager.getCenterGroupStartIndex(); dimensionGroupIndex < brickColumnManager
-				.getRightGroupStartIndex(); dimensionGroupIndex++) {
+		for (int dimensionGroupIndex = brickColumnManager.getCenterColumnStartIndex(); dimensionGroupIndex < brickColumnManager
+				.getRightColumnStartIndex(); dimensionGroupIndex++) {
 
 			ElementLayout dynamicDimensionGroupSpacing;
 
-			BrickColumn group = brickColumnManager.getBrickColumns().get(dimensionGroupIndex);
+			BrickColumn group = brickColumnManager.getBrickColumns().get(
+					dimensionGroupIndex);
 			group.setCollapsed(false);
 			group.setArchHeight(ARCH_PIXEL_HEIGHT);
 			centerRowLayout.append(group.getLayout());
 
-			if (dimensionGroupIndex != brickColumnManager.getRightGroupStartIndex() - 1) {
+			if (dimensionGroupIndex != brickColumnManager.getRightColumnStartIndex() - 1) {
 				dynamicDimensionGroupSpacing = new ElementLayout("dynamicDimGrSpacing");
 				dimensionGroupSpacingRenderer = new BrickColumnSpacingRenderer(
 						relationAnalyzer, connectionRenderer, group, brickColumnManager
@@ -379,8 +377,7 @@ public class GLStratomex
 				dynamicDimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 				centerRowLayout.append(dynamicDimensionGroupSpacing);
 
-			}
-			else {
+			} else {
 				rightBrickColumnSpacing = new ElementLayout("lastDimGrSpacing");
 				dimensionGroupSpacingRenderer = new BrickColumnSpacingRenderer(null,
 						connectionRenderer, group, null, this);
@@ -427,11 +424,10 @@ public class GLStratomex
 				|| dimensinoGroupStartIndex == dimensionGroupEndIndex) {
 			dimensionGroupSpacingRenderer = new BrickColumnSpacingRenderer(null,
 					connectionRenderer, null, null, this);
-		}
-		else {
+		} else {
 			dimensionGroupSpacingRenderer = new BrickColumnSpacingRenderer(null,
 					connectionRenderer, null, brickColumnManager.getBrickColumns().get(
-							brickColumnManager.getCenterGroupStartIndex()), this);
+							brickColumnManager.getCenterColumnStartIndex()), this);
 		}
 
 		dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
@@ -441,7 +437,8 @@ public class GLStratomex
 
 		for (int dimensionGroupIndex = dimensinoGroupStartIndex; dimensionGroupIndex < dimensionGroupEndIndex; dimensionGroupIndex++) {
 
-			BrickColumn group = brickColumnManager.getBrickColumns().get(dimensionGroupIndex);
+			BrickColumn group = brickColumnManager.getBrickColumns().get(
+					dimensionGroupIndex);
 
 			group.getLayout().setAbsoluteSizeY(archSideWidth);
 			group.setArchHeight(-1);
@@ -452,8 +449,8 @@ public class GLStratomex
 			dimensionGroupSpacing = new ElementLayout("sideDimGrSpacing");
 			dimensionGroupSpacing.setGrabY(true);
 
-			dimensionGroupSpacingRenderer = new BrickColumnSpacingRenderer(null, null, group,
-					null, this);
+			dimensionGroupSpacingRenderer = new BrickColumnSpacingRenderer(null, null,
+					group, null, this);
 			columnLayout.append(dimensionGroupSpacing);
 
 			dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
@@ -615,52 +612,59 @@ public class GLStratomex
 
 	/**
 	 * Switches to detail mode where the detail brick is on the right side of
-	 * the specified dimension group
+	 * the specified column
+	 * 
+	 * @param focusColumn
+	 *            the column that contains the focus brick
 	 */
-	public void switchToDetailModeRight(BrickColumn dimensionGroup) {
+	public void switchToDetailModeRight(BrickColumn focusColumn) {
 
-		int dimensionGroupIndex = brickColumnManager.indexOfBrickColumn(dimensionGroup);
-		// false only if this is the rightmost DimensionGroup. If true we
-		// move anything beyond the next dimension group out
-		if (dimensionGroupIndex != brickColumnManager.getRightGroupStartIndex() - 1) {
-			brickColumnManager.setRightGroupStartIndex(dimensionGroupIndex + 2);
+		int dimensionGroupIndex = brickColumnManager.indexOfBrickColumn(focusColumn);
+		// false only if this is the rightmost column. If true we
+		// move anything beyond the next column out
+		if (dimensionGroupIndex != brickColumnManager.getRightColumnStartIndex() - 1) {
+			brickColumnManager.setRightColumnStartIndex(dimensionGroupIndex + 2);
 
 		}
-		// false only if this is the leftmost DimensionGroup. If true we
+		// false only if this is the leftmost colum. If true we
 		// move anything further left out
-		if (dimensionGroupIndex != brickColumnManager.getCenterGroupStartIndex()) {
-			brickColumnManager.setCenterGroupStartIndex(dimensionGroupIndex);
+		if (dimensionGroupIndex != brickColumnManager.getCenterColumnStartIndex()) {
+			brickColumnManager.setCenterColumnStartIndex(dimensionGroupIndex);
 		}
 
 		isRightDetailShown = true;
 		mainRow.remove(rightColumnLayout);
 		mainRow.remove(leftColumnLayout);
-		layoutManager.updateLayout();
+		initLayouts();
 		setDisplayListDirty();
 	}
 
 	/**
 	 * Switches to detail mode where the detail brick is on the left side of the
-	 * specified dimension group
+	 * specified column.
+	 * 
+	 * @param focusColumn
+	 *            the column that contains the detail brick
 	 */
-	public void switchToDetailModeLeft(BrickColumn dimensionGroup) {
+	public void switchToDetailModeLeft(BrickColumn focusColumn) {
 
-		int dimensionGroupIndex = brickColumnManager.indexOfBrickColumn(dimensionGroup);
+		int columnIndex = brickColumnManager.indexOfBrickColumn(focusColumn);
 
-		// false only if this is the left-most dimension group. If true we move
-		// out everything right of this dimension group
-		if (dimensionGroupIndex != brickColumnManager.getCenterGroupStartIndex()) {
-			brickColumnManager.setCenterGroupStartIndex(dimensionGroupIndex - 1);
+		// false only if this is the left-most column. If true we move
+		// out everything right of this column
+		if (columnIndex != brickColumnManager.getCenterColumnStartIndex()) {
+			brickColumnManager.setCenterColumnStartIndex(columnIndex - 1);
 		}
-		// false only if this is the right-most dimension group
-		if (dimensionGroupIndex != brickColumnManager.getRightGroupStartIndex() - 1) {
-			brickColumnManager.setRightGroupStartIndex(dimensionGroupIndex + 1);
+		// false only if this is the right-most column
+		if (columnIndex != brickColumnManager.getRightColumnStartIndex() - 1) {
+			brickColumnManager.setRightColumnStartIndex(columnIndex + 1);
 		}
 
 		isLeftDetailShown = true;
 		mainRow.remove(rightColumnLayout);
 		mainRow.remove(leftColumnLayout);
-		layoutManager.updateLayout();
+		initLayouts();
+//		layoutManager.updateLayout();
 	}
 
 	/**
@@ -725,7 +729,8 @@ public class GLStratomex
 		Point currentPoint = glMouseListener.getPickedPoint();
 
 		float[] pointCordinates = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
+				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+						currentPoint.y);
 
 		if (Float.isNaN(previousXCoordinate)) {
 			previousXCoordinate = pointCordinates[0];
@@ -740,8 +745,7 @@ public class GLStratomex
 			if (change < 0.01f)
 				return;
 			lastResizeDirectionWasToLeft = false;
-		}
-		else {
+		} else {
 			// ignore tiny changes
 			if (change > -0.01f)
 				return;
@@ -792,8 +796,7 @@ public class GLStratomex
 				if (count < centerRowLayout.size() - 1) {
 					layout.setGrabX(false);
 					layout.setAbsoluteSizeX(layout.getSizeScaledX());
-				}
-				else
+				} else
 					layout.setGrabX(true);
 			}
 			count++;
@@ -814,8 +817,7 @@ public class GLStratomex
 				rightSpacing.setAbsoluteSizeX(rightSizeX - change);
 				leftSpacing.setAbsoluteSizeX(leftSizeX + change);
 
-			}
-			else {
+			} else {
 				// the immediate neighbor doesn't have space, check for the
 				// following
 				rightSpacing.setAbsoluteSizeX(minWidth);
@@ -831,11 +833,11 @@ public class GLStratomex
 					rightIndex += 2;
 					ElementLayout spacing = centerRowLayout.getElements().get(rightIndex);
 					if (spacing.getSizeScaledX() - remainingChange > minWidth + 0.001f) {
-						spacing.setAbsoluteSizeX(spacing.getSizeScaledX() - remainingChange);
+						spacing.setAbsoluteSizeX(spacing.getSizeScaledX()
+								- remainingChange);
 						remainingChange = 0;
 						break;
-					}
-					else {
+					} else {
 						savedSize = spacing.getSizeScaledX() - minWidth;
 						remainingChange -= savedSize;
 						if (rightIndex == centerRowLayout.size() - 1) {
@@ -847,15 +849,13 @@ public class GLStratomex
 				leftSpacing.setAbsoluteSizeX(leftSizeX + change - remainingChange);
 			}
 
-		}
-		else {
+		} else {
 			// moved to the left, change is negative
 			if (leftSizeX + change > minWidth) {
 				// there is space, we adapt the spacings left and right
 				leftSpacing.setAbsoluteSizeX(leftSizeX + change);
 				rightSpacing.setAbsoluteSizeX(rightSizeX - change);
-			}
-			else {
+			} else {
 				// the immediate neighbor doesn't have space, check for the
 				// following
 				leftSpacing.setAbsoluteSizeX(minWidth);
@@ -874,11 +874,11 @@ public class GLStratomex
 					if (spacing.getSizeScaledX() + remainingChange > minWidth + 0.001f) {
 						// the whole change fits in the first spacing left of
 						// the source
-						spacing.setAbsoluteSizeX(spacing.getSizeScaledX() + remainingChange);
+						spacing.setAbsoluteSizeX(spacing.getSizeScaledX()
+								+ remainingChange);
 						remainingChange = 0;
 						break;
-					}
-					else {
+					} else {
 						savedSize = spacing.getSizeScaledX() - minWidth;
 						remainingChange += savedSize;
 						if (leftIndex == 0) {
@@ -908,10 +908,10 @@ public class GLStratomex
 			@Override
 			public void rightClicked(Pick pick) {
 
-				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getObjectID(),
-						true));
-				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getObjectID(),
-						false));
+				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick
+						.getObjectID(), true));
+				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick
+						.getObjectID(), false));
 			}
 
 		}, EPickingType.BRICK_CONNECTION_BAND.name());
@@ -950,12 +950,11 @@ public class GLStratomex
 
 				if (dragAndDropController.isDragging()
 						&& dragAndDropController.getDraggingMode() != null
-						&& dragAndDropController.getDraggingMode()
-								.equals("DimensionGroupDrag")) {
+						&& dragAndDropController.getDraggingMode().equals(
+								"DimensionGroupDrag")) {
 					dragAndDropController.setDropArea(brickColumnManager
 							.getBrickColumnSpacers().get(pick.getObjectID()));
-				}
-				else {
+				} else {
 					if (dragAndDropController.isDragging()) {
 
 					}
@@ -1003,7 +1002,8 @@ public class GLStratomex
 
 		trendHighlightModeListener = new ConnectionsModeListener();
 		trendHighlightModeListener.setHandler(this);
-		eventPublisher.addListener(ConnectionsModeEvent.class, trendHighlightModeListener);
+		eventPublisher
+				.addListener(ConnectionsModeEvent.class, trendHighlightModeListener);
 
 		splitBrickListener = new SplitBrickListener();
 		splitBrickListener.setHandler(this);
@@ -1114,8 +1114,9 @@ public class GLStratomex
 	 * </p>
 	 * 
 	 * @param newTablePerspectives
-	 * @param brickConfigurer The brick configurer can be specified externally
-	 *            (e.g., pathways, kaplan meier). If null, the
+	 * @param brickConfigurer
+	 *            The brick configurer can be specified externally (e.g.,
+	 *            pathways, kaplan meier). If null, the
 	 *            {@link NumericalDataConfigurer} will be used.
 	 */
 	public void addTablePerspectives(List<TablePerspective> newTablePerspectives,
@@ -1129,7 +1130,8 @@ public class GLStratomex
 
 		// if this is the first data container set, we imprint StratomeX
 		if (recordIDCategory == null) {
-			ATableBasedDataDomain dataDomain = newTablePerspectives.get(0).getDataDomain();
+			ATableBasedDataDomain dataDomain = newTablePerspectives.get(0)
+					.getDataDomain();
 			imprintVisBricks(dataDomain);
 		}
 
@@ -1176,8 +1178,8 @@ public class GLStratomex
 								BrickColumn.class,
 								getParentGLCanvas(),
 								parentComposite,
-								new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
-										-1, 1));
+								new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1,
+										0, 1, -1, 1));
 
 				/**
 				 * If no brick configurer was specified in the
@@ -1189,8 +1191,7 @@ public class GLStratomex
 					// only one dimension categorical data
 					if (tablePerspective.getNrDimensions() == 1) {
 						brickConfigurer = new CategoricalDataConfigurer(tablePerspective);
-					}
-					else {
+					} else {
 						brickConfigurer = new NumericalDataConfigurer(tablePerspective);
 					}
 				}
@@ -1214,8 +1215,8 @@ public class GLStratomex
 				// dataDomains.add(tablePerspective.getDataDomain());
 				// }
 
-				brickColumnManager.setRightGroupStartIndex(brickColumnManager
-						.getRightGroupStartIndex() + 1);
+				brickColumnManager.setRightColumnStartIndex(brickColumnManager
+						.getRightColumnStartIndex() + 1);
 			}
 		}
 
@@ -1227,7 +1228,8 @@ public class GLStratomex
 	@Override
 	public void removeTablePerspective(int tablePerspectiveID) {
 
-		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives.iterator();
+		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives
+				.iterator();
 
 		while (tablePerspectiveIterator.hasNext()) {
 			TablePerspective container = tablePerspectiveIterator.next();
@@ -1258,7 +1260,8 @@ public class GLStratomex
 	public void replaceTablePerspective(TablePerspective newTablePerspective,
 			TablePerspective oldTablePerspective) {
 
-		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives.iterator();
+		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives
+				.iterator();
 		while (tablePerspectiveIterator.hasNext()) {
 			TablePerspective tempPerspective = tablePerspectiveIterator.next();
 			if (tempPerspective.equals(oldTablePerspective)) {
@@ -1319,14 +1322,13 @@ public class GLStratomex
 		for (ElementLayout leftLayout : leftColumnLayout.getElements()) {
 			if (spacer == leftLayout.getRenderer()) {
 
-				brickColumnManager.setCenterGroupStartIndex(brickColumnManager
-						.getCenterGroupStartIndex() + 1);
+				brickColumnManager.setCenterColumnStartIndex(brickColumnManager
+						.getCenterColumnStartIndex() + 1);
 
 				dimensionGroups.remove(movedDimGroup);
 				if (referenceDimGroup == null) {
 					dimensionGroups.add(0, movedDimGroup);
-				}
-				else {
+				} else {
 					dimensionGroups.add(dimensionGroups.indexOf(referenceDimGroup),
 							movedDimGroup);
 				}
@@ -1340,15 +1342,15 @@ public class GLStratomex
 			for (ElementLayout rightLayout : rightColumnLayout.getElements()) {
 				if (spacer == rightLayout.getRenderer()) {
 
-					brickColumnManager.setRightGroupStartIndex(brickColumnManager
-							.getRightGroupStartIndex() - 1);
+					brickColumnManager.setRightColumnStartIndex(brickColumnManager
+							.getRightColumnStartIndex() - 1);
 
 					dimensionGroups.remove(movedDimGroup);
 					if (referenceDimGroup == null) {
 						dimensionGroups.add(dimensionGroups.size(), movedDimGroup);
-					}
-					else {
-						dimensionGroups.add(dimensionGroups.indexOf(referenceDimGroup) + 1,
+					} else {
+						dimensionGroups.add(
+								dimensionGroups.indexOf(referenceDimGroup) + 1,
 								movedDimGroup);
 					}
 
@@ -1363,22 +1365,23 @@ public class GLStratomex
 				if (spacer == centerLayout.getRenderer()) {
 
 					if (dimensionGroups.indexOf(movedDimGroup) < brickColumnManager
-							.getCenterGroupStartIndex())
-						brickColumnManager.setCenterGroupStartIndex(brickColumnManager
-								.getCenterGroupStartIndex() - 1);
+							.getCenterColumnStartIndex())
+						brickColumnManager.setCenterColumnStartIndex(brickColumnManager
+								.getCenterColumnStartIndex() - 1);
 					else if (dimensionGroups.indexOf(movedDimGroup) >= brickColumnManager
-							.getRightGroupStartIndex())
-						brickColumnManager.setRightGroupStartIndex(brickColumnManager
-								.getRightGroupStartIndex() + 1);
+							.getRightColumnStartIndex())
+						brickColumnManager.setRightColumnStartIndex(brickColumnManager
+								.getRightColumnStartIndex() + 1);
 
 					dimensionGroups.remove(movedDimGroup);
 					if (referenceDimGroup == null) {
-						dimensionGroups.add(brickColumnManager.getCenterGroupStartIndex(),
+						dimensionGroups.add(
+								brickColumnManager.getCenterColumnStartIndex(),
 								movedDimGroup);
-					}
-					else {
+					} else {
 
-						dimensionGroups.add(dimensionGroups.indexOf(referenceDimGroup) + 1,
+						dimensionGroups.add(
+								dimensionGroups.indexOf(referenceDimGroup) + 1,
 								movedDimGroup);
 
 					}
@@ -1400,17 +1403,20 @@ public class GLStratomex
 		// Clear previous spacer highlights
 		for (ElementLayout element : centerRowLayout.getElements()) {
 			if (element.getRenderer() instanceof BrickColumnSpacingRenderer)
-				((BrickColumnSpacingRenderer) element.getRenderer()).setRenderSpacer(false);
+				((BrickColumnSpacingRenderer) element.getRenderer())
+						.setRenderSpacer(false);
 		}
 
 		for (ElementLayout element : leftColumnLayout.getElements()) {
 			if (element.getRenderer() instanceof BrickColumnSpacingRenderer)
-				((BrickColumnSpacingRenderer) element.getRenderer()).setRenderSpacer(false);
+				((BrickColumnSpacingRenderer) element.getRenderer())
+						.setRenderSpacer(false);
 		}
 
 		for (ElementLayout element : rightColumnLayout.getElements()) {
 			if (element.getRenderer() instanceof BrickColumnSpacingRenderer)
-				((BrickColumnSpacingRenderer) element.getRenderer()).setRenderSpacer(false);
+				((BrickColumnSpacingRenderer) element.getRenderer())
+						.setRenderSpacer(false);
 		}
 	}
 
@@ -1523,7 +1529,8 @@ public class GLStratomex
 				volatileBandSelectionType);
 		GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
 
-		BrickConnection connectionBand = hashConnectionBandIDToRecordVA.get(connectionBandID);
+		BrickConnection connectionBand = hashConnectionBandIDToRecordVA
+				.get(connectionBandID);
 		RecordVirtualArray recordVA = connectionBand.getSharedRecordVirtualArray();
 		for (Integer recordID : recordVA) {
 			recordSelectionManager.addToType(recordSelectionManager.getSelectionType(),
@@ -1538,7 +1545,8 @@ public class GLStratomex
 		// however, if we don't send it, we don't see the selection in the
 		// selection info view. to fix this, we need to redesign the selection
 		// info view.
-		event.setDataDomainID(connectionBand.getLeftBrick().getDataDomain().getDataDomainID());
+		event.setDataDomainID(connectionBand.getLeftBrick().getDataDomain()
+				.getDataDomainID());
 		eventPublisher.triggerEvent(event);
 
 		updateConnectionLinesBetweenDimensionGroups();
@@ -1549,7 +1557,8 @@ public class GLStratomex
 	 * identified through the connection band id and the others.
 	 */
 	public void splitBrick(Integer connectionBandID, boolean isSplitLeftBrick) {
-		BrickConnection brickConnection = hashConnectionBandIDToRecordVA.get(connectionBandID);
+		BrickConnection brickConnection = hashConnectionBandIDToRecordVA
+				.get(connectionBandID);
 		RecordVirtualArray sharedRecordVA = brickConnection.getSharedRecordVirtualArray();
 
 		RecordPerspective sourcePerspective;
@@ -1558,15 +1567,15 @@ public class GLStratomex
 		GLBrick sourceBrick;
 		if (isSplitLeftBrick) {
 			sourceBrick = brickConnection.getLeftBrick();
-		}
-		else {
+		} else {
 			sourceBrick = brickConnection.getRightBrick();
 		}
 
 		sourcePerspective = sourceBrick.getBrickColumn().getTablePerspective()
 				.getRecordPerspective();
 		sourceVA = sourcePerspective.getVirtualArray();
-		sourceGroupIndex = sourceBrick.getTablePerspective().getRecordGroup().getGroupIndex();
+		sourceGroupIndex = sourceBrick.getTablePerspective().getRecordGroup()
+				.getGroupIndex();
 
 		boolean idNeedsConverting = false;
 		if (!sourceVA.getIdType().equals(sharedRecordVA.getIdType())) {
@@ -1615,10 +1624,12 @@ public class GLStratomex
 		sourceVA.getGroupList().updateGroupInfo();
 
 		List<Integer> newIDs = new ArrayList<Integer>(sourceVA.size());
-		List<Integer> groupSizes = new ArrayList<Integer>(sourceVA.getGroupList().size() + 1);
-		List<String> groupNames = new ArrayList<String>(sourceVA.getGroupList().size() + 1);
-		List<Integer> sampleElements = new ArrayList<Integer>(
+		List<Integer> groupSizes = new ArrayList<Integer>(
 				sourceVA.getGroupList().size() + 1);
+		List<String> groupNames = new ArrayList<String>(
+				sourceVA.getGroupList().size() + 1);
+		List<Integer> sampleElements = new ArrayList<Integer>(sourceVA.getGroupList()
+				.size() + 1);
 
 		// build up the data for the perspective
 		int sizeCounter = 0;
@@ -1628,17 +1639,16 @@ public class GLStratomex
 				groupSizes.add(sharedRecordVA.size());
 				sampleElements.add(sizeCounter);
 				sizeCounter += sharedRecordVA.size();
-				groupNames
-						.add(sourceVA.getGroupList().get(groupIndex).getLabel() + " Split 1");
+				groupNames.add(sourceVA.getGroupList().get(groupIndex).getLabel()
+						+ " Split 1");
 
 				newIDs.addAll(remainingGroupIDs);
 				groupSizes.add(remainingGroupIDs.size());
 				sampleElements.add(sizeCounter);
 				sizeCounter += remainingGroupIDs.size();
-				groupNames
-						.add(sourceVA.getGroupList().get(groupIndex).getLabel() + " Split 2");
-			}
-			else {
+				groupNames.add(sourceVA.getGroupList().get(groupIndex).getLabel()
+						+ " Split 2");
+			} else {
 				newIDs.addAll(sourceVA.getIDsOfGroup(groupIndex));
 				groupSizes.add(sourceVA.getGroupList().get(groupIndex).getSize());
 				sampleElements.add(sizeCounter);
@@ -1685,8 +1695,7 @@ public class GLStratomex
 			if (tablePerspective instanceof PathwayTablePerspective) {
 				dataDomains.add(((PathwayTablePerspective) tablePerspective)
 						.getPathwayDataDomain());
-			}
-			else {
+			} else {
 				dataDomains.add(tablePerspective.getDataDomain());
 			}
 		}
@@ -1725,10 +1734,13 @@ public class GLStratomex
 		vendingMachineLayout = new ElementLayout("vendingMachineLayout");
 		vendingMachineLayout.setPixelSizeX(VendingMachine.VENDING_MACHINE_PIXEL_WIDTH);
 
-		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
-				-4, 4);
-		vendingMachine = (VendingMachine) GeneralManager.get().getViewManager()
-				.createGLView(VendingMachine.class, parentGLCanvas, parentComposite, frustum);
+		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
+				1, -4, 4);
+		vendingMachine = (VendingMachine) GeneralManager
+				.get()
+				.getViewManager()
+				.createGLView(VendingMachine.class, parentGLCanvas, parentComposite,
+						frustum);
 
 		vendingMachine.setStratomex(this);
 		vendingMachine.setRemoteRenderingGLView(this);

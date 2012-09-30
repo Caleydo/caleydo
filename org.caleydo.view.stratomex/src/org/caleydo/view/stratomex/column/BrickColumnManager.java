@@ -33,9 +33,9 @@ public class BrickColumnManager {
 
 	private HashMap<Integer, BrickColumnSpacingRenderer> brickColumnSpacers = new HashMap<Integer, BrickColumnSpacingRenderer>();
 
-	private int centerGroupStartIndex = 0;
+	private int centerColumnStartIndex = 0;
 
-	private int rightGroupStartIndex = 0;
+	private int rightColumnStartIndex = 0;
 
 	public ArrayList<BrickColumn> getBrickColumns() {
 		return brickColumns;
@@ -61,32 +61,32 @@ public class BrickColumnManager {
 		return brickColumnSpacers;
 	}
 
-	public int getRightGroupStartIndex() {
-		return rightGroupStartIndex;
+	public int getRightColumnStartIndex() {
+		return rightColumnStartIndex;
 	}
 
-	public int getCenterGroupStartIndex() {
-		return centerGroupStartIndex;
+	public int getCenterColumnStartIndex() {
+		return centerColumnStartIndex;
 	}
 
-	public void setRightGroupStartIndex(int rightGroupStartIndex) {
-		this.rightGroupStartIndex = rightGroupStartIndex;
+	public void setRightColumnStartIndex(int rightGroupStartIndex) {
+		this.rightColumnStartIndex = rightGroupStartIndex;
 	}
 
-	public void setCenterGroupStartIndex(int centerGroupStartIndex) {
-		this.centerGroupStartIndex = centerGroupStartIndex;
+	public void setCenterColumnStartIndex(int centerGroupStartIndex) {
+		this.centerColumnStartIndex = centerGroupStartIndex;
 	}
 
-	public void calculateGroupDivision() {
-		if (brickColumns.size() > MAX_CENTER_BRICK_COLUMNS) {
-			centerGroupStartIndex = (brickColumns.size() - MAX_CENTER_BRICK_COLUMNS) / 2;
-			rightGroupStartIndex = centerGroupStartIndex + MAX_CENTER_BRICK_COLUMNS;
-		}
-		else {
-			centerGroupStartIndex = 0;
-			rightGroupStartIndex = brickColumns.size();
-		}
-	}
+//	public void calculateGroupDivision() {
+//		if (brickColumns.size() > MAX_CENTER_BRICK_COLUMNS) {
+//			centerColumnStartIndex = (brickColumns.size() - MAX_CENTER_BRICK_COLUMNS) / 2;
+//			rightColumnStartIndex = centerColumnStartIndex + MAX_CENTER_BRICK_COLUMNS;
+//		}
+//		else {
+//			centerColumnStartIndex = 0;
+//			rightColumnStartIndex = brickColumns.size();
+//		}
+//	}
 
 	public int indexOfBrickColumn(BrickColumn brickColumn) {
 		return brickColumns.indexOf(brickColumn);
@@ -107,11 +107,11 @@ public class BrickColumnManager {
 			if (brickColumn.getTablePerspective().getID() == tablePerspectiveID) {
 				ViewManager.get().unregisterGLView(brickColumn);
 				brickColumnIterator.remove();
-				if (count < centerGroupStartIndex) {
-					centerGroupStartIndex--;
+				if (count < centerColumnStartIndex) {
+					centerColumnStartIndex--;
 				}
-				if (count < rightGroupStartIndex) {
-					rightGroupStartIndex--;
+				if (count < rightColumnStartIndex) {
+					rightColumnStartIndex--;
 				}
 			}
 			count++;

@@ -1121,7 +1121,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	public boolean isLeftmost() {
 		BrickColumnManager dimensionGroupManager = stratomex.getBrickColumnManager();
 		int index = dimensionGroupManager.indexOfBrickColumn(this);
-		return (index == dimensionGroupManager.getCenterGroupStartIndex());
+		return (index == dimensionGroupManager.getCenterColumnStartIndex());
 	}
 
 	/**
@@ -1130,7 +1130,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	public boolean isRightmost() {
 		BrickColumnManager dimensionGroupManager = stratomex.getBrickColumnManager();
 		int index = dimensionGroupManager.indexOfBrickColumn(this);
-		return (index == dimensionGroupManager.getRightGroupStartIndex() - 1);
+		return (index == dimensionGroupManager.getRightColumnStartIndex() - 1);
 	}
 
 	public int getGroupColumnWidthPixels() {
