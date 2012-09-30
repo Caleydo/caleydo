@@ -167,7 +167,7 @@ public class GLHistogram extends ATableBasedView {
 		if (bUpdateColorPointPosition || bUpdateLeftSpread || bUpdateRightSpread)
 			updateColorPointPosition(gl);
 
-		if (true) {
+		if (isDisplayListDirty) {
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
 		}
@@ -590,11 +590,11 @@ public class GLHistogram extends ATableBasedView {
 		case HIGH:
 			return 300;
 		case MEDIUM:
-			return 130;
+			return 100;
 		case LOW:
-			return 50;
+			return 40;
 		default:
-			return 50;
+			return 40;
 		}
 	}
 
@@ -604,7 +604,7 @@ public class GLHistogram extends ATableBasedView {
 		case HIGH:
 			return 300;
 		case MEDIUM:
-			return 130;
+			return 100;
 		case LOW:
 			return 40;
 		default:
