@@ -20,6 +20,7 @@
 package org.caleydo.view.histogram;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ChooseColorMappingDialog;
@@ -33,6 +34,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -47,6 +49,7 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 	@Override
 	public void redrawView() {
 
+		/** The color scale below the histogram */
 		colorMappingPreview = new CLabel(histoComposite, SWT.SHADOW_IN);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.heightHint = 10;
@@ -56,13 +59,8 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				ChooseColorMappingDialog dialog = new ChooseColorMappingDialog(new Shell(
-						SWT.APPLICATION_MODAL), dataDomain);
-				// dialog.setPossibleDataDomains(availableDomains);
-				dialog.setBlockOnOpen(true);
-				dialog.open();
-
-				updateColorMappingPreview();
+				openColorMapDialog();
+				
 			}
 		});
 
@@ -86,6 +84,21 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 		}
 
 		updateColorMappingPreview();
+		
+		Button changeColorButton = new Button (histoComposite, SWT.PUSH);
+		changeColorButton.setText("Colormap");
+		changeColorButton.setToolTipText("Choose a colormap for this dataset");
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+//		gridData.heightHint = 20;
+		gridData.grabExcessHorizontalSpace = true;
+		changeColorButton.setLayoutData(gridData);
+		changeColorButton.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+				openColorMapDialog();
+			}
+		});
 	}
 
 	@Override
@@ -98,6 +111,19 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 		});
 	}
 
+	/**
+	 * Opens the {@link ChooseColorMappingDialog}.
+	 */
+	private void openColorMapDialog()
+	{
+		ChooseColorMappingDialog dialog = new ChooseColorMappingDialog(new Shell(
+				SWT.APPLICATION_MODAL), dataDomain);
+		// dialog.setPossibleDataDomains(availableDomains);
+		dialog.setBlockOnOpen(true);
+		dialog.open();
+
+		updateColorMappingPreview();
+	}
 	private void updateColorMappingPreview() {
 
 		if(!dataDomain.getTable().isDataHomogeneous())

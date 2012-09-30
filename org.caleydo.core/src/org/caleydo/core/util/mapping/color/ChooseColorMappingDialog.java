@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -38,9 +38,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 
-public class ChooseColorMappingDialog
-	extends Dialog
-	implements IDataOKListener {
+public class ChooseColorMappingDialog extends Dialog implements IDataOKListener {
 
 	private ColorMapper colorMapper;
 
@@ -71,6 +69,11 @@ public class ChooseColorMappingDialog
 
 			Button button = new Button(colorSchemeGroup, SWT.RADIO);
 			button.setText(colorScheme.getColorSchemeName());
+			if (colorScheme.getColorSchemeName().equals(
+					dataDomain.getColorMapper().getColorSchemeName()))
+			{
+				button.setSelection(true);
+			}
 			button.addSelectionListener(new SelectionAdapter() {
 
 				@Override
@@ -79,7 +82,8 @@ public class ChooseColorMappingDialog
 
 					dataDomain.setColorMapper(colorMapper);
 
-					EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+					EventPublisher eventPublisher = GeneralManager.get()
+							.getEventPublisher();
 
 					RedrawViewEvent redrawEvent = new RedrawViewEvent();
 					redrawEvent.setDataDomainID(dataDomain.getDataDomainID());
@@ -92,12 +96,13 @@ public class ChooseColorMappingDialog
 				}
 			});
 
-			CLabel colorMappingPreview = new CLabel(colorSchemeGroup, SWT.SHADOW_IN | SWT.RADIO);
+			CLabel colorMappingPreview = new CLabel(colorSchemeGroup, SWT.SHADOW_IN
+					| SWT.RADIO);
 			GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 			gridData.minimumWidth = 250;
 			colorMappingPreview.setLayoutData(gridData);
-			ColorMapper.createColorMappingPreview(ColorMapper.createDefaultMapper(colorScheme),
-				colorMappingPreview);
+			ColorMapper.createColorMappingPreview(
+					ColorMapper.createDefaultMapper(colorScheme), colorMappingPreview);
 		}
 
 		return parent;
