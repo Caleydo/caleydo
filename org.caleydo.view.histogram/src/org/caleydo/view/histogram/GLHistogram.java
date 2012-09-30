@@ -167,7 +167,7 @@ public class GLHistogram extends ATableBasedView {
 		if (bUpdateColorPointPosition || bUpdateLeftSpread || bUpdateRightSpread)
 			updateColorPointPosition(gl);
 
-		if (isDisplayListDirty) {
+		if (true) {
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
 		}

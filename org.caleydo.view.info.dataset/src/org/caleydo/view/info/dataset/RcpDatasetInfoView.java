@@ -46,9 +46,8 @@ import org.eclipse.swt.widgets.Label;
  * 
  * @author Marc Streit
  */
-public class RcpDatasetInfoView
-	extends CaleydoRCPViewPart
-	implements IDataDomainBasedView<IDataDomain> {
+public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
+		IDataDomainBasedView<IDataDomain> {
 
 	public static String VIEW_TYPE = "org.caleydo.view.info.dataset";
 
@@ -81,8 +80,7 @@ public class RcpDatasetInfoView
 
 		try {
 			viewContext = JAXBContext.newInstance(SerializedDatasetInfoView.class);
-		}
-		catch (JAXBException ex) {
+		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
 	}
@@ -104,9 +102,10 @@ public class RcpDatasetInfoView
 		nameLabel.setLayoutData(gridData);
 
 		if (dataDomain == null) {
-			setDataDomain((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
-					((ASerializedSingleTablePerspectiveBasedView) serializedView)
-							.getDataDomainID()));
+			setDataDomain((ATableBasedDataDomain) DataDomainManager.get()
+					.getDataDomainByID(
+							((ASerializedSingleTablePerspectiveBasedView) serializedView)
+									.getDataDomainID()));
 		}
 
 		parent.layout();
@@ -143,8 +142,8 @@ public class RcpDatasetInfoView
 			recordLabel.setText(tableBasedDD.getRecordDenomination(true, true) + ": "
 					+ tableBasedDD.getTable().getMetaData().depth());
 
-			dimensionLabel.setText(tableBasedDD.getDimensionDenomination(true, true) + ": "
-					+ tableBasedDD.getTable().getMetaData().size());
+			dimensionLabel.setText(tableBasedDD.getDimensionDenomination(true, true)
+					+ ": " + tableBasedDD.getTable().getMetaData().size());
 
 			if (!tableBasedDD.getTable().isDataHomogeneous()) {
 				histogramExpandBar.setVisible(false);
@@ -176,23 +175,23 @@ public class RcpDatasetInfoView
 
 				histogramExpandBar.setSpacing(2);
 			}
-			else {
+			// else {
 
-				// If the default table perspective does not exist yet, we
-				// create it and set it to private so that it does not show up
-				// in the DVI
-				if (!tableBasedDD.hasTablePerspective(tableBasedDD.getTable()
-						.getDefaultRecordPerspective().getPerspectiveID(), tableBasedDD
-						.getTable().getDefaultDimensionPerspective().getPerspectiveID())) {
-					tableBasedDD.getDefaultTablePerspective().setPrivate(true);
-				}
-
-				((GLHistogram) histogramView.getGLView()).setHistogram(tableBasedDD
-						.getDefaultTablePerspective().getContainerStatistics().getHistogram());
-				((GLHistogram) histogramView.getGLView()).setDisplayListDirty();
+			// If the default table perspective does not exist yet, we
+			// create it and set it to private so that it does not show up
+			// in the DVI
+			if (!tableBasedDD.hasTablePerspective(tableBasedDD.getTable()
+					.getDefaultRecordPerspective().getPerspectiveID(), tableBasedDD
+					.getTable().getDefaultDimensionPerspective().getPerspectiveID())) {
+				tableBasedDD.getDefaultTablePerspective().setPrivate(true);
 			}
-		}
-		else {
+
+			((GLHistogram) histogramView.getGLView())
+					.setHistogram(tableBasedDD.getDefaultTablePerspective()
+							.getContainerStatistics().getHistogram());
+			((GLHistogram) histogramView.getGLView()).setDisplayListDirty();
+			// }
+		} else {
 			histogramExpandBar.setVisible(false);
 			recordLabel.setVisible(false);
 			dimensionLabel.setVisible(false);
@@ -233,7 +232,8 @@ public class RcpDatasetInfoView
 
 		dataDomainChangedListener = new DataDomainChangedListener();
 		dataDomainChangedListener.setHandler(this);
-		eventPublisher.addListener(DataDomainUpdateEvent.class, dataDomainChangedListener);
+		eventPublisher
+				.addListener(DataDomainUpdateEvent.class, dataDomainChangedListener);
 	}
 
 	@Override
