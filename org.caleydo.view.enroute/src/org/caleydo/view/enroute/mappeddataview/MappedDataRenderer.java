@@ -133,7 +133,16 @@ public class MappedDataRenderer {
 	 */
 	private int minWidthPixels = 0;
 
-	private LayoutManager layoutManger;
+	/**
+	 * Layout manager for the base representation of the data. This manager only
+	 * updates when the layout is changed.
+	 */
+	private LayoutManager baseLayoutManger;
+	/**
+	 * Layout manager used for highlighted elements. This manager updates when
+	 * the display list of enRoute is dirty.
+	 */
+	private LayoutManager highlightLayoutManger;
 	private ViewFrustum viewFrustum;
 
 	EventBasedSelectionManager geneSelectionManager;
@@ -151,7 +160,10 @@ public class MappedDataRenderer {
 	public MappedDataRenderer(GLEnRoutePathway parentView) {
 		this.parentView = parentView;
 		viewFrustum = new ViewFrustum();
-		layoutManger = new LayoutManager(viewFrustum, parentView.getPixelGLConverter());
+		baseLayoutManger = new LayoutManager(viewFrustum,
+				parentView.getPixelGLConverter());
+		highlightLayoutManger = new LayoutManager(viewFrustum,
+				parentView.getPixelGLConverter());
 		usedTablePerspectives = resolvedTablePerspectives;
 
 		geneSelectionManager = new EventBasedSelectionManager(parentView,
@@ -187,16 +199,21 @@ public class MappedDataRenderer {
 		geneSelectionManager = null;
 	}
 
-	public void render(GL2 gl, boolean isLayoutDirty) {
+	public void updateLayout() {
+		baseLayoutManger.updateLayout();
+		highlightLayoutManger.updateLayout();
+	}
 
-		if (isLayoutDirty)
-			layoutManger.updateLayout();
-
-		layoutManger.render(gl);
+	public void renderBaseRepresentation(GL2 gl) {
+		baseLayoutManger.render(gl);
 
 		for (RelationshipRenderer relationshipRenderer : relationShipRenderers) {
 			relationshipRenderer.render(gl);
 		}
+	}
+
+	public void renderHighlightElements(GL2 gl) {
+		highlightLayoutManger.render(gl);
 	}
 
 	/**
@@ -237,13 +254,19 @@ public class MappedDataRenderer {
 	 */
 	public void setLinearizedNodes(List<ALinearizableNode> linearizedNodes) {
 
-		float[] color;
 		relationShipRenderers = new ArrayList<RelationshipRenderer>(
 				linearizedNodes.size());
+		createLayout(linearizedNodes, baseLayoutManger, false);
+		createLayout(linearizedNodes, highlightLayoutManger, true);
+	}
+
+	private void createLayout(List<ALinearizableNode> linearizedNodes,
+			LayoutManager layoutManager, boolean isHighlightLayout) {
 
 		Row baseRow = new Row("baseRow");
-		layoutManger.setBaseElementLayout(baseRow);
+		layoutManager.setBaseElementLayout(baseRow);
 
+		float[] color;
 		// baseRow.setDebug(true);
 		Column dataSetColumn = new Column("dataSetColumn");
 		dataSetColumn.setBottomUp(false);
@@ -330,22 +353,26 @@ public class MappedDataRenderer {
 			else
 				color = ODD_BACKGROUND_COLOR;
 
-			RelationshipRenderer relationShipRenderer = new RelationshipRenderer(color,
-					parentView);
-			relationShipRenderers.add(relationShipRenderer);
-			float x = node.getPosition().x()
-					+ parentView.getPixelGLConverter().getGLWidthForPixelWidth(
-							node.getWidthPixels()) / 2;
-			float height = parentView.getPixelGLConverter().getGLHeightForPixelHeight(
-					node.getHeightPixels());
+			RelationshipRenderer relationShipRenderer = null;
 
-			relationShipRenderer.topLeft[0] = x - xOffset;
-			relationShipRenderer.topLeft[1] = node.getPosition().y() + height / 2
-					- yOffset;
+			if (!isHighlightLayout) {
 
-			relationShipRenderer.bottomLeft[0] = x - xOffset;
-			relationShipRenderer.bottomLeft[1] = node.getPosition().y() - height / 2
-					- yOffset;
+				relationShipRenderer = new RelationshipRenderer(color, parentView);
+				relationShipRenderers.add(relationShipRenderer);
+				float x = node.getPosition().x()
+						+ parentView.getPixelGLConverter().getGLWidthForPixelWidth(
+								node.getWidthPixels()) / 2;
+				float height = parentView.getPixelGLConverter()
+						.getGLHeightForPixelHeight(node.getHeightPixels());
+
+				relationShipRenderer.topLeft[0] = x - xOffset;
+				relationShipRenderer.topLeft[1] = node.getPosition().y() + height / 2
+						- yOffset;
+
+				relationShipRenderer.bottomLeft[0] = x - xOffset;
+				relationShipRenderer.bottomLeft[1] = node.getPosition().y() - height / 2
+						- yOffset;
+			}
 
 			nodeCount++;
 
@@ -370,8 +397,10 @@ public class MappedDataRenderer {
 					ElementLayout tablePerspectiveLayout = new ElementLayout(
 							"TablePerspective " + tablePerspectiveCount + " / " + idCount);
 					// tablePerspectiveRow.setPixelSizeX(5);
-					tablePerspectiveLayout
-							.addBackgroundRenderer(new RowBackgroundRenderer(color));
+					if (!isHighlightLayout) {
+						tablePerspectiveLayout
+								.addBackgroundRenderer(new RowBackgroundRenderer(color));
+					}
 
 					row.append(tablePerspectiveLayout);
 					rowListForTablePerspectives.get(tablePerspectiveCount).add(
@@ -383,16 +412,21 @@ public class MappedDataRenderer {
 				ElementLayout rowCaption = new ElementLayout();
 				rowCaption.setAbsoluteSizeY(rowHeight);
 
-				RowCaptionRenderer captionRenderer = new RowCaptionRenderer(davidID,
-						parentView, this, color);
-				rowCaption.setRenderer(captionRenderer);
+				if (isHighlightLayout) {
+					RowCaptionRenderer captionRenderer = new RowCaptionRenderer(davidID,
+							parentView, this, color);
+					rowCaption.setRenderer(captionRenderer);
+				}
 
 				captionColumn.append(rowCaption);
 
-				if (idCount == 0)
-					relationShipRenderer.topRightLayout = row;
-				if (idCount == subDavidIDs.size() - 1)
-					relationShipRenderer.bottomRightLayout = row;
+				if (!isHighlightLayout) {
+
+					if (idCount == 0)
+						relationShipRenderer.topRightLayout = row;
+					if (idCount == subDavidIDs.size() - 1)
+						relationShipRenderer.bottomRightLayout = row;
+				}
 
 				idCount++;
 			}
@@ -431,13 +465,13 @@ public class MappedDataRenderer {
 			}
 			prepareData(usedTablePerspectives.get(tablePerspectiveCount),
 					rowListForTablePerspectives.get(tablePerspectiveCount),
-					topCaptionLayout, bottomCaptionLayout, davidIDs);
+					topCaptionLayout, bottomCaptionLayout, davidIDs, isHighlightLayout);
 		}
 		calcMinWidthPixels();
-		
+
 		PixelGLConverter pixelGLConverter = parentView.getPixelGLConverter();
 		float minWidth = pixelGLConverter.getGLWidthForPixelWidth(minWidthPixels);
-		if(viewFrustum.getWidth() < minWidth) {
+		if (viewFrustum.getWidth() < minWidth) {
 			viewFrustum.setRight(minWidth);
 		}
 	}
@@ -478,7 +512,8 @@ public class MappedDataRenderer {
 	/** Fills the layout with data specific for the data containers */
 	private void prepareData(TablePerspective tablePerspective,
 			ArrayList<ElementLayout> rowLayouts, ColumnCaptionLayout topCaptionLayout,
-			ColumnCaptionLayout bottomCaptionLayout, ArrayList<Integer> davidIDs) {
+			ColumnCaptionLayout bottomCaptionLayout, ArrayList<Integer> davidIDs,
+			boolean isHighlightLayout) {
 		GeneticDataDomain dataDomain = (GeneticDataDomain) tablePerspective
 				.getDataDomain();
 
@@ -507,8 +542,10 @@ public class MappedDataRenderer {
 						tablePerspective.isLabelDefault());
 			}
 		}
-		topCaptionLayout.init(group, experimentPerspective, dataDomain);
-		bottomCaptionLayout.init(group, experimentPerspective, dataDomain);
+		if (isHighlightLayout) {
+			topCaptionLayout.init(group, experimentPerspective, dataDomain);
+			bottomCaptionLayout.init(group, experimentPerspective, dataDomain);
+		}
 
 		IDType geneIDTYpe = dataDomain.getGeneIDType();
 		// ArrayList<Integer> geneIDs = new ArrayList<Integer>(davidIDs.size());
@@ -559,11 +596,11 @@ public class MappedDataRenderer {
 			if (!dataDomain.getLabel().contains("Copy")) {
 				tablePerspectiveLayout.setRenderer(new ContinuousContentRenderer(geneID,
 						davidID, dataDomain, tablePerspective, experimentPerspective,
-						parentView, this, group));
+						parentView, this, group, isHighlightLayout));
 			} else {
 				tablePerspectiveLayout.setRenderer(new CategoricalRowContentRenderer(
 						geneID, davidID, dataDomain, tablePerspective,
-						experimentPerspective, parentView, this, group));
+						experimentPerspective, parentView, this, group, isHighlightLayout));
 			}
 
 		}

@@ -36,7 +36,6 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.enroute.EPickingType;
 
@@ -55,9 +54,9 @@ public class ContinuousContentRenderer extends ContentRenderer {
 	public ContinuousContentRenderer(Integer geneID, Integer davidID,
 			GeneticDataDomain dataDomain, TablePerspective tablePerspective,
 			AVariablePerspective<?, ?, ?, ?> experimentPerspective, AGLView parentView,
-			MappedDataRenderer parent, Group group) {
+			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
 		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective,
-				parentView, parent, group);
+				parentView, parent, group, isHighlightMode);
 		synchronized (rendererIDCounter) {
 			rendererID = rendererIDCounter++;
 		}
@@ -118,13 +117,28 @@ public class ContinuousContentRenderer extends ContentRenderer {
 				ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager
 						.getSelectionTypes(sampleIDType, sampleID);
 
-				colorCalculator.setBaseColor(new Color(MappedDataRenderer.BAR_COLOR));
+				float[] topBarColor = MappedDataRenderer.BAR_COLOR;
+				float[] bottomBarColor = MappedDataRenderer.BAR_COLOR;
 
-				colorCalculator.calculateColors(Algorithms.mergeListsToUniqueList(
-						experimentSelectionTypes, geneSelectionTypes));
+				ArrayList<SelectionType> selectionTypes = Algorithms
+						.mergeListsToUniqueList(experimentSelectionTypes,
+								geneSelectionTypes);
 
-				float[] topBarColor = colorCalculator.getPrimaryColor().getRGBA();
-				float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
+				if (isHighlightMode
+						&& !(selectionTypes.contains(SelectionType.MOUSE_OVER) || selectionTypes
+								.contains(SelectionType.SELECTION))) {
+					experimentCount++;
+					continue;
+				}
+
+				if (isHighlightMode) {
+					colorCalculator.setBaseColor(new Color(MappedDataRenderer.BAR_COLOR));
+
+					colorCalculator.calculateColors(selectionTypes);
+
+					topBarColor = colorCalculator.getPrimaryColor().getRGBA();
+					bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
+				}
 
 				float leftEdge = xIncrement * experimentCount;
 				float upperEdge = value * y;

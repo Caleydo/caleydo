@@ -56,10 +56,10 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 	public CategoricalRowContentRenderer(Integer geneID, Integer davidID,
 			GeneticDataDomain dataDomain, TablePerspective tablePerspective,
 			AVariablePerspective<?, ?, ?, ?> experimentPerspective, AGLView parentView,
-			MappedDataRenderer parent, Group group) {
+			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
 
 		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective,
-				parentView, parent, group);
+				parentView, parent, group, isHighlightMode);
 	}
 
 	public CategoricalRowContentRenderer(
@@ -145,14 +145,32 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 						.getSelectionTypes(sampleIDType, sampleID);
 
 				float[] baseColor = dataDomain.getColorMapper().getColor(value);
-				colorCalculator.setBaseColor(new Color(baseColor[0], baseColor[1],
-						baseColor[2]));
+				float[] topBarColor = baseColor;
+				float[] bottomBarColor = baseColor;
 
 				colorCalculator.calculateColors(Algorithms.mergeListsToUniqueList(
 						experimentSelectionTypes, geneSelectionTypes));
 
-				float[] topBarColor = colorCalculator.getPrimaryColor().getRGB();
-				float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGB();
+				ArrayList<SelectionType> selectionTypes = Algorithms
+						.mergeListsToUniqueList(experimentSelectionTypes,
+								geneSelectionTypes);
+
+				if (isHighlightMode
+						&& !(selectionTypes.contains(SelectionType.MOUSE_OVER) || selectionTypes
+								.contains(SelectionType.SELECTION))) {
+					experimentCount++;
+					continue;
+				}
+
+				if (isHighlightMode) {
+					colorCalculator.setBaseColor(new Color(baseColor[0], baseColor[1],
+							baseColor[2]));
+
+					colorCalculator.calculateColors(selectionTypes);
+
+					topBarColor = colorCalculator.getPrimaryColor().getRGB();
+					bottomBarColor = colorCalculator.getSecondaryColor().getRGB();
+				}
 
 				float leftEdge = xIncrement * experimentCount;
 

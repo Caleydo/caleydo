@@ -47,12 +47,17 @@ public abstract class ContentRenderer extends SelectableRenderer {
 	IDType sampleIDType;
 	APickingListener pickingListener;
 
+	/**
+	 * Determines whether the renderer should render in highlight mode.
+	 */
+	boolean isHighlightMode = false;
+
 	IDMappingManager sampleIDMappingManager;
 
 	public ContentRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
 			TablePerspective tablePerspective,
 			AVariablePerspective<?, ?, ?, ?> experimentPerspective, AGLView parentView,
-			MappedDataRenderer parent, Group group) {
+			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
 		super(parentView, parent, new Color(MappedDataRenderer.BAR_COLOR));
 		this.davidID = davidID;
 		this.geneID = geneID;
@@ -61,6 +66,7 @@ public abstract class ContentRenderer extends SelectableRenderer {
 		this.tablePerspective = tablePerspective;
 		this.experimentPerspective = experimentPerspective;
 		this.group = group;
+		this.isHighlightMode = isHighlightMode;
 		sampleIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
 				parent.sampleIDType.getIDCategory());
 		sampleIDType = experimentPerspective.getIdType();
