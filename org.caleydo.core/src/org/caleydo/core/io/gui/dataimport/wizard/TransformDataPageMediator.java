@@ -128,8 +128,9 @@ public class TransformDataPageMediator {
 			IDCategory tcgaSampleCategory = IDCategory.getIDCategory("TCGA_SAMPLE");
 			if (totalNumberOfColumns > 100
 					&& totalNumberOfColumns > totalNumberOfRows
-					|| (dataSetDescription.getColumnIDSpecification().getIdCategory()
-							.equals(tcgaSampleCategory.getCategoryName()))) {
+					|| (tcgaSampleCategory != null && (dataSetDescription
+							.getColumnIDSpecification().getIdCategory()
+							.equals(tcgaSampleCategory.getCategoryName())))) {
 				page.swapRowsWithColumnsButton.setSelection(true);
 
 			} else {
