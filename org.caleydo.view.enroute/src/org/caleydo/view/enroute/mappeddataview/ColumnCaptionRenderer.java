@@ -27,10 +27,12 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.ToolTipPickingListener;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.enroute.EPickingType;
 
@@ -38,7 +40,7 @@ import org.caleydo.view.enroute.EPickingType;
  * @author Alexander Lex
  * 
  */
-public class ColumnCaptionRenderer extends SelectableRenderer {
+public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelProvider {
 
 	private Group group;
 	private CaleydoTextRenderer textRenderer;
@@ -155,14 +157,29 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 
 		parentView.addIDPickingListener(groupPickingListener,
 				EPickingType.SAMPLE_GROUP.name(), group.getID());
+
+		parentView.addIDPickingListener(new ToolTipPickingListener(parentView, this),
+				EPickingType.SAMPLE_GROUP.name(), group.getID());
 	}
 
 	private void unregisterPickingListener() {
 		parentView.removePickingListener(groupPickingListener);
+		parentView.removeAllIDPickingListeners(EPickingType.SAMPLE_GROUP.name(),
+				group.getID());
 	}
 
 	@Override
 	protected boolean permitsDisplayLists() {
 		return false;
+	}
+
+	@Override
+	public String getLabel() {
+		return group.getLabel() + ", Elements: " + group.getSize();
+	}
+
+	@Override
+	public String getProviderName() {
+		return "Group Column";
 	}
 }
