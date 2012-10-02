@@ -28,9 +28,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -290,7 +292,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		leftColumnLayout = new Column("leftArchColumn");
 		leftColumnLayout.setPixelSizeX(ARCH_PIXEL_WIDTH);
 
-		initSideLayout(leftColumnLayout, 0, brickColumnManager.getCenterColumnStartIndex());
+		initSideLayout(leftColumnLayout, 0,
+				brickColumnManager.getCenterColumnStartIndex());
 	}
 
 	private void initRightLayout() {
@@ -664,7 +667,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		mainRow.remove(rightColumnLayout);
 		mainRow.remove(leftColumnLayout);
 		initLayouts();
-//		layoutManager.updateLayout();
+		// layoutManager.updateLayout();
 	}
 
 	/**
@@ -1760,5 +1763,10 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	public Row getLayout() {
 		return mainRow;
+	}
+
+	@Override
+	public boolean isTablePerspectiveValid(TablePerspective tablePerspective) {
+		return true;
 	}
 }

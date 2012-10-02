@@ -101,7 +101,6 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 		parentComposite = new Composite(parent, SWT.NONE);
 		parentComposite.setLayout(new GridLayout(1, false));
 	}
-	
 
 	@Override
 	public void setPartName(String partName) {
@@ -142,8 +141,8 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 	/**
 	 * <p>
 	 * If applicable initializes the {@link #view} with the {@link ADataDomain}
-	 * and the {@link TablePerspective}, or with multiple TablePerspectives as they
-	 * are specified in the {@link #serializedView}.
+	 * and the {@link TablePerspective}, or with multiple TablePerspectives as
+	 * they are specified in the {@link #serializedView}.
 	 * </p>
 	 * <p>
 	 * Calls {@link AGLView#initialize()} and
@@ -184,7 +183,8 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 			IMultiTablePerspectiveBasedView multiTablePerspectiveBasedView = (IMultiTablePerspectiveBasedView) view;
 			ASerializedMultiTablePerspectiveBasedView serializedMultiTablePerspectiveBasedView = (ASerializedMultiTablePerspectiveBasedView) serializedView;
 
-			if (serializedMultiTablePerspectiveBasedView.getDataDomainAndTablePerspectiveKeys() != null) {
+			if (serializedMultiTablePerspectiveBasedView
+					.getDataDomainAndTablePerspectiveKeys() != null) {
 				boolean inconsistentSerializedView = false;
 				for (Pair<String, String> data : serializedMultiTablePerspectiveBasedView
 						.getDataDomainAndTablePerspectiveKeys()) {
@@ -197,7 +197,11 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 						inconsistentSerializedView = true;
 						break;
 					}
-					multiTablePerspectiveBasedView.addTablePerspective(tablePerspective);
+					if (multiTablePerspectiveBasedView
+							.isTablePerspectiveValid(tablePerspective)) {
+						multiTablePerspectiveBasedView
+								.addTablePerspective(tablePerspective);
+					}
 				}
 				if (inconsistentSerializedView) {
 					createDefaultSerializedView();
@@ -273,7 +277,8 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 					serializedTopLevelDataView
 							.setTablePerspectiveKey(((ATableBasedDataDomain) DataDomainManager
 									.get().getDataDomainByID(dataDomainID))
-									.getDefaultTablePerspective().getTablePerspectiveKey());
+									.getDefaultTablePerspective()
+									.getTablePerspectiveKey());
 				}
 			}
 		}
@@ -298,7 +303,8 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 					.getDataDomainID());
 			serializedTopLevelDataView.setTablePerspectiveKey(config
 					.getDataDomain()
-					.getTablePerspective(config.getRecordPerspective().getPerspectiveID(),
+					.getTablePerspective(
+							config.getRecordPerspective().getPerspectiveID(),
 							config.getDimensionPerspective().getPerspectiveID())
 					.getTablePerspectiveKey());
 		}

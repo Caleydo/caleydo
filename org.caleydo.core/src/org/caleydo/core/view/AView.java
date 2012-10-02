@@ -125,6 +125,9 @@ public abstract class AView extends AUniqueObject implements IView {
 		eventPublisher.triggerEvent(event);
 	}
 
+	/**
+	 * @return A Copy of the datadomain set of this view.
+	 */
 	public Set<IDataDomain> getDataDomains() {
 		return new HashSet<IDataDomain>();
 	}

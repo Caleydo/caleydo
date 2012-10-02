@@ -19,13 +19,20 @@
  *******************************************************************************/
 package org.caleydo.core.view.listener;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 
 /**
- * Listener for {@link AddTablePerspectivesEvent}s for setting data containers to
- * {@link IMultiTablePerspectiveBasedView}s.
+ * Listener for {@link AddTablePerspectivesEvent}s for setting data containers
+ * to {@link IMultiTablePerspectiveBasedView}s.
  * 
  * @author Alexander Lex
  * 
@@ -39,7 +46,24 @@ public class AddTablePerspectivesListener extends
 		if (event instanceof AddTablePerspectivesEvent) {
 			AddTablePerspectivesEvent addTablePerspectivesEvent = (AddTablePerspectivesEvent) event;
 			if (addTablePerspectivesEvent.getReceiver() == handler) {
-				handler.addTablePerspectives(addTablePerspectivesEvent.getTablePerspectives());
+				List<TablePerspective> validTablePerspectives = new ArrayList<TablePerspective>(
+						addTablePerspectivesEvent.getTablePerspectives().size());
+				for (TablePerspective tablePerspective : addTablePerspectivesEvent
+						.getTablePerspectives()) {
+					if (handler.isTablePerspectiveValid(tablePerspective)) {
+						validTablePerspectives.add(tablePerspective);
+					}
+				}
+				if (validTablePerspectives.size() == 0) {
+					// Make clear for (e.g. for DVI) that no perspectives have
+					// been added.
+					TablePerspectivesChangedEvent e = new TablePerspectivesChangedEvent(
+							(AGLView) handler);
+					e.setSender(this);
+					GeneralManager.get().getEventPublisher().triggerEvent(e);
+				} else {
+					handler.addTablePerspectives(validTablePerspectives);
+				}
 			}
 		}
 	}

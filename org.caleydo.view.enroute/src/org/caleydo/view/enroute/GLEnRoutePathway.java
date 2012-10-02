@@ -480,8 +480,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 			isLayoutDirty = false;
 		}
-		
-		
 
 		if (isDisplayListDirty) {
 			buildDisplayList(gl, displayListIndex);
@@ -574,17 +572,15 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
 		float sideSpacing = pixelGLConverter
 				.getGLHeightForPixelHeight(SIDE_SPACING_MAPPED_DATA);
-		
+
 		mappedDataRenderer.setGeometry(viewFrustum.getWidth() - dataRowPositionX
 				- sideSpacing, viewFrustum.getHeight() - 2 * topSpacing,
 				dataRowPositionX, topSpacing, dataRowHeight);
-		
+
 		mappedDataRenderer.setLinearizedNodes(linearizedNodes);
 		int minMappedDataRendererWidthPixels = mappedDataRenderer.getMinWidthPixels();
 		int minViewHeightRequiredByPath = pixelGLConverter
 				.getPixelHeightForGLHeight(pathwayHeight);
-		
-		
 
 		adaptViewSize(minMappedDataRendererWidthPixels + BRANCH_COLUMN_WIDTH_PIXELS
 				+ PATHWAY_COLUMN_WIDTH_PIXELS + SIDE_SPACING_MAPPED_DATA,
@@ -633,9 +629,10 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		float sideSpacing = pixelGLConverter
 				.getGLHeightForPixelHeight(SIDE_SPACING_MAPPED_DATA);
 
-//		mappedDataRenderer.setGeometry(viewFrustum.getWidth() - dataRowPositionX
-//				- sideSpacing, viewFrustum.getHeight() - 2 * topSpacing,
-//				dataRowPositionX, topSpacing, dataRowHeight);
+		// mappedDataRenderer.setGeometry(viewFrustum.getWidth() -
+		// dataRowPositionX
+		// - sideSpacing, viewFrustum.getHeight() - 2 * topSpacing,
+		// dataRowPositionX, topSpacing, dataRowHeight);
 
 		gl.glPushMatrix();
 		gl.glTranslatef(dataRowPositionX, topSpacing, 0);
@@ -1518,7 +1515,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	@Override
 	public Set<IDataDomain> getDataDomains() {
-		return dataDomains;
+		return new HashSet<IDataDomain>(dataDomains);
 	}
 
 	@Override
@@ -1561,6 +1558,14 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public void setLayoutDirty() {
 		isLayoutDirty = true;
 		setDisplayListDirty();
+	}
+
+
+	@Override
+	public boolean isTablePerspectiveValid(TablePerspective tablePerspective) {
+
+		return tablePerspective != null
+				&& tablePerspective.getDataDomain() instanceof GeneticDataDomain;
 	}
 
 }
