@@ -89,8 +89,10 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.pathway.event.ClearPathEvent;
 import org.caleydo.view.pathway.event.EnRoutePathEvent;
 import org.caleydo.view.pathway.event.SelectPathModeEvent;
+import org.caleydo.view.pathway.listener.ClearPathEventListener;
 import org.caleydo.view.pathway.listener.DisableGeneMappingListener;
 import org.caleydo.view.pathway.listener.EnRoutePathEventListener;
 import org.caleydo.view.pathway.listener.EnableGeneMappingListener;
@@ -167,6 +169,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	protected SwitchDataRepresentationListener switchDataRepresentationListener;
 	protected EnRoutePathEventListener enRoutePathEventListener;
 	protected SelectPathModeEventListener selectPathModeEventListener;
+	protected ClearPathEventListener clearPathEventListener;
 
 	private IPickingListener pathwayElementPickingListener;
 
@@ -599,14 +602,14 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		gl.glPushMatrix();
 		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
 		gl.glScalef(vecScaling.x(), vecScaling.y(), vecScaling.z());
-		float textureOffset=0.0f;//to avoid z fighting 
+		float textureOffset = 0.0f;// to avoid z fighting
 		if (enablePathwayTexture) {
 			float fPathwayTransparency = 1.0f;
 
 			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, pathway,
 					fPathwayTransparency, false);
-			textureOffset+=0.01f;
-			gl.glTranslatef(0.0f,0.0f,textureOffset);
+			textureOffset += 0.01f;
+			gl.glTranslatef(0.0f, 0.0f, textureOffset);
 			overlayBubbleSets(gl);
 
 		}
@@ -615,8 +618,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		// Pathway texture height is subtracted from Y to align pathways to
 		// front level
-		textureOffset+=0.01f;
-		gl.glTranslatef(0, tmp, textureOffset);		
+		textureOffset += 0.01f;
+		gl.glTranslatef(0, tmp, textureOffset);
 		gLPathwayContentCreator.renderPathway(gl, pathway, false);
 		renderPaths(gl);
 		gl.glTranslatef(0, -tmp, -textureOffset);
@@ -1220,6 +1223,10 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		selectPathModeEventListener.setHandler(this);
 		eventPublisher
 				.addListener(SelectPathModeEvent.class, selectPathModeEventListener);
+
+		clearPathEventListener = new ClearPathEventListener();
+		clearPathEventListener.setHandler(this);
+		eventPublisher.addListener(ClearPathEvent.class, clearPathEventListener);
 	}
 
 	@Override
@@ -1250,6 +1257,11 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		if (selectPathModeEventListener != null) {
 			eventPublisher.removeListener(selectPathModeEventListener);
 			selectPathModeEventListener = null;
+		}
+
+		if (clearPathEventListener != null) {
+			eventPublisher.removeListener(clearPathEventListener);
+			clearPathEventListener = null;
 		}
 
 		metaboliteSelectionManager.unregisterEventListeners();
@@ -1488,6 +1500,15 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		setDisplayListDirty();
 	}
 
+	public void clearPath() {
+		selectedPath = null;
+		allPaths = null;
+		
+		triggerPathUpdate();
+		isBubbleTextureDirty = true;
+		setDisplayListDirty();
+	}
+
 	/**
 	 * @return
 	 */
@@ -1508,14 +1529,15 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	public EventBasedSelectionManager getMetaboliteSelectionManager() {
 		return metaboliteSelectionManager;
 	}
-	
+
 	/**
-	 * @param isPathSelectionMode setter, see {@link #isPathSelectionMode}
+	 * @param isPathSelectionMode
+	 *            setter, see {@link #isPathSelectionMode}
 	 */
 	public void setPathSelectionMode(boolean isPathSelectionMode) {
 		this.isPathSelectionMode = isPathSelectionMode;
 	}
-	
+
 	/**
 	 * @return the isPathSelectionMode, see {@link #isPathSelectionMode}
 	 */

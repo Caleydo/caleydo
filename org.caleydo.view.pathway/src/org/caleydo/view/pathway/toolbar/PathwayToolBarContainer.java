@@ -27,6 +27,7 @@ import org.caleydo.core.gui.toolbar.action.TakeSnapshotAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.view.pathway.toolbar.actions.ClearPathAction;
 import org.caleydo.view.pathway.toolbar.actions.SelectPathAction;
 
 /**
@@ -50,6 +51,7 @@ public class PathwayToolBarContainer extends ToolBarContainer {
 
 		List<IToolBarItem> elements = new ArrayList<IToolBarItem>();
 		elements.add(new SelectPathAction());
+		elements.add(new ClearPathAction());
 
 		PathwaySearchBox pathwaySearchBox = new PathwaySearchBox("");
 		pathwaySearchBox.setPathwayToolBarMediator(pathwayToolBarMediator);
@@ -57,7 +59,7 @@ public class PathwayToolBarContainer extends ToolBarContainer {
 
 		AGLView view = GeneralManager.get().getViewManager()
 				.getGLView(targetViewData.getViewID());
-		elements.add(new TakeSnapshotAction(view.getParentComposite()));
+//		elements.add(new TakeSnapshotAction(view.getParentComposite()));
 
 		return elements;
 	}

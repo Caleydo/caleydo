@@ -22,10 +22,13 @@
  */
 package org.caleydo.view.enroute.listener;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.pathway.event.EnRoutePathEvent;
 
@@ -48,6 +51,8 @@ public class EnRoutePathEventListener extends
 			if (path != null && path.getPath() != null) {
 				PathwayGraph pathway = (PathwayGraph) path.getPath().getGraph();
 				handler.setPath(pathway, path.getNodes());
+			} else {
+				handler.setPath(null, new ArrayList<PathwayVertexRep>());
 			}
 		}
 	}
