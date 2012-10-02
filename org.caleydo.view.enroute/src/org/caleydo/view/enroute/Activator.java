@@ -20,7 +20,10 @@
 package org.caleydo.view.enroute;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
+import org.caleydo.view.enroute.toolbar.EnRouteToolBarContent;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -47,6 +50,9 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		
+		ToolBarContentFactory.get().addToolBarContent(GLEnRoutePathway.VIEW_TYPE, false,
+				new EnRouteToolBarContent());
 		
 		registerDataDomains();
 		

@@ -21,12 +21,11 @@ package org.caleydo.view.pathway.toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.caleydo.core.gui.toolbar.IToolBarItem;
+import org.caleydo.core.gui.toolbar.OpenOnlineHelpAction;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
-import org.caleydo.core.gui.toolbar.action.TakeSnapshotAction;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.pathway.toolbar.actions.ClearPathAction;
 import org.caleydo.view.pathway.toolbar.actions.SelectPathAction;
 
@@ -56,9 +55,14 @@ public class PathwayToolBarContainer extends ToolBarContainer {
 		PathwaySearchBox pathwaySearchBox = new PathwaySearchBox("");
 		pathwaySearchBox.setPathwayToolBarMediator(pathwayToolBarMediator);
 		elements.add(pathwaySearchBox);
+		
+		elements
+		.add(new OpenOnlineHelpAction(
+				"http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/pathways",
+				false));
 
-		AGLView view = GeneralManager.get().getViewManager()
-				.getGLView(targetViewData.getViewID());
+//		AGLView view = GeneralManager.get().getViewManager()
+//				.getGLView(targetViewData.getViewID());
 //		elements.add(new TakeSnapshotAction(view.getParentComposite()));
 
 		return elements;
