@@ -17,62 +17,58 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.event.view.tablebased;
+package org.caleydo.core.event.view;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 
-/**
- * This event signals a view that a new groupList for a VA is available.
- * 
- * @author Bernhard Schlegl
- */
-@XmlRootElement
-@XmlType
-public class NewRecordGroupInfoEvent
+public class SetMinViewSizeEvent
 	extends AEvent {
 
-	private String perspectiveID = null;
-	private RecordGroupList groupList = null;
-	private boolean bDeleteTree = false;
+	private int minHeight;
+	private int minWidth;
+	private AGLView view;
 
-	public NewRecordGroupInfoEvent() {
+	public SetMinViewSizeEvent() {
+		minHeight = -1;
+		minWidth = -1;
+		view = null;
 	}
 
 	@Override
 	public boolean checkIntegrity() {
-
-		if (perspectiveID != null && bDeleteTree == true)
-			return true;
-		else if (perspectiveID != null && groupList != null && bDeleteTree == false)
-			return true;
-		else
-			return false;
+		if ((minHeight == -1) || (minWidth == -1) || (view == null))
+			throw new IllegalStateException("parameters not set");
+		return true;
 	}
 
-	public void setVAType(String vaType) {
-		this.perspectiveID = vaType;
+	public int getMinHeight() {
+		return minHeight;
 	}
 
-	public String getVAType() {
-		return perspectiveID;
+	public void setMinHeight(int minHeight) {
+		this.minHeight = minHeight;
 	}
 
-	public void setGroupList(RecordGroupList groupList) {
-		this.groupList = groupList;
+	public int getMinWidth() {
+		return minWidth;
 	}
 
-	public RecordGroupList getGroupList() {
-		return groupList;
+	public void setMinWidth(int minWidth) {
+		this.minWidth = minWidth;
 	}
 
-	public void setDeleteTree(boolean bDeleteTree) {
-		this.bDeleteTree = bDeleteTree;
+	public void setMinViewSize(int minWidth, int minHeight) {
+		this.minWidth = minWidth;
+		this.minHeight = minHeight;
 	}
 
-	public boolean isDeleteTree() {
-		return bDeleteTree;
+	public AGLView getView() {
+		return view;
 	}
+
+	public void setView(AGLView view) {
+		this.view = view;
+	}
+
 }

@@ -31,7 +31,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.event.view.RemoveManagedSelectionTypesEvent;
+import org.caleydo.core.event.data.RemoveManagedSelectionTypesEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;

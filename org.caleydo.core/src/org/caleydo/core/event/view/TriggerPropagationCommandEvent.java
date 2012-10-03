@@ -22,6 +22,8 @@ package org.caleydo.core.event.view;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.event.data.SelectionCommandEvent;
+
 /**
  * This class is no different from {@link SelectionCommandEvent} except for it's type thereby allowing a
  * different listener to react on it.

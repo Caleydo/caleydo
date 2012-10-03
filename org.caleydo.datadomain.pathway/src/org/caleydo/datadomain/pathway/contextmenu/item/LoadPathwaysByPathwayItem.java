@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.datadomain.pathway.contextmenu.item;
 
-import org.caleydo.core.event.view.remote.LoadPathwayEvent;
+import org.caleydo.core.event.view.pathway.LoadPathwayEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 

@@ -20,7 +20,7 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
 import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.view.remote.LoadPathwayEvent;
+import org.caleydo.core.event.view.pathway.LoadPathwayEvent;
 
 public class AddPathwayListener
 	extends ARemoteRenderingListener {

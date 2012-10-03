@@ -17,57 +17,22 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.event;
+package org.caleydo.core.event.view;
 
-import org.caleydo.core.view.opengl.canvas.AGLView;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import org.caleydo.core.event.AFlagSetterEvent;
 
-public class SetMinViewSizeEvent
-	extends AEvent {
+@XmlRootElement
+@XmlType
+public class UseRandomSamplingEvent
+	extends AFlagSetterEvent {
 
-	private int minHeight;
-	private int minWidth;
-	private AGLView view;
-
-	public SetMinViewSizeEvent() {
-		minHeight = -1;
-		minWidth = -1;
-		view = null;
+	public UseRandomSamplingEvent() {
+		// nothing to initialize here
 	}
 
-	@Override
-	public boolean checkIntegrity() {
-		if ((minHeight == -1) || (minWidth == -1) || (view == null))
-			throw new IllegalStateException("parameters not set");
-		return true;
+	public UseRandomSamplingEvent(boolean flag) {
+		super(flag);
 	}
-
-	public int getMinHeight() {
-		return minHeight;
-	}
-
-	public void setMinHeight(int minHeight) {
-		this.minHeight = minHeight;
-	}
-
-	public int getMinWidth() {
-		return minWidth;
-	}
-
-	public void setMinWidth(int minWidth) {
-		this.minWidth = minWidth;
-	}
-
-	public void setMinViewSize(int minWidth, int minHeight) {
-		this.minWidth = minWidth;
-		this.minHeight = minHeight;
-	}
-
-	public AGLView getView() {
-		return view;
-	}
-
-	public void setView(AGLView view) {
-		this.view = view;
-	}
-
 }

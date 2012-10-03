@@ -21,7 +21,7 @@ package org.caleydo.core.data.selection;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.view.RemoveManagedSelectionTypesEvent;
+import org.caleydo.core.event.data.RemoveManagedSelectionTypesEvent;
 
 public class RemoveManagedSelectionTypesListener
 	extends AEventListener<SelectionManager> {

@@ -17,25 +17,62 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.event.view;
+package org.caleydo.core.event.data;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.event.AEvent;
 
 /**
- * Removes all dynamically created selection types. These types are marked as "managed".
+ * This event signals a view that a new groupList for a VA is available.
  * 
- * @author Marc Streit
+ * @author Bernhard Schlegl
  */
 @XmlRootElement
 @XmlType
-public class RemoveManagedSelectionTypesEvent
+public class NewRecordGroupInfoEvent
 	extends AEvent {
+
+	private String perspectiveID = null;
+	private RecordGroupList groupList = null;
+	private boolean bDeleteTree = false;
+
+	public NewRecordGroupInfoEvent() {
+	}
 
 	@Override
 	public boolean checkIntegrity() {
-		// nothing to check
-		return true;
+
+		if (perspectiveID != null && bDeleteTree == true)
+			return true;
+		else if (perspectiveID != null && groupList != null && bDeleteTree == false)
+			return true;
+		else
+			return false;
+	}
+
+	public void setVAType(String vaType) {
+		this.perspectiveID = vaType;
+	}
+
+	public String getVAType() {
+		return perspectiveID;
+	}
+
+	public void setGroupList(RecordGroupList groupList) {
+		this.groupList = groupList;
+	}
+
+	public RecordGroupList getGroupList() {
+		return groupList;
+	}
+
+	public void setDeleteTree(boolean bDeleteTree) {
+		this.bDeleteTree = bDeleteTree;
+	}
+
+	public boolean isDeleteTree() {
+		return bDeleteTree;
 	}
 }

@@ -24,7 +24,7 @@ import java.util.Set;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.event.view.SelectionCommandEvent;
+import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.AUniqueObject;

@@ -17,48 +17,25 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.event.view.remote;
+package org.caleydo.core.event.view;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.event.AEvent;
 
 /**
- * Event to signal that a pathway should be loaded.
+ * Event that signals that the current selection should be book-marked
  * 
- * @author Werner Puff
+ * @author Alexander Lex
  */
 @XmlRootElement
 @XmlType
-public class LoadPathwayEvent
+public class BookmarkButtonEvent
 	extends AEvent {
-
-	/** id of the pathway to load */
-	private int pathwayID = -1;
-
-	/**
-	 * gets the id of the pathway to load
-	 * 
-	 * @return pathway-id to load
-	 */
-	public int getPathwayID() {
-		return pathwayID;
-	}
-
-	/**
-	 * sets the id of the pathway to load
-	 * 
-	 * @param pathwayID
-	 *            pathway-id to load
-	 */
-	public void setPathwayID(int pathwayID) {
-		this.pathwayID = pathwayID;
-	}
 
 	@Override
 	public boolean checkIntegrity() {
-		if (pathwayID == -1)
-			throw new IllegalStateException("pathwayID was not set");
+		// nothing to check
 		return true;
 	}
 

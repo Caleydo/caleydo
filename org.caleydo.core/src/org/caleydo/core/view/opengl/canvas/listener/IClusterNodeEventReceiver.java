@@ -20,7 +20,7 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
 import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.event.view.ClusterNodeSelectionEvent;
+import org.caleydo.core.event.data.ClusterNodeSelectionEvent;
 
 /**
  * Receiver of events dealing with cluster nodes.

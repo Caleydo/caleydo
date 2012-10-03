@@ -22,7 +22,7 @@ package org.caleydo.core.data.virtualarray.events;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.event.data.SelectionUpdateEvent;
 
 /**
  * Listener for dimension virtual array update events. This listener gets the payload from a

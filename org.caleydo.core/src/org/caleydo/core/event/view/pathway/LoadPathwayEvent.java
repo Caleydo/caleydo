@@ -17,26 +17,49 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.event.view;
+package org.caleydo.core.event.view.pathway;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.event.AEvent;
 
 /**
- * Clears all selections in a receiving view
+ * Event to signal that a pathway should be loaded.
  * 
  * @author Werner Puff
- * @deprecated Selection command should be used!
  */
 @XmlRootElement
 @XmlType
-public class ClearSelectionsEvent
+public class LoadPathwayEvent
 	extends AEvent {
+
+	/** id of the pathway to load */
+	private int pathwayID = -1;
+
+	/**
+	 * gets the id of the pathway to load
+	 * 
+	 * @return pathway-id to load
+	 */
+	public int getPathwayID() {
+		return pathwayID;
+	}
+
+	/**
+	 * sets the id of the pathway to load
+	 * 
+	 * @param pathwayID
+	 *            pathway-id to load
+	 */
+	public void setPathwayID(int pathwayID) {
+		this.pathwayID = pathwayID;
+	}
 
 	@Override
 	public boolean checkIntegrity() {
-		// nothing to check
+		if (pathwayID == -1)
+			throw new IllegalStateException("pathwayID was not set");
 		return true;
 	}
+
 }

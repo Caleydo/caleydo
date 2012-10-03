@@ -21,54 +21,28 @@ package org.caleydo.core.event.view;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.event.AEvent;
-import org.caleydo.core.id.IDCategory;
 
 /**
- * A SelectionCommandEvent holds a {@link SelectionCommand} which is used to
- * signal one of the actions defined in {@link ESelectionCommandType} to a
- * {@link VABasedSelectionManager}. Which particular selection manager the
- * command should be applied to is specified via the additional {@link EIDType},
- * which can be null if it should be applied to all types.
+ * This event signals a view that a change has occurred in some part that
+ * affects the display of the view, outside of other update events such as
+ * {@link SelectionUpdate}. An example is a change in color mapping.
  * 
  * @author Werner Puff
- * @author Alexander Lex
  */
 @XmlRootElement
 @XmlType
-public class SelectionCommandEvent extends AEvent {
+public class RedrawViewEvent extends AEvent {
 
 	/**
-	 * The ID Category this selection command event should be used for, or null
-	 * if it should be used for all categories
+	 * 
 	 */
-	IDCategory idCategory = null;
-
-	/** list of selection commands to handle by the receiver */
-	SelectionCommand selectionCommand = null;
-
-	public SelectionCommand getSelectionCommand() {
-		return selectionCommand;
-	}
-
-	public void setSelectionCommand(SelectionCommand selectionCommand) {
-		this.selectionCommand = selectionCommand;
-	}
-
-	public IDCategory getIdCategory() {
-		return idCategory;
-	}
-
-	public void tableIDCategory(IDCategory idCategory) {
-		this.idCategory = idCategory;
+	public RedrawViewEvent() {
 	}
 
 	@Override
 	public boolean checkIntegrity() {
-		if (selectionCommand == null)
-			throw new NullPointerException("selectionCommands was null");
+		// nothing to check
 		return true;
 	}
 }

@@ -35,7 +35,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
-import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;

@@ -22,7 +22,7 @@ package org.caleydo.view.info.selection.listener;
 import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.view.info.selection.InfoArea;
 
 /**

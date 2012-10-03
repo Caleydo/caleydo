@@ -27,7 +27,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.data.BookmarkEvent;
 import org.caleydo.core.event.data.RemoveBookmarkEvent;
-import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;

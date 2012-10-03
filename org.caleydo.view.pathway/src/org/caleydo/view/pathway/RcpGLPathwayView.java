@@ -25,7 +25,7 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.event.view.remote.LoadPathwayEvent;
+import org.caleydo.core.event.view.pathway.LoadPathwayEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.opengl.canvas.listener.AddPathwayListener;

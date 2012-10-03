@@ -17,20 +17,20 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.event.view.tablebased;
+package org.caleydo.core.event.data;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.event.AEvent;
 
 /**
- * Event that signals that the current selection should be book-marked
+ * Removes all dynamically created selection types. These types are marked as "managed".
  * 
- * @author Alexander Lex
+ * @author Marc Streit
  */
 @XmlRootElement
 @XmlType
-public class BookmarkButtonEvent
+public class RemoveManagedSelectionTypesEvent
 	extends AEvent {
 
 	@Override
@@ -38,5 +38,4 @@ public class BookmarkButtonEvent
 		// nothing to check
 		return true;
 	}
-
 }

@@ -126,8 +126,7 @@ Export-Package:
    org.caleydo.core.view.vislink,
    org.caleydo.core.id,
    org.caleydo.core.data.selection",
- org.caleydo.core.event.view.remote;uses:="org.caleydo.core.event,org.caleydo.core.id",
- org.caleydo.core.event.view.tablebased;uses:="org.caleydo.core.event,org.caleydo.core.data.virtualarray.group,org.caleydo.core.data.selection.delta",
+ org.caleydo.core.event.view.pathway;uses:="org.caleydo.core.event,org.caleydo.core.id",
  org.caleydo.core.gui;uses:="org.caleydo.core.manager,org.eclipse.core.commands,org.eclipse.swt.widgets",
  org.caleydo.core.gui.perspective;uses:="org.eclipse.ui",
  org.caleydo.core.gui.preferences;

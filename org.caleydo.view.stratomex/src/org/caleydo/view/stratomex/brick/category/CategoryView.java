@@ -24,7 +24,7 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
-import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
+import org.caleydo.core.event.view.RedrawViewEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;

@@ -42,7 +42,7 @@ import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
-import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.gui.util.ChangeNameDialog;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;

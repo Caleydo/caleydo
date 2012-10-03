@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.gui.toolbar.action;
 
-import org.caleydo.core.event.view.tablebased.BookmarkButtonEvent;
+import org.caleydo.core.event.view.BookmarkButtonEvent;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
