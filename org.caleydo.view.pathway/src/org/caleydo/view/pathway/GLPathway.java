@@ -1368,7 +1368,7 @@ public class GLPathway extends ATableBasedView implements
 		return 200;
 	}
 
-	public void handlePathwayElementSelection(SelectionType selectionType, int externalID) {
+	public void handlePathwayElementSelection(SelectionType selectionType, int externalID) {	
 		if(externalID==-1){
 			if(	   isPathStartSelected 
 				&& selectionType==SelectionType.SELECTION 
@@ -1378,9 +1378,9 @@ public class GLPathway extends ATableBasedView implements
 		}
 		else{
 			setDisplayListDirty();
-			if (geneSelectionManager.checkStatus(selectionType, externalID)) {
-				return;
-			}
+//			if (geneSelectionManager.checkStatus(selectionType, externalID)) {
+//				return;
+//			}
 	
 			PathwayVertexRep previouslySelectedVertexRep = null;
 			if (geneSelectionManager.getElements(SelectionType.SELECTION).size() == 1) {
@@ -1395,8 +1395,7 @@ public class GLPathway extends ATableBasedView implements
 				metaboliteSelectionManager.triggerSelectionUpdateEvent();
 			}
 	
-			PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager
-					.getPathwayVertexRep(externalID);
+			PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager.getPathwayVertexRep(externalID);
 	
 			if (vertexRep.getType() == EPathwayVertexType.compound) {
 				metaboliteSelectionManager.addToType(selectionType, vertexRep.getName()
@@ -1405,32 +1404,42 @@ public class GLPathway extends ATableBasedView implements
 			}
 			if (isPathSelectionMode) {
 				if(isPathStartSelected)//select end node //mouse-over to interactively extend the path				
-				{ //click on end node
+				{ //click on end node		
 					if(selectionType==SelectionType.SELECTION && (allPaths != null && allPaths.size() > 0)){//click on start node
 						isPathStartSelected=false;
 					}				
 					KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 							pathway, previouslySelectedVertexRep, MAX_PATHS);
 	
-					if (vertexRep != previouslySelectedVertexRep)
+					if (vertexRep != previouslySelectedVertexRep){					
 						allPaths = pathAlgo.getPaths(vertexRep);
-	
+					}
+					
 					if (allPaths != null && allPaths.size() > 0) {
 						// selectedPath = allPaths.get(0);
 						if (allPaths.size() <= selectedPathID)
 							selectedPathID = 0;
 						selectedPath = allPaths.get(selectedPathID);
 						// allPaths.clear();
-						selectedPathID = 0;
-						allPaths.add(selectedPath);
+						//selectedPathID = 0;
+						//allPaths.add(selectedPath);
 						triggerPathUpdate();
 						isBubbleTextureDirty = true;
 					}
 				}
-				else{ //isPathStartSelected==false -> select start node 1) no path extension				
-					if(selectionType==SelectionType.SELECTION
-						&& vertexRep!= null){//click on start node 					
-						isPathStartSelected=true;
+				else{ //isPathStartSelected==false -> select start node 1) no path extension
+					if(isShiftKeyDown){//extend and existing path
+						if (selectedPathID < allPaths.size()){							
+							selectedPath = allPaths.get(selectedPathID);
+							isPathStartSelected=true;
+						}
+					}
+					else{
+						if(	selectionType==SelectionType.SELECTION 
+							&& vertexRep!= null){	//click on start node
+								System.out.println("vertexRep!= null)");
+								isPathStartSelected=true;
+						}
 					}
 				}
 				
