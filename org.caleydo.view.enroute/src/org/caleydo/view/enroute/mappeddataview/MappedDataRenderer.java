@@ -471,7 +471,7 @@ public class MappedDataRenderer {
 
 		PixelGLConverter pixelGLConverter = parentView.getPixelGLConverter();
 		float minWidth = pixelGLConverter.getGLWidthForPixelWidth(minWidthPixels);
-		if (viewFrustum.getWidth() < minWidth) {
+		if (!parentView.isFitWidthToScreen() && viewFrustum.getWidth() < minWidth) {
 			viewFrustum.setRight(minWidth);
 		}
 	}
@@ -598,9 +598,10 @@ public class MappedDataRenderer {
 						davidID, dataDomain, tablePerspective, experimentPerspective,
 						parentView, this, group, isHighlightLayout));
 			} else {
-				tablePerspectiveLayout.setRenderer(new CategoricalRowContentRenderer(
-						geneID, davidID, dataDomain, tablePerspective,
-						experimentPerspective, parentView, this, group, isHighlightLayout));
+				tablePerspectiveLayout
+						.setRenderer(new CategoricalRowContentRenderer(geneID, davidID,
+								dataDomain, tablePerspective, experimentPerspective,
+								parentView, this, group, isHighlightLayout));
 			}
 
 		}

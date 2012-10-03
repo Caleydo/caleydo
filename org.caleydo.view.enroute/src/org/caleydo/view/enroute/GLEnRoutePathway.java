@@ -21,7 +21,6 @@ package org.caleydo.view.enroute;
 
 import gleem.linalg.Vec3f;
 
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,10 +28,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -70,8 +71,10 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.event.RemoveEnRouteNodeEvent;
 import org.caleydo.view.enroute.listener.EnRoutePathEventListener;
+import org.caleydo.view.enroute.listener.FitToViewWidthEventListener;
 import org.caleydo.view.enroute.listener.RemoveEnRouteNodeEventListener;
 import org.caleydo.view.enroute.mappeddataview.MappedDataRenderer;
 import org.caleydo.view.enroute.node.ALinearizableNode;
@@ -206,6 +209,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 */
 	private int currentMinWidth = 0;
 
+	/**
+	 * Determines, whether the rendered content is fit to the width of the view.
+	 * (With an absolute view minimum remaining)
+	 */
+	private boolean fitToViewWidth = true;
+
 	private EventBasedSelectionManager geneSelectionManager;
 	private EventBasedSelectionManager metaboliteSelectionManager;
 
@@ -213,6 +222,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	private AddTablePerspectivesListener addTablePerspectivesListener;
 	private RemoveEnRouteNodeEventListener removeLinearizedNodeEventListener;
 	private RemoveTablePerspectiveListener removeTablePerspectiveListener;
+	private FitToViewWidthEventListener fitToViewWidthEventListener;
 
 	private int layoutDisplayListIndex = -1;
 
@@ -636,13 +646,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
 		float topSpacing = pixelGLConverter
 				.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
-		float sideSpacing = pixelGLConverter
-				.getGLHeightForPixelHeight(SIDE_SPACING_MAPPED_DATA);
-
-		// mappedDataRenderer.setGeometry(viewFrustum.getWidth() -
-		// dataRowPositionX
-		// - sideSpacing, viewFrustum.getHeight() - 2 * topSpacing,
-		// dataRowPositionX, topSpacing, dataRowHeight);
 
 		gl.glPushMatrix();
 		gl.glTranslatef(dataRowPositionX, topSpacing, 0);
@@ -698,8 +701,14 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		if (updateWidth || updateHeight) {
 
 			// System.out.println("setting min width:" + minViewWidth);
-			currentMinWidth = updateWidth ? minViewWidth + 3 : BRANCH_COLUMN_WIDTH_PIXELS
-					+ PATHWAY_COLUMN_WIDTH_PIXELS + DATA_COLUMN_WIDTH_PIXELS;
+			if (fitToViewWidth) {
+				currentMinWidth = BRANCH_COLUMN_WIDTH_PIXELS
+						+ PATHWAY_COLUMN_WIDTH_PIXELS + DATA_COLUMN_WIDTH_PIXELS;
+			} else {
+				currentMinWidth = updateWidth ? minViewWidth + 3
+						: BRANCH_COLUMN_WIDTH_PIXELS + PATHWAY_COLUMN_WIDTH_PIXELS
+								+ DATA_COLUMN_WIDTH_PIXELS;
+			}
 
 			setMinViewSize(currentMinWidth, minViewHeightPixels + 3);
 		}
@@ -1158,6 +1167,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		eventPublisher.addListener(RemoveTablePerspectiveEvent.class,
 				removeTablePerspectiveListener);
 
+		fitToViewWidthEventListener = new FitToViewWidthEventListener();
+		fitToViewWidthEventListener.setHandler(this);
+		eventPublisher
+				.addListener(FitToViewWidthEvent.class, fitToViewWidthEventListener);
+
 	}
 
 	@Override
@@ -1182,6 +1196,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		if (removeTablePerspectiveListener != null) {
 			eventPublisher.removeListener(removeTablePerspectiveListener);
 			removeTablePerspectiveListener = null;
+		}
+
+		if (fitToViewWidthEventListener != null) {
+			eventPublisher.removeListener(fitToViewWidthEventListener);
+			fitToViewWidthEventListener = null;
 		}
 
 		geneSelectionManager.unregisterEventListeners();
@@ -1577,6 +1596,23 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		return tablePerspective != null
 				&& tablePerspective.getDataDomain() instanceof GeneticDataDomain;
+	}
+
+	/**
+	 * @return the fitWidthToScreen, see {@link #fitToViewWidth}
+	 */
+	public boolean isFitWidthToScreen() {
+		return fitToViewWidth;
+	}
+
+	/**
+	 * @param fitToViewWidth
+	 *            setter, see {@link #fitToViewWidth}
+	 */
+	public void setFitToViewWidth(boolean fitToViewWidth) {
+		this.fitToViewWidth = fitToViewWidth;
+		currentMinWidth = 0;
+		setLayoutDirty();
 	}
 
 }

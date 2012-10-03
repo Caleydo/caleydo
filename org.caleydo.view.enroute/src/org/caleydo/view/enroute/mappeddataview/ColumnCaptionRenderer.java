@@ -65,7 +65,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 
 	@Override
 	protected void finalize() throws Throwable {
-		unregisterPickingListener();
+//		unregisterPickingListener();
 	}
 
 	@Override
@@ -114,6 +114,8 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 	}
 
 	private void registerPickingListener() {
+		unregisterPickingListener();
+		
 		groupPickingListener = new APickingListener() {
 
 			@Override
@@ -163,7 +165,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 	}
 
 	private void unregisterPickingListener() {
-		parentView.removePickingListener(groupPickingListener);
+//		parentView.removePickingListener(groupPickingListener);
 		parentView.removeAllIDPickingListeners(EPickingType.SAMPLE_GROUP.name(),
 				group.getID());
 	}

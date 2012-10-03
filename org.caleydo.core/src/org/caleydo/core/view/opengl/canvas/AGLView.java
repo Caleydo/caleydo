@@ -39,7 +39,6 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
 import javax.swing.SwingUtilities;
 
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
@@ -77,9 +76,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.internal.dnd.SwtUtil;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -339,19 +336,19 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 				return;
 
 			if (!focusGained) {
-//				SwingUtilities.invokeLater(new Runnable() {
-//					@Override
-//					public void run() {
-//						parentGLCanvas.requestFocus();
-//					}
-//				});
-				
-				Display.getDefault().asyncExec(new Runnable() {
+				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
 						parentGLCanvas.requestFocus();
 					}
 				});
+				
+//				Display.getDefault().asyncExec(new Runnable() {
+//					@Override
+//					public void run() {
+//						parentGLCanvas.requestFocus();
+//					}
+//				});
 
 			}
 

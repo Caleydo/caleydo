@@ -12,12 +12,13 @@ import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.OpenOnlineHelpAction;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
 import org.caleydo.view.enroute.GLEnRoutePathway;
+import org.caleydo.view.enroute.toolbar.actions.FitToViewWidthAction;
 
 /**
  * Toolbar content for the enRoute view.
  * 
  * @author Christian Partl
- *
+ * 
  */
 public class EnRouteToolBarContent extends AToolBarContent {
 
@@ -35,6 +36,7 @@ public class EnRouteToolBarContent extends AToolBarContent {
 		// container.setImagePath(IMAGE_PATH);
 		container.setTitle(VIEW_TITLE);
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
+		actionList.add(new FitToViewWidthAction());
 		container.setToolBarItems(actionList);
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
@@ -46,11 +48,11 @@ public class EnRouteToolBarContent extends AToolBarContent {
 		actionList
 				.add(new OpenOnlineHelpAction(
 						"http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/enroute",
-						true));
+						false));
 
 		list.add(container);
 
 		return list;
 	}
-	
+
 }
