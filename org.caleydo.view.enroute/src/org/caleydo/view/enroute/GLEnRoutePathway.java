@@ -20,6 +20,8 @@
 package org.caleydo.view.enroute;
 
 import gleem.linalg.Vec3f;
+
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -198,6 +200,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 * total view height.
 	 */
 	private boolean isViewHeightDeterminedByPath = true;
+
+	/**
+	 * The current minimum width in Pixels of this view.
+	 */
+	private int currentMinWidth = 0;
 
 	private EventBasedSelectionManager geneSelectionManager;
 	private EventBasedSelectionManager metaboliteSelectionManager;
@@ -485,6 +492,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
 		}
+		// IntBuffer buffer = IntBuffer.wrap(new int[] {layoutDisplayListIndex,
+		// displayListIndex});
+		// gl.glCallLists(2, GL2.GL_INT, buffer);
 		gl.glCallList(layoutDisplayListIndex);
 		gl.glCallList(displayListIndex);
 
@@ -671,7 +681,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		}
 		// System.out.println("min width: " + minViewWidth + ", currentWidth: "
 		// + parentGLCanvas.getWidth());
-		boolean updateWidth = minViewWidth > parentGLCanvas.getWidth();
+		boolean updateWidth = minViewWidth > parentGLCanvas.getWidth()
+				|| (minViewWidth < parentGLCanvas.getWidth() && (minViewWidth > currentMinWidth || minViewWidth + 3 < currentMinWidth));
+
 		boolean updateHeight = false;
 
 		if (isNewPath
@@ -686,10 +698,10 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		if (updateWidth || updateHeight) {
 
 			// System.out.println("setting min width:" + minViewWidth);
+			currentMinWidth = updateWidth ? minViewWidth + 3 : BRANCH_COLUMN_WIDTH_PIXELS
+					+ PATHWAY_COLUMN_WIDTH_PIXELS + DATA_COLUMN_WIDTH_PIXELS;
 
-			setMinViewSize(updateWidth ? minViewWidth + 3 : BRANCH_COLUMN_WIDTH_PIXELS
-					+ PATHWAY_COLUMN_WIDTH_PIXELS + DATA_COLUMN_WIDTH_PIXELS,
-					minViewHeightPixels + 3);
+			setMinViewSize(currentMinWidth, minViewHeightPixels + 3);
 		}
 
 	}
@@ -1559,7 +1571,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		isLayoutDirty = true;
 		setDisplayListDirty();
 	}
-
 
 	@Override
 	public boolean isTablePerspectiveValid(TablePerspective tablePerspective) {

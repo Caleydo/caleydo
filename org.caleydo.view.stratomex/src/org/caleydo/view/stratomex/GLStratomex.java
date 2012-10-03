@@ -1078,7 +1078,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	}
 
 	public void clearAllSelections() {
-		recordSelectionManager.clearSelections();
+		if (recordSelectionManager != null)
+			recordSelectionManager.clearSelections();
 		updateConnectionLinesBetweenDimensionGroups();
 	}
 
