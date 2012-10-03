@@ -193,6 +193,7 @@ public class GLPathway extends ATableBasedView implements
 	private CanvasComponent bubblesetCanvas;
 	Texture bubbleSetsTexture;
 	private boolean isBubbleTextureDirty;
+	private boolean isPathStartSelected=false;
 
 	private boolean isControlKeyDown = false;
 	private boolean isShiftKeyDown = false;
@@ -496,6 +497,7 @@ public class GLPathway extends ATableBasedView implements
 		addTypePickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
+				handlePathwayElementSelection(SelectionType.SELECTION, -1);
 				int pickX = (int) pick.getPickedPoint().getX();
 				int pickY = (int) pick.getPickedPoint().getY();
 				System.out.println("\nDENIS_DEBUG::UnScaled pickX:" + pickX + " pickY:"
@@ -532,6 +534,8 @@ public class GLPathway extends ATableBasedView implements
 						System.out.println("DENIS_DEBUG:: found usedColor id=" + i);
 						// select
 						selectedPathID = i;
+						if (selectedPathID > allPaths.size() - 1)
+							selectedPathID=allPaths.size() - 1;
 						selectedPath = allPaths.get(selectedPathID);
 						isBubbleTextureDirty = true;
 						setDisplayListDirty();
@@ -1365,44 +1369,52 @@ public class GLPathway extends ATableBasedView implements
 	}
 
 	public void handlePathwayElementSelection(SelectionType selectionType, int externalID) {
-
-		setDisplayListDirty();
-		if (geneSelectionManager.checkStatus(selectionType, externalID)) {
-			return;
+		if(externalID==-1){
+			if(	   isPathStartSelected 
+				&& selectionType==SelectionType.SELECTION 
+				&& allPaths != null 
+				&& allPaths.size()>0)
+				isPathStartSelected=false;
 		}
-
-		PathwayVertexRep previouslySelectedVertexRep = null;
-		if (geneSelectionManager.getElements(SelectionType.SELECTION).size() == 1) {
-			previouslySelectedVertexRep = (PathwayVertexRep) pathwayItemManager
-					.getPathwayVertexRep((Integer) geneSelectionManager.getElements(
-							SelectionType.SELECTION).toArray()[0]);
-		}
-
-		geneSelectionManager.clearSelection(selectionType);
-		if (metaboliteSelectionManager.getNumberOfElements(selectionType) > 0) {
-			metaboliteSelectionManager.clearSelection(selectionType);
-			metaboliteSelectionManager.triggerSelectionUpdateEvent();
-		}
-
-		PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager
-				.getPathwayVertexRep(externalID);
-
-		if (vertexRep.getType() == EPathwayVertexType.compound) {
-			metaboliteSelectionManager.addToType(selectionType, vertexRep.getName()
-					.hashCode());
-			metaboliteSelectionManager.triggerSelectionUpdateEvent();
-		}
-
-		if (isPathSelectionMode) {
-			if (previouslySelectedVertexRep != null) {
-				if (!isControlKeyDown) { // extend current path
-					// System.out.println("isShiftKeyDown && NOTisControlKeyDown");
+		else{
+			setDisplayListDirty();
+			if (geneSelectionManager.checkStatus(selectionType, externalID)) {
+				return;
+			}
+	
+			PathwayVertexRep previouslySelectedVertexRep = null;
+			if (geneSelectionManager.getElements(SelectionType.SELECTION).size() == 1) {
+				previouslySelectedVertexRep = (PathwayVertexRep) pathwayItemManager
+						.getPathwayVertexRep((Integer) geneSelectionManager.getElements(
+								SelectionType.SELECTION).toArray()[0]);
+			}
+	
+			geneSelectionManager.clearSelection(selectionType);
+			if (metaboliteSelectionManager.getNumberOfElements(selectionType) > 0) {
+				metaboliteSelectionManager.clearSelection(selectionType);
+				metaboliteSelectionManager.triggerSelectionUpdateEvent();
+			}
+	
+			PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager
+					.getPathwayVertexRep(externalID);
+	
+			if (vertexRep.getType() == EPathwayVertexType.compound) {
+				metaboliteSelectionManager.addToType(selectionType, vertexRep.getName()
+						.hashCode());
+				metaboliteSelectionManager.triggerSelectionUpdateEvent();
+			}
+			if (isPathSelectionMode) {
+				if(isPathStartSelected)//select end node //mouse-over to interactively extend the path				
+				{ //click on end node
+					if(selectionType==SelectionType.SELECTION && (allPaths != null && allPaths.size() > 0)){//click on start node
+						isPathStartSelected=false;
+					}				
 					KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 							pathway, previouslySelectedVertexRep, MAX_PATHS);
-
+	
 					if (vertexRep != previouslySelectedVertexRep)
 						allPaths = pathAlgo.getPaths(vertexRep);
-
+	
 					if (allPaths != null && allPaths.size() > 0) {
 						// selectedPath = allPaths.get(0);
 						if (allPaths.size() <= selectedPathID)
@@ -1414,72 +1426,36 @@ public class GLPathway extends ATableBasedView implements
 						triggerPathUpdate();
 						isBubbleTextureDirty = true;
 					}
-				} else if (selectedPath != null) {
-					// System.out.println("isControlKeyDown && isShiftKeyDown");
-					KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
-							pathway, selectedPath.getStartVertex(), MAX_PATHS);
-					allPaths = pathAlgo.getPaths(vertexRep);
-					if (allPaths != null && allPaths.size() > 0) {
-						// selectedPath = allPaths.get(0);
-						if (allPaths.size() <= selectedPathID)
-							selectedPathID = 0;
-						selectedPath = allPaths.get(selectedPathID);
-						allPaths.clear();
-						selectedPathID = 0;
-						allPaths.add(selectedPath);
-						triggerPathUpdate();
-						isBubbleTextureDirty = true;
+				}
+				else{ //isPathStartSelected==false -> select start node 1) no path extension				
+					if(selectionType==SelectionType.SELECTION
+						&& vertexRep!= null){//click on start node 					
+						isPathStartSelected=true;
 					}
 				}
-			} // if (previouslySelectedVertexRep != null)
-				// else if (previouslySelectedVertexRep != null
-				// && selectionType == SelectionType.MOUSE_OVER) {
-				//
-				// KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new
-				// KShortestPaths<PathwayVertexRep, DefaultEdge>(
-				// pathway, previouslySelectedVertexRep, MAX_PATHS);
-				//
-				// if (vertexRep != previouslySelectedVertexRep) {
-				// List<GraphPath<PathwayVertexRep, DefaultEdge>> mouseOverPaths
-				// =
-				// pathAlgo
-				// .getPaths(vertexRep);
-				//
-				// if (mouseOverPaths != null && mouseOverPaths.size() > 0) {
-				//
-				// allPaths = mouseOverPaths;
-				// if (allPaths.size() <= selectedPathID)
-				// selectedPathID = 0;
-				// selectedPath = allPaths.get(selectedPathID);
-				// if (selectedPath != null && isControlKeyDown)
-				// allPaths.add(selectedPath);
-				//
-				// isBubbleTextureDirty = true;
-				// }
-				// }
-				// }
-				// }// if(isPathSelectionMode)
-		}// if(isPathSelectionMode)
-			// else{
+				
+				
+			}// end if(isPathSelectionMode)
+	
 			// Add new vertex to internal selection manager
-		geneSelectionManager.addToType(selectionType, vertexRep.getID());
-
-		int iConnectionID = generalManager.getIDCreator().createID(
-				ManagedObjectType.CONNECTION);
-		geneSelectionManager.addConnectionID(iConnectionID, vertexRep.getID());
-		connectedElementRepresentationManager.clear(geneSelectionManager.getIDType(),
-				selectionType);
-
-		createConnectionLines(selectionType, iConnectionID);
-
-		SelectionDelta selectionDelta = createExternalSelectionDelta(geneSelectionManager
-				.getDelta());
-		SelectionUpdateEvent event = new SelectionUpdateEvent();
-		event.setSender(this);
-		event.setDataDomainID(dataDomain.getDataDomainID());
-		event.setSelectionDelta((SelectionDelta) selectionDelta);
-		eventPublisher.triggerEvent(event);
-		// }
+			geneSelectionManager.addToType(selectionType, vertexRep.getID());
+	
+			int iConnectionID = generalManager.getIDCreator().createID(
+					ManagedObjectType.CONNECTION);
+			geneSelectionManager.addConnectionID(iConnectionID, vertexRep.getID());
+			connectedElementRepresentationManager.clear(geneSelectionManager.getIDType(),
+					selectionType);
+	
+			createConnectionLines(selectionType, iConnectionID);
+	
+			SelectionDelta selectionDelta = createExternalSelectionDelta(geneSelectionManager
+					.getDelta());
+			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSender(this);
+			event.setDataDomainID(dataDomain.getDataDomainID());
+			event.setSelectionDelta((SelectionDelta) selectionDelta);
+			eventPublisher.triggerEvent(event);
+		}//else if(externalID==-1 
 	}
 
 	private void triggerPathUpdate() {
@@ -1543,6 +1519,7 @@ public class GLPathway extends ATableBasedView implements
 	 */
 	public void setPathSelectionMode(boolean isPathSelectionMode) {
 		this.isPathSelectionMode = isPathSelectionMode;
+		isPathStartSelected=false;
 	}
 
 	/**
