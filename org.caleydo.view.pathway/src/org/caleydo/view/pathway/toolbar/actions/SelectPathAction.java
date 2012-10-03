@@ -24,12 +24,12 @@ public class SelectPathAction extends Action implements IToolBarItem {
 	/**
 	 * Constructor.
 	 */
-	public SelectPathAction() {
+	public SelectPathAction(boolean isChecked) {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
 				PlatformUI.getWorkbench().getDisplay(), ICON)));
-		setChecked(false);
+		setChecked(isChecked);
 	}
 
 	@Override

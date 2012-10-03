@@ -24,12 +24,12 @@ public class FitToViewWidthAction extends Action implements IToolBarItem {
 	/**
 	 * Constructor.
 	 */
-	public FitToViewWidthAction() {
+	public FitToViewWidthAction(boolean isChecked) {
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
 				PlatformUI.getWorkbench().getDisplay(), ICON)));
-		setChecked(true);
+		setChecked(isChecked);
 	}
 
 	@Override

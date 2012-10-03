@@ -1135,6 +1135,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	public ASerializedMultiTablePerspectiveBasedView getSerializableRepresentation() {
 		SerializedEnRoutePathwayView serializedForm = new SerializedEnRoutePathwayView();
 		serializedForm.setViewID(this.getID());
+		serializedForm.setFitToViewWidth(fitToViewWidth);
 		return serializedForm;
 	}
 

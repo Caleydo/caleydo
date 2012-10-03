@@ -31,11 +31,14 @@ import org.caleydo.core.serialize.ASerializedMultiTablePerspectiveBasedView;
 @XmlRootElement
 @XmlType
 public class SerializedEnRoutePathwayView extends ASerializedMultiTablePerspectiveBasedView {
+	
+	private boolean fitToViewWidth;
 
 	/**
 	 * Default constructor with default initialization
 	 */
 	public SerializedEnRoutePathwayView() {
+		setFitToViewWidth(true);
 	}
 
 	@Override
@@ -46,5 +49,19 @@ public class SerializedEnRoutePathwayView extends ASerializedMultiTablePerspecti
 	@Override
 	public String getViewClassType() {
 		return GLEnRoutePathway.class.getName();
+	}
+	
+	/**
+	 * @return the fitToViewWidth, see {@link #fitToViewWidth}
+	 */
+	public boolean isFitToViewWidth() {
+		return fitToViewWidth;
+	}
+	
+	/**
+	 * @param fitToViewWidth setter, see {@link #fitToViewWidth}
+	 */
+	public void setFitToViewWidth(boolean fitToViewWidth) {
+		this.fitToViewWidth = fitToViewWidth;
 	}
 }

@@ -1284,6 +1284,8 @@ public class GLPathway extends ATableBasedView implements
 		// of the pathway here?
 		if (pathway != null)
 			serializedForm.setPathwayID(pathway.getID());
+		
+		serializedForm.setPathSelectionMode(isPathSelectionMode);
 
 		System.out.println("Serializing Pathway: review me!");
 

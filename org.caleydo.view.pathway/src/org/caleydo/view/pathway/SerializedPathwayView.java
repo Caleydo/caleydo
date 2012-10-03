@@ -43,20 +43,25 @@ public class SerializedPathwayView extends ASerializedSingleTablePerspectiveBase
 
 	/**
 	 * The id of the pathway data domain. The id of the underlying mapped data
-	 * datadomain is stored in {@link ASerializedSingleTablePerspectiveBasedView}
+	 * datadomain is stored in
+	 * {@link ASerializedSingleTablePerspectiveBasedView}
 	 */
 	private String pathwayDataDomainID;
+
+	private boolean isPathSelectionMode;
 
 	/**
 	 * Default constructor with default initialization
 	 */
 	public SerializedPathwayView() {
+		isPathSelectionMode = false;
 	}
 
 	public SerializedPathwayView(String pathwayDataDomainID,
 			ISingleTablePerspectiveBasedView view) {
 		super(view);
 		pathwayID = -1;
+		isPathSelectionMode = false;
 		this.pathwayDataDomainID = pathwayDataDomainID;
 	}
 
@@ -110,5 +115,20 @@ public class SerializedPathwayView extends ASerializedSingleTablePerspectiveBase
 	@Override
 	public String getViewClassType() {
 		return GLPathway.class.getName();
+	}
+
+	/**
+	 * @param isPathSelectionMode
+	 *            setter, see {@link #isPathSelectionMode}
+	 */
+	public void setPathSelectionMode(boolean isPathSelectionMode) {
+		this.isPathSelectionMode = isPathSelectionMode;
+	}
+
+	/**
+	 * @return the isPathSelectionMode, see {@link #isPathSelectionMode}
+	 */
+	public boolean isPathSelectionMode() {
+		return isPathSelectionMode;
 	}
 }
