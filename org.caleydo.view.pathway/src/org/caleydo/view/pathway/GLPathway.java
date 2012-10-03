@@ -20,6 +20,7 @@
 package org.caleydo.view.pathway;
 
 import gleem.linalg.Vec3f;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -33,10 +34,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -54,8 +57,6 @@ import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.events.RecordVADeltaEvent;
 import org.caleydo.core.event.view.SwitchDataRepresentationEvent;
-import org.caleydo.core.event.view.pathway.DisableGeneMappingEvent;
-import org.caleydo.core.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
@@ -66,6 +67,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.ColorManager;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -91,9 +93,9 @@ import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.pathway.event.ClearPathEvent;
 import org.caleydo.view.pathway.event.EnRoutePathEvent;
+import org.caleydo.view.pathway.event.EnableGeneMappingEvent;
 import org.caleydo.view.pathway.event.SelectPathModeEvent;
 import org.caleydo.view.pathway.listener.ClearPathEventListener;
-import org.caleydo.view.pathway.listener.DisableGeneMappingListener;
 import org.caleydo.view.pathway.listener.EnRoutePathEventListener;
 import org.caleydo.view.pathway.listener.EnableGeneMappingListener;
 import org.caleydo.view.pathway.listener.SelectPathModeEventListener;
@@ -104,11 +106,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultEdge;
+
 import setvis.SetOutline;
 import setvis.bubbleset.BubbleSet;
 import setvis.gui.CanvasComponent;
 import setvis.shape.AbstractShapeGenerator;
 import setvis.shape.BSplineShapeGenerator;
+
 import com.jogamp.opengl.util.awt.TextureRenderer;
 import com.jogamp.opengl.util.texture.Texture;
 
@@ -119,8 +123,9 @@ import com.jogamp.opengl.util.texture.Texture;
  * @author Alexander Lex
  */
 
-public class GLPathway extends ATableBasedView implements ISelectionUpdateHandler,
-		IViewCommandHandler, ISelectionCommandHandler, IEventBasedSelectionManagerUser {
+public class GLPathway extends ATableBasedView implements
+		ISingleTablePerspectiveBasedView, ISelectionUpdateHandler, IViewCommandHandler,
+		ISelectionCommandHandler, IEventBasedSelectionManagerUser {
 	public static String VIEW_TYPE = "org.caleydo.view.pathway";
 
 	public static String VIEW_NAME = "Pathway";
@@ -165,7 +170,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	private Vec3f vecTranslation;
 
 	protected EnableGeneMappingListener enableGeneMappingListener;
-	protected DisableGeneMappingListener disableGeneMappingListener;
 	protected SwitchDataRepresentationListener switchDataRepresentationListener;
 	protected EnRoutePathEventListener enRoutePathEventListener;
 	protected SelectPathModeEventListener selectPathModeEventListener;
@@ -332,15 +336,18 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				//System.out.println("getKeyCode()"+e.getKeyCode()); //comment_1/2:
-				if (e.isControlDown()  && (e.getKeyCode() == 79)) {	//ctrl +o	
-					setPathSelectionMode(!isPathSelectionMode);					
-					//System.out.println("ctrl + 79 "); //comment_2/2: will remove this and the println at comment_1-2 after i know which ctrol+key combination are still available
-					//GeneralManager.get().getEventPublisher().getListenerMap().get(SelectPathModeEvent);			
-					//TODO select / unselect button
+				// System.out.println("getKeyCode()"+e.getKeyCode());
+				// //comment_1/2:
+				if (e.isControlDown() && (e.getKeyCode() == 79)) { // ctrl +o
+					setPathSelectionMode(!isPathSelectionMode);
+					// System.out.println("ctrl + 79 "); //comment_2/2: will
+					// remove this and the println at comment_1-2 after i know
+					// which ctrol+key combination are still available
+					// GeneralManager.get().getEventPublisher().getListenerMap().get(SelectPathModeEvent);
+					// TODO select / unselect button
 				}
-				isControlKeyDown = e.isControlDown();				
-				isShiftKeyDown = e.isShiftDown();				
+				isControlKeyDown = e.isControlDown();
+				isShiftKeyDown = e.isShiftDown();
 			}
 
 			@Override
@@ -1212,11 +1219,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		eventPublisher.addListener(EnableGeneMappingEvent.class,
 				enableGeneMappingListener);
 
-		disableGeneMappingListener = new DisableGeneMappingListener();
-		disableGeneMappingListener.setHandler(this);
-		eventPublisher.addListener(DisableGeneMappingEvent.class,
-				disableGeneMappingListener);
-
 		switchDataRepresentationListener = new SwitchDataRepresentationListener();
 		switchDataRepresentationListener.setHandler(this);
 		eventPublisher.addListener(SwitchDataRepresentationEvent.class,
@@ -1244,11 +1246,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			eventPublisher.removeListener(EnableGeneMappingEvent.class,
 					enableGeneMappingListener);
 			enableGeneMappingListener = null;
-		}
-		if (disableGeneMappingListener != null) {
-			eventPublisher.removeListener(DisableGeneMappingEvent.class,
-					disableGeneMappingListener);
-			disableGeneMappingListener = null;
 		}
 
 		if (switchDataRepresentationListener != null) {
@@ -1324,13 +1321,12 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 					"Pathway view can handle only genetic data domain, tried to set: "
 							+ dataDomain);
 
-		if (pathwayDataDomain.getGeneIDMappingManager().hasMapping(
-				pathwayDataDomain.getDavidIDType(), dataDomain.getRecordIDType())) {
-			geneSelectionManager = dataDomain.getRecordSelectionManager();
-		} else {
-			geneSelectionManager = dataDomain.getDimensionSelectionManager();
-		}
-
+		GeneticDataDomain geneticDataDomain = (GeneticDataDomain) dataDomain;
+		if (geneticDataDomain.isGeneRecord())
+			geneSelectionManager = geneticDataDomain.getRecordSelectionManager();
+		else
+			geneSelectionManager = geneticDataDomain.getDimensionSelectionManager();
+		
 		sampleSelectionManager = new EventBasedSelectionManager(this,
 				((GeneticDataDomain) dataDomain).getSampleIDType());
 
@@ -1369,7 +1365,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	}
 
 	public void handlePathwayElementSelection(SelectionType selectionType, int externalID) {
-	
+
 		setDisplayListDirty();
 		if (geneSelectionManager.checkStatus(selectionType, externalID)) {
 			return;
@@ -1397,90 +1393,93 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			metaboliteSelectionManager.triggerSelectionUpdateEvent();
 		}
 
-		if(isPathSelectionMode){ 
-				if (previouslySelectedVertexRep != null){
-					if (!isControlKeyDown) { //extend current path
-						//System.out.println("isShiftKeyDown && NOTisControlKeyDown");
-						KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
-								pathway, previouslySelectedVertexRep, MAX_PATHS);
-	
-						if (vertexRep != previouslySelectedVertexRep)
-							allPaths = pathAlgo.getPaths(vertexRep);
-	
-						if (allPaths != null && allPaths.size() > 0) {
-							// selectedPath = allPaths.get(0);
-							if (allPaths.size() <= selectedPathID)
-								selectedPathID = 0;
-							selectedPath = allPaths.get(selectedPathID);
-							// allPaths.clear();
-							selectedPathID = 0;
-							allPaths.add(selectedPath);
-							triggerPathUpdate();
-							isBubbleTextureDirty = true;
-						}
-					} else if (selectedPath != null) {
-						//System.out.println("isControlKeyDown && isShiftKeyDown");
-						KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
-								pathway, selectedPath.getStartVertex(), MAX_PATHS);
+		if (isPathSelectionMode) {
+			if (previouslySelectedVertexRep != null) {
+				if (!isControlKeyDown) { // extend current path
+					// System.out.println("isShiftKeyDown && NOTisControlKeyDown");
+					KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
+							pathway, previouslySelectedVertexRep, MAX_PATHS);
+
+					if (vertexRep != previouslySelectedVertexRep)
 						allPaths = pathAlgo.getPaths(vertexRep);
-						if (allPaths != null && allPaths.size() > 0) {
-							// selectedPath = allPaths.get(0);
-							if (allPaths.size() <= selectedPathID)
-								selectedPathID = 0;
-							selectedPath = allPaths.get(selectedPathID);
-							allPaths.clear();
+
+					if (allPaths != null && allPaths.size() > 0) {
+						// selectedPath = allPaths.get(0);
+						if (allPaths.size() <= selectedPathID)
 							selectedPathID = 0;
-							allPaths.add(selectedPath);
-							triggerPathUpdate();
-							isBubbleTextureDirty = true;
-						}
-					}	
-				} //if (previouslySelectedVertexRep != null)
-//				else if (previouslySelectedVertexRep != null
-//						&& selectionType == SelectionType.MOUSE_OVER) {
-//	
-//					KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
-//							pathway, previouslySelectedVertexRep, MAX_PATHS);
-//	
-//					if (vertexRep != previouslySelectedVertexRep) {
-//						List<GraphPath<PathwayVertexRep, DefaultEdge>> mouseOverPaths = pathAlgo
-//								.getPaths(vertexRep);
-//	
-//						if (mouseOverPaths != null && mouseOverPaths.size() > 0) {
-//	
-//							allPaths = mouseOverPaths;
-//							if (allPaths.size() <= selectedPathID)
-//								selectedPathID = 0;
-//							selectedPath = allPaths.get(selectedPathID);
-//							if (selectedPath != null && isControlKeyDown)
-//								allPaths.add(selectedPath);
-//	
-//							isBubbleTextureDirty = true;
-//						}
-//					}
-//				}
-//			}//		if(isPathSelectionMode)		
-		}//if(isPathSelectionMode)
-		//else{
+						selectedPath = allPaths.get(selectedPathID);
+						// allPaths.clear();
+						selectedPathID = 0;
+						allPaths.add(selectedPath);
+						triggerPathUpdate();
+						isBubbleTextureDirty = true;
+					}
+				} else if (selectedPath != null) {
+					// System.out.println("isControlKeyDown && isShiftKeyDown");
+					KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
+							pathway, selectedPath.getStartVertex(), MAX_PATHS);
+					allPaths = pathAlgo.getPaths(vertexRep);
+					if (allPaths != null && allPaths.size() > 0) {
+						// selectedPath = allPaths.get(0);
+						if (allPaths.size() <= selectedPathID)
+							selectedPathID = 0;
+						selectedPath = allPaths.get(selectedPathID);
+						allPaths.clear();
+						selectedPathID = 0;
+						allPaths.add(selectedPath);
+						triggerPathUpdate();
+						isBubbleTextureDirty = true;
+					}
+				}
+			} // if (previouslySelectedVertexRep != null)
+				// else if (previouslySelectedVertexRep != null
+				// && selectionType == SelectionType.MOUSE_OVER) {
+				//
+				// KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new
+				// KShortestPaths<PathwayVertexRep, DefaultEdge>(
+				// pathway, previouslySelectedVertexRep, MAX_PATHS);
+				//
+				// if (vertexRep != previouslySelectedVertexRep) {
+				// List<GraphPath<PathwayVertexRep, DefaultEdge>> mouseOverPaths
+				// =
+				// pathAlgo
+				// .getPaths(vertexRep);
+				//
+				// if (mouseOverPaths != null && mouseOverPaths.size() > 0) {
+				//
+				// allPaths = mouseOverPaths;
+				// if (allPaths.size() <= selectedPathID)
+				// selectedPathID = 0;
+				// selectedPath = allPaths.get(selectedPathID);
+				// if (selectedPath != null && isControlKeyDown)
+				// allPaths.add(selectedPath);
+				//
+				// isBubbleTextureDirty = true;
+				// }
+				// }
+				// }
+				// }// if(isPathSelectionMode)
+		}// if(isPathSelectionMode)
+			// else{
 			// Add new vertex to internal selection manager
-			geneSelectionManager.addToType(selectionType, vertexRep.getID());
+		geneSelectionManager.addToType(selectionType, vertexRep.getID());
 
-			int iConnectionID = generalManager.getIDCreator().createID(
-					ManagedObjectType.CONNECTION);
-			geneSelectionManager.addConnectionID(iConnectionID, vertexRep.getID());
-			connectedElementRepresentationManager.clear(geneSelectionManager.getIDType(),
-					selectionType);
+		int iConnectionID = generalManager.getIDCreator().createID(
+				ManagedObjectType.CONNECTION);
+		geneSelectionManager.addConnectionID(iConnectionID, vertexRep.getID());
+		connectedElementRepresentationManager.clear(geneSelectionManager.getIDType(),
+				selectionType);
 
-			createConnectionLines(selectionType, iConnectionID);
+		createConnectionLines(selectionType, iConnectionID);
 
-			SelectionDelta selectionDelta = createExternalSelectionDelta(geneSelectionManager
-					.getDelta());
-			SelectionUpdateEvent event = new SelectionUpdateEvent();
-			event.setSender(this);
-			event.setDataDomainID(dataDomain.getDataDomainID());
-			event.setSelectionDelta((SelectionDelta) selectionDelta);
-			eventPublisher.triggerEvent(event);
-		//}
+		SelectionDelta selectionDelta = createExternalSelectionDelta(geneSelectionManager
+				.getDelta());
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
+		event.setDataDomainID(dataDomain.getDataDomainID());
+		event.setSelectionDelta((SelectionDelta) selectionDelta);
+		eventPublisher.triggerEvent(event);
+		// }
 	}
 
 	private void triggerPathUpdate() {
@@ -1508,10 +1507,10 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		setDisplayListDirty();
 	}
 
-	public void clearPath() {	
+	public void clearPath() {
 		selectedPath = null;
 		allPaths = null;
-		
+
 		triggerPathUpdate();
 		isBubbleTextureDirty = true;
 		setDisplayListDirty();

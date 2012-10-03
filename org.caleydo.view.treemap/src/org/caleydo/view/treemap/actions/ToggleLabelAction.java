@@ -19,11 +19,11 @@
  *******************************************************************************/
 package org.caleydo.view.treemap.actions;
 
-import org.caleydo.core.event.view.treemap.ToggleLabelEvent;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.action.AToolBarAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.view.treemap.listener.ToggleLabelEvent;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 

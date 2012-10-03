@@ -21,7 +21,7 @@ package org.caleydo.view.radial.toolbar;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.view.radial.UpdateDepthSliderPositionEvent;
+import org.caleydo.view.radial.event.UpdateDepthSliderPositionEvent;
 
 /**
  * Listener that reacts on update depth slider position events for DepthSlider.

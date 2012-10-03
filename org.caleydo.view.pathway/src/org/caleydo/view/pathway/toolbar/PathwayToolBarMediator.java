@@ -20,11 +20,10 @@
 package org.caleydo.view.pathway.toolbar;
 
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.event.view.pathway.DisableGeneMappingEvent;
-import org.caleydo.core.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.view.pathway.event.EnableGeneMappingEvent;
 
 /**
  * Mediator for pathway-related toolbar items
@@ -51,13 +50,13 @@ public class PathwayToolBarMediator {
 	}
 
 	public void enableGeneMapping() {
-		EnableGeneMappingEvent event = new EnableGeneMappingEvent();
+		EnableGeneMappingEvent event = new EnableGeneMappingEvent(true);
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
 
 	public void disableGeneMapping() {
-		DisableGeneMappingEvent event = new DisableGeneMappingEvent();
+		EnableGeneMappingEvent event = new EnableGeneMappingEvent(false);
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}

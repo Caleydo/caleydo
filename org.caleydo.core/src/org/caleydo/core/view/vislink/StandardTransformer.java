@@ -30,7 +30,7 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.event.view.selection.NewConnectionsEvent;
+import org.caleydo.core.event.view.linking.NewConnectionsEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ViewManager;

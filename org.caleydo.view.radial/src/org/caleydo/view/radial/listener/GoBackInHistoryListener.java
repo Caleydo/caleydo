@@ -21,8 +21,8 @@ package org.caleydo.view.radial.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.view.radial.GoBackInHistoryEvent;
 import org.caleydo.view.radial.GLRadialHierarchy;
+import org.caleydo.view.radial.event.GoBackInHistoryEvent;
 
 /**
  * Listener that reacts on go back in history events for RadialHierarchy.

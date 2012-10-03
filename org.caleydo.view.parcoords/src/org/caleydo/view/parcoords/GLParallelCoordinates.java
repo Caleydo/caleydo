@@ -35,6 +35,7 @@ import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_MOUSE_OVER_LINE_WI
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -43,9 +44,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.dimension.RawDataType;
 import org.caleydo.core.data.collection.table.DataTable;
@@ -64,12 +67,7 @@ import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.event.view.ResetAllViewsEvent;
-import org.caleydo.core.event.view.infoarea.InfoAreaUpdateEvent;
-import org.caleydo.core.event.view.tablebased.AngularBrushingEvent;
-import org.caleydo.core.event.view.tablebased.ApplyCurrentSelectionToVirtualArrayEvent;
 import org.caleydo.core.event.view.tablebased.BookmarkButtonEvent;
-import org.caleydo.core.event.view.tablebased.ResetAxisSpacingEvent;
-import org.caleydo.core.event.view.tablebased.ResetParallelCoordinatesEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.event.view.tablebased.UseRandomSamplingEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
@@ -98,10 +96,14 @@ import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.vislink.StandardTransformer;
 import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
 import org.caleydo.view.parcoords.PCRenderStyle.PolyLineState;
+import org.caleydo.view.parcoords.listener.AngularBrushingEvent;
 import org.caleydo.view.parcoords.listener.AngularBrushingListener;
+import org.caleydo.view.parcoords.listener.ApplyCurrentSelectionToVirtualArrayEvent;
 import org.caleydo.view.parcoords.listener.ApplyCurrentSelectionToVirtualArrayListener;
 import org.caleydo.view.parcoords.listener.BookmarkButtonListener;
+import org.caleydo.view.parcoords.listener.ResetAxisSpacingEvent;
 import org.caleydo.view.parcoords.listener.ResetAxisSpacingListener;
+import org.caleydo.view.parcoords.listener.ResetParallelCoordinatesEvent;
 import org.caleydo.view.parcoords.listener.UseRandomSamplingListener;
 import org.eclipse.swt.widgets.Composite;
 
@@ -1097,12 +1099,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		bIsGateDraggingFirstTime = false;
 
 		isDisplayListDirty = true;
-		InfoAreaUpdateEvent event = new InfoAreaUpdateEvent();
-		event.setDataDomainID(dataDomain.getDataDomainID());
-		event.setSender(this);
-		event.setInfo(VIEW_NAME);
-		eventPublisher.triggerEvent(event);
-
+	
 		if (glMouseListener.wasMouseReleased()) {
 
 			bIsDraggingActive = false;

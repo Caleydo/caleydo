@@ -23,12 +23,15 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -41,16 +44,10 @@ import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.ResetAllViewsEvent;
+import org.caleydo.core.event.view.ResetViewEvent;
 import org.caleydo.core.event.view.ViewActivationEvent;
-import org.caleydo.core.event.view.pathway.DisableGeneMappingEvent;
-import org.caleydo.core.event.view.pathway.EnableGeneMappingEvent;
-import org.caleydo.core.event.view.remote.DisableConnectionLinesEvent;
-import org.caleydo.core.event.view.remote.EnableConnectionLinesEvent;
 import org.caleydo.core.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
-import org.caleydo.core.event.view.remote.ResetRemoteRendererEvent;
-import org.caleydo.core.event.view.remote.ToggleNavigationModeEvent;
-import org.caleydo.core.event.view.remote.ToggleZoomEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
@@ -93,19 +90,24 @@ import org.caleydo.datadomain.pathway.IPathwayLoader;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneListener;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.bucket.listener.DisableConnectionLinesEvent;
 import org.caleydo.view.bucket.listener.DisableConnectionLinesListener;
-import org.caleydo.view.bucket.listener.DisableGeneMappingListener;
+import org.caleydo.view.bucket.listener.EnableConnectionLinesEvent;
 import org.caleydo.view.bucket.listener.EnableConnectionLinesListener;
 import org.caleydo.view.bucket.listener.EnableGeneMappingListener;
+import org.caleydo.view.bucket.listener.ToggleNavigationModeEvent;
 import org.caleydo.view.bucket.listener.ToggleNavigationModeListener;
+import org.caleydo.view.bucket.listener.ToggleZoomEvent;
 import org.caleydo.view.bucket.listener.ToggleZoomListener;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.BucketTemplate;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
+import org.caleydo.view.pathway.event.EnableGeneMappingEvent;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
+
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 
@@ -207,7 +209,6 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 	protected AddPathwayListener addPathwayListener;
 	protected LoadPathwaysByGeneListener loadPathwaysByGeneListener;
 	protected EnableGeneMappingListener enableGeneMappingListener;
-	protected DisableGeneMappingListener disableGeneMappingListener;
 	protected ToggleNavigationModeListener toggleNavigationModeListener;
 	protected ToggleZoomListener toggleZoomListener;
 	protected EnableConnectionLinesListener enableConnectionLinesListener;
@@ -617,10 +618,10 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			}
 
 			int iNumberOfGenesSelected = 0;
-			//FIXME implement as events if bucket reactivated
-			//glView.getNumberOfSelections(SelectionType.SELECTION);
+			// FIXME implement as events if bucket reactivated
+			// glView.getNumberOfSelections(SelectionType.SELECTION);
 			int iNumberOfGenesMouseOver = 0;
-			//glView.getNumberOfSelections(SelectionType.MOUSE_OVER);
+			// glView.getNumberOfSelections(SelectionType.MOUSE_OVER);
 
 			textRenderer.begin3DRendering();
 
@@ -1420,11 +1421,11 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		gl.glVertex3f(fXOrigin + 2 / aspectRatio * sideSwitchFactor + fPanelSideWidth,
 				fYOrigin + fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fXOrigin + 2f / aspectRatio * sideSwitchFactor,
-				fYOrigin + fHeight, -0.01f);
+		gl.glVertex3f(fXOrigin + 2f / aspectRatio * sideSwitchFactor, fYOrigin + fHeight,
+				-0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fXOrigin + 2f / aspectRatio * sideSwitchFactor,
-				fYOrigin - fHeight, -0.01f);
+		gl.glVertex3f(fXOrigin + 2f / aspectRatio * sideSwitchFactor, fYOrigin - fHeight,
+				-0.01f);
 		gl.glEnd();
 
 		tempTexture.disable(gl);
@@ -2626,11 +2627,6 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		eventPublisher.addListener(EnableGeneMappingEvent.class,
 				enableGeneMappingListener);
 
-		disableGeneMappingListener = new DisableGeneMappingListener();
-		disableGeneMappingListener.setHandler(this);
-		eventPublisher.addListener(DisableGeneMappingEvent.class,
-				disableGeneMappingListener);
-
 		enableConnectionLinesListener = new EnableConnectionLinesListener();
 		enableConnectionLinesListener.setHandler(this);
 		eventPublisher.addListener(EnableConnectionLinesEvent.class,
@@ -2645,7 +2641,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		resetViewListener.setHandler(this);
 		eventPublisher.addListener(ResetAllViewsEvent.class, resetViewListener);
 
-		eventPublisher.addListener(ResetRemoteRendererEvent.class, resetViewListener);
+		eventPublisher.addListener(ResetViewEvent.class, resetViewListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
@@ -2662,7 +2658,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 
 		// resetRemoteRendererListener = new ResetRemoteRendererListener();
 		// resetRemoteRendererListener.setHandler(this);
-		// eventPublisher.addListener(ResetRemoteRendererEvent.class,
+		// eventPublisher.addListener(ResetViewEvent.class,
 		// resetRemoteRendererListener);
 	}
 
@@ -2686,10 +2682,6 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		if (enableGeneMappingListener != null) {
 			eventPublisher.removeListener(enableGeneMappingListener);
 			enableGeneMappingListener = null;
-		}
-		if (disableGeneMappingListener != null) {
-			eventPublisher.removeListener(disableGeneMappingListener);
-			disableGeneMappingListener = null;
 		}
 		if (enableConnectionLinesListener != null) {
 			eventPublisher.removeListener(enableConnectionLinesListener);
@@ -2840,9 +2832,9 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		recordPerspective.setPrivate(true);
 		recordPerspective.init(null);
 		dataDomain.getTable().registerRecordPerspective(recordPerspective);
-		tablePerspective = dataDomain
-				.getTablePerspective(recordPerspective.getPerspectiveID(), dataDomain
-						.getTable().getDefaultDimensionPerspective().getPerspectiveID());
+		tablePerspective = dataDomain.getTablePerspective(
+				recordPerspective.getPerspectiveID(), dataDomain.getTable()
+						.getDefaultDimensionPerspective().getPerspectiveID());
 	}
 
 	@Override

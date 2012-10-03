@@ -26,8 +26,8 @@ import org.caleydo.core.data.filter.event.ReEvaluateDimensionFilterListEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateRecordFilterListEvent;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.view.filterpipeline.SetFilterTypeEvent.FilterType;
 import org.caleydo.view.filterpipeline.GLFilterPipeline;
+import org.caleydo.view.filterpipeline.listener.SetFilterTypeEvent.FilterType;
 
 /**
  * @author Thomas Geymayer

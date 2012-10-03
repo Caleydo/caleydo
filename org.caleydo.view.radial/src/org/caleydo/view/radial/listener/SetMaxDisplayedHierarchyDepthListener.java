@@ -21,8 +21,8 @@ package org.caleydo.view.radial.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.view.radial.SetMaxDisplayedHierarchyDepthEvent;
 import org.caleydo.view.radial.GLRadialHierarchy;
+import org.caleydo.view.radial.event.SetMaxDisplayedHierarchyDepthEvent;
 
 /**
  * Listener that reacts events for setting the max. displayed hierarchy depth in

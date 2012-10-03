@@ -21,7 +21,7 @@ package org.caleydo.core.view.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.view.selection.NewConnectionsEvent;
+import org.caleydo.core.event.view.linking.NewConnectionsEvent;
 import org.caleydo.core.view.vislink.ISelectionTransformer;
 
 /**

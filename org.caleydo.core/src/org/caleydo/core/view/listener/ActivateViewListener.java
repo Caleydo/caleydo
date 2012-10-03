@@ -23,9 +23,7 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.data.BookmarkEvent;
-import org.caleydo.core.event.view.OpenMatchmakerViewEvent;
 import org.caleydo.core.event.view.OpenViewEvent;
-import org.caleydo.core.event.view.grouper.CompareGroupsEvent;
 import org.caleydo.core.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.GeneralManager;
@@ -62,38 +60,7 @@ public class ActivateViewListener
 				//
 				// // Re-trigger event so that the opened view receives it
 				// GeneralManager.get().getEventPublisher().triggerEvent(event);
-			}
-			else if (event instanceof OpenMatchmakerViewEvent) {
-
-				try {
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-						.showView("org.caleydo.view.matchmaker");
-
-					// Re-trigger event so that view receives it
-					GeneralManager.get().getEventPublisher().triggerEvent(event);
-				}
-				catch (PartInitException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				CompareGroupsEvent compareGroupsEvent =
-					new CompareGroupsEvent(((OpenMatchmakerViewEvent) event).getTablesToCompare());
-				compareGroupsEvent.setSender(this);
-				GeneralManager.get().getEventPublisher().triggerEvent(compareGroupsEvent);
-
-				// PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-				//
-				// @Override
-				// public void run() {
-				// StartClusteringAction startClusteringAction = new StartClusteringAction();
-				// startClusteringAction.setTables(((OpenMatchmakerViewEvent) event)
-				// .getTablesToCompare());
-				// startClusteringAction.run();
-				// }
-				// });
-
-			}
+			}		
 			else if (event instanceof BookmarkEvent<?>) {
 
 				IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();

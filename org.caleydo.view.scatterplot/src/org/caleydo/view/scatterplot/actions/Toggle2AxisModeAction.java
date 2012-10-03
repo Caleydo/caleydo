@@ -19,11 +19,11 @@
  *******************************************************************************/
 package org.caleydo.view.scatterplot.actions;
 
-import org.caleydo.core.event.view.tablebased.Toggle2AxisEvent;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.action.AToolBarAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.view.scatterplot.listener.Toggle2AxisEvent;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 

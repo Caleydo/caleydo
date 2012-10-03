@@ -33,7 +33,6 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.event.view.tablebased.HideHeatMapElementsEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.object.ManagedObjectType;
@@ -65,6 +64,7 @@ import org.caleydo.view.heatmap.heatmap.template.AHeatMapLayoutConfiguration;
 import org.caleydo.view.heatmap.heatmap.template.DefaultTemplate;
 import org.caleydo.view.heatmap.heatmap.template.TextureHeatLayoutConfiguration;
 import org.caleydo.view.heatmap.listener.GLHeatMapKeyListener;
+import org.caleydo.view.heatmap.listener.HideHeatMapElementsEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
