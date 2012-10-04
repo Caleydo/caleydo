@@ -268,6 +268,12 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		layoutManager.setBaseElementLayout(mainRow);
 
 		initVendingMachine();
+
+		leftColumnLayout = new Column("leftArchColumn");
+		leftColumnLayout.setPixelSizeX(ARCH_PIXEL_WIDTH);
+		
+		rightColumnLayout = new Column("rightArchColumn");
+		rightColumnLayout.setPixelSizeX(ARCH_PIXEL_WIDTH);
 	}
 
 	public void initLayouts() {
@@ -293,17 +299,11 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	}
 
 	private void initLeftLayout() {
-		leftColumnLayout = new Column("leftArchColumn");
-		leftColumnLayout.setPixelSizeX(ARCH_PIXEL_WIDTH);
-
 		initSideLayout(leftColumnLayout, 0,
 				brickColumnManager.getCenterColumnStartIndex());
 	}
 
 	private void initRightLayout() {
-		rightColumnLayout = new Column("rightArchColumn");
-		rightColumnLayout.setPixelSizeX(ARCH_PIXEL_WIDTH);
-
 		initSideLayout(rightColumnLayout, brickColumnManager.getRightColumnStartIndex(),
 				brickColumnManager.getBrickColumns().size());
 	}
@@ -707,7 +707,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
-		renderArch(gl);
+		//renderArch(gl);
 		gl.glEndList();
 	}
 
