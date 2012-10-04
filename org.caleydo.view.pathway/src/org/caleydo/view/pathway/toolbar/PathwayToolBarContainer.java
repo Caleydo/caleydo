@@ -25,7 +25,11 @@ import java.util.List;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.OpenOnlineHelpAction;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.IDataDomainBasedView;
+import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
 import org.caleydo.view.pathway.toolbar.actions.ClearPathAction;
 import org.caleydo.view.pathway.toolbar.actions.SelectPathAction;
@@ -51,8 +55,13 @@ public class PathwayToolBarContainer extends ToolBarContainer {
 
 		List<IToolBarItem> elements = new ArrayList<IToolBarItem>();
 		SerializedPathwayView serializedView = (SerializedPathwayView) getTargetViewData();
-
-		elements.add(new SelectPathAction(serializedView.isPathSelectionMode()));
+		
+		SelectPathAction selectPathAction= new SelectPathAction(serializedView.isPathSelectionMode());
+		AGLView view = GeneralManager.get().getViewManager().getGLView(this.getTargetViewData().getViewID());
+		if(view instanceof GLPathway)
+			((GLPathway)view).setSelectPathAction(selectPathAction);
+		
+		elements.add(selectPathAction);				
 		elements.add(new ClearPathAction());
 
 		PathwaySearchBox pathwaySearchBox = new PathwaySearchBox("");

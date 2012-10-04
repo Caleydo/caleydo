@@ -100,6 +100,7 @@ import org.caleydo.view.pathway.listener.EnRoutePathEventListener;
 import org.caleydo.view.pathway.listener.EnableGeneMappingListener;
 import org.caleydo.view.pathway.listener.SelectPathModeEventListener;
 import org.caleydo.view.pathway.listener.SwitchDataRepresentationListener;
+import org.caleydo.view.pathway.toolbar.actions.SelectPathAction;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
@@ -203,6 +204,7 @@ public class GLPathway extends ATableBasedView implements
 	 * Determines whether the paths should be selectable via mouse click.
 	 */
 	private boolean isPathSelectionMode = false;
+	private SelectPathAction selectPathAction=null;
 
 	/**
 	 * Constructor.
@@ -331,22 +333,30 @@ public class GLPathway extends ATableBasedView implements
 		});
 	}
 
+	
+	public void setSelectPathAction(SelectPathAction aSelectPathAction)
+	{
+		this.selectPathAction=aSelectPathAction;
+	}
+	
 	protected void registeKeyListeners() {
 
 		parentGLCanvas.addKeyListener(new KeyAdapter() {
-
 			@Override
-			public void keyPressed(KeyEvent e) {
-				// System.out.println("getKeyCode()"+e.getKeyCode());
-				// //comment_1/2:
-				if (e.isControlDown() && (e.getKeyCode() == 79)) { // ctrl +o
+			public void keyPressed(KeyEvent e)
+			{
+				// //comment_1/2:			
+				if (e.isControlDown() && (e.getKeyCode() == 79)){ // ctrl +o
 					setPathSelectionMode(!isPathSelectionMode);
-					// System.out.println("ctrl + 79 "); //comment_2/2: will
-					// remove this and the println at comment_1-2 after i know
-					// which ctrol+key combination are still available
-					// GeneralManager.get().getEventPublisher().getListenerMap().get(SelectPathModeEvent);
-					// TODO select / unselect button
-				}
+					getParentComposite().getDisplay().asyncExec(new Runnable() {
+																	@Override
+																	public void run(){																						
+																		if(selectPathAction!=null){
+																			selectPathAction.setChecked(isPathSelectionMode);
+																		}
+																	}
+																});
+				}//if (e.isControlDown() && (e.getKeyCode() == 79))
 				isControlKeyDown = e.isControlDown();
 				isShiftKeyDown = e.isShiftDown();
 			}
