@@ -33,6 +33,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.CategoricalTablePerspectiveCreator;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -110,7 +111,7 @@ public class VendingMachine
 
 	private GLStratomex stratomex;
 
-	private boolean isActive = false;
+	private boolean isActive = !GeneralManager.RELEASE_MODE;
 
 	private BrickColumnManager brickColumnManager;
 
@@ -123,6 +124,9 @@ public class VendingMachine
 	private CategoricalTablePerspectiveCreator categoricalTablePerspectiveCreator = new CategoricalTablePerspectiveCreator();
 
 	private EScoreReferenceMode scoreReferenceMode;
+
+	private RankedElement selectedRankedElement;
+	private boolean isSelectedRankedElementDirty;
 
 	/**
 	 * Constructor.
@@ -420,7 +424,7 @@ public class VendingMachine
 				String dimensionPerspectiveID = null;
 				for (String tmpDimensionPerspectiveID : dataDomain
 						.getDimensionPerspectiveIDs()) {
-					
+
 					if (dataDomain.getTable()
 							.getDimensionPerspective(tmpDimensionPerspectiveID).getLabel()
 							.contains("Ungrouped"))
@@ -615,6 +619,16 @@ public class VendingMachine
 
 			rankColumn.getLayoutManager().updateLayout();
 		}
+
+		selectedRankedElement = newlySelectedRankedElement;
+		isSelectedRankedElementDirty = true;
+	}
+
+	/**
+	 * @return the selectedRankedElement, see {@link #selectedRankedElement}
+	 */
+	public RankedElement getSelectedRankedElement() {
+		return selectedRankedElement;
 	}
 
 	private void addTablePerspectiveToStratomex(TablePerspective newlySelectedTablePerspective) {
@@ -636,8 +650,9 @@ public class VendingMachine
 
 	public void selectChoice() {
 
-		rankedElements.get(selectedTablePerspectiveIndex).getColumnTablePerspective()
-				.setPrivate(false);
+		RankedElement selectedRankedElement = rankedElements
+				.get(selectedTablePerspectiveIndex);
+		selectedRankedElement.getColumnTablePerspective().setPrivate(false);
 		// FIXME: we need to think about the workflow
 		isActive = true;
 
@@ -689,5 +704,21 @@ public class VendingMachine
 		// mainColumn.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH);
 		// else
 		// mainColumn.setAbsoluteSizeX(0);
+	}
+
+	/**
+	 * @return the isSelectedRankedElementDirty, see
+	 *         {@link #isSelectedRankedElementDirty}
+	 */
+	public boolean isSelectedRankedElementDirty() {
+		return isSelectedRankedElementDirty;
+	}
+
+	/**
+	 * @param isSelectedRankedElementDirty setter, see
+	 *            {@link #isSelectedRankedElementDirty}
+	 */
+	public void setSelectedRankedElementDirty(boolean isSelectedRankedElementDirty) {
+		this.isSelectedRankedElementDirty = isSelectedRankedElementDirty;
 	}
 }

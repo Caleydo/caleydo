@@ -74,6 +74,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
+import org.caleydo.core.view.opengl.miniview.slider.GLDistributionMiniView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -98,6 +99,7 @@ import org.caleydo.view.stratomex.listener.ConnectionsModeListener;
 import org.caleydo.view.stratomex.listener.GLStratomexKeyListener;
 import org.caleydo.view.stratomex.listener.ReplaceTablePerspectiveListener;
 import org.caleydo.view.stratomex.listener.SplitBrickListener;
+import org.caleydo.view.stratomex.vendingmachine.RankedElement;
 import org.caleydo.view.stratomex.vendingmachine.VendingMachine;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
@@ -211,6 +213,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	/** Needed for selecting the elements when a connection band is picked **/
 	private HashMap<Integer, BrickConnection> hashConnectionBandIDToRecordVA = new HashMap<Integer, BrickConnection>();
+
+	private HashMap<RecordPerspective, HashMap<RecordPerspective, BrickConnection>> hashRowPerspectivesToConnectionBandID = new HashMap<RecordPerspective, HashMap<RecordPerspective, BrickConnection>>();
 
 	private SelectionType volatileBandSelectionType;
 
@@ -599,13 +603,28 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			dimensionGroup.display(gl);
 		}
 
-		if (isConnectionLinesDirty)
+		if (isConnectionLinesDirty) {
+
 			performConnectionLinesUpdate();
+		}
+		
+		if (vendingMachine.isSelectedRankedElementDirty())
+		{
+			RankedElement selectedRankedElement = vendingMachine.getSelectedRankedElement();
+			if (selectedRankedElement != null) {
+				selectElementsByConnectionBandID(selectedRankedElement
+						.getGroupTablePerspective().getRecordPerspective(),
+						selectedRankedElement.getReferenceTablePerspective()
+								.getRecordPerspective());
+			}
+			
+			vendingMachine.setSelectedRankedElementDirty(false);
+		}
 
 		layoutManager.render(gl);
 
 		if (!isRightDetailShown && !isLeftDetailShown) {
-			renderArch(gl);
+			gl.glCallList(displayListIndex);
 		}
 
 		// call after all other rendering because it calls the onDrag methods
@@ -688,9 +707,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
-
 		renderArch(gl);
-
 		gl.glEndList();
 	}
 
@@ -1510,11 +1527,41 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		return selectedConnectionBandID;
 	}
 
+	/**
+	 * @return the hashConnectionBandIDToRecordVA, see
+	 *         {@link #hashConnectionBandIDToRecordVA}
+	 */
 	public HashMap<Integer, BrickConnection> getHashConnectionBandIDToRecordVA() {
 		return hashConnectionBandIDToRecordVA;
 	}
 
-	private void selectElementsByConnectionBandID(int connectionBandID) {
+	/**
+	 * @return the hashTablePerspectivesToConnectionBandID, see
+	 *         {@link #hashRowPerspectivesToConnectionBandID}
+	 */
+	public HashMap<RecordPerspective, HashMap<RecordPerspective, BrickConnection>> getHashTablePerspectivesToConnectionBandID() {
+		return hashRowPerspectivesToConnectionBandID;
+	}
+
+	public void selectElementsByConnectionBandID(RecordPerspective recordPerspective1,
+			RecordPerspective recordPerspective2) {
+
+		BrickConnection connectionBand = null;
+		HashMap<RecordPerspective, BrickConnection> tmp = hashRowPerspectivesToConnectionBandID
+				.get(recordPerspective1);
+		if (tmp != null) {
+			connectionBand = tmp.get(recordPerspective2);
+		}
+		else {
+			connectionBand = hashRowPerspectivesToConnectionBandID.get(recordPerspective2).get(
+					recordPerspective1);
+		}
+
+		if (connectionBand != null)
+			selectedConnectionBandID = connectionBand.getConnectionBandID();
+	}
+
+	public void selectElementsByConnectionBandID(int connectionBandID) {
 		recordSelectionManager.clearSelections();
 
 		ClearSelectionsEvent cse = new ClearSelectionsEvent();

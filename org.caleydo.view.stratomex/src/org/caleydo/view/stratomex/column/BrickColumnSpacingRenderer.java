@@ -19,11 +19,12 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.column;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import javax.media.opengl.GL2;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -116,6 +117,7 @@ public class BrickColumnSpacingRenderer
 			return;
 
 		hashGroupID2GroupMatches.clear();
+		stratomex.getHashTablePerspectivesToConnectionBandID().clear();
 
 		List<GLBrick> leftBricks = leftDimGroup.getBricksForRelations();
 		List<GLBrick> rightBricks = rightDimGroup.getBricksForRelations();
@@ -168,13 +170,31 @@ public class BrickColumnSpacingRenderer
 						.getSimilarityVAs(rightBrick.getTablePerspective().getRecordGroup()
 								.getGroupIndex());
 
-				BrickConnection brickConnection = new BrickConnection();
-				brickConnection.setConnectionBandID(subGroupMatch.getConnectionBandID());
-				brickConnection.setLeftBrick(leftBrick);
-				brickConnection.setRightBrick(rightBrick);
-				brickConnection.setSharedRecordVirtualArray(similarityVA);
+				BrickConnection brickConnectionBand = new BrickConnection();
+				brickConnectionBand.setConnectionBandID(subGroupMatch.getConnectionBandID());
+				brickConnectionBand.setLeftBrick(leftBrick);
+				brickConnectionBand.setRightBrick(rightBrick);
+				brickConnectionBand.setSharedRecordVirtualArray(similarityVA);
 				stratomex.getHashConnectionBandIDToRecordVA().put(
-						subGroupMatch.getConnectionBandID(), brickConnection);
+						subGroupMatch.getConnectionBandID(), brickConnectionBand);
+
+				RecordPerspective leftRecordPerspective = leftBrick.getTablePerspective()
+						.getRecordPerspective();
+				RecordPerspective rightRecordPerspective = rightBrick.getTablePerspective()
+						.getRecordPerspective();
+				HashMap<RecordPerspective, HashMap<RecordPerspective, BrickConnection>> hashRecordPerspectivesToConnectionBandID = stratomex
+						.getHashTablePerspectivesToConnectionBandID();
+
+				if (hashRecordPerspectivesToConnectionBandID
+						.containsKey(leftRecordPerspective)) {
+					hashRecordPerspectivesToConnectionBandID.get(leftRecordPerspective).put(
+							rightRecordPerspective, brickConnectionBand);
+				}
+				else {
+					HashMap<RecordPerspective, BrickConnection> tmp = new HashMap<RecordPerspective, BrickConnection>();
+					tmp.put(rightRecordPerspective, brickConnectionBand);
+					hashRecordPerspectivesToConnectionBandID.put(leftRecordPerspective, tmp);
+				}
 
 				calculateSubMatchSelections(subGroupMatch, similarityVA);
 
@@ -239,8 +259,7 @@ public class BrickColumnSpacingRenderer
 		if (recordVA.size() == 0)
 			return;
 
-		RecordSelectionManager recordSelectionManager = stratomex
-				.getRecordSelectionManager();
+		RecordSelectionManager recordSelectionManager = stratomex.getRecordSelectionManager();
 
 		float ratio = 0;
 
@@ -301,8 +320,6 @@ public class BrickColumnSpacingRenderer
 		renderDimensionGroupConnections(gl);
 		renderDragAndDropMarker(gl);
 
-		
-		
 		// FIXME Stratomex 2.0 testing
 		// if (leftDimGroup != null && rightDimGroup != null) {
 		// float score =
@@ -506,8 +523,8 @@ public class BrickColumnSpacingRenderer
 				float xEnd = x + subBrick.getLayout().getTranslateX()
 						- rightDimGroup.getLayout().getTranslateX();
 
-				gl.glPushName(stratomex.getPickingManager().getPickingID(
-						stratomex.getID(), EPickingType.BRICK_CONNECTION_BAND.name(),
+				gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
+						EPickingType.BRICK_CONNECTION_BAND.name(),
 						subGroupMatch.getConnectionBandID()));
 
 				// Render selected portion
@@ -517,8 +534,7 @@ public class BrickColumnSpacingRenderer
 					float trendRatio = 0;
 					float[] color = new float[] { 0, 0, 0, 1 };
 
-					if (selectionType == SelectionType.NORMAL
-							&& !stratomex.isConnectionsOn()) {
+					if (selectionType == SelectionType.NORMAL && !stratomex.isConnectionsOn()) {
 						continue;
 					}
 

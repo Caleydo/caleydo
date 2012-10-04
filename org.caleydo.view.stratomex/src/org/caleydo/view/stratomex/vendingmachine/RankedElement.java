@@ -89,6 +89,13 @@ public class RankedElement
 		return groupTablePerspective;
 	}
 
+	/**
+	 * @return the referenceTablePerspective, see {@link #referenceTablePerspective}
+	 */
+	public TablePerspective getReferenceTablePerspective() {
+		return referenceTablePerspective;
+	}
+	
 	@Override
 	public int compareTo(RankedElement comparedRankedElement) {
 		if (score < comparedRankedElement.getScore())

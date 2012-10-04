@@ -30,6 +30,8 @@ public class PathwayRenderStyle
 
 	public static final float SCALING_FACTOR_X = 0.0025f;
 	public static final float SCALING_FACTOR_Y = 0.0025f;
+	
+	public static final float PADDING_FACTOR = 0.98f;
 
 	public static final float ENZYME_NODE_WIDTH = 45 * SCALING_FACTOR_X;
 	public static final float ENZYME_NODE_HEIGHT = 17 * SCALING_FACTOR_X;

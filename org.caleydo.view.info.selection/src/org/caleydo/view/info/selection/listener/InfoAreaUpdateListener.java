@@ -23,7 +23,7 @@ import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
-import org.caleydo.view.info.selection.InfoArea;
+import org.caleydo.view.info.selection.RcpSelectionInfoView;
 
 /**
  * Listener for virtual array update events. This listener gets the payload from
@@ -32,7 +32,7 @@ import org.caleydo.view.info.selection.InfoArea;
  * 
  * @author Werner Puff
  */
-public class InfoAreaUpdateListener extends AEventListener<InfoArea> {
+public class InfoAreaUpdateListener extends AEventListener<RcpSelectionInfoView> {
 
 	/**
 	 * Handles {@link VirtualArrayUdpateEvent}s by extracting the events payload
