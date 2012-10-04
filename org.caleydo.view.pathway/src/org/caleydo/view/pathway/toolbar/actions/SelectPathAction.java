@@ -18,8 +18,10 @@ import org.eclipse.ui.PlatformUI;
  * 
  */
 public class SelectPathAction extends Action implements IToolBarItem {
-	public static final String TEXT = "Toggle path selection";
+	public static final String TEXT = "Toggle path selection (Ctrl + O)";
 	public static final String ICON = "resources/icons/view/pathway/path_selection.png";
+
+//	private UpdatePathSelectionModeButtonEventListener updatePathSelectionModeButtonEventListener;
 
 	/**
 	 * Constructor.
@@ -30,6 +32,8 @@ public class SelectPathAction extends Action implements IToolBarItem {
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
 				PlatformUI.getWorkbench().getDisplay(), ICON)));
 		setChecked(isChecked);
+		
+//		registerEventListeners();
 	}
 
 	@Override
@@ -39,4 +43,41 @@ public class SelectPathAction extends Action implements IToolBarItem {
 		GeneralManager.get().getEventPublisher()
 				.triggerEvent(new SelectPathModeEvent(isChecked()));
 	}
+
+//	@Override
+//	public void queueEvent(final AEventListener<? extends IListenerOwner> listener,
+//			final AEvent event) {
+//		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+//			@Override
+//			public void run() {
+//				listener.handleEvent(event);
+//			}
+//		});
+//
+//	}
+//
+//	@Override
+//	public void registerEventListeners() {
+////		updatePathSelectionModeButtonEventListener = new UpdatePathSelectionModeButtonEventListener();
+////		updatePathSelectionModeButtonEventListener.setHandler(this);
+////		GeneralManager
+////				.get()
+////				.getEventPublisher()
+////				.addListener(UpdatePathSelectionModeButtonEvent.class,
+////						updatePathSelectionModeButtonEventListener);
+//
+//	}
+//
+//	/*
+//	 * (non-Javadoc)
+//	 * 
+//	 * @see org.caleydo.core.event.IListenerOwner#unregisterEventListeners()
+//	 */
+//	@Override
+//	public void unregisterEventListeners() {
+//		// TODO Auto-generated method stub
+//
+//	}
+	
+	
 }
