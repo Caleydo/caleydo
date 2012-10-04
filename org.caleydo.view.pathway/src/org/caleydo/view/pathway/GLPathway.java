@@ -20,7 +20,6 @@
 package org.caleydo.view.pathway;
 
 import gleem.linalg.Vec3f;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -34,12 +33,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -77,6 +74,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
@@ -107,13 +105,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultEdge;
-
 import setvis.SetOutline;
 import setvis.bubbleset.BubbleSet;
 import setvis.gui.CanvasComponent;
 import setvis.shape.AbstractShapeGenerator;
 import setvis.shape.BSplineShapeGenerator;
-
 import com.jogamp.opengl.util.awt.TextureRenderer;
 import com.jogamp.opengl.util.texture.Texture;
 
@@ -510,9 +506,14 @@ public class GLPathway extends ATableBasedView implements
 				handlePathwayElementSelection(SelectionType.SELECTION, -1);
 				int pickX = (int) pick.getPickedPoint().getX();
 				int pickY = (int) pick.getPickedPoint().getY();
-				System.out.println("\nDENIS_DEBUG::UnScaled pickX:" + pickX + " pickY:"
-						+ pickY);
-				//
+				
+				float pathwayTextureScalingY = pathway.getHeight() / (float)pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight() * 0.98f);
+				
+				System.out.println(pathwayTextureScalingY);
+				
+				pickX = (int) ((pickX - pixelGLConverter.getPixelWidthForGLWidth(vecTranslation.x())) * pathwayTextureScalingY);
+				pickY = (int) ((pickY - pixelGLConverter.getPixelHeightForGLHeight(vecTranslation.y())) * pathwayTextureScalingY);
+				
 				// code adapted from documentation at
 				// http://docs.oracle.com/javase/6/docs/api/java/awt/image/PixelGrabber.html
 				int[] pixels = new int[1];
@@ -639,7 +640,6 @@ public class GLPathway extends ATableBasedView implements
 			textureOffset += 0.01f;
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
 			overlayBubbleSets(gl);
-
 		}
 
 		float tmp = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
@@ -649,7 +649,6 @@ public class GLPathway extends ATableBasedView implements
 		textureOffset += 0.01f;
 		gl.glTranslatef(0, tmp, textureOffset);
 		gLPathwayContentCreator.renderPathway(gl, pathway, false);
-		renderPaths(gl);
 		gl.glTranslatef(0, -tmp, -textureOffset);
 
 		gl.glScalef(1 / vecScaling.x(), 1 / vecScaling.y(), 1 / vecScaling.z());
@@ -832,52 +831,52 @@ public class GLPathway extends ATableBasedView implements
 
 	}
 
-	private void renderPaths(GL2 gl) {
-
-		if (allPaths == null)
-			return;
-
-		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths)
-			renderSinglePath(gl, path);
-	}
-
-	private void renderSinglePath(GL2 gl, GraphPath<PathwayVertexRep, DefaultEdge> path) {
-
-		if (path == null)
-			return;
-
-		gl.glLineWidth(5);
-
-		gl.glPushName(generalManager
-				.getViewManager()
-				.getPickingManager()
-				.getPickingID(uniqueID, EPickingType.PATHWAY_PATH_SELECTION.name(),
-						allPaths.indexOf(path)));
-
-		if (path == selectedPath)
-			gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
-		else
-			gl.glColor4fv(PathwayRenderStyle.PATH_COLOR, 0);
-
-		for (DefaultEdge edge : path.getEdgeList()) {
-
-			PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
-			PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
-
-			// gl.glBegin(GL.GL_LINES);
-			// gl.glVertex3f(sourceVertexRep.getCenterX() *
-			// PathwayRenderStyle.SCALING_FACTOR_X,
-			// -sourceVertexRep.getCenterY() *
-			// PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
-			// gl.glVertex3f(targetVertexRep.getCenterX() *
-			// PathwayRenderStyle.SCALING_FACTOR_X,
-			// -targetVertexRep.getCenterY() *
-			// PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
-			// gl.glEnd();
-		}
-
-		gl.glPopName();
-	}
+//	private void renderPaths(GL2 gl) {
+//
+//		if (allPaths == null)
+//			return;
+//
+//		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths)
+//			renderSinglePath(gl, path);
+//	}
+//
+//	private void renderSinglePath(GL2 gl, GraphPath<PathwayVertexRep, DefaultEdge> path) {
+//
+//		if (path == null)
+//			return;
+//
+//		gl.glLineWidth(5);
+//
+//		gl.glPushName(generalManager
+//				.getViewManager()
+//				.getPickingManager()
+//				.getPickingID(uniqueID, EPickingType.PATHWAY_PATH_SELECTION.name(),
+//						allPaths.indexOf(path)));
+//
+//		if (path == selectedPath)
+//			gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
+//		else
+//			gl.glColor4fv(PathwayRenderStyle.PATH_COLOR, 0);
+//
+//		for (DefaultEdge edge : path.getEdgeList()) {
+//
+//			PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
+//			PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
+//
+//			// gl.glBegin(GL.GL_LINES);
+//			// gl.glVertex3f(sourceVertexRep.getCenterX() *
+//			// PathwayRenderStyle.SCALING_FACTOR_X,
+//			// -sourceVertexRep.getCenterY() *
+//			// PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
+//			// gl.glVertex3f(targetVertexRep.getCenterX() *
+//			// PathwayRenderStyle.SCALING_FACTOR_X,
+//			// -targetVertexRep.getCenterY() *
+//			// PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
+//			// gl.glEnd();
+//		}
+//
+//		gl.glPopName();
+//	}
 
 	private void rebuildPathwayDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gLPathwayContentCreator.buildPathwayDisplayList(gl, this, pathway);
