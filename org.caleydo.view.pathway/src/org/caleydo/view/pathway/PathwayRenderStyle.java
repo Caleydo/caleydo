@@ -28,15 +28,12 @@ public class PathwayRenderStyle
 
 	public static final int neighborhoodNodeColorArraysize = 4;
 
-	public static final float SCALING_FACTOR_X = 0.0025f;
-	public static final float SCALING_FACTOR_Y = 0.0025f;
+	public static final int ENZYME_NODE_WIDTH = 45;
+	public static final int ENZYME_NODE_HEIGHT = 17;
+	public static final int COMPOUND_NODE_WIDTH = 8;
+	public static final int COMPOUND_NODE_HEIGHT = 8;
 	
-	public static final float PADDING_FACTOR = 0.98f;
-
-	public static final float ENZYME_NODE_WIDTH = 45 * SCALING_FACTOR_X;
-	public static final float ENZYME_NODE_HEIGHT = 17 * SCALING_FACTOR_X;
-	public static final float COMPOUND_NODE_WIDTH = 8 * SCALING_FACTOR_X;
-	public static final float COMPOUND_NODE_HEIGHT = 8 * SCALING_FACTOR_X;
+	public static final float Z_OFFSET = 0.01f;
 
 	public static final float[] ENZYME_NODE_COLOR = new float[] { 0.3f, 0.3f, 0.3f, 1 };
 	public static final float[] COMPOUND_NODE_COLOR = new float[] { 0.3f, 0.3f, 0.3f, 1 };
@@ -48,11 +45,9 @@ public class PathwayRenderStyle
 
 	public static final float[] PATH_COLOR = new float[] { 1, 1, 1, 0.3f };
 
-	public static final float[] STD_DEV_COLOR = new float[] { 49f / 255f, 163f / 255,
-			84f / 255, 1f };
+	public static final float[] STD_DEV_COLOR = new float[] { 49f / 255f, 163f / 255, 84f / 255, 1f };
 	public static final float STD_DEV_BAR_WIDTH = 0.018f;
 
-	
 	/**
 	 * The color of the neighborhood node with the distance to the clicked node
 	 * of [1..neighborhoodNodeColorArraysize]
@@ -177,8 +172,7 @@ public class PathwayRenderStyle
 	 */
 	public float[] getNeighborhoodNodeColorByDepth(final int depth) {
 		if (depth >= neighborhoodNodeColorArraysize)
-			throw new IllegalStateException("getNeighborhoodNodeColorByDepth(" + depth
-					+ ") exceed range!");
+			throw new IllegalStateException("getNeighborhoodNodeColorByDepth(" + depth + ") exceed range!");
 		return this.neighborhoodNodeColorArray[depth];
 	}
 }

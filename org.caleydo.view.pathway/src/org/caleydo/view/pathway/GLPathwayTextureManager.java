@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -54,26 +54,23 @@ public class GLPathwayTextureManager {
 
 		Texture pathwayTexture = null;
 
-		String sPathwayTexturePath = pathway.getImageLink();
+		String pathwayTexturePath = pathway.getImageLink();
 		EPathwayDatabaseType type = pathway.getType();
 
-		sPathwayTexturePath = PathwayManager.get().getPathwayDatabaseByType(type)
-				.getImagePath()
-				+ sPathwayTexturePath;
+		pathwayTexturePath = PathwayManager.get().getPathwayDatabaseByType(type).getImagePath() + pathwayTexturePath;
 
-		Logger.log(new Status(IStatus.INFO, this.toString(),
-				"Load pathway texture with ID: " + pathway.getID()));
+		Logger.log(new Status(IStatus.INFO, this.toString(), "Load pathway texture with ID: " + pathway.getID()));
 
 		if (type == EPathwayDatabaseType.BIOCARTA) {
-			pathwayTexture = PathwayManager.get()
-					.getPathwayResourceLoader(EPathwayDatabaseType.BIOCARTA)
-					.getTexture(sPathwayTexturePath);
-		} else if (type == EPathwayDatabaseType.KEGG) {
-			pathwayTexture = PathwayManager.get()
-					.getPathwayResourceLoader(EPathwayDatabaseType.KEGG)
-					.getTexture(sPathwayTexturePath);
+			pathwayTexture = PathwayManager.get().getPathwayResourceLoader(EPathwayDatabaseType.BIOCARTA)
+					.getTexture(pathwayTexturePath);
+		}
+		else if (type == EPathwayDatabaseType.KEGG) {
+			pathwayTexture = PathwayManager.get().getPathwayResourceLoader(EPathwayDatabaseType.KEGG)
+					.getTexture(pathwayTexturePath);
 
-		} else {
+		}
+		else {
 			throw new IllegalStateException("Unknown pathway database " + type);
 		}
 
@@ -82,9 +79,8 @@ public class GLPathwayTextureManager {
 		return pathwayTexture;
 	}
 
-	public void renderPathway(final GL2 gl, final AGLView containingView,
-			final PathwayGraph pathway, final float fTextureTransparency,
-			final boolean bHighlight) {
+	public void renderPathway(final GL2 gl, final AGLView containingView, final PathwayGraph pathway,
+			final float fTextureTransparency, final boolean bHighlight) {
 
 		Texture tmpPathwayTexture = loadPathwayTexture(pathway);
 
@@ -93,19 +89,15 @@ public class GLPathwayTextureManager {
 
 		if (bHighlight) {
 			gl.glColor4f(1f, 0.85f, 0.85f, fTextureTransparency);
-		} else {
+		}
+		else {
 			gl.glColor4f(1f, 1f, 1f, fTextureTransparency);
 		}
 
 		TextureCoords texCoords = tmpPathwayTexture.getImageTexCoords();
 
-		float textureWidth = PathwayRenderStyle.SCALING_FACTOR_X * pathway.getWidth();
-		float textureHeight = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
-
-		// gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().
-		// getPickingManager()
-		// .getPickingID(containingView.getId(),
-		// EPickingType.PATHWAY_TEXTURE_SELECTION, iPathwayId));
+		float textureWidth = containingView.getPixelGLConverter().getGLWidthForPixelWidth(pathway.getWidth());
+		float textureHeight = containingView.getPixelGLConverter().getGLHeightForPixelHeight(pathway.getHeight());
 
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
@@ -123,7 +115,8 @@ public class GLPathwayTextureManager {
 		if (bHighlight) {
 			gl.glColor4f(1, 0, 0, 1);
 			gl.glLineWidth(3);
-		} else {
+		}
+		else {
 			gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
 			gl.glLineWidth(1);
 		}
@@ -135,8 +128,6 @@ public class GLPathwayTextureManager {
 		gl.glVertex3f(0.0f, textureHeight, 0.0f);
 		gl.glVertex3f(0.0f, 0.0f, 0.0f);
 		gl.glEnd();
-
-		// gl.glPopName();
 	}
 
 	/**
@@ -155,24 +146,14 @@ public class GLPathwayTextureManager {
 		return hashPathwayToTexture.get(pathway);
 	}
 
-	public void unloadUnusedTextures(GL2 gl, LinkedList<Integer> iLLVisiblePathways) {
+	public void unloadUnusedTextures(GL2 gl, LinkedList<Integer> visiblePathways) {
 
-		int iTmpPathwayId = 0;
-		Integer[] iArPathwayId = hashPathwayToTexture.keySet().toArray(
-				new Integer[hashPathwayToTexture.size()]);
+		for (Integer element : hashPathwayToTexture.keySet().toArray(new Integer[hashPathwayToTexture.size()])) {
+			int pathwayId = element;
 
-		for (Integer element : iArPathwayId) {
-			iTmpPathwayId = element;
-
-			if (!iLLVisiblePathways.contains(iTmpPathwayId)) {
+			if (!visiblePathways.contains(pathwayId)) {
 				// Remove and dispose texture
-				hashPathwayToTexture.remove(iTmpPathwayId).dispose(gl);
-
-				// generalManager.logMsg(
-				// this.getClass().getSimpleName()
-				// +": unloadUnusedTextures(): Unloading pathway texture with ID "
-				// + iTmpPathwayId,
-				// LoggerType.VERBOSE);
+				hashPathwayToTexture.remove(pathwayId).dispose(gl);
 			}
 		}
 	}

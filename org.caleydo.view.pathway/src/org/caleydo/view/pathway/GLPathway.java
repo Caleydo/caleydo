@@ -109,6 +109,7 @@ import setvis.bubbleset.BubbleSet;
 import setvis.gui.CanvasComponent;
 import setvis.shape.AbstractShapeGenerator;
 import setvis.shape.BSplineShapeGenerator;
+import com.jogamp.opengl.util.GLPixelStorageModes;
 import com.jogamp.opengl.util.awt.TextureRenderer;
 import com.jogamp.opengl.util.texture.Texture;
 
@@ -507,8 +508,7 @@ public class GLPathway
 				}
 
 				pathwayTextureScaling = pathway.getHeight()
-						/ (float) pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight()
-								* PathwayRenderStyle.PADDING_FACTOR);
+						/ (float) pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight());
 
 				pickX = (int) ((pickX - pixelGLConverter.getPixelWidthForGLWidth(vecTranslation.x())) * pathwayTextureScaling);
 				pickY = (int) ((pickY - pixelGLConverter.getPixelHeightForGLHeight(vecTranslation.y())) * pathwayTextureScaling);
@@ -636,19 +636,19 @@ public class GLPathway
 			float fPathwayTransparency = 1.0f;
 
 			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, pathway, fPathwayTransparency, false);
-			textureOffset += 0.01f;
+			textureOffset += PathwayRenderStyle.Z_OFFSET;
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
 			overlayBubbleSets(gl);
 		}
 
-		float tmp = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
+		float pathwayHeight = pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight());
 
 		// Pathway texture height is subtracted from Y to align pathways to
 		// front level
-		textureOffset += 0.01f;
-		gl.glTranslatef(0, tmp, textureOffset);
+		textureOffset += PathwayRenderStyle.Z_OFFSET;
+		gl.glTranslatef(0, pathwayHeight, textureOffset);
 		gLPathwayContentCreator.renderPathway(gl, pathway, false);
-		gl.glTranslatef(0, -tmp, -textureOffset);
+		gl.glTranslatef(0, -pathwayHeight, -textureOffset);
 
 		gl.glScalef(1 / vecScaling.x(), 1 / vecScaling.y(), 1 / vecScaling.z());
 		gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(), -vecTranslation.z());
@@ -799,8 +799,8 @@ public class GLPathway
 		}
 		bubbleSetsTexture = texRenderer.getTexture();
 
-		float textureWidth = PathwayRenderStyle.SCALING_FACTOR_X * pathway.getWidth();
-		float textureHeight = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
+		float textureWidth = pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth());
+		float textureHeight = pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight());
 
 		gl.glPushName(generalManager.getViewManager().getPickingManager()
 				.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
@@ -905,22 +905,22 @@ public class GLPathway
 				PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager.getPathwayVertexRep(item.getID());
 
 				int viewID = uniqueID;
-				// If rendered remote (hierarchical heat map) - use the remote
-				// view ID
-				// if (glRemoteRenderingView != null && glRemoteRenderingView
-				// instanceof AGLViewBrowser)
-				// viewID = glRemoteRenderingView.getID();
 
-				ElementConnectionInformation elementRep = new ElementConnectionInformation(
-						dataDomain.getRecordIDType(), viewID, vertexRep.getLowerLeftCornerX()
-								* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x() + vecTranslation.x(),
-						(pathwayHeight - vertexRep.getLowerLeftCornerY()) * PathwayRenderStyle.SCALING_FACTOR_Y
-								* vecScaling.y() + vecTranslation.y(), 0);
-
-				for (Integer iConnectionID : item.getConnectionIDs()) {
-					connectedElementRepresentationManager.addSelection(iConnectionID, elementRep,
-							item.getSelectionType());
-				}
+				// ElementConnectionInformation elementRep = new
+				// ElementConnectionInformation(
+				// dataDomain.getRecordIDType(), viewID,
+				// vertexRep.getLowerLeftCornerX()
+				// * PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x() +
+				// vecTranslation.x(),
+				// (pathwayHeight - vertexRep.getLowerLeftCornerY()) *
+				// PathwayRenderStyle.SCALING_FACTOR_Y
+				// * vecScaling.y() + vecTranslation.y(), 0);
+				//
+				// for (Integer iConnectionID : item.getConnectionIDs()) {
+				// connectedElementRepresentationManager.addSelection(iConnectionID,
+				// elementRep,
+				// item.getSelectionType());
+				// }
 			}
 		}
 	}
@@ -1016,65 +1016,47 @@ public class GLPathway
 		if (hashGLcontext2TextureManager.get(gl) == null)
 			return;
 
-		float fPathwayScalingFactor = 0;
+		int pathwayPixelWidth = pathway.getWidth();
+		int pathwayPixelHeight = pathway.getHeight();
 
-		if (pathway.getType().equals(EPathwayDatabaseType.BIOCARTA)) {
-			fPathwayScalingFactor = 5;
-		}
-		else {
-			fPathwayScalingFactor = 3.2f;
-		}
-
-		int iImageWidth = pathway.getWidth();
-		int iImageHeight = pathway.getHeight();
-
-		if (iImageWidth == -1 || iImageHeight == -1) {
+		if (pathwayPixelWidth == -1 || pathwayPixelHeight == -1) {
 			Logger.log(new Status(IStatus.ERROR, this.toString(),
 					"Problem because pathway texture width or height is invalid!"));
 		}
 
-		float fTmpPathwayWidth = iImageWidth * PathwayRenderStyle.SCALING_FACTOR_X * fPathwayScalingFactor;
-		float fTmpPathwayHeight = iImageHeight * PathwayRenderStyle.SCALING_FACTOR_Y * fPathwayScalingFactor;
+		float pathwayWidth = pixelGLConverter.getGLWidthForPixelWidth(pathwayPixelWidth);
+		float pathwayHeight = pixelGLConverter.getGLHeightForPixelHeight(pathwayPixelHeight);
 
-		float pathwayAspectRatio = fTmpPathwayWidth / fTmpPathwayHeight;
+		float pathwayAspectRatio = pathwayWidth / pathwayHeight;
 		float viewFrustumWidth = viewFrustum.getRight() - viewFrustum.getLeft();
 		float viewFrustumHeight = viewFrustum.getTop() - viewFrustum.getBottom();
 		float viewFrustumAspectRatio = viewFrustumWidth / viewFrustumHeight;
 		boolean pathwayFitsViewFrustum = true;
 
-		if (viewFrustumAspectRatio < pathwayAspectRatio && fTmpPathwayWidth > viewFrustumWidth) {
+		if (viewFrustumAspectRatio < pathwayAspectRatio && pathwayWidth > viewFrustumWidth) {
 
-			vecScaling.setX((viewFrustum.getRight() - viewFrustum.getLeft())
-					/ (iImageWidth * PathwayRenderStyle.SCALING_FACTOR_X) * PathwayRenderStyle.PADDING_FACTOR);
+			vecScaling.setX((viewFrustum.getRight() - viewFrustum.getLeft()) / pathwayWidth);
 			vecScaling.setY(vecScaling.x());
 
-			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
-					* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f,
-					(viewFrustum.getTop() - viewFrustum.getBottom() - iImageHeight
-							* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
+			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - pathwayWidth * vecScaling.x()) / 2.0f,
+					(viewFrustum.getTop() - viewFrustum.getBottom() - pathwayHeight * vecScaling.y()) / 2.0f, 0);
 			pathwayFitsViewFrustum = false;
 		}
-		if (viewFrustumAspectRatio >= pathwayAspectRatio && fTmpPathwayHeight > viewFrustumHeight) {
-			//
-			// else if (fTmpPathwayHeight > viewFrustum.getTop()
-			// - viewFrustum.getBottom()) {
-			vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom())
-					/ (iImageHeight * PathwayRenderStyle.SCALING_FACTOR_Y) * PathwayRenderStyle.PADDING_FACTOR);
+		if (viewFrustumAspectRatio >= pathwayAspectRatio && pathwayHeight > viewFrustumHeight) {
+
+			vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom()) / pathwayHeight);
 			vecScaling.setX(vecScaling.y());
 
-			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
-					* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f,
-					(viewFrustum.getTop() - viewFrustum.getBottom() - iImageHeight
-							* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
+			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - pathwayWidth * vecScaling.x()) / 2.0f,
+					(viewFrustum.getTop() - viewFrustum.getBottom() - pathwayHeight * vecScaling.y()) / 2.0f, 0);
 			pathwayFitsViewFrustum = false;
-
-		} // else {
+		}
 
 		if (pathwayFitsViewFrustum) {
-			vecScaling.set(fPathwayScalingFactor, fPathwayScalingFactor, 1f);
+			vecScaling.set(1, 1, 1f);
 
-			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f - fTmpPathwayWidth / 2.0f,
-					(viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f - fTmpPathwayHeight / 2.0f, 0);
+			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f - pathwayWidth / 2.0f,
+					(viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f - pathwayHeight / 2.0f, 0);
 		}
 	}
 
@@ -1097,40 +1079,50 @@ public class GLPathway
 	}
 
 	private void createConnectionLines(SelectionType selectionType, int iConnectionID) {
-		// check in preferences if we should draw connection lines for mouse
-		// over
-		if (!connectedElementRepresentationManager.isSelectionTypeRenderedWithVisuaLinks(selectionType))
-			return;
-		// check for selections
-		if (!generalManager.getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_FOR_SELECTIONS)
-				&& selectionType == SelectionType.SELECTION)
-			return;
-
-		PathwayVertexRep tmpPathwayVertexRep;
-		int pathwayHeight = pathway.getHeight();
-
-		int viewID = uniqueID;
-		// If rendered remote (hierarchical heat map) - use the remote view ID
-		// if (glRemoteRenderingView != null && glRemoteRenderingView instanceof
-		// AGLViewBrowser)
-		// viewID = glRemoteRenderingView.getID();
-
-		for (int vertexRepID : geneSelectionManager.getElements(selectionType)) {
-			tmpPathwayVertexRep = pathwayItemManager.getPathwayVertexRep(vertexRepID);
-
-			ElementConnectionInformation elementRep = new ElementConnectionInformation(dataDomain.getRecordIDType(),
-					viewID, tmpPathwayVertexRep.getLowerLeftCornerX() * PathwayRenderStyle.SCALING_FACTOR_X
-							* vecScaling.x() + vecTranslation.x(),
-					(pathwayHeight - tmpPathwayVertexRep.getLowerLeftCornerY()) * PathwayRenderStyle.SCALING_FACTOR_Y
-							* vecScaling.y() + vecTranslation.y(), 0);
-
-			// for (Integer iConnectionID : selectionManager
-			// .getConnectionForElementID(iVertexRepID))
-			// {
-			connectedElementRepresentationManager.addSelection(iConnectionID, elementRep, selectionType);
-			// }
-		}
+		// // check in preferences if we should draw connection lines for mouse
+		// // over
+		// if
+		// (!connectedElementRepresentationManager.isSelectionTypeRenderedWithVisuaLinks(selectionType))
+		// return;
+		// // check for selections
+		// if
+		// (!generalManager.getPreferenceStore().getBoolean(PreferenceConstants.VISUAL_LINKS_FOR_SELECTIONS)
+		// && selectionType == SelectionType.SELECTION)
+		// return;
+		//
+		// PathwayVertexRep tmpPathwayVertexRep;
+		// int pathwayHeight = pathway.getHeight();
+		//
+		// int viewID = uniqueID;
+		// // If rendered remote (hierarchical heat map) - use the remote view
+		// ID
+		// // if (glRemoteRenderingView != null && glRemoteRenderingView
+		// instanceof
+		// // AGLViewBrowser)
+		// // viewID = glRemoteRenderingView.getID();
+		//
+		// for (int vertexRepID :
+		// geneSelectionManager.getElements(selectionType)) {
+		// tmpPathwayVertexRep =
+		// pathwayItemManager.getPathwayVertexRep(vertexRepID);
+		//
+		// ElementConnectionInformation elementRep = new
+		// ElementConnectionInformation(dataDomain.getRecordIDType(),
+		// viewID, tmpPathwayVertexRep.getLowerLeftCornerX() *
+		// PathwayRenderStyle.SCALING_FACTOR_X
+		// * vecScaling.x() + vecTranslation.x(),
+		// (pathwayHeight - tmpPathwayVertexRep.getLowerLeftCornerY()) *
+		// PathwayRenderStyle.SCALING_FACTOR_Y
+		// * vecScaling.y() + vecTranslation.y(), 0);
+		//
+		// // for (Integer iConnectionID : selectionManager
+		// // .getConnectionForElementID(iVertexRepID))
+		// // {
+		// connectedElementRepresentationManager.addSelection(iConnectionID,
+		// elementRep, selectionType);
+		// // }
 		// }
+		// // }
 	}
 
 	@Override
