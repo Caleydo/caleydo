@@ -1419,7 +1419,8 @@ public class GLPathway extends ATableBasedView implements
 				{ //click on end node		
 					if(selectionType==SelectionType.SELECTION && (allPaths != null && allPaths.size() > 0)){//click on start node
 						isPathStartSelected=false;
-					}				
+					}
+					if(previouslySelectedVertexRep==null)return;
 					KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 							pathway, previouslySelectedVertexRep, MAX_PATHS);
 	
