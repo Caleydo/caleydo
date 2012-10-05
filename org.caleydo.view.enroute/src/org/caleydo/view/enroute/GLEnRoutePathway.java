@@ -66,8 +66,6 @@ import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
-import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.event.FitToViewWidthEvent;
 import org.caleydo.view.enroute.event.RemoveEnRouteNodeEvent;
 import org.caleydo.view.enroute.listener.EnRoutePathEventListener;
@@ -101,21 +99,25 @@ public class GLEnRoutePathway
 	public static String VIEW_TYPE = "org.caleydo.view.enroute";
 	public static String VIEW_NAME = "enRoute";
 
-	public final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
-	public final static int BRANCH_COLUMN_WIDTH_PIXELS = 100;
-	public final static int PATHWAY_COLUMN_WIDTH_PIXELS = 150;
-	public final static int DATA_COLUMN_WIDTH_PIXELS = 350;
-	public final static int MIN_NODE_SPACING_PIXELS = 50;
-	public final static int TOP_SPACING_PIXELS = 60;
-	public final static int TOP_SPACING_MAPPED_DATA = 10;
-	public final static int SIDE_SPACING_MAPPED_DATA = 10;
-	public final static int BOTTOM_SPACING_PIXELS = 60;
-	public final static int PREVIEW_NODE_DATA_ROW_HEIGHT_PIXELS = 40;
-	public final static int BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS = 20;
-	public final static int EXPANDED_BRANCH_NODE_SPACING_PIXELS = 20;
-	public final static int EXPANDED_BRANCH_NODE_WIDTH_PIXELS = 150;
-	public final static int SPACING_PIXELS = 2;
-	public final static int BRANCH_AREA_SIDE_SPACING_PIXELS = 8;
+	protected final static String EMPTY_VIEW_TEXT_LINE_ONE = "Please select a path of nodes";
+	protected final static String EMPTY_VIEW_TEXT_LINE_TWO = "in the pathway view.";
+
+	protected final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
+	protected final static int BRANCH_COLUMN_WIDTH_PIXELS = 100;
+	protected final static int PATHWAY_COLUMN_WIDTH_PIXELS = 150;
+	protected final static int DATA_COLUMN_WIDTH_PIXELS = 350;
+	protected final static int MIN_NODE_SPACING_PIXELS = 50;
+	protected final static int TOP_SPACING_PIXELS = 60;
+	protected final static int TOP_SPACING_MAPPED_DATA = 10;
+	protected final static int SIDE_SPACING_MAPPED_DATA = 10;
+	protected final static int BOTTOM_SPACING_PIXELS = 60;
+	protected final static int PREVIEW_NODE_DATA_ROW_HEIGHT_PIXELS = 40;
+	protected final static int BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS = 20;
+	protected final static int EXPANDED_BRANCH_NODE_SPACING_PIXELS = 20;
+	protected final static int EXPANDED_BRANCH_NODE_WIDTH_PIXELS = 150;
+	protected final static int SPACING_PIXELS = 2;
+	protected final static int BRANCH_AREA_SIDE_SPACING_PIXELS = 8;
+	protected final static int EMPTY_VIEW_TEXT_HEIGHT_PIXELS = 26;
 
 	public final static int DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH = 5;
 
@@ -256,31 +258,32 @@ public class GLEnRoutePathway
 
 		path = new ArrayList<PathwayVertexRep>();
 		// Create sample path
-		for (PathwayGraph graph : PathwayManager.get().getAllItems()) {
-			if (graph.getType() == EPathwayDatabaseType.KEGG && graph.getTitle().startsWith("Glioma")) {
-				pathway = graph;
-				break;
-			}
-		}
-
-		PathwayVertexRep currentVertex = null;
-		for (PathwayVertexRep vertex : pathway.vertexSet()) {
-			currentVertex = vertex;
-			break;
-		}
-
-		for (int i = 0; i < 6; i++) {
-
-			path.add(currentVertex);
-
-			for (DefaultEdge edge : pathway.edgesOf(currentVertex)) {
-				PathwayVertexRep v2 = pathway.getEdgeTarget(edge);
-
-				currentVertex = v2;
-			}
-		}
-
-		setPath(pathway, path);
+		// for (PathwayGraph graph : PathwayManager.get().getAllItems()) {
+		// if (graph.getType() == EPathwayDatabaseType.KEGG
+		// && graph.getTitle().startsWith("Glioma")) {
+		// pathway = graph;
+		// break;
+		// }
+		// }
+		//
+		// PathwayVertexRep currentVertex = null;
+		// for (PathwayVertexRep vertex : pathway.vertexSet()) {
+		// currentVertex = vertex;
+		// break;
+		// }
+		//
+		// for (int i = 0; i < 6; i++) {
+		//
+		// path.add(currentVertex);
+		//
+		// for (DefaultEdge edge : pathway.edgesOf(currentVertex)) {
+		// PathwayVertexRep v2 = pathway.getEdgeTarget(edge);
+		//
+		// currentVertex = v2;
+		// }
+		// }
+		//
+		// setPath(pathway, path);
 
 		// setMappedDataRendererGeometry();
 
@@ -463,36 +466,73 @@ public class GLEnRoutePathway
 	public void display(GL2 gl) {
 
 		// setMappedDataRendererGeometry();
-		if (isLayoutDirty) {
-			updateLayout();
+		if (path.isEmpty()) {
+			if (isDisplayListDirty) {
+				renderEmptyViewInfo(gl, displayListIndex);
+				isDisplayListDirty = false;
+			}
 
-			float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
-			float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
-
-			float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
-			float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
-
-			gl.glNewList(layoutDisplayListIndex, GL2.GL_COMPILE);
-			gl.glPushMatrix();
-			gl.glTranslatef(dataRowPositionX, topSpacing, 0);
-			mappedDataRenderer.renderBaseRepresentation(gl);
-			gl.glPopMatrix();
-			gl.glEndList();
-
-			isLayoutDirty = false;
+			gl.glCallList(displayListIndex);
 		}
+		else {
 
-		if (isDisplayListDirty) {
-			buildDisplayList(gl, displayListIndex);
-			isDisplayListDirty = false;
+			if (isLayoutDirty) {
+				updateLayout();
+
+				float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
+				float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
+
+				float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
+				float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
+
+				gl.glNewList(layoutDisplayListIndex, GL2.GL_COMPILE);
+				gl.glPushMatrix();
+				gl.glTranslatef(dataRowPositionX, topSpacing, 0);
+				mappedDataRenderer.renderBaseRepresentation(gl);
+				gl.glPopMatrix();
+				gl.glEndList();
+
+				isLayoutDirty = false;
+			}
+
+			if (isDisplayListDirty) {
+				buildDisplayList(gl, displayListIndex);
+				isDisplayListDirty = false;
+			}
+			// IntBuffer buffer = IntBuffer.wrap(new int[]
+			// {layoutDisplayListIndex,
+			// displayListIndex});
+			// gl.glCallLists(2, GL2.GL_INT, buffer);
+			gl.glCallList(layoutDisplayListIndex);
+			gl.glCallList(displayListIndex);
 		}
-		// IntBuffer buffer = IntBuffer.wrap(new int[] {layoutDisplayListIndex,
-		// displayListIndex});
-		// gl.glCallLists(2, GL2.GL_INT, buffer);
-		gl.glCallList(layoutDisplayListIndex);
-		gl.glCallList(displayListIndex);
 
 		checkForHits(gl);
+	}
+
+	/**
+	 * Renders information what to do in order to see data in the view.
+	 * 
+	 * @param gl
+	 * @param displayListIndex
+	 */
+	private void renderEmptyViewInfo(GL2 gl, int displayListIndex) {
+		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
+		float textHeight = pixelGLConverter.getGLHeightForPixelHeight(EMPTY_VIEW_TEXT_HEIGHT_PIXELS);
+		float safetySpacing = pixelGLConverter.getGLHeightForPixelHeight(3);
+		float requiredWidth = textRenderer.getRequiredTextWidth(EMPTY_VIEW_TEXT_LINE_ONE, textHeight);
+		float linePositionX = viewFrustum.getWidth() / 2.0f - requiredWidth / 2.0f;
+		float linePositionY = viewFrustum.getHeight() / 2.0f;
+		textRenderer.setColor(0, 0, 0, 1);
+		textRenderer.renderTextInBounds(gl, EMPTY_VIEW_TEXT_LINE_ONE, linePositionX, linePositionY, 0, requiredWidth
+				+ safetySpacing, textHeight);
+
+		requiredWidth = textRenderer.getRequiredTextWidth(EMPTY_VIEW_TEXT_LINE_TWO, textHeight);
+		linePositionX = viewFrustum.getWidth() / 2.0f - requiredWidth / 2.0f;
+		linePositionY = viewFrustum.getHeight() / 2.0f - textHeight;
+		textRenderer.renderTextInBounds(gl, EMPTY_VIEW_TEXT_LINE_TWO, linePositionX, linePositionY, 0, requiredWidth
+				+ safetySpacing, textHeight);
+		gl.glEndList();
 	}
 
 	/**
@@ -581,11 +621,11 @@ public class GLEnRoutePathway
 		mappedDataRenderer.updateLayout();
 	}
 
-	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
+	private void buildDisplayList(final GL2 gl, int displayListIndex) {
 
 		dataRowHeight = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_DATA_ROW_HEIGHT_PIXELS);
 
-		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
+		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
 		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
 		float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
@@ -1441,11 +1481,6 @@ public class GLEnRoutePathway
 		return false;
 	}
 
-	@Override
-	public void notifyOfChange(EventBasedSelectionManager selectionManager) {
-		setDisplayListDirty();
-	}
-
 	/**
 	 * @return the geneSelectionManager, see {@link #geneSelectionManager}
 	 */
@@ -1538,6 +1573,12 @@ public class GLEnRoutePathway
 		this.fitToViewWidth = fitToViewWidth;
 		currentMinWidth = 0;
 		setLayoutDirty();
+	}
+
+	@Override
+	public void notifyOfChange(EventBasedSelectionManager selectionManager) {
+		setDisplayListDirty();
+
 	}
 
 }
