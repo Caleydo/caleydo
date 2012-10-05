@@ -153,8 +153,11 @@ public class RcpSelectionInfoView
 
 					selectionManagerToSubTree.put(selectionManager, idCategorySubTree);
 				}
-
+				
 				TreeItem subTree = selectionManagerToSubTree.get(selectionManager);
+				
+				if (subTree == null)
+					return;
 				
 				// Flush old items from this selection type
 				for (TreeItem item : subTree.getItems()) {
