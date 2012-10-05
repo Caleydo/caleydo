@@ -31,7 +31,6 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.id.MappingType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.CaleydoRCPViewPart;
@@ -56,7 +55,7 @@ public class RcpSelectionInfoView
 
 	public static String VIEW_TYPE = "org.caleydo.view.info.selection";
 
-	private HashMap<EventBasedSelectionManager, TreeItem> selectionManagerToSubTree = new HashMap<EventBasedSelectionManager, TreeItem>();
+	private HashMap<SelectionManager, TreeItem> selectionManagerToSubTree = new HashMap<SelectionManager, TreeItem>();
 
 	private Label lblViewInfoContent;
 
@@ -91,13 +90,6 @@ public class RcpSelectionInfoView
 			EventBasedSelectionManager selectionManager = new EventBasedSelectionManager(this,
 					idCategory.getPrimaryMappingType());
 			selectionManager.registerEventListeners();
-
-			TreeItem idCategorySubTree = new TreeItem(selectionTree, SWT.NONE);
-			idCategorySubTree.setExpanded(true);
-			idCategorySubTree.setData(-1);
-			idCategorySubTree.setText(idCategory.getDenominationPlural());
-
-			selectionManagerToSubTree.put(selectionManager, idCategorySubTree);
 		}
 	}
 
@@ -142,20 +134,35 @@ public class RcpSelectionInfoView
 			@Override
 			public void run() {
 
-				TreeItem subTree = selectionManagerToSubTree.get(selectionManager);
+				IDType idType = selectionManager.getIDType();
+				IDCategory idCategory = idType.getIDCategory();
 
+				if (idType.getIDCategory().getPrimaryMappingType() == null)
+					return;
+
+				Set<Integer> mouseOverIDs = selectionManager.getElements(SelectionType.MOUSE_OVER);
+				Set<Integer> selectedIDs = selectionManager.getElements(SelectionType.SELECTION);
+
+				if (!selectionManagerToSubTree.containsKey(selectionManager)
+						&& (mouseOverIDs.size() > 0 || selectedIDs.size() > 0)) {
+					
+					TreeItem idCategorySubTree = new TreeItem(selectionTree, SWT.NONE);
+					idCategorySubTree.setExpanded(true);
+					idCategorySubTree.setData(-1);
+					idCategorySubTree.setText(idCategory.getDenominationPlural());
+
+					selectionManagerToSubTree.put(selectionManager, idCategorySubTree);
+				}
+
+				TreeItem subTree = selectionManagerToSubTree.get(selectionManager);
+				
 				// Flush old items from this selection type
 				for (TreeItem item : subTree.getItems()) {
 					item.dispose();
 				}
 				subTree.clearAll(true);
-
-				IDType idType = selectionManager.getIDType();
-
-				Set<Integer> mouseOverIDs = selectionManager.getElements(SelectionType.MOUSE_OVER);
+				
 				createItems(subTree, SelectionType.MOUSE_OVER, mouseOverIDs, idType);
-
-				Set<Integer> selectedIDs = selectionManager.getElements(SelectionType.SELECTION);
 				createItems(subTree, SelectionType.SELECTION, selectedIDs, idType);
 
 				int numberElements = IDMappingManagerRegistry.get().getIDMappingManager(idType).getPrimaryTypeCounter();
@@ -180,9 +187,13 @@ public class RcpSelectionInfoView
 
 		for (Integer id : IDs) {
 
+			Set<Object> resolvedIDs = idMappingManager.getIDAsSet(idType, idType.getIDCategory().getHumanReadableIDType(), id);
+			String humanReadableID = "<unresolved>";
+			if (resolvedIDs != null && resolvedIDs.size() > 0)
+				humanReadableID = (String) resolvedIDs.toArray()[0];
+			
 			TreeItem item = new TreeItem(tree, SWT.NONE);
-			item.setText(idMappingManager.getIDAsSet(idType, idType.getIDCategory().getHumanReadableIDType(), id)
-					.toArray()[0] + "");
+			item.setText(humanReadableID + "");
 			item.setBackground(color);
 			item.setData(id);
 			item.setData("selection_type", selectionType);
