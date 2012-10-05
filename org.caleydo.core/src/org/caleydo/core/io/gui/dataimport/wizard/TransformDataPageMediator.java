@@ -5,6 +5,8 @@ package org.caleydo.core.io.gui.dataimport.wizard;
 
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * Mediator for {@link TransformDataPage}. This class is responsible for setting
@@ -79,6 +81,10 @@ public class TransformDataPageMediator {
 		page.swapRowsWithColumnsButton.setEnabled(true);
 		page.swapRowsWithColumnsButton.setSelection(dataSetDescription
 				.isTransposeMatrix());
+
+		page.useDataCenterButton.setSelection(false);
+		page.dataCenterTextField.setEnabled(false);
+		page.dataCenterTextField.setText("0");
 	}
 
 	/**
@@ -95,11 +101,6 @@ public class TransformDataPageMediator {
 		page.minTextField.setEnabled(page.minButton.getSelection());
 	}
 
-	public void verifyClippingTextField(String text) {
-		char[] chars = new char[text.length()];
-		text.getChars(0, chars.length, chars, 0);
-	}
-
 	/**
 	 * Sets the {@link #scalingMode}.
 	 */
@@ -113,6 +114,10 @@ public class TransformDataPageMediator {
 	 */
 	public void swapRowsWithColumnsButtonSelected() {
 		updateColumnCountWarning();
+	}
+
+	public void useDataCenterButtonSelected() {
+		page.dataCenterTextField.setEnabled(page.useDataCenterButton.getSelection());
 	}
 
 	/**
@@ -205,10 +210,40 @@ public class TransformDataPageMediator {
 				dataSetDescription.setMax(max);
 			}
 		}
+		if (page.useDataCenterButton.getSelection()) {
+			dataSetDescription.setDataCenter(Double.parseDouble(page.dataCenterTextField
+					.getText()));
+		}
 
 		dataSetDescription.setMathFilterMode(scalingMode);
 		dataSetDescription.setTransposeMatrix(page.swapRowsWithColumnsButton
 				.getSelection());
+	}
+
+	public boolean isDataValid() {
+		if (page.maxButton.getSelection()) {
+			try {
+				Float.parseFloat(page.maxTextField.getText());
+			} catch (NumberFormatException e) {
+				return false;
+			}
+		}
+		if (page.minButton.getSelection()) {
+			try {
+				Float.parseFloat(page.minTextField.getText());
+			} catch (NumberFormatException e) {
+				return false;
+			}
+		}
+		if (page.useDataCenterButton.getSelection()) {
+			try {
+				Double.parseDouble(page.dataCenterTextField.getText());
+			} catch (NumberFormatException e) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 }

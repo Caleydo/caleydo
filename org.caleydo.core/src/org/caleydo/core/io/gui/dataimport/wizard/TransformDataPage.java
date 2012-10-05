@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Text;
  * @author Christian Partl
  * 
  */
-public class TransformDataPage extends AImportDataPage {
+public class TransformDataPage extends AImportDataPage implements Listener {
 
 	public static final String PAGE_NAME = "Transform Data";
 
@@ -50,6 +50,16 @@ public class TransformDataPage extends AImportDataPage {
 	 * Button to determine whether the dataset should be transposed.
 	 */
 	protected Button swapRowsWithColumnsButton;
+
+	/**
+	 * Button to determine whether a data center is used.
+	 */
+	protected Button useDataCenterButton;
+
+	/**
+	 * Text field used to define the data center.
+	 */
+	protected Text dataCenterTextField;
 
 	/**
 	 * Button to enable the {@link #maxTextField};
@@ -92,6 +102,11 @@ public class TransformDataPage extends AImportDataPage {
 	protected Group dataTranspositionGroup;
 
 	/**
+	 * Group that contains widgets associated with determining the data center.
+	 */
+	protected Group dataCenterGroup;
+
+	/**
 	 * Mediator of this class.
 	 */
 	private TransformDataPageMediator mediator;
@@ -124,6 +139,8 @@ public class TransformDataPage extends AImportDataPage {
 
 		createTranspositionGroup(parentComposite);
 
+		createDataCenterGroup(parentComposite);
+
 		mediator.guiCreated();
 
 		setControl(parentComposite);
@@ -153,6 +170,57 @@ public class TransformDataPage extends AImportDataPage {
 				mediator.swapRowsWithColumnsButtonSelected();
 			}
 		});
+
+	}
+
+	private void createDataCenterGroup(Composite parent) {
+		dataCenterGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		dataCenterGroup.setText("Data Center");
+		dataCenterGroup.setLayout(new GridLayout(2, false));
+		dataCenterGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+		Label dateCenterExplanationLabel = new Label(dataCenterGroup, SWT.WRAP);
+		dateCenterExplanationLabel
+				.setText("The data center is a balue that, if set, determines a neutral center point of the data. A"
+						+ " common example is that 0 is the neutral value, lower values are in the"
+						+ " negative and larger values are in the positive range. If the data center is "
+						+ " set it is assumed that the extend into both, positive and negative"
+						+ " direction is the same. For example, for a dataset [-0.5, 0.7] with a center set at"
+						+ " 0, the value range will be set to -0.7 to 0.7.");
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
+		gridData.widthHint = 200;
+		dateCenterExplanationLabel.setLayoutData(gridData);
+		useDataCenterButton = new Button(dataCenterGroup, SWT.CHECK);
+		// useDataCenterButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
+		// true, true, 1,
+		// 1));
+		useDataCenterButton.setText("Use data center ");
+		useDataCenterButton.addListener(SWT.Selection, this);
+		useDataCenterButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				mediator.useDataCenterButtonSelected();
+			}
+		});
+
+		dataCenterTextField = new Text(dataCenterGroup, SWT.BORDER);
+		gridData = new GridData(SWT.LEFT, SWT.FILL, false, true);
+		gridData.widthHint = 70;
+		dataCenterTextField.setLayoutData(gridData);
+		dataCenterTextField.addListener(SWT.Modify, this);
+		// dataCenterTextField.addVerifyListener(new VerifyListener() {
+		// @Override
+		// public void verifyText(VerifyEvent e) {
+		// mediator.verifyTextField(dataCenterTextField, e);
+		// }
+		// });
+		// dataCenterTextField.addModifyListener(new ModifyListener() {
+		// @Override
+		// public void modifyText(ModifyEvent e) {
+		// mediator.verifyClippingTextField(dataCenterTextField.getText());
+		// }
+		// });
 
 	}
 
@@ -187,7 +255,7 @@ public class TransformDataPage extends AImportDataPage {
 
 		maxButton = new Button(clippingGroup, SWT.CHECK);
 		maxButton.setText("Max");
-
+		maxButton.addListener(SWT.Selection, this);
 		maxButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -197,19 +265,17 @@ public class TransformDataPage extends AImportDataPage {
 		});
 
 		maxTextField = new Text(clippingGroup, SWT.BORDER);
-
-		maxTextField.addListener(SWT.Verify, new Listener() {
-			@Override
-			public void handleEvent(Event e) {
-				// Only allow digits
-				String string = e.text;
-				mediator.verifyClippingTextField(string);
-			}
-		});
+		maxTextField.addListener(SWT.Modify, this);
+		// maxTextField.addVerifyListener(new VerifyListener() {
+		// @Override
+		// public void verifyText(VerifyEvent e) {
+		// mediator.verifyTextField(maxTextField, e);
+		// }
+		// });
 
 		minButton = new Button(clippingGroup, SWT.CHECK);
 		minButton.setText("Min");
-
+		minButton.addListener(SWT.Selection, this);
 		minButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -218,14 +284,13 @@ public class TransformDataPage extends AImportDataPage {
 		});
 
 		minTextField = new Text(clippingGroup, SWT.BORDER);
-		minTextField.addListener(SWT.Verify, new Listener() {
-			@Override
-			public void handleEvent(Event e) {
-				// Only allow digits
-				String string = e.text;
-				mediator.verifyClippingTextField(string);
-			}
-		});
+		minTextField.addListener(SWT.Modify, this);
+		// minTextField.addVerifyListener(new VerifyListener() {
+		// @Override
+		// public void verifyText(VerifyEvent e) {
+		// mediator.verifyTextField(minTextField, e);
+		// }
+		// });
 
 	}
 
@@ -245,7 +310,7 @@ public class TransformDataPage extends AImportDataPage {
 		Label scalingMethodLabel = new Label(scalingGroup, SWT.NONE);
 		scalingMethodLabel.setText("Scaling Method");
 
-		scalingCombo = new Combo(scalingGroup, SWT.DROP_DOWN);
+		scalingCombo = new Combo(scalingGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
 
 		scalingCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -253,6 +318,15 @@ public class TransformDataPage extends AImportDataPage {
 				mediator.scalingComboSelected();
 			}
 		});
+	}
+
+	@Override
+	public boolean isPageComplete() {
+
+		if (mediator.isDataValid()) {
+			return super.isPageComplete();
+		}
+		return false;
 	}
 
 	@Override
@@ -264,6 +338,12 @@ public class TransformDataPage extends AImportDataPage {
 	public void pageActivated() {
 		mediator.pageActivated();
 
+	}
+
+	@Override
+	public void handleEvent(Event event) {
+		if (getWizard().getContainer().getCurrentPage() != null)
+			getWizard().getContainer().updateButtons();
 	}
 
 }
