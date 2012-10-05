@@ -24,10 +24,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -74,7 +76,6 @@ import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
 import org.caleydo.view.stratomex.brick.contextmenu.CreateKaplanMeierSmallMultiplesGroupItem;
-import org.caleydo.view.stratomex.brick.contextmenu.CreatePathwayGroupFromDataItem;
 import org.caleydo.view.stratomex.brick.contextmenu.CreatePathwaySmallMultiplesGroupItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RemoveColumnItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RenameBrickItem;
@@ -849,10 +850,10 @@ public class GLBrick
 											.getTablePerspective().getDimensionPerspective()));
 				}
 				else {
-					contextMenuCreator.addContextMenuItem(new CreatePathwayGroupFromDataItem(
-							dataDomain, tablePerspective.getRecordPerspective()
-									.getVirtualArray(), brickColumn.getTablePerspective()
-									.getDimensionPerspective()));
+//					contextMenuCreator.addContextMenuItem(new CreatePathwayGroupFromDataItem(
+//							dataDomain, tablePerspective.getRecordPerspective()
+//									.getVirtualArray(), brickColumn.getTablePerspective()
+//									.getDimensionPerspective()));
 
 					if (!GeneralManager.RELEASE_MODE) {
 						contextMenuCreator.addContextMenuItem(new ScoreGroupItem(stratomex
