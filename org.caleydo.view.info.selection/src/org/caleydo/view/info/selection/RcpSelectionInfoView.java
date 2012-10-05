@@ -31,7 +31,9 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.MappingType;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -131,23 +133,6 @@ public class RcpSelectionInfoView
 		determineDataConfiguration(serializedView, false);
 	}
 
-	private void updateSelectionCount() {
-
-		// if (recordSelectionManager.getNumberOfElements() > 0 &&
-		// !recordTree.isDisposed()) {
-		// int numberRecords = dataDomain.getTable().getMetaData().depth();
-		// int selectedRecords =
-		// recordSelectionManager.getNumberOfElements(SelectionType.SELECTION);
-		// float selectedRecordsPercentage = selectedRecords / (float)
-		// numberRecords * 100f;
-		//
-		// recordTree.setText(dataDomain.getRecordDenomination(true, true) +
-		// " - " + selectedRecords + " of "
-		// + numberRecords + " (" +
-		// Formatter.formatNumber(selectedRecordsPercentage) + "%)");
-		// }
-	}
-
 	private void updateSubTree(final SelectionManager selectionManager) {
 
 		if (parentComposite.isDisposed())
@@ -163,12 +148,24 @@ public class RcpSelectionInfoView
 				for (TreeItem item : subTree.getItems()) {
 					item.dispose();
 				}
+				subTree.clearAll(true);
+
+				IDType idType = selectionManager.getIDType();
 
 				Set<Integer> mouseOverIDs = selectionManager.getElements(SelectionType.MOUSE_OVER);
-				createItems(subTree, SelectionType.MOUSE_OVER, mouseOverIDs, selectionManager.getIDType());
+				createItems(subTree, SelectionType.MOUSE_OVER, mouseOverIDs, idType);
 
 				Set<Integer> selectedIDs = selectionManager.getElements(SelectionType.SELECTION);
-				createItems(subTree, SelectionType.SELECTION, selectedIDs, selectionManager.getIDType());
+				createItems(subTree, SelectionType.SELECTION, selectedIDs, idType);
+
+				int numberElements = IDMappingManagerRegistry.get().getIDMappingManager(idType).getPrimaryTypeCounter();
+				int selectedRecords = selectionManager.getNumberOfElements(SelectionType.SELECTION);
+				float selectedRecordsPercentage = selectedRecords / (float) numberElements * 100f;
+
+				if (numberElements != 0) {
+					subTree.setText(idType.getIDCategory().getDenominationPlural() + " - " + selectedRecords + " of "
+							+ numberElements + " (" + Formatter.formatNumber(selectedRecordsPercentage) + "%)");
+				}
 			}
 		});
 	}
