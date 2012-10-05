@@ -59,15 +59,13 @@ public class ConnectionsModeGUI extends ControlContribution implements IToolBarI
 		final Slider slider = new Slider(composite, SWT.HORIZONTAL);
 		slider.setValues(0, 0, 100, 1, 1, 1);
 		slider.setLayoutData(new RowData(130, 20));
+		slider.setEnabled(false);
 
 		Listener listener = new Listener() {
 			@Override
 			public void handleEvent(Event event) {
 
-				if (dynamicTrendHighlightButton.getSelection() == false)
-					slider.setEnabled(false);
-				else
-					slider.setEnabled(true);
+				slider.setEnabled(dynamicTrendHighlightButton.getSelection());
 
 				GeneralManager
 						.get()
