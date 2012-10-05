@@ -63,7 +63,7 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 						.addContextMenuItem(new RenameLabelHolderItem(dataDomain));
 			}
 
-		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
+		}, DATA_GRAPH_NODE_PICKING_TYPE, id);
 	}
 
 	public void setDataDomain(IDataDomain dataDomain) {

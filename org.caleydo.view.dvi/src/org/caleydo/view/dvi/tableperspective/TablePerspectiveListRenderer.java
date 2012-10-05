@@ -102,47 +102,45 @@ public class TablePerspectiveListRenderer extends AMultiTablePerspectiveRenderer
 		bottomDimensionGroupPositions.clear();
 		topDimensionGroupPositions.clear();
 
-		for (TablePerspectiveRenderer dimensionGroupRenderer : dimensionGroupRenderers) {
+		for (TablePerspectiveRenderer tablePerspectiveRenderer : dimensionGroupRenderers) {
 
 			int pickingID = view.getPickingManager().getPickingID(view.getID(),
 					PickingType.DATA_CONTAINER.name() + node.getID(),
-					dimensionGroupRenderer.getTablePerspective().getID());
+					tablePerspectiveRenderer.getTablePerspective().getID());
 
 			gl.glPushName(pickingID);
-			// if (pickingIDsToBePushed != null)
-			// {
-			// for (Pair<String, Integer> pickingPair : pickingIDsToBePushed)
-			// {
-			// gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-			// pickingPair.getFirst(), pickingPair.getSecond()));
-			// }
-			// }
+			 if (pickingIDsToBePushed != null)
+			 {
+			 for (Pair<String, Integer> pickingPair : pickingIDsToBePushed)
+			 {
+			 gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+			 pickingPair.getFirst(), pickingPair.getSecond()));
+			 }
+			 }
 
-			dimensionGroupRenderer.setLimits(dimensionGroupWidth, y);
+			tablePerspectiveRenderer.setLimits(dimensionGroupWidth, y);
 			gl.glPushMatrix();
 			gl.glTranslatef(currentPosX, 0, 0);
 
-			dimensionGroupRenderer.render(gl);
+			tablePerspectiveRenderer.render(gl);
 			gl.glPopMatrix();
 
 			gl.glPopName();
-			// if (pickingIDsToBePushed != null)
-			// {
-			// for (int i = 0; i < pickingIDsToBePushed.size(); i++)
-			// {
-			// gl.glPopName();
-			// }
-			// }
+			if (pickingIDsToBePushed != null) {
+				for (int i = 0; i < pickingIDsToBePushed.size(); i++) {
+					gl.glPopName();
+				}
+			}
 
 			Point2D bottomPosition1 = new Point2D.Float(currentPosX, 0);
 			Point2D bottomPosition2 = new Point2D.Float(
 					currentPosX + dimensionGroupWidth, 0);
 			Point2D topPosition1 = new Point2D.Float(currentPosX, y);
 			Point2D topPosition2 = new Point2D.Float(currentPosX + dimensionGroupWidth, y);
-			bottomDimensionGroupPositions.put(dimensionGroupRenderer
+			bottomDimensionGroupPositions.put(tablePerspectiveRenderer
 					.getTablePerspective().getID(), new Pair<Point2D, Point2D>(
 					bottomPosition1, bottomPosition2));
-			topDimensionGroupPositions.put(dimensionGroupRenderer.getTablePerspective()
+			topDimensionGroupPositions.put(tablePerspectiveRenderer.getTablePerspective()
 					.getID(), new Pair<Point2D, Point2D>(topPosition1, topPosition2));
 
 			currentPosX += step;
