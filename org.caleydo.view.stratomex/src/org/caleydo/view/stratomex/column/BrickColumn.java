@@ -24,9 +24,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
@@ -66,7 +68,6 @@ import org.caleydo.view.stratomex.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.HeaderBrickLayoutTemplate;
-import org.caleydo.view.stratomex.brick.layout.TitleOnlyHeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.ui.OverviewDetailBandRenderer;
 import org.eclipse.swt.widgets.Composite;
 
@@ -318,8 +319,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		headerBrickLayout.append(innerHeaderBrickLayout);
 		headerBrickLayout.append(brickSpacingLayout);
 
-		headerBrick = createBrick(innerHeaderBrickLayout, tablePerspective);
-		headerBrick.setHeaderBrick(true);
+		headerBrick = createBrick(innerHeaderBrickLayout, tablePerspective, true);
 
 		ABrickLayoutConfiguration layoutTemplate;
 
@@ -353,7 +353,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		List<GLBrick> segmentBricks = new ArrayList<GLBrick>();
 
 		for (TablePerspective brickData : brickTablePerspectives) {
-			GLBrick segmentBrick = createBrick(new ElementLayout("brick"), brickData);
+			GLBrick segmentBrick = createBrick(new ElementLayout("brick"), brickData, false);
 
 			// segmentBrick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
 
@@ -459,7 +459,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 * @return
 	 */
 	private GLBrick createBrick(ElementLayout wrappingLayout,
-			TablePerspective tablePerspective) {
+			TablePerspective tablePerspective, boolean isHeaderBrick) {
 		ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
 				0, 0, 0, -4, 4);
 		GLBrick brick = (GLBrick) GeneralManager
@@ -475,6 +475,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		brick.setStratomex(stratomex);
 		brick.setLayout(wrappingLayout);
 		brick.setBrickColumn(this);
+		brick.setHeaderBrick(isHeaderBrick);
 		brick.initialize();
 
 		uninitializedBricks.add(brick);
@@ -980,7 +981,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 		detailBrickLayout = new Column("detailBrickWrappingLayout");
 
-		detailBrick = createBrick(detailBrickLayout, brick.getTablePerspective());
+		detailBrick = createBrick(detailBrickLayout, brick.getTablePerspective(), false);
 		detailBrick.setHeaderBrick(brick.isHeaderBrick());
 		// detailBrick.setBrickData(brick.getBrickData());
 		// detailBrick.setBrickConfigurer(brick.getBrickConfigurer());
