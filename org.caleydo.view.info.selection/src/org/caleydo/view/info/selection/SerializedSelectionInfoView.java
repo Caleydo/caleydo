@@ -21,28 +21,21 @@ package org.caleydo.view.info.selection;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
-import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
+import org.caleydo.core.serialize.ASerializedView;
 
 /**
  * Serialized form of a parallel-coordinates-view.
  * 
  * @author Werner Puff
- * @deprecated This class should extend ASerializedView!
  */
-@Deprecated
 @XmlRootElement
 @XmlType
-public class SerializedSelectionInfoView extends ASerializedSingleTablePerspectiveBasedView {
+public class SerializedSelectionInfoView extends ASerializedView {
 
 	/**
 	 * Default constructor with default initialization
 	 */
 	public SerializedSelectionInfoView() {
-	}
-
-	public SerializedSelectionInfoView(ISingleTablePerspectiveBasedView view) {
-		super(view);
 	}
 
 	@Override

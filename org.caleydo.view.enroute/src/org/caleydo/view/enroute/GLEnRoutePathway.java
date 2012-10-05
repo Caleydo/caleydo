@@ -20,7 +20,6 @@
 package org.caleydo.view.enroute;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,12 +27,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
-
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -97,8 +94,9 @@ import org.jgrapht.graph.GraphPathImpl;
  * @author Alexander Lex
  */
 
-public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveBasedView,
-		IEventBasedSelectionManagerUser {
+public class GLEnRoutePathway
+	extends AGLView
+	implements IMultiTablePerspectiveBasedView, IEventBasedSelectionManagerUser {
 
 	public static String VIEW_TYPE = "org.caleydo.view.enroute";
 	public static String VIEW_NAME = "enRoute";
@@ -233,19 +231,16 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 * @param viewLabel
 	 * @param viewFrustum
 	 */
-	public GLEnRoutePathway(GLCanvas glCanvas, Composite parentComposite,
-			ViewFrustum viewFrustum) {
+	public GLEnRoutePathway(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		mappedDataRenderer = new MappedDataRenderer(this);
 
-		geneSelectionManager = new EventBasedSelectionManager(this,
-				IDType.getIDType("DAVID"));
+		geneSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("DAVID"));
 		geneSelectionManager.registerEventListeners();
 
-		metaboliteSelectionManager = new EventBasedSelectionManager(this,
-				IDType.getIDType("METABOLITE"));
+		metaboliteSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("METABOLITE"));
 		metaboliteSelectionManager.registerEventListeners();
 
 	}
@@ -262,8 +257,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		path = new ArrayList<PathwayVertexRep>();
 		// Create sample path
 		for (PathwayGraph graph : PathwayManager.get().getAllItems()) {
-			if (graph.getType() == EPathwayDatabaseType.KEGG
-					&& graph.getTitle().startsWith("Glioma")) {
+			if (graph.getType() == EPathwayDatabaseType.KEGG && graph.getTitle().startsWith("Glioma")) {
 				pathway = graph;
 				break;
 			}
@@ -320,15 +314,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				nextVertexRep = nextNode.getPathwayVertexRep();
 			}
 
-			BranchSummaryNode incomingNode = new BranchSummaryNode(this, lastNodeId++,
-					currentNode);
-			BranchSummaryNode outgoingNode = new BranchSummaryNode(this, lastNodeId++,
-					currentNode);
-			List<PathwayVertexRep> sourceVertexReps = Graphs.predecessorListOf(pathway,
-					currentVertexRep);
+			BranchSummaryNode incomingNode = new BranchSummaryNode(this, lastNodeId++, currentNode);
+			BranchSummaryNode outgoingNode = new BranchSummaryNode(this, lastNodeId++, currentNode);
+			List<PathwayVertexRep> sourceVertexReps = Graphs.predecessorListOf(pathway, currentVertexRep);
 			sourceVertexReps.remove(prevVertexRep);
-			List<PathwayVertexRep> targetVertexReps = Graphs.successorListOf(pathway,
-					currentVertexRep);
+			List<PathwayVertexRep> targetVertexReps = Graphs.successorListOf(pathway, currentVertexRep);
 			targetVertexReps.remove(nextVertexRep);
 
 			if (sourceVertexReps.size() > 0) {
@@ -336,8 +326,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 				createNodesForList(sourceNodes, sourceVertexReps);
 				incomingNode.setBranchNodes(sourceNodes);
-				linearizedNodesToIncomingBranchSummaryNodesMap.put(currentNode,
-						incomingNode);
+				linearizedNodesToIncomingBranchSummaryNodesMap.put(currentNode, incomingNode);
 				branchNodes.add(incomingNode);
 				branchNodes.addAll(sourceNodes);
 				for (ANode node : sourceNodes) {
@@ -351,8 +340,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				createNodesForList(targetNodes, targetVertexReps);
 
 				outgoingNode.setBranchNodes(targetNodes);
-				linearizedNodesToOutgoingBranchSummaryNodesMap.put(currentNode,
-						outgoingNode);
+				linearizedNodesToOutgoingBranchSummaryNodesMap.put(currentNode, outgoingNode);
 				branchNodes.add(outgoingNode);
 				branchNodes.addAll(targetNodes);
 				for (ANode node : targetNodes) {
@@ -365,8 +353,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 	}
 
-	private void createNodesForList(List<ALinearizableNode> nodes,
-			List<PathwayVertexRep> vertexReps) {
+	private void createNodesForList(List<ALinearizableNode> nodes, List<PathwayVertexRep> vertexReps) {
 
 		for (int i = 0; i < vertexReps.size(); i++) {
 			PathwayVertexRep currentVertexRep = vertexReps.get(i);
@@ -376,31 +363,31 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				List<PathwayVertexRep> groupedReps = groupRep.getGroupedVertexReps();
 				List<ALinearizableNode> groupedNodes = new ArrayList<ALinearizableNode>();
 				createNodesForList(groupedNodes, groupedReps);
-				ComplexNode complexNode = new ComplexNode(pixelGLConverter, textRenderer,
-						this, lastNodeId++);
+				ComplexNode complexNode = new ComplexNode(pixelGLConverter, textRenderer, this, lastNodeId++);
 				complexNode.setNodes(groupedNodes);
 				for (ALinearizableNode groupedNode : groupedNodes) {
 					groupedNode.setParentNode(complexNode);
 				}
 				complexNode.setPathwayVertexRep(currentVertexRep);
 				node = complexNode;
-			} else if (currentVertexRep.getType() == EPathwayVertexType.compound) {
-				CompoundNode compoundNode = new CompoundNode(pixelGLConverter, this,
-						lastNodeId++);
+			}
+			else if (currentVertexRep.getType() == EPathwayVertexType.compound) {
+				CompoundNode compoundNode = new CompoundNode(pixelGLConverter, this, lastNodeId++);
 
 				compoundNode.setPathwayVertexRep(currentVertexRep);
 				node = compoundNode;
 
-			} else {
+			}
+			else {
 
 				// TODO: Verify that this is also the right approach for
 				// enzymes and ortholog
-				GeneNode geneNode = new GeneNode(pixelGLConverter, textRenderer, this,
-						lastNodeId++);
+				GeneNode geneNode = new GeneNode(pixelGLConverter, textRenderer, this, lastNodeId++);
 				int commaIndex = currentVertexRep.getName().indexOf(',');
 				if (commaIndex > 0) {
 					geneNode.setLabel(currentVertexRep.getName().substring(0, commaIndex));
-				} else {
+				}
+				else {
 					geneNode.setLabel(currentVertexRep.getName());
 				}
 				geneNode.setPathwayVertexRep(currentVertexRep);
@@ -422,7 +409,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			for (ALinearizableNode groupedNode : complexNode.getNodes()) {
 				mappedDavidIds.addAll(setMappedDavidIds(groupedNode));
 			}
-		} else {
+		}
+		else {
 			// TODO: This is only true if the davidID maps to one id of the
 			// genetic
 			for (Integer davidID : node.getPathwayVertexRep().getDavidIDs()) {
@@ -441,8 +429,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	@Override
-	public void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener) {
+	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
 		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
@@ -479,14 +466,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		if (isLayoutDirty) {
 			updateLayout();
 
-			float branchColumnWidth = pixelGLConverter
-					.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
-			float pathwayColumnWidth = pixelGLConverter
-					.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
+			float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
+			float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
 
 			float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
-			float topSpacing = pixelGLConverter
-					.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
+			float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
 
 			gl.glNewList(layoutDisplayListIndex, GL2.GL_COMPILE);
 			gl.glPushMatrix();
@@ -515,24 +499,19 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 * Updates the layout of the view.
 	 */
 	private void updateLayout() {
-		dataRowHeight = pixelGLConverter
-				.getGLHeightForPixelHeight(DEFAULT_DATA_ROW_HEIGHT_PIXELS);
+		dataRowHeight = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_DATA_ROW_HEIGHT_PIXELS);
 
-		float branchColumnWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
-		float pathwayColumnWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
+		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
+		float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
 
 		float pathwayHeight = 0;
 		int minViewHeightRequiredByBranchNodes = 0;
 
 		List<AnchorNodeSpacing> anchorNodeSpacings = calcAnchorNodeSpacings();
 
-		Vec3f currentPosition = new Vec3f(branchColumnWidth + pathwayColumnWidth / 2.0f,
-				viewFrustum.getHeight(), 0.2f);
+		Vec3f currentPosition = new Vec3f(branchColumnWidth + pathwayColumnWidth / 2.0f, viewFrustum.getHeight(), 0.2f);
 
-		float minNodeSpacing = pixelGLConverter
-				.getGLHeightForPixelHeight(MIN_NODE_SPACING_PIXELS);
+		float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(MIN_NODE_SPACING_PIXELS);
 
 		for (AnchorNodeSpacing spacing : anchorNodeSpacings) {
 
@@ -554,9 +533,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			for (int i = 0; i < spacing.getNodesInbetween().size(); i++) {
 				ANode node = spacing.getNodesInbetween().get(i);
 
-				node.setPosition(new Vec3f(currentPosition.x(),
-						currentInbetweenNodePositionY - nodeSpacing - node.getHeight()
-								/ 2.0f, currentPosition.z()));
+				node.setPosition(new Vec3f(currentPosition.x(), currentInbetweenNodePositionY - nodeSpacing
+						- node.getHeight() / 2.0f, currentPosition.z()));
 				currentInbetweenNodePositionY -= (nodeSpacing + node.getHeight());
 
 				minViewHeight = calculatePositionsOfBranchNodes(node);
@@ -565,8 +543,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				}
 			}
 
-			currentPosition.setY(currentPosition.y()
-					- spacing.getCurrentAnchorNodeSpacing());
+			currentPosition.setY(currentPosition.y() - spacing.getCurrentAnchorNodeSpacing());
 
 			ANode endAnchorNode = spacing.getEndNode();
 			if (endAnchorNode != null) {
@@ -588,38 +565,30 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		}
 
 		float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
-		float topSpacing = pixelGLConverter
-				.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
-		float sideSpacing = pixelGLConverter
-				.getGLHeightForPixelHeight(SIDE_SPACING_MAPPED_DATA);
+		float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
+		float sideSpacing = pixelGLConverter.getGLHeightForPixelHeight(SIDE_SPACING_MAPPED_DATA);
 
-		mappedDataRenderer.setGeometry(viewFrustum.getWidth() - dataRowPositionX
-				- sideSpacing, viewFrustum.getHeight() - 2 * topSpacing,
-				dataRowPositionX, topSpacing, dataRowHeight);
+		mappedDataRenderer.setGeometry(viewFrustum.getWidth() - dataRowPositionX - sideSpacing, viewFrustum.getHeight()
+				- 2 * topSpacing, dataRowPositionX, topSpacing, dataRowHeight);
 
 		mappedDataRenderer.setLinearizedNodes(linearizedNodes);
 		int minMappedDataRendererWidthPixels = mappedDataRenderer.getMinWidthPixels();
-		int minViewHeightRequiredByPath = pixelGLConverter
-				.getPixelHeightForGLHeight(pathwayHeight);
+		int minViewHeightRequiredByPath = pixelGLConverter.getPixelHeightForGLHeight(pathwayHeight);
 
-		adaptViewSize(minMappedDataRendererWidthPixels + BRANCH_COLUMN_WIDTH_PIXELS
-				+ PATHWAY_COLUMN_WIDTH_PIXELS + SIDE_SPACING_MAPPED_DATA,
-				minViewHeightRequiredByPath, minViewHeightRequiredByBranchNodes);
+		adaptViewSize(minMappedDataRendererWidthPixels + BRANCH_COLUMN_WIDTH_PIXELS + PATHWAY_COLUMN_WIDTH_PIXELS
+				+ SIDE_SPACING_MAPPED_DATA, minViewHeightRequiredByPath, minViewHeightRequiredByBranchNodes);
 
 		mappedDataRenderer.updateLayout();
 	}
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 
-		dataRowHeight = pixelGLConverter
-				.getGLHeightForPixelHeight(DEFAULT_DATA_ROW_HEIGHT_PIXELS);
+		dataRowHeight = pixelGLConverter.getGLHeightForPixelHeight(DEFAULT_DATA_ROW_HEIGHT_PIXELS);
 
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
-		float branchColumnWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
-		float pathwayColumnWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
+		float branchColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
+		float pathwayColumnWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
 
 		GLU glu = new GLU();
 
@@ -630,9 +599,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		if (expandedBranchSummaryNode != null) {
 			renderBranchSummaryNode(gl, glu, expandedBranchSummaryNode);
-			float coverWidth = pixelGLConverter
-					.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS
-							+ BRANCH_COLUMN_WIDTH_PIXELS);
+			float coverWidth = pixelGLConverter.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS
+					+ BRANCH_COLUMN_WIDTH_PIXELS);
 			gl.glColor4f(1, 1, 1, 0.9f);
 
 			gl.glBegin(GL2.GL_QUADS);
@@ -644,8 +612,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		}
 
 		float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
-		float topSpacing = pixelGLConverter
-				.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
+		float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
 
 		gl.glPushMatrix();
 		gl.glTranslatef(dataRowPositionX, topSpacing, 0);
@@ -662,23 +629,21 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 * Adapts the view height to the maximum of the specified minimum view
 	 * heights, if necessary.
 	 * 
-	 * @param minViewWidth
-	 *            Minimum width required.
-	 * @param minViewHeightRequiredByPath
-	 *            View height in pixels required by the linearized path and its
-	 *            rows.
-	 * @param minViewHeightRequiredByBranchNodes
-	 *            View height in pixels required by branch nodes.
+	 * @param minViewWidth Minimum width required.
+	 * @param minViewHeightRequiredByPath View height in pixels required by the
+	 *            linearized path and its rows.
+	 * @param minViewHeightRequiredByBranchNodes View height in pixels required
+	 *            by branch nodes.
 	 */
-	private void adaptViewSize(int minViewWidth, int minViewHeightRequiredByPath,
-			int minViewHeightRequiredByBranchNodes) {
+	private void adaptViewSize(int minViewWidth, int minViewHeightRequiredByPath, int minViewHeightRequiredByBranchNodes) {
 		int minViewHeightPixels = 0;
 
 		boolean isViewHeightCurrentlyDeterminedByPath;
 		if (minViewHeightRequiredByBranchNodes > minViewHeightRequiredByPath) {
 			minViewHeightPixels = minViewHeightRequiredByBranchNodes;
 			isViewHeightCurrentlyDeterminedByPath = false;
-		} else {
+		}
+		else {
 			minViewHeightPixels = minViewHeightRequiredByPath;
 			isViewHeightCurrentlyDeterminedByPath = true;
 		}
@@ -689,8 +654,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		boolean updateHeight = false;
 
-		if (isNewPath
-				|| (isViewHeightCurrentlyDeterminedByPath != isViewHeightDeterminedByPath)
+		if (isNewPath || (isViewHeightCurrentlyDeterminedByPath != isViewHeightDeterminedByPath)
 				|| parentGLCanvas.getHeight() < minViewHeightPixels) {
 			// System.out.println("setting min height:" + minViewHeightPixels);
 			isNewPath = false;
@@ -702,12 +666,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 			// System.out.println("setting min width:" + minViewWidth);
 			if (fitToViewWidth) {
-				currentMinWidth = BRANCH_COLUMN_WIDTH_PIXELS
+				currentMinWidth = BRANCH_COLUMN_WIDTH_PIXELS + PATHWAY_COLUMN_WIDTH_PIXELS + DATA_COLUMN_WIDTH_PIXELS;
+			}
+			else {
+				currentMinWidth = updateWidth ? minViewWidth + 3 : BRANCH_COLUMN_WIDTH_PIXELS
 						+ PATHWAY_COLUMN_WIDTH_PIXELS + DATA_COLUMN_WIDTH_PIXELS;
-			} else {
-				currentMinWidth = updateWidth ? minViewWidth + 3
-						: BRANCH_COLUMN_WIDTH_PIXELS + PATHWAY_COLUMN_WIDTH_PIXELS
-								+ DATA_COLUMN_WIDTH_PIXELS;
 			}
 
 			setMinViewSize(currentMinWidth, minViewHeightPixels + 3);
@@ -744,9 +707,9 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			if (numAssociatedRows == 0) {
 				unmappedNodes.add(node);
 
-			} else {
-				AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(
-						currentAnchorNode, node, unmappedNodes,
+			}
+			else {
+				AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(currentAnchorNode, node, unmappedNodes,
 						currentAnchorNode == null, false);
 
 				anchorNodeSpacings.add(anchorNodeSpacing);
@@ -756,8 +719,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			}
 
 			if (i == linearizedNodes.size() - 1) {
-				AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(
-						currentAnchorNode, null, unmappedNodes,
+				AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(currentAnchorNode, null, unmappedNodes,
 						currentAnchorNode == null, true);
 				anchorNodeSpacings.add(anchorNodeSpacing);
 
@@ -768,8 +730,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	private AnchorNodeSpacing createAnchorNodeSpacing(ALinearizableNode startAnchorNode,
-			ALinearizableNode endAnchorNode, List<ANode> nodesInbetween,
-			boolean isFirstSpacing, boolean isLastSpacing) {
+			ALinearizableNode endAnchorNode, List<ANode> nodesInbetween, boolean isFirstSpacing, boolean isLastSpacing) {
 
 		AnchorNodeSpacing anchorNodeSpacing = new AnchorNodeSpacing();
 		anchorNodeSpacing.setStartNode(startAnchorNode);
@@ -777,8 +738,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		anchorNodeSpacing.setNodesInbetween(nodesInbetween);
 		anchorNodeSpacing.calcTotalNodeHeight();
 
-		float minNodeSpacing = pixelGLConverter
-				.getGLHeightForPixelHeight(MIN_NODE_SPACING_PIXELS);
+		float minNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(MIN_NODE_SPACING_PIXELS);
 
 		int numSpacingAnchorNodeRows = 0;
 		if (startAnchorNode != null) {
@@ -790,17 +750,13 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		float additionalSpacing = 0;
 		if (isFirstSpacing)
-			additionalSpacing += pixelGLConverter
-					.getGLHeightForPixelHeight(TOP_SPACING_PIXELS);
+			additionalSpacing += pixelGLConverter.getGLHeightForPixelHeight(TOP_SPACING_PIXELS);
 		if (isLastSpacing)
-			additionalSpacing += pixelGLConverter
-					.getGLHeightForPixelHeight(BOTTOM_SPACING_PIXELS);
+			additionalSpacing += pixelGLConverter.getGLHeightForPixelHeight(BOTTOM_SPACING_PIXELS);
 
-		anchorNodeSpacing.setCurrentAnchorNodeSpacing(Math.max(
-				dataRowHeight * ((float) numSpacingAnchorNodeRows) / 2.0f
-						+ additionalSpacing,
-				minNodeSpacing * (float) (nodesInbetween.size() + 1)
-						+ anchorNodeSpacing.getTotalNodeHeight()));
+		anchorNodeSpacing.setCurrentAnchorNodeSpacing(Math.max(dataRowHeight * ((float) numSpacingAnchorNodeRows)
+				/ 2.0f + additionalSpacing,
+				minNodeSpacing * (float) (nodesInbetween.size() + 1) + anchorNodeSpacing.getTotalNodeHeight()));
 
 		return anchorNodeSpacing;
 	}
@@ -856,8 +812,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	/**
-	 * @param node
-	 *            The node for which the positions of associated branch nodes
+	 * @param node The node for which the positions of associated branch nodes
 	 *            shall be calculated
 	 * @return the minimum view height in pixels that would be required by the
 	 *         nodes to be displayed.
@@ -884,32 +839,29 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 * @return
 	 */
 	private int calculateBranchNodePosition(BranchSummaryNode summaryNode) {
-		boolean isIncomingNode = linearizedNodesToIncomingBranchSummaryNodesMap
-				.get(summaryNode.getAssociatedLinearizedNode()) == summaryNode;
+		boolean isIncomingNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(summaryNode
+				.getAssociatedLinearizedNode()) == summaryNode;
 		ALinearizableNode linearizedNode = summaryNode.getAssociatedLinearizedNode();
 		Vec3f linearizedNodePosition = linearizedNode.getPosition();
 
-		float sideSpacing = pixelGLConverter
-				.getGLHeightForPixelHeight(BRANCH_AREA_SIDE_SPACING_PIXELS);
+		float sideSpacing = pixelGLConverter.getGLHeightForPixelHeight(BRANCH_AREA_SIDE_SPACING_PIXELS);
 		float branchSummaryNodeToLinearizedNodeDistance = pixelGLConverter
 				.getGLHeightForPixelHeight(BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS);
 		float width = summaryNode.getWidth();
-		float titleAreaHeight = pixelGLConverter.getGLHeightForPixelHeight(summaryNode
-				.getTitleAreaHeightPixels());
+		float titleAreaHeight = pixelGLConverter.getGLHeightForPixelHeight(summaryNode.getTitleAreaHeightPixels());
 
 		float nodePositionY = linearizedNodePosition.y()
 				+ (isIncomingNode ? branchSummaryNodeToLinearizedNodeDistance
-						: -branchSummaryNodeToLinearizedNodeDistance)
-				- (summaryNode.getHeight() / 2.0f) + titleAreaHeight / 2.0f;
+						: -branchSummaryNodeToLinearizedNodeDistance) - (summaryNode.getHeight() / 2.0f)
+				+ titleAreaHeight / 2.0f;
 
-		summaryNode.setPosition(new Vec3f(sideSpacing + width / 2.0f, nodePositionY,
-				(summaryNode.isCollapsed() ? 0 : 0.2f)));
+		summaryNode.setPosition(new Vec3f(sideSpacing + width / 2.0f, nodePositionY, (summaryNode.isCollapsed() ? 0
+				: 0.2f)));
 
 		float bottomPositionY = nodePositionY - (summaryNode.getHeight() / 2.0f);
 		int minViewHeightPixels = 0;
 		// if (viewFrustum.getBottom() > bottomPositionY) {
-		minViewHeightPixels = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
-				.getBottom() - bottomPositionY)
+		minViewHeightPixels = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getBottom() - bottomPositionY)
 				+ parentGLCanvas.getHeight();
 		// setMinSize(minViewHeightPixels + 3);
 		// }
@@ -937,14 +889,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		for (int i = 0; i < linearizedNodes.size() - 1; i++) {
 			ALinearizableNode node1 = linearizedNodes.get(i);
 			ALinearizableNode node2 = linearizedNodes.get(i + 1);
-			renderEdge(gl, node1, node2, node1.getBottomConnectionPoint(),
-					node2.getTopConnectionPoint(), 0.2f, true);
+			renderEdge(gl, node1, node2, node1.getBottomConnectionPoint(), node2.getTopConnectionPoint(), 0.2f, true);
 		}
 	}
 
-	private void renderEdge(GL2 gl, ALinearizableNode node1, ALinearizableNode node2,
-			Vec3f node1ConnectionPoint, Vec3f node2ConnectionPoint, float zCoordinate,
-			boolean isVerticalConnection) {
+	private void renderEdge(GL2 gl, ALinearizableNode node1, ALinearizableNode node2, Vec3f node1ConnectionPoint,
+			Vec3f node2ConnectionPoint, float zCoordinate, boolean isVerticalConnection) {
 
 		PathwayVertexRep vertexRep1 = node1.getPathwayVertexRep();
 		PathwayVertexRep vertexRep2 = node2.getPathwayVertexRep();
@@ -961,10 +911,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		boolean isNode1Target = pathway.getEdgeTarget(edge) == vertexRep1;
 
-		Vec3f sourceConnectionPoint = (isNode1Target) ? node2ConnectionPoint
-				: node1ConnectionPoint;
-		Vec3f targetConnectionPoint = (isNode1Target) ? node1ConnectionPoint
-				: node2ConnectionPoint;
+		Vec3f sourceConnectionPoint = (isNode1Target) ? node2ConnectionPoint : node1ConnectionPoint;
+		Vec3f targetConnectionPoint = (isNode1Target) ? node1ConnectionPoint : node2ConnectionPoint;
 
 		sourceConnectionPoint.setZ(zCoordinate);
 		targetConnectionPoint.setZ(zCoordinate);
@@ -977,8 +925,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			PathwayReactionEdgeRep reactionEdge = (PathwayReactionEdgeRep) edge;
 
 			ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
-			LineEndArrowRenderer lineEndArrowRenderer = new LineEndArrowRenderer(false,
-					arrowRenderer);
+			LineEndArrowRenderer lineEndArrowRenderer = new LineEndArrowRenderer(false, arrowRenderer);
 
 			connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
 
@@ -988,98 +935,92 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 				connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
 			}
 
-		} else {
+		}
+		else {
 			if (edge instanceof PathwayRelationEdgeRep) {
 				PathwayRelationEdgeRep relationEdgeRep = (PathwayRelationEdgeRep) edge;
 
-				ArrayList<EPathwayRelationEdgeSubType> subtypes = relationEdgeRep
-						.getRelationSubTypes();
+				ArrayList<EPathwayRelationEdgeSubType> subtypes = relationEdgeRep.getRelationSubTypes();
 				float spacing = pixelGLConverter.getGLHeightForPixelHeight(3);
 
 				for (EPathwayRelationEdgeSubType subtype : subtypes) {
 					switch (subtype) {
-					case compound:
-						// TODO:
-						break;
-					case hidden_compound:
-						// TODO:
-						break;
-					case activation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-						break;
-					case inhibition:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(isVerticalConnection));
-						if (isVerticalConnection) {
+						case compound:
+							// TODO:
+							break;
+						case hidden_compound:
+							// TODO:
+							break;
+						case activation:
+							connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+							break;
+						case inhibition:
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(isVerticalConnection));
+							if (isVerticalConnection) {
+								targetConnectionPoint.setY(targetConnectionPoint.y()
+										+ ((isNode1Target) ? -spacing : spacing));
+							}
+							else {
+								targetConnectionPoint.setX(targetConnectionPoint.x()
+										+ ((isNode1Target) ? spacing : -spacing));
+							}
+							break;
+						case expression:
+							connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+							if (vertexRep1.getType() == EPathwayVertexType.gene
+									&& vertexRep1.getType() == EPathwayVertexType.gene) {
+								connectionRenderer.addAttributeRenderer(createDefaultLabelOnLineRenderer("e"));
+							}
+							break;
+						case repression:
+							connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(isVerticalConnection));
 							targetConnectionPoint.setY(targetConnectionPoint.y()
 									+ ((isNode1Target) ? -spacing : spacing));
-						} else {
-							targetConnectionPoint.setX(targetConnectionPoint.x()
-									+ ((isNode1Target) ? spacing : -spacing));
-						}
-						break;
-					case expression:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-						if (vertexRep1.getType() == EPathwayVertexType.gene
-								&& vertexRep1.getType() == EPathwayVertexType.gene) {
+							break;
+						case indirect_effect:
+							connectionRenderer.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+							connectionRenderer.setLineStippled(true);
+							break;
+						case state_change:
+							connectionRenderer.setLineStippled(true);
+							break;
+						case binding_association:
+							// Nothing to do
+							break;
+						case dissociation:
+							connectionRenderer.addAttributeRenderer(createDefaultOrthogonalLineCrossingRenderer());
+							break;
+						case missing_interaction:
+							connectionRenderer.addAttributeRenderer(createDefaultLineCrossingRenderer());
+							break;
+						case phosphorylation:
 							connectionRenderer
-									.addAttributeRenderer(createDefaultLabelOnLineRenderer("e"));
-						}
-						break;
-					case repression:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineEndStaticLineRenderer(isVerticalConnection));
-						targetConnectionPoint.setY(targetConnectionPoint.y()
-								+ ((isNode1Target) ? -spacing : spacing));
-						break;
-					case indirect_effect:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-						connectionRenderer.setLineStippled(true);
-						break;
-					case state_change:
-						connectionRenderer.setLineStippled(true);
-						break;
-					case binding_association:
-						// Nothing to do
-						break;
-					case dissociation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultOrthogonalLineCrossingRenderer());
-						break;
-					case missing_interaction:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineCrossingRenderer());
-						break;
-					case phosphorylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.phosphorylation
-										.getSymbol()));
-						break;
-					case dephosphorylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.dephosphorylation
-										.getSymbol()));
-						break;
-					case glycosylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.glycosylation
-										.getSymbol()));
-						break;
-					case ubiquitination:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.ubiquitination
-										.getSymbol()));
-						break;
-					case methylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.methylation
-										.getSymbol()));
-						break;
+									.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.phosphorylation
+											.getSymbol()));
+							break;
+						case dephosphorylation:
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.dephosphorylation
+											.getSymbol()));
+							break;
+						case glycosylation:
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.glycosylation
+											.getSymbol()));
+							break;
+						case ubiquitination:
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.ubiquitination
+											.getSymbol()));
+							break;
+						case methylation:
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.methylation
+											.getSymbol()));
+							break;
 					}
 				}
 			}
@@ -1093,17 +1034,14 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 		return new LineEndArrowRenderer(false, arrowRenderer);
 	}
 
-	private LineEndStaticLineRenderer createDefaultLineEndStaticLineRenderer(
-			boolean isHorizontalLine) {
-		LineEndStaticLineRenderer lineEndRenderer = new LineEndStaticLineRenderer(false,
-				pixelGLConverter);
+	private LineEndStaticLineRenderer createDefaultLineEndStaticLineRenderer(boolean isHorizontalLine) {
+		LineEndStaticLineRenderer lineEndRenderer = new LineEndStaticLineRenderer(false, pixelGLConverter);
 		lineEndRenderer.setHorizontalLine(isHorizontalLine);
 		return lineEndRenderer;
 	}
 
 	private LineLabelRenderer createDefaultLabelOnLineRenderer(String text) {
-		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.5f,
-				pixelGLConverter, text, textRenderer);
+		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.5f, pixelGLConverter, text, textRenderer);
 		lineLabelRenderer.setXCentered(true);
 		lineLabelRenderer.setYCentered(true);
 		lineLabelRenderer.setLineOffsetPixels(0);
@@ -1111,22 +1049,19 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	private LineLabelRenderer createDefaultLabelAboveLineRenderer(String text) {
-		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.66f,
-				pixelGLConverter, text, textRenderer);
+		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.66f, pixelGLConverter, text, textRenderer);
 		lineLabelRenderer.setLineOffsetPixels(5);
 		return lineLabelRenderer;
 	}
 
 	private LineCrossingRenderer createDefaultOrthogonalLineCrossingRenderer() {
-		LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(0.5f,
-				pixelGLConverter);
+		LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(0.5f, pixelGLConverter);
 		lineCrossingRenderer.setCrossingAngle(90);
 		return lineCrossingRenderer;
 	}
 
 	private LineCrossingRenderer createDefaultLineCrossingRenderer() {
-		LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(0.5f,
-				pixelGLConverter);
+		LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(0.5f, pixelGLConverter);
 		lineCrossingRenderer.setCrossingAngle(45);
 		return lineCrossingRenderer;
 	}
@@ -1150,28 +1085,23 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		linearizePathwayPathEventListener = new EnRoutePathEventListener();
 		linearizePathwayPathEventListener.setHandler(this);
-		eventPublisher.addListener(EnRoutePathEvent.class,
-				linearizePathwayPathEventListener);
+		eventPublisher.addListener(EnRoutePathEvent.class, linearizePathwayPathEventListener);
 
 		addTablePerspectivesListener = new AddTablePerspectivesListener();
 		addTablePerspectivesListener.setHandler(this);
-		eventPublisher.addListener(AddTablePerspectivesEvent.class,
-				addTablePerspectivesListener);
+		eventPublisher.addListener(AddTablePerspectivesEvent.class, addTablePerspectivesListener);
 
 		removeLinearizedNodeEventListener = new RemoveEnRouteNodeEventListener();
 		removeLinearizedNodeEventListener.setHandler(this);
-		eventPublisher.addListener(RemoveEnRouteNodeEvent.class,
-				removeLinearizedNodeEventListener);
+		eventPublisher.addListener(RemoveEnRouteNodeEvent.class, removeLinearizedNodeEventListener);
 
 		removeTablePerspectiveListener = new RemoveTablePerspectiveListener();
 		removeTablePerspectiveListener.setHandler(this);
-		eventPublisher.addListener(RemoveTablePerspectiveEvent.class,
-				removeTablePerspectiveListener);
+		eventPublisher.addListener(RemoveTablePerspectiveEvent.class, removeTablePerspectiveListener);
 
 		fitToViewWidthEventListener = new FitToViewWidthEventListener();
 		fitToViewWidthEventListener.setHandler(this);
-		eventPublisher
-				.addListener(FitToViewWidthEvent.class, fitToViewWidthEventListener);
+		eventPublisher.addListener(FitToViewWidthEvent.class, fitToViewWidthEventListener);
 
 	}
 
@@ -1211,10 +1141,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	/**
 	 * Sets a new path to be linearized.
 	 * 
-	 * @param pathway
-	 *            The pathway the path corresponds to.
-	 * @param path
-	 *            List of {@link PathwayVertexRep}s that represents a path. If
+	 * @param pathway The pathway the path corresponds to.
+	 * @param path List of {@link PathwayVertexRep}s that represents a path. If
 	 *            multiple <code>PathwayVertexRep</code>s represent a complex
 	 *            node, they must occur in a sequence.
 	 */
@@ -1238,8 +1166,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	/**
-	 * @param currentExpandedBranchNode
-	 *            setter, see {@link #expandedBranchSummaryNode}
+	 * @param currentExpandedBranchNode setter, see
+	 *            {@link #expandedBranchSummaryNode}
 	 */
 	public void setExpandedBranchSummaryNode(BranchSummaryNode expandedBranchSummaryNode) {
 		this.expandedBranchSummaryNode = expandedBranchSummaryNode;
@@ -1286,8 +1214,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		int linearizedNodeIndex = linearizedNodes.indexOf(linearizedNode);
 		List<PathwayVertexRep> newPath = null;
-		List<PathwayVertexRep> branchPath = determineDefiniteUniDirectionalBranchPath(
-				branchVertexRep, linearizedVertexRep, isIncomingBranch);
+		List<PathwayVertexRep> branchPath = determineDefiniteUniDirectionalBranchPath(branchVertexRep,
+				linearizedVertexRep, isIncomingBranch);
 
 		if (isIncomingBranch) {
 			// insert above linearized node
@@ -1296,7 +1224,8 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 			newPath.addAll(0, branchPath);
 
-		} else {
+		}
+		else {
 			// insert below linearized node
 			newPath = path.subList(0, linearizedNodeIndex + 1);
 			newPath.addAll(branchPath);
@@ -1315,20 +1244,17 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 * <code>PathwayVertexRep</code> that represents the start of the path is
 	 * added at the beginning of the path.
 	 * 
-	 * @param branchVertexRep
-	 *            The <code>PathwayVertexRep</code> that represents the start of
-	 *            the branch path.
-	 * @param linearizedVertexRep
-	 *            The <code>PathwayVertexRep</code> of the linearized path this
-	 *            branch belongs to.
-	 * @param isIncomingBranchPath
-	 *            Determines whether the branch path is incoming or outgoing.
-	 *            This is especially important for bidirectional edges.
+	 * @param branchVertexRep The <code>PathwayVertexRep</code> that represents
+	 *            the start of the branch path.
+	 * @param linearizedVertexRep The <code>PathwayVertexRep</code> of the
+	 *            linearized path this branch belongs to.
+	 * @param isIncomingBranchPath Determines whether the branch path is
+	 *            incoming or outgoing. This is especially important for
+	 *            bidirectional edges.
 	 * @return
 	 */
-	private List<PathwayVertexRep> determineDefiniteUniDirectionalBranchPath(
-			PathwayVertexRep branchVertexRep, PathwayVertexRep linearizedVertexRep,
-			boolean isIncomingBranchPath) {
+	private List<PathwayVertexRep> determineDefiniteUniDirectionalBranchPath(PathwayVertexRep branchVertexRep,
+			PathwayVertexRep linearizedVertexRep, boolean isIncomingBranchPath) {
 
 		List<PathwayVertexRep> vertexReps = new ArrayList<PathwayVertexRep>();
 		vertexReps.add(branchVertexRep);
@@ -1342,13 +1268,15 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 			List<PathwayVertexRep> nextVertices = null;
 			if (isIncomingBranchPath) {
 				nextVertices = Graphs.predecessorListOf(pathway, currentVertexRep);
-			} else {
+			}
+			else {
 				nextVertices = Graphs.successorListOf(pathway, currentVertexRep);
 			}
 
 			if (nextVertices.size() == 0 || nextVertices.size() > 1) {
 				return vertexReps;
-			} else {
+			}
+			else {
 				currentVertexRep = nextVertices.get(0);
 				vertexReps.add(currentVertexRep);
 			}
@@ -1377,10 +1305,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 
 		if (linearizedNodeIndex == 0) {
 			path.remove(0);
-		} else if (linearizedNodeIndex == path.size() - 1) {
+		}
+		else if (linearizedNodeIndex == path.size() - 1) {
 			path.remove(path.size() - 1);
 
-		} else {
+		}
+		else {
 			return;
 		}
 
@@ -1429,8 +1359,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	/**
-	 * @param dataRowHeight
-	 *            setter, see {@link #dataRowHeight}
+	 * @param dataRowHeight setter, see {@link #dataRowHeight}
 	 */
 	public void setDataRowHeight(float dataRowHeight) {
 		this.dataRowHeight = dataRowHeight;
@@ -1501,12 +1430,10 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	 * davidID provided, else false
 	 */
 	public boolean doesDavidMapToData(Integer davidID) {
-		for (TablePerspective currentTablePerspective : mappedDataRenderer
-				.getTablePerspectives()) {
-			GeneticDataDomain dataDomain = (GeneticDataDomain) currentTablePerspective
-					.getDataDomain();
-			Set<Integer> ids = dataDomain.getGeneIDMappingManager().getIDAsSet(
-					IDType.getIDType("DAVID"), dataDomain.getGeneIDType(), davidID);
+		for (TablePerspective currentTablePerspective : mappedDataRenderer.getTablePerspectives()) {
+			GeneticDataDomain dataDomain = (GeneticDataDomain) currentTablePerspective.getDataDomain();
+			Set<Integer> ids = dataDomain.getGeneIDMappingManager().getIDAsSet(IDType.getIDType("DAVID"),
+					dataDomain.getGeneIDType(), davidID);
 			if (ids != null && ids.size() > 0) {
 				return true;
 			}
@@ -1515,7 +1442,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	@Override
-	public void notifyOfChange() {
+	public void notifyOfChange(EventBasedSelectionManager selectionManager) {
 		setDisplayListDirty();
 	}
 
@@ -1553,8 +1480,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	@Override
 	public void removeTablePerspective(int tablePerspectiveID) {
 
-		for (TablePerspective tablePerspective : mappedDataRenderer
-				.getTablePerspectives()) {
+		for (TablePerspective tablePerspective : mappedDataRenderer.getTablePerspectives()) {
 			if (tablePerspective.getID() == tablePerspectiveID) {
 				IDataDomain dataDomain = tablePerspective.getDataDomain();
 				boolean removeDataDomain = true;
@@ -1595,8 +1521,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	@Override
 	public boolean isTablePerspectiveValid(TablePerspective tablePerspective) {
 
-		return tablePerspective != null
-				&& tablePerspective.getDataDomain() instanceof GeneticDataDomain;
+		return tablePerspective != null && tablePerspective.getDataDomain() instanceof GeneticDataDomain;
 	}
 
 	/**
@@ -1607,8 +1532,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiTablePerspectiveB
 	}
 
 	/**
-	 * @param fitToViewWidth
-	 *            setter, see {@link #fitToViewWidth}
+	 * @param fitToViewWidth setter, see {@link #fitToViewWidth}
 	 */
 	public void setFitToViewWidth(boolean fitToViewWidth) {
 		this.fitToViewWidth = fitToViewWidth;

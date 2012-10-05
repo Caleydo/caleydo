@@ -32,6 +32,6 @@ public interface IEventBasedSelectionManagerUser {
 	 * Called by the {@link EventBasedSelectionManager} if a changes has
 	 * happened in the {@link EventBasedSelectionManager}
 	 */
-	public void notifyOfChange();
+	public void notifyOfChange(EventBasedSelectionManager selectionManager);
 
 }

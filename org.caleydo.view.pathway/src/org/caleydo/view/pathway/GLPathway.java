@@ -1460,7 +1460,7 @@ public class GLPathway
 	}
 
 	@Override
-	public void notifyOfChange() {
+	public void notifyOfChange(EventBasedSelectionManager selectionManager) {
 		setDisplayListDirty();
 	}
 

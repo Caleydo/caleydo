@@ -91,9 +91,6 @@ public class EventBasedSelectionManager extends SelectionManager implements
 		// clearSelectionsListener.setHandler(this);
 		// eventPublisher.addListener(ClearSelectionsEvent.class,
 		// clearSelectionsListener);
-
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -120,7 +117,7 @@ public class EventBasedSelectionManager extends SelectionManager implements
 	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		if (selectionDelta.getIDType().getIDCategory().equals(idType.getIDCategory())) {
 			setDelta(selectionDelta);
-			parent.notifyOfChange();
+			parent.notifyOfChange(this);
 		}
 	}
 
@@ -129,7 +126,7 @@ public class EventBasedSelectionManager extends SelectionManager implements
 			SelectionCommand selectionCommand) {
 		if (idCategory == null || idCategory.equals(idType.getIDCategory())) {
 			super.executeSelectionCommand(selectionCommand);
-			parent.notifyOfChange();
+			parent.notifyOfChange(this);
 		}
 	}
 
