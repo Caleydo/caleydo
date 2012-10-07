@@ -104,6 +104,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.GraphPathImpl;
 import setvis.SetOutline;
 import setvis.bubbleset.BubbleSet;
 import setvis.gui.CanvasComponent;
@@ -179,7 +180,7 @@ public class GLPathway
 	 * The currently selected path as selected by the user from allPaths.
 	 */
 	private GraphPath<PathwayVertexRep, DefaultEdge> selectedPath;
-
+	private GraphPath<PathwayVertexRep, DefaultEdge> previousSelectedPath;
 	/**
 	 * All paths which are available between two user selected nodes.
 	 */
@@ -253,6 +254,14 @@ public class GLPathway
 				selectedPathID = 0;
 
 			selectedPath = allPaths.get(selectedPathID);
+			
+			if(selectedPath.getEdgeList().size()>0 && !isShiftKeyDown){
+				PathwayVertexRep startPrevVertex = selectedPath.getStartVertex();
+				PathwayVertexRep   endPrevVertex = selectedPath.getEndVertex();
+				List<DefaultEdge>  edgePrevList = selectedPath.getEdgeList();
+				previousSelectedPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(pathway,startPrevVertex,endPrevVertex,edgePrevList,0);
+			}
+
 		}
 		isBubbleTextureDirty = true;
 		setDisplayListDirty();
@@ -707,7 +716,7 @@ public class GLPathway
 				bubblesetCanvas.addGroup(new Color(c.r, c.g, c.b), outlineThickness, true);
 			}
 
-			DefaultEdge lastEdge = null;
+
 			for (DefaultEdge edge : path.getEdgeList()) {
 				PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
 				PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
@@ -720,10 +729,14 @@ public class GLPathway
 				double tY = targetVertexRep.getLowerLeftCornerY();
 
 				bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-				bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);
-				lastEdge = edge;
+//
+//				bubblesetCanvas.addItem(bbGroupID, tX, tY, bbItemW, bbItemH);
+//
+				bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);				
 				visitedNodes.add(sourceVertexRep);
 			}
+			
+			DefaultEdge lastEdge = path.getEdgeList().get(path.getEdgeList().size()-1);
 			if (lastEdge != null) {
 				PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(lastEdge);
 				double posX = targetVertexRep.getLowerLeftCornerX();
@@ -732,6 +745,8 @@ public class GLPathway
 				bbItemH = targetVertexRep.getHeight();
 				bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
 				visitedNodes.add(targetVertexRep);
+			}else{
+				System.out.println("das sollte nicht passieren");
 			}
 			gl.glPopName();
 			//
@@ -1316,19 +1331,51 @@ public class GLPathway
 		return 200;
 	}
 
+
 	public void handlePathwayElementSelection(SelectionType selectionType, int externalID) {
-		if (externalID == -1) {
-			if (isPathStartSelected && selectionType == SelectionType.SELECTION && allPaths != null
-					&& allPaths.size() > 0)
+		if (externalID == -1){
+			 if(selectionType==SelectionType.SELECTION && selectedPath!=null){//no element is selected -> e.g. when click in texture appears
 				isPathStartSelected = false;
+				geneSelectionManager.clearSelection(SelectionType.SELECTION);
+				//if (metaboliteSelectionManager.getNumberOfElements(SelectionType.SELECTION) > 0) {
+				metaboliteSelectionManager.clearSelection(SelectionType.SELECTION);
+				metaboliteSelectionManager.triggerSelectionUpdateEvent();
+				// Add new vertex to internal selection manager
+				geneSelectionManager.addToType(SelectionType.SELECTION, selectedPath.getEndVertex().getID());				
+				int iConnectionIDa = generalManager.getIDCreator().createID(
+						ManagedObjectType.CONNECTION);
+				geneSelectionManager.addConnectionID(iConnectionIDa, selectedPath.getEndVertex().getID());
+				connectedElementRepresentationManager.clear(geneSelectionManager.getIDType(),
+						SelectionType.SELECTION);					
+				createConnectionLines(SelectionType.SELECTION, iConnectionIDa);				
+				SelectionDelta selectionDelta = createExternalSelectionDelta(geneSelectionManager
+						.getDelta());
+				SelectionUpdateEvent event = new SelectionUpdateEvent();
+				event.setSender(this);
+				event.setDataDomainID(dataDomain.getDataDomainID());
+				event.setSelectionDelta((SelectionDelta) selectionDelta);
+				eventPublisher.triggerEvent(event);
+			 }
+			 else{
+				 if(this.previousSelectedPath!=null && !this.isShiftKeyDown){
+						if (allPaths==null){
+							//selectedPath=previousSelectedPath;								
+							allPaths=new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>(); 
+							allPaths.add(previousSelectedPath);
+							selectedPathID=0;							
+						}else{
+							allPaths.set(selectedPathID,previousSelectedPath);
+						}
+						selectedPath=previousSelectedPath;
+				 }
+			 }
 		}
-		else {
+		else{
 			setDisplayListDirty();
 			// if (geneSelectionManager.checkStatus(selectionType, externalID))
 			// {
 			// return;
 			// }
-
 			PathwayVertexRep previouslySelectedVertexRep = null;
 			if (geneSelectionManager.getElements(SelectionType.SELECTION).size() == 1) {
 				previouslySelectedVertexRep = (PathwayVertexRep) pathwayItemManager
@@ -1352,47 +1399,120 @@ public class GLPathway
 				if (isPathStartSelected)// select end node //mouse-over to
 										// interactively extend the path
 				{ // click on end node
-					if (selectionType == SelectionType.SELECTION && (allPaths != null && allPaths.size() > 0)) {// click
-																												// on
-																												// start
-																												// node
-						isPathStartSelected = false;
-					}
 					if (previouslySelectedVertexRep == null)
 						return;
 					KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 							pathway, previouslySelectedVertexRep, MAX_PATHS);
-
 					if (vertexRep != previouslySelectedVertexRep) {
 						allPaths = pathAlgo.getPaths(vertexRep);
 					}
 
-					if (allPaths != null && allPaths.size() > 0) {
-						// selectedPath = allPaths.get(0);
+					if (allPaths != null && allPaths.size() > 0) 
+					{
 						if (allPaths.size() <= selectedPathID)
 							selectedPathID = 0;
 						selectedPath = allPaths.get(selectedPathID);
-						// allPaths.clear();
-						// selectedPathID = 0;
-						// allPaths.add(selectedPath);
+						if(selectedPath.getEdgeList().size()>0){
+							PathwayVertexRep startPrevVertex = selectedPath.getStartVertex();
+							PathwayVertexRep   endPrevVertex = selectedPath.getEndVertex();
+							List<DefaultEdge>  edgePrevList = selectedPath.getEdgeList();
+							previousSelectedPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(pathway,startPrevVertex,endPrevVertex,edgePrevList,0);
+							//selectedPath=previousSelectedPath;
+						}
+					}
+					if (selectionType == SelectionType.SELECTION ) {// click on end node
+						isPathStartSelected = false;
+					}
+					triggerPathUpdate();
+					isBubbleTextureDirty = true;
+				}
+				else { // isPathStartSelected==false -> select start node 1) no
+					if (this.isControlKeyDown) {// shorten path
+						//shorten path
+						List<DefaultEdge>  edgeListPrev = previousSelectedPath.getEdgeList();
+						List<DefaultEdge>  edgeListNew= new ArrayList<DefaultEdge>();
+						PathwayVertexRep startVertex = previousSelectedPath.getStartVertex();
+						PathwayVertexRep endVertex = previousSelectedPath.getEndVertex();
+
+						for(int i=0;i<edgeListPrev.size();i++){
+							DefaultEdge edge = edgeListPrev.get(i);
+							endVertex = pathway.getEdgeTarget(edge);
+							edgeListNew.add(edge);
+							if (vertexRep == endVertex)				
+								break;							
+						}
+							
+						previousSelectedPath
+						= new GraphPathImpl<PathwayVertexRep, DefaultEdge>(pathway,startVertex,endVertex,edgeListNew,0);
+
+						//
+						if(allPaths==null)
+							allPaths=new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
+						else
+							allPaths.clear();
+						allPaths.add(previousSelectedPath);
+						selectedPathID=0;
+						selectedPath=previousSelectedPath;				
 						triggerPathUpdate();
 						isBubbleTextureDirty = true;
 					}
-				}
-				else { // isPathStartSelected==false -> select start node 1) no
-						// path extension
+					// path extension
 					if (isShiftKeyDown) {// extend and existing path
-						if (selectedPathID < allPaths.size()) {
-							selectedPath = allPaths.get(selectedPathID);
-							isPathStartSelected = true;
-						}
+//						System.out.println("isShiftKeyDown");
+////						if (allPaths != null){// && selectedPathID < allPaths.size() && selectedPathID>=0){
+////							System.out.println("allPaths != null");
+//							//////////////////////////////////////////////////		
+						if (previouslySelectedVertexRep == null)
+							return;
+						PathwayVertexRep endVertex = previousSelectedPath.getEndVertex();
+						KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
+									pathway, endVertex, MAX_PATHS);			
+							if (vertexRep != endVertex){					
+								allPaths = pathAlgo.getPaths(vertexRep);							
+							}
+							else{
+								allPaths=null;
+							}	
+							if (allPaths==null){
+								//selectedPath=previousSelectedPath;								
+								allPaths=new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>(); 
+								allPaths.add(previousSelectedPath);
+								selectedPathID=0;
+								selectedPath=previousSelectedPath;
+							}
+							else{																
+								List<DefaultEdge>  edgeListPrev = previousSelectedPath.getEdgeList();								
+								PathwayVertexRep   startExtVertex = previousSelectedPath.getStartVertex();
+
+								//								for(int i=0;i<edgeListPrev.size();i++){
+								//									edgeListExt.add(edgeListPrev.get(i));
+								//								}
+								int idx=0;
+								for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
+									//PathwayVertexRep   endExtVertex = previousSelectedPath.getEndVertex();
+									List<DefaultEdge>  edgeListExt = new ArrayList<DefaultEdge>();
+									edgeListExt.addAll(edgeListPrev);
+									PathwayVertexRep endExtVertex = path.getEndVertex();
+									List<DefaultEdge>  edgeListNew = path.getEdgeList();
+									edgeListExt.addAll(edgeListNew);
+	//								for(int i=0;i<edgeListNew.size();i++){
+	//									edgeListExt.add(edgeListNew.get(i));
+	//								}
+									GraphPath<PathwayVertexRep, DefaultEdge> extendedPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(pathway,startExtVertex,endExtVertex,edgeListExt,0);
+									allPaths.set(idx,extendedPath);
+									idx++;
+								}
+								if (allPaths.size() <= selectedPathID)
+									selectedPathID = 0;							
+								selectedPath=allPaths.get(selectedPathID);;
+
+							}
+					
+							triggerPathUpdate();
+							isBubbleTextureDirty = true;
 					}
 					else {
-						if (selectionType == SelectionType.SELECTION && vertexRep != null) { // click
-																								// on
-																								// start
-																								// node
-							System.out.println("vertexRep!= null)");
+						if (selectionType == SelectionType.SELECTION && vertexRep != null) { // click on start node
 							isPathStartSelected = true;
 						}
 					}
@@ -1417,7 +1537,7 @@ public class GLPathway
 			eventPublisher.triggerEvent(event);
 		}// else if(externalID==-1
 	}
-
+	
 	private void triggerPathUpdate() {
 		EnRoutePathEvent pathEvent = new EnRoutePathEvent();
 		pathEvent.setPath(new PathwayPath(selectedPath));
