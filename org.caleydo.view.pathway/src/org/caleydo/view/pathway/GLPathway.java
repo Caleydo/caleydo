@@ -1025,6 +1025,13 @@ public class GLPathway
 		return newSelectionDelta;
 	}
 
+	@Override
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+		super.reshape(drawable, x, y, width, height);
+
+		System.out.println("Frustum: " +viewFrustum);
+	}
+	
 	private void calculatePathwayScaling(final GL2 gl, final PathwayGraph pathway) {
 
 		if (hashGLcontext2TextureManager.get(gl) == null)
@@ -1047,31 +1054,32 @@ public class GLPathway
 		float viewFrustumAspectRatio = viewFrustumWidth / viewFrustumHeight;
 		boolean pathwayFitsViewFrustum = true;
 
-		if (viewFrustumAspectRatio < pathwayAspectRatio && pathwayWidth > viewFrustumWidth) {
-
-			vecScaling.setX((viewFrustum.getRight() - viewFrustum.getLeft()) / pathwayWidth);
-			vecScaling.setY(vecScaling.x());
-
-			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - pathwayWidth * vecScaling.x()) / 2.0f,
-					(viewFrustum.getTop() - viewFrustum.getBottom() - pathwayHeight * vecScaling.y()) / 2.0f, 0);
-			pathwayFitsViewFrustum = false;
-		}
-		if (viewFrustumAspectRatio >= pathwayAspectRatio && pathwayHeight > viewFrustumHeight) {
-
-			vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom()) / pathwayHeight);
-			vecScaling.setX(vecScaling.y());
-
-			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - pathwayWidth * vecScaling.x()) / 2.0f,
-					(viewFrustum.getTop() - viewFrustum.getBottom() - pathwayHeight * vecScaling.y()) / 2.0f, 0);
-			pathwayFitsViewFrustum = false;
-		}
-
-		if (pathwayFitsViewFrustum) {
-			vecScaling.set(1, 1, 1f);
-
-			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f - pathwayWidth / 2.0f,
-					(viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f - pathwayHeight / 2.0f, 0);
-		}
+		
+//		if (viewFrustumAspectRatio < pathwayAspectRatio && pathwayWidth > viewFrustumWidth) {
+//
+//			//vecScaling.setX((viewFrustum.getRight() - viewFrustum.getLeft()) / pathwayWidth);
+//			//vecScaling.setY(vecScaling.x());
+//
+//			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - pathwayWidth * vecScaling.x()) / 2.0f,
+//					(viewFrustum.getTop() - viewFrustum.getBottom() - pathwayHeight * vecScaling.y()) / 2.0f, 0);
+//			pathwayFitsViewFrustum = false;
+//		}
+//		if (viewFrustumAspectRatio >= pathwayAspectRatio && pathwayHeight > viewFrustumHeight) {
+//
+//			//vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom()) / pathwayHeight);
+//			//vecScaling.setX(vecScaling.y());
+//
+//			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - pathwayWidth * vecScaling.x()) / 2.0f,
+//					(viewFrustum.getTop() - viewFrustum.getBottom() - pathwayHeight * vecScaling.y()) / 2.0f, 0);
+//			pathwayFitsViewFrustum = false;
+//		}
+//
+//		if (pathwayFitsViewFrustum) {
+//			//vecScaling.set(1, 1, 1f);
+//
+//			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f - pathwayWidth / 2.0f,
+//					(viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f - pathwayHeight / 2.0f, 0);
+//		}
 	}
 
 	public void enableGeneMapping(final boolean bEnableMapping) {
