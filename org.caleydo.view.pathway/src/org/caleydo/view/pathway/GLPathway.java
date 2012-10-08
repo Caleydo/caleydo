@@ -1267,15 +1267,16 @@ public class GLPathway
 
 	@Override
 	public int getMinPixelHeight() {
-		return 120;
+		if (pathway == null)
+			return 100;		
+		return pathway.getHeight();
 	}
 
 	@Override
 	public int getMinPixelWidth() {
 		if (pathway == null)
-			return 70;
-		float aspectRatio = (float) pathway.getWidth() / (float) pathway.getHeight();
-		return (int) (120.0f * aspectRatio);
+			return 100;
+		return pathway.getWidth();
 	}
 
 	@Override
