@@ -744,24 +744,22 @@ public class GLPathway
 
 				bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
 //
-//				bubblesetCanvas.addItem(bbGroupID, tX, tY, bbItemW, bbItemH);
+				bubblesetCanvas.addItem(bbGroupID, tX, tY, bbItemW, bbItemH);
 //
 				bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);				
 				visitedNodes.add(sourceVertexRep);
 			}
 			
-			DefaultEdge lastEdge = path.getEdgeList().get(path.getEdgeList().size()-1);
-			if (lastEdge != null) {
-				PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(lastEdge);
-				double posX = targetVertexRep.getLowerLeftCornerX();
-				double posY = targetVertexRep.getLowerLeftCornerY();
-				bbItemW = targetVertexRep.getWidth();
-				bbItemH = targetVertexRep.getHeight();
-				bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-				visitedNodes.add(targetVertexRep);
-			}else{
-				System.out.println("das sollte nicht passieren");
-			}
+//			DefaultEdge lastEdge = path.getEdgeList().get(path.getEdgeList().size()-1);
+//			if (lastEdge != null) {
+//				PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(lastEdge);
+//				double posX = targetVertexRep.getLowerLeftCornerX();
+//				double posY = targetVertexRep.getLowerLeftCornerY();
+//				bbItemW = targetVertexRep.getWidth();
+//				bbItemH = targetVertexRep.getHeight();
+//				bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
+//				visitedNodes.add(targetVertexRep);
+//			}
 			gl.glPopName();
 			//
 
