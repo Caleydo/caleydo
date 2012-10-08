@@ -88,6 +88,8 @@ public class GLPathwayContentCreator {
 
 	private VirtualArray<?, ?, ?> selectedSamplesVA;
 
+	private PixelGLConverter pixelGLConverter;
+
 	/**
 	 * Constructor.
 	 */
@@ -107,6 +109,8 @@ public class GLPathwayContentCreator {
 		pathwayItemManager = PathwayItemManager.get();
 
 		geneticDataDomain = (GeneticDataDomain) glPathwayView.getDataDomain();
+
+		pixelGLConverter = glPathwayView.getPixelGLConverter();
 	}
 
 	public void init(final GL2 gl, SelectionManager geneSelectionManager) {
@@ -227,10 +231,8 @@ public class GLPathwayContentCreator {
 
 		enzymeNodeDisplayListId = gl.glGenLists(1);
 
-		float nodeWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
-				PathwayRenderStyle.ENZYME_NODE_WIDTH);
-		float nodeHeight = glPathwayView.getPixelGLConverter().getGLHeightForPixelHeight(
-				PathwayRenderStyle.ENZYME_NODE_HEIGHT);
+		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_WIDTH);
+		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_HEIGHT);
 
 		gl.glNewList(enzymeNodeDisplayListId, GL2.GL_COMPILE);
 		fillNodeDisplayList(gl, nodeWidth + 0.002f, nodeHeight);
@@ -241,10 +243,8 @@ public class GLPathwayContentCreator {
 
 		upscaledFilledEnzymeNodeDisplayListId = gl.glGenLists(1);
 
-		float nodeWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
-				PathwayRenderStyle.ENZYME_NODE_WIDTH);
-		float nodeHeight = glPathwayView.getPixelGLConverter().getGLHeightForPixelHeight(
-				PathwayRenderStyle.ENZYME_NODE_HEIGHT);
+		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_WIDTH);
+		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_HEIGHT);
 
 		float scaleFactor = 3;
 		nodeWidth *= scaleFactor;
@@ -259,10 +259,8 @@ public class GLPathwayContentCreator {
 
 		upscaledFramedEnzymeNodeDisplayListID = gl.glGenLists(1);
 
-		float nodeWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
-				PathwayRenderStyle.ENZYME_NODE_WIDTH);
-		float nodeHeight = glPathwayView.getPixelGLConverter().getGLHeightForPixelHeight(
-				PathwayRenderStyle.ENZYME_NODE_HEIGHT);
+		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_WIDTH);
+		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_HEIGHT);
 
 		float scaleFactor = 1.4f;
 		nodeWidth *= scaleFactor;
@@ -277,10 +275,8 @@ public class GLPathwayContentCreator {
 
 		framedEnzymeNodeDisplayListId = gl.glGenLists(1);
 
-		float nodeWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
-				PathwayRenderStyle.ENZYME_NODE_WIDTH);
-		float nodeHeight = glPathwayView.getPixelGLConverter().getGLHeightForPixelHeight(
-				PathwayRenderStyle.ENZYME_NODE_HEIGHT);
+		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_WIDTH);
+		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_HEIGHT);
 
 		gl.glNewList(framedEnzymeNodeDisplayListId, GL2.GL_COMPILE);
 		fillNodeDisplayListFrame(gl, nodeWidth + 0.02f, nodeHeight);
@@ -476,10 +472,12 @@ public class GLPathwayContentCreator {
 							// gl.glEnable(GL2.GL_DEPTH_TEST);
 
 							// max std dev is 0.5 -> thus we multiply it with 2
-							Float stdDev = PathwayRenderStyle.ENZYME_NODE_HEIGHT
+							Float stdDev = pixelGLConverter
+									.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_HEIGHT)
 									* (float) average.getStandardDeviation() * 5.0f;
-							float x = PathwayRenderStyle.ENZYME_NODE_WIDTH + 0.000f;
-							float y = -PathwayRenderStyle.ENZYME_NODE_HEIGHT + 0.002f;
+							float x = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_WIDTH) - 0.01f;
+							float y = -pixelGLConverter
+									.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_HEIGHT) + 0.004f;
 							if (!stdDev.isNaN()) {
 
 								// opaque background
