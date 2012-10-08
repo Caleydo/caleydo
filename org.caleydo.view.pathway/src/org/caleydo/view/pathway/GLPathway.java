@@ -537,8 +537,8 @@ public class GLPathway
 				int red = (pixels[0] >> 16) & 0xff;
 				int green = (pixels[0] >> 8) & 0xff;
 				int blue = (pixels[0]) & 0xff;
-				System.out.println("DENIS_DEBUG:: pickedRed:" + red + " pickedGreen:" + green + " pickedBlue:" + blue
-						+ " pickedAlpha:" + alpha);
+//				System.out.println("DENIS_DEBUG:: pickedRed:" + red + " pickedGreen:" + green + " pickedBlue:" + blue
+//						+ " pickedAlpha:" + alpha);
 				// look up color
 				List<org.caleydo.core.util.color.Color> colorTable = (ColorManager.get())
 						.getColorList("qualitativeColors");
@@ -550,7 +550,7 @@ public class GLPathway
 					cComponents = c.getRGB();
 					if (red > (int) (cComponents[0] * 255f) - threshold
 							&& red < (int) (cComponents[0] * 255f) + threshold) {
-						System.out.println("DENIS_DEBUG:: found usedColor id=" + i);
+//						System.out.println("DENIS_DEBUG:: found usedColor id=" + i);
 						// select
 						selectedPathID = i;
 						if (selectedPathID > allPaths.size() - 1)
@@ -642,11 +642,7 @@ public class GLPathway
 		float textureOffset = 0.0f;// to avoid z fighting
 		if (enablePathwayTexture) {
 			float fPathwayTransparency = 1.0f;
-
 			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, pathway, fPathwayTransparency, false);
-			textureOffset += PathwayRenderStyle.Z_OFFSET;
-			gl.glTranslatef(0.0f, 0.0f, textureOffset);
-			overlayBubbleSets(gl);
 		}
 
 		float pathwayHeight = pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight());
@@ -658,6 +654,25 @@ public class GLPathway
 		gLPathwayContentCreator.renderPathway(gl, pathway, false);
 		gl.glTranslatef(0, -pathwayHeight, -textureOffset);
 
+		if (enablePathwayTexture) {
+			float fPathwayTransparency = 1.0f;
+			textureOffset += PathwayRenderStyle.Z_OFFSET;
+			gl.glTranslatef(0.0f, 0.0f, textureOffset);
+			
+            gl.glEnable(GL2.GL_STENCIL_TEST);
+            gl.glStencilFunc(GL2.GL_EQUAL, 0, 1);
+            gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);
+    		gl.glPushName(generalManager.getViewManager().getPickingManager()
+    				.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
+			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, pathway, fPathwayTransparency, false);
+			gl.glPopName();
+			gl.glDisable(GL2.GL_STENCIL_TEST);
+			
+			textureOffset -= 2f*PathwayRenderStyle.Z_OFFSET;
+			gl.glTranslatef(0.0f, 0.0f, textureOffset);
+			overlayBubbleSets(gl);
+		}
+////		
 		gl.glScalef(1 / vecScaling.x(), 1 / vecScaling.y(), 1 / vecScaling.z());
 		gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(), -vecTranslation.z());
 
