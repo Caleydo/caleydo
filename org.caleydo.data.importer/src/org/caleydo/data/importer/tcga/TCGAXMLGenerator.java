@@ -144,7 +144,7 @@ public class TCGAXMLGenerator
 
 			if (loadSampledGenes) {
 				matrixArchiveName = "mRNA_Clustering_CNMF";
-				matrixFileName = "cnmf.normalized.gct";
+				matrixFileName = "outputprefix.expclu.gct";
 			}
 			else {
 				matrixArchiveName = "mRNA_Preprocess_Median";
@@ -171,7 +171,7 @@ public class TCGAXMLGenerator
 
 			if (loadSampledGenes) {
 				matrixArchiveName = "miR_Clustering_CNMF";
-				matrixFileName = "cnmf.normalized.gct";
+				matrixFileName = "outputprefix.expclu.gct";
 			}
 			else {
 				matrixArchiveName = "miR_Preprocess";
@@ -203,7 +203,7 @@ public class TCGAXMLGenerator
 		try {
 			if (loadSampledGenes) {
 				matrixArchiveName = "mRNAseq_Clustering_CNMF";
-				matrixFileName = "cnmf.normalized.gct";
+				matrixFileName = "outputprefix.expclu.gct";
 			}
 			else {
 				matrixArchiveName = "mRNAseq_Preprocess";
@@ -225,7 +225,7 @@ public class TCGAXMLGenerator
 
 			if (loadSampledGenes) {
 				matrixArchiveName = "miRseq_Clustering_CNMF";
-				matrixFileName = "cnmf.normalized.gct";
+				matrixFileName = "outputprefix.expclu.gct";
 			}
 			else {
 				matrixArchiveName = "miRseq_Preprocess";
@@ -248,7 +248,7 @@ public class TCGAXMLGenerator
 		try {
 			projectDescription.add(setUpClusteredMatrixData("Methylation_Clustering_CNMF",
 					"Methylation_Clustering_Consensus", "Methylation_Clustering_CNMF",
-					"cnmf.normalized.gct", "Methylation", rowIDSpecification,
+					"outputprefix.expclu.gct", "Methylation", rowIDSpecification,
 					sampleIDSpecification, true, EDataSetType.methylation.getColor()));
 		}
 		catch (Exception e) {
@@ -264,7 +264,7 @@ public class TCGAXMLGenerator
 		try {
 			projectDescription.add(setUpClusteredMatrixData("RPPA_Clustering_CNMF",
 					"RPPA_Clustering_Consensus", "RPPA_Clustering_CNMF",
-					"cnmf.normalized.gct", "RPPA", rowIDSpecification, sampleIDSpecification,
+					"outputprefix.expclu.gct", "RPPA", rowIDSpecification, sampleIDSpecification,
 					false, EDataSetType.RPPA.getColor()));
 		}
 		catch (Exception e) {
