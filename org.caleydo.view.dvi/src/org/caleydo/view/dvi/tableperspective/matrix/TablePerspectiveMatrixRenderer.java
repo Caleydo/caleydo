@@ -27,9 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
@@ -57,7 +55,8 @@ import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.TablePerspectivePickingListener;
 import org.caleydo.view.dvi.tableperspective.TablePerspectiveRenderer;
 
-public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRenderer {
+public class TablePerspectiveMatrixRenderer
+	extends AMultiTablePerspectiveRenderer {
 
 	protected ATableBasedDataDomain dataDomain;
 	// private List<ADimensionGroupData> dimensionGroupDatas;
@@ -76,14 +75,13 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 
 	protected ATablePerspectiveMatrixRenderingStrategy renderingStrategy;
 
-	public TablePerspectiveMatrixRenderer(ATableBasedDataDomain dataDomain,
-			GLDataViewIntegrator view, IDVINode node,
+	public TablePerspectiveMatrixRenderer(ATableBasedDataDomain dataDomain, GLDataViewIntegrator view, IDVINode node,
 			DragAndDropController dragAndDropController) {
 		super(node, view, dragAndDropController);
 
 		this.dataDomain = dataDomain;
-		renderingStrategy = (isUpsideDown) ? new BottomUpTablePerspectiveMatrixRenderingStrategy(
-				this) : new TopDownTablePerspectiveMatrixRenderingStrategy(this);
+		renderingStrategy = (isUpsideDown) ? new BottomUpTablePerspectiveMatrixRenderingStrategy(this)
+				: new TopDownTablePerspectiveMatrixRenderingStrategy(this);
 		// DataDomainManager.get().getDataDomainByType(dataDomainType);
 
 		createRowsAndColumns(node.getTablePerspectives());
@@ -96,16 +94,14 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 		if (arePickingListenersRegistered)
 			return;
 
-		view.addTypePickingListener(new TablePerspectivePickingListener(view,
-				dragAndDropController, this),
+		view.addTypePickingListener(new TablePerspectivePickingListener(view, dragAndDropController, this),
 				PickingType.DATA_CONTAINER.name() + node.getID());
 
 		view.addTypePickingListener(new APickingListener() {
 
 			@Override
 			public void mouseOver(Pick pick) {
-				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick
-						.getObjectID());
+				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick.getObjectID());
 				if (emptyCellRenderer == null)
 					return;
 
@@ -116,8 +112,7 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 
 			@Override
 			public void mouseOut(Pick pick) {
-				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick
-						.getObjectID());
+				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick.getObjectID());
 				if (emptyCellRenderer == null)
 					return;
 
@@ -154,13 +149,12 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 					RecordVirtualArray recordVA = null;
 					boolean createRecordPerspective = false;
 
-					if (!dataDomain.getTable().containsRecordPerspective(
-							recordPerspectiveID)) {
+					if (!dataDomain.getTable().containsRecordPerspective(recordPerspectiveID)) {
 						// FIXME: Check additionally if the group has a
 						// dimensionperspective
 
-						RecordPerspective perspective = dataDomain.getTable()
-								.getRecordPerspective(row.parentContainer.id);
+						RecordPerspective perspective = dataDomain.getTable().getRecordPerspective(
+								row.parentContainer.id);
 
 						// This works because the child containers do net get
 						// sorted in a cellcontainer
@@ -181,18 +175,16 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 					DimensionVirtualArray dimensionVA = null;
 					boolean createDimensionPerspective = false;
 
-					if (!dataDomain.getTable().containsDimensionPerspective(
-							dimensionPerspectiveID)) {
+					if (!dataDomain.getTable().containsDimensionPerspective(dimensionPerspectiveID)) {
 						// FIXME: Check additionally if the group has a
 						// dimensionperspective
 
-						DimensionPerspective perspective = dataDomain.getTable()
-								.getDimensionPerspective(column.parentContainer.id);
+						DimensionPerspective perspective = dataDomain.getTable().getDimensionPerspective(
+								column.parentContainer.id);
 
 						// This works because the child containers do net get
 						// sorted in a cellcontainer
-						int groupIndex = column.parentContainer.childContainers
-								.indexOf(column);
+						int groupIndex = column.parentContainer.childContainers.indexOf(column);
 
 						dimensionVA = perspective.getVirtualArray();
 
@@ -203,14 +195,13 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 
 					}
 
-					CreateTablePerspectiveEvent event = new CreateTablePerspectiveEvent(
-							dataDomain, recordPerspectiveID, createRecordPerspective,
-							recordVA, rowGroup, dimensionPerspectiveID,
+					CreateTablePerspectiveEvent event = new CreateTablePerspectiveEvent(dataDomain,
+							recordPerspectiveID, createRecordPerspective, recordVA, rowGroup, dimensionPerspectiveID,
 							createDimensionPerspective, dimensionVA, columnGroup);
 					if (useContextMenu) {
-						view.getContextMenuCreator().addContextMenuItem(
-								new CreateTablePerspectiveItem(event));
-					} else {
+						view.getContextMenuCreator().addContextMenuItem(new CreateTablePerspectiveItem(event));
+					}
+					else {
 						event.setSender(this);
 						GeneralManager.get().getEventPublisher().triggerEvent(event);
 					}
@@ -243,13 +234,11 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 				for (CellContainer child : container.childContainers) {
 
 					boolean isAlwaysVisible = false;
-					for (TablePerspectiveRenderer dimensionGroupRenderer : dimensionGroupRenderers
-							.keySet()) {
+					for (TablePerspectiveRenderer dimensionGroupRenderer : dimensionGroupRenderers.keySet()) {
 						Pair<CellContainer, CellContainer> rowAndColumn = dimensionGroupRenderers
 								.get(dimensionGroupRenderer);
 
-						if (child == rowAndColumn.getFirst()
-								|| child == rowAndColumn.getSecond()) {
+						if (child == rowAndColumn.getFirst() || child == rowAndColumn.getSecond()) {
 							isAlwaysVisible = true;
 							break;
 						}
@@ -260,8 +249,7 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 
 				// graphLayout.updateNodePositions();
 				node.recalculateNodeSize();
-				view.getGraphLayout().fitNodesToDrawingArea(
-						view.calculateGraphDrawingArea());
+				view.getGraphLayout().fitNodesToDrawingArea(view.calculateGraphDrawingArea());
 				view.setDisplayListDirty();
 			}
 
@@ -270,15 +258,13 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 		view.addTypePickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
-				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick
-						.getObjectID());
+				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick.getObjectID());
 				if (perspectiveRenderer == null)
 					return;
 
 				Point point = pick.getPickedPoint();
 				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingProperties(new Point(point.x, point.y),
-						"PerspectiveDrag");
+				dragAndDropController.setDraggingProperties(new Point(point.x, point.y), "PerspectiveDrag");
 
 				dragAndDropController.addDraggable(perspectiveRenderer);
 				view.setDisplayListDirty();
@@ -296,26 +282,23 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 
 			@Override
 			public void rightClicked(Pick pick) {
-				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick
-						.getObjectID());
+				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick.getObjectID());
 				if (perspectiveRenderer == null)
 					return;
 
 				AVariablePerspective<?, ?, ?, ?> perspective = null;
 				if (perspectiveRenderer.isRecordPerspective()) {
-					perspective = dataDomain.getTable().getRecordPerspective(
-							perspectiveRenderer.getPerspectiveID());
-				} else {
-					perspective = dataDomain.getTable().getDimensionPerspective(
-							perspectiveRenderer.getPerspectiveID());
+					perspective = dataDomain.getTable().getRecordPerspective(perspectiveRenderer.getPerspectiveID());
+				}
+				else {
+					perspective = dataDomain.getTable().getDimensionPerspective(perspectiveRenderer.getPerspectiveID());
 				}
 
 				// view.getContextMenuCreator().addContextMenuItem(
 				// new RenameVariablePerspectiveItem(perspectiveRenderer
 				// .getPerspectiveID(), dataDomain, perspectiveRenderer
 				// .isRecordPerspective()));
-				view.getContextMenuCreator().addContextMenuItem(
-						new RenameLabelHolderItem(perspective));
+				view.getContextMenuCreator().addContextMenuItem(new RenameLabelHolderItem(perspective));
 
 			}
 
@@ -325,21 +308,18 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 
 			@Override
 			public void mouseOver(Pick pick) {
-				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick
-						.getObjectID());
+				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick.getObjectID());
 				if (perspectiveRenderer == null)
 					return;
 				float[] color = renderingStrategy.getPerspectiveColor();
 
-				perspectiveRenderer.setColor(new float[] { color[0] - 0.2f,
-						color[1] - 0.2f, color[2] - 0.2f, 1f });
+				perspectiveRenderer.setColor(new float[] { color[0] - 0.2f, color[1] - 0.2f, color[2] - 0.2f, 1f });
 				view.setDisplayListDirty();
 			}
 
 			@Override
 			public void mouseOut(Pick pick) {
-				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick
-						.getObjectID());
+				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick.getObjectID());
 				if (perspectiveRenderer == null)
 					return;
 
@@ -381,8 +361,7 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 
 		for (String id : rowIDs) {
 
-			RecordPerspective perspective = dataDomain.getTable()
-					.getRecordPerspective(id);
+			RecordPerspective perspective = dataDomain.getTable().getRecordPerspective(id);
 			if (perspective.isPrivate()) {
 				continue;
 			}
@@ -398,8 +377,8 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 			}
 			row.childContainers.clear();
 
-			PerspectiveRenderer perspectiveRenderer = new PerspectiveRenderer(
-					perspectiveColor, perspectiveColor, 0, view, dataDomain, id, true);
+			PerspectiveRenderer perspectiveRenderer = new PerspectiveRenderer(perspectiveColor, perspectiveColor, 0,
+					view, dataDomain, id, true);
 			perspectiveRenderers.put(id, perspectiveRenderer);
 			newRowMap.put(id, row);
 			// rows.add(row);
@@ -408,13 +387,11 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 			RecordGroupList groupList = perspective.getVirtualArray().getGroupList();
 
 			if (groupList != null && groupList.size() > 1) {
-				List<CellContainer> childList = new ArrayList<CellContainer>(
-						groupList.size());
+				List<CellContainer> childList = new ArrayList<CellContainer>(groupList.size());
 				for (int i = 0; i < groupList.size(); i++) {
 
 					Group group = groupList.get(i);
-					String subRowID = group.getPerspectiveID() != null ? group
-							.getPerspectiveID() : row.id + i;
+					String subRowID = group.getPerspectiveID() != null ? group.getPerspectiveID() : row.id + i;
 					CellContainer subRow = rowMap.get(subRowID);
 					if (subRow == null) {
 						subRow = new CellContainer();
@@ -454,8 +431,7 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 
 		for (String id : columnIDs) {
 
-			DimensionPerspective perspective = dataDomain.getTable()
-					.getDimensionPerspective(id);
+			DimensionPerspective perspective = dataDomain.getTable().getDimensionPerspective(id);
 			if (perspective.isPrivate()) {
 				continue;
 			}
@@ -471,8 +447,8 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 				column.isCollapsed = true;
 			}
 
-			PerspectiveRenderer perspectiveRenderer = new PerspectiveRenderer(
-					perspectiveColor, perspectiveColor, 0, view, dataDomain, id, false);
+			PerspectiveRenderer perspectiveRenderer = new PerspectiveRenderer(perspectiveColor, perspectiveColor, 0,
+					view, dataDomain, id, false);
 			perspectiveRenderers.put(id, perspectiveRenderer);
 
 			column.childContainers.clear();
@@ -483,13 +459,11 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 			DimensionGroupList groupList = perspective.getVirtualArray().getGroupList();
 
 			if (groupList != null && groupList.size() > 1) {
-				List<CellContainer> childList = new ArrayList<CellContainer>(
-						groupList.size());
+				List<CellContainer> childList = new ArrayList<CellContainer>(groupList.size());
 				for (int i = 0; i < groupList.size(); i++) {
 
 					Group group = groupList.get(i);
-					String subColumnID = group.getPerspectiveID() != null ? group
-							.getPerspectiveID() : column.id + i;
+					String subColumnID = group.getPerspectiveID() != null ? group.getPerspectiveID() : column.id + i;
 
 					CellContainer subColumn = columnMap.get(subColumnID);
 
@@ -514,7 +488,7 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 			}
 		}
 
-		// Collections.sort(parentContainers);
+		Collections.sort(parentContainers);
 
 		for (CellContainer column : parentContainers) {
 			columns.add(column);
@@ -542,33 +516,28 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 					String recordPerspectiveID = row.id;
 					String dimensionPerspectiveID = column.id;
 
-					if (tablePerspective.getDimensionPerspective().getPerspectiveID()
-							.equals(dimensionPerspectiveID)
-							&& tablePerspective.getRecordPerspective().getPerspectiveID()
-									.equals(recordPerspectiveID)) {
+					if (tablePerspective.getDimensionPerspective().getPerspectiveID().equals(dimensionPerspectiveID)
+							&& tablePerspective.getRecordPerspective().getPerspectiveID().equals(recordPerspectiveID)) {
 						numSubdivisions++;
 						if (numSubdivisions >= rows.size()) {
 							numSubdivisions = rows.size();
 						}
 						dimensionGroupExists = true;
 						TablePerspectiveRenderer dimensionGroupRenderer = new TablePerspectiveRenderer(
-								tablePerspective, view, node, dataDomain.getColor()
-										.getRGBA());
+								tablePerspective, view, node, dataDomain.getColor().getRGBA());
 						dimensionGroupRenderer.setShowText(false);
 						cells.put(row.id + column.id, dimensionGroupRenderer);
-						dimensionGroupRenderers.put(dimensionGroupRenderer,
-								new Pair<CellContainer, CellContainer>(row, column));
+						dimensionGroupRenderers.put(dimensionGroupRenderer, new Pair<CellContainer, CellContainer>(row,
+								column));
 						row.isVisible = true;
 						column.isVisible = true;
 						break;
 					}
 				}
 				if (!dimensionGroupExists) {
-					EmptyCellRenderer emptyCellRenderer = new EmptyCellRenderer(
-							emptyCellId++);
+					EmptyCellRenderer emptyCellRenderer = new EmptyCellRenderer(emptyCellId++);
 					cells.put(row.id + column.id, emptyCellRenderer);
-					emptyCellRenderers.put(emptyCellRenderer,
-							new Pair<CellContainer, CellContainer>(row, column));
+					emptyCellRenderers.put(emptyCellRenderer, new Pair<CellContainer, CellContainer>(row, column));
 				}
 			}
 			column.numSubdivisions = numSubdivisions;
@@ -581,9 +550,8 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 		String columnsCaption = dataDomain.getDimensionDenomination(true, true);
 		String rowsCaption = dataDomain.getRecordDenomination(true, true);
 
-		renderingStrategy.render(gl, bottomDimensionGroupPositions,
-				topDimensionGroupPositions, x, y, node, view, pickingIDsToBePushed,
-				rowsCaption, columnsCaption);
+		renderingStrategy.render(gl, bottomDimensionGroupPositions, topDimensionGroupPositions, x, y, node, view,
+				pickingIDsToBePushed, rowsCaption, columnsCaption);
 
 	}
 
@@ -609,20 +577,17 @@ public class TablePerspectiveMatrixRenderer extends AMultiTablePerspectiveRender
 	@Override
 	public void setUpsideDown(boolean isUpsideDown) {
 		this.isUpsideDown = isUpsideDown;
-		renderingStrategy = (isUpsideDown) ? new BottomUpTablePerspectiveMatrixRenderingStrategy(
-				this) : new TopDownTablePerspectiveMatrixRenderingStrategy(this);
+		renderingStrategy = (isUpsideDown) ? new BottomUpTablePerspectiveMatrixRenderingStrategy(this)
+				: new TopDownTablePerspectiveMatrixRenderingStrategy(this);
 	}
 
 	@Override
 	public void removePickingListeners() {
 		view.removeAllTypePickingListeners(PickingType.EMPTY_CELL.name() + node.getID());
-		view.removeAllTypePickingListeners(PickingType.DATA_CONTAINER.name()
-				+ node.getID());
-		view.removeAllTypePickingListeners(PickingType.COLLAPSE_BUTTON.name()
-				+ node.getID());
+		view.removeAllTypePickingListeners(PickingType.DATA_CONTAINER.name() + node.getID());
+		view.removeAllTypePickingListeners(PickingType.COLLAPSE_BUTTON.name() + node.getID());
 		view.removeAllTypePickingListeners(PickingType.PERSPECTIVE.name() + node.getID());
-		view.removeAllTypePickingListeners(PickingType.PERSPECTIVE_PENETRATING.name()
-				+ node.getID());
+		view.removeAllTypePickingListeners(PickingType.PERSPECTIVE_PENETRATING.name() + node.getID());
 
 	}
 
