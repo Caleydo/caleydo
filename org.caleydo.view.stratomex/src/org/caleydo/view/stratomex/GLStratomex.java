@@ -74,7 +74,6 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
-import org.caleydo.core.view.opengl.miniview.slider.GLDistributionMiniView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -1562,11 +1561,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	}
 
 	public void selectElementsByConnectionBandID(int connectionBandID) {
-		recordSelectionManager.clearSelections();
-
-		ClearSelectionsEvent cse = new ClearSelectionsEvent();
-		cse.setSender(this);
-		eventPublisher.triggerEvent(cse);
 
 		recordSelectionManager.clearSelection(recordSelectionManager.getSelectionType());
 
