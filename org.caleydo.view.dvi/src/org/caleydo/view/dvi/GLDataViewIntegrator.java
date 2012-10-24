@@ -340,9 +340,7 @@ public class GLDataViewIntegrator
 			graphLayout.layout(drawingArea);
 			updateMinWindowSize(true);
 		}
-		else {
-
-		}
+		
 		for (IDVINode node : dataGraph.getNodes()) {
 			// Point2D position = graphLayout.getNodePosition(node);
 

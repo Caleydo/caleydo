@@ -63,5 +63,12 @@
             viewID="org.caleydo.view.enroute">
       </ViewCategory>
    </extension>
+   <extension
+         point="org.caleydo.view.DataSupport">
+      <DataSupport
+            class="org.caleydo.view.enroute.EnRouteDataSupportDefinition"
+            viewID="org.caleydo.view.enroute">
+      </DataSupport>
+   </extension>
 
 </plugin>

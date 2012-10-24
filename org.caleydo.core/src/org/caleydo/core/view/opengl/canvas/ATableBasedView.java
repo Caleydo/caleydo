@@ -21,18 +21,21 @@ package org.caleydo.core.view.opengl.canvas;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DefaultDataSupportDefinition;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
+import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -75,8 +78,9 @@ import org.eclipse.swt.widgets.Composite;
  * @author Marc Streit
  */
 public abstract class ATableBasedView extends AGLView implements
-		ISingleTablePerspectiveBasedView, ISelectionUpdateHandler, IRecordVAUpdateHandler,
-		IDimensionVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
+		ISingleTablePerspectiveBasedView, ISelectionUpdateHandler,
+		IRecordVAUpdateHandler, IDimensionVAUpdateHandler, ISelectionCommandHandler,
+		IViewCommandHandler {
 
 	protected ATableBasedDataDomain dataDomain;
 
@@ -132,7 +136,8 @@ public abstract class ATableBasedView extends AGLView implements
 	 * @param viewFrustum
 	 * @param viewType
 	 *            TODO
-	 * @param viewName TODO
+	 * @param viewName
+	 *            TODO
 	 * @param label
 	 */
 	protected ATableBasedView(GLCanvas glCanvas, Composite parentComposite,
@@ -196,8 +201,8 @@ public abstract class ATableBasedView extends AGLView implements
 	public void initFromSerializableRepresentation(ASerializedView serialzedView) {
 		if (serialzedView instanceof ASerializedSingleTablePerspectiveBasedView) {
 			ASerializedSingleTablePerspectiveBasedView topSerializedView = (ASerializedSingleTablePerspectiveBasedView) serialzedView;
-			tablePerspective = dataDomain.getTablePerspective(
-					topSerializedView.getTablePerspectiveKey());
+			tablePerspective = dataDomain.getTablePerspective(topSerializedView
+					.getTablePerspectiveKey());
 		}
 	}
 
@@ -254,7 +259,8 @@ public abstract class ATableBasedView extends AGLView implements
 
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
-		if (tablePerspective != null && tablePerspective.hasRecordPerspective(recordPerspectiveID)) {
+		if (tablePerspective != null
+				&& tablePerspective.hasRecordPerspective(recordPerspectiveID)) {
 
 			reactOnRecordVAChanges();
 			// reactOnExternalSelection();
@@ -565,6 +571,11 @@ public abstract class ATableBasedView extends AGLView implements
 
 		int pixelHeight = va.size() * pixelPerElement;
 		return pixelHeight;
+	}
+
+	@Override
+	public IDataSupportDefinition getDataSupportDefinition() {
+		return new DefaultDataSupportDefinition();
 	}
 
 }

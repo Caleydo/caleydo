@@ -191,7 +191,7 @@ public class ClusterDialog extends AHelpButtonDialog implements IDataOKListener 
 			dataChooserGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,
 					2, 1));
 			dataChooserGroup.setLayout(new GridLayout(1, false));
-			dataChooser = new DataChooserComposite(this, dataChooserGroup, SWT.NONE);
+			dataChooser = new DataChooserComposite(this, dataChooserGroup, null, SWT.NONE);
 			// dataChooser.setLayout(new GridLayout(1, false));
 			GridData gridData = new GridData(SWT.BEGINNING, SWT.TOP, true, false);
 			// gridData.grabExcessHorizontalSpace = true;

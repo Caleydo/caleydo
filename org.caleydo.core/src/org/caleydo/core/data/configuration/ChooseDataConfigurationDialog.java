@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.caleydo.core.data.configuration;
 
+import java.util.List;
+
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.io.gui.IDataOKListener;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -28,14 +31,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-public class ChooseDataConfigurationDialog
-	extends Dialog
-	implements IDataOKListener {
+public class ChooseDataConfigurationDialog extends Dialog implements IDataOKListener {
 
 	private DataConfiguration dataConfiguration;
 
 	private DataChooserComposite dataChooserComposite;
 	private String windowTitle;
+	/**
+	 * All dataDomains that shall be available to choose from.
+	 */
+	private List<ATableBasedDataDomain> supportedDataDomains;
 
 	public ChooseDataConfigurationDialog(Shell parent, String windowTitle) {
 		super(parent);
@@ -66,8 +71,9 @@ public class ChooseDataConfigurationDialog
 
 	private void createGUI(Composite shell) {
 		shell.setLayout(new GridLayout(1, false));
-		dataChooserComposite = new DataChooserComposite(this, shell, SWT.NONE);
-	
+		dataChooserComposite = new DataChooserComposite(this, shell,
+				supportedDataDomains, SWT.NONE);
+
 	}
 
 	@Override
@@ -84,12 +90,21 @@ public class ChooseDataConfigurationDialog
 	}
 
 	public static void main(String[] args) {
-		ChooseDataConfigurationDialog dialog = new ChooseDataConfigurationDialog(new Shell(), "Bla");
+		ChooseDataConfigurationDialog dialog = new ChooseDataConfigurationDialog(
+				new Shell(), "Bla");
 		dialog.open();
 	}
 
 	@Override
 	public void dataOK() {
 		getButton(IDialogConstants.OK_ID).setEnabled(true);
+	}
+
+	/**
+	 * @param supportedDataDomains
+	 *            setter, see {@link #supportedDataDomains}
+	 */
+	public void setSupportedDataDomains(List<ATableBasedDataDomain> supportedDataDomains) {
+		this.supportedDataDomains = supportedDataDomains;
 	}
 }

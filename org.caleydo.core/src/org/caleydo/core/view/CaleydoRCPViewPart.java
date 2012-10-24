@@ -23,16 +23,19 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+
 import org.caleydo.core.data.configuration.DataConfiguration;
 import org.caleydo.core.data.configuration.DataConfigurationChooser;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.AEvent;
@@ -48,6 +51,10 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.listener.ExtendedSelectionUpdateListener;
 import org.caleydo.core.view.listener.IExtendedSelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -197,8 +204,8 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 						inconsistentSerializedView = true;
 						break;
 					}
-					if (multiTablePerspectiveBasedView
-							.isTablePerspectiveValid(tablePerspective)) {
+					if (multiTablePerspectiveBasedView.getDataSupportDefinition()
+							.isDataDomainSupported(tablePerspective.getDataDomain())) {
 						multiTablePerspectiveBasedView
 								.addTablePerspective(tablePerspective);
 					}
@@ -289,8 +296,42 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 					.getAssociationManager()
 					.getTableBasedDataDomainsForView(serializedView.getViewType());
 
+			ArrayList<ATableBasedDataDomain> supportedDataDomains = new ArrayList<ATableBasedDataDomain>(
+					availableDomains.size());
+
+			IExtensionRegistry registry = Platform.getExtensionRegistry();
+			IConfigurationElement[] dataSupportConfigElements = registry
+					.getConfigurationElementsFor("org.caleydo.view.DataSupport");
+			IConfigurationElement dataSupportConfigForCurrentView = null;
+			for (IConfigurationElement configurationElement : dataSupportConfigElements) {
+				if (configurationElement.getAttribute("viewID").equals(
+						serializedView.getViewType())) {
+					dataSupportConfigForCurrentView = configurationElement;
+					break;
+				}
+			}
+
+			if (dataSupportConfigForCurrentView != null) {
+				for (ATableBasedDataDomain dataDomain : availableDomains) {
+					IDataSupportDefinition supportDefinition;
+					try {
+						supportDefinition = (IDataSupportDefinition) dataSupportConfigForCurrentView
+								.createExecutableExtension("class");
+
+						if (supportDefinition.isDataDomainSupported(dataDomain)) {
+							supportedDataDomains.add(dataDomain);
+						}
+					} catch (CoreException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+
 			DataConfiguration config = DataConfigurationChooser
-					.determineDataConfiguration(availableDomains,
+					.determineDataConfiguration(
+							dataSupportConfigForCurrentView == null ? availableDomains
+									: supportedDataDomains,
 							serializedView.getViewLabel(), letUserChoose);
 
 			// for some views its ok if initially no data is set

@@ -9,6 +9,7 @@
    <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
    <extension-point id="org.caleydo.view.ViewCategory" name="ViewCategory" schema="schema/org.caleydo.view.ViewCategory.exsd"/>
    <extension-point id="org.caleydo.datadomain.DataDomainInitialization" name="DataDomainInitialization" schema="schema/org.caleydo.datadomain.DataDomainInitialization.exsd"/>
+   <extension-point id="org.caleydo.view.DataSupport" name="DataSupport" schema="schema/org.caleydo.view.DataSupport.exsd"/>
 
    <extension
          id="application"

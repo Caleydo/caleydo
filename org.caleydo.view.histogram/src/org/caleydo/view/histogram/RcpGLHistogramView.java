@@ -24,6 +24,8 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DefaultDataSupportDefinition;
+import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.serialize.ASerializedView;
@@ -38,8 +40,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
-		ISingleTablePerspectiveBasedView {
+public class RcpGLHistogramView
+	extends ARcpGLViewPart
+	implements IView, ISingleTablePerspectiveBasedView {
 
 	protected Composite histoComposite;
 
@@ -54,7 +57,8 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 
 		try {
 			viewContext = JAXBContext.newInstance(SerializedHistogramView.class);
-		} catch (JAXBException ex) {
+		}
+		catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
 	}
@@ -103,8 +107,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 		if (dataDomain == null)
 			determineDataConfiguration(serializedView);
 		else
-			((ASerializedSingleTablePerspectiveBasedView) serializedView)
-					.setDataDomainID(dataDomain.getDataDomainID());
+			((ASerializedSingleTablePerspectiveBasedView) serializedView).setDataDomainID(dataDomain.getDataDomainID());
 	}
 
 	@Override
@@ -192,6 +195,11 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IView,
 	@Override
 	public void setLabel(String label) {
 		view.setLabel(label);
+	}
+
+	@Override
+	public IDataSupportDefinition getDataSupportDefinition() {
+		return new DefaultDataSupportDefinition();
 	}
 
 }

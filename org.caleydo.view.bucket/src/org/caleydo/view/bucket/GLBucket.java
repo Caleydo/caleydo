@@ -23,18 +23,17 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.datadomain.DefaultDataSupportDefinition;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
@@ -107,7 +106,6 @@ import org.caleydo.view.pathway.event.EnableGeneMappingEvent;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
-
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 
@@ -118,8 +116,10 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * @author Alexander Lex
  * @author Werner Puff
  */
-public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedView,
-		ISelectionUpdateHandler, IGLBucketView, IRemoteRenderingHandler, IPathwayLoader {
+public class GLBucket
+	extends AGLView
+	implements ISingleTablePerspectiveBasedView, ISelectionUpdateHandler, IGLBucketView, IRemoteRenderingHandler,
+	IPathwayLoader {
 	public static String VIEW_TYPE = "org.caleydo.view.bucket";
 
 	public static String VIEW_NAME = "Bucket";
@@ -232,8 +232,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			layoutRenderStyle = new BucketLayoutRenderStyle(viewFrustum);
 			super.renderStyle = layoutRenderStyle;
 
-			bucketMouseWheelListener = new BucketMouseWheelListener(this,
-					(BucketLayoutRenderStyle) layoutRenderStyle);
+			bucketMouseWheelListener = new BucketMouseWheelListener(this, (BucketLayoutRenderStyle) layoutRenderStyle);
 
 			// Unregister standard mouse wheel listener
 			parentGLCanvas.removeMouseWheelListener(glMouseListener);
@@ -241,9 +240,11 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 			// parentGLCanvas.addMouseListener(bucketMouseWheelListener);
 
-		} else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
+		}
+		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
 			layoutRenderStyle = new JukeboxLayoutRenderStyle(viewFrustum);
-		} else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.LIST)) {
+		}
+		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.LIST)) {
 			layoutRenderStyle = new ListLayoutRenderStyle(viewFrustum);
 		}
 
@@ -256,12 +257,12 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		spawnLevel = layoutRenderStyle.initSpawnLevel();
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
-			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel,
-					stackLevel);
-		} else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
-			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(focusLevel,
-					stackLevel, poolLevel);
-		} else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.LIST)) {
+			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel, stackLevel);
+		}
+		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
+			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(focusLevel, stackLevel, poolLevel);
+		}
+		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.LIST)) {
 			glConnectionLineRenderer = null;
 		}
 
@@ -274,8 +275,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 
 		dragAndDrop = new GLDragAndDrop();
 
-		iPoolLevelCommonID = generalManager.getIDCreator().createID(
-				ManagedObjectType.REMOTE_LEVEL_ELEMENT);
+		iPoolLevelCommonID = generalManager.getIDCreator().createID(ManagedObjectType.REMOTE_LEVEL_ELEMENT);
 	}
 
 	@Override
@@ -285,15 +285,13 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		ArrayList<RemoteLevelElement> remoteLevelElementWhiteList = new ArrayList<RemoteLevelElement>();
 		remoteLevelElementWhiteList.addAll(focusLevel.getAllElements());
 		remoteLevelElementWhiteList.addAll(stackLevel.getAllElements());
-		selectionTransformer = new RemoteRenderingTransformer(uniqueID,
-				remoteLevelElementWhiteList);
+		selectionTransformer = new RemoteRenderingTransformer(uniqueID, remoteLevelElementWhiteList);
 
 		init(gl);
 	}
 
 	@Override
-	public void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener) {
+	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
 		throw new IllegalStateException("Not implemented to be rendered remote");
 	}
@@ -332,8 +330,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
-		ConnectedElementRepresentationManager cerm = GeneralManager.get()
-				.getViewManager().getConnectedElementRepresentationManager();
+		ConnectedElementRepresentationManager cerm = GeneralManager.get().getViewManager()
+				.getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		if (busyState != EBusyState.OFF) {
@@ -345,8 +343,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		}
 
 		if (dragAndDrop.isDragActionRunning()) {
-			dragAndDrop.renderDragThumbnailTexture(gl,
-					bucketMouseWheelListener.isZoomedIn());
+			dragAndDrop.renderDragThumbnailTexture(gl, bucketMouseWheelListener.isZoomedIn());
 		}
 
 		if (glMouseListener.wasMouseReleased() && dragAndDrop.isDragActionRunning()) {
@@ -357,23 +354,20 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 
 			// Prevent user from dragging element onto selection level
 			if (!RemoteElementManager.get().hasItem(iMouseOverObjectID)
-					|| !externalSelectionLevel.containsElement(RemoteElementManager.get()
-							.getItem(iMouseOverObjectID))) {
+					|| !externalSelectionLevel.containsElement(RemoteElementManager.get().getItem(iMouseOverObjectID))) {
 				RemoteLevelElement mouseOverElement = null;
 
 				// Check if a drag and drop action is performed onto the pool
 				// level
 				if (iMouseOverObjectID == iPoolLevelCommonID) {
 					mouseOverElement = poolLevel.getNextFree();
-				} else if (mouseOverElement == null
-						&& iMouseOverObjectID != iDraggedObjectId) {
-					mouseOverElement = RemoteElementManager.get().getItem(
-							iMouseOverObjectID);
+				}
+				else if (mouseOverElement == null && iMouseOverObjectID != iDraggedObjectId) {
+					mouseOverElement = RemoteElementManager.get().getItem(iMouseOverObjectID);
 				}
 
 				if (mouseOverElement != null) {
-					RemoteLevelElement originElement = RemoteElementManager.get()
-							.getItem(iDraggedObjectId);
+					RemoteLevelElement originElement = RemoteElementManager.get().getItem(iDraggedObjectId);
 
 					AGLView mouseOverView = mouseOverElement.getGLView();
 					AGLView originView = originElement.getGLView();
@@ -396,22 +390,19 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 						if (poolLevel.containsElement(originElement)
 								&& (stackLevel.containsElement(mouseOverElement) || focusLevel
 										.containsElement(mouseOverElement))) {
-							mouseOverElement.getGLView().broadcastElements(
-									EVAOperation.APPEND_UNIQUE);
+							mouseOverElement.getGLView().broadcastElements(EVAOperation.APPEND_UNIQUE);
 						}
 
 						if (poolLevel.containsElement(mouseOverElement)
 								&& (stackLevel.containsElement(originElement) || focusLevel
 										.containsElement(originElement))) {
-							mouseOverElement.getGLView().broadcastElements(
-									EVAOperation.REMOVE_ELEMENT);
+							mouseOverElement.getGLView().broadcastElements(EVAOperation.REMOVE_ELEMENT);
 						}
 					}
 				}
 			}
 
-			generalManager.getViewManager().getConnectedElementRepresentationManager()
-					.clearTransformedConnections();
+			generalManager.getViewManager().getConnectedElementRepresentationManager().clearTransformedConnections();
 			dragAndDrop.stopDragAction();
 			bUpdateOffScreenTextures = true;
 		}
@@ -472,8 +463,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		}
 	}
 
-	public void renderBucketWall(final GL2 gl, boolean bRenderBorder,
-			RemoteLevelElement element) {
+	public void renderBucketWall(final GL2 gl, boolean bRenderBorder, RemoteLevelElement element) {
 		// Highlight potential view drop destination
 		if (dragAndDrop.isDragActionRunning() && element.getID() == iMouseOverObjectID) {
 			gl.glLineWidth(5);
@@ -488,7 +478,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 
 		if (arSlerpActions.isEmpty()) {
 			gl.glColor4f(1f, 1f, 1f, 1.0f); // normal mode
-		} else {
+		}
+		else {
 			gl.glColor4f(1f, 1f, 1f, 0.3f);
 		}
 
@@ -520,8 +511,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		}
 	}
 
-	private void renderRemoteLevelElement(final GL2 gl, RemoteLevelElement element,
-			RemoteLevel level) {
+	private void renderRemoteLevelElement(final GL2 gl, RemoteLevelElement element, RemoteLevel level) {
 		// // Check if view is visible
 		// if (!level.getElementVisibilityById(viewID))
 		// return;
@@ -532,10 +522,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			return;
 		}
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.REMOTE_VIEW_SELECTION, glView.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_VIEW_SELECTION, glView.getID()));
 
 		gl.glPushMatrix();
 
@@ -557,7 +545,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			int iMaxChars;
 			if (layoutRenderStyle instanceof ListLayoutRenderStyle) {
 				iMaxChars = 80;
-			} else {
+			}
+			else {
 				iMaxChars = 20;
 			}
 
@@ -565,8 +554,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 				sRenderText = sRenderText.subSequence(0, iMaxChars - 3) + "...";
 			}
 
-			boolean leftSide = poolLevel.getPositionIndexByElementID(element) >= poolLevel
-					.getCapacity() / 2 ? false : true;
+			boolean leftSide = poolLevel.getPositionIndexByElementID(element) >= poolLevel.getCapacity() / 2 ? false
+					: true;
 
 			float fTextScalingFactor = 0.09f;
 			float fTextXPosition = 0f;
@@ -576,23 +565,22 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 
 				if (leftSide) {
 					fTextXPosition = 12f;
-				} else {
-					fTextXPosition = -(float) (textRenderer.getBounds(sRenderText)
-							.getWidth() * 0.06f + 12f);
+				}
+				else {
+					fTextXPosition = -(float) (textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 12f);
 					textWidth *= -1;
 				}
 
-				renderPoolSelection(gl, translation.x() - 0.4f / aspectRatio,
-						translation.y() * scale.y() + 5.2f, textWidth, 6f, element,
-						leftSide);
+				renderPoolSelection(gl, translation.x() - 0.4f / aspectRatio, translation.y() * scale.y() + 5.2f,
+						textWidth, 6f, element, leftSide);
 				gl.glTranslatef(0.8f, 1.3f, 0);
 
 				fTextScalingFactor = 0.075f;
 
-			} else {
+			}
+			else {
 				// Render view background frame
-				Texture tempTexture = textureManager.getIconTexture(gl,
-						EIconTextures.POOL_VIEW_BACKGROUND);
+				Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND);
 				tempTexture.enable(gl);
 				tempTexture.bind(gl);
 
@@ -627,16 +615,16 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 
 			if (element.getID() == iMouseOverObjectID) {
 				textRenderer.setColor(1, 1, 1, 1);
-			} else {
+			}
+			else {
 				textRenderer.setColor(0, 0, 0, 1);
 			}
 
 			if (iNumberOfGenesMouseOver == 0 && iNumberOfGenesSelected == 0) {
-				textRenderer.draw3D(sRenderText, fTextXPosition, 3f, 0,
-						fTextScalingFactor);
-			} else {
-				textRenderer.draw3D(sRenderText, fTextXPosition, 4.5f, 0,
-						fTextScalingFactor);
+				textRenderer.draw3D(sRenderText, fTextXPosition, 3f, 0, fTextScalingFactor);
+			}
+			else {
+				textRenderer.draw3D(sRenderText, fTextXPosition, 4.5f, 0, fTextScalingFactor);
 			}
 
 			textRenderer.end3DRendering();
@@ -653,8 +641,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 				}
 
 				textRenderer.begin3DRendering();
-				textRenderer.draw3D(Integer.toString(iNumberOfGenesMouseOver),
-						fTextXPosition + 9, 2.4f, 0, fTextScalingFactor);
+				textRenderer.draw3D(Integer.toString(iNumberOfGenesMouseOver), fTextXPosition + 9, 2.4f, 0,
+						fTextScalingFactor);
 				textRenderer.end3DRendering();
 
 				if (element.getID() == iMouseOverObjectID) {
@@ -680,8 +668,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 				}
 
 				textRenderer.begin3DRendering();
-				textRenderer.draw3D(Integer.toString(iNumberOfGenesSelected),
-						fTextXPosition + 9, 2.5f, 0, fTextScalingFactor);
+				textRenderer.draw3D(Integer.toString(iNumberOfGenesSelected), fTextXPosition + 9, 2.5f, 0,
+						fTextScalingFactor);
 				textRenderer.end3DRendering();
 
 				if (element.getID() == iMouseOverObjectID) {
@@ -717,14 +705,16 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		if (level != externalSelectionLevel && level != poolLevel) {
 			if (level.equals(focusLevel)) {
 				renderBucketWall(gl, false, element);
-			} else {
+			}
+			else {
 				renderBucketWall(gl, true, element);
 			}
 		}
 
 		if (!bEnableNavigationOverlay || !level.equals(stackLevel)) {
 			glView.displayRemote(gl);
-		} else {
+		}
+		else {
 			renderNavigationOverlay(gl, element.getID());
 		}
 
@@ -734,12 +724,10 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		gl.glPopName();
 	}
 
-	private void renderEmptyBucketWall(final GL2 gl, RemoteLevelElement element,
-			RemoteLevel level) {
+	private void renderEmptyBucketWall(final GL2 gl, RemoteLevelElement element, RemoteLevel level) {
 		gl.glPushMatrix();
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 
 		Transform transform = element.getTransform();
 		Vec3f translation = transform.getTranslation();
@@ -752,8 +740,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 
-		if (!level.equals(transitionLevel) && !level.equals(spawnLevel)
-				&& !level.equals(poolLevel) && !level.equals(externalSelectionLevel)) {
+		if (!level.equals(transitionLevel) && !level.equals(spawnLevel) && !level.equals(poolLevel)
+				&& !level.equals(externalSelectionLevel)) {
 			renderBucketWall(gl, true, element);
 		}
 
@@ -772,7 +760,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 				gl.glTranslatef(-2, 0, 4.02f);
 				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 2);
 				gl.glTranslatef(2, 0, -4.02f);
-			} else {
+			}
+			else {
 				renderStackViewHandleBarZoomedIn(gl, element);
 			}
 		}
@@ -786,7 +775,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 				renderNavigationHandleBar(gl, element, 4, 0.075f, true, 2);
 				gl.glRotatef(-180, 1, 0, 0);
 				gl.glTranslatef(2, 0, -4.02f);
-			} else {
+			}
+			else {
 				renderStackViewHandleBarZoomedIn(gl, element);
 			}
 		}
@@ -800,7 +790,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 2);
 				gl.glRotatef(-90, 0, 0, 1);
 				gl.glTranslatef(2f / aspectRatio - 2 - 0.8f, 2, -4.02f);
-			} else {
+			}
+			else {
 				renderStackViewHandleBarZoomedIn(gl, element);
 			}
 		}
@@ -814,7 +805,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 2);
 				gl.glRotatef(90, 0, 0, 1);
 				gl.glTranslatef(-2f / aspectRatio + 0.8f + 2, -2, -4.02f);
-			} else {
+			}
+			else {
 				renderStackViewHandleBarZoomedIn(gl, element);
 			}
 		}
@@ -830,7 +822,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			float fYCorrection = 0f;
 			if (!bucketMouseWheelListener.isZoomedIn()) {
 				fYCorrection = 0f;
-			} else {
+			}
+			else {
 				fYCorrection = 0.145f;
 			}
 
@@ -838,15 +831,13 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			translation = transform.getTranslation();
 			scale = transform.getScale();
 
-			gl.glTranslatef(translation.x(), translation.y() - 2 * 0.075f + fYCorrection,
-					translation.z() + 0.001f);
+			gl.glTranslatef(translation.x(), translation.y() - 2 * 0.075f + fYCorrection, translation.z() + 0.001f);
 
 			gl.glScalef(scale.x() * 4, scale.y() * 4, scale.z());
 			renderNavigationHandleBar(gl, element, 2, 0.075f, false, 2);
 			gl.glScalef(1 / (scale.x() * 4), 1 / (scale.y() * 4), 1 / scale.z());
 
-			gl.glTranslatef(-translation.x(), -translation.y() + 2 * 0.075f
-					- fYCorrection, -translation.z() - 0.001f);
+			gl.glTranslatef(-translation.x(), -translation.y() + 2 * 0.075f - fYCorrection, -translation.z() - 0.001f);
 		}
 	}
 
@@ -858,46 +849,43 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		float fYCorrection = 0f;
 		if (!bucketMouseWheelListener.isZoomedIn()) {
 			fYCorrection = 0f;
-		} else {
+		}
+		else {
 			fYCorrection = 0.145f;
 		}
 
-		gl.glTranslatef(translation.x(), translation.y() - 2 * 0.075f + fYCorrection,
-				translation.z() + 0.001f);
+		gl.glTranslatef(translation.x(), translation.y() - 2 * 0.075f + fYCorrection, translation.z() + 0.001f);
 		gl.glScalef(scale.x() * 4, scale.y() * 4, scale.z());
 		renderNavigationHandleBar(gl, element, 2, 0.075f, false, 2);
 		gl.glScalef(1 / (scale.x() * 4), 1 / (scale.y() * 4), 1 / scale.z());
-		gl.glTranslatef(-translation.x(), -translation.y() + 2 * 0.075f - fYCorrection,
-				-translation.z() - 0.001f);
+		gl.glTranslatef(-translation.x(), -translation.y() + 2 * 0.075f - fYCorrection, -translation.z() - 0.001f);
 	}
 
-	private void renderNavigationHandleBar(final GL2 gl, RemoteLevelElement element,
-			float fHandleWidth, float fHandleHeight, boolean bUpsideDown,
-			float fScalingFactor) {
+	private void renderNavigationHandleBar(final GL2 gl, RemoteLevelElement element, float fHandleWidth,
+			float fHandleHeight, boolean bUpsideDown, float fScalingFactor) {
 
 		// Render icons
 		gl.glTranslatef(0, 2 + fHandleHeight, 0);
-		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_DRAG,
-				EIconTextures.NAVIGATION_DRAG_VIEW, fHandleHeight, fHandleHeight);
+		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_DRAG, EIconTextures.NAVIGATION_DRAG_VIEW,
+				fHandleHeight, fHandleHeight);
 		gl.glTranslatef(fHandleWidth - 2 * fHandleHeight, 0, 0);
 		if (bUpsideDown) {
 			gl.glRotatef(180, 1, 0, 0);
 			gl.glTranslatef(0, fHandleHeight, 0);
 		}
-		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_LOCK,
-				EIconTextures.NAVIGATION_LOCK_VIEW, fHandleHeight, fHandleHeight);
+		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_LOCK, EIconTextures.NAVIGATION_LOCK_VIEW,
+				fHandleHeight, fHandleHeight);
 		if (bUpsideDown) {
 			gl.glTranslatef(0, -fHandleHeight, 0);
 			gl.glRotatef(-180, 1, 0, 0);
 		}
 		gl.glTranslatef(fHandleHeight, 0, 0);
-		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_REMOVE,
-				EIconTextures.NAVIGATION_REMOVE_VIEW, fHandleHeight, fHandleHeight);
+		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_REMOVE, EIconTextures.NAVIGATION_REMOVE_VIEW,
+				fHandleHeight, fHandleHeight);
 		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
 		// Render background (also draggable)
-		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_VIEW_DRAG,
-				element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_VIEW_DRAG, element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0 + fHandleHeight, 2 + fHandleHeight, 0);
@@ -925,9 +913,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 
 		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1);
 		textRenderer.begin3DRendering();
-		textRenderer.draw3D(sText, fHandleWidth / fScalingFactor
-				- (float) textRenderer.getBounds(sText).getWidth() / 2f
-				* fTextScalingFactor, 2.02f, 0f, fTextScalingFactor);
+		textRenderer.draw3D(sText, fHandleWidth / fScalingFactor - (float) textRenderer.getBounds(sText).getWidth()
+				/ 2f * fTextScalingFactor, 2.02f, 0f, fTextScalingFactor);
 		textRenderer.end3DRendering();
 
 		if (bUpsideDown) {
@@ -936,11 +923,9 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		}
 	}
 
-	private void renderSingleHandle(final GL2 gl, int iRemoteLevelElementID,
-			PickingType ePickingType, EIconTextures eIconTexture, float fWidth,
-			float fHeight) {
-		gl.glPushName(pickingManager.getPickingID(uniqueID, ePickingType,
-				iRemoteLevelElementID));
+	private void renderSingleHandle(final GL2 gl, int iRemoteLevelElementID, PickingType ePickingType,
+			EIconTextures eIconTexture, float fWidth, float fHeight) {
+		gl.glPushName(pickingManager.getPickingID(uniqueID, ePickingType, iRemoteLevelElementID));
 
 		Texture tempTexture = textureManager.getIconTexture(gl, eIconTexture);
 		tempTexture.enable(gl);
@@ -969,37 +954,30 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			glConnectionLineRenderer.enableRendering(false);
 		}
 
-		RemoteLevelElement remoteLevelElement = RemoteElementManager.get().getItem(
-				iRemoteLevelElementID);
+		RemoteLevelElement remoteLevelElement = RemoteElementManager.get().getItem(iRemoteLevelElementID);
 
 		PickingType leftWallPickingType = null;
 		PickingType rightWallPickingType = null;
 		PickingType topWallPickingType = null;
 		PickingType bottomWallPickingType = null;
 
-		Vec4f tmpColor_out = new Vec4f(0.9f, 0.9f, 0.9f,
-				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-		Vec4f tmpColor_in = new Vec4f(0.9f, 0.9f, 0.9f,
-				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-		Vec4f tmpColor_left = new Vec4f(0.9f, 0.9f, 0.9f,
-				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-		Vec4f tmpColor_right = new Vec4f(0.9f, 0.9f, 0.9f,
-				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-		Vec4f tmpColor_lock = new Vec4f(0.9f, 0.9f, 0.9f,
-				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+		Vec4f tmpColor_out = new Vec4f(0.9f, 0.9f, 0.9f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+		Vec4f tmpColor_in = new Vec4f(0.9f, 0.9f, 0.9f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+		Vec4f tmpColor_left = new Vec4f(0.9f, 0.9f, 0.9f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+		Vec4f tmpColor_right = new Vec4f(0.9f, 0.9f, 0.9f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+		Vec4f tmpColor_lock = new Vec4f(0.9f, 0.9f, 0.9f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
 		// Assign view symbol
 		Texture textureViewSymbol;
 		AGLView view = remoteLevelElement.getGLView();
 		if (view.getViewType().equals("org.caleydo.view.heatmap")) {
-			textureViewSymbol = textureManager.getIconTexture(gl,
-					EIconTextures.HEAT_MAP_SYMBOL);
-		} else if (view.getViewType().equals("org.caleydo.view.parcoords")) {
-			textureViewSymbol = textureManager.getIconTexture(gl,
-					EIconTextures.PAR_COORDS_SYMBOL);
-		} else if (view.getViewType().equals("org.caleydo.view.pathway")) {
-			textureViewSymbol = textureManager.getIconTexture(gl,
-					EIconTextures.PATHWAY_SYMBOL);
+			textureViewSymbol = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
+		}
+		else if (view.getViewType().equals("org.caleydo.view.parcoords")) {
+			textureViewSymbol = textureManager.getIconTexture(gl, EIconTextures.PAR_COORDS_SYMBOL);
+		}
+		else if (view.getViewType().equals("org.caleydo.view.pathway")) {
+			textureViewSymbol = textureManager.getIconTexture(gl, EIconTextures.PATHWAY_SYMBOL);
 		}
 		// else if (view.getViewType().equals("org.caleydo.view.glyph")) {
 		// textureViewSymbol = textureManager.getIconTexture(gl,
@@ -1020,8 +998,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		TextureCoords texCoords = textureViewSymbol.getImageTexCoords();
 
 		if (iNavigationMouseOverViewID_lock == iRemoteLevelElementID) {
-			tmpColor_lock.set(1, 0.3f, 0.3f,
-					ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+			tmpColor_lock.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 		}
 
 		if (layoutMode.equals(LayoutMode.JUKEBOX)) {
@@ -1031,25 +1008,24 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			rightWallPickingType = PickingType.BUCKET_MOVE_IN_ICON_SELECTION;
 
 			if (iNavigationMouseOverViewID_out == iRemoteLevelElementID) {
-				tmpColor_left.set(1, 0.3f, 0.3f,
-						ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-			} else if (iNavigationMouseOverViewID_in == iRemoteLevelElementID) {
-				tmpColor_right.set(1, 0.3f, 0.3f,
-						ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-			} else if (iNavigationMouseOverViewID_left == iRemoteLevelElementID) {
-				tmpColor_in.set(1, 0.3f, 0.3f,
-						ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-			} else if (iNavigationMouseOverViewID_right == iRemoteLevelElementID) {
-				tmpColor_out.set(1, 0.3f, 0.3f,
-						ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				tmpColor_left.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+			}
+			else if (iNavigationMouseOverViewID_in == iRemoteLevelElementID) {
+				tmpColor_right.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+			}
+			else if (iNavigationMouseOverViewID_left == iRemoteLevelElementID) {
+				tmpColor_in.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+			}
+			else if (iNavigationMouseOverViewID_right == iRemoteLevelElementID) {
+				tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 			}
 
 			textureMoveIn = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 			textureMoveOut = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
 			textureMoveLeft = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-			textureMoveRight = textureManager
-					.getIconTexture(gl, EIconTextures.ARROW_LEFT);
-		} else {
+			textureMoveRight = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+		}
+		else {
 			if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 0) // top
 			{
 				topWallPickingType = PickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
@@ -1058,28 +1034,24 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 				rightWallPickingType = PickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
 
 				if (iNavigationMouseOverViewID_out == iRemoteLevelElementID) {
-					tmpColor_out.set(1, 0.3f, 0.3f,
-							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-				} else if (iNavigationMouseOverViewID_in == iRemoteLevelElementID) {
-					tmpColor_in.set(1, 0.3f, 0.3f,
-							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-				} else if (iNavigationMouseOverViewID_left == iRemoteLevelElementID) {
-					tmpColor_left.set(1, 0.3f, 0.3f,
-							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-				} else if (iNavigationMouseOverViewID_right == iRemoteLevelElementID) {
-					tmpColor_right.set(1, 0.3f, 0.3f,
-							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				}
+				else if (iNavigationMouseOverViewID_in == iRemoteLevelElementID) {
+					tmpColor_in.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				}
+				else if (iNavigationMouseOverViewID_left == iRemoteLevelElementID) {
+					tmpColor_left.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				}
+				else if (iNavigationMouseOverViewID_right == iRemoteLevelElementID) {
+					tmpColor_right.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				}
 
-				textureMoveIn = textureManager.getIconTexture(gl,
-						EIconTextures.ARROW_LEFT);
-				textureMoveOut = textureManager.getIconTexture(gl,
-						EIconTextures.ARROW_DOWN);
-				textureMoveLeft = textureManager.getIconTexture(gl,
-						EIconTextures.ARROW_DOWN);
-				textureMoveRight = textureManager.getIconTexture(gl,
-						EIconTextures.ARROW_LEFT);
-			} else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 2) // bottom
+				textureMoveIn = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveLeft = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveRight = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+			}
+			else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 2) // bottom
 			{
 				topWallPickingType = PickingType.BUCKET_MOVE_IN_ICON_SELECTION;
 				bottomWallPickingType = PickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
@@ -1087,28 +1059,24 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 				rightWallPickingType = PickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
 
 				if (iNavigationMouseOverViewID_out == iRemoteLevelElementID) {
-					tmpColor_in.set(1, 0.3f, 0.3f,
-							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-				} else if (iNavigationMouseOverViewID_in == iRemoteLevelElementID) {
-					tmpColor_out.set(1, 0.3f, 0.3f,
-							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-				} else if (iNavigationMouseOverViewID_left == iRemoteLevelElementID) {
-					tmpColor_right.set(1, 0.3f, 0.3f,
-							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-				} else if (iNavigationMouseOverViewID_right == iRemoteLevelElementID) {
-					tmpColor_left.set(1, 0.3f, 0.3f,
-							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_in.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				}
+				else if (iNavigationMouseOverViewID_in == iRemoteLevelElementID) {
+					tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				}
+				else if (iNavigationMouseOverViewID_left == iRemoteLevelElementID) {
+					tmpColor_right.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				}
+				else if (iNavigationMouseOverViewID_right == iRemoteLevelElementID) {
+					tmpColor_left.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				}
 
-				textureMoveIn = textureManager.getIconTexture(gl,
-						EIconTextures.ARROW_LEFT);
-				textureMoveOut = textureManager.getIconTexture(gl,
-						EIconTextures.ARROW_DOWN);
-				textureMoveLeft = textureManager.getIconTexture(gl,
-						EIconTextures.ARROW_DOWN);
-				textureMoveRight = textureManager.getIconTexture(gl,
-						EIconTextures.ARROW_LEFT);
-			} else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 1) // left
+				textureMoveIn = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveLeft = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveRight = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+			}
+			else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 1) // left
 			{
 				topWallPickingType = PickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
 				bottomWallPickingType = PickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
@@ -1116,28 +1084,24 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 				rightWallPickingType = PickingType.BUCKET_MOVE_IN_ICON_SELECTION;
 
 				if (iNavigationMouseOverViewID_out == iRemoteLevelElementID) {
-					tmpColor_left.set(1, 0.3f, 0.3f,
-							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-				} else if (iNavigationMouseOverViewID_in == iRemoteLevelElementID) {
-					tmpColor_right.set(1, 0.3f, 0.3f,
-							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-				} else if (iNavigationMouseOverViewID_left == iRemoteLevelElementID) {
-					tmpColor_in.set(1, 0.3f, 0.3f,
-							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-				} else if (iNavigationMouseOverViewID_right == iRemoteLevelElementID) {
-					tmpColor_out.set(1, 0.3f, 0.3f,
-							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_left.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				}
+				else if (iNavigationMouseOverViewID_in == iRemoteLevelElementID) {
+					tmpColor_right.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				}
+				else if (iNavigationMouseOverViewID_left == iRemoteLevelElementID) {
+					tmpColor_in.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				}
+				else if (iNavigationMouseOverViewID_right == iRemoteLevelElementID) {
+					tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				}
 
-				textureMoveIn = textureManager.getIconTexture(gl,
-						EIconTextures.ARROW_LEFT);
-				textureMoveOut = textureManager.getIconTexture(gl,
-						EIconTextures.ARROW_DOWN);
-				textureMoveLeft = textureManager.getIconTexture(gl,
-						EIconTextures.ARROW_DOWN);
-				textureMoveRight = textureManager.getIconTexture(gl,
-						EIconTextures.ARROW_LEFT);
-			} else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 3) // right
+				textureMoveIn = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveLeft = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveRight = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+			}
+			else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 3) // right
 			{
 				topWallPickingType = PickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
 				bottomWallPickingType = PickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
@@ -1145,27 +1109,22 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 				rightWallPickingType = PickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
 
 				if (iNavigationMouseOverViewID_out == iRemoteLevelElementID) {
-					tmpColor_right.set(1, 0.3f, 0.3f,
-							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-				} else if (iNavigationMouseOverViewID_in == iRemoteLevelElementID) {
-					tmpColor_left.set(1, 0.3f, 0.3f,
-							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-				} else if (iNavigationMouseOverViewID_left == iRemoteLevelElementID) {
-					tmpColor_out.set(1, 0.3f, 0.3f,
-							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-				} else if (iNavigationMouseOverViewID_right == iRemoteLevelElementID) {
-					tmpColor_in.set(1, 0.3f, 0.3f,
-							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_right.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				}
+				else if (iNavigationMouseOverViewID_in == iRemoteLevelElementID) {
+					tmpColor_left.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				}
+				else if (iNavigationMouseOverViewID_left == iRemoteLevelElementID) {
+					tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				}
+				else if (iNavigationMouseOverViewID_right == iRemoteLevelElementID) {
+					tmpColor_in.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				}
 
-				textureMoveIn = textureManager.getIconTexture(gl,
-						EIconTextures.ARROW_LEFT);
-				textureMoveOut = textureManager.getIconTexture(gl,
-						EIconTextures.ARROW_DOWN);
-				textureMoveLeft = textureManager.getIconTexture(gl,
-						EIconTextures.ARROW_DOWN);
-				textureMoveRight = textureManager.getIconTexture(gl,
-						EIconTextures.ARROW_LEFT);
+				textureMoveIn = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveLeft = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveRight = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 			}
 			// else if
 			// (underInteractionLayer.getPositionIndexByElementID(viewID) == 0)
@@ -1245,8 +1204,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		// gl.glPopName();
 
 		// BOTTOM - NAVIGATION: MOVE IN
-		gl.glPushName(pickingManager.getPickingID(uniqueID, bottomWallPickingType,
-				iRemoteLevelElementID));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, bottomWallPickingType, iRemoteLevelElementID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL2.GL_LINE_LOOP);
@@ -1279,8 +1237,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		gl.glPopName();
 
 		// RIGHT - NAVIGATION: MOVE RIGHT
-		gl.glPushName(pickingManager.getPickingID(uniqueID, rightWallPickingType,
-				iRemoteLevelElementID));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, rightWallPickingType, iRemoteLevelElementID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL2.GL_LINE_LOOP);
@@ -1313,8 +1270,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		gl.glPopName();
 
 		// LEFT - NAVIGATION: MOVE LEFT
-		gl.glPushName(pickingManager.getPickingID(uniqueID, leftWallPickingType,
-				iRemoteLevelElementID));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, leftWallPickingType, iRemoteLevelElementID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL2.GL_LINE_LOOP);
@@ -1347,8 +1303,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		gl.glPopName();
 
 		// TOP - NAVIGATION: MOVE OUT
-		gl.glPushName(pickingManager.getPickingID(uniqueID, topWallPickingType,
-				iRemoteLevelElementID));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, topWallPickingType, iRemoteLevelElementID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL2.GL_LINE_LOOP);
@@ -1381,8 +1336,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		gl.glPopName();
 	}
 
-	private void renderPoolSelection(final GL2 gl, float fXOrigin, float fYOrigin,
-			float fWidth, float fHeight, RemoteLevelElement element, boolean leftSide) {
+	private void renderPoolSelection(final GL2 gl, float fXOrigin, float fYOrigin, float fWidth, float fHeight,
+			RemoteLevelElement element, boolean leftSide) {
 
 		float fPanelSideWidth = 11f;
 
@@ -1393,8 +1348,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			fPanelSideWidth += 1f;
 		}
 
-		float backgroudX = fXOrigin + 1.65f / aspectRatio * sideSwitchFactor
-				+ fPanelSideWidth;
+		float backgroudX = fXOrigin + 1.65f / aspectRatio * sideSwitchFactor + fPanelSideWidth;
 
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL2.GL_POLYGON);
@@ -1404,8 +1358,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		gl.glVertex3f(backgroudX, fYOrigin - fHeight / 2f, 0f);
 		gl.glEnd();
 
-		Texture tempTexture = textureManager.getIconTexture(gl,
-				EIconTextures.POOL_VIEW_BACKGROUND_SELECTION);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND_SELECTION);
 		tempTexture.enable(gl);
 		tempTexture.bind(gl);
 
@@ -1415,17 +1368,13 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fXOrigin + 2 / aspectRatio * sideSwitchFactor + fPanelSideWidth,
-				fYOrigin - fHeight, -0.01f);
+		gl.glVertex3f(fXOrigin + 2 / aspectRatio * sideSwitchFactor + fPanelSideWidth, fYOrigin - fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fXOrigin + 2 / aspectRatio * sideSwitchFactor + fPanelSideWidth,
-				fYOrigin + fHeight, -0.01f);
+		gl.glVertex3f(fXOrigin + 2 / aspectRatio * sideSwitchFactor + fPanelSideWidth, fYOrigin + fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fXOrigin + 2f / aspectRatio * sideSwitchFactor, fYOrigin + fHeight,
-				-0.01f);
+		gl.glVertex3f(fXOrigin + 2f / aspectRatio * sideSwitchFactor, fYOrigin + fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fXOrigin + 2f / aspectRatio * sideSwitchFactor, fYOrigin - fHeight,
-				-0.01f);
+		gl.glVertex3f(fXOrigin + 2f / aspectRatio * sideSwitchFactor, fYOrigin - fHeight, -0.01f);
 		gl.glEnd();
 
 		tempTexture.disable(gl);
@@ -1434,19 +1383,16 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		gl.glPopName();
 
 		int fHandleScaleFactor = 18;
-		gl.glTranslatef(fXOrigin + 2.5f / aspectRatio * sideSwitchFactor, fYOrigin
-				- fHeight / 2f + fHeight - 1f, 1.8f);
+		gl.glTranslatef(fXOrigin + 2.5f / aspectRatio * sideSwitchFactor, fYOrigin - fHeight / 2f + fHeight - 1f, 1.8f);
 		gl.glScalef(fHandleScaleFactor, fHandleScaleFactor, fHandleScaleFactor);
-		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_DRAG,
-				EIconTextures.POOL_DRAG_VIEW, 0.1f, 0.1f);
+		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_DRAG, EIconTextures.POOL_DRAG_VIEW, 0.1f, 0.1f);
 		gl.glTranslatef(0, -0.2f, 0);
-		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_REMOVE,
-				EIconTextures.POOL_REMOVE_VIEW, 0.1f, 0.1f);
+		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_REMOVE, EIconTextures.POOL_REMOVE_VIEW, 0.1f,
+				0.1f);
 		gl.glTranslatef(0, 0.2f, 0);
-		gl.glScalef(1f / fHandleScaleFactor, 1f / fHandleScaleFactor,
-				1f / fHandleScaleFactor);
-		gl.glTranslatef(-fXOrigin - 2.5f / aspectRatio * sideSwitchFactor, -fYOrigin
-				+ fHeight / 2f - fHeight + 1f, -1.8f);
+		gl.glScalef(1f / fHandleScaleFactor, 1f / fHandleScaleFactor, 1f / fHandleScaleFactor);
+		gl.glTranslatef(-fXOrigin - 2.5f / aspectRatio * sideSwitchFactor, -fYOrigin + fHeight / 2f - fHeight + 1f,
+				-1.8f);
 
 		// gl.glColor3f(0.25f, 0.25f, 0.25f);
 		// gl.glBegin(GL2.GL_POLYGON);
@@ -1458,10 +1404,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		// gl.glVertex3f(fXOrigin + 3f, fYOrigin- fHeight / 2f + 1.5f , 0f);
 		// gl.glEnd();
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.REMOTE_VIEW_SELECTION, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_VIEW_SELECTION, element.getID()));
 	}
 
 	private void doSlerpActions(final GL2 gl) {
@@ -1497,10 +1441,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			slerpMod.playSlerpSound();
 		}
 
-		Transform transform = slerpMod.interpolate(slerpAction
-				.getOriginRemoteLevelElement().getTransform(), slerpAction
-				.getDestinationRemoteLevelElement().getTransform(), (float) iSlerpFactor
-				/ SLERP_RANGE);
+		Transform transform = slerpMod.interpolate(slerpAction.getOriginRemoteLevelElement().getTransform(),
+				slerpAction.getDestinationRemoteLevelElement().getTransform(), (float) iSlerpFactor / SLERP_RANGE);
 
 		gl.glPushMatrix();
 
@@ -1518,8 +1460,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 
 			slerpAction.finished();
 
-			RemoteLevelElement destinationElement = slerpAction
-					.getDestinationRemoteLevelElement();
+			RemoteLevelElement destinationElement = slerpAction.getDestinationRemoteLevelElement();
 
 			updateViewDetailLevels(destinationElement);
 
@@ -1533,10 +1474,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 				glConnectionLineRenderer.enableRendering(true);
 			}
 
-			generalManager.getViewManager().getInfoAreaManager()
-					.enable(!bEnableNavigationOverlay);
-			generalManager.getViewManager().getConnectedElementRepresentationManager()
-					.clearTransformedConnections();
+			generalManager.getViewManager().getInfoAreaManager().enable(!bEnableNavigationOverlay);
+			generalManager.getViewManager().getConnectedElementRepresentationManager().clearTransformedConnections();
 		}
 	}
 
@@ -1551,16 +1490,17 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 
 		// Update detail level of moved view when slerp action is finished;
 		if (destinationLevel == focusLevel) {
-			if (bucketMouseWheelListener.isZoomedIn()
-					|| layoutRenderStyle instanceof ListLayoutRenderStyle) {
+			if (bucketMouseWheelListener.isZoomedIn() || layoutRenderStyle instanceof ListLayoutRenderStyle) {
 				glActiveSubView.setDetailLevel(EDetailLevel.HIGH);
-			} else {
+			}
+			else {
 				glActiveSubView.setDetailLevel(EDetailLevel.MEDIUM);
 			}
-		} else if (destinationLevel == stackLevel) {
+		}
+		else if (destinationLevel == stackLevel) {
 			glActiveSubView.setDetailLevel(EDetailLevel.LOW);
-		} else if (destinationLevel == poolLevel
-				|| destinationLevel == externalSelectionLevel) {
+		}
+		else if (destinationLevel == poolLevel || destinationLevel == externalSelectionLevel) {
 			glActiveSubView.setDetailLevel(EDetailLevel.VERY_LOW);
 		}
 
@@ -1568,8 +1508,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 	}
 
 	private void loadViewToFocusLevel(final int iRemoteLevelElementID) {
-		RemoteLevelElement element = RemoteElementManager.get().getItem(
-				iRemoteLevelElementID);
+		RemoteLevelElement element = RemoteElementManager.get().getItem(iRemoteLevelElementID);
 
 		// Check if other slerp action is currently running
 		if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
@@ -1624,28 +1563,26 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 				// Check if focus level is free
 				if (!focusLevel.hasFreePosition()) {
 					// Slerp focus view to free spot in stack
-					SlerpAction reverseSlerpAction = new SlerpAction(focusLevel
-							.getElementByPositionIndex(0).getGLView().getID(),
-							focusLevel.getElementByPositionIndex(0), element);
+					SlerpAction reverseSlerpAction = new SlerpAction(focusLevel.getElementByPositionIndex(0)
+							.getGLView().getID(), focusLevel.getElementByPositionIndex(0), element);
 					arSlerpActions.add(reverseSlerpAction);
 				}
 
 				// Slerp selected view from transition position to focus
 				// position
 				SlerpAction slerpAction = new SlerpAction(element.getGLView().getID(),
-						transitionLevel.getElementByPositionIndex(0),
-						focusLevel.getElementByPositionIndex(0));
+						transitionLevel.getElementByPositionIndex(0), focusLevel.getElementByPositionIndex(0));
 				arSlerpActions.add(slerpAction);
 			}
 			// Check if focus position is free
 			else if (focusLevel.hasFreePosition()) {
 
 				// Slerp selected view to focus position
-				SlerpAction slerpActionTransition = new SlerpAction(element,
-						focusLevel.getElementByPositionIndex(0));
+				SlerpAction slerpActionTransition = new SlerpAction(element, focusLevel.getElementByPositionIndex(0));
 				arSlerpActions.add(slerpActionTransition);
 
-			} else {
+			}
+			else {
 				// Slerp selected view to transition position
 				SlerpAction slerpActionTransition = new SlerpAction(element,
 						transitionLevel.getElementByPositionIndex(0));
@@ -1677,32 +1614,29 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 					// throw new
 					// IllegalStateException("All views in stack are locked!");
 
-					freeStackElement = stackLevel
-							.getElementByPositionIndex(iReplacePosition);
+					freeStackElement = stackLevel.getElementByPositionIndex(iReplacePosition);
 
 					// Slerp view from stack to pool
-					SlerpAction reverseSlerpAction = new SlerpAction(freeStackElement,
-							poolLevel.getNextFree());
+					SlerpAction reverseSlerpAction = new SlerpAction(freeStackElement, poolLevel.getNextFree());
 					arSlerpActions.add(reverseSlerpAction);
 
 					// Unregister all elements of the view that is moved out
-					freeStackElement.getGLView().broadcastElements(
-							EVAOperation.REMOVE_ELEMENT);
-				} else {
+					freeStackElement.getGLView().broadcastElements(EVAOperation.REMOVE_ELEMENT);
+				}
+				else {
 					freeStackElement = stackLevel.getNextFree();
 				}
 
 				if (!focusLevel.hasFreePosition()) {
 					// Slerp focus view to free spot in stack
-					SlerpAction reverseSlerpAction2 = new SlerpAction(
-							focusLevel.getElementByPositionIndex(0), freeStackElement);
+					SlerpAction reverseSlerpAction2 = new SlerpAction(focusLevel.getElementByPositionIndex(0),
+							freeStackElement);
 					arSlerpActions.add(reverseSlerpAction2);
 				}
 
 				// Slerp selected view from transition position to focus
 				// position
-				SlerpAction slerpAction = new SlerpAction(glView.getID(),
-						transitionLevel.getElementByPositionIndex(0),
+				SlerpAction slerpAction = new SlerpAction(glView.getID(), transitionLevel.getElementByPositionIndex(0),
 						focusLevel.getElementByPositionIndex(0));
 				arSlerpActions.add(slerpAction);
 			}
@@ -1730,8 +1664,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 	@Override
 	public void addPathwayView(final int pathwayID, String dataDomainID) {
 
-		if (!PathwayManager.get().isPathwayVisible(
-				PathwayManager.get().getItem(pathwayID))) {
+		if (!PathwayManager.get().isPathwayVisible(PathwayManager.get().getItem(pathwayID))) {
 			SerializedPathwayView serPathway = new SerializedPathwayView();
 			serPathway.setDataDomainID(dataDomain.getDataDomainID());
 			serPathway.setPathwayID(pathwayID);
@@ -1740,313 +1673,302 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int externalID, Pick pick) {
 
 		switch (pickingType) {
-		case REMOTE_VIEW_DRAG:
+			case REMOTE_VIEW_DRAG:
 
-			switch (pickingMode) {
-			case CLICKED:
+				switch (pickingMode) {
+					case CLICKED:
 
-				if (!dragAndDrop.isDragActionRunning()) {
-					// System.out.println("Start drag!");
-					dragAndDrop.startDragAction(externalID);
-				}
+						if (!dragAndDrop.isDragActionRunning()) {
+							// System.out.println("Start drag!");
+							dragAndDrop.startDragAction(externalID);
+						}
 
-				iMouseOverObjectID = externalID;
+						iMouseOverObjectID = externalID;
 
-				compactPoolLevel();
+						compactPoolLevel();
 
-				break;
-			}
-			break;
-
-		case REMOTE_VIEW_REMOVE:
-
-			switch (pickingMode) {
-			case CLICKED:
-
-				RemoteLevelElement element = RemoteElementManager.get().getItem(
-						externalID);
-
-				AGLView glView = element.getGLView();
-
-				// // Unregister all elements of the view that is
-				// removed
-				// glEventListener.broadcastElements(EVAOperation.REMOVE_ELEMENT);
-
-				removeView(glView);
-				element.setGLView(null);
-				containedGLViews.remove(glView);
-
-				if (element.getRemoteLevel() == poolLevel) {
-					compactPoolLevel();
-				}
-
-				break;
-			}
-			break;
-
-		case REMOTE_VIEW_LOCK:
-
-			switch (pickingMode) {
-			case CLICKED:
-
-				RemoteLevelElement element = RemoteElementManager.get().getItem(
-						externalID);
-
-				// Toggle lock flag
-				element.lock(!element.isLocked());
-
-				break;
-			}
-			break;
-
-		case REMOTE_LEVEL_ELEMENT:
-			switch (pickingMode) {
-			case MOUSE_OVER:
-			case DRAGGED:
-				iMouseOverObjectID = externalID;
-				break;
-			case CLICKED:
-
-				// Do not handle click if element is dragged
-				if (dragAndDrop.isDragActionRunning()) {
-					break;
-				}
-
-				// Check if view is contained in pool level
-				for (RemoteLevelElement element : poolLevel.getAllElements()) {
-					if (element.getID() == externalID) {
-						loadViewToFocusLevel(externalID);
 						break;
-					}
 				}
 				break;
-			}
-			break;
 
-		case REMOTE_VIEW_SELECTION:
-			switch (pickingMode) {
-			case MOUSE_OVER:
+			case REMOTE_VIEW_REMOVE:
 
-				// generalManager.getViewGLCanvasManager().getInfoAreaManager()
-				// .setDataAboutView(externalID);
+				switch (pickingMode) {
+					case CLICKED:
 
-				// Prevent update flood when moving mouse over view
-				if (activeViewID == externalID) {
-					break;
+						RemoteLevelElement element = RemoteElementManager.get().getItem(externalID);
+
+						AGLView glView = element.getGLView();
+
+						// // Unregister all elements of the view that is
+						// removed
+						// glEventListener.broadcastElements(EVAOperation.REMOVE_ELEMENT);
+
+						removeView(glView);
+						element.setGLView(null);
+						containedGLViews.remove(glView);
+
+						if (element.getRemoteLevel() == poolLevel) {
+							compactPoolLevel();
+						}
+
+						break;
 				}
-
-				activeViewID = externalID;
-
-				setDisplayListDirty();
-
-				// TODO
-				// generalManager.getEventPublisher().triggerEvent(
-				// EMediatorType.VIEW_SELECTION,
-				// generalManager.getViewGLCanvasManager().getGLEventListener(
-				// externalID), );
-
 				break;
 
-			case CLICKED:
+			case REMOTE_VIEW_LOCK:
 
-				// generalManager.getViewGLCanvasManager().getInfoAreaManager()
-				// .setDataAboutView(externalID);
+				switch (pickingMode) {
+					case CLICKED:
 
-				break;
-			case RIGHT_CLICKED:
-				break;
+						RemoteLevelElement element = RemoteElementManager.get().getItem(externalID);
 
-			}
-			// infoAreaManager.setData(externalID, dataDomain.get,
-			// pick.getPickedPoint(), 0.3f);// pick.getDepth());
-			break;
+						// Toggle lock flag
+						element.lock(!element.isLocked());
 
-		case BUCKET_MOVE_IN_ICON_SELECTION:
-			switch (pickingMode) {
-			case CLICKED:
-				loadViewToFocusLevel(externalID);
-				bEnableNavigationOverlay = false;
-				// glConnectionLineRenderer.enableRendering(true);
-				break;
-
-			case MOUSE_OVER:
-				iNavigationMouseOverViewID_left = -1;
-				iNavigationMouseOverViewID_right = -1;
-				iNavigationMouseOverViewID_out = -1;
-				iNavigationMouseOverViewID_in = externalID;
-				iNavigationMouseOverViewID_lock = -1;
-
-				break;
-			}
-			break;
-
-		case BUCKET_MOVE_OUT_ICON_SELECTION:
-			switch (pickingMode) {
-			case CLICKED:
-
-				// Check if other slerp action is currently running
-				if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE) {
-					break;
+						break;
 				}
-
-				// glConnectionLineRenderer.enableRendering(true);
-
-				arSlerpActions.clear();
-
-				RemoteLevelElement element = RemoteElementManager.get().getItem(
-						externalID);
-				SlerpAction slerpActionTransition = new SlerpAction(element,
-						poolLevel.getNextFree());
-				arSlerpActions.add(slerpActionTransition);
-
-				bEnableNavigationOverlay = false;
-
-				// Unregister all elements of the view that is moved out
-				element.getGLView().broadcastElements(EVAOperation.REMOVE_ELEMENT);
-
 				break;
 
-			case MOUSE_OVER:
+			case REMOTE_LEVEL_ELEMENT:
+				switch (pickingMode) {
+					case MOUSE_OVER:
+					case DRAGGED:
+						iMouseOverObjectID = externalID;
+						break;
+					case CLICKED:
 
-				iNavigationMouseOverViewID_left = -1;
-				iNavigationMouseOverViewID_right = -1;
-				iNavigationMouseOverViewID_out = externalID;
-				iNavigationMouseOverViewID_in = -1;
-				iNavigationMouseOverViewID_lock = -1;
+						// Do not handle click if element is dragged
+						if (dragAndDrop.isDragActionRunning()) {
+							break;
+						}
 
-				break;
-			}
-			break;
-
-		case BUCKET_MOVE_LEFT_ICON_SELECTION:
-			switch (pickingMode) {
-			case CLICKED:
-				// Check if other slerp action is currently running
-				if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE) {
-					break;
+						// Check if view is contained in pool level
+						for (RemoteLevelElement element : poolLevel.getAllElements()) {
+							if (element.getID() == externalID) {
+								loadViewToFocusLevel(externalID);
+								break;
+							}
+						}
+						break;
 				}
-
-				// glConnectionLineRenderer.enableRendering(true);
-
-				arSlerpActions.clear();
-
-				RemoteLevelElement selectedElement = RemoteElementManager.get().getItem(
-						externalID);
-
-				int iDestinationPosIndex = stackLevel
-						.getPositionIndexByElementID(selectedElement);
-
-				if (iDestinationPosIndex == 3) {
-					iDestinationPosIndex = 0;
-				} else {
-					iDestinationPosIndex++;
-				}
-
-				// Check if destination position in stack is free
-				if (stackLevel.getElementByPositionIndex(iDestinationPosIndex)
-						.getGLView() == null) {
-					SlerpAction slerpAction = new SlerpAction(selectedElement,
-							stackLevel.getElementByPositionIndex(iDestinationPosIndex));
-					arSlerpActions.add(slerpAction);
-				} else {
-					SlerpAction slerpActionTransition = new SlerpAction(selectedElement,
-							transitionLevel.getElementByPositionIndex(0));
-					arSlerpActions.add(slerpActionTransition);
-
-					SlerpAction slerpAction = new SlerpAction(
-							stackLevel.getElementByPositionIndex(iDestinationPosIndex),
-							selectedElement);
-					arSlerpActions.add(slerpAction);
-
-					SlerpAction slerpActionTransitionReverse = new SlerpAction(
-							selectedElement.getGLView().getID(),
-							transitionLevel.getElementByPositionIndex(0),
-							stackLevel.getElementByPositionIndex(iDestinationPosIndex));
-					arSlerpActions.add(slerpActionTransitionReverse);
-				}
-
-				bEnableNavigationOverlay = false;
-
 				break;
 
-			case MOUSE_OVER:
+			case REMOTE_VIEW_SELECTION:
+				switch (pickingMode) {
+					case MOUSE_OVER:
 
-				iNavigationMouseOverViewID_left = externalID;
-				iNavigationMouseOverViewID_right = -1;
-				iNavigationMouseOverViewID_out = -1;
-				iNavigationMouseOverViewID_in = -1;
-				iNavigationMouseOverViewID_lock = -1;
+						// generalManager.getViewGLCanvasManager().getInfoAreaManager()
+						// .setDataAboutView(externalID);
 
-				break;
-			}
-			break;
+						// Prevent update flood when moving mouse over view
+						if (activeViewID == externalID) {
+							break;
+						}
 
-		case BUCKET_MOVE_RIGHT_ICON_SELECTION:
-			switch (pickingMode) {
-			case CLICKED:
-				// Check if other slerp action is currently running
-				if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE) {
-					break;
+						activeViewID = externalID;
+
+						setDisplayListDirty();
+
+						// TODO
+						// generalManager.getEventPublisher().triggerEvent(
+						// EMediatorType.VIEW_SELECTION,
+						// generalManager.getViewGLCanvasManager().getGLEventListener(
+						// externalID), );
+
+						break;
+
+					case CLICKED:
+
+						// generalManager.getViewGLCanvasManager().getInfoAreaManager()
+						// .setDataAboutView(externalID);
+
+						break;
+					case RIGHT_CLICKED:
+						break;
+
 				}
-
-				// glConnectionLineRenderer.enableRendering(true);
-
-				arSlerpActions.clear();
-
-				RemoteLevelElement selectedElement = RemoteElementManager.get().getItem(
-						externalID);
-
-				int iDestinationPosIndex = stackLevel
-						.getPositionIndexByElementID(selectedElement);
-
-				if (iDestinationPosIndex == 0) {
-					iDestinationPosIndex = 3;
-				} else {
-					iDestinationPosIndex--;
-				}
-
-				// Check if destination position in stack is free
-				if (stackLevel.getElementByPositionIndex(iDestinationPosIndex)
-						.getGLView() == null) {
-					SlerpAction slerpAction = new SlerpAction(selectedElement,
-							stackLevel.getElementByPositionIndex(iDestinationPosIndex));
-					arSlerpActions.add(slerpAction);
-				} else {
-					SlerpAction slerpActionTransition = new SlerpAction(selectedElement,
-							transitionLevel.getElementByPositionIndex(0));
-					arSlerpActions.add(slerpActionTransition);
-
-					SlerpAction slerpAction = new SlerpAction(
-							stackLevel.getElementByPositionIndex(iDestinationPosIndex),
-							selectedElement);
-					arSlerpActions.add(slerpAction);
-
-					SlerpAction slerpActionTransitionReverse = new SlerpAction(
-							selectedElement.getGLView().getID(),
-							transitionLevel.getElementByPositionIndex(0),
-							stackLevel.getElementByPositionIndex(iDestinationPosIndex));
-					arSlerpActions.add(slerpActionTransitionReverse);
-				}
-
-				bEnableNavigationOverlay = false;
-
+				// infoAreaManager.setData(externalID, dataDomain.get,
+				// pick.getPickedPoint(), 0.3f);// pick.getDepth());
 				break;
 
-			case MOUSE_OVER:
+			case BUCKET_MOVE_IN_ICON_SELECTION:
+				switch (pickingMode) {
+					case CLICKED:
+						loadViewToFocusLevel(externalID);
+						bEnableNavigationOverlay = false;
+						// glConnectionLineRenderer.enableRendering(true);
+						break;
 
-				iNavigationMouseOverViewID_left = -1;
-				iNavigationMouseOverViewID_right = externalID;
-				iNavigationMouseOverViewID_out = -1;
-				iNavigationMouseOverViewID_in = -1;
-				iNavigationMouseOverViewID_lock = -1;
+					case MOUSE_OVER:
+						iNavigationMouseOverViewID_left = -1;
+						iNavigationMouseOverViewID_right = -1;
+						iNavigationMouseOverViewID_out = -1;
+						iNavigationMouseOverViewID_in = externalID;
+						iNavigationMouseOverViewID_lock = -1;
 
+						break;
+				}
 				break;
-			}
-			break;
+
+			case BUCKET_MOVE_OUT_ICON_SELECTION:
+				switch (pickingMode) {
+					case CLICKED:
+
+						// Check if other slerp action is currently running
+						if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE) {
+							break;
+						}
+
+						// glConnectionLineRenderer.enableRendering(true);
+
+						arSlerpActions.clear();
+
+						RemoteLevelElement element = RemoteElementManager.get().getItem(externalID);
+						SlerpAction slerpActionTransition = new SlerpAction(element, poolLevel.getNextFree());
+						arSlerpActions.add(slerpActionTransition);
+
+						bEnableNavigationOverlay = false;
+
+						// Unregister all elements of the view that is moved out
+						element.getGLView().broadcastElements(EVAOperation.REMOVE_ELEMENT);
+
+						break;
+
+					case MOUSE_OVER:
+
+						iNavigationMouseOverViewID_left = -1;
+						iNavigationMouseOverViewID_right = -1;
+						iNavigationMouseOverViewID_out = externalID;
+						iNavigationMouseOverViewID_in = -1;
+						iNavigationMouseOverViewID_lock = -1;
+
+						break;
+				}
+				break;
+
+			case BUCKET_MOVE_LEFT_ICON_SELECTION:
+				switch (pickingMode) {
+					case CLICKED:
+						// Check if other slerp action is currently running
+						if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE) {
+							break;
+						}
+
+						// glConnectionLineRenderer.enableRendering(true);
+
+						arSlerpActions.clear();
+
+						RemoteLevelElement selectedElement = RemoteElementManager.get().getItem(externalID);
+
+						int iDestinationPosIndex = stackLevel.getPositionIndexByElementID(selectedElement);
+
+						if (iDestinationPosIndex == 3) {
+							iDestinationPosIndex = 0;
+						}
+						else {
+							iDestinationPosIndex++;
+						}
+
+						// Check if destination position in stack is free
+						if (stackLevel.getElementByPositionIndex(iDestinationPosIndex).getGLView() == null) {
+							SlerpAction slerpAction = new SlerpAction(selectedElement,
+									stackLevel.getElementByPositionIndex(iDestinationPosIndex));
+							arSlerpActions.add(slerpAction);
+						}
+						else {
+							SlerpAction slerpActionTransition = new SlerpAction(selectedElement,
+									transitionLevel.getElementByPositionIndex(0));
+							arSlerpActions.add(slerpActionTransition);
+
+							SlerpAction slerpAction = new SlerpAction(
+									stackLevel.getElementByPositionIndex(iDestinationPosIndex), selectedElement);
+							arSlerpActions.add(slerpAction);
+
+							SlerpAction slerpActionTransitionReverse = new SlerpAction(selectedElement.getGLView()
+									.getID(), transitionLevel.getElementByPositionIndex(0),
+									stackLevel.getElementByPositionIndex(iDestinationPosIndex));
+							arSlerpActions.add(slerpActionTransitionReverse);
+						}
+
+						bEnableNavigationOverlay = false;
+
+						break;
+
+					case MOUSE_OVER:
+
+						iNavigationMouseOverViewID_left = externalID;
+						iNavigationMouseOverViewID_right = -1;
+						iNavigationMouseOverViewID_out = -1;
+						iNavigationMouseOverViewID_in = -1;
+						iNavigationMouseOverViewID_lock = -1;
+
+						break;
+				}
+				break;
+
+			case BUCKET_MOVE_RIGHT_ICON_SELECTION:
+				switch (pickingMode) {
+					case CLICKED:
+						// Check if other slerp action is currently running
+						if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE) {
+							break;
+						}
+
+						// glConnectionLineRenderer.enableRendering(true);
+
+						arSlerpActions.clear();
+
+						RemoteLevelElement selectedElement = RemoteElementManager.get().getItem(externalID);
+
+						int iDestinationPosIndex = stackLevel.getPositionIndexByElementID(selectedElement);
+
+						if (iDestinationPosIndex == 0) {
+							iDestinationPosIndex = 3;
+						}
+						else {
+							iDestinationPosIndex--;
+						}
+
+						// Check if destination position in stack is free
+						if (stackLevel.getElementByPositionIndex(iDestinationPosIndex).getGLView() == null) {
+							SlerpAction slerpAction = new SlerpAction(selectedElement,
+									stackLevel.getElementByPositionIndex(iDestinationPosIndex));
+							arSlerpActions.add(slerpAction);
+						}
+						else {
+							SlerpAction slerpActionTransition = new SlerpAction(selectedElement,
+									transitionLevel.getElementByPositionIndex(0));
+							arSlerpActions.add(slerpActionTransition);
+
+							SlerpAction slerpAction = new SlerpAction(
+									stackLevel.getElementByPositionIndex(iDestinationPosIndex), selectedElement);
+							arSlerpActions.add(slerpAction);
+
+							SlerpAction slerpActionTransitionReverse = new SlerpAction(selectedElement.getGLView()
+									.getID(), transitionLevel.getElementByPositionIndex(0),
+									stackLevel.getElementByPositionIndex(iDestinationPosIndex));
+							arSlerpActions.add(slerpActionTransitionReverse);
+						}
+
+						bEnableNavigationOverlay = false;
+
+						break;
+
+					case MOUSE_OVER:
+
+						iNavigationMouseOverViewID_left = -1;
+						iNavigationMouseOverViewID_right = externalID;
+						iNavigationMouseOverViewID_out = -1;
+						iNavigationMouseOverViewID_in = -1;
+						iNavigationMouseOverViewID_lock = -1;
+
+						break;
+				}
+				break;
 		}
 	}
 
@@ -2054,16 +1976,15 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			// layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.LIST;
 			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX;
-		} else {
+		}
+		else {
 			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET;
 		}
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
-			layoutRenderStyle = new BucketLayoutRenderStyle(viewFrustum,
-					layoutRenderStyle);
+			layoutRenderStyle = new BucketLayoutRenderStyle(viewFrustum, layoutRenderStyle);
 
-			bucketMouseWheelListener = new BucketMouseWheelListener(this,
-					(BucketLayoutRenderStyle) layoutRenderStyle);
+			bucketMouseWheelListener = new BucketMouseWheelListener(this, (BucketLayoutRenderStyle) layoutRenderStyle);
 
 			// Unregister standard mouse wheel listener
 			parentGLCanvas.removeMouseWheelListener(glMouseListener);
@@ -2072,20 +1993,19 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 			parentGLCanvas.addMouseListener(bucketMouseWheelListener);
 
-			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel,
-					stackLevel);
-		} else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
-			layoutRenderStyle = new JukeboxLayoutRenderStyle(viewFrustum,
-					layoutRenderStyle);
+			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel, stackLevel);
+		}
+		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
+			layoutRenderStyle = new JukeboxLayoutRenderStyle(viewFrustum, layoutRenderStyle);
 
 			// Unregister bucket wheel listener
 			parentGLCanvas.removeMouseWheelListener(bucketMouseWheelListener);
 			// Register standard mouse wheel listener
 			parentGLCanvas.addMouseWheelListener(glMouseListener);
 
-			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(focusLevel,
-					stackLevel, poolLevel);
-		} else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.LIST)) {
+			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(focusLevel, stackLevel, poolLevel);
+		}
+		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.LIST)) {
 			layoutRenderStyle = new ListLayoutRenderStyle(viewFrustum, layoutRenderStyle);
 			glConnectionLineRenderer = null;
 
@@ -2136,13 +2056,14 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		if (reinitialize) {
 			ArrayList<ASerializedView> removeNewViews = new ArrayList<ASerializedView>();
 			for (ASerializedView view : newViews) {
-				if (!(view.getViewType().equals("org.caleydo.view.heatmap") || view
-						.getViewType().equals("org.caleydo.view.parcoords"))) {
+				if (!(view.getViewType().equals("org.caleydo.view.heatmap") || view.getViewType().equals(
+						"org.caleydo.view.parcoords"))) {
 					removeNewViews.add(view);
 				}
 			}
 			newViews.removeAll(removeNewViews);
-		} else {
+		}
+		else {
 			newViews.clear();
 		}
 
@@ -2151,13 +2072,14 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		if (reinitialize) {
 			ArrayList<AGLView> removeView = new ArrayList<AGLView>();
 			for (AGLView glView : containedGLViews) {
-				if (!(glView.getViewType().equals("org.caleydo.view.parcoords") || glView
-						.getViewType().equals("org.caleydo.view.heatmap"))) {
+				if (!(glView.getViewType().equals("org.caleydo.view.parcoords") || glView.getViewType().equals(
+						"org.caleydo.view.heatmap"))) {
 					removeView.add(glView);
 				}
 			}
 			containedGLViews.removeAll(removeView);
-		} else {
+		}
+		else {
 			containedGLViews.clear();
 		}
 
@@ -2167,8 +2089,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 
 		// Send out remove broadcast for views that are currently slerped
 		for (SlerpAction slerpAction : arSlerpActions) {
-			viewManager.getGLView(slerpAction.getElementId()).broadcastElements(
-					EVAOperation.REMOVE_ELEMENT);
+			viewManager.getGLView(slerpAction.getElementId()).broadcastElements(EVAOperation.REMOVE_ELEMENT);
 		}
 		arSlerpActions.clear();
 
@@ -2184,15 +2105,15 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 				if (view.getViewType().equals("org.caleydo.view.parcoords")) {
 					stackLevel.getElementByPositionIndex(0).setGLView(view);
 					view.setRemoteLevelElement(stackLevel.getElementByPositionIndex(0));
-				} else if (view.getViewType().equals("org.caleydo.view.heatmap")) {
+				}
+				else if (view.getViewType().equals("org.caleydo.view.heatmap")) {
 					focusLevel.getElementByPositionIndex(0).setGLView(view);
 					view.setRemoteLevelElement(focusLevel.getElementByPositionIndex(0));
 				}
 			}
 		}
 
-		generalManager.getViewManager().getConnectedElementRepresentationManager()
-				.clearAll();
+		generalManager.getViewManager().getConnectedElementRepresentationManager().clearAll();
 	}
 
 	@Override
@@ -2219,7 +2140,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 				if (!glView.isRenderedRemote()) {
 					glView.enableBusyMode(false);
 				}
-			} else {
+			}
+			else {
 				removeView(glView);
 				glView.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 			}
@@ -2267,7 +2189,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		if (aspectRatio < 1) {
 			fXScaling = 1 / aspectRatio;
 			fYScaling = 1;
-		} else {
+		}
+		else {
 			fXScaling = 1;
 			fYScaling = aspectRatio;
 		}
@@ -2276,8 +2199,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		float fBottomSceneBorder = -2 * fYScaling;
 
 		if (layoutMode.equals(LayoutMode.BUCKET)) {
-			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.REMOTE_LEVEL_ELEMENT, iPoolLevelCommonID));
+			gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_LEVEL_ELEMENT, iPoolLevelCommonID));
 
 			gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
 			gl.glLineWidth(1);
@@ -2285,17 +2207,15 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glVertex3f(fLeftSceneBorder, fBottomSceneBorder, fZ);
 			gl.glVertex3f(fLeftSceneBorder, -fBottomSceneBorder, fZ);
-			gl.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH,
-					-fBottomSceneBorder, fZ);
-			gl.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH,
-					fBottomSceneBorder, fZ);
+			gl.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -fBottomSceneBorder, fZ);
+			gl.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, fBottomSceneBorder, fZ);
 			gl.glEnd();
 
-			if (dragAndDrop.isDragActionRunning()
-					&& iMouseOverObjectID == iPoolLevelCommonID) {
+			if (dragAndDrop.isDragActionRunning() && iMouseOverObjectID == iPoolLevelCommonID) {
 				gl.glLineWidth(5);
 				gl.glColor4f(0.2f, 0.2f, 0.2f, 1);
-			} else {
+			}
+			else {
 				gl.glLineWidth(1);
 				gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
 			}
@@ -2303,10 +2223,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			gl.glBegin(GL2.GL_LINE_LOOP);
 			gl.glVertex3f(fLeftSceneBorder, fBottomSceneBorder, fZ);
 			gl.glVertex3f(fLeftSceneBorder, -fBottomSceneBorder, fZ);
-			gl.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH,
-					-fBottomSceneBorder, fZ);
-			gl.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH,
-					fBottomSceneBorder, fZ);
+			gl.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -fBottomSceneBorder, fZ);
+			gl.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, fBottomSceneBorder, fZ);
 			gl.glEnd();
 
 			gl.glPopName();
@@ -2317,10 +2235,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glVertex3f(-fLeftSceneBorder, fBottomSceneBorder, fZ);
 			gl.glVertex3f(-fLeftSceneBorder, -fBottomSceneBorder, fZ);
-			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH,
-					-fBottomSceneBorder, fZ);
-			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH,
-					fBottomSceneBorder, fZ);
+			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -fBottomSceneBorder, fZ);
+			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, fBottomSceneBorder, fZ);
 			gl.glEnd();
 
 			gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
@@ -2328,10 +2244,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 			gl.glBegin(GL2.GL_LINE_LOOP);
 			gl.glVertex3f(-fLeftSceneBorder, fBottomSceneBorder, fZ);
 			gl.glVertex3f(-fLeftSceneBorder, -fBottomSceneBorder, fZ);
-			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH,
-					-fBottomSceneBorder, fZ);
-			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH,
-					fBottomSceneBorder, fZ);
+			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -fBottomSceneBorder, fZ);
+			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, fBottomSceneBorder, fZ);
 			gl.glEnd();
 		}
 
@@ -2342,8 +2256,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		String sTmp = "POOL AREA";
 		textRenderer.begin3DRendering();
 		textRenderer.setColor(0.6f, 0.6f, 0.6f, 1.0f);
-		textRenderer.draw3D(sTmp, (-1.9f - fXCorrection) / aspectRatio, -1.97f,
-				fZ + 0.01f, 0.003f);
+		textRenderer.draw3D(sTmp, (-1.9f - fXCorrection) / aspectRatio, -1.97f, fZ + 0.01f, 0.003f);
 		textRenderer.end3DRendering();
 	}
 
@@ -2360,15 +2273,15 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 	 * @param GL
 	 */
 	private void initNewView(GL2 gl) {
-		if (!newViews.isEmpty() && PathwayManager.get().isPathwayLoadingFinished()
-				&& arSlerpActions.isEmpty()) {
+		if (!newViews.isEmpty() && PathwayManager.get().isPathwayLoadingFinished() && arSlerpActions.isEmpty()) {
 
 			ASerializedView serView = newViews.remove(0);
 			AGLView view = createView(gl, serView);
 			if (hasFreeViewPosition()) {
 				addSlerpActionForView(gl, view);
 				containedGLViews.add(view);
-			} else {
+			}
+			else {
 				newViews.clear();
 			}
 			if (newViews.isEmpty()) {
@@ -2421,8 +2334,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 	 * space is left to slerp the given view to.
 	 * 
 	 * @param gl
-	 * @param view
-	 *            the view for which the slerp transition should be added
+	 * @param view the view for which the slerp transition should be added
 	 * @return <code>true</code> if adding the slerp action was successfull,
 	 *         <code>false</code> otherwise
 	 */
@@ -2434,15 +2346,16 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		if (focusLevel.hasFreePosition()) {
 			destination = focusLevel.getNextFree();
 			view.broadcastElements(EVAOperation.APPEND_UNIQUE);
-		} else if (stackLevel.hasFreePosition()
-				&& !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
+		}
+		else if (stackLevel.hasFreePosition() && !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
 			destination = stackLevel.getNextFree();
 			view.broadcastElements(EVAOperation.APPEND_UNIQUE);
-		} else if (poolLevel.hasFreePosition()) {
+		}
+		else if (poolLevel.hasFreePosition()) {
 			destination = poolLevel.getNextFree();
-		} else {
-			Logger.log(new Status(IStatus.WARNING, this.toString(),
-					"No empty space left to add new pathway!"));
+		}
+		else {
+			Logger.log(new Status(IStatus.WARNING, this.toString(), "No empty space left to add new pathway!"));
 			newViews.clear();
 			return false;
 		}
@@ -2462,34 +2375,27 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 	 * is already added to the list of event receivers and senders.
 	 * 
 	 * @param gl
-	 * @param serView
-	 *            serialized form of the view to create
+	 * @param serView serialized form of the view to create
 	 * @return the created view ready to be used within the application
 	 */
 	@SuppressWarnings("unchecked")
 	private AGLView createView(GL2 gl, ASerializedView serView) {
 
-		@SuppressWarnings("rawtypes")
-		Class viewClass;
+		@SuppressWarnings("rawtypes") Class viewClass;
 		try {
 			viewClass = Class.forName(serView.getViewClassType());
-		} catch (ClassNotFoundException e) {
-			throw new IllegalStateException("Cannot find class for view "
-					+ serView.getViewType());
+		}
+		catch (ClassNotFoundException e) {
+			throw new IllegalStateException("Cannot find class for view " + serView.getViewType());
 		}
 
-		AGLView glView = GeneralManager
-				.get()
-				.getViewManager()
-				.createGLView(viewClass, parentGLCanvas, parentComposite,
-						serView.getViewFrustum());
+		AGLView glView = GeneralManager.get().getViewManager()
+				.createGLView(viewClass, parentGLCanvas, parentComposite, serView.getViewFrustum());
 		glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof IDataDomainBasedView<?>) {
-			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
-					.get().getDataDomainByID(
-							((ASerializedSingleTablePerspectiveBasedView) serView)
-									.getDataDomainID()));
+			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager.get().getDataDomainByID(
+					((ASerializedSingleTablePerspectiveBasedView) serView).getDataDomainID()));
 		}
 
 		if (glView instanceof ATableBasedView) {
@@ -2571,7 +2477,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		if (busyState == EBusyState.ON) {
 			parentGLCanvas.removeMouseListener(bucketMouseWheelListener);
 			parentGLCanvas.removeMouseWheelListener(bucketMouseWheelListener);
-		} else {
+		}
+		else {
 			parentGLCanvas.addMouseListener(bucketMouseWheelListener);
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 		}
@@ -2619,23 +2526,19 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 
 		loadPathwaysByGeneListener = new LoadPathwaysByGeneListener();
 		loadPathwaysByGeneListener.setHandler(this);
-		eventPublisher.addListener(LoadPathwaysByGeneEvent.class,
-				loadPathwaysByGeneListener);
+		eventPublisher.addListener(LoadPathwaysByGeneEvent.class, loadPathwaysByGeneListener);
 
 		enableGeneMappingListener = new EnableGeneMappingListener();
 		enableGeneMappingListener.setHandler(this);
-		eventPublisher.addListener(EnableGeneMappingEvent.class,
-				enableGeneMappingListener);
+		eventPublisher.addListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
 
 		enableConnectionLinesListener = new EnableConnectionLinesListener();
 		enableConnectionLinesListener.setHandler(this);
-		eventPublisher.addListener(EnableConnectionLinesEvent.class,
-				enableConnectionLinesListener);
+		eventPublisher.addListener(EnableConnectionLinesEvent.class, enableConnectionLinesListener);
 
 		disableConnectionLinesListener = new DisableConnectionLinesListener();
 		disableConnectionLinesListener.setHandler(this);
-		eventPublisher.addListener(DisableConnectionLinesEvent.class,
-				disableConnectionLinesListener);
+		eventPublisher.addListener(DisableConnectionLinesEvent.class, disableConnectionLinesListener);
 
 		resetViewListener = new ResetViewListener();
 		resetViewListener.setHandler(this);
@@ -2649,8 +2552,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 
 		toggleNavigationModeListener = new ToggleNavigationModeListener();
 		toggleNavigationModeListener.setHandler(this);
-		eventPublisher.addListener(ToggleNavigationModeEvent.class,
-				toggleNavigationModeListener);
+		eventPublisher.addListener(ToggleNavigationModeEvent.class, toggleNavigationModeListener);
 
 		toggleZoomListener = new ToggleZoomListener();
 		toggleZoomListener.setHandler(this);
@@ -2714,8 +2616,7 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		serializedForm.setGeneMappingEnabled(geneMappingEnabled);
 		serializedForm.setConnectionLinesEnabled(connectionLinesEnabled);
 
-		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>(
-				focusLevel.getAllElements().size());
+		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>(focusLevel.getAllElements().size());
 		for (RemoteLevelElement rle : focusLevel.getAllElements()) {
 			if (rle.getGLView() != null) {
 				AGLView remoteView = rle.getGLView();
@@ -2832,9 +2733,8 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		recordPerspective.setPrivate(true);
 		recordPerspective.init(null);
 		dataDomain.getTable().registerRecordPerspective(recordPerspective);
-		tablePerspective = dataDomain.getTablePerspective(
-				recordPerspective.getPerspectiveID(), dataDomain.getTable()
-						.getDefaultDimensionPerspective().getPerspectiveID());
+		tablePerspective = dataDomain.getTablePerspective(recordPerspective.getPerspectiveID(), dataDomain.getTable()
+				.getDefaultDimensionPerspective().getPerspectiveID());
 	}
 
 	@Override
@@ -2857,5 +2757,10 @@ public class GLBucket extends AGLView implements ISingleTablePerspectiveBasedVie
 		ArrayList<TablePerspective> tablePerspectiveList = new ArrayList<TablePerspective>();
 		tablePerspectiveList.add(tablePerspective);
 		return tablePerspectiveList;
+	}
+
+	@Override
+	public IDataSupportDefinition getDataSupportDefinition() {
+		return new DefaultDataSupportDefinition();
 	}
 }

@@ -50,7 +50,8 @@ public class AddTablePerspectivesListener extends
 						addTablePerspectivesEvent.getTablePerspectives().size());
 				for (TablePerspective tablePerspective : addTablePerspectivesEvent
 						.getTablePerspectives()) {
-					if (handler.isTablePerspectiveValid(tablePerspective)) {
+					if (handler.getDataSupportDefinition().isDataDomainSupported(
+							tablePerspective.getDataDomain())) {
 						validTablePerspectives.add(tablePerspective);
 					}
 				}

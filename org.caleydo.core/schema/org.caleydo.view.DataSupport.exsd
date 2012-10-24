@@ -3,7 +3,7 @@
 <schema targetNamespace="org.caleydo.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.caleydo.core" id="org.caleydo.view.ViewCategory" name="ViewCategory"/>
+         <meta.schema plugin="org.caleydo.core" id="org.caleydo.view.DataSupport" name="DataSupport"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <choice>
-            <element ref="ViewCategory"/>
+            <element ref="DataSupport"/>
          </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,26 +47,19 @@
       </complexType>
    </element>
 
-   <element name="ViewCategory">
+   <element name="DataSupport">
       <complexType>
-         <attribute name="viewID" type="string" use="required">
+         <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="identifier" basedOn="org.eclipse.ui.views/view/@id"/>
+                  <meta.attribute kind="java" basedOn=":org.caleydo.core.data.datadomain.IDataSupportDefinition"/>
                </appInfo>
             </annotation>
          </attribute>
-         <attribute name="isDataView" type="boolean" use="required">
-            <annotation>
-               <documentation>
-                  Specifies whether the view is a major view that can display assigned data.
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="isReleaseView" type="boolean" use="required">
+         <attribute name="viewID" type="string" use="required">
             <annotation>
                <documentation>
                   

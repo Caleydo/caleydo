@@ -41,16 +41,6 @@ public interface IMultiTablePerspectiveBasedView extends ITablePerspectiveBasedV
 	public void addTablePerspective(TablePerspective newTablePerspective);
 
 	/**
-	 * Determines whether the specified {@link TablePerspective} is supported by
-	 * the view.
-	 * 
-	 * @param tablePerspective
-	 * @return True, if the view supports the specified
-	 *         <code>TablePerspective</code>, false otherwise.
-	 */
-	public boolean isTablePerspectiveValid(TablePerspective tablePerspective);
-
-	/**
 	 * Add a list of tablePerspectives to the view.
 	 * 
 	 * @param newTablePerspectives

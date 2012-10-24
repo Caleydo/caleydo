@@ -90,6 +90,7 @@ public class DataConfigurationChooser {
 			Shell shell = new Shell(SWT.APPLICATION_MODAL);
 			ChooseDataConfigurationDialog dialog = new ChooseDataConfigurationDialog(shell,
 					"Choose Data for " + viewName);
+			dialog.setSupportedDataDomains(possibleDataDomains);
 			// dialog.setPossibleDataDomains(availableDomains);
 			dialog.setBlockOnOpen(true);
 			dialog.open();

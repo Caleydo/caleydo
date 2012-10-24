@@ -48,4 +48,11 @@
          </menu>
       </menuContribution>
    </extension>
+   <extension
+         point="org.caleydo.view.DataSupport">
+      <DataSupport
+            class="org.caleydo.view.pathway.PathwayDataSupportDefinition"
+            viewID="org.caleydo.view.pathway">
+      </DataSupport>
+   </extension>
 </plugin>

@@ -22,7 +22,8 @@
  */
 package org.caleydo.core.data.configuration;
 
-import java.util.ArrayList;
+import java.util.List;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
@@ -56,6 +57,11 @@ public class DataChooserComposite extends Composite {
 	/** The dimension perspective chosen by the user */
 	private DimensionPerspective dimensionPerspective;
 
+	/**
+	 * All datadomains that can be chosen from.
+	 */
+	private List<ATableBasedDataDomain> supportedDataDomains;
+
 	/** The parent of this widget which is notified when the data is ready */
 	IDataOKListener dataOKListener;
 
@@ -76,12 +82,22 @@ public class DataChooserComposite extends Composite {
 	 *            see {@link #dataOKListener}
 	 * @param parent
 	 *            the parent composite
+	 * @param supportedDataDomains
+	 *            All datadomains that shall be chosen from. If null, all
+	 *            tablebased datadomains are available.
 	 * @param style
 	 *            the SWT style
+	 * 
 	 */
 	public DataChooserComposite(IDataOKListener dataOKListener, Composite parent,
-			int style) {
+			List<ATableBasedDataDomain> supportedDataDomains, int style) {
 		super(parent, style);
+		if (supportedDataDomains == null) {
+			supportedDataDomains = DataDomainManager.get().getDataDomainsByType(
+					ATableBasedDataDomain.class);
+		} else {
+			this.supportedDataDomains = supportedDataDomains;
+		}
 		this.dataOKListener = dataOKListener;
 		this.parent = parent;
 		initGui();
@@ -103,13 +119,12 @@ public class DataChooserComposite extends Composite {
 		dataDomainChooser.setText("Choose data set");
 		dataDomainChooser.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
-		ArrayList<ATableBasedDataDomain> tDataDomains = DataDomainManager.get()
-				.getDataDomainsByType(ATableBasedDataDomain.class);
-		possibleDataDomains = new String[tDataDomains.size()];
-		for (int count = 0; count < tDataDomains.size(); count++) {
-			possibleDataDomains[count] = tDataDomains.get(count).getDataDomainID();
+		possibleDataDomains = new String[supportedDataDomains.size()];
+		for (int count = 0; count < supportedDataDomains.size(); count++) {
+			possibleDataDomains[count] = supportedDataDomains.get(count)
+					.getDataDomainID();
 			// String possibleDataDomain = possibleDataDomains[count];
-			dataDomainChooser.add(tDataDomains.get(count).getLabel(), count);
+			dataDomainChooser.add(supportedDataDomains.get(count).getLabel(), count);
 		}
 		if (possibleDataDomains.length == 1) {
 			dataDomainChooser.select(0);

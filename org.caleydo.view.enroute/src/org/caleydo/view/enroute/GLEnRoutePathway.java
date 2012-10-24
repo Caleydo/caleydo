@@ -32,6 +32,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
@@ -1553,12 +1554,6 @@ public class GLEnRoutePathway
 		setDisplayListDirty();
 	}
 
-	@Override
-	public boolean isTablePerspectiveValid(TablePerspective tablePerspective) {
-
-		return tablePerspective != null && tablePerspective.getDataDomain() instanceof GeneticDataDomain;
-	}
-
 	/**
 	 * @return the fitWidthToScreen, see {@link #fitToViewWidth}
 	 */
@@ -1579,6 +1574,11 @@ public class GLEnRoutePathway
 	public void notifyOfChange(EventBasedSelectionManager selectionManager) {
 		setDisplayListDirty();
 
+	}
+
+	@Override
+	public IDataSupportDefinition getDataSupportDefinition() {
+		return new EnRouteDataSupportDefinition();
 	}
 
 }

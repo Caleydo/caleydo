@@ -34,7 +34,9 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DefaultDataSupportDefinition;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
@@ -1808,7 +1810,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	}
 
 	@Override
-	public boolean isTablePerspectiveValid(TablePerspective tablePerspective) {
-		return true;
+	public IDataSupportDefinition getDataSupportDefinition() {
+		return new DefaultDataSupportDefinition();
 	}
 }
