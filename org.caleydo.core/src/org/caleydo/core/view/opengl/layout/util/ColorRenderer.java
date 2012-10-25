@@ -22,7 +22,7 @@ package org.caleydo.core.view.opengl.layout.util;
 import javax.media.opengl.GL2;
 
 /**
- * Simple renderer for a colored rectangle.
+ * Simple renderer for a colored rectangle exactly of the size of the layout.
  * 
  * @author Christian Partl
  */

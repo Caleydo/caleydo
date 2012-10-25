@@ -33,8 +33,16 @@ public class BrickColumnManager {
 
 	private HashMap<Integer, BrickColumnSpacingRenderer> brickColumnSpacers = new HashMap<Integer, BrickColumnSpacingRenderer>();
 
+	/**
+	 * The index of the first column in the center referring to
+	 * {@link #brickColumns}
+	 */
 	private int centerColumnStartIndex = 0;
 
+	/**
+	 * The index of the first column in the right leg of the arc, referring to
+	 * {@link #brickColumns}
+	 */
 	private int rightColumnStartIndex = 0;
 
 	public ArrayList<BrickColumn> getBrickColumns() {
@@ -45,7 +53,8 @@ public class BrickColumnManager {
 	 * Returns the first brick column that contains the given table perspective.
 	 * If not brick column is found, null is returned.
 	 * 
-	 * @param tablePerspective for which the brick column will be returned
+	 * @param tablePerspective
+	 *            for which the brick column will be returned
 	 */
 	public BrickColumn getBrickColumn(TablePerspective tablePerspective) {
 
@@ -77,27 +86,29 @@ public class BrickColumnManager {
 		this.centerColumnStartIndex = centerGroupStartIndex;
 	}
 
-//	public void calculateGroupDivision() {
-//		if (brickColumns.size() > MAX_CENTER_BRICK_COLUMNS) {
-//			centerColumnStartIndex = (brickColumns.size() - MAX_CENTER_BRICK_COLUMNS) / 2;
-//			rightColumnStartIndex = centerColumnStartIndex + MAX_CENTER_BRICK_COLUMNS;
-//		}
-//		else {
-//			centerColumnStartIndex = 0;
-//			rightColumnStartIndex = brickColumns.size();
-//		}
-//	}
+	// public void calculateGroupDivision() {
+	// if (brickColumns.size() > MAX_CENTER_BRICK_COLUMNS) {
+	// centerColumnStartIndex = (brickColumns.size() - MAX_CENTER_BRICK_COLUMNS)
+	// / 2;
+	// rightColumnStartIndex = centerColumnStartIndex +
+	// MAX_CENTER_BRICK_COLUMNS;
+	// }
+	// else {
+	// centerColumnStartIndex = 0;
+	// rightColumnStartIndex = brickColumns.size();
+	// }
+	// }
 
 	public int indexOfBrickColumn(BrickColumn brickColumn) {
 		return brickColumns.indexOf(brickColumn);
 	}
-	
+
 	public void moveBrickColumn(BrickColumn brickColumn, int newPosIndex) {
-		
+
 		brickColumns.remove(indexOfBrickColumn(brickColumn));
 		brickColumns.add(newPosIndex, brickColumn);
 	}
-	
+
 	public void removeBrickColumn(int tablePerspectiveID) {
 		Iterator<BrickColumn> brickColumnIterator = brickColumns.iterator();
 

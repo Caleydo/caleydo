@@ -721,7 +721,7 @@ public class BrickColumnSpacingRenderer
 			float mouseCoordinateX, float mouseCoordinateY,
 			DragAndDropController dragAndDropController) {
 
-		stratomex.clearDimensionGroupSpacerHighlight();
+		stratomex.clearColumnSpacerHighlight();
 
 		for (IDraggable draggable : draggables) {
 
@@ -732,7 +732,7 @@ public class BrickColumnSpacingRenderer
 				System.out.println("CHRISTIAN HEEEEELP!!");
 				break;
 			}
-			stratomex.moveDimensionGroup(this, (BrickColumn) draggable, leftDimGroup);
+			stratomex.moveColumn(this, (BrickColumn) draggable, leftDimGroup);
 		}
 
 		draggables.clear();

@@ -113,7 +113,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	private Row mainRow;
 
 	/**
-	 * Contains the dimension group including the header brick and the cluster
+	 * Contains the column including the header brick and the cluster
 	 * bricks. A child of {@link #mainRow}.
 	 */
 	private Column mainColumn;
@@ -199,7 +199,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 	public void initLayouts() {
 		mainRow = new Row("mainRow");
-		mainRow.setDebug(false);
+//		mainRow.setDebug(true);
 		mainRow.setRenderingPriority(3);
 		mainRow.setXDynamic(true);
 		mainRow.setFrameColor(0, 0, 1, 1);
@@ -447,7 +447,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		clusterBricks.clear();
 
 		addSortedBricks(sortedBricks);
-		stratomex.updateConnectionLinesBetweenDimensionGroups();
+		stratomex.updateConnectionLinesBetweenColumns();
 		stratomex.setLayoutDirty();
 
 	}
@@ -633,7 +633,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			mainRow.updateSubLayout();
 			// visBricks.setLastResizeDirectionWasToLeft(false);
 			stratomex.setLayoutDirty();
-			stratomex.updateConnectionLinesBetweenDimensionGroups();
+			stratomex.updateConnectionLinesBetweenColumns();
 			showDetailBrick = false;
 			isDetailBrickShown = true;
 		}
@@ -661,13 +661,13 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			mainRow.updateSubLayout();
 			// visBricks.setLastResizeDirectionWasToLeft(false);
 			stratomex.setLayoutDirty();
-			stratomex.updateConnectionLinesBetweenDimensionGroups();
+			stratomex.updateConnectionLinesBetweenColumns();
 		}
 
 		while (!uninitializedBricks.isEmpty()) {
 			uninitializedBricks.poll().initRemote(gl, this, glMouseListener);
 			stratomex.setLayoutDirty();
-			stratomex.updateConnectionLinesBetweenDimensionGroups();
+			stratomex.updateConnectionLinesBetweenColumns();
 		}
 		handleVerticalMoveDragging(gl);
 		checkForHits(gl);
@@ -750,7 +750,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		// headerBrickLayout.updateSubLayout();
 		mainRow.updateSubLayout();
 		// groupColumn.updateSubLayout();
-		stratomex.updateConnectionLinesBetweenDimensionGroups();
+		stratomex.updateConnectionLinesBetweenColumns();
 
 	}
 
@@ -760,7 +760,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	public void updateLayout() {
 
 		mainRow.updateSubLayout();
-		stratomex.updateConnectionLinesBetweenDimensionGroups();
+		stratomex.updateConnectionLinesBetweenColumns();
 
 		for (GLBrick clusterBrick : clusterBricks) {
 			clusterBrick.updateLayout();

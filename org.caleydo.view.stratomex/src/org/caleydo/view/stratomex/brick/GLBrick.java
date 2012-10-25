@@ -518,7 +518,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		stratomex.setLastResizeDirectionWasToLeft(false);
 		stratomex.setLayoutDirty();
-		stratomex.updateConnectionLinesBetweenDimensionGroups();
+		stratomex.updateConnectionLinesBetweenColumns();
 
 	}
 
@@ -652,7 +652,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		layoutManager.updateLayout();
 
 		stratomex.setLayoutDirty();
-		stratomex.updateConnectionLinesBetweenDimensionGroups();
+		stratomex.updateConnectionLinesBetweenColumns();
 
 	}
 
@@ -986,7 +986,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 					tablePerspective.getID())) {
 				// brickLayout.setShowHandles(true);
 				brickLayoutConfiguration.setSelected(true);
-				stratomex.updateConnectionLinesBetweenDimensionGroups();
+				stratomex.updateConnectionLinesBetweenColumns();
 			} else {
 				brickLayoutConfiguration.setSelected(false);
 				// brickLayout.setShowHandles(false);
@@ -1037,7 +1037,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		// wrappingLayout.setAbsoluteSizeX(minWidth);
 
 		stratomex.setLayoutDirty();
-		stratomex.updateConnectionLinesBetweenDimensionGroups();
+		stratomex.updateConnectionLinesBetweenColumns();
 
 	}
 
@@ -1064,7 +1064,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		brickLayoutConfiguration.setLockResizing(true);
 		// brickColumn.updateLayout();
 		stratomex.setLayoutDirty();
-		stratomex.updateConnectionLinesBetweenDimensionGroups();
+		stratomex.updateConnectionLinesBetweenColumns();
 	}
 
 	public boolean isInOverviewMode() {
