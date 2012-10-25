@@ -127,7 +127,7 @@ public class RcpGLHistogramView
 
 	@Override
 	public void initialize() {
-		ATableBasedView glHistogram = (ATableBasedView) view;
+		GLHistogram glHistogram = (GLHistogram) view;
 		setDataDomain(glHistogram.getDataDomain());
 		setTablePerspective(glHistogram.getTablePerspective());
 	}

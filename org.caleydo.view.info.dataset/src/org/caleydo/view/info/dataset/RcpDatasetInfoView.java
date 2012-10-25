@@ -186,9 +186,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 				tableBasedDD.getDefaultTablePerspective().setPrivate(true);
 			}
 
-			((GLHistogram) histogramView.getGLView())
-					.setHistogram(tableBasedDD.getDefaultTablePerspective()
-							.getContainerStatistics().getHistogram());
+			((GLHistogram) histogramView.getGLView()).setDataDomain(tableBasedDD);					
 			((GLHistogram) histogramView.getGLView()).setDisplayListDirty();
 			// }
 		} else {

@@ -57,6 +57,7 @@ import org.caleydo.core.view.opengl.util.connectionline.LineEndArrowRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineEndStaticLineRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.datadomain.genetic.GeneticDataSupportDefinition;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
@@ -1578,7 +1579,7 @@ public class GLEnRoutePathway
 
 	@Override
 	public IDataSupportDefinition getDataSupportDefinition() {
-		return new EnRouteDataSupportDefinition();
+		return new GeneticDataSupportDefinition();
 	}
 
 }

@@ -1,8 +1,7 @@
-package org.caleydo.view.enroute;
+package org.caleydo.datadomain.genetic;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
 /**
  * Defines the {@link DataDomain}s supported by {@link GLEnRoutePathway}.
@@ -10,10 +9,10 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
  * @author Christian Partl
  * 
  */
-public class EnRouteDataSupportDefinition
+public class GeneticDataSupportDefinition
 	implements IDataSupportDefinition {
 
-	public EnRouteDataSupportDefinition() {
+	public GeneticDataSupportDefinition() {
 	}
 
 	@Override
