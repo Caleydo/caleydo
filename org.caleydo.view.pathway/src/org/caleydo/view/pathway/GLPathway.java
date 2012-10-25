@@ -1473,7 +1473,9 @@ public class GLPathway
 				}
 				else { // isPathStartSelected==false -> select start node 1) no
 					if (this.isControlKeyDown) {// shorten path
-						// shorten path
+						//if (previouslySelectedVertexRep == null || previousSelectedPath == null)
+						if (previousSelectedPath == null)
+							return;			
 						List<DefaultEdge> edgeListPrev = previousSelectedPath.getEdgeList();
 						List<DefaultEdge> edgeListNew = new ArrayList<DefaultEdge>();
 						PathwayVertexRep startVertex = previousSelectedPath.getStartVertex();
@@ -1508,7 +1510,7 @@ public class GLPathway
 					// allPaths.size() && selectedPathID>=0){
 					// // System.out.println("allPaths != null");
 					// //////////////////////////////////////////////////
-						if (previouslySelectedVertexRep == null)
+						if (previousSelectedPath == null)
 							return;
 						PathwayVertexRep endVertex = previousSelectedPath.getEndVertex();
 						KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
