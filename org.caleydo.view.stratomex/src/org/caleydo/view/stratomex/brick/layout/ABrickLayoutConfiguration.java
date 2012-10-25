@@ -26,6 +26,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutConfiguration;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
+import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.stratomex.brick.EContainedViewType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
@@ -38,8 +39,7 @@ import org.caleydo.view.stratomex.column.BrickColumn;
  * @author Christian Partl
  * 
  */
-public abstract class ABrickLayoutConfiguration
-	extends LayoutConfiguration {
+public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 
 	protected static final int SPACING_PIXELS = 4;
 	protected static final int DEFAULT_GUI_ELEMENT_SIZE_PIXELS = 16;
@@ -60,8 +60,15 @@ public abstract class ABrickLayoutConfiguration
 		viewTypeChangeListeners = new ArrayList<IViewTypeChangeListener>();
 		borderedAreaRenderer = new BorderedAreaRenderer();
 
-		if (brick.isHeaderBrick())
-			borderedAreaRenderer.setColor(brick.getDataDomain().getColor().getRGBA());
+		// if (brick.isHeaderBrick())
+		float[] color = brick.getDataDomain().getColor().getRGBA();
+
+		if (brick.getBrickColumn().getTablePerspective() instanceof PathwayTablePerspective)
+			color = ((PathwayTablePerspective) brick.getBrickColumn()
+					.getTablePerspective()).getPathwayDataDomain().getColor()
+					.getRGBA();
+
+		borderedAreaRenderer.setColor(color);
 
 		// setValidViewTypes();
 		// registerPickingListeners();
@@ -207,7 +214,8 @@ public abstract class ABrickLayoutConfiguration
 		return dimensionGroup;
 	}
 
-	public void registerViewTypeChangeListener(IViewTypeChangeListener viewTypeChangeListener) {
+	public void registerViewTypeChangeListener(
+			IViewTypeChangeListener viewTypeChangeListener) {
 		viewTypeChangeListeners.add(viewTypeChangeListener);
 	}
 
@@ -219,9 +227,9 @@ public abstract class ABrickLayoutConfiguration
 				float glSize = elementLayout.getAbsoluteSizeX();
 				if (Float.isNaN(glSize)) {
 					pixelSize = DEFAULT_GUI_ELEMENT_SIZE_PIXELS;
-				}
-				else {
-					pixelSize = brick.getPixelGLConverter().getPixelWidthForGLWidth(glSize);
+				} else {
+					pixelSize = brick.getPixelGLConverter().getPixelWidthForGLWidth(
+							glSize);
 				}
 			}
 			sum += pixelSize;
@@ -238,9 +246,9 @@ public abstract class ABrickLayoutConfiguration
 				float glSize = elementLayout.getAbsoluteSizeY();
 				if (glSize == Float.NaN) {
 					pixelSize = DEFAULT_GUI_ELEMENT_SIZE_PIXELS;
-				}
-				else {
-					pixelSize = brick.getPixelGLConverter().getPixelHeightForGLHeight(glSize);
+				} else {
+					pixelSize = brick.getPixelGLConverter().getPixelHeightForGLHeight(
+							glSize);
 				}
 			}
 			sum += pixelSize;
@@ -256,7 +264,8 @@ public abstract class ABrickLayoutConfiguration
 			if (pixelSize == Integer.MIN_VALUE) {
 				float glSize = elementLayout.getAbsoluteSizeY();
 				if (glSize != Float.NaN) {
-					pixelSize = brick.getPixelGLConverter().getPixelHeightForGLHeight(glSize);
+					pixelSize = brick.getPixelGLConverter().getPixelHeightForGLHeight(
+							glSize);
 				}
 			}
 			if (max < pixelSize)
@@ -273,7 +282,8 @@ public abstract class ABrickLayoutConfiguration
 			if (pixelSize == Integer.MIN_VALUE) {
 				float glSize = elementLayout.getAbsoluteSizeX();
 				if (glSize != Float.NaN) {
-					pixelSize = brick.getPixelGLConverter().getPixelWidthForGLWidth(glSize);
+					pixelSize = brick.getPixelGLConverter().getPixelWidthForGLWidth(
+							glSize);
 				}
 			}
 			if (max < pixelSize)
@@ -288,18 +298,27 @@ public abstract class ABrickLayoutConfiguration
 		if (selected) {
 			float[] color = new float[4];
 			float[] selectionColor = SelectionType.SELECTION.getColor();
-			color[0] = selectionColor[0] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[0] * 0.6f;
-			color[1] = selectionColor[1] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[1] * 0.6f;
-			color[2] = selectionColor[2] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[2] * 0.6f;
+			color[0] = selectionColor[0] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[0]
+					* 0.6f;
+			color[1] = selectionColor[1] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[1]
+					* 0.6f;
+			color[2] = selectionColor[2] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[2]
+					* 0.6f;
 			color[3] = 1;
 			borderedAreaRenderer.setColor(color);
-		}
-		else {
+		} else {
 
-			if (brick.isHeaderBrick())
-				borderedAreaRenderer.setColor(brick.getDataDomain().getColor().getRGBA());
-			else
-				borderedAreaRenderer.setColor(BorderedAreaRenderer.DEFAULT_COLOR);
+			// if (brick.isHeaderBrick())
+			float[] color = brick.getDataDomain().getColor().getRGBA();
+
+			if (brick.getBrickColumn().getTablePerspective() instanceof PathwayTablePerspective)
+				color = ((PathwayTablePerspective) brick.getBrickColumn()
+						.getTablePerspective()).getPathwayDataDomain().getColor()
+						.getRGBA();
+
+			borderedAreaRenderer.setColor(color);
+			// else
+			// borderedAreaRenderer.setColor(BorderedAreaRenderer.DEFAULT_COLOR);
 		}
 	}
 

@@ -66,7 +66,7 @@
    <extension
          point="org.caleydo.view.DataSupport">
       <DataSupport
-            class="org.caleydo.view.enroute.EnRouteDataSupportDefinition"
+            class="org.caleydo.datadomain.genetic.GeneticDataSupportDefinition"
             viewID="org.caleydo.view.enroute">
       </DataSupport>
    </extension>

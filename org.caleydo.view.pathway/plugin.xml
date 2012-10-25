@@ -51,7 +51,7 @@
    <extension
          point="org.caleydo.view.DataSupport">
       <DataSupport
-            class="org.caleydo.view.pathway.PathwayDataSupportDefinition"
+            class="org.caleydo.datadomain.genetic.GeneticDataSupportDefinition"
             viewID="org.caleydo.view.pathway">
       </DataSupport>
    </extension>

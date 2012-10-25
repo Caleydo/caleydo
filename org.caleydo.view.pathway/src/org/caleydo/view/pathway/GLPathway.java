@@ -77,6 +77,7 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.datadomain.genetic.GeneticDataSupportDefinition;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
 import org.caleydo.datadomain.pathway.contextmenu.item.LoadPathwaysByPathwayItem;
@@ -1663,6 +1664,6 @@ public class GLPathway
 
 	@Override
 	public IDataSupportDefinition getDataSupportDefinition() {
-		return new PathwayDataSupportDefinition();
+		return new GeneticDataSupportDefinition();
 	}
 }
