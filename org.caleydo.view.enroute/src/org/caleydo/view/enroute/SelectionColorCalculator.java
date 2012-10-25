@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.view.enroute.mappeddataview;
+package org.caleydo.view.enroute;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import org.caleydo.core.util.color.Color;
  * @author Christian Partl
  * 
  */
-class SelectionColorCalculator {
+public class SelectionColorCalculator {
 
 	/**
 	 * The color that is used for the {@link SelectionType} with the highest
@@ -45,17 +45,19 @@ class SelectionColorCalculator {
 		secondaryColor = new Color();
 	}
 
-	void calculateColors(List<SelectionType> selectionTypes) {
+	public void calculateColors(List<SelectionType> selectionTypes) {
 
 		if (selectionTypes.size() != 0
 				&& !selectionTypes.get(0).equals(SelectionType.NORMAL)
 				&& selectionTypes.get(0).isVisible()) {
-			primaryColor.setRGBA(selectionTypes.get(0).getColor());
+			float[] color = selectionTypes.get(0).getColor();
+			primaryColor.setRGBA(new float[] {color[0], color[1], color[2], 1});
 
 			if (selectionTypes.size() > 1
 					&& !selectionTypes.get(1).equals(SelectionType.NORMAL)
 					&& selectionTypes.get(1).isVisible()) {
-				secondaryColor.setRGBA(selectionTypes.get(1).getColor());
+				color = selectionTypes.get(1).getColor();
+				secondaryColor.setRGBA(new float[] {color[0], color[1], color[2], 1});
 			} else {
 				secondaryColor.setRGBA(primaryColor.getRGBA());
 			}

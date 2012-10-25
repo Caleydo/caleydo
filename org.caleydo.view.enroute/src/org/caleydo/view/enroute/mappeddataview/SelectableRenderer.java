@@ -22,6 +22,7 @@ package org.caleydo.view.enroute.mappeddataview;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.view.enroute.SelectionColorCalculator;
 
 /**
  * @author Alexander Lex

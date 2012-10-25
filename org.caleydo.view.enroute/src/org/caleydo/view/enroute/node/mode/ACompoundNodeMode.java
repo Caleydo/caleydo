@@ -10,10 +10,12 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.GLEnRoutePathway;
+import org.caleydo.view.enroute.SelectionColorCalculator;
 import org.caleydo.view.enroute.node.ANode;
 import org.caleydo.view.enroute.node.CompoundNode;
 
@@ -26,6 +28,8 @@ import org.caleydo.view.enroute.node.CompoundNode;
 public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 
 	protected PixelGLConverter pixelGLConverter;
+	
+	SelectionColorCalculator colorCalculator;
 
 	/**
 	 * @param view
@@ -33,6 +37,7 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 	public ACompoundNodeMode(GLEnRoutePathway view) {
 		super(view);
 		this.pixelGLConverter = view.getPixelGLConverter();
+		colorCalculator = new SelectionColorCalculator(new Color(DEFAULT_BACKGROUND_COLOR));
 	}
 
 	protected void renderCircle(GL2 gl, GLU glu, Vec3f position, float radius) {
@@ -53,14 +58,15 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 	protected void determineBackgroundColor(EventBasedSelectionManager selectionManager) {
 		ArrayList<SelectionType> selectionTypes = selectionManager.getSelectionTypes(node
 				.getPathwayVertexRep().getName().hashCode());
-		backgroundColor = DEFAULT_BACKGROUND_COLOR;
 		Collections.sort(selectionTypes);
 		Collections.reverse(selectionTypes);
-		for (SelectionType selectionType : selectionTypes) {
-			if (!selectionType.equals(SelectionType.NORMAL))
-				backgroundColor = selectionType.getColor();
-			break;
-		}
+		colorCalculator.calculateColors(selectionTypes);
+		backgroundColor = colorCalculator.getPrimaryColor().getRGBA();
+//		for (SelectionType selectionType : selectionTypes) {
+//			if (!selectionType.equals(SelectionType.NORMAL))
+//				backgroundColor = selectionType.getColor();
+//			break;
+//		}
 	}
 
 	@Override
