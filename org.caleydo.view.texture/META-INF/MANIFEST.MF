@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Texture View
-Bundle-SymbolicName: org.caleydo.view.texture;singleton:=true
-Bundle-Version: 2.1
-Require-Bundle: org.caleydo.core;bundle-version="2.1"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.caleydo.view.texture
-Bundle-Vendor: www.caleydo.org
