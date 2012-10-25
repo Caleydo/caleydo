@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -39,7 +39,6 @@ import java.util.ArrayList;
  */
 
 public enum EDefaultColorSchemes {
-	
 
 	GREEN_BLACK_RED(
 			"Green-Black-Red",
@@ -73,6 +72,7 @@ public enum EDefaultColorSchemes {
 			new int[] { 64, 64, 64 },
 			ColorMapper.NEUTRAL_GREY,
 			new int[] { 202, 0, 32 }),
+
 	BLUE_RED_YELLOW(
 			"Blue-Red-Yellow",
 			"3-class Spectral diverging color scheme from colorbrewer.org. Print friendly. May cause issues with color-blind users",
@@ -94,14 +94,20 @@ public enum EDefaultColorSchemes {
 			new int[] { 171, 217, 233 },
 			new int[] { 44, 123, 182 }),
 
+	GREY_RED(
+			"Grey-Red",
+			"2-class Red-Grey  color scheme Print friendly.",
+			ColorMapper.NEUTRAL_GREY,
+			new int[] { 202, 0, 32 }),
 	// -------- DISCRETE COLOR SCHEMES ---------
+
 	WHITE_RED(
 			"White-Red",
 			"2-class White-Blue diverging color scheme from colorbrewer.org. Color-blind and print friendly.",
 			true,
 			// new int[] { 247, 247, 247 },
 			ColorMapper.NEUTRAL_GREY,
-			new int[] { 202, 0, 32 }),	;
+			new int[] { 202, 0, 32 }), ;
 
 	private ArrayList<ColorMarkerPoint> colorMarkerPoints;
 	/**

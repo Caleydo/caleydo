@@ -140,7 +140,7 @@ public class DataSetDescription extends MatrixDefinition {
 	 * 0, the value range will be set to -0.7 to 0.7.
 	 * </p>
 	 * <p>
-	 * Defaults to 0, i.e., data is not centered.
+	 * Defaults to null, i.e., no external data center is defined.
 	 * </p>
 	 */
 	private Double dataCenter = null;

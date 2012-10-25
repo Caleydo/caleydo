@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -28,22 +28,21 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Color mapping. The class is initialized with a list of inflection points and an associated color. A color
- * mapping for values between 0 and 1 based on the provided points is accessible.
+ * Color mapping. The class is initialized with a list of inflection points and
+ * an associated color. A color mapping for values between 0 and 1 based on the
+ * provided points is accessible.
  * 
  * @author Alexander Lex
  */
 @XmlType
 public class ColorMapper {
-	public static int[] NEUTRAL_GREY = {220, 220, 220};
+	public static int[] NEUTRAL_GREY = { 220, 220, 220 };
 	public static float[] NOT_A_NUMBER_COLOR = { 0.3f, 0.3f, 0.3f };
-	
 
 	private ArrayList<float[]> colorList;
 	private ArrayList<ColorMarkerPoint> markerPoints;
 
 	// ColorMappingType colorMappingType;
-
 
 	private String colorSchemeName = "Unspecified";
 	private String colorSchemeDescription = "No description given";
@@ -59,23 +58,42 @@ public class ColorMapper {
 
 	/**
 	 * <p>
-	 * Constructor. Provide a list of {@link ColorMarkerPoint} where the first has the smallest value, and
-	 * each next point has a bigger value. These color points work as inflection points. Between two adjacent
-	 * points the colors are interpolated.
+	 * Constructor. Provide a list of {@link ColorMarkerPoint} where the first
+	 * has the smallest value, and each next point has a bigger value. These
+	 * color points work as inflection points. Between two adjacent points the
+	 * colors are interpolated.
 	 * </p>
 	 * <p>
-	 * Additionally the color marker points have spreads - which define an area of constant color. For example
-	 * if a marker point has a value of 0.5 and a left spread of 0.1 and a right spread of 0.2 then the region
-	 * between 0.4 and 0.7 is in the constant color of the marker point. Only at the end of the spreads the
-	 * interpolation to the next color begins.
+	 * Additionally the color marker points have spreads - which define an area
+	 * of constant color. For example if a marker point has a value of 0.5 and a
+	 * left spread of 0.1 and a right spread of 0.2 then the region between 0.4
+	 * and 0.7 is in the constant color of the marker point. Only at the end of
+	 * the spreads the interpolation to the next color begins.
 	 * </p>
 	 * 
 	 * @param markerPoints
 	 * @throws IllegalArgumentException
-	 *             if values in marker points are not increasing, or if fvalue > 1 || fvalue < 0
+	 *             if values in marker points are not increasing, or if fvalue >
+	 *             1 || fvalue < 0
 	 */
 	public ColorMapper(ArrayList<ColorMarkerPoint> markerPoints) {
 		init(markerPoints);
+	}
+
+	/**
+	 * Returns the default two-color color mapper for Caleydo. Default scheme is
+	 * {@link EDefaultColorSchemes#GREY_RED}
+	 */
+	public static ColorMapper createDefaultTwoColorMapper() {
+		return EDefaultColorSchemes.GREY_RED.getDefaultColorMapper();
+	}
+
+	/**
+	 * Returns the default two-color color mapper for Caleydo. Default scheme is
+	 * {@link EDefaultColorSchemes#BLUE_WHITE_REDD}
+	 */
+	public static ColorMapper createDefaultThreeColorMapper() {
+		return EDefaultColorSchemes.BLUE_WHITE_RED.getDefaultColorMapper();
 	}
 
 	/**
@@ -119,7 +137,8 @@ public class ColorMapper {
 	}
 
 	/**
-	 * Reset the color mapping, same principles as constructor {@link ColorMapper#ColorMapping(ArrayList)}
+	 * Reset the color mapping, same principles as constructor
+	 * {@link ColorMapper#ColorMapping(ArrayList)}
 	 * 
 	 * @param alMarkerPoints
 	 */
@@ -153,8 +172,9 @@ public class ColorMapper {
 			destValue = alFinalMarkerPoints.get(iCount + 1).getMappingValue();
 
 			if (destValue < srcValue)
-				throw new IllegalArgumentException("Marker points values have to be increasing in size, "
-					+ "but this was not the case");
+				throw new IllegalArgumentException(
+						"Marker points values have to be increasing in size, "
+								+ "but this was not the case");
 
 			float[] fSrcColor = alFinalMarkerPoints.get(iCount).getColor();
 			float[] fDestColor = alFinalMarkerPoints.get(iCount + 1).getColor();
@@ -187,7 +207,9 @@ public class ColorMapper {
 			return NOT_A_NUMBER_COLOR;
 
 		if (value > 1 || value < 0)
-			throw new IllegalArgumentException("Invalid value in fValue. Has to be between 0 and 1 but was: " + value);
+			throw new IllegalArgumentException(
+					"Invalid value in fValue. Has to be between 0 and 1 but was: "
+							+ value);
 
 		return colorList.get((int) (value * (COLOR_DEPTH - 1)));
 	}
@@ -202,9 +224,10 @@ public class ColorMapper {
 	}
 
 	/**
-	 * Returns the list of marker points, but with spread converted to a separate marker point. This means
-	 * that a marker point at 0.5 with a left spread of 0.1 will result in two marker points, one with 0.4 and
-	 * one with 0.5 of the same color in this list
+	 * Returns the list of marker points, but with spread converted to a
+	 * separate marker point. This means that a marker point at 0.5 with a left
+	 * spread of 0.1 will result in two marker points, one with 0.4 and one with
+	 * 0.5 of the same color in this list
 	 * 
 	 * @return the list of marker points without spreads but points for spreads
 	 */
@@ -217,8 +240,8 @@ public class ColorMapper {
 	}
 
 	/**
-	 * Converts the spread in color marker points to separate color points, which are easier to map later.
-	 * Does some checking and error handling.
+	 * Converts the spread in color marker points to separate color points,
+	 * which are easier to map later. Does some checking and error handling.
 	 * 
 	 * @return the list with all the marker points instead of spreads
 	 */
@@ -228,12 +251,14 @@ public class ColorMapper {
 		for (ColorMarkerPoint point : markerPoints) {
 			if (point.hasLeftSpread()) {
 				float fLeftValue = point.getMappingValue() - point.getLeftSpread();
-				alFinalColorMarkerPoints.add(new ColorMarkerPoint(fLeftValue, point.getColor()));
+				alFinalColorMarkerPoints.add(new ColorMarkerPoint(fLeftValue, point
+						.getColor()));
 			}
 			alFinalColorMarkerPoints.add(point);
 			if (point.hasRightSpread()) {
 				float fRightValue = point.getMappingValue() + point.getRightSpread();
-				alFinalColorMarkerPoints.add(new ColorMarkerPoint(fRightValue, point.getColor()));
+				alFinalColorMarkerPoints.add(new ColorMarkerPoint(fRightValue, point
+						.getColor()));
 			}
 		}
 
@@ -265,7 +290,8 @@ public class ColorMapper {
 		return colorSchemeName;
 	}
 
-	public static void createColorMappingPreview(ColorMapper colorMapper, CLabel colorMappingPreview) {
+	public static void createColorMappingPreview(ColorMapper colorMapper,
+			CLabel colorMappingPreview) {
 
 		ArrayList<ColorMarkerPoint> markerPoints = colorMapper.getMarkerPoints();
 
@@ -284,8 +310,8 @@ public class ColorMapper {
 
 			int[] color = markerPoints.get(iCount - 1).getIntColor();
 
-			alColor[iCount - 1] =
-				new Color(PlatformUI.getWorkbench().getDisplay(), color[0], color[1], color[2]);
+			alColor[iCount - 1] = new Color(PlatformUI.getWorkbench().getDisplay(),
+					color[0], color[1], color[2]);
 		}
 
 		colorMappingPreview.setBackground(alColor, colorMarkerPoints);

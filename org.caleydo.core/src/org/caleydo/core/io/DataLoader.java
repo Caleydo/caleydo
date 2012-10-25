@@ -125,10 +125,6 @@ public class DataLoader {
 							dataSetDescription);
 
 		}
-
-		dataDomain.setColorMapper(ColorMapper
-				.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED));
-
 //		dataDomain.init();
 
 		boolean createDefaultRecordPerspective = true;

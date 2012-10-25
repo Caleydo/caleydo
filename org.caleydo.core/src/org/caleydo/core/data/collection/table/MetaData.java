@@ -96,6 +96,13 @@ public class MetaData {
 	}
 
 	/**
+	 * @return the dataCenter, see {@link #dataCenter}
+	 */
+	public Double getDataCenter() {
+		return dataCenter;
+	}
+
+	/**
 	 * Get the minimum value in the table.
 	 * 
 	 * @throws OperationNotSupportedException
@@ -248,6 +255,12 @@ public class MetaData {
 					max = temp;
 				}
 			}
+			if (dataCenter == null) {
+				// in case we have data with both, positive and negative values
+				// we assume it to be centered.
+				if (min < 0 && max > 0)
+					dataCenter = 0d;
+			}
 			if (dataCenter != null) {
 				if (min > dataCenter || max < dataCenter) {
 					throw new IllegalStateException("DataCentered was set to "
@@ -258,7 +271,7 @@ public class MetaData {
 				double lowerDelta = Math.abs(min - dataCenter);
 				double upperDelta = Math.abs(max - dataCenter);
 				double maxDelta;
-				maxDelta = (lowerDelta > upperDelta) ?  lowerDelta : upperDelta;
+				maxDelta = (lowerDelta > upperDelta) ? lowerDelta : upperDelta;
 				max = dataCenter + maxDelta;
 				min = dataCenter - maxDelta;
 
