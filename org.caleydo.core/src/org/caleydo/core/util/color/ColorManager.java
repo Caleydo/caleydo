@@ -44,30 +44,20 @@ public class ColorManager {
 		List<Pair<Color, Boolean>> qualitativeColorList = new ArrayList<Pair<Color, Boolean>>();
 
 		// Colors from colorbrewer qualitative Set3
-		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(141f / 255f, 211f / 255f,
-				199f / 255f), false));
-		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(179f / 255f, 222f / 255f,
-				105f / 255f), false));
-		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(128f / 255f, 177f / 255f,
-				211f / 255f), false));
-		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(190f / 255f, 186f / 255f,
-				218f / 255f), false));
+		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(141f / 255f, 211f / 255f, 199f / 255f), false));
+		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(179f / 255f, 222f / 255f, 105f / 255f), false));
+		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(128f / 255f, 177f / 255f, 211f / 255f), false));
+		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(190f / 255f, 186f / 255f, 218f / 255f), false));
 
-		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(252f / 255f, 205f / 255f,
-				229f / 255f), false));
+		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(252f / 255f, 205f / 255f, 229f / 255f), false));
 		// dataDomainColorList.add(new Pair<Color, Boolean>(new Color(217f /
 		// 255f, 217f / 255f, 217f / 255f),
 		// false));
-		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(188f / 255f, 128f / 255f,
-				189f / 255f), false));
-		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(204f / 255f, 235f / 255f,
-				197f / 255f), false));
-		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(1f, 237f / 255f,
-				111f / 255f), false));
-		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(251f / 255f, 128f / 255f,
-				114f / 255f), false));
-		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(253f / 255f, 180f / 255f,
-				98f / 255f), false));
+		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(188f / 255f, 128f / 255f, 189f / 255f), false));
+		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(204f / 255f, 235f / 255f, 197f / 255f), false));
+		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(1f, 237f / 255f, 111f / 255f), false));
+		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(251f / 255f, 128f / 255f, 114f / 255f), false));
+		qualitativeColorList.add(new Pair<Color, Boolean>(new Color(253f / 255f, 180f / 255f, 98f / 255f), false));
 		// dataDomainColorList.add(new Pair<Color, Boolean>(new Color(1f, 1f,
 		// 179f / 255f), false));
 		// 141, 211, 199;
@@ -182,12 +172,9 @@ public class ColorManager {
 	public void addNewColorList(String colorListID) throws IllegalArgumentException {
 
 		if (colorLists.containsKey(colorListID))
-			throw new IllegalArgumentException(
-					"Color list with the specified ID already exists");
+			throw new IllegalArgumentException("Color list with the specified ID already exists");
 
 		List<Pair<Color, Boolean>> colorList = new ArrayList<Pair<Color, Boolean>>();
 		colorLists.put(colorListID, colorList);
-
 	}
-
 }
