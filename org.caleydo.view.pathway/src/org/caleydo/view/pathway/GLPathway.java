@@ -326,14 +326,15 @@ public class GLPathway extends ATableBasedView implements
 	public void init(final GL2 gl) {
 
 		displayListIndex = gl.glGenLists(1);
+		
+		// we will adapt the dimensions in each frame
+		texRenderer = new TextureRenderer(1280, 768, true);
+		
 		// Check if pathway exists or if it's already loaded
 		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
 			return;
 
 		initPathwayData(gl);
-		
-		// we will adapt the dimensions in each frame
-		texRenderer = new TextureRenderer(1280, 768, true);
 	}
 
 	protected void registerMouseListeners() {
@@ -1112,7 +1113,7 @@ public class GLPathway extends ATableBasedView implements
 			int height) {
 		super.reshape(drawable, x, y, width, height);
 
-		System.out.println("Frustum: " + viewFrustum);
+		//System.out.println("Frustum: " + viewFrustum);
 	}
 
 	private void calculatePathwayScaling(final GL2 gl,

@@ -413,22 +413,21 @@ public class GLPathwayContentCreator {
 					gl.glColor4fv(tmpNodeColor, 0);
 					fillNodeDisplayListFrame(gl, nodeWidth, nodeHeight);
 				}
-				
-				//create mask to prevent redrawing
-                gl.glEnable(GL2.GL_STENCIL_TEST);
-                gl.glClearStencil(0);
-                gl.glClear(GL2.GL_STENCIL);
-                gl.glColorMask(false, false, false, false);
-                gl.glDisable(GL2.GL_DEPTH_TEST);
-                gl.glStencilFunc(GL2.GL_ALWAYS, 1, 1);
-                gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
 
-                fillNodeDisplayList(gl, nodeWidth, nodeHeight);
-               
-               
-                gl.glDisable(GL2.GL_STENCIL_TEST);
-                gl.glColorMask(true, true, true, true);
-                gl.glEnable(GL2.GL_DEPTH_TEST);
+				// create mask to prevent redrawing
+				gl.glEnable(GL2.GL_STENCIL_TEST);
+				gl.glClearStencil(0);
+				gl.glClear(GL2.GL_STENCIL);
+				gl.glColorMask(false, false, false, false);
+				gl.glDisable(GL2.GL_DEPTH_TEST);
+				gl.glStencilFunc(GL2.GL_ALWAYS, 1, 1);
+				gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+
+				fillNodeDisplayList(gl, nodeWidth, nodeHeight);
+
+				gl.glDisable(GL2.GL_STENCIL_TEST);
+				gl.glColorMask(true, true, true, true);
+				gl.glEnable(GL2.GL_DEPTH_TEST);
 
 				break;
 			case compound:
@@ -478,14 +477,13 @@ public class GLPathwayContentCreator {
 
 					if (tmpNodeColor != null) {
 
-						gl.glColor4f(tmpNodeColor[0], tmpNodeColor[1], tmpNodeColor[2], 1.0f);						
+						gl.glColor4f(tmpNodeColor[0], tmpNodeColor[1], tmpNodeColor[2], 1.0f);
 
 						if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
 
 							// gl.glEnable(GL2.GL_BLEND);
 							gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 							gl.glCallList(enzymeNodeDisplayListId);
-
 
 							// gl.glEnable(GL2.GL_DEPTH_TEST);
 
@@ -529,26 +527,27 @@ public class GLPathwayContentCreator {
 										PathwayRenderStyle.Z_OFFSET + 0.02f);
 								gl.glVertex3f(x, 0 + 0.001f, PathwayRenderStyle.Z_OFFSET + 0.02f);
 								gl.glEnd();
-								
-								
-								/// create mask
-	                            gl.glEnable(GL2.GL_STENCIL_TEST);	                            
-	                            gl.glColorMask(false, false, false, false);
-	                            gl.glDisable(GL2.GL_DEPTH_TEST);
-	                            gl.glStencilFunc(GL2.GL_ALWAYS, 1, 1);
-	                            gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
-	                            //
+
+								// / create mask
+								gl.glEnable(GL2.GL_STENCIL_TEST);
+								gl.glColorMask(false, false, false, false);
+								gl.glDisable(GL2.GL_DEPTH_TEST);
+								gl.glStencilFunc(GL2.GL_ALWAYS, 1, 1);
+								gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+								//
 								gl.glBegin(GL2.GL_QUADS);
 								gl.glColor4f(1, 1, 1, 1f);
 								gl.glVertex3f(x, y - .001f, PathwayRenderStyle.Z_OFFSET);
-								gl.glVertex3f(x + PathwayRenderStyle.STD_DEV_BAR_WIDTH, y - .001f,PathwayRenderStyle.Z_OFFSET);
-								gl.glVertex3f(x + PathwayRenderStyle.STD_DEV_BAR_WIDTH, 0 + .001f,PathwayRenderStyle.Z_OFFSET);
+								gl.glVertex3f(x + PathwayRenderStyle.STD_DEV_BAR_WIDTH, y - .001f,
+										PathwayRenderStyle.Z_OFFSET);
+								gl.glVertex3f(x + PathwayRenderStyle.STD_DEV_BAR_WIDTH, 0 + .001f,
+										PathwayRenderStyle.Z_OFFSET);
 								gl.glVertex3f(x, 0 + 0.001f, PathwayRenderStyle.Z_OFFSET);
 								gl.glEnd();
 								//
-	                            gl.glDisable(GL2.GL_STENCIL_TEST);
-	                            gl.glColorMask(true, true, true, true);
-	                            gl.glEnable(GL2.GL_DEPTH_TEST);	
+								gl.glDisable(GL2.GL_STENCIL_TEST);
+								gl.glColorMask(true, true, true, true);
+								gl.glEnable(GL2.GL_DEPTH_TEST);
 							}
 
 							// Handle selection highlighting of element
@@ -854,27 +853,25 @@ public class GLPathwayContentCreator {
 		if (selectedSamplesVA == null)
 			return null;
 
-		int davidID = pathwayItemManager.getDavidIdByPathwayVertex((PathwayVertex) vertexRep.getPathwayVertices()
-				.get(0));
+		List<Integer> mappedDavidIds = pathwayItemManager.getDavidIDsByPathwayVertexRep(vertexRep);
 
-		if (davidID == -1 || davidID == 0)
-			return null;
-		else {
+		for (Integer davidID : mappedDavidIds) {
+			{
+				Set<Integer> expressionIndices = idMappingManager.<Integer, Integer> getIDAsSet(glPathwayView
+						.getPathwayDataDomain().getDavidIDType(), glPathwayView.getGeneSelectionManager().getIDType(),
+						davidID);
+				if (expressionIndices == null)
+					continue;
 
-			Set<Integer> expressionIndices = idMappingManager.<Integer, Integer> getIDAsSet(glPathwayView
-					.getPathwayDataDomain().getDavidIDType(), glPathwayView.getGeneSelectionManager().getIDType(),
-					davidID);
-			if (expressionIndices == null)
-				return null;
+				// FIXME multi mappings not properly handled - only the first is
+				// taken
+				for (Integer expressionIndex : expressionIndices) {
 
-			// FIXME multi mappings not properly handled - only the first is
-			// taken
-			for (Integer expressionIndex : expressionIndices) {
+					Average average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA,
+							geneticDataDomain.getTable(), expressionIndex);
 
-				Average average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA,
-						geneticDataDomain.getTable(), expressionIndex);
-
-				return average;
+					return average;
+				}
 			}
 		}
 
