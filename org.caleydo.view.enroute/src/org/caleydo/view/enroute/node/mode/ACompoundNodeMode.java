@@ -62,11 +62,6 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 		Collections.reverse(selectionTypes);
 		colorCalculator.calculateColors(selectionTypes);
 		backgroundColor = colorCalculator.getPrimaryColor().getRGBA();
-//		for (SelectionType selectionType : selectionTypes) {
-//			if (!selectionType.equals(SelectionType.NORMAL))
-//				backgroundColor = selectionType.getColor();
-//			break;
-//		}
 	}
 
 	@Override

@@ -68,19 +68,6 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements
 		colorCalculator.calculateColors(allSelectionTypes);
 		backgroundColor = colorCalculator.getPrimaryColor().getRGBA();
 		gradientColor = colorCalculator.getSecondaryColor().getRGBA();
-		
-
-//		if (allSelectionTypes.size() > 0) {
-//			SelectionType selectionType = allSelectionTypes.get(0);
-//			if (!selectionType.equals(SelectionType.NORMAL))
-//				backgroundColor = selectionType.getColor();
-//			gradientColor = null;
-//			if (allSelectionTypes.size() > 1) {
-//				selectionType = allSelectionTypes.get(1);
-//				if (!selectionType.equals(SelectionType.NORMAL))
-//					gradientColor = selectionType.getColor();
-//			}
-//		}
 
 	}
 
