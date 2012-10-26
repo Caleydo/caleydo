@@ -112,8 +112,10 @@ public class FloatContainer implements INumericalContainer {
 
 	@Override
 	public FloatContainer normalizeWithExternalExtrema(final double min, final double max) {
-		if (min >= max)
-			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
+		if (min > max)
+			throw new IllegalArgumentException("Minimum was bigger as maximum");
+		if(min == max)
+			Logger.log(new Status(Status.WARNING, this.toString(), "Min was the same as max. This is not very interesting to visualize."));
 
 		return new FloatContainer(ConversionTools.normalize(container, (float) min,
 				(float) max));

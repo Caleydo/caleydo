@@ -29,13 +29,13 @@ public interface INumericalContainer
 
 	/**
 	 * Execute the normalize method, where values in the container are normalized to values between 0 and 1,
-	 * but do not take min max from the range calculated internally, but use those specified in dMin, dMax
-	 * Take care that dMin and dMax are smaller resp. bigger than the smallest resp. biggest value in the
+	 * but do not take min max from the range calculated internally, but use those specified in min, max
+	 * Take care that min and max are smaller resp. bigger than the smallest resp. biggest value in the
 	 * data.
 	 * 
-	 * @param dMin
+	 * @param min
 	 *            the minimum
-	 * @param dMax
+	 * @param max
 	 *            the maximum
 	 * @return a container with the normalized values
 	 * @throws IllegalAttributeException

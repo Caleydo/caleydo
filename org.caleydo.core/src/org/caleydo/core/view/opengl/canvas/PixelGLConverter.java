@@ -32,6 +32,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
  * @author Christian Partl
  */
 public class PixelGLConverter {
+	
 	private ViewFrustum viewFrustum;
 	private GLCanvas canvas;
 

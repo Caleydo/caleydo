@@ -20,6 +20,8 @@
 package org.caleydo.core.data.collection.container;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.Status;
 
 /**
  * CContainer implementation for int A container for ints. Initialized with an
@@ -125,8 +127,10 @@ public class IntContainer
 	private FloatContainer normalize(int min, int max)
 
 	{
-		if (min >= max)
-			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
+		if (min > max)
+			throw new IllegalArgumentException("Minimum was bigger as maximum");
+		if(min == max)
+			Logger.log(new Status(Status.WARNING, this.toString(), "Min was the same as max. This is not very interesting to visualize."));
 		float[] target = new float[container.length];
 
 		for (int iCount = 0; iCount < container.length; iCount++) {

@@ -82,8 +82,8 @@ public class NumericalColumn extends AColumn {
 	 * normalization
 	 * 
 	 * @param sourceRep
-	 * @param dMin
-	 * @param dMax
+	 * @param min
+	 * @param max
 	 */
 	public void normalizeWithExternalExtrema(DataRepresentation sourceRep,
 			DataRepresentation targetRep, double dMin, double dMax) {
@@ -110,15 +110,15 @@ public class NumericalColumn extends AColumn {
 	 * Normalize operates on the raw data, except if you previously called log,
 	 * then the logarithmized data is used.
 	 * 
-	 * @param dMin
+	 * @param min
 	 *            the minimum
-	 * @param dMax
+	 * @param max
 	 *            the maximum
 	 * @throws IlleagalAttributeStateException
-	 *             if dMin >= dMax
+	 *             if min >= max
 	 */
-	public void normalizeWithExternalExtrema(double dMin, double dMax) {
-		normalizeWithExternalExtrema(dataRep, DataRepresentation.NORMALIZED, dMin, dMax);
+	public void normalizeWithExternalExtrema(double min, double max) {
+		normalizeWithExternalExtrema(dataRep, DataRepresentation.NORMALIZED, min, max);
 	}
 
 	@Override

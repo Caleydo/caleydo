@@ -21,6 +21,9 @@ package org.caleydo.core.data.collection.container;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.Status;
+
 /**
  * A container for numerical values. Type can be anything that implements java.Number
  * 
@@ -35,8 +38,8 @@ public class NumericalContainer<T extends Number>
 
 {
 
-	Double dMin = Double.MAX_VALUE;
-	Double dMax = Double.MIN_VALUE;
+	Double min = Double.MAX_VALUE;
+	Double max = Double.MIN_VALUE;
 
 	/**
 	 * Constructor Pass an arrayList of a type that extends java.Number
@@ -49,18 +52,18 @@ public class NumericalContainer<T extends Number>
 
 	@Override
 	public double getMin() {
-		if (dMin == Double.MAX_VALUE) {
+		if (min == Double.MAX_VALUE) {
 			calculateMinMax();
 		}
-		return dMin;
+		return min;
 	}
 
 	@Override
 	public double getMax() {
-		if (dMax == Double.MIN_VALUE) {
+		if (max == Double.MIN_VALUE) {
 			calculateMinMax();
 		}
-		return dMax;
+		return max;
 	}
 
 	@Override
@@ -92,16 +95,18 @@ public class NumericalContainer<T extends Number>
 	/**
 	 * Does the actual normalization
 	 * 
-	 * @param dMin
-	 * @param dMax
+	 * @param min
+	 * @param max
 	 * @return a new container with the normalized values
 	 * @throws IllegalAttributeException
-	 *             when dMin is >= dMax
+	 *             when min is >= max
 	 */
-	private FloatContainer normalize(double dMin, double dMax) {
+	private FloatContainer normalize(double min, double max) {
 
-		if (dMin >= dMax)
-			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
+		if (min > max)
+			throw new IllegalArgumentException("Minimum was bigger as maximum");
+		if(min == max)
+			Logger.log(new Status(Status.WARNING, this.toString(), "Min was the same as max. This is not very interesting to visualize."));
 
 		float[] fArTmpTarget = new float[alContainer.size()];
 
@@ -113,7 +118,7 @@ public class NumericalContainer<T extends Number>
 			else {
 
 				fArTmpTarget[iCount] =
-					(alContainer.get(iCount).floatValue() - (float) dMin) / ((float) dMax - (float) dMin);
+					(alContainer.get(iCount).floatValue() - (float) min) / ((float) max - (float) min);
 				if (fArTmpTarget[iCount] > 1) {
 					fArTmpTarget[iCount] = 1;
 				}
@@ -134,12 +139,12 @@ public class NumericalContainer<T extends Number>
 				continue;
 			}
 
-			if (current.doubleValue() < dMin) {
-				dMin = current.doubleValue();
+			if (current.doubleValue() < min) {
+				min = current.doubleValue();
 				continue;
 			}
-			if (current.doubleValue() > dMax) {
-				dMax = current.doubleValue();
+			if (current.doubleValue() > max) {
+				max = current.doubleValue();
 			}
 		}
 		return;
