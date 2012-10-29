@@ -344,12 +344,12 @@ public class BrickColumnSpacingRenderer
 				EPickingType.DIMENSION_GROUP_SPACER.name(), ID);
 
 		gl.glPushName(pickingID);
-		gl.glColor4f(1, 1, 1, 0);
+		gl.glColor4f(1f, 1f, 1f, 0);
 		gl.glBegin(GL2.GL_POLYGON);
-		gl.glVertex2f(0, 0);
-		gl.glVertex2f(x, 0);
-		gl.glVertex2f(x, y);
-		gl.glVertex2f(0, y);
+		gl.glVertex3f(0, 0,-1);
+		gl.glVertex3f(x, 0,-1);
+		gl.glVertex3f(x, y,-1);
+		gl.glVertex3f(0, y,-1);
 		gl.glEnd();
 		gl.glPopName();
 	}
