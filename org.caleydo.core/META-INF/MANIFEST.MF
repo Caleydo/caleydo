@@ -417,7 +417,8 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0";visibility:=reex
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.caleydo.core.data.virtualarray.delta,
- org.caleydo.core.manager
+ org.caleydo.core.manager,
+ org.caleydo.core.util.conversion
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: www.caleydo.org
 Bundle-Activator: org.caleydo.core.startup.Activator

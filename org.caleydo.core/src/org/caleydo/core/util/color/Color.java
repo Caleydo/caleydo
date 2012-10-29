@@ -68,6 +68,13 @@ public final class Color {
 		return new float[] { r, g, b, a };
 	}
 
+	public String getHEX() {
+		String hexColor = Integer.toHexString(new java.awt.Color((int) (r * 255f), (int) (g * 255f), (int) (b * 255f))
+				.getRGB());
+		hexColor = hexColor.substring(2, hexColor.length());
+		return hexColor;
+	}
+
 	public Color getColorWithSpecificBrighness(float brightness) {
 
 		float[] hsb = new float[3];
