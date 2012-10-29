@@ -1,30 +1,31 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.stratomex.vendingmachine;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
@@ -32,9 +33,13 @@ import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.CategoricalTablePerspectiveCreator;
+import org.caleydo.core.data.perspective.table.JaccardIndex;
+import org.caleydo.core.data.perspective.table.JaccardIndex.JaccardIndexScorePair;
+import org.caleydo.core.data.perspective.table.JaccardIndex.JaccardIndexScores;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.collection.Triple;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -67,7 +72,7 @@ import org.eclipse.swt.widgets.Composite;
  * The vending machine for stratification and cluster comparisons using scoring
  * approach.
  * </p>
- * 
+ *
  * @author Marc Streit
  */
 
@@ -220,48 +225,26 @@ public class VendingMachine
 
 		// Trigger ranking of data containers
 		rankedElements = new ArrayList<RankedElement>();
-		for (TablePerspective scoredTablePerspective : scoringTablePerspectives) {
-
-			if (referenceTablePerspectives == null) {
-				RankedElement rankedElement = new RankedElement(0, scoredTablePerspective,
-						null, null);
-				rankedElements.add(rankedElement);
+		// more efficient to perform a loop in each case, as cache can be better used
+		if (referenceTablePerspectives == null) {
+			for (TablePerspective scoredTablePerspective : scoringTablePerspectives) {
+				rankedElements.add(new RankedElement(0, scoredTablePerspective, null, null));
 			}
-			else {
-
-				switch (scoreReferenceMode) {
-					case COLUMN:
-
-						TablePerspective columnTablePerspective = referenceTablePerspectives
-								.get(0);
-						float score = scoredTablePerspective.getContainerStatistics()
-								.getAdjustedRandIndex().getScore(columnTablePerspective, true);
-
-						RankedElement rankedElement = new RankedElement(score,
-								scoredTablePerspective, null, columnTablePerspective);
-						rankedElements.add(rankedElement);
-
-						break;
-
-					case SINGLE_GROUP:
-
-						TablePerspective singleReferenceTablePerspective = referenceTablePerspectives
-								.get(0);
-
-						createSingleJaccardRankedElement(singleReferenceTablePerspective,
-								scoredTablePerspective);
-
-						break;
-
-					case ALL_GROUPS_IN_COLUMN:
-
-						for (TablePerspective referenceTablePerspective : referenceTablePerspectives) {
-							createSingleJaccardRankedElement(referenceTablePerspective,
-									scoredTablePerspective);
-						}
-
-						break;
+		} else {
+			switch (scoreReferenceMode) {
+			case COLUMN:
+				TablePerspective columnTablePerspective = referenceTablePerspectives.get(0);
+				for (TablePerspective scoredTablePerspective : scoringTablePerspectives) {
+					float score = scoredTablePerspective.getContainerStatistics().getAdjustedRandIndex().getScore(columnTablePerspective, true);
+					rankedElements.add(new RankedElement(score, scoredTablePerspective, null, columnTablePerspective));
 				}
+				break;
+			case SINGLE_GROUP:
+				createJaccardRankedElement(referenceTablePerspectives.subList(0, 1), scoringTablePerspectives);
+				break;
+			case ALL_GROUPS_IN_COLUMN:
+				createJaccardRankedElement(referenceTablePerspectives, scoringTablePerspectives);
+				break;
 			}
 		}
 
@@ -311,19 +294,15 @@ public class VendingMachine
 		layoutManager.updateLayout();
 	}
 
-	private void createSingleJaccardRankedElement(TablePerspective referenceTablePerspective,
-			TablePerspective scoredTablePerspective) {
+	private void createJaccardRankedElement(Collection<TablePerspective> a, Collection<TablePerspective> b) {
+		for (Triple<TablePerspective, TablePerspective, JaccardIndexScores> scores : JaccardIndex.createScores(a, b)) {
+			TablePerspective referenceTablePerspective = scores.getFirst();
+			TablePerspective against = scores.getFirst();
 
-		HashMap<TablePerspective, Float> subTablePerspectiveToScore = referenceTablePerspective
-				.getContainerStatistics().getJaccardIndex()
-				.getScore(scoredTablePerspective, true);
-
-		for (TablePerspective subTablePerspective : subTablePerspectiveToScore.keySet()) {
-
-			RankedElement tmpRankedElement = new RankedElement(
-					subTablePerspectiveToScore.get(subTablePerspective),
-					scoredTablePerspective, subTablePerspective, referenceTablePerspective);
-			rankedElements.add(tmpRankedElement);
+			for (JaccardIndexScorePair entry : scores.getThird()) {
+				RankedElement tmpRankedElement = new RankedElement(entry.getSecond(), against, entry.getFirst(), referenceTablePerspective);
+				rankedElements.add(tmpRankedElement);
+			}
 		}
 	}
 
@@ -476,6 +455,7 @@ public class VendingMachine
 
 		// Sort data domains alphabetically
 		Collections.sort(dataDomains, new Comparator<ADataDomain>() {
+			@Override
 			public int compare(ADataDomain dd1, ADataDomain dd2) {
 				return dd1.toString().compareTo(dd2.toString());
 			}

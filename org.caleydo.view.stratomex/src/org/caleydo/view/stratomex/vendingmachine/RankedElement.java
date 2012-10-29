@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,6 +21,7 @@ package org.caleydo.view.stratomex.vendingmachine;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -30,7 +31,7 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 
 /**
  * @author Marc Streit
- * 
+ *
  */
 public class RankedElement
 	extends Row
@@ -95,17 +96,14 @@ public class RankedElement
 	public TablePerspective getReferenceTablePerspective() {
 		return referenceTablePerspective;
 	}
-	
+
 	@Override
 	public int compareTo(RankedElement comparedRankedElement) {
-		if (score < comparedRankedElement.getScore())
-			return 1;
-
-		return -1;
+		return -Float.compare(score, comparedRankedElement.getScore()); // the lower the score, the larger
 	}
 
 	public void createLayout(AGLView vendingMachine) {
-		
+
 		BigDecimal bd = new BigDecimal(score).setScale(2, RoundingMode.HALF_EVEN);
 		float score = bd.floatValue();
 
@@ -150,9 +148,9 @@ public class RankedElement
 			scoreBarLayout.addForeGroundRenderer(scoreNumberRenderer);
 			// scoreBarLayout.setPixelSizeX(SCORE_BAR_WIDTH);
 			append(scoreBarLayout);
-		
+
 			append(spacerLayout);
-			
+
 			ElementLayout referenceGroupLayout = new ElementLayout("referenceGroupLayout");
 			referenceGroupLayout.setPixelSizeX(100);
 			referenceGroupLayout.setRenderer(new LabelRenderer(vendingMachine, referenceTablePerspective.getLabel()));
