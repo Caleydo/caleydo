@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -47,7 +47,7 @@ public abstract class AGraphLayout {
 	public abstract void layout(Rectangle2D area);
 
 	/**
-	 * Updates the psotions of the nodes so that they do not exceed the
+	 * Updates the positions of the nodes so that they do not exceed the
 	 * boundaries of the drawing area.
 	 * 
 	 * @param area
@@ -69,10 +69,31 @@ public abstract class AGraphLayout {
 	 * way. However, {@link #layout(Rectangle2D)} has to be called before and
 	 * every time the graph structure changes.
 	 * 
-	 * @param area
-	 *            The area the where the graph shall be layouted, specified in
+	 * @param area The area the where the graph shall be layouted, specified in
 	 *            pixels.
 	 */
 	public abstract void applyIncrementalLayout(Rectangle2D area);
+
+	/**
+	 * @return True, if the layout allows the position of nodes to be changed
+	 *         manually, false otherwise.
+	 */
+	public abstract boolean isLayoutFixed();
+
+	/**
+	 * @return The minimum pixel width that is currently required by the layout
+	 *         to accommodate all nodes. Note that {@link #layout(Rectangle2D)}
+	 *         has to be called before to be able to determine the minimum
+	 *         width.
+	 */
+	public abstract int getMinWidthPixels();
+
+	/**
+	 * @return The minimum pixel height that is currently required by the layout
+	 *         to accommodate all nodes. Note that {@link #layout(Rectangle2D)}
+	 *         has to be called before to be able to determine the minimum
+	 *         height.
+	 */
+	public abstract int getMinHeightPixels();
 
 }

@@ -545,7 +545,7 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 					(float) nodePositionY));
 		}
 
-		view.setNodePositionsUpdated(true);
+		view.updateMinWindowSize(true);
 	}
 
 	protected Collection<IDVINode> getNodesToLayout() {
@@ -776,5 +776,50 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 					* (float) area.getHeight()));
 		}
 
+	}
+
+	@Override
+	public boolean isLayoutFixed() {
+		return false;
+	}
+
+
+	@Override
+	public int getMinWidthPixels() {
+		int minX = Integer.MAX_VALUE;
+		int maxX = Integer.MIN_VALUE;
+
+		for (IDVINode node : nodesToLayout) {
+			Point2D position = getNodePosition(node);
+
+			if (position.getX() - node.getWidthPixels() / 2.0f < minX) {
+				minX = (int) (position.getX() - node.getWidthPixels() / 2.0f);
+			}
+			if (position.getX() + node.getWidthPixels() / 2.0f > maxX) {
+				maxX = (int) (position.getX() + node.getWidthPixels() / 2.0f);
+			}
+		}
+		
+		return maxX - minX;
+	}
+
+
+	@Override
+	public int getMinHeightPixels() {
+		int minY = Integer.MAX_VALUE;
+		int maxY = Integer.MIN_VALUE;
+
+		for (IDVINode node : nodesToLayout) {
+			Point2D position = getNodePosition(node);
+
+			if (position.getY() - node.getHeightPixels() / 2.0f < minY) {
+				minY = (int) (position.getY() - node.getHeightPixels() / 2.0f);
+			}
+			if (position.getY() + node.getHeightPixels() / 2.0f > maxY) {
+				maxY = (int) (position.getY() + node.getHeightPixels() / 2.0f);
+			}
+		}
+		
+		return maxY - minY;
 	}
 }
