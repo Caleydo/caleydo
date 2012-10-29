@@ -1522,26 +1522,28 @@ public class GLPathway extends ATableBasedView implements
 				.getStartVertex();
 		PathwayVertexRep endVertex = previousSelectedPath
 				.getEndVertex();
-
-		for (int i = 0; i < edgeListPrev.size(); i++) {
-			DefaultEdge edge = edgeListPrev.get(i);
-			endVertex = pathway.getEdgeTarget(edge);
-			edgeListNew.add(edge);
-			if (vertexRep == endVertex)
-				break;
+		if(vertexRep==startVertex){
+			generateSingleNodePath(vertexRep);
 		}
-
-		GraphPath<PathwayVertexRep, DefaultEdge> tmpSelectedPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
-				pathway, startVertex, endVertex, edgeListNew, 0);
-
-		//
-		if (allPaths == null)
-			allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
-		else
-			allPaths.clear();
-		allPaths.add(tmpSelectedPath);
-		selectedPathID = 0;
-		selectedPath = tmpSelectedPath;
+		else{
+			for (int i = 0; i < edgeListPrev.size(); i++) {
+				DefaultEdge edge = edgeListPrev.get(i);
+				endVertex = pathway.getEdgeTarget(edge);
+				edgeListNew.add(edge);
+				if (vertexRep == endVertex)
+					break;
+			}
+			GraphPath<PathwayVertexRep, DefaultEdge> tmpSelectedPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
+					pathway, startVertex, endVertex, edgeListNew, 0);
+			//
+			if (allPaths == null)
+				allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
+			else
+				allPaths.clear();
+			allPaths.add(tmpSelectedPath);
+			selectedPathID = 0;
+			selectedPath = tmpSelectedPath;
+		}
 	}
 	
 	private void extendSelectedPath(PathwayVertexRep vertexRep)
@@ -1589,6 +1591,21 @@ public class GLPathway extends ATableBasedView implements
 	}
 
 	
+	private void generateSingleNodePath(PathwayVertexRep vertexRep)
+	{		
+		GraphPath<PathwayVertexRep, DefaultEdge> path = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
+				pathway, vertexRep, vertexRep,
+				new ArrayList<DefaultEdge>(), 0);
+		if(allPaths==null)
+			allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
+		else
+			allPaths.clear();
+		allPaths.add(path);
+		selectedPath = path;
+		selectedPathID = 0;
+	}
+	
+	
 	private void selectPath(PathwayVertexRep vertexRep, SelectionType selectionType)
 	{
 		if (!isPathStartSelected)
@@ -1608,17 +1625,10 @@ public class GLPathway extends ATableBasedView implements
 			}		
 			if(!isShiftKeyDown && !isControlKeyDown && vertexRep != null ){
 				//no interaction with the previous selected path 
-				//select vertexRep as startPoint and switch to end_point_selection_mode
-				if(selectionType == SelectionType.SELECTION)
-					isPathStartSelected = true;				
-				if(previousSelectedPath==null || selectionType == SelectionType.SELECTION){
-					GraphPath<PathwayVertexRep, DefaultEdge> path = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
-							pathway, vertexRep, vertexRep,
-							new ArrayList<DefaultEdge>(), 0);
-					allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
-					allPaths.add(path);
-					selectedPath = path;
-					selectedPathID = 0;
+				//select vertexRep as startPoint and switch to end_point_selection_mode				
+				if(selectionType == SelectionType.SELECTION){
+					generateSingleNodePath(vertexRep);
+					isPathStartSelected = true;	
 				}
 			}
 		}else
@@ -1627,15 +1637,21 @@ public class GLPathway extends ATableBasedView implements
 				return;
 			KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 					pathway, pathStartVertexRep, MAX_PATHS);
+			List<GraphPath<PathwayVertexRep, DefaultEdge>> allPathsTmp = null;
 			if (vertexRep != pathStartVertexRep) {
-				allPaths = pathAlgo.getPaths(vertexRep);
+				allPathsTmp = pathAlgo.getPaths(vertexRep);
+				//if at least one path exist update the selected path
+				if (allPathsTmp != null && allPathsTmp.size() > 0) {
+					allPaths=allPathsTmp;
+					if (allPaths.size() <= selectedPathID)
+						selectedPathID = 0;
+					selectedPath = allPaths.get(selectedPathID);
+				}
 			}
-			//if at least one path exist update the selected path
-			if (allPaths != null && allPaths.size() > 0) {
-				if (allPaths.size() <= selectedPathID)
-					selectedPathID = 0;
-				selectedPath = allPaths.get(selectedPathID);
+			else{
+				generateSingleNodePath(vertexRep);
 			}
+
 			if (selectionType == SelectionType.SELECTION) {// click on
 															// end node
 				isPathStartSelected = false;
