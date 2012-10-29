@@ -776,25 +776,35 @@ public class GLPathway extends ATableBasedView implements
 				bubblesetCanvas.addGroup(new Color(c.r, c.g, c.b),
 						outlineThickness, true);
 			}
-
-			for (DefaultEdge edge : path.getEdgeList()) {
-				PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
-				PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
-
+			
+			if(path.getEndVertex()==path.getStartVertex()){
+				PathwayVertexRep sourceVertexRep = path.getEndVertex();
 				bbItemW = sourceVertexRep.getWidth();
 				bbItemH = sourceVertexRep.getHeight();
 				double posX = sourceVertexRep.getLowerLeftCornerX();
 				double posY = sourceVertexRep.getLowerLeftCornerY();
-				double tX = targetVertexRep.getLowerLeftCornerX();
-				double tY = targetVertexRep.getLowerLeftCornerY();
-
-				bubblesetCanvas
-						.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-				//
-				bubblesetCanvas.addItem(bbGroupID, tX, tY, bbItemW, bbItemH);
-				//
-				bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);
-				visitedNodes.add(sourceVertexRep);
+				bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
+			}
+			else{
+				for (DefaultEdge edge : path.getEdgeList()) {
+					PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
+					PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
+	
+					bbItemW = sourceVertexRep.getWidth();
+					bbItemH = sourceVertexRep.getHeight();
+					double posX = sourceVertexRep.getLowerLeftCornerX();
+					double posY = sourceVertexRep.getLowerLeftCornerY();
+					double tX = targetVertexRep.getLowerLeftCornerX();
+					double tY = targetVertexRep.getLowerLeftCornerY();
+	
+					bubblesetCanvas
+							.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
+					//
+					bubblesetCanvas.addItem(bbGroupID, tX, tY, bbItemW, bbItemH);
+					//
+					bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);
+					visitedNodes.add(sourceVertexRep);
+				}
 			}
 
 			// DefaultEdge lastEdge =
@@ -1596,17 +1606,20 @@ public class GLPathway extends ATableBasedView implements
 					previousSelectedPath=selectedPath;
 				}
 			}		
-			if(!isShiftKeyDown && !isControlKeyDown && vertexRep != null && selectionType == SelectionType.SELECTION){
+			if(!isShiftKeyDown && !isControlKeyDown && vertexRep != null ){
 				//no interaction with the previous selected path 
-				//select vertexRep as startPoint and switch to end_point_selection_mode		
-				GraphPath<PathwayVertexRep, DefaultEdge> path = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
-						pathway, vertexRep, vertexRep,
-						new ArrayList<DefaultEdge>(), 0);
-				allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
-				allPaths.add(path);
-				selectedPath = path;
-				selectedPathID = 0;
-				isPathStartSelected = true;
+				//select vertexRep as startPoint and switch to end_point_selection_mode
+				if(selectionType == SelectionType.SELECTION)
+					isPathStartSelected = true;				
+				if(previousSelectedPath==null || selectionType == SelectionType.SELECTION){
+					GraphPath<PathwayVertexRep, DefaultEdge> path = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
+							pathway, vertexRep, vertexRep,
+							new ArrayList<DefaultEdge>(), 0);
+					allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
+					allPaths.add(path);
+					selectedPath = path;
+					selectedPathID = 0;
+				}
 			}
 		}else
 		{////////// select end node /////////////////////////
