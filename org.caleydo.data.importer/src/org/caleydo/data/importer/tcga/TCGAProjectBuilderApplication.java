@@ -300,6 +300,6 @@ public class TCGAProjectBuilderApplication
 				+ GroupingListCreator.getDimensionGroupingList(dataDomain)
 				+ "]},\"sample\":{\"count\":\"" + dataDomain.getTable().getMetaData().depth()
 				+ "\",\"groupings\":[" + GroupingListCreator.getRecordGroupingList(dataDomain)
-				+ "]}}";
+				+ "]},\"color\":\""+dataDomain.getColor().getHEX()+"\"}";
 	}
 }

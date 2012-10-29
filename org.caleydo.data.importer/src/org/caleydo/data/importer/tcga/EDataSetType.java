@@ -33,14 +33,14 @@ import org.caleydo.core.util.color.ColorManager;
 public enum EDataSetType {
 
 	mRNA(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(0)),
-	mRNAseq(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(0).getColorWithSpecificBrighness(0.8f)),
+	mRNAseq(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(0).getColorWithSpecificBrighness(0.7f)),
 	microRNA(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(1)),
-	microRNAseq(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(2).getColorWithSpecificBrighness(0.8f)),
-	methylation(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(3)),
-	RPPA(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(4)),
-	copyNumber(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(5)),
-	mutation(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(6)),
-	clinical(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(7));
+	microRNAseq(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(1).getColorWithSpecificBrighness(0.7f)),
+	methylation(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(2)),
+	RPPA(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(3)),
+	copyNumber(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(4)),
+	mutation(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(5)),
+	clinical(ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS).get(6));
 
 	private Color color;
 
