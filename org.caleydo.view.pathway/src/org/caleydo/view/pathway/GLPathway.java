@@ -1598,7 +1598,14 @@ public class GLPathway extends ATableBasedView implements
 			}		
 			if(!isShiftKeyDown && !isControlKeyDown && vertexRep != null && selectionType == SelectionType.SELECTION){
 				//no interaction with the previous selected path 
-				//select vertexRep as startPoint and switch to end_point_selection_mode				
+				//select vertexRep as startPoint and switch to end_point_selection_mode		
+				GraphPath<PathwayVertexRep, DefaultEdge> path = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
+						pathway, vertexRep, vertexRep,
+						new ArrayList<DefaultEdge>(), 0);
+				allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
+				allPaths.add(path);
+				selectedPath = path;
+				selectedPathID = 0;
 				isPathStartSelected = true;
 			}
 		}else
