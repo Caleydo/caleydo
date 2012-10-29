@@ -169,9 +169,13 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_VIEW);
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
-		toolBarElements.add(createCaptionLayout(layoutTemplate,
-				layoutTemplate.getBrick(), EPickingType.BRICK, layoutTemplate.getBrick()
-						.getID(), layoutTemplate.getBrick()));
+//		toolBarElements.add(createCaptionLayout(layoutTemplate,
+//				layoutTemplate.getBrick(), EPickingType.BRICK, layoutTemplate.getBrick()
+//						.getID(), layoutTemplate.getBrick()));
+		ElementLayout leftPaddingLayout = new ElementLayout("padding");
+		leftPaddingLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
+		toolBarElements.add(leftPaddingLayout);
+		
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setToolBarElements(toolBarElements);

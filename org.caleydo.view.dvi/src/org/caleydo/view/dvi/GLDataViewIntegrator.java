@@ -70,6 +70,7 @@ import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.RCPViewInitializationData;
 import org.caleydo.core.view.RCPViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -112,6 +113,7 @@ import org.caleydo.view.dvi.listener.TablePerspectivesCangedListener;
 import org.caleydo.view.dvi.listener.ViewClosedEventListener;
 import org.caleydo.view.dvi.node.ADataNode;
 import org.caleydo.view.dvi.node.IDVINode;
+import org.caleydo.view.dvi.node.MultiTablePerspectiveViewNode;
 import org.caleydo.view.dvi.node.NodeCreator;
 import org.caleydo.view.dvi.node.ViewNode;
 import org.eclipse.core.runtime.Status;
@@ -300,6 +302,17 @@ public class GLDataViewIntegrator
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
 			waitForMinSizeApplication = false;
+
+			// update all IMultiTablePerspecitveBasedViews to get orderings of
+			// tableperspectives right, as this is only possible after the nodes
+			// have been layouted once.
+			if (!isRendered) {
+				for (ViewNode viewNode : viewNodes) {
+					if (viewNode instanceof MultiTablePerspectiveViewNode) {
+						viewNode.update();
+					}
+				}
+			}
 		}
 		gl.glCallList(displayListIndex);
 
