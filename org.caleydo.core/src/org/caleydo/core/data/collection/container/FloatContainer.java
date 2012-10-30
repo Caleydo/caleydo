@@ -179,7 +179,6 @@ public class FloatContainer implements INumericalContainer {
 			}
 			if (current < min) {
 				min = current;
-				continue;
 			}
 			if (current > max) {
 				max = current;
