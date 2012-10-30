@@ -28,6 +28,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -66,8 +67,6 @@ import org.caleydo.view.stratomex.event.ScoreTablePerspectiveEvent;
 import org.caleydo.view.stratomex.listener.ScoreTablePerspectiveListener;
 import org.caleydo.view.stratomex.listener.VendingMachineKeyListener;
 import org.eclipse.swt.widgets.Composite;
-
-import com.jogamp.opengl.swt.GLCanvas;
 
 /**
  * <p>
@@ -148,13 +147,8 @@ public class VendingMachine
 
 		glKeyListener = new VendingMachineKeyListener(this);
 
-		parentComposite.getDisplay().syncExec(new Runnable() {
-			@Override
-			public void run() {
-				parentGLCanvas.removeMouseWheelListener(glMouseListener);
-				parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
-			}
-		});
+		parentGLCanvas.removeMouseWheelListener(glMouseListener);
+		parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
 	}
 
 	@Override
