@@ -1,7 +1,0 @@
-BIOCARTA Pathways
-
-Source:
-http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways
-
-Aquired with wget command:
-wget -e robots=off -r -l 2 http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways 
