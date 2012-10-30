@@ -28,7 +28,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -66,6 +66,8 @@ import org.caleydo.view.stratomex.event.ScoreTablePerspectiveEvent;
 import org.caleydo.view.stratomex.listener.ScoreTablePerspectiveListener;
 import org.caleydo.view.stratomex.listener.VendingMachineKeyListener;
 import org.eclipse.swt.widgets.Composite;
+
+import com.jogamp.opengl.swt.GLCanvas;
 
 /**
  * <p>
@@ -135,7 +137,7 @@ public class VendingMachine
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param glCanvas
 	 * @param viewLabel
 	 * @param viewFrustum
@@ -146,8 +148,13 @@ public class VendingMachine
 
 		glKeyListener = new VendingMachineKeyListener(this);
 
-		parentGLCanvas.removeMouseWheelListener(glMouseListener);
-		parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
+		parentComposite.getDisplay().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				parentGLCanvas.removeMouseWheelListener(glMouseListener);
+				parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
+			}
+		});
 	}
 
 	@Override
@@ -297,7 +304,7 @@ public class VendingMachine
 	private void createJaccardRankedElement(Collection<TablePerspective> a, Collection<TablePerspective> b) {
 		for (Triple<TablePerspective, TablePerspective, JaccardIndexScores> scores : JaccardIndex.createScores(a, b)) {
 			TablePerspective referenceTablePerspective = scores.getFirst();
-			TablePerspective against = scores.getFirst();
+			TablePerspective against = scores.getSecond();
 
 			for (JaccardIndexScorePair entry : scores.getThird()) {
 				RankedElement tmpRankedElement = new RankedElement(entry.getSecond(), against, entry.getFirst(), referenceTablePerspective);
