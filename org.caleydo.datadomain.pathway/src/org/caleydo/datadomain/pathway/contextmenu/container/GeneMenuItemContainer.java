@@ -37,28 +37,27 @@ import org.caleydo.datadomain.pathway.contextmenu.item.ShowPathwaysByGeneItem;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GeneMenuItemContainer extends AContextMenuItemContainer {
+public class GeneMenuItemContainer
+	extends AContextMenuItemContainer {
 
 	public void setData(IDType idType, int id) {
 
-		String label = "";
+		String label;
 		if (dataDomain.isColumnDimension()) {
-			label = "Bookmark " + dataDomain.getHumanReadableRecordIDType() + ": "
-					+ dataDomain.getRecordLabel(idType, id);
-		} else {
-			label = "Bookmark " + dataDomain.getHumanReadableDimensionIDType() + ": "
-					+ dataDomain.getDimensionLabel(idType, id);
+			label = "Bookmark gene: " + dataDomain.getRecordLabel(idType, id);
+		}
+		else {
+			label = "Bookmark gene: " + dataDomain.getDimensionLabel(idType, id);
 		}
 
-		AContextMenuItem menuItem = new BookmarkMenuItem(label, idType, id,
-				dataDomain.getDataDomainID());
+		AContextMenuItem menuItem = new BookmarkMenuItem(label, idType, id, dataDomain.getDataDomainID());
 		addContextMenuItem(menuItem);
 
-		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
-				.getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
+		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+				PathwayDataDomain.DATA_DOMAIN_TYPE);
 
-		Set<Integer> davids = ((GeneticDataDomain) dataDomain).getGeneIDMappingManager()
-				.getIDAsSet(idType, pathwayDataDomain.getDavidIDType(), id);
+		Set<Integer> davids = ((GeneticDataDomain) dataDomain).getGeneIDMappingManager().getIDAsSet(idType,
+				pathwayDataDomain.getDavidIDType(), id);
 		if (davids == null)
 			return;
 		for (Integer david : davids) {
@@ -77,19 +76,18 @@ public class GeneMenuItemContainer extends AContextMenuItemContainer {
 		// sGeneSymbol = "Unkonwn Gene";
 		// addHeading(sGeneSymbol);
 
-		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
-				.getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
+		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+				PathwayDataDomain.DATA_DOMAIN_TYPE);
 
 		if (pathwayDataDomain != null) {
 			LoadPathwaysByGeneItem loadPathwaysByGeneItem = new LoadPathwaysByGeneItem();
-			loadPathwaysByGeneItem.setDavidID(pathwayDataDomain.getDavidIDType(),
-					davidID, dataDomain.getDataDomainID());
+			loadPathwaysByGeneItem
+					.setDavidID(pathwayDataDomain.getDavidIDType(), davidID, dataDomain.getDataDomainID());
 			addContextMenuItem(loadPathwaysByGeneItem);
 
-			ShowPathwaysByGeneItem showPathwaysByGeneItem = new ShowPathwaysByGeneItem(
-					pathwayDataDomain);
-			showPathwaysByGeneItem.setDavidID(pathwayDataDomain.getDavidIDType(),
-					davidID, dataDomain.getDataDomainID());
+			ShowPathwaysByGeneItem showPathwaysByGeneItem = new ShowPathwaysByGeneItem(pathwayDataDomain);
+			showPathwaysByGeneItem
+					.setDavidID(pathwayDataDomain.getDavidIDType(), davidID, dataDomain.getDataDomainID());
 			addContextMenuItem(showPathwaysByGeneItem);
 		}
 	}

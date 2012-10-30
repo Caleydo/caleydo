@@ -46,8 +46,9 @@ import org.eclipse.swt.widgets.Label;
  * 
  * @author Marc Streit
  */
-public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
-		IDataDomainBasedView<IDataDomain> {
+public class RcpDatasetInfoView
+	extends CaleydoRCPViewPart
+	implements IDataDomainBasedView<IDataDomain> {
 
 	public static String VIEW_TYPE = "org.caleydo.view.info.dataset";
 
@@ -80,7 +81,8 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 
 		try {
 			viewContext = JAXBContext.newInstance(SerializedDatasetInfoView.class);
-		} catch (JAXBException ex) {
+		}
+		catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
 	}
@@ -102,10 +104,8 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 		nameLabel.setLayoutData(gridData);
 
 		if (dataDomain == null) {
-			setDataDomain((ATableBasedDataDomain) DataDomainManager.get()
-					.getDataDomainByID(
-							((ASerializedSingleTablePerspectiveBasedView) serializedView)
-									.getDataDomainID()));
+			setDataDomain((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+					((ASerializedSingleTablePerspectiveBasedView) serializedView).getDataDomainID()));
 		}
 
 		parent.layout();
@@ -114,8 +114,9 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 	@Override
 	public void setDataDomain(IDataDomain dataDomain) {
 
-		// Do nothing if new datadomain is the same as the current one
-		if (dataDomain == this.dataDomain)
+		// Do nothing if new datadomain is the same as the current one, or if dd
+		// is null
+		if (dataDomain == this.dataDomain || dataDomain == null)
 			return;
 
 		this.dataDomain = dataDomain;
@@ -142,8 +143,8 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 			recordLabel.setText(tableBasedDD.getRecordDenomination(true, true) + ": "
 					+ tableBasedDD.getTable().getMetaData().depth());
 
-			dimensionLabel.setText(tableBasedDD.getDimensionDenomination(true, true)
-					+ ": " + tableBasedDD.getTable().getMetaData().size());
+			dimensionLabel.setText(tableBasedDD.getDimensionDenomination(true, true) + ": "
+					+ tableBasedDD.getTable().getMetaData().size());
 
 			if (!tableBasedDD.getTable().isDataHomogeneous()) {
 				histogramExpandBar.setVisible(false);
@@ -165,8 +166,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 				// PartListener. Because the GL2 histogram is no usual RCP view
 				// we
 				// have to do it on our own
-				GeneralManager.get().getViewManager()
-						.registerGLCanvasToAnimator(histogramView.getGLCanvas());
+				GeneralManager.get().getViewManager().registerGLCanvasToAnimator(histogramView.getGLCanvas());
 				ExpandItem item2 = new ExpandItem(histogramExpandBar, SWT.NONE, 0);
 				item2.setText("Histogram");
 				item2.setHeight(200);
@@ -180,16 +180,16 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 			// If the default table perspective does not exist yet, we
 			// create it and set it to private so that it does not show up
 			// in the DVI
-			if (!tableBasedDD.hasTablePerspective(tableBasedDD.getTable()
-					.getDefaultRecordPerspective().getPerspectiveID(), tableBasedDD
-					.getTable().getDefaultDimensionPerspective().getPerspectiveID())) {
+			if (!tableBasedDD.hasTablePerspective(tableBasedDD.getTable().getDefaultRecordPerspective()
+					.getPerspectiveID(), tableBasedDD.getTable().getDefaultDimensionPerspective().getPerspectiveID())) {
 				tableBasedDD.getDefaultTablePerspective().setPrivate(true);
 			}
 
-			((GLHistogram) histogramView.getGLView()).setDataDomain(tableBasedDD);					
+			((GLHistogram) histogramView.getGLView()).setDataDomain(tableBasedDD);
 			((GLHistogram) histogramView.getGLView()).setDisplayListDirty();
 			// }
-		} else {
+		}
+		else {
 			histogramExpandBar.setVisible(false);
 			recordLabel.setVisible(false);
 			dimensionLabel.setVisible(false);
@@ -230,8 +230,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 
 		dataDomainChangedListener = new DataDomainChangedListener();
 		dataDomainChangedListener.setHandler(this);
-		eventPublisher
-				.addListener(DataDomainUpdateEvent.class, dataDomainChangedListener);
+		eventPublisher.addListener(DataDomainUpdateEvent.class, dataDomainChangedListener);
 	}
 
 	@Override

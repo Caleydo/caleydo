@@ -31,6 +31,8 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
@@ -40,7 +42,6 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.parser.BioCartaPathwayImageMapSaxHandler;
 import org.caleydo.datadomain.pathway.parser.KgmlSaxHandler;
 import org.caleydo.datadomain.pathway.parser.PathwayImageMap;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -124,34 +125,32 @@ public class PathwayManager
 
 		KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
 		xmlParserManager.registerAndInitSaxHandler(kgmlParser);
-//		BioCartaPathwayImageMapSaxHandler biocartaPathwayParser = new BioCartaPathwayImageMapSaxHandler();
-//		xmlParserManager.registerAndInitSaxHandler(biocartaPathwayParser);
+		// BioCartaPathwayImageMapSaxHandler biocartaPathwayParser = new
+		// BioCartaPathwayImageMapSaxHandler();
+		// xmlParserManager.registerAndInitSaxHandler(biocartaPathwayParser);
 	}
 
-	public PathwayDatabase createPathwayDatabase(final EPathwayDatabaseType type,
-			final String XMLPath, final String imagePath, final String imageMapPath) {
+	public PathwayDatabase createPathwayDatabase(final EPathwayDatabaseType type, final String XMLPath,
+			final String imagePath, final String imageMapPath) {
 
 		// Check if requested pathway database is already loaded (e.g. using
 		// caching)
 		if (hashPathwayDatabase.containsKey(type))
 			return hashPathwayDatabase.get(type);
 
-		PathwayDatabase pathwayDatabase = new PathwayDatabase(type, XMLPath, imagePath,
-				imagePath);
+		PathwayDatabase pathwayDatabase = new PathwayDatabase(type, XMLPath, imagePath, imagePath);
 
 		hashPathwayDatabase.put(type, pathwayDatabase);
 
-		Logger.log(new Status(IStatus.INFO, this.toString(),
-				"Setting pathway loading path: database-type:[" + type + "] " + "xml-path:["
-						+ pathwayDatabase.getXMLPath() + "] image-path:["
-						+ pathwayDatabase.getImagePath() + "] image-map-path:["
-						+ pathwayDatabase.getImageMapPath() + "]"));
+		Logger.log(new Status(IStatus.INFO, this.toString(), "Setting pathway loading path: database-type:[" + type
+				+ "] " + "xml-path:[" + pathwayDatabase.getXMLPath() + "] image-path:["
+				+ pathwayDatabase.getImagePath() + "] image-map-path:[" + pathwayDatabase.getImageMapPath() + "]"));
 
 		return pathwayDatabase;
 	}
 
-	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName,
-			final String sTitle, final String sImageLink, final String sExternalLink) {
+	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName, final String sTitle,
+			final String sImageLink, final String sExternalLink) {
 		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, sImageLink, sExternalLink);
 
 		registerItem(pathway);
@@ -163,9 +162,8 @@ public class PathwayManager
 		return pathway;
 	}
 
-	public PathwayGraph getPathwayByTitle(final String pathwayTitle,
-			EPathwayDatabaseType pathwayDatabaseType) {
-		
+	public PathwayGraph getPathwayByTitle(final String pathwayTitle, EPathwayDatabaseType pathwayDatabaseType) {
+
 		waitUntilPathwayLoadingIsFinished();
 		Iterator<String> iterPathwayName = hashPathwayTitleToPathway.keySet().iterator();
 		Pattern pattern = Pattern.compile(pathwayTitle, Pattern.CASE_INSENSITIVE);
@@ -202,8 +200,7 @@ public class PathwayManager
 		return super.getAllItems();
 	}
 
-	public void setPathwayVisibilityState(final PathwayGraph pathway,
-			final boolean bVisibilityState) {
+	public void setPathwayVisibilityState(final PathwayGraph pathway, final boolean bVisibilityState) {
 		waitUntilPathwayLoadingIsFinished();
 
 		hashPathwayToVisibilityState.put(pathway, bVisibilityState);
@@ -245,8 +242,7 @@ public class PathwayManager
 				Thread.sleep(1000);
 			}
 			catch (InterruptedException e) {
-				throw new IllegalThreadStateException(
-						"Pathway loader thread has been interrupted!");
+				throw new IllegalThreadStateException("Pathway loader thread has been interrupted!");
 			}
 		}
 	}
@@ -260,34 +256,28 @@ public class PathwayManager
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 		try {
 			if (type == EPathwayDatabaseType.KEGG) {
-				IExtensionPoint ep = reg
-						.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
-				IExtension ext = ep
-						.getExtension("org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader");
+				IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
+				IExtension ext = ep.getExtension("org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader");
 				IConfigurationElement[] ce = ext.getConfigurationElements();
 
-				keggPathwayResourceLoader = (IPathwayResourceLoader) ce[0]
-						.createExecutableExtension("class");
+				keggPathwayResourceLoader = (IPathwayResourceLoader) ce[0].createExecutableExtension("class");
 
 			}
 			else if (type == EPathwayDatabaseType.BIOCARTA) {
 
-				IExtensionPoint ep = reg
-						.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
-				IExtension ext = ep
-						.getExtension("org.caleydo.data.pathway.biocarta.BioCartaPathwayResourceLoader");
+				IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
+				IExtension ext = ep.getExtension("org.caleydo.data.pathway.biocarta.BioCartaPathwayResourceLoader");
 				IConfigurationElement[] ce = ext.getConfigurationElements();
 
-				biocartaPathwayResourceLoader = (IPathwayResourceLoader) ce[0]
-						.createExecutableExtension("class");
+				biocartaPathwayResourceLoader = (IPathwayResourceLoader) ce[0].createExecutableExtension("class");
 			}
 			else {
 				throw new IllegalStateException("Unknown pathway database " + type);
 			}
 		}
 		catch (Exception ex) {
-			Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Could not load "
-					+ type.getName() + " pathways."));
+			Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Could not load " + type.getName()
+					+ " pathways."));
 		}
 	}
 
@@ -315,8 +305,8 @@ public class PathwayManager
 
 		GeneralManager generalManager = GeneralManager.get();
 
-		Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Start parsing "
-				+ pathwayDatabase.getName() + " pathways."));
+		Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Start parsing " + pathwayDatabase.getName()
+				+ " pathways."));
 
 		BufferedReader file = null;
 		String line = null;
@@ -334,12 +324,10 @@ public class PathwayManager
 				fileName = "data/pathway_list_KEGG_mus_musculus.txt";
 			}
 			else {
-				throw new IllegalStateException("Cannot load pathways from organism "
-						+ organism);
+				throw new IllegalStateException("Cannot load pathways from organism " + organism);
 			}
 
-			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
-					"Loading KEGG Pathways...");
+			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread("Loading KEGG Pathways...");
 		}
 		else if (pathwayDatabase.getType() == EPathwayDatabaseType.BIOCARTA) {
 
@@ -350,18 +338,15 @@ public class PathwayManager
 				fileName = "data/pathway_list_BIOCARTA_mus_musculus.txt";
 			}
 			else {
-				throw new IllegalStateException("Cannot load pathways from organism "
-						+ organism);
+				throw new IllegalStateException("Cannot load pathways from organism " + organism);
 			}
 
-			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
-					"Loading BioCarta Pathways...");
+			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread("Loading BioCarta Pathways...");
 		}
 
 		PathwayManager.get().createPathwayResourceLoader(pathwayDatabase.getType());
-		pathwayResourceLoader = PathwayManager.get().getPathwayResourceLoader(
-				pathwayDatabase.getType());
-		
+		pathwayResourceLoader = PathwayManager.get().getPathwayResourceLoader(pathwayDatabase.getType());
+
 		if (pathwayResourceLoader == null)
 			return;
 
@@ -382,26 +367,21 @@ public class PathwayManager
 				pathwayName = tokenizer.nextToken();
 
 				// Skip non pathway files
-				if (!pathwayName.endsWith(".xml") && !line.contains("h_")
-						&& !line.contains("m_")) {
+				if (!pathwayName.endsWith(".xml") && !line.contains("h_") && !line.contains("m_")) {
 					continue;
 				}
 
-				PathwayManager.get().getXmlParserManager()
-						.parseXmlFileByName(pathwayPath + pathwayName);
+				PathwayManager.get().getXmlParserManager().parseXmlFileByName(pathwayPath + pathwayName);
 
-				currentPathwayGraph
-						.setWidth(Integer.valueOf(tokenizer.nextToken()).intValue());
-				currentPathwayGraph.setHeight(Integer.valueOf(tokenizer.nextToken())
-						.intValue());
+				currentPathwayGraph.setWidth(Integer.valueOf(tokenizer.nextToken()).intValue());
+				currentPathwayGraph.setHeight(Integer.valueOf(tokenizer.nextToken()).intValue());
 
 				int iImageWidth = currentPathwayGraph.getWidth();
 				int iImageHeight = currentPathwayGraph.getHeight();
 
 				if (iImageWidth == -1 || iImageHeight == -1) {
-					Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread",
-							"Pathway texture width=" + iImageWidth + " / height="
-									+ iImageHeight));
+					Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Pathway texture width=" + iImageWidth
+							+ " / height=" + iImageHeight));
 				}
 			}
 
@@ -410,12 +390,11 @@ public class PathwayManager
 			throw new IllegalStateException("Pathway list file " + fileName + " not found.");
 		}
 		catch (IOException e) {
-			throw new IllegalStateException("Error reading data from pathway list file: "
-					+ fileName);
+			throw new IllegalStateException("Error reading data from pathway list file: " + fileName);
 		}
 
-		Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Finished parsing "
-				+ pathwayDatabase.getName() + " pathways."));
+		Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Finished parsing " + pathwayDatabase.getName()
+				+ " pathways."));
 	}
 
 	/**
@@ -430,17 +409,13 @@ public class PathwayManager
 		// set to avoid duplicate pathways
 		Set<PathwayGraph> pathways = new HashSet<PathwayGraph>();
 
-		PathwayVertex pathwayVertexGraphItem;
-		if (idType == IDType.getIDType("DAVID"))
-			pathwayVertexGraphItem = PathwayItemManager.get().getPathwayVertexByDavidId(id);
-		else
-			throw new IllegalStateException("Only David IDs can be resolved to pathways lists");
-
-		if (pathwayVertexGraphItem == null)
+		IDMappingManager geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idType);
+		Set<Integer> vertexRepIDs = geneIDMappingManager.getIDAsSet(idType, PathwayVertexRep.getIdType(), id);
+		if(vertexRepIDs == null)
 			return null;
+		for (Integer vertexRepID : vertexRepIDs) {
 
-		for (PathwayVertexRep pathwayItemRep : pathwayVertexGraphItem.getPathwayVertexReps()) {
-			pathways.add(pathwayItemRep.getPathway());
+			pathways.add(PathwayItemManager.get().getPathwayVertexRep(vertexRepID).getPathway());
 		}
 
 		return pathways;
@@ -453,20 +428,19 @@ public class PathwayManager
 	 * @param geneIDs
 	 * @return a Set of PathwayGraphs or null if no such mapping exists
 	 */
-	public HashMap<PathwayGraph, Integer> getPathwayGraphsWithOccurencesByGeneIDs(
-			GeneticDataDomain dataDomain, IDType idType, List<Integer> geneIDs) {
+	public HashMap<PathwayGraph, Integer> getPathwayGraphsWithOccurencesByGeneIDs(GeneticDataDomain dataDomain,
+			IDType idType, List<Integer> geneIDs) {
 
 		IDType davidIDType = IDType.getIDType("DAVID");
 		HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
 		for (Integer gene : geneIDs) {
 
-			Set<Integer> davids = ((GeneticDataDomain) dataDomain).getGeneIDMappingManager()
-					.getIDAsSet(idType, davidIDType, gene);
+			Set<Integer> davids = ((GeneticDataDomain) dataDomain).getGeneIDMappingManager().getIDAsSet(idType,
+					davidIDType, gene);
 			if (davids == null || davids.size() == 0)
 				continue;
 			for (Integer david : davids) {
-				Set<PathwayGraph> pathwayGraphs = PathwayManager.get()
-						.getPathwayGraphsByGeneID(davidIDType, david);
+				Set<PathwayGraph> pathwayGraphs = PathwayManager.get().getPathwayGraphsByGeneID(davidIDType, david);
 
 				if (pathwayGraphs != null) {
 

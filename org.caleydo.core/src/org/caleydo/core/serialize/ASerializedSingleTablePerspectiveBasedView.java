@@ -55,10 +55,15 @@ public abstract class ASerializedSingleTablePerspectiveBasedView extends ASerial
 	public ASerializedSingleTablePerspectiveBasedView(
 			ISingleTablePerspectiveBasedView singleTablePerspectiveBasedView) {
 		this.viewID = singleTablePerspectiveBasedView.getID();
-		this.dataDomainID = singleTablePerspectiveBasedView.getDataDomain()
-				.getDataDomainID();
-		this.tablePerspectiveKey = singleTablePerspectiveBasedView.getTablePerspective()
-				.getTablePerspectiveKey();
+		if (singleTablePerspectiveBasedView.getDataDomain() != null) {
+			this.dataDomainID = singleTablePerspectiveBasedView.getDataDomain()
+					.getDataDomainID();
+
+			if (singleTablePerspectiveBasedView.getTablePerspective() != null) {
+				this.tablePerspectiveKey = singleTablePerspectiveBasedView
+						.getTablePerspective().getTablePerspectiveKey();
+			}
+		}
 	}
 
 	/**
@@ -95,9 +100,10 @@ public abstract class ASerializedSingleTablePerspectiveBasedView extends ASerial
 	public String getTablePerspectiveKey() {
 		return tablePerspectiveKey;
 	}
-	
+
 	/**
-	 * @param tablePerspectiveKey setter, see {@link #tablePerspectiveKey}
+	 * @param tablePerspectiveKey
+	 *            setter, see {@link #tablePerspectiveKey}
 	 */
 	public void setTablePerspectiveKey(String tablePerspectiveKey) {
 		this.tablePerspectiveKey = tablePerspectiveKey;

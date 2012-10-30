@@ -24,10 +24,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Set;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.event.AggregateGroupEvent;
@@ -83,7 +85,6 @@ import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
 
 /**
  * <p>
@@ -454,26 +455,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 */
 	public IDType getDimensionGroupIDType() {
 		return dimensionGroupIDType;
-	}
-
-	/**
-	 * Returns the id type that should be used if an entity of this data domain
-	 * should be printed human readable for records
-	 * 
-	 * @deprecated
-	 */
-	public IDType getHumanReadableRecordIDType() {
-		return recordIDCategory.getHumanReadableIDType();
-	}
-
-	/**
-	 * Returns the id type that should be used if an entity of this data domain
-	 * should be printed human readable for dimensions
-	 * 
-	 * @deprecated
-	 */
-	public IDType getHumanReadableDimensionIDType() {
-		return dimensionIDCategory.getHumanReadableIDType();
 	}
 
 	/**

@@ -7,8 +7,10 @@ import java.util.Set;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
 /**
@@ -17,7 +19,8 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
  * @author Christian
  * 
  */
-public class ContentRendererInitializor implements IContentRendererInitializor {
+public class ContentRendererInitializor
+	implements IContentRendererInitializor {
 
 	private Integer geneID;
 	private Integer davidID;
@@ -40,38 +43,38 @@ public class ContentRendererInitializor implements IContentRendererInitializor {
 
 		if (dataDomain.isGeneRecord()) {
 			experimentPerspective = tablePerspective.getDimensionPerspective();
-		} else {
+		}
+		else {
 			experimentPerspective = tablePerspective.getRecordPerspective();
 		}
 
 		if (dataDomain.isGeneRecord()) {
 			group = tablePerspective.getDimensionGroup();
 			if (group == null) {
-				group = tablePerspective.getDimensionPerspective().getVirtualArray()
-						.getGroupList().get(0);
+				group = tablePerspective.getDimensionPerspective().getVirtualArray().getGroupList().get(0);
 			}
-		} else {
+		}
+		else {
 			group = tablePerspective.getRecordGroup();
 			if (group == null) {
-				group = tablePerspective.getRecordPerspective().getVirtualArray()
-						.getGroupList().get(0);
+				group = tablePerspective.getRecordPerspective().getVirtualArray().getGroupList().get(0);
 			}
 		}
 
 		IDType geneIDTYpe = dataDomain.getGeneIDType();
-		Set<Integer> geneIDs = dataDomain.getGeneIDMappingManager().getIDAsSet(
-				IDType.getIDType("DAVID"), geneIDTYpe, davidID);
+		Set<Integer> geneIDs = dataDomain.getGeneIDMappingManager().getIDAsSet(IDType.getIDType("DAVID"), geneIDTYpe,
+				davidID);
 		if (geneIDs == null) {
 			// System.out.println("No mapping for david: " + davidID);
 			geneID = null;
 
-		} else {
+		}
+		else {
 			geneID = geneIDs.iterator().next();
 			if (geneIDs.size() > 1) {
 
-				Set<String> names = dataDomain.getGeneIDMappingManager().getIDAsSet(
-						IDType.getIDType("DAVID"),
-						dataDomain.getHumanReadableGeneIDType(), davidID);
+				Set<String> names = dataDomain.getGeneIDMappingManager().getIDAsSet(IDType.getIDType("DAVID"),
+						IDCategory.getIDCategory(EGeneIDTypes.GENE.name()).getHumanReadableIDType(), davidID);
 				System.out.println("Here's the problem: " + names + " / " + geneIDs);
 			}
 		}

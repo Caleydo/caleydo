@@ -29,7 +29,9 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
  * @author Alexander Lex
  * 
  */
-public interface ISingleTablePerspectiveBasedView extends ITablePerspectiveBasedView,  IDataDomainBasedView<ATableBasedDataDomain> {
+public interface ISingleTablePerspectiveBasedView extends ITablePerspectiveBasedView,
+		IDataDomainBasedView<ATableBasedDataDomain> {
+
 
 	/**
 	 * Set the data container for this view

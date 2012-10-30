@@ -35,19 +35,18 @@ import org.caleydo.core.specialized.Organism;
  * @author Marc Streit
  * 
  */
-public class GeneticDataDomainInitialization
-	implements IDataDomainInitialization {
+public class GeneticDataDomainInitialization implements IDataDomainInitialization {
 
 	private static boolean isAlreadyInitialized = false;
-	
+
 	@Override
 	public void createIDTypesAndMapping() {
-		
+
 		if (isAlreadyInitialized)
 			return;
-		
+
 		isAlreadyInitialized = true;
-		
+
 		IDCategory geneIDCategory = IDCategory.registerCategory(EGeneIDTypes.GENE.name());
 
 		IDType david = IDType.registerType(EGeneIDTypes.DAVID.name(), geneIDCategory,
@@ -65,10 +64,12 @@ public class GeneticDataDomainInitialization
 				EGeneIDTypes.ENSEMBL_GENE_ID.getColumnType());
 		IDType.registerType(EGeneIDTypes.ENTREZ_GENE_ID.name(), geneIDCategory,
 				EGeneIDTypes.ENTREZ_GENE_ID.getColumnType());
-		IDType.registerType(EGeneIDTypes.PATHWAY_VERTEX.name(), geneIDCategory,
-				EGeneIDTypes.PATHWAY_VERTEX.getColumnType());
 		IDType.registerType(EGeneIDTypes.PATHWAY.name(), geneIDCategory,
 				EGeneIDTypes.PATHWAY.getColumnType());
+		IDType.registerType(EGeneIDTypes.PATHWAY_VERTEX.name(), geneIDCategory,
+				EGeneIDTypes.PATHWAY_VERTEX.getColumnType());
+		IDType.registerType(EGeneIDTypes.PATHWAY_VERTEX_REP.name(), geneIDCategory,
+				EGeneIDTypes.PATHWAY_VERTEX_REP.getColumnType());
 
 		geneIDCategory.setPrimaryMappingType(david);
 		geneIDCategory.setHumanReadableIDType(geneSymbol);
@@ -94,30 +95,30 @@ public class GeneticDataDomainInitialization
 			IDMappingParser.loadMapping(fileName + "_DAVID2ENSEMBL_GENE_ID.txt", 0, -1,
 					IDType.getIDType("DAVID"), IDType.getIDType("ENSEMBL_GENE_ID"), "\t",
 					geneIDCategory, false, true, false, null, null);
-		}
-		else {
+		} else {
 			// This is indirection via REFSEQ_MRNA instead of DAVID is needed as
 			// we currently do not have a mapping file DAVID2ENSEMBL for home
 			// sapiens
 			IDMappingParser.loadMapping("data/genome/mapping/" + Organism.HOMO_SAPIENS
 					+ "_ENSEMBL_GENE_ID_2_REFSEQ_MRNA.txt", 0, -1,
-					IDType.getIDType("ENSEMBL_GENE_ID"), IDType.getIDType("REFSEQ_MRNA"), ";",
-					geneIDCategory, true, true, true, IDType.getIDType("ENSEMBL_GENE_ID"),
-					IDType.getIDType("DAVID"));
+					IDType.getIDType("ENSEMBL_GENE_ID"), IDType.getIDType("REFSEQ_MRNA"),
+					";", geneIDCategory, true, true, true,
+					IDType.getIDType("ENSEMBL_GENE_ID"), IDType.getIDType("DAVID"));
 		}
 
 		IDMappingParser.loadMapping("data/genome/mapping/"
 				+ GeneralManager.get().getBasicInfo().getOrganism()
 				+ "_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt", 0, -1,
-				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("REFSEQ_MRNA"), ";",
-				geneIDCategory, true, true, true, IDType.getIDType("BIOCARTA_GENE_ID"),
-				IDType.getIDType("DAVID"));
+				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("REFSEQ_MRNA"),
+				";", geneIDCategory, true, true, true,
+				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("DAVID"));
 
 		// ==== SAMPLES ======
 
 		IDCategory sampleIDCategory = IDCategory.registerCategory("SAMPLE");
 
-		IDType sampleID = IDType.registerType("SAMPLE", sampleIDCategory, EDataType.STRING);
+		IDType sampleID = IDType.registerType("SAMPLE", sampleIDCategory,
+				EDataType.STRING);
 		sampleIDCategory.setHumanReadableIDType(sampleID);
 
 		IDCategory tcgaSampleIDCategory = IDCategory.registerCategory("TCGA_SAMPLE");
@@ -130,7 +131,7 @@ public class GeneticDataDomainInitialization
 		tcgaIDTypeParsingRules.setDefault(true);
 		tcgaSample.setIdTypeParsingRules(tcgaIDTypeParsingRules);
 		tcgaSampleIDCategory.setHumanReadableIDType(tcgaSample);
-		
+
 		// Trigger pathway loading
 		if (!GeneralManager.get().isDryMode())
 			DataDomainManager.get().createDataDomain("org.caleydo.datadomain.pathway");

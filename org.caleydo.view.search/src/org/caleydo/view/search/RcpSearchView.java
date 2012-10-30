@@ -76,7 +76,8 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Marc Streit
  */
-public class RcpSearchView extends CaleydoRCPViewPart {
+public class RcpSearchView
+	extends CaleydoRCPViewPart {
 
 	private ArrayList<GeneticDataDomain> geneticDataDomains;
 
@@ -132,16 +133,14 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 
-		geneticDataDomains = DataDomainManager.get().getDataDomainsByType(
-				GeneticDataDomain.class);
+		geneticDataDomains = DataDomainManager.get().getDataDomainsByType(GeneticDataDomain.class);
 
 		generalManager = GeneralManager.get();
 
 		if (geneticDataDomains.size() == 0)
 			throw new IllegalStateException("No genetic data domains found");
 
-		geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
-				geneIDCategory);
+		geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(geneIDCategory);
 
 		composite = new Composite(parent, SWT.NULL);
 		composite.setLayout(new GridLayout(1, false));
@@ -239,9 +238,9 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 			@Override
 			public void keyPressed(KeyEvent event) {
 				switch (event.keyCode) {
-				case SWT.CR: {
-					startSearch();
-				}
+					case SWT.CR: {
+						startSearch();
+					}
 				}
 			}
 		});
@@ -268,15 +267,13 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 		if (horizontalSeparator != null)
 			horizontalSeparator.dispose();
 
-		if (useGeneSymbol.getSelection() || useGeneDavidID.getSelection()
-				|| useGeneEntrezGeneID.getSelection() || useGeneName.getSelection()
-				|| useGeneRefSeqID.getSelection()) {
+		if (useGeneSymbol.getSelection() || useGeneDavidID.getSelection() || useGeneEntrezGeneID.getSelection()
+				|| useGeneName.getSelection() || useGeneRefSeqID.getSelection()) {
 
 			geneResultsLabel = new Label(composite, SWT.NULL);
 			geneResultsLabel.setText("Gene results:");
 
-			geneTable = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION
-					| SWT.VIRTUAL);
+			geneTable = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
 			geneTable.setLinesVisible(true);
 			geneTable.setHeaderVisible(true);
 			geneTable.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -314,10 +311,8 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 					pathwayContainingGeneLabel.setEnabled(true);
 					pathwayContainingGeneTable.setEnabled(true);
 
-					for (PathwayGraph pathway : getPathwaysContainingGene((Integer) e.item
-							.getData())) {
-						TableItem item = new TableItem(pathwayContainingGeneTable,
-								SWT.NULL);
+					for (PathwayGraph pathway : getPathwaysContainingGene((Integer) e.item.getData())) {
+						TableItem item = new TableItem(pathwayContainingGeneTable, SWT.NULL);
 						item.setText(0, pathway.getType().getName());
 						item.setText(1, pathway.getTitle());
 						item.setData(pathway);
@@ -326,31 +321,26 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 					pathwayContainingGeneTable.getColumn(0).pack();
 					pathwayContainingGeneTable.getColumn(1).pack();
 
-					pathwayContainingGeneLabel
-							.setText("Pathway containing selected gene: "
-									+ geneTable.getSelection()[0].getText(3));
+					pathwayContainingGeneLabel.setText("Pathway containing selected gene: "
+							+ geneTable.getSelection()[0].getText(3));
 				}
 			});
 
 			showOnlyGenesContainedInAnyPathway = new Button(composite, SWT.CHECK);
-			showOnlyGenesContainedInAnyPathway
-					.setText("Show only genes contained in any pathway");
-			showOnlyGenesContainedInAnyPathway
-					.setSelection(bShowOnlyGenesContainedInAnyPathway);
-			showOnlyGenesContainedInAnyPathway
-					.addSelectionListener(new SelectionAdapter() {
-						@Override
-						public void widgetSelected(SelectionEvent e) {
-							bShowOnlyGenesContainedInAnyPathway = showOnlyGenesContainedInAnyPathway
-									.getSelection();
-							startSearch();
-						}
-					});
+			showOnlyGenesContainedInAnyPathway.setText("Show only genes contained in any pathway");
+			showOnlyGenesContainedInAnyPathway.setSelection(bShowOnlyGenesContainedInAnyPathway);
+			showOnlyGenesContainedInAnyPathway.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					bShowOnlyGenesContainedInAnyPathway = showOnlyGenesContainedInAnyPathway.getSelection();
+					startSearch();
+				}
+			});
 		}
 
-		if ((useGeneSymbol.getSelection() || useGeneDavidID.getSelection()
-				|| useGeneEntrezGeneID.getSelection() || useGeneName.getSelection() || useGeneRefSeqID
-					.getSelection()) && usePathways.getSelection()) {
+		if ((useGeneSymbol.getSelection() || useGeneDavidID.getSelection() || useGeneEntrezGeneID.getSelection()
+				|| useGeneName.getSelection() || useGeneRefSeqID.getSelection())
+				&& usePathways.getSelection()) {
 
 			horizontalSeparator = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
 			GridData data = new GridData(GridData.FILL_HORIZONTAL);
@@ -369,11 +359,9 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 
 			pathwayContainingGeneLabel = new Label(pathwayResultsComposite, SWT.NULL);
 			pathwayContainingGeneLabel.setText("Pathway containing selected gene:");
-			pathwayContainingGeneLabel.setLayoutData(new GridData(
-					GridData.FILL_HORIZONTAL));
+			pathwayContainingGeneLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-			pathwayTable = new Table(pathwayResultsComposite, SWT.BORDER
-					| SWT.FULL_SELECTION | SWT.VIRTUAL);
+			pathwayTable = new Table(pathwayResultsComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
 			pathwayTable.setLinesVisible(true);
 			pathwayTable.setHeaderVisible(true);
 			pathwayTable.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -385,18 +373,16 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 
 			addPathwayContextMenu(pathwayTable);
 
-			pathwayContainingGeneTable = new Table(pathwayResultsComposite, SWT.BORDER
-					| SWT.FULL_SELECTION | SWT.VIRTUAL);
+			pathwayContainingGeneTable = new Table(pathwayResultsComposite, SWT.BORDER | SWT.FULL_SELECTION
+					| SWT.VIRTUAL);
 			pathwayContainingGeneTable.setLinesVisible(true);
 			pathwayContainingGeneTable.setHeaderVisible(true);
 			pathwayContainingGeneTable.setLayoutData(new GridData(GridData.FILL_BOTH));
 			pathwayContainingGeneTable.setEnabled(false);
 
-			TableColumn pathwayContainingGeneDatabaseColumn = new TableColumn(
-					pathwayContainingGeneTable, SWT.NONE);
+			TableColumn pathwayContainingGeneDatabaseColumn = new TableColumn(pathwayContainingGeneTable, SWT.NONE);
 			pathwayContainingGeneDatabaseColumn.setText("Database");
-			TableColumn pathwayContainingGeneNameColumn = new TableColumn(
-					pathwayContainingGeneTable, SWT.NONE);
+			TableColumn pathwayContainingGeneNameColumn = new TableColumn(pathwayContainingGeneTable, SWT.NONE);
 			pathwayContainingGeneNameColumn.setText("Pathway Name");
 
 			addPathwayContextMenu(pathwayContainingGeneTable);
@@ -413,8 +399,7 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 
 			MessageBox messageBox = new MessageBox(composite.getShell(), SWT.OK);
 			messageBox.setText("Invalid search query");
-			messageBox
-					.setMessage("Please enter a search query with the minimum of 3 characters.");
+			messageBox.setMessage("Please enter a search query with the minimum of 3 characters.");
 			messageBox.open();
 			return;
 		}
@@ -426,9 +411,8 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 			searchForPathway(searchText.getText());
 		}
 
-		if (useGeneSymbol.getSelection() || useGeneDavidID.getSelection()
-				|| useGeneEntrezGeneID.getSelection() || useGeneName.getSelection()
-				|| useGeneRefSeqID.getSelection()) {
+		if (useGeneSymbol.getSelection() || useGeneDavidID.getSelection() || useGeneEntrezGeneID.getSelection()
+				|| useGeneName.getSelection() || useGeneRefSeqID.getSelection()) {
 
 			searchForGene(searchText.getText());
 		}
@@ -472,43 +456,39 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 		ArrayList<Integer> davidGeneResults = new ArrayList<Integer>();
 
 		if (useGeneSymbol.getSelection()) {
-			for (Object sGeneSymbol : geneIDMappingManager.getMap(
-					MappingType.getType(geneSymbolIDType, davidIDType)).keySet()) {
+			for (Object sGeneSymbol : geneIDMappingManager.getMap(MappingType.getType(geneSymbolIDType, davidIDType))
+					.keySet()) {
 				regexMatcher = pattern.matcher((String) sGeneSymbol);
 				if (regexMatcher.find())
-					davidGeneResults.add((Integer) geneIDMappingManager.getID(
-							geneSymbolIDType, davidIDType, sGeneSymbol));
+					davidGeneResults.add((Integer) geneIDMappingManager.getID(geneSymbolIDType, davidIDType,
+							sGeneSymbol));
 			}
 		}
 
 		if (useGeneEntrezGeneID.getSelection()) {
-			for (Object entrezGeneID : geneIDMappingManager.getMap(
-					MappingType.getType(entrez, davidIDType)).keySet()) {
+			for (Object entrezGeneID : geneIDMappingManager.getMap(MappingType.getType(entrez, davidIDType)).keySet()) {
 				regexMatcher = pattern.matcher(entrezGeneID.toString());
 				if (regexMatcher.find())
-					davidGeneResults.add((Integer) geneIDMappingManager.getID(entrez,
-							davidIDType, entrezGeneID));
+					davidGeneResults.add((Integer) geneIDMappingManager.getID(entrez, davidIDType, entrezGeneID));
 			}
 		}
 
 		if (useGeneRefSeqID.getSelection()) {
-			for (Object refSeqMrna : geneIDMappingManager.getMap(
-					MappingType.getType(refseqMrnaIDTYpe, davidIDType)).keySet()) {
+			for (Object refSeqMrna : geneIDMappingManager.getMap(MappingType.getType(refseqMrnaIDTYpe, davidIDType))
+					.keySet()) {
 				regexMatcher = pattern.matcher((String) refSeqMrna);
 				if (regexMatcher.find())
-					davidGeneResults
-							.addAll((Collection<? extends Integer>) geneIDMappingManager
-									.getID(refseqMrnaIDTYpe, davidIDType, refSeqMrna));
+					davidGeneResults.addAll((Collection<? extends Integer>) geneIDMappingManager.getID(
+							refseqMrnaIDTYpe, davidIDType, refSeqMrna));
 			}
 		}
 
 		if (useGeneName.getSelection()) {
-			for (Object geneName : geneIDMappingManager.getMap(
-					MappingType.getType(geneNameIDType, davidIDType)).keySet()) {
+			for (Object geneName : geneIDMappingManager.getMap(MappingType.getType(geneNameIDType, davidIDType))
+					.keySet()) {
 				regexMatcher = pattern.matcher((String) geneName);
 				if (regexMatcher.find())
-					davidGeneResults.add((Integer) geneIDMappingManager.getID(
-							geneNameIDType, davidIDType, geneName));
+					davidGeneResults.add((Integer) geneIDMappingManager.getID(geneNameIDType, davidIDType, geneName));
 			}
 		}
 
@@ -517,48 +497,45 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 
 			// When gene filter is on and gene is not contained in any pathway
 			// -> ignore
-			if (showOnlyGenesContainedInAnyPathway.getSelection()
-					&& getPathwaysContainingGene(davidID).size() == 0)
+			if (showOnlyGenesContainedInAnyPathway.getSelection() && getPathwaysContainingGene(davidID).size() == 0)
 				continue;
 
 			String sRefSeqIDs = "";
 
 			try {
-				for (Object refSeqID : geneIDMappingManager.<Integer, Set<Object>> getID(
-						davidIDType, refseqMrnaIDTYpe, davidID)) {
+				for (Object refSeqID : geneIDMappingManager.<Integer, Set<Object>> getID(davidIDType, refseqMrnaIDTYpe,
+						davidID)) {
 					sRefSeqIDs += refSeqID + " ";
 				}
-			} catch (NullPointerException npe) {
+			}
+			catch (NullPointerException npe) {
 				sRefSeqIDs = "<No Mapping>";
 			}
 
 			String entrezGeneID = "";
-			Integer iEntrezGeneID = geneIDMappingManager.getID(davidIDType, entrez,
-					davidID);
+			Integer iEntrezGeneID = geneIDMappingManager.getID(davidIDType, entrez, davidID);
 			if (iEntrezGeneID == null)
 				entrezGeneID = "<No Mapping>";
 			else
 				entrezGeneID = iEntrezGeneID.toString();
 
-			String geneSymbol = geneIDMappingManager.getID(davidIDType, geneSymbolIDType,
-					davidID);
+			String geneSymbol = geneIDMappingManager.getID(davidIDType, geneSymbolIDType, davidID);
 			if (geneSymbol == null)
 				geneSymbol = "<Unknown>";
 
-			String geneName = geneIDMappingManager.getID(davidIDType, geneNameIDType,
-					davidID);
+			String geneName = geneIDMappingManager.getID(davidIDType, geneNameIDType, davidID);
 			if (geneName == null)
 				geneName = "<Unknown>";
 
-			ArrayList<String> foundInDataSet = new ArrayList<String>(
-					geneticDataDomains.size());
+			ArrayList<String> foundInDataSet = new ArrayList<String>(geneticDataDomains.size());
 
 			for (GeneticDataDomain geneticDataDomain : geneticDataDomains) {
-				Set<Integer> expressionIndices = geneIDMappingManager.getIDAsSet(
-						davidIDType, geneticDataDomain.getGeneIDType(), davidID);
+				Set<Integer> expressionIndices = geneIDMappingManager.getIDAsSet(davidIDType,
+						geneticDataDomain.getGeneIDType(), davidID);
 				if (expressionIndices != null && expressionIndices.size() > 0) {
 					foundInDataSet.add("Found");
-				} else
+				}
+				else
 					foundInDataSet.add("Not found");
 			}
 
@@ -590,8 +567,7 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 			for (TableItem item : geneTable.getItems()) {
 				regexMatcher = pattern.matcher(item.getText(iIndex));
 				if (regexMatcher.find()) {
-					item.setBackground(iIndex,
-							Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+					item.setBackground(iIndex, Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 				}
 			}
 		}
@@ -624,15 +600,15 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 
 				for (final TableItem tableItem : geneTable.getSelection()) {
 
-					for (int dataDomainCount = 0; dataDomainCount < geneticDataDomains
-							.size(); dataDomainCount++) {
+					for (int dataDomainCount = 0; dataDomainCount < geneticDataDomains.size(); dataDomainCount++) {
 						// Do not create context menu for genes that have to
 						// expression value
 
 						if (tableItem.getText(dataDomainCount).equalsIgnoreCase("FOUND")) {
 							createContextMenuItemsForDataDomain(menu, tableItem,
 									geneticDataDomains.get(dataDomainCount));
-						} else {
+						}
+						else {
 							MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
 							openInBrowserMenuItem.setText("Not loaded");
 						}
@@ -646,8 +622,8 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 		});
 	}
 
-	private void createContextMenuItemsForDataDomain(Menu menu,
-			final TableItem tableItem, final GeneticDataDomain dataDomain) {
+	private void createContextMenuItemsForDataDomain(Menu menu, final TableItem tableItem,
+			final GeneticDataDomain dataDomain) {
 
 		//
 		// MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
@@ -746,19 +722,20 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 		makeCategoryOfGene.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-	
+
 				new CategoricalTablePerspectiveCreator().createTablePerspeciveByRowID(dataDomain,
 						(Integer) tableItem.getData(), davidIDType, false);
 
 				DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
 				event.setSender(this);
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
-				
+
 				// Switch to DVI view
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 							.showView("org.caleydo.view.dvi");
-				} catch (PartInitException e1) {
+				}
+				catch (PartInitException e1) {
 					e1.printStackTrace();
 				}
 			};
@@ -784,31 +761,29 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 
 				MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
 				openInBrowserMenuItem.setText("Open in browser");
-				openInBrowserMenuItem.setImage(generalManager.getResourceLoader()
-						.getImage(pathwayTable.getDisplay(),
-								"resources/icons/view/browser/browser.png"));
+				openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(pathwayTable.getDisplay(),
+						"resources/icons/view/browser/browser.png"));
 				openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 
 						// Switch to browser view
 						try {
-							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-									.getActivePage().showView("org.caleydo.view.browser");
-						} catch (PartInitException e1) {
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+									.showView("org.caleydo.view.browser");
+						}
+						catch (PartInitException e1) {
 							e1.printStackTrace();
 						}
 
-						searchViewMediator.loadURLInBrowser(((PathwayGraph) tableItem
-								.getData()).getExternalLink());
+						searchViewMediator.loadURLInBrowser(((PathwayGraph) tableItem.getData()).getExternalLink());
 					};
 				});
 
 				MenuItem loadPathwayInBucketMenuItem = new MenuItem(menu, SWT.PUSH);
 				loadPathwayInBucketMenuItem.setText("Load pathway in Bucket");
-				loadPathwayInBucketMenuItem.setImage(generalManager.getResourceLoader()
-						.getImage(pathwayTable.getDisplay(),
-								"resources/icons/view/remote/remote.png"));
+				loadPathwayInBucketMenuItem.setImage(generalManager.getResourceLoader().getImage(
+						pathwayTable.getDisplay(), "resources/icons/view/remote/remote.png"));
 
 				loadPathwayInBucketMenuItem.addSelectionListener(new SelectionAdapter() {
 					@Override
@@ -816,14 +791,14 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 
 						// Switch to bucket view
 						try {
-							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-									.getActivePage().showView("org.caleydo.view.bucket");
-						} catch (PartInitException e1) {
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+									.showView("org.caleydo.view.bucket");
+						}
+						catch (PartInitException e1) {
 							e1.printStackTrace();
 						}
 
-						searchViewMediator.loadPathway(((PathwayGraph) tableItem
-								.getData()).getID());
+						searchViewMediator.loadPathway(((PathwayGraph) tableItem.getData()).getID());
 					};
 				});
 			}
@@ -834,17 +809,12 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 
 		// set to avoid duplicate pathwaysserializedView
 		Set<PathwayGraph> pathwaysContainingGene = new HashSet<PathwayGraph>();
+		Set<Integer> vertexRepIDs = geneIDMappingManager.getIDAsSet(davidIDType, PathwayVertexRep.getIdType(), davidID);
 
-		PathwayVertex vertex = PathwayItemManager.get()
-				.getPathwayVertexByDavidId(davidID);
-
-		// Only handle David IDs that does exist in any pathway
-		if (vertex != null) {
-
-			for (PathwayVertexRep vertexRep : vertex.getPathwayVertexReps()) {
-				pathwaysContainingGene.add(vertexRep.getPathway());
-			}
+		for (Integer vertexRepID : vertexRepIDs) {
+			pathwaysContainingGene.add(PathwayItemManager.get().getPathwayVertexRep(vertexRepID).getPathway());
 		}
+
 		return pathwaysContainingGene;
 	}
 
@@ -859,8 +829,7 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 		Comparator comparator = new Comparator() {
 			@Override
 			public int compare(Object o1, Object o2) {
-				return ((TableItem) o1).getText(colIndex).compareTo(
-						((TableItem) o2).getText(colIndex));
+				return ((TableItem) o1).getText(colIndex).compareTo(((TableItem) o2).getText(colIndex));
 			}
 
 			@Override

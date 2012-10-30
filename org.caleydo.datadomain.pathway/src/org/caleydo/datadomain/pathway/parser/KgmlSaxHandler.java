@@ -29,6 +29,7 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.parser.xml.AXmlParserHandler;
 import org.caleydo.core.io.parser.xml.IXmlParserHandler;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayReactionEdgeType;
@@ -42,6 +43,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.eclipse.core.runtime.Status;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -95,8 +97,8 @@ public class KgmlSaxHandler
 	}
 
 	@Override
-	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
-			Attributes attributes) throws SAXException {
+	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName, Attributes attributes)
+			throws SAXException {
 
 		String elementName = sSimpleName;
 		this.attributes = attributes;
@@ -137,8 +139,7 @@ public class KgmlSaxHandler
 	}
 
 	@Override
-	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
-			throws SAXException {
+	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName) throws SAXException {
 
 		String eName = "".equals(sSimpleName) ? sQualifiedName : sSimpleName;
 
@@ -192,16 +193,15 @@ public class KgmlSaxHandler
 			title = "unknown title";
 		}
 
-		String pathwayTexturePath = sImageLink.substring(sImageLink.lastIndexOf('/') + 1,
-				sImageLink.length());
+		String pathwayTexturePath = sImageLink.substring(sImageLink.lastIndexOf('/') + 1, sImageLink.length());
 
 		// FIX inconsistency between XML data which state the pathway images as
 		// GIFs - but we have them as
 		// PNGs
 		pathwayTexturePath = pathwayTexturePath.replace(".gif", ".png");
 
-		currentPathway = pathwayManager.createPathway(EPathwayDatabaseType.KEGG, name, title,
-				pathwayTexturePath, externalLink);
+		currentPathway = pathwayManager.createPathway(EPathwayDatabaseType.KEGG, name, title, pathwayTexturePath,
+				externalLink);
 
 		hashKgmlEntryIdToVertexRep.clear();
 		hashKgmlReactionNameToVertexRep.clear();
@@ -214,8 +214,11 @@ public class KgmlSaxHandler
 
 	/**
 	 * Reacts on the elements of the entry tag. An example entry tag looks like
-	 * this: <entry id="1" name="ec:1.8.4.1" type="enzyme" reaction="rn:R01292"
+	 * this: 
+	 * 
+	 * <entry id="1" name="ec:1.8.4.1" type="enzyme" reaction="rn:R01292"
 	 * link="http://www.genome.jp/dbget-bin/www_bget?enzyme+1.8.4.1">
+	 * 
 	 */
 	protected void handleEntryTag() {
 		int entryId = 0;
@@ -254,42 +257,36 @@ public class KgmlSaxHandler
 
 		if (type.equals("gene")) {
 			StringTokenizer tokenText = new StringTokenizer(name, " ");
-			Integer davidId = -1;
-			String tmpVertexName = "";
-			Set<Integer> DataTableDavidID = new HashSet<Integer>();
+			Set<Integer> davidIDs = null;
+			String vertexName = "";
+			Set<Integer> mappingDavidIDs = new HashSet<Integer>();
 
 			while (tokenText.hasMoreTokens()) {
-				tmpVertexName = tokenText.nextToken();
+				vertexName = tokenText.nextToken();
 
-				if (tmpVertexName.substring(4).equals("")) {
+				String entrezID = vertexName.substring(4);
+				if (entrezID.isEmpty()) {
 					continue;
 				}
 
-				IDMappingManager genomeIdManager = ((PathwayDataDomain) DataDomainManager
-						.get().getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE))
-						.getGeneIDMappingManager();
-				davidId = genomeIdManager
-						.getID(IDType.getIDType("ENTREZ_GENE_ID"), IDType.getIDType("DAVID"),
-								Integer.valueOf(tmpVertexName.substring(4)));
+				IDMappingManager genomeIdManager = ((PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+						PathwayDataDomain.DATA_DOMAIN_TYPE)).getGeneIDMappingManager();
+				davidIDs = genomeIdManager.getIDAsSet(IDType.getIDType("ENTREZ_GENE_ID"), IDType.getIDType("DAVID"),
+						Integer.valueOf(entrezID));
 
-				if (davidId == null) {
-					// Logger.log(new Status(IStatus.INFO,
-					// GeneralManager.PLUGIN_ID,
-					// "NCBI Gene ID " + tmpVertexName +
-					// " cannot be mapped to David ID."));
-
+				if (davidIDs == null) {
+					Logger.log(new Status(Status.INFO, this.toString(), "No david mapping for Entrez ID: " + entrezID));
 					continue;
 				}
 
-				DataTableDavidID.add(davidId);
+				mappingDavidIDs.addAll(davidIDs);
 			}
 
-			currentVertices.addAll(pathwayItemManager.createVertexGene(tmpVertexName, type,
-					externalLink, DataTableDavidID));
+			currentVertices.addAll(pathwayItemManager.createGeneVertex(vertexName, type, externalLink,
+					mappingDavidIDs));
 		}
 		else {
-			PathwayVertex currentVertex = pathwayItemManager.createVertex(name, type,
-					externalLink);
+			PathwayVertex currentVertex = pathwayItemManager.createVertex(name, type, externalLink);
 
 			currentVertices.add(currentVertex);
 		}
@@ -302,8 +299,7 @@ public class KgmlSaxHandler
 
 		String kgmlEntryID = attributes.getValue(0);
 
-		PathwayVertexRep vertexRep = hashKgmlEntryIdToVertexRep.get(Integer
-				.parseInt(kgmlEntryID));
+		PathwayVertexRep vertexRep = hashKgmlEntryIdToVertexRep.get(Integer.parseInt(kgmlEntryID));
 
 		if (vertexRep == null)
 			return;
@@ -372,8 +368,8 @@ public class KgmlSaxHandler
 			hashKgmlEntryIdToVertexRep.put(currentEntryId, currentVertexGroupRep);
 		}
 		else {
-			PathwayVertexRep vertexRep = pathwayItemManager.createVertexRep(currentPathway,
-					currentVertices, name, shapeType, x, y, width, height);
+			PathwayVertexRep vertexRep = pathwayItemManager.createVertexRep(currentPathway, currentVertices, name,
+					shapeType, x, y, width, height);
 
 			hashKgmlEntryIdToVertexRep.put(currentEntryId, vertexRep);
 
@@ -387,17 +383,14 @@ public class KgmlSaxHandler
 							.get(currentReactionName);
 
 					if (alreadyPresentReactionNode instanceof PathwayVertexGroupRep) {
-						((PathwayVertexGroupRep) alreadyPresentReactionNode)
-								.addVertexRep(vertexRep);
+						((PathwayVertexGroupRep) alreadyPresentReactionNode).addVertexRep(vertexRep);
 					}
 					else {
-						PathwayVertexGroupRep vertexGroupRep = pathwayItemManager
-								.createVertexGroupRep(currentPathway);
+						PathwayVertexGroupRep vertexGroupRep = pathwayItemManager.createVertexGroupRep(currentPathway);
 						vertexGroupRep.addVertexRep(alreadyPresentReactionNode);
 						vertexGroupRep.addVertexRep(vertexRep);
 						hashKgmlReactionNameToVertexRep.remove(alreadyPresentReactionNode);
-						hashKgmlReactionNameToVertexRep.put(currentReactionName,
-								vertexGroupRep);
+						hashKgmlReactionNameToVertexRep.put(currentReactionName, vertexGroupRep);
 					}
 				}
 				else {
@@ -428,12 +421,10 @@ public class KgmlSaxHandler
 				type = attributes.getValue(attributeIndex);
 			}
 			else if (attributeName.equals("entry1")) {
-				sourceVertexId = Integer.valueOf(attributes.getValue(attributeIndex))
-						.intValue();
+				sourceVertexId = Integer.valueOf(attributes.getValue(attributeIndex)).intValue();
 			}
 			else if (attributeName.equals("entry2")) {
-				targetVertexId = Integer.valueOf(attributes.getValue(attributeIndex))
-						.intValue();
+				targetVertexId = Integer.valueOf(attributes.getValue(attributeIndex)).intValue();
 			}
 		}
 
@@ -528,15 +519,15 @@ public class KgmlSaxHandler
 						return;
 
 					// create edge representation
-					PathwayRelationEdgeRep pathwayRelationEdgeRep = (PathwayRelationEdgeRep) currentPathway
-							.getEdge(relationSourceVertexRep, relationTargetVertexRep);
+					PathwayRelationEdgeRep pathwayRelationEdgeRep = (PathwayRelationEdgeRep) currentPathway.getEdge(
+							relationSourceVertexRep, relationTargetVertexRep);
 
 					// edge from vertex to vertex
 					if (pathwayRelationEdgeRep == null) {
 						pathwayRelationEdgeRep = new PathwayRelationEdgeRep(relationType);
 
-						currentPathway.addEdge(relationSourceVertexRep,
-								relationTargetVertexRep, pathwayRelationEdgeRep);
+						currentPathway
+								.addEdge(relationSourceVertexRep, relationTargetVertexRep, pathwayRelationEdgeRep);
 					}
 
 					pathwayRelationEdgeRep.addRelationSubType(subType);
@@ -592,8 +583,7 @@ public class KgmlSaxHandler
 
 		PathwayVertexRep sourceVertexRep = hashKgmlEntryIdToVertexRep.get(reactionSubstrateID);
 
-		PathwayVertexRep targetVertexRep = hashKgmlReactionNameToVertexRep
-				.get(currentReactionName);
+		PathwayVertexRep targetVertexRep = hashKgmlReactionNameToVertexRep.get(currentReactionName);
 
 		// Prevent double insertion of edges that connect to group nodes
 		if (currentPathway.getEdge(sourceVertexRep, targetVertexRep) != null
@@ -601,16 +591,14 @@ public class KgmlSaxHandler
 			return;
 
 		// Edge from the substrate to the gene
-		PathwayReactionEdgeRep pathwayReactionEdgeRep = new PathwayReactionEdgeRep(
-				currentReactionType);
+		PathwayReactionEdgeRep pathwayReactionEdgeRep = new PathwayReactionEdgeRep(currentReactionType);
 
 		try {
 			currentPathway.addEdge(sourceVertexRep, targetVertexRep, pathwayReactionEdgeRep);
 
 			if (currentReactionType == EPathwayReactionEdgeType.reversible) {
 				pathwayReactionEdgeRep = new PathwayReactionEdgeRep(currentReactionType);
-				currentPathway.addEdge(targetVertexRep, sourceVertexRep,
-						pathwayReactionEdgeRep);
+				currentPathway.addEdge(targetVertexRep, sourceVertexRep, pathwayReactionEdgeRep);
 			}
 		}
 		catch (Exception e) {
@@ -637,8 +625,7 @@ public class KgmlSaxHandler
 			}
 		}
 
-		PathwayVertexRep sourceVertexRep = hashKgmlReactionNameToVertexRep
-				.get(currentReactionName);
+		PathwayVertexRep sourceVertexRep = hashKgmlReactionNameToVertexRep.get(currentReactionName);
 
 		PathwayVertexRep targetVertexRep = hashKgmlEntryIdToVertexRep.get(reactionProductID);
 
@@ -648,16 +635,14 @@ public class KgmlSaxHandler
 			return;
 
 		// Edge from the product to the gene
-		PathwayReactionEdgeRep pathwayReactionEdgeRep = new PathwayReactionEdgeRep(
-				currentReactionType);
+		PathwayReactionEdgeRep pathwayReactionEdgeRep = new PathwayReactionEdgeRep(currentReactionType);
 
 		try {
 			currentPathway.addEdge(sourceVertexRep, targetVertexRep, pathwayReactionEdgeRep);
 
 			if (currentReactionType == EPathwayReactionEdgeType.reversible) {
 				pathwayReactionEdgeRep = new PathwayReactionEdgeRep(currentReactionType);
-				currentPathway.addEdge(targetVertexRep, sourceVertexRep,
-						pathwayReactionEdgeRep);
+				currentPathway.addEdge(targetVertexRep, sourceVertexRep, pathwayReactionEdgeRep);
 			}
 		}
 		catch (Exception e) {

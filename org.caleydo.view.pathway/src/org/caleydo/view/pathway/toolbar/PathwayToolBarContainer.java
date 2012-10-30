@@ -21,13 +21,11 @@ package org.caleydo.view.pathway.toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.OpenOnlineHelpAction;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;

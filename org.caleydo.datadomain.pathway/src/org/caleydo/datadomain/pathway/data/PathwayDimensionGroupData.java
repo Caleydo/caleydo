@@ -30,12 +30,12 @@ import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 
 /**
  * Specialization of {@link TablePerspective} for pathway dimension groups. A
@@ -47,17 +47,17 @@ import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
  * @author Marc Streit
  * 
  */
-public class PathwayDimensionGroupData extends TablePerspective {
+public class PathwayDimensionGroupData
+	extends TablePerspective {
 
 	protected PathwayDataDomain pathwayDataDomain;
 	protected ArrayList<PathwayGraph> pathways;
 
 	private List<TablePerspective> recordSubTablePerspectives = new ArrayList<TablePerspective>();
 
-	public PathwayDimensionGroupData(ATableBasedDataDomain dataDomain,
-			PathwayDataDomain pathwayDataDomain, RecordPerspective recordPerspective,
-			DimensionPerspective dimensionPerspective, ArrayList<PathwayGraph> pathways,
-			String label) {
+	public PathwayDimensionGroupData(ATableBasedDataDomain dataDomain, PathwayDataDomain pathwayDataDomain,
+			RecordPerspective recordPerspective, DimensionPerspective dimensionPerspective,
+			ArrayList<PathwayGraph> pathways, String label) {
 		this.dataDomain = dataDomain;
 		this.pathwayDataDomain = pathwayDataDomain;
 		this.dimensionPerspective = dimensionPerspective;
@@ -65,7 +65,6 @@ public class PathwayDimensionGroupData extends TablePerspective {
 		this.pathways = pathways;
 		this.label = label;
 
-		// initializeData();
 	}
 
 	/**
@@ -87,58 +86,29 @@ public class PathwayDimensionGroupData extends TablePerspective {
 
 	private void initializeData() {
 
-		ArrayList<Integer> groups = new ArrayList<Integer>();
 		ArrayList<Integer> sampleElements = new ArrayList<Integer>();
-		List<Integer> allIDsInPathwayDimensionGroup = new ArrayList<Integer>();
-
+		
 		IDType geneIDType = null;
 		if (dataDomain.isColumnDimension())
 			geneIDType = dataDomain.getRecordIDType();
 		else
 			geneIDType = dataDomain.getDimensionIDType();
 
-		// if (dataDomain.isColumnDimension()) {
-		// recordPerspective = new RecordPerspective(dataDomain);
-		// PerspectiveInitializationData data = new
-		// PerspectiveInitializationData();
-		// data.setData(allIDsInPathwayDimensionGroup, groups, sampleElements);
-		// recordPerspective.init(data);
-		// } else {
-		// dimensionPerspective = new DimensionPerspective(dataDomain);
-		// PerspectiveInitializationData data = new
-		// PerspectiveInitializationData();
-		// data.setData(allIDsInPathwayDimensionGroup, groups, sampleElements);
-		// dimensionPerspective.init(data);
-		// }
-
+		IDMappingManager geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(geneIDType);
 		int startIndex = 0;
+
 		for (PathwayGraph pathway : pathways) {
 			List<Integer> idsInPathway = new ArrayList<Integer>();
 
 			int groupSize = 0;
-
 			for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
+				Set<Integer> geneIDs = geneIDMappingManager.getIDAsSet(vertexRep.getIdType(), geneIDType,
+						vertexRep.getID());
+				idsInPathway.addAll(geneIDs);
+				groupSize += geneIDs.size();
 
-				for (PathwayVertex vertex : vertexRep.getPathwayVertices()) {
-					Integer davidId = PathwayItemManager.get().getDavidIdByPathwayVertex(
-							vertex);
-
-					if (davidId != null) {
-
-						Set<Integer> ids = pathwayDataDomain.getGeneIDMappingManager()
-								.getIDAsSet(pathwayDataDomain.getDavidIDType(),
-										geneIDType, davidId);
-
-						if (ids != null && ids.size() > 0) {
-							groupSize++;
-							allIDsInPathwayDimensionGroup.addAll(ids);
-							idsInPathway.addAll(ids);
-						}
-					}
-				}
 			}
 
-			groups.add(groupSize);
 			sampleElements.add(startIndex);
 			startIndex += groupSize;
 
@@ -146,135 +116,26 @@ public class PathwayDimensionGroupData extends TablePerspective {
 			data.setData(idsInPathway);
 			PathwayTablePerspective pathwayTablePerspective;
 			if (dataDomain.isColumnDimension()) {
-				RecordPerspective pathwayRecordPerspective = new RecordPerspective(
-						dataDomain);
+				RecordPerspective pathwayRecordPerspective = new RecordPerspective(dataDomain);
 				pathwayRecordPerspective.init(data);
 
-				pathwayTablePerspective = new PathwayTablePerspective(dataDomain,
-						pathwayDataDomain, pathwayRecordPerspective,
-						dimensionPerspective, pathway);
-			} else {
-				DimensionPerspective pathwayDimensionPerspective = new DimensionPerspective(
-						dataDomain);
+				pathwayTablePerspective = new PathwayTablePerspective(dataDomain, pathwayDataDomain,
+						pathwayRecordPerspective, dimensionPerspective, pathway);
+			}
+			else {
+				DimensionPerspective pathwayDimensionPerspective = new DimensionPerspective(dataDomain);
 				pathwayDimensionPerspective.init(data);
 
-				pathwayTablePerspective = new PathwayTablePerspective(dataDomain,
-						pathwayDataDomain, recordPerspective,
+				pathwayTablePerspective = new PathwayTablePerspective(dataDomain, pathwayDataDomain, recordPerspective,
 						pathwayDimensionPerspective, pathway);
 			}
 
-			pathwayTablePerspective.setRecordGroup(recordPerspective.getVirtualArray()
-					.getGroupList().get(0));
+			pathwayTablePerspective.setRecordGroup(recordPerspective.getVirtualArray().getGroupList().get(0));
 
 			recordSubTablePerspectives.add(pathwayTablePerspective);
 		}
 	}
 
-	// @Override
-	// public ArrayList<Group> getGroups() {
-	// ArrayList<Group> groups = new ArrayList<Group>();
-	//
-	// int groupID = 0;
-	// int startIndex = 0;
-	// for (PathwayGraph pathway : pathways) {
-	//
-	// Group group = new Group();
-	// group.setGroupID(groupID);
-	// group.setStartIndex(startIndex);
-	//
-	// List<IGraphItem> vertexGraphItemReps = pathway
-	// .getAllItemsByKind(EGraphItemKind.NODE);
-	//
-	// int groupSize = 0;
-	// for (IGraphItem itemRep : vertexGraphItemReps) {
-	//
-	// List<IGraphItem> vertexGraphItems = itemRep
-	// .getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT);
-	//
-	// for (IGraphItem item : vertexGraphItems) {
-	// int davidId = PathwayItemManager.get()
-	// .getDavidIdByPathwayVertexGraphItem(
-	// (PathwayVertexGraphItem) item);
-	//
-	// if (davidId != -1) {
-	// Set<Integer> recordIDs = pathwayDataDomain
-	// .getGeneIDMappingManager().getIDAsSet(
-	// IDType.getIDType("DAVID"),
-	// dataDomain.getRecordIDType(), davidId);
-	//
-	// if (recordIDs != null && recordIDs.size() > 0) {
-	// groupSize++;
-	// }
-	//
-	// }
-	// }
-	// }
-	//
-	// group.setSize(groupSize);
-	// groups.add(group);
-	// startIndex += groupSize;
-	// groupID++;
-	// }
-	//
-	// return groups;
-	// }
-
-	// @Override
-	// public List<TablePerspective> getDa() {
-	//
-	// List<ISegmentData> segmentData = new ArrayList<ISegmentData>();
-	//
-	// int groupID = 0;
-	// int startIndex = 0;
-	// for (PathwayGraph pathway : pathways) {
-	//
-	// Group group = new Group();
-	// List<Integer> ids = new ArrayList<Integer>();
-	// group.setGroupID(groupID);
-	// group.setStartIndex(startIndex);
-	//
-	// List<IGraphItem> vertexGraphItemReps = pathway
-	// .getAllItemsByKind(EGraphItemKind.NODE);
-	//
-	// int groupSize = 0;
-	// for (IGraphItem itemRep : vertexGraphItemReps) {
-	//
-	// List<IGraphItem> vertexGraphItems = itemRep
-	// .getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT);
-	//
-	// for (IGraphItem item : vertexGraphItems) {
-	// int davidId = PathwayItemManager.get()
-	// .getDavidIdByPathwayVertexGraphItem(
-	// (PathwayVertexGraphItem) item);
-	//
-	// if (davidId != -1) {
-	// groupSize++;
-	// Set<Integer> recordIDs = pathwayDataDomain
-	// .getGeneIDMappingManager().getIDAsSet(
-	// IDType.getIDType("DAVID"),
-	// dataDomain.getRecordIDType(), davidId);
-	//
-	// if (recordIDs != null && recordIDs.size() > 0) {
-	// ids.addAll(recordIDs);
-	// }
-	// }
-	// }
-	// }
-	//
-	// group.setSize(groupSize);
-	// RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
-	// PerspectiveInitializationData data = new PerspectiveInitializationData();
-	// data.setData(ids);
-	// recordPerspective.init(data);
-	// segmentData.add(new PathwaySegmentData(dataDomain, pathwayDataDomain,
-	// recordPerspective, dimensionPerspective, group, pathway, this));
-	//
-	// startIndex += groupSize;
-	// groupID++;
-	// }
-	//
-	// return segmentData;
-	// }
 
 	/**
 	 * @return the pathwayDataDomain, see {@link #pathwayDataDomain}
@@ -305,9 +166,8 @@ public class PathwayDimensionGroupData extends TablePerspective {
 			recordPerspective.init(data);
 
 			// FIXME: currently only the first pathway is taken from the list
-			PathwayTablePerspective subTablePerspective = new PathwayTablePerspective(
-					dataDomain, pathwayDataDomain, recordPerspective,
-					dimensionPerspective, pathways.get(0));
+			PathwayTablePerspective subTablePerspective = new PathwayTablePerspective(dataDomain, pathwayDataDomain,
+					recordPerspective, dimensionPerspective, pathways.get(0));
 			subTablePerspective.setRecordGroup(group);
 			recordSubTablePerspectives.add(subTablePerspective);
 

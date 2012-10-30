@@ -371,12 +371,6 @@ public class GeneticDataDomain
 			return getRecordIDType();
 	}
 
-	public IDType getHumanReadableGeneIDType() {
-		if (isColumnDimension())
-			return getHumanReadableRecordIDType();
-		else
-			return getHumanReadableDimensionIDType();
-	}
 
 	public IDType getGeneGroupIDType() {
 		if (isColumnDimension())

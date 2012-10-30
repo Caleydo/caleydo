@@ -201,7 +201,7 @@ public class BioCartaPathwayImageMapSaxHandler extends AXmlParserHandler {
 		if (DataTableDavidID == null)
 			return;
 
-		ArrayList<PathwayVertex> alVertex = pathwayItemManager.createVertexGene(sName,
+		ArrayList<PathwayVertex> alVertex = pathwayItemManager.createGeneVertex(sName,
 				"gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink,
 				DataTableDavidID);
 

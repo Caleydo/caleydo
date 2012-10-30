@@ -525,7 +525,7 @@ public class IDMappingManager {
 	 * @param toID
 	 */
 	public <KeyType, ValueType> void addMapping(IDType fromIDType, KeyType fromID, IDType toIDType, ValueType toID) {
-		addMapping(MappingType.getType(fromIDType, toIDType), fromID, toIDType);
+		addMapping(MappingType.getType(fromIDType, toIDType), fromID, toID);
 	}
 
 	/**

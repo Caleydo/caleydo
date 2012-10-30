@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -74,14 +74,16 @@ import org.eclipse.swt.widgets.Display;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateListener {
+public class GLHeatMap
+	extends ATableBasedView
+	implements IColorMappingUpdateListener {
 
 	public static String VIEW_TYPE = "org.caleydo.view.heatmap";
 
 	public static String VIEW_NAME = "Heatmap";
 
-	public static final SelectionType SELECTION_HIDDEN = new SelectionType("Hidden",
-			new float[] { 0f, 0f, 0f, 1f }, 1, false, false, 0.2f);
+	public static final SelectionType SELECTION_HIDDEN = new SelectionType("Hidden", new float[] { 0f, 0f, 0f, 1f }, 1,
+			false, false, 0.2f);
 
 	private HeatMapRenderStyle renderStyle;
 
@@ -159,8 +161,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	}
 
 	@Override
-	public void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener) {
+	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
 		// if (glRemoteRenderingView != null
 		// &&
@@ -196,7 +197,8 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 			layoutManager.setStaticLayoutConfiguration(detailedRenderingTemplate);
 			detailedRenderingTemplate.setStaticLayouts();
 			showCaptions = true;
-		} else {
+		}
+		else {
 			layoutManager.setStaticLayoutConfiguration(textureTemplate);
 			showCaptions = false;
 		}
@@ -244,8 +246,8 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		if (!lazyMode)
 			checkForHits(gl);
 
-		ConnectedElementRepresentationManager cerm = GeneralManager.get()
-				.getViewManager().getConnectedElementRepresentationManager();
+		ConnectedElementRepresentationManager cerm = GeneralManager.get().getViewManager()
+				.getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 	}
@@ -259,15 +261,15 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 		if (tablePerspective.getNrRecords() == 0 || tablePerspective.getNrDimensions() == 0) {
 			renderSymbol(gl, EIconTextures.HEAT_MAP_SYMBOL, 2);
-		} else {
+		}
+		else {
 			layoutManager.render(gl);
 		}
 		gl.glEndList();
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int pickingID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int pickingID, Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
@@ -275,113 +277,111 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		SelectionType selectionType;
 
 		switch (pickingType) {
-		case HEAT_MAP_RECORD_SELECTION:
-			// iCurrentMouseOverElement = pickingID;
-			switch (pickingMode) {
+			case HEAT_MAP_RECORD_SELECTION:
+				// iCurrentMouseOverElement = pickingID;
+				switch (pickingMode) {
 
-			case CLICKED:
-				selectionType = SelectionType.SELECTION;
-				break;
+					case CLICKED:
+						selectionType = SelectionType.SELECTION;
+						break;
 
-			case MOUSE_OVER:
-				selectionType = SelectionType.MOUSE_OVER;
-				break;
+					case MOUSE_OVER:
+						selectionType = SelectionType.MOUSE_OVER;
+						break;
 
-			case RIGHT_CLICKED:
-				selectionType = SelectionType.SELECTION;
+					case RIGHT_CLICKED:
+						selectionType = SelectionType.SELECTION;
 
-				if (dataDomain instanceof GeneticDataDomain
-						&& dataDomain.isColumnDimension()) {
+						if (dataDomain instanceof GeneticDataDomain && dataDomain.isColumnDimension()) {
 
-					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-					contexMenuItemContainer.setDataDomain(dataDomain);
-					contexMenuItemContainer.setData(recordIDType, pickingID);
-					contextMenuCreator
-							.addContextMenuItemContainer(contexMenuItemContainer);
-					contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
-				} else {
-					AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-							+ dataDomain.getHumanReadableRecordIDType() + ": "
-							+ dataDomain.getRecordLabel(recordIDType, pickingID),
-							recordIDType, pickingID, dataDomain.getDataDomainID());
-					contextMenuCreator.addContextMenuItem(menuItem);
+							GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
+							contexMenuItemContainer.setDataDomain(dataDomain);
+							contexMenuItemContainer.setData(recordIDType, pickingID);
+							contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
+							contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
+						}
+						else {
+							AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+									+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
+									+ dataDomain.getRecordLabel(recordIDType, pickingID), recordIDType, pickingID,
+									dataDomain.getDataDomainID());
+							contextMenuCreator.addContextMenuItem(menuItem);
+						}
+
+						break;
+
+					default:
+						return;
+
 				}
 
+				createRecordSelection(selectionType, pickingID);
+
 				break;
 
-			default:
-				return;
+			case HEAT_MAP_DIMENSION_SELECTION:
 
-			}
+				switch (pickingMode) {
+					case CLICKED:
+						selectionType = SelectionType.SELECTION;
+						break;
+					case MOUSE_OVER:
+						selectionType = SelectionType.MOUSE_OVER;
+						break;
+					case RIGHT_CLICKED:
 
-			createRecordSelection(selectionType, pickingID);
+						if (dataDomain instanceof GeneticDataDomain && !dataDomain.isColumnDimension()) {
 
-			break;
+							GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
+							contexMenuItemContainer.setDataDomain(dataDomain);
+							contexMenuItemContainer.setData(dimensionIDType, pickingID);
+							contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
+							contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
+						}
+						else {
 
-		case HEAT_MAP_DIMENSION_SELECTION:
+							AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+									+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
+									+ dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType,
+									pickingID, dataDomain.getDataDomainID());
+							contextMenuCreator.addContextMenuItem(menuItem);
+						}
 
-			switch (pickingMode) {
-			case CLICKED:
-				selectionType = SelectionType.SELECTION;
-				break;
-			case MOUSE_OVER:
-				selectionType = SelectionType.MOUSE_OVER;
-				break;
-			case RIGHT_CLICKED:
-
-				if (dataDomain instanceof GeneticDataDomain
-						&& !dataDomain.isColumnDimension()) {
-
-					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-					contexMenuItemContainer.setDataDomain(dataDomain);
-					contexMenuItemContainer.setData(dimensionIDType, pickingID);
-					contextMenuCreator
-							.addContextMenuItemContainer(contexMenuItemContainer);
-					contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
-				} else {
-
-					AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-							+ dataDomain.getHumanReadableRecordIDType() + ": "
-							+ dataDomain.getDimensionLabel(dimensionIDType, pickingID),
-							dimensionIDType, pickingID, dataDomain.getDataDomainID());
-					contextMenuCreator.addContextMenuItem(menuItem);
+					default:
+						return;
 				}
 
-			default:
-				return;
-			}
+				createDimensionSelection(selectionType, pickingID);
 
-			createDimensionSelection(selectionType, pickingID);
+				break;
 
-			break;
+			case HEAT_MAP_HIDE_HIDDEN_ELEMENTS:
+				if (pickingMode == PickingMode.CLICKED)
+					if (hideElements)
+						hideElements = false;
+					else
+						hideElements = true;
 
-		case HEAT_MAP_HIDE_HIDDEN_ELEMENTS:
-			if (pickingMode == PickingMode.CLICKED)
-				if (hideElements)
-					hideElements = false;
-				else
-					hideElements = true;
+				HideHeatMapElementsEvent event = new HideHeatMapElementsEvent(hideElements);
+				event.setSender(this);
+				event.setDataDomainID(dataDomain.getDataDomainID());
+				eventPublisher.triggerEvent(event);
 
-			HideHeatMapElementsEvent event = new HideHeatMapElementsEvent(hideElements);
-			event.setSender(this);
-			event.setDataDomainID(dataDomain.getDataDomainID());
-			eventPublisher.triggerEvent(event);
+				setDisplayListDirty();
 
-			setDisplayListDirty();
+				break;
+			case HEAT_MAP_SHOW_CAPTIONS:
 
-			break;
-		case HEAT_MAP_SHOW_CAPTIONS:
+				if (pickingMode == PickingMode.CLICKED)
+					if (showCaptions)
+						showCaptions = false;
+					else {
+						showCaptions = true;
+					}
 
-			if (pickingMode == PickingMode.CLICKED)
-				if (showCaptions)
-					showCaptions = false;
-				else {
-					showCaptions = true;
-				}
-
-			detailedRenderingTemplate.setStaticLayouts();
-			setDisplayListDirty();
-			break;
+				detailedRenderingTemplate.setStaticLayouts();
+				setDisplayListDirty();
+				break;
 		}
 	}
 
@@ -403,8 +403,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 		// TODO: Integrate multi spotting support again
 
-		Integer iMappingID = generalManager.getIDCreator().createID(
-				ManagedObjectType.CONNECTION);
+		Integer iMappingID = generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION);
 		recordSelectionManager.addToType(selectionType, recordID);
 		recordSelectionManager.addConnectionID(iMappingID, recordID);
 
@@ -428,8 +427,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		// whether mouse over is clear.
 		// If that all is true we don't need to do anything
 		if (selectionType == SelectionType.MOUSE_OVER
-				&& dimensionSelectionManager.checkStatus(SelectionType.SELECTION,
-						dimensionID)
+				&& dimensionSelectionManager.checkStatus(SelectionType.SELECTION, dimensionID)
 				&& dimensionSelectionManager.getElements(SelectionType.MOUSE_OVER).size() == 0)
 			return;
 
@@ -446,11 +444,9 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	}
 
 	public void upDownSelect(boolean isUp) {
-		RecordVirtualArray virtualArray = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray virtualArray = tablePerspective.getRecordPerspective().getVirtualArray();
 		if (virtualArray == null)
-			throw new IllegalStateException(
-					"Virtual Array is required for selectNext Operation");
+			throw new IllegalStateException("Virtual Array is required for selectNext Operation");
 		int selectedElement = cursorSelect(virtualArray, recordSelectionManager, isUp);
 		if (selectedElement < 0)
 			return;
@@ -458,38 +454,30 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	}
 
 	public void leftRightSelect(boolean isLeft) {
-		DimensionVirtualArray virtualArray = tablePerspective.getDimensionPerspective()
-				.getVirtualArray();
+		DimensionVirtualArray virtualArray = tablePerspective.getDimensionPerspective().getVirtualArray();
 		if (virtualArray == null)
-			throw new IllegalStateException(
-					"Virtual Array is required for selectNext Operation");
-		int selectedElement = cursorSelect(virtualArray, dimensionSelectionManager,
-				isLeft);
+			throw new IllegalStateException("Virtual Array is required for selectNext Operation");
+		int selectedElement = cursorSelect(virtualArray, dimensionSelectionManager, isLeft);
 		if (selectedElement < 0)
 			return;
 		createDimensionSelection(SelectionType.MOUSE_OVER, selectedElement);
 	}
 
 	public void enterPressedSelect() {
-		DimensionVirtualArray virtualArray = tablePerspective.getDimensionPerspective()
-				.getVirtualArray();
+		DimensionVirtualArray virtualArray = tablePerspective.getDimensionPerspective().getVirtualArray();
 		if (virtualArray == null)
-			throw new IllegalStateException(
-					"Virtual Array is required for enterPressed Operation");
+			throw new IllegalStateException("Virtual Array is required for enterPressed Operation");
 
-		java.util.Set<Integer> elements = dimensionSelectionManager
-				.getElements(SelectionType.MOUSE_OVER);
+		java.util.Set<Integer> elements = dimensionSelectionManager.getElements(SelectionType.MOUSE_OVER);
 		Integer selectedElement = -1;
 		if (elements.size() == 1) {
 			selectedElement = (Integer) elements.toArray()[0];
 			createDimensionSelection(SelectionType.SELECTION, selectedElement);
 		}
 
-		RecordVirtualArray recordVirtualArray = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVirtualArray = tablePerspective.getRecordPerspective().getVirtualArray();
 		if (recordVirtualArray == null)
-			throw new IllegalStateException(
-					"Virtual Array is required for enterPressed Operation");
+			throw new IllegalStateException("Virtual Array is required for enterPressed Operation");
 		elements = recordSelectionManager.getElements(SelectionType.MOUSE_OVER);
 		selectedElement = -1;
 		if (elements.size() == 1) {
@@ -501,8 +489,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	private <VAType extends VirtualArray<?, ?, ?>, SelectionManagerType extends SelectionManager> int cursorSelect(
 			VAType virtualArray, SelectionManagerType selectionManager, boolean isUp) {
 
-		java.util.Set<Integer> elements = selectionManager
-				.getElements(SelectionType.MOUSE_OVER);
+		java.util.Set<Integer> elements = selectionManager.getElements(SelectionType.MOUSE_OVER);
 		if (elements.size() == 0) {
 			elements = selectionManager.getElements(SelectionType.SELECTION);
 			if (elements.size() == 0)
@@ -517,7 +504,8 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 				newIndex = index - 1;
 				if (newIndex < 0)
 					return -1;
-			} else {
+			}
+			else {
 				newIndex = index + 1;
 				if (newIndex == virtualArray.size())
 					return -1;
@@ -530,14 +518,12 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
-			IDType idType, int id) throws InvalidAttributeValueException {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
+			throws InvalidAttributeValueException {
 		ElementConnectionInformation elementRep;
-		ArrayList<ElementConnectionInformation> alElementReps = new ArrayList<ElementConnectionInformation>(
-				4);
+		ArrayList<ElementConnectionInformation> alElementReps = new ArrayList<ElementConnectionInformation>(4);
 
-		for (int recordIndex : tablePerspective.getRecordPerspective().getVirtualArray()
-				.indicesOf(id)) {
+		for (int recordIndex : tablePerspective.getRecordPerspective().getVirtualArray().indicesOf(id)) {
 			if (recordIndex == -1) {
 				continue;
 			}
@@ -548,8 +534,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 			yValue = getYCoordinateOfRecord(recordIndex);
 			yValue = viewFrustum.getHeight() - yValue;
-			elementRep = new ElementConnectionInformation(recordIDType, uniqueID, xValue,
-					yValue, 0);
+			elementRep = new ElementConnectionInformation(recordIDType, uniqueID, xValue, yValue, 0);
 
 			alElementReps.add(elementRep);
 		}
@@ -566,8 +551,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	 */
 	public Float getYCoordinateOfRecord(int recordIndex) {
 		if (isHideElements()) {
-			Integer recordID = tablePerspective.getRecordPerspective().getVirtualArray()
-					.get(recordIndex);
+			Integer recordID = tablePerspective.getRecordPerspective().getVirtualArray().get(recordIndex);
 			if (recordSelectionManager.checkStatus(SELECTION_HIDDEN, recordID))
 				return null;
 		}
@@ -627,8 +611,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedHeatMapView serializedForm = new SerializedHeatMapView(
-				this);
+		SerializedHeatMapView serializedForm = new SerializedHeatMapView(this);
 		return serializedForm;
 	}
 
@@ -636,8 +619,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		this.bClusterVisualizationGenesActive = bClusterVisualizationActive;
 	}
 
-	public void setClusterVisualizationExperimentsActiveFlag(
-			boolean bClusterVisualizationExperimentsActive) {
+	public void setClusterVisualizationExperimentsActiveFlag(boolean bClusterVisualizationExperimentsActive) {
 		this.bClusterVisualizationExperimentsActive = bClusterVisualizationExperimentsActive;
 	}
 
@@ -719,9 +701,8 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	/**
 	 * Returns the height of a particular element
 	 * 
-	 * @param recordID
-	 *            the id of the element - since they can be of different height
-	 *            due to the fish eye
+	 * @param recordID the id of the element - since they can be of different
+	 *            height due to the fish eye
 	 * @return the height of the element
 	 */
 	public float getFieldHeight(int recordID) {
@@ -756,8 +737,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		Iterator<Integer> elementIterator = zoomedElements.iterator();
 		while (elementIterator.hasNext()) {
 			int recordID = elementIterator.next();
-			if (!tablePerspective.getRecordPerspective().getVirtualArray()
-					.contains(recordID))
+			if (!tablePerspective.getRecordPerspective().getVirtualArray().contains(recordID))
 				elementIterator.remove();
 			else if (recordSelectionManager.checkStatus(SELECTION_HIDDEN, recordID))
 				elementIterator.remove();
@@ -795,8 +775,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		super.registerEventListeners();
 		updateColorMappingListener = new UpdateColorMappingListener();
 		updateColorMappingListener.setHandler(this);
-		eventPublisher.addListener(UpdateColorMappingEvent.class,
-				updateColorMappingListener);
+		eventPublisher.addListener(UpdateColorMappingEvent.class, updateColorMappingListener);
 	}
 
 	@Override

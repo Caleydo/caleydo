@@ -34,6 +34,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
@@ -45,6 +46,7 @@ import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.GLEnRoutePathway;
@@ -564,7 +566,7 @@ public class MappedDataRenderer {
 
 					Set<String> names = dataDomain.getGeneIDMappingManager().getIDAsSet(
 							IDType.getIDType("DAVID"),
-							dataDomain.getHumanReadableGeneIDType(), davidID);
+							IDCategory.getIDCategory(EGeneIDTypes.GENE.name()).getHumanReadableIDType(), davidID);
 					System.out.println("Here's the problem: " + names + " / " + geneIDs);
 				}
 			}

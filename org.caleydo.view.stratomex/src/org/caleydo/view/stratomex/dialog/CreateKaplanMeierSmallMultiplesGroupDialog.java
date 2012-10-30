@@ -146,7 +146,7 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog 
 				String dimLabel = tableBasedDataDomain.getDimensionIDMappingManager()
 						.getID(tableBasedDataDomain.getTable()
 								.getDefaultDimensionPerspective().getIdType(),
-								tableBasedDataDomain.getHumanReadableDimensionIDType(),
+								tableBasedDataDomain.getDimensionIDCategory().getHumanReadableIDType(),
 								dimID);
 
 				TableItem item = new TableItem(possibleKaplanMeierDataTable, SWT.NONE);

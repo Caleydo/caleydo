@@ -25,8 +25,8 @@ import org.caleydo.core.id.IDType;
 
 /**
  * List of names of {@link IDType}s that belong to the gene {@link IDCategory}.
- * These values should not be used as enums, but with the {@link #name()}
- * method to retreive its string representation.
+ * These values should not be used as enums, but with the {@link #name()} method
+ * to retreive its string representation.
  * 
  * @author Alexander Lex
  * 
@@ -42,8 +42,10 @@ public enum EGeneIDTypes {
 	REFSEQ_MRNA(EDataType.STRING),
 	ENSEMBL_GENE_ID(EDataType.STRING),
 	ENTREZ_GENE_ID(EDataType.INT),
+
+	PATHWAY(EDataType.INT),
 	PATHWAY_VERTEX(EDataType.INT),
-	PATHWAY(EDataType.INT);
+	PATHWAY_VERTEX_REP(EDataType.INT);
 
 	private EDataType columnType;
 

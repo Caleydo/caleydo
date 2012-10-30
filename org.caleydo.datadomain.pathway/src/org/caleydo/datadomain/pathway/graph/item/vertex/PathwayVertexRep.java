@@ -22,10 +22,12 @@ package org.caleydo.datadomain.pathway.graph.item.vertex;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.IUniqueObject;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 
@@ -58,6 +60,9 @@ public class PathwayVertexRep
 
 	protected ArrayList<Pair<Short, Short>> coords;
 
+	/** The id type of the vertex rep used in the id mapping manager */
+	private static IDType idType = IDType.getIDType(EGeneIDTypes.PATHWAY_VERTEX_REP.name());
+
 	/**
 	 * The {@link PathwayVertex} objects that map to this representation there
 	 * might be several
@@ -75,8 +80,7 @@ public class PathwayVertexRep
 	 */
 	public PathwayVertexRep(final String name, final String shapeType, final String coords) {
 
-		id = GeneralManager.get().getIDCreator()
-				.createID(ManagedObjectType.PATHWAY_VERTEX_REP);
+		id = GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY_VERTEX_REP);
 
 		shape = EPathwayVertexShape.valueOf(shapeType);
 		this.name = name;
@@ -94,11 +98,10 @@ public class PathwayVertexRep
 	 * @param width
 	 * @param height
 	 */
-	public PathwayVertexRep(final String name, final String shapeType, final short x,
-			final short y, final short width, final short height) {
+	public PathwayVertexRep(final String name, final String shapeType, final short x, final short y, final short width,
+			final short height) {
 
-		id = GeneralManager.get().getIDCreator()
-				.createID(ManagedObjectType.PATHWAY_VERTEX_REP);
+		id = GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY_VERTEX_REP);
 
 		if (shapeType == null || shapeType.isEmpty())
 			shape = EPathwayVertexShape.rect;
@@ -177,13 +180,11 @@ public class PathwayVertexRep
 	}
 
 	public short getLowerLeftCornerX() {
-		return (short) (coords.get(0).getFirst() + ((coords.get(1).getFirst() - coords.get(0)
-				.getFirst())/2));
+		return (short) (coords.get(0).getFirst() + ((coords.get(1).getFirst() - coords.get(0).getFirst()) / 2));
 	}
 
 	public short getLowerLeftCornerY() {
-		return (short) (coords.get(1).getSecond() + ((coords.get(2).getSecond() - coords.get(1)
-				.getSecond())/2));
+		return (short) (coords.get(1).getSecond() + ((coords.get(2).getSecond() - coords.get(1).getSecond()) / 2));
 	}
 
 	public short getWidth() {
@@ -246,4 +247,12 @@ public class PathwayVertexRep
 	public ArrayList<Integer> getDavidIDs() {
 		return PathwayItemManager.get().getDavidIDsByPathwayVertexRep(this);
 	}
+
+	/**
+	 * @return the idType, see {@link #idType}
+	 */
+	public static IDType getIdType() {
+		return idType;
+	}
+
 }

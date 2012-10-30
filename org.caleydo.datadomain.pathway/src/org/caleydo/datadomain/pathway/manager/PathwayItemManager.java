@@ -21,12 +21,19 @@ package org.caleydo.datadomain.pathway.manager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
-import org.caleydo.core.manager.AManager;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
+import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.logging.Logger;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.eclipse.core.runtime.Status;
 
 /**
  * The element manager is in charge for handling the items. Items are vertices
@@ -34,20 +41,37 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
  * 
  * @author Marc Streit
  */
-public class PathwayItemManager extends AManager<PathwayVertex> {
+public class PathwayItemManager {
 
 	private volatile static PathwayItemManager pathwayItemManager;
 
-	// TODO: replace these hash maps by GenomeIDManager
-	private HashMap<Integer, PathwayVertex> hashDavidIdToPathwayVertexGraphItem;
-	private HashMap<PathwayVertex, Integer> hashPathwayVertexGraphItemToDavidId;
+	/** The mapping manager for genes */
+	private IDMappingManager geneIDMappingManager;
+	/** The davidIDType ID Type */
+	private IDType davidIDType;
+	/** The ID type for the {@link PathwayVertex}s */
+	private IDType pathwayVertexIDType;
+	/** The id type for the {@link PathwayVertexRep}s */
+	private IDType pathwayVertexRepIDType;
 
-	private HashMap<Integer, PathwayVertexRep> hashIDToPathwayVertexGraphItemRep;
+	private HashMap<Integer, PathwayVertexRep> hashPathwayVertexRepIDToPathwayVertexRep;
+	private HashMap<Integer, PathwayVertex> hashVertexIDToVertex;
 
 	private PathwayItemManager() {
-		hashDavidIdToPathwayVertexGraphItem = new HashMap<Integer, PathwayVertex>();
-		hashPathwayVertexGraphItemToDavidId = new HashMap<PathwayVertex, Integer>();
-		hashIDToPathwayVertexGraphItemRep = new HashMap<Integer, PathwayVertexRep>();
+		geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+				IDCategory.getIDCategory(EGeneIDTypes.GENE.name()));
+		davidIDType = IDType.getIDType(EGeneIDTypes.DAVID.name());
+		pathwayVertexIDType = IDType.getIDType(EGeneIDTypes.PATHWAY_VERTEX.name());
+		pathwayVertexRepIDType = IDType.getIDType(EGeneIDTypes.PATHWAY_VERTEX_REP.name());
+
+		if (!geneIDMappingManager.hasMapping(davidIDType, pathwayVertexIDType)) {
+			geneIDMappingManager.createMap(davidIDType, pathwayVertexIDType, true, true);
+		}
+		if (!geneIDMappingManager.hasMapping(pathwayVertexIDType, pathwayVertexRepIDType)) {
+			geneIDMappingManager.createMap(pathwayVertexIDType, pathwayVertexRepIDType, true, true);
+		}
+		hashPathwayVertexRepIDToPathwayVertexRep = new HashMap<Integer, PathwayVertexRep>();
+		hashVertexIDToVertex = new HashMap<Integer, PathwayVertex>();
 	}
 
 	/**
@@ -66,92 +90,143 @@ public class PathwayItemManager extends AManager<PathwayVertex> {
 		return pathwayItemManager;
 	}
 
-	public PathwayVertex createVertex(final String name, final String type,
-			final String externalLink) {
+	/**
+	 * Creates a general (aka non-gene) pathway vertex
+	 * 
+	 * @param name the name of the vertex
+	 * @param type the type of the vertex, e.g. "gene"
+	 * @param externalLink a link to a web resource about the vertex
+	 */
+	public PathwayVertex createVertex(final String name, final String type, final String externalLink) {
 
 		PathwayVertex pathwayVertex = new PathwayVertex(name, type, externalLink);
 
-		hashItems.put(pathwayVertex.getID(), pathwayVertex);
+		hashVertexIDToVertex.put(pathwayVertex.getID(), pathwayVertex);
 
 		PathwayManager.get().getRootPathway().addVertex(pathwayVertex);
 
 		return pathwayVertex;
 	}
 
-	public ArrayList<PathwayVertex> createVertexGene(final String name,
-			final String type, final String externalLink,
-			final Set<Integer> DataTableDavidId) {
+	/**
+	 * Creates a vertex that can be mapped to a gene.
+	 * 
+	 * @param name the name of the vertex
+	 * @param type the type of the vertex, e.g. "gene"
+	 * @param externalLink a link to a web resource about the vertex
+	 * @param mappingDavidIDs the davidIDType ids that map to this vertex
+	 * @return
+	 */
+	public ArrayList<PathwayVertex> createGeneVertex(final String name, final String type, final String externalLink,
+			final Set<Integer> mappingDavidIDs) {
 
-		ArrayList<PathwayVertex> alGraphItems = new ArrayList<PathwayVertex>();
-		PathwayVertex tmpGraphItem = null;
-		for (int iDavidId : DataTableDavidId) {
+		ArrayList<PathwayVertex> vertices = new ArrayList<PathwayVertex>();
+		PathwayVertex vertex = null;
+		for (int davidId : mappingDavidIDs) {
 
 			// Do not create a new vertex if it is already registered
-			if (hashDavidIdToPathwayVertexGraphItem.containsKey(iDavidId)) {
-				tmpGraphItem = hashDavidIdToPathwayVertexGraphItem.get(iDavidId);
-			} else {
-				tmpGraphItem = createVertex(name, type, externalLink);
+			Set<Integer> existingVerticeIDs = geneIDMappingManager
+					.getIDAsSet(davidIDType, pathwayVertexIDType, davidId);
 
-				hashDavidIdToPathwayVertexGraphItem.put(iDavidId,
-						(PathwayVertex) tmpGraphItem);
-				hashPathwayVertexGraphItemToDavidId.put((PathwayVertex) tmpGraphItem,
-						iDavidId);
+			if (existingVerticeIDs != null && !existingVerticeIDs.isEmpty()) {
+
+				geneIDMappingManager.getIDAsSet(davidIDType, pathwayVertexIDType, davidId);
+				if (existingVerticeIDs.size() > 1) {
+					Logger.log(new Status(Status.WARNING, this.toString(),
+							"There was a multi-mapping from vertex to davidIDType. This shouldn't happen. Using only the first hit."));
+				}
+				Integer vertexID = existingVerticeIDs.iterator().next();
+				vertex = hashVertexIDToVertex.get(vertexID);
+			}
+			else {
+				vertex = createVertex(name, type, externalLink);
+				geneIDMappingManager.addMapping(davidIDType, davidId, pathwayVertexIDType, vertex.getID());
+				// hashDavidIdToPathwayVertexGraphItem.put(davidId,
+				// (PathwayVertex) vertex);
+				// hashPathwayVertexGraphItemToDavidId.put((PathwayVertex)
+				// vertex, davidId);
 			}
 
-			if (tmpGraphItem == null)
+			if (vertex == null)
 				throw new IllegalStateException("New pathway vertex is null");
 
-			alGraphItems.add(tmpGraphItem);
+			vertices.add(vertex);
 		}
 
-		return alGraphItems;
+		return vertices;
 	}
 
-	public PathwayVertexRep createVertexRep(final PathwayGraph parentPathway,
-			final ArrayList<PathwayVertex> alVertex, final String sName,
-			final String sShapeType, final short shHeight, final short shWidth,
-			final short shXPosition, final short shYPosition) {
+	/**
+	 * Creates a rectangular {@link PathwayVertexRep} and registers it in the ID
+	 * manager
+	 * 
+	 * @param parentPathway the pathway the rep belongs to
+	 * @param vertices the vertices this rep is associated with
+	 * @param name
+	 * @param shapeType
+	 * @param height
+	 * @param width
+	 * @param xPosition
+	 * @param yPosition
+	 * @return
+	 */
+	public PathwayVertexRep createVertexRep(final PathwayGraph parentPathway, final ArrayList<PathwayVertex> vertices,
+			final String name, final String shapeType, final short height, final short width, final short xPosition,
+			final short yPosition) {
 
-		PathwayVertexRep pathwayVertexRep = new PathwayVertexRep(sName, sShapeType,
-				shHeight, shWidth, shXPosition, shYPosition);
+		PathwayVertexRep pathwayVertexRep = new PathwayVertexRep(name, shapeType, height, width, xPosition, yPosition);
 
 		// registerItem(pathwayVertexRep);
 
-		parentPathway.addVertex(pathwayVertexRep);
-		pathwayVertexRep.setPathway(parentPathway);
-
-		for (PathwayVertex parentVertex : alVertex) {
-			pathwayVertexRep.addPathwayVertex(parentVertex);
-			parentVertex.addPathwayVertexRep(pathwayVertexRep);
-		}
-
-		hashIDToPathwayVertexGraphItemRep.put(pathwayVertexRep.getID(),
-				(PathwayVertexRep) pathwayVertexRep);
+		registerRep(parentPathway, vertices, pathwayVertexRep);
 
 		return pathwayVertexRep;
 	}
 
-	public PathwayVertexRep createVertexRep(final PathwayGraph parentPathway,
-			final ArrayList<PathwayVertex> alVertexGraphItem, final String sName,
-			final String sShapeType, final String sCoords) {
+	/**
+	 * Creates polygonal a {@link PathwayVertexRep} and registers it in the ID
+	 * manager. The shape of this vertex is specified as a list of points in the
+	 * coords parameter.
+	 * 
+	 * @param parentPathway the pathway the rep belongs to
+	 * @param vertices the vertices this rep is associated with
+	 * @param name
+	 * @param shapeType
+	 * @param coords a string with the coordinates comma separated. e.g.
+	 *            13,25,15,26,... alternating between x and y values
+	 * @return
+	 */
+	public PathwayVertexRep createVertexRep(final PathwayGraph parentPathway, final ArrayList<PathwayVertex> vertices,
+			final String name, final String shapeType, final String coords) {
 
-		PathwayVertexRep pathwayVertexRep = new PathwayVertexRep(sName, sShapeType,
-				sCoords);
+		PathwayVertexRep pathwayVertexRep = new PathwayVertexRep(name, shapeType, coords);
 
-		// registerItem(pathwayVertexRep);
+		registerRep(parentPathway, vertices, pathwayVertexRep);
 
+		return pathwayVertexRep;
+	}
+
+	/**
+	 * Registers a pathwayVertexRep to it's pathway, its vertices and to the id
+	 * mapping manager
+	 * 
+	 * @param parentPathway
+	 * @param vertices
+	 * @param pathwayVertexRep
+	 */
+	private void registerRep(PathwayGraph parentPathway, final ArrayList<PathwayVertex> vertices,
+			PathwayVertexRep pathwayVertexRep) {
 		parentPathway.addVertex(pathwayVertexRep);
 		pathwayVertexRep.setPathway(parentPathway);
 
-		for (PathwayVertex parentVertex : alVertexGraphItem) {
-			pathwayVertexRep.addPathwayVertex(parentVertex);
-			parentVertex.addPathwayVertexRep(pathwayVertexRep);
+		for (PathwayVertex vertex : vertices) {
+			pathwayVertexRep.addPathwayVertex(vertex);
+			vertex.addPathwayVertexRep(pathwayVertexRep);
+			geneIDMappingManager.addMapping(pathwayVertexIDType, vertex.getID(), pathwayVertexRepIDType,
+					pathwayVertexRep.getID());
 		}
 
-		hashIDToPathwayVertexGraphItemRep.put(pathwayVertexRep.getID(),
-				(PathwayVertexRep) pathwayVertexRep);
-
-		return pathwayVertexRep;
+		hashPathwayVertexRepIDToPathwayVertexRep.put(pathwayVertexRep.getID(), (PathwayVertexRep) pathwayVertexRep);
 	}
 
 	public PathwayVertexGroupRep createVertexGroupRep(final PathwayGraph parentPathway) {
@@ -163,50 +238,54 @@ public class PathwayItemManager extends AManager<PathwayVertex> {
 		parentPathway.addVertex(pathwayVertexGroupRep);
 		pathwayVertexGroupRep.setPathway(parentPathway);
 
-		hashIDToPathwayVertexGraphItemRep.put(pathwayVertexGroupRep.getID(),
+		hashPathwayVertexRepIDToPathwayVertexRep.put(pathwayVertexGroupRep.getID(),
 				(PathwayVertexRep) pathwayVertexGroupRep);
 
 		return pathwayVertexGroupRep;
 	}
-	
+
 	// TODO: throw exception
-	public final PathwayVertex getPathwayVertexByDavidId(final int iDavidId) {
+	public List<PathwayVertex> getPathwayVertexByDavidId(final int davidId) {
 		PathwayManager.get().waitUntilPathwayLoadingIsFinished();
 
-		if (hashDavidIdToPathwayVertexGraphItem.containsKey(iDavidId))
-			return hashDavidIdToPathwayVertexGraphItem.get(iDavidId);
+		Set<Integer> vertexIDs = geneIDMappingManager.getIDAsSet(davidIDType, pathwayVertexIDType, davidId);
+		if (vertexIDs == null)
+			return null;
 
-		return null;
+		List<PathwayVertex> vertices = new ArrayList<PathwayVertex>();
+		for (Integer vertexID : vertexIDs) {
+			vertices.add(hashVertexIDToVertex.get(vertexID));
+		}
+		return vertices;
+
 	}
 
 	/**
-	 * Returns a david ID for the specified <code>PathwayVertex</code>. If no
-	 * david ID can be found, -1 is returned.
+	 * Returns a davidIDType ID for the specified <code>PathwayVertex</code>. If
+	 * no davidIDType ID can be found, -1 is returned.
 	 * 
-	 * @param pathwayVertex
+	 * @param pathwayVertexIDType
 	 * @return the davidID or null if no mapping was found
 	 */
-	public Integer getDavidIdByPathwayVertex(final PathwayVertex pathwayVertex) {
+	public Set<Integer> getDavidIdByPathwayVertex(final PathwayVertex pathwayVertex) {
 		PathwayManager.get().waitUntilPathwayLoadingIsFinished();
+		Set<Integer> davidIDs = geneIDMappingManager
+				.getIDAsSet(pathwayVertexIDType, davidIDType, pathwayVertex.getID());
 
-		if (hashPathwayVertexGraphItemToDavidId.containsKey(pathwayVertex))
-			return hashPathwayVertexGraphItemToDavidId.get(pathwayVertex);
-
-		return null;
+		return davidIDs;
 	}
 
 	/**
-	 * Returns all david IDs of all vertices stored in the
+	 * Returns all davidIDType IDs of all vertices stored in the
 	 * <code>PathwayVertexRep</code>. If no davidIDs can be resolved an empty
 	 * list is returned.
 	 */
-	public ArrayList<Integer> getDavidIDsByPathwayVertexRep(
-			PathwayVertexRep pathwayVertexRep) {
+	public ArrayList<Integer> getDavidIDsByPathwayVertexRep(PathwayVertexRep pathwayVertexRep) {
 		ArrayList<Integer> davidIDs = new ArrayList<Integer>();
 		for (PathwayVertex vertex : pathwayVertexRep.getPathwayVertices()) {
-			Integer davidID = getDavidIdByPathwayVertex(vertex);
-			if (davidID != null)
-				davidIDs.add(davidID);
+			Set<Integer> tempDavids = getDavidIdByPathwayVertex(vertex);
+			if (tempDavids != null)
+				davidIDs.addAll(tempDavids);
 		}
 		return davidIDs;
 	}
@@ -214,11 +293,9 @@ public class PathwayItemManager extends AManager<PathwayVertex> {
 	public PathwayVertexRep getPathwayVertexRep(int iID) {
 		PathwayManager.get().waitUntilPathwayLoadingIsFinished();
 
-		if (!hashIDToPathwayVertexGraphItemRep.containsKey(iID))
-			throw new IllegalArgumentException(
-					"Requested pathway vertex representation ID " + iID
-							+ " does not exist!");
+		if (!hashPathwayVertexRepIDToPathwayVertexRep.containsKey(iID))
+			throw new IllegalArgumentException("Requested pathway vertex representation ID " + iID + " does not exist!");
 
-		return hashIDToPathwayVertexGraphItemRep.get(iID);
+		return hashPathwayVertexRepIDToPathwayVertexRep.get(iID);
 	}
 }
