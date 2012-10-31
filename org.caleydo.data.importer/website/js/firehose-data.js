@@ -6,6 +6,19 @@
 var tumor;
 var analysis;
 var runs;
+var dataTypes = null;
+var tumorTypes = null;  
+
+var dataTypeColors = {
+	"mRNA": "#8dd3c7",
+	"mRNA-seq": "#77b3a8",
+	"microRNA": "#b3de69",
+	"microRNA-seq": "#90b354",
+	"Mutations": "#CCEBC5",
+	"Copy Number": "#fccde5",
+	"Methylation": "#80b1d3",
+	"RPPA": "#bebada",
+	 };
 
 // Read a page's GET URL variables and return them as an associative array.
 function getUrlParameters( decode )
@@ -55,10 +68,10 @@ function initialize() {
 	
 	loadRuns( function( data ) {
 		runs = data;
-		analysisIndex = renderAnalysisSelection( data, "#analysis-selection-container" );
-		
+		renderAnalysisSelection( data, "#analysis-selection-container" );		
+		analysisIndex = renderAnalysisSelectionOverview( data, "#analysis-selection-overview-container" );
 		loadRun( getBaseUrl() + "/data/" + runs[analysisIndex].json, renderContent );
-	});	
+	});		
 }
 
 
@@ -83,7 +96,20 @@ function renderContent( data )
 	}
 
 	tumorIndex = renderTumorSelection( data, "#tumor-selection-container", tumor );
-	renderTumorType( data, tumorIndex );	
+	
+	if ( dataTypes == null ) {
+		initializeDataTypeSelection( data );		
+	}
+	
+	if ( tumorTypes == null ) {
+		initializeTumorTypeSelection( data );		
+	}
+	
+	renderDataTypeSelectionOverview( data, "#datatype-selection-overview-container" );
+	renderTumorTypeSelectionOverview( data, "#tumortype-selection-overview-container" );
+	renderOverviewChart( data );
+	renderHeaderOverview( data, "#header-overview-container" );			
+	renderTumorType( data, tumorIndex );		
 }
 
 function renderTumorType( data, tumorIndex ) {
@@ -139,6 +165,40 @@ function renderTumorSelectionBootstrap( data, element ) {
 	});	
 }
 */
+
+
+function renderAnalysisSelectionOverview( runs, element ) {
+	
+	var analysisDates = [];
+	var analysisIndex = 0;
+	//console.log(runs);
+	
+	for ( var i = 0; i < runs.length; ++i ) {
+		if ( runs[i].id === analysis ) {
+			analysisIndex = i;
+			analysisDates.push( "<option selected id=\"" + "analysis_" + i + "\" value=\"" + i + "\">" + runs[i].label + "</option>" );
+		}
+		else {
+			analysisDates.push( "<option id=\"" + "analysis_" + i + "\" value=\"" + i + "\">" + runs[i].label + "</option>" );
+		}		
+	}
+	
+	$( "<select/>", {
+		id: "analysis-selection-overview",
+		"class": "",
+		"html": analysisDates.join("\n")
+	}).appendTo( element );
+
+	analysis = runs[analysisIndex].id;
+	
+	
+	$( "#analysis-selection-overview" ).on( "change", function() {
+		clearTumorType();
+		loadRun( getBaseUrl() + "/data/" + runs[this.value].json, renderContent );		
+	});	
+	
+	return analysisIndex;
+}
 
 
 function renderAnalysisSelection( runs, element ) {
@@ -208,6 +268,125 @@ function renderTumorSelection( data, element ) {
 	return tumorIndex;
 }
 
+function _makeDataTypeId( name ) {
+	return name.replace( " ", "-" ).toLowerCase();
+}
+
+function initializeDataTypeSelection( data ) {
+	dataTypes = {};
+	
+	for ( var p in data.details[0].genomic ) {
+		if ( data.details[0].genomic.hasOwnProperty( p ) ) {
+			dataTypes[p] = true; 
+		}
+	}	
+}
+
+function renderDataTypeSelectionOverview( data, element ) {		
+	var dataTypeSelectorElements = [];
+	
+	$( element ).html("");
+	
+	dataTypeSelectorElements.push( "<thead><tr><th><i class=\" icon-eye-open\"></th><th colspan=2>Data Type<span style=\"margin-left: 15px;\" class=\"btn btn-mini\" id=\"clear-datatypes\">Clear</span><span  style=\"margin-left: 5px;\" class=\"btn btn-mini\" id=\"all-datatypes\">All</span></th></tr></thead>" );
+
+	
+	for ( var p in data.details[0].genomic ) {
+		if ( data.details[0].genomic.hasOwnProperty( p ) ) { 
+			dataTypeSelectorElements.push( "<tr>" + "<td>" + "<input type=\"checkbox\" name=\"" + "dataType" + "\" value=\"" + p + "\" " + ( dataTypes[p] == true ? "checked" : "" ) + ">" + "</td>" + "<td>" + p + "</td>" + "<td>" 
+			+ "<span class=\"badge\" style=\"background: " + mapDataTypeToColor( p ) +";\"></span>" + "</td>" + "</tr>" );
+		}
+	}
+
+	$( "<table/>", {
+		id: "datatype-selector",
+		"class": "table table-condensed table-striped",
+		"html": dataTypeSelectorElements.join("\n")
+	}).appendTo( element );
+	
+    $('input[name=dataType]').click(showCheckedValues);
+                
+	function showCheckedValues() {
+		$('input[name=dataType]').map(function() {
+			dataTypes[this.value] = this.checked;
+		});
+
+		renderOverviewChart(data);
+	}
+	
+    $('#clear-datatypes').click(function() {
+    	$('input[name=dataType]').map(function() {
+			dataTypes[this.value] = false;
+			this.checked = false;
+		});
+		renderOverviewChart(data);
+    });
+
+    $('#all-datatypes').click(function() {
+    	$('input[name=dataType]').map(function() {
+			dataTypes[this.value] = true;
+			this.checked = true;
+		});
+		renderOverviewChart(data);
+    });
+
+	
+}
+
+function initializeTumorTypeSelection( data ) {
+	tumorTypes = {};
+	
+	for ( var i = 0; i < data.details.length; ++i ) {
+		tumorTypes[data.details[i].tumorAbbreviation] = true; 
+	}	
+}
+
+function renderTumorTypeSelectionOverview( data, element ) {		
+	var tumorTypeSelectorElements = [];
+	
+	$( element ).html("");
+	
+	tumorTypeSelectorElements.push( "<thead><tr><th><i class=\" icon-eye-open\"></th><th colspan=2>Tumor Type<span style=\"margin-left: 15px;\" class=\"btn btn-mini\" id=\"clear-tumortypes\">Clear</span><span  style=\"margin-left: 5px;\" class=\"btn btn-mini\" id=\"all-tumortypes\">All</span></th></tr></thead>" );
+	
+	for ( var i = 0; i < data.details.length; ++i ) {
+		tumorTypeSelectorElements.push( "<tr>" + "<td>" + "<input type=\"checkbox\" name=\"" + "tumorType" + "\" value=\"" + data.details[i].tumorAbbreviation + "\" " + ( tumorTypes[data.details[i].tumorAbbreviation] == true ? "checked" : "" ) + ">" + "</td>" + "<td>" + data.details[i].tumorAbbreviation + "</td>" + "<td>" 
+		+ data.details[i].tumorName + "</td>" + "</tr>" );
+	}
+
+	$( "<table/>", {
+		id: "tumortype-selector",
+		"class": "table table-condensed table-striped",
+		"html": tumorTypeSelectorElements.join("\n")
+	}).appendTo( element );
+	
+    $('input[name=tumorType]').click(showCheckedValues);
+                
+	function showCheckedValues() {
+		$('input[name=tumorType]').map(function() {
+			tumorTypes[this.value] = this.checked;
+		});
+
+		renderOverviewChart(data);
+	}
+	
+    $('#clear-tumortypes').click(function() {
+    	$('input[name=tumorType]').map(function() {
+			tumorTypes[this.value] = false;
+			this.checked = false;
+		});
+		renderOverviewChart(data);
+    });
+
+    $('#all-tumortypes').click(function() {
+    	$('input[name=tumorType]').map(function() {
+			tumorTypes[this.value] = true;
+			this.checked = true;
+		});
+		renderOverviewChart(data);
+    });
+	
+}
+
+
 
 function renderHeader( data, tumorIndex, element ) {	
 	// set default element
@@ -220,6 +399,22 @@ function renderHeader( data, tumorIndex, element ) {
 	$( "<div>", {
 		"class": "",
 		"html": "<h2>" + data.details[tumorIndex].tumorAbbreviation + " - " + data.details[tumorIndex].tumorName + " (" + data.analysisRun  + ")</h2>"
+	}).appendTo( element );
+}
+
+
+function renderHeaderOverview( data, element ) {	
+	// set default element
+	var element = element || "#header-container-overview";
+		
+	// clear the element
+	$( element ).html( "" );
+	
+	// render caption
+	$( "<div>", {
+		"class": "",
+		//"html": "<h2>" + "Analysis Run " + data.analysisRun + "/" + "Data Run " + data.dataRun + "</h2>"
+		"html": "<h2>" + "Firehose Patient Data (" + data.analysisRun + ")</h2>"
 	}).appendTo( element );
 }
 
@@ -311,13 +506,13 @@ function renderTable( data, tumorIndex, element ) {
 
 
 function _genomicHeaderRender() {
-		return "<thead><tr><th width=10%>" + "Data Type" + "</th><th>" + "#Patients" + "</th><th width=40%>" + "Patient Stratifications" + 
+		return "<thead><tr><th width=10%>" + "Data Type" + "</th><th></th><th>" + "#Patients" + "</th><th width=40%>" + "Patient Stratifications" + 
 										  "</td><th>" + "#Genes" + "</th><th width=40%>" + "Gene Stratifications" + "</th></tr></thead>";			
 	}
 
 function _genomicRowRender( dataset, datasetName ) {
 	if ( dataset ) {
-		return "<tr><th>" + datasetName + "</th><td>" + dataset.sample.count + "</td><td>" + dataset.sample.groupings.join( "; ") + 
+		return "<tr><th>" + datasetName + "</th><td><span class=\"badge\" style=\"background: " + mapDataTypeToColor( datasetName ) +";\"></span></td><td>" + dataset.sample.count + "</td><td>" + dataset.sample.groupings.join( "; ") + 
 										  "</td><td>" + dataset.gene.count + "</td><td>" + dataset.gene.groupings.join( "; ") + "</td></tr>";			
 	}
 	/*
@@ -343,8 +538,264 @@ function _nonGenomicRowRender( dataset, datasetName ) {
 	}
 }
 
-initialize();
 
+function mapDataTypeToColor( dataType ){
+	return ( dataTypeColors[dataType] == null ) ? "#777" : dataTypeColors[dataType];
+} 
+
+
+function renderOverviewChart( input ) {
+	$( "#chart-container" ).html( "" );
+
+	var newData = []; 
+			
+	for ( var p in input.details[0].genomic ) {
+		if ( input.details[0].genomic.hasOwnProperty( p ) ) {
+			if ( dataTypes[p] == false ) {
+				continue;
+			}
+			newList = []
+			for ( var t = 0; t < input.details.length; ++t ) {
+				
+				if ( !tumorTypes[input.details[t].tumorAbbreviation] ) {
+					continue;
+				}
+								
+				if ( input.details[t].genomic[p] != null ) {
+					newList.push( { tumorType: input.details[t].tumorAbbreviation, dataType: p, x: newList.length, y: parseInt( input.details[t].genomic[p].sample.count ), y0: 0 } );					
+				}
+				else {
+					newList.push( { tumorType: input.details[t].tumorAbbreviation, dataType: p, x: newList.length, y: 0, y0: 0 } );					
+				}					
+			}
+			
+			newData.push( newList );
+		}
+	}
+		
+	var n = newData.length; // number of layers
+	var m = newData[0].length; // number of samples per layer
+	var data = newData; //
+	var color = function( data ) { 	if ( data == null ) return "orange"; return mapDataTypeToColor( data.dataType ); };
+		
+	var margin = 40,
+	    width = window.innerWidth - 80 - .5 - margin,
+	    height = 300 - .5 - margin,
+	    mx = m,
+	    my = d3.max(data, function(d) {
+	      return d3.max(d, function(d) {
+	        return d.y0 + d.y;
+	      });
+	    }),
+	    mz = d3.max(data, function(d) {
+	      return d3.max(d, function(d) {
+	        return d.y;
+	      });
+	    }),
+	    x = function(d) { return d.x * width / mx; },
+	    y0 = function(d) { return height - d.y0 * height / my; },
+	    y1 = function(d) { return height - (d.y + d.y0) * height / my; },
+	    y2 = function(d) { return d.y * height / mz; }; // or `my` to not rescale
+	
+	var vis = d3.select("#chart-container")
+	  .append("svg")
+	    .attr("width", width + 2*margin)
+	    .attr("height", height + margin);
+	
+	var layers = vis.selectAll("g.layer")
+	    .data(data)
+	  .enter().append("g")
+	    .style("fill", function(d, i) { return color(d[0]); })
+	    .attr("class", "layer");
+	
+	var bars = layers.selectAll("g.bar")
+	    .data(function(d) { return d; })
+	  .enter().append("g")
+	    .attr("class", "bar")
+	    .attr("transform", function(d) { return "translate(" + ( x(d) + margin + 2.5 ) + ",0)"; })
+		.attr("xlink:title", function(d) {
+    		return "<b style=\"color:" + mapDataTypeToColor( d.dataType ) + "\">"  + d.dataType + ": " + d.y + "</b>";
+		})	    
+	
+	bars.append("rect")
+	    .attr("width", x({x: .9}))
+	    .attr("x", 0)
+	    .attr("y", height)
+	    .attr("height", 0)
+	  .transition()
+	    .delay(function(d, i) { return i * 20; })
+	    .attr("y", y1)
+	    .attr("height", function(d) { return y0(d) - y1(d); });
+
+	$('.bar').tipsy({
+        gravity:'s',
+        html: true,
+        delayIn: 100,
+        fade: true
+	});
+	
+	var labels = vis.selectAll("text.label")
+	    .data(data[0])
+	  .enter().append("text")
+	    .attr("class", "label")
+	    //.attr("x", x)
+	    .attr("transform", function(d) { return "translate(" + ( x(d) + margin ) + ",0)"; })	    
+	    .attr("y", function(d,i) { return ( height + 6 + ( 6 * ((i%2)*3) ) ); } )
+	    .attr("dx", x({x: .45}))
+	    .attr("dy", ".71em")
+	    .attr("text-anchor", "middle")	    
+	    .text(function(d, i) { return d.tumorType });
+	
+	vis.append("line")
+	    .attr("x1", 0)
+	    .attr("x2", width - x({x: .1}))
+	    .attr("y1", height)
+	    .attr("y2", height);
+
+var yScale = d3.scale.linear().domain([0, my]).range([height,0]);
+var xScale = d3.scale.linear().domain([0, mx]).range([0,width]);
+	    
+//Define Y axis
+var yAxis = d3.svg.axis()
+                  .scale(yScale)
+                  .orient("left")
+                  .ticks(5);
+
+var xAxis = d3.svg.axis()
+                  .scale(xScale)
+                  .orient("top")
+                  .ticks(mx)
+                  .tickSize(height,0,height)
+                  .tickFormat(null);
+
+                  
+//Create Y axis
+vis.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(" + margin + ",0)")
+    .call(yAxis);
+
+vis.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(" + margin + "," + height + ")")
+    .call(xAxis);
+                  	    
+	    
+	var group = d3.selectAll("#chart-container");
+
+  group.select("#group")
+      .attr("class", "first active");
+
+  group.select("#stack")
+      .attr("class", "last");
+
+  group.selectAll("g.layer rect")
+    .transition()
+      .duration(500)
+      .delay(function(d, i) { return (i % m) * 10; })
+      .attr("x", function(d, i) { return x({x: .9 * ~~(i / m) / n}); })
+      .attr("width", x({x: .9 / n}))
+      .each("end", transitionEnd);
+
+  function transitionEnd() {
+    d3.select(this)
+      .transition()
+        .duration(500)
+        .attr("y", function(d) { return height - y2(d); })
+        .attr("height", y2);
+  }
+}
+
+function transitionGroup() {
+  var m = 21;
+  var group = d3.selectAll("#chart-container");
+
+  group.select("#group")
+      .attr("class", "first active");
+
+  group.select("#stack")
+      .attr("class", "last");
+
+  group.selectAll("g.layer rect")
+    .transition()
+      .duration(500)
+      .delay(function(d, i) { return (i % m) * 10; })
+      .attr("x", function(d, i) { return x({x: .9 * ~~(i / m) / n}); })
+      .attr("width", x({x: .9 / n}))
+      .each("end", transitionEnd);
+
+  function transitionEnd() {
+    d3.select(this)
+      .transition()
+        .duration(500)
+        .attr("y", function(d) { return height - y2(d); })
+        .attr("height", y2);
+  }
+}
+
+function transitionStack() {
+  var m = 21;
+  var stack = d3.select("#chart-container");
+
+  stack.select("#group")
+      .attr("class", "first");
+
+  stack.select("#stack")
+      .attr("class", "last active");
+
+  stack.selectAll("g.layer rect")
+    .transition()
+      .duration(500)
+      .delay(function(d, i) { return (i % m) * 10; })
+      .attr("y", y1)
+      .attr("height", function(d) { return y0(d) - y1(d); })
+      .each("end", transitionEnd);
+
+  function transitionEnd() {
+    d3.select(this)
+      .transition()
+        .duration(500)
+        .attr("x", 0)
+        .attr("width", x({x: .9}));
+  }
+}
+
+/* Inspired by Lee Byron's test data generator. */
+function stream_layers(n, m, o) {
+  if (arguments.length < 3) o = 0;
+  function bump(a) {
+    var x = 1 / (.1 + Math.random()),
+        y = 2 * Math.random() - .5,
+        z = 10 / (.1 + Math.random());
+    for (var i = 0; i < m; i++) {
+      var w = (i / m - y) * z;
+      a[i] += x * Math.exp(-w * w);
+    }
+  }
+  return d3.range(n).map(function() {
+      var a = [], i;
+      for (i = 0; i < m; i++) a[i] = o + o * Math.random();
+      for (i = 0; i < 5; i++) bump(a);
+      return a.map(stream_index);
+    });
+}
+
+/* Another layer generator using gamma distributions. */
+function stream_waves(n, m) {
+  return d3.range(n).map(function(i) {
+    return d3.range(m).map(function(j) {
+        var x = 20 * j / m - i / 3;
+        return 2 * x * Math.exp(-.5 * x);
+      }).map(stream_index);
+    });
+}
+
+function stream_index(d, i) {
+  return {x: i, y: Math.max(0, d)};
+}
+
+
+initialize();
 
 
 // ---------------------------------
