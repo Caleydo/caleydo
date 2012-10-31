@@ -17,34 +17,23 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view;
+package org.caleydo.view.pathway;
 
-import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 
 /**
- * This is obsolete for {@link ITablePerspectiveBasedView}s. We need to think
- * what we want to do with the others.
+ * Defines which samples should be mapped on average in the pathway.
  * 
  * @author Alexander Lex
  * 
- * @param <DataDomainType>
  */
-@Deprecated
-public interface IDataDomainBasedView<DataDomainType extends IDataDomain> {
-
+public enum ESampleMappingMode {
+	/** All samples of the current {@link TablePerspective} should be mapped */
+	ALL,
 	/**
-	 * Set the data domain which determines the behavior of the view. Attention:
-	 * The data domain need not be changed at runtime.
-	 * 
-	 * @param dataDomain
+	 * Only those samples that are both in the {@link TablePerspective} and in
+	 * the selected set of samples should be mapped.
 	 */
-	public void setDataDomain(DataDomainType dataDomain);
-
-	/**
-	 * Get the data domain the view is operating on
-	 * 
-	 * @return
-	 */
-	public DataDomainType getDataDomain();
+	SELECTED;
 
 }

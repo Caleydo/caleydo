@@ -52,6 +52,7 @@ import org.caleydo.core.data.virtualarray.events.RecordVADeltaEvent;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.SwitchDataRepresentationEvent;
+import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.event.view.pathway.LoadPathwayEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.object.ManagedObjectType;
@@ -89,6 +90,8 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.pathway.event.ClearPathEvent;
 import org.caleydo.view.pathway.event.EnRoutePathEvent;
 import org.caleydo.view.pathway.event.EnableGeneMappingEvent;
+import org.caleydo.view.pathway.event.SampleMappingModeEvent;
+import org.caleydo.view.pathway.event.SampleMappingModeListener;
 import org.caleydo.view.pathway.event.SelectPathModeEvent;
 import org.caleydo.view.pathway.listener.ClearPathEventListener;
 import org.caleydo.view.pathway.listener.EnRoutePathEventListener;
@@ -148,10 +151,13 @@ public class GLPathway
 
 	private boolean isPathwayDataDirty = false;
 
-	private GLPathwayContentCreator gLPathwayContentCreator;
+	private GLPathwayAugmentationRenderer gLPathwayAugmentationRenderer;
 
 	private EventBasedSelectionManager vertexSelectionManager;
 	private EventBasedSelectionManager sampleSelectionManager;
+
+	/** The mode determing which samples (all or a selection)s should be mapped */
+	private ESampleMappingMode sampleMappingMode = ESampleMappingMode.ALL;
 
 	/**
 	 * Selection manager for metabolites (compounds). Uses the hash value of
@@ -176,6 +182,7 @@ public class GLPathway
 	private SelectPathModeEventListener selectPathModeEventListener;
 	private ClearPathEventListener clearPathEventListener;
 	private AddTablePerspectivesListener addTablePerspectivesListener;
+	private SampleMappingModeListener sampleMappingModeListener;
 
 	private IPickingListener pathwayElementPickingListener;
 
@@ -299,9 +306,9 @@ public class GLPathway
 	@Override
 	public void initialize() {
 		super.initialize();
-		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum, this);
+		gLPathwayAugmentationRenderer = new GLPathwayAugmentationRenderer(viewFrustum, this);
 		if (dataDomain != null)
-			gLPathwayContentCreator.enableGeneMapping(true);
+			gLPathwayAugmentationRenderer.enableGeneMapping(true);
 	}
 
 	@Override
@@ -627,7 +634,7 @@ public class GLPathway
 		selectedPath = null;
 		allPaths = null;
 
-		gLPathwayContentCreator.init(gl, vertexSelectionManager);
+		gLPathwayAugmentationRenderer.init(gl, vertexSelectionManager);
 		vertexSelectionManager.clearSelections();
 
 		if (dataDomain != null) {
@@ -642,7 +649,7 @@ public class GLPathway
 		calculatePathwayScaling(gl, pathway);
 		pathwayManager.setPathwayVisibilityState(pathway, true);
 
-		// gLPathwayContentCreator.buildPathwayDisplayList(gl, this,
+		// gLPathwayAugmentationRenderer.buildPathwayDisplayList(gl, this,
 		// iPathwayID);
 	}
 
@@ -663,7 +670,7 @@ public class GLPathway
 		// front level
 		textureOffset += PathwayRenderStyle.Z_OFFSET;
 		gl.glTranslatef(0, pathwayHeight, textureOffset);
-		gLPathwayContentCreator.renderPathway(gl, pathway, false);
+		gLPathwayAugmentationRenderer.renderPathway(gl, pathway, false);
 		gl.glTranslatef(0, -pathwayHeight, -textureOffset);
 
 		if (enablePathwayTexture) {
@@ -927,7 +934,7 @@ public class GLPathway
 
 	private void rebuildPathwayDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 
-		gLPathwayContentCreator.buildPathwayDisplayList(gl, this, pathway);
+		gLPathwayAugmentationRenderer.buildPathwayDisplayList(gl, pathway);
 
 		// gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 		// renderPathwayName(gl);
@@ -996,12 +1003,12 @@ public class GLPathway
 	}
 
 	public void enableGeneMapping(final boolean enableGeneMapping) {
-		gLPathwayContentCreator.enableGeneMapping(enableGeneMapping);
+		gLPathwayAugmentationRenderer.enableGeneMapping(enableGeneMapping);
 		setDisplayListDirty();
 	}
 
 	public void enablePathwayTextures(final boolean bEnablePathwayTexture) {
-		gLPathwayContentCreator.enableEdgeRendering(!bEnablePathwayTexture);
+		gLPathwayAugmentationRenderer.enableEdgeRendering(!bEnablePathwayTexture);
 		setDisplayListDirty();
 
 		this.enablePathwayTexture = bEnablePathwayTexture;
@@ -1010,7 +1017,7 @@ public class GLPathway
 	public void enableNeighborhood(final boolean bEnableNeighborhood) {
 		setDisplayListDirty();
 
-		gLPathwayContentCreator.enableNeighborhood(bEnableNeighborhood);
+		gLPathwayAugmentationRenderer.enableNeighborhood(bEnableNeighborhood);
 	}
 
 	private void createConnectionLines(SelectionType selectionType, int iConnectionID) {
@@ -1128,6 +1135,10 @@ public class GLPathway
 		addTablePerspectivesListener = new AddTablePerspectivesListener();
 		addTablePerspectivesListener.setHandler(this);
 		eventPublisher.addListener(AddTablePerspectivesEvent.class, addTablePerspectivesListener);
+
+		sampleMappingModeListener = new SampleMappingModeListener();
+		sampleMappingModeListener.setHandler(this);
+		eventPublisher.addListener(SampleMappingModeEvent.class, sampleMappingModeListener);
 	}
 
 	@Override
@@ -1162,6 +1173,11 @@ public class GLPathway
 		if (addTablePerspectivesListener != null) {
 			eventPublisher.removeListener(addTablePerspectivesListener);
 			addTablePerspectivesListener = null;
+		}
+
+		if (sampleMappingModeListener != null) {
+			eventPublisher.removeListener(sampleMappingModeListener);
+			sampleMappingMode = null;
 		}
 
 		metaboliteSelectionManager.unregisterEventListeners();
@@ -1207,15 +1223,15 @@ public class GLPathway
 	}
 
 	public void switchDataRepresentation() {
-		gLPathwayContentCreator.switchDataRepresentation();
+		gLPathwayAugmentationRenderer.switchDataRepresentation();
 		setDisplayListDirty();
 	}
 
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		if (dataDomain == null) {
-			if (gLPathwayContentCreator != null) {
-				gLPathwayContentCreator.enableGeneMapping(false);
+			if (gLPathwayAugmentationRenderer != null) {
+				gLPathwayAugmentationRenderer.enableGeneMapping(false);
 			}
 			return;
 		}
@@ -1225,11 +1241,17 @@ public class GLPathway
 
 		this.dataDomain = (GeneticDataDomain) dataDomain;
 
-		if (gLPathwayContentCreator != null) {
-			gLPathwayContentCreator.enableGeneMapping(true);
+		if (gLPathwayAugmentationRenderer != null) {
+			gLPathwayAugmentationRenderer.enableGeneMapping(true);
 		}
-		sampleSelectionManager = new EventBasedSelectionManager(this,
-				((GeneticDataDomain) dataDomain).getSampleIDType());
+		// only make a new sample selection manager if necessary due to
+		// different id category or because it wasn't initalized so far
+		if (sampleSelectionManager == null
+				|| !sampleSelectionManager.getIDType().getIDCategory()
+						.equals(this.dataDomain.getSampleIDType().getIDCategory())) {
+			sampleSelectionManager = new EventBasedSelectionManager(this,
+					((GeneticDataDomain) dataDomain).getSampleIDType());
+		}
 		setDisplayListDirty();
 
 	}
@@ -1243,6 +1265,9 @@ public class GLPathway
 		setDisplayListDirty();
 		DataDomainUpdateEvent event = new DataDomainUpdateEvent(tablePerspective.getDataDomain());
 		eventPublisher.triggerEvent(event);
+
+		TablePerspectivesChangedEvent tbEvent = new TablePerspectivesChangedEvent(this);
+		eventPublisher.triggerEvent(tbEvent);
 
 	}
 
@@ -1584,4 +1609,22 @@ public class GLPathway
 		tablePerspectives.add(tablePerspective);
 		return tablePerspectives;
 	}
+
+	/**
+	 * @param sampleMappingMode setter, see {@link #sampleMappingMode}
+	 */
+	public void setSampleMappingMode(ESampleMappingMode sampleMappingMode) {
+		if (this.sampleMappingMode != sampleMappingMode)
+			setDisplayListDirty();
+		this.sampleMappingMode = sampleMappingMode;
+
+	}
+
+	/**
+	 * @return the sampleMappingMode, see {@link #sampleMappingMode}
+	 */
+	public ESampleMappingMode getSampleMappingMode() {
+		return sampleMappingMode;
+	}
+
 }

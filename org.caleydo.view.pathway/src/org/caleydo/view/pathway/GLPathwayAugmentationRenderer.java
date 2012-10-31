@@ -34,12 +34,9 @@ import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDMappingManager;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.base.IUniqueObject;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexShape;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
@@ -48,12 +45,13 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 
 /**
- * OpenGL2 pathway manager.
+ * Class responsible for rendering all augmentations on top of the pathway
+ * texture.
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
-public class GLPathwayContentCreator {
-	private GeneralManager generalManager;
+public class GLPathwayAugmentationRenderer {
 
 	private GLPathway glPathwayView;
 
@@ -80,16 +78,17 @@ public class GLPathwayContentCreator {
 
 	private DataRepresentation dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
+	/**
+	 * The virtual array containing the samples that are currently mapped onto
+	 * the nodes
+	 */
 	private VirtualArray<?, ?, ?> selectedSamplesVA;
-
-	private PixelGLConverter pixelGLConverter;
 
 	/**
 	 * Constructor.
 	 */
-	public GLPathwayContentCreator(ViewFrustum viewFrustum, GLPathway glPathwayView) {
+	public GLPathwayAugmentationRenderer(ViewFrustum viewFrustum, GLPathway glPathwayView) {
 
-		this.generalManager = GeneralManager.get();
 		this.glPathwayView = glPathwayView;
 		idMappingManager = glPathwayView.getPathwayDataDomain().getGeneIDMappingManager();
 
@@ -100,7 +99,6 @@ public class GLPathwayContentCreator {
 
 		pathwayItemManager = PathwayItemManager.get();
 
-		pixelGLConverter = glPathwayView.getPixelGLConverter();
 	}
 
 	public void init(final GL2 gl, SelectionManager vertexSelectionManager) {
@@ -115,7 +113,7 @@ public class GLPathwayContentCreator {
 		this.vertexSelectionManager = vertexSelectionManager;
 	}
 
-	public void buildPathwayDisplayList(final GL2 gl, final IUniqueObject containingView, final PathwayGraph pathway) {
+	public void buildPathwayDisplayList(final GL2 gl, final PathwayGraph pathway) {
 
 		if (pathway == null)
 			return;
@@ -136,7 +134,7 @@ public class GLPathwayContentCreator {
 		createSelectedSamplesVA();
 
 		gl.glNewList(iVerticesDisplayListId, GL2.GL_COMPILE);
-		extractVertices(gl, containingView, pathway);
+		renderVertices(gl, pathway);
 		gl.glEndList();
 
 		if (hashPathway2EdgesDisplayListId.containsKey(pathway)) {
@@ -155,8 +153,8 @@ public class GLPathwayContentCreator {
 	}
 
 	/**
-	 * Creates a sample va based on various state, or sets the sample va to null
-	 * if no data is set.
+	 * Creates a sample va based on the state of
+	 * {@link GLPathway#getSampleMappingMode()}
 	 */
 	private void createSelectedSamplesVA() {
 		if (glPathwayView.getDataDomain() == null) {
@@ -167,20 +165,27 @@ public class GLPathwayContentCreator {
 		List<Integer> selectedSamplesArray = new ArrayList<Integer>();
 
 		// Only add selected samples for single pathway
-		if (!glPathwayView.isRenderedRemote() && selectedSamples != null && !selectedSamples.isEmpty()) {
-			selectedSamplesArray.addAll(selectedSamples);
-		}
-		else {
-			// if no sample is currently selected, we add all samples for
-			// calculating the average
-			if (selectedSamplesArray.size() == 0) {
+		switch (glPathwayView.getSampleMappingMode()) {
+			case ALL:
 				if (!glPathwayView.getDataDomain().isGeneRecord())
 					selectedSamplesArray.addAll(glPathwayView.getTablePerspective().getRecordPerspective()
 							.getVirtualArray().getIDs());
 				else
 					selectedSamplesArray.addAll(glPathwayView.getTablePerspective().getDimensionPerspective()
 							.getVirtualArray().getIDs());
-			}
+				break;
+
+			case SELECTED:
+				selectedSamplesArray.addAll(selectedSamples);
+				break;
+			default:
+				throw new IllegalStateException("Unknown state when switching " + glPathwayView.getSampleMappingMode());
+		}
+
+		if (selectedSamplesArray.isEmpty()) {
+
+			selectedSamplesVA = null;
+			return;
 		}
 
 		if (!glPathwayView.getDataDomain().isGeneRecord())
@@ -229,8 +234,10 @@ public class GLPathwayContentCreator {
 
 		enzymeNodeDisplayListId = gl.glGenLists(1);
 
-		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_WIDTH);
-		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_HEIGHT);
+		float nodeWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
+				PathwayRenderStyle.ENZYME_NODE_WIDTH);
+		float nodeHeight = glPathwayView.getPixelGLConverter().getGLHeightForPixelHeight(
+				PathwayRenderStyle.ENZYME_NODE_HEIGHT);
 
 		gl.glNewList(enzymeNodeDisplayListId, GL2.GL_COMPILE);
 		fillNodeDisplayList(gl, nodeWidth + 0.002f, nodeHeight);
@@ -241,8 +248,10 @@ public class GLPathwayContentCreator {
 
 		upscaledFilledEnzymeNodeDisplayListId = gl.glGenLists(1);
 
-		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_WIDTH);
-		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_HEIGHT);
+		float nodeWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
+				PathwayRenderStyle.ENZYME_NODE_WIDTH);
+		float nodeHeight = glPathwayView.getPixelGLConverter().getGLHeightForPixelHeight(
+				PathwayRenderStyle.ENZYME_NODE_HEIGHT);
 
 		float scaleFactor = 3;
 		nodeWidth *= scaleFactor;
@@ -257,8 +266,10 @@ public class GLPathwayContentCreator {
 
 		upscaledFramedEnzymeNodeDisplayListID = gl.glGenLists(1);
 
-		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_WIDTH);
-		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_HEIGHT);
+		float nodeWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
+				PathwayRenderStyle.ENZYME_NODE_WIDTH);
+		float nodeHeight = glPathwayView.getPixelGLConverter().getGLHeightForPixelHeight(
+				PathwayRenderStyle.ENZYME_NODE_HEIGHT);
 
 		float scaleFactor = 1.4f;
 		nodeWidth *= scaleFactor;
@@ -273,8 +284,10 @@ public class GLPathwayContentCreator {
 
 		framedEnzymeNodeDisplayListId = gl.glGenLists(1);
 
-		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_WIDTH);
-		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_HEIGHT);
+		float nodeWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
+				PathwayRenderStyle.ENZYME_NODE_WIDTH);
+		float nodeHeight = glPathwayView.getPixelGLConverter().getGLHeightForPixelHeight(
+				PathwayRenderStyle.ENZYME_NODE_HEIGHT);
 
 		gl.glNewList(framedEnzymeNodeDisplayListId, GL2.GL_COMPILE);
 		fillNodeDisplayListFrame(gl, nodeWidth + 0.02f, nodeHeight);
@@ -331,14 +344,18 @@ public class GLPathwayContentCreator {
 		gl.glEnd();
 	}
 
-	private void extractVertices(final GL2 gl, final IUniqueObject containingView, PathwayGraph pathwayToExtract) {
+	/**
+	 * Iterates over all vertices in the pathway and renders the augmentations
+	 * of the vertex reps
+	 */
+	private void renderVertices(final GL2 gl, PathwayGraph pathway) {
 
-		for (PathwayVertexRep vertexRep : pathwayToExtract.vertexSet()) {
+		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
 			if (vertexRep == null) {
 				continue;
 			}
 
-			createVertex(gl, containingView, vertexRep, pathwayToExtract);
+			renderVertex(gl, vertexRep);
 		}
 	}
 
@@ -360,13 +377,12 @@ public class GLPathwayContentCreator {
 		// }
 	}
 
-	private void createVertex(final GL2 gl, final IUniqueObject containingView, PathwayVertexRep vertexRep,
-			PathwayGraph containingPathway) {
+	private void renderVertex(final GL2 gl, PathwayVertexRep vertexRep) {
 
 		float[] tmpNodeColor = null;
 
-		gl.glPushName(generalManager.getViewManager().getPickingManager()
-				.getPickingID(containingView.getID(), EPickingType.PATHWAY_ELEMENT_SELECTION.name(), vertexRep.getID()));
+		gl.glPushName(glPathwayView.getPickingManager().getPickingID(glPathwayView.getID(),
+				EPickingType.PATHWAY_ELEMENT_SELECTION.name(), vertexRep.getID()));
 
 		EPathwayVertexShape shape = vertexRep.getShapeType();
 
@@ -465,7 +481,6 @@ public class GLPathwayContentCreator {
 				// new kegg data assign enzymes without mapping to "undefined"
 				// which we represent as other
 			case other:
-
 				gl.glLineWidth(1);
 				if (enableGeneMapping) {
 
@@ -493,7 +508,7 @@ public class GLPathwayContentCreator {
 							float x = pixelGLConverter.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_WIDTH) - 0.01f;
 							float y = -pixelGLConverter
 									.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_HEIGHT) + 0.004f;
-							if (!stdDev.isNaN()) {
+							if (!stdDev.isNaN() && selectedSamplesVA.size() > 1) {
 
 								// opaque background
 								gl.glColor4f(1, 1, 1, 1f);
@@ -850,7 +865,7 @@ public class GLPathwayContentCreator {
 
 	private Average getExpressionAverage(PathwayVertexRep vertexRep) {
 
-		if (selectedSamplesVA == null)
+		if (selectedSamplesVA == null || selectedSamplesVA.size() == 0)
 			return null;
 
 		List<Integer> mappedDavidIds = pathwayItemManager.getDavidIDsByPathwayVertexRep(vertexRep);

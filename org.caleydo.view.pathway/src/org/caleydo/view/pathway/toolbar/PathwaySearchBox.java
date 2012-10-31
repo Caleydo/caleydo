@@ -63,7 +63,7 @@ public class PathwaySearchBox
 	protected Control createControl(Composite parent) {
 
 		final SearchBox pathwaySearchBox = new SearchBox(parent, SWT.BORDER);
-
+		pathwaySearchBox.setToolTipText("Select which pathway to show");
 		String items[] = { "No pathways available!" };
 		pathwaySearchBox.setItems(items);
 		pathwaySearchBox.setTextLimit(90);

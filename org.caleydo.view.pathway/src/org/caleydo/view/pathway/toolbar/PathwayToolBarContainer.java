@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -37,7 +37,8 @@ import org.caleydo.view.pathway.toolbar.actions.SelectPathAction;
  * 
  * @author Marc Streit
  */
-public class PathwayToolBarContainer extends ToolBarContainer {
+public class PathwayToolBarContainer
+	extends ToolBarContainer {
 
 	/** Mediator to handle actions triggered by the contributed elements */
 	PathwayToolBarMediator pathwayToolBarMediator;
@@ -53,17 +54,18 @@ public class PathwayToolBarContainer extends ToolBarContainer {
 
 		List<IToolBarItem> elements = new ArrayList<IToolBarItem>();
 		SerializedPathwayView serializedView = (SerializedPathwayView) getTargetViewData();
-		
-		
-		
-		SelectPathAction selectPathAction= new SelectPathAction(serializedView.isPathSelectionMode());
+
+		SelectPathAction selectPathAction = new SelectPathAction(serializedView.isPathSelectionMode());
 		AGLView view = GeneralManager.get().getViewManager().getGLView(this.getTargetViewData().getViewID());
-		if(view instanceof GLPathway)
-			((GLPathway)view).setSelectPathAction(selectPathAction);		
-		elements.add(selectPathAction);	
-		
+		if (view instanceof GLPathway)
+			((GLPathway) view).setSelectPathAction(selectPathAction);
+		elements.add(selectPathAction);
+
 		elements.add(new ClearPathAction());
-		
+
+		SampleSelectionMode sampleSelectionMode = new SampleSelectionMode("Select which Samples to map");
+		elements.add(sampleSelectionMode);
+
 		DatasetSelectionBox dataSelectionBox = new DatasetSelectionBox("Select Data");
 		elements.add(dataSelectionBox);
 
@@ -71,8 +73,7 @@ public class PathwayToolBarContainer extends ToolBarContainer {
 		pathwaySearchBox.setPathwayToolBarMediator(pathwayToolBarMediator);
 		elements.add(pathwaySearchBox);
 
-		elements.add(new OpenOnlineHelpAction(
-				"http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/pathways",
+		elements.add(new OpenOnlineHelpAction("http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/pathways",
 				false));
 
 		// AGLView view = GeneralManager.get().getViewManager()

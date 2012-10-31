@@ -30,8 +30,6 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.pathway.GLPathway;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -49,7 +47,7 @@ public class DatasetSelectionBox
 	extends ControlContribution
 	implements IToolBarItem {
 
-	public static final int TOOLBAR_WIDTH = 700;
+	public static final int TOOLBAR_WIDTH = 300;
 
 	/** mediator to handle actions triggered by the contributed element */
 	private PathwayToolBarMediator pathwayToolBarMediator;
@@ -70,6 +68,7 @@ public class DatasetSelectionBox
 
 		dataSetChooser = new Combo(parent, SWT.BORDER);
 		dataSetChooser.setText("Choose data set");
+		dataSetChooser.setToolTipText("Select which dataset should be used for mapping experimental data onto the nodes of the pathway.");
 		GridData gd = new GridData(SWT.RIGHT, SWT.TOP, false, false);
 		gd.widthHint = 120;
 		dataSetChooser.setLayoutData(gd);
@@ -85,12 +84,7 @@ public class DatasetSelectionBox
 
 		dataSetChooser.setItems(datasetNames);
 		dataSetChooser.select(0);
-		dataSetChooser.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-
-			}
-		});
+	
 
 		dataSetChooser.addSelectionListener(new SelectionAdapter() {
 			@Override
