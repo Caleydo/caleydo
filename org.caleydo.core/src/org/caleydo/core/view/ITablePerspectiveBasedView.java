@@ -27,6 +27,7 @@ import java.util.List;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.event.IListenerOwner;
 
 /**
  * <p>
@@ -40,7 +41,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
  * 
  * @author Alexander Lex
  */
-public interface ITablePerspectiveBasedView extends IView {
+public interface ITablePerspectiveBasedView extends IView, IListenerOwner {
 
 	/**
 	 * Returns all {@link TablePerspective}s that this view and all of its

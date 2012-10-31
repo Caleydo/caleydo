@@ -78,8 +78,6 @@ public class GLPathwayContentCreator {
 
 	private PathwayItemManager pathwayItemManager;
 
-	private GeneticDataDomain geneticDataDomain;
-
 	private DataRepresentation dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
 	private VirtualArray<?, ?, ?> selectedSamplesVA;
@@ -101,8 +99,6 @@ public class GLPathwayContentCreator {
 		selectedEdgeRepId = new ArrayList<Integer>();
 
 		pathwayItemManager = PathwayItemManager.get();
-
-		geneticDataDomain = (GeneticDataDomain) glPathwayView.getDataDomain();
 
 		pixelGLConverter = glPathwayView.getPixelGLConverter();
 	}
@@ -178,7 +174,7 @@ public class GLPathwayContentCreator {
 			// if no sample is currently selected, we add all samples for
 			// calculating the average
 			if (selectedSamplesArray.size() == 0) {
-				if (!geneticDataDomain.isGeneRecord())
+				if (!glPathwayView.getDataDomain().isGeneRecord())
 					selectedSamplesArray.addAll(glPathwayView.getTablePerspective().getRecordPerspective()
 							.getVirtualArray().getIDs());
 				else
@@ -187,7 +183,7 @@ public class GLPathwayContentCreator {
 			}
 		}
 
-		if (!geneticDataDomain.isGeneRecord())
+		if (!glPathwayView.getDataDomain().isGeneRecord())
 			selectedSamplesVA = new RecordVirtualArray(glPathwayView.getSampleSelectionManager().getIDType(),
 					selectedSamplesArray);
 		else
@@ -774,66 +770,67 @@ public class GLPathwayContentCreator {
 
 	}
 
-//	private void createEdge(final GL2 gl, PathwayRelationEdgeRep edgeRep, PathwayGraph containingPathway) {
+	// private void createEdge(final GL2 gl, PathwayRelationEdgeRep edgeRep,
+	// PathwayGraph containingPathway) {
 
-		// List<IGraphItem> listGraphItemsIn = edgeRep
-		// .getAllItemsByProp(EGraphItemProperty.INCOMING);
-		// List<IGraphItem> listGraphItemsOut = edgeRep
-		// .getAllItemsByProp(EGraphItemProperty.OUTGOING);
-		//
-		// if (listGraphItemsIn.isEmpty() || listGraphItemsOut.isEmpty())
-		// return;
-		//
-		// float[] tmpColor;
-		// float fReactionLineOffset = 0;
-		//
-		// // Check if edge is a reaction
-		// if (edgeRep instanceof PathwayReactionEdgeGraphItemRep) {
-		// tmpColor = PathwayRenderStyle.REACTION_EDGE_COLOR;
-		// fReactionLineOffset = 0.01f;
-		// }
-		// // Check if edge is a relation
-		// else if (edgeRep instanceof PathwayRelationEdgeGraphItemRep) {
-		// tmpColor = PathwayRenderStyle.RELATION_EDGE_COLOR;
-		// } else {
-		// tmpColor = new float[] { 0, 0, 0, 0 };
-		// }
-		//
-		// gl.glLineWidth(4);
-		// gl.glColor4fv(tmpColor, 0);
-		// gl.glBegin(GL2.GL_LINES);
-		//
-		// Iterator<IGraphItem> iterSourceGraphItem =
-		// listGraphItemsIn.iterator();
-		// Iterator<IGraphItem> iterTargetGraphItem =
-		// listGraphItemsOut.iterator();
-		//
-		// PathwayVertexGraphItemRep tmpSourceGraphItem;
-		// PathwayVertexGraphItemRep tmpTargetGraphItem;
-		// while (iterSourceGraphItem.hasNext()) {
-		//
-		// tmpSourceGraphItem = (PathwayVertexGraphItemRep)
-		// iterSourceGraphItem.next();
-		//
-		// while (iterTargetGraphItem.hasNext()) {
-		// tmpTargetGraphItem = (PathwayVertexGraphItemRep) iterTargetGraphItem
-		// .next();
-		//
-		// gl.glVertex3f(tmpSourceGraphItem.getXOrigin()
-		// * PathwayRenderStyle.SCALING_FACTOR_X + fReactionLineOffset,
-		// -tmpSourceGraphItem.getYOrigin()
-		// * PathwayRenderStyle.SCALING_FACTOR_Y
-		// + fReactionLineOffset, 0.02f);
-		// gl.glVertex3f(tmpTargetGraphItem.getXOrigin()
-		// * PathwayRenderStyle.SCALING_FACTOR_X + fReactionLineOffset,
-		// -tmpTargetGraphItem.getYOrigin()
-		// * PathwayRenderStyle.SCALING_FACTOR_Y
-		// + fReactionLineOffset, 0.02f);
-		// }
-		// }
-		//
-		// gl.glEnd();
-//	}
+	// List<IGraphItem> listGraphItemsIn = edgeRep
+	// .getAllItemsByProp(EGraphItemProperty.INCOMING);
+	// List<IGraphItem> listGraphItemsOut = edgeRep
+	// .getAllItemsByProp(EGraphItemProperty.OUTGOING);
+	//
+	// if (listGraphItemsIn.isEmpty() || listGraphItemsOut.isEmpty())
+	// return;
+	//
+	// float[] tmpColor;
+	// float fReactionLineOffset = 0;
+	//
+	// // Check if edge is a reaction
+	// if (edgeRep instanceof PathwayReactionEdgeGraphItemRep) {
+	// tmpColor = PathwayRenderStyle.REACTION_EDGE_COLOR;
+	// fReactionLineOffset = 0.01f;
+	// }
+	// // Check if edge is a relation
+	// else if (edgeRep instanceof PathwayRelationEdgeGraphItemRep) {
+	// tmpColor = PathwayRenderStyle.RELATION_EDGE_COLOR;
+	// } else {
+	// tmpColor = new float[] { 0, 0, 0, 0 };
+	// }
+	//
+	// gl.glLineWidth(4);
+	// gl.glColor4fv(tmpColor, 0);
+	// gl.glBegin(GL2.GL_LINES);
+	//
+	// Iterator<IGraphItem> iterSourceGraphItem =
+	// listGraphItemsIn.iterator();
+	// Iterator<IGraphItem> iterTargetGraphItem =
+	// listGraphItemsOut.iterator();
+	//
+	// PathwayVertexGraphItemRep tmpSourceGraphItem;
+	// PathwayVertexGraphItemRep tmpTargetGraphItem;
+	// while (iterSourceGraphItem.hasNext()) {
+	//
+	// tmpSourceGraphItem = (PathwayVertexGraphItemRep)
+	// iterSourceGraphItem.next();
+	//
+	// while (iterTargetGraphItem.hasNext()) {
+	// tmpTargetGraphItem = (PathwayVertexGraphItemRep) iterTargetGraphItem
+	// .next();
+	//
+	// gl.glVertex3f(tmpSourceGraphItem.getXOrigin()
+	// * PathwayRenderStyle.SCALING_FACTOR_X + fReactionLineOffset,
+	// -tmpSourceGraphItem.getYOrigin()
+	// * PathwayRenderStyle.SCALING_FACTOR_Y
+	// + fReactionLineOffset, 0.02f);
+	// gl.glVertex3f(tmpTargetGraphItem.getXOrigin()
+	// * PathwayRenderStyle.SCALING_FACTOR_X + fReactionLineOffset,
+	// -tmpTargetGraphItem.getYOrigin()
+	// * PathwayRenderStyle.SCALING_FACTOR_Y
+	// + fReactionLineOffset, 0.02f);
+	// }
+	// }
+	//
+	// gl.glEnd();
+	// }
 
 	public void renderPathway(final GL2 gl, final PathwayGraph pathway, boolean bRenderLabels) {
 		if (enableEdgeRendering || !selectedEdgeRepId.isEmpty()) {
@@ -861,13 +858,14 @@ public class GLPathwayContentCreator {
 		for (Integer davidID : mappedDavidIds) {
 			{
 				Set<Integer> expressionIndices = idMappingManager.<Integer, Integer> getIDAsSet(glPathwayView
-						.getPathwayDataDomain().getDavidIDType(), geneticDataDomain.getGeneIDType(), davidID);
+						.getPathwayDataDomain().getDavidIDType(), glPathwayView.getDataDomain().getGeneIDType(),
+						davidID);
 				if (expressionIndices == null)
 					continue;
 
 				for (Integer expressionIndex : expressionIndices) {
-					Average average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA,
-							geneticDataDomain.getTable(), expressionIndex);
+					Average average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA, glPathwayView
+							.getDataDomain().getTable(), expressionIndex);
 
 					return average;
 				}
@@ -890,8 +888,8 @@ public class GLPathwayContentCreator {
 
 	public void switchDataRepresentation() {
 		if (dimensionDataRepresentation.equals(DataRepresentation.NORMALIZED)) {
-			if (!geneticDataDomain.getTable().containsFoldChangeRepresentation())
-				geneticDataDomain.getTable().createFoldChangeRepresentation();
+			if (!glPathwayView.getDataDomain().getTable().containsFoldChangeRepresentation())
+				glPathwayView.getDataDomain().getTable().createFoldChangeRepresentation();
 			dimensionDataRepresentation = DataRepresentation.FOLD_CHANGE_NORMALIZED;
 		}
 		else

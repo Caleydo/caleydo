@@ -54,13 +54,18 @@ public class PathwayToolBarContainer extends ToolBarContainer {
 		List<IToolBarItem> elements = new ArrayList<IToolBarItem>();
 		SerializedPathwayView serializedView = (SerializedPathwayView) getTargetViewData();
 		
+		
+		
 		SelectPathAction selectPathAction= new SelectPathAction(serializedView.isPathSelectionMode());
 		AGLView view = GeneralManager.get().getViewManager().getGLView(this.getTargetViewData().getViewID());
 		if(view instanceof GLPathway)
-			((GLPathway)view).setSelectPathAction(selectPathAction);
+			((GLPathway)view).setSelectPathAction(selectPathAction);		
+		elements.add(selectPathAction);	
 		
-		elements.add(selectPathAction);				
 		elements.add(new ClearPathAction());
+		
+		DatasetSelectionBox dataSelectionBox = new DatasetSelectionBox("Select Data");
+		elements.add(dataSelectionBox);
 
 		PathwaySearchBox pathwaySearchBox = new PathwaySearchBox("");
 		pathwaySearchBox.setPathwayToolBarMediator(pathwayToolBarMediator);

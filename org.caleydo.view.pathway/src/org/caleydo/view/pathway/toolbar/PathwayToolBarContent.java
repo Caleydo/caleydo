@@ -37,6 +37,12 @@ public class PathwayToolBarContent extends AToolBarContent {
 	public static final String PATHWAY_VIEW_TITLE = "Pathways";
 
 	PathwayToolBarMediator mediator;
+	
+	/**
+	 * Default Constructor
+	 */
+	public PathwayToolBarContent() {
+	}
 
 	@Override
 	public Class<?> getViewClass() {

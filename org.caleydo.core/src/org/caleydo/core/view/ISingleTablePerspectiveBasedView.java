@@ -20,8 +20,10 @@
 package org.caleydo.core.view;
 
 import java.util.List;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.event.IListenerOwner;
 
 /**
  * Interface for views that use a single {@link TablePerspective}
@@ -31,7 +33,6 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
  */
 public interface ISingleTablePerspectiveBasedView extends ITablePerspectiveBasedView,
 		IDataDomainBasedView<ATableBasedDataDomain> {
-
 
 	/**
 	 * Set the data container for this view

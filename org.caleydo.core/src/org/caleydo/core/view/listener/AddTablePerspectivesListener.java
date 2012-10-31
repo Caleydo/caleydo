@@ -28,6 +28,8 @@ import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
+import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
+import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
 /**
@@ -38,7 +40,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
  * 
  */
 public class AddTablePerspectivesListener extends
-		AEventListener<IMultiTablePerspectiveBasedView> {
+		AEventListener<ITablePerspectiveBasedView> {
 
 	@Override
 	public void handleEvent(AEvent event) {
@@ -63,7 +65,29 @@ public class AddTablePerspectivesListener extends
 					e.setSender(this);
 					GeneralManager.get().getEventPublisher().triggerEvent(e);
 				} else {
-					handler.addTablePerspectives(validTablePerspectives);
+
+					if (handler instanceof IMultiTablePerspectiveBasedView) {
+						((IMultiTablePerspectiveBasedView) handler)
+								.addTablePerspectives(validTablePerspectives);
+					} else if (handler instanceof ISingleTablePerspectiveBasedView) {
+						ISingleTablePerspectiveBasedView view = ((ISingleTablePerspectiveBasedView) handler);
+						if (validTablePerspectives.isEmpty()) {
+							return;
+
+						}
+						if (validTablePerspectives.size() > 1) {
+							throw new IllegalStateException(
+									"Tried to set multiple perspectives ("
+											+ validTablePerspectives.toString()
+											+ ")s for a single table perspective view ("
+											+ view.toString() + ")");
+						}
+
+					view
+								.setTablePerspective(validTablePerspectives.get(0));
+					view.setDataDomain(validTablePerspectives.get(0).getDataDomain());
+
+					}
 				}
 			}
 		}

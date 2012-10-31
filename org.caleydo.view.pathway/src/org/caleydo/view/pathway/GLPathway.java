@@ -49,6 +49,7 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.events.RecordVADeltaEvent;
+import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.SwitchDataRepresentationEvent;
 import org.caleydo.core.event.view.pathway.LoadPathwayEvent;
@@ -59,6 +60,8 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.ColorManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
+import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
+import org.caleydo.core.view.listener.AddTablePerspectivesListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -127,7 +130,7 @@ public class GLPathway
 
 	private TablePerspective tablePerspective;
 
-	protected PathwayDataDomain pathwayDataDomain;
+	private PathwayDataDomain pathwayDataDomain;
 
 	private PathwayGraph pathway;
 
@@ -167,11 +170,12 @@ public class GLPathway
 	private Vec3f vecScaling;
 	private Vec3f vecTranslation;
 
-	protected EnableGeneMappingListener enableGeneMappingListener;
-	protected SwitchDataRepresentationListener switchDataRepresentationListener;
-	protected EnRoutePathEventListener enRoutePathEventListener;
-	protected SelectPathModeEventListener selectPathModeEventListener;
-	protected ClearPathEventListener clearPathEventListener;
+	private EnableGeneMappingListener enableGeneMappingListener;
+	private SwitchDataRepresentationListener switchDataRepresentationListener;
+	private EnRoutePathEventListener enRoutePathEventListener;
+	private SelectPathModeEventListener selectPathModeEventListener;
+	private ClearPathEventListener clearPathEventListener;
+	private AddTablePerspectivesListener addTablePerspectivesListener;
 
 	private IPickingListener pathwayElementPickingListener;
 
@@ -190,7 +194,7 @@ public class GLPathway
 	private SetOutline setOutline;
 	private AbstractShapeGenerator shaper;
 	private CanvasComponent bubblesetCanvas;
-	Texture bubbleSetsTexture;
+	private Texture bubbleSetsTexture;
 	private boolean isBubbleTextureDirty;
 	private boolean isPathStartSelected = false;
 
@@ -280,13 +284,6 @@ public class GLPathway
 
 		this.pathway = pathway;
 		isPathwayDataDirty = true;
-	}
-
-	@Override
-	public void setTablePerspective(TablePerspective tablePerspective) {
-		this.tablePerspective = tablePerspective;
-		if (tablePerspective instanceof PathwayTablePerspective)
-			pathway = ((PathwayTablePerspective) tablePerspective).getPathway();
 	}
 
 	public void setPathway(final int iPathwayID) {
@@ -1127,6 +1124,10 @@ public class GLPathway
 		clearPathEventListener = new ClearPathEventListener();
 		clearPathEventListener.setHandler(this);
 		eventPublisher.addListener(ClearPathEvent.class, clearPathEventListener);
+
+		addTablePerspectivesListener = new AddTablePerspectivesListener();
+		addTablePerspectivesListener.setHandler(this);
+		eventPublisher.addListener(AddTablePerspectivesEvent.class, addTablePerspectivesListener);
 	}
 
 	@Override
@@ -1156,6 +1157,11 @@ public class GLPathway
 		if (clearPathEventListener != null) {
 			eventPublisher.removeListener(clearPathEventListener);
 			clearPathEventListener = null;
+		}
+
+		if (addTablePerspectivesListener != null) {
+			eventPublisher.removeListener(addTablePerspectivesListener);
+			addTablePerspectivesListener = null;
 		}
 
 		metaboliteSelectionManager.unregisterEventListeners();
@@ -1224,11 +1230,24 @@ public class GLPathway
 		}
 		sampleSelectionManager = new EventBasedSelectionManager(this,
 				((GeneticDataDomain) dataDomain).getSampleIDType());
+		setDisplayListDirty();
 
 	}
 
 	@Override
-	public ATableBasedDataDomain getDataDomain() {
+	public void setTablePerspective(TablePerspective tablePerspective) {
+		this.tablePerspective = tablePerspective;
+		if (tablePerspective instanceof PathwayTablePerspective)
+			pathway = ((PathwayTablePerspective) tablePerspective).getPathway();
+
+		setDisplayListDirty();
+		DataDomainUpdateEvent event = new DataDomainUpdateEvent(tablePerspective.getDataDomain());
+		eventPublisher.triggerEvent(event);
+
+	}
+
+	@Override
+	public GeneticDataDomain getDataDomain() {
 		return dataDomain;
 	}
 

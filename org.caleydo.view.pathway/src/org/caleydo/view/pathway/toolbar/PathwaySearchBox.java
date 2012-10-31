@@ -48,7 +48,7 @@ public class PathwaySearchBox
 	public static final int TOOLBAR_WIDTH = 700;
 
 	/** mediator to handle actions triggered by the contributed element */
-	PathwayToolBarMediator pathwayToolBarMediator;
+	private PathwayToolBarMediator pathwayToolBarMediator;
 
 	/**
 	 * constructor as requested by ControlContribution
@@ -87,8 +87,7 @@ public class PathwaySearchBox
 					// sArSearchItems[iIndex] = pathway.getType().toString()
 					// + " - " + sPathwayTitle;
 
-					searchItems[iIndex] = sPathwayTitle + " (" + pathway.getType().getName()
-							+ ")";
+					searchItems[iIndex] = sPathwayTitle + " (" + pathway.getType().getName() + ")";
 					iIndex++;
 				}
 
@@ -100,8 +99,7 @@ public class PathwaySearchBox
 		pathwaySearchBox.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				String sSearchEntity = pathwaySearchBox.getItem(pathwaySearchBox
-						.getSelectionIndex());
+				String sSearchEntity = pathwaySearchBox.getItem(pathwaySearchBox.getSelectionIndex());
 				// sSearchEntity = sSearchEntity.substring(0,
 				// sSearchEntity.indexOf(" ("));
 
@@ -160,8 +158,7 @@ public class PathwaySearchBox
 
 		entity = entity.substring(0, entity.indexOf(" ("));
 
-		PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(entity,
-				ePathwayDatabaseType);
+		PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(entity, ePathwayDatabaseType);
 
 		if (pathway == null)
 			return false;
