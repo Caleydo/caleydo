@@ -571,7 +571,7 @@ public class GLHistogram
 			case HIGH:
 				return 300;
 			case MEDIUM:
-				return 150;
+				return 100;
 			case LOW:
 				return 40;
 			default:
@@ -585,7 +585,7 @@ public class GLHistogram
 			case HIGH:
 				return 300;
 			case MEDIUM:
-				return 150;
+				return 100;
 			case LOW:
 				return 40;
 			default:
