@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  * 
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.pathway;
 
@@ -143,9 +140,8 @@ public class GLPathway
 	private PathwayItemManager pathwayItemManager;
 
 	/**
-	 * The maximal number of paths in the pathway that are looked up. The user
-	 * specifies from which source to which destination node the search will be
-	 * triggered.
+	 * The maximal number of paths in the pathway that are looked up. The user specifies from which source to which
+	 * destination node the search will be triggered.
 	 */
 	private final static int MAX_PATHS = 10;
 
@@ -162,16 +158,14 @@ public class GLPathway
 	private ESampleMappingMode sampleMappingMode = ESampleMappingMode.ALL;
 
 	/**
-	 * Selection manager for metabolites (compounds). Uses the hash value of
-	 * compound names as id.
+	 * Selection manager for metabolites (compounds). Uses the hash value of compound names as id.
 	 */
 	private EventBasedSelectionManager metaboliteSelectionManager;
 
 	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 	/**
-	 * Own texture manager is needed for each GL2 context, because textures
-	 * cannot be bound to multiple GL2 contexts.
+	 * Own texture manager is needed for each GL2 context, because textures cannot be bound to multiple GL2 contexts.
 	 */
 	private HashMap<GL, GLPathwayTextureManager> hashGLcontext2TextureManager;
 
@@ -596,21 +590,11 @@ public class GLPathway
 			initPathwayData(gl);
 
 		pickingManager.handlePicking(this, gl);
-		if (isDisplayListDirty) {
-			rebuildPathwayDisplayList(gl, displayListIndex);
-			isDisplayListDirty = false;
-		}
 		display(gl);
 	}
 
 	@Override
 	public void displayRemote(final GL2 gl) {
-
-		if (isDisplayListDirty) {
-			calculatePathwayScaling(gl, pathway);
-			rebuildPathwayDisplayList(gl, displayListIndex);
-			isDisplayListDirty = false;
-		}
 
 		display(gl);
 
@@ -619,6 +603,12 @@ public class GLPathway
 	@Override
 	public void display(final GL2 gl) {
 		checkForHits(gl);
+
+		if (isDisplayListDirty) {
+			calculatePathwayScaling(gl, pathway);
+			rebuildPathwayDisplayList(gl, displayListIndex);
+			isDisplayListDirty = false;
+		}
 
 		if (pathway != null) {
 			// TODO: also put this in global DL
@@ -943,15 +933,6 @@ public class GLPathway
 		// gl.glEndList();
 	}
 
-	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-		super.reshape(drawable, x, y, width, height);
-
-		setDisplayListDirty();
-		
-		// System.out.println("Frustum: " + viewFrustum);
-	}
-
 	private void calculatePathwayScaling(final GL2 gl, final PathwayGraph pathway) {
 
 		if (hashGLcontext2TextureManager.get(gl) == null)
@@ -975,6 +956,7 @@ public class GLPathway
 		boolean pathwayFitsViewFrustum = true;
 
 		if (isRenderedRemote()) {
+
 			if (viewFrustumAspectRatio < pathwayAspectRatio && pathwayWidth > viewFrustumWidth) {
 
 				vecScaling.setX((viewFrustum.getRight() - viewFrustum.getLeft()) / pathwayWidth);
@@ -985,6 +967,7 @@ public class GLPathway
 						(viewFrustum.getTop() - viewFrustum.getBottom() - pathwayHeight * vecScaling.y()) / 2.0f, 0);
 				pathwayFitsViewFrustum = false;
 			}
+
 			if (viewFrustumAspectRatio >= pathwayAspectRatio && pathwayHeight > viewFrustumHeight) {
 
 				vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom()) / pathwayHeight);
@@ -1004,6 +987,15 @@ public class GLPathway
 			}
 		}
 
+		// Center pathway in x direction
+		if (pathwayWidth < viewFrustumWidth) {
+			vecTranslation.setX((viewFrustumWidth - pathwayWidth) / 2.0f);
+		}
+
+		// Center pathway in y direction
+		if (pathwayHeight < viewFrustumWidth) {
+			vecTranslation.setY((viewFrustumHeight - pathwayHeight) / 2.0f);
+		}
 	}
 
 	public void enableGeneMapping(final boolean enableGeneMapping) {
@@ -1562,8 +1554,7 @@ public class GLPathway
 	}
 
 	/**
-	 * @return the metaboliteSelectionManager, see
-	 *         {@link #metaboliteSelectionManager}
+	 * @return the metaboliteSelectionManager, see {@link #metaboliteSelectionManager}
 	 */
 	public EventBasedSelectionManager getMetaboliteSelectionManager() {
 		return metaboliteSelectionManager;
@@ -1630,7 +1621,6 @@ public class GLPathway
 	public ESampleMappingMode getSampleMappingMode() {
 		return sampleMappingMode;
 	}
-	
 
 	@Override
 	public Set<IDataDomain> getDataDomains() {
