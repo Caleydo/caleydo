@@ -28,10 +28,10 @@ public class PathwayRenderStyle
 
 	public static final int neighborhoodNodeColorArraysize = 4;
 
-	public static final int ENZYME_NODE_WIDTH = 45;
-	public static final int ENZYME_NODE_HEIGHT = 17;
-	public static final int COMPOUND_NODE_WIDTH = 8;
-	public static final int COMPOUND_NODE_HEIGHT = 8;
+	public static final int ENZYME_NODE_PIXEL_WIDTH = 45;
+	public static final int ENZYME_NODE_PIXEL_HEIGHT = 17;
+	public static final int COMPOUND_NODE_PIXEL_WIDTH = 8;
+	public static final int COMPOUND_NODE_PIXEL_HEIGHT = 8;
 	
 	public static final float Z_OFFSET = 0.01f;
 
@@ -46,7 +46,7 @@ public class PathwayRenderStyle
 	public static final float[] PATH_COLOR = new float[] { 1, 1, 1, 0.3f };
 
 	public static final float[] STD_DEV_COLOR = new float[] { 49f / 255f, 163f / 255, 84f / 255, 1f };
-	public static final float STD_DEV_BAR_WIDTH = 0.028f;
+	public static final int STD_DEV_BAR_PIXEL_WIDTH = 6;
 
 	/**
 	 * The color of the neighborhood node with the distance to the clicked node

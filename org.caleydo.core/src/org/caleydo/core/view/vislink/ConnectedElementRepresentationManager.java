@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.EventPublisher;
@@ -400,9 +402,9 @@ public class ConnectedElementRepresentationManager
 	}
 
 	public void doViewRelatedTransformation(GL2 gl, ISelectionTransformer transformer) {
-		boolean newTransformedPoints = false;
-		newTransformedPoints = transformer.transform(sourceConnectionsByType,
-				transformedConnectionsByType);
+		// boolean newTransformedPoints = false;
+		// newTransformedPoints = transformer.transform(sourceConnectionsByType,
+		// transformedConnectionsByType);
 	}
 
 	/**

@@ -105,8 +105,8 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public abstract class AGLView extends AView implements GLEventListener, IResettableView,
-		IMouseWheelHandler {
+public abstract class AGLView extends AView implements GLEventListener,
+		IResettableView, IMouseWheelHandler {
 
 	public enum EBusyState {
 		SWITCH_OFF, ON, OFF
@@ -223,8 +223,9 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	protected AGLView(GLCanvas glCanvas, final Composite parentComposite,
 			final ViewFrustum viewFrustum, String viewType, String viewName) {
 
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW),
-				parentComposite, viewType, viewName);
+		super(GeneralManager.get().getIDCreator()
+				.createID(ManagedObjectType.GL_VIEW), parentComposite,
+				viewType, viewName);
 
 		parentGLCanvas = glCanvas;
 
@@ -342,13 +343,13 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 						parentGLCanvas.requestFocus();
 					}
 				});
-				
-//				Display.getDefault().asyncExec(new Runnable() {
-//					@Override
-//					public void run() {
-//						parentGLCanvas.requestFocus();
-//					}
-//				});
+
+				// Display.getDefault().asyncExec(new Runnable() {
+				// @Override
+				// public void run() {
+				// parentGLCanvas.requestFocus();
+				// }
+				// });
 
 			}
 
@@ -382,8 +383,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 			gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 
 			gl.glTranslatef(position.x(), position.y(), position.z());
-			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(),
-					rot_Vec3f.y(), rot_Vec3f.z());
+			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f),
+					rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
 
 			displayLocal(gl);
 
@@ -395,36 +396,20 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height) {
 
-		if (glRemoteRenderingView != null
-				|| this.getViewType().equals("org.caleydo.view.bucket")
-				|| this.getViewType().equals("org.caleydo.view.dataflipper")) {
-			viewFrustum.considerAspectRatio(true);
-		} else {
-			// normalize between 0 and 8
-			Rectangle frame = parentGLCanvas.getBounds();
-			viewFrustum.setLeft(0);
-			// viewFrustum.setRight(8);// frame.width / 100);
-			viewFrustum.setBottom(0);
-			float value = (float) frame.height / (float) frame.width * 8.0f;
+		viewFrustum.setLeft(0);
+		viewFrustum.setBottom(0);
+		aspectRatio = (float) height / (float) width;
+		viewFrustum.setTop(aspectRatio);
+		viewFrustum.setRight(1);		
 
-			// Special case for embedded heatmap in hierarchical heatmap
-			// if
-			// (this.getViewType().equals("org.caleydo.view.heatmap.hierarchical"))
-			// viewFrustum.setTop(5.51f);
-			// else
-			viewFrustum.setTop(value);
-
-			viewFrustum.setRight(8);
-
-			setDisplayListDirty();
-			hasFrustumChanged = true;
-		}
+		setDisplayListDirty();
+		hasFrustumChanged = true;
 
 		GL2 gl = drawable.getGL().getGL2();
 
-		aspectRatio = (float) height / (float) width;
 
 		gl.glViewport(x, y, width, height);
 		gl.glMatrixMode(GL2.GL_PROJECTION);
@@ -537,8 +522,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	@Override
 	public final synchronized void queueEvent(
 			AEventListener<? extends IListenerOwner> listener, AEvent event) {
-		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener,
-				event));
+		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(
+				listener, event));
 	}
 
 	/**
@@ -628,9 +613,10 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 	private void updateDetailMode() {
 		EDetailLevel newDetailLevel;
-		int pixelWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth());
-		int pixelHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
-				.getHeight());
+		int pixelWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum
+				.getWidth());
+		int pixelHeight = pixelGLConverter
+				.getPixelHeightForGLHeight(viewFrustum.getHeight());
 		if (pixelHeight > getMinPixelHeight(EDetailLevel.HIGH)
 				&& pixelWidth > getMinPixelWidth(EDetailLevel.HIGH)) {
 			newDetailLevel = EDetailLevel.HIGH;
@@ -684,17 +670,19 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 					PickingMode ePickingMode = tempPick.getPickingMode();
 
-					handlePicking(pickingType, ePickingMode, pickedObjectID, tempPick);
+					handlePicking(pickingType, ePickingMode, pickedObjectID,
+							tempPick);
 					// FIXME: This is for legacy support -> picking listeners
 					// should be used
 
 					try {
 						PickingType type = PickingType.valueOf(pickingType);
 						try {
-							handlePickingEvents(type, ePickingMode, pickedObjectID,
-									tempPick);
+							handlePickingEvents(type, ePickingMode,
+									pickedObjectID, tempPick);
 						} catch (Exception e) {
-							Logger.log(new Status(Status.ERROR, this.toString(),
+							Logger.log(new Status(Status.ERROR,
+									this.toString(),
 									"Caught exception when picking", e));
 						}
 					} catch (IllegalArgumentException e) {
@@ -712,7 +700,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	protected void handlePicking(String pickingType, PickingMode pickingMode,
 			int pickedObjectID, Pick pick) {
 
-		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
+		Set<IPickingListener> pickingListeners = typePickingListeners
+				.get(pickingType);
 
 		if (pickingListeners != null) {
 			for (IPickingListener pickingListener : pickingListeners) {
@@ -720,7 +709,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 			}
 		}
 
-		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
+		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners
+				.get(pickingType);
 		if (map == null)
 			return;
 
@@ -774,7 +764,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 */
 	public void addIDPickingListener(IPickingListener pickingListener,
 			String pickingType, int pickedObjectID) {
-		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
+		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners
+				.get(pickingType);
 		if (map == null) {
 			map = new HashMap<Integer, Set<IPickingListener>>();
 			idPickingListeners.put(pickingType, map);
@@ -809,7 +800,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 */
 	public void addTypePickingListener(IPickingListener pickingListener,
 			String pickingType) {
-		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
+		Set<IPickingListener> pickingListeners = typePickingListeners
+				.get(pickingType);
 		if (pickingListeners == null) {
 			pickingListeners = new HashSet<IPickingListener>();
 
@@ -833,7 +825,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 */
 	public void removeIDPickingListener(IPickingListener pickingListener,
 			String pickingType, int pickedObjectID) {
-		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
+		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners
+				.get(pickingType);
 		if (map == null) {
 			return;
 		}
@@ -854,7 +847,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 */
 	public void removeTypePickingListener(IPickingListener pickingListener,
 			String pickingType) {
-		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
+		Set<IPickingListener> pickingListeners = typePickingListeners
+				.get(pickingType);
 		if (pickingListeners == null) {
 			return;
 		}
@@ -875,7 +869,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 */
 	public void removePickingListener(IPickingListener pickingListener) {
 
-		for (HashMap<Integer, Set<IPickingListener>> map : idPickingListeners.values()) {
+		for (HashMap<Integer, Set<IPickingListener>> map : idPickingListeners
+				.values()) {
 			if (map != null) {
 				for (Set<IPickingListener> pickingListeners : map.values()) {
 					if (pickingListeners != null) {
@@ -884,7 +879,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 				}
 			}
 		}
-		for (Set<IPickingListener> pickingListeners : typePickingListeners.values()) {
+		for (Set<IPickingListener> pickingListeners : typePickingListeners
+				.values()) {
 			if (pickingListeners != null) {
 				pickingListeners.remove(pickingListener);
 			}
@@ -897,9 +893,11 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 * @param pickingType
 	 * @param pickedObjectID
 	 */
-	public void removeAllIDPickingListeners(String pickingType, int pickedObjectID) {
+	public void removeAllIDPickingListeners(String pickingType,
+			int pickedObjectID) {
 
-		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
+		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners
+				.get(pickingType);
 		if (map == null) {
 			return;
 		}
@@ -926,7 +924,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 */
 	public void removeAllTypePickingListeners(String pickingType) {
 
-		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
+		Set<IPickingListener> pickingListeners = typePickingListeners
+				.get(pickingType);
 		if (pickingListeners == null) {
 			return;
 		}
@@ -1022,7 +1021,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 		// TODO bad hack here, frustum wrong or renderStyle null
 
-		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.LOADING);
+		Texture tempTexture = textureManager.getIconTexture(gl,
+				EIconTextures.LOADING);
 		tempTexture.enable(gl);
 		tempTexture.bind(gl);
 
@@ -1034,18 +1034,18 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		gl.glBegin(GL2.GL_POLYGON);
 
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fXCenter - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
-				- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+		gl.glVertex3f(fXCenter - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+				fYCenter - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fXCenter - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
-				+ GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+		gl.glVertex3f(fXCenter - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+				fYCenter + GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fXCenter + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
-				+ GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+		gl.glVertex3f(fXCenter + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+				fYCenter + GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 
-		gl.glVertex3f(fXCenter + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
-				- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+		gl.glVertex3f(fXCenter + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+				fYCenter - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
 		gl.glEnd();
 
 		tempTexture.disable(gl);
@@ -1161,10 +1161,10 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 */
 	protected void renderSymbol(GL2 gl, EIconTextures texture, float buttonSize) {
 
-		float xButtonOrigin = viewFrustum.getLeft() + viewFrustum.getWidth() / 2
-				- buttonSize / 2;
-		float yButtonOrigin = viewFrustum.getBottom() + viewFrustum.getHeight() / 2
-				- buttonSize / 2;
+		float xButtonOrigin = viewFrustum.getLeft() + viewFrustum.getWidth()
+				/ 2 - buttonSize / 2;
+		float yButtonOrigin = viewFrustum.getBottom() + viewFrustum.getHeight()
+				/ 2 - buttonSize / 2;
 		Texture tempTexture = textureManager.getIconTexture(gl, texture);
 		tempTexture.enable(gl);
 		tempTexture.bind(gl);
@@ -1180,7 +1180,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(xButtonOrigin, yButtonOrigin + buttonSize, 0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(xButtonOrigin + buttonSize, yButtonOrigin + buttonSize, 0.01f);
+		gl.glVertex3f(xButtonOrigin + buttonSize, yButtonOrigin + buttonSize,
+				0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 		gl.glVertex3f(xButtonOrigin + buttonSize, yButtonOrigin, 0.01f);
 		gl.glEnd();
@@ -1213,8 +1214,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		this.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 
 		pickingManager.removeViewSpecificData(uniqueID);
-		generalManager.getViewManager().getConnectedElementRepresentationManager()
-				.clearAll();
+		generalManager.getViewManager()
+				.getConnectedElementRepresentationManager().clearAll();
 		unregisterEventListeners();
 		destroyViewSpecificContent(gl);
 	}
@@ -1289,7 +1290,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 * @param pixelWidth
 	 * @return
 	 */
-	public EDetailLevel getHightestPossibleDetailLevel(int pixelHeight, int pixelWidth) {
+	public EDetailLevel getHightestPossibleDetailLevel(int pixelHeight,
+			int pixelWidth) {
 		return EDetailLevel.LOW;
 	}
 
@@ -1322,7 +1324,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		mouseWheelListeners.add(listener);
 	}
 
-	public void unregisterRemoteViewMouseWheelListener(IMouseWheelHandler listener) {
+	public void unregisterRemoteViewMouseWheelListener(
+			IMouseWheelHandler listener) {
 		mouseWheelListeners.remove(listener);
 	}
 

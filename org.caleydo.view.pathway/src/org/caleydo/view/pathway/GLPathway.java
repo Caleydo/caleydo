@@ -947,6 +947,8 @@ public class GLPathway
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
 
+		setDisplayListDirty();
+		
 		// System.out.println("Frustum: " + viewFrustum);
 	}
 

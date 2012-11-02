@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.event.IListenerOwner;
 
 /**
  * Interface for views that use a single {@link TablePerspective}

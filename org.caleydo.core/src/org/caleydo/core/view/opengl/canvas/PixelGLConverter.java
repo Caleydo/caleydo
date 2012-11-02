@@ -66,12 +66,18 @@ public class PixelGLConverter {
 	public float getGLWidthForPixelWidth(int pixelWidth) {
 		float totalWidthGL = viewFrustum.getWidth();
 		Double totalWidthPixel = canvas.getBounds().getWidth();
+		
+		//System.out.println("Frustum width: " +totalWidthGL);
+		//System.out.println("Pixel width: " +totalWidthPixel);
+		
 		if (totalWidthPixel == null || totalWidthPixel <= 0)
 			throw new IllegalStateException("Width of Canvas in pixel is "
 					+ totalWidthPixel
 					+ ". It's likely that the canvas is not initialized.");
 
 		float width = totalWidthGL / totalWidthPixel.floatValue() * pixelWidth;
+		//System.out.println("GL width: " +width);
+
 		return width;
 	}
 
