@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  * 
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.data.importer.tcga;
 
@@ -29,14 +26,12 @@ import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ParsingRule;
-import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 import org.caleydo.data.importer.tcga.utils.ArchiveExtractionUtils;
 
 /**
- * Generator class that writes the loading information of a series of TCGA data
- * sets to an XML file.
+ * Generator class that writes the loading information of a series of TCGA data sets to an XML file.
  * 
  * @author Nils Gehlenborg
  * @author Alexander Lex
@@ -66,9 +61,8 @@ public class TCGAXMLGenerator
 
 	private boolean loadSampledGenes = false;
 
-	public TCGAXMLGenerator(String tumorAbbreviation, String runIdentifierUnderscore,
-			String dataRunIdentifier, String outputXMLFilePath, String outputFolderPath,
-			String tmpOutputFolderPath, boolean loadSampledGenes) {
+	public TCGAXMLGenerator(String tumorAbbreviation, String runIdentifierUnderscore, String dataRunIdentifier,
+			String outputXMLFilePath, String outputFolderPath, String tmpOutputFolderPath, boolean loadSampledGenes) {
 
 		super(null);
 
@@ -87,32 +81,30 @@ public class TCGAXMLGenerator
 		this.dataRunIdentifierWithoutUnderscore = dataRunIdentifier.replace("_", "");
 
 		// create path of archive search directory
-		this.remoteAnalysisRunArchiveDirectory = FIREHOSE_URL_PREFIX + "analyses__"
-				+ analysisRunIdentifier + "/data/" + tumorAbbreviation + "/"
-				+ analysisRunIdentifierWithoutUnderscore + "/";
+		this.remoteAnalysisRunArchiveDirectory = FIREHOSE_URL_PREFIX + "analyses__" + analysisRunIdentifier + "/data/"
+				+ tumorAbbreviation + "/" + analysisRunIdentifierWithoutUnderscore + "/";
 
-		this.remoteDataRunArchiveDirectory = FIREHOSE_URL_PREFIX + "stddata__"
-				+ dataRunIdentifier + "/data/" + tumorAbbreviation + "/"
-				+ dataRunIdentifierWithoutUnderscore + "/";
+		this.remoteDataRunArchiveDirectory = FIREHOSE_URL_PREFIX + "stddata__" + dataRunIdentifier + "/data/"
+				+ tumorAbbreviation + "/" + dataRunIdentifierWithoutUnderscore + "/";
 	}
 
 	// find Firehose archive in Firehose_get output directory and extract file
 	// from archive to temp directory
 	// return path to file in temp directory
-	protected String extractFile(String fileName, String pipelineName,
-			String runIdentifierWithoutUnderscore, String remoteArchiveDirectory, int level) {
+	protected String extractFile(String fileName, String pipelineName, String runIdentifierWithoutUnderscore,
+			String remoteArchiveDirectory, int level) {
 
 		// gdac.broadinstitute.org_GBM.Methylation_Clustering_CNMF.Level_4.2012052500.0.0.tar.gz
-		String archiveName = FIREHOSE_TAR_NAME_PREFIX + tumorAbbreviation + "." + pipelineName
-				+ ".Level_" + level + "." + runIdentifierWithoutUnderscore + "00.0.0.tar.gz";
+		String archiveName = FIREHOSE_TAR_NAME_PREFIX + tumorAbbreviation + "." + pipelineName + ".Level_" + level
+				+ "." + runIdentifierWithoutUnderscore + "00.0.0.tar.gz";
 
 		String outputDirectoryName = tmpOutputDirectoryPath + runIdentifierWithoutUnderscore
-				+ System.getProperty("file.separator") + tumorAbbreviation
-				+ System.getProperty("file.separator") + archiveName;
+				+ System.getProperty("file.separator") + tumorAbbreviation + System.getProperty("file.separator")
+				+ archiveName;
 
 		// extract file to temp directory and return path to file
-		return ArchiveExtractionUtils.extractFileFromTarGzArchive(archiveName, fileName,
-				outputDirectoryName, remoteArchiveDirectory);
+		return ArchiveExtractionUtils.extractFileFromTarGzArchive(archiveName, fileName, outputDirectoryName,
+				remoteArchiveDirectory);
 	}
 
 	@Override
@@ -147,10 +139,9 @@ public class TCGAXMLGenerator
 				matrixFileName = tumorAbbreviation + ".medianexp.txt";
 			}
 
-			projectDescription.add(setUpClusteredMatrixData("mRNA_Clustering_CNMF",
-					"mRNA_Clustering_Consensus", matrixArchiveName, matrixFileName, "mRNA",
-					rowIDSpecification, sampleIDSpecification, true,
-					EDataSetType.mRNA.getColor()));
+			projectDescription.add(setUpClusteredMatrixData("mRNA_Clustering_CNMF", "mRNA_Clustering_Consensus",
+					matrixArchiveName, matrixFileName, rowIDSpecification, sampleIDSpecification, true,
+					EDataSetType.mRNA));
 
 		}
 		catch (Exception e) {
@@ -174,10 +165,9 @@ public class TCGAXMLGenerator
 				matrixFileName = tumorAbbreviation + ".miR_expression.txt";
 			}
 
-			projectDescription.add(setUpClusteredMatrixData("miR_Clustering_CNMF",
-					"miR_Clustering_Consensus", matrixArchiveName, matrixFileName, "microRNA",
-					rowIDSpecification, sampleIDSpecification, false,
-					EDataSetType.microRNA.getColor()));
+			projectDescription.add(setUpClusteredMatrixData("miR_Clustering_CNMF", "miR_Clustering_Consensus",
+					matrixArchiveName, matrixFileName, rowIDSpecification, sampleIDSpecification, false,
+					EDataSetType.microRNA));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -206,10 +196,9 @@ public class TCGAXMLGenerator
 				matrixFileName = tumorAbbreviation + ".mRNAseq_RPKM_log2.txt";
 			}
 
-			projectDescription.add(setUpClusteredMatrixData("mRNAseq_Clustering_CNMF",
-					"mRNAseq_Clustering_Consensus", matrixArchiveName, matrixFileName,
-					"mRNA-seq", rowIDSpecification, seqSampleIDSpecification, true,
-					EDataSetType.mRNAseq.getColor()));
+			projectDescription.add(setUpClusteredMatrixData("mRNAseq_Clustering_CNMF", "mRNAseq_Clustering_Consensus",
+					matrixArchiveName, matrixFileName, rowIDSpecification, seqSampleIDSpecification, true,
+					EDataSetType.mRNAseq));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -228,10 +217,9 @@ public class TCGAXMLGenerator
 				matrixFileName = tumorAbbreviation + ".miRseq_RPKM_log2.txt";
 			}
 
-			projectDescription.add(setUpClusteredMatrixData("miRseq_Clustering_CNMF",
-					"miRseq_Clustering_Consensus", matrixArchiveName, matrixFileName,
-					"microRNA-seq", rowIDSpecification, seqSampleIDSpecification, false,
-					EDataSetType.microRNAseq.getColor()));
+			projectDescription.add(setUpClusteredMatrixData("miRseq_Clustering_CNMF", "miRseq_Clustering_Consensus",
+					matrixArchiveName, matrixFileName, rowIDSpecification, seqSampleIDSpecification, false,
+					EDataSetType.microRNAseq));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -243,9 +231,8 @@ public class TCGAXMLGenerator
 
 		try {
 			projectDescription.add(setUpClusteredMatrixData("Methylation_Clustering_CNMF",
-					"Methylation_Clustering_Consensus", "Methylation_Clustering_CNMF",
-					"outputprefix.expclu.gct", "Methylation", rowIDSpecification,
-					sampleIDSpecification, true, EDataSetType.methylation.getColor()));
+					"Methylation_Clustering_Consensus", "Methylation_Clustering_CNMF", "outputprefix.expclu.gct",
+					rowIDSpecification, sampleIDSpecification, true, EDataSetType.methylation));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -258,10 +245,9 @@ public class TCGAXMLGenerator
 		rowIDSpecification.setIdCategory("protein");
 
 		try {
-			projectDescription.add(setUpClusteredMatrixData("RPPA_Clustering_CNMF",
-					"RPPA_Clustering_Consensus", "RPPA_Clustering_CNMF",
-					"outputprefix.expclu.gct", "RPPA", rowIDSpecification, sampleIDSpecification,
-					false, EDataSetType.RPPA.getColor()));
+			projectDescription.add(setUpClusteredMatrixData("RPPA_Clustering_CNMF", "RPPA_Clustering_Consensus",
+					"RPPA_Clustering_CNMF", "outputprefix.expclu.gct", rowIDSpecification, sampleIDSpecification,
+					false, EDataSetType.RPPA));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -270,8 +256,7 @@ public class TCGAXMLGenerator
 		// ====== copy number ======
 
 		try {
-			projectDescription.add(setUpCopyNumberData("CopyNumber_Gistic2", "Copy Number",
-					EDataSetType.copyNumber.getColor()));
+			projectDescription.add(setUpCopyNumberData("CopyNumber_Gistic2", EDataSetType.copyNumber));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -280,8 +265,7 @@ public class TCGAXMLGenerator
 		// ====== mutation ======
 
 		try {
-			projectDescription.add(setUpMutationData("Mutation_Significance", "Mutations",
-					EDataSetType.mutation.getColor()));
+			projectDescription.add(setUpMutationData("Mutation_Significance", EDataSetType.mutation));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -290,36 +274,33 @@ public class TCGAXMLGenerator
 		// ====== clinical ======
 
 		try {
-			projectDescription.add(setUpClinicalData("Clinical_Pick_Tier1", "Clinical",
-					EDataSetType.clinical.getColor()));
+			projectDescription.add(setUpClinicalData("Clinical_Pick_Tier1", EDataSetType.clinical));
 		}
 		catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
 	}
 
-	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName,
-			String hierarchicalArchiveName, String matrixArchiveName, String matrixFileName,
-			String dataSetName, IDSpecification rowIDSpecification,
-			IDSpecification columnIDSpecification, boolean isGeneIdType, Color color) {
+	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName, String hierarchicalArchiveName,
+			String matrixArchiveName, String matrixFileName, IDSpecification rowIDSpecification,
+			IDSpecification columnIDSpecification, boolean isGeneIdType, EDataSetType dataSetType) {
 
-		String matrixFile = this.extractFile(matrixFileName, matrixArchiveName,
-				analysisRunIdentifierWithoutUnderscore, remoteAnalysisRunArchiveDirectory, 4);
+		String matrixFile = this.extractFile(matrixFileName, matrixArchiveName, analysisRunIdentifierWithoutUnderscore,
+				remoteAnalysisRunArchiveDirectory, 4);
 		String cnmfGroupingFile = this.extractFile("cnmf.membership.txt", cnmfArchiveName,
 				analysisRunIdentifierWithoutUnderscore, remoteAnalysisRunArchiveDirectory, 4);
 
 		DataSetDescription matrixData = new DataSetDescription();
-		matrixData.setDataSetName(dataSetName);
+		matrixData.setDataSetName(dataSetType.getName());
 		matrixData.setDataSourcePath(matrixFile);
 		matrixData.setNumberOfHeaderLines(3);
-		matrixData.setColor(color);
+		matrixData.setColor(dataSetType.getColor());
 		matrixData.setDataCenter(0d);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
-				ColumnDescription.CONTINUOUS));
+		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT", ColumnDescription.CONTINUOUS));
 		matrixData.addParsingRule(parsingRule);
 		matrixData.setTransposeMatrix(true);
 
@@ -340,17 +321,15 @@ public class TCGAXMLGenerator
 
 		matrixData.setColumnIDSpecification(columnIDSpecification);
 
-		GroupingParseSpecification firehoseCnmfClustering = new GroupingParseSpecification(
-				cnmfGroupingFile);
+		GroupingParseSpecification firehoseCnmfClustering = new GroupingParseSpecification(cnmfGroupingFile);
 		firehoseCnmfClustering.setContainsColumnIDs(false);
 		firehoseCnmfClustering.setRowIDSpecification(columnIDSpecification);
 		firehoseCnmfClustering.setGroupingName("CNMF Clustering");
 		matrixData.addColumnGroupingSpecification(firehoseCnmfClustering);
 
 		try {
-			String hierarchicalGroupingFile = this.extractFile(this.tumorAbbreviation
-					+ ".allclusters.txt", hierarchicalArchiveName,
-					analysisRunIdentifierWithoutUnderscore, remoteAnalysisRunArchiveDirectory,
+			String hierarchicalGroupingFile = this.extractFile(this.tumorAbbreviation + ".allclusters.txt",
+					hierarchicalArchiveName, analysisRunIdentifierWithoutUnderscore, remoteAnalysisRunArchiveDirectory,
 					4);
 
 			GroupingParseSpecification firehoseHierarchicalClustering = new GroupingParseSpecification(
@@ -364,37 +343,34 @@ public class TCGAXMLGenerator
 			System.err.println(e.getMessage());
 		}
 
-//		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
-//		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
-//		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-//		KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
-//		kMeansAlgo.setNumberOfClusters(5);
-//		clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
-//		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
-//		matrixData.setDataProcessingDescription(dataProcessingDescription);
+		// DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
+		// ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
+		// clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		// KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
+		// kMeansAlgo.setNumberOfClusters(5);
+		// clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
+		// dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+		// matrixData.setDataProcessingDescription(dataProcessingDescription);
 
 		return matrixData;
 	}
 
-	private DataSetDescription setUpMutationData(String archiveName, String dataSetName,
-			Color color) {
+	private DataSetDescription setUpMutationData(String archiveName, EDataSetType dataSetType) {
 
-		String mutationFile = this.extractFile(this.tumorAbbreviation
-				+ ".per_gene.mutation_counts.txt", archiveName,
+		String mutationFile = this.extractFile(this.tumorAbbreviation + ".per_gene.mutation_counts.txt", archiveName,
 				analysisRunIdentifierWithoutUnderscore, remoteAnalysisRunArchiveDirectory, 4);
 
 		DataSetDescription mutationData = new DataSetDescription();
-		mutationData.setDataSetName(dataSetName);
+		mutationData.setDataSetName(dataSetType.getName());
 		mutationData.setDataSourcePath(mutationFile);
 		mutationData.setNumberOfHeaderLines(1);
 		mutationData.setMax((float) 1);
-		mutationData.setColor(color);
+		mutationData.setColor(dataSetType.getColor());
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(8);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
-				ColumnDescription.NOMINAL));
+		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT", ColumnDescription.NOMINAL));
 		mutationData.addParsingRule(parsingRule);
 		mutationData.setTransposeMatrix(true);
 
@@ -416,22 +392,20 @@ public class TCGAXMLGenerator
 		return mutationData;
 	}
 
-	private DataSetDescription setUpCopyNumberData(String archiveName, String dataType,
-			Color color) {
+	private DataSetDescription setUpCopyNumberData(String archiveName, EDataSetType dataSetType) {
 		String copyNumberFile = this.extractFile("all_thresholded.by_genes.txt", archiveName,
 				analysisRunIdentifierWithoutUnderscore, remoteAnalysisRunArchiveDirectory, 4);
 
 		DataSetDescription copyNumberData = new DataSetDescription();
-		copyNumberData.setDataSetName(dataType);
+		copyNumberData.setDataSetName(dataSetType.getName());
 		copyNumberData.setDataSourcePath(copyNumberFile);
 		copyNumberData.setNumberOfHeaderLines(1);
-		copyNumberData.setColor(color);
+		copyNumberData.setColor(dataSetType.getColor());
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
-				ColumnDescription.ORDINAL));
+		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT", ColumnDescription.ORDINAL));
 		copyNumberData.addParsingRule(parsingRule);
 		copyNumberData.setTransposeMatrix(true);
 
@@ -444,21 +418,19 @@ public class TCGAXMLGenerator
 		return copyNumberData;
 	}
 
-	private DataSetDescription setUpClinicalData(String archiveName, String dataType,
-			Color color) {
+	private DataSetDescription setUpClinicalData(String archiveName, EDataSetType dataSetType) {
 
-		String clinicalFile = this.extractFile(this.tumorAbbreviation
-				+ ".clin.merged.picked.txt", archiveName, dataRunIdentifierWithoutUnderscore,
-				remoteDataRunArchiveDirectory, 4);
+		String clinicalFile = this.extractFile(this.tumorAbbreviation + ".clin.merged.picked.txt", archiveName,
+				dataRunIdentifierWithoutUnderscore, remoteDataRunArchiveDirectory, 4);
 
 		transposeCSV(clinicalFile);
 
 		DataSetDescription clinicalData = new DataSetDescription();
-		clinicalData.setDataSetName("Clinical");
+		clinicalData.setDataSetName(dataSetType.getName());
 		clinicalData.setDataHomogeneous(false);
 		clinicalData.setDataSourcePath(clinicalFile);
 		clinicalData.setNumberOfHeaderLines(1);
-		clinicalData.setColor(color);
+		clinicalData.setColor(dataSetType.getColor());
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);

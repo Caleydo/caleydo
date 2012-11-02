@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  * 
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.data.importer.tcga;
 
@@ -39,7 +36,9 @@ import com.martiansoftware.jsap.JSAPResult;
  * @author Marc Streit
  * 
  */
-public class TCGAProjectBuilderApplication extends AProjectBuilderApplication implements IApplication {
+public class TCGAProjectBuilderApplication
+	extends AProjectBuilderApplication
+	implements IApplication {
 
 	public static String DEFAULT_TCGA_SERVER_URL = "http://compbio.med.harvard.edu/tcga/stratomex/data/";
 	public static String CALEYDO_WEBSTART_URL = "http://data.icg.tugraz.at/caleydo/download/webstart_"
@@ -124,7 +123,8 @@ public class TCGAProjectBuilderApplication extends AProjectBuilderApplication im
 			}
 			outputPath = config.getString("output-folder");
 			tcgaServerURL = config.getString("server");
-		} catch (JSAPException e) {
+		}
+		catch (JSAPException e) {
 			handleJSAPError(jsap);
 		}
 	}
@@ -189,14 +189,14 @@ public class TCGAProjectBuilderApplication extends AProjectBuilderApplication im
 
 		String dataSetColors = "";
 		for (EDataSetType dataSetType : EDataSetType.values()) {
-			dataSetColors += "{\"" + dataSetType.name() + "\":\"#" + dataSetType.getColor().getHEX() + "\"}, ";
+			dataSetColors += "{\"" + dataSetType.getName() + "\":\"#" + dataSetType.getColor().getHEX() + "\"}, ";
 		}
-		dataSetColors.substring(0, dataSetColors.length() - 1);
+		dataSetColors = dataSetColors.substring(0, dataSetColors.length() - 2);
 
 		reportJSONGenomicData = reportJSONGenomicData.replace("\"null\"", "null");
 		reportJSONGenomicData = "{\"analysisRun\":\"" + analysisRun + "\",\"dataRun\":\"" + dataRun
 				+ "\",\"details\":[" + reportJSONGenomicData + "],\"caleydoVersion\":\"" + GeneralManager.VERSION
-				+ ", \"dataSetcolors\"=[" + dataSetColors + "]}\n";
+				+ "\", \"dataSetColors\":[" + dataSetColors + "]}\n";
 
 		writeJSONReport(reportJSONOutputPath);
 	}
@@ -228,21 +228,29 @@ public class TCGAProjectBuilderApplication extends AProjectBuilderApplication im
 
 			if (dataSetName.equals("mRNA")) {
 				addInfoMRNA = getAdditionalInfo(dataDomain);
-			} else if (dataSetName.equals("mRNA-seq")) {
+			}
+			else if (dataSetName.equals("mRNA-seq")) {
 				addInfoMRNASeq = getAdditionalInfo(dataDomain);
-			} else if (dataSetName.equals("microRNA")) {
+			}
+			else if (dataSetName.equals("microRNA")) {
 				addInfoMicroRNA = getAdditionalInfo(dataDomain);
-			} else if (dataSetName.equals("microRNA-seq")) {
+			}
+			else if (dataSetName.equals("microRNA-seq")) {
 				addInfoMicroRNASeq = getAdditionalInfo(dataDomain);
-			} else if (dataSetName.equals("Clinical")) {
+			}
+			else if (dataSetName.equals("Clinical")) {
 				addInfoClinical = getClinicalInfo(dataDomain);
-			} else if (dataSetName.equals("Mutations")) {
+			}
+			else if (dataSetName.equals("Mutations")) {
 				addInfoMutations = getAdditionalInfo(dataDomain);
-			} else if (dataSetName.equals("Copy Number")) {
+			}
+			else if (dataSetName.equals("Copy Number")) {
 				addInfoCopyNumber = getAdditionalInfo(dataDomain);
-			} else if (dataSetName.equals("Methylation")) {
+			}
+			else if (dataSetName.equals("Methylation")) {
 				addInfoMethylation = getAdditionalInfo(dataDomain);
-			} else if (dataSetName.equals("RPPA")) {
+			}
+			else if (dataSetName.equals("RPPA")) {
 				addInfoRPPA = getAdditionalInfo(dataDomain);
 			}
 		}
