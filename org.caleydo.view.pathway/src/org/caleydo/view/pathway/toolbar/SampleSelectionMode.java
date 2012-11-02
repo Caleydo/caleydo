@@ -24,11 +24,10 @@ import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Group;
 
 /**
  * Drop down to select the dataset to be mapped in the pathway. Uses the default perspective.
@@ -39,7 +38,7 @@ public class SampleSelectionMode
 	extends ControlContribution
 	implements IToolBarItem {
 
-	public static final int TOOLBAR_WIDTH = 280;
+//	public static final int TOOLBAR_WIDTH = 280;
 
 	/** mediator to handle actions triggered by the contributed element */
 	private PathwayToolBarMediator pathwayToolBarMediator;
@@ -55,9 +54,9 @@ public class SampleSelectionMode
 
 	@Override
 	protected Control createControl(Composite parent) {
+		Composite buttonGroup = new Composite(parent, SWT.NULL);
+		RowLayout rowLayout = new RowLayout(SWT.HORIZONTAL);
 
-		Group buttonGroup = new Group(parent, SWT.NONE);
-		FillLayout rowLayout = new FillLayout(SWT.HORIZONTAL);
 		buttonGroup.setLayout(rowLayout);
 
 		Button allSamplesModeRadio = new Button(buttonGroup, SWT.RADIO);
@@ -128,10 +127,10 @@ public class SampleSelectionMode
 
 	}
 
-	@Override
-	protected int computeWidth(Control control) {
-		return TOOLBAR_WIDTH;
-	}
+//	@Override
+//	protected int computeWidth(Control control) {
+//		return TOOLBAR_WIDTH;
+//	}
 
 	public PathwayToolBarMediator getPathwayToolBarMediator() {
 		return pathwayToolBarMediator;

@@ -101,8 +101,8 @@ public class GLEnRoutePathway
 	public static String VIEW_TYPE = "org.caleydo.view.enroute";
 	public static String VIEW_NAME = "enRoute";
 
-	protected final static String EMPTY_VIEW_TEXT_LINE_ONE = "Please select a path of nodes using the pathway view ";
-	protected final static String EMPTY_VIEW_TEXT_LINE_TWO = "and assign data to enRoute using the Data-View Integrater View.";
+	protected final static String EMPTY_VIEW_TEXT_LINE_ONE = "Please select a path of nodes using the Pathway View ";
+	protected final static String EMPTY_VIEW_TEXT_LINE_TWO = "and assign data to enRoute using the Data-View Integrator.";
 
 	protected final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
 	protected final static int BRANCH_COLUMN_WIDTH_PIXELS = 100;
