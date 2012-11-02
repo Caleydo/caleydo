@@ -1772,7 +1772,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		vendingMachineLayout.setPixelSizeX(VendingMachine.VENDING_MACHINE_PIXEL_WIDTH);
 
 		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
-				1, -4, 4);
+				1, -1, 1);
 		vendingMachine = (VendingMachine) GeneralManager
 				.get()
 				.getViewManager()

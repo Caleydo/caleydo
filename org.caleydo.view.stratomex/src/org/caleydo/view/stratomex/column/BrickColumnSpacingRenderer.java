@@ -435,7 +435,7 @@ public class BrickColumnSpacingRenderer
 			if (rightDimGroup != null) {
 				leftCenterBrickBottom = stratomex.getArchBottomY();
 				leftCenterBrickTop = stratomex.getArchTopY();
-				curveOffset = 0.1f;
+				
 			}
 		}
 
@@ -472,7 +472,7 @@ public class BrickColumnSpacingRenderer
 			if (leftDimGroup != null) {
 				rightCenterBrickBottom = stratomex.getArchBottomY();
 				rightCenterBrickTop = stratomex.getArchTopY();
-				curveOffset = 0.1f;
+				
 			}
 		}
 

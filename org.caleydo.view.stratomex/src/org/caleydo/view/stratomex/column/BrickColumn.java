@@ -696,9 +696,9 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		gl.glColor4f(0, 0, 0, 0.5f);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(mouseCoordinateX, mouseCoordinateY, 1);
-		gl.glVertex3f(mouseCoordinateX + 1, mouseCoordinateY, 1);
-		gl.glVertex3f(mouseCoordinateX + 1, mouseCoordinateY + 1, 1);
-		gl.glVertex3f(mouseCoordinateX, mouseCoordinateY + 1, 1);
+		gl.glVertex3f(mouseCoordinateX + mainColumn.getSizeScaledX() , mouseCoordinateY, 1);
+		gl.glVertex3f(mouseCoordinateX + mainColumn.getSizeScaledX(), mouseCoordinateY - mainColumn.getSizeScaledY(), 1);
+		gl.glVertex3f(mouseCoordinateX, mouseCoordinateY - mainColumn.getSizeScaledY(), 1);
 		gl.glEnd();
 
 	}
