@@ -82,7 +82,7 @@ public class AddTablePerspectivesEvent extends AEvent {
 		return receiver;
 	}
 
-	public void addTablePerspecitve(TablePerspective tablePerspective) {
+	public void addTablePerspective(TablePerspective tablePerspective) {
 		if (tablePerspectives == null)
 			tablePerspectives = new ArrayList<TablePerspective>(1);
 		tablePerspectives.add(tablePerspective);

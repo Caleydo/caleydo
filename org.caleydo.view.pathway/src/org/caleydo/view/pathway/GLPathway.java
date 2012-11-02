@@ -85,12 +85,14 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.pathway.event.ClearMappingEvent;
 import org.caleydo.view.pathway.event.ClearPathEvent;
 import org.caleydo.view.pathway.event.EnRoutePathEvent;
 import org.caleydo.view.pathway.event.EnableGeneMappingEvent;
 import org.caleydo.view.pathway.event.SampleMappingModeEvent;
 import org.caleydo.view.pathway.event.SampleMappingModeListener;
 import org.caleydo.view.pathway.event.SelectPathModeEvent;
+import org.caleydo.view.pathway.listener.ClearMappingListener;
 import org.caleydo.view.pathway.listener.ClearPathEventListener;
 import org.caleydo.view.pathway.listener.EnRoutePathEventListener;
 import org.caleydo.view.pathway.listener.EnableGeneMappingListener;
@@ -178,6 +180,7 @@ public class GLPathway
 	private ClearPathEventListener clearPathEventListener;
 	private AddTablePerspectivesListener addTablePerspectivesListener;
 	private SampleMappingModeListener sampleMappingModeListener;
+	private ClearMappingListener clearMappingListener;
 
 	private IPickingListener pathwayElementPickingListener;
 
@@ -932,6 +935,7 @@ public class GLPathway
 		// gl.glEndList();
 	}
 
+	
 	private void calculatePathwayScaling(final GL2 gl, final PathwayGraph pathway) {
 
 		if (hashGLcontext2TextureManager.get(gl) == null)
@@ -1134,6 +1138,10 @@ public class GLPathway
 		sampleMappingModeListener = new SampleMappingModeListener();
 		sampleMappingModeListener.setHandler(this);
 		eventPublisher.addListener(SampleMappingModeEvent.class, sampleMappingModeListener);
+
+		clearMappingListener = new ClearMappingListener();
+		clearMappingListener.setHandler(this);
+		eventPublisher.addListener(ClearMappingEvent.class, clearMappingListener);
 	}
 
 	@Override
@@ -1175,6 +1183,11 @@ public class GLPathway
 			sampleMappingMode = null;
 		}
 
+		if (clearMappingListener != null) {
+			eventPublisher.removeListener(clearMappingListener);
+			clearMappingListener = null;
+		}
+
 		metaboliteSelectionManager.unregisterEventListeners();
 
 	}
@@ -1188,6 +1201,8 @@ public class GLPathway
 			serializedForm.setPathwayID(pathway.getID());
 
 		serializedForm.setPathSelectionMode(isPathSelectionMode);
+		serializedForm.setMappingMode(sampleMappingMode);
+		serializedForm.setDataDomainID(dataDomain != null ? dataDomain.getDataDomainID() : null);
 
 		System.out.println("Serializing Pathway: review me!");
 
@@ -1258,8 +1273,12 @@ public class GLPathway
 			pathway = ((PathwayTablePerspective) tablePerspective).getPathway();
 
 		setDisplayListDirty();
-		DataDomainUpdateEvent event = new DataDomainUpdateEvent(tablePerspective.getDataDomain());
-		eventPublisher.triggerEvent(event);
+		if (tablePerspective != null) {
+			DataDomainUpdateEvent event = new DataDomainUpdateEvent(tablePerspective.getDataDomain());
+			eventPublisher.triggerEvent(event);
+		} else {
+			dataDomain = null;
+		}
 
 		TablePerspectivesChangedEvent tbEvent = new TablePerspectivesChangedEvent(this);
 		eventPublisher.triggerEvent(tbEvent);

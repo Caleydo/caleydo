@@ -38,7 +38,9 @@ public class SampleSelectionMode
 	extends ControlContribution
 	implements IToolBarItem {
 
-//	public static final int TOOLBAR_WIDTH = 280;
+	private ESampleMappingMode mappingMode;
+
+	// public static final int TOOLBAR_WIDTH = 280;
 
 	/** mediator to handle actions triggered by the contributed element */
 	private PathwayToolBarMediator pathwayToolBarMediator;
@@ -48,8 +50,12 @@ public class SampleSelectionMode
 	 * 
 	 * @param str
 	 */
-	public SampleSelectionMode(String str) {
+	public SampleSelectionMode(String str, ESampleMappingMode mappingMode) {
 		super(str);
+		if(mappingMode == null) {
+			this.mappingMode = ESampleMappingMode.ALL;
+		}
+		this.mappingMode = mappingMode;
 	}
 
 	@Override
@@ -63,16 +69,24 @@ public class SampleSelectionMode
 		allSamplesModeRadio.setText("Map all Samples");
 		allSamplesModeRadio
 				.setToolTipText("If selected an average of all samples of the chosen dataset is mapped onto the pathway nodes.");
-		allSamplesModeRadio.setSelection(true);
+		
+		
 
 		Button selectedSampleModeRadio = new Button(buttonGroup, SWT.RADIO);
 		selectedSampleModeRadio.setText("Map selected Samples");
 		selectedSampleModeRadio
 				.setToolTipText("If selected an average of only the selected samples of the chosen dataset is mapped onto the pathway nodes.");
 
+		if(mappingMode == ESampleMappingMode.ALL) {
+			allSamplesModeRadio.setSelection(true);
+		} else {
+			selectedSampleModeRadio.setSelection(true);
+		}
+		
 		allSamplesModeRadio.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				mappingMode = ESampleMappingMode.ALL;
 				GeneralManager.get().getEventPublisher()
 						.triggerEvent(new SampleMappingModeEvent(ESampleMappingMode.ALL));
 			}
@@ -81,6 +95,7 @@ public class SampleSelectionMode
 		selectedSampleModeRadio.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				mappingMode = ESampleMappingMode.SELECTED;
 				GeneralManager.get().getEventPublisher()
 						.triggerEvent(new SampleMappingModeEvent(ESampleMappingMode.SELECTED));
 			}
@@ -127,10 +142,10 @@ public class SampleSelectionMode
 
 	}
 
-//	@Override
-//	protected int computeWidth(Control control) {
-//		return TOOLBAR_WIDTH;
-//	}
+	// @Override
+	// protected int computeWidth(Control control) {
+	// return TOOLBAR_WIDTH;
+	// }
 
 	public PathwayToolBarMediator getPathwayToolBarMediator() {
 		return pathwayToolBarMediator;
