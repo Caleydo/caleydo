@@ -376,9 +376,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 			if (columnIndex != brickColumnManager.getRightColumnStartIndex() - 1) {
 				dynamicColumnSpacing = new ElementLayout("dynamicDimGrSpacing");
-				columnSpacingRenderer = new BrickColumnSpacingRenderer(
-						relationAnalyzer, connectionRenderer, column, brickColumnManager
-								.getBrickColumns().get(columnIndex + 1), this);
+				columnSpacingRenderer = new BrickColumnSpacingRenderer(relationAnalyzer,
+						connectionRenderer, column, brickColumnManager.getBrickColumns()
+								.get(columnIndex + 1), this);
 				dynamicColumnSpacing.setGrabX(true);
 				dynamicColumnSpacing.setRenderer(columnSpacingRenderer);
 				centerRowLayout.append(dynamicColumnSpacing);
@@ -508,124 +508,141 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	@Override
 	public void display(GL2 gl) {
 
-		if (!uninitializedSubViews.isEmpty()) {
-			while (uninitializedSubViews.peek() != null) {
-				uninitializedSubViews.poll().initRemote(gl, this, glMouseListener);
+		if (tablePerspectives == null || tablePerspectives.isEmpty()) {
+			if (isDisplayListDirty) {
+				gl.glNewList(displayListIndex, GL2.GL_COMPILE);
+				renderEmptyViewText(gl, new String[] {
+						"Please use the Data-View Integrator to assign ",
+						"one or multiple dataset(s) to StratomeX.",
+						"Refer to http://help.caleydo.org for more information." });
+				gl.glEndList();
+				isDisplayListDirty = false;
 			}
-			initLayouts();
-		}
-		if (isDisplayListDirty) {
-			buildDisplayList(gl, displayListIndex);
-			isDisplayListDirty = false;
-		}
+			gl.glCallList(displayListIndex);
+		} else {
 
-		for (BrickColumn group : brickColumnManager.getBrickColumns()) {
-			group.processEvents();
-		}
+			if (!uninitializedSubViews.isEmpty()) {
+				while (uninitializedSubViews.peek() != null) {
+					uninitializedSubViews.poll().initRemote(gl, this, glMouseListener);
+				}
+				initLayouts();
+			}
+			if (isDisplayListDirty) {
+				buildDisplayList(gl, displayListIndex);
+				isDisplayListDirty = false;
+			}
 
-		handleHorizontalColumnMove(gl);
-		if (isLayoutDirty) {
-			isLayoutDirty = false;
+			for (BrickColumn group : brickColumnManager.getBrickColumns()) {
+				group.processEvents();
+			}
 
-			layoutManager.updateLayout();
-			float minWidth = pixelGLConverter
-					.getGLWidthForPixelWidth(BRICK_COLUMN_SPACING_MIN_PIXEL_WIDTH);
-			for (ElementLayout layout : centerRowLayout) {
-				if (!(layout.getRenderer() instanceof BrickColumnSpacingRenderer))
-					continue;
-				if (resizeNecessary)
-					break;
+			handleHorizontalColumnMove(gl);
+			if (isLayoutDirty) {
+				isLayoutDirty = false;
 
-				if (layout.getSizeScaledX() < minWidth - 0.01f) {
-					resizeNecessary = true;
-					break;
+				layoutManager.updateLayout();
+				float minWidth = pixelGLConverter
+						.getGLWidthForPixelWidth(BRICK_COLUMN_SPACING_MIN_PIXEL_WIDTH);
+				for (ElementLayout layout : centerRowLayout) {
+					if (!(layout.getRenderer() instanceof BrickColumnSpacingRenderer))
+						continue;
+					if (resizeNecessary)
+						break;
+
+					if (layout.getSizeScaledX() < minWidth - 0.01f) {
+						resizeNecessary = true;
+						break;
+					}
 				}
 			}
-		}
 
-		if (resizeNecessary) {
-			// int size = centerRowLayout.size();
-			// if (size >= 3) {
-			// if (lastResizeDirectionWasToLeft) {
-			// dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupManager
-			// .getCenterGroupStartIndex() + 1);
-			//
-			// float width =
-			// centerRowLayout.getElements().get(0).getSizeScaledX()
-			// + centerRowLayout.getElements().get(1).getSizeScaledX()
-			// + centerRowLayout.getElements().get(2).getSizeScaledX();
-			// centerRowLayout.remove(0);
-			// centerRowLayout.remove(0);
-			// leftDimensionGroupSpacing = centerRowLayout.getElements().get(0);
-			//
-			// leftDimensionGroupSpacing.setAbsoluteSizeX(width);
-			// ((DimensionGroupSpacingRenderer) leftDimensionGroupSpacing
-			// .getRenderer()).setLeftDimGroup(null);
-			// initLeftLayout();
-			//
-			// // if (size == 3)
-			// // leftDimensionGroupSpacing.setGrabX(true);
-			//
-			// } else {
-			// dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
-			// .getRightGroupStartIndex() - 1);
-			//
-			// // float width = centerRowLayout.getElements().get(size - 1)
-			// // .getSizeScaledX()
-			// // + centerRowLayout.getElements().get(size - 2)
-			// // .getSizeScaledX()
-			// // + centerRowLayout.getElements().get(size - 3)
-			// // .getSizeScaledX();
-			// centerRowLayout.remove(centerRowLayout.size() - 1);
-			// centerRowLayout.remove(centerRowLayout.size() - 1);
-			// rightDimensionGroupSpacing = centerRowLayout.getElements().get(
-			// centerRowLayout.size() - 1);
-			// // rightDimensionGroupSpacing.setAbsoluteSizeX(width);
-			// rightDimensionGroupSpacing.setGrabX(true);
-			// ((DimensionGroupSpacingRenderer) rightDimensionGroupSpacing
-			// .getRenderer()).setRightDimGroup(null);
-			// initRightLayout();
-			//
-			// // if (size == 3)
-			// // rightDimensionGroupSpacing.setGrabX(true);
-			//
-			// }
-			// }
-			// centerLayoutManager.updateLayout();
-			resizeNecessary = false;
-		}
-
-		for (BrickColumn column : brickColumnManager.getBrickColumns()) {
-			column.display(gl);
-		}
-
-		if (isConnectionLinesDirty) {
-
-			performConnectionLinesUpdate();
-		}
-
-		if (vendingMachine.isSelectedRankedElementDirty()) {
-			RankedElement selectedRankedElement = vendingMachine
-					.getSelectedRankedElement();
-			if (selectedRankedElement != null) {
-				selectElementsByConnectionBandID(selectedRankedElement
-						.getGroupTablePerspective().getRecordPerspective(),
-						selectedRankedElement.getReferenceTablePerspective()
-								.getRecordPerspective());
+			if (resizeNecessary) {
+				// int size = centerRowLayout.size();
+				// if (size >= 3) {
+				// if (lastResizeDirectionWasToLeft) {
+				// dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupManager
+				// .getCenterGroupStartIndex() + 1);
+				//
+				// float width =
+				// centerRowLayout.getElements().get(0).getSizeScaledX()
+				// + centerRowLayout.getElements().get(1).getSizeScaledX()
+				// + centerRowLayout.getElements().get(2).getSizeScaledX();
+				// centerRowLayout.remove(0);
+				// centerRowLayout.remove(0);
+				// leftDimensionGroupSpacing =
+				// centerRowLayout.getElements().get(0);
+				//
+				// leftDimensionGroupSpacing.setAbsoluteSizeX(width);
+				// ((DimensionGroupSpacingRenderer) leftDimensionGroupSpacing
+				// .getRenderer()).setLeftDimGroup(null);
+				// initLeftLayout();
+				//
+				// // if (size == 3)
+				// // leftDimensionGroupSpacing.setGrabX(true);
+				//
+				// } else {
+				// dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
+				// .getRightGroupStartIndex() - 1);
+				//
+				// // float width = centerRowLayout.getElements().get(size - 1)
+				// // .getSizeScaledX()
+				// // + centerRowLayout.getElements().get(size - 2)
+				// // .getSizeScaledX()
+				// // + centerRowLayout.getElements().get(size - 3)
+				// // .getSizeScaledX();
+				// centerRowLayout.remove(centerRowLayout.size() - 1);
+				// centerRowLayout.remove(centerRowLayout.size() - 1);
+				// rightDimensionGroupSpacing =
+				// centerRowLayout.getElements().get(
+				// centerRowLayout.size() - 1);
+				// // rightDimensionGroupSpacing.setAbsoluteSizeX(width);
+				// rightDimensionGroupSpacing.setGrabX(true);
+				// ((DimensionGroupSpacingRenderer) rightDimensionGroupSpacing
+				// .getRenderer()).setRightDimGroup(null);
+				// initRightLayout();
+				//
+				// // if (size == 3)
+				// // rightDimensionGroupSpacing.setGrabX(true);
+				//
+				// }
+				// }
+				// centerLayoutManager.updateLayout();
+				resizeNecessary = false;
 			}
 
-			vendingMachine.setSelectedRankedElementDirty(false);
+			for (BrickColumn column : brickColumnManager.getBrickColumns()) {
+				column.display(gl);
+			}
+
+			if (isConnectionLinesDirty) {
+
+				performConnectionLinesUpdate();
+			}
+
+			if (vendingMachine.isSelectedRankedElementDirty()) {
+				RankedElement selectedRankedElement = vendingMachine
+						.getSelectedRankedElement();
+				if (selectedRankedElement != null) {
+					selectElementsByConnectionBandID(selectedRankedElement
+							.getGroupTablePerspective().getRecordPerspective(),
+							selectedRankedElement.getReferenceTablePerspective()
+									.getRecordPerspective());
+				}
+
+				vendingMachine.setSelectedRankedElementDirty(false);
+			}
+
+			layoutManager.render(gl);
+
+			if (!isRightDetailShown && !isLeftDetailShown) {
+				gl.glCallList(displayListIndex);
+			}
+
+			// call after all other rendering because it calls the onDrag
+			// methods
+			// which need alpha blending...
+			dragAndDropController.handleDragging(gl, glMouseListener);
 		}
-
-		layoutManager.render(gl);
-
-		if (!isRightDetailShown && !isLeftDetailShown) {
-			gl.glCallList(displayListIndex);
-		}
-
-		// call after all other rendering because it calls the onDrag methods
-		// which need alpha blending...
-		dragAndDropController.handleDragging(gl, glMouseListener);
 	}
 
 	/**
@@ -1221,8 +1238,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 				brickColumn.setStratomex(this);
 				brickColumn.initialize();
 
-				brickColumns.add(brickColumnManager
-						.getRightColumnStartIndex(), brickColumn);
+				brickColumns.add(brickColumnManager.getRightColumnStartIndex(),
+						brickColumn);
 				tablePerspectives.add(tablePerspective);
 
 				uninitializedSubViews.add(brickColumn);

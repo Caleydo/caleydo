@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  * 
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.enroute;
 
@@ -119,7 +116,6 @@ public class GLEnRoutePathway
 	protected final static int EXPANDED_BRANCH_NODE_WIDTH_PIXELS = 150;
 	protected final static int SPACING_PIXELS = 2;
 	protected final static int BRANCH_AREA_SIDE_SPACING_PIXELS = 8;
-	protected final static int EMPTY_VIEW_TEXT_HEIGHT_PIXELS = 26;
 
 	public final static int DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH = 5;
 
@@ -146,14 +142,12 @@ public class GLEnRoutePathway
 	private List<ANode> branchNodes = new ArrayList<ANode>();
 
 	/**
-	 * Map that associates the linearized nodes with their incoming branch
-	 * summary nodes.
+	 * Map that associates the linearized nodes with their incoming branch summary nodes.
 	 */
 	private Map<ANode, ANode> linearizedNodesToIncomingBranchSummaryNodesMap = new HashMap<ANode, ANode>();
 
 	/**
-	 * Map that associates the linearized nodes with their outgoing branch
-	 * summary nodes.
+	 * Map that associates the linearized nodes with their outgoing branch summary nodes.
 	 */
 	private Map<ANode, ANode> linearizedNodesToOutgoingBranchSummaryNodesMap = new HashMap<ANode, ANode>();
 
@@ -173,8 +167,7 @@ public class GLEnRoutePathway
 	private BranchSummaryNode expandedBranchSummaryNode = null;
 
 	/**
-	 * The renderer for the experimental data of the nodes in the linearized
-	 * pathways.
+	 * The renderer for the experimental data of the nodes in the linearized pathways.
 	 */
 	private MappedDataRenderer mappedDataRenderer;
 
@@ -184,14 +177,13 @@ public class GLEnRoutePathway
 	private float dataRowHeight;
 
 	/**
-	 * The maximum number of nodes that are added at once to the linearized
-	 * pathway when switching branches.
+	 * The maximum number of nodes that are added at once to the linearized pathway when switching branches.
 	 */
 	private int maxBranchSwitchingPathLength = DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH;
 
 	/**
-	 * Determines whether the layout needs to be updated. This is a more severe
-	 * update than only the display list update.
+	 * Determines whether the layout needs to be updated. This is a more severe update than only the display list
+	 * update.
 	 */
 	private boolean isLayoutDirty = true;
 
@@ -201,8 +193,7 @@ public class GLEnRoutePathway
 	private boolean isNewPath = true;
 
 	/**
-	 * Determines whether the linearized path or branch nodes determine the
-	 * total view height.
+	 * Determines whether the linearized path or branch nodes determine the total view height.
 	 */
 	private boolean isViewHeightDeterminedByPath = true;
 
@@ -212,8 +203,8 @@ public class GLEnRoutePathway
 	private int currentMinWidth = 0;
 
 	/**
-	 * Determines, whether the rendered content is fit to the width of the view.
-	 * (With an absolute view minimum remaining)
+	 * Determines, whether the rendered content is fit to the width of the view. (With an absolute view minimum
+	 * remaining)
 	 */
 	private boolean fitToViewWidth = true;
 
@@ -520,20 +511,8 @@ public class GLEnRoutePathway
 	 */
 	private void renderEmptyViewInfo(GL2 gl, int displayListIndex) {
 		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
-		float textHeight = pixelGLConverter.getGLHeightForPixelHeight(EMPTY_VIEW_TEXT_HEIGHT_PIXELS);
-		float safetySpacing = pixelGLConverter.getGLHeightForPixelHeight(3);
-		float requiredWidth = textRenderer.getRequiredTextWidth(EMPTY_VIEW_TEXT_LINE_ONE, textHeight);
-		float linePositionX = viewFrustum.getWidth() / 2.0f - requiredWidth / 2.0f;
-		float linePositionY = viewFrustum.getHeight() / 2.0f;
-		textRenderer.setColor(0, 0, 0, 1);
-		textRenderer.renderTextInBounds(gl, EMPTY_VIEW_TEXT_LINE_ONE, linePositionX, linePositionY, 0, requiredWidth
-				+ safetySpacing, textHeight);
-
-		requiredWidth = textRenderer.getRequiredTextWidth(EMPTY_VIEW_TEXT_LINE_TWO, textHeight);
-		linePositionX = viewFrustum.getWidth() / 2.0f - requiredWidth / 2.0f;
-		linePositionY = viewFrustum.getHeight() / 2.0f - textHeight;
-		textRenderer.renderTextInBounds(gl, EMPTY_VIEW_TEXT_LINE_TWO, linePositionX, linePositionY, 0, requiredWidth
-				+ safetySpacing, textHeight);
+		renderEmptyViewText(gl, new String[] { EMPTY_VIEW_TEXT_LINE_ONE, EMPTY_VIEW_TEXT_LINE_TWO,
+				"Refer to http://help.caleydo.org for more information." });
 		gl.glEndList();
 	}
 
@@ -668,14 +647,11 @@ public class GLEnRoutePathway
 	}
 
 	/**
-	 * Adapts the view height to the maximum of the specified minimum view
-	 * heights, if necessary.
+	 * Adapts the view height to the maximum of the specified minimum view heights, if necessary.
 	 * 
 	 * @param minViewWidth Minimum width required.
-	 * @param minViewHeightRequiredByPath View height in pixels required by the
-	 *            linearized path and its rows.
-	 * @param minViewHeightRequiredByBranchNodes View height in pixels required
-	 *            by branch nodes.
+	 * @param minViewHeightRequiredByPath View height in pixels required by the linearized path and its rows.
+	 * @param minViewHeightRequiredByBranchNodes View height in pixels required by branch nodes.
 	 */
 	private void adaptViewSize(int minViewWidth, int minViewHeightRequiredByPath, int minViewHeightRequiredByBranchNodes) {
 		int minViewHeightPixels = 0;
@@ -730,8 +706,7 @@ public class GLEnRoutePathway
 	}
 
 	/**
-	 * Calculates the spacings between all anchor nodes (nodes with mapped data)
-	 * of the path.
+	 * Calculates the spacings between all anchor nodes (nodes with mapped data) of the path.
 	 * 
 	 * @return
 	 */
@@ -804,8 +779,7 @@ public class GLEnRoutePathway
 	}
 
 	/**
-	 * Renders the branch nodes for a specified linearized node. The position of
-	 * this node has to be set beforehand.
+	 * Renders the branch nodes for a specified linearized node. The position of this node has to be set beforehand.
 	 * 
 	 * @param node
 	 */
@@ -854,10 +828,8 @@ public class GLEnRoutePathway
 	}
 
 	/**
-	 * @param node The node for which the positions of associated branch nodes
-	 *            shall be calculated
-	 * @return the minimum view height in pixels that would be required by the
-	 *         nodes to be displayed.
+	 * @param node The node for which the positions of associated branch nodes shall be calculated
+	 * @return the minimum view height in pixels that would be required by the nodes to be displayed.
 	 */
 	private int calculatePositionsOfBranchNodes(ANode node) {
 		int minViewHeightPixelsIncoming = 0;
@@ -1184,9 +1156,8 @@ public class GLEnRoutePathway
 	 * Sets a new path to be linearized.
 	 * 
 	 * @param pathway The pathway the path corresponds to.
-	 * @param path List of {@link PathwayVertexRep}s that represents a path. If
-	 *            multiple <code>PathwayVertexRep</code>s represent a complex
-	 *            node, they must occur in a sequence.
+	 * @param path List of {@link PathwayVertexRep}s that represents a path. If multiple <code>PathwayVertexRep</code>s
+	 *            represent a complex node, they must occur in a sequence.
 	 */
 	public void setPath(PathwayGraph pathway, List<PathwayVertexRep> path) {
 		this.pathway = pathway;
@@ -1208,24 +1179,21 @@ public class GLEnRoutePathway
 	}
 
 	/**
-	 * @param currentExpandedBranchNode setter, see
-	 *            {@link #expandedBranchSummaryNode}
+	 * @param currentExpandedBranchNode setter, see {@link #expandedBranchSummaryNode}
 	 */
 	public void setExpandedBranchSummaryNode(BranchSummaryNode expandedBranchSummaryNode) {
 		this.expandedBranchSummaryNode = expandedBranchSummaryNode;
 	}
 
 	/**
-	 * @return the expandedBranchSummaryNode, see
-	 *         {@link #expandedBranchSummaryNode}
+	 * @return the expandedBranchSummaryNode, see {@link #expandedBranchSummaryNode}
 	 */
 	public BranchSummaryNode getExpandedBranchSummaryNode() {
 		return expandedBranchSummaryNode;
 	}
 
 	/**
-	 * @return the currentExpandedBranchNode, see
-	 *         {@link #expandedBranchSummaryNode}
+	 * @return the currentExpandedBranchNode, see {@link #expandedBranchSummaryNode}
 	 */
 	public BranchSummaryNode getCurrentExpandedBranchNode() {
 		return expandedBranchSummaryNode;
@@ -1279,20 +1247,15 @@ public class GLEnRoutePathway
 	}
 
 	/**
-	 * Calculates a branch path consisting of {@link PathwayVertexRep} objects
-	 * for a specified branch node. This path ends if there is no unambiguous
-	 * way to continue, the direction of edges changes, the pathway ends, or the
-	 * {@link #maxBranchSwitchingPathLength} is reached. The specified
-	 * <code>PathwayVertexRep</code> that represents the start of the path is
-	 * added at the beginning of the path.
+	 * Calculates a branch path consisting of {@link PathwayVertexRep} objects for a specified branch node. This path
+	 * ends if there is no unambiguous way to continue, the direction of edges changes, the pathway ends, or the
+	 * {@link #maxBranchSwitchingPathLength} is reached. The specified <code>PathwayVertexRep</code> that represents the
+	 * start of the path is added at the beginning of the path.
 	 * 
-	 * @param branchVertexRep The <code>PathwayVertexRep</code> that represents
-	 *            the start of the branch path.
-	 * @param linearizedVertexRep The <code>PathwayVertexRep</code> of the
-	 *            linearized path this branch belongs to.
-	 * @param isIncomingBranchPath Determines whether the branch path is
-	 *            incoming or outgoing. This is especially important for
-	 *            bidirectional edges.
+	 * @param branchVertexRep The <code>PathwayVertexRep</code> that represents the start of the branch path.
+	 * @param linearizedVertexRep The <code>PathwayVertexRep</code> of the linearized path this branch belongs to.
+	 * @param isIncomingBranchPath Determines whether the branch path is incoming or outgoing. This is especially
+	 *            important for bidirectional edges.
 	 * @return
 	 */
 	private List<PathwayVertexRep> determineDefiniteUniDirectionalBranchPath(PathwayVertexRep branchVertexRep,
@@ -1336,8 +1299,7 @@ public class GLEnRoutePathway
 	}
 
 	/**
-	 * Removes the specified linearized node from the path if it is at the start
-	 * or the end of the path.
+	 * Removes the specified linearized node from the path if it is at the start or the end of the path.
 	 * 
 	 * @param node
 	 */
@@ -1468,8 +1430,7 @@ public class GLEnRoutePathway
 	}
 
 	/**
-	 * Returns true if one of the set {@link TablePerspective}s maps to the
-	 * davidID provided, else false
+	 * Returns true if one of the set {@link TablePerspective}s maps to the davidID provided, else false
 	 */
 	public boolean doesDavidMapToData(Integer davidID) {
 		for (TablePerspective currentTablePerspective : mappedDataRenderer.getTablePerspectives()) {
@@ -1491,8 +1452,7 @@ public class GLEnRoutePathway
 	}
 
 	/**
-	 * @return the metaboliteSelectionManager, see
-	 *         {@link #metaboliteSelectionManager}
+	 * @return the metaboliteSelectionManager, see {@link #metaboliteSelectionManager}
 	 */
 	public EventBasedSelectionManager getMetaboliteSelectionManager() {
 		return metaboliteSelectionManager;

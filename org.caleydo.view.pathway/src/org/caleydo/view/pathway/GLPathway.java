@@ -590,8 +590,18 @@ public class GLPathway
 	public void displayLocal(final GL2 gl) {
 
 		// Check if pathway exists or if it's already loaded
-		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
+		if (pathway == null || !pathwayManager.hasItem(pathway.getID())) {
+			if (isDisplayListDirty) {
+				gl.glNewList(displayListIndex, GL2.GL_COMPILE);
+				renderEmptyViewText(gl, new String[] { "Please select a pathway map in the ",
+						"dropdown box of the toolbar.", "Refer to http://help.caleydo.org for more information." });
+				gl.glEndList();
+				isDisplayListDirty = false;
+			}
+			gl.glCallList(displayListIndex);
 			return;
+		}
+			
 
 		if (isPathwayDataDirty)
 			initPathwayData(gl);
