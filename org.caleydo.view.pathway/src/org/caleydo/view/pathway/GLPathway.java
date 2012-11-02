@@ -58,6 +58,9 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.ColorManager;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.util.mapping.color.IColorMappingUpdateListener;
+import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
+import org.caleydo.core.util.mapping.color.UpdateColorMappingListener;
 import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.AddTablePerspectivesListener;
@@ -123,7 +126,8 @@ import com.jogamp.opengl.util.texture.Texture;
 
 public class GLPathway
 	extends AGLView
-	implements ISingleTablePerspectiveBasedView, IViewCommandHandler, IEventBasedSelectionManagerUser {
+	implements ISingleTablePerspectiveBasedView, IViewCommandHandler, IEventBasedSelectionManagerUser,
+	IColorMappingUpdateListener {
 
 	public static String VIEW_TYPE = "org.caleydo.view.pathway";
 
@@ -180,6 +184,7 @@ public class GLPathway
 	private ClearPathEventListener clearPathEventListener;
 	private AddTablePerspectivesListener addTablePerspectivesListener;
 	private SampleMappingModeListener sampleMappingModeListener;
+	private UpdateColorMappingListener updateColorMappingListener;
 	private ClearMappingListener clearMappingListener;
 
 	private IPickingListener pathwayElementPickingListener;
@@ -935,7 +940,6 @@ public class GLPathway
 		// gl.glEndList();
 	}
 
-	
 	private void calculatePathwayScaling(final GL2 gl, final PathwayGraph pathway) {
 
 		if (hashGLcontext2TextureManager.get(gl) == null)
@@ -1139,9 +1143,14 @@ public class GLPathway
 		sampleMappingModeListener.setHandler(this);
 		eventPublisher.addListener(SampleMappingModeEvent.class, sampleMappingModeListener);
 
+		updateColorMappingListener = new UpdateColorMappingListener();
+		updateColorMappingListener.setHandler(this);
+		eventPublisher.addListener(UpdateColorMappingEvent.class, updateColorMappingListener);
+
 		clearMappingListener = new ClearMappingListener();
 		clearMappingListener.setHandler(this);
 		eventPublisher.addListener(ClearMappingEvent.class, clearMappingListener);
+
 	}
 
 	@Override
@@ -1180,9 +1189,14 @@ public class GLPathway
 
 		if (sampleMappingModeListener != null) {
 			eventPublisher.removeListener(sampleMappingModeListener);
-			sampleMappingMode = null;
+			sampleMappingModeListener = null;
 		}
 
+		if (updateColorMappingListener != null) {
+			eventPublisher.removeListener(updateColorMappingListener);
+			updateColorMappingListener = null;
+		}
+		
 		if (clearMappingListener != null) {
 			eventPublisher.removeListener(clearMappingListener);
 			clearMappingListener = null;
@@ -1276,7 +1290,8 @@ public class GLPathway
 		if (tablePerspective != null) {
 			DataDomainUpdateEvent event = new DataDomainUpdateEvent(tablePerspective.getDataDomain());
 			eventPublisher.triggerEvent(event);
-		} else {
+		}
+		else {
 			dataDomain = null;
 		}
 
@@ -1645,6 +1660,11 @@ public class GLPathway
 		Set<IDataDomain> dataDomains = new HashSet<IDataDomain>(1);
 		dataDomains.add(dataDomain);
 		return dataDomains;
+	}
+
+	@Override
+	public void updateColorMapping() {
+		setDisplayListDirty();
 	}
 
 }

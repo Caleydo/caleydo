@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  * 
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.pathway;
 
@@ -45,8 +42,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 
 /**
- * Class responsible for rendering all augmentations on top of the pathway
- * texture.
+ * Class responsible for rendering all augmentations on top of the pathway texture.
  * 
  * @author Marc Streit
  * @author Alexander Lex
@@ -79,8 +75,7 @@ public class GLPathwayAugmentationRenderer {
 	private DataRepresentation dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
 	/**
-	 * The virtual array containing the samples that are currently mapped onto
-	 * the nodes
+	 * The virtual array containing the samples that are currently mapped onto the nodes
 	 */
 	private VirtualArray<?, ?, ?> selectedSamplesVA;
 
@@ -153,8 +148,7 @@ public class GLPathwayAugmentationRenderer {
 	}
 
 	/**
-	 * Creates a sample va based on the state of
-	 * {@link GLPathway#getSampleMappingMode()}
+	 * Creates a sample va based on the state of {@link GLPathway#getSampleMappingMode()}
 	 */
 	private void createSelectedSamplesVA() {
 		if (glPathwayView.getDataDomain() == null) {
@@ -345,8 +339,7 @@ public class GLPathwayAugmentationRenderer {
 	}
 
 	/**
-	 * Iterates over all vertices in the pathway and renders the augmentations
-	 * of the vertex reps
+	 * Iterates over all vertices in the pathway and renders the augmentations of the vertex reps
 	 */
 	private void renderVertices(final GL2 gl, PathwayGraph pathway) {
 
@@ -858,6 +851,14 @@ public class GLPathwayAugmentationRenderer {
 		}
 	}
 
+	/**
+	 * Calculates the average value of the selected samples (taken from {@link #selectedSamplesVA}) selectedSamplesVA.
+	 * 
+	 * FIXME: doesn't consider multi-mappings atm.
+	 * 
+	 * @param vertexRep
+	 * @return
+	 */
 	private Average getExpressionAverage(PathwayVertexRep vertexRep) {
 
 		if (selectedSamplesVA == null || selectedSamplesVA.size() == 0)
@@ -865,21 +866,20 @@ public class GLPathwayAugmentationRenderer {
 
 		List<Integer> mappedDavidIds = pathwayItemManager.getDavidIDsByPathwayVertexRep(vertexRep);
 
+		Average average = null;
 		for (Integer davidID : mappedDavidIds) {
-			{
-				Set<Integer> expressionIndices = idMappingManager.<Integer, Integer> getIDAsSet(glPathwayView
-						.getPathwayDataDomain().getDavidIDType(), glPathwayView.getDataDomain().getGeneIDType(),
-						davidID);
-				if (expressionIndices == null)
-					continue;
 
-				for (Integer expressionIndex : expressionIndices) {
-					Average average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA, glPathwayView
-							.getDataDomain().getTable(), expressionIndex);
+			Set<Integer> expressionIndices = idMappingManager.<Integer, Integer> getIDAsSet(glPathwayView
+					.getPathwayDataDomain().getDavidIDType(), glPathwayView.getDataDomain().getGeneIDType(), davidID);
+			if (expressionIndices == null)
+				continue;
 
-					return average;
-				}
+			for (Integer expressionIndex : expressionIndices) {
+				average = TablePerspectiveStatistics.calculateAverage(selectedSamplesVA, glPathwayView.getDataDomain()
+						.getTable(), expressionIndex);
+
 			}
+			return average;
 		}
 
 		return null;
