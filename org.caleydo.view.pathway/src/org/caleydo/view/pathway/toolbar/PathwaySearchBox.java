@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  * 
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.pathway.toolbar;
 
@@ -50,13 +47,16 @@ public class PathwaySearchBox
 	/** mediator to handle actions triggered by the contributed element */
 	private PathwayToolBarMediator pathwayToolBarMediator;
 
+	private int pathwayID = -1;
+
 	/**
 	 * constructor as requested by ControlContribution
 	 * 
 	 * @param str
 	 */
-	public PathwaySearchBox(String str) {
+	public PathwaySearchBox(String str, int pathwayID) {
 		super(str);
+		this.pathwayID = pathwayID;
 	}
 
 	@Override
@@ -67,6 +67,11 @@ public class PathwaySearchBox
 		String items[] = { "No pathways available!" };
 		pathwaySearchBox.setItems(items);
 		pathwaySearchBox.setTextLimit(90);
+
+		if (PathwayManager.get().hasItem(pathwayID)) {
+			PathwayGraph pathway = PathwayManager.get().getItem(pathwayID);
+			pathwaySearchBox.setText(pathway.getTitle() + " (" + pathway.getType().getName() + ")");
+		}
 
 		pathwaySearchBox.addFocusListener(new FocusAdapter() {
 			@Override
@@ -138,8 +143,8 @@ public class PathwaySearchBox
 	}
 
 	/**
-	 * Method gets a pathway title and tries to determine the pathway ID. If
-	 * this is successful the load pathway event is triggered.
+	 * Method gets a pathway title and tries to determine the pathway ID. If this is successful the load pathway event
+	 * is triggered.
 	 * 
 	 * @param entity Pathway search title
 	 * @return

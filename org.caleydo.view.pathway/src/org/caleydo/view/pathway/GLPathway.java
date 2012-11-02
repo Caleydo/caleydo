@@ -593,15 +593,16 @@ public class GLPathway
 		if (pathway == null || !pathwayManager.hasItem(pathway.getID())) {
 			if (isDisplayListDirty) {
 				gl.glNewList(displayListIndex, GL2.GL_COMPILE);
-				renderEmptyViewText(gl, new String[] { "Please select a pathway map in the ",
-						"dropdown box of the toolbar.", "Refer to http://help.caleydo.org for more information." });
+				renderEmptyViewText(gl, new String[] {
+						"Please select a pathway map from the pathway dropdown box in the toolbar.",
+						"To map experimental data select one of the available datasets from the dataset dropdown box.",
+						"Refer to http://help.caleydo.org for more information." });
 				gl.glEndList();
 				isDisplayListDirty = false;
 			}
 			gl.glCallList(displayListIndex);
 			return;
 		}
-			
 
 		if (isPathwayDataDirty)
 			initPathwayData(gl);
@@ -1206,7 +1207,7 @@ public class GLPathway
 			eventPublisher.removeListener(updateColorMappingListener);
 			updateColorMappingListener = null;
 		}
-		
+
 		if (clearMappingListener != null) {
 			eventPublisher.removeListener(clearMappingListener);
 			clearMappingListener = null;

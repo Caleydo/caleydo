@@ -71,7 +71,7 @@ public class PathwayToolBarContainer
 		DatasetSelectionBox dataSelectionBox = new DatasetSelectionBox("Select Data", dataDomain);
 		elements.add(dataSelectionBox);
 
-		PathwaySearchBox pathwaySearchBox = new PathwaySearchBox("");
+		PathwaySearchBox pathwaySearchBox = new PathwaySearchBox("", serializedView.getPathwayID());
 		pathwaySearchBox.setPathwayToolBarMediator(pathwayToolBarMediator);
 		elements.add(pathwaySearchBox);
 
