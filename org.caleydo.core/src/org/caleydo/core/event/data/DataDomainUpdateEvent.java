@@ -23,7 +23,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.event.AEvent;
 
 /**
- * This Event should be triggered when the dimension groups of a data domain change.
+ * This Event should be triggered when the table perspectives of a data domain change.
  * 
  * @author Christian Partl
  */

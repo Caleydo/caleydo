@@ -21,6 +21,7 @@ package org.caleydo.view.pathway.toolbar;
 
 import java.util.List;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ViewManager;
@@ -98,7 +99,9 @@ public class DatasetSelectionBox
 						GeneticDataDomain dataDomain = candidateDataDomains.get(dataSetChooser.getSelectionIndex() - 1);
 
 						addTablePerspectivesEvent.setDataDomainID(dataDomain.getDataDomainID());
-						addTablePerspectivesEvent.addTablePerspecitve(dataDomain.getDefaultTablePerspective());
+						TablePerspective tablePerspective = dataDomain.getDefaultTablePerspective();
+						tablePerspective.setPrivate(false);
+						addTablePerspectivesEvent.addTablePerspecitve(tablePerspective);
 
 						GeneralManager.get().getEventPublisher().triggerEvent(addTablePerspectivesEvent);
 					}
