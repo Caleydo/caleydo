@@ -262,9 +262,6 @@ public class StartupProcessor {
 		generalManager.getViewManager().stopAnimator();
 
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Bye bye!"));
-		// display.dispose();
-
-		System.exit(0);
 	}
 
 	public AStartupProcedure getStartupProcedure() {
