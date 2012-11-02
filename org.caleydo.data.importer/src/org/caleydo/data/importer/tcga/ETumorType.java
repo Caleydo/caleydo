@@ -45,7 +45,7 @@ public enum ETumorType {
 	LUSC("Lung squamous cell carcinoma"),
 	OV("Ovarian serous cystadenocarcinoma"),
 	PAAD("Pancreatic adenocarcinoma"),
-	PANCANCER(""),
+	PANCAN8("All samples from: BRCA, COAD, GBM, KIRC, LUSC, OV, READ, UCEC"),
 	PRAD("Prostate adenocarcinoma"),
 	SKCM("Skin Cutaneous Melanoma"),
 	STAD("Stomach adenocarcinoma"),
