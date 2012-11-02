@@ -34,8 +34,6 @@ import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.picking.APickingListener;
-import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
@@ -58,27 +56,6 @@ public class MultiTablePerspectiveViewNode extends ViewNode implements IDropArea
 
 	}
 
-	@Override
-	protected void registerPickingListeners() {
-		
-		super.registerPickingListeners();
-
-		view.addIDPickingListener(new APickingListener() {
-
-			@Override
-			public void dragged(Pick pick) {
-
-				DragAndDropController dragAndDropController = MultiTablePerspectiveViewNode.this.dragAndDropController;
-				if (dragAndDropController.isDragging()
-						&& dragAndDropController.getDraggingMode().equals(
-								"DimensionGroupDrag")) {
-					dragAndDropController.setDropArea(MultiTablePerspectiveViewNode.this);
-				}
-
-			}
-		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
-
-	}
 
 	@Override
 	protected ElementLayout setupLayout() {
@@ -241,7 +218,6 @@ public class MultiTablePerspectiveViewNode extends ViewNode implements IDropArea
 		super.destroy();
 		// overviewTablePerspectiveRenderer.destroy();
 		tablePerspectiveListRenderer.destroy();
-		view.removeAllIDPickingListeners(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 	}
 
 	@Override

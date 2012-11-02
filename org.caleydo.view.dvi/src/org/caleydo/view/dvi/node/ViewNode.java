@@ -25,9 +25,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.media.opengl.GL2;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
+import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -37,12 +40,16 @@ import org.caleydo.core.view.opengl.layout.util.TextureRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
+import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
+import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.ViewNodeBackGroundRenderer;
 import org.caleydo.view.dvi.contextmenu.OpenViewItem;
 import org.caleydo.view.dvi.contextmenu.RenameLabelHolderItem;
 import org.caleydo.view.dvi.layout.AGraphLayout;
 import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
+import org.caleydo.view.dvi.tableperspective.TablePerspectiveRenderer;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -52,16 +59,17 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 
-public class ViewNode extends ADefaultTemplateNode {
+public class ViewNode
+	extends ADefaultTemplateNode
+	implements IDropArea {
 
 	// private TablePerspectiveListRenderer overviewTablePerspectiveRenderer;
 	protected AGLView representedView;
 	protected Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
 	protected String iconPath;
 
-	public ViewNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
-			DragAndDropController dragAndDropController, Integer id,
-			AGLView representedView) {
+	public ViewNode(AGraphLayout graphLayout, GLDataViewIntegrator view, DragAndDropController dragAndDropController,
+			Integer id, AGLView representedView) {
 		super(graphLayout, view, dragAndDropController, id);
 
 		this.representedView = representedView;
@@ -80,11 +88,9 @@ public class ViewNode extends ADefaultTemplateNode {
 
 			@Override
 			public void rightClicked(Pick pick) {
-				view.getContextMenuCreator().addContextMenuItem(
-						new OpenViewItem(representedView));
-				
-				view.getContextMenuCreator().addContextMenuItem(
-						new RenameLabelHolderItem(representedView));
+				view.getContextMenuCreator().addContextMenuItem(new OpenViewItem(representedView));
+
+				view.getContextMenuCreator().addContextMenuItem(new RenameLabelHolderItem(representedView));
 			}
 
 			@Override
@@ -93,6 +99,20 @@ public class ViewNode extends ADefaultTemplateNode {
 			}
 
 		}, DATA_GRAPH_NODE_PICKING_TYPE, id);
+
+		view.addIDPickingListener(new APickingListener() {
+
+			@Override
+			public void dragged(Pick pick) {
+
+				DragAndDropController dragAndDropController = ViewNode.this.dragAndDropController;
+				if (dragAndDropController.isDragging()
+						&& dragAndDropController.getDraggingMode().equals("DimensionGroupDrag")) {
+					dragAndDropController.setDropArea(ViewNode.this);
+				}
+
+			}
+		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 
 	}
 
@@ -129,7 +149,8 @@ public class ViewNode extends ADefaultTemplateNode {
 			URL iconURL = viewPlugin.getEntry(iconPath);
 			try {
 				iconPath = FileLocator.toFileURL(iconURL).getPath();
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				new IllegalStateException("Cannot load view icon texture");
 			}
 		}
@@ -154,8 +175,7 @@ public class ViewNode extends ADefaultTemplateNode {
 			ElementLayout iconLayout = new ElementLayout("icon");
 			iconLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
 			iconLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-			iconLayout
-					.setRenderer(new TextureRenderer(iconPath, view.getTextureManager()));
+			iconLayout.setRenderer(new TextureRenderer(iconPath, view.getTextureManager()));
 			titleRow.append(iconLayout);
 			titleRow.append(spacingLayoutX);
 		}
@@ -167,8 +187,8 @@ public class ViewNode extends ADefaultTemplateNode {
 		ElementLayout lineSeparatorLayout = createDefaultLineSeparatorLayout();
 
 		Row bodyRow = new Row("bodyRow");
-		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(new float[] { 1, 1,
-				1, 1 }, iconPath, view.getTextureManager()));
+		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(new float[] { 1, 1, 1, 1 }, iconPath, view
+				.getTextureManager()));
 
 		bodyColumn = new Column("bodyColumn");
 
@@ -199,7 +219,8 @@ public class ViewNode extends ADefaultTemplateNode {
 	public List<TablePerspective> getTablePerspectives() {
 
 		if (representedView instanceof ITablePerspectiveBasedView) {
-			return ((ITablePerspectiveBasedView) representedView).getTablePerspectives();
+			return new ArrayList<TablePerspective>(
+					((ITablePerspectiveBasedView) representedView).getTablePerspectives());
 
 		}
 
@@ -230,6 +251,7 @@ public class ViewNode extends ADefaultTemplateNode {
 	public void destroy() {
 		super.destroy();
 		view.removeAllIDPickingListeners(DATA_GRAPH_NODE_PICKING_TYPE, id);
+		view.removeAllIDPickingListeners(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 	}
 
 	@Override
@@ -239,23 +261,78 @@ public class ViewNode extends ADefaultTemplateNode {
 
 	@Override
 	protected int getMinTitleBarWidthPixels() {
-		float textWidth = view.getTextRenderer().getRequiredTextWidthWithMax(
-				representedView.getLabel(),
-				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS),
-				MIN_TITLE_BAR_WIDTH_PIXELS);
+		float textWidth = view.getTextRenderer().getRequiredTextWidthWithMax(representedView.getLabel(),
+				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS), MIN_TITLE_BAR_WIDTH_PIXELS);
 
-		return pixelGLConverter.getPixelWidthForGLWidth(textWidth)
-				+ CAPTION_HEIGHT_PIXELS + SPACING_PIXELS;
+		return pixelGLConverter.getPixelWidthForGLWidth(textWidth) + CAPTION_HEIGHT_PIXELS + SPACING_PIXELS;
 	}
 
 	@Override
 	public String getLabel() {
 		return representedView.getLabel();
 	}
-	
+
 	@Override
 	public String getProviderName() {
 		return "View Node";
+	}
+
+	@Override
+	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX, float mouseCoordinateY,
+			DragAndDropController dragAndDropController) {
+		ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>();
+		for (IDraggable draggable : draggables) {
+			if (draggable instanceof TablePerspectiveRenderer) {
+				TablePerspectiveRenderer tablePerspectiveRenderer = (TablePerspectiveRenderer) draggable;
+				tablePerspectives.add(tablePerspectiveRenderer.getTablePerspective());
+			}
+		}
+
+		if (!tablePerspectives.isEmpty()) {
+			// FIXME: this needs to be looked at again
+			// System.out.println("Drop");
+			TablePerspective tablePerspective = tablePerspectives.get(0);
+			AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(tablePerspective);
+			event.setReceiver((ITablePerspectiveBasedView) representedView);
+			event.setSender(this);
+			GeneralManager.get().getEventPublisher().triggerEvent(event);
+
+			if (tablePerspective instanceof PathwayTablePerspective) {
+				dataDomains.add(((PathwayTablePerspective) tablePerspective).getPathwayDataDomain());
+			}
+			else {
+				dataDomains.add(tablePerspective.getDataDomain());
+			}
+			view.updateGraphEdgesOfViewNode(this);
+			graphLayout.fitNodesToDrawingArea(view.calculateGraphDrawingArea());
+			view.setDisplayListDirty();
+		}
+
+		// dragAndDropController.clearDraggables();
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * org.caleydo.core.view.opengl.util.draganddrop.IDropArea#handleDragOver
+	 * (javax.media.opengl.GL2, java.util.Set, float, float)
+	 */
+	@Override
+	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX, float mouseCoordinateY) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.util.draganddrop.IDropArea#
+	 * handleDropAreaReplaced()
+	 */
+	@Override
+	public void handleDropAreaReplaced() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

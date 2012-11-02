@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
-import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 
 /**
