@@ -91,7 +91,7 @@ public abstract class ASerializedView {
 	 * @return ViewFrustum for open-gl rendering
 	 */
 	public ViewFrustum getViewFrustum() {
-		return new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20);
+		return new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -20, 20);
 	}
 
 	/**

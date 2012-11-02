@@ -422,7 +422,7 @@ public class GLParallelCoordinates
 	private void initGates() {
 		hashGates = new HashMap<Integer, AGate>();
 		hashIsGateBlocking = new HashMap<Integer, ArrayList<Integer>>();
-		if (dataDomain.getTable().isDataHomogeneous()) {
+		if (dataDomain != null && dataDomain.getTable().isDataHomogeneous()) {
 			hashMasterGates = new HashMap<Integer, Gate>();
 		}
 		hashExcludeNAN = new HashMap<Integer, Boolean>();

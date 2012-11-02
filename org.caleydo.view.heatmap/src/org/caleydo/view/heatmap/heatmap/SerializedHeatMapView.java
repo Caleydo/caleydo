@@ -51,13 +51,6 @@ public class SerializedHeatMapView extends ASerializedSingleTablePerspectiveBase
 	}
 
 	@Override
-	public ViewFrustum getViewFrustum() {
-		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
-				8, 0, 8, -20, 20);
-		return viewFrustum;
-	}
-
-	@Override
 	public String getViewType() {
 		return GLHeatMap.VIEW_TYPE;
 	}

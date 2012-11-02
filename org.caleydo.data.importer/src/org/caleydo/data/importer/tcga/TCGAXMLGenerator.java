@@ -368,14 +368,14 @@ public class TCGAXMLGenerator
 			System.err.println(e.getMessage());
 		}
 
-		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
-		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
-		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
-		kMeansAlgo.setNumberOfClusters(5);
-		clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
-		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
-		matrixData.setDataProcessingDescription(dataProcessingDescription);
+//		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
+//		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
+//		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+//		KMeansClusterConfiguration kMeansAlgo = new KMeansClusterConfiguration();
+//		kMeansAlgo.setNumberOfClusters(5);
+//		clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
+//		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+//		matrixData.setDataProcessingDescription(dataProcessingDescription);
 
 		return matrixData;
 	}

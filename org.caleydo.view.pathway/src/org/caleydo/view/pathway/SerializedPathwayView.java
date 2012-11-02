@@ -101,13 +101,6 @@ public class SerializedPathwayView extends ASerializedSingleTablePerspectiveBase
 	}
 
 	@Override
-	public ViewFrustum getViewFrustum() {
-		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
-				1, 0, 1, -20, 20);
-		return viewFrustum;
-	}
-
-	@Override
 	public String getViewType() {
 		return GLPathway.VIEW_TYPE;
 	}

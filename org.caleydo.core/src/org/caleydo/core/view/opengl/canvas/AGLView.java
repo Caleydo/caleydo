@@ -410,7 +410,6 @@ public abstract class AGLView extends AView implements GLEventListener,
 
 		GL2 gl = drawable.getGL().getGL2();
 
-
 		gl.glViewport(x, y, width, height);
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
