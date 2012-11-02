@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  * 
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.histogram;
 
@@ -63,7 +60,7 @@ public class GLHistogram
 
 	public static String VIEW_NAME = "Histogram";
 
-	private boolean bUseDetailLevel = true;
+	private boolean useDetailLevel = true;
 
 	private boolean useColor = true;
 
@@ -82,8 +79,7 @@ public class GLHistogram
 	private static float[] SPREAD_LINE_COLOR = { 0.5f, 0.5f, 0.5f };
 
 	float fRenderWidth;
-
-	private float sideSpacing = SIDE_SPACING;
+	float sideSpacing = 0;
 
 	/**
 	 * Constructor.
@@ -143,15 +139,7 @@ public class GLHistogram
 	@Override
 	public void setDetailLevel(EDetailLevel detailLevel) {
 		super.setDetailLevel(detailLevel);
-		if (bUseDetailLevel) {
-			// renderStyle.setDetailLevel(detailLevel);
-			if (detailLevel == EDetailLevel.LOW) {
-				sideSpacing = 0;
-			}
-			else {
-				sideSpacing = SIDE_SPACING;
-			}
-		}
+
 	}
 
 	@Override
@@ -185,6 +173,17 @@ public class GLHistogram
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
+
+		if (useDetailLevel) {
+			// renderStyle.setDetailLevel(detailLevel);
+			if (detailLevel == EDetailLevel.LOW) {
+				sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW);
+			}
+			else {
+				sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(SIDE_SPACING);
+			}
+		}
+
 		renderHistogram(gl);
 		if (renderColorBars && detailLevel != EDetailLevel.LOW)
 			renderColorBars(gl);
@@ -209,7 +208,7 @@ public class GLHistogram
 			}
 		}
 
-		float fSpacing = (viewFrustum.getWidth() - 2 * sideSpacing) / histogram.size();
+		float spacing = (viewFrustum.getWidth() - 2 * sideSpacing) / histogram.size();
 		float continuousColorDistance = 1.0f / histogram.size();
 
 		float fOneHeightValue = (viewFrustum.getHeight() - 2 * sideSpacing) / histogram.getLargestValue();
@@ -226,12 +225,12 @@ public class GLHistogram
 			gl.glLineWidth(3.0f);
 			gl.glBegin(GL2.GL_POLYGON);
 
-			gl.glVertex3f(fSpacing * iCount + sideSpacing, sideSpacing, 0);
-			gl.glVertex3f(fSpacing * iCount + sideSpacing, sideSpacing + iValue * fOneHeightValue, 0);
+			gl.glVertex3f(spacing * iCount + sideSpacing, sideSpacing, 0);
+			gl.glVertex3f(spacing * iCount + sideSpacing, sideSpacing + iValue * fOneHeightValue, 0);
 			// gl.glColor3fv(colorMapping.getColor(fContinuousColorRegion *
 			// (iCount + 1)), 0);
-			gl.glVertex3f(fSpacing * (iCount + 1) + sideSpacing, sideSpacing + iValue * fOneHeightValue, 0);
-			gl.glVertex3f(fSpacing * (iCount + 1) + sideSpacing, sideSpacing, 0);
+			gl.glVertex3f(spacing * (iCount + 1) + sideSpacing, sideSpacing + iValue * fOneHeightValue, 0);
+			gl.glVertex3f(spacing * (iCount + 1) + sideSpacing, sideSpacing, 0);
 			gl.glEnd();
 
 			gl.glBegin(GL2.GL_LINE);
@@ -384,22 +383,25 @@ public class GLHistogram
 
 	private void renderCaption(GL2 gl, float normalizedValue) {
 
-		if (getParentGLCanvas().getSize().getWidth() < 500
-				|| dataDomain.getTable().getTableType() != DataTableDataType.NUMERIC)
+		if (detailLevel != EDetailLevel.HIGH || dataDomain.getTable().getTableType() != DataTableDataType.NUMERIC)
 			return;
-
-		textRenderer.begin3DRendering();
-		textRenderer.setColor(0, 0, 0, 1);
-		gl.glDisable(GL2.GL_DEPTH_TEST);
 
 		double correspondingValue = dataDomain.getTable().getRawForNormalized(normalizedValue);
 
 		String text = Formatter.formatNumber(correspondingValue);
+		textRenderer.renderTextInBounds(gl, text, sideSpacing + normalizedValue * fRenderWidth
+				+ HistogramRenderStyle.CAPTION_SPACING, 0, 0.01f, pixelGLConverter.getGLWidthForPixelWidth(100),
+				pixelGLConverter.getGLHeightForPixelHeight(HistogramRenderStyle.SIDE_SPACING));
 
-		textRenderer.draw3D(text, sideSpacing + normalizedValue * fRenderWidth + HistogramRenderStyle.CAPTION_SPACING,
-				HistogramRenderStyle.CAPTION_SPACING, 0.001f, GeneralRenderStyle.HEADING_FONT_SCALING_FACTOR);
-		// textRenderer.flush();
-		textRenderer.end3DRendering();
+		// textRenderer.begin3DRendering();
+		// textRenderer.setColor(0, 0, 0, 1);
+		// gl.glDisable(GL2.GL_DEPTH_TEST);
+
+		// textRenderer.draw3D(text, sideSpacing + normalizedValue * fRenderWidth +
+		// HistogramRenderStyle.CAPTION_SPACING,
+		// HistogramRenderStyle.CAPTION_SPACING, 0.001f, GeneralRenderStyle.HEADING_FONT_SCALING_FACTOR);
+		// // textRenderer.flush();
+		// textRenderer.end3DRendering();
 	}
 
 	/**
@@ -569,7 +571,7 @@ public class GLHistogram
 			case HIGH:
 				return 300;
 			case MEDIUM:
-				return 100;
+				return 150;
 			case LOW:
 				return 40;
 			default:
@@ -583,7 +585,7 @@ public class GLHistogram
 			case HIGH:
 				return 300;
 			case MEDIUM:
-				return 100;
+				return 150;
 			case LOW:
 				return 40;
 			default:
@@ -616,8 +618,7 @@ public class GLHistogram
 	}
 
 	/**
-	 * Sets the datadomain and clears the histogram and sets the display list
-	 * dirty. Can be set at runtime.
+	 * Sets the datadomain and clears the histogram and sets the display list dirty. Can be set at runtime.
 	 */
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
@@ -632,8 +633,7 @@ public class GLHistogram
 	}
 
 	/**
-	 * Sets the TablePerspective and clears the histogram and sets the display
-	 * list dirty. Can be set at runtime.
+	 * Sets the TablePerspective and clears the histogram and sets the display list dirty. Can be set at runtime.
 	 */
 	@Override
 	public void setTablePerspective(TablePerspective tablePerspective) {

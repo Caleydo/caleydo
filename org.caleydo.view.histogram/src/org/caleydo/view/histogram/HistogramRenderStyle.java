@@ -30,7 +30,9 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 public class HistogramRenderStyle extends GeneralRenderStyle {
 
-	public static final float SIDE_SPACING = 0.1f;
+	/** Spacing of the Histogram in pixel */
+	public static final int SIDE_SPACING = 15;
+	public static final int SIDE_SPACING_DETAIL_LOW = 5;
 
 	public static final float SPREAD_CAPTION_THRESHOLD = 0.03f;
 
