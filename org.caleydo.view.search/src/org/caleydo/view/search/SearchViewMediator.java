@@ -19,15 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.search;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.AVariablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
-import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.EventPublisher;
@@ -36,10 +27,8 @@ import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.event.view.pathway.LoadPathwayEvent;
 import org.caleydo.core.event.view.pathway.LoadPathwaysByGeneEvent;
-import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
 public class SearchViewMediator {
 

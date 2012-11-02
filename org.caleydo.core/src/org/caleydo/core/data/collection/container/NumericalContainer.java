@@ -20,7 +20,6 @@
 package org.caleydo.core.data.collection.container;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 

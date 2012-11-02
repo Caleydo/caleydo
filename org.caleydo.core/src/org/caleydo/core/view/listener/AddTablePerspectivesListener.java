@@ -21,7 +21,6 @@ package org.caleydo.core.view.listener;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;

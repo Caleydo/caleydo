@@ -43,7 +43,6 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
-import com.jogamp.opengl.util.GLPixelStorageModes;
 
 /**
  * Class responsible for rendering all augmentations on top of the pathway

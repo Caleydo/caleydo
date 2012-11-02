@@ -23,7 +23,6 @@
 package org.caleydo.view.enroute.listener;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;

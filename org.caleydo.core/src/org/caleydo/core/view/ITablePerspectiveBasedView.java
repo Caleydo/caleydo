@@ -23,7 +23,6 @@
 package org.caleydo.core.view;
 
 import java.util.List;
-
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;

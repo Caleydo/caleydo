@@ -5,8 +5,6 @@ package org.caleydo.core.io.gui.dataimport.wizard;
 
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Mediator for {@link TransformDataPage}. This class is responsible for setting

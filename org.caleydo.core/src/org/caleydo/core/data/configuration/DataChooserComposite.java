@@ -23,7 +23,6 @@
 package org.caleydo.core.data.configuration;
 
 import java.util.List;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;

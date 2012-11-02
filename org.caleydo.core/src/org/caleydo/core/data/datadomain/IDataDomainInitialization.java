@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.data.datadomain;
 
+import org.caleydo.core.id.IDType;
+
 /**
  * Extension point interface class that triggers the initialization of data
  * domains. The initialization concerns the creation of ID types and ID

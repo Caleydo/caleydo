@@ -22,7 +22,6 @@ package org.caleydo.core.io.gui;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
 import org.caleydo.core.data.collection.export.DataTableExporter;
 import org.caleydo.core.data.configuration.DataChooserComposite;
 import org.caleydo.core.manager.GeneralManager;

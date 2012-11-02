@@ -6,10 +6,8 @@ package org.caleydo.view.enroute.node.mode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
-
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Color;

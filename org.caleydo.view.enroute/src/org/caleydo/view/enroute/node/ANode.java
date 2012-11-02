@@ -25,7 +25,6 @@ package org.caleydo.view.enroute.node;
 import gleem.linalg.Vec3f;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
-
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.picking.PickingManager;

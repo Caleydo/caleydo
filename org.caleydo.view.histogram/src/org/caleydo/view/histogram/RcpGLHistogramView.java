@@ -33,7 +33,6 @@ import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.MinimumSizeComposite;
-import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

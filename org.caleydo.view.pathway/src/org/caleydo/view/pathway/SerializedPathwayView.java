@@ -23,8 +23,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
  * Serialized form of a pathway-view.

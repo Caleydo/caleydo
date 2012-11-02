@@ -22,7 +22,6 @@ package org.caleydo.view.pathway.event;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.event.AEvent;
-import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 
 /**
  * Events that signals that gene mapping within pathway views should be enabled.

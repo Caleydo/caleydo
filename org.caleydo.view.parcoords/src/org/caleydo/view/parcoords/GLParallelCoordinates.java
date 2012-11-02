@@ -97,7 +97,6 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.vislink.StandardTransformer;
 import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
-import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.view.parcoords.PCRenderStyle.PolyLineState;
 import org.caleydo.view.parcoords.listener.AngularBrushingEvent;
 import org.caleydo.view.parcoords.listener.AngularBrushingListener;

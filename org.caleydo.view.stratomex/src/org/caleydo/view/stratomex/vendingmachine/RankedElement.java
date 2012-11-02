@@ -21,7 +21,6 @@ package org.caleydo.view.stratomex.vendingmachine;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;

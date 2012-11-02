@@ -42,7 +42,6 @@ import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.AUniqueObject;
-import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

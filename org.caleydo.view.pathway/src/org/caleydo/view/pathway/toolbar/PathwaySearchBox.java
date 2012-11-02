@@ -45,7 +45,7 @@ public class PathwaySearchBox
 	extends ControlContribution
 	implements IToolBarItem {
 
-	public static final int TOOLBAR_WIDTH = 700;
+	public static final int TOOLBAR_WIDTH = 500;
 
 	/** mediator to handle actions triggered by the contributed element */
 	private PathwayToolBarMediator pathwayToolBarMediator;

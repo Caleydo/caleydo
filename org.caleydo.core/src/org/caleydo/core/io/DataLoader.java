@@ -34,8 +34,6 @@ import org.caleydo.core.id.IDTypeInitializer;
 import org.caleydo.core.io.parser.ascii.GroupingParser;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
-import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
 
 /**
  * Creates datadomains, perspectives, etc based on a {@link DataSetDescription}
