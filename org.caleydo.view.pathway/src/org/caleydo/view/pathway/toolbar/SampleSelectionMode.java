@@ -24,8 +24,7 @@ import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -56,26 +55,21 @@ public class SampleSelectionMode
 
 	@Override
 	protected Control createControl(Composite parent) {
-		
-		Group buttonGroup = new Group(parent, SWT.BORDER);
-		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
+
+		Group buttonGroup = new Group(parent, SWT.NONE);
+		FillLayout rowLayout = new FillLayout(SWT.HORIZONTAL);
 		buttonGroup.setLayout(rowLayout);
 
-		RowData rowData = new RowData();
-		rowData.width = 140;
-		
 		Button allSamplesModeRadio = new Button(buttonGroup, SWT.RADIO);
 		allSamplesModeRadio.setText("Map all Samples");
 		allSamplesModeRadio
 				.setToolTipText("If selected an average of all samples of the chosen dataset is mapped onto the pathway nodes.");
 		allSamplesModeRadio.setSelection(true);
-		allSamplesModeRadio.setLayoutData(rowData);
 
 		Button selectedSampleModeRadio = new Button(buttonGroup, SWT.RADIO);
 		selectedSampleModeRadio.setText("Map selected Samples");
 		selectedSampleModeRadio
 				.setToolTipText("If selected an average of only the selected samples of the chosen dataset is mapped onto the pathway nodes.");
-		selectedSampleModeRadio.setLayoutData(rowData);
 
 		allSamplesModeRadio.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -129,7 +123,7 @@ public class SampleSelectionMode
 		// }
 		// }
 		// });
-		
+
 		return buttonGroup;
 
 	}
