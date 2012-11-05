@@ -20,8 +20,10 @@
 package org.caleydo.view.radial;
 
 import java.util.ArrayList;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
@@ -46,8 +48,6 @@ public class RcpGLRadialHierarchyView extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		// minSizeComposite.setView(view);
-
-		createGLCanvas();
 
 		view = new GLRadialHierarchy(glCanvas, parentComposite,
 				serializedView.getViewFrustum());

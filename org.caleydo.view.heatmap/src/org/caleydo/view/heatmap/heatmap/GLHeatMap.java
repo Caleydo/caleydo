@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,10 +22,11 @@ package org.caleydo.view.heatmap.heatmap;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -48,6 +49,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -70,7 +72,7 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * Rendering the GLHeatMap
- * 
+ *
  * @author Alexander Lex
  * @author Marc Streit
  */
@@ -116,9 +118,9 @@ public class GLHeatMap
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 */
-	public GLHeatMap(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLHeatMap(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -545,7 +547,7 @@ public class GLHeatMap
 	/**
 	 * Returns the y coordinate of the element rendered at recordIndex, or null
 	 * if the current element is hidden
-	 * 
+	 *
 	 * @param recordIndex
 	 * @return
 	 */
@@ -561,7 +563,7 @@ public class GLHeatMap
 
 	/**
 	 * Returns the x coordinate of the element rendered at dimensionIndex
-	 * 
+	 *
 	 * @param dimensionIndex
 	 * @return
 	 */
@@ -639,7 +641,7 @@ public class GLHeatMap
 
 	/**
 	 * Check whether we should hide elements
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isHideElements() {
@@ -648,7 +650,7 @@ public class GLHeatMap
 
 	/**
 	 * Check whether we should try to show captions
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isShowCaptions() {
@@ -657,7 +659,7 @@ public class GLHeatMap
 
 	/**
 	 * returns the number of elements currently visible in the heat map
-	 * 
+	 *
 	 * @return
 	 */
 	public int getNumberOfVisibleRecords() {
@@ -671,7 +673,7 @@ public class GLHeatMap
 	/**
 	 * returns the overhead which the heat map needs additionally to the
 	 * elements
-	 * 
+	 *
 	 * @return
 	 */
 	public float getRequiredOverheadSpacing() {
@@ -689,7 +691,7 @@ public class GLHeatMap
 	/**
 	 * Returns true if a minimum spacing per element is required. This is
 	 * typically the case when captions are rendered.
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isForceMinSpacing() {
@@ -700,7 +702,7 @@ public class GLHeatMap
 
 	/**
 	 * Returns the height of a particular element
-	 * 
+	 *
 	 * @param recordID the id of the element - since they can be of different
 	 *            height due to the fish eye
 	 * @return the height of the element
@@ -716,7 +718,7 @@ public class GLHeatMap
 	/**
 	 * Returns the minimal spacing required when {@link #isForceMinSpacing()} is
 	 * true. This is typically the case when captions are rendered.
-	 * 
+	 *
 	 * @return
 	 */
 	// public float getMinSpacing() {

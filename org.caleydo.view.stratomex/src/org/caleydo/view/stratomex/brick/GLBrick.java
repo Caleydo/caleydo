@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -24,10 +24,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -52,6 +53,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -110,9 +112,9 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * Individual Brick for StratomeX
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		ILayoutedElement, IDraggable {
@@ -238,7 +240,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	private ABrickLayoutConfiguration brickLayoutConfiguration;
 	private IBrickConfigurer brickConfigurer;
 
-	public GLBrick(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLBrick(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 		views = new HashMap<EContainedViewType, AGLView>();
 		containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
@@ -298,7 +300,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	/**
 	 * Triggers a dialog to rename the specified group.
-	 * 
+	 *
 	 * @param groupID
 	 *            ID of the group that shall be renamed.
 	 */
@@ -523,7 +525,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	/**
 	 * Set the {@link GLStratomex} view managing this brick, which is needed for
 	 * environment information.
-	 * 
+	 *
 	 * @param stratomex
 	 */
 	public void setStratomex(GLStratomex stratomex) {
@@ -532,7 +534,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	/**
 	 * Set the {@link BrickColumn} this brick belongs to.
-	 * 
+	 *
 	 * @param brickColumn
 	 */
 	public void setBrickColumn(BrickColumn brickColumn) {
@@ -541,7 +543,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	/**
 	 * Returns the {@link BrickColumn} this brick belongs to.
-	 * 
+	 *
 	 * @return
 	 */
 	public BrickColumn getBrickColumn() {
@@ -568,8 +570,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * </p>
 	 * <p>
 	 * </p>
-	 * 
-	 * 
+	 *
+	 *
 	 * @param viewType
 	 */
 	public void setBrickViewTypeAndConfigureSize(EContainedViewType viewType) {
@@ -654,6 +656,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	}
 
+	@Override
 	public TextureManager getTextureManager() {
 		return textureManager;
 	}
@@ -662,7 +665,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * Sets the {@link ABrickLayoutConfiguration} for this brick, specifying its
 	 * appearance. If the specified view type is valid, it will be set,
 	 * otherwise the default view type will be set.
-	 * 
+	 *
 	 * @param newBrickLayout
 	 * @param viewType
 	 */
@@ -914,7 +917,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	/**
 	 * Only to be called via a {@link RelationsUpdatedListener} upon a
 	 * {@link RelationsUpdatedEvent}.
-	 * 
+	 *
 	 * TODO: add parameters to check whether this brick needs to be updated
 	 */
 	public void relationsUpdated() {
@@ -933,7 +936,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	/**
 	 * Set the layout that this view is embedded in
-	 * 
+	 *
 	 * @param wrappingLayout
 	 */
 	public void setLayout(ElementLayout wrappingLayout) {
@@ -943,7 +946,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	/**
 	 * Returns the layout that this view is wrapped in, which is created by the
 	 * same instance that creates the view.
-	 * 
+	 *
 	 * @return
 	 */
 	@Override
@@ -967,7 +970,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	/**
 	 * Returns the selection manager responsible for managing selections of data
 	 * containers.
-	 * 
+	 *
 	 * @return
 	 */
 	public SelectionManager getTablePerspectiveSelectionManager() {
@@ -1006,7 +1009,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	/**
 	 * Sets this brick collapsed
-	 * 
+	 *
 	 * @return how much this has affected the height of the brick.
 	 */
 	public void collapse() {
@@ -1072,7 +1075,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	/**
 	 * Sets, whether view switching by this brick should affect other bricks in
 	 * the dimension group.
-	 * 
+	 *
 	 * @param isGlobalViewSwitching
 	 */
 	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
@@ -1152,7 +1155,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	/**
 	 * FIXME this should not be here but somewhere specific to genes
-	 * 
+	 *
 	 * @param sourceDataDomain
 	 * @param sourceRecordVA
 	 */
@@ -1191,7 +1194,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	/**
 	 * FIXME this should not be here but somewhere specific to genes
-	 * 
+	 *
 	 * @param sourceDataDomain
 	 * @param sourceRecordVA
 	 */
@@ -1280,7 +1283,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	/**
 	 * FIXME this should not be here but somewhere specific to genes
-	 * 
+	 *
 	 * @param sourceDataDomain
 	 * @param sourceRecordVA
 	 */

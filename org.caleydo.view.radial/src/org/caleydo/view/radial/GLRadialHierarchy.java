@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,26 +8,28 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.radial;
 
 import gleem.linalg.Vec2f;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
-import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.ClusterNode;
@@ -49,6 +51,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -71,13 +74,13 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * This class is responsible for rendering the radial hierarchy and receiving
  * user events and events from other views.
- * 
+ *
  * @author Christian Partl
  */
 public class GLRadialHierarchy extends ATableBasedView {
 
 	public static String VIEW_TYPE = "org.caleydo.view.radial";
-	
+
 		public static String VIEW_NAME = "Radial Hierarchy";
 
 
@@ -133,12 +136,12 @@ public class GLRadialHierarchy extends ATableBasedView {
 	/**
 	 * Constructor.
 	 */
-	public GLRadialHierarchy(GLCanvas glCanvas, Composite parentComposite,
+	public GLRadialHierarchy(IGLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
-	
+
 		ArrayList<SelectionType> alSelectionTypes = new ArrayList<SelectionType>();
 		alSelectionTypes.add(SelectionType.NORMAL);
 		alSelectionTypes.add(SelectionType.MOUSE_OVER);
@@ -210,7 +213,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 	/**
 	 * Initializes a new hierarchy of partial discs according to a tree of
 	 * cluster nodes.
-	 * 
+	 *
 	 * @param tree
 	 *            Tree of cluster nodes which is used to build the partial disc
 	 *            tree.
@@ -218,7 +221,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 	/**
 	 * Initializes a new hierarchy of partial discs according to a tree of
 	 * cluster nodes and other parameters.
-	 * 
+	 *
 	 * @param <E>
 	 *            Concrete Type of IHierarchyData
 	 * @param tree
@@ -282,7 +285,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 	 * Recursively builds the partial disc tree according to a hierarchy data
 	 * tree. Note that the root element of the partial disc tree has to be set
 	 * separately.
-	 * 
+	 *
 	 * @param tree
 	 *            Tree of cluster nodes which is used to build the partial disc
 	 *            tree.
@@ -416,7 +419,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 
 	/**
 	 * Builds the display list for a given display list index.
-	 * 
+	 *
 	 * @param gl
 	 *            Instance of GL2.
 	 * @param iGLDisplayListIndex
@@ -612,7 +615,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 
 	/**
 	 * Gets the real root element of the hierarchy.
-	 * 
+	 *
 	 * @return Real root element of the hierarchy.
 	 */
 	public PartialDisc getRealRootElement() {
@@ -621,7 +624,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 
 	/**
 	 * Gets the element that will be displayed as root element.
-	 * 
+	 *
 	 * @return Element that will be displayed as root element.
 	 */
 	public PartialDisc getCurrentRootElement() {
@@ -630,7 +633,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 
 	/**
 	 * Sets an element that will be displayed as root element.
-	 * 
+	 *
 	 * @param pdCurrentRootElement
 	 *            New element that will be displayed as root element.
 	 */
@@ -641,7 +644,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 
 	/**
 	 * Gets the current selected element.
-	 * 
+	 *
 	 * @return The current selected element.
 	 */
 	public PartialDisc getCurrentSelectedElement() {
@@ -650,7 +653,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 
 	/**
 	 * Sets the current selected element.
-	 * 
+	 *
 	 * @param pdCurrentSelectedElement
 	 *            Element that will be the current selected element.
 	 */
@@ -661,7 +664,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 	/**
 	 * Returns whether an element has been newly selected, either by the view
 	 * itself or externally.
-	 * 
+	 *
 	 * @return true if an element has been newly selected, false otherwise.
 	 */
 	public boolean isNewSelection() {
@@ -670,7 +673,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 
 	/**
 	 * Gets the maximum displayed hierarchy depth.
-	 * 
+	 *
 	 * @return The maximum displayed hierarchy depth.
 	 */
 	public int getMaxDisplayedHierarchyDepth() {
@@ -693,7 +696,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 
 	/**
 	 * Sets the maximum displayed hierarchy depth.
-	 * 
+	 *
 	 * @param iMaxDisplayedHierarchyDepth
 	 */
 	public void setMaxDisplayedHierarchyDepth(int iMaxDisplayedHierarchyDepth) {
@@ -715,7 +718,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 	/**
 	 * Sets if an animation is currently active. If true, no display lists will
 	 * be built or called.
-	 * 
+	 *
 	 * @param bIsAnimationActive
 	 *            Determines if the animation is active.
 	 */
@@ -725,7 +728,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 
 	/**
 	 * Returns the partial disc with the specified ID.
-	 * 
+	 *
 	 * @param elementID
 	 *            ID of the partial disc to obtain.
 	 * @return Partial disc with the specified ID, null if no partial disc with
@@ -747,7 +750,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 	 * parameters. A ClusterNodeSelectionEvent with the new selection will be
 	 * triggered. If the selected element corresponds to a gene, a
 	 * SelectionUpdateEvent will also be triggered.
-	 * 
+	 *
 	 * @param selectionType
 	 *            Type of selection.
 	 * @param pdSelected
@@ -847,7 +850,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 	/**
 	 * Sets up the current display of the RadialHierarchy view according to the
 	 * specified parameters.
-	 * 
+	 *
 	 * @param drawingStateType
 	 *            DrawingState that shall be used.
 	 * @param drawingStrategyType

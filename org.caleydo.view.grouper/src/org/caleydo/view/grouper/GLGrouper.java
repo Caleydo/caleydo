@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,18 +8,19 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.grouper;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -27,9 +28,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
@@ -57,6 +59,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -93,7 +96,7 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * The group assignment interface
- * 
+ *
  * @author Christian Partl
  * @author Alexander Lex
  * @author Marc Streit
@@ -141,11 +144,11 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param glCanvas
 	 * @param viewFrustum
 	 */
-	public GLGrouper(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLGrouper(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -189,7 +192,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	/**
 	 * Creates a new composite GroupRepresentation tree according to the
 	 * specified cluster node tree.
-	 * 
+	 *
 	 * @param tree
 	 *            Tree of cluster nodes that should be used to build a composite
 	 *            GroupRepresentation tree.
@@ -213,7 +216,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	 * Recursive method that builds the composite tree of GroupRepresentations.
 	 * Thereby each GroupRepresentation object corresponds to one ClusterNode of
 	 * the specified tree.
-	 * 
+	 *
 	 * @param tree
 	 *            Tree of cluster nodes that should be used to build a composite
 	 *            GroupRepresentation tree.
@@ -297,7 +300,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	 * Recursive method that builds the a tree of ClusterNodes according to the
 	 * composite GroupRepresentation tree. Thereby each GroupRepresentation
 	 * object corresponds to one ClusterNode.
-	 * 
+	 *
 	 * @param tree
 	 *            Tree of cluster nodes that shall recursively be built.
 	 * @param parentNode
@@ -409,7 +412,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	/**
 	 * Builds a display list of graphical elements that do not have to be
 	 * updated in every frame.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 context.
 	 * @param iGLDisplayListIndex
@@ -870,7 +873,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 	/**
 	 * Sets whether the control key is pressed or not.
-	 * 
+	 *
 	 * @param bControlPressed
 	 *            Specifies if the control key is pressed.
 	 */
@@ -889,7 +892,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	/**
 	 * Sets whether the hierarchy (composite GroupRepresentation tree) was
 	 * changed or not.
-	 * 
+	 *
 	 * @param bHierarchyChanged
 	 *            Specifies if the hierarchy has changed.
 	 */
@@ -899,7 +902,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 	/**
 	 * Adds a GroupRepresentation object to the registered GroupRepresentations.
-	 * 
+	 *
 	 * @param iID
 	 *            ID for the GroupRepresentation object.
 	 * @param groupRepresentation
@@ -916,7 +919,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 	/**
 	 * Removes/unregisters a GroupRepresentation object.
-	 * 
+	 *
 	 * @param iID
 	 *            ID of the GroupRepresentation object that shall be removed.
 	 */
@@ -933,7 +936,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	 * set of group IDs. The ordering is given by the appearance of the
 	 * composites in the tree, hence their visual appearance from top to bottom
 	 * of this view.
-	 * 
+	 *
 	 * @param setGroupIds
 	 *            IDs of the composites that should be retrieved.
 	 * @param topLevelElementsOnly
@@ -967,7 +970,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	 * GroupRepresentations. If all of the specified GroupRepresentations have
 	 * the same parent, they will be the children of the newly created group,
 	 * otherwise the newly created group's children are copies of them.
-	 * 
+	 *
 	 * @param setContainedGroups
 	 *            IDs of the GroupRepresentations a new parent shall be created
 	 *            for.
@@ -1033,7 +1036,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 	/**
 	 * Determine a node label for the new node
-	 * 
+	 *
 	 * @param dimensionIDs
 	 * @return
 	 */
@@ -1076,7 +1079,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	/**
 	 * Finds the common parent of the specified composites, i.e. the first
 	 * composite that all composites have along their parent paths.
-	 * 
+	 *
 	 * @param alComposites
 	 *            Composites whose common parent shall be found for.
 	 * @return The common parent if there exists one, null otherwise.
@@ -1123,7 +1126,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 	/**
 	 * Sets the groups that shall be copied to the specified set of groups.
-	 * 
+	 *
 	 * @param setGroupsToCopy
 	 *            IDs of groups that shall be copied.
 	 */
@@ -1133,7 +1136,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 	/**
 	 * Pastes copied groups as children of the specified group.
-	 * 
+	 *
 	 * @param iParentGroupID
 	 *            ID of the group where the copied groups should be pasted in.
 	 */
@@ -1162,7 +1165,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 	/**
 	 * Removes the specified groups from the composite GroupRepresentation tree.
-	 * 
+	 *
 	 * @param setGroupsToDelete
 	 *            IDs of groups that should be deleted.
 	 */
@@ -1247,7 +1250,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 	/**
 	 * Triggers a dialog to rename the specified group.
-	 * 
+	 *
 	 * @param groupID
 	 *            ID of the group that shall be renamed.
 	 */

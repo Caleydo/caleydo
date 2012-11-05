@@ -21,6 +21,7 @@ package org.caleydo.view.heatmap.uncertainty;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -42,8 +43,6 @@ public class RcpGLUncertaintyHeatMapView extends ARcpGLViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-
-		createGLCanvas();
 
 		view = new GLUncertaintyHeatMap(glCanvas, parentComposite,
 				serializedView.getViewFrustum());

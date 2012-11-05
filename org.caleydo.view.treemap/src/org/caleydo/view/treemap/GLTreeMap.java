@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,11 +21,11 @@ package org.caleydo.view.treemap;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
@@ -46,6 +46,8 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingManager;
@@ -69,9 +71,9 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * Control Class for a single treemap. Handles interaction and events. Calls
  * TreemapRenderer to display the treemap.
- * 
+ *
  * @author Michael Lafer
- * 
+ *
  */
 public class GLTreeMap extends ATableBasedView {
 
@@ -120,7 +122,7 @@ public class GLTreeMap extends ATableBasedView {
 	private UpdateColorMappingListener updateViewListener;
 	LevelHighlightingListener levelHighlightingListener;
 
-	public GLTreeMap(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLTreeMap(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 		renderer = new TreeMapRenderer();
@@ -333,7 +335,7 @@ public class GLTreeMap extends ATableBasedView {
 		treeSelectionManager.clearSelections();
 	}
 
-	public void processMouseWheeleEvent(MouseWheelEvent e) {
+	public void processMouseWheeleEvent(IMouseEvent e) {
 		if (bIsMouseWheeleUsed) {
 			// System.out.println("wheel used: " +
 			// e.getWheelRotation());

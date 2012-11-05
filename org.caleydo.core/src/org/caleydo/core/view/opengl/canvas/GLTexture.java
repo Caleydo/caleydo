@@ -1,27 +1,28 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL2;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.serialize.ASerializedView;
@@ -32,12 +33,12 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * Single OpenGL2 tissue view
- * 
+ *
  * @author Marc Streit
  */
 public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDomain> {
 	public static String VIEW_TYPE = "org.caleydo.view.texture";
-	
+
 	public static String VIEW_NAME = "Texture";
 	private String texturePath;
 	private int experimentIndex;
@@ -51,7 +52,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	/**
 	 * Constructor.
 	 */
-	public GLTexture(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLTexture(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -189,6 +190,6 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

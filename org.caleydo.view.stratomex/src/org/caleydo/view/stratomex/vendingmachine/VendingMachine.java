@@ -25,9 +25,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -42,6 +43,7 @@ import org.caleydo.core.util.collection.Triple;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -139,14 +141,14 @@ public class VendingMachine
 	 * @param viewLabel
 	 * @param viewFrustum
 	 */
-	public VendingMachine(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public VendingMachine(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		glKeyListener = new VendingMachineKeyListener(this);
 
-		parentGLCanvas.removeMouseWheelListener(glMouseListener);
-		parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
+		// parentGLCanvas.removeMouseListener(glMouseListener);
+		parentGLCanvas.addMouseListener(glMouseWheelListener);
 	}
 
 	@Override

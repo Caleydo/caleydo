@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -28,9 +28,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
-import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.manager.AManager;
@@ -40,6 +41,10 @@ import org.caleydo.core.util.execution.DisplayLoopExecution;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
+import org.caleydo.core.view.opengl.canvas.internal.awt.AWTGLCanvasFactory;
+import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
@@ -51,23 +56,24 @@ import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+
 import com.jogamp.opengl.util.FPSAnimator;
 
 /**
  * Manage all canvas, view and canvas objects.
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
 public class ViewManager extends AManager<IView> {
 
-	private HashMap<GLCanvas, ArrayList<AGLView>> hashGLCanvas2GLView = new HashMap<GLCanvas, ArrayList<AGLView>>();
+	private final Map<IGLCanvas, List<AGLView>> hashGLCanvas2GLView = new HashMap<>();
 
-	private HashMap<Integer, AGLView> hashGLViewID2GLView = new HashMap<Integer, AGLView>();
+	private final Map<Integer, AGLView> hashGLViewID2GLView = new HashMap<>();
 
-	private HashMap<ARcpGLViewPart, IView> hashRCP2View = new HashMap<ARcpGLViewPart, IView>();
+	private final Map<ARcpGLViewPart, IView> hashRCP2View = new HashMap<>();
 
-	private HashMap<IView, ARcpGLViewPart> hashView2RCP = new HashMap<IView, ARcpGLViewPart>();
+	private final Map<IView, ARcpGLViewPart> hashView2RCP = new HashMap<>();
 
 	/**
 	 * Map that maps from a remote rendering view to a list of its remote
@@ -107,6 +113,22 @@ public class ViewManager extends AManager<IView> {
 	 */
 	private DisplayLoopExecution displayLoopExecution;
 
+	private final IGLCanvasFactory canvasFactory;
+
+	{
+		String kind = System.getProperty("org.caleydo.opengl", "awt");
+
+		if ("awt".equalsIgnoreCase(kind)) {
+			canvasFactory = new AWTGLCanvasFactory();
+		} else if ("swt".equalsIgnoreCase(kind)) {
+			canvasFactory = new SWTGLCanvasFactory();
+			// } else if ("newt".equalsIgnoreCase(kind)) {
+			//
+		} else {
+			throw new IllegalStateException("unknown opengl implementation: " + kind);
+		}
+	}
+
 	private volatile static ViewManager instance;
 
 	public static ViewManager get() {
@@ -118,6 +140,10 @@ public class ViewManager extends AManager<IView> {
 			}
 		}
 		return instance;
+	}
+
+	public IGLCanvasFactory getCanvasFactory() {
+		return canvasFactory;
 	}
 
 	@Override
@@ -135,12 +161,12 @@ public class ViewManager extends AManager<IView> {
 		return hashGLViewID2GLView.get(iItemID);
 	}
 
-	public boolean unregisterGLCanvas(final GLCanvas glCanvas) {
+	public boolean unregisterGLCanvas(final IGLCanvas glCanvas) {
 
 		if (glCanvas == null)
 			return false;
 
-		fpsAnimator.remove(glCanvas);
+		fpsAnimator.remove(glCanvas.asGLAutoDrawAble());
 		hashGLCanvas2GLView.remove(glCanvas);
 
 		return true;
@@ -148,7 +174,7 @@ public class ViewManager extends AManager<IView> {
 
 	/**
 	 * Registers the specified {@link AGLView}.
-	 * 
+	 *
 	 * @param glView
 	 * @param assignInstanceNumber
 	 *            If true, a number that is unique among all instances of the
@@ -197,7 +223,7 @@ public class ViewManager extends AManager<IView> {
 	/**
 	 * Registers the dependency between a remote rendering and a remote rendered
 	 * view.
-	 * 
+	 *
 	 * @param remoteRenderedView
 	 *            The remote rendered view.
 	 * @param remoteRenderingView
@@ -220,7 +246,7 @@ public class ViewManager extends AManager<IView> {
 	/**
 	 * Destroys all remote views of topLevelRemoteRenderingView that have
 	 * previously been unregistered via {@link #unregisterGLView(AGLView)}.
-	 * 
+	 *
 	 * @param gl
 	 * @param topLevelRemoteRenderingView
 	 */
@@ -253,7 +279,7 @@ public class ViewManager extends AManager<IView> {
 
 	/**
 	 * Recursively destroys all remote views of the specified view.
-	 * 
+	 *
 	 * @param gl
 	 * @param remoteRenderingView
 	 */
@@ -272,7 +298,7 @@ public class ViewManager extends AManager<IView> {
 		}
 	}
 
-	public void registerGLEventListenerByGLCanvas(final GLCanvas glCanvas,
+	public void registerGLEventListenerByGLCanvas(final IGLCanvas glCanvas,
 			final AGLView glView) {
 
 		// This is the case when a view is rendered remote
@@ -290,7 +316,7 @@ public class ViewManager extends AManager<IView> {
 	/**
 	 * Associate an RCP view with the Caleydo view contained inside the RCP
 	 * view.
-	 * 
+	 *
 	 * @param rcpView
 	 * @param view
 	 */
@@ -305,7 +331,7 @@ public class ViewManager extends AManager<IView> {
 	/**
 	 * Remove association between an RCP view and the Caleydo view contained
 	 * inside the RCP view.
-	 * 
+	 *
 	 * @param rcpView
 	 * @param view
 	 */
@@ -340,7 +366,7 @@ public class ViewManager extends AManager<IView> {
 	 * This method unregisters the specified view and also triggers the
 	 * destruction of that view and all remote rendered child views if it is
 	 * remotely rendered.
-	 * 
+	 *
 	 * @param glView
 	 */
 	public void unregisterGLView(final AGLView glView) {
@@ -349,7 +375,7 @@ public class ViewManager extends AManager<IView> {
 
 	/**
 	 * Unregisters the specified view from this manager.
-	 * 
+	 *
 	 * @param glView
 	 * @param registerAtTopLevelViewForDestruction
 	 *            Specifies whether the view (if remote rendered) shall be
@@ -361,7 +387,7 @@ public class ViewManager extends AManager<IView> {
 		if (glView == null)
 			return;
 
-		GLCanvas parentGLCanvas = (glView).getParentGLCanvas();
+		IGLCanvas parentGLCanvas = (glView).getParentGLCanvas();
 
 		if (parentGLCanvas != null) {
 			parentGLCanvas.removeGLEventListener(glView);
@@ -462,17 +488,16 @@ public class ViewManager extends AManager<IView> {
 		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Stop animator"));
 	}
 
-	public void registerGLCanvasToAnimator(final GLCanvas glCanvas) {
+	public void registerGLCanvasToAnimator(final IGLCanvas glCanvas) {
 
 		// Lazy creation of animator
 		if (fpsAnimator == null) {
 			startAnimator();
 		}
 
-		fpsAnimator.add(glCanvas);
+		fpsAnimator.add(glCanvas.asGLAutoDrawAble());
 
-		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
-				"Add canvas to animator" + glCanvas.getName()));
+		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Add canvas to animator" + glCanvas));
 	}
 
 	public void unregisterGLCanvasFromAnimator(final GLCanvas glCanvas) {
@@ -485,7 +510,7 @@ public class ViewManager extends AManager<IView> {
 	 * application, e.g. when starting up or when loading multiple pathways.
 	 * Usually this should result disabling user events and showing a loading
 	 * screen animation.
-	 * 
+	 *
 	 * @param requestInstance
 	 *            object that wants to request busy mode
 	 */
@@ -510,7 +535,7 @@ public class ViewManager extends AManager<IView> {
 	/**
 	 * Releases a previously requested busy mode. Releases are only performed by
 	 * passing the originally requesting object to this method.
-	 * 
+	 *
 	 * @param requestInstance
 	 *            the object that requested the busy mode
 	 */
@@ -554,12 +579,12 @@ public class ViewManager extends AManager<IView> {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public AGLView createGLView(Class<? extends AGLView> viewClass, GLCanvas glCanvas,
+	public AGLView createGLView(Class<? extends AGLView> viewClass, IGLCanvas glCanvas,
 			Composite parentComposite, ViewFrustum viewFrustum) {
 
 		AGLView view;
 		try {
-			Class[] argTypes = { GLCanvas.class, Composite.class, ViewFrustum.class };
+			Class[] argTypes = { IGLCanvas.class, Composite.class, ViewFrustum.class };
 			Constructor aConstructor = viewClass.getConstructor(argTypes);
 			view = (AGLView) aConstructor.newInstance(glCanvas, parentComposite,
 					viewFrustum);
@@ -574,7 +599,7 @@ public class ViewManager extends AManager<IView> {
 	/**
 	 * Retrieves the {@link DisplayLoopExecution} related to the
 	 * {@link ViewManager}'s display loop.
-	 * 
+	 *
 	 * @return {@link DisplayLoopExecution} for executing code in the display
 	 *         loop
 	 */
@@ -584,7 +609,7 @@ public class ViewManager extends AManager<IView> {
 		if (displayLoopExecution == null) {
 			startAnimator();
 			displayLoopExecution = DisplayLoopExecution.get();
-			fpsAnimator.add((GLAutoDrawable) displayLoopExecution.getDisplayLoopCanvas());
+			fpsAnimator.add(displayLoopExecution.getDisplayLoopCanvas());
 			displayLoopExecution.executeMultiple(connectedElementRepManager);
 		}
 		return displayLoopExecution;

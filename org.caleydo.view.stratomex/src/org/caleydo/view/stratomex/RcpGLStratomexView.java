@@ -21,6 +21,7 @@ package org.caleydo.view.stratomex;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -48,7 +49,6 @@ public class RcpGLStratomexView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		createGLCanvas();
 		GLStratomex stratomex = new GLStratomex(glCanvas, parentComposite,
 				serializedView.getViewFrustum());
 		view = stratomex;

@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -24,9 +24,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
@@ -39,6 +40,7 @@ import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
@@ -72,9 +74,9 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * Container for a group of dimensions. Manages layouts as well as brick views
  * for the whole dimension group.
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class BrickColumn extends ATableBasedView implements ILayoutSizeCollisionHandler,
 		ILayoutedElement, IDraggable, IGLRemoteRenderingView {
@@ -183,7 +185,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 	IBrickConfigurer brickConfigurer;
 
-	public BrickColumn(GLCanvas canvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public BrickColumn(IGLCanvas canvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(canvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 	}
@@ -419,7 +421,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 * Moves the specified brick from its current position to the position
 	 * before the second specified brick. If the second brick is null, the brick
 	 * will be moved to the last position.
-	 * 
+	 *
 	 * @param brickToMove
 	 * @param brickAfter
 	 */
@@ -452,7 +454,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 	/**
 	 * Creates a single brick
-	 * 
+	 *
 	 * @param wrappingLayout
 	 * @return
 	 */
@@ -519,7 +521,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 * This is only used if the group is not collapsed. If it is collapsed, the
 	 * values are irrelevant.
 	 * </p>
-	 * 
+	 *
 	 * @param archHeight
 	 *            the pixel height of the arch
 	 */
@@ -573,7 +575,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 * Replaces the local table perspective with the one provided. This should
 	 * only be called through
 	 * {@link GLStratomex#replaceTablePerspective(TablePerspective)}
-	 * 
+	 *
 	 * @param tablePerspective
 	 */
 	public void replaceTablePerspective(TablePerspective tablePerspective) {
@@ -711,7 +713,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 	/**
 	 * Handles the up-down dragging of the whole dimension group
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void handleVerticalMoveDragging(GL2 gl) {
@@ -767,7 +769,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 	/**
 	 * Switch all bricks to the specified view type
-	 * 
+	 *
 	 * @param viewType
 	 */
 	public void switchBrickViews(EContainedViewType viewType) {
@@ -793,7 +795,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	/**
 	 * Note: The vis bricks view is needed for pushing the picking names, so
 	 * that the GLVisBricks view can gets the events
-	 * 
+	 *
 	 */
 	public void setStratomex(GLStratomex stratomex) {
 		this.stratomex = stratomex;
@@ -802,7 +804,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	/**
 	 * Note: The vis bricks view is needed for pushing the picking names, so
 	 * that the GLVisBricks view can gets the events
-	 * 
+	 *
 	 */
 	public GLStratomex getStratomexView() {
 		return stratomex;
@@ -810,7 +812,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 	/**
 	 * Get the id of the set that this dimension group is showing
-	 * 
+	 *
 	 * @return
 	 */
 	public int getTableID() {
@@ -820,7 +822,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	/**
 	 * Returns the list of bricks ordered from bottom to top as it is rendered
 	 * in this dimension group
-	 * 
+	 *
 	 * @return
 	 */
 	public List<GLBrick> getBricks() {
@@ -868,7 +870,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	/**
 	 * Returns the center brick that shows the summary of the dimension group
 	 * data.
-	 * 
+	 *
 	 * @return
 	 */
 	public GLBrick getHeaderBrick() {
@@ -920,7 +922,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	/**
 	 * Sets whether the views of all bricks of this dimension groups shall be
 	 * switched when switching the view in a single brick.
-	 * 
+	 *
 	 * @param isGlobalViewSwitching
 	 */
 	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
@@ -955,7 +957,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 	/**
 	 * Shows a detailed brick.
-	 * 
+	 *
 	 * @param brick
 	 *            The brick for which a detailed version shall be shown.
 	 * @param expandLeft
@@ -1082,7 +1084,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 * false.
 	 * <p>
 	 * Returns null there is no dimension group on the specified side
-	 * 
+	 *
 	 * @param isCurrentDimensionGroupLeft
 	 *            Specifies, whether the dimension group is on the left side.
 	 *            (When a detail brick is shown, only two dimension groups are
@@ -1162,7 +1164,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 * Returns the proportional height a record should have in this dimension
 	 * group as pixels. Can be in sub-pixel space and therefore returns a
 	 * double.
-	 * 
+	 *
 	 * @return
 	 */
 	public double getProportionalHeightPerRecord() {

@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -35,6 +35,7 @@ import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_MOUSE_OVER_LINE_WI
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -43,9 +44,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.dimension.RawDataType;
 import org.caleydo.core.data.collection.table.DataTable;
@@ -85,6 +87,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -111,7 +114,7 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * This class is responsible for rendering the parallel coordinates
- * 
+ *
  * @author Alexander Lex (responsible for PC)
  * @author Marc Streit
  */
@@ -214,7 +217,7 @@ public class GLParallelCoordinates
 	/**
 	 * Constructor.
 	 */
-	public GLParallelCoordinates(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLParallelCoordinates(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 		renderStyle = new PCRenderStyle(this, viewFrustum);
 		super.renderStyle = this.renderStyle;
@@ -431,7 +434,7 @@ public class GLParallelCoordinates
 	/**
 	 * Build polyline display list. Renders coordinate system, polylines and
 	 * gates, by calling the render methods
-	 * 
+	 *
 	 * @param gl GL2 context
 	 * @param iGLDisplayListIndex the index of the display list
 	 */
@@ -468,10 +471,10 @@ public class GLParallelCoordinates
 	 * Polyline rendering method. All polylines that are contained in the
 	 * polylineSelectionManager and are of the selection type specified in
 	 * renderMode
-	 * 
+	 *
 	 * FIXME this needs to be changed to iterate over the virtual array,
 	 * considering the deselected elements
-	 * 
+	 *
 	 * @param gl the GL2 context
 	 * @param renderMode the type of selection in the selection manager to
 	 *            render
@@ -599,7 +602,7 @@ public class GLParallelCoordinates
 	/**
 	 * Render the coordinate system of the parallel coordinates, including the
 	 * axis captions and axis-specific buttons
-	 * 
+	 *
 	 * @param gl the gl context
 	 * @param iNumberAxis
 	 */
@@ -862,7 +865,7 @@ public class GLParallelCoordinates
 	/**
 	 * Render the gates and update the fArGateHeights for the
 	 * selection/unselection
-	 * 
+	 *
 	 * @param gl
 	 * @param iNumberAxis
 	 */
@@ -961,7 +964,7 @@ public class GLParallelCoordinates
 
 	/**
 	 * Render the captions on the axis
-	 * 
+	 *
 	 * @param gl
 	 * @param fXOrigin
 	 * @param fYOrigin
@@ -1015,7 +1018,7 @@ public class GLParallelCoordinates
 
 	/**
 	 * Renders the gates and updates their values
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void handleGateDragging(GL2 gl) {
@@ -1052,7 +1055,7 @@ public class GLParallelCoordinates
 
 	/**
 	 * Unselect all lines that are deselected with the gates
-	 * 
+	 *
 	 * @param iChangeDropOnAxisNumber
 	 */
 	// TODO revise
@@ -1279,7 +1282,7 @@ public class GLParallelCoordinates
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
 					event.setSender(this);
 					event.setDataDomainID(dataDomain.getDataDomainID());
-					event.setSelectionDelta((SelectionDelta) selectionDelta);
+					event.setSelectionDelta(selectionDelta);
 					eventPublisher.triggerEvent(event);
 				}
 
@@ -1335,7 +1338,7 @@ public class GLParallelCoordinates
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
 				event.setDataDomainID(dataDomain.getDataDomainID());
-				event.setSelectionDelta((SelectionDelta) selectionDelta);
+				event.setSelectionDelta(selectionDelta);
 				eventPublisher.triggerEvent(event);
 
 				setDisplayListDirty();
@@ -2201,7 +2204,7 @@ public class GLParallelCoordinates
 	@Override
 	public void setTablePerspective(TablePerspective tablePerspective) {
 		this.tablePerspective = tablePerspective;
-		
+
 		initData();
 		updateSpacings();
 

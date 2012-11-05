@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -30,9 +30,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -75,6 +76,7 @@ import org.caleydo.core.view.RCPViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -129,7 +131,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * This class is responsible for providing an overview of all loaded datasets
  * and opened views and their relationships.
- * 
+ *
  * @author Christian Partl
  */
 public class GLDataViewIntegrator
@@ -193,7 +195,7 @@ public class GLDataViewIntegrator
 	/**
 	 * Constructor.
 	 */
-	public GLDataViewIntegrator(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLDataViewIntegrator(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -325,7 +327,7 @@ public class GLDataViewIntegrator
 
 	/**
 	 * Builds the display list for a given display list index.
-	 * 
+	 *
 	 * @param gl Instance of GL2.
 	 * @param iGLDisplayListIndex Index of the display list.
 	 */
@@ -882,7 +884,7 @@ public class GLDataViewIntegrator
 	 * FIXME:
 	 * DOKU!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	 * !!!!!!!!!!!
-	 * 
+	 *
 	 * @param dataDomain
 	 * @param recordPerspectiveID
 	 * @param createRecordPerspective
@@ -982,7 +984,7 @@ public class GLDataViewIntegrator
 				if (tablePerspective.isPrivate()) {
 					tablePerspective.setPrivate(false);
 
-					DataDomainUpdateEvent event = new DataDomainUpdateEvent((IDataDomain) dataDomain);
+					DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
 					event.setSender(this);
 					GeneralManager.get().getEventPublisher().triggerEvent(event);
 				}
@@ -1143,7 +1145,7 @@ public class GLDataViewIntegrator
 
 	/**
 	 * Triggers group loading by opening the {@link ImportGroupingDialog}.
-	 * 
+	 *
 	 * @param dataDomain The datadomain a grouping shall be loaded for.
 	 * @param idCategory Determines for which {@link IDCategory} the grouping
 	 *            should be loaded, i.e. whether rows or columns should be
@@ -1192,7 +1194,7 @@ public class GLDataViewIntegrator
 	 * Creates a new perspective for the specified data domain through
 	 * clustering via the {@link ClusterDialog}. The default perspectives of the
 	 * data domain are used to specify the data to be clustered.
-	 * 
+	 *
 	 * @param dataDomain
 	 * @param isDimensionClustering Specifies whether a
 	 *            {@link DimensionPerspective} or a {@link RecordPerspective}
@@ -1227,7 +1229,7 @@ public class GLDataViewIntegrator
 	/**
 	 * Opens an input dialog in order to rename the specified
 	 * {@link ILabelHolder}.
-	 * 
+	 *
 	 * @param labelHolder
 	 */
 	public void renameLabelHolder(final ILabelHolder labelHolder) {

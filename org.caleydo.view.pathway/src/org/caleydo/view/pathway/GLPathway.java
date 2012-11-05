@@ -1,38 +1,36 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
  * University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.pathway;
 
 import gleem.linalg.Vec3f;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.image.PixelGrabber;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -67,6 +65,9 @@ import org.caleydo.core.view.listener.AddTablePerspectivesListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.GLMouseAdapter;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -109,17 +110,19 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.GraphPathImpl;
+
 import setvis.SetOutline;
 import setvis.bubbleset.BubbleSet;
 import setvis.gui.CanvasComponent;
 import setvis.shape.AbstractShapeGenerator;
 import setvis.shape.BSplineShapeGenerator;
+
 import com.jogamp.opengl.util.awt.TextureRenderer;
 import com.jogamp.opengl.util.texture.Texture;
 
 /**
  * Single OpenGL2 pathway view
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -221,7 +224,7 @@ public class GLPathway
 	/**
 	 * Constructor.
 	 */
-	public GLPathway(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLPathway(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		pathwayManager = PathwayManager.get();
@@ -342,9 +345,9 @@ public class GLPathway
 
 	protected void registerMouseListeners() {
 
-		parentGLCanvas.addMouseWheelListener(new MouseWheelListener() {
+		parentGLCanvas.addMouseListener(new GLMouseAdapter() {
 			@Override
-			public void mouseWheelMoved(MouseWheelEvent e) {
+			public void mouseWheelMoved(IMouseEvent e) {
 				selectNextPath();
 			}
 		});
@@ -356,9 +359,9 @@ public class GLPathway
 
 	protected void registeKeyListeners() {
 
-		parentGLCanvas.addKeyListener(new KeyAdapter() {
+		parentGLCanvas.addKeyListener(new IGLKeyListener() {
 			@Override
-			public void keyPressed(KeyEvent e) {
+			public void keyPressed(IKeyEvent e) {
 				// //comment_1/2:
 				if (e.isControlDown() && (e.getKeyCode() == 79)) { // ctrl +o
 					setPathSelectionMode(!isPathSelectionMode);
@@ -376,7 +379,7 @@ public class GLPathway
 			}
 
 			@Override
-			public void keyReleased(KeyEvent e) {
+			public void keyReleased(IKeyEvent e) {
 
 				isControlKeyDown = e.isControlDown();
 				isShiftKeyDown = e.isShiftDown();
@@ -420,7 +423,7 @@ public class GLPathway
 					return;
 				}
 
-				PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager.getPathwayVertexRep(pick
+				PathwayVertexRep vertexRep = pathwayItemManager.getPathwayVertexRep(pick
 						.getObjectID());
 
 				// Load embedded pathway
@@ -467,7 +470,7 @@ public class GLPathway
 					return;
 				}
 
-				PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager.getPathwayVertexRep(pick
+				PathwayVertexRep vertexRep = pathwayItemManager.getPathwayVertexRep(pick
 						.getObjectID());
 
 				if (vertexRep.getType() == EPathwayVertexType.map) {
@@ -482,7 +485,7 @@ public class GLPathway
 					for (PathwayVertex pathwayVertex : vertexRep.getPathwayVertices()) {
 						for (Integer davidID : pathwayItemManager.getDavidIdByPathwayVertex(pathwayVertex)) {
 							GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-							contexMenuItemContainer.setDataDomain((ATableBasedDataDomain) dataDomain);
+							contexMenuItemContainer.setDataDomain(dataDomain);
 							contexMenuItemContainer.setData(pathwayDataDomain.getDavidIDType(), davidID);
 							contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
 						}
@@ -1092,7 +1095,7 @@ public class GLPathway
 
 		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
 			for (Integer davidID : vertexRep.getDavidIDs()) {
-				delta.add(VADeltaItem.create(type, (Integer) davidID));
+				delta.add(VADeltaItem.create(type, davidID));
 			}
 		}
 
@@ -1360,7 +1363,7 @@ public class GLPathway
 
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
-			event.setSelectionDelta((SelectionDelta) selectionDelta);
+			event.setSelectionDelta(selectionDelta);
 			eventPublisher.triggerEvent(event);
 
 			if (isControlKeyDown || this.isShiftKeyDown) {
@@ -1511,7 +1514,7 @@ public class GLPathway
 	public void handlePathwayElementSelection(SelectionType selectionType, int externalID) {
 		setDisplayListDirty();
 		if (vertexSelectionManager.getElements(SelectionType.SELECTION).size() == 1) {
-			pathStartVertexRep = (PathwayVertexRep) pathwayItemManager
+			pathStartVertexRep = pathwayItemManager
 					.getPathwayVertexRep((Integer) vertexSelectionManager.getElements(SelectionType.SELECTION)
 							.toArray()[0]);
 		}
@@ -1522,7 +1525,7 @@ public class GLPathway
 			metaboliteSelectionManager.triggerSelectionUpdateEvent();
 		}
 
-		PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager.getPathwayVertexRep(externalID);
+		PathwayVertexRep vertexRep = pathwayItemManager.getPathwayVertexRep(externalID);
 
 		if (vertexRep.getType() == EPathwayVertexType.compound) {
 			metaboliteSelectionManager.addToType(selectionType, vertexRep.getName().hashCode());
@@ -1548,7 +1551,7 @@ public class GLPathway
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
-		event.setSelectionDelta((SelectionDelta) selectionDelta);
+		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
 	}
 

@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -25,15 +25,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
-import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+
 import com.jogamp.common.nio.Buffers;
 
 /**
@@ -54,7 +57,7 @@ import com.jogamp.common.nio.Buffers;
  * {@link #getHitTypes(int)} to get all the types that have been hit and then
  * calling {@link #getHits(int, String)} which returns the actual hits
  * </p>
- * 
+ *
  * @author Alexander Lex
  * @author Christian Partl
  */
@@ -72,7 +75,7 @@ public class PickingManager {
 
 		/**
 		 * Returns all picks for a specific type
-		 * 
+		 *
 		 * @param pickingType
 		 * @return
 		 */
@@ -82,7 +85,7 @@ public class PickingManager {
 
 		/**
 		 * Add a pick to a type
-		 * 
+		 *
 		 * @param pickingType
 		 *            the type of the pick
 		 * @param pick
@@ -104,7 +107,7 @@ public class PickingManager {
 
 		/**
 		 * Returns all picking types that have been added to the container.
-		 * 
+		 *
 		 * @return
 		 */
 		private Set<String> getPickingTypes() {
@@ -113,7 +116,7 @@ public class PickingManager {
 
 		/**
 		 * Creates a deep copy of the container.
-		 * 
+		 *
 		 * @return
 		 */
 		private ViewSpecificHitListContainer copy() {
@@ -146,7 +149,7 @@ public class PickingManager {
 
 		/**
 		 * Add a new pickingID and its corresponding pickedObjectID
-		 * 
+		 *
 		 * @param pickingID
 		 * @param pickedObjectID
 		 */
@@ -173,7 +176,7 @@ public class PickingManager {
 		/**
 		 * Returns the pickedObjectID associated with the provided pickingID and
 		 * pickingType or null if no such mapping exists
-		 * 
+		 *
 		 * @param pickingID
 		 * @param pickingType
 		 * @return the picedObjectID or null if no id was found
@@ -190,7 +193,7 @@ public class PickingManager {
 		/**
 		 * Returns the picking ID associated with the provided pickedObjectID or
 		 * null if no such mapping exists
-		 * 
+		 *
 		 * @param pickingType
 		 * @param pickedObjectID
 		 * @return the pickingID or null
@@ -206,7 +209,7 @@ public class PickingManager {
 
 		/**
 		 * Returns all pickingIDs stored in the container
-		 * 
+		 *
 		 * @return all picking IDs
 		 */
 		public Set<Integer> getAllPickingIDs() {
@@ -271,7 +274,7 @@ public class PickingManager {
 
 	/**
 	 * Turn on/off picking
-	 * 
+	 *
 	 * @param enablePicking
 	 */
 	public void enablePicking(final boolean enablePicking) {
@@ -282,7 +285,7 @@ public class PickingManager {
 	 * Returns a unique picking ID which can be used for the glPushName()
 	 * commands. The returned id is mapped to the provided pickedObjectID which
 	 * is intended to be used by the caller internally.
-	 * 
+	 *
 	 * @param viewID
 	 *            the ID of the calling view
 	 * @param ePickingType
@@ -314,7 +317,7 @@ public class PickingManager {
 	 * Returns a unique picking ID which can be used for the glPushName()
 	 * commands. The returned id is mapped to the provided pickedObjectID which
 	 * is intended to be used by the caller internally. external id
-	 * 
+	 *
 	 * @param viewID
 	 *            the ID of the calling view
 	 * @param ePickingType
@@ -337,7 +340,7 @@ public class PickingManager {
 	 * calling view and a gl context. It calls the display() method of the
 	 * calling view, therefore only elements rendered in the display() can be
 	 * picked.
-	 * 
+	 *
 	 * @param glView
 	 *            a reference to the calling view
 	 * @param gl
@@ -439,7 +442,7 @@ public class PickingManager {
 
 		// We have to check the parent canvas to identify common remote rendered
 		// views
-		GLCanvas parentCanvas = glView.getParentGLCanvas();
+		IGLCanvas parentCanvas = glView.getParentGLCanvas();
 
 		if (iAlPickedObjectId.size() > 0) {
 			processPicks(iAlPickedObjectId, ePickingMode, tmpPickPoint,
@@ -590,7 +593,7 @@ public class PickingManager {
 	/**
 	 * Adds a {@link PickingMode#MOUSE_OUT} for all Objects that have previously
 	 * picked in the specified views.
-	 * 
+	 *
 	 * @param viewIDs
 	 * @param glMouseListener
 	 * @param pickedPoint
@@ -630,7 +633,7 @@ public class PickingManager {
 
 	/**
 	 * Returns all picking types for a view that have been hit in the last cycle
-	 * 
+	 *
 	 * @param viewID
 	 *            the ID of the view
 	 * @return A set of als picking types hit in the previous cycle
@@ -644,7 +647,7 @@ public class PickingManager {
 
 	/**
 	 * Returns the hits of the last cycle for a particular view and type
-	 * 
+	 *
 	 * @param viewID
 	 *            the id of the view
 	 * @param ePickingType
@@ -662,7 +665,7 @@ public class PickingManager {
 
 	/**
 	 * Flush a particular hit list. This has to be done after every cycle.
-	 * 
+	 *
 	 * @param viewID
 	 *            the id of the calling view
 	 * @param ePickingType
@@ -679,7 +682,7 @@ public class PickingManager {
 	/**
 	 * Removes all data associated with a view. You should do that when you
 	 * close a view
-	 * 
+	 *
 	 * @param viewID
 	 *            the id of the calling view
 	 */
@@ -702,7 +705,7 @@ public class PickingManager {
 	/**
 	 * Returns the pickedObjectID (the id with which you initialized
 	 * getPickingID()) when you provide the picking ID and the id of the view.
-	 * 
+	 *
 	 * @param viewID
 	 *            the id of the view which has to be the same which was used
 	 *            when the picking id was created
@@ -718,7 +721,7 @@ public class PickingManager {
 
 	/**
 	 * Calculates the picking id, based on a type
-	 * 
+	 *
 	 * @param iType
 	 *            the type
 	 * @return a unique ID
@@ -730,7 +733,7 @@ public class PickingManager {
 	/**
 	 * Extracts the nearest hit from the provided iArPickingBuffer Stores it
 	 * internally Can process only one hit at at time at the moment
-	 * 
+	 *
 	 * @param iHitCount
 	 * @param iArPickingBuffer
 	 */
@@ -792,7 +795,7 @@ public class PickingManager {
 	/**
 	 * Given the list of picking IDs which where hit it maps the picking ID to
 	 * the view and stores it in the hit list
-	 * 
+	 *
 	 * @param alPickingIDs
 	 * @param myMode
 	 * @param pickedPoint

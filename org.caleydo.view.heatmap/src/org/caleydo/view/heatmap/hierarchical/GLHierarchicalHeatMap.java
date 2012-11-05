@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -30,14 +30,16 @@ import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
+
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
@@ -74,6 +76,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.DimensionGroupExportingListener;
 import org.caleydo.core.view.opengl.canvas.listener.DimensionGroupInterChangingActionListener;
 import org.caleydo.core.view.opengl.canvas.listener.DimensionGroupMergingActionListener;
@@ -107,6 +110,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
+
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 import com.jogamp.opengl.util.texture.TextureData;
@@ -114,7 +118,7 @@ import com.jogamp.opengl.util.texture.TextureIO;
 
 /**
  * Rendering the GLHierarchicalHeatMap with remote rendering support.
- * 
+ *
  * @author Bernhard Schlegl
  * @author Marc Streit
  * @author Alexander Lex
@@ -272,11 +276,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param glCanvas
 	 * @param viewFrustum
 	 */
-	public GLHierarchicalHeatMap(GLCanvas glCanvas, Composite parentComposite,
+	public GLHierarchicalHeatMap(IGLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
@@ -411,7 +415,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	/**
 	 * Init (reset) the positions of cursors used for highlighting selected
 	 * elements in stage 1 (overviewBar)
-	 * 
+	 *
 	 * @param
 	 */
 	private void initPosCursorLevel1() {
@@ -449,7 +453,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	/**
 	 * Init (reset) the positions of cursors used for highlighting selected
 	 * elements in stage 2 (texture)
-	 * 
+	 *
 	 * @param
 	 */
 	private void initPosCursorLevel2() {
@@ -487,7 +491,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	/**
 	 * Function calculates number of textures and fills array lists to avoid
 	 * NPEs after initialization.
-	 * 
+	 *
 	 * @param
 	 */
 	private void calculateTextures() {
@@ -519,7 +523,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Init textures, build array of textures used for holding the whole samples
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void initTextures(final GL2 gl) {
@@ -669,7 +673,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Create embedded heat map
-	 * 
+	 *
 	 * @param
 	 */
 	private void createHeatMap() {
@@ -705,7 +709,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Create embedded dendrogram
-	 * 
+	 *
 	 * @param
 	 */
 	private void createDendrogram() {
@@ -773,7 +777,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Jump to other areas of a heat map
-	 * 
+	 *
 	 * @param
 	 */
 	@Override
@@ -899,7 +903,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Render caption, simplified version used in (original) heatmap
-	 * 
+	 *
 	 * @param gl
 	 * @param label
 	 * @param fXOrigin
@@ -920,7 +924,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Render a curved (nice looking) grey area between two views
-	 * 
+	 *
 	 * @param gl
 	 * @param startpoint1
 	 * @param endpoint1
@@ -1116,7 +1120,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Renders class assignments for experiments in level 2 (textures)
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderClassAssignmentsExperimentsLevel2(final GL2 gl) {
@@ -1195,7 +1199,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Renders class assignments for experiments in level 3 (embedded heat map)
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderClassAssignmentsExperimentsLevel3(final GL2 gl) {
@@ -1278,7 +1282,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Renders class assignments for genes in level 1 (overview bar)
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderClassAssignmentsGenesLevel1(final GL2 gl) {
@@ -1364,7 +1368,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Renders class assignments for genes in level 2 (textures)
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderClassAssignmentsGenesLevel2(final GL2 gl) {
@@ -1499,7 +1503,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Renders class assignments for genes in level 3 (embedded heat map)
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderClassAssignmentsGenesLevel3(final GL2 gl) {
@@ -1633,7 +1637,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Render the first stage of the hierarchy (OverviewBar)
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderLevel1(GL2 gl) {
@@ -1688,7 +1692,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	/**
 	 * Render marker in OverviewBar for visualization of the currently (in stage
 	 * 2) rendered part
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderMarkerLevel1(final GL2 gl) {
@@ -1752,7 +1756,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	/**
 	 * Render marker next to OverviewBar for visualization of selected elements
 	 * in the data set
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderSelectedElementsLevel1(GL2 gl) {
@@ -1803,7 +1807,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Render the second stage of the hierarchy (Texture)
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderLevel2(GL2 gl) {
@@ -2094,7 +2098,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	/**
 	 * Render marker in Texture for visualization of the currently (in stage 3)
 	 * rendered part
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderMarkerLevel2(final GL2 gl) {
@@ -2211,7 +2215,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	/**
 	 * Render marker in Texture (level 2) for visualization of selected elements
 	 * in the data set
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderSelectedElementsLevel2(GL2 gl) {
@@ -2333,7 +2337,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Render cursor used for controlling level 1
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderCursorLevel1(final GL2 gl) {
@@ -2413,7 +2417,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	/**
 	 * Render cursor used for controlling hierarchical heat map (e.g. next
 	 * Texture, previous Texture, set heatmap in focus)
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderCursorLevel2(final GL2 gl) {
@@ -3380,7 +3384,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Determine selected element in stage 1 (overview bar)
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void handleTexturePickingLevel1(GL2 gl) {
@@ -3426,7 +3430,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Determine selected element in stage 2 (texture)
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void handleTexturePickingLevel2(GL2 gl) {
@@ -3473,7 +3477,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Handles drag&drop of groups in experiment dimension
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void handleDragDropGroupExperiments(final GL2 gl) {
@@ -3569,7 +3573,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Handles drag&drop of groups in gene dimension
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void handleDragDropGroupGenes(final GL2 gl) {
@@ -3651,7 +3655,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Handles the dragging cursor for gene groups
-	 * 
+	 *
 	 * @param gl
 	 */
 	@SuppressWarnings("unused")
@@ -3693,7 +3697,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Handles the dragging cursor for experiments groups
-	 * 
+	 *
 	 * @param gl
 	 */
 	@SuppressWarnings("unused")
@@ -3735,7 +3739,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	/**
 	 * Function used for updating position of block (block of elements rendered
 	 * in level 2) in case of dragging
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void handleBlockDraggingLevel1(final GL2 gl) {
@@ -3792,7 +3796,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	/**
 	 * Function used for updating position of block (block of elements rendered
 	 * in level 3) in case of dragging
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void handleBlockDraggingLevel2(final GL2 gl) {
@@ -3847,7 +3851,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Function used for updating cursor position of level 1 in case of dragging
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void handleCursorDraggingLevel1(final GL2 gl) {
@@ -3915,7 +3919,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Function used for updating cursor position of level 2 in case of dragging
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void handleCursorDraggingLevel2(final GL2 gl) {
@@ -4687,7 +4691,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Handels keyboard events for controlling level 2
-	 * 
+	 *
 	 * @param bArrowUp
 	 *            true for arrow up, false for arrow down
 	 */
@@ -4720,7 +4724,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Handels keyboard events for controlling level 1
-	 * 
+	 *
 	 * @param bArrowUp
 	 *            true for arrow up, false for arrow down
 	 */
@@ -4753,7 +4757,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Handle keyboard events for enabling embedded dendrograms.
-	 * 
+	 *
 	 * @param bGeneDendrogram
 	 *            true for gene dendrogram, false for experiment dendrogram
 	 */
@@ -4818,7 +4822,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Handels arrow up/down keyboard events
-	 * 
+	 *
 	 * @param bArrowUp
 	 *            true for arrow up, false for arrow down
 	 */
@@ -4831,7 +4835,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Handle keyboard events for setting embedded heat map in focus
-	 * 
+	 *
 	 * @param bArrowLeft
 	 *            true for arrow left, false for arrow right
 	 */
@@ -4851,7 +4855,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Set the number of samples which are shown in one texture
-	 * 
+	 *
 	 * @param iNumberOfSamplesPerTexture
 	 *            the number
 	 */
@@ -4861,7 +4865,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	/**
 	 * Set the number of samples which are shown in one heat map
-	 * 
+	 *
 	 * @param iNumberOfSamplesPerHeatmap
 	 *            the number
 	 */

@@ -21,6 +21,7 @@ package org.caleydo.view.parcoords;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -43,7 +44,6 @@ public class RcpGLParCoordsView extends ARcpGLViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		createGLCanvas();
 		view = new GLParallelCoordinates(glCanvas, parentComposite,
 				serializedView.getViewFrustum());
 		initializeView();

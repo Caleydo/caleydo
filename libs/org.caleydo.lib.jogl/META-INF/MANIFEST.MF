@@ -52,8 +52,18 @@ Export-Package: com.jogamp.common,
  com.jogamp.common.util.locks,
  com.jogamp.gluegen.runtime,
  com.jogamp.gluegen.runtime.opengl,
+ com.jogamp.newt,
+ com.jogamp.newt.awt,
+ com.jogamp.newt.awt.applet,
+ com.jogamp.newt.event,
+ com.jogamp.newt.event.awt,
+ com.jogamp.newt.opengl,
+ com.jogamp.newt.swt,
+ com.jogamp.newt.util,
  com.jogamp.opengl,
+ com.jogamp.opengl.swt,
  com.jogamp.opengl.util,
+ com.jogamp.opengl.util.av,
  com.jogamp.opengl.util.awt,
  com.jogamp.opengl.util.gl2,
  com.jogamp.opengl.util.glsl,
@@ -76,3 +86,4 @@ Export-Package: com.jogamp.common,
 Bundle-Vendor: www.caleydo.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.swt;bundle-version="3.100.1"

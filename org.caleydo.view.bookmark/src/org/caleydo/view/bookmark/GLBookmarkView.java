@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,10 +22,11 @@ package org.caleydo.view.bookmark;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
@@ -44,6 +45,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -57,13 +59,13 @@ import org.eclipse.swt.widgets.Composite;
  * The list heat map that shows elements on the right of a view that have been
  * selected. It is registered to special listeners that are triggered in such a
  * event. Other than that it is equivalent to the {@link GLHeatMap}
- * 
+ *
  * @author Alexander Lex
  */
 public class GLBookmarkView extends ATableBasedView {
 
 	public static String VIEW_TYPE = "org.caleydo.view.bookmark";
-	
+
 	public static String VIEW_NAME = "Bookmarks";
 
 
@@ -123,11 +125,11 @@ public class GLBookmarkView extends ATableBasedView {
 	/**
 	 * Constructor.
 	 */
-	public GLBookmarkView(GLCanvas glCanvas, Composite parentComposite,
+	public GLBookmarkView(IGLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
-	
+
 		renderStyle = new BookmarkRenderStyle(viewFrustum);
 
 		bookmarkContainers = new ArrayList<ABookmarkContainer<?>>();
@@ -217,7 +219,7 @@ public class GLBookmarkView extends ATableBasedView {
 	/**
 	 * Builds a display list of graphical elements that do not have to be
 	 * updated in every frame.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 context.
 	 * @param iGLDisplayListIndex
@@ -372,6 +374,6 @@ public class GLBookmarkView extends ATableBasedView {
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

@@ -21,6 +21,7 @@ package org.caleydo.view.heatmap.hierarchical;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -43,8 +44,6 @@ public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-
-		createGLCanvas();
 
 		view = new GLHierarchicalHeatMap(glCanvas, parentComposite,
 				serializedView.getViewFrustum());

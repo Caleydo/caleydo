@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -24,14 +24,16 @@ import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 import static org.caleydo.view.heatmap.dendrogram.DendrogramRenderStyle.CUT_OFF_Z;
 import static org.caleydo.view.heatmap.dendrogram.DendrogramRenderStyle.DENDROGRAM_Z;
 import gleem.linalg.Vec3f;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
@@ -57,6 +59,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -65,12 +68,13 @@ import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.eclipse.swt.widgets.Composite;
+
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 
 /**
  * Rendering the dendrogram.
- * 
+ *
  * @author Bernhard Schlegl
  */
 public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
@@ -133,13 +137,13 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param glCanvas
 	 * @param viewFrustum
 	 * @param bRenderGeneTree boolean to determine whether a gene(horizontal) or
 	 *            a experiment(vertical) dendrogram should be rendered
 	 */
-	public GLDendrogram(final GLCanvas glCanvas, Composite parentComposite,
+	public GLDendrogram(final IGLCanvas glCanvas, Composite parentComposite,
 			final ViewFrustum viewFrustum, final boolean bRenderGeneTree) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -250,7 +254,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 	/**
 	 * Returns the position of the cut. This function is used in HHM to
 	 * determine how many area the dendrogram up to the cut requires.
-	 * 
+	 *
 	 * @return position of cut
 	 */
 	public float getPositionOfCut() {
@@ -260,7 +264,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 	/**
 	 * Function sets an initial value for the position of the cut off value.
 	 * Used in HHM when rendering a dendrogram the first time.
-	 * 
+	 *
 	 * @return True in case of tree is available and clusters are determined,
 	 *         false in case of no tree available.
 	 */
@@ -280,7 +284,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 	/**
 	 * Function is responsible for activating/deactivating "render up to cut"
 	 * mode.
-	 * 
+	 *
 	 * @param bRenderUntilCut
 	 */
 	public void setRenderUntilCut(boolean bRenderUntilCut) {
@@ -289,7 +293,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 
 	/**
 	 * Render the handles for the "cut off value"
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderCut(final GL2 gl) {
@@ -469,7 +473,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 	/**
 	 * In case of no tree is available render the symbol of the view instead of
 	 * the view
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderSymbol(GL2 gl) {
@@ -523,7 +527,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 	/**
 	 * Functions renders a sub part of the dendrogram determined by two indexes
 	 * (first and last element).
-	 * 
+	 *
 	 * @param gl
 	 * @param fromIndex index of the first element in sub dendrogram
 	 * @param toIndex index (+1) of the last element in sub dendrogram
@@ -558,7 +562,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 
 	/**
 	 * Recursive function responsible for determine sub dendrogram.
-	 * 
+	 *
 	 * @param currentNode
 	 * @param from index of the first element in sub dendrogram
 	 * @param to index (+1) of the last element in sub dendrogram
@@ -601,7 +605,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 	/**
 	 * Helper function which determines the maximum hierarchy depth of the sub
 	 * denrogram.
-	 * 
+	 *
 	 * @param currentNode
 	 */
 	private int determineMaxDepthSubTree(ClusterNode currentNode) {
@@ -625,7 +629,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 	/**
 	 * Function calculates for each node (gene or entity) in the sub dendrogram
 	 * recursive the corresponding position inside the view frustum
-	 * 
+	 *
 	 * @param currentNode
 	 * @return position of node in sub dendrogram
 	 */
@@ -681,7 +685,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 
 	/**
 	 * Renders the sub dendrogram recursive
-	 * 
+	 *
 	 * @param gl
 	 * @param currentNode
 	 */
@@ -779,7 +783,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 	/**
 	 * Function calculates for each node (gene or entity) in the dendrogram
 	 * recursive the corresponding position inside the view frustum
-	 * 
+	 *
 	 * @param currentNode current node for calculation
 	 * @return Vec3f position of the current node
 	 */
@@ -835,7 +839,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 	/**
 	 * Function calculates for each node (experiment) in the dendrogram
 	 * recursive the corresponding position inside the view frustum
-	 * 
+	 *
 	 * @param currentNode current node for calculation
 	 * @return Vec3f position of the current node
 	 */
@@ -894,7 +898,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 	/**
 	 * Recursive function which renders selection markers for all nodes in the
 	 * tree.
-	 * 
+	 *
 	 * @param gl
 	 * @param currentNode
 	 */
@@ -940,7 +944,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 
 	/**
 	 * Render a node (gene or entity) of the dendrogram (recursive)
-	 * 
+	 *
 	 * @param gl
 	 * @param currentNode
 	 * @param fOpacity Opacity value of the current node. In case of determine
@@ -1061,7 +1065,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 
 	/**
 	 * Render a node (experiment) of the dendrogram (recursive)
-	 * 
+	 *
 	 * @param gl
 	 * @param currentNode
 	 * @param fOpacity Opacity value of the current node. In case of determine
@@ -1272,7 +1276,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 
 	/**
 	 * Function used for updating cursor position in case of dragging
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void handleDragging(final GL2 gl) {
@@ -1359,7 +1363,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 	/**
 	 * Recursive function determines the sizes of clusters set by the cut off
 	 * value
-	 * 
+	 *
 	 * @param node current node
 	 */
 	private void getNumberOfClustersRec(ClusterNode node) {
@@ -1382,7 +1386,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 	/**
 	 * Determines for each node in the dendrogram if the current node is
 	 * selected by the "cut" or not
-	 * 
+	 *
 	 * @param node current node
 	 */
 	private void determineSelectedNodesRec(ClusterNode node) {
@@ -1497,7 +1501,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 					prepareVisualLinkingInformation(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
 					event.setSender(this);
-					event.setSelectionDelta((SelectionDelta) selectionDelta);
+					event.setSelectionDelta(selectionDelta);
 					eventPublisher.triggerEvent(event);
 
 					setDisplayListDirty();
@@ -1581,7 +1585,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 					prepareVisualLinkingInformation(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
 					event.setSender(this);
-					event.setSelectionDelta((SelectionDelta) selectionDelta);
+					event.setSelectionDelta(selectionDelta);
 					eventPublisher.triggerEvent(event);
 
 					setDisplayListDirty();
@@ -1627,7 +1631,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 
 	/**
 	 * Function called any time a update is triggered external
-	 * 
+	 *
 	 * @param
 	 */
 	@Override
@@ -1733,7 +1737,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>>
 
 	/**
 	 * Recursive function resets all selections in the tree
-	 * 
+	 *
 	 * @param node current node
 	 */
 	private void resetAllTreeSelectionsRec(ClusterNode currentNode) {

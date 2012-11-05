@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,8 +21,9 @@ package org.caleydo.core.view.opengl.canvas;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.management.InvalidAttributeValueException;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -71,7 +72,7 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * Base class for OpenGL2 views that visualize {@link DataTable}s.
- * 
+ *
  * @author Alexander Lex
  * @author Marc Streit
  */
@@ -129,7 +130,7 @@ public abstract class ATableBasedView extends AGLView implements
 
 	/**
 	 * Constructor for dimension based views
-	 * 
+	 *
 	 * @param glCanvas
 	 * @param viewFrustum
 	 * @param viewType
@@ -138,7 +139,7 @@ public abstract class ATableBasedView extends AGLView implements
 	 *            TODO
 	 * @param label
 	 */
-	protected ATableBasedView(GLCanvas glCanvas, Composite parentComposite,
+	protected ATableBasedView(IGLCanvas glCanvas, Composite parentComposite,
 			final ViewFrustum viewFrustum, String viewType, String viewName) {
 		super(glCanvas, parentComposite, viewFrustum, viewType, viewName);
 
@@ -165,6 +166,7 @@ public abstract class ATableBasedView extends AGLView implements
 	/**
 	 * @return the tablePerspective, see {@link #tablePerspective}
 	 */
+	@Override
 	public TablePerspective getTablePerspective() {
 		return tablePerspective;
 	}
@@ -215,7 +217,7 @@ public abstract class ATableBasedView extends AGLView implements
 	/**
 	 * Create {@link ElementConnectionInformation}, which basically describes
 	 * anchor points for visual links for the element specified through the id
-	 * 
+	 *
 	 * @param iDType
 	 *            the type of the id - for possible conversion
 	 * @param the
@@ -284,7 +286,7 @@ public abstract class ATableBasedView extends AGLView implements
 	/**
 	 * Is called any time a virtual array is changed. Can be implemented by
 	 * inheriting views if some action is necessary
-	 * 
+	 *
 	 * @param delta
 	 */
 	protected void reactOnRecordVAChanges() {
@@ -322,7 +324,7 @@ public abstract class ATableBasedView extends AGLView implements
 	/**
 	 * Handles the creation of {@link ElementConnectionInformation} according to
 	 * the data in a selectionDelta
-	 * 
+	 *
 	 * @param selectionDelta
 	 *            the selection data that should be handled
 	 */
@@ -390,7 +392,7 @@ public abstract class ATableBasedView extends AGLView implements
 
 	/**
 	 * Set whether to use random sampling or not, synchronized
-	 * 
+	 *
 	 * @param useRandomSampling
 	 */
 	public final void useRandomSampling(boolean useRandomSampling) {
@@ -403,7 +405,7 @@ public abstract class ATableBasedView extends AGLView implements
 	/**
 	 * Set the number of samples which are shown in the view. The distribution
 	 * is purely random
-	 * 
+	 *
 	 * @param numberOfRandomElements
 	 *            the number
 	 */
@@ -534,7 +536,7 @@ public abstract class ATableBasedView extends AGLView implements
 	/**
 	 * Calculates how many pixels are required per element for a given detail
 	 * level.
-	 * 
+	 *
 	 * @param forRecord
 	 *            flag telling whether this is for the records (true) or for
 	 *            dimensions (false)

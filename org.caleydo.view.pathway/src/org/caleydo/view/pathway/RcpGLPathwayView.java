@@ -21,6 +21,7 @@ package org.caleydo.view.pathway;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;
@@ -61,8 +62,6 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner,
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-
-		createGLCanvas();
 
 		view = new GLPathway(glCanvas, parentComposite, serializedView.getViewFrustum());
 		initializeView();

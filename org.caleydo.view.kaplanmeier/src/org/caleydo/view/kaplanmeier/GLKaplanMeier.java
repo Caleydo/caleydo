@@ -1,31 +1,33 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.kaplanmeier;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -42,6 +44,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -59,7 +62,7 @@ import org.eclipse.swt.widgets.Composite;
  * <p>
  * TODO
  * </p>
- * 
+ *
  * @author Marc Streit
  * @author Christian
  */
@@ -110,12 +113,12 @@ public class GLKaplanMeier extends ATableBasedView {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param glCanvas
 	 * @param viewLabel
 	 * @param viewFrustum
 	 */
-	public GLKaplanMeier(GLCanvas glCanvas, Composite parentComposite,
+	public GLKaplanMeier(IGLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
@@ -337,11 +340,11 @@ public class GLKaplanMeier extends ATableBasedView {
 				+ ((isXAxis) ? 0 : getPlotHeight()), 0));
 
 		ConnectionLineRenderer axis = new ConnectionLineRenderer();
-		float step = maxTickValue / (float) (numTicks - 1);
+		float step = maxTickValue / (numTicks - 1);
 
 		for (int i = 0; i < numTicks; i++) {
 			LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(
-					(float) i / 5.0f, pixelGLConverter);
+					i / 5.0f, pixelGLConverter);
 			LineLabelRenderer lineLabelRenderer = new LineLabelRenderer((float) i
 					/ (float) (numTicks - 1), pixelGLConverter, new Integer(i
 					* (int) step).toString(), textRenderer);
@@ -455,7 +458,7 @@ public class GLKaplanMeier extends ATableBasedView {
 				remainingItemCount--;
 			}
 
-			float y = (float) remainingItemCount * ySingleSampleSize;
+			float y = remainingItemCount * ySingleSampleSize;
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth,
 					bottomAxisSpacing, 0);
@@ -500,7 +503,7 @@ public class GLKaplanMeier extends ATableBasedView {
 				remainingItemCount--;
 			}
 
-			float y = (float) remainingItemCount * ySingleSampleSize;
+			float y = remainingItemCount * ySingleSampleSize;
 
 			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing
 					+ y, 1);

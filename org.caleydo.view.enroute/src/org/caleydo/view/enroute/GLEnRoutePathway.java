@@ -1,22 +1,23 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
  * University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.enroute;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,10 +25,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -46,6 +48,7 @@ import org.caleydo.core.view.listener.RemoveTablePerspectiveListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
@@ -86,7 +89,7 @@ import org.jgrapht.graph.GraphPathImpl;
 
 /**
  * Main view class for the linearized pathway view.
- * 
+ *
  * @author Christian Partl
  * @author Alexander Lex
  */
@@ -221,12 +224,12 @@ public class GLEnRoutePathway
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param glCanvas
 	 * @param viewLabel
 	 * @param viewFrustum
 	 */
-	public GLEnRoutePathway(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLEnRoutePathway(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -505,7 +508,7 @@ public class GLEnRoutePathway
 
 	/**
 	 * Renders information what to do in order to see data in the view.
-	 * 
+	 *
 	 * @param gl
 	 * @param displayListIndex
 	 */
@@ -648,7 +651,7 @@ public class GLEnRoutePathway
 
 	/**
 	 * Adapts the view height to the maximum of the specified minimum view heights, if necessary.
-	 * 
+	 *
 	 * @param minViewWidth Minimum width required.
 	 * @param minViewHeightRequiredByPath View height in pixels required by the linearized path and its rows.
 	 * @param minViewHeightRequiredByBranchNodes View height in pixels required by branch nodes.
@@ -707,7 +710,7 @@ public class GLEnRoutePathway
 
 	/**
 	 * Calculates the spacings between all anchor nodes (nodes with mapped data) of the path.
-	 * 
+	 *
 	 * @return
 	 */
 	private List<AnchorNodeSpacing> calcAnchorNodeSpacings() {
@@ -771,16 +774,16 @@ public class GLEnRoutePathway
 		if (isLastSpacing)
 			additionalSpacing += pixelGLConverter.getGLHeightForPixelHeight(BOTTOM_SPACING_PIXELS);
 
-		anchorNodeSpacing.setCurrentAnchorNodeSpacing(Math.max(dataRowHeight * ((float) numSpacingAnchorNodeRows)
+		anchorNodeSpacing.setCurrentAnchorNodeSpacing(Math.max(dataRowHeight * (numSpacingAnchorNodeRows)
 				/ 2.0f + additionalSpacing,
-				minNodeSpacing * (float) (nodesInbetween.size() + 1) + anchorNodeSpacing.getTotalNodeHeight()));
+				minNodeSpacing * (nodesInbetween.size() + 1) + anchorNodeSpacing.getTotalNodeHeight()));
 
 		return anchorNodeSpacing;
 	}
 
 	/**
 	 * Renders the branch nodes for a specified linearized node. The position of this node has to be set beforehand.
-	 * 
+	 *
 	 * @param node
 	 */
 	private void renderBranchNodes(GL2 gl, GLU glu, ANode node) {
@@ -848,7 +851,7 @@ public class GLEnRoutePathway
 
 	/**
 	 * Calculates the position for a single branch node.
-	 * 
+	 *
 	 * @param summaryNode
 	 * @return
 	 */
@@ -1154,7 +1157,7 @@ public class GLEnRoutePathway
 
 	/**
 	 * Sets a new path to be linearized.
-	 * 
+	 *
 	 * @param pathway The pathway the path corresponds to.
 	 * @param path List of {@link PathwayVertexRep}s that represents a path. If multiple <code>PathwayVertexRep</code>s
 	 *            represent a complex node, they must occur in a sequence.
@@ -1201,7 +1204,7 @@ public class GLEnRoutePathway
 
 	/**
 	 * Selects a branch node to be linearized.
-	 * 
+	 *
 	 * @param node
 	 */
 	public void selectBranch(ALinearizableNode node) {
@@ -1251,7 +1254,7 @@ public class GLEnRoutePathway
 	 * ends if there is no unambiguous way to continue, the direction of edges changes, the pathway ends, or the
 	 * {@link #maxBranchSwitchingPathLength} is reached. The specified <code>PathwayVertexRep</code> that represents the
 	 * start of the path is added at the beginning of the path.
-	 * 
+	 *
 	 * @param branchVertexRep The <code>PathwayVertexRep</code> that represents the start of the branch path.
 	 * @param linearizedVertexRep The <code>PathwayVertexRep</code> of the linearized path this branch belongs to.
 	 * @param isIncomingBranchPath Determines whether the branch path is incoming or outgoing. This is especially
@@ -1300,7 +1303,7 @@ public class GLEnRoutePathway
 
 	/**
 	 * Removes the specified linearized node from the path if it is at the start or the end of the path.
-	 * 
+	 *
 	 * @param node
 	 */
 	public void removeLinearizedNode(ALinearizableNode node) {
@@ -1342,7 +1345,7 @@ public class GLEnRoutePathway
 				edges.add(edge);
 			}
 			GraphPath<PathwayVertexRep, DefaultEdge> graphPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
-					pathway, startVertexRep, endVertexRep, edges, (double) edges.size());
+					pathway, startVertexRep, endVertexRep, edges, edges.size());
 
 			pathwayPath = new PathwayPath(graphPath);
 		}

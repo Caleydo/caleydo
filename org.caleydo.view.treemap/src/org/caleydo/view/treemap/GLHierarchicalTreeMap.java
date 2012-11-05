@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,28 +8,27 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.treemap;
 
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Vector;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
@@ -41,6 +40,8 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.GLMouseAdapter;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -54,12 +55,13 @@ import org.caleydo.view.treemap.listener.ZoomOutEvent;
 import org.caleydo.view.treemap.listener.ZoomOutListener;
 import org.caleydo.view.treemap.renderstyle.TreeMapRenderStyle;
 import org.eclipse.swt.widgets.Composite;
+
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 
 /**
  * Extended Treemap for displaying multiple treemaps and zoom function.
- * 
+ *
  * @author Alexander Lex
  * @author Michael Lafer
  */
@@ -103,19 +105,19 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param glCanvas
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLHierarchicalTreeMap(GLCanvas glCanvas, Composite parentComposite,
+	public GLHierarchicalTreeMap(IGLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
-		parentGLCanvas.addMouseWheelListener(new MouseWheelListener() {
+		parentGLCanvas.addMouseListener(new GLMouseAdapter() {
 			@Override
-			public void mouseWheelMoved(MouseWheelEvent e) {
+			public void mouseWheelMoved(IMouseEvent e) {
 				mainTreeMapView.processMouseWheeleEvent(e);
 			}
 		});
@@ -256,7 +258,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 		// double yOffset = 0;
 		if (thumbnailTreemapViews.size() > 3)
 			drawArrow(gl, (float) xOffset, (float) (1.0f - yMargin - thumbNailHeight),
-					(float) (xOffset + xMargin), (float) (1 - yMargin));
+					(float) (xOffset + xMargin), 1 - yMargin);
 		for (int i = Math.max(0, thumbnailTreemapViews.size() - maxThumbNailViews); i < thumbnailTreemapViews
 				.size(); i++) {
 			xOffset += xMargin;
@@ -272,7 +274,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 					(float) (viewFrustum.getTop() - viewFrustum.getHeight()
 							* (yMargin + thumbNailHeight)));
 			treemap.getViewFrustum().setTop(
-					(float) (viewFrustum.getTop() - viewFrustum.getHeight() * yMargin));
+					viewFrustum.getTop() - viewFrustum.getHeight() * yMargin);
 
 			// gl.glPushMatrix();
 			// gl.glTranslated(viewFrustum.getWidth() * xOffset,
@@ -286,13 +288,13 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 			xOffset += thumbNailWidth;
 
 			drawArrow(gl, (float) xOffset, (float) (1.0f - yMargin - thumbNailHeight),
-					(float) (xOffset + xMargin), (float) (1 - yMargin));
+					(float) (xOffset + xMargin), 1 - yMargin);
 		}
 	}
 
 	/**
 	 * Draws an arrow between the thumbnail treemaps.
-	 * 
+	 *
 	 * @param gl
 	 * @param x
 	 * @param y
@@ -551,7 +553,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

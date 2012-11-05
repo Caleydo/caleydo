@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -28,9 +28,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DefaultDataSupportDefinition;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -67,6 +68,7 @@ import org.caleydo.core.view.listener.RemoveTablePerspectiveListener;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -106,7 +108,7 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * VisBricks main view
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -230,9 +232,9 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 */
-	public GLStratomex(GLCanvas glCanvas, Composite parentComposite,
+	public GLStratomex(IGLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
@@ -249,8 +251,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 		tablePerspectives = new ArrayList<TablePerspective>();
 
-		parentGLCanvas.removeMouseWheelListener(glMouseListener);
-		parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
+		parentGLCanvas.addMouseListener(glMouseWheelListener);
 
 		registerPickingListeners();
 	}
@@ -404,7 +405,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	/**
 	 * Initialize the layout for the sides of the arch
-	 * 
+	 *
 	 * @param columnLayout
 	 * @param layoutTemplate
 	 * @param layoutManager
@@ -648,7 +649,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	/**
 	 * Switches to detail mode where the detail brick is on the right side of
 	 * the specified column
-	 * 
+	 *
 	 * @param focusColumn
 	 *            the column that contains the focus brick
 	 */
@@ -677,7 +678,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	/**
 	 * Switches to detail mode where the detail brick is on the left side of the
 	 * specified column.
-	 * 
+	 *
 	 * @param focusColumn
 	 *            the column that contains the detail brick
 	 */
@@ -745,7 +746,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	/**
 	 * Handles the left-right dragging of the whole dimension group. Does
 	 * collision handling and moves dimension groups to the sides if necessary.
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void handleHorizontalColumnMove(GL2 gl) {
@@ -1146,7 +1147,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 * records, the imprinting of the IDType and IDCategory for the records is
 	 * done here if there is no data set yet.
 	 * </p>
-	 * 
+	 *
 	 * @param newTablePerspectives
 	 * @param brickConfigurer
 	 *            The brick configurer can be specified externally (e.g.,
@@ -1288,7 +1289,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	/**
 	 * Replaces an old tablePerspective with a new one whil keeping the column
 	 * at the same place.
-	 * 
+	 *
 	 * @param newTablePerspective
 	 * @param oldTablePerspective
 	 */
@@ -1319,7 +1320,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 * Imprints VisBricks to a particular record ID Category by setting the
 	 * {@link #recordIDCategory}, and initializes the
 	 * {@link #recordSelectionManager}.
-	 * 
+	 *
 	 * @param dataDomain
 	 */
 	private void imprintVisBricks(ATableBasedDataDomain dataDomain) {
@@ -1487,7 +1488,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	/**
 	 * Set whether the last resize of any sub-brick was to the left(true) or to
 	 * the right. Important for determining, which brick to kick next.
-	 * 
+	 *
 	 * @param lastResizeDirectionWasToLeft
 	 */
 	public void setLastResizeDirectionWasToLeft(boolean lastResizeDirectionWasToLeft) {

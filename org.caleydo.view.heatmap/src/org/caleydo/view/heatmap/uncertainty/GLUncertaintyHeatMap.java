@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,10 +21,11 @@ package org.caleydo.view.heatmap.uncertainty;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
@@ -42,6 +43,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -60,7 +62,7 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * Uncertainty heat map view.
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  * @author Clemens Holzhüter
@@ -114,12 +116,12 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param glCanvas
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLUncertaintyHeatMap(GLCanvas glCanvas, Composite parentComposite,
+	public GLUncertaintyHeatMap(IGLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
@@ -210,9 +212,9 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 	/**
 	 * Create embedded heat map
-	 * 
+	 *
 	 * @param overviewLayout2
-	 * 
+	 *
 	 * @param
 	 */
 	private void createOverviewHeatMap(GL2 gl) {
@@ -432,7 +434,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 		double[] convertedSNR = new double[SNR.length];
 		for (int index = 0; index < SNR.length; index++) {
-			convertedSNR[index] = (double) (SNR[index]);
+			convertedSNR[index] = (SNR[index]);
 		}
 
 		// Initialize with 1 in order to calculate uncertainty max
@@ -482,6 +484,6 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		layoutManager.destroy(gl);
-		
+
 	}
 }

@@ -21,6 +21,7 @@ package org.caleydo.view.filterpipeline;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
@@ -57,8 +58,6 @@ public class RcpGLFilterPipelineView extends ARcpGLViewPart implements IListener
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-
-		createGLCanvas();
 
 		view = new GLFilterPipeline(glCanvas, parentComposite,
 				serializedView.getViewFrustum());

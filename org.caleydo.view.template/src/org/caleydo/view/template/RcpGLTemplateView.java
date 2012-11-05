@@ -21,6 +21,7 @@ package org.caleydo.view.template;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -48,7 +49,6 @@ public class RcpGLTemplateView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		createGLCanvas();
 		view = new GLTemplate(glCanvas, parentComposite, serializedView.getViewFrustum());
 		initializeView();
 		createPartControlGL();

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,28 +21,23 @@ package org.caleydo.core.view.opengl.mouse;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 
 /**
  * Mouse picking listener for JOGL2 views
- * 
+ *
  * @author Michael Kalkusch
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class GLMouseListener
-	extends MouseAdapter
-	implements MouseMotionListener, MouseWheelListener {
+public class GLMouseListener implements IGLMouseListener {
 
 	/**
 	 * All canvas objects which camera is manipulated by the mouse listener
@@ -69,15 +64,13 @@ public class GLMouseListener
 	private boolean enableRotate = true;
 	private boolean enableZoom = true;
 
-	public int[] mousePosition = new int[2];;
-
 	/**
 	 * Define mouse sensitivity. Higher value indicates more degrees of rotation. Default value 1.0
 	 */
 	private float mouseSensitivityRotation = 1.0f;
 
 	@Override
-	public void mousePressed(MouseEvent mouseEvent) {
+	public void mousePressed(IMouseEvent mouseEvent) {
 
 		mouseReleased = false;
 		leftMouseButtonPressed = false;
@@ -85,8 +78,8 @@ public class GLMouseListener
 
 		pickedPointDragStart.setLocation(mouseEvent.getPoint());
 
-		prevMouseX = mouseEvent.getX();
-		prevMouseY = mouseEvent.getY();
+		prevMouseX = mouseEvent.getPoint().x;
+		prevMouseY = mouseEvent.getPoint().y;
 
 		if (mouseEvent.getClickCount() > 1) {
 			mouseDoubleClick = true;
@@ -94,31 +87,28 @@ public class GLMouseListener
 			return;
 		}
 
-		if (mouseEvent.getButton() == MouseEvent.BUTTON1)
+		if (mouseEvent.getButton() == 1)
 			leftMouseButtonPressed = true;
-		else if (mouseEvent.getButton() == MouseEvent.BUTTON3)
+		else if (mouseEvent.getButton() == 3)
 			rightMouseButtonPressed = true;
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent mouseEvent) {
-		this.mousePosition[0] = mouseEvent.getXOnScreen();
-		this.mousePosition[1] = mouseEvent.getYOnScreen();
-
+	public void mouseMoved(IMouseEvent mouseEvent) {
 		mouseMoved = true;
 		pickedPointCurrent = mouseEvent.getPoint();
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
+	public void mouseClicked(IMouseEvent arg0) {
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent mouseEvent) {
+	public void mouseReleased(IMouseEvent mouseEvent) {
 
 		mouseDragged = false;
 
-		if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
+		if (mouseEvent.getButton() == 1) {
 			pickedPointCurrent = mouseEvent.getPoint();
 		}
 
@@ -126,20 +116,20 @@ public class GLMouseListener
 
 		mouseDoubleClick = false;
 
-		if ((mouseEvent.getModifiers() & InputEvent.BUTTON2_MASK) != 0) {
+		if (mouseEvent.isButtonDown(2)) {
 			mouseMiddleButtonPressed = false;
 		}
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent mouseEvent) {
+	public void mouseDragged(IMouseEvent mouseEvent) {
 
 		mouseDragged = true;
 		pickedPointCurrent = mouseEvent.getPoint();
 
-		int x = mouseEvent.getX();
-		int y = mouseEvent.getY();
-		Dimension size = mouseEvent.getComponent().getSize();
+		int x = mouseEvent.getPoint().x;
+		int y = mouseEvent.getPoint().y;
+		Dimension size = mouseEvent.getParentSize();
 
 		if (!rightMouseButtonPressed) {
 			if (!mouseMiddleButtonPressed && enableRotate) {
@@ -213,7 +203,7 @@ public class GLMouseListener
 	}
 
 	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) {
+	public void mouseWheelMoved(IMouseEvent e) {
 		if (!enableZoom)
 			return;
 
@@ -230,7 +220,7 @@ public class GLMouseListener
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
+	public void mouseEntered(IMouseEvent arg0) {
 		Iterator<AGLView> iterGLCanvas = glCanvasList.iterator();
 
 		while (iterGLCanvas.hasNext()) {
@@ -239,7 +229,7 @@ public class GLMouseListener
 	}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
+	public void mouseExited(IMouseEvent e) {
 		Iterator<AGLView> iterGLCanvas = glCanvasList.iterator();
 
 		while (iterGLCanvas.hasNext()) {

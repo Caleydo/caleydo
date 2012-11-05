@@ -21,6 +21,7 @@ package org.caleydo.view.treemap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -46,7 +47,6 @@ public class RcpGLTreeMapView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		createGLCanvas();
 		view = new GLHierarchicalTreeMap(glCanvas, parentComposite,
 				serializedView.getViewFrustum());
 		initializeView();
