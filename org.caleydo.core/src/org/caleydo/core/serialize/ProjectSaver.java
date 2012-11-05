@@ -382,7 +382,7 @@ public class ProjectSaver {
 		MultiStatus result = new MultiStatus(PlatformUI.PLUGIN_ID, IStatus.OK,
 				WorkbenchMessages.Workbench_problemsSaving, null);
 		// Save the version number.
-		memento.putString(IWorkbenchConstants.TAG_VERSION, "2.0");
+		memento.putString(IWorkbenchConstants.TAG_VERSION, GeneralManager.VERSION);
 		// Save how many plug-ins were loaded while restoring the workbench
 		memento.putInteger(IWorkbenchConstants.TAG_PROGRESS_COUNT, 10); // we
 																		// guesstimate
