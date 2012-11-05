@@ -6,6 +6,7 @@
 var tumor;
 var analysis;
 var runs;
+var runData;
 var dataTypes = null;
 var tumorTypes = null;  
 
@@ -66,6 +67,14 @@ function initialize() {
 	tumor = getUrlParameters()["tumor"];
 	analysis = getUrlParameters()["analysis"];
 	
+	// open webstart tab if both tumor and analysis date are supplied 
+	if ( tumor != undefined && analysis != undefined ) {
+		$( "#tabs a[href=#stratomex]" ).tab('show');		
+	}
+	else {		
+		$( "#tabs a[href=#overview]" ).tab('show');		
+	}
+	
 	loadRuns( function( data ) {
 		runs = data;
 		renderAnalysisSelection( data, "#analysis-selection-container" );		
@@ -95,20 +104,22 @@ function renderContent( data )
 		
 	}
 
-	tumorIndex = renderTumorSelection( data, "#tumor-selection-container", tumor );
+	runData = data;
+	
+	tumorIndex = renderTumorSelection( runData, "#tumor-selection-container", tumor );
 	
 	if ( dataTypes == null ) {
-		initializeDataTypeSelection( data );		
+		initializeDataTypeSelection( runData );		
 	}
 	
 	if ( tumorTypes == null ) {
-		initializeTumorTypeSelection( data );		
+		initializeTumorTypeSelection( runData );		
 	}
 	
-	renderDataTypeSelectionOverview( data, "#datatype-selection-overview-container" );
-	renderTumorTypeSelectionOverview( data, "#tumortype-selection-overview-container" );
-	renderOverviewChart( data );
-	renderHeaderOverview( data, "#header-overview-container" );			
+	renderDataTypeSelectionOverview( runData, "#datatype-selection-overview-container" );
+	renderTumorTypeSelectionOverview( runData, "#tumortype-selection-overview-container" );
+	renderOverviewChart();
+	renderHeaderOverview( runData, "#header-overview-container" );			
 	renderTumorType( data, tumorIndex );		
 }
 
@@ -133,40 +144,6 @@ function clearTumorType() {
 }
 
 
-/*
-function renderTumorSelectionBootstrap( data, element ) {
-	
-	var tumorTypes = [];
-	
-	for ( var i = 0; i < data.details.length; ++i ) {
-		tumorTypes.push( "<li><a href=\"#\" id=\"" + "tumor-" + i + "\" value=\"" + i + "\">" + data.details[i].tumorAbbreviation + " - " + data.details[i].tumorName + "</a></li>" );
-	}
-	
-	$( "<div/>", {
-		class: "btn-group",
-		id: "tumor-selection-dropdown",
-		html: "<a class=\"btn dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\"><span id=\"tumor-selection-dropdown-title\">" + data.details[0].tumorAbbreviation + " - " + data.details[0].tumorName + "</span><span class=\"caret\"></span></a>",
-	}).appendTo( element );
-	
-	$( "<ul/>", {
-		id: "tumor-selection",
-		class: "dropdown-menu",
-		"html": tumorTypes.join("\n")
-	}).appendTo( "#tumor-selection-dropdown" );
-	
-	
-	$( "#tumor-selection" ).on( "change", function() {
-		renderTumorType( data, this.value );
-	});	
-	
-	$('#tumor-3' ).on('click', function(){
-    	var text = $(this).text(); //.replace(/\ /g,'&nbsp;');
-    	$("#tumor-selection-dropdown-title").html(text);
-	});	
-}
-*/
-
-
 function renderAnalysisSelectionOverview( runs, element ) {
 	
 	var analysisDates = [];
@@ -186,6 +163,7 @@ function renderAnalysisSelectionOverview( runs, element ) {
 	$( "<select/>", {
 		id: "analysis-selection-overview",
 		"class": "",
+		"style": "width: 100%;",
 		"html": analysisDates.join("\n")
 	}).appendTo( element );
 
@@ -194,7 +172,9 @@ function renderAnalysisSelectionOverview( runs, element ) {
 	
 	$( "#analysis-selection-overview" ).on( "change", function() {
 		clearTumorType();
-		loadRun( getBaseUrl() + "/data/" + runs[this.value].json, renderContent );		
+		loadRun( getBaseUrl() + "/data/" + runs[this.value].json, renderContent );
+
+		$( "#analysis-selection" ).val( this.value ).selected = true;
 	});	
 	
 	return analysisIndex;
@@ -220,6 +200,7 @@ function renderAnalysisSelection( runs, element ) {
 	$( "<select/>", {
 		id: "analysis-selection",
 		"class": "",
+		"style": "width: 100%;",
 		"html": analysisDates.join("\n")
 	}).appendTo( element );
 
@@ -228,7 +209,9 @@ function renderAnalysisSelection( runs, element ) {
 	
 	$( "#analysis-selection" ).on( "change", function() {
 		clearTumorType();
-		loadRun( getBaseUrl() + "/data/" + runs[this.value].json, renderContent );		
+		loadRun( getBaseUrl() + "/data/" + runs[this.value].json, renderContent );
+		
+		$( "#analysis-selection-overview" ).val( this.value ).selected = true;		
 	});	
 	
 	return analysisIndex;
@@ -256,6 +239,7 @@ function renderTumorSelection( data, element ) {
 	$( "<select/>", {
 		id: "tumor-selection",
 		"class": "",
+		"style": "width: 100%;",
 		"html": tumorTypes.join("\n")
 	}).appendTo( element );
 	
@@ -287,7 +271,7 @@ function renderDataTypeSelectionOverview( data, element ) {
 	
 	$( element ).html("");
 	
-	dataTypeSelectorElements.push( "<thead><tr><th><i class=\" icon-eye-open\"></th><th colspan=2>Data Type<span style=\"margin-left: 15px;\" class=\"btn btn-mini\" id=\"clear-datatypes\">Clear</span><span  style=\"margin-left: 5px;\" class=\"btn btn-mini\" id=\"all-datatypes\">All</span></th></tr></thead>" );
+	dataTypeSelectorElements.push( "<thead><tr><th><i class=\" icon-eye-open\"></th><th colspan=2>Data Type&nbsp;<span style=\"margin-left: 0px;\" class=\"btn-group\"><span class=\"btn btn-mini\" id=\"clear-datatypes\">Clear</span><span class=\"btn btn-mini\" id=\"all-datatypes\">All</span></span></th></tr></thead>" );
 
 	
 	for ( var p in data.details[0].genomic ) {
@@ -310,7 +294,7 @@ function renderDataTypeSelectionOverview( data, element ) {
 			dataTypes[this.value] = this.checked;
 		});
 
-		renderOverviewChart(data);
+		renderOverviewChart();
 	}
 	
     $('#clear-datatypes').click(function() {
@@ -318,7 +302,7 @@ function renderDataTypeSelectionOverview( data, element ) {
 			dataTypes[this.value] = false;
 			this.checked = false;
 		});
-		renderOverviewChart(data);
+		renderOverviewChart();
     });
 
     $('#all-datatypes').click(function() {
@@ -326,7 +310,7 @@ function renderDataTypeSelectionOverview( data, element ) {
 			dataTypes[this.value] = true;
 			this.checked = true;
 		});
-		renderOverviewChart(data);
+		renderOverviewChart();
     });
 
 	
@@ -345,7 +329,7 @@ function renderTumorTypeSelectionOverview( data, element ) {
 	
 	$( element ).html("");
 	
-	tumorTypeSelectorElements.push( "<thead><tr><th><i class=\" icon-eye-open\"></th><th colspan=2>Tumor Type<span style=\"margin-left: 15px;\" class=\"btn btn-mini\" id=\"clear-tumortypes\">Clear</span><span  style=\"margin-left: 5px;\" class=\"btn btn-mini\" id=\"all-tumortypes\">All</span></th></tr></thead>" );
+	tumorTypeSelectorElements.push( "<thead><tr><th><i class=\" icon-eye-open\"></th><th colspan=2>Tumor Type&nbsp;<span class=\"btn-group\"><span class=\"btn btn-mini\" id=\"clear-tumortypes\">Clear</span><span class=\"btn btn-mini\" id=\"all-tumortypes\">All</span></span></th></tr></thead>" );
 	
 	for ( var i = 0; i < data.details.length; ++i ) {
 		tumorTypeSelectorElements.push( "<tr>" + "<td>" + "<input type=\"checkbox\" name=\"" + "tumorType" + "\" value=\"" + data.details[i].tumorAbbreviation + "\" " + ( tumorTypes[data.details[i].tumorAbbreviation] == true ? "checked" : "" ) + ">" + "</td>" + "<td>" + data.details[i].tumorAbbreviation + "</td>" + "<td>" 
@@ -365,7 +349,7 @@ function renderTumorTypeSelectionOverview( data, element ) {
 			tumorTypes[this.value] = this.checked;
 		});
 
-		renderOverviewChart(data);
+		renderOverviewChart();
 	}
 	
     $('#clear-tumortypes').click(function() {
@@ -373,7 +357,7 @@ function renderTumorTypeSelectionOverview( data, element ) {
 			tumorTypes[this.value] = false;
 			this.checked = false;
 		});
-		renderOverviewChart(data);
+		renderOverviewChart();
     });
 
     $('#all-tumortypes').click(function() {
@@ -381,7 +365,7 @@ function renderTumorTypeSelectionOverview( data, element ) {
 			tumorTypes[this.value] = true;
 			this.checked = true;
 		});
-		renderOverviewChart(data);
+		renderOverviewChart();
     });
 	
 }
@@ -424,11 +408,7 @@ function renderControls( data, tumorIndex, element ) {
 	var element = element || "#controls-container";
 
 	// clear the element
-	$( "#webstart-instructions-container" ).html( "" );
-	$( "#webstart-button-container" ).html( "" );
-	$( "#download-button-container" ).html( "" );
-	$( "#report-button-container" ).html( "" );
-	$( "#direct-link-container" ).html( "" );
+	$( "#control-button-group" ).html( "" );
 	$( "#direct-link-url-container" ).html( "" );		
 		
 	// links
@@ -438,36 +418,50 @@ function renderControls( data, tumorIndex, element ) {
 	}).appendTo( "#webstart-instructions-container" );	
 	
 	$( "<a/>", {
-		"href": data.details[tumorIndex]["Caleydo JNLP"], 
+		"href": data.details[tumorIndex]["Caleydo JNLP"],
 		"class": "btn btn-primary",
-		"html": "<i class=\"icon-play icon-white\"></i>&nbsp;Start with " + data.details[tumorIndex].tumorAbbreviation
-	}).appendTo( "#webstart-button-container" );		
+		"style": "",
+		"rel": "tooltip",
+		"title": "Run <b>Caleydo Stratomex " + data.caleydoVersion + "</b> with Java WebStart and load all data for <i>" + data.details[tumorIndex].tumorName + "</i> from <i>" + data.analysisRun + "</i>.",
+		"html": "<i class=\"icon-play icon-white\"></i>&nbsp;Run"
+	}).appendTo( "#control-button-group" );
 	
-
 	$( "<a/>", {
 		"href": data.details[tumorIndex]["Caleydo Project"], 
-		"class": "",
-		"html": "<i class=\"icon-download\"></i>&nbsp;Download Data Set"
-	}).appendTo( "#download-button-container" );
+		"class": "btn",
+		"rel": "tooltip",
+		"title": "Download the complete <i>" + data.details[tumorIndex].tumorName + "</i> data set from <i>" + data.analysisRun + "</i> as a Caleydo data package.",
+		"html": "<i class=\"icon-download\"></i>"
+	}).appendTo( "#control-button-group" );
 
 	$( "<a/>", {
 		"href": data.details[tumorIndex]["Firehose Report"], 
-		"class": "",
+		"class": "btn",
+		"rel": "tooltip",
 		target: "_new",
-		"html": "<i class=\"icon-file\"></i>&nbsp;View Nozzle Report"
-	}).appendTo( "#report-button-container" );
+		"title": "View the Nozzle analysis reports from the <i>" + data.analysisRun + "</i> Firehose analysis run for <i>" + data.details[tumorIndex].tumorName + "</i> on the Firehose website.",
+		"html": "<i class=\"icon-file\"></i>"
+	}).appendTo( "#control-button-group" );
 
-	$( "<div/>", {
-		"class": "",
-		"html": "<i class=\"icon-retweet\"></i>&nbsp;<a id=\"direct-link\" href=\"#\">Get direct link</a>"
-	}).appendTo(  "#direct-link-container"  );
+	$( "<a/>", {
+		"class": "btn",
+		"rel": "tooltip",
+		"id": "direct-link",
+		"title": "Get a direct link to with website for the <i>" + data.details[tumorIndex].tumorName + "</i> data set from <i>" + data.analysisRun + "</i>.",
+		"html": "<i class=\"icon-retweet\"></i>"
+	}).appendTo(  "#control-button-group"  );
+	
+	$(".btn").tooltip({
+		'selector': '',
+		'placement': 'bottom'
+	});	
 	
 	$( "#direct-link" ).on( "click", function() {
 		$( "#direct-link-url-container" ).html( "" );		
 		$( "<div/>", {
 			"class": "alert alert-info",
-			"html": "<a class=\"close\" data-dismiss=\"alert\" href=\"#\">x</a>" + getCurrentUrl()
-		}).appendTo(  "#direct-link-url-container"  );
+			"html": "<a class=\"close\" data-dismiss=\"alert\" href=\"#\">x</a><b>Direct Link</b> <a href=\"" + getCurrentUrl() + "\">" + getCurrentUrl() + "</a>"
+		}).appendTo( "#direct-link-url-container"  );
 	});		
 }
 
@@ -543,9 +537,52 @@ function mapDataTypeToColor( dataType ){
 	return ( dataTypeColors[dataType] == null ) ? "#777" : dataTypeColors[dataType];
 } 
 
+// test if has contains given value
+function _contains( array, value ) {
+	for ( var key in array ) {
+		if ( array.hasOwnProperty( key ) ) {
+			if ( array[key] == value ) {
+				return true;
+			}
+		}
+	}
+	return false;	
+}
 
-function renderOverviewChart( input ) {
+
+function renderOverviewChart() {
+	input = runData;
+	
+	// clear plotting area
 	$( "#chart-container" ).html( "" );
+				
+	// test if at least one tumor type and one data type have been selected
+	if ( !_contains( dataTypes, true ) && _contains( tumorTypes, true ) ) {
+		$( "<div/>", {
+			"class": "alert alert-warning",
+			"html": "<a class=\"close\" data-dismiss=\"warning\" href=\"#\"></a><b>Warning</b> Please select <i>at least one data type</i> to display in the data overview chart."
+		}).appendTo( "#chart-container"  );
+		
+		return;
+	}	
+
+	if ( !_contains( tumorTypes, true ) && _contains( dataTypes, true ) ) {
+		$( "<div/>", {
+			"class": "alert alert-warning",
+			"html": "<a class=\"close\" data-dismiss=\"warning\" href=\"#\"></a><b>Warning</b> Please select <i>at least one tumor type</i> to display in the data overview chart."
+		}).appendTo( "#chart-container"  );
+		
+		return;
+	}	
+
+	if ( !_contains( tumorTypes, true ) && !_contains( dataTypes, true ) ) {
+		$( "<div/>", {
+			"class": "alert alert-warning",
+			"html": "<a class=\"close\" data-dismiss=\"warning\" href=\"#\"></a><b>Warning</b> Please select <i>at least one data type and one tumor type</i> to display in the data overview chart."
+		}).appendTo( "#chart-container"  );
+		
+		return;
+	}	
 
 	var newData = []; 
 			
@@ -572,19 +609,21 @@ function renderOverviewChart( input ) {
 			newData.push( newList );
 		}
 	}
-		
+
+	console.log( newData );
+			
 	var n = newData.length; // number of layers
 	var m = newData[0].length; // number of samples per layer
 	var data = newData; //
 	var color = function( data ) { 	if ( data == null ) return "orange"; return mapDataTypeToColor( data.dataType ); };
 		
 	var margin = 40,
-	    width = window.innerWidth - 80 - .5 - margin,
+	    width = window.innerWidth - 2*margin - .5 - margin,
 	    height = 300 - .5 - margin,
 	    mx = m,
 	    my = d3.max(data, function(d) {
 	      return d3.max(d, function(d) {
-	        return d.y0 + d.y;
+	        return d.y0 + d.y > 0 ? d.y0 + d.y : 5;
 	      });
 	    }),
 	    mz = d3.max(data, function(d) {
@@ -637,13 +676,14 @@ function renderOverviewChart( input ) {
 	var labels = vis.selectAll("text.label")
 	    .data(data[0])
 	  .enter().append("text")
-	    .attr("class", "label")
+	    .attr("class", "axis-label")
 	    //.attr("x", x)
 	    .attr("transform", function(d) { return "translate(" + ( x(d) + margin ) + ",0)"; })	    
 	    .attr("y", function(d,i) { return ( height + 6 + ( 6 * ((i%2)*3) ) ); } )
-	    .attr("dx", x({x: .45}))
+	    .attr("dx", x({x: .5}))
 	    .attr("dy", ".71em")
 	    .attr("text-anchor", "middle")	    
+	    .attr("font-weight", "normal")	    
 	    .text(function(d, i) { return d.tumorType });
 	
 	vis.append("line")
@@ -796,6 +836,7 @@ function stream_index(d, i) {
 
 
 initialize();
+$(window).resize(renderOverviewChart);
 
 
 // ---------------------------------
