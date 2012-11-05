@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
@@ -42,6 +43,7 @@ import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.AUniqueObject;
+import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -66,8 +68,7 @@ import org.eclipse.core.runtime.Status;
  * 
  * @author Alexander Lex
  */
-public class DataTable
-	extends AUniqueObject {
+public class DataTable extends AUniqueObject {
 
 	HashMap<Integer, AColumn> hashColumns;
 
@@ -182,11 +183,12 @@ public class DataTable
 			Integer dimensionID) {
 		try {
 			if (isColumnDimension)
-				return hashColumns.get(dimensionID).getFloat(dataRepresentation, recordID);
+				return hashColumns.get(dimensionID)
+						.getFloat(dataRepresentation, recordID);
 			else
-				return hashColumns.get(recordID).getFloat(dataRepresentation, dimensionID);
-		}
-		catch (NullPointerException npe) {
+				return hashColumns.get(recordID)
+						.getFloat(dataRepresentation, dimensionID);
+		} catch (NullPointerException npe) {
 			Logger.log(new Status(Status.ERROR, "DataTable",
 					"Data table does not contain a value for record: " + recordID
 							+ " and dimension " + dimensionID));
@@ -219,12 +221,11 @@ public class DataTable
 		String result;
 		if (rawDataType == RawDataType.FLOAT) {
 			result = Float.toString(getFloat(DataRepresentation.RAW, rowID, columnID));
-		}
-		else if (rawDataType == RawDataType.STRING) {
+		} else if (rawDataType == RawDataType.STRING) {
 			result = getRaw(columnID, rowID);
-		}
-		else {
-			throw new IllegalStateException("DataType " + rawDataType + " not implemented");
+		} else {
+			throw new IllegalStateException("DataType " + rawDataType
+					+ " not implemented");
 
 		}
 		return result;
@@ -261,7 +262,8 @@ public class DataTable
 	/**
 	 * Calculates a raw value based on min and max from a normalized value.
 	 * 
-	 * @param dNormalized a value between 0 and 1
+	 * @param dNormalized
+	 *            a value between 0 and 1
 	 * @return a value between min and max
 	 */
 	public double getRawForNormalized(double dNormalized) {
@@ -274,15 +276,14 @@ public class DataTable
 		if (dNormalized == 0)
 			result = metaData.getMin();
 		// if(getMin() > 0)
-		result = metaData.getMin() + dNormalized * (metaData.getMax() - metaData.getMin());
+		result = metaData.getMin() + dNormalized
+				* (metaData.getMax() - metaData.getMin());
 		// return (dNormalized) * (getMax() + getMin());
 		if (externalDataTrans == EDataTransformation.NONE) {
 			return result;
-		}
-		else if (externalDataTrans == EDataTransformation.LOG2) {
+		} else if (externalDataTrans == EDataTransformation.LOG2) {
 			return Math.pow(2, result);
-		}
-		else if (externalDataTrans == EDataTransformation.LOG10) {
+		} else if (externalDataTrans == EDataTransformation.LOG10) {
 			return Math.pow(10, result);
 		}
 		throw new IllegalStateException(
@@ -293,7 +294,8 @@ public class DataTable
 	/**
 	 * Calculates a normalized value based on min and max.
 	 * 
-	 * @param dRaw the raw value
+	 * @param dRaw
+	 *            the raw value
 	 * @return a value between 0 and 1
 	 */
 	public double getNormalizedForRaw(double dRaw) {
@@ -305,14 +307,11 @@ public class DataTable
 
 		if (externalDataTrans == EDataTransformation.NONE) {
 			result = dRaw;
-		}
-		else if (externalDataTrans == EDataTransformation.LOG2) {
+		} else if (externalDataTrans == EDataTransformation.LOG2) {
 			result = Math.log(dRaw) / Math.log(2);
-		}
-		else if (externalDataTrans == EDataTransformation.LOG10) {
+		} else if (externalDataTrans == EDataTransformation.LOG10) {
 			result = Math.log10(dRaw);
-		}
-		else {
+		} else {
 			throw new IllegalStateException(
 					"Conversion raw to normalized not implemented for data rep"
 							+ externalDataTrans);
@@ -428,17 +427,20 @@ public class DataTable
 	 * Register a new {@link RecordPerspective} with this DataTable
 	 * 
 	 * @param recordPerspective
-	 * @param flat determines whether a datadomain update event is triggered
+	 * @param flat
+	 *            determines whether a datadomain update event is triggered
 	 */
 	public void registerRecordPerspective(RecordPerspective recordPerspective,
 			boolean triggerUpdate) {
 		if (recordPerspective.getPerspectiveID() == null)
-			throw new IllegalStateException("Record perspective not correctly initiaklized: "
-					+ recordPerspective);
+			throw new IllegalStateException(
+					"Record perspective not correctly initiaklized: " + recordPerspective);
 		if (!recordPerspective.getIdType().equals(dataDomain.getRecordIDType()))
-			throw new IllegalStateException("Invalid reocrd id type for this datadomain: "
-					+ recordPerspective.getIdType());
-		hashRecordPerspectives.put(recordPerspective.getPerspectiveID(), recordPerspective);
+			throw new IllegalStateException(
+					"Invalid reocrd id type for this datadomain: "
+							+ recordPerspective.getIdType());
+		hashRecordPerspectives.put(recordPerspective.getPerspectiveID(),
+				recordPerspective);
 
 		if (recordPerspective.isDefault()) {
 			if (defaultRecordPerspective != null)
@@ -498,7 +500,8 @@ public class DataTable
 	 * Register a new {@link DimensionPerspective} with this DataTable
 	 * 
 	 * @param dimensionPerspective
-	 * @param flat determines whether a datadomain update event is triggered
+	 * @param flat
+	 *            determines whether a datadomain update event is triggered
 	 */
 	public void registerDimensionPerspective(DimensionPerspective dimensionPerspective,
 			boolean triggerUpdate) {
@@ -617,7 +620,8 @@ public class DataTable
 	 * Add a column by reference. The column has to be fully initialized with
 	 * data
 	 * 
-	 * @param column the column
+	 * @param column
+	 *            the column
 	 */
 	public void addColumn(AColumn column) {
 		// if (hashDimensions.isEmpty()) {
@@ -626,8 +630,7 @@ public class DataTable
 				tableType = DataTableDataType.NUMERIC;
 			else if (tableType.equals(DataTableDataType.NOMINAL))
 				tableType = DataTableDataType.HYBRID;
-		}
-		else {
+		} else {
 			if (tableType == null)
 				tableType = DataTableDataType.NOMINAL;
 			else if (tableType.equals(DataTableDataType.NUMERIC))
@@ -652,14 +655,15 @@ public class DataTable
 	 * Switch the representation of the data. When this is called the data in
 	 * normalized is replaced with data calculated from the mode specified.
 	 * 
-	 * @param externalDataRep Determines how the data is visualized. For options
-	 *            see {@link EDataTransformation}
-	 * @param isTableHomogeneous Determines whether a set is homogeneous or not.
-	 *            Homogeneous means that the sat has a global maximum and
-	 *            minimum, meaning that all dimensions in the set contain equal
-	 *            data. If false, each dimension is treated separately, has it's
-	 *            own min and max etc. Sets that contain nominal data MUST be
-	 *            inhomogeneous.
+	 * @param externalDataRep
+	 *            Determines how the data is visualized. For options see
+	 *            {@link EDataTransformation}
+	 * @param isTableHomogeneous
+	 *            Determines whether a set is homogeneous or not. Homogeneous
+	 *            means that the sat has a global maximum and minimum, meaning
+	 *            that all dimensions in the set contain equal data. If false,
+	 *            each dimension is treated separately, has it's own min and max
+	 *            etc. Sets that contain nominal data MUST be inhomogeneous.
 	 */
 	void setExternalDataRepresentation(EDataTransformation externalDataRep,
 			boolean isTableHomogeneous) {
@@ -671,38 +675,38 @@ public class DataTable
 
 		for (AColumn dimension : hashColumns.values()) {
 			if (dimension instanceof NumericalColumn) {
-				((NumericalColumn) dimension).setExternalDataRepresentation(externalDataRep);
+				((NumericalColumn) dimension)
+						.setExternalDataRepresentation(externalDataRep);
 			}
 		}
 
 		if (isTableHomogeneous) {
 			switch (externalDataRep) {
-				case NONE:
-					normalization.normalizeGlobally();
-					break;
-				case LOG10:
-					normalization.log10();
-					normalization.normalizeGlobally();
-					break;
-				case LOG2:
-					normalization.log2();
-					normalization.normalizeGlobally();
-					break;
+			case NONE:
+				normalization.normalizeGlobally();
+				break;
+			case LOG10:
+				normalization.log10();
+				normalization.normalizeGlobally();
+				break;
+			case LOG2:
+				normalization.log2();
+				normalization.normalizeGlobally();
+				break;
 			}
-		}
-		else {
+		} else {
 			switch (externalDataRep) {
-				case NONE:
-					normalization.normalizeLocally();
-					break;
-				case LOG10:
-					normalization.log10();
-					normalization.normalizeLocally();
-					break;
-				case LOG2:
-					normalization.log2();
-					normalization.normalizeLocally();
-					break;
+			case NONE:
+				normalization.normalizeLocally();
+				break;
+			case LOG10:
+				normalization.log10();
+				normalization.normalizeLocally();
+				break;
+			case LOG2:
+				normalization.log2();
+				normalization.normalizeLocally();
+				break;
 			}
 		}
 	}
@@ -713,7 +717,8 @@ public class DataTable
 
 	public boolean containsFoldChangeRepresentation() {
 		for (AColumn dimension : hashColumns.values()) {
-			return dimension.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW);
+			return dimension
+					.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW);
 		}
 		return false;
 	}
@@ -724,13 +729,27 @@ public class DataTable
 		defaultRecordPerspective = new RecordPerspective(dataDomain);
 		defaultRecordPerspective.setDefault(true);
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
-		if (isColumnDimension)
-			data.setData(getRowIDList());
-		else
-			data.setData(getColumnIDList());
-		defaultRecordPerspective.init(data);
-		defaultRecordPerspective.setLabel("Ungrouped", true);
+		Integer nrRecordsInSample = null;
+		List<Integer> recordIDs;
+		if (isColumnDimension) {
+			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
+				nrRecordsInSample = dataDomain.getDataSetDescription()
+						.getDataProcessingDescription().getNrRowsInSample();
+			}
+			recordIDs = getRowIDList();
+		} else {
+			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
+				nrRecordsInSample = dataDomain.getDataSetDescription()
+						.getDataProcessingDescription().getNrColumnsInSample();
+			}
+			recordIDs = getColumnIDList();
+		}
 
+		recordIDs = Algorithms.sampleList(nrRecordsInSample, recordIDs);
+
+		data.setData(recordIDs);
+		defaultRecordPerspective.setLabel("Ungrouped", true);
+		defaultRecordPerspective.init(data);
 		hashRecordPerspectives.put(defaultRecordPerspective.getPerspectiveID(),
 				defaultRecordPerspective);
 	}
@@ -741,14 +760,24 @@ public class DataTable
 		defaultDimensionPerspective.setDefault(true);
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 		List<Integer> dimensionIDs;
-		if (isColumnDimension)
+		Integer nrDimensionsInsample = null;
+		if (isColumnDimension) {
+			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
+				nrDimensionsInsample = dataDomain.getDataSetDescription()
+						.getDataProcessingDescription().getNrColumnsInSample();
+			}
 			dimensionIDs = getColumnIDList();
-		else
+		} else {
+			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
+				nrDimensionsInsample = dataDomain.getDataSetDescription()
+						.getDataProcessingDescription().getNrRowsInSample();
+			}
 			dimensionIDs = getRowIDList();
-
+		}
 		// here we sample the list of dimensions to avoid problems with the heat
 		// map TODO: we should probably move this to some better place
-		//dimensionIDs = Algorithms.sampleList(1600, dimensionIDs);
+
+		dimensionIDs = Algorithms.sampleList(nrDimensionsInsample, dimensionIDs);
 
 		data.setData(dimensionIDs);
 		defaultDimensionPerspective.init(data);

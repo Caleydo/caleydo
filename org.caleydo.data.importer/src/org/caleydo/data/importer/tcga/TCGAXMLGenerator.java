@@ -372,6 +372,8 @@ public class TCGAXMLGenerator extends DataSetDescriptionSerializer {
 		clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		matrixData.setDataProcessingDescription(dataProcessingDescription);
+		// here we turn on sampling to 1500 
+		dataProcessingDescription.setNrRowsInSample(1500);
 
 		return matrixData;
 	}

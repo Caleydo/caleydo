@@ -176,7 +176,7 @@ public class GLHistogram
 
 		if (useDetailLevel) {
 			// renderStyle.setDetailLevel(detailLevel);
-			if (detailLevel == EDetailLevel.LOW) {
+			if (detailLevel == EDetailLevel.LOW || detailLevel == EDetailLevel.MEDIUM) {
 				sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW);
 			}
 			else {

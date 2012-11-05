@@ -76,7 +76,9 @@ public class Algorithms {
 
 	/**
 	 * Returns a randomly sampled list of Integers of a size not larger than
-	 * numberOfSamples based on the provides sourceList. </p>
+	 * numberOfSamples based on the provided sourceList, or the unmodified
+	 * sourceList if numberOfSamples is null or bigger then the size of
+	 * sourceList. </p>
 	 * <p>
 	 * Notice that the sourceList will also be modified, so clone it beforehand
 	 * if you don't want that.
@@ -89,8 +91,9 @@ public class Algorithms {
 	 * @return the sourceList if it's length is smaller than numberOfSamples or
 	 *         a new randomly sampled list of length numberOfSamples
 	 */
-	public static List<Integer> sampleList(int numberOfSamples, List<Integer> sourceList) {
-		if (sourceList.size() < numberOfSamples)
+	public static List<Integer> sampleList(Integer numberOfSamples,
+			List<Integer> sourceList) {
+		if (numberOfSamples == null || sourceList.size() < numberOfSamples)
 			return sourceList;
 
 		Logger.log(new Status(Status.INFO, "Sampling in core util.Algorithms",
