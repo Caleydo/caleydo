@@ -161,7 +161,7 @@ public class TCGAProjectBuilderApplication
 				System.out.println("Downloading data for tumor type " + tumorType + " for analysis run " + analysisRun);
 
 				TCGAXMLGenerator generator = new TCGAXMLGenerator(tumorType, analysisRun, dataRun, xmlFilePath,
-						runSpecificOutputPath, tmpDataOutputPath, true);
+						runSpecificOutputPath, tmpDataOutputPath, sampleGenes);
 
 				generator.run();
 
