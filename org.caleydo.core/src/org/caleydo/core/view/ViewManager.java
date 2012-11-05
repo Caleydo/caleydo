@@ -44,6 +44,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.awt.AWTGLCanvasFactory;
+import org.caleydo.core.view.opengl.canvas.internal.newt.NEWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -122,8 +123,8 @@ public class ViewManager extends AManager<IView> {
 			canvasFactory = new AWTGLCanvasFactory();
 		} else if ("swt".equalsIgnoreCase(kind)) {
 			canvasFactory = new SWTGLCanvasFactory();
-			// } else if ("newt".equalsIgnoreCase(kind)) {
-			//
+		} else if ("newt".equalsIgnoreCase(kind)) {
+			canvasFactory = new NEWTGLCanvasFactory();
 		} else {
 			throw new IllegalStateException("unknown opengl implementation: " + kind);
 		}

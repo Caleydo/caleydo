@@ -10,6 +10,7 @@ Bundle-NativeCode:
  lib/jogl/macosx/libjogl_desktop.jnilib;
  lib/jogl/macosx/libnativewindow_awt.jnilib;
  lib/jogl/macosx/libnativewindow_macosx.jnilib;
+ lib/jogl/macosx/libnewt.jnilib;
  osname=macosx;
  osname=mac;
  osname=macos;
@@ -23,24 +24,28 @@ Bundle-NativeCode:
  lib/jogl/linux/x86/libjogl_desktop.so;
  lib/jogl/linux/x86/libnativewindow_awt.so;
  lib/jogl/linux/x86/libnativewindow_x11.so;
+ lib/jogl/linux/x86/libnewt.so;
  osname=linux;
  processor=x86,
  lib/jogl/linux/x86_64/libgluegen-rt.so;
  lib/jogl/linux/x86_64/libjogl_desktop.so;
  lib/jogl/linux/x86_64/libnativewindow_awt.so;
  lib/jogl/linux/x86_64/libnativewindow_x11.so;
+ lib/jogl/linux/x86_64/libnewt.so;
  osname=linux;
  processor=x86_64,
  lib/jogl/windows/x86/gluegen-rt.dll;
  lib/jogl/windows/x86/jogl_desktop.dll;
  lib/jogl/windows/x86/nativewindow_win32.dll;
  lib/jogl/windows/x86/nativewindow_awt.dll;
+ lib/jogl/windows/x86/newt.dll;
  osname=win32;
  processor=x86,
  lib/jogl/windows/x86_64/gluegen-rt.dll;
  lib/jogl/windows/x86_64/jogl_desktop.dll;
  lib/jogl/windows/x86_64/nativewindow_win32.dll;
  lib/jogl/windows/x86_64/nativewindow_awt.dll;
+ lib/jogl/windows/x86_64/newt.dll;
  osname=win32;
  processor=x86_64
 Export-Package: com.jogamp.common,
@@ -82,7 +87,8 @@ Export-Package: com.jogamp.common,
  javax.media.opengl.glu,
  javax.media.opengl.glu.gl2,
  javax.media.opengl.glu.gl2es1,
- jogamp.nativewindow.x11
+ jogamp.nativewindow.x11,
+ jogamp.opengl
 Bundle-Vendor: www.caleydo.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
