@@ -1,24 +1,24 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 /**
- * 
+ *
  */
 package org.caleydo.core.io;
 
@@ -68,7 +68,7 @@ import org.caleydo.core.id.IDTypeInitializer;
  * <li><code>ENTREZ_GENE_ID</code></li>
  * <li><code>REFSEQ_MRNA</code></li>
  * </ul>
- * 
+ *
  * <p>
  * This IDSpecification also provides the ability to transform ID Types using
  * regular expressions. For details see the parent {@link IDTypeParsingRules}
@@ -76,9 +76,9 @@ import org.caleydo.core.id.IDTypeInitializer;
  * <p>
  * The defaults are initializes in {@link IDTypeInitializer}
  * </p>
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class IDSpecification {
 
@@ -141,9 +141,14 @@ public class IDSpecification {
 	private IDTypeParsingRules idTypeParsingRules = null;
 
 	/**
-	 * 
+	 *
 	 */
 	public IDSpecification() {
+	}
+
+	public IDSpecification(String idCategory, String idType) {
+		this.idCategory = idCategory;
+		this.idType = idType;
 	}
 
 	/**
@@ -178,7 +183,7 @@ public class IDSpecification {
 
 	/**
 	 * Setter for both, {@link #idCategory} and {@link #idType}
-	 * 
+	 *
 	 * @param idCategory
 	 * @param idType
 	 */

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,7 +22,9 @@ package org.caleydo.core.data.filter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.UnRegisterListenersOnEvent;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -32,6 +34,7 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
@@ -44,7 +47,7 @@ import org.caleydo.core.manager.GeneralManager;
  * The FilterManager is the base for a statically typed FilterManager sub-class, such as {@link RecordFilter}
  * .
  * </p>
- * 
+ *
  * @author Alexander Lex
  * @param <VAType>
  * @param <DeltaType>
@@ -61,9 +64,11 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 
 	EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 
+	private UnRegisterListenersOnEvent unregisterListener = null;
+
 	/**
 	 * Pass the dataDomain, the initial VA, and a factory to create filters of the specified type.
-	 * 
+	 *
 	 * @param dataDomain
 	 * @param virtualArray
 	 * @param factory
@@ -80,7 +85,7 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 
 	/**
 	 * Adds a filter and triggers a {@link VADeltaEvent} with the {@link VirtualArrayDelta} in the filter.
-	 * 
+	 *
 	 * @param filter
 	 * @return
 	 */
@@ -105,10 +110,22 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 		}
 	}
 
+	@Override
+	public void registerEventListeners() {
+		unregisterListener = new UnRegisterListenersOnEvent(this, dataDomain);
+		eventPublisher.addListener(RemoveDataDomainEvent.class, unregisterListener);
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		if (unregisterListener != null)
+			eventPublisher.removeListener(RemoveDataDomainEvent.class, unregisterListener);
+		unregisterListener = null;
+	}
 	/**
 	 * To also support legacy VA update events, this listener creates a filter for every incoming vaDelta
 	 * event.
-	 * 
+	 *
 	 * @param vaDelta
 	 * @param info
 	 */
@@ -132,7 +149,7 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 
 	/**
 	 * Returns all current filters.
-	 * 
+	 *
 	 * @return a list of all filters
 	 */
 	public ArrayList<FilterType> getFilterPipe() {
@@ -221,7 +238,7 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 	/**
 	 * Triggers event signaling a virtual array update. Has to be implemented in sub-classes, because only
 	 * there the type is known.
-	 * 
+	 *
 	 * @param delta
 	 */
 	protected abstract void triggerVADeltaEvent(DeltaType delta);

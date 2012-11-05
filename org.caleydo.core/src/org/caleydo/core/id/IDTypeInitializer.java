@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -30,9 +30,9 @@ import org.eclipse.core.runtime.Status;
  * This class provides a static method to initialize {@link IDType}s and
  * {@link IDCategory} from the Information provided in the
  * {@link DataSetDescription}.
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class IDTypeInitializer {
 
@@ -46,7 +46,7 @@ public class IDTypeInitializer {
 	 * creates default values for <code>IDSpecification</code>s themselves if
 	 * necessary.
 	 * </p>
-	 * 
+	 *
 	 * @param dataSetDescription
 	 *            the {@link DataSetDescription} containing the externally
 	 *            specified information about IDs
@@ -115,8 +115,7 @@ public class IDTypeInitializer {
 		if (recordIDCategoryName == null)
 			recordIDCategoryName = recordIDTypeName;
 
-		IDCategory dimensionIDCategory = IDCategory
-				.getIDCategory(dimensionIDCategoryName);
+		IDCategory dimensionIDCategory = IDCategory.getIDCategory(dimensionIDCategoryName);
 		if (dimensionIDCategory == null) {
 			dimensionIDCategory = IDCategory.registerCategory(dimensionIDCategoryName);
 		}

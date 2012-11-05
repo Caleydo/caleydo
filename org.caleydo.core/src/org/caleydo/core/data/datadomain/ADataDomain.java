@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,18 +21,25 @@ package org.caleydo.core.data.datadomain;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
+import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventHandler;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
  * Abstract class that implements data and view management.
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -74,6 +81,9 @@ public abstract class ADataDomain extends AEventHandler implements IDataDomain {
 	 * determines whether the label of this datadomain is the default label.
 	 */
 	protected boolean isLabelDefault = false;
+
+	private AEventListener<ADataDomain> removeListener = null;
+
 
 	/**
 	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
@@ -177,13 +187,43 @@ public abstract class ADataDomain extends AEventHandler implements IDataDomain {
 	/**
 	 * @return the isSerializeable, see {@link #isSerializeable}
 	 */
+	@Override
 	public boolean isSerializeable() {
 		return isSerializeable;
 	}
-	
+
 	@Override
 	public String getProviderName() {
 		return "Dataset";
+	}
+
+
+	@Override
+	public void registerEventListeners() {
+		removeListener = new AEventListener<ADataDomain>() {
+			@Override
+			public void handleEvent(AEvent event) {
+				if (event instanceof RemoveDataDomainEvent && event.getDataDomainID().equals(this.getDataDomainID()))
+					removeMe();
+			}
+		};
+		removeListener.setExclusiveDataDomainID(dataDomainID);
+		removeListener.setHandler(this);
+		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+		eventPublisher.addListener(RemoveDataDomainEvent.class, removeListener);
+	}
+
+	protected void removeMe() {
+		// ok we are in the event listener thread for this data domain -> interrupt me
+		Thread.currentThread().interrupt();
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+		if (removeListener != null)
+			eventPublisher.removeListener(RemoveDataDomainEvent.class, removeListener);
+		removeListener = null;
 	}
 
 }

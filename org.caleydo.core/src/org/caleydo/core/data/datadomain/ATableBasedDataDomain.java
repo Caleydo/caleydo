@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -99,7 +99,7 @@ import org.caleydo.core.util.mapping.color.ColorMapper;
  * {@link DataDomainConfiguration} object, which can be either specified or
  * taken from a default initialization of an implementing sub-class.
  * </p>
- * 
+ *
  * @author Alexander Lex
  * @author Marc Streit
  */
@@ -270,7 +270,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * Sets the {@link #table} of this dataDomain. The table may not be null.
 	 * Initializes {@link #recordPerspectiveIDs} and
 	 * {@link #dimensionPerspectiveIDs}.
-	 * 
+	 *
 	 * @param table
 	 *            The new set which replaced the currently loaded one.
 	 */
@@ -297,9 +297,9 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * <p>
 	 * If such a container exists already, the existing container is returned.
 	 * If not, a new container is created and the datadomain will be notified.
-	 * 
+	 *
 	 * </p>
-	 * 
+	 *
 	 * @param recordPerspectiveID
 	 * @param dimensionPerspectiveID
 	 * @return
@@ -316,7 +316,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * If such a container exists already, the existing container is returned.
 	 * If not, a new container is created.
 	 * </p>
-	 * 
+	 *
 	 * @param recordPerspectiveID
 	 * @param dimensionPerspectiveID
 	 * @param flag
@@ -362,7 +362,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 	/**
 	 * Returns a data container based on its key
-	 * 
+	 *
 	 * @param tablePerspectiveKey
 	 * @return
 	 */
@@ -380,7 +380,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	/**
 	 * Returns whether a {@link TablePerspective} Object exists in this
 	 * datadomain for the given perspectiveIDs.
-	 * 
+	 *
 	 * @param recordPerspectiveID
 	 * @param dimensionPerspectiveID
 	 * @return
@@ -458,7 +458,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	/**
 	 * Returns a clone of the record selection manager. This is the preferred
 	 * way to initialize SelectionManagers.
-	 * 
+	 *
 	 * @return a clone of the record selection manager
 	 */
 	public RecordSelectionManager getRecordSelectionManager() {
@@ -468,7 +468,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	/**
 	 * Returns a clone of the dimension selection manager. This is the preferred
 	 * way to initialize SelectionManagers.
-	 * 
+	 *
 	 * @return a clone of the dimension selection manager
 	 */
 	public DimensionSelectionManager getDimensionSelectionManager() {
@@ -478,7 +478,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	/**
 	 * Returns a clone of the record group selection manager. This is the
 	 * preferred way to initialize SelectionManagers. *
-	 * 
+	 *
 	 * @return a clone of the dimension selection manager
 	 */
 	public SelectionManager getRecordGroupSelectionManager() {
@@ -487,7 +487,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 	/**
 	 * Returns the virtual array for the type
-	 * 
+	 *
 	 * @param recordPerspectiveID
 	 *            the type of VA requested
 	 * @return
@@ -500,7 +500,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 	/**
 	 * Returns the virtual array for the type
-	 * 
+	 *
 	 * @param dimensionPerspectiveID
 	 *            the type of VA requested
 	 * @return
@@ -549,7 +549,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	/**
 	 * Initiates clustering based on the parameters passed. Sends out an event
 	 * to all affected views upon positive completion to replace their VA.
-	 * 
+	 *
 	 * @param tableID
 	 *            ID of the set to cluster
 	 * @param clusterState
@@ -721,7 +721,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * signaling that a selection form another dataDomain is available. If
 	 * possible, it is converted to be compatible with the local dataDomain and
 	 * then sent out via a {@link SelectionUpdateEvent}.
-	 * 
+	 *
 	 * @param dataDomainType
 	 *            the type of the dataDomain for which this selectionUpdate is
 	 *            intended
@@ -747,7 +747,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * This method is called if a record VA Update was requested, but the
 	 * dataDomainType specified was not this dataDomains type. Concrete handling
 	 * can only be done in concrete dataDomains.
-	 * 
+	 *
 	 * @param tableID
 	 * @param dataDomainType
 	 * @param vaType
@@ -761,7 +761,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	/**
 	 * Returns the denomination for the records. For genetic data for example
 	 * this would be "Gene"
-	 * 
+	 *
 	 * @param capitalized
 	 *            if true, the label is returned capitalized, e.g., "Gene", if
 	 *            false it would be "gene"
@@ -805,7 +805,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	/**
 	 * Get the human readable record label for the id, which is of the
 	 * {@link #recordIDType}.
-	 * 
+	 *
 	 * @param id
 	 *            the id to convert to a human readable label
 	 * @return the readable label
@@ -817,7 +817,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	/**
 	 * Get the human readable dimension label for the id, which is of the
 	 * {@link #dimensionIDType}.
-	 * 
+	 *
 	 * @param id
 	 *            the id to convert to a human readable label
 	 * @return the readable label
@@ -829,7 +829,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	/**
 	 * Get the human readable record label for the id, which is of the type
 	 * specified.
-	 * 
+	 *
 	 * @param idType
 	 *            the IDType of the id passed
 	 * @param id
@@ -901,7 +901,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 	@Override
 	public void registerEventListeners() {
-
+		super.registerEventListeners();
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		selectionUpdateListener.setExclusiveDataDomainID(dataDomainID);
@@ -947,6 +947,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	// TODO this is never called!
 	@Override
 	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
 
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,13 +21,15 @@ package org.caleydo.core.event;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * EventPublishers are the central event distributing entities. {@link IEventListener}s with their related
  * {@link AEvent}s are registered to instances of this class. When an event is triggered, the handleEvent()
  * method to registered listeners are invoked.
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  * @author Werner Puff
@@ -46,7 +48,7 @@ public class EventPublisher {
 
 	/**
 	 * adds a receiver to the list of event handlers
-	 * 
+	 *
 	 * @param eventClass
 	 *            event type to register the handler to
 	 * @param listener
@@ -70,7 +72,7 @@ public class EventPublisher {
 
 	/**
 	 * removes a contained receiver from the list of event handlers
-	 * 
+	 *
 	 * @param eventClass
 	 *            event type to remove the handler from
 	 * @param listener
@@ -83,7 +85,7 @@ public class EventPublisher {
 
 	/**
 	 * removes a listener from all events in this event-publisher
-	 * 
+	 *
 	 * @param listener
 	 *            listener to remove
 	 */
@@ -100,7 +102,7 @@ public class EventPublisher {
 	/**
 	 * Central event handling and distribution method. The prohibition of sending events back to its sender is
 	 * done within {@link AEventListener}. Furthermore an integrity check is performed.
-	 * 
+	 *
 	 * @param event
 	 *            event to distribute to the listeners
 	 */
@@ -128,7 +130,11 @@ public class EventPublisher {
 
 	private void triggerEvents(AEvent event, Collection<AEventListener<?>> listeners) {
 		if (listeners != null) {
-			for (AEventListener<?> receiver : listeners) {
+			Deque<AEventListener<?>> tmp = new LinkedList<AEventListener<?>>(listeners);
+			// work on a local copy to allow concurrent modifications, + use a list for freeing as fast as possible, if
+			// we had concurrent modifactions
+			while (!tmp.isEmpty()) {
+				AEventListener<?> receiver = tmp.pollFirst();
 				// check if a receiver wants events that are not if his data domain
 				if (event.getDataDomainID() == null && receiver.isExclusiveDataDomain()) {
 				}

@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,6 +22,8 @@ package org.caleydo.core.io;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -37,9 +39,9 @@ import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 
 /**
  * Creates datadomains, perspectives, etc based on a {@link DataSetDescription}
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class DataLoader {
 
@@ -47,7 +49,7 @@ public class DataLoader {
 	 * Creates a {@link ATableBasedDataDomain} and loads the dataset and
 	 * groupings into it. Creates all necessary IDTypes for a dataset. Also does
 	 * the processing of the data.
-	 * 
+	 *
 	 * @param dataSetDescription
 	 *            The information for how to create everything
 	 */
@@ -60,9 +62,10 @@ public class DataLoader {
 		return dataDomain;
 	}
 
+
 	/**
 	 * Load a single grouping to a {@link ATableBasedDataDomain}
-	 * 
+	 *
 	 * @param dataDomain
 	 * @param groupingSpec
 	 *            the specification of the grouping
@@ -84,7 +87,7 @@ public class DataLoader {
 
 	/**
 	 * Creates the {@link ATableBasedDataDomain} and loads the data file
-	 * 
+	 *
 	 * @param dataSetDescription
 	 * @return
 	 * @throws FileNotFoundException
@@ -95,8 +98,7 @@ public class DataLoader {
 
 		ATableBasedDataDomain dataDomain;
 
-		IDSpecification columnIDSpecification = dataSetDescription
-				.getColumnIDSpecification();
+		IDSpecification columnIDSpecification = dataSetDescription.getColumnIDSpecification();
 		IDSpecification rowIDSpecification = dataSetDescription.getRowIDSpecification();
 
 		if ((rowIDSpecification.isIDTypeGene() && !dataSetDescription.isTransposeMatrix())
@@ -137,13 +139,13 @@ public class DataLoader {
 	/**
 	 * Loads all groupings for columns and rows that are specified in the
 	 * {@link DataSetDescription}. Respects transposition.
-	 * 
+	 *
 	 * @param dataSetDescription
 	 */
 	public static void loadGroupings(ATableBasedDataDomain dataDomain,
 			DataSetDescription dataSetDescription) {
 
-		ArrayList<GroupingParseSpecification> columnGroupingSpecifications = dataSetDescription
+		List<GroupingParseSpecification> columnGroupingSpecifications = dataSetDescription
 				.getColumnGroupingSpecifications();
 		if (columnGroupingSpecifications != null) {
 			if (dataSetDescription.isTransposeMatrix()) {
@@ -153,7 +155,7 @@ public class DataLoader {
 			}
 		}
 
-		ArrayList<GroupingParseSpecification> rowGroupingSpecifications = dataSetDescription
+		List<GroupingParseSpecification> rowGroupingSpecifications = dataSetDescription
 				.getRowGroupingSpecifications();
 		if (rowGroupingSpecifications != null) {
 
@@ -168,16 +170,16 @@ public class DataLoader {
 
 	/**
 	 * Load groupings for dimensions
-	 * 
+	 *
 	 * @param dataDomain
 	 * @param dimensionGroupings
 	 */
 	private static void loadDimensionGroupings(ATableBasedDataDomain dataDomain,
-			ArrayList<GroupingParseSpecification> dimensionGroupings) {
+			List<GroupingParseSpecification> dimensionGroupings) {
 
 		IDType targetIDType = dataDomain.getDimensionIDType();
 
-		ArrayList<PerspectiveInitializationData> dimensionPerspectivesInitData = parseGrouping(
+		List<PerspectiveInitializationData> dimensionPerspectivesInitData = parseGrouping(
 				dimensionGroupings, targetIDType);
 
 		for (PerspectiveInitializationData data : dimensionPerspectivesInitData) {
@@ -191,16 +193,16 @@ public class DataLoader {
 
 	/**
 	 * Load groupings for records
-	 * 
+	 *
 	 * @param dataDomain
 	 * @param recordGroupings
 	 */
 	private static void loadRecordGroupings(ATableBasedDataDomain dataDomain,
-			ArrayList<GroupingParseSpecification> recordGroupings) {
+			List<GroupingParseSpecification> recordGroupings) {
 
 		IDType targetIDType = dataDomain.getRecordIDType();
 
-		ArrayList<PerspectiveInitializationData> dimensionPerspectivesInitData = parseGrouping(
+		List<PerspectiveInitializationData> dimensionPerspectivesInitData = parseGrouping(
 				recordGroupings, targetIDType);
 
 		for (PerspectiveInitializationData data : dimensionPerspectivesInitData) {
@@ -213,19 +215,18 @@ public class DataLoader {
 	/**
 	 * Runs the parser on the groupings and returns a lisst of
 	 * {@link PerspectiveInitializationData}
-	 * 
+	 *
 	 * @param groupingSpecifications
 	 * @param targetIDType
 	 * @return
 	 */
-	private static ArrayList<PerspectiveInitializationData> parseGrouping(
-			ArrayList<GroupingParseSpecification> groupingSpecifications,
+	private static List<PerspectiveInitializationData> parseGrouping(
+			List<GroupingParseSpecification> groupingSpecifications,
 			IDType targetIDType) {
 
-		ArrayList<PerspectiveInitializationData> perspectiveDatas = new ArrayList<PerspectiveInitializationData>();
+		List<PerspectiveInitializationData> perspectiveDatas = new ArrayList<PerspectiveInitializationData>();
 		for (GroupingParseSpecification groupingSpecification : groupingSpecifications) {
-			GroupingParser parser = new GroupingParser(groupingSpecification,
-					targetIDType);
+			GroupingParser parser = new GroupingParser(groupingSpecification, targetIDType);
 			parser.loadData();
 			perspectiveDatas.addAll(parser.getPerspectiveInitializationDatas());
 		}
@@ -239,7 +240,7 @@ public class DataLoader {
 		if (dataProcessingDescription == null)
 			return;
 
-		ArrayList<ClusterConfiguration> rowClusterConfigurations = dataProcessingDescription
+		List<ClusterConfiguration> rowClusterConfigurations = dataProcessingDescription
 				.getRowClusterConfigurations();
 		if (rowClusterConfigurations != null) {
 			for (ClusterConfiguration clusterConfiguration : rowClusterConfigurations) {

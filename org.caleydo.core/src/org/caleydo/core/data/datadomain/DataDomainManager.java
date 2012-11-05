@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,10 +22,11 @@ package org.caleydo.core.data.datadomain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
+
 import org.caleydo.core.data.configuration.ChooseDataConfigurationDialog;
 import org.caleydo.core.data.datadomain.graph.DataDomainGraph;
 import org.caleydo.core.event.data.NewDataDomainEvent;
+import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
@@ -47,7 +48,7 @@ import org.eclipse.swt.widgets.Shell;
  * stores associations between views and dataDomains. Notice that it is legal to
  * hold a private AssociationManager for special cases.
  * </p>
- * 
+ *
  * @author Alexander Lex
  * @author Marc Streit
  */
@@ -73,7 +74,7 @@ public class DataDomainManager {
 	/**
 	 * This method is intended for initialization of the data domain in general.
 	 * It does not create an data domain instance.
-	 * 
+	 *
 	 * @param dataDomainType the plug-in id of the data domain
 	 */
 	public void initalizeDataDomain(String dataDomainType) {
@@ -108,7 +109,7 @@ public class DataDomainManager {
 	 * relevant for {@link ATableBasedDataDomain}s. For other DataDomains or the
 	 * default (true) use {@link #createDataDomain(String)}.
 	 * </p>
-	 * 
+	 *
 	 * @param dataDomainType the plug-in id of the data domain
 	 * @param isColumnDimension set to false if this dataDomain is of type
 	 *            {@link ATableBasedDataDomain} and you want to access the
@@ -145,7 +146,7 @@ public class DataDomainManager {
 	 * Create a new {@link ADataDomain} of the type specified through
 	 * <code>dataDomainType</code>. The created dataDomain is also registered
 	 * with the manager.
-	 * 
+	 *
 	 * @param dataDomainType the plug-in id of the data domain
 	 * @return the created {@link IDataDomain}
 	 */
@@ -156,7 +157,7 @@ public class DataDomainManager {
 	/**
 	 * Returns all data domains. The collection is backed by the manager, so do
 	 * NOT! modify it, otherwise you will modify the manager contents.
-	 * 
+	 *
 	 * @return
 	 */
 	public Collection<IDataDomain> getDataDomains() {
@@ -166,7 +167,7 @@ public class DataDomainManager {
 	/**
 	 * Get a concrete dataDomain object for the dataDomainID. Returns null if no
 	 * dataDomain object is mapped to the ID.
-	 * 
+	 *
 	 * @param dataDomainID
 	 * @return
 	 */
@@ -180,7 +181,7 @@ public class DataDomainManager {
 	 * no dataDomain object is mapped to the type. If more than one data domain
 	 * object is registered for that ID, the chooser dialog is opened where the
 	 * user can determine the data domain.
-	 * 
+	 *
 	 * @param dataDomainType
 	 * @return
 	 */
@@ -209,7 +210,7 @@ public class DataDomainManager {
 
 	/**
 	 * Register a concrete data domain
-	 * 
+	 *
 	 * @param dataDomain
 	 */
 	public void register(IDataDomain dataDomain) {
@@ -243,7 +244,7 @@ public class DataDomainManager {
 
 	/**
 	 * Unregister a concrete data domain
-	 * 
+	 *
 	 * @param dataDomain
 	 */
 	public void unregister(IDataDomain dataDomain) {
@@ -259,11 +260,13 @@ public class DataDomainManager {
 		ColorManager.get().markColor(ColorManager.QUALITATIVE_COLORS, color, false);
 
 		dataDomainGraph.removeDataDomain(dataDomain);
+
+		GeneralManager.get().getEventPublisher().triggerEvent(new RemoveDataDomainEvent(this, dataDomain));
 	}
 
 	/**
 	 * Returns the default association manager which is valid system-wide.
-	 * 
+	 *
 	 * @return
 	 */
 	public AssociationManager getAssociationManager() {
@@ -277,7 +280,7 @@ public class DataDomainManager {
 	/**
 	 * Returns a list of all data domains of this type registered or null if no
 	 * such data domain is registered.
-	 * 
+	 *
 	 * @param dataDomainType
 	 * @return
 	 */
@@ -288,28 +291,15 @@ public class DataDomainManager {
 	/**
 	 * Returns a list containing all DataDomains that are of the type classType.
 	 * If no type is registered the list is returned empty.
-	 * 
+	 *
 	 * @param classType
 	 * @return
 	 */
 	public <T extends ADataDomain> ArrayList<T> getDataDomainsByType(Class<T> classType) {
 		ArrayList<T> result = new ArrayList<T>();
-		Collection<IDataDomain> allDataDomains = getDataDomains();
-
-		Iterator<IDataDomain> iterator = allDataDomains.iterator();
-		while (iterator.hasNext()) {
-			IDataDomain dataDomain = iterator.next();
-			try {
-				T typedDataDomain = classType.cast(dataDomain);
-				// if we get here cast was successful
-				result.add(typedDataDomain);
-			}
-			catch (ClassCastException e) {
-				// this is expected for every failed cast, i.e. the checked
-				// dataDomain is not an instance of
-				// the specified class.
-			}
-		}
+		for (IDataDomain dataDomain : getDataDomains())
+			if (classType.isInstance(dataDomain))
+				result.add(classType.cast(dataDomain));
 		return result;
 	}
 
@@ -318,7 +308,8 @@ public class DataDomainManager {
 	 * new cal file during runtime.
 	 */
 	public void unregisterAllDataDomains() {
-		registeredDataDomainsByID.clear();
-		registeredDataDomainsByType.clear();
+		for (IDataDomain domain : new ArrayList<IDataDomain>(getDataDomains())) { // work on a local copy
+			unregister(domain);
+		}
 	}
 }
