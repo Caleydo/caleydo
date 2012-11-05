@@ -116,13 +116,6 @@ All Rights Reserved.
          unpack="false"/>
 
    <plugin
-         id="org.caleydo.lib.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.ui.workbench"
          download-size="0"
          install-size="0"
@@ -415,5 +408,41 @@ All Rights Reserved.
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+   <plugin
+         id="org.caleydo.lib.args4j"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.caleydo.lib.jgrapht"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.caleydo.lib.jsap"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.caleydo.lib.tagsoup"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.caleydo.lib.vecmath"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.caleydo.lib.weka"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>
