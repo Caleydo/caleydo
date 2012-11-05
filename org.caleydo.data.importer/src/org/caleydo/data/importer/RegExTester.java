@@ -21,38 +21,40 @@ package org.caleydo.data.importer;
 
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.parser.ascii.TabularDataParser;
+import org.caleydo.datadomain.genetic.TCGADefinitions;
 
 /**
  * Test class for regular expressions applied to IDs. Uses the actual code which
  * is also used in caleydo. Can be used for replacement and substring
  * expressions
  * 
- * @see{http://docs.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html}
+ * @see{http://docs.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html
  * 
  * @author Alexander Lex
  */
 public class RegExTester {
 
-//	public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-01";
+	// public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-01";
 
 	public static void main(String[] args) {
-		
 
-		String inputString = "tcga-06-0125-02";
-		
-		String regex = "tcga\\-|\\-..\\z";
-//		String regex = "tcga\\-|\\-...\\-";
-//		String regex =TCGATestDataXMLGenerator.TCGA_ID_SUBSTRING_REGEX;
-
+		// String regex = "tcga\\-|\\-...\\-";
+		// String regex =TCGATestDataXMLGenerator.TCGA_ID_SUBSTRING_REGEX;
 
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
-		// idSpecification.setReplacementExpression(replacingExpression,
-		// replacementString)
+		idTypeParsingRules.setReplacementExpression(
+				TCGADefinitions.TCGA_REPLACEMENT_STRING,
+				TCGADefinitions.TCGA_REPLACING_EXPRESSIONS);
 
-		idTypeParsingRules.setSubStringExpression(regex);
+		idTypeParsingRules
+				.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
 
-		String outputString = TabularDataParser.convertID(inputString, idTypeParsingRules);
+		int count = 1;
+		for (String id : TCGADefinitions.KNOWN_ID_EXAMPLES) {
+			String outputString = TabularDataParser.convertID(id, idTypeParsingRules);
 
-		System.out.println("Output: " + outputString);
+			System.out.println(count + ") source : " + id + ", converted: "
+					+ outputString);
+		}
 	}
 }

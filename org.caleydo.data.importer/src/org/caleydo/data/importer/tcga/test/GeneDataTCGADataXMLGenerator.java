@@ -115,8 +115,8 @@ public class GeneDataTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		sampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
 		idTypeParsingRules.setReplacementExpression(
-				TCGADefinitions.TCGA_REPLACING_EXPRESSION,
-				TCGADefinitions.TCGA_REPLACEMENT_STRING);
+				TCGADefinitions.TCGA_REPLACEMENT_STRING,
+				TCGADefinitions.TCGA_REPLACING_EXPRESSIONS);
 		idTypeParsingRules.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
 		idTypeParsingRules.setDefault(true);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);

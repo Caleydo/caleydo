@@ -132,8 +132,8 @@ public class TCGAXMLGenerator extends DataSetDescriptionSerializer {
 		sampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
 		idTypeParsingRules.setReplacementExpression(
-				TCGADefinitions.TCGA_REPLACING_EXPRESSION,
-				TCGADefinitions.TCGA_REPLACEMENT_STRING);
+				TCGADefinitions.TCGA_REPLACEMENT_STRING,
+				TCGADefinitions.TCGA_REPLACING_EXPRESSIONS);
 		idTypeParsingRules
 				.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
 		idTypeParsingRules.setToLowerCase(true);
@@ -196,8 +196,8 @@ public class TCGAXMLGenerator extends DataSetDescriptionSerializer {
 		seqSampleIDTypeParsingRules
 				.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
 		seqSampleIDTypeParsingRules.setReplacementExpression(
-				TCGADefinitions.TCGA_REPLACING_EXPRESSION,
-				TCGADefinitions.TCGA_REPLACEMENT_STRING);
+				TCGADefinitions.TCGA_REPLACEMENT_STRING,
+				TCGADefinitions.TCGA_REPLACING_EXPRESSIONS);
 		seqSampleIDTypeParsingRules.setToLowerCase(true);
 		seqSampleIDSpecification.setIdTypeParsingRules(seqSampleIDTypeParsingRules);
 
@@ -399,19 +399,22 @@ public class TCGAXMLGenerator extends DataSetDescriptionSerializer {
 		mutationData.addParsingRule(parsingRule);
 		mutationData.setTransposeMatrix(true);
 
-		IDSpecification mutationSampleIDSpecification = new IDSpecification();
-		mutationSampleIDSpecification.setIdCategory("TCGA_SAMPLE");
-		mutationSampleIDSpecification.setIdType("TCGA_SAMPLE");
+		// IDSpecification mutationSampleIDSpecification = new
+		// IDSpecification();
+		// mutationSampleIDSpecification.setIdCategory("TCGA_SAMPLE");
+		// mutationSampleIDSpecification.setIdType("TCGA_SAMPLE");
 
 		// Mutation uses a different ID convention, the source looks like this:
 		// OV_20_0990
-		IDTypeParsingRules mutationSampleIDTypeParsingRules = new IDTypeParsingRules();
-		mutationSampleIDTypeParsingRules.setReplacementExpression("\\_", "-");
-		mutationSampleIDTypeParsingRules.setSubStringExpression("^[a-z]+\\-");
-		mutationSampleIDTypeParsingRules.setToLowerCase(true);
-		mutationSampleIDSpecification
-				.setIdTypeParsingRules(mutationSampleIDTypeParsingRules);
-		mutationData.setColumnIDSpecification(mutationSampleIDSpecification);
+		// IDTypeParsingRules mutationSampleIDTypeParsingRules = new
+		// IDTypeParsingRules();
+		// mutationSampleIDTypeParsingRules.setReplacementExpression("-",
+		// "\\_");
+		// mutationSampleIDTypeParsingRules.setSubStringExpression("^[a-z]+\\-");
+		// mutationSampleIDTypeParsingRules.setToLowerCase(true);
+		// mutationSampleIDSpecification
+		// .setIdTypeParsingRules(mutationSampleIDTypeParsingRules);
+		mutationData.setColumnIDSpecification(sampleIDSpecification);
 
 		IDSpecification geneIDSpecification = new IDSpecification();
 		geneIDSpecification.setIDTypeGene(true);

@@ -169,8 +169,8 @@ public class CreateIDTypeDialogMediator {
 		if (dialog.useRegExButton.getSelection()) {
 			IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
 			idTypeParsingRules.setReplacementExpression(
-					dialog.replacementRegExTextField.getText(),
-					dialog.replacementStringTextField.getText());
+					dialog.replacementStringTextField.getText(),
+					dialog.replacementRegExTextField.getText());
 			idTypeParsingRules.setSubStringExpression(dialog.substringRegExTextField
 					.getText());
 			idTypeParsingRules.setDefault(true);

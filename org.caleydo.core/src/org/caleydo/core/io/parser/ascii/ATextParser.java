@@ -175,11 +175,14 @@ public abstract class ATextParser {
 	public static String convertID(String sourceID, IDTypeParsingRules idTypeParsingRules) {
 		if (idTypeParsingRules == null)
 			return sourceID;
-		if(idTypeParsingRules.isToLowerCase())
+		if (idTypeParsingRules.isToLowerCase())
 			sourceID = sourceID.toLowerCase();
-		if (idTypeParsingRules.getReplacingExpression() != null) {
-			sourceID = sourceID.replaceAll(idTypeParsingRules.getReplacingExpression(),
-					idTypeParsingRules.getReplacementString());
+		if (idTypeParsingRules.getReplacingExpressions() != null) {
+			for (String replacingExpression : idTypeParsingRules
+					.getReplacingExpressions()) {
+				sourceID = sourceID.replaceAll(replacingExpression,
+						idTypeParsingRules.getReplacementString());
+			}
 		}
 		if (idTypeParsingRules.getSubStringExpression() != null) {
 			String[] splitID = sourceID

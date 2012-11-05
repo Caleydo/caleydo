@@ -79,8 +79,8 @@ public class TCGAInterAnalysisRunXMLGenerator extends DataSetDescriptionSerializ
 		sampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
 		idTypeParsingRules.setReplacementExpression(
-				TCGADefinitions.TCGA_REPLACING_EXPRESSION,
-				TCGADefinitions.TCGA_REPLACEMENT_STRING);
+				TCGADefinitions.TCGA_REPLACEMENT_STRING,
+				TCGADefinitions.TCGA_REPLACING_EXPRESSIONS);
 		idTypeParsingRules
 				.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
 		idTypeParsingRules.setToLowerCase(true);
@@ -95,8 +95,8 @@ public class TCGAInterAnalysisRunXMLGenerator extends DataSetDescriptionSerializ
 		seqSampleIDTypeParsingRules
 				.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
 		seqSampleIDTypeParsingRules.setReplacementExpression(
-				TCGADefinitions.TCGA_REPLACING_EXPRESSION,
-				TCGADefinitions.TCGA_REPLACEMENT_STRING);
+				TCGADefinitions.TCGA_REPLACEMENT_STRING,
+				TCGADefinitions.TCGA_REPLACING_EXPRESSIONS);
 		seqSampleIDTypeParsingRules.setToLowerCase(true);
 		seqSampleIDSpecification.setIdTypeParsingRules(seqSampleIDTypeParsingRules);
 
