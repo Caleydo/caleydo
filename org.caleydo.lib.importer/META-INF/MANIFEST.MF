@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Importer
-Bundle-SymbolicName: org.caleydo.lib.importer;singleton:=true
-Bundle-Version: 1.0.0.qualifier
-Bundle-ActivationPolicy: lazy
