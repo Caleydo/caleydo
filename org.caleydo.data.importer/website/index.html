@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>StratomeX</title>
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <meta name="description" content="">
+	    <meta name="author" content="">
+
+	    <!-- Le styles -->	    
+	    <link href="css/firehose-data.css" rel="stylesheet">
+	    <link href="js/bootstrap/css/bootstrap.css" rel="stylesheet">
+	    <style>
+	      body {
+	        padding-top: 60px;
+	        padding-bottom: 40px;
+	      }
+	      
+	    </style>
+	    <link href="js/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	
+	    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+	    <!--[if lt IE 9]>
+	      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	    <![endif]-->
+	</head>
+	<body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#"><b>Park Lab</b>&nbsp;Tools for The Cancer Genome Atlas</a>
+          <!--
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">StratomeX</a></li>
+              <li><a href="#nozzle">Nozzle</a></li>
+              <li><a href="#tea">Tea</a></li>
+            </ul>
+          </div> --> <!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+<div class="container-fluid">
+
+	<div class="row-fluid">
+	 	<div class="span12">
+	 		<div class="page-header">    
+				<h1>StratomeX <small>Visual Exploration of Tumor Subtypes in Genomics Data</small></h1>				
+	    	</div>
+	    </div>
+	</div>
+
+	<div class="row-fluid">      
+	    <ul class="nav nav-tabs">
+  			<li class="active"><a href="#overview" data-toggle="tab">Data Overview</a></li>
+  			<li><a href="#stratomex" data-toggle="tab">Run StratomeX</a></li>
+			<li><a href="#software" data-toggle="tab">About the Software</a></li>
+  			<li><a href="#data" data-toggle="tab">About the Data</a></li>
+  	    </ul>
+  	</div>
+
+	<div class="tab-content">
+
+		<!-- data overview tab -->
+		
+  		<div class="tab-pane active" id="overview">
+			<div class="row-fluid">
+			 	<div class="span12">
+					<div id="header-overview-container"></div>
+					<p>
+					<div id="analysis-selection-overview-container"></div>
+						
+					</p>
+					<p>
+						<div id="chart-container"></div>						
+					</p>
+			 		
+				</div> 		    
+			</div>
+				
+			<div class="row-fluid">
+				<div class="span3">
+					<div id="datatype-selection-overview-container"></div>    		
+				</div>
+				<div class="span9">
+					<div id="tumortype-selection-overview-container"></div>    		
+				</div>
+			</div>  			
+  		</div>
+  		
+		
+		<!-- StratomeX data set selection and WebStart tab -->
+		
+  		<div class="tab-pane" id="stratomex">
+			<div class="row-fluid">
+			 	<div class="span3">
+			 		
+			 		<h2>Firehose Analysis</h2>
+					<p>
+						<div id="analysis-selection-container"></div>    		
+						<div id="tumor-selection-container"></div>
+			    	</p>
+			 		<p>
+						<div id="webstart-instructions-container"></div>  
+			    	</p>
+			 		<p>
+						<div id="webstart-button-container"></div>  
+			    	</p>
+				</div> 		    
+					
+			      
+				<div class="span9">
+					<div id="header-container"></div>
+					
+					<div class="row-fluid">
+						<div class="span6">
+				    		<p>
+				    			<span id="download-button-container"></span>&nbsp;&nbsp;   		
+				    			<span id="report-button-container"></span>   		
+				    		</p>
+			    		</div>
+						<div class="span6" align="right">
+				    		<p>
+				    			<span id="direct-link-container"></span>   		
+				    		</p>
+			    		</div>
+					</div>
+					<p>
+						<div id="direct-link-url-container"></div>  
+						<div id="table-container"></div>    					
+					</p>
+			   </div>
+			</div>  			
+  		</div>
+  		
+  		
+		<!-- Software description tab -->
+  		
+  		<div class="tab-pane" id="software">
+  			  			
+			<div class="row-fluid">
+			 	<div class="span3">
+			 		
+			 		<h2>Screenshots</h2>
+			 		
+					<ul class="thumbnails">
+					  <li class="span6">  
+					    <div class="thumbnail">
+					      <img src="http://caleydo.icg.tugraz.at/images/projects/stratomex/pathway.png" alt=""/>
+					    </div>
+					    <div class="thumbnail">
+					      <img src="http://caleydo.icg.tugraz.at/images/projects/stratomex/pathway_copy_numbers.png" alt=""/>
+					    </div>
+					  </li>
+					  <li class="span6">  
+					    <div class="thumbnail">
+					      <img src="http://caleydo.icg.tugraz.at/images/projects/stratomex/pathway.png" alt=""/>
+					    </div>
+					    <div class="thumbnail">
+					      <img src="http://caleydo.icg.tugraz.at/images/projects/stratomex/pathway.png" alt=""/>
+					    </div>
+					  </li>
+					</ul>
+
+
+			 		<h2>Links</h2>
+			 		
+			 		<ul>
+			 			<li><a href="http://stratomex.caleydo.org">Caleydo StratomeX Project Website</a></li>	
+			 			<li><a href="http://help.caleydo.org">Caleydo Help Pages</a></li>	
+			 		</ul>
+					
+			 	</div>
+				
+				
+			 	<div class="span9">
+			 		
+		  			<h2>Background</h2>
+					<p>
+						Identification and characterization of cancer subtypes for refined therapeutic targeting is an important step towards improved patient outcomes. Recent research has shown that integrated analysis of different molecular data types generated by the TCGA project can be used to discover subtypes and suggest molecular differences relevant for therapeutic approaches.	
+					</p>
+					
+					<p>	
+						Large-scale data analysis systems developed to perform comprehensive analyses of TCGA data, such as the Firehose pipeline developed by the Broad Institute, have strong algorithmic capabilities and generate analysis results required for subtype identification and characterization. Visualization tools that enable biologists to integrate and explore these large sets of results are an important prerequisite for their efficient interpretation.
+					</p>
+
+		  			<h2>Approach</h2>
+					<p>
+						To address this, we have developed a new interactive visualization method that supports biologists in the identification and characterization of cancer subtypes. Our method is designed to integrate many TCGA data types, including expression, copy number, methylation, mutation, and clinical data.				
+					</p>
+		
+					<p>
+						The core concept of our approach is to visualize sample groupings (partitions of the set of all samples for a given tumor type) and the relationships between these groupings in a given cancer type. Groupings of samples are obtained for instance by clustering mRNA, microRNA or DNA methylation profiles. Groups can also be derived from copy number levels of a particular gene or gene mutation status, e.g., one group for "wild-type", one for "mutated".				
+					</p>
+
+		  			<h2>Visualization</h2>
+					<p>
+						In the visualization, groupings are represented as columns and the groups are represented as bricks in these columns. Relationships between groups are visualized as ribbons of varying width drawn between neighboring columns. Wide ribbons encode a high co-occurrence of samples in the connected groups, while the absence of ribbons between bricks indicates mutual exclusion. This encoding provides a straightforward and scalable overview of the consistency of group memberships of samples across different data types.				
+					</p>
+		
+					<p>
+						Since many groupings are derived from molecular profiling data, interactive heat maps can be visualized directly in the columns. The rows of the heat maps correspond to samples and columns correspond to the profiled molecules. Finally, our method also supports the visualization and comparison of such molecular profiling data for selected sample groups in the context of pathway maps to enable biologists to characterize functional differences between potential subtypes.				
+					</p>
+					
+					<h2>Further Reading</h2>
+					
+					<p>
+						Alexander Lex, Marc Streit, Hans-J&ouml;rg Schulz, Christian Partl, Dieter Schmalstieg, Peter J. Park and Nils Gehlenborg,
+						<i>"StratomeX: Visual Analysis of Large-Scale Heterogeneous Genomics Data for Cancer Subtype Characterization"</i>,
+						Computer Graphics Forum (EuroVis '12), <b>31</b>:3, 1175-1184 (2012).						
+					</p>					     				
+					
+			 	</div>
+			</div>
+  		</div>
+  		
+		<!-- Data description tab -->
+  		
+  		<div class="tab-pane" id="data">
+
+			<div class="row-fluid">
+			 	<div class="span3">
+			 		
+			 		<h2>Links</h2>
+			 		
+			 		<ul>
+			 			<li><a href="http://gdac.broadinstitute.org">TCGA Firehose Website</a></li>	
+			 		</ul>
+					
+			 	</div>
+								
+			 	<div class="span9">
+			 		
+			 		<h2>Firehose</h2>
+			 		
+			 		<h2>Analyses</h2>
+			 		
+			 		<h5>Mutations</h5>
+			 		<p>
+			 			Lorem Ipsum!
+			 		</p>
+
+			 		<h5>Copy Number Alterations</h5>
+			 		<p>
+			 			Lorem Ipsum!
+			 		</p>
+
+			 		<h5>Consensus Hierarchical Clustering</h5>
+			 		<p>
+			 			Lorem Ipsum!
+			 		</p>
+			 		
+			 		<h5>Consensus NMF Clustering</h5>
+			 		<p>
+			 			Lorem Ipsum!
+			 		</p>
+			 		
+			 		<h2>Data Types</h2>
+
+			 		<h5>Clinical Parameters</h5>
+			 		<p>
+			 			Lorem Ipsum!
+			 		</p>
+
+			 		<h5>mRNA and mRNA-seq</h5>
+			 		<p>
+			 			Lorem Ipsum!
+			 		</p>
+			 		
+			 		<h5>microRNA and microRNA-seq</h5>
+			 		<p>
+			 			Lorem Ipsum!
+			 		</p>
+			 		
+			 		
+				</div>  			
+  		</div>
+  	  		
+  	</div>
+
+	
+    <div class="navbar navbar-fixed-bottom">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+			<p class="navbar-text pull-right">Copyright &copy; 2012 Park Lab at Harvard Medical School as part of the TCGA Research Network. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+	
+</div>
+
+	</body>
+
+    <!-- third party libraries -->
+    <script src="http://d3js.org/d3.v2.js"></script>
+
+            
+    <script src="js/jquery/jquery-1.7.2.min.js"></script>
+    <script src="js/underscore/underscore-min.js"></script>
+    <script src="js/bootstrap/js/bootstrap.min.js"></script>
+    
+<script src="https://raw.github.com/bigmlcom/tipsy/master/src/javascripts/jquery.tipsy.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="http://onehackoranother.com/projects/jquery/tipsy/stylesheets/tipsy.css" type="text/css" title="no title" charset="utf-8"/>
+ 	
+	<!-- our own -->    
+    <script src="js/firehose-data.js"></script>	
+</html>

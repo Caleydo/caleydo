@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="org.caleydo.view.kaplanmeier.RcpGLKaplanMeierView"
+            icon="resources/icons/icon.png"
+            id="org.caleydo.view.kaplanmeier"
+            name="Kaplan Meier">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.kaplanmeier.command.handler.OpenKaplanMeierHandler"
+            id="org.caleydo.view.kaplanmeier.command.openkaplanmeier"
+            name="Kaplan Meier">
+      </command>
+   </extension>
+   <extension
+         id="org.caleydo.view.kaplanmeier"
+         name="KaplanMeierViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="KaplanMeierViewCreator"
+          class="org.caleydo.view.kaplanmeier.creator.ViewCreator" />
+   </extension>
+</plugin>

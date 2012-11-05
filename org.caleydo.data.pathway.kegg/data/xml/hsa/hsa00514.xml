@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Jan 24, 2011 14:59:42 +0900 (GMT+09:00) -->
+<pathway name="path:hsa00514" org="hsa" number="00514"
+         title="Other types of O-glycan biosynthesis"
+         image="http://www.genome.jp/kegg/pathway/hsa/hsa00514.png"
+         link="http://www.genome.jp/kegg-bin/show_pathway?hsa00514">
+    <entry id="1" name="path:hsa00514" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa00514">
+        <graphics name="TITLE:Other types of O-glycan biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="207" y="58" width="333" height="25"/>
+    </entry>
+    <entry id="2" name="ko:K05538 ko:K10968 ko:K10969" type="ortholog" reaction="rn:R09302"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K05538+K10968+K10969">
+        <graphics name="K05538..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="line" coords="161,350,176,365"/>
+    </entry>
+    <entry id="4" name="hsa:55624" type="gene" reaction="rn:R07619"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:55624">
+        <graphics name="POMGNT1, DKFZp761B182, FLJ20277, GNTI.2, GnT_I.2, MDDGA3, MDDGB3, MDDGC3, MEB, MGAT1.2, gnT-I.2" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="299,292,329,292"/>
+    </entry>
+    <entry id="5" name="ko:K10970" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K10970">
+        <graphics name="K10970" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="line" coords="83,409,113,409"/>
+    </entry>
+    <entry id="6" name="ko:K10970" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K10970">
+        <graphics name="K10970" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="line" coords="160,406,175,391"/>
+    </entry>
+    <entry id="7" name="ko:K10967" type="ortholog" reaction="rn:R09301"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K10967">
+        <graphics name="K10967" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="line" coords="222,372,252,342"/>
+    </entry>
+    <entry id="8" name="ko:K10967" type="ortholog" reaction="rn:R09300"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K10967">
+        <graphics name="K10967" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="line" coords="298,336,328,306"/>
+    </entry>
+    <entry id="9" name="hsa:10585 hsa:29954" type="gene" reaction="rn:R07620"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10585+hsa:29954">
+        <graphics name="POMT1, FLJ37239, LGMD2K, MDDGA1, MDDGB1, MDDGC1, RT..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="379,292,409,292"/>
+    </entry>
+    <entry id="11" name="ko:K05538 ko:K10968 ko:K10969" type="ortholog" reaction="rn:R09303"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K05538+K10968+K10969">
+        <graphics name="K05538..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="line" coords="82,348,112,348"/>
+    </entry>
+    <entry id="13" name="ko:K10971" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K10971">
+        <graphics name="K10971" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="line" coords="199,395,199,415"/>
+    </entry>
+    <entry id="14" name="hsa:23127 hsa:79709 hsa:8985" type="gene" reaction="rn:R03380"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23127+hsa:79709+hsa:8985">
+        <graphics name="GLT25D2, C1orf17, FLJ37771, FLJ37873, KIAA0584..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="139,762,169,762"/>
+    </entry>
+    <entry id="15" name="hsa:145173" type="gene" reaction="rn:R09316"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:145173">
+        <graphics name="B3GALTL, B3GLCT, B3GTL, B3Glc-T, Gal-T, beta3Glc-T" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="266,566,281,551"/>
+    </entry>
+    <entry id="16" name="hsa:8985" type="gene" reaction="rn:R04491"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8985">
+        <graphics name="PLOD3, LH3" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="66,762,96,762"/>
+    </entry>
+    <entry id="17" name="hsa:6480 hsa:6487 hsa:84620" type="gene" reaction="rn:R09297 rn:R09298"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6480+hsa:6487+hsa:84620">
+        <graphics name="ST6GAL1, MGC48859, SIAT1, ST6GalI, ST6N..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="89,522,119,522"/>
+    </entry>
+    <entry id="18" name="hsa:3955 hsa:4242 hsa:5986" type="gene" reaction="rn:R09296"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3955+hsa:4242+hsa:5986">
+        <graphics name="LFNG, SCDO3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="268,522,283,537"/>
+    </entry>
+    <entry id="19" name="hsa:2683 hsa:8703 hsa:8704" type="gene" reaction="rn:R09299"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2683+hsa:8703+hsa:8704">
+        <graphics name="B4GALT1, B4GAL-T1, CDG2D, DKFZp686N19253, GGTB2, GT1, GTB, MGC50983, beta4Gal-T1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="176,522,206,522"/>
+    </entry>
+    <entry id="20" name="hsa:23275 hsa:23509" type="gene" reaction="rn:R09295"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23275+hsa:23509">
+        <graphics name="POFUT2, C21orf80, FUT13..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="331,545,361,545"/>
+    </entry>
+    <entry id="22" name="hsa:56983" type="gene" reaction="rn:R09315"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:56983">
+        <graphics name="POGLUT1, C3orf9, CLP46, KDELCL1, KTELC1, MDSRP, MGC32995, Rumi, hCLP46" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="212,664,242,664"/>
+    </entry>
+    <entry id="23" name="hsa:283464 hsa:727936" type="gene" reaction="rn:R09290"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:283464+hsa:727936">
+        <graphics name="GXYLT1, FLJ43151, GLT8D3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="140,664,170,664"/>
+    </entry>
+    <entry id="24" name="hsa:8473" type="gene" reaction="rn:R09304"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8473">
+        <graphics name="OGT, FLJ23071, HRNT1, MGC22921, O-GLCNAC" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="88,149,118,149"/>
+    </entry>
+    <entry id="25" name="hsa:146664" type="gene" reaction="rn:R07621"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:146664">
+        <graphics name="MGAT5B, FLJ25132, GnT-IX, GnT-VB, KIAA2008" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="300,248,330,278"/>
+    </entry>
+    <entry id="26" name="hsa:2683 hsa:8703 hsa:8704" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2683+hsa:8703+hsa:8704">
+        <graphics name="B4GALT1, B4GAL-T1, CDG2D, DKFZp686N19253, GGTB2, GT1, GTB, MGC50983, beta4Gal-T1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="210,247,240,247"/>
+    </entry>
+    <entry id="27" name="hsa:2683 hsa:8703 hsa:8704" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2683+hsa:8703+hsa:8704">
+        <graphics name="B4GALT1, B4GAL-T1, CDG2D, DKFZp686N19253, GGTB2, GT1, GTB, MGC50983, beta4Gal-T1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="211,291,241,291"/>
+    </entry>
+    <entry id="28" name="hsa:6487" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6487">
+        <graphics name="ST3GAL3, SIAT6, ST3GALII, ST3GalIII, ST3N" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="153,313,168,298"/>
+    </entry>
+    <entry id="29" name="hsa:10690 hsa:2526 hsa:2529" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10690+hsa:2526+hsa:2529">
+        <graphics name="FUT9, Fuc-TIX..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="226,318,241,303"/>
+    </entry>
+    <entry id="30" name="hsa:10720 hsa:10941 hsa:54490 hsa:54575 hsa:54576 hsa:54577 hsa:54578 hsa:54579 hsa:54600 hsa:54657 hsa:54658 hsa:54659 hsa:574537 hsa:7363 hsa:7364 hsa:7365 hsa:7366 hsa:7367 hsa:79799" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10720+hsa:10941+hsa:54490+hsa:54575+hsa:54576+hsa:54577+hsa:54578+hsa:54579+hsa:54600+hsa:54657+hsa:54658+hsa:54659+hsa:574537+hsa:7363+hsa:7364+hsa:7365+hsa:7366+hsa:7367+hsa:79799">
+        <graphics name="UGT2B11, MGC129611, MGC129612..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="154,270,169,285"/>
+    </entry>
+    <entry id="31" name="hsa:10720 hsa:10941 hsa:54490 hsa:54575 hsa:54576 hsa:54577 hsa:54578 hsa:54579 hsa:54600 hsa:54657 hsa:54658 hsa:54659 hsa:574537 hsa:7363 hsa:7364 hsa:7365 hsa:7366 hsa:7367 hsa:79799" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10720+hsa:10941+hsa:54490+hsa:54575+hsa:54576+hsa:54577+hsa:54578+hsa:54579+hsa:54600+hsa:54657+hsa:54658+hsa:54659+hsa:574537+hsa:7363+hsa:7364+hsa:7365+hsa:7366+hsa:7367+hsa:79799">
+        <graphics name="UGT2B11, MGC129611, MGC129612..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="135,247,165,247"/>
+    </entry>
+    <entry id="32" name="hsa:9486" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9486">
+        <graphics name="CHST10, HNK-1ST, HNK1ST, MGC17148" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="57,247,87,247"/>
+    </entry>
+    <entry id="33" name="hsa:9486" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9486">
+        <graphics name="CHST10, HNK-1ST, HNK1ST, MGC17148" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+             type="line" coords="77,269,107,269"/>
+    </entry>
+    <reaction id="4" name="rn:R07619" type="reversible">
+    </reaction>
+    <reaction id="9" name="rn:R07620" type="reversible">
+    </reaction>
+    <reaction id="14" name="rn:R03380" type="reversible">
+    </reaction>
+    <reaction id="15" name="rn:R09316" type="reversible">
+    </reaction>
+    <reaction id="16" name="rn:R04491" type="reversible">
+    </reaction>
+    <reaction id="17" name="rn:R09297 rn:R09298" type="reversible">
+    </reaction>
+    <reaction id="18" name="rn:R09296" type="reversible">
+    </reaction>
+    <reaction id="19" name="rn:R09299" type="reversible">
+    </reaction>
+    <reaction id="20" name="rn:R09295" type="reversible">
+    </reaction>
+    <reaction id="22" name="rn:R09315" type="reversible">
+    </reaction>
+    <reaction id="23" name="rn:R09290" type="reversible">
+    </reaction>
+    <reaction id="24" name="rn:R09304" type="reversible">
+    </reaction>
+    <reaction id="25" name="rn:R07621" type="reversible">
+    </reaction>
+</pathway>

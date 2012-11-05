@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Kaplan Meier View
+Bundle-SymbolicName: org.caleydo.view.kaplanmeier;singleton:=true
+Bundle-Version: 2.1
+Require-Bundle: org.caleydo.core;bundle-version="2.1",
+ org.caleydo.datadomain.genetic;bundle-version="2.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: gleem.linalg,
+ javax.media.opengl,
+ org.caleydo.data.loader
+Export-Package: org.caleydo.view.kaplanmeier
+Bundle-Vendor: www.caleydo.org
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.caleydo.view.kaplanmeier.Activator

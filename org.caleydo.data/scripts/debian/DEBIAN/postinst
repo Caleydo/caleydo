@@ -1,0 +1,56 @@
+#!/bin/sh
+#xdg-mime install tugraz-caleydo.sharedmimeinfo
+#
+#xdg-icon-resource install --context mimetypes --size 48 caleydo_48.png application/x-cal
+xdg-mime install --mode system /opt/caleydo/mime/x-cal.xml
+xdg-mime default caleydo.desktop application/x-cal
+
+xdg-icon-resource install --context mimetypes --size 16 --mode system /opt/caleydo/gfx/file/file_16.png application-x-cal
+xdg-icon-resource install --context mimetypes --size 32 --mode system /opt/caleydo/gfx/file/file_32.png application-x-cal
+xdg-icon-resource install --context mimetypes --size 48 --mode system /opt/caleydo/gfx/file/file_48.png application-x-cal
+xdg-icon-resource install --context mimetypes --size 64 --mode system /opt/caleydo/gfx/file/file_64.png application-x-cal
+xdg-icon-resource install --context mimetypes --size 128 --mode system /opt/caleydo/gfx/file/file_128.png application-x-cal
+xdg-icon-resource install --context mimetypes --size 256 --mode system /opt/caleydo/gfx/file/file_256.png application-x-cal
+
+update-mime-database /usr/share/mime
+
+#finalize_desktop()
+#{
+#	# Menu entries
+#	if available update-desktop-database
+#	then
+#		update-desktop-database /usr/share/applications
+#	fi
+#	if available update-menus
+#	then
+#		update-menus
+#	fi
+#	if available update-app-install
+#	then
+#		update-app-install
+#	fi
+#	if available update-software-center
+#	then
+#		update-software-center
+#	fi
+#
+#	# MIME associations
+#	if available update-mime-database
+#	then
+#		update-mime-database /usr/share/mime
+#	fi
+#
+#	# Icons
+#	touch -c /usr/share/icons/hicolor
+#	if available update-icon-caches
+#	then
+#		update-icon-caches -tq /usr/share/icons/hicolor
+#	elif available gtk-update-icon-cache
+#	then
+#		gtk-update-icon-cache -tq /usr/share/icons/hicolor
+#	fi
+#}
+
+
+
+#finalize_desktop

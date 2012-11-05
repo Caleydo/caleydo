@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="org.caleydo.view.heatmap.heatmap.RcpGLHeatMapView"
+            icon="resources/icons/heatmap.png"
+            id="org.caleydo.view.heatmap"
+            name="Heat Map"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="org.caleydo.view.heatmap.hierarchical.RcpGLHierarchicalHeatMapView"
+            icon="resources/icons/heatmap.png"
+            id="org.caleydo.view.heatmap.hierarchical"
+            name="Hierarchical Heat Map"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="org.caleydo.view.heatmap.uncertainty.RcpGLUncertaintyHeatMapView"
+            icon="resources/icons/heatmap.png"
+            id="org.caleydo.view.heatmap.uncertainty"
+            name="Uncertainty Heat Map"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.caleydo.menu.view"
+               label="View">
+            <menu
+                  id="org.caleydo.menu.view.legacy"
+                  label="Legacy">
+               <command
+                     commandId="org.caleydo.view.heatmap.command.openheatmap"
+                     icon="resources/icons/heatmap.png"
+                     style="push">
+                  <visibleWhen
+                        checkEnabled="false">
+                     <with
+                           variable="org.caleydo.core.isReleaseState">
+                        <equals
+                              value="releaseVersion">
+                        </equals>
+                     </with>
+                  </visibleWhen>
+               </command>
+            </menu>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.heatmap.command.handler.OpenHierarchicalHeatMapHandler"
+            id="org.caleydo.view.heatmap.command.openheatmap"
+            name="Heat Map">
+      </command>
+      <command
+            defaultHandler="org.caleydo.view.heatmap.command.handler.OpenUncertaintyHeatMapHandler"
+            id="org.caleydo.view.heatmap.command.openuncertaintyheatmap"
+            name="Uncertainty Heat Map">
+      </command>
+   </extension>
+   <extension
+         id="org.caleydo.view.heatmap"
+         name="HeatMapViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="HeatMapViewCreator"
+          class="org.caleydo.view.heatmap.creator.ViewCreatorHeatMap" />
+   </extension>
+      <extension
+         id="org.caleydo.view.heatmap.hierarchical"
+         name="HierarchicalHeatMapViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="HierarchicalHeatMapViewCreator"
+          class="org.caleydo.view.heatmap.creator.ViewCreatorHierarchicalHeatMap" />
+   </extension>
+         <extension
+         id="org.caleydo.view.heatmap.uncertainty"
+         name="UncertaintyHeatMapViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="UncertaintyHeatMapViewCreator"
+          class="org.caleydo.view.heatmap.creator.ViewCreatorUncertaintyHeatMap" />
+   </extension>
+      <extension
+         id="org.caleydo.view.dendrogram.horizontal"
+         name="DendrogramHorizontalViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="DendrogramHorizontalViewCreator"
+          class="org.caleydo.view.heatmap.creator.ViewCreatorDendrogramHorizontal" />
+   </extension>
+      <extension
+         id="org.caleydo.view.dendrogram.vertical"
+         name="DendrogramVerticalViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="DendrogramVerticalViewCreator"
+          class="org.caleydo.view.heatmap.creator.ViewCreatorDendrogramVertical" />
+   </extension>
+      <extension
+            point="org.caleydo.view.ViewCategory">
+         <ViewCategory
+               isDataView="true"
+               isReleaseView="false"
+               viewID="org.caleydo.view.heatmap.hierarchical">
+         </ViewCategory>
+      </extension>
+</plugin>

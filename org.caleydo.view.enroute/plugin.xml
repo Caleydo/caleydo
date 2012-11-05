@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.enroute.command.handler.OpenEnRouteHandler"
+            description="Path and Experimental Data View"
+            id="org.caleydo.view.linearizedpathway.openlinearizedpathway"
+            name="enRoute ">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.caleydo.core.views"
+            class="org.caleydo.view.enroute.RcpGLEnRoutePathwayView"
+            icon="resources/icons/enroute.png"
+            id="org.caleydo.view.enroute"
+            name="enRoute"
+            restorable="true">
+         <description>
+            description body text
+         </description>
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               icon="resources/icons/enroute.png"
+               id="org.caleydo.menu.view"
+               label="View">
+            <menu
+                  id="org.caleydo.menu.view.visualization"
+                  label="Visualizations">
+               <command
+                     commandId="org.caleydo.view.linearizedpathway.openlinearizedpathway"
+                     icon="resources/icons/enroute.png"
+                     label="enRoute - Pathway Path"
+                     style="push">
+               </command>
+            </menu>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         id="org.caleydo.view.linearizedpathway"
+         name="LinearizedPathwayViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="enRoutePathwayViewCreator"
+          class="org.caleydo.view.enroute.creator.ViewCreator" />
+   </extension>
+   <extension
+         point="org.caleydo.view.ViewCategory">
+      <ViewCategory
+            isDataView="false"
+            isReleaseView="false"
+            viewID="org.caleydo.view.enroute">
+      </ViewCategory>
+   </extension>
+   <extension
+         point="org.caleydo.view.DataSupport">
+      <DataSupport
+            class="org.caleydo.datadomain.genetic.GeneticDataSupportDefinition"
+            viewID="org.caleydo.view.enroute">
+      </DataSupport>
+   </extension>
+
+</plugin>

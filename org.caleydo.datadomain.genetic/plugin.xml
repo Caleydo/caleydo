@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+        id="org.caleydo.datadomain.genetic"
+        name="GeneticDataDomain"
+        point="org.caleydo.datadomain.DataDomain">
+        <DataDomain
+          id="org.caleydo.datadomain.DataDomain"
+          name="GeneticDataDomain"
+          class="org.caleydo.datadomain.genetic.GeneticDataDomain" />
+   </extension>
+   <extension
+        id="org.caleydo.datadomain.genetic"
+        name="GeneticDataDomainInitialization"
+        point="org.caleydo.datadomain.DataDomainInitialization">
+        <DataDomainInitialization
+          id="org.caleydo.datadomain.DataDomainInitialization"
+          name="GeneticDataDomainInitialization"
+          class="org.caleydo.datadomain.genetic.GeneticDataDomainInitialization" />
+   </extension>
+</plugin>

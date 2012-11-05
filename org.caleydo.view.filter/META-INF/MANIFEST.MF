@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Filter View
+Bundle-SymbolicName: org.caleydo.view.filter;singleton:=true
+Bundle-Version: 2.1
+Require-Bundle: org.caleydo.core;bundle-version="2.1",
+ org.caleydo.datadomain.genetic;bundle-version="2.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: gleem.linalg,
+ javax.media.opengl,
+ org.caleydo.data.loader
+Export-Package: org.caleydo.view.filter,
+ org.caleydo.view.filter.toolbar
+Bundle-Vendor: www.caleydo.org
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.caleydo.view.filter.Activator

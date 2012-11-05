@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Bubblesets
+Bundle-SymbolicName: org.caleydo.util.bubblesets
+Bundle-Version: 2.1
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: setvis,
+ setvis.bubbleset,
+ setvis.ch,
+ setvis.gui,
+ setvis.shape

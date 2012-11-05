@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            category="org.caleydo.core.views"
+            class="org.caleydo.view.filterpipeline.RcpGLFilterPipelineView"
+            icon="resources/icons/icon.png"
+            id="org.caleydo.view.filterpipeline"
+            name="Filter Pipeline">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.caleydo.menu.view"
+               label="View">
+            <menu
+                  id="org.caleydo.menu.view.experimental"
+                  label="Experimental">
+               <command
+                     commandId="org.caleydo.view.filterpipeline.command.openfilterpipeline"
+                     icon="resources/icons/icon.png"
+                     style="push">
+                  <visibleWhen
+                        checkEnabled="false">
+                     <with
+                           variable="org.caleydo.core.isReleaseState">
+                        <equals
+                              value="releaseVersion">
+                        </equals>
+                     </with>
+                  </visibleWhen>
+               </command>
+            </menu>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.filterpipeline.command.handler.OpenFilterPipelineHandler"
+            id="org.caleydo.view.filterpipeline.command.openfilterpipeline"
+            name="Filter Pipeline">
+      </command>
+   </extension>
+   <extension
+         id="org.caleydo.view.template"
+         name="TemplateViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="FilterPipelineViewCreator"
+          class="org.caleydo.view.filterpipeline.creator.ViewCreator" />
+   </extension>
+</plugin>
