@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry excluding="org/caleydo/view/visbricks/brick/data/BrickData.java|org/caleydo/view/visbricks/brick/data/BrickDimensionGroupDataCreator.java|org/caleydo/view/visbricks/brick/data/IBrickData.java|org/caleydo/view/visbricks/brick/data/IBrickDimensionGroupData.java|org/caleydo/view/visbricks/brick/data/PathwayBrickData.java|org/caleydo/view/visbricks/brick/data/PathwayBrickDimensionGroupData.java|org/caleydo/view/visbricks/brick/data/TableBasedBrickDimensionGroupData.java|org/caleydo/view/visbricks/brick/viewcreation/TagCloudCreator.java|org/caleydo/view/visbricks/brick/configurer/TextualDataConfigurer.java" kind="src" path="src"/>
 	<classpathentry kind="output" path="bin"/>

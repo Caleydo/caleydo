@@ -7,7 +7,7 @@ Require-Bundle: org.caleydo.datadomain.genetic;bundle-version="1.0.0",
  org.caleydo.core;bundle-version="2.1",
  org.caleydo.util.r;bundle-version="2.1";resolution:=optional,
  org.caleydo.view.stratomex;bundle-version="2.1"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.caleydo.view.grouper,
  org.caleydo.view.grouper.command.handler,
  org.caleydo.view.grouper.event

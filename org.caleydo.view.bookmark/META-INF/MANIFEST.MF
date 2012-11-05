@@ -4,7 +4,7 @@ Bundle-Name: Bookmark View
 Bundle-SymbolicName: org.caleydo.view.bookmark;singleton:=true
 Bundle-Version: 2.1
 Require-Bundle: org.caleydo.core;bundle-version="2.1"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.caleydo.view.bookmark
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy

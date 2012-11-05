@@ -27,7 +27,7 @@ Bundle-NativeCode:
  processor=x86_64;
  processor=ppc
 Bundle-Vendor: www.caleydo.org
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .,
  lib/JRI.jar
 Require-Bundle: org.caleydo.core;bundle-version="2.1",

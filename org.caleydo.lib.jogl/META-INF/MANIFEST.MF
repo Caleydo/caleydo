@@ -74,5 +74,5 @@ Export-Package: com.jogamp.common,
  javax.media.opengl.glu.gl2es1,
  jogamp.nativewindow.x11
 Bundle-Vendor: www.caleydo.org
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

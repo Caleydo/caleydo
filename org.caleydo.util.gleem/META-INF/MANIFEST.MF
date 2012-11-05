@@ -7,7 +7,7 @@ Bundle-ClassPath: gleem.jar
 Export-Package: gleem,
  gleem.linalg,
  gleem.linalg.open
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.caleydo.lib.jogl;bundle-version="2.1"
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy

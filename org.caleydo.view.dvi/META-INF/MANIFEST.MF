@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.ui,
  org.caleydo.datadomain.pathway;bundle-version="2.1",
  org.caleydo.view.stratomex;bundle-version="2.1"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: www.caleydo.org
 Export-Package: org.caleydo.view.dvi,
  org.caleydo.view.dvi.event

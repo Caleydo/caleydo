@@ -41,5 +41,5 @@ Export-Package: com.martiansoftware.jsap;uses:="com.martiansoftware.jsap.stringp
    weka.core,
    weka.core.stemmers"
 Bundle-Vendor: www.caleydo.org
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

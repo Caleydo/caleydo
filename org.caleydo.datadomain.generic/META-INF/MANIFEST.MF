@@ -6,6 +6,6 @@ Bundle-Version: 2.1
 Bundle-Activator: org.caleydo.datadomain.generic.Activator
 Require-Bundle: org.caleydo.core;bundle-version="2.1"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: www.caleydo.org
 Export-Package: org.caleydo.datadomain.generic

@@ -8,7 +8,7 @@ Bundle-Vendor: www.caleydo.org
 Require-Bundle: org.caleydo.core;bundle-version="2.1",
  org.caleydo.data;bundle-version="2.1",
  org.caleydo.datadomain.genetic;bundle-version="2.1"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.caleydo.datadomain.pathway,
  org.caleydo.datadomain.pathway.contextmenu.container,
