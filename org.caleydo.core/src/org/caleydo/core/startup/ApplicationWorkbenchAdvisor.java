@@ -21,7 +21,7 @@ package org.caleydo.core.startup;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.AutoSaver;
-import org.caleydo.core.serialize.ProjectSaver;
+import org.caleydo.core.serialize.ProjectManager;
 import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
@@ -92,7 +92,7 @@ public class ApplicationWorkbenchAdvisor
 				.stopMultipleExecution(autoSaver);
 		autoSaver = null;
 
-		new ProjectSaver().saveRecentProject();
+		new ProjectManager().saveRecentProject();
 
 		return true;
 	}

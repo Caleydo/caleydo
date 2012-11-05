@@ -1,30 +1,29 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.startup.gui;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.util.Date;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ProjectSaver;
+import org.caleydo.core.serialize.ProjectManager;
 import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.link.LinkHandler;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -52,7 +51,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * 1st wizard page: The user has to choose the type of project, if she wants to
  * create a new project or load an existing one, or load sample data
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -120,9 +119,9 @@ public class ChooseProjectTypePage
 
 		this.setDescription("What data do you want to load?");
 
-		parentWizard = (Wizard) this.getWizard();
+		this.parentWizard = (Wizard) this.getWizard();
 
-		setPageComplete(false);
+		this.setPageComplete(false);
 	}
 
 	/*
@@ -133,38 +132,38 @@ public class ChooseProjectTypePage
 	 */
 	@Override
 	public void createControl(Composite parent) {
-		parentWizard = (Wizard) this.getWizard();
+		this.parentWizard = (Wizard) this.getWizard();
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new FillLayout(SWT.VERTICAL));
 
 		final TabFolder tabFolder = new TabFolder(composite, SWT.BORDER);
 
-		projectMode = ProjectMode.valueOf(GeneralManager.get().getPreferenceStore()
+		this.projectMode = ProjectMode.valueOf(GeneralManager.get().getPreferenceStore()
 				.getString(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE));
 
-		createSampleTab(tabFolder);
-		createGeneticUseCaseTab(tabFolder);
-		createGeneralDataUseCaseTab(tabFolder);
-		createLoadProjectTab(tabFolder);
+		this.createSampleTab(tabFolder);
+		this.createGeneticUseCaseTab(tabFolder);
+		this.createGeneralDataUseCaseTab(tabFolder);
+		this.createLoadProjectTab(tabFolder);
 
 		if (!GeneralManager.RELEASE_MODE)
-			createCollaborationClientTab(tabFolder);
+			this.createCollaborationClientTab(tabFolder);
 
 		// restore the previously selected tab
-		if (projectMode == null || projectMode.equals(ProjectMode.SAMPLE_PROJECT)) {
+		if (this.projectMode == null || this.projectMode.equals(ProjectMode.SAMPLE_PROJECT)) {
 			tabFolder.setSelection(0);
 		}
-		else if (projectMode.equals(ProjectMode.GENE_EXPRESSION_SAMPLE_DATA)) {
+		else if (this.projectMode.equals(ProjectMode.GENE_EXPRESSION_SAMPLE_DATA)) {
 			tabFolder.setSelection(0);
 		}
-		else if (projectMode.equals(ProjectMode.GENE_EXPRESSION_NEW_DATA)) {
+		else if (this.projectMode.equals(ProjectMode.GENE_EXPRESSION_NEW_DATA)) {
 			tabFolder.setSelection(1);
 		}
-		else if (projectMode.equals(ProjectMode.UNSPECIFIED_NEW_DATA)) {
+		else if (this.projectMode.equals(ProjectMode.UNSPECIFIED_NEW_DATA)) {
 			tabFolder.setSelection(2);
 		}
-		else if (projectMode.equals(ProjectMode.LOAD_PROJECT)) {
+		else if (this.projectMode.equals(ProjectMode.LOAD_PROJECT)) {
 			tabFolder.setSelection(3);
 		}
 		// set the default project mode for each specified tab
@@ -172,20 +171,20 @@ public class ChooseProjectTypePage
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (((TabItem) e.item) == generalDataUseCaseTab) {
-					projectMode = ProjectMode.UNSPECIFIED_NEW_DATA;
+				if (((TabItem) e.item) == ChooseProjectTypePage.this.generalDataUseCaseTab) {
+					ChooseProjectTypePage.this.projectMode = ProjectMode.UNSPECIFIED_NEW_DATA;
 				}
-				else if (((TabItem) e.item) == sampleTab) {
-					if (btnSampleProject.getSelection())
-						projectMode = ProjectMode.SAMPLE_PROJECT;
+				else if (((TabItem) e.item) == ChooseProjectTypePage.this.sampleTab) {
+					if (ChooseProjectTypePage.this.btnSampleProject.getSelection())
+						ChooseProjectTypePage.this.projectMode = ProjectMode.SAMPLE_PROJECT;
 					else
-						projectMode = ProjectMode.GENE_EXPRESSION_SAMPLE_DATA;
+						ChooseProjectTypePage.this.projectMode = ProjectMode.GENE_EXPRESSION_SAMPLE_DATA;
 				}
-				else if (((TabItem) e.item) == geneticDataUseCaseTab) {
-					projectMode = ProjectMode.GENE_EXPRESSION_NEW_DATA;
+				else if (((TabItem) e.item) == ChooseProjectTypePage.this.geneticDataUseCaseTab) {
+					ChooseProjectTypePage.this.projectMode = ProjectMode.GENE_EXPRESSION_NEW_DATA;
 				}
-				else if (((TabItem) e.item) == loadProjectTab) {
-					projectMode = ProjectMode.LOAD_PROJECT;
+				else if (((TabItem) e.item) == ChooseProjectTypePage.this.loadProjectTab) {
+					ChooseProjectTypePage.this.projectMode = ProjectMode.LOAD_PROJECT;
 				}
 				else
 					throw new IllegalStateException("Not implemented!");
@@ -194,7 +193,7 @@ public class ChooseProjectTypePage
 
 		tabFolder.pack();
 
-		setControl(composite);
+		this.setControl(composite);
 		composite.pack();
 	}
 
@@ -202,7 +201,7 @@ public class ChooseProjectTypePage
 	 * This tab lets you choose between a sample project, which has e.g. cluster
 	 * data included and a sample dataset, which is basically just a set csv
 	 * file.
-	 * 
+	 *
 	 * @param tabFolder
 	 */
 	private void createSampleTab(TabFolder tabFolder) {
@@ -216,27 +215,27 @@ public class ChooseProjectTypePage
 
 		};
 
-		sampleTab = new TabItem(tabFolder, SWT.NONE);
-		sampleTab.setText("Try Caleydo");
+		this.sampleTab = new TabItem(tabFolder, SWT.NONE);
+		this.sampleTab.setText("Try Caleydo");
 
 		Composite composite = new Composite(tabFolder, SWT.NONE);
-		sampleTab.setControl(composite);
+		this.sampleTab.setControl(composite);
 		composite.setLayout(new GridLayout(1, false));
 
-		btnSampleProject = new Button(composite, SWT.RADIO);
-		btnSampleProject.setText("Load sample project");
-		if (projectMode != ProjectMode.GENE_EXPRESSION_SAMPLE_DATA)
-			btnSampleProject.setSelection(true);
+		this.btnSampleProject = new Button(composite, SWT.RADIO);
+		this.btnSampleProject.setText("Load sample project");
+		if (this.projectMode != ProjectMode.GENE_EXPRESSION_SAMPLE_DATA)
+			this.btnSampleProject.setSelection(true);
 
 		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gd.horizontalSpan = 1;
-		btnSampleProject.setLayoutData(gd);
+		this.btnSampleProject.setLayoutData(gd);
 
-		btnSampleProject.addSelectionListener(new SelectionAdapter() {
+		this.btnSampleProject.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				projectMode = ProjectMode.SAMPLE_PROJECT;
-				setPageComplete(true);
+				ChooseProjectTypePage.this.projectMode = ProjectMode.SAMPLE_PROJECT;
+				ChooseProjectTypePage.this.setPageComplete(true);
 			}
 		});
 
@@ -270,7 +269,7 @@ public class ChooseProjectTypePage
 		Button btnSampleData = new Button(composite, SWT.RADIO);
 		btnSampleData.setText("Start with sample gene expression data");
 		// buttonSampleDataMode.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
-		if (projectMode == ProjectMode.GENE_EXPRESSION_SAMPLE_DATA)
+		if (this.projectMode == ProjectMode.GENE_EXPRESSION_SAMPLE_DATA)
 			btnSampleData.setSelection(true);
 		else
 			btnSampleData.setSelection(false);
@@ -293,8 +292,8 @@ public class ChooseProjectTypePage
 		btnSampleData.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				projectMode = ProjectMode.GENE_EXPRESSION_SAMPLE_DATA;
-				setPageComplete(true);
+				ChooseProjectTypePage.this.projectMode = ProjectMode.GENE_EXPRESSION_SAMPLE_DATA;
+				ChooseProjectTypePage.this.setPageComplete(true);
 			}
 		});
 
@@ -303,11 +302,11 @@ public class ChooseProjectTypePage
 
 	private void createGeneticUseCaseTab(TabFolder tabFolder) {
 
-		geneticDataUseCaseTab = new TabItem(tabFolder, SWT.NONE);
-		geneticDataUseCaseTab.setText("Load Genetic Data");
+		this.geneticDataUseCaseTab = new TabItem(tabFolder, SWT.NONE);
+		this.geneticDataUseCaseTab.setText("Load Genetic Data");
 
 		Composite composite = new Composite(tabFolder, SWT.NONE);
-		geneticDataUseCaseTab.setControl(composite);
+		this.geneticDataUseCaseTab.setControl(composite);
 		composite.setLayout(new GridLayout(1, false));
 
 		// GridData gridData = new GridData(GridData.FILL_BOTH);
@@ -318,7 +317,7 @@ public class ChooseProjectTypePage
 		buttonNewProject.setText("Load data from file (CSV, TXT)");
 		buttonNewProject.setLayoutData(gridData);
 		buttonNewProject.setSelection(true);
-		setPageComplete(true);
+		this.setPageComplete(true);
 
 		Text geneticDataDescription = new Text(composite, SWT.MULTI | SWT.WRAP);
 		geneticDataDescription
@@ -352,7 +351,7 @@ public class ChooseProjectTypePage
 		btnOrganismHuman.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				organism = Organism.HOMO_SAPIENS;
+				ChooseProjectTypePage.this.organism = Organism.HOMO_SAPIENS;
 			}
 		});
 
@@ -362,7 +361,7 @@ public class ChooseProjectTypePage
 		btnOrganismMouse.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				organism = Organism.MUS_MUSCULUS;
+				ChooseProjectTypePage.this.organism = Organism.MUS_MUSCULUS;
 			}
 		});
 
@@ -371,18 +370,18 @@ public class ChooseProjectTypePage
 				.getPreferenceStore().getString(PreferenceConstants.LAST_CHOSEN_ORGANISM));
 		if (lastChosenOrganism == Organism.HOMO_SAPIENS) {
 			btnOrganismHuman.setSelection(true);
-			organism = Organism.HOMO_SAPIENS;
+			this.organism = Organism.HOMO_SAPIENS;
 		}
 		else {
 			btnOrganismMouse.setSelection(true);
-			organism = Organism.MUS_MUSCULUS;
+			this.organism = Organism.MUS_MUSCULUS;
 		}
 
 		buttonNewProject.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				projectMode = ProjectMode.GENE_EXPRESSION_NEW_DATA;
-				setPageComplete(true);
+				ChooseProjectTypePage.this.projectMode = ProjectMode.GENE_EXPRESSION_NEW_DATA;
+				ChooseProjectTypePage.this.setPageComplete(true);
 			}
 		});
 
@@ -390,11 +389,11 @@ public class ChooseProjectTypePage
 
 	private void createGeneralDataUseCaseTab(TabFolder tabFolder) {
 
-		generalDataUseCaseTab = new TabItem(tabFolder, SWT.NONE);
-		generalDataUseCaseTab.setText("Load Other Data");
+		this.generalDataUseCaseTab = new TabItem(tabFolder, SWT.NONE);
+		this.generalDataUseCaseTab.setText("Load Other Data");
 
 		Composite composite = new Composite(tabFolder, SWT.NONE);
-		generalDataUseCaseTab.setControl(composite);
+		this.generalDataUseCaseTab.setControl(composite);
 		composite.setLayout(new GridLayout(1, false));
 
 		Text geneticDataDescription = new Text(composite, SWT.MULTI | SWT.WRAP);
@@ -411,24 +410,24 @@ public class ChooseProjectTypePage
 		buttonNewProject.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		buttonNewProject.setSelection(true);
 
-		setPageComplete(true);
+		this.setPageComplete(true);
 
 		buttonNewProject.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				projectMode = ProjectMode.UNSPECIFIED_NEW_DATA;
-				setPageComplete(true);
+				ChooseProjectTypePage.this.projectMode = ProjectMode.UNSPECIFIED_NEW_DATA;
+				ChooseProjectTypePage.this.setPageComplete(true);
 			}
 		});
 
 	}
 
 	private void createLoadProjectTab(TabFolder tabFolder) {
-		loadProjectTab = new TabItem(tabFolder, SWT.NONE);
-		loadProjectTab.setText("Load Project");
+		this.loadProjectTab = new TabItem(tabFolder, SWT.NONE);
+		this.loadProjectTab.setText("Load Project");
 
 		Composite composite = new Composite(tabFolder, SWT.NONE);
-		loadProjectTab.setControl(composite);
+		this.loadProjectTab.setControl(composite);
 		composite.setLayout(new GridLayout(2, false));
 
 		Text geneticDataDescription = new Text(composite, SWT.MULTI | SWT.WRAP);
@@ -446,14 +445,12 @@ public class ChooseProjectTypePage
 		String text = "Continue where you stopped last time";
 		recentProject.setText(text);
 
-		File recentProjectFile = new File(ProjectSaver.RECENT_PROJECT_FOLDER
-				+ ProjectSaver.DATA_DOMAIN_FILE);
+		final Date recentProjectChange = ProjectManager.getRecentProjectLastModified();
 
-		if (recentProjectFile.exists()) {
-			Date date = new Date(recentProjectFile.lastModified());
-			DateFormat dataformat = DateFormat.getDateTimeInstance(DateFormat.FULL,
-					DateFormat.FULL);
-			String lastModifiedDate = dataformat.format(date);
+		if (recentProjectChange != null)
+		{
+			DateFormat dataformat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
+			String lastModifiedDate = dataformat.format(recentProjectChange);
 			text = text + ", on " + lastModifiedDate;
 		}
 		recentProject.setText(text);
@@ -473,16 +470,16 @@ public class ChooseProjectTypePage
 
 		String lastProjectFileName = GeneralManager.get().getPreferenceStore()
 				.getString(PreferenceConstants.LAST_MANUALLY_CHOSEN_PROJECT);
-		projectFileName = new Text(composite, SWT.BORDER);
-		projectFileName.setEnabled(false);
-		projectFileName.setText(lastProjectFileName);
+		this.projectFileName = new Text(composite, SWT.BORDER);
+		this.projectFileName.setEnabled(false);
+		this.projectFileName.setText(lastProjectFileName);
 		singleCellGD = new GridData(SWT.FILL, SWT.TOP, true, false);
 		singleCellGD.grabExcessHorizontalSpace = true;
 		// singleCellGD.widthHint = 300;
-		projectFileName.setLayoutData(singleCellGD);
+		this.projectFileName.setLayoutData(singleCellGD);
 
 		try {
-			projectLoadType = EProjectLoadType.valueOf(GeneralManager.get()
+			this.projectLoadType = EProjectLoadType.valueOf(GeneralManager.get()
 					.getPreferenceStore()
 					.getString(PreferenceConstants.LAST_CHOSEN_PROJECT_LOAD_TYPE));
 		}
@@ -491,22 +488,23 @@ public class ChooseProjectTypePage
 			// situation) or when the value could not
 			// be matched to the enum
 		}
-		if ((projectLoadType != null && projectLoadType.equals(EProjectLoadType.SPECIFIED))
-				|| !recentProjectFile.exists()) {
+		if ((this.projectLoadType != null && this.projectLoadType.equals(EProjectLoadType.SPECIFIED))
+ || recentProjectChange == null)
+		{
 
-			if (!recentProjectFile.exists())
+			if (recentProjectChange == null)
 				recentProject.setEnabled(false);
 
 			loadProject.setSelection(true);
-			projectLoadType = EProjectLoadType.SPECIFIED;
-			projectFileName.setEnabled(true);
+			this.projectLoadType = EProjectLoadType.SPECIFIED;
+			this.projectFileName.setEnabled(true);
 			chooseProjectFile.setEnabled(true);
 		}
 		else // if (recentProjectFile.exists())
 		{
 			recentProject.setEnabled(true);
 			recentProject.setSelection(true);
-			projectLoadType = EProjectLoadType.RECENT;
+			this.projectLoadType = EProjectLoadType.RECENT;
 
 		}
 
@@ -521,24 +519,24 @@ public class ChooseProjectTypePage
 		recentProject.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				projectLoadType = EProjectLoadType.RECENT;
+				ChooseProjectTypePage.this.projectLoadType = EProjectLoadType.RECENT;
 				chooseProjectFile.setEnabled(false);
-				projectFileName.setEnabled(false);
-				setPageComplete(true);
+				ChooseProjectTypePage.this.projectFileName.setEnabled(false);
+				ChooseProjectTypePage.this.setPageComplete(true);
 			}
 		});
 
 		loadProject.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				projectLoadType = EProjectLoadType.SPECIFIED;
-				projectFileName.setEnabled(true);
+				ChooseProjectTypePage.this.projectLoadType = EProjectLoadType.SPECIFIED;
+				ChooseProjectTypePage.this.projectFileName.setEnabled(true);
 				chooseProjectFile.setEnabled(true);
-				if (projectFileName.getText() != null && !projectFileName.getText().isEmpty()) {
-					setPageComplete(true);
+				if (ChooseProjectTypePage.this.projectFileName.getText() != null && !ChooseProjectTypePage.this.projectFileName.getText().isEmpty()) {
+					ChooseProjectTypePage.this.setPageComplete(true);
 				}
 				else {
-					setPageComplete(false);
+					ChooseProjectTypePage.this.setPageComplete(false);
 				}
 			}
 		});
@@ -553,8 +551,8 @@ public class ChooseProjectTypePage
 
 				String fileName = fileDialog.open();
 				if (fileName != null) {
-					projectFileName.setText(fileName);
-					setPageComplete(true);
+					ChooseProjectTypePage.this.projectFileName.setText(fileName);
+					ChooseProjectTypePage.this.setPageComplete(true);
 				}
 			}
 		});
@@ -563,75 +561,75 @@ public class ChooseProjectTypePage
 	/**
 	 * Creates the tab for connecting a client to a already running
 	 * caleydo-server-application to get the use case and basic data from.
-	 * 
+	 *
 	 * @param tabFolder tab-widget to create the new tab-item in
 	 */
 	private void createCollaborationClientTab(TabFolder tabFolder) {
-		collaborationClientTab = new TabItem(tabFolder, SWT.NONE);
-		collaborationClientTab.setText("Connect to Server");
+		this.collaborationClientTab = new TabItem(tabFolder, SWT.NONE);
+		this.collaborationClientTab.setText("Connect to Server");
 
 		Composite composite = new Composite(tabFolder, SWT.NONE);
-		collaborationClientTab.setControl(composite);
+		this.collaborationClientTab.setControl(composite);
 		composite.setLayout(new GridLayout(2, false));
 
 		Label networkNameLabel = new Label(composite, SWT.LEFT);
 		networkNameLabel.setText("Network Name:");
-		networkNameText = new Text(composite, SWT.BORDER);
-		networkNameText.setText("client");
+		this.networkNameText = new Text(composite, SWT.BORDER);
+		this.networkNameText.setText("client");
 		GridData gd = new GridData();
 		gd.widthHint = 200;
-		networkNameText.setLayoutData(gd);
+		this.networkNameText.setLayoutData(gd);
 
 		Label networkAddressLabel = new Label(composite, SWT.LEFT);
 		networkAddressLabel.setText("Server Address:");
-		networkAddressText = new Text(composite, SWT.BORDER);
-		networkAddressText.setText("127.0.0.1");
+		this.networkAddressText = new Text(composite, SWT.BORDER);
+		this.networkAddressText.setText("127.0.0.1");
 		gd = new GridData();
 		gd.widthHint = 200;
-		networkAddressText.setLayoutData(gd);
+		this.networkAddressText.setLayoutData(gd);
 
-		setPageComplete(true);
+		this.setPageComplete(true);
 	}
 
 	public ProjectMode getProjectMode() {
-		return projectMode;
+		return this.projectMode;
 	}
 
 	/**
 	 * Returns the network-name entered by the user in the network-name
 	 * text-field
-	 * 
+	 *
 	 * @return network-name to use
 	 */
 	public String getNetworkName() {
-		return networkNameText.getText();
+		return this.networkNameText.getText();
 	}
 
 	/**
 	 * Returns the network-address entered by the user in the network-address
 	 * text-field
-	 * 
+	 *
 	 * @return network-address to connect to
 	 */
 	public String getNetworkAddress() {
-		return networkAddressText.getText();
+		return this.networkAddressText.getText();
 	}
 
 	/**
 	 * Returns the project file-name for open existing projects
-	 * 
+	 *
 	 * @return
 	 */
 	public String getProjectFileName() {
-		return projectFileName.getText();
+		return this.projectFileName.getText();
 	}
 
 	public EProjectLoadType getProjectLoadType() {
-		return projectLoadType;
+		return this.projectLoadType;
 	}
 
 	public Organism getOrganism() {
-		return organism;
+		return this.organism;
 	}
 
 }

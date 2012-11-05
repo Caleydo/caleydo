@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -29,21 +29,23 @@ import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Utility class for zipping and deleting directories.
- * 
+ *
  * @author Werner Puff
  * @author Marc Streit
  */
-public class ZipUtils {
+public final class ZipUtils {
+	private ZipUtils() {
 
+	}
 	/**
 	 * Zips a directory into a zip-archive
-	 * 
+	 *
 	 * @param dirName
 	 *            directory to zip
 	 * @param zipFileName
 	 *            name of the resulting zip-file
 	 */
-	public void zipDirectory(String dirName, String zipFileName) {
+	public static void zipDirectory(String dirName, String zipFileName) {
 		try {
 			ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFileName));
 			zipDirectory(dirName, zos);
@@ -56,13 +58,13 @@ public class ZipUtils {
 
 	/**
 	 * Browses through a given directory and writes the files to a given {@link ZipOutputStream}
-	 * 
+	 *
 	 * @param dir2zip
 	 *            directory to zip
 	 * @param zos
 	 *            stream to write to
 	 */
-	public void zipDirectory(String dir2zip, ZipOutputStream zos) {
+	public static void zipDirectory(String dir2zip, ZipOutputStream zos) {
 		try {
 			// create a new File object based on the directory we have to zip
 			File zipDir = new File(dir2zip);
@@ -104,13 +106,13 @@ public class ZipUtils {
 
 	/**
 	 * Extracts a zip file to a directory
-	 * 
+	 *
 	 * @param fileName
 	 *            file to unzip
 	 * @param dirName
 	 *            directory to store the unzipped files
 	 */
-	public void unzipToDirectory(String fileName, String dirName) {
+	public static void unzipToDirectory(String fileName, String dirName) {
 		if (dirName.charAt(dirName.length() - 1) != File.separatorChar) {
 			dirName += File.separator;
 		}
@@ -119,9 +121,8 @@ public class ZipUtils {
 		tempDirFile.mkdir();
 
 		try {
-			ZipInputStream zis =
-				new ZipInputStream(GeneralManager.get().getResourceLoader().getInputSource(fileName)
-					.getByteStream());
+			ZipInputStream zis = new ZipInputStream(GeneralManager.get().getResourceLoader()
+					.getInputSource(fileName).getByteStream());
 			unzipToDirectory(zis, dirName);
 		}
 		catch (Exception ex) {
@@ -131,13 +132,13 @@ public class ZipUtils {
 
 	/**
 	 * Extracts a zip file to a directory
-	 * 
+	 *
 	 * @param zis
 	 *            Stream to read the zip entries from
 	 * @param dirName
 	 *            directory to store the unzipped files
 	 */
-	public void unzipToDirectory(ZipInputStream zis, String dirName) {
+	public static void unzipToDirectory(ZipInputStream zis, String dirName) {
 		try {
 			byte[] readBuffer = new byte[2156];
 			int bytesIn = 0;

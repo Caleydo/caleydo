@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -28,8 +28,7 @@ import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.serialize.DataDomainSerializationData;
-import org.caleydo.core.serialize.ProjectLoader;
-import org.caleydo.core.serialize.ProjectSaver;
+import org.caleydo.core.serialize.ProjectManager;
 import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -47,33 +46,29 @@ public class SerializationStartupProcedure
 
 	private SerializationData serializationDataList;
 
-	private ProjectLoader loader = new ProjectLoader();
-
 	@Override
 	public void initPreWorkbenchOpen() {
 		super.initPreWorkbenchOpen();
 
-		if (loadSampleProject) {
-			projectLocation = SAMPLE_PROJECT_LOCATION;
-			loader.loadProjectFromZIP(projectLocation);
-			loader.loadWorkbenchData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);
+		if (this.loadSampleProject) {
+			this.projectLocation = SAMPLE_PROJECT_LOCATION;
+			ProjectManager.loadProjectFromZIP(this.projectLocation);
+			ProjectManager.loadWorkbenchData(ProjectManager.TEMP_PROJECT_ZIP_FOLDER);
+		}
+		else if (this.loadRecentProject) {
+			this.projectLocation = ProjectManager.RECENT_PROJECT_FOLDER;
+			ProjectManager.loadWorkbenchData(this.projectLocation);
+		}
+		else if (this.projectLocation != null && !this.projectLocation.isEmpty()) {
+			ProjectManager.loadProjectFromZIP(this.projectLocation);
+			ProjectManager.loadWorkbenchData(ProjectManager.TEMP_PROJECT_ZIP_FOLDER);
 		}
 		else {
-			if (loadRecentProject) {
-				projectLocation = ProjectSaver.RECENT_PROJECT_FOLDER;
-				loader.loadWorkbenchData(projectLocation);
-			}
-			else if (projectLocation != null && !projectLocation.isEmpty()) {
-				loader.loadProjectFromZIP(projectLocation);
-				loader.loadWorkbenchData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);
-			}
-			else {
-				throw new IllegalArgumentException("encountered unknown project-load-type");
-			}
+			throw new IllegalArgumentException("encountered unknown project-load-type");
 		}
 
 		ApplicationWorkbenchWindowAdvisor.setWindowTitle("Caleydo - "
-				+ projectLocation.substring(projectLocation.lastIndexOf("/") + 1));
+				+ this.projectLocation.substring(this.projectLocation.lastIndexOf("/") + 1));
 	}
 
 	@Override
@@ -86,26 +81,23 @@ public class SerializationStartupProcedure
 		// not calling super.init() on purpose
 
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Load serialized project"));
-		
-		if (loadSampleProject) {
-			serializationDataList = loader
-					.loadProjectData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);
+
+		if (this.loadSampleProject) {
+			this.serializationDataList = ProjectManager.loadProjectData(ProjectManager.TEMP_PROJECT_ZIP_FOLDER);
 		}
 		else {
-			if (loadRecentProject) {
-				serializationDataList = loader
-						.loadProjectData(ProjectSaver.RECENT_PROJECT_FOLDER);
+			if (this.loadRecentProject) {
+				this.serializationDataList = ProjectManager.loadProjectData(ProjectManager.RECENT_PROJECT_FOLDER);
 			}
-			else if (projectLocation != null || projectLocation.isEmpty()) {
-				serializationDataList = loader
-						.loadProjectData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);
+			else if (this.projectLocation != null || this.projectLocation.isEmpty()) {
+				this.serializationDataList = ProjectManager.loadProjectData(ProjectManager.TEMP_PROJECT_ZIP_FOLDER);
 			}
 			else {
 				throw new IllegalArgumentException("encoutnered unknown project-load-type");
 			}
 		}
 
-		deserializeData(serializationDataList);
+		this.deserializeData(this.serializationDataList);
 	}
 
 	private void deserializeData(SerializationData serializationDataList) {
