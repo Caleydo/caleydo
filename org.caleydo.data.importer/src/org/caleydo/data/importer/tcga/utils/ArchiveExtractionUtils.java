@@ -32,8 +32,12 @@ public class ArchiveExtractionUtils {
 	public static String extractFileFromTarGzArchive(String archiveName, String fileToExtract,
 			String outputDirectoryName, String remoteArchiveDirectory) {
 
-		String outputFileName = null;
-
+		String outputFileName = outputDirectoryName + fileToExtract;
+		
+		// Do now dowload it, if the target file from the TAR already exists locally
+		if (new File(outputFileName).exists())
+			return outputFileName;
+		
 		try {
 			byte[] buf = new byte[1024];
 			TarInputStream tarInputStream = null;
@@ -64,8 +68,6 @@ public class ArchiveExtractionUtils {
 				}
 
 				FileOperations.createDirectory(outputDirectoryName);
-
-				outputFileName = outputDirectoryName + fileToExtract;
 
 				fileoutputstream = new FileOutputStream(outputFileName);
 
