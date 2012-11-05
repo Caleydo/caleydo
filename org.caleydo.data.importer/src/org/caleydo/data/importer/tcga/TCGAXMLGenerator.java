@@ -37,6 +37,7 @@ import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.system.FileOperations;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 import org.caleydo.data.importer.tcga.utils.ArchiveExtractionUtils;
+import org.caleydo.datadomain.genetic.TCGADefinitions;
 
 /**
  * Generator class that writes the loading information of a series of TCGA data
@@ -62,8 +63,6 @@ public class TCGAXMLGenerator extends DataSetDescriptionSerializer {
 	private String tmpOutputDirectoryPath;
 	private String remoteAnalysisRunArchiveDirectory;
 	private String remoteDataRunArchiveDirectory;
-
-	public static final String TCGA_ID_SUBSTRING_REGEX = "tcga\\-|\\-...\\-";
 
 	private IDSpecification sampleIDSpecification;
 
@@ -100,9 +99,10 @@ public class TCGAXMLGenerator extends DataSetDescriptionSerializer {
 				+ dataRunIdentifierWithoutUnderscore + "/";
 	}
 
-	// find Firehose archive in Firehose_get output directory and extract file
-	// from archive to temp directory
-	// return path to file in temp directory
+	/**
+	 * Find Firehose archive in Firehose_get output directory and extract file
+	 * from archive to temp directory return path to file in temp directory
+	 */
 	protected String extractFile(String fileName, String pipelineName,
 			String runIdentifierWithoutUnderscore, String remoteArchiveDirectory,
 			int level) {
@@ -131,8 +131,11 @@ public class TCGAXMLGenerator extends DataSetDescriptionSerializer {
 		sampleIDSpecification.setIdCategory("TCGA_SAMPLE");
 		sampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
-		idTypeParsingRules.setReplacementExpression("\\.", "-");
-		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		idTypeParsingRules.setReplacementExpression(
+				TCGADefinitions.TCGA_REPLACING_EXPRESSION,
+				TCGADefinitions.TCGA_REPLACEMENT_STRING);
+		idTypeParsingRules
+				.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
 		idTypeParsingRules.setToLowerCase(true);
 		idTypeParsingRules.setDefault(true);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
@@ -190,8 +193,11 @@ public class TCGAXMLGenerator extends DataSetDescriptionSerializer {
 		seqSampleIDSpecification.setIdCategory("TCGA_SAMPLE");
 		seqSampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules seqSampleIDTypeParsingRules = new IDTypeParsingRules();
-		seqSampleIDTypeParsingRules.setSubStringExpression("tcga\\-|\\-..\\z");
-		seqSampleIDTypeParsingRules.setReplacementExpression("\\.", "-");
+		seqSampleIDTypeParsingRules
+				.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
+		seqSampleIDTypeParsingRules.setReplacementExpression(
+				TCGADefinitions.TCGA_REPLACING_EXPRESSION,
+				TCGADefinitions.TCGA_REPLACEMENT_STRING);
 		seqSampleIDTypeParsingRules.setToLowerCase(true);
 		seqSampleIDSpecification.setIdTypeParsingRules(seqSampleIDTypeParsingRules);
 
@@ -396,11 +402,15 @@ public class TCGAXMLGenerator extends DataSetDescriptionSerializer {
 		IDSpecification mutationSampleIDSpecification = new IDSpecification();
 		mutationSampleIDSpecification.setIdCategory("TCGA_SAMPLE");
 		mutationSampleIDSpecification.setIdType("TCGA_SAMPLE");
-		IDTypeParsingRules mutationIDTypeParsingRules = new IDTypeParsingRules();
-		mutationIDTypeParsingRules.setReplacementExpression("\\_", "-");
-		mutationIDTypeParsingRules.setSubStringExpression("^[a-z]+\\-");
-		mutationIDTypeParsingRules.setToLowerCase(true);
-		mutationSampleIDSpecification.setIdTypeParsingRules(mutationIDTypeParsingRules);
+
+		// Mutation uses a different ID convention, the source looks like this:
+		// OV_20_0990
+		IDTypeParsingRules mutationSampleIDTypeParsingRules = new IDTypeParsingRules();
+		mutationSampleIDTypeParsingRules.setReplacementExpression("\\_", "-");
+		mutationSampleIDTypeParsingRules.setSubStringExpression("^[a-z]+\\-");
+		mutationSampleIDTypeParsingRules.setToLowerCase(true);
+		mutationSampleIDSpecification
+				.setIdTypeParsingRules(mutationSampleIDTypeParsingRules);
 		mutationData.setColumnIDSpecification(mutationSampleIDSpecification);
 
 		IDSpecification geneIDSpecification = new IDSpecification();

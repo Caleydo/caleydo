@@ -17,42 +17,27 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.data.importer;
-
-import org.caleydo.core.io.IDTypeParsingRules;
-import org.caleydo.core.io.parser.ascii.TabularDataParser;
+package org.caleydo.datadomain.genetic;
 
 /**
- * Test class for regular expressions applied to IDs. Uses the actual code which
- * is also used in caleydo. Can be used for replacement and substring
- * expressions
  * 
- * @see{http://docs.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html}
+ * Known source ID formats covered by correctly applying these expressions:
+ * 
+ * Known source ID formats not covered correctly:
+ * 
+ * <li>OV_20_0990 - known expression: "^[a-z]+\\-",
+ * setReplacementExpression("\\_", "-");</li>
  * 
  * @author Alexander Lex
+ * 
  */
-public class RegExTester {
+public class TCGADefinitions {
 
-//	public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-01";
+	public static final String[] KNOWN_ID_EXAMPLES = { "TCGA-06-0171-02",
+			"tcga-06-0125-02", "OV_20_0990" };
 
-	public static void main(String[] args) {
-		
+	public static final String TCGA_ID_SUBSTRING_REGEX = "tcga\\-|\\-..\\z";
+	public static final String TCGA_REPLACING_EXPRESSION = "\\.";
+	public static final String TCGA_REPLACEMENT_STRING = "-";
 
-		String inputString = "tcga-06-0125-02";
-		
-		String regex = "tcga\\-|\\-..\\z";
-//		String regex = "tcga\\-|\\-...\\-";
-//		String regex =TCGATestDataXMLGenerator.TCGA_ID_SUBSTRING_REGEX;
-
-
-		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
-		// idSpecification.setReplacementExpression(replacingExpression,
-		// replacementString)
-
-		idTypeParsingRules.setSubStringExpression(regex);
-
-		String outputString = TabularDataParser.convertID(inputString, idTypeParsingRules);
-
-		System.out.println("Output: " + outputString);
-	}
 }

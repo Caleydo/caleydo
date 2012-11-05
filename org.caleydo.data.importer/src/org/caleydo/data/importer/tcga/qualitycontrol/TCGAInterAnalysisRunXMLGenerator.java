@@ -33,6 +33,7 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 import org.caleydo.data.importer.tcga.EDataSetType;
 import org.caleydo.data.importer.tcga.utils.ArchiveExtractionUtils;
+import org.caleydo.datadomain.genetic.TCGADefinitions;
 
 /**
  * Generator class that writes the loading information of a series of TCGA data
@@ -42,8 +43,7 @@ import org.caleydo.data.importer.tcga.utils.ArchiveExtractionUtils;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class TCGAInterAnalysisRunXMLGenerator
-	extends DataSetDescriptionSerializer {
+public class TCGAInterAnalysisRunXMLGenerator extends DataSetDescriptionSerializer {
 
 	public static String FIREHOSE_URL_PREFIX = "http://gdac.broadinstitute.org/runs/";
 	private static String FIREHOSE_TAR_NAME_PREFIX = "gdac.broadinstitute.org_";
@@ -54,15 +54,13 @@ public class TCGAInterAnalysisRunXMLGenerator
 
 	private String tmpOutputDirectoryPath;
 
-	public static final String TCGA_ID_SUBSTRING_REGEX = "tcga\\-|\\-...\\-";
-
 	private IDSpecification sampleIDSpecification;
 
 	public EDataSetType dataSetType;
 
-	public TCGAInterAnalysisRunXMLGenerator(String tumorAbbreviation, String[] analysisRuns,
-			EDataSetType dataSetType, String outputXMLFilePath, String outputFolderPath,
-			String tmpOutputFolderPath) {
+	public TCGAInterAnalysisRunXMLGenerator(String tumorAbbreviation,
+			String[] analysisRuns, EDataSetType dataSetType, String outputXMLFilePath,
+			String outputFolderPath, String tmpOutputFolderPath) {
 
 		super(null);
 
@@ -80,8 +78,11 @@ public class TCGAInterAnalysisRunXMLGenerator
 		sampleIDSpecification.setIdCategory("TCGA_SAMPLE");
 		sampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
-		idTypeParsingRules.setReplacementExpression("\\.", "-");
-		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		idTypeParsingRules.setReplacementExpression(
+				TCGADefinitions.TCGA_REPLACING_EXPRESSION,
+				TCGADefinitions.TCGA_REPLACEMENT_STRING);
+		idTypeParsingRules
+				.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
 		idTypeParsingRules.setToLowerCase(true);
 		idTypeParsingRules.setDefault(true);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
@@ -91,8 +92,11 @@ public class TCGAInterAnalysisRunXMLGenerator
 		seqSampleIDSpecification.setIdCategory("TCGA_SAMPLE");
 		seqSampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules seqSampleIDTypeParsingRules = new IDTypeParsingRules();
-		seqSampleIDTypeParsingRules.setSubStringExpression("tcga\\-|\\-..\\z");
-		seqSampleIDTypeParsingRules.setReplacementExpression("\\.", "-");
+		seqSampleIDTypeParsingRules
+				.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
+		seqSampleIDTypeParsingRules.setReplacementExpression(
+				TCGADefinitions.TCGA_REPLACING_EXPRESSION,
+				TCGADefinitions.TCGA_REPLACEMENT_STRING);
 		seqSampleIDTypeParsingRules.setToLowerCase(true);
 		seqSampleIDSpecification.setIdTypeParsingRules(seqSampleIDTypeParsingRules);
 
@@ -106,76 +110,75 @@ public class TCGAInterAnalysisRunXMLGenerator
 			try {
 				switch (dataSetType) {
 
-					case mRNA:
+				case mRNA:
 
-						projectDescription.add(setUpClusteredMatrixData(
-								"mRNA_Clustering_CNMF", "mRNA_Clustering_Consensus",
-								"outputprefix.expclu.gct", "mRNA", rowIDSpecification,
-								sampleIDSpecification, true, dataSetType.getColor(),
-								analysisRun, analysisRunWithoutUnderscore));
-						break;
-					case mRNAseq:
+					projectDescription.add(setUpClusteredMatrixData(
+							"mRNA_Clustering_CNMF", "mRNA_Clustering_Consensus",
+							"outputprefix.expclu.gct", "mRNA", rowIDSpecification,
+							sampleIDSpecification, true, dataSetType.getColor(),
+							analysisRun, analysisRunWithoutUnderscore));
+					break;
+				case mRNAseq:
 
-						projectDescription.add(setUpClusteredMatrixData(
-								"mRNAseq_Clustering_CNMF", "mRNAseq_Clustering_Consensus",
-								"outputprefix.expclu.gct", "mRNA-seq", rowIDSpecification,
-								seqSampleIDSpecification, true, dataSetType.getColor(),
-								analysisRun, analysisRunWithoutUnderscore));
+					projectDescription.add(setUpClusteredMatrixData(
+							"mRNAseq_Clustering_CNMF", "mRNAseq_Clustering_Consensus",
+							"outputprefix.expclu.gct", "mRNA-seq", rowIDSpecification,
+							seqSampleIDSpecification, true, dataSetType.getColor(),
+							analysisRun, analysisRunWithoutUnderscore));
 
-						break;
-					case microRNA:
+					break;
+				case microRNA:
 
-						rowIDSpecification = new IDSpecification();
-						rowIDSpecification.setIdType("microRNA");
-						rowIDSpecification.setIdCategory("microRNA");
+					rowIDSpecification = new IDSpecification();
+					rowIDSpecification.setIdType("microRNA");
+					rowIDSpecification.setIdCategory("microRNA");
 
-						projectDescription.add(setUpClusteredMatrixData("miR_Clustering_CNMF",
-								"miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA",
-								rowIDSpecification, sampleIDSpecification, false,
-								dataSetType.getColor(), analysisRun,
-								analysisRunWithoutUnderscore));
+					projectDescription.add(setUpClusteredMatrixData(
+							"miR_Clustering_CNMF", "miR_Clustering_Consensus",
+							"cnmf.normalized.gct", "microRNA", rowIDSpecification,
+							sampleIDSpecification, false, dataSetType.getColor(),
+							analysisRun, analysisRunWithoutUnderscore));
 
-						break;
-					case microRNAseq:
+					break;
+				case microRNAseq:
 
-						rowIDSpecification = new IDSpecification();
-						rowIDSpecification.setIdType("microRNA");
-						rowIDSpecification.setIdCategory("microRNA");
+					rowIDSpecification = new IDSpecification();
+					rowIDSpecification.setIdType("microRNA");
+					rowIDSpecification.setIdCategory("microRNA");
 
-						projectDescription.add(setUpClusteredMatrixData(
-								"miRseq_Clustering_CNMF", "miRseq_Clustering_Consensus",
-								"cnmf.normalized.gct", "microRNA-seq", rowIDSpecification,
-								seqSampleIDSpecification, false, dataSetType.getColor(),
-								analysisRun, analysisRunWithoutUnderscore));
+					projectDescription.add(setUpClusteredMatrixData(
+							"miRseq_Clustering_CNMF", "miRseq_Clustering_Consensus",
+							"cnmf.normalized.gct", "microRNA-seq", rowIDSpecification,
+							seqSampleIDSpecification, false, dataSetType.getColor(),
+							analysisRun, analysisRunWithoutUnderscore));
 
-						break;
-					case methylation:
+					break;
+				case methylation:
 
-						projectDescription.add(setUpClusteredMatrixData(
-								"Methylation_Clustering_CNMF",
-								"Methylation_Clustering_Consensus", "cnmf.normalized.gct",
-								"Methylation", rowIDSpecification, sampleIDSpecification,
-								true, dataSetType.getColor(), analysisRun,
-								analysisRunWithoutUnderscore));
+					projectDescription.add(setUpClusteredMatrixData(
+							"Methylation_Clustering_CNMF",
+							"Methylation_Clustering_Consensus", "cnmf.normalized.gct",
+							"Methylation", rowIDSpecification, sampleIDSpecification,
+							true, dataSetType.getColor(), analysisRun,
+							analysisRunWithoutUnderscore));
 
-						break;
-					case RPPA:
+					break;
+				case RPPA:
 
-						rowIDSpecification = new IDSpecification();
-						rowIDSpecification.setIdType("protein");
-						rowIDSpecification.setIdCategory("protein");
+					rowIDSpecification = new IDSpecification();
+					rowIDSpecification.setIdType("protein");
+					rowIDSpecification.setIdCategory("protein");
 
-						projectDescription.add(setUpClusteredMatrixData(
-								"RPPA_Clustering_CNMF", "RPPA_Clustering_Consensus",
-								"cnmf.normalized.gct", "RPPA", rowIDSpecification,
-								sampleIDSpecification, false, dataSetType.getColor(),
-								analysisRun, analysisRunWithoutUnderscore));
+					projectDescription.add(setUpClusteredMatrixData(
+							"RPPA_Clustering_CNMF", "RPPA_Clustering_Consensus",
+							"cnmf.normalized.gct", "RPPA", rowIDSpecification,
+							sampleIDSpecification, false, dataSetType.getColor(),
+							analysisRun, analysisRunWithoutUnderscore));
 
-						break;
+					break;
 
 				}
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				System.err.println(e.getMessage());
 			}
 		}
@@ -194,8 +197,9 @@ public class TCGAInterAnalysisRunXMLGenerator
 
 		String matrixFile = this.extractFile(matrixFileName, cnmfArchiveName,
 				analysisRunWithoutUnderscore, remoteAnalysisRunArchiveDirectory, 4);
-		String cnmfGroupingFile = this.extractFile("cnmf.membership.txt", cnmfArchiveName,
-				analysisRunWithoutUnderscore, remoteAnalysisRunArchiveDirectory, 4);
+		String cnmfGroupingFile = this.extractFile("cnmf.membership.txt",
+				cnmfArchiveName, analysisRunWithoutUnderscore,
+				remoteAnalysisRunArchiveDirectory, 4);
 
 		DataSetDescription matrixData = new DataSetDescription();
 		matrixData.setDataSetName(analysisRun);
@@ -217,8 +221,7 @@ public class TCGAInterAnalysisRunXMLGenerator
 			geneIDSpecification.setIDTypeGene(true);
 			geneIDSpecification.setIdType("GENE_SYMBOL");
 			matrixData.setRowIDSpecification(geneIDSpecification);
-		}
-		else {
+		} else {
 			if (rowIDSpecification == null) {
 				rowIDSpecification = new IDSpecification();
 				rowIDSpecification.setIdType("unknown");
@@ -247,8 +250,7 @@ public class TCGAInterAnalysisRunXMLGenerator
 			firehoseHierarchicalClustering.setRowIDSpecification(columnIDSpecification);
 			firehoseHierarchicalClustering.setGroupingName("Hierarchical");
 			matrixData.addColumnGroupingSpecification(firehoseHierarchicalClustering);
-		}
-		catch (RuntimeException e) {
+		} catch (RuntimeException e) {
 			System.err.println(e.getMessage());
 		}
 
@@ -268,15 +270,17 @@ public class TCGAInterAnalysisRunXMLGenerator
 	// from archive to temp directory
 	// return path to file in temp directory
 	protected String extractFile(String fileName, String pipelineName,
-			String runIdentifierWithoutUnderscore, String remoteArchiveDirectory, int level) {
+			String runIdentifierWithoutUnderscore, String remoteArchiveDirectory,
+			int level) {
 
 		// gdac.broadinstitute.org_GBM.Methylation_Clustering_CNMF.Level_4.2012052500.0.0.tar.gz
-		String archiveName = FIREHOSE_TAR_NAME_PREFIX + tumorAbbreviation + "." + pipelineName
-				+ ".Level_" + level + "." + runIdentifierWithoutUnderscore + "00.0.0.tar.gz";
+		String archiveName = FIREHOSE_TAR_NAME_PREFIX + tumorAbbreviation + "."
+				+ pipelineName + ".Level_" + level + "." + runIdentifierWithoutUnderscore
+				+ "00.0.0.tar.gz";
 
-		String outputDirectoryName = tmpOutputDirectoryPath + runIdentifierWithoutUnderscore
-				+ System.getProperty("file.separator") + tumorAbbreviation
-				+ System.getProperty("file.separator") + archiveName;
+		String outputDirectoryName = tmpOutputDirectoryPath
+				+ runIdentifierWithoutUnderscore + System.getProperty("file.separator")
+				+ tumorAbbreviation + System.getProperty("file.separator") + archiveName;
 
 		// extract file to temp directory and return path to file
 		return ArchiveExtractionUtils.extractFileFromTarGzArchive(archiveName, fileName,

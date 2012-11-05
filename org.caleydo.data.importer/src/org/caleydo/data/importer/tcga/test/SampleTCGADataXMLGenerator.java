@@ -30,6 +30,7 @@ import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfigurati
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
+import org.caleydo.datadomain.genetic.TCGADefinitions;
 
 /**
  * Generator class that writes the loading information of a series of TCGA data
@@ -81,8 +82,6 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 	public static final String OUTPUT_FILE_PATH = System.getProperty("user.home")
 			+ System.getProperty("file.separator") + "caleydo_data.xml";
 
-	public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-...\\-";
-
 	private IDSpecification sampleIDSpecification;
 
 	/*
@@ -118,8 +117,11 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		sampleIDSpecification.setIdCategory("TCGA_SAMPLE");
 		sampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
-		idTypeParsingRules.setReplacementExpression("\\.", "-");
-		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		idTypeParsingRules.setReplacementExpression(
+				TCGADefinitions.TCGA_REPLACING_EXPRESSION,
+				TCGADefinitions.TCGA_REPLACEMENT_STRING);
+		idTypeParsingRules
+				.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
 		idTypeParsingRules.setDefault(true);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
 
@@ -203,7 +205,7 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		firehoseClustering.setContainsColumnIDs(false);
 		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
 		mirnaData.addColumnGroupingSpecification(firehoseClustering);
-		
+
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
 		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
@@ -212,7 +214,6 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		mirnaData.setDataProcessingDescription(dataProcessingDescription);
-
 
 		return mirnaData;
 	}
@@ -242,7 +243,7 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		firehoseClustering.setContainsColumnIDs(false);
 		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
 		methylationData.addColumnGroupingSpecification(firehoseClustering);
-		
+
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
 		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
@@ -251,7 +252,6 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		methylationData.setDataProcessingDescription(dataProcessingDescription);
-
 
 		return methylationData;
 	}
