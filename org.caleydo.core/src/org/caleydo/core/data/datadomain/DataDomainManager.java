@@ -160,8 +160,8 @@ public class DataDomainManager {
 	 *
 	 * @return
 	 */
-	public Collection<IDataDomain> getDataDomains() {
-		return registeredDataDomainsByID.values();
+	public synchronized Collection<IDataDomain> getDataDomains() {
+		return new ArrayList<>(registeredDataDomainsByID.values());
 	}
 
 	/**
@@ -171,8 +171,7 @@ public class DataDomainManager {
 	 * @param dataDomainID
 	 * @return
 	 */
-	public IDataDomain getDataDomainByID(String dataDomainID) {
-
+	public synchronized IDataDomain getDataDomainByID(String dataDomainID) {
 		return registeredDataDomainsByID.get(dataDomainID);
 	}
 
@@ -185,7 +184,7 @@ public class DataDomainManager {
 	 * @param dataDomainType
 	 * @return
 	 */
-	public IDataDomain getDataDomainByType(String dataDomainType) {
+	public synchronized IDataDomain getDataDomainByType(String dataDomainType) {
 
 		IDataDomain dataDomain = null;
 		ArrayList<IDataDomain> possibleDataDomains = registeredDataDomainsByType
@@ -213,7 +212,7 @@ public class DataDomainManager {
 	 *
 	 * @param dataDomain
 	 */
-	public void register(IDataDomain dataDomain) {
+	public synchronized void register(IDataDomain dataDomain) {
 
 		if (!registeredDataDomainsByID.containsKey(dataDomain.getDataDomainID()))
 			registeredDataDomainsByID.put(dataDomain.getDataDomainID(), dataDomain);
@@ -247,7 +246,7 @@ public class DataDomainManager {
 	 *
 	 * @param dataDomain
 	 */
-	public void unregister(IDataDomain dataDomain) {
+	public synchronized void unregister(IDataDomain dataDomain) {
 
 		if (registeredDataDomainsByID.containsKey(dataDomain.getDataDomainID()))
 			registeredDataDomainsByID.remove(dataDomain.getDataDomainID());

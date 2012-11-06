@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.data.importer.tcga.qualitycontrol;
+package org.caleydo.data.importer.tcga.regular;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +26,6 @@ import java.util.concurrent.RecursiveAction;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.importer.tcga.AProjectBuilderApplication;
-import org.caleydo.data.importer.tcga.EDataSetType;
 import org.eclipse.equinox.app.IApplication;
 
 import com.martiansoftware.jsap.FlaggedOption;
@@ -36,39 +35,27 @@ import com.martiansoftware.jsap.JSAPResult;
 
 /**
  * This class handles the whole workflow of creating a Caleydo project from TCGA
- * data for inter analysis run comparisons.
+ * data.
  *
  * @author Marc Streit
  *
  */
-public class TCGAInterAnalysisRunProjectBuilderApplication
- extends AProjectBuilderApplication<TCGAQCSettings>
+public class TCGAProjectBuilderApplication
+ extends AProjectBuilderApplication<TCGASettings>
 	implements IApplication {
 
-	public static String DEFAULT_TCGA_SERVER_URL = "http://compbio.med.harvard.edu/tcga/stratomex/data_qc/";
+	public static String DEFAULT_TCGA_SERVER_URL = "http://compbio.med.harvard.edu/tcga/stratomex/data/";
 	public static String CALEYDO_WEBSTART_URL = "http://data.icg.tugraz.at/caleydo/download/webstart_"
 			+ GeneralManager.VERSION + "/";
-	public static String DEFAULT_OUTPUT_FOLDER_PATH = GeneralManager.CALEYDO_HOME_PATH + "TCGA/";
-
-	protected String[] tumorTypes = null;
-	protected String[] analysisRuns = null;
-	protected String[] dataRuns = null;
-	protected String tcgaServerURL = "";
-	protected boolean sampleGenes = true;
-
-	protected String outputPath = "";
-
-	protected StringBuilder reportJSONGenomicData = new StringBuilder();
 
 	@Override
-	protected TCGAQCSettings createSettings() {
-		return new TCGAQCSettings();
+	protected TCGASettings createSettings() {
+		return new TCGASettings();
 	}
 
 	@Override
 	protected void registerArguments(JSAP jsap) throws JSAPException {
 		super.registerArguments(jsap);
-
 		FlaggedOption analysisRunIdentifierOpt = new FlaggedOption("analysis_runs").setStringParser(JSAP.STRING_PARSER).setDefault(JSAP.NO_DEFAULT).setRequired(true).setShortFlag('a')
 				.setLongFlag(JSAP.NO_LONGFLAG);
 		analysisRunIdentifierOpt.setList(true);
@@ -76,18 +63,38 @@ public class TCGAInterAnalysisRunProjectBuilderApplication
 		analysisRunIdentifierOpt.setHelp("Analysis run identifiers");
 		jsap.registerParameter(analysisRunIdentifierOpt);
 
+		FlaggedOption dataRunIdentifierOpt = new FlaggedOption("data_runs").setStringParser(JSAP.STRING_PARSER).setDefault(JSAP.NO_DEFAULT).setRequired(true).setShortFlag('d')
+				.setLongFlag(JSAP.NO_LONGFLAG);
+		dataRunIdentifierOpt.setList(true);
+		dataRunIdentifierOpt.setListSeparator(',');
+		dataRunIdentifierOpt.setHelp("Data run identifiers");
+		jsap.registerParameter(dataRunIdentifierOpt);
+
 		FlaggedOption tcgaServerURLOpt = new FlaggedOption("server").setStringParser(JSAP.STRING_PARSER).setDefault(DEFAULT_TCGA_SERVER_URL).setRequired(false).setShortFlag('s')
 				.setLongFlag(JSAP.NO_LONGFLAG);
 		tcgaServerURLOpt.setHelp("TCGA Server URL that hosts TCGA Caleydo project files");
 		jsap.registerParameter(tcgaServerURLOpt);
 
+		FlaggedOption sampleGenesOpt = new FlaggedOption("sample_genes").setStringParser(JSAP.BOOLEAN_PARSER).setDefault("true").setRequired(false).setShortFlag('g').setLongFlag(JSAP.NO_LONGFLAG);
+		sampleGenesOpt.setHelp("TCGA Server URL that hosts TCGA Caleydo project files");
+		jsap.registerParameter(sampleGenesOpt);
 	}
 
 	@Override
-	protected void extractArguments(JSAPResult config, TCGAQCSettings settings, JSAP jsap) {
+	protected void extractArguments(JSAPResult config, TCGASettings settings, JSAP jsap) {
 		super.extractArguments(config, settings, jsap);
-		analysisRuns = config.getStringArray("analysis_runs");
-		tcgaServerURL = config.getString("server");
+
+		settings.setRuns(config.getStringArray("analysis_runs"), config.getStringArray("data_runs"));
+		settings.setSampleGenes(config.getBoolean("sample_genes"));
+
+		if (settings.getAnalysisRuns().length != settings.getDataRuns().length) {
+			System.err.println("Error during parsing of program arguments. You need to provide a corresponding data run for each analysis run. Closing program.");
+			System.err.println("Usage: Caleydo");
+			System.err.println(jsap.getUsage());
+			System.err.println();
+			System.exit(1);
+		}
+		settings.setTcgaServerURL(config.getString("server"));
 	}
 
 	@Override
@@ -99,19 +106,17 @@ public class TCGAInterAnalysisRunProjectBuilderApplication
 
 			@Override
 			protected void compute() {
-				Collection<TCGAQCDataSetTypeTask> tasks = new ArrayList<>();
-				for (EDataSetType dataSetType : EDataSetType.values()) {
-					tasks.add(new TCGAQCDataSetTypeTask(dataSetType, settings));
+				Collection<TCGARunTask> tasks = new ArrayList<>();
+				for (int i = 0; i < settings.getNumRuns(); i++) {
+					String analysisRun = settings.getAnalysisRun(i);
+					String dataRun = settings.getDataRun(i);
+
+					tasks.add(new TCGARunTask(analysisRun, dataRun, settings));
 				}
 				invokeAll(tasks);
 			}
 		};
 		pool.invoke(action);
 		pool.shutdown();
-	}
-
-	@Override
-	public void stop() {
-		// nothing to do
 	}
 }

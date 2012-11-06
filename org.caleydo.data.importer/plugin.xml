@@ -21,7 +21,7 @@
             thread="main"
             visible="true">
          <run
-               class="org.caleydo.data.importer.tcga.TCGAProjectBuilderApplication">
+               class="org.caleydo.data.importer.tcga.regular.TCGAProjectBuilderApplication">
          </run>
       </application>
    </extension>

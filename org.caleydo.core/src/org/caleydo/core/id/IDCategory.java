@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,8 +22,10 @@ package org.caleydo.core.id;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.collection.Pair;
@@ -53,12 +55,12 @@ import org.eclipse.core.runtime.Status;
  * <p>
  * This class is also a singleton that manages all IDCategories
  * </p>
- * 
+ *
  * @author Alexander Lex
  */
 public class IDCategory {
 
-	private static HashMap<String, IDCategory> registeredCategories = new HashMap<String, IDCategory>();
+	private static final ConcurrentMap<String, IDCategory> registeredCategories = new ConcurrentHashMap<>();
 
 	/**
 	 * <p>
@@ -70,7 +72,7 @@ public class IDCategory {
 	 * registered. If an IDCategory of this name is already registered, the
 	 * previously registered IDCategory is returned.
 	 * </p>
-	 * 
+	 *
 	 * @param categoryName
 	 *            the globally unique name of the category, may not be null
 	 * @return the newly registered IDCategory, or a previously registered
@@ -87,8 +89,7 @@ public class IDCategory {
 			return registeredCategories.get(categoryName);
 		}
 
-		Logger.log(new Status(Status.INFO, "IDCategory", "Registered new IDCategory "
-				+ categoryName + "."));
+		Logger.log(new Status(Status.INFO, "IDCategory", "Registered new IDCategory " + categoryName + "."));
 
 		IDCategory idCategory = new IDCategory(categoryName);
 		registeredCategories.put(categoryName, idCategory);
@@ -98,7 +99,7 @@ public class IDCategory {
 
 	/**
 	 * Returns all registered ID categories.
-	 * 
+	 *
 	 * @return all registered ID categories
 	 */
 	public static Collection<IDCategory> getAllRegisteredIDCategories() {
@@ -107,7 +108,7 @@ public class IDCategory {
 
 	/**
 	 * Returns the IDCategory associated with the specified name.
-	 * 
+	 *
 	 * @param categoryName
 	 *            the globally unique name of the category, may not be null
 	 * @return Returns null if no IDCategory of that name is specified.
@@ -117,12 +118,16 @@ public class IDCategory {
 		if (categoryName == null)
 			throw new IllegalArgumentException("categoryName was null");
 
-		IDCategory category = registeredCategories.get(categoryName);
+		return registeredCategories.get(categoryName);
+	}
 
-		if (category == null)
-			return null;
-
-		return category;
+	/**
+	 * @param dimensionIDCategoryName
+	 * @return
+	 */
+	public static IDCategory registerCategoryIfAbsent(String category) {
+		registeredCategories.putIfAbsent(category, new IDCategory(category));
+		return registeredCategories.get(category);
 	}
 
 	/**
@@ -211,7 +216,7 @@ public class IDCategory {
 	/**
 	 * Setter. Must be called after {@link #setDenomination(String)}, otherwise
 	 * it is overridden.
-	 * 
+	 *
 	 * @param denominationPlural
 	 *            setter, see {@link #denominationPlural}
 	 */
@@ -228,7 +233,7 @@ public class IDCategory {
 
 	/**
 	 * May be called more than once with the same IDType
-	 * 
+	 *
 	 * @param primaryMappingType
 	 *            setter, see {@link #primaryMappingType}
 	 */
@@ -295,7 +300,7 @@ public class IDCategory {
 
 	/**
 	 * Add an ID type to the category.
-	 * 
+	 *
 	 * @param idType
 	 *            the IDType to add
 	 */
@@ -305,7 +310,7 @@ public class IDCategory {
 
 	/**
 	 * Remove an ID type from the category.
-	 * 
+	 *
 	 * @param idType
 	 *            the IDType to remove
 	 */
@@ -315,7 +320,7 @@ public class IDCategory {
 
 	/**
 	 * Returns all ID types that are associated to this category.
-	 * 
+	 *
 	 * @return the idTypes, see {@link #idTypes}
 	 */
 	public ArrayList<IDType> getIdTypes() {
@@ -363,7 +368,7 @@ public class IDCategory {
 	/**
 	 * Calculates the probability of the specified id list to belong to every
 	 * {@link IDType} of this category.
-	 * 
+	 *
 	 * @param idList
 	 *            List of IDs the probabilities should be calculated for.
 	 * @param checkInternalIDTypes

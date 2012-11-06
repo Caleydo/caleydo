@@ -52,7 +52,7 @@ public class IDTypeInitializer {
 	 *            specified information about IDs
 	 * @return the {@link DataSetDescription} enriched by default values
 	 */
-	public static DataSetDescription initIDs(DataSetDescription dataSetDescription) {
+	public static synchronized DataSetDescription initIDs(DataSetDescription dataSetDescription) {
 		String dimensionIDCategoryName;
 		String dimensionIDTypeName;
 		String recordIDCategoryName;
@@ -115,15 +115,9 @@ public class IDTypeInitializer {
 		if (recordIDCategoryName == null)
 			recordIDCategoryName = recordIDTypeName;
 
-		IDCategory dimensionIDCategory = IDCategory.getIDCategory(dimensionIDCategoryName);
-		if (dimensionIDCategory == null) {
-			dimensionIDCategory = IDCategory.registerCategory(dimensionIDCategoryName);
-		}
+		IDCategory dimensionIDCategory = IDCategory.registerCategoryIfAbsent(dimensionIDCategoryName);
 
-		IDCategory recodIDCategory = IDCategory.getIDCategory(recordIDCategoryName);
-		if (recodIDCategory == null) {
-			recodIDCategory = IDCategory.registerCategory(recordIDCategoryName);
-		}
+		IDCategory recodIDCategory = IDCategory.registerCategoryIfAbsent(recordIDCategoryName);
 
 		IDType recordIDType = IDType.getIDType(recordIDTypeName);
 		if (recordIDType == null) {

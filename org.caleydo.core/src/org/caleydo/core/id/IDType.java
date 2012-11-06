@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,6 +21,8 @@ package org.caleydo.core.id;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.util.logging.Logger;
@@ -50,12 +52,12 @@ import org.eclipse.core.runtime.Status;
  * <p>
  * This class is also a singleton that manages all IDTypes.
  * </p>
- * 
+ *
  * @author Alexander Lex
  */
 public class IDType {
 
-	private static HashMap<String, IDType> registeredTypes = new HashMap<String, IDType>();
+	private static Map<String, IDType> registeredTypes = new HashMap<String, IDType>();
 
 	/**
 	 * The {@link IDCategory} of an {@link IDType} specifies to which category
@@ -98,7 +100,7 @@ public class IDType {
 
 	/**
 	 * Should be used for de-serialization only
-	 * 
+	 *
 	 * @param idCategory
 	 */
 	public void setIdCategory(IDCategory idCategory) {
@@ -107,7 +109,7 @@ public class IDType {
 
 	/**
 	 * Should be used for de-serialization only
-	 * 
+	 *
 	 * @param idCategory
 	 */
 	public void setDataType(EDataType dataType) {
@@ -137,7 +139,7 @@ public class IDType {
 	 * the typeName is already registered, a check is conducted whether the
 	 * registered and the new one match, and if they do, the previously
 	 * registered type is returned. Else an exception is thrown.
-	 * 
+	 *
 	 * @param typeName
 	 *            see {@link #typeName}
 	 * @param idCategory
@@ -152,44 +154,46 @@ public class IDType {
 			throw new IllegalStateException(
 					"IDTypes are allowed to be only either of type STRING or INT, but was: "
 							+ columnType);
-		IDType idType = registeredTypes.get(typeName);
-		if (idType != null) {
-			if (!idType.getIDCategory().equals(idCategory)
-					|| !idType.getColumnType().equals(columnType))
-				throw new IllegalStateException("Tried to register id type: " + typeName
-						+ ", Category: " + idCategory + ", ColumnType: " + columnType
-						+ "\n but was already registered with conflicting parameters. \n"
-						+ "Previously registered type: " + idType + ", Category: "
-						+ idType.getIDCategory() + ", ColumnType: "
-						+ idType.getColumnType());
-		} else {
-			idType = new IDType(typeName, idCategory, columnType);
-			registeredTypes.put(typeName, idType);
-			idCategory.addIDType(idType);
-			Logger.log(new Status(Status.INFO, "IDType", "Registering IDType " + typeName));
+		synchronized (IDType.class) {
+			IDType idType = registeredTypes.get(typeName);
+			if (idType != null) {
+				if (!idType.getIDCategory().equals(idCategory) || !idType.getColumnType().equals(columnType))
+					throw new IllegalStateException("Tried to register id type: " + typeName + ", Category: "
+							+ idCategory + ", ColumnType: " + columnType
+							+ "\n but was already registered with conflicting parameters. \n"
+							+ "Previously registered type: " + idType + ", Category: " + idType.getIDCategory()
+							+ ", ColumnType: " + idType.getColumnType());
+			} else {
+				idType = new IDType(typeName, idCategory, columnType);
+				registeredTypes.put(typeName, idType);
+				idCategory.addIDType(idType);
+				Logger.log(new Status(Status.INFO, "IDType", "Registering IDType " + typeName));
+			}
+			return idType;
 		}
-		return idType;
 	}
 
 	/**
 	 * Unregister an IDType. Checks whether the IDType is registered.
-	 * 
+	 *
 	 * @param idType
 	 *            see {@link #idType}
 	 */
 	public static void unregisterType(IDType idType) {
 		if (idType == null)
 			return;
-		if (registeredTypes.containsKey(idType.getTypeName())) {
-			Logger.log(new Status(Status.INFO, "IDType", "Unregistered IDType "
-					+ idType.getTypeName()));
-			registeredTypes.remove(idType.getTypeName());
-			idType.setTypeName("INVALID");
-			idType.getIDCategory().removeIDType(idType);
-		} else {
-			Logger.log(new Status(Status.INFO, "IDType", "Unable to unregister IDType "
-					+ idType.getTypeName() + " because it does not exist."));
+		synchronized (IDType.class) {
+			if (registeredTypes.containsKey(idType.getTypeName())) {
+				Logger.log(new Status(Status.INFO, "IDType", "Unregistered IDType " + idType.getTypeName()));
+				registeredTypes.remove(idType.getTypeName());
+				idType.setTypeName("INVALID");
+				idType.getIDCategory().removeIDType(idType);
+			} else {
+				Logger.log(new Status(Status.INFO, "IDType", "Unable to unregister IDType " + idType.getTypeName()
+						+ " because it does not exist."));
+			}
 		}
+
 	}
 
 	/**
@@ -197,8 +201,9 @@ public class IDType {
 	 * registered
 	 */
 	public static IDType getIDType(String typeName) {
-		IDType requestedType = registeredTypes.get(typeName);
-		return requestedType;
+		synchronized (IDType.class) {
+			return registeredTypes.get(typeName);
+		}
 	}
 
 	/**
@@ -253,7 +258,7 @@ public class IDType {
 	/**
 	 * Calculates the probability of the specified list of ids to belong to this
 	 * IDType.
-	 * 
+	 *
 	 * @param idList
 	 * @return Probability of affiliation as value from 0 to 1. 0 means that
 	 *         none of the specified ids matched this IDType, wheras 1 means

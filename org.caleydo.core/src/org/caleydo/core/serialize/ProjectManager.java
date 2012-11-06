@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -326,7 +327,7 @@ public final class ProjectManager {
 	 * @param fileName name of the file to save the project in.
 	 */
 	public static void save(String fileName) {
-		save(fileName, false);
+		save(fileName, false, DataDomainManager.get().getDataDomains());
 	}
 
 	/**
@@ -337,14 +338,14 @@ public final class ProjectManager {
 	 * @param onlyData if true, only the data is saved, else also the workbench
 	 *            is saved
 	 */
-	public static void save(String fileName, boolean onlyData) {
+	public static void save(String fileName, boolean onlyData, Collection<? extends IDataDomain> dataDomains) {
 		FileOperations.createDirectory(TEMP_PROJECT_FOLDER);
 		try {
 			if (!onlyData) {
 				saveWorkbenchData(TEMP_PROJECT_FOLDER);
 			}
 			savePluginData(TEMP_PROJECT_FOLDER);
-			saveData(TEMP_PROJECT_FOLDER);
+			saveData(TEMP_PROJECT_FOLDER, dataDomains);
 
 			ZipUtils.zipDirectory(TEMP_PROJECT_FOLDER, fileName);
 
@@ -386,7 +387,7 @@ public final class ProjectManager {
 
 		try {
 			savePluginData(RECENT_PROJECT_FOLDER);
-			saveData(RECENT_PROJECT_FOLDER);
+			saveData(RECENT_PROJECT_FOLDER, DataDomainManager.get().getDataDomains());
 			saveWorkbenchData(RECENT_PROJECT_FOLDER);
 		} catch (Exception e) {
 			log.error("Faild to auto-save project.", e);
@@ -421,7 +422,8 @@ public final class ProjectManager {
 
 	}
 
-	private static void saveData(String dirName) throws JAXBException, IOException {
+	private static void saveData(String dirName, Collection<? extends IDataDomain> toSave) throws JAXBException,
+			IOException {
 
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 		JAXBContext projectContext = serializationManager.getProjectContext();
@@ -431,8 +433,7 @@ public final class ProjectManager {
 		File dataDomainFile = new File(dirName + DATA_DOMAIN_FILE);
 		List<ADataDomain> dataDomains = new ArrayList<ADataDomain>();
 
-		for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
-
+		for (IDataDomain dataDomain : toSave) {
 			if (!dataDomain.isSerializeable())
 				continue;
 
