@@ -449,6 +449,23 @@ function renderControls( data, tumorIndex, element ) {
 		"html": "<i class=\"icon-retweet\"></i>"
 	}).appendTo(  "#control-button-group"  );
 	
+	$( "<a/>", {
+		"class": "btn btn-danger",
+		"rel": "tooltip",
+		"id": "macosx-java-issue-button",
+		"title": "There is a serious issue with Java 1.7 on Mac OS X. Please click for details.",
+		"html": "<i class=\"icon-warning-sign icon-white\"></i>&nbsp;Mac Users"
+	}).appendTo(  "#control-button-group"  );
+
+	$( "#macosx-java-issue-button").on( "click", function() {
+		bootbox.alert( "<h3>Issue with Java 1.7 on Mac OS X 10.7+</h3>" +
+		"<p>On 16 October 2012 Apple released a <a href=\"http://support.apple.com/kb/HT5493\">security patch and update called \"Java for OS X 2012-006\"</a> for Java on Mac OS X 10.7 and later.</p>" +
+		"<p>This update removed the Java 1.6 Runtime Enviroment provided by Apple and users were asked to replace an new Java 1.7 Runtime Enviroment provided by Oracle.</p>" +
+		"<p>Unfortunately, Caleydo StratomeX <i>currently does not work</i> with the Oracle Java 1.7 Runtime Environment for Mac OS X due to incompatibilities with 3rd party libraries used by StratomeX.</p>" + 
+		"<p>We are working hard to resolve this problem as soon as possible. Until a solution has been found, we advise against installing aforementioned Mac OS X update.</p>" 
+		);
+	});	
+	
 	$(".btn").tooltip({
 		'selector': '',
 		'placement': 'bottom'

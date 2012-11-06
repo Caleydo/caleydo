@@ -5,6 +5,10 @@
     shape-rendering: crispEdges;
 }
 
+.copyright {
+	margin-top: 20px;
+}
+
 .axis-label {
 	font-weight: normal;
     font-family: sans-serif;

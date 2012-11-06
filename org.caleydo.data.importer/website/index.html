@@ -127,10 +127,13 @@
 			 		<span class="selection-label">Tumor Type</span>
 					<span id="tumor-selection-container"></span>
 				</div>				
-				<div class="span6">
+				<div class="span3">
 			 		<small><b>&nbsp;</b></small><br>			 		
 					<span class="btn-group" id="control-button-group"></span>				
 				</div>				
+				<div class="span3">
+			 		<small><b>&nbsp;</b></small><br>			 		
+				</div>
 			</div>
 			<!--  			
 			<div class="row-fluid">
@@ -146,16 +149,13 @@
 	    			</p>   							
 	    			<p>
 			 		<div id="data-usage-notice-container">
-						<div class="alert alert-error">
+						<div class="alert">
 							<button type="button" class="close" data-dismiss="alert">x</button>
 							<b>Important Notice</b>&nbsp;Please be advised that downloading data from this site constitutes agreement to the <i>The Cancer Genome Atlas</i> policies and guidelines on <a href="http://cancergenome.nih.gov/abouttcga/policies/policiesguidelines">data usage and publications</a>.								
 						</div>
 					</div>	    				
 	    			</p>
-				</div>
-			</div> 		    
-			<div class="row-fluid">
-				<div class="span12">
+	    			
 					<div id="table-container"></div>    									
 				</div>							      
 			</div>							      
@@ -206,12 +206,105 @@
 			 	<div class="span3">
 			 		<p>
 						<b>
+							What is Firehose?
+						</b>			 			
+			 		</p>
+			 	</div>
+			 	<div class="span9">
+			 		<p>
+			 			Firehose is a data analysis pipeline developed and maintained by the <a href="http://gdac.broadinstitute.org">
+						TCGA Genome Data Analysis Center</a> at the Broad Institute. The <a href="http://gdac.broadinstitute.org">
+						GDAC website</a> and the <a href="https://confluence.broadinstitute.org/display/GDAC/FAQ">Firehose FAQ</a> provides important background information the operation of the system.
+			 		</p>
+			 	</div>
+			</div>
+			  		
+			<hr>
+	  			
+			<div class="row-fluid">
+			 	<div class="span3">
+			 		<p>
+						<b>
 							Where does the data come from?
 						</b>			 			
 			 		</p>
 			 	</div>
 			 	<div class="span9">
 			 		<p>
+			 			Data packages are generated monthly from the publicly available <a href="https://confluence.broadinstitute.org/display/GDAC/Dashboard-Analyses">Firehose "Data Analysis Run"</a> results.
+			 			Additional data is loaded from the corresponding <a href="https://confluence.broadinstitute.org/display/GDAC/Dashboard-Analyses">Firehose "Standardized Data Packages"</a>, which are also public. 
+			 		</p>
+			 	</div>
+			</div>
+
+			<hr>
+			
+			<div class="row-fluid">
+			 	<div class="span3">
+			 		<p>
+						<b>
+							How was the data analyzed?
+						</b>			 			
+			 		</p>
+			 	</div>
+			 	<div class="span9">
+			 		<p>
+			 			Due to the complexity of the Firehose analysis pipeline we refer to the Nozzle analysis reports we link to for each data package, i.e. for each tumor type in a given "Data Analysis Run".
+			 			As of Novemer 2012 we use results from the "MutSig" (Mutations), "GISTIC 2" (Copy Number), "Consensus Hierarchical Clustering" (mRNA, mRNA-seq, microRNA, microRNA-seq, Methylation, RPPA)
+			 			and "Consensus NMF Clustering"  (mRNA, mRNA-seq, microRNA, microRNA-seq, Methylation, RPPA) pipelines for our data packages.
+			 		</p>
+			 	</div>
+			</div>
+
+			<hr>
+
+			<div class="row-fluid">
+			 	<div class="span3">
+			 		<p>
+						<b>
+							What is the difference between m(icro)RNA and m(icro)RNA-seq?
+						</b>			 			
+			 		</p>
+			 	</div>
+			 	<div class="span9">
+			 		<p>
+			 			mRNA and microRNA data sets were generated using microarray technology, whereas mRNA-seq and microRNA-seq were generated using next-generation sequencing technology.  
+			 		</p>
+			 	</div>
+			</div>
+
+			<hr>
+						
+			<div class="row-fluid">
+			 	<div class="span3">
+			 		<p>
+						<b>
+							What is RPPA?
+						</b>			 			
+			 		</p>
+			 	</div>
+			 	<div class="span9">
+			 		<p>
+			 			RPPA stands for "Reverse Phase Protein Array". Some background about the technique is available on the website of the <a href="http://www.mdanderson.org/education-and-research/resources-for-professionals/scientific-resources/core-facilities-and-services/functional-proteomics-rppa-core/faq/functional-proteomics-reverse-phase-protein-array-core-facility-faq.html">MD Anderson Cancer Center website</a>.  
+			 		</p>
+			 	</div>
+			</div>
+
+			<hr>
+						
+			<div class="row-fluid">
+			 	<div class="span3">
+			 		<p>
+						<b>
+							What is the number of patient stratifications shown for each data type?
+						</b>			 			
+			 		</p>
+			 	</div>
+			 	<div class="span9">
+			 		<p>
+			 			This number usually represents the number of clustering results included in the data package for the given data type.
+			 			Note that for mutation and copy number data this number is in fact equal to the number of genes for this data type, since the mutation
+			 			and copy number status for each gene corresponds to a stratification of the patients (e.g. patients that have a mutation in a given gene and patients that have the wildtype). 
 			 		</p>
 			 	</div>
 			</div>
@@ -253,38 +346,6 @@
 
 			<hr>
 			
-			<div class="row-fluid">
-			 	<div class="span3">
-			 		<p>
-						<b>
-							How was the data analyzed?
-						</b>			 			
-			 		</p>
-			 	</div>
-			 	<div class="span9">
-			 		<p>
-			 		</p>
-			 	</div>
-			</div>
-
-			<hr>
-			
-			<div class="row-fluid">
-			 	<div class="span3">
-			 		<p>
-						<b>
-							What is Firehose?
-						</b>			 			
-			 		</p>
-			 	</div>
-			 	<div class="span9">
-			 		<p>
-			 		</p>
-			 	</div>
-			</div>
-			  		
-			<hr>
-	  			
 			<div class="row-fluid">
 			 	<div class="span12">
 			 		<h3>
@@ -364,6 +425,23 @@
 
 			<hr>
 
+			<div class="row-fluid">
+			 	<div class="span3">
+			 		<p>
+			 			<b>
+							What does "StratomeX" mean?			 						 				
+			 			</b>
+			 		</p>
+			 	</div>
+			 	<div class="span9">
+			 		<p>
+			 			"StratomeX" stands for "Stratome Explorer" and we define the "stratome" as the set of all possible patient stratifications with a particular type of cancer.  
+			 		</p>
+			 	</div>
+			</div>
+
+			<hr>
+
 
 			<div class="row-fluid">
 			 	<div class="span12">
@@ -382,7 +460,7 @@
 			 	</div>
 			 	<div class="span9">
 			 		<p>
-						Caleydo StratomeX is a collaboration between <a href="http://www.gehlenborg.com">Nils Gehlenborg</a> and <a href="http://compbio.med.harvard.edu">Peter Park</a> at Harvard Medical School,
+						Caleydo StratomeX and this website are a collaboration between <a href="http://www.gehlenborg.com">Nils Gehlenborg</a> and <a href="http://compbio.med.harvard.edu">Peter Park</a> at Harvard Medical School,
 						<a href="http://gvi.seas.harvard.edu/user/57">Alexander Lex</a> at the Harvard School of Engineering and Applied Sciences,
 						<a href="http://marc.streit.com">Marc Streit</a> and <a href="http://www.jku.at/cg/content/e48314/">Samuel Gratzl</a> at the Johannes Kepler University Linz and
 						<a href="http://www.icg.tugraz.at/Members/partl">Christian Partl</a> and <a href="http://www.icg.tugraz.at/Members/schmalstieg">Dieter Schmalstieg</a> at the Graz University of Technology.			 			
@@ -406,52 +484,6 @@
 			 		</p>
 			 	</div>
 			</div>
-
-			<div class="row-fluid">
-			 	<div class="span3">
-			 		<p>
-			 			<b>
-			 				
-			 			</b>
-			 		</p>
-			 	</div>
-			 	<div class="span9">
-			 		<p>
-			 			
-			 		</p>
-			 	</div>
-			</div>
-
-			<div class="row-fluid">
-			 	<div class="span3">
-			 		<p>
-			 			<b>
-			 				
-			 			</b>
-			 		</p>
-			 	</div>
-			 	<div class="span9">
-			 		<p>
-			 			
-			 		</p>
-			 	</div>
-			</div>
-
-			<div class="row-fluid">
-			 	<div class="span3">
-			 		<p>
-			 			<b>
-			 				
-			 			</b>
-			 		</p>
-			 	</div>
-			 	<div class="span9">
-			 		<p>
-			 			
-			 		</p>
-			 	</div>
-			</div>
-			
 			
   		</div>  	  		
   	</div>
@@ -460,7 +492,7 @@
 		<div class="span12">
         	<div class="copyright">
 				<p class="muted">
-					Copyright &copy; 2012 <a href="http://compbio.med.harvard.edu">Park Lab at Harvard Medical School</a> as part of the TCGA Research Network. All rights reserved.
+					Copyright &copy; 2012 <a href="http://compbio.med.harvard.edu">Park Lab at Harvard Medical School</a> as part of the TCGA Research Network. All rights reserved. &nbsp;&nbsp;&nbsp;<i class="icon-envelope"></i>&nbsp;<a href="mailto:nils@hms.harvard.edu">Contact</a>
 				</p>
 			</div>				
 		</div>	
@@ -477,6 +509,7 @@
     <script src="js/jquery/jquery-1.7.2.min.js"></script>
     <script src="js/underscore/underscore-min.js"></script>
     <script src="js/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/bootbox/bootbox.min.js"></script>    
     
 	<script src="js/tipsy/jquery.tipsy.js" type="text/javascript"></script>
  	
