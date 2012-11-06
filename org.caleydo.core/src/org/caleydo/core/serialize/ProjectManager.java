@@ -339,17 +339,18 @@ public final class ProjectManager {
 	 *            is saved
 	 */
 	public static void save(String fileName, boolean onlyData, Collection<? extends IDataDomain> dataDomains) {
-		FileOperations.createDirectory(TEMP_PROJECT_FOLDER);
+		String tempDir = dir("temp_project" + System.currentTimeMillis());
+		FileOperations.createDirectory(tempDir);
 		try {
 			if (!onlyData) {
-				saveWorkbenchData(TEMP_PROJECT_FOLDER);
+				saveWorkbenchData(tempDir);
 			}
-			savePluginData(TEMP_PROJECT_FOLDER);
-			saveData(TEMP_PROJECT_FOLDER, dataDomains);
+			savePluginData(tempDir);
+			saveData(tempDir, dataDomains);
 
-			ZipUtils.zipDirectory(TEMP_PROJECT_FOLDER, fileName);
+			ZipUtils.zipDirectory(tempDir, fileName);
 
-			FileOperations.deleteDirectory(TEMP_PROJECT_FOLDER);
+			FileOperations.deleteDirectory(tempDir);
 
 			String message = "Caleydo project successfully written to\n" + fileName;
 			log.info(message);
@@ -518,7 +519,11 @@ public final class ProjectManager {
 
 		ResourceSet resSet = new ResourceSetImpl();
 		Resource resource = resSet.createResource(URI.createFileURI(dirName + WORKBENCH_XMI));
-		resource.getContents().add((EObject)app);
+		EObject eapp = (EObject) app;
+		// EObject local = EcoreUtil.copy(eapp);
+		// resource.getContents().add(local);
+		resource.getContents().add(eapp);
+
 		try {
 			resource.save(Collections.EMPTY_MAP);
 			log.info("stored application.xmi");

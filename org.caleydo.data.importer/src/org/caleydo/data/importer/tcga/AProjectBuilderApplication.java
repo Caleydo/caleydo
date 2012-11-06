@@ -19,16 +19,6 @@
  *******************************************************************************/
 package org.caleydo.data.importer.tcga;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.id.IDMappingManager;
-import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 
@@ -118,55 +108,6 @@ public abstract class AProjectBuilderApplication<S extends Settings>
 		System.err.println(jsap.getUsage());
 		System.err.println();
 		System.exit(1);
-	}
-
-
-	protected void cleanUp(String xmlFilePath, String jnlpOutputPath, String jnlpFileName,
-			String jnlpRemoteOutputURL) {
-
-		DataDomainManager.get().unregisterAllDataDomains();
-
-		// Clean up
-		new File(xmlFilePath).delete();
-
-		try {
-			// Generate jnlp file from jnlp template
-			File tmpFile = new File(jnlpOutputPath + "_");
-			replaceStringInFile("CALEYDO_PROJECT_URL", jnlpRemoteOutputURL, new File("resources/caleydo.jnlp"), tmpFile);
-			replaceStringInFile("JNLP_NAME", jnlpFileName, tmpFile, new File(jnlpOutputPath));
-
-			tmpFile.delete();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		for (IDMappingManager idMappingManager : IDMappingManagerRegistry.get().getAllIDMappingManager()) {
-			idMappingManager.clearInternalMappingsAndIDTypes();
-		}
-	}
-
-	private static void replaceStringInFile(String oldstring, String newstring, File in, File out) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(in));
-		PrintWriter writer = new PrintWriter(new FileWriter(out));
-		String line = null;
-		while ((line = reader.readLine()) != null)
-			writer.println(line.replaceAll(oldstring, newstring));
-		reader.close();
-		writer.close();
-	}
-
-	protected final static boolean dumpToFile(CharSequence data, File file) {
-		FileWriter writer = null;
-		try {
-			writer = new FileWriter(file);
-			writer.append(data);
-			writer.close();
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
 	}
 
 	@Override

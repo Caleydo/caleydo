@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.tools.tar.TarEntry;
@@ -79,9 +81,12 @@ public abstract class AFirehoseProvider {
 
 			byte[] buf = new byte[4096];
 			int n;
-			out = new FileOutputStream(targetFile);
+			String tmpFile = targetFile.getAbsolutePath() + ".tmp";
+			out = new FileOutputStream(tmpFile);
 			while ((n = tarIn.read(buf, 0, 4096)) > -1)
 				out.write(buf, 0, n);
+			out.close();
+			Files.move(new File(tmpFile).toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			return targetFile;
 		} catch (Exception e) {
 			System.err.println("Unable to extract " + fileToExtract + " from " + archiveName + ". " + e.getMessage());

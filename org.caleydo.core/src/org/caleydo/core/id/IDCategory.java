@@ -197,6 +197,7 @@ public class IDCategory {
 		return categoryName;
 	}
 
+
 	/**
 	 * @param denomination
 	 *            setter, see {@link #denomination}

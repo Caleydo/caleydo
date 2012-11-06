@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -76,7 +77,7 @@ import org.jgrapht.graph.DefaultDirectedWeightedGraph;
  * and value are exchanged. If a reverse map is desired it is created and
  * maintained automatically.
  * </p>
- * 
+ *
  * <h2>Known Issues</h2>
  * <p>
  * Multi-mapping works in general, but it's not clear how it is preserved e.g.
@@ -85,15 +86,15 @@ import org.jgrapht.graph.DefaultDirectedWeightedGraph;
  * <p>
  * Code-resolved maps only work for special cases
  * </p>
- * 
+ *
  * <p>
  * TODO: implement search feature
  * </p>
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  * @author Christian Partl
- * 
+ *
  */
 public class IDMappingManager {
 
@@ -136,7 +137,7 @@ public class IDMappingManager {
 	 * </p>
 	 * <p>
 	 * </p>
-	 * 
+	 *
 	 * @param <K> Type of Keys of the map
 	 * @param <V> Type of Values of the map
 	 * @param fromIDType Specifies the source ID type.
@@ -148,7 +149,8 @@ public class IDMappingManager {
 	 *            fromIDType to toIDType should also be created from toIDType to
 	 *            fromIDType
 	 */
-	public <K, V> MappingType createMap(IDType fromIDType, IDType toIDType, boolean isMultiMap, boolean createReverseMap) {
+	public synchronized <K, V> MappingType createMap(IDType fromIDType, IDType toIDType, boolean isMultiMap,
+			boolean createReverseMap) {
 
 		MappingType mappingType = MappingType.registerMappingType(fromIDType, toIDType, isMultiMap, createReverseMap);
 		if (hashMappingType2Map.containsKey(mappingType))
@@ -193,9 +195,9 @@ public class IDMappingManager {
 
 	/**
 	 * Creates a reverse map to an already existing map.
-	 * 
+	 *
 	 * TODO: Check how multi-mapping is handled.
-	 * 
+	 *
 	 * @param <SrcType>
 	 * @param <DestType>
 	 * @param sourceMappingType Mapping type the reverse map shall be created
@@ -254,9 +256,9 @@ public class IDMappingManager {
 	/**
 	 * Method takes a map that contains identifier codes and creates a new
 	 * resolved codes. Resolving means mapping from code to internal ID.
-	 * 
+	 *
 	 * TODO: several cases are not handled
-	 * 
+	 *
 	 * @param <KeyType>
 	 * @param <ValueType>
 	 * @param originalMappingType Mapping type that specifies the already
@@ -443,7 +445,7 @@ public class IDMappingManager {
 
 	/**
 	 * Gets the map of the specified mapping type for manipulation.
-	 * 
+	 *
 	 * @param <KeyType>
 	 * @param <ValueType>
 	 * @param type Mapping type that identifies the map.
@@ -462,13 +464,13 @@ public class IDMappingManager {
 	 * Adds a mapping from fromID to toID to the map identified through
 	 * {@link MappingType}. If {@link MappingType#isHasReverseMap()} is true, a
 	 * corresponding entry to the reverse map is automatically added.
-	 * 
+	 *
 	 * @param mappingType the mapping type identifying the map for the supplied
 	 *            ids
 	 * @param fromID the source ID
 	 * @param toID the target ID
 	 */
-	public <KeyType, ValueType> void addMapping(MappingType mappingType, KeyType fromID, ValueType toID) {
+	public synchronized <KeyType, ValueType> void addMapping(MappingType mappingType, KeyType fromID, ValueType toID) {
 		@SuppressWarnings("unchecked") Map<KeyType, ValueType> map = (Map<KeyType, ValueType>) hashMappingType2Map
 				.get(mappingType);
 		map.put(fromID, toID);
@@ -518,7 +520,7 @@ public class IDMappingManager {
 	/**
 	 * Convenience wrapper of {@link #addMapping(MappingType, Object, Object)}
 	 * containing {@link IDType}s instead of a {@link MappingType}
-	 * 
+	 *
 	 * @param fromIDType
 	 * @param fromID
 	 * @param toIDType
@@ -531,12 +533,12 @@ public class IDMappingManager {
 	/**
 	 * Checks whether a mapping is possible from the specified source IDType to
 	 * the destination IDType.
-	 * 
+	 *
 	 * @param source Source IDType of the mapping.
 	 * @param destination Destination IDType of the mapping.
 	 * @return true, if a mapping is possible, false otherwise.
 	 */
-	public final boolean hasMapping(IDType source, IDType destination) {
+	public synchronized final boolean hasMapping(IDType source, IDType destination) {
 
 		if (source.equals(destination))
 			return true;
@@ -559,8 +561,8 @@ public class IDMappingManager {
 	 * Note that this method always tries to choose a path without
 	 * multi-mappings if possible.
 	 * </p>
-	 * 
-	 * 
+	 *
+	 *
 	 * @param <K> Type of the sourceID
 	 * @param <V> Type of the expected result of the mapping
 	 * @param source IDType of the source data
@@ -573,7 +575,7 @@ public class IDMappingManager {
 	 */
 	@SuppressWarnings("unchecked")
 	@Deprecated
-	public <K, V> V getID(IDType source, IDType destination, K sourceID) {
+	public synchronized <K, V> V getID(IDType source, IDType destination, K sourceID) {
 
 		if (source.equals(destination))
 			return (V) sourceID;
@@ -651,7 +653,7 @@ public class IDMappingManager {
 	 * IDType of the specified sourceID along a path of IDTypes where mappings
 	 * exist. If no such path is found, null is returned. The result will always
 	 * be a Set of the found mappings.
-	 * 
+	 *
 	 * @param <K> Type of the sourceID
 	 * @param <V> Type of the expected result of the mapping
 	 * @param source IDType of the source data
@@ -661,7 +663,7 @@ public class IDMappingManager {
 	 *         corresponding ID(s).
 	 */
 	@SuppressWarnings("unchecked")
-	public <K, V> Set<V> getIDAsSet(IDType source, IDType destination, K sourceID) {
+	public synchronized <K, V> Set<V> getIDAsSet(IDType source, IDType destination, K sourceID) {
 
 		Set<V> setResult = new HashSet<V>();
 
@@ -740,13 +742,13 @@ public class IDMappingManager {
 	/**
 	 * Determines whether the IDMappingManager holds a map that contains the
 	 * specified element of the specified type.
-	 * 
+	 *
 	 * @param <T>
 	 * @param idType IDType of the element.
 	 * @param element Element to be found.
 	 * @return True, if such an element is fund, false otherwise.
 	 */
-	public <T> boolean doesElementExist(IDType idType, T element) {
+	public synchronized <T> boolean doesElementExist(IDType idType, T element) {
 		if (!mappingGraph.containsVertex(idType))
 			return false;
 		Set<MappingType> edges = mappingGraph.edgesOf(idType);
@@ -765,10 +767,10 @@ public class IDMappingManager {
 	 * Returns all id types registered in this ID Mapping Manager. Consider
 	 * using {@link IDCategory#getIdTypes()} for a list of all registered
 	 * {@link IDType}s of a category instead.
-	 * 
+	 *
 	 * @return
 	 */
-	public HashSet<IDType> getIDTypes() {
+	public synchronized HashSet<IDType> getIDTypes() {
 		HashSet<IDType> idTypes = new HashSet<IDType>();
 		for (MappingType mappingType : hashMappingType2Map.keySet()) {
 			idTypes.add(mappingType.getFromIDType());
@@ -785,7 +787,7 @@ public class IDMappingManager {
 	/**
 	 * Clear all mapping types that have a from- or to-type that is internal.
 	 */
-	public void clearInternalMappingsAndIDTypes() {
+	public synchronized void clearInternalMappingsAndIDTypes() {
 
 		Object[] mappingTypes = hashMappingType2Map.keySet().toArray();
 		for (int i = 0; i < mappingTypes.length; i++) {
