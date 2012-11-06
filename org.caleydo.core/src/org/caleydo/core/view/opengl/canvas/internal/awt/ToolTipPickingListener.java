@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,42 +8,44 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.picking;
+package org.caleydo.core.view.opengl.canvas.internal.awt;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
+
 import org.caleydo.core.util.base.ILabelProvider;
-import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 
 /**
  * The ToolTipPickingListener automatically displays a tooltip with specified
  * text on mouse over.
- * 
+ *
  * @author Christian
- * 
+ *
  */
-public class ToolTipPickingListener extends APickingListener {
+final class ToolTipPickingListener extends APickingListener {
 
 	private static final int MOUSE_POSITION_TOOLTIP_SPACING_PIXELS = 20;
 
-	private AGLView view;
 	private ToolTipThread toolTipThread;
 
 	/**
@@ -86,9 +88,9 @@ public class ToolTipPickingListener extends APickingListener {
 
 	/**
 	 * Thread that shows the tooltip.
-	 * 
+	 *
 	 * @author Christian
-	 * 
+	 *
 	 */
 	private class ToolTipThread implements Runnable {
 		private ToolTipp toolTip;
@@ -123,17 +125,11 @@ public class ToolTipPickingListener extends APickingListener {
 
 	}
 
-	public ToolTipPickingListener(AGLView view) {
-		this.view = view;
-	}
-
-	public ToolTipPickingListener(AGLView view, String toolTipMessage) {
-		this.view = view;
+	public ToolTipPickingListener(String toolTipMessage) {
 		this.toolTipMessage = toolTipMessage;
 	}
 
-	public ToolTipPickingListener(AGLView view, ILabelProvider labelProvider) {
-		this.view = view;
+	public ToolTipPickingListener(ILabelProvider labelProvider) {
 		this.labelProvider = labelProvider;
 	}
 
@@ -210,28 +206,4 @@ public class ToolTipPickingListener extends APickingListener {
 			}
 		});
 	}
-
-	/**
-	 * @param toolTipMessage
-	 *            setter, see {@link #toolTipMessage}
-	 */
-	public void setToolTipMessage(String toolTipMessage) {
-		this.toolTipMessage = toolTipMessage;
-	}
-
-	/**
-	 * @return the toolTipMessage, see {@link #toolTipMessage}
-	 */
-	public String getToolTipMessage() {
-		return toolTipMessage;
-	}
-
-	/**
-	 * @param labelProvider
-	 *            setter, see {@link #labelProvider}
-	 */
-	public void setLabelProvider(ILabelProvider labelProvider) {
-		this.labelProvider = labelProvider;
-	}
-
 }

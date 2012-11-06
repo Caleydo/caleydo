@@ -22,6 +22,8 @@ package org.caleydo.core.view.opengl.canvas;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
+import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -57,10 +59,14 @@ public interface IGLCanvas {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString();
+
+	IPickingListener createTooltip(ILabelProvider label);
+
+	IPickingListener createTooltip(String label);
 
 }

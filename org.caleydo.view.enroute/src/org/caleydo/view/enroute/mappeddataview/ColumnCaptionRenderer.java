@@ -1,26 +1,28 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.selection.SelectionType;
@@ -30,13 +32,12 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.ToolTipPickingListener;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.enroute.EPickingType;
 
 /**
  * @author Alexander Lex
- * 
+ *
  */
 public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelProvider {
 
@@ -113,7 +114,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 
 	private void registerPickingListener() {
 		unregisterPickingListener();
-		
+
 		groupPickingListener = new APickingListener() {
 
 			@Override
@@ -158,8 +159,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 		parentView.addIDPickingListener(groupPickingListener,
 				EPickingType.SAMPLE_GROUP.name(), group.getID());
 
-		parentView.addIDPickingListener(new ToolTipPickingListener(parentView, this),
-				EPickingType.SAMPLE_GROUP.name(), group.getID());
+		parentView.addIDPickingTooltipListener(this, EPickingType.SAMPLE_GROUP.name(), group.getID());
 	}
 
 	private void unregisterPickingListener() {

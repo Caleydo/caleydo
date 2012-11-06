@@ -27,10 +27,12 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLFocusListener;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
@@ -82,6 +84,16 @@ final class SWTGLCanvas implements IGLCanvas {
 				fireDisplay(drawable);
 			}
 		});
+	}
+
+	@Override
+	public IPickingListener createTooltip(ILabelProvider label) {
+		return new SWTTooltipManager(canvas, label);
+	}
+
+	@Override
+	public IPickingListener createTooltip(String label) {
+		return new SWTTooltipManager(canvas, label);
 	}
 
 	/**

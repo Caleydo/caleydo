@@ -28,10 +28,12 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
 import javax.swing.SwingUtilities;
 
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLFocusListener;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -57,6 +59,28 @@ final class AWTGLCanvas implements IGLCanvas {
 	/*
 	 * (non-Javadoc)
 	 *
+	 * @see
+	 * org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory#createTooltip(org.caleydo.core.util.base.ILabelProvider
+	 * )
+	 */
+	@Override
+	public IPickingListener createTooltip(ILabelProvider label) {
+		return new ToolTipPickingListener(label);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory#createTooltip(java.lang.String)
+	 */
+	@Override
+	public IPickingListener createTooltip(String label) {
+		return new ToolTipPickingListener(label);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see
 	 * org.caleydo.core.view.opengl.canvas.IGLCanvas#addMouseListener(org.caleydo.core.view.opengl.canvas.IGLMouseListener
 	 * )

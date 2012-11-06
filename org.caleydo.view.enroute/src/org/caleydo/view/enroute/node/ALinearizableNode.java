@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,28 +8,29 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 /**
- * 
+ *
  */
 package org.caleydo.view.enroute.node;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.picking.ToolTipPickingListener;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.GLEnRoutePathway;
@@ -37,9 +38,9 @@ import org.caleydo.view.enroute.node.mode.ALinearizeableNodeMode;
 
 /**
  * Base class for all nodes that can be linearized.
- * 
+ *
  * @author Christian
- * 
+ *
  */
 public abstract class ALinearizableNode extends ANode implements ILabelProvider {
 
@@ -214,9 +215,7 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 
 	@Override
 	protected void registerPickingListeners() {
-		ToolTipPickingListener toolTipPickingListener = new ToolTipPickingListener(view, this);
-		view.addIDPickingListener(toolTipPickingListener,
-				EPickingType.LINEARIZABLE_NODE.name(), nodeId);
+		view.addIDPickingTooltipListener(this, EPickingType.LINEARIZABLE_NODE.name(), nodeId);
 	}
 
 	@Override
@@ -224,7 +223,7 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), nodeId);
 		mode.unregisterPickingListeners();
 	}
-	
+
 	public void update() {
 		unregisterPickingListeners();
 		registerPickingListeners();

@@ -48,7 +48,6 @@ import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.ToolTipPickingListener;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineCrossingRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer;
@@ -150,10 +149,7 @@ public class GLKaplanMeier extends ATableBasedView {
 				.getVirtualArray();
 
 		for (Group group : recordVA.getGroupList()) {
-			ToolTipPickingListener toolTipPickingListener = new ToolTipPickingListener(
-					this, group.getLabel());
-			addIDPickingListener(toolTipPickingListener, EPickingType.KM_CURVE.name(),
-					group.getID());
+			addIDPickingTooltipListener(group.getLabel(), EPickingType.KM_CURVE.name(), group.getID());
 		}
 
 		addTypePickingListener(new APickingListener() {

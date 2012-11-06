@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -26,7 +26,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -43,7 +45,6 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.ToolTipPickingListener;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -222,9 +223,8 @@ public class TableBasedDataNode
 				|| dataDomain.getLabel().toLowerCase().contains("mutation")) {
 			final boolean isCopyNumber = dataDomain.getLabel().toLowerCase().contains("copy");
 
-			view.addIDPickingListener(new ToolTipPickingListener(view, "To create a "
-					+ (isCopyNumber ? "copy number" : "mutation status")
-					+ " categorization for one gene use the Search view."), DATA_GRAPH_NODE_PICKING_TYPE, id);
+			view.addIDPickingTooltipListener("To create a " + (isCopyNumber ? "copy number" : "mutation status")
+					+ " categorization for one gene use the Search view.", DATA_GRAPH_NODE_PICKING_TYPE, id);
 
 			view.addIDPickingListener(new APickingListener() {
 
@@ -255,8 +255,8 @@ public class TableBasedDataNode
 			}, DATA_GRAPH_NODE_PICKING_TYPE, id);
 		}
 		if (dataDomain.getLabel().contains("Clinical")) {
-			view.addIDPickingListener(new ToolTipPickingListener(view,
-					"To add clinical data to StratomeX use context menu of a data column in StratomeX."),
+			view.addIDPickingTooltipListener(
+					"To add clinical data to StratomeX use context menu of a data column in StratomeX.",
 					DATA_GRAPH_NODE_PICKING_TYPE, id);
 		}
 	}

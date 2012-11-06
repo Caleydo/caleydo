@@ -42,6 +42,7 @@ import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.exception.ExceptionHandler;
 import org.caleydo.core.util.logging.Logger;
@@ -764,6 +765,14 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		pickingListeners.add(pickingListener);
 		map.put(pickedObjectID, pickingListeners);
 
+	}
+
+	public final void addIDPickingTooltipListener(String tooltip, String pickingType, int pickedObjectID) {
+		addIDPickingListener(this.getParentGLCanvas().createTooltip(tooltip), pickingType, pickedObjectID);
+	}
+
+	public final void addIDPickingTooltipListener(ILabelProvider tooltip, String pickingType, int pickedObjectID) {
+		addIDPickingListener(this.getParentGLCanvas().createTooltip(tooltip), pickingType, pickedObjectID);
 	}
 
 	/**
