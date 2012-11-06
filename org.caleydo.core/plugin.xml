@@ -270,7 +270,7 @@
             </command>
             <command
                   commandId="org.eclipse.ui.help.aboutAction"
-                  icon="resources/icons/caleydo16.gif"
+                  icon="resources/icons/caleydo_16.png"
                   label="About Caleydo"
                   style="push">
             </command>
