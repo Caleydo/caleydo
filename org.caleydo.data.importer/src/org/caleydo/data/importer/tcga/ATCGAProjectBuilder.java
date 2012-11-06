@@ -144,6 +144,8 @@ public abstract class ATCGAProjectBuilder extends RecursiveTask<ProjectDescripti
 				clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
 				dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 				matrixData.setDataProcessingDescription(dataProcessingDescription);
+				// here we turn on sampling to 1500
+				dataProcessingDescription.setNrRowsInSample(1500);
 
 				return matrixData;
 			}
@@ -151,7 +153,7 @@ public abstract class ATCGAProjectBuilder extends RecursiveTask<ProjectDescripti
 	}
 
 	protected Callable<DataSetDescription> setUpMutationData(final String archiveName,
-			final DataSetDescription template,
+			final DataSetDescription template, final IDSpecification sampleIDSpecification,
 			final AFirehoseProvider fileProvider) {
 		return new Callable<DataSetDescription>() {
 			@Override
@@ -173,15 +175,22 @@ public abstract class ATCGAProjectBuilder extends RecursiveTask<ProjectDescripti
 				mutationData.addParsingRule(parsingRule);
 				mutationData.setTransposeMatrix(true);
 
-				IDSpecification mutationSampleIDSpecification = new IDSpecification();
-				mutationSampleIDSpecification.setIdCategory("TCGA_SAMPLE");
-				mutationSampleIDSpecification.setIdType("TCGA_SAMPLE");
-				IDTypeParsingRules mutationIDTypeParsingRules = new IDTypeParsingRules();
-				mutationIDTypeParsingRules.setReplacementExpression("\\_", "-");
-				mutationIDTypeParsingRules.setSubStringExpression("^[a-z]+\\-");
-				mutationIDTypeParsingRules.setToLowerCase(true);
-				mutationSampleIDSpecification.setIdTypeParsingRules(mutationIDTypeParsingRules);
-				mutationData.setColumnIDSpecification(mutationSampleIDSpecification);
+				// IDSpecification mutationSampleIDSpecification = new
+				// IDSpecification();
+				// mutationSampleIDSpecification.setIdCategory("TCGA_SAMPLE");
+				// mutationSampleIDSpecification.setIdType("TCGA_SAMPLE");
+
+				// Mutation uses a different ID convention, the source looks like this:
+				// OV_20_0990
+				// IDTypeParsingRules mutationSampleIDTypeParsingRules = new
+				// IDTypeParsingRules();
+				// mutationSampleIDTypeParsingRules.setReplacementExpression("-",
+				// "\\_");
+				// mutationSampleIDTypeParsingRules.setSubStringExpression("^[a-z]+\\-");
+				// mutationSampleIDTypeParsingRules.setToLowerCase(true);
+				// mutationSampleIDSpecification
+				// .setIdTypeParsingRules(mutationSampleIDTypeParsingRules);
+				mutationData.setColumnIDSpecification(sampleIDSpecification);
 
 				IDSpecification geneIDSpecification = new IDSpecification();
 				geneIDSpecification.setIDTypeGene(true);

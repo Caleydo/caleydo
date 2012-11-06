@@ -55,6 +55,15 @@ public class DataProcessingDescription {
 	private ArrayList<ClusterConfiguration> rowClusterConfigurations;
 
 	/**
+	 * The number of columns we want to keep in the random sample. If null no
+	 * sampling is done.
+	 */
+	private Integer nrColumnsInSample = null;
+
+	/** Same as {@link #nrColumnsInSample} for rows */
+	private Integer nrRowsInSample = null;
+
+	/**
 	 * @param columnClusterConfigurations
 	 *            setter, see {@link #columnClusterConfigurations}
 	 */
@@ -103,6 +112,36 @@ public class DataProcessingDescription {
 			rowClusterConfigurations = new ArrayList<ClusterConfiguration>(3);
 		}
 		rowClusterConfigurations.add(rowClusterConfiguration);
+	}
+
+	/**
+	 * @return the nrColumnsInSample, see {@link #nrColumnsInSample}
+	 */
+	public Integer getNrColumnsInSample() {
+		return nrColumnsInSample;
+	}
+
+	/**
+	 * @param nrColumnsInSample
+	 *            setter, see {@link #nrColumnsInSample}
+	 */
+	public void setNrColumnsInSample(Integer nrColumnsInSample) {
+		this.nrColumnsInSample = nrColumnsInSample;
+	}
+
+	/**
+	 * @return the nrRowsInSample, see {@link #nrRowsInSample}
+	 */
+	public Integer getNrRowsInSample() {
+		return nrRowsInSample;
+	}
+
+	/**
+	 * @param nrRowsInSample
+	 *            setter, see {@link #nrRowsInSample}
+	 */
+	public void setNrRowsInSample(Integer nrRowsInSample) {
+		this.nrRowsInSample = nrRowsInSample;
 	}
 
 }

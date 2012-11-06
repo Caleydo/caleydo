@@ -26,6 +26,7 @@ import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ParsingRule;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
+import org.caleydo.datadomain.genetic.TCGADefinitions;
 
 /**
  * Generator class that writes the loading information of a the TCGA gene-referenced data
@@ -77,8 +78,7 @@ public class GeneDataTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 	public static final String OUTPUT_FILE_PATH = System.getProperty("user.home")
 			+ System.getProperty("file.separator") + "caleydo_data.xml";
 
-	public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-...\\-";
-
+	
 	private IDSpecification sampleIDSpecification;
 
 	/*
@@ -114,8 +114,10 @@ public class GeneDataTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		sampleIDSpecification.setIdCategory("TCGA_SAMPLE");
 		sampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
-		idTypeParsingRules.setReplacementExpression("\\.", "-");
-		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		idTypeParsingRules.setReplacementExpression(
+				TCGADefinitions.TCGA_REPLACEMENT_STRING,
+				TCGADefinitions.TCGA_REPLACING_EXPRESSIONS);
+		idTypeParsingRules.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
 		idTypeParsingRules.setDefault(true);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
 

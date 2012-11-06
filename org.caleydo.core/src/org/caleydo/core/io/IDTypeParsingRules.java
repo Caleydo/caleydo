@@ -82,8 +82,8 @@ public class IDTypeParsingRules {
 
 	/**
 	 * <p>
-	 * Regular expression specifying a string that is to be replaced with
-	 * {@link #replacementString} before storing and resolving the id.
+	 * Regular expression specifying a (list of) strings that is to be replaced
+	 * with {@link #replacementString} before storing and resolving the id.
 	 * {@link String#replaceAll(String, String)} is used to achieve this.
 	 * </p>
 	 * <p>
@@ -100,7 +100,7 @@ public class IDTypeParsingRules {
 	 * </p>
 	 */
 	@XmlElement
-	private String replacingExpression = null;
+	private String[] replacingExpressions = null;
 
 	/**
 	 * <p>
@@ -177,17 +177,17 @@ public class IDTypeParsingRules {
 	 * Set a replacement expression. Sets {@link #replacingExpression} and
 	 * {@link #replacementString}
 	 */
-	public void setReplacementExpression(String replacingExpression,
-			String replacementString) {
-		this.replacingExpression = replacingExpression;
+	public void setReplacementExpression(String replacementString,
+			String... replacingExpressions) {
+		this.replacingExpressions = replacingExpressions;
 		this.replacementString = replacementString;
 	}
 
 	/**
-	 * @return the replacingExpression, see {@link #replacingExpression}
+	 * @return the replacingExpressions, see {@link #replacingExpressions}
 	 */
-	public String getReplacingExpression() {
-		return replacingExpression;
+	public String[] getReplacingExpressions() {
+		return replacingExpressions;
 	}
 
 	/**

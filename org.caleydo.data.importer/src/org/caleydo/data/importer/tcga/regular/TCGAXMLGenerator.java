@@ -31,6 +31,7 @@ import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.data.importer.tcga.ATCGAProjectBuilder;
 import org.caleydo.data.importer.tcga.EDataSetType;
 import org.caleydo.data.importer.tcga.provider.AFirehoseProvider;
+import org.caleydo.datadomain.genetic.TCGADefinitions;
 
 
 /**
@@ -65,8 +66,11 @@ public class TCGAXMLGenerator extends ATCGAProjectBuilder {
 		sampleIDSpecification.setIdCategory("TCGA_SAMPLE");
 		sampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
-		idTypeParsingRules.setReplacementExpression("\\.", "-");
-		idTypeParsingRules.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		idTypeParsingRules.setReplacementExpression(
+				TCGADefinitions.TCGA_REPLACEMENT_STRING,
+				TCGADefinitions.TCGA_REPLACING_EXPRESSIONS);
+		idTypeParsingRules
+				.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
 		idTypeParsingRules.setToLowerCase(true);
 		idTypeParsingRules.setDefault(true);
 		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
@@ -125,8 +129,11 @@ public class TCGAXMLGenerator extends ATCGAProjectBuilder {
 		seqSampleIDSpecification.setIdCategory("TCGA_SAMPLE");
 		seqSampleIDSpecification.setIdType("TCGA_SAMPLE");
 		IDTypeParsingRules seqSampleIDTypeParsingRules = new IDTypeParsingRules();
-		seqSampleIDTypeParsingRules.setSubStringExpression("tcga\\-|\\-..\\z");
-		seqSampleIDTypeParsingRules.setReplacementExpression("\\.", "-");
+		seqSampleIDTypeParsingRules
+				.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
+		seqSampleIDTypeParsingRules.setReplacementExpression(
+				TCGADefinitions.TCGA_REPLACEMENT_STRING,
+				TCGADefinitions.TCGA_REPLACING_EXPRESSIONS);
 		seqSampleIDTypeParsingRules.setToLowerCase(true);
 		seqSampleIDSpecification.setIdTypeParsingRules(seqSampleIDTypeParsingRules);
 
@@ -207,7 +214,7 @@ public class TCGAXMLGenerator extends ATCGAProjectBuilder {
 
 		try {
 			tasks.add(adapt(setUpMutationData("Mutation_Significance", createTemplate(EDataSetType.mutation),
-					fileProvider)));
+					sampleIDSpecification, fileProvider)));
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
