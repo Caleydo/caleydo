@@ -24,6 +24,7 @@ import static org.caleydo.core.manager.GeneralManager.CALEYDO_HOME_PATH;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -63,9 +64,17 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.XMLMemento;
+import org.eclipse.ui.internal.ViewReference;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 
@@ -84,21 +93,22 @@ public final class ProjectManager {
 	private static String file(String... elems) {
 		StringBuilder b = new StringBuilder();
 		b.append(CALEYDO_HOME_PATH);
-		for(int i = 0; i < elems.length; ++i) {
+		for (int i = 0; i < elems.length; ++i) {
 			b.append(elems[i]);
-			if (i != elems.length-1)
+			if (i != elems.length - 1)
 				b.append(File.separator);
 		}
 		return b.toString();
 	}
+
 	private static String dir(String... elems) {
-		return file(elems)+File.separator;
+		return file(elems) + File.separator;
 	}
+
 	/**
 	 *
 	 *
-	 * full path to directory to temporarily store the projects file before
-	 * zipping
+	 * full path to directory to temporarily store the projects file before zipping
 	 */
 	private static final String TEMP_PROJECT_FOLDER = dir("temp_project");
 
@@ -109,7 +119,8 @@ public final class ProjectManager {
 	private static final String RECENT_PROJECT_FOLDER_TMP = dir("recent_project_tmp");
 
 	private static final String WORKBENCH_XMI = "workbench.xmi";
-	private static final String WORKBENCH_XMI_FILE = file(".metadata", ".plugins", "org.eclipse.e4.workbench", WORKBENCH_XMI);
+	private static final String WORKBENCH_XMI_FILE = file(".metadata", ".plugins", "org.eclipse.e4.workbench",
+			WORKBENCH_XMI);
 
 	/** file name of the data table file in project-folders */
 	private static final String DATA_TABLE_FILE = "data.csv";
@@ -123,20 +134,17 @@ public final class ProjectManager {
 	/** file name of the datadomain-file in project-folders */
 	private static final String BASIC_INFORMATION_FILE = "basic_information.xml";
 
-
 	/**
-	 * full path to directory to temporarily store the projects file before
-	 * zipping
+	 * full path to directory to temporarily store the projects file before zipping
 	 */
 	public static final String TEMP_PROJECT_ZIP_FOLDER = CALEYDO_HOME_PATH + "temp_load" + SEPARATOR;
-
 
 	/**
 	 * Loads the project from a specified zip-archive.
 	 *
-	 * @param fileName name of the file to load the project from
-	 * @return initialization data for the application from which it can restore
-	 *         itself
+	 * @param fileName
+	 *            name of the file to load the project from
+	 * @return initialization data for the application from which it can restore itself
 	 */
 	public static void loadProjectFromZIP(String fileName) {
 		FileOperations.deleteDirectory(TEMP_PROJECT_ZIP_FOLDER);
@@ -146,9 +154,9 @@ public final class ProjectManager {
 	/**
 	 * Loads the project from a directory
 	 *
-	 * @param dirName name of the directory to load the project from
-	 * @return initialization data for the application from which it can restore
-	 *         itself
+	 * @param dirName
+	 *            name of the directory to load the project from
+	 * @return initialization data for the application from which it can restore itself
 	 */
 	public static SerializationData loadProjectData(String dirName) {
 		try {
@@ -187,14 +195,13 @@ public final class ProjectManager {
 		Unmarshaller unmarshaller = serializationManager.getProjectContext().createUnmarshaller();
 
 		GeneralManager.get().setBasicInfo(
-				(BasicInformation) unmarshaller.unmarshal(GeneralManager.get()
-						.getResourceLoader()
+				(BasicInformation) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
 						.getResource(dirName + ProjectManager.BASIC_INFORMATION_FILE)));
 
 		DataDomainList dataDomainList;
 
-		dataDomainList = (DataDomainList) unmarshaller.unmarshal(GeneralManager.get()
-				.getResourceLoader().getResource(dirName + ProjectManager.DATA_DOMAIN_FILE));
+		dataDomainList = (DataDomainList) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
+				.getResource(dirName + ProjectManager.DATA_DOMAIN_FILE));
 
 		SerializationData serializationData = new SerializationData();
 
@@ -220,8 +227,7 @@ public final class ProjectManager {
 				String extendedDirName = dirName + dataDomain.getDataDomainID() + "_";
 
 				// Overwrite filename with new one in caleydo project (data.csv)
-				dataDomain.getDataSetDescription().setDataSourcePath(
-						extendedDirName + ProjectManager.DATA_TABLE_FILE);
+				dataDomain.getDataSetDescription().setDataSourcePath(extendedDirName + ProjectManager.DATA_TABLE_FILE);
 
 				DataDomainSerializationData dataInitializationData = new DataDomainSerializationData();
 				dataInitializationData.setDataDomain((ATableBasedDataDomain) dataDomain);
@@ -231,39 +237,27 @@ public final class ProjectManager {
 				GeneralManager.get().getSWTGUIManager()
 						.setProgressBarText("Loading groupings for: " + dataDomain.getLabel());
 
-				Set<String> recordPerspectiveIDs = ((ATableBasedDataDomain) dataDomain)
-						.getRecordPerspectiveIDs();
-				Set<String> dimensionPerspectiveIDs = ((ATableBasedDataDomain) dataDomain)
-						.getDimensionPerspectiveIDs();
+				Set<String> recordPerspectiveIDs = ((ATableBasedDataDomain) dataDomain).getRecordPerspectiveIDs();
+				Set<String> dimensionPerspectiveIDs = ((ATableBasedDataDomain) dataDomain).getDimensionPerspectiveIDs();
 
-				int nrPerspectives = recordPerspectiveIDs.size()
-						+ dimensionPerspectiveIDs.size();
+				int nrPerspectives = recordPerspectiveIDs.size() + dimensionPerspectiveIDs.size();
 				float progressBarFactor = 100f / nrPerspectives;
 				int perspectiveCount = 0;
 				for (String recordPerspectiveID : recordPerspectiveIDs) {
 
-					RecordPerspective recordPerspective = (RecordPerspective) unmarshaller
-							.unmarshal(GeneralManager
-									.get()
-									.getResourceLoader()
-									.getResource(
-											extendedDirName + recordPerspectiveID + ".xml"));
+					RecordPerspective recordPerspective = (RecordPerspective) unmarshaller.unmarshal(GeneralManager
+							.get().getResourceLoader().getResource(extendedDirName + recordPerspectiveID + ".xml"));
 					recordPerspective.setDataDomain((ATableBasedDataDomain) dataDomain);
-					recordPerspective.setIDType(((ATableBasedDataDomain) dataDomain)
-							.getRecordIDType());
+					recordPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getRecordIDType());
 					recordPerspectives.put(recordPerspectiveID, recordPerspective);
 
-					ClusterTree tree = loadTree(extendedDirName + recordPerspectiveID
-							+ "_tree.xml",
+					ClusterTree tree = loadTree(extendedDirName + recordPerspectiveID + "_tree.xml",
 							((ATableBasedDataDomain) dataDomain).getRecordIDType());
 					if (tree != null)
 						recordPerspective.setTree(tree);
 
-					GeneralManager
-							.get()
-							.getSWTGUIManager()
-							.setProgressBarPercentage(
-									(int) (progressBarFactor * perspectiveCount));
+					GeneralManager.get().getSWTGUIManager()
+							.setProgressBarPercentage((int) (progressBarFactor * perspectiveCount));
 					perspectiveCount++;
 				}
 
@@ -274,25 +268,17 @@ public final class ProjectManager {
 				for (String dimensionPerspectiveID : dimensionPerspectiveIDs) {
 
 					DimensionPerspective dimensionPerspective = (DimensionPerspective) unmarshaller
-							.unmarshal(GeneralManager
-									.get()
-									.getResourceLoader()
-									.getResource(
-											extendedDirName + dimensionPerspectiveID + ".xml"));
+							.unmarshal(GeneralManager.get().getResourceLoader()
+									.getResource(extendedDirName + dimensionPerspectiveID + ".xml"));
 					dimensionPerspective.setDataDomain((ATableBasedDataDomain) dataDomain);
-					dimensionPerspective.setIDType(((ATableBasedDataDomain) dataDomain)
-							.getDimensionIDType());
+					dimensionPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getDimensionIDType());
 					dimensionPerspectives.put(dimensionPerspectiveID, dimensionPerspective);
 
-					ClusterTree tree = loadTree(extendedDirName + dimensionPerspectiveID
-							+ "_tree.xml",
+					ClusterTree tree = loadTree(extendedDirName + dimensionPerspectiveID + "_tree.xml",
 							((ATableBasedDataDomain) dataDomain).getDimensionIDType());
 					dimensionPerspective.setTree(tree);
-					GeneralManager
-							.get()
-							.getSWTGUIManager()
-							.setProgressBarPercentage(
-									(int) (progressBarFactor * perspectiveCount));
+					GeneralManager.get().getSWTGUIManager()
+							.setProgressBarPercentage((int) (progressBarFactor * perspectiveCount));
 					perspectiveCount++;
 
 				}
@@ -308,9 +294,8 @@ public final class ProjectManager {
 	}
 
 	/**
-	 * Load trees as specified in loadDataParameters and write them to the
-	 * table. FIXME: this is not aware of possibly alternative
-	 * {@link RecordVAType}s or {@link DimensionVAType}s
+	 * Load trees as specified in loadDataParameters and write them to the table. FIXME: this is not aware of possibly
+	 * alternative {@link RecordVAType}s or {@link DimensionVAType}s
 	 *
 	 * @param loadDataParameters
 	 * @param set
@@ -324,19 +309,19 @@ public final class ProjectManager {
 	/**
 	 * Saves the project into a specified zip-archive.
 	 *
-	 * @param fileName name of the file to save the project in.
+	 * @param fileName
+	 *            name of the file to save the project in.
 	 */
 	public static void save(String fileName) {
 		save(fileName, false, DataDomainManager.get().getDataDomains());
 	}
 
 	/**
-	 * Saves the data and optionally also the workbench (i.e., view states,
-	 * etc.)
+	 * Saves the data and optionally also the workbench (i.e., view states, etc.)
 	 *
 	 * @param fileName
-	 * @param onlyData if true, only the data is saved, else also the workbench
-	 *            is saved
+	 * @param onlyData
+	 *            if true, only the data is saved, else also the workbench is saved
 	 */
 	public static void save(String fileName, boolean onlyData, Collection<? extends IDataDomain> dataDomains) {
 		String tempDir = dir("temp_project" + System.currentTimeMillis());
@@ -449,14 +434,12 @@ public final class ProjectManager {
 				String sourceFileName = dataSetDescription.getDataSourcePath();
 
 				if (sourceFileName.contains(RECENT_PROJECT_FOLDER))
-					sourceFileName = sourceFileName.replace(RECENT_PROJECT_FOLDER,
-							RECENT_PROJECT_FOLDER_TMP);
+					sourceFileName = sourceFileName.replace(RECENT_PROJECT_FOLDER, RECENT_PROJECT_FOLDER_TMP);
 
 				try {
-					FileOperations.writeInputStreamToFile(dataDomainFileName, GeneralManager
-							.get().getResourceLoader().getResource(sourceFileName));
-				}
-				catch (FileNotFoundException e) {
+					FileOperations.writeInputStreamToFile(dataDomainFileName, GeneralManager.get().getResourceLoader()
+							.getResource(sourceFileName));
+				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 					throw new IllegalStateException("Error saving project file", e);
 				}
@@ -464,11 +447,13 @@ public final class ProjectManager {
 				ATableBasedDataDomain tableBasedDataDomain = (ATableBasedDataDomain) dataDomain;
 
 				for (String recordPerspectiveID : tableBasedDataDomain.getTable().getRecordPerspectiveIDs()) {
-					saveDataPerspective(marshaller, extendedDirName, recordPerspectiveID, tableBasedDataDomain.getTable().getRecordPerspective(recordPerspectiveID));
+					saveDataPerspective(marshaller, extendedDirName, recordPerspectiveID, tableBasedDataDomain
+							.getTable().getRecordPerspective(recordPerspectiveID));
 				}
 
 				for (String dimensionPerspectiveID : tableBasedDataDomain.getTable().getDimensionPerspectiveIDs()) {
-					saveDataPerspective(marshaller, extendedDirName, dimensionPerspectiveID, tableBasedDataDomain.getTable().getDimensionPerspective(dimensionPerspectiveID));
+					saveDataPerspective(marshaller, extendedDirName, dimensionPerspectiveID, tableBasedDataDomain
+							.getTable().getDimensionPerspective(dimensionPerspectiveID));
 				}
 
 			}
@@ -485,14 +470,14 @@ public final class ProjectManager {
 	}
 
 	/**
-	 * Saves the {@link VirtualArray} of the given type. The filename is created
-	 * from the type.
+	 * Saves the {@link VirtualArray} of the given type. The filename is created from the type.
 	 *
-	 * @param dir directory to save the {@link VirtualArray} in.
-	 * @param useCase {@link IDataDomain} to retrieve the {@link VirtualArray}
-	 *            from.
-	 * @param perspectiveID type of the virtual array within the given
-	 *            {@link IDataDomain} .
+	 * @param dir
+	 *            directory to save the {@link VirtualArray} in.
+	 * @param useCase
+	 *            {@link IDataDomain} to retrieve the {@link VirtualArray} from.
+	 * @param perspectiveID
+	 *            type of the virtual array within the given {@link IDataDomain} .
 	 */
 	private static void saveDataPerspective(Marshaller marshaller, String dir, String perspectiveID,
 			AVariablePerspective<?, ?, ?, ?> perspective) throws JAXBException, IOException {
@@ -508,27 +493,68 @@ public final class ProjectManager {
 	}
 
 	/**
-	 * Saves all the view's serialized forms to the given directory. The
-	 * directory must exist.
+	 * Saves all the view's serialized forms to the given directory. The directory must exist.
 	 *
-	 * @param dirName name of the directory to save the views to.
+	 * @param dirName
+	 *            name of the directory to save the views to.
 	 */
 	private static void saveWorkbenchData(String dirName) {
-		// find the model
-		MApplication app = (MApplication) PlatformUI.getWorkbench().getService(MApplication.class);
+		// see https://bugs.eclipse.org/bugs/show_bug.cgi?id=2369
+		// -> if this is implemented than a much cleaner solution can be used to persist the application model
 
+		IWorkbench workbench = PlatformUI.getWorkbench();
+		MApplication app = (MApplication) workbench.getService(MApplication.class);
+
+		// persist the views in their models
+		IWorkbenchWindow windows[] = workbench.getWorkbenchWindows();
+		for (int i = 0; i < windows.length; i++) {
+			IWorkbenchPage pages[] = windows[i].getPages();
+			for (int j = 0; j < pages.length; j++) {
+				IViewReference[] references = pages[j].getViewReferences();
+				for (int k = 0; k < references.length; k++) {
+					if (references[k].getView(false) != null) {
+						try {
+							persistView(((ViewReference) references[k]));
+						} catch (IOException e) {
+							log.warn("cant persist view: " + references[k].getId());
+						}
+					}
+				}
+			}
+		}
+
+		EObject local = EcoreUtil.copy((EObject) app); // create a local copy
+		MApplication localapp = (MApplication) local;
+		localapp.getMenuContributions().clear(); // manipulate like in the original
+		localapp.getSelectedElement().setMainMenu(null);
+
+		// dump the model
 		ResourceSet resSet = new ResourceSetImpl();
 		Resource resource = resSet.createResource(URI.createFileURI(dirName + WORKBENCH_XMI));
-		EObject eapp = (EObject) app;
-		// EObject local = EcoreUtil.copy(eapp);
-		// resource.getContents().add(local);
-		resource.getContents().add(eapp);
 
+		resource.getContents().add(local);
 		try {
 			resource.save(Collections.EMPTY_MAP);
 			log.info("stored application.xmi");
 		} catch (IOException e) {
 			log.error("can't persist application.xmi", e);
+		}
+	}
+
+	/**
+	 * persist the given view see {@link ViewReference#persist}
+	 *
+	 * @param viewReference
+	 * @throws IOException
+	 */
+	private static void persistView(ViewReference viewReference) throws IOException {
+		IViewPart view = viewReference.getView(false);
+		if (view != null) {
+			XMLMemento root = XMLMemento.createWriteRoot("view"); //$NON-NLS-1$
+			view.saveState(root);
+			StringWriter writer = new StringWriter();
+			root.save(writer);
+			viewReference.getModel().getPersistedState().put("memento", writer.toString());
 		}
 	}
 
@@ -543,7 +569,8 @@ public final class ProjectManager {
 				log.info("Could not load workbench data from " + workbenchFile);
 				return;
 			}
-			// Create .metadata folder if it does not exist yet. This is the case when Caleydo is started the first time.
+			// Create .metadata folder if it does not exist yet. This is the case when Caleydo is started the first
+			// time.
 			File f = target.getParentFile();
 			if (!f.exists()) {
 				f.mkdirs();
