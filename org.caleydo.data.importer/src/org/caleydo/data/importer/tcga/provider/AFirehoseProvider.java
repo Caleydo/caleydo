@@ -48,7 +48,7 @@ public abstract class AFirehoseProvider {
 
 
 	protected static String clean(String id) {
-		return id.replace("_", "");
+		return id == null ? null : id.replace("_", "");
 	}
 
 	public abstract File extractAnalysisRunFile(String fileName, String pipelineName, int level);

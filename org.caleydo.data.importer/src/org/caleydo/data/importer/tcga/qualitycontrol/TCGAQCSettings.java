@@ -5,7 +5,6 @@ import org.caleydo.data.importer.tcga.Settings;
 
 public class TCGAQCSettings extends Settings {
 	private String[] analysisRuns = null;
-	private String[] dataRuns = null;
 	private String tcgaServerURL = "";
 	private boolean sampleGenes = true;
 
@@ -22,17 +21,8 @@ public class TCGAQCSettings extends Settings {
 		return analysisRuns[i];
 	}
 
-	public String[] getDataRuns() {
-		return dataRuns;
-	}
-
-	public String getDataRun(int i) {
-		return dataRuns[i];
-	}
-
-	public void setRuns(String[] analysisRuns, String[] dataRuns) {
+	public void setRuns(String[] analysisRuns) {
 		this.analysisRuns = analysisRuns;
-		this.dataRuns = dataRuns;
 	}
 
 

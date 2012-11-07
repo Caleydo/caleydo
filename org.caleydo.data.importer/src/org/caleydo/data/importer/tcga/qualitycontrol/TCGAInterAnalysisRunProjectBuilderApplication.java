@@ -50,16 +50,6 @@ public class TCGAInterAnalysisRunProjectBuilderApplication
 			+ GeneralManager.VERSION + "/";
 	public static String DEFAULT_OUTPUT_FOLDER_PATH = GeneralManager.CALEYDO_HOME_PATH + "TCGA/";
 
-	protected String[] tumorTypes = null;
-	protected String[] analysisRuns = null;
-	protected String[] dataRuns = null;
-	protected String tcgaServerURL = "";
-	protected boolean sampleGenes = true;
-
-	protected String outputPath = "";
-
-	protected StringBuilder reportJSONGenomicData = new StringBuilder();
-
 	@Override
 	protected TCGAQCSettings createSettings() {
 		return new TCGAQCSettings();
@@ -86,8 +76,8 @@ public class TCGAInterAnalysisRunProjectBuilderApplication
 	@Override
 	protected void extractArguments(JSAPResult config, TCGAQCSettings settings, JSAP jsap) {
 		super.extractArguments(config, settings, jsap);
-		analysisRuns = config.getStringArray("analysis_runs");
-		tcgaServerURL = config.getString("server");
+		settings.setRuns(config.getStringArray("analysis_runs"));
+		settings.setTcgaServerURL(config.getString("server"));
 	}
 
 	@Override

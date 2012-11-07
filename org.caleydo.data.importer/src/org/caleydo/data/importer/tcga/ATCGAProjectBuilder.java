@@ -67,7 +67,7 @@ public abstract class ATCGAProjectBuilder extends RecursiveTask<ProjectDescripti
 			String hierarchicalArchiveName, String matrixFileName, IDSpecification rowIDSpecification,
 			IDSpecification columnIDSpecification, boolean isGeneIdType, DataSetDescription template,
 			AFirehoseProvider fileProvider) {
-		return setUpClusteredMatrixData(cnmfArchiveName, hierarchicalArchiveName, cnmfArchiveName,
+		return setUpClusteredMatrixData(cnmfArchiveName, hierarchicalArchiveName, cnmfArchiveName, matrixFileName,
  rowIDSpecification,
 				columnIDSpecification, isGeneIdType, template, fileProvider);
 	}

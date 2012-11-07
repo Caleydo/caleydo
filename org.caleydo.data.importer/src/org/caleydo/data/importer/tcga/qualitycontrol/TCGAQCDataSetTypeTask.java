@@ -11,9 +11,10 @@ import org.caleydo.data.importer.tcga.EDataSetType;
 import org.caleydo.data.importer.tcga.utils.IOUtils;
 
 public class TCGAQCDataSetTypeTask extends RecursiveAction {
+	private static final long serialVersionUID = -5114565876888372304L;
 
 	private final EDataSetType datasetType;
-	private TCGAQCSettings settings;
+	private final TCGAQCSettings settings;
 
 	public TCGAQCDataSetTypeTask(EDataSetType datasetType, TCGAQCSettings settings) {
 		this.datasetType = datasetType;
@@ -26,7 +27,7 @@ public class TCGAQCDataSetTypeTask extends RecursiveAction {
 		for (String tumorType : settings.getTumorTypes()) {
 			tasks.add(new TCGAQCTask(tumorType, datasetType, settings));
 		}
-		invokeAll(tasks);
+		invokeAll(tasks); // fork and wait
 
 		StringBuilder b = new StringBuilder();
 		for (TCGAQCTask task : tasks) {
