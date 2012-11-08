@@ -23,15 +23,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinTask;
+import java.util.concurrent.RecursiveTask;
 
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.IDSpecification;
-import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ProjectDescription;
-import org.caleydo.data.importer.tcga.ATCGAProjectBuilder;
 import org.caleydo.data.importer.tcga.EDataSetType;
+import org.caleydo.data.importer.tcga.TCGADataSetBuilder;
 import org.caleydo.data.importer.tcga.provider.AFirehoseProvider;
-import org.caleydo.datadomain.genetic.TCGADefinitions;
 
 /**
  * Generator class that writes the loading information of a series of TCGA data
@@ -41,104 +39,33 @@ import org.caleydo.datadomain.genetic.TCGADefinitions;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class TCGAInterAnalysisRunXMLGenerator extends ATCGAProjectBuilder {
-
-	public static final String TCGA_ID_SUBSTRING_REGEX = "tcga\\-|\\-...\\-";
+public class TCGAInterAnalysisRunXMLGenerator extends RecursiveTask<ProjectDescription> {
+	private static final long serialVersionUID = -7056378841113169134L;
 
 	private final EDataSetType dataSetType;
 	private final TCGAQCSettings settings;
+	private final boolean loadSampledGenes = true;
+
+	private final String tumorAbbreviation;
 
 	public TCGAInterAnalysisRunXMLGenerator(String tumorAbbreviation, EDataSetType dataSetType, TCGAQCSettings settings) {
-		super(tumorAbbreviation);
 		this.settings = settings;
+		this.tumorAbbreviation = tumorAbbreviation;
 		this.dataSetType = dataSetType;
 	}
 
 	@Override
 	public ProjectDescription compute() {
-		ProjectDescription projectDescription = new ProjectDescription();
-
-		IDSpecification sampleIDSpecification = new IDSpecification();
-		sampleIDSpecification.setIdCategory("TCGA_SAMPLE");
-		sampleIDSpecification.setIdType("TCGA_SAMPLE");
-		IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
-		idTypeParsingRules.setReplacementExpression(
-				TCGADefinitions.TCGA_REPLACEMENT_STRING,
-				TCGADefinitions.TCGA_REPLACING_EXPRESSIONS);
-		idTypeParsingRules
-				.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
-		idTypeParsingRules.setToLowerCase(true);
-		idTypeParsingRules.setDefault(true);
-		sampleIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
-
-		// TCGA SAMPLE IDs look different for seq data (an "-01" is attached)
-		IDSpecification seqSampleIDSpecification = new IDSpecification();
-		seqSampleIDSpecification.setIdCategory("TCGA_SAMPLE");
-		seqSampleIDSpecification.setIdType("TCGA_SAMPLE");
-		IDTypeParsingRules seqSampleIDTypeParsingRules = new IDTypeParsingRules();
-		seqSampleIDTypeParsingRules
-				.setSubStringExpression(TCGADefinitions.TCGA_ID_SUBSTRING_REGEX);
-		seqSampleIDTypeParsingRules.setReplacementExpression(
-				TCGADefinitions.TCGA_REPLACEMENT_STRING,
-				TCGADefinitions.TCGA_REPLACING_EXPRESSIONS);
-		seqSampleIDTypeParsingRules.setToLowerCase(true);
-		seqSampleIDSpecification.setIdTypeParsingRules(seqSampleIDTypeParsingRules);
-
-		IDSpecification rowIDSpecification = createIDSpecification(dataSetType); // uses genes
-
 		Collection<ForkJoinTask<DataSetDescription>> tasks = new ArrayList<>();
 
 		for (String analysisRun : settings.getAnalysisRuns()) {
 			AFirehoseProvider fileProvider = settings.createFirehoseProvider(tumorAbbreviation, analysisRun);
 
-			DataSetDescription datasetDescription = createTemplate(analysisRun, dataSetType);
-			try {
-				switch (dataSetType) {
-				case mRNA:
-					tasks.add(adapt(setUpClusteredMatrixData("mRNA_Clustering_CNMF",
-							"mRNA_Clustering_Consensus", "outputprefix.expclu.gct", analysisRun, rowIDSpecification,
- sampleIDSpecification, true,
-							datasetDescription, fileProvider)));
-					break;
-				case mRNAseq:
-					tasks.add(adapt(setUpClusteredMatrixData("mRNAseq_Clustering_CNMF",
-							"mRNAseq_Clustering_Consensus", "outputprefix.expclu.gct", rowIDSpecification,
- seqSampleIDSpecification, true,
-							datasetDescription, fileProvider)));
-
-					break;
-				case microRNA:
-					tasks.add(adapt(setUpClusteredMatrixData("miR_Clustering_CNMF", "miR_Clustering_Consensus",
-							"cnmf.normalized.gct", rowIDSpecification, sampleIDSpecification, false,
-							datasetDescription, fileProvider)));
-
-					break;
-				case microRNAseq:
-					tasks.add(adapt(setUpClusteredMatrixData("miRseq_Clustering_CNMF",
-							"miRseq_Clustering_Consensus", "cnmf.normalized.gct", rowIDSpecification,
- seqSampleIDSpecification, false,
-							datasetDescription, fileProvider)));
-
-					break;
-				case methylation:
-					tasks.add(adapt(setUpClusteredMatrixData("Methylation_Clustering_CNMF",
-							"Methylation_Clustering_Consensus", "cnmf.normalized.gct", rowIDSpecification,
-							sampleIDSpecification, true, datasetDescription, fileProvider)));
-
-					break;
-				case RPPA:
-					tasks.add(adapt(setUpClusteredMatrixData("RPPA_Clustering_CNMF",
-							"RPPA_Clustering_Consensus", "cnmf.normalized.gct", rowIDSpecification,
- sampleIDSpecification, false,
-							datasetDescription, fileProvider)));
-
-					break;
-				}
-			}
-			catch (Exception e) {
-				System.err.println(e.getMessage());
-			}
+			tasks.add(TCGADataSetBuilder.create(tumorAbbreviation, dataSetType, analysisRun, fileProvider,
+					loadSampledGenes));
 		}
+
+		ProjectDescription projectDescription = new ProjectDescription();
 
 		for (ForkJoinTask<DataSetDescription> task : invokeAll(tasks)) {
 			try {
@@ -147,29 +74,11 @@ public class TCGAInterAnalysisRunXMLGenerator extends ATCGAProjectBuilder {
 					continue;
 				projectDescription.add(ds);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.println(e.getMessage());
 			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.println(e.getMessage());
 			}
 		}
 		return projectDescription;
-	}
-
-	private static IDSpecification createIDSpecification(EDataSetType dataSetType) {
-		switch (dataSetType) {
-		case mRNA:
-		case mRNAseq:
-		case RPPA:
-			return null;
-		case microRNA:
-		case microRNAseq:
-			return new IDSpecification("microRNA", "microRNA");
-		case methylation:
-			return new IDSpecification("protein", "protein");
-		default:
-			return null;
-		}
 	}
 }

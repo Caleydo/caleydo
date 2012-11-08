@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,12 +21,14 @@ package org.caleydo.core.data.perspective.variable;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.FilterManager;
@@ -66,7 +68,7 @@ import org.eclipse.core.runtime.Status;
  * this perspective.
  * </ol>
  * </p>
- * 
+ *
  * @author Alexander Lex
  * @param <VA>
  * @param <GroupType>
@@ -229,7 +231,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	/**
 	 * Returns the automatically generated globally unique
 	 * {@link #perspectiveID} of this perspective
-	 * 
+	 *
 	 * @return
 	 */
 	public String getPerspectiveID() {
@@ -256,7 +258,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	/**
 	 * Creates a new virtual array for this perspective and resets all other
 	 * associated parameters (clusterSizes, contentTree, etc.)
-	 * 
+	 *
 	 * @param indices
 	 *            can be a filled ArrayList, an empty ArrayList for empty
 	 *            initialization or null for empty initialization
@@ -267,7 +269,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 
 	/**
 	 * Returns a reference to the virtual array of this perspective
-	 * 
+	 *
 	 * @return
 	 */
 	@XmlElementRef
@@ -286,7 +288,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	 * all leafs as children of the root (the default tree). You can check
 	 * whether the tree is the default tree using {@link #isTreeDefaultTree()}.
 	 * </p>
-	 * 
+	 *
 	 * @return
 	 */
 	@XmlTransient
@@ -299,7 +301,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 
 	/**
 	 * Set a cluster tree for the virtual array.
-	 * 
+	 *
 	 * @param tree
 	 */
 	@Deprecated
@@ -310,7 +312,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 
 	/**
 	 * Sets a new virtual array to this perspective.
-	 * 
+	 *
 	 * @param virtualArray
 	 */
 	@Deprecated
@@ -333,7 +335,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	/**
 	 * Returns the {@link #rootNode} of the tree, which can be different from
 	 * {@link ClusterTree#getRoot()} - it can be a sub-tree only.
-	 * 
+	 *
 	 * @return
 	 */
 	public ClusterNode getTreeRoot() {
@@ -348,7 +350,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	/**
 	 * Returns the {@link FilterManager} associated with this perspective. Every
 	 * perspective has it's own unique filter manager.
-	 * 
+	 *
 	 * @return
 	 */
 	public FilterManagerType getFilterManager() {
@@ -360,7 +362,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	/**
 	 * Sets the delta to the virtual array and resets other related data
 	 * (groups, trees) accordingly.
-	 * 
+	 *
 	 * @param delta
 	 */
 	public void setVADelta(DeltaType delta) {
@@ -378,7 +380,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	 * <p>
 	 * If null is passed, an empty perspective is created.
 	 * </p>
-	 * 
+	 *
 	 * @param data
 	 */
 	@SuppressWarnings("unchecked")
@@ -571,9 +573,9 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 
 	@Override
 	public String toString() {
-		return perspectiveID + ", size: " + virtualArray.size();
+		return perspectiveID + ", size: " + (virtualArray == null ? -1 : virtualArray.size());
 	}
-	
+
 	@Override
 	public void setLabel(String label) {
 		this.label = label;

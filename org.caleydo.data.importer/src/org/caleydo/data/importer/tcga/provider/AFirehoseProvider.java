@@ -1,8 +1,10 @@
 package org.caleydo.data.importer.tcga.provider;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -59,17 +61,27 @@ public abstract class AFirehoseProvider {
 		return FIREHOSE_URL_PREFIX + "analyses__" + analysisRun + "/reports/cancer/" + tumortype + "/";
 	}
 
-	protected File extractFileFromTarGzArchive(URL in, String fileToExtract, File outputDirectory, String archiveName) {
+	protected File extractFileFromTarGzArchive(URL inUrl, String fileToExtract, File outputDirectory, String archiveName) {
 		File targetFile = new File(outputDirectory, fileToExtract);
 
 		// use cached
 		if (targetFile.exists() && !settings.isCleanCache())
 			return targetFile;
 
+		File notFound = new File(outputDirectory, fileToExtract + "-notfound");
+		if (notFound.exists() && !settings.isCleanCache()) {
+			System.err.println("Unable to extract " + fileToExtract + " from " + archiveName + ". "
+					+ "file not found in a previous run");
+			return null;
+		}
+
 		TarInputStream tarIn = null;
 		FileOutputStream out = null;
 		try {
-			tarIn = new TarInputStream(new GZIPInputStream(in.openStream()));
+			InputStream in = inUrl.openStream();
+
+			// ok we have the file
+			tarIn = new TarInputStream(new GZIPInputStream(in));
 
 			// search the correct entry
 			TarEntry act = tarIn.getNextEntry();
@@ -81,6 +93,7 @@ public abstract class AFirehoseProvider {
 
 			byte[] buf = new byte[4096];
 			int n;
+			targetFile.getParentFile().mkdirs();
 			String tmpFile = targetFile.getAbsolutePath() + ".tmp";
 			out = new FileOutputStream(tmpFile);
 			while ((n = tarIn.read(buf, 0, 4096)) > -1)
@@ -88,6 +101,17 @@ public abstract class AFirehoseProvider {
 			out.close();
 			Files.move(new File(tmpFile).toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			return targetFile;
+		} catch (FileNotFoundException e) {
+			System.err.println("Unable to extract " + fileToExtract + " from " + archiveName + ". " + "file not found");
+			// file was not found, create a marker to remember this for quicker checks
+			notFound.getParentFile().mkdirs();
+			try {
+				notFound.createNewFile();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			return null;
 		} catch (Exception e) {
 			System.err.println("Unable to extract " + fileToExtract + " from " + archiveName + ". " + e.getMessage());
 			return null;

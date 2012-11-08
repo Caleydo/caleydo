@@ -1,35 +1,38 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.datadomain.genetic;
 
+import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.io.IDTypeParsingRules;
+
 /**
- * 
+ *
  * Known source ID formats covered by correctly applying these expressions:
- * 
+ *
  * Known source ID formats not covered correctly:
- * 
+ *
  * <li>OV_20_0990 - known expression: "^[a-z]+\\-",
  * setReplacementExpression("\\_", "-");</li>
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class TCGADefinitions {
 
@@ -41,4 +44,15 @@ public class TCGADefinitions {
 	public static final String[] TCGA_REPLACING_EXPRESSIONS = {"\\.","\\_"};
 	public static final String TCGA_REPLACEMENT_STRING = "-";
 
+	public static IDSpecification createIDSpecification(boolean isDefault) {
+		IDTypeParsingRules rule = new IDTypeParsingRules();
+		rule.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		rule.setReplacementExpression(TCGA_REPLACEMENT_STRING, TCGA_REPLACING_EXPRESSIONS);
+		rule.setToLowerCase(true);
+		rule.setDefault(isDefault);
+
+		IDSpecification id = new IDSpecification("TCGA_SAMPLE", "TCGA_SAMPLE");
+		id.setIdTypeParsingRules(rule);
+		return id;
+	}
 }
