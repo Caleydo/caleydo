@@ -462,7 +462,9 @@ public class TCGAXMLGenerator extends DataSetDescriptionSerializer {
 				+ ".clin.merged.picked.txt", archiveName,
 				dataRunIdentifierWithoutUnderscore, remoteDataRunArchiveDirectory, 4);
 
-		transposeCSV(clinicalFile);
+		clinicalFile = transposeCSV(clinicalFile);
+		if (clinicalFile == null)
+			throw new IllegalStateException("can't transpose file");
 
 		DataSetDescription clinicalData = new DataSetDescription();
 		clinicalData.setDataSetName(dataSetType.getName());
@@ -494,11 +496,9 @@ public class TCGAXMLGenerator extends DataSetDescriptionSerializer {
 		return clinicalData;
 	}
 
-	private void transposeCSV(String fileName) {
+	private String transposeCSV(String fileName) {
 
-		// Tmp file needed because script cannot read and write from same file
-		// simultaneously
-		String tmpFile = fileName + "tmp";
+		String tmpFile = fileName + "-trans";
 
 		Runtime rt = Runtime.getRuntime();
 		Process p;
@@ -514,12 +514,13 @@ public class TCGAXMLGenerator extends DataSetDescriptionSerializer {
 			while ((line = buf.readLine()) != null) {
 				System.out.println(line);
 			}
-
-			FileOperations.copyFolder(new File(tmpFile), new File(fileName));
+			return tmpFile;
+			//FileOperations.copyFolder(new File(tmpFile), new File(fileName));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 }
