@@ -63,9 +63,9 @@ public class ApplicationWorkbenchAdvisor
 
 		filterPreferencePages();
 
-		autoSaver = new AutoSaver();
-		GeneralManager.get().getViewManager().getDisplayLoopExecution()
-				.executeMultiple(autoSaver);
+//		autoSaver = new AutoSaver();
+//		GeneralManager.get().getViewManager().getDisplayLoopExecution()
+//				.executeMultiple(autoSaver);
 	}
 
 	private void filterPreferencePages() {
@@ -88,9 +88,9 @@ public class ApplicationWorkbenchAdvisor
 	public boolean preShutdown() {
 		super.preShutdown();
 
-		GeneralManager.get().getViewManager().getDisplayLoopExecution()
-				.stopMultipleExecution(autoSaver);
-		autoSaver = null;
+//		GeneralManager.get().getViewManager().getDisplayLoopExecution()
+//				.stopMultipleExecution(autoSaver);
+//		autoSaver = null;
 
 		ProjectManager.saveRecentProject();
 
