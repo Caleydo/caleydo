@@ -97,13 +97,14 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		// TCGA SAMPLE IDs look different for seq data (an "-01" is attached)
 		final IDSpecification seqSampleID = TCGADefinitions.createIDSpecification(false);
 
-		final IDSpecification clinicalSampleID = new IDSpecification();
-		clinicalSampleID.setIdType("clinical");
+		final IDSpecification clinicalColumnID = new IDSpecification();
+		clinicalColumnID.setIdType("clinical");
 
 		final IDSpecification geneRowID = IDSpecification.createGene();
 		final IDSpecification proteinRowID = new IDSpecification("protein", "protein");
 		final IDSpecification microRNARowID = new IDSpecification("microRNA", "microRNA");
 		final IDSpecification clinicalRowID = new IDSpecification("TCGA_SAMPLE", "TCGA_SAMPLE");
+		
 		IDTypeParsingRules clinicalSampleIDTypeParsingRules = new IDTypeParsingRules();
 		clinicalSampleIDTypeParsingRules.setSubStringExpression("tcga\\-");
 		clinicalSampleIDTypeParsingRules.setToLowerCase(true);
@@ -143,7 +144,7 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		case RPPA:
 			return setUpClusteredMatrixData(proteinRowID, sampleID);
 		case clinical:
-			return setUpClinicalData(clinicalRowID, clinicalSampleID);
+			return setUpClinicalData(clinicalRowID, clinicalColumnID);
 		case mutation:
 			return setUpMutationData(geneRowID, sampleID);
 		case copyNumber:
@@ -292,7 +293,7 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 	}
 
 	private DataSetDescription setUpClinicalData(IDSpecification rowIdSpecification,
-			IDSpecification sampleIdSpecification) {
+			IDSpecification columnIdSpecification) {
 		File clinicalFile = fileProvider.extractDataRunFile(tumorAbbreviation + ".clin.merged.picked.txt",
 				"Clinical_Pick_Tier1", LEVEL);
 		if (clinicalFile == null)
@@ -314,9 +315,8 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		parsingRule.setColumnDescripton(new ColumnDescription());
 		dataSet.addParsingRule(parsingRule);
 
-		dataSet.setColumnIDSpecification(sampleIdSpecification);
-
 		dataSet.setRowIDSpecification(rowIdSpecification);
+		dataSet.setColumnIDSpecification(columnIdSpecification);
 
 		return dataSet;
 	}

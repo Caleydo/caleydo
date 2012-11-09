@@ -98,11 +98,6 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog 
 				.setText("Select the clinical variables you want to see in the Kaplan-Meier plots.");
 		descriptionLabel.setLayoutData(data);
 
-		VirtualArray<?, ?, ?> va = null;
-		// if (tablePerspective.getDataDomain().isColumnDimension())
-		va = tablePerspective.getDataDomain().getTable().getDefaultDimensionPerspective()
-				.getVirtualArray();
-
 		data = new GridData();
 		data.grabExcessHorizontalSpace = true;
 		data.grabExcessVerticalSpace = true;
@@ -137,6 +132,7 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog 
 					.getDataDomain().getRecordIDType().getIDCategory()))
 				continue;
 
+			// FIXME: This assumption is a very bad hack. We need a better way to find out if the DD is the clinical one
 			if (tableBasedDataDomain.getTable().getDefaultDimensionPerspective()
 					.getVirtualArray().size() > 10)
 				continue;

@@ -64,7 +64,7 @@ public class ApplicationWorkbenchWindowAdvisor
 		configurer.setShowStatusLine(false);
 		configurer.getWindow().getPartService().addPartListener(new PartListener());
 		// configurer.setShowProgressIndicator(true);
-		configurer.setShowPerspectiveBar(true);
+		// configurer.setShowPerspectiveBar(true);
 	}
 
 	@Override
