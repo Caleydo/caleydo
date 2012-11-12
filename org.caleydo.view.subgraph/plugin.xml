@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="org.caleydo.view.subgraph.RcpGLSubGraphView"
+            icon="resources/icons/icon.png"
+            id="org.caleydo.view.subgraph"
+            name="SubGraph">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.caleydo.menu.view"
+               label="View">
+            <menu
+                  id="org.caleydo.menu.view.visualization"
+                  label="Visualizations">
+               <command
+                     commandId="org.caleydo.view.subgraph.command.opensubgraph"
+                     icon="resources/icons/icon.png"
+                     style="push">
+               </command>
+            </menu>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.subgraph.command.handler.OpenSubGraphHandler"
+            id="org.caleydo.view.subgraph.command.opensubgraph"
+            name="SubGraph">
+      </command>
+   </extension>
+      <extension
+         id="org.caleydo.view.subgraph"
+         name="SubGraphViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="SubgraphViewCreator"
+          class="org.caleydo.view.subgraph.creator.ViewCreator" />
+   </extension>
+   <extension
+         point="org.caleydo.view.ViewCategory">
+      <ViewCategory
+            isDataView="false"
+            isReleaseView="false"
+            viewID="org.caleydo.view.subgraph">
+      </ViewCategory>
+   </extension>
+
+</plugin>
