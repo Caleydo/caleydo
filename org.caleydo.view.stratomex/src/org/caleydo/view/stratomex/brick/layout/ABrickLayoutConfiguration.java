@@ -47,7 +47,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	protected GLBrick brick;
 	protected LayoutRenderer viewRenderer;
 	protected ElementLayout viewLayout;
-	protected BrickColumn dimensionGroup;
+	protected BrickColumn brickColumn;
 	protected HashSet<EContainedViewType> validViewTypes;
 	protected EContainedViewType defaultViewType;
 	protected ArrayList<IViewTypeChangeListener> viewTypeChangeListeners;
@@ -55,7 +55,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 
 	public ABrickLayoutConfiguration(GLBrick brick, BrickColumn dimensionGroup) {
 		this.brick = brick;
-		this.dimensionGroup = dimensionGroup;
+		this.brickColumn = dimensionGroup;
 		validViewTypes = new HashSet<EContainedViewType>();
 		viewTypeChangeListeners = new ArrayList<IViewTypeChangeListener>();
 		borderedAreaRenderer = new BorderedAreaRenderer();
@@ -211,7 +211,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	}
 
 	public BrickColumn getDimensionGroup() {
-		return dimensionGroup;
+		return brickColumn;
 	}
 
 	public void registerViewTypeChangeListener(

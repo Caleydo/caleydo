@@ -379,7 +379,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 			@Override
 			public void clicked(Pick pick) {
-				dimensionGroup.showDetailedBrick(brick, false);
+				brickColumn.showDetailedBrick(brick, false);
 			}
 		}, EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
 
@@ -387,7 +387,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 			@Override
 			public void clicked(Pick pick) {
-				dimensionGroup.showDetailedBrick(brick, true);
+				brickColumn.showDetailedBrick(brick, true);
 			}
 		}, EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
 	}
@@ -421,7 +421,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	public ABrickLayoutConfiguration getCollapsedLayoutTemplate() {
-		return new CompactHeaderBrickLayoutTemplate(brick, dimensionGroup, stratomex,
+		return new CompactHeaderBrickLayoutTemplate(brick, brickColumn, stratomex,
 				brick.getBrickConfigurer());
 	}
 

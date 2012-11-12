@@ -622,7 +622,7 @@ public class GLPathway
 	public void display(final GL2 gl) {
 		checkForHits(gl);
 
-		if (isDisplayListDirty) {
+		if (true) {
 			calculatePathwayScaling(gl, pathway);
 			rebuildPathwayDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
@@ -632,7 +632,6 @@ public class GLPathway
 			// TODO: also put this in global DL
 			renderPathway(gl, pathway);
 
-			gl.glCallList(displayListIndex);
 		}
 	}
 
@@ -942,13 +941,8 @@ public class GLPathway
 	// gl.glPopName();
 	// }
 
-	private void rebuildPathwayDisplayList(final GL2 gl, int iGLDisplayListIndex) {
-
+	private void rebuildPathwayDisplayList(final GL2 gl, int displayListIndex) {
 		gLPathwayAugmentationRenderer.buildPathwayDisplayList(gl, pathway);
-
-		// gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
-		// renderPathwayName(gl);
-		// gl.glEndList();
 	}
 
 	private void calculatePathwayScaling(final GL2 gl, final PathwayGraph pathway) {

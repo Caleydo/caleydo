@@ -257,7 +257,7 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	public ABrickLayoutConfiguration getExpandedLayoutTemplate() {
-		return new DefaultBrickLayoutTemplate(brick, stratomex, dimensionGroup,
+		return new DefaultBrickLayoutTemplate(brick, stratomex, brickColumn,
 				brick.getBrickConfigurer());
 	}
 

@@ -171,7 +171,7 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 
 	@Override
 	public ABrickLayoutConfiguration getExpandedLayoutTemplate() {
-		return new HeaderBrickLayoutTemplate(brick, dimensionGroup, stratomex,
+		return new HeaderBrickLayoutTemplate(brick, brickColumn, stratomex,
 				brick.getBrickConfigurer());
 	}
 
