@@ -483,12 +483,14 @@ public class GLPathwayAugmentationRenderer {
 
 					if (tmpNodeColor != null) {
 
-						gl.glColor4f(tmpNodeColor[0], tmpNodeColor[1], tmpNodeColor[2], 1.0f);
+						gl.glColor4f(tmpNodeColor[0], tmpNodeColor[1], tmpNodeColor[2], 0.8f);
 
 						if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
 
 							gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 							gl.glCallList(enzymeNodeDisplayListId);
+
+							// gl.glBegin(GL.gl)
 
 							// gl.glEnable(GL2.GL_DEPTH_TEST);
 
@@ -504,6 +506,8 @@ public class GLPathwayAugmentationRenderer {
 
 							float stdBarWidth = pixelGLConverter
 									.getGLWidthForPixelWidth(PathwayRenderStyle.STD_DEV_BAR_PIXEL_WIDTH);
+
+							// rendering the std-dev box
 							if (!stdDev.isNaN() && selectedSamplesVA.size() > 1) {
 
 								// opaque background
