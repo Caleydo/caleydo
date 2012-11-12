@@ -19,24 +19,24 @@ public class Settings {
 	private static final String ANALYSIS_PATTERN = "http://gdac.broadinstitute.org/runs/analyses__{0}/data/{2}/{1}/gdac.broadinstitute.org_{2}.{3}.Level_{4}.{1}00.0.0.tar.gz";
 	private static final String REPORT_PATTERN = "http://gdac.broadinstitute.org/runs/analyses__{0}/reports/cancer/{2}/";
 
-	@Option(name = "-t", required = false, aliases = { "--tumortypes" }, usage = "the tumor types to export (all known)")
+	@Option(name = "-t", required = false, aliases = { "--tumortypes" }, usage = "the tumor types to export default: \"all known\"")
 	private List<String> tumorTypes = null;
 
-	@Argument(required = true, usage = "the dates on the analysis runs as argument list")
+	@Argument(required = true, usage = "the dates on the analysis runs as argument list separated by spaces")
 	private List<String> analysisRuns = null;
-	@Option(name = "-d", required = false, usage = "the dates of the data runs to use, (=analysisRuns)")
+	@Option(name = "-d", required = false, usage = "the dates of the data runs to use default the same as the analysis runs")
 	private List<String> dataRuns = null;
 
-	@Option(name = "-o", aliases = { "--output" }, usage = "the directory to store the generated files and temporary files (current directory)")
+	@Option(name = "-o", aliases = { "--output" }, usage = "the directory to store the generated files and temporary files default: \".\"")
 	private File outputPath = new File("."); // default current directory
 	private boolean flatOutput = false;
-	@Option(name = "-c", aliases = { "--clean" }, usage = "don't use the cache (false)")
+	@Option(name = "-c", aliases = { "--clean" }, usage = "don't use the cache default: \"false\"")
 	private boolean cleanCache = false;
 
-	@Option(name = "-p", aliases = { "--threads" }, usage = "number of parallel threads, <= 0 -> available processors (1)")
+	@Option(name = "-p", aliases = { "--threads" }, usage = "number of parallel threads, <= 0 -> available processors, default \"1\"")
 	private int numThreads = 1;
 
-	@Option(name = "-b", aliases = { "--batch" }, usage = "batch size of parallel top tasks (4)")
+	@Option(name = "-b", aliases = { "--batch" }, usage = "batch size of parallel top tasks default \"4\"")
 	private int batchSize = 4;
 
 	// create path of archive search directory
@@ -45,14 +45,15 @@ public class Settings {
 	// 2 .. tumor
 	// 3 .. piplelineName
 	// 4 .. level
-	@Option(name = "-ap", aliases = { "--analysisPattern" }, usage = "the pattern used to locate analysis run archives, where {0}...analysisRun {1}...cleaned analysisRun, {2} .. tumor, {3} .. pipelinebname, {4} .. level ("+DATA_PATTERN+")")
+	@Option(name = "-ap", aliases = { "--analysisPattern" }, usage = "the pattern used to locate analysis run archives, where {0} .. analysisRun {1} .. cleaned analysisRun, {2} .. tumor, {3} .. pipelineName, {4} .. level, default \""
+			+ DATA_PATTERN + "\"")
 	private String analysisPattern = ANALYSIS_PATTERN;
-	@Option(name = "-dp", aliases = { "--dataPattern" }, usage = "the pattern used to locate data run archives, where {0}...analysisRun {1}...cleaned analysisRun, {2} .. tumor, {3} .. pipelinebname, {4} .. level ("
-			+ DATA_PATTERN + ")")
+	@Option(name = "-dp", aliases = { "--dataPattern" }, usage = "the pattern used to locate data run archives, where {0} .. dataRun {1} .. cleaned dataRun, {2} .. tumor, {3} .. pipelineName, {4} .. level, default \""
+			+ DATA_PATTERN + "\"")
 	private String dataPattern = DATA_PATTERN;
 
-	@Option(name = "-rp", aliases = { "--reportPattern" }, usage = "the pattern used to locate run reports, where {0}...analysisRun {1}...cleaned analysisRun, {2} .. tumor, {3} .. pipelinebname, {4} .. level ("
-			+ REPORT_PATTERN + ")")
+	@Option(name = "-rp", aliases = { "--reportPattern" }, usage = "the pattern used to locate run reports, where {0} .. analysisRun {1} .. cleaned analysisRun, {2} .. tumor, {3} .. pipelineName, {4} .. level, default \""
+			+ REPORT_PATTERN + "\"")
 	private String reportPattern = REPORT_PATTERN;
 
 	public boolean validate() {
