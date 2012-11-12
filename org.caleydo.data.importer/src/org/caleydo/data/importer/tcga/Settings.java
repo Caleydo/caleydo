@@ -29,6 +29,8 @@ public class Settings {
 
 	@Option(name = "-o", aliases = { "--output" }, usage = "the directory to store the generated files and temporary files default: \".\"")
 	private File outputPath = new File("."); // default current directory
+
+	@Option(name = "-f", aliases = { "--flatOutput" }, usage = "whether to create a flat output directory structure default: \"false\"")
 	private boolean flatOutput = false;
 	@Option(name = "-c", aliases = { "--clean" }, usage = "don't use the cache default: \"false\"")
 	private boolean cleanCache = false;
@@ -55,6 +57,7 @@ public class Settings {
 	@Option(name = "-rp", aliases = { "--reportPattern" }, usage = "the pattern used to locate run reports, where {0} .. analysisRun {1} .. cleaned analysisRun, {2} .. tumor, {3} .. pipelineName, {4} .. level, default \""
 			+ REPORT_PATTERN + "\"")
 	private String reportPattern = REPORT_PATTERN;
+
 
 	public boolean validate() {
 		if (dataRuns == null)
@@ -102,12 +105,6 @@ public class Settings {
 
 	public String getTemporaryDirectory() {
 		return ensureExistingDir(new File(outputPath, "tmp"));
-	}
-
-	public void setOutput(String outputPath, boolean flatOutput, boolean cleanCache) {
-		this.outputPath = new File(outputPath);
-		this.flatOutput = flatOutput;
-		this.cleanCache = cleanCache;
 	}
 
 	/**
