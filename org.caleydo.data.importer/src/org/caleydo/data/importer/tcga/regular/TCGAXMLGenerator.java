@@ -28,8 +28,8 @@ import java.util.concurrent.RecursiveTask;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.data.importer.tcga.EDataSetType;
+import org.caleydo.data.importer.tcga.FirehoseProvider;
 import org.caleydo.data.importer.tcga.TCGADataSetBuilder;
-import org.caleydo.data.importer.tcga.provider.AFirehoseProvider;
 
 
 /**
@@ -43,11 +43,11 @@ public class TCGAXMLGenerator extends RecursiveTask<ProjectDescription> {
 	private static final long serialVersionUID = 7866075803605970224L;
 
 	private final boolean loadSampledGenes;
-	private final AFirehoseProvider fileProvider;
+	private final FirehoseProvider fileProvider;
 
 	private final String tumorAbbreviation;
 
-	public TCGAXMLGenerator(String tumorAbbreviation, AFirehoseProvider fileProvider, TCGASettings settings) {
+	public TCGAXMLGenerator(String tumorAbbreviation, FirehoseProvider fileProvider, TCGASettings settings) {
 		this.tumorAbbreviation = tumorAbbreviation;
 		this.fileProvider = fileProvider;
 		this.loadSampledGenes = settings.isSampleGenes();

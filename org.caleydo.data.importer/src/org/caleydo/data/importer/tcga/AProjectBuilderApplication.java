@@ -19,13 +19,17 @@
  *******************************************************************************/
 package org.caleydo.data.importer.tcga;
 
+import java.util.List;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
+import java.util.concurrent.RecursiveAction;
+
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
-
-import com.martiansoftware.jsap.FlaggedOption;
-import com.martiansoftware.jsap.JSAP;
-import com.martiansoftware.jsap.JSAPException;
-import com.martiansoftware.jsap.JSAPResult;
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
 
 /**
  * This abstract class coordinates the whole workflow of creating a Caleydo
@@ -37,77 +41,65 @@ import com.martiansoftware.jsap.JSAPResult;
 public abstract class AProjectBuilderApplication<S extends Settings>
 	implements IApplication {
 
-	protected S settings;
-
 	@Override
 	public final Object start(IApplicationContext context) throws Exception {
-		parseArgs(context);
+		S settings = parseArgs(context);
 
-		generateTCGAProjectFiles();
+		generateTCGAProjectFiles(settings);
 
 		// FileOperations.deleteDirectory(tmpDataOutputPath);
 
 		return context;
 	}
 
-	private void parseArgs(IApplicationContext context) {
+	private S parseArgs(IApplicationContext context) {
 		String[] args = (String[]) context.getArguments().get("application.args");
-		JSAP jsap = new JSAP();
+		S settings = createSettings();
+
+		CmdLineParser parser = new CmdLineParser(settings);
 		try {
-			registerArguments(jsap);
-
-			JSAPResult config = jsap.parse(args);
-
-			// check whether the command line was valid, and if it wasn't,
-			// display usage information and exit.
-			if (!config.success()) {
-				handleJSAPError(jsap);
+			parser.parseArgument(args);
+			if (!settings.validate()) {
+				parser.printUsage(System.err);
+				System.exit(1);
 			}
-			this.settings = createSettings();
-			extractArguments(config, settings, jsap);
-		} catch (JSAPException e) {
-			handleJSAPError(jsap);
+		} catch (CmdLineException e) {
+			System.err.println("Error parsing arguments: " + e.getMessage());
+			parser.printUsage(System.err);
+			System.exit(1);
 		}
+
+		return settings;
 	}
 
 	protected abstract S createSettings();
 
-	protected void registerArguments(JSAP jsap) throws JSAPException {
-		FlaggedOption tumorOpt = new FlaggedOption("tumor").setStringParser(JSAP.STRING_PARSER).setDefault(JSAP.NO_DEFAULT).setRequired(true).setShortFlag('t').setLongFlag(JSAP.NO_LONGFLAG);
-		tumorOpt.setList(true);
-		tumorOpt.setListSeparator(',');
-		tumorOpt.setHelp("Tumor abbreviation");
-		jsap.registerParameter(tumorOpt);
+	protected abstract List<? extends ForkJoinTask<Void>> createTasks(final S settings);
 
-		FlaggedOption outputFolderOpt = new FlaggedOption("output-folder").setStringParser(JSAP.STRING_PARSER).setDefault(".").setRequired(false).setShortFlag('o').setLongFlag(JSAP.NO_LONGFLAG);
-		outputFolderOpt.setHelp("Output folder (full path)");
-		jsap.registerParameter(outputFolderOpt);
+	private void generateTCGAProjectFiles(final S settings) {
+		ForkJoinPool pool = new ForkJoinPool(settings.getNumThreads());
 
-		jsap.registerParameter(new FlaggedOption("flatOutput").setDefault("false").setRequired(false).setShortFlag('f').setLongFlag("flat").setStringParser(JSAP.BOOLEAN_PARSER)
-				.setHelp("whether the project files should be generated flat, i.e. without the differnt types as directories"));
-		jsap.registerParameter(new FlaggedOption("cleanOutput").setDefault("false").setRequired(false).setShortFlag('c').setLongFlag("clean").setStringParser(JSAP.BOOLEAN_PARSER)
-				.setHelp("whether the cached temporary files should not be used"));
+		RecursiveAction action = new RecursiveAction() {
+			private static final long serialVersionUID = -8919058430905145146L;
 
-		jsap.registerParameter(new FlaggedOption("numThreads").setDefault("1").setRequired(false).setShortFlag('p')
-				.setLongFlag("processes").setStringParser(JSAP.INTEGER_PARSER)
-				.setHelp("number of processes to be used for multi processing"));
+			@Override
+			protected void compute() {
+				List<? extends ForkJoinTask<Void>> tasks = createTasks(settings);
+				for(int i = 0; i < tasks.size(); i+=settings.getBatchSize()) {
+					int to = Math.min(i + settings.getBatchSize(), tasks.size());
+					invokeAll(tasks.subList(i, to));
+					cleanupBatch();
+				}
+			}
+		};
+		pool.invoke(action);
+		pool.shutdown();
 	}
 
-	protected void extractArguments(JSAPResult config, S settings, JSAP jsap) {
-		settings.setNumThreads(config.getInt("numThreads"));
-		settings.setOutput(config.getString("output-folder"), config.getBoolean("flatOutput"),
-				config.getBoolean("cleanOutput"));
-		settings.setTumorTypes(config.getStringArray("tumor"));
-	}
-
-	protected abstract void generateTCGAProjectFiles();
-
-	protected void handleJSAPError(JSAP jsap) {
-		System.err.println("Error during parsing of program arguments. Closing program.");
-		System.err.println("Usage: Caleydo");
-		System.err.println(jsap.getUsage());
-		System.err.println();
-		System.exit(1);
+	protected void cleanupBatch() {
+		for (IDMappingManager idMappingManager : IDMappingManagerRegistry.get().getAllIDMappingManager()) {
+			idMappingManager.clearInternalMappingsAndIDTypes();
+		}
 	}
 
 	@Override

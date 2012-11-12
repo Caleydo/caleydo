@@ -20,84 +20,34 @@
 package org.caleydo.data.importer.tcga.qualitycontrol;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.RecursiveAction;
+import java.util.List;
+import java.util.concurrent.ForkJoinTask;
 
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.importer.tcga.AProjectBuilderApplication;
 import org.caleydo.data.importer.tcga.EDataSetType;
 import org.eclipse.equinox.app.IApplication;
 
-import com.martiansoftware.jsap.FlaggedOption;
-import com.martiansoftware.jsap.JSAP;
-import com.martiansoftware.jsap.JSAPException;
-import com.martiansoftware.jsap.JSAPResult;
-
-/**
- * This class handles the whole workflow of creating a Caleydo project from TCGA
- * data for inter analysis run comparisons.
- *
- * @author Marc Streit
- *
- */
-public class TCGAInterAnalysisRunProjectBuilderApplication
- extends AProjectBuilderApplication<TCGAQCSettings>
-	implements IApplication {
-
-	public static String DEFAULT_TCGA_SERVER_URL = "http://compbio.med.harvard.edu/tcga/stratomex/data_qc/";
-	public static String CALEYDO_WEBSTART_URL = "http://data.icg.tugraz.at/caleydo/download/webstart_"
-			+ GeneralManager.VERSION + "/";
-	public static String DEFAULT_OUTPUT_FOLDER_PATH = GeneralManager.CALEYDO_HOME_PATH + "TCGA/";
+public class TCGAInterAnalysisRunProjectBuilderApplication extends AProjectBuilderApplication<TCGAQCSettings> implements
+		IApplication {
 
 	@Override
 	protected TCGAQCSettings createSettings() {
 		return new TCGAQCSettings();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * org.caleydo.data.importer.tcga.AProjectBuilderApplication#createTasks(org.caleydo.data.importer.tcga.Settings)
+	 */
 	@Override
-	protected void registerArguments(JSAP jsap) throws JSAPException {
-		super.registerArguments(jsap);
-
-		FlaggedOption analysisRunIdentifierOpt = new FlaggedOption("analysis_runs").setStringParser(JSAP.STRING_PARSER).setDefault(JSAP.NO_DEFAULT).setRequired(true).setShortFlag('a')
-				.setLongFlag(JSAP.NO_LONGFLAG);
-		analysisRunIdentifierOpt.setList(true);
-		analysisRunIdentifierOpt.setListSeparator(',');
-		analysisRunIdentifierOpt.setHelp("Analysis run identifiers");
-		jsap.registerParameter(analysisRunIdentifierOpt);
-
-		FlaggedOption tcgaServerURLOpt = new FlaggedOption("server").setStringParser(JSAP.STRING_PARSER).setDefault(DEFAULT_TCGA_SERVER_URL).setRequired(false).setShortFlag('s')
-				.setLongFlag(JSAP.NO_LONGFLAG);
-		tcgaServerURLOpt.setHelp("TCGA Server URL that hosts TCGA Caleydo project files");
-		jsap.registerParameter(tcgaServerURLOpt);
-
-	}
-
-	@Override
-	protected void extractArguments(JSAPResult config, TCGAQCSettings settings, JSAP jsap) {
-		super.extractArguments(config, settings, jsap);
-		settings.setRuns(config.getStringArray("analysis_runs"));
-		settings.setTcgaServerURL(config.getString("server"));
-	}
-
-	@Override
-	protected void generateTCGAProjectFiles() {
-		ForkJoinPool pool = new ForkJoinPool(settings.getNumThreads());
-
-		RecursiveAction action = new RecursiveAction() {
-			private static final long serialVersionUID = -8919058430905145146L;
-
-			@Override
-			protected void compute() {
-				Collection<TCGAQCDataSetTypeTask> tasks = new ArrayList<>();
-				for (EDataSetType dataSetType : EDataSetType.values()) {
-					tasks.add(new TCGAQCDataSetTypeTask(dataSetType, settings));
-				}
-				invokeAll(tasks);
-			}
-		};
-		pool.invoke(action);
-		pool.shutdown();
+	protected List<ForkJoinTask<Void>> createTasks(TCGAQCSettings settings) {
+		List<ForkJoinTask<Void>> tasks = new ArrayList<>();
+		for (EDataSetType dataSetType : EDataSetType.values()) {
+			tasks.add(new TCGAQCDataSetTypeTask(dataSetType, settings));
+		}
+		return tasks;
 	}
 
 	@Override

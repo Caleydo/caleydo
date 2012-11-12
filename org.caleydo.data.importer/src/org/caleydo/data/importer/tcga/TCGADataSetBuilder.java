@@ -38,7 +38,6 @@ import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
-import org.caleydo.data.importer.tcga.provider.AFirehoseProvider;
 import org.caleydo.datadomain.genetic.TCGADefinitions;
 
 public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
@@ -52,13 +51,13 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 	private final String tumorAbbreviation;
 	private boolean loadSampledGenes;
 
-	private final AFirehoseProvider fileProvider;
+	private final FirehoseProvider fileProvider;
 
 	private final String dataSetName;
 
 
 	private TCGADataSetBuilder(String tumorAbbreviation, EDataSetType datasetType, String dataSetName,
-			AFirehoseProvider fileProvider, boolean loadSampledGenes) {
+			FirehoseProvider fileProvider, boolean loadSampledGenes) {
 		this.tumorAbbreviation = tumorAbbreviation;
 		this.dataSetType = datasetType;
 		this.fileProvider = fileProvider;
@@ -68,25 +67,25 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 	}
 
 	public static ForkJoinTask<DataSetDescription> create(String tumorAbbreviation, EDataSetType datasetType,
-			AFirehoseProvider fileProvider) {
+			FirehoseProvider fileProvider) {
 		return create(tumorAbbreviation, datasetType, fileProvider, true);
 	}
 
 	public static ForkJoinTask<DataSetDescription> create(String tumorAbbreviation, EDataSetType datasetType,
 			String dataSetName,
-			AFirehoseProvider fileProvider) {
+			FirehoseProvider fileProvider) {
 		return create(tumorAbbreviation, datasetType, dataSetName, fileProvider, true);
 	}
 
 	public static ForkJoinTask<DataSetDescription> create(String tumorAbbreviation, EDataSetType datasetType,
-			AFirehoseProvider fileProvider,
+			FirehoseProvider fileProvider,
 			boolean loadSampledGenes) {
 		return create(tumorAbbreviation, datasetType, datasetType.getName(), fileProvider, loadSampledGenes);
 	}
 
 	public static ForkJoinTask<DataSetDescription> create(String tumorAbbreviation, EDataSetType datasetType,
 			String dataSetName,
-			AFirehoseProvider fileProvider, boolean loadSampledGenes) {
+			FirehoseProvider fileProvider, boolean loadSampledGenes) {
 		return new TCGADataSetBuilder(tumorAbbreviation, datasetType, dataSetName, fileProvider, loadSampledGenes);
 	}
 

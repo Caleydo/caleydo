@@ -21,6 +21,7 @@ package org.caleydo.data.importer.tcga.qualitycontrol;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
@@ -28,8 +29,8 @@ import java.util.concurrent.RecursiveTask;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.data.importer.tcga.EDataSetType;
+import org.caleydo.data.importer.tcga.FirehoseProvider;
 import org.caleydo.data.importer.tcga.TCGADataSetBuilder;
-import org.caleydo.data.importer.tcga.provider.AFirehoseProvider;
 
 /**
  * Generator class that writes the loading information of a series of TCGA data
@@ -58,8 +59,12 @@ public class TCGAInterAnalysisRunXMLGenerator extends RecursiveTask<ProjectDescr
 	public ProjectDescription compute() {
 		Collection<ForkJoinTask<DataSetDescription>> tasks = new ArrayList<>();
 
-		for (String analysisRun : settings.getAnalysisRuns()) {
-			AFirehoseProvider fileProvider = settings.createFirehoseProvider(tumorAbbreviation, analysisRun);
+		List<String> analysisRuns = settings.getAnalysisRuns();
+		List<String> dataRuns = settings.getDataRuns();
+		for (int i = 0; i < analysisRuns.size(); i++) {
+			String analysisRun = analysisRuns.get(i);
+			String dataRun = dataRuns.get(i);
+			FirehoseProvider fileProvider = settings.createFirehoseProvider(tumorAbbreviation, analysisRun, dataRun);
 
 			tasks.add(TCGADataSetBuilder.create(tumorAbbreviation, dataSetType, analysisRun, fileProvider,
 					loadSampledGenes));

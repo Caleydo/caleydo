@@ -32,7 +32,10 @@ public class TCGAQCDataSetTypeTask extends RecursiveAction {
 		StringBuilder b = new StringBuilder();
 		for (TCGAQCTask task : tasks) {
 			try {
-				b.append(task.get()).append("\n,");
+				String t = task.get();
+				if (t == null)
+					continue;
+				b.append(t).append("\n,");
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

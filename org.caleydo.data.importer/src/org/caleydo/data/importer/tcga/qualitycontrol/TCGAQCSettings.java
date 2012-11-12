@@ -1,44 +1,14 @@
 package org.caleydo.data.importer.tcga.qualitycontrol;
 
 import org.caleydo.data.importer.tcga.Settings;
+import org.kohsuke.args4j.Option;
 
 
 public class TCGAQCSettings extends Settings {
-	private String[] analysisRuns = null;
-	private String tcgaServerURL = "";
-	private boolean sampleGenes = true;
-
-
-	public int getNumRuns() {
-		return analysisRuns.length;
-	}
-
-	public String[] getAnalysisRuns() {
-		return analysisRuns;
-	}
-
-	public String getAnalysisRun(int i) {
-		return analysisRuns[i];
-	}
-
-	public void setRuns(String[] analysisRuns) {
-		this.analysisRuns = analysisRuns;
-	}
-
+	@Option(name = "s", aliases = { "server" }, usage = "TCGA Server URL that hosts TCGA Caleydo project files")
+	private String tcgaServerURL = "http://compbio.med.harvard.edu/tcga/stratomex/data_qc/";
 
 	public String getTcgaServerURL() {
 		return tcgaServerURL;
-	}
-
-	public void setTcgaServerURL(String tcgaServerURL) {
-		this.tcgaServerURL = tcgaServerURL;
-	}
-
-	public boolean isSampleGenes() {
-		return sampleGenes;
-	}
-
-	public void setSampleGenes(boolean sampleGenes) {
-		this.sampleGenes = sampleGenes;
 	}
 }

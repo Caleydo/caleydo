@@ -20,18 +20,11 @@
 package org.caleydo.data.importer.tcga.regular;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.RecursiveAction;
+import java.util.List;
+import java.util.concurrent.ForkJoinTask;
 
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.importer.tcga.AProjectBuilderApplication;
 import org.eclipse.equinox.app.IApplication;
-
-import com.martiansoftware.jsap.FlaggedOption;
-import com.martiansoftware.jsap.JSAP;
-import com.martiansoftware.jsap.JSAPException;
-import com.martiansoftware.jsap.JSAPResult;
 
 /**
  * This class handles the whole workflow of creating a Caleydo project from TCGA
@@ -44,79 +37,28 @@ public class TCGAProjectBuilderApplication
  extends AProjectBuilderApplication<TCGASettings>
 	implements IApplication {
 
-	public static String DEFAULT_TCGA_SERVER_URL = "http://compbio.med.harvard.edu/tcga/stratomex/data/";
-	public static String CALEYDO_WEBSTART_URL = "http://data.icg.tugraz.at/caleydo/download/webstart_"
-			+ GeneralManager.VERSION + "/";
-
 	@Override
 	protected TCGASettings createSettings() {
 		return new TCGASettings();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * org.caleydo.data.importer.tcga.AProjectBuilderApplication#createTasks(org.caleydo.data.importer.tcga.Settings)
+	 */
 	@Override
-	protected void registerArguments(JSAP jsap) throws JSAPException {
-		super.registerArguments(jsap);
-		FlaggedOption analysisRunIdentifierOpt = new FlaggedOption("analysis_runs").setStringParser(JSAP.STRING_PARSER).setDefault(JSAP.NO_DEFAULT).setRequired(true).setShortFlag('a')
-				.setLongFlag(JSAP.NO_LONGFLAG);
-		analysisRunIdentifierOpt.setList(true);
-		analysisRunIdentifierOpt.setListSeparator(',');
-		analysisRunIdentifierOpt.setHelp("Analysis run identifiers");
-		jsap.registerParameter(analysisRunIdentifierOpt);
+	protected List<ForkJoinTask<Void>> createTasks(TCGASettings settings) {
+		List<ForkJoinTask<Void>> tasks = new ArrayList<>();
+		List<String> analysisRuns = settings.getAnalysisRuns();
+		List<String> dataRuns = settings.getDataRuns();
+		for (int i = 0; i < analysisRuns.size(); i++) {
+			String analysisRun = analysisRuns.get(i);
+			String dataRun = dataRuns.get(i);
 
-		FlaggedOption dataRunIdentifierOpt = new FlaggedOption("data_runs").setStringParser(JSAP.STRING_PARSER).setDefault(JSAP.NO_DEFAULT).setRequired(true).setShortFlag('d')
-				.setLongFlag(JSAP.NO_LONGFLAG);
-		dataRunIdentifierOpt.setList(true);
-		dataRunIdentifierOpt.setListSeparator(',');
-		dataRunIdentifierOpt.setHelp("Data run identifiers");
-		jsap.registerParameter(dataRunIdentifierOpt);
-
-		FlaggedOption tcgaServerURLOpt = new FlaggedOption("server").setStringParser(JSAP.STRING_PARSER).setDefault(DEFAULT_TCGA_SERVER_URL).setRequired(false).setShortFlag('s')
-				.setLongFlag(JSAP.NO_LONGFLAG);
-		tcgaServerURLOpt.setHelp("TCGA Server URL that hosts TCGA Caleydo project files");
-		jsap.registerParameter(tcgaServerURLOpt);
-
-		FlaggedOption sampleGenesOpt = new FlaggedOption("sample_genes").setStringParser(JSAP.BOOLEAN_PARSER).setDefault("true").setRequired(false).setShortFlag('g').setLongFlag(JSAP.NO_LONGFLAG);
-		sampleGenesOpt.setHelp("TCGA Server URL that hosts TCGA Caleydo project files");
-		jsap.registerParameter(sampleGenesOpt);
-	}
-
-	@Override
-	protected void extractArguments(JSAPResult config, TCGASettings settings, JSAP jsap) {
-		super.extractArguments(config, settings, jsap);
-
-		settings.setRuns(config.getStringArray("analysis_runs"), config.getStringArray("data_runs"));
-		settings.setSampleGenes(config.getBoolean("sample_genes"));
-
-		if (settings.getAnalysisRuns().length != settings.getDataRuns().length) {
-			System.err.println("Error during parsing of program arguments. You need to provide a corresponding data run for each analysis run. Closing program.");
-			System.err.println("Usage: Caleydo");
-			System.err.println(jsap.getUsage());
-			System.err.println();
-			System.exit(1);
+			tasks.add(new TCGARunTask(analysisRun, dataRun, settings));
 		}
-		settings.setTcgaServerURL(config.getString("server"));
-	}
-
-	@Override
-	protected void generateTCGAProjectFiles() {
-		ForkJoinPool pool = new ForkJoinPool(settings.getNumThreads());
-
-		RecursiveAction action = new RecursiveAction() {
-			private static final long serialVersionUID = -8919058430905145146L;
-
-			@Override
-			protected void compute() {
-				Collection<TCGARunTask> tasks = new ArrayList<>();
-				for (int i = 0; i < settings.getNumRuns(); i++) {
-					String analysisRun = settings.getAnalysisRun(i);
-					String dataRun = settings.getDataRun(i);
-
-					tasks.add(new TCGARunTask(analysisRun, dataRun, settings));
-				}
-				invokeAll(tasks);
-			}
-		};
-		pool.invoke(action);
-		pool.shutdown();
+		return tasks;
 	}
 }

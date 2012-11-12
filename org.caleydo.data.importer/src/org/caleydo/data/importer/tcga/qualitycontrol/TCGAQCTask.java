@@ -37,6 +37,7 @@ import org.caleydo.data.importer.tcga.ETumorType;
  *
  */
 public class TCGAQCTask extends ATCGATask {
+	private static final long serialVersionUID = -3231766030581533359L;
 
 	private final String tumorType;
 	private final TCGAQCSettings settings;
@@ -60,6 +61,9 @@ public class TCGAQCTask extends ATCGATask {
 
 		ProjectDescription project = new TCGAInterAnalysisRunXMLGenerator(tumorType, dataSetType, settings).invoke();
 
+		if (project.getDataSetDescriptionCollection().isEmpty())
+			return null;
+
 		Collection<ATableBasedDataDomain> dataDomains = new XMLToProjectBuilder().buildProject(project,
 				projectOutputPath);
 
@@ -79,7 +83,7 @@ public class TCGAQCTask extends ATCGATask {
 	protected void generateTumorReportLine(StringBuilder report, Collection<ATableBasedDataDomain> dataDomains,
 			String tumorAbbreviation, String jnlpFileName, String projectOutputPath) {
 
-		String jnlpURL = TCGAInterAnalysisRunProjectBuilderApplication.CALEYDO_WEBSTART_URL + jnlpFileName;
+		String jnlpURL = settings.getJNLPURL(jnlpFileName);
 
 		String tumorName = ETumorType.valueOf(tumorAbbreviation).getTumorName();
 

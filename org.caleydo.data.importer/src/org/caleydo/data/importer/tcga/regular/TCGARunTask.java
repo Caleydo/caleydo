@@ -11,6 +11,7 @@ import org.caleydo.data.importer.tcga.EDataSetType;
 import org.caleydo.data.importer.tcga.utils.IOUtils;
 
 public class TCGARunTask extends RecursiveAction {
+	private static final long serialVersionUID = 1903427073511950319L;
 
 	private final String analysisRun;
 	private final String dataRun;
@@ -33,7 +34,10 @@ public class TCGARunTask extends RecursiveAction {
 		StringBuilder b = new StringBuilder();
 		for (TCGATask task : tasks) {
 			try {
-				b.append(task.get()).append("\n,");
+				String t = task.get();
+				if (t == null)
+					continue;
+				b.append(t).append("\n,");
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

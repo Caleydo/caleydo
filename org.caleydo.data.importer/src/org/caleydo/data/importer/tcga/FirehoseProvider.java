@@ -1,10 +1,11 @@
-package org.caleydo.data.importer.tcga.provider;
+package org.caleydo.data.importer.tcga;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -12,10 +13,8 @@ import java.util.zip.GZIPInputStream;
 
 import org.apache.tools.tar.TarEntry;
 import org.apache.tools.tar.TarInputStream;
-import org.caleydo.data.importer.tcga.Settings;
 
-public abstract class AFirehoseProvider {
-	protected static String FIREHOSE_URL_PREFIX = "http://gdac.broadinstitute.org/runs/";
+public final class FirehoseProvider {
 	protected static String FIREHOSE_TAR_NAME_PREFIX = "gdac.broadinstitute.org_";
 
 	protected final String tumorAbbreviation;
@@ -27,7 +26,7 @@ public abstract class AFirehoseProvider {
 	protected final File tmpDataDir;
 	protected final Settings settings;
 
-	public AFirehoseProvider(String tumorAbbreviation, String analysisRunId, String dataRunId, Settings settings) {
+	FirehoseProvider(String tumorAbbreviation, String analysisRunId, String dataRunId, Settings settings) {
 		this.tumorAbbreviation = tumorAbbreviation;
 		this.analysisRunId = analysisRunId;
 		this.dataRunId = dataRunId;
@@ -40,28 +39,47 @@ public abstract class AFirehoseProvider {
 	private File createTempDirectory(String tmpOutputDirectory, String runId, String tumor) {
 		if (runId == null)
 			runId = "unknown";
-		return new File(tmpOutputDirectory + clean(runId) + System.getProperty("file.separator") + tumorAbbreviation + System.getProperty("file.separator"));
+		return new File(tmpOutputDirectory + Settings.clean(runId) + System.getProperty("file.separator")
+				+ tumorAbbreviation + System.getProperty("file.separator"));
+	}
+
+	public File extractAnalysisRunFile(String fileName, String pipelineName, int level) {
+		return extractFile(fileName, pipelineName, level, true);
+	}
+
+	public File extractDataRunFile(String fileName, String pipelineName, int level) {
+		return extractFile(fileName, pipelineName, level, false);
 	}
 
 	protected final String getArchiveName(String pipelineName, int level, boolean analysisRun) {
+		// up to now the real name, to use the existing cache
 		String id = analysisRun ? analysisRunId : dataRunId;
-		return FIREHOSE_TAR_NAME_PREFIX + tumorAbbreviation + "." + pipelineName + ".Level_" + level + "." + clean(id) + "00.0.0.tar.gz";
+		return FIREHOSE_TAR_NAME_PREFIX + tumorAbbreviation + "." + pipelineName + ".Level_" + level + "."
+				+ Settings.clean(id)
+				+ "00.0.0.tar.gz";
 	}
 
+	protected File extractFile(String fileName, String pipelineName, int level, boolean analysisRun) {
+		String id = analysisRun ? analysisRunId : dataRunId;
+		String label = getArchiveName(pipelineName, level, analysisRun);
 
-	protected static String clean(String id) {
-		return id == null ? null : id.replace("_", "");
+		File outputDir = new File(analysisRun ? tmpAnalysisDir : tmpDataDir, label);
+		outputDir.mkdirs();
+
+		// extract file to temp directory and return path to file
+		URL url;
+		try {
+			if (analysisRun)
+				url = settings.getAnalysisURL(id, tumorAbbreviation, pipelineName, level);
+			else
+				url = settings.getDataURL(id, tumorAbbreviation, pipelineName, level);
+			return extractFileFromTarGzArchive(url, fileName, outputDir);
+		} catch (MalformedURLException e) {
+			throw new RuntimeException("can't extract " + fileName + " from " + label, e);
+		}
 	}
 
-	public abstract File extractAnalysisRunFile(String fileName, String pipelineName, int level);
-
-	public abstract File extractDataRunFile(String fileName, String pipelineName, int level);
-
-	public static String getReportUrl(String analysisRun, String tumortype) {
-		return FIREHOSE_URL_PREFIX + "analyses__" + analysisRun + "/reports/cancer/" + tumortype + "/";
-	}
-
-	protected File extractFileFromTarGzArchive(URL inUrl, String fileToExtract, File outputDirectory, String archiveName) {
+	protected File extractFileFromTarGzArchive(URL inUrl, String fileToExtract, File outputDirectory) {
 		File targetFile = new File(outputDirectory, fileToExtract);
 
 		// use cached
@@ -70,7 +88,7 @@ public abstract class AFirehoseProvider {
 
 		File notFound = new File(outputDirectory, fileToExtract + "-notfound");
 		if (notFound.exists() && !settings.isCleanCache()) {
-			System.err.println("Unable to extract " + fileToExtract + " from " + archiveName + ". "
+			System.err.println("Unable to extract " + fileToExtract + " from " + inUrl + ". "
 					+ "file not found in a previous run");
 			return null;
 		}
@@ -94,6 +112,7 @@ public abstract class AFirehoseProvider {
 			byte[] buf = new byte[4096];
 			int n;
 			targetFile.getParentFile().mkdirs();
+			// use a temporary file to recognize if we have aborted between run
 			String tmpFile = targetFile.getAbsolutePath() + ".tmp";
 			out = new FileOutputStream(tmpFile);
 			while ((n = tarIn.read(buf, 0, 4096)) > -1)
@@ -102,7 +121,8 @@ public abstract class AFirehoseProvider {
 			Files.move(new File(tmpFile).toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			return targetFile;
 		} catch (FileNotFoundException e) {
-			System.err.println("Unable to extract " + fileToExtract + " from " + archiveName + ". " + "file not found");
+			System.err
+.println("Unable to extract " + fileToExtract + " from " + inUrl + ". " + "file not found");
 			// file was not found, create a marker to remember this for quicker checks
 			notFound.getParentFile().mkdirs();
 			try {
@@ -113,7 +133,7 @@ public abstract class AFirehoseProvider {
 			}
 			return null;
 		} catch (Exception e) {
-			System.err.println("Unable to extract " + fileToExtract + " from " + archiveName + ". " + e.getMessage());
+			System.err.println("Unable to extract " + fileToExtract + " from " + inUrl + ". " + e.getMessage());
 			return null;
 		} finally {
 			if (tarIn != null)

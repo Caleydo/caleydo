@@ -28,7 +28,6 @@ import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.data.importer.XMLToProjectBuilder;
 import org.caleydo.data.importer.tcga.ATCGATask;
 import org.caleydo.data.importer.tcga.ETumorType;
-import org.caleydo.data.importer.tcga.provider.AFirehoseProvider;
 
 /**
  * This class handles the whole workflow of creating a Caleydo project from TCGA
@@ -38,6 +37,8 @@ import org.caleydo.data.importer.tcga.provider.AFirehoseProvider;
  *
  */
 public class TCGATask extends ATCGATask {
+	private static final long serialVersionUID = 7378867458430247164L;
+
 	private final String tumorType;
 	private final String analysisRun;
 	private final String dataRun;
@@ -58,6 +59,9 @@ public class TCGATask extends ATCGATask {
 
 		ProjectDescription project = new TCGAXMLGenerator(tumorType, settings.createFirehoseProvider(tumorType,
 				analysisRun, dataRun), settings).invoke();
+
+		if (project.getDataSetDescriptionCollection().isEmpty())
+			return null;
 
 		System.out.println("Building project file for tumor type " + tumorType + " for analysis run " + analysisRun);
 		String projectOutputPath = runSpecificOutputPath + analysisRun + "_" + tumorType + ".cal";
@@ -96,9 +100,9 @@ public class TCGATask extends ATCGATask {
 		String addInfoMethylation = "null";
 		String addInfoRPPA = "null";
 
-		String jnlpURL = TCGAProjectBuilderApplication.CALEYDO_WEBSTART_URL + jnlpFileName;
+		String jnlpURL = settings.getJNLPURL(jnlpFileName);
 
-		String firehoseReportURL = AFirehoseProvider.getReportUrl(analysisRun, tumorAbbreviation);
+		String firehoseReportURL = settings.getReportUrl(analysisRun, tumorAbbreviation);
 
 		String tumorName = ETumorType.valueOf(tumorAbbreviation).getTumorName();
 

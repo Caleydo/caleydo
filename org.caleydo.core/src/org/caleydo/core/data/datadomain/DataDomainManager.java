@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -65,9 +66,13 @@ public class DataDomainManager {
 	private DataDomainGraph dataDomainGraph = new DataDomainGraph();;
 
 	public static DataDomainManager get() {
-		if (dataDomainManager == null)
-			dataDomainManager = new DataDomainManager();
-
+		if (dataDomainManager == null) {
+			synchronized (DataDomainManager.class) {
+				if (dataDomainManager == null) {
+					dataDomainManager = new DataDomainManager();
+				}
+			}
+		}
 		return dataDomainManager;
 	}
 
@@ -116,10 +121,10 @@ public class DataDomainManager {
 	 *            columns of the loaded files as records
 	 * @return the created {@link IDataDomain}
 	 */
-	public IDataDomain createDataDomain(String dataDomainType,
+	public synchronized IDataDomain createDataDomain(String dataDomainType,
 			DataSetDescription dataSetDescription) {
 
-		IExtensionRegistry reg = Platform.getExtensionRegistry();
+		IExtensionRegistry reg = RegistryFactory.getRegistry();
 
 		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.datadomain.DataDomain");
 		IExtension ext = ep.getExtension(dataDomainType);

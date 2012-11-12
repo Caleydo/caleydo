@@ -36,11 +36,6 @@ public abstract class ATCGATask extends RecursiveTask<String> {
 	protected static void cleanUp(Collection<? extends IDataDomain> dataDomains) {
 		for (IDataDomain dataDomain : dataDomains)
 			DataDomainManager.get().unregister(dataDomain);
-
-		// TODO really needed?
-		// for (IDMappingManager idMappingManager : IDMappingManagerRegistry.get().getAllIDMappingManager()) {
-		// idMappingManager.clearInternalMappingsAndIDTypes();
-		// }
 	}
 
 }

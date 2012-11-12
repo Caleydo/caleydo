@@ -1,54 +1,26 @@
 package org.caleydo.data.importer.tcga.regular;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.importer.tcga.Settings;
+import org.kohsuke.args4j.Option;
 
 
 public class TCGASettings extends Settings {
-	private String[] analysisRuns = null;
-	private String[] dataRuns = null;
-	private String tcgaServerURL = "";
+	@Option(name = "s", aliases = { "server" }, usage = "TCGA Server URL that hosts TCGA Caleydo project files")
+	private String tcgaServerURL = "http://compbio.med.harvard.edu/tcga/stratomex/data/";
+
+	@Option(name = "g", aliases = { "sampleGenes" })
 	private boolean sampleGenes = true;
 
-
-	public int getNumRuns() {
-		return analysisRuns.length;
-	}
-
-	public String[] getAnalysisRuns() {
-		return analysisRuns;
-	}
-
-	public String getAnalysisRun(int i) {
-		return analysisRuns[i];
-	}
-
-	public String[] getDataRuns() {
-		return dataRuns;
-	}
-
-	public String getDataRun(int i) {
-		return dataRuns[i];
-	}
-
-	public void setRuns(String[] analysisRuns, String[] dataRuns) {
-		this.analysisRuns = analysisRuns;
-		this.dataRuns = dataRuns;
-	}
+	public static String CALEYDO_WEBSTART_URL = "http://data.icg.tugraz.at/caleydo/download/webstart_"
+			+ GeneralManager.VERSION + "/";
 
 
 	public String getTcgaServerURL() {
 		return tcgaServerURL;
 	}
 
-	public void setTcgaServerURL(String tcgaServerURL) {
-		this.tcgaServerURL = tcgaServerURL;
-	}
-
 	public boolean isSampleGenes() {
 		return sampleGenes;
-	}
-
-	public void setSampleGenes(boolean sampleGenes) {
-		this.sampleGenes = sampleGenes;
 	}
 }
