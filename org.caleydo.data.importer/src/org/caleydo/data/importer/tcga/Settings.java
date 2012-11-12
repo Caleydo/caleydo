@@ -54,7 +54,7 @@ public class Settings {
 			+ DATA_PATTERN + "\"")
 	private String dataPattern = DATA_PATTERN;
 
-	@Option(name = "-rp", aliases = { "--reportPattern" }, usage = "the pattern used to locate run reports, where {0} .. analysisRun {1} .. cleaned analysisRun, {2} .. tumor, {3} .. pipelineName, {4} .. level, default \""
+	@Option(name = "-rp", aliases = { "--reportPattern" }, usage = "the pattern used to locate run reports, where {0} .. analysisRun {1} .. cleaned analysisRun, {2} .. tumor, default \""
 			+ REPORT_PATTERN + "\"")
 	private String reportPattern = REPORT_PATTERN;
 

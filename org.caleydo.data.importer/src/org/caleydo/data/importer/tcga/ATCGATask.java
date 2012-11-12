@@ -17,7 +17,7 @@ public abstract class ATCGATask extends RecursiveTask<String> {
 	protected static void generateJNLP(File jnlpFile, String projectRemoteOutputURL) {
 		try {
 			// Generate jnlp file from jnlp template
-			String template = IOUtils.readAll(new File("resources/caleydo.jnlp"));
+			String template = IOUtils.readAll(ATCGATask.class.getResourceAsStream("/resources/caleydo.jnlp"));
 			template = template.replaceAll("CALEYDO_PROJECT_URL", projectRemoteOutputURL);
 			template = template.replaceAll("JNLP_NAME", jnlpFile.getName());
 			IOUtils.dumpToFile(template, jnlpFile);
