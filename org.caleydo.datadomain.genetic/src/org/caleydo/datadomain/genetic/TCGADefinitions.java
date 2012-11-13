@@ -37,11 +37,12 @@ import org.caleydo.core.io.IDTypeParsingRules;
 public class TCGADefinitions {
 
 	public static final String[] KNOWN_ID_EXAMPLES = { "TCGA-06-0171-02",
-			"tcga-06-0125-02","TCGA-02-0003-01A-01R-0177-01", "TCGA-02-0004-01A-21-1898-20", "OV_20_0990" };
+			"tcga-06-0125-02", "TCGA-02-0003-01A-01R-0177-01",
+			"TCGA-02-0004-01A-21-1898-20", "OV_20_0990" };
 
 	// tcga\\-|TCGA\\-|^[a-zA-Z]|\\-..\\z
 	public static final String TCGA_ID_SUBSTRING_REGEX = "^[a-zA-Z]*\\-|\\-..\\z|\\-...\\-";
-	public static final String[] TCGA_REPLACING_EXPRESSIONS = {"\\.","\\_"};
+	public static final String[] TCGA_REPLACING_EXPRESSIONS = { "\\.", "\\_" };
 	public static final String TCGA_REPLACEMENT_STRING = "-";
 
 	public static IDSpecification createIDSpecification(boolean isDefault) {
