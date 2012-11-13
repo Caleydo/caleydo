@@ -287,7 +287,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			@Override
 			public void clicked(Pick pick) {
 				boolean isGlobalViewSwitching = !viewSwitchingModeButton.isSelected();
-				dimensionGroup.setGlobalViewSwitching(isGlobalViewSwitching);
+				brickColumn.setGlobalViewSwitching(isGlobalViewSwitching);
 				viewSwitchingModeButton.setSelected(isGlobalViewSwitching);
 			}
 		}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
@@ -297,7 +297,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 			@Override
 			public void clicked(Pick pick) {
-				dimensionGroup.hideDetailedBrick();
+				brickColumn.hideDetailedBrick();
 			}
 		}, EPickingType.BRICK_CLOSE_BUTTON.name(), CLOSE_BUTTON_ID);
 	}
@@ -358,12 +358,12 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	public int getDefaultHeightPixels() {
-		return dimensionGroup.getDetailBrickHeightPixels();
+		return brickColumn.getDetailBrickHeightPixels();
 	}
 
 	@Override
 	public int getDefaultWidthPixels() {
-		return dimensionGroup.getDetailBrickWidthPixels(dimensionGroup.isLeftmost());
+		return brickColumn.getDetailBrickWidthPixels(brickColumn.isLeftmost());
 	}
 
 	/**

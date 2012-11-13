@@ -73,6 +73,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
@@ -625,7 +626,15 @@ public class GLPathway
 	public void display(final GL2 gl) {
 		checkForHits(gl);
 
-		if (isDisplayListDirty) {
+//		gl.glColor3f(1, 0, 0);
+//		gl.glBegin(GL2.GL_POLYGON);
+//		gl.glVertex3f(0, 0, 0);
+//		gl.glVertex3f(0, 1, 0);
+//		gl.glVertex3f(1, 1, 0);
+//		gl.glVertex3f(1, 0, 0);
+//		gl.glEnd();
+		
+		if (true) {
 			calculatePathwayScaling(gl, pathway);
 			rebuildPathwayDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
@@ -635,7 +644,6 @@ public class GLPathway
 			// TODO: also put this in global DL
 			renderPathway(gl, pathway);
 
-			gl.glCallList(displayListIndex);
 		}
 	}
 
@@ -945,13 +953,8 @@ public class GLPathway
 	// gl.glPopName();
 	// }
 
-	private void rebuildPathwayDisplayList(final GL2 gl, int iGLDisplayListIndex) {
-
+	private void rebuildPathwayDisplayList(final GL2 gl, int displayListIndex) {
 		gLPathwayAugmentationRenderer.buildPathwayDisplayList(gl, pathway);
-
-		// gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
-		// renderPathwayName(gl);
-		// gl.glEndList();
 	}
 
 	private void calculatePathwayScaling(final GL2 gl, final PathwayGraph pathway) {

@@ -131,9 +131,11 @@ public class DataTable extends AUniqueObject {
 	 * should not be called by implementing sub-classes.
 	 */
 	public DataTable(ATableBasedDataDomain dataDomain) {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.DATA_TABLE));
+		super(GeneralManager.get().getIDCreator()
+				.createID(ManagedObjectType.DATA_TABLE));
 		this.dataDomain = dataDomain;
-		isColumnDimension = !dataDomain.getDataSetDescription().isTransposeMatrix();
+		isColumnDimension = !dataDomain.getDataSetDescription()
+				.isTransposeMatrix();
 		// initWithDataDomain();
 	}
 
@@ -179,21 +181,22 @@ public class DataTable extends AUniqueObject {
 		return dataDomain;
 	}
 
-	public float getFloat(DataRepresentation dataRepresentation, Integer recordID,
-			Integer dimensionID) {
+	public Float getFloat(DataRepresentation dataRepresentation,
+			Integer recordID, Integer dimensionID) {
 		try {
 			if (isColumnDimension)
-				return hashColumns.get(dimensionID)
-						.getFloat(dataRepresentation, recordID);
+				return hashColumns.get(dimensionID).getFloat(
+						dataRepresentation, recordID);
 			else
-				return hashColumns.get(recordID)
-						.getFloat(dataRepresentation, dimensionID);
+				return hashColumns.get(recordID).getFloat(dataRepresentation,
+						dimensionID);
 		} catch (NullPointerException npe) {
+
 			Logger.log(new Status(Status.ERROR, "DataTable",
-					"Data table does not contain a value for record: " + recordID
-							+ " and dimension " + dimensionID));
+					"Data table does not contain a value for record: "
+							+ recordID + " and dimension " + dimensionID));
+			return null;
 		}
-		return 0;
 
 	}
 
@@ -220,7 +223,8 @@ public class DataTable extends AUniqueObject {
 		RawDataType rawDataType = hashColumns.get(columnID).getRawDataType();
 		String result;
 		if (rawDataType == RawDataType.FLOAT) {
-			result = Float.toString(getFloat(DataRepresentation.RAW, rowID, columnID));
+			result = Float.toString(getFloat(DataRepresentation.RAW, rowID,
+					columnID));
 		} else if (rawDataType == RawDataType.STRING) {
 			result = getRaw(columnID, rowID);
 		} else {
@@ -231,14 +235,16 @@ public class DataTable extends AUniqueObject {
 		return result;
 	}
 
-	public boolean containsDataRepresentation(DataRepresentation dataRepresentation,
-			Integer dimensionID, Integer recordID) {
+	public boolean containsDataRepresentation(
+			DataRepresentation dataRepresentation, Integer dimensionID,
+			Integer recordID) {
 		Integer columnID = dimensionID;
 
 		if (!isColumnDimension)
 			columnID = recordID;
 
-		return hashColumns.get(columnID).containsDataRepresentation(dataRepresentation);
+		return hashColumns.get(columnID).containsDataRepresentation(
+				dataRepresentation);
 	}
 
 	public RawDataType getRawDataType(Integer dimensionID, Integer recordID) {
@@ -255,8 +261,8 @@ public class DataTable extends AUniqueObject {
 	 * @return
 	 */
 	public Iterator<AColumn> iterator(String type) {
-		return new DimensionIterator(hashColumns, hashDimensionPerspectives.get(type)
-				.getVirtualArray());
+		return new DimensionIterator(hashColumns, hashDimensionPerspectives
+				.get(type).getVirtualArray());
 	}
 
 	/**
@@ -317,7 +323,8 @@ public class DataTable extends AUniqueObject {
 							+ externalDataTrans);
 		}
 
-		result = (result - metaData.getMin()) / (metaData.getMax() - metaData.getMin());
+		result = (result - metaData.getMin())
+				/ (metaData.getMax() - metaData.getMin());
 
 		return result;
 	}
@@ -387,11 +394,14 @@ public class DataTable extends AUniqueObject {
 	public RecordPerspective getRecordPerspective(String recordPerspectiveID) {
 		if (recordPerspectiveID == null)
 			throw new IllegalArgumentException("perspectiveID was null");
-		RecordPerspective recordData = hashRecordPerspectives.get(recordPerspectiveID);
+		RecordPerspective recordData = hashRecordPerspectives
+				.get(recordPerspectiveID);
 		if (recordData == null)
-			throw new IllegalStateException("No RecordPerspective registered for "
-					+ recordPerspectiveID + ", registered Perspectives: "
-					+ hashRecordPerspectives);
+			throw new IllegalStateException(
+					"No RecordPerspective registered for "
+							+ recordPerspectiveID
+							+ ", registered Perspectives: "
+							+ hashRecordPerspectives);
 		return recordData;
 	}
 
@@ -434,7 +444,8 @@ public class DataTable extends AUniqueObject {
 			boolean triggerUpdate) {
 		if (recordPerspective.getPerspectiveID() == null)
 			throw new IllegalStateException(
-					"Record perspective not correctly initiaklized: " + recordPerspective);
+					"Record perspective not correctly initiaklized: "
+							+ recordPerspective);
 		if (!recordPerspective.getIdType().equals(dataDomain.getRecordIDType()))
 			throw new IllegalStateException(
 					"Invalid reocrd id type for this datadomain: "
@@ -474,15 +485,18 @@ public class DataTable extends AUniqueObject {
 	 * @return the associated {@link DimensionPerspective} object, or null if no
 	 *         such object is registered.
 	 */
-	public DimensionPerspective getDimensionPerspective(String dimensionPerspectiveID) {
+	public DimensionPerspective getDimensionPerspective(
+			String dimensionPerspectiveID) {
 		if (dimensionPerspectiveID == null)
 			throw new IllegalArgumentException("perspectiveID was null");
 		DimensionPerspective dimensionPerspective = hashDimensionPerspectives
 				.get(dimensionPerspectiveID);
 		if (dimensionPerspective == null)
-			throw new IllegalStateException("No DimensionPerspective registered for "
-					+ dimensionPerspectiveID + ", registered Perspectives: "
-					+ hashDimensionPerspectives);
+			throw new IllegalStateException(
+					"No DimensionPerspective registered for "
+							+ dimensionPerspectiveID
+							+ ", registered Perspectives: "
+							+ hashDimensionPerspectives);
 		return dimensionPerspective;
 	}
 
@@ -492,7 +506,8 @@ public class DataTable extends AUniqueObject {
 	 * 
 	 * @param dimensionPerspective
 	 */
-	public void registerDimensionPerspective(DimensionPerspective dimensionPerspective) {
+	public void registerDimensionPerspective(
+			DimensionPerspective dimensionPerspective) {
 		registerDimensionPerspective(dimensionPerspective, true);
 	}
 
@@ -503,8 +518,8 @@ public class DataTable extends AUniqueObject {
 	 * @param flat
 	 *            determines whether a datadomain update event is triggered
 	 */
-	public void registerDimensionPerspective(DimensionPerspective dimensionPerspective,
-			boolean triggerUpdate) {
+	public void registerDimensionPerspective(
+			DimensionPerspective dimensionPerspective, boolean triggerUpdate) {
 		if (dimensionPerspective.getPerspectiveID() == null)
 			throw new IllegalStateException(
 					"Dimension perspective not correctly initiaklized: "
@@ -558,12 +573,14 @@ public class DataTable extends AUniqueObject {
 
 	@Override
 	public void finalize() {
-		Logger.log(new Status(IStatus.INFO, this.toString(), "Set " + this + "destroyed"));
+		Logger.log(new Status(IStatus.INFO, this.toString(), "Set " + this
+				+ "destroyed"));
 	}
 
 	@Override
 	public String toString() {
-		return "Set for " + dataDomain + " with " + hashColumns.size() + " dimensions.";
+		return "Set for " + dataDomain + " with " + hashColumns.size()
+				+ " dimensions.";
 	}
 
 	/**
@@ -580,11 +597,13 @@ public class DataTable extends AUniqueObject {
 		if (!tableType.equals(DataTableDataType.NUMERIC) || !isTableHomogeneous)
 			throw new IllegalStateException(
 					"Can not provide a mean dimension if set is not numerical (Set type: "
-							+ tableType + ") or not homgeneous (isHomogeneous: "
+							+ tableType
+							+ ") or not homgeneous (isHomogeneous: "
 							+ isTableHomogeneous + ")");
 		if (meanDimension == null) {
 			meanDimension = new NumericalColumn();
-			meanDimension.setExternalDataRepresentation(EDataTransformation.NONE);
+			meanDimension
+					.setExternalDataRepresentation(EDataTransformation.NONE);
 
 			float[] meanValues = new float[metaData.depth()];
 			DimensionVirtualArray dimensionVA = hashDimensionPerspectives.get(
@@ -592,7 +611,8 @@ public class DataTable extends AUniqueObject {
 			for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
 				float sum = 0;
 				for (int dimensionID : dimensionVA) {
-					sum += getFloat(DataRepresentation.RAW, contentCount, dimensionID);
+					sum += getFloat(DataRepresentation.RAW, contentCount,
+							dimensionID);
 				}
 				meanValues[contentCount] = sum / metaData.size();
 			}
@@ -732,13 +752,15 @@ public class DataTable extends AUniqueObject {
 		Integer nrRecordsInSample = null;
 		List<Integer> recordIDs;
 		if (isColumnDimension) {
-			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
+			if (dataDomain.getDataSetDescription()
+					.getDataProcessingDescription() != null) {
 				nrRecordsInSample = dataDomain.getDataSetDescription()
 						.getDataProcessingDescription().getNrRowsInSample();
 			}
 			recordIDs = getRowIDList();
 		} else {
-			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
+			if (dataDomain.getDataSetDescription()
+					.getDataProcessingDescription() != null) {
 				nrRecordsInSample = dataDomain.getDataSetDescription()
 						.getDataProcessingDescription().getNrColumnsInSample();
 			}
@@ -762,13 +784,15 @@ public class DataTable extends AUniqueObject {
 		List<Integer> dimensionIDs;
 		Integer nrDimensionsInsample = null;
 		if (isColumnDimension) {
-			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
+			if (dataDomain.getDataSetDescription()
+					.getDataProcessingDescription() != null) {
 				nrDimensionsInsample = dataDomain.getDataSetDescription()
 						.getDataProcessingDescription().getNrColumnsInSample();
 			}
 			dimensionIDs = getColumnIDList();
 		} else {
-			if (dataDomain.getDataSetDescription().getDataProcessingDescription() != null) {
+			if (dataDomain.getDataSetDescription()
+					.getDataProcessingDescription() != null) {
 				nrDimensionsInsample = dataDomain.getDataSetDescription()
 						.getDataProcessingDescription().getNrRowsInSample();
 			}
@@ -777,14 +801,16 @@ public class DataTable extends AUniqueObject {
 		// here we sample the list of dimensions to avoid problems with the heat
 		// map TODO: we should probably move this to some better place
 
-		dimensionIDs = Algorithms.sampleList(nrDimensionsInsample, dimensionIDs);
+		dimensionIDs = Algorithms
+				.sampleList(nrDimensionsInsample, dimensionIDs);
 
 		data.setData(dimensionIDs);
 		defaultDimensionPerspective.init(data);
 
 		defaultDimensionPerspective.setLabel("Ungrouped", true);
 
-		hashDimensionPerspectives.put(defaultDimensionPerspective.getPerspectiveID(),
+		hashDimensionPerspectives.put(
+				defaultDimensionPerspective.getPerspectiveID(),
 				defaultDimensionPerspective);
 	}
 }

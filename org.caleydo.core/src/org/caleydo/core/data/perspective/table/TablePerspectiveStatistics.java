@@ -108,9 +108,9 @@ public class TablePerspectiveStatistics {
 				return;
 			}
 			for (Integer dimensionID : dimensionVA) {
-				float value = referenceTablePerspective.getDataDomain().getTable()
+				Float value = referenceTablePerspective.getDataDomain().getTable()
 						.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
-				if (!Float.isNaN(value)) {
+				if (value != null && !Float.isNaN(value)) {
 					averageValue += value;
 					count++;
 				}
@@ -297,7 +297,7 @@ public class TablePerspectiveStatistics {
 				value = table
 						.getFloat(DataRepresentation.NORMALIZED, objectID, virtualArrayID);
 			}
-			if (!value.isNaN()) {
+			if (value != null && !value.isNaN()) {
 				sumOfValues += value;
 				nrValidValues++;
 			}
@@ -312,7 +312,7 @@ public class TablePerspectiveStatistics {
 			else {
 				value = table.getFloat(DataRepresentation.NORMALIZED, objectID, recordID);
 			}
-			if (!value.isNaN()) {
+			if (value != null && !value.isNaN()) {
 				sumDeviation += Math.pow(value - averageDimension.arithmeticMean, 2);
 			}
 		}

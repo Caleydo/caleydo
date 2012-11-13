@@ -297,7 +297,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			@Override
 			public void clicked(Pick pick) {
 				boolean isGlobalViewSwitching = !viewSwitchingModeButton.isSelected();
-				dimensionGroup.setGlobalViewSwitching(isGlobalViewSwitching);
+				brickColumn.setGlobalViewSwitching(isGlobalViewSwitching);
 				viewSwitchingModeButton.setSelected(isGlobalViewSwitching);
 			}
 		}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
@@ -308,7 +308,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			@Override
 			public void clicked(Pick pick) {
 				brick.collapse();
-				dimensionGroup.updateLayout();
+				brickColumn.updateLayout();
 			}
 		}, EPickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID);
 
@@ -316,7 +316,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 			@Override
 			public void clicked(Pick pick) {
-				dimensionGroup.showDetailedBrick(brick, false);
+				brickColumn.showDetailedBrick(brick, false);
 			}
 		}, EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
 
@@ -324,7 +324,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 			@Override
 			public void clicked(Pick pick) {
-				dimensionGroup.showDetailedBrick(brick, true);
+				brickColumn.showDetailedBrick(brick, true);
 			}
 		}, EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
 	}
@@ -361,7 +361,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	public ABrickLayoutConfiguration getCollapsedLayoutTemplate() {
-		return new CollapsedBrickLayoutTemplate(brick, stratomex, dimensionGroup,
+		return new CollapsedBrickLayoutTemplate(brick, stratomex, brickColumn,
 				brick.getBrickConfigurer());
 	}
 
