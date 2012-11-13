@@ -1382,7 +1382,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 * @param lines
 	 *            The lines of text.
 	 */
-	protected void renderEmptyViewText(GL2 gl, String[] lines) {
+	protected void renderEmptyViewText(GL2 gl, String... lines) {
 
 		if (textRenderer == null)
 			textRenderer = new CaleydoTextRenderer(24);

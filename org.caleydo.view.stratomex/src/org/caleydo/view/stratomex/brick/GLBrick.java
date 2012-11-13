@@ -21,6 +21,7 @@ package org.caleydo.view.stratomex.brick;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,7 @@ import org.caleydo.core.gui.util.ChangeNameDialog;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -80,9 +82,6 @@ import org.caleydo.view.stratomex.brick.contextmenu.CreateKaplanMeierSmallMultip
 import org.caleydo.view.stratomex.brick.contextmenu.CreatePathwaySmallMultiplesGroupItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RemoveColumnItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RenameBrickItem;
-import org.caleydo.view.stratomex.brick.contextmenu.ScoreAllGroupsInColumnItem;
-import org.caleydo.view.stratomex.brick.contextmenu.ScoreColumnItem;
-import org.caleydo.view.stratomex.brick.contextmenu.ScoreGroupItem;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.stratomex.brick.layout.CollapsedBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.CompactHeaderBrickLayoutTemplate;
@@ -105,6 +104,9 @@ import org.caleydo.view.stratomex.listener.OpenCreatePathwayGroupDialogListener;
 import org.caleydo.view.stratomex.listener.OpenCreatePathwaySmallMultiplesGroupDialogListener;
 import org.caleydo.view.stratomex.listener.RelationsUpdatedListener;
 import org.caleydo.view.stratomex.listener.RenameListener;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -240,10 +242,32 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	private ABrickLayoutConfiguration brickLayoutConfiguration;
 	private IBrickConfigurer brickConfigurer;
 
+	private final Collection<IContextMenuBrickFactory> contextMenuFactories;
+
 	public GLBrick(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 		views = new HashMap<EContainedViewType, AGLView>();
 		containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
+
+		contextMenuFactories = createContextMenuFactories();
+	}
+
+	/**
+	 * @return
+	 */
+	private static Collection<IContextMenuBrickFactory> createContextMenuFactories() {
+		Collection<IContextMenuBrickFactory> factories = new ArrayList<>();
+		try {
+			for (IConfigurationElement elem : RegistryFactory.getRegistry().getConfigurationElementsFor(
+					IContextMenuBrickFactory.EXTENSION_ID)) {
+				final Object o = elem.createExecutableExtension("class");
+				if (o instanceof IContextMenuBrickFactory)
+					factories.add((IContextMenuBrickFactory) o);
+			}
+		} catch (CoreException ex) {
+			System.err.println(ex.getMessage());
+		}
+		return factories;
 	}
 
 	@Override
@@ -853,7 +877,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				// or a brick
 				ContextMenuCreator contextMenuCreator = stratomex.getContextMenuCreator();
 				if (brickColumn.getTablePerspective() == tablePerspective) {
-
+					//single item
 					if (dataDomain instanceof GeneticDataDomain
 							&& !dataDomain.isColumnDimension()) {
 						contextMenuCreator
@@ -868,19 +892,17 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 											.getTablePerspective()
 											.getDimensionPerspective()));
 				} else {
+					//header brick
 					// contextMenuCreator.addContextMenuItem(new
 					// CreatePathwayGroupFromDataItem(
 					// dataDomain, tablePerspective.getRecordPerspective()
 					// .getVirtualArray(), brickColumn.getTablePerspective()
 					// .getDimensionPerspective()));
 
-					if (!GeneralManager.RELEASE_MODE) {
-						contextMenuCreator.addContextMenuItem(new ScoreGroupItem(
-								stratomex.getVendingMachine(), tablePerspective,
-								brickColumn));
-
-						selectElementsByGroup();
-					}
+					for (IContextMenuBrickFactory factory : contextMenuFactories)
+						for (AContextMenuItem item : factory.createGroupEntries(tablePerspective, brickColumn))
+							contextMenuCreator.addContextMenuItem(item);
+					selectElementsByGroup();
 				}
 
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
@@ -888,13 +910,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(stratomex,
 						getBrickColumn().getTablePerspective().getID()));
 
-				if (!GeneralManager.RELEASE_MODE) {
-					contextMenuCreator.addContextMenuItem(new ScoreColumnItem(stratomex
-							.getVendingMachine(), brickColumn));
-
-					contextMenuCreator.addContextMenuItem(new ScoreAllGroupsInColumnItem(
-							stratomex.getVendingMachine(), brickColumn));
-				}
+				for (IContextMenuBrickFactory factory : contextMenuFactories)
+					for (AContextMenuItem item : factory.createBrickEntries(brickColumn))
+						contextMenuCreator.addContextMenuItem(item);
 			}
 
 		};

@@ -76,7 +76,6 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
-import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -101,8 +100,6 @@ import org.caleydo.view.stratomex.listener.ConnectionsModeListener;
 import org.caleydo.view.stratomex.listener.GLStratomexKeyListener;
 import org.caleydo.view.stratomex.listener.ReplaceTablePerspectiveListener;
 import org.caleydo.view.stratomex.listener.SplitBrickListener;
-import org.caleydo.view.stratomex.vendingmachine.RankedElement;
-import org.caleydo.view.stratomex.vendingmachine.VendingMachine;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
@@ -227,10 +224,6 @@ public class GLStratomex extends AGLView implements
 
 	private List<TablePerspective> tablePerspectives;
 
-	private VendingMachine vendingMachine;
-
-	private ElementLayout vendingMachineLayout;
-
 	/**
 	 * Constructor.
 	 *
@@ -269,8 +262,6 @@ public class GLStratomex extends AGLView implements
 		mainRow = new Row();
 		layoutManager.setBaseElementLayout(mainRow);
 
-		initVendingMachine();
-
 		leftColumnLayout = new Column("leftArchColumn");
 		leftColumnLayout.setPixelSizeX(ARCH_PIXEL_WIDTH);
 
@@ -284,18 +275,13 @@ public class GLStratomex extends AGLView implements
 
 		mainRow.clear();
 
-		if (!isLeftDetailShown && !isRightDetailShown
-				&& !vendingMachine.isActive()) {
+		if (!isLeftDetailShown && !isRightDetailShown) {
 			initLeftLayout();
 		}
 		initCenterLayout();
-		if (!isLeftDetailShown && !isRightDetailShown
-				&& !vendingMachine.isActive()) {
+		if (!isLeftDetailShown && !isRightDetailShown) {
 			initRightLayout();
 		}
-
-		if (vendingMachine.isActive())
-			mainRow.append(vendingMachineLayout);
 
 		layoutManager.updateLayout();
 
@@ -638,20 +624,6 @@ public class GLStratomex extends AGLView implements
 			if (isConnectionLinesDirty) {
 
 				performConnectionLinesUpdate();
-			}
-
-			if (vendingMachine.isSelectedRankedElementDirty()) {
-				RankedElement selectedRankedElement = vendingMachine
-						.getSelectedRankedElement();
-				if (selectedRankedElement != null) {
-					selectElementsByConnectionBandID(selectedRankedElement
-							.getGroupTablePerspective().getRecordPerspective(),
-							selectedRankedElement
-									.getReferenceTablePerspective()
-									.getRecordPerspective());
-				}
-
-				vendingMachine.setSelectedRankedElementDirty(false);
 			}
 
 			layoutManager.render(gl);
@@ -1820,37 +1792,6 @@ public class GLStratomex extends AGLView implements
 
 		if (layoutManager != null)
 			layoutManager.destroy(gl);
-	}
-
-	private void initVendingMachine() {
-
-		vendingMachineLayout = new ElementLayout("vendingMachineLayout");
-		vendingMachineLayout
-				.setPixelSizeX(VendingMachine.VENDING_MACHINE_PIXEL_WIDTH);
-
-		ViewFrustum frustum = new ViewFrustum(
-				CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1);
-		vendingMachine = (VendingMachine) GeneralManager
-				.get()
-				.getViewManager()
-				.createGLView(VendingMachine.class, parentGLCanvas,
-						parentComposite, frustum);
-
-		vendingMachine.setStratomex(this);
-		vendingMachine.setRemoteRenderingGLView(this);
-		vendingMachine.initialize();
-
-		uninitializedSubViews.add(vendingMachine);
-		ViewLayoutRenderer viewLayoutRenderer = new ViewLayoutRenderer(
-				vendingMachine);
-		vendingMachineLayout.setRenderer(viewLayoutRenderer);
-	}
-
-	/**
-	 * @return the vendingMachine, see {@link #vendingMachine}
-	 */
-	public VendingMachine getVendingMachine() {
-		return vendingMachine;
 	}
 
 	public Row getLayout() {

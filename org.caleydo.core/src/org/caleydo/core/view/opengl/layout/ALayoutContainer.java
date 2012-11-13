@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,12 +23,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.util.collection.Pair;
 
 /**
  * BaseClass for layouts which contain nested {@link ElementLayout}s.
- * 
+ *
  * @author Alexander Lex
  */
 public abstract class ALayoutContainer
@@ -143,17 +145,26 @@ public abstract class ALayoutContainer
 
 	/**
 	 * Append an element to the container at the end
-	 * 
+	 *
 	 * @param elementLayout
 	 */
 	public void append(ElementLayout elementLayout) {
+		add(elementLayout);
+	}
+
+	/**
+	 * Append an element to the container at the end
+	 *
+	 * @param elementLayout
+	 */
+	public void add(ElementLayout elementLayout) {
 		elements.add(elementLayout);
 	}
 
 	/**
 	 * Add an element to the container at the specified index. Subsequent
 	 * layouts will be shifted to the right.
-	 * 
+	 *
 	 * @param index
 	 * @param elementLayout
 	 */
@@ -265,7 +276,7 @@ public abstract class ALayoutContainer
 	/**
 	 * Sets whether this layout container renders its elements in an order
 	 * (concerning the time) according to their priority.
-	 * 
+	 *
 	 * @param isPriorityRendereing
 	 */
 	public void setPriorityRendereing(boolean isPriorityRendereing) {

@@ -17,31 +17,16 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.brick.contextmenu;
-
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.view.stratomex.column.BrickColumn;
-import org.caleydo.view.stratomex.event.ScoreTablePerspectiveEvent;
-import org.caleydo.view.stratomex.vendingmachine.EScoreReferenceMode;
-import org.caleydo.view.stratomex.vendingmachine.VendingMachine;
+package org.caleydo.view.tourguide.vendingmachine;
 
 /**
+ * Possible modes for scoring against a reference table perspective.
+ * 
  * @author Marc Streit
  * 
  */
-public class ScoreAllGroupsInColumnItem
-	extends AContextMenuItem {
-
-	public ScoreAllGroupsInColumnItem(VendingMachine vendingMachine,
-			BrickColumn referenceBrickColumn) {
-
-		setLabel("Score all groups in column");
-
-		ScoreTablePerspectiveEvent event = new ScoreTablePerspectiveEvent(
-				EScoreReferenceMode.ALL_GROUPS_IN_COLUMN, referenceBrickColumn
-						.getTablePerspective().getRecordSubTablePerspectives(),
-				referenceBrickColumn);
-		event.setSender(this);
-		registerEvent(event);
-	}
+public enum EScoreReferenceMode {
+	COLUMN,
+	ALL_GROUPS_IN_COLUMN,
+	SINGLE_GROUP;
 }

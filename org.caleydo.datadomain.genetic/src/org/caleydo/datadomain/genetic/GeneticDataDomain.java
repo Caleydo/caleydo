@@ -1,26 +1,29 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.datadomain.genetic;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -43,7 +46,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
  * DataDomain for genetic data.
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -60,7 +63,7 @@ public class GeneticDataDomain
 	 * Counter used for determining the extension that together with the type
 	 * builds the data domain ID.
 	 */
-	private static int extensionID = 0;
+	private static AtomicInteger extensionID = new AtomicInteger();
 
 	private ReplaceRecordPerspectiveListener clinicalReplaceContentVirtualArrayListener;
 	private ForeignSelectionUpdateListener clinicalSelectionUpdateListener;
@@ -72,7 +75,8 @@ public class GeneticDataDomain
 	 */
 	public GeneticDataDomain() {
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE
-				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
+ + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER
+				+ extensionID.getAndIncrement());
 	}
 
 	@Override
@@ -238,7 +242,7 @@ public class GeneticDataDomain
 				convertedItem.setRemove(item.isRemove());
 				convertedDelta.add(convertedItem);
 			}
-			resendEvent.setSelectionDelta((SelectionDelta) convertedDelta);
+			resendEvent.setSelectionDelta(convertedDelta);
 
 			eventPublisher.triggerEvent(resendEvent);
 		}
@@ -354,7 +358,7 @@ public class GeneticDataDomain
 	 * Returns the idType for the content in the data table, which is either the
 	 * recordIDType or the dimensionIDType depending on the result of
 	 * {@link #isColumnDimension()}
-	 * 
+	 *
 	 * @return
 	 */
 	public IDType getGeneIDType() {

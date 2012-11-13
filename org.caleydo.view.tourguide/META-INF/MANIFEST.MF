@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tour Guide
+Bundle-SymbolicName: org.caleydo.view.tourguide;singleton:=true
+Bundle-Version: 2.1
+Require-Bundle: org.caleydo.core;bundle-version="2.1",
+ org.caleydo.view.stratomex;bundle-version="2.1.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: gleem.linalg,
+ javax.media.opengl,
+ org.caleydo.data.loader
+Export-Package: org.caleydo.view.tourguide,
+ org.caleydo.view.tourguide.toolbar
+Bundle-Vendor: www.caleydo.org
+Bundle-ActivationPolicy: lazy
+Bundle-Activator: org.caleydo.view.tourguide.Activator

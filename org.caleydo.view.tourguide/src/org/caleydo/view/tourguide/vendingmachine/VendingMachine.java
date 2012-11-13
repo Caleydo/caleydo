@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.vendingmachine;
+package org.caleydo.view.tourguide.vendingmachine;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,9 +37,12 @@ import org.caleydo.core.data.perspective.table.JaccardIndex;
 import org.caleydo.core.data.perspective.table.JaccardIndex.JaccardIndexScorePair;
 import org.caleydo.core.data.perspective.table.JaccardIndex.JaccardIndexScores;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.EventListeners;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Triple;
+import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -63,9 +66,11 @@ import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnGlowRenderer;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
-import org.caleydo.view.stratomex.event.ScoreTablePerspectiveEvent;
-import org.caleydo.view.stratomex.listener.ScoreTablePerspectiveListener;
-import org.caleydo.view.stratomex.listener.VendingMachineKeyListener;
+import org.caleydo.view.stratomex.event.SelectElementsEvent;
+import org.caleydo.view.tourguide.SerializedTourGuideView;
+import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
+import org.caleydo.view.tourguide.listener.ScoreTablePerspectiveListener;
+import org.caleydo.view.tourguide.listener.VendingMachineKeyListener;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -81,26 +86,22 @@ public class VendingMachine
 	extends AGLView
 	implements IGLRemoteRenderingView, ILayoutedElement {
 
-	public static String VIEW_TYPE = "org.caleydo.view.vendingmachine";
-
-	public static String VIEW_NAME = "Vending Machine";
+	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
+	public static final String VIEW_NAME = "Vending Machine";
 
 	// private final static String DATASET_BUTTON_PICKING_TYPE =
 	// "org.caleydo.view.stratomex.vendingmachine.testbutton";
 	private final static int DATASET_BUTTON_PICKING_ID = 0;
 
-	public static int VENDING_MACHINE_PIXEL_WIDTH = 500;
+	public static final int VENDING_MACHINE_PIXEL_WIDTH = 500;
+	private static final int MAX_RANKED_ELEMENTS = 35;
 
-	private static int MAX_RANKED_ELEMENTS = 35;
-	private static float SCORE_CUTOFF = 0.2f;
-
-	private static float[] RANK_SELECTION_COLOR = new float[] { 1, 1, 0, 1 };
-	private static float[] REFERENCE_SELECTION_COLOR = new float[] { 1, 0, 0, 1 };
+	private static final float[] RANK_SELECTION_COLOR = new float[] { 1, 1, 0, 1 };
+	private static final float[] REFERENCE_SELECTION_COLOR = new float[] { 1, 0, 0, 1 };
 
 	private LayoutManager layoutManager;
 
 	private Column mainColumn;
-	private Column dataSetButtonListColumn;
 	private Column rankColumn;
 
 	private boolean isRankedListDirty = false;
@@ -115,24 +116,23 @@ public class VendingMachine
 
 	private List<RankedElement> rankedElements;
 
-	private GLStratomex stratomex;
-
 	private boolean isActive = !GeneralManager.RELEASE_MODE;
 
-	private BrickColumnManager brickColumnManager;
+	private final EventListeners listeners = new EventListeners();
 
-	private BrickColumn referenceBrickColumn;
-
-	private ScoreTablePerspectiveListener scoreGroupListener;
-
-	private ArrayList<Button> dataDomainButtons = new ArrayList<Button>();
+	private List<Button> dataDomainButtons = new ArrayList<Button>();
 
 	private CategoricalTablePerspectiveCreator categoricalTablePerspectiveCreator = new CategoricalTablePerspectiveCreator();
 
 	private EScoreReferenceMode scoreReferenceMode;
 
 	private RankedElement selectedRankedElement;
-	private boolean isSelectedRankedElementDirty;
+
+	private BrickColumn referenceBrickColumn;
+
+	private GLStratomex stratomex;
+
+	private BrickColumnManager brickColumnManager;
 
 	/**
 	 * Constructor.
@@ -190,7 +190,6 @@ public class VendingMachine
 
 	@Override
 	public void displayLocal(GL2 gl) {
-
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
@@ -209,12 +208,12 @@ public class VendingMachine
 		rankColumn.setBottomUp(false);
 		mainColumn.append(rankColumn);
 
-		dataSetButtonListColumn = new Column("dataSetButtonColum");
+		Column dataSetButtonListColumn = new Column("dataSetButtonColum");
 		dataSetButtonListColumn.setBottomUp(false);
 		dataSetButtonListColumn.setPixelSizeY(200);
 		mainColumn.append(dataSetButtonListColumn);
 
-		addDataSetButtons();
+		addDataSetButtons(dataSetButtonListColumn);
 
 		layoutManager.updateLayout();
 	}
@@ -273,20 +272,16 @@ public class VendingMachine
 			rankColumn.append(spacerLayout);
 		}
 
-		if (rankedElements.size() > 0) {
+		if (!rankedElements.isEmpty()) {
 
-			// Add first ranked table perspective as the currently selected one
-			// to
-			// stratomex
-			TablePerspective tablePerspective = rankedElements.get(
-					selectedTablePerspectiveIndex).getColumnTablePerspective();
+			// Add first ranked table perspective as the currently selected one to stratomex
+			// FIXME event
+			TablePerspective tablePerspective = rankedElements.get(selectedTablePerspectiveIndex)
+					.getColumnTablePerspective();
 			addTablePerspectiveToStratomex(tablePerspective);
 
-			// Move newly added table perspective to be right of the reference
-			// table
-			// perspective
-			brickColumnManager.moveBrickColumn(
-					brickColumnManager.getBrickColumn(tablePerspective),
+			// Move newly added table perspective to be right of the reference table perspective
+			brickColumnManager.moveBrickColumn(brickColumnManager.getBrickColumn(tablePerspective),
 					brickColumnManager.indexOfBrickColumn(referenceBrickColumn) + 1);
 
 			rankedElements.get(0).addBackgroundRenderer(highlightRankBackgroundRenderer);
@@ -314,6 +309,11 @@ public class VendingMachine
 
 	@Override
 	public void display(GL2 gl) {
+		if (!hasActiveStratomex()) {
+			renderEmptyViewText(gl, "No Active Stratomex");
+			return;
+		}
+
 		checkForHits(gl);
 		processEvents();
 
@@ -325,33 +325,30 @@ public class VendingMachine
 		layoutManager.render(gl);
 	}
 
+	private boolean hasActiveStratomex() {
+		return stratomex != null;
+	}
+
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		return null;
+		return new SerializedTourGuideView();
 	}
 
 	@Override
 	public String toString() {
-		return "TODO: ADD INFO THAT APPEARS IN THE LOG";
+		return "VendingMachine";
 	}
 
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-
-		scoreGroupListener = new ScoreTablePerspectiveListener();
-		scoreGroupListener.setHandler(this);
-		eventPublisher.addListener(ScoreTablePerspectiveEvent.class, scoreGroupListener);
+		listeners.register(ScoreTablePerspectiveEvent.class, new ScoreTablePerspectiveListener().setHandler(this));
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
-
-		if (scoreGroupListener != null) {
-			eventPublisher.removeListener(scoreGroupListener);
-			scoreGroupListener = null;
-		}
+		listeners.unregisterAll();
 	}
 
 	@Override
@@ -394,8 +391,7 @@ public class VendingMachine
 			ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID(dataDomainButton.getPickingType());
 
-			if (dataDomain.getLabel().toLowerCase().contains("mutation")
-					|| dataDomain.getLabel().toLowerCase().contains("copy")) {
+			if (isCategoricalDataDomain(dataDomain)) {
 
 				scoringTablePerspectives.addAll(dataDomain.getAllTablePerspectives());
 			}
@@ -447,108 +443,65 @@ public class VendingMachine
 		}
 	}
 
-	private void addDataSetButtons() {
+	private void addDataSetButtons(Column buttons) {
 
 		dataDomainButtons.clear();
 
-		List<ATableBasedDataDomain> dataDomains = DataDomainManager.get()
-				.getDataDomainsByType(ATableBasedDataDomain.class);
+		List<ATableBasedDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(
+				ATableBasedDataDomain.class);
 
 		// Sort data domains alphabetically
 		Collections.sort(dataDomains, new Comparator<ADataDomain>() {
 			@Override
 			public int compare(ADataDomain dd1, ADataDomain dd2) {
-				return dd1.toString().compareTo(dd2.toString());
+				return dd1.getLabel().compareTo(dd2.getLabel());
 			}
 		});
 
-		ElementLayout horizontalSpacerLayout = new ElementLayout("spacerLayout");
+		final ElementLayout horizontalSpacerLayout = new ElementLayout("spacerLayout");
 		horizontalSpacerLayout.setPixelSizeY(3);
 
-		ElementLayout verticalSpacerLayout = new ElementLayout("spacerLayout");
+		final ElementLayout verticalSpacerLayout = new ElementLayout("spacerLayout");
 		verticalSpacerLayout.setPixelSizeX(7);
 
-		ElementLayout topSpacerLayout = new ElementLayout("spacerLayout");
+		final ElementLayout topSpacerLayout = new ElementLayout("spacerLayout");
 		topSpacerLayout.setPixelSizeY(20);
-		dataSetButtonListColumn.append(topSpacerLayout);
+
+		buttons.append(topSpacerLayout);
 
 		for (ATableBasedDataDomain dataDomain : dataDomains) {
+			if (filterDataDomain(dataDomain))
+				continue;
 
 			Row singleDataSetRow = new Row("singleDataSetRow");
 			singleDataSetRow.setGrabX(true);
 			singleDataSetRow.setPixelSizeY(18);
 
-			if (dataDomain.getLabel().toLowerCase().equals("clinical"))
-				continue;
-
 			ElementLayout dataSetButtonLayout = new ElementLayout("dataSetButtonLayout");
 			dataSetButtonLayout.setPixelSizeX(20);
 
-			final Button dataDomainButton = new Button(dataDomain.getDataDomainID(),
-					DATASET_BUTTON_PICKING_ID,
+			final Button dataDomainButton = new Button(dataDomain.getDataDomainID(), DATASET_BUTTON_PICKING_ID,
 					EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
-
-			// if ((dataDomain.getLabel().toLowerCase().contains("mutation") ||
-			// dataDomain
-			// .getLabel().toLowerCase().contains("copy")))
 			dataDomainButton.setSelected(false);
-			// else
-			// dataDomainButton.setSelected(true);
 
 			dataDomainButtons.add(dataDomainButton);
 
-			ButtonRenderer dataDomainButtonRenderer = new ButtonRenderer(dataDomainButton,
-					this);
+			ButtonRenderer dataDomainButtonRenderer = new ButtonRenderer(dataDomainButton, this);
 			dataDomainButtonRenderer.setZCoordinate(1);
 			dataSetButtonLayout.setRenderer(dataDomainButtonRenderer);
 
 			addTypePickingListener(new APickingListener() {
-
 				@Override
 				public void clicked(Pick pick) {
-
-					dataDomainButton.setSelected(!dataDomainButton.isSelected());
-
-					// Remove current score column before adding the new one
-					if (rankedElements != null
-							&& rankedElements.size() > 0
-							&& rankedElements.get(selectedTablePerspectiveIndex) != null
-							&& rankedElements.get(selectedTablePerspectiveIndex)
-									.getColumnTablePerspective() != null)
-						stratomex.removeTablePerspective(rankedElements
-								.get(selectedTablePerspectiveIndex)
-								.getColumnTablePerspective().getID());
-
-					if (referenceTablePerspectives != null) {
-
-						if (dataDomainButton.isSelected()) {
-
-							// FIND A BETTER PLACE FOR CREATING CATEGORICAL DATA
-							ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
-									.get()
-									.getDataDomainByID(dataDomainButton.getPickingType());
-							if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
-								categoricalTablePerspectiveCreator.createAllTablePerspectives(dataDomain);
-							}
-							else if (dataDomain.getLabel().toLowerCase().contains("copy")) {
-								categoricalTablePerspectiveCreator
-										.createAllTablePerspectives(dataDomain);
-							}
-						}
-					}
-
-					updateScoredTablePerspectives();
-					isRankedListDirty = true;
+					toogleDomainButton(dataDomainButton);
 				}
-
 			}, dataDomain.getDataDomainID());
 
 			singleDataSetRow.append(dataSetButtonLayout);
 			singleDataSetRow.append(verticalSpacerLayout);
 
 			ElementLayout dataSetIndicatorLayout = new ElementLayout("dataSetIndicatorLayout");
-			dataSetIndicatorLayout.addBackgroundRenderer(new ColorRenderer(dataDomain
-					.getColor().getRGBA()));
+			dataSetIndicatorLayout.addBackgroundRenderer(new ColorRenderer(dataDomain.getColor().getRGBA()));
 			dataSetIndicatorLayout.setPixelSizeX(RankedElement.DATASET_COLOR_INDICATOR_WIDTH);
 			singleDataSetRow.append(dataSetIndicatorLayout);
 			singleDataSetRow.append(verticalSpacerLayout);
@@ -558,19 +511,46 @@ public class VendingMachine
 			labelLayout.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH - 30);
 			singleDataSetRow.append(labelLayout);
 
-			dataSetButtonListColumn.append(singleDataSetRow);
-			dataSetButtonListColumn.append(horizontalSpacerLayout);
+			buttons.append(singleDataSetRow);
+			buttons.append(horizontalSpacerLayout);
 		}
 	}
 
-	public List<TablePerspective> getTablePerspectives() {
-		return scoringTablePerspectives;
+	void toogleDomainButton(final Button dataDomainButton) {
+		dataDomainButton.setSelected(!dataDomainButton.isSelected()); // toggle button
+
+		// Remove current score column before adding the new one
+		if (rankedElements != null && !rankedElements.isEmpty()
+				&& rankedElements.get(selectedTablePerspectiveIndex) != null
+				&& rankedElements.get(selectedTablePerspectiveIndex).getColumnTablePerspective() != null) {
+			int id = rankedElements.get(selectedTablePerspectiveIndex).getColumnTablePerspective().getID();
+			triggerEvent(new RemoveTablePerspectiveEvent(id, stratomex));
+		}
+
+		if (referenceTablePerspectives != null && dataDomainButton.isSelected()) {
+			// TODO FIND A BETTER PLACE FOR CREATING CATEGORICAL DATA
+			ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+					dataDomainButton.getPickingType());
+			if (isCategoricalDataDomain(dataDomain)) {
+				categoricalTablePerspectiveCreator.createAllTablePerspectives(dataDomain);
+			}
+		}
+		updateScoredTablePerspectives();
+		isRankedListDirty = true;
+	}
+
+	private final boolean isCategoricalDataDomain(ATableBasedDataDomain dataDomain) {
+		return dataDomain.getLabel().toLowerCase().contains("mutation")
+				|| dataDomain.getLabel().toLowerCase().contains("copy");
+	}
+
+	private final boolean filterDataDomain(ATableBasedDataDomain dataDomain) {
+		return dataDomain.getLabel().toLowerCase().equals("clinical");
 	}
 
 	public void highlightRankedElement(boolean next) {
 
-		RankedElement prevSelectedRankedElement = rankedElements
-				.get(selectedTablePerspectiveIndex);
+		RankedElement prevSelectedRankedElement = rankedElements.get(selectedTablePerspectiveIndex);
 
 		if (next && selectedTablePerspectiveIndex < MAX_RANKED_ELEMENTS - 1)
 			selectedTablePerspectiveIndex++;
@@ -602,14 +582,16 @@ public class VendingMachine
 		}
 
 		selectedRankedElement = newlySelectedRankedElement;
-		isSelectedRankedElementDirty = true;
+		if (selectedRankedElement != null) {
+			triggerEvent(new SelectElementsEvent(this, selectedRankedElement.getGroupTablePerspective()
+					.getRecordPerspective(), selectedRankedElement.getReferenceTablePerspective()
+					.getRecordPerspective()));
+
+		}
 	}
 
-	/**
-	 * @return the selectedRankedElement, see {@link #selectedRankedElement}
-	 */
-	public RankedElement getSelectedRankedElement() {
-		return selectedRankedElement;
+	private static void triggerEvent(AEvent event) {
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
 	private void addTablePerspectiveToStratomex(TablePerspective newlySelectedTablePerspective) {
@@ -619,11 +601,12 @@ public class VendingMachine
 		// event.setReceiver(stratomex);
 		// event.setSender(this);
 		// eventPublisher.triggerEvent(event);
-
+		if (!hasActiveStratomex())
+			return;
+		// FIXME as event
 		stratomex.addTablePerspective(newlySelectedTablePerspective);
 
-		BrickColumn brickColumn = brickColumnManager
-				.getBrickColumn(newlySelectedTablePerspective);
+		BrickColumn brickColumn = brickColumnManager.getBrickColumn(newlySelectedTablePerspective);
 		brickColumn.getLayout().addBackgroundRenderer(
 				new BrickColumnGlowRenderer(RANK_SELECTION_COLOR, brickColumn, false));
 		brickColumn.getLayout().updateSubLayout();
@@ -631,17 +614,14 @@ public class VendingMachine
 
 	public void selectChoice() {
 
-		RankedElement selectedRankedElement = rankedElements
-				.get(selectedTablePerspectiveIndex);
+		RankedElement selectedRankedElement = rankedElements.get(selectedTablePerspectiveIndex);
 		selectedRankedElement.getColumnTablePerspective().setPrivate(false);
 		// FIXME: we need to think about the workflow
 		isActive = true;
 
 		brickColumnManager
-				.getBrickColumn(
-						rankedElements.get(selectedTablePerspectiveIndex)
-								.getColumnTablePerspective()).getLayout()
-				.clearBackgroundRenderers();
+				.getBrickColumn(rankedElements.get(selectedTablePerspectiveIndex).getColumnTablePerspective())
+				.getLayout().clearBackgroundRenderers();
 
 		if (referenceBrickColumn != null)
 			referenceBrickColumn.getLayout().clearBackgroundRenderers();
@@ -666,40 +646,16 @@ public class VendingMachine
 	}
 
 	/**
-	 * @param glStratomex
-	 */
-	public void setStratomex(GLStratomex stratomex) {
-		this.stratomex = stratomex;
-		brickColumnManager = stratomex.getBrickColumnManager();
-	}
-
-	/**
 	 * @return the isActive, see {@link #isActive}
 	 */
 	public boolean isActive() {
 		return isActive;
 	}
-
-	public void updatLayout() {
-		// if (isActive)
-		// mainColumn.setPixelSizeX(VENDING_MACHINE_PIXEL_WIDTH);
-		// else
-		// mainColumn.setAbsoluteSizeX(0);
-	}
-
 	/**
-	 * @return the isSelectedRankedElementDirty, see
-	 *         {@link #isSelectedRankedElementDirty}
+	 * @param stratomex
 	 */
-	public boolean isSelectedRankedElementDirty() {
-		return isSelectedRankedElementDirty;
-	}
-
-	/**
-	 * @param isSelectedRankedElementDirty setter, see
-	 *            {@link #isSelectedRankedElementDirty}
-	 */
-	public void setSelectedRankedElementDirty(boolean isSelectedRankedElementDirty) {
-		this.isSelectedRankedElementDirty = isSelectedRankedElementDirty;
+	public void switchToStratomex(GLStratomex stratomex) {
+		this.stratomex = stratomex;
+		this.brickColumnManager = stratomex == null ? null : stratomex.getBrickColumnManager();
 	}
 }

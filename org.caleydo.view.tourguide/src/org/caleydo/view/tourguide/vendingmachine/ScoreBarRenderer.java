@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.vendingmachine;
+package org.caleydo.view.tourguide.vendingmachine;
 
 import javax.media.opengl.GL2;
 import org.caleydo.core.util.color.Color;

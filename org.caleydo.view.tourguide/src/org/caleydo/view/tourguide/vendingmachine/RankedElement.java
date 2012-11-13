@@ -17,10 +17,11 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.vendingmachine;
+package org.caleydo.view.tourguide.vendingmachine;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -32,9 +33,7 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
  * @author Marc Streit
  *
  */
-public class RankedElement
-	extends Row
-	implements Comparable<RankedElement> {
+public class RankedElement extends Row implements Comparable<RankedElement> {
 
 	private static final int RANK_NUMBER_WIDTH = 22;
 	public static final int DATASET_COLOR_INDICATOR_WIDTH = 20;
@@ -42,13 +41,13 @@ public class RankedElement
 	private static final int GROUP_TABLE_PERSPECTIVE_WIDTH = 80;
 	private static final int SCORE_BAR_WIDTH = 150;
 
-	private float score;
+	private final float score;
 
-	private TablePerspective columnTablePerspective;
+	private final TablePerspective columnTablePerspective;
 
-	private TablePerspective groupTablePerspective;
+	private final TablePerspective groupTablePerspective;
 
-	private TablePerspective referenceTablePerspective;
+	private final TablePerspective referenceTablePerspective;
 
 	private int rank;
 
