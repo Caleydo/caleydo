@@ -105,13 +105,6 @@ public final class ProjectManager {
 		return file(elems) + File.separator;
 	}
 
-	/**
-	 *
-	 *
-	 * full path to directory to temporarily store the projects file before zipping
-	 */
-	private static final String TEMP_PROJECT_FOLDER = dir("temp_project");
-
 	/** full path to directory of the recently open project */
 	public static final String RECENT_PROJECT_FOLDER = dir("recent_project");
 

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,19 +8,20 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.util.clusterer;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.ClusterNode;
@@ -33,40 +34,34 @@ import org.caleydo.core.util.collection.Pair;
 
 /**
  * Cluster helper provides methods needed in cluster algorithms such as median, arithmetic mean, etc.
- * 
+ *
  * @author Bernhard Schlegl
  */
 public class ClusterHelper {
 
 	/**
 	 * Calculates the arithmetic mean for a given vector (float array)
-	 * 
+	 *
 	 * @param vector
 	 * @return arithmetic mean
 	 */
 	public static float arithmeticMean(float[] vector) {
 		float mean = 0;
-		float temp = 0;
 		int iCnt = 0;
 
 		for (int i = 0; i < vector.length; i++) {
-
-			if (Float.isNaN(vector[i]))
-				temp = 0;
-			else {
-				temp = vector[i];
+			float v = vector[i];
+			if (!Float.isNaN(vector[i])) {
+				mean += v;
 				iCnt++;
 			}
-
-			mean += temp;
 		}
-
 		return mean / iCnt;
 	}
 
 	/**
 	 * Calculates the standard deviation for a given vector (float array)
-	 * 
+	 *
 	 * @param vector
 	 * @param arithmeticMean
 	 * @return standard deviation
@@ -221,15 +216,15 @@ public class ClusterHelper {
 
 	/**
 	 * Function sorts clusters depending on their average value (in case of genes: expression value).
-	 * 
+	 *
 	 * @param set
 	 * @param iVAIdContent
 	 * @param iVAIdDimension
 	 * @param examples
 	 * @param eClustererType
 	 */
-	public static void sortClusters(DataTable table, RecordVirtualArray recordVA,
-		DimensionVirtualArray dimensionVA, ArrayList<Integer> examples, EClustererTarget eClustererType) {
+	public static void sortClusters(DataTable table, RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA,
+			List<Integer> examples, EClustererTarget eClustererType) {
 
 		int iNrExamples = examples.size();
 		float[] fColorSum = null;
@@ -295,7 +290,7 @@ public class ClusterHelper {
 
 	/**
 	 * Calculates the median for a given vector (float array)
-	 * 
+	 *
 	 * @param vector
 	 * @return median
 	 */
@@ -324,7 +319,7 @@ public class ClusterHelper {
 
 	/**
 	 * Calculates the minimum for a given vector (float array)
-	 * 
+	 *
 	 * @param vector
 	 * @return double minimum
 	 */

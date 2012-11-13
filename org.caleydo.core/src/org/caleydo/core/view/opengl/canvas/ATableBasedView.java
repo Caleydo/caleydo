@@ -27,7 +27,7 @@ import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DefaultDataSupportDefinition;
+import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -575,7 +575,7 @@ public abstract class ATableBasedView extends AGLView implements
 
 	@Override
 	public IDataSupportDefinition getDataSupportDefinition() {
-		return new DefaultDataSupportDefinition();
+		return DataSupportDefinitions.all;
 	}
 
 }

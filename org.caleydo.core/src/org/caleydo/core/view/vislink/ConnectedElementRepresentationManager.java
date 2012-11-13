@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.EventPublisher;
@@ -35,7 +37,6 @@ import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.execution.ADisplayLoopEventHandler;
-import org.caleydo.core.util.execution.DisplayLoopExecution;
 import org.caleydo.core.view.listener.AddSelectionListener;
 import org.caleydo.core.view.listener.ClearConnectionsListener;
 import org.caleydo.core.view.listener.ClearTransformedConnectionsListener;

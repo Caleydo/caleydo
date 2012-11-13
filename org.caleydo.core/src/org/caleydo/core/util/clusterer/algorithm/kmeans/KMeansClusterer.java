@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -36,6 +38,7 @@ import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
+
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.SimpleKMeans;
 import weka.core.DistanceFunction;
@@ -45,53 +48,41 @@ import weka.core.ManhattanDistance;
 
 /**
  * KMeans clusterer using Weka
- * 
+ *
  * @author Bernhard Schlegl
  */
 public class KMeansClusterer extends AClusterer implements IClusterer {
 
-	private SimpleKMeans clusterer = null;
-
-	private int numberOfCluster = 5;
+	private final SimpleKMeans clusterer;
 
 	public KMeansClusterer() {
 		clusterer = new SimpleKMeans();
 	}
 
-	private PerspectiveInitializationData cluster(DataTable table,
-			ClusterConfiguration clusterState) {
+	private PerspectiveInitializationData cluster(DataTable table, ClusterConfiguration clusterState,
+			int numberOfCluster) {
 
 		// Arraylist holding clustered indicess
-		ArrayList<Integer> indices = new ArrayList<Integer>();
+		List<Integer> indices = new ArrayList<>();
 		// Arraylist holding # of elements per cluster
-		ArrayList<Integer> clusterSizes = new ArrayList<Integer>();
+		List<Integer> clusterSizes = new ArrayList<>();
 		// Arraylist holding indices of examples (cluster centers)
-		ArrayList<Integer> sampleElements = new ArrayList<Integer>();
+		List<Integer> sampleElements = new ArrayList<>();
 
-		DistanceFunction distanceMeasure;
 
 		// SimpleKMeans only supports Euclidean and Manhattan at that time
 		// if (clusterState.getDistanceMeasure() ==
 		// EDistanceMeasure.CHEBYSHEV_DISTANCE)
 		// distanceMeasure = new ChebyshevDistance();
-		if (clusterState.getDistanceMeasure() == EDistanceMeasure.MANHATTAN_DISTANCE)
-			distanceMeasure = new ManhattanDistance();
-		else if (clusterState.getDistanceMeasure() == EDistanceMeasure.EUCLIDEAN_DISTANCE)
-			distanceMeasure = new EuclideanDistance();
-		else {
-			throw new IllegalStateException("Unsupported Distance Measure for K-Means: "
-					+ clusterState.getDistanceMeasure());
-		}
+		DistanceFunction distanceMeasure = convert(clusterState.getDistanceMeasure());
 
 		try {
 			clusterer.setNumClusters(numberOfCluster);
 			clusterer.setMaxIterations(1000);
 			if (distanceMeasure != null)
 				clusterer.setDistanceFunction(distanceMeasure);
-		} catch (Exception e2) {
-			GeneralManager.get().getEventPublisher()
-					.triggerEvent(new ClusterProgressEvent(100, true));
-			return null;
+		} catch (Exception e) {
+			return error(e);
 		}
 
 		StringBuffer buffer = new StringBuffer();
@@ -102,12 +93,7 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 
 		if (clusterState.getClusterTarget() == EClustererTarget.RECORD_CLUSTERING) {
 
-			GeneralManager
-					.get()
-					.getEventPublisher()
-					.triggerEvent(
-							new RenameProgressBarEvent(
-									"Determine Similarities for gene clustering"));
+			triggerRename("Determine Similarities for gene clustering");
 
 			int iNrElements = recordVA.size();
 
@@ -122,40 +108,27 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 
 			int icnt = 0;
 			for (Integer recordIndex : recordVA) {
+				if (bClusteringCanceled)
+					return canceled();
 
-				if (bClusteringCanceled == false) {
-					int tempPercentage = (int) ((float) icnt / recordVA.size() * 100);
-					if (percentage == tempPercentage) {
-						GeneralManager
-								.get()
-								.getEventPublisher()
-								.triggerEvent(new ClusterProgressEvent(percentage, false));
-						percentage++;
-					}
-
-					for (Integer iDimensionIndex : dimensionVA) {
-						buffer.append(table.getFloat(DataRepresentation.NORMALIZED,
-								recordIndex, iDimensionIndex) + ", ");
-
-					}
-					buffer.append("\n");
-					icnt++;
-
-					processEvents();
-				} else {
-					GeneralManager.get().getEventPublisher()
-							.triggerEvent(new ClusterProgressEvent(100, true));
-					return null;
+				int tempPercentage = (int) ((float) icnt / recordVA.size() * 100);
+				if (percentage == tempPercentage) {
+					triggerProgress(percentage, false);
+					percentage++;
 				}
+
+				for (Integer iDimensionIndex : dimensionVA) {
+					buffer.append(table.getFloat(DataRepresentation.NORMALIZED, recordIndex, iDimensionIndex) + ", ");
+
+				}
+				buffer.append("\n");
+				icnt++;
+
+				processEvents();
 			}
 		} else {
 
-			GeneralManager
-					.get()
-					.getEventPublisher()
-					.triggerEvent(
-							new RenameProgressBarEvent(
-									"Determine Similarities for experiment clustering"));
+			triggerRename("Determine Similarities for experiment clustering");
 
 			int iNrElements = dimensionVA.size();
 
@@ -170,53 +143,29 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 
 			int isto = 0;
 			for (Integer iDimensionIndex : dimensionVA) {
+				if (bClusteringCanceled)
+					return canceled();
 
-				if (bClusteringCanceled == false) {
-					int tempPercentage = (int) ((float) isto / dimensionVA.size() * 100);
-					if (percentage == tempPercentage) {
-						GeneralManager
-								.get()
-								.getEventPublisher()
-								.triggerEvent(new ClusterProgressEvent(percentage, false));
-						percentage++;
-					}
-
-					for (Integer recordIndex : recordVA) {
-						buffer.append(table.getFloat(DataRepresentation.NORMALIZED,
-								recordIndex, iDimensionIndex) + ", ");
-
-					}
-					buffer.append("\n");
-					isto++;
-					processEvents();
-				} else {
-					GeneralManager.get().getEventPublisher()
-							.triggerEvent(new ClusterProgressEvent(100, true));
-					return null;
+				int tempPercentage = (int) ((float) isto / dimensionVA.size() * 100);
+				if (percentage == tempPercentage) {
+					triggerProgress(percentage, false);
+					percentage++;
 				}
+
+				for (Integer recordIndex : recordVA) {
+					buffer.append(table.getFloat(DataRepresentation.NORMALIZED, recordIndex, iDimensionIndex) + ", ");
+				}
+				buffer.append("\n");
+				isto++;
+				processEvents();
 			}
 		}
-		GeneralManager
-				.get()
-				.getEventPublisher()
-				.triggerEvent(
-						new ClusterProgressEvent(25 * iProgressBarMultiplier
-								+ iProgressBarOffsetValue, true));
+		triggerProgress(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true);
 
 		if (clusterState.getClusterTarget() == EClustererTarget.RECORD_CLUSTERING)
-			GeneralManager
-					.get()
-					.getEventPublisher()
-					.triggerEvent(
-							new RenameProgressBarEvent(
-									"KMeans clustering of genes in progress"));
+			triggerRename("KMeans clustering of genes in progress");
 		else
-			GeneralManager
-					.get()
-					.getEventPublisher()
-					.triggerEvent(
-							new RenameProgressBarEvent(
-									"KMeans clustering of experiments in progress"));
+			triggerRename("KMeans clustering of experiments in progress");
 
 		Instances data = null;
 
@@ -224,50 +173,37 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 
 		try {
 			data = new Instances(new StringReader(buffer.toString()));
-		} catch (IOException e1) {
-			GeneralManager.get().getEventPublisher()
-					.triggerEvent(new ClusterProgressEvent(100, true));
-			return null;
+		} catch (IOException e) {
+			return error(e);
 		}
 
-		GeneralManager.get().getEventPublisher()
-				.triggerEvent(new ClusterProgressEvent(10, false));
+		triggerProgress(10, false);
 
 		try {
 			// train the clusterer
 			clusterer.buildClusterer(data);
 		} catch (Exception e) {
-			GeneralManager.get().getEventPublisher()
-					.triggerEvent(new ClusterProgressEvent(100, true));
-			return null;
+			return error(e);
 		}
 
 		processEvents();
 		if (bClusteringCanceled) {
-			GeneralManager.get().getEventPublisher()
-					.triggerEvent(new ClusterProgressEvent(100, true));
-			return null;
+			return canceled();
 		}
-		GeneralManager.get().getEventPublisher()
-				.triggerEvent(new ClusterProgressEvent(45, false));
+		triggerProgress(45, false);
 
 		ClusterEvaluation eval = new ClusterEvaluation();
 		eval.setClusterer(clusterer); // the cluster to evaluate
 		try {
 			eval.evaluateClusterer(data);
 		} catch (Exception e) {
-			GeneralManager.get().getEventPublisher()
-					.triggerEvent(new ClusterProgressEvent(100, true));
-			return null;
+			return error(e);
 		}
 		processEvents();
 		if (bClusteringCanceled) {
-			GeneralManager.get().getEventPublisher()
-					.triggerEvent(new ClusterProgressEvent(100, true));
-			return null;
+			return canceled();
 		}
-		GeneralManager.get().getEventPublisher()
-				.triggerEvent(new ClusterProgressEvent(60, false));
+		triggerProgress(60, false);
 
 		double[] ClusterAssignments = eval.getClusterAssignments();
 
@@ -289,12 +225,9 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 		}
 		processEvents();
 		if (bClusteringCanceled) {
-			GeneralManager.get().getEventPublisher()
-					.triggerEvent(new ClusterProgressEvent(100, true));
-			return null;
+			return canceled();
 		}
-		GeneralManager.get().getEventPublisher()
-				.triggerEvent(new ClusterProgressEvent(80, false));
+		triggerProgress(80, false);
 
 		HashMap<Integer, Integer> hashExamples = new HashMap<Integer, Integer>();
 
@@ -335,14 +268,44 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
 		tempResult.setData(indices, clusterSizes, sampleElements);
 
-		GeneralManager
-				.get()
-				.getEventPublisher()
-				.triggerEvent(
-						new ClusterProgressEvent(50 * iProgressBarMultiplier
-								+ iProgressBarOffsetValue, true));
+		triggerProgress(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true);
 
 		return tempResult;
+	}
+
+	/**
+	 * @param distanceMeasure
+	 * @return
+	 */
+	private DistanceFunction convert(EDistanceMeasure distanceMeasure) {
+		switch (clusterState.getDistanceMeasure()) {
+		case MANHATTAN_DISTANCE:
+			return new ManhattanDistance();
+		case EUCLIDEAN_DISTANCE:
+			return new EuclideanDistance();
+		default:
+			throw new IllegalStateException("Unsupported Distance Measure for K-Means: "
+					+ clusterState.getDistanceMeasure());
+		}
+	}
+
+	protected PerspectiveInitializationData error(Exception e1) {
+		triggerProgress(100, true);
+		return null;
+	}
+
+	protected PerspectiveInitializationData canceled() {
+		triggerProgress(100, true);
+		return null;
+	}
+
+	private static void triggerProgress(int percentCompleted, boolean forSimilaritiesBar) {
+		GeneralManager.get().getEventPublisher()
+				.triggerEvent(new ClusterProgressEvent(percentCompleted, forSimilaritiesBar));
+	}
+
+	private static void triggerRename(String text) {
+		GeneralManager.get().getEventPublisher().triggerEvent(new RenameProgressBarEvent(text));
 	}
 
 	@Override
@@ -356,13 +319,12 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 		KMeansClusterConfiguration kMeansClusterConfiguration = (KMeansClusterConfiguration) clusterConfiguration
 				.getClusterAlgorithmConfiguration();
 
-		numberOfCluster = kMeansClusterConfiguration.getNumberOfClusters();
+		int numberOfCluster = kMeansClusterConfiguration.getNumberOfClusters();
 		if (numberOfCluster < 1) {
-			throw new IllegalStateException("Illegal Number of clusters: "
-					+ numberOfCluster);
+			throw new IllegalStateException("Illegal Number of clusters: " + numberOfCluster);
 		}
 
-		return cluster(dataDomain.getTable(), clusterConfiguration);
+		return cluster(dataDomain.getTable(), clusterConfiguration, numberOfCluster);
 	}
 
 }

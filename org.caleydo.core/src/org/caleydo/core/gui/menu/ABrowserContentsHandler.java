@@ -19,12 +19,35 @@
  *******************************************************************************/
 package org.caleydo.core.gui.menu;
 
+import org.caleydo.core.event.view.browser.ChangeURLEvent;
+import org.caleydo.core.manager.GeneralManager;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.IHandler;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.handlers.HandlerUtil;
 
-public class HelpContentsHandler extends ABrowserContentsHandler {
+public abstract class ABrowserContentsHandler extends AbstractHandler implements IHandler {
+	private final String url;
 
-	private final static String URL_HELP_CONTENTS = "http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/caleydo-help";
+	public ABrowserContentsHandler(String url) {
+		this.url = url;
+	}
 
-	public HelpContentsHandler() {
-		super(URL_HELP_CONTENTS);
+	@Override
+	public final Object execute(ExecutionEvent event) throws ExecutionException {
+		try {
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView("org.caleydo.view.browser");
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+
+		ChangeURLEvent changeURLEvent = new ChangeURLEvent();
+		changeURLEvent.setSender(this);
+		changeURLEvent.setUrl(url);
+		GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
+
+		return null;
 	}
 }

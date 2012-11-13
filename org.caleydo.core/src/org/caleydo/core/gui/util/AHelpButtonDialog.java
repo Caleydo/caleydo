@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.core.gui.util;
 
@@ -22,9 +22,9 @@ import org.eclipse.swt.widgets.ToolItem;
 
 /**
  * Dialog that makes a nice help button in push style.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public abstract class AHelpButtonDialog extends TrayDialog {
 
@@ -62,6 +62,7 @@ public abstract class AHelpButtonDialog extends TrayDialog {
 		final Cursor cursor = new Cursor(parent.getDisplay(), SWT.CURSOR_HAND);
 		toolBar.setCursor(cursor);
 		toolBar.addDisposeListener(new DisposeListener() {
+			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				cursor.dispose();
 			}
@@ -70,6 +71,7 @@ public abstract class AHelpButtonDialog extends TrayDialog {
 		helpButton.setImage(image);
 		helpButton.setToolTipText(JFaceResources.getString("helpToolTip"));
 		helpButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				helpPressed();
 			}

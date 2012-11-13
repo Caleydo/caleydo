@@ -21,13 +21,13 @@ package org.caleydo.core.startup.gui;
 
 import java.text.DateFormat;
 import java.util.Date;
+
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectManager;
 import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.link.LinkHandler;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -65,8 +65,6 @@ public class ChooseProjectTypePage
 	private static final String TCGA_LINK = "http://cancergenome.nih.gov";
 
 	private static final String BROAD_GDAC_LINK = "http://gdac.broadinstitute.org";
-
-	public Wizard parentWizard = null;
 
 	private static final int WIDTH = 400;
 
@@ -119,8 +117,6 @@ public class ChooseProjectTypePage
 
 		this.setDescription("What data do you want to load?");
 
-		this.parentWizard = (Wizard) this.getWizard();
-
 		this.setPageComplete(false);
 	}
 
@@ -132,8 +128,6 @@ public class ChooseProjectTypePage
 	 */
 	@Override
 	public void createControl(Composite parent) {
-		this.parentWizard = (Wizard) this.getWizard();
-
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new FillLayout(SWT.VERTICAL));
 

@@ -23,6 +23,12 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
 
+/**
+ * utility event listener, which invoke to unregister all events listenes on its handler on an event
+ * 
+ * @author Samuel Gratzl
+ * 
+ */
 public class UnRegisterListenersOnEvent extends AEventListener<IListenerOwner> {
 	public UnRegisterListenersOnEvent(IListenerOwner handler, IDataDomain dataDomain) {
 		setHandler(handler);

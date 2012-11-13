@@ -27,8 +27,8 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.DataTableDataType;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
-import org.caleydo.core.data.datadomain.TableBasedDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.view.RedrawViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
@@ -560,17 +560,6 @@ public class GLHistogram
 	}
 
 	@Override
-	public void registerEventListeners() {
-		super.registerEventListeners();
-
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-		super.unregisterEventListeners();
-	}
-
-	@Override
 	public int getMinPixelHeight(EDetailLevel detailLevel) {
 		switch (detailLevel) {
 			case HIGH:
@@ -619,7 +608,7 @@ public class GLHistogram
 
 	@Override
 	public IDataSupportDefinition getDataSupportDefinition() {
-		return new TableBasedDataSupportDefinition();
+		return DataSupportDefinitions.tableBased;
 	}
 
 	/**

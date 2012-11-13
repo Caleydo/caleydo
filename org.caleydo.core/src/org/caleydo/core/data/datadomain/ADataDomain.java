@@ -29,11 +29,10 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventHandler;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.EventListeners;
 import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -82,7 +81,8 @@ public abstract class ADataDomain extends AEventHandler implements IDataDomain {
 	 */
 	protected boolean isLabelDefault = false;
 
-	private AEventListener<ADataDomain> removeListener = null;
+	@XmlTransient
+	protected final EventListeners listeners = new EventListeners();
 
 
 	/**
@@ -200,17 +200,14 @@ public abstract class ADataDomain extends AEventHandler implements IDataDomain {
 
 	@Override
 	public void registerEventListeners() {
-		removeListener = new AEventListener<ADataDomain>() {
+		AEventListener<ADataDomain> removeListener = new AEventListener<ADataDomain>() {
 			@Override
 			public void handleEvent(AEvent event) {
 				if (event instanceof RemoveDataDomainEvent && event.getDataDomainID().equals(this.getDataDomainID()))
 					removeMe();
 			}
-		};
-		removeListener.setExclusiveDataDomainID(dataDomainID);
-		removeListener.setHandler(this);
-		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
-		eventPublisher.addListener(RemoveDataDomainEvent.class, removeListener);
+		}.setExclusiveDataDomainID(dataDomainID).setHandler(this);
+		listeners.register(RemoveDataDomainEvent.class, removeListener);
 	}
 
 	protected void removeMe() {
@@ -220,10 +217,7 @@ public abstract class ADataDomain extends AEventHandler implements IDataDomain {
 
 	@Override
 	public void unregisterEventListeners() {
-		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
-		if (removeListener != null)
-			eventPublisher.removeListener(RemoveDataDomainEvent.class, removeListener);
-		removeListener = null;
+		listeners.unregisterAll();
 	}
 
 }

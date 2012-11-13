@@ -4054,7 +4054,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				for (Group group : recordVA.getGroupList())
 					group.setSelectionType(SelectionType.NORMAL);
 
-				recordVA.getGroupList().get(pickingID).togglSelectionType();
+				recordVA.getGroupList().get(pickingID).toggleSelectionType();
 				deactivateAllDraggingCursor();
 				bActivateDraggingGenes = true;
 
@@ -4153,7 +4153,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					break;
 				// else we want to do clicked here as well
 			case CLICKED:
-				dimensionVA.getGroupList().get(pickingID).togglSelectionType();
+				dimensionVA.getGroupList().get(pickingID).toggleSelectionType();
 				deactivateAllDraggingCursor();
 				bActivateDraggingExperiments = true;
 

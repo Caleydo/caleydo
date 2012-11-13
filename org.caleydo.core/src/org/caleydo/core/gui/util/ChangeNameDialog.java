@@ -34,19 +34,17 @@ import org.eclipse.swt.widgets.Text;
  * @author Alexander Lex
  */
 public class ChangeNameDialog {
-	static boolean deleteFlag = false;
-
 	private String resultingName;
 
-	public void run(Display display, final String origianlName) {
-		resultingName = origianlName;
+	public void run(Display display, final String originalName) {
+		resultingName = originalName;
 		// Shell shell = new Shell(display);
 		// shell.pack();
 		// shell.open();
 		final Shell dialog = new Shell(display, SWT.DIALOG_TRIM);
 		final Text text = new Text(dialog, SWT.SHADOW_IN);
 		text.setBounds(140, 40, 100, 25);
-		text.setText(origianlName);
+		text.setText(originalName);
 		final Button okButton = new Button(dialog, SWT.PUSH);
 		okButton.setText("&OK");
 		Button cancelButton = new Button(dialog, SWT.PUSH);

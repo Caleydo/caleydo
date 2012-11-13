@@ -1,26 +1,29 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.data.virtualarray.group;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
+
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
@@ -32,11 +35,11 @@ import org.caleydo.core.util.base.IDefaultLabelHolder;
  */
 public class Group implements IDefaultLabelHolder {
 
-	private static int GROUP_ID_COUNTER = 0;
-	
-	/** unique ID */	
+	private static AtomicInteger GROUP_ID_COUNTER = new AtomicInteger();
+
+	/** unique ID */
 	private int id = 0;
-	
+
 	/** number of elements in the group/cluster */
 	private int size = 0;
 
@@ -93,13 +96,13 @@ public class Group implements IDefaultLabelHolder {
 	}
 
 	{
-		id = GROUP_ID_COUNTER++;
+		id = GROUP_ID_COUNTER.getAndIncrement();
 		label = "Group " + id;
 	}
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param size
 	 *            the size of the group
 	 * @param representativeElementIndex
@@ -113,7 +116,7 @@ public class Group implements IDefaultLabelHolder {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param size
 	 *            the size of the group
 	 * @param representativeElementIndex
@@ -137,6 +140,7 @@ public class Group implements IDefaultLabelHolder {
 	/**
 	 * @return the isDefaultLabel, see {@link #isDefaultLabel}
 	 */
+	@Override
 	public boolean isLabelDefault() {
 		return isDefaultLabel;
 	}
@@ -201,7 +205,7 @@ public class Group implements IDefaultLabelHolder {
 		return selectionType;
 	}
 
-	public void togglSelectionType() {
+	public void toggleSelectionType() {
 		this.selectionType = (selectionType == SelectionType.SELECTION) ? SelectionType.NORMAL
 				: SelectionType.SELECTION;
 	}
@@ -252,7 +256,7 @@ public class Group implements IDefaultLabelHolder {
 	public void setLabel(String label) {
 		this.label = label;
 	}
-	
+
 	/**
 	 * @return the id, see {@link #id}
 	 */

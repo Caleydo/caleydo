@@ -37,7 +37,6 @@ import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.execution.DisplayLoopExecution;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -107,12 +106,6 @@ public class ViewManager extends AManager<IView> {
 	 * visible.
 	 */
 	private boolean areSerializedViewsInitialized = false;
-
-	/**
-	 * Utility object to execute code within the display loop, e.g. used by
-	 * managers to avoid access conflicts with views.
-	 */
-	private DisplayLoopExecution displayLoopExecution;
 
 	private final IGLCanvasFactory canvasFactory;
 
@@ -595,25 +588,6 @@ public class ViewManager extends AManager<IView> {
 		}
 
 		return view;
-	}
-
-	/**
-	 * Retrieves the {@link DisplayLoopExecution} related to the
-	 * {@link ViewManager}'s display loop.
-	 *
-	 * @return {@link DisplayLoopExecution} for executing code in the display
-	 *         loop
-	 */
-	public DisplayLoopExecution getDisplayLoopExecution() {
-
-		// lazy creation of animator and display loop
-		if (displayLoopExecution == null) {
-			startAnimator();
-			displayLoopExecution = DisplayLoopExecution.get();
-			fpsAnimator.add(displayLoopExecution.getDisplayLoopCanvas());
-			displayLoopExecution.executeMultiple(connectedElementRepManager);
-		}
-		return displayLoopExecution;
 	}
 
 	public synchronized void initializeUnserializedViews() {

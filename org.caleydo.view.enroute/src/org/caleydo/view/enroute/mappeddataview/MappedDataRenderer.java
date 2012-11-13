@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
@@ -55,9 +57,9 @@ import org.caleydo.view.enroute.node.ComplexNode;
  * Renderer for mapped genomic data for linearized pathway view. Based on a list
  * of input nodes genomic data is rendered in a row-column layout. For every
  * node 0-n rows are created, depending on the mapping of the node to the data.
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class MappedDataRenderer {
 
@@ -170,7 +172,7 @@ public class MappedDataRenderer {
 				IDType.getIDType("DAVID"));
 		geneSelectionManager.registerEventListeners();
 
-		ArrayList<GeneticDataDomain> dataDomains = DataDomainManager.get()
+		List<GeneticDataDomain> dataDomains = DataDomainManager.get()
 				.getDataDomainsByType(GeneticDataDomain.class);
 		if (dataDomains.size() != 0) {
 			sampleIDType = dataDomains.get(0).getSampleIDType().getIDCategory()
@@ -218,7 +220,7 @@ public class MappedDataRenderer {
 
 	/**
 	 * Set the geometry information for this <code>MappedDataRenderer</code>.
-	 * 
+	 *
 	 * @param width
 	 *            the width of the drawing space of this renderer
 	 * @param height
@@ -248,7 +250,7 @@ public class MappedDataRenderer {
 	 * Sets the list of nodes that are used as the basis for rendering the
 	 * mapped data. Triggers a complete re-build of the layout. Creates the
 	 * layout used for the rendering.
-	 * 
+	 *
 	 * @param linearizedNodes
 	 *            setter, see {@link #linearizedNodes}
 	 */
@@ -333,9 +335,9 @@ public class MappedDataRenderer {
 				currentNrDavids = node.getParentNode().getNumAssociatedRows();
 			}
 			float previousLowerHeight = previousNodePosition - rowHeight
-					* ((float) previousNrDavids) / 2;
+					* (previousNrDavids) / 2;
 			float currentUpperHeight = (currentNodePositionY + rowHeight
-					* ((float) currentNrDavids) / 2);
+					* (currentNrDavids) / 2);
 			deviation = previousLowerHeight - currentUpperHeight;
 
 			if (previousNodePosition > 0 && deviation > 0) {
@@ -611,7 +613,7 @@ public class MappedDataRenderer {
 	/**
 	 * Adds a data container to {@link #tablePerspectives} and resolves sub data
 	 * containers by calling {@link #resolveSubTablePerspectives(List)}
-	 * 
+	 *
 	 * @param newTablePerspective
 	 */
 	public void addTablePerspective(TablePerspective newTablePerspective) {

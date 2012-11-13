@@ -20,7 +20,7 @@
 package org.caleydo.core.serialize;
 
 import java.util.Date;
-import org.caleydo.core.util.execution.DisplayLoopExecution;
+
 import org.caleydo.core.view.ViewManager;
 import org.eclipse.ui.PlatformUI;
 

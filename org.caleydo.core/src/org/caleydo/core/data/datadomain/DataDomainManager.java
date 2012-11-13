@@ -22,6 +22,8 @@ package org.caleydo.core.data.datadomain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.caleydo.core.data.configuration.ChooseDataConfigurationDialog;
 import org.caleydo.core.data.datadomain.graph.DataDomainGraph;
@@ -54,16 +56,15 @@ import org.eclipse.swt.widgets.Shell;
  * @author Marc Streit
  */
 public class DataDomainManager {
-
 	public final static String DATA_DOMAIN_INSTANCE_DELIMITER = "_";
 
 	private static DataDomainManager dataDomainManager;
-	private HashMap<String, IDataDomain> registeredDataDomainsByID = new HashMap<String, IDataDomain>(
-			8);
-	private HashMap<String, ArrayList<IDataDomain>> registeredDataDomainsByType = new HashMap<String, ArrayList<IDataDomain>>();
 
-	private AssociationManager associationManager = new AssociationManager();
-	private DataDomainGraph dataDomainGraph = new DataDomainGraph();;
+	private Map<String, IDataDomain> byID = new HashMap<>(8);
+	private Map<String, List<IDataDomain>> byType = new HashMap<>();
+
+	private final AssociationManager associationManager = new AssociationManager();
+	private final DataDomainGraph dataDomainGraph = new DataDomainGraph();
 
 	public static DataDomainManager get() {
 		if (dataDomainManager == null) {
@@ -160,13 +161,12 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * Returns all data domains. The collection is backed by the manager, so do
-	 * NOT! modify it, otherwise you will modify the manager contents.
+	 * Returns all data domains.
 	 *
 	 * @return
 	 */
 	public synchronized Collection<IDataDomain> getDataDomains() {
-		return new ArrayList<>(registeredDataDomainsByID.values());
+		return new ArrayList<>(byID.values());
 	}
 
 	/**
@@ -177,7 +177,7 @@ public class DataDomainManager {
 	 * @return
 	 */
 	public synchronized IDataDomain getDataDomainByID(String dataDomainID) {
-		return registeredDataDomainsByID.get(dataDomainID);
+		return byID.get(dataDomainID);
 	}
 
 	/**
@@ -192,8 +192,7 @@ public class DataDomainManager {
 	public synchronized IDataDomain getDataDomainByType(String dataDomainType) {
 
 		IDataDomain dataDomain = null;
-		ArrayList<IDataDomain> possibleDataDomains = registeredDataDomainsByType
-				.get(dataDomainType);
+		List<IDataDomain> possibleDataDomains = byType.get(dataDomainType);
 
 		if (possibleDataDomains == null)
 			return null;
@@ -219,16 +218,16 @@ public class DataDomainManager {
 	 */
 	public synchronized void register(IDataDomain dataDomain) {
 
-		if (!registeredDataDomainsByID.containsKey(dataDomain.getDataDomainID()))
-			registeredDataDomainsByID.put(dataDomain.getDataDomainID(), dataDomain);
+		if (!byID.containsKey(dataDomain.getDataDomainID()))
+			byID.put(dataDomain.getDataDomainID(), dataDomain);
 
-		if (registeredDataDomainsByType.get(dataDomain.getDataDomainType()) == null) {
-			ArrayList<IDataDomain> dataDomainList = new ArrayList<IDataDomain>();
+		if (byType.get(dataDomain.getDataDomainType()) == null) {
+			List<IDataDomain> dataDomainList = new ArrayList<IDataDomain>();
 			dataDomainList.add(dataDomain);
-			registeredDataDomainsByType.put(dataDomain.getDataDomainType(), dataDomainList);
+			byType.put(dataDomain.getDataDomainType(), dataDomainList);
 		}
 		else {
-			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).add(dataDomain);
+			byType.get(dataDomain.getDataDomainType()).add(dataDomain);
 		}
 
 		// Only assign random color if no color has been set externally
@@ -253,11 +252,11 @@ public class DataDomainManager {
 	 */
 	public synchronized void unregister(IDataDomain dataDomain) {
 
-		if (registeredDataDomainsByID.containsKey(dataDomain.getDataDomainID()))
-			registeredDataDomainsByID.remove(dataDomain.getDataDomainID());
+		if (byID.containsKey(dataDomain.getDataDomainID()))
+			byID.remove(dataDomain.getDataDomainID());
 
-		if (registeredDataDomainsByType.get(dataDomain.getDataDomainType()) != null) {
-			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).remove(dataDomain);
+		if (byType.get(dataDomain.getDataDomainType()) != null) {
+			byType.get(dataDomain.getDataDomainType()).remove(dataDomain);
 		}
 
 		Color color = dataDomain.getColor();
@@ -288,8 +287,8 @@ public class DataDomainManager {
 	 * @param dataDomainType
 	 * @return
 	 */
-	public ArrayList<IDataDomain> getDataDomainsByType(String dataDomainType) {
-		return registeredDataDomainsByType.get(dataDomainType);
+	public List<IDataDomain> getDataDomainsByType(String dataDomainType) {
+		return byType.get(dataDomainType);
 	}
 
 	/**
@@ -299,7 +298,7 @@ public class DataDomainManager {
 	 * @param classType
 	 * @return
 	 */
-	public <T extends ADataDomain> ArrayList<T> getDataDomainsByType(Class<T> classType) {
+	public <T extends ADataDomain> List<T> getDataDomainsByType(Class<T> classType) {
 		ArrayList<T> result = new ArrayList<T>();
 		for (IDataDomain dataDomain : getDataDomains())
 			if (classType.isInstance(dataDomain))
@@ -312,7 +311,7 @@ public class DataDomainManager {
 	 * new cal file during runtime.
 	 */
 	public void unregisterAllDataDomains() {
-		for (IDataDomain domain : new ArrayList<IDataDomain>(getDataDomains())) { // work on a local copy
+		for (IDataDomain domain : new ArrayList<>(getDataDomains())) { // work on a local copy
 			unregister(domain);
 		}
 	}

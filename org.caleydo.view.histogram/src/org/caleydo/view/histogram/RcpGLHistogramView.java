@@ -26,7 +26,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DefaultDataSupportDefinition;
+import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
@@ -206,7 +206,7 @@ public class RcpGLHistogramView
 
 	@Override
 	public IDataSupportDefinition getDataSupportDefinition() {
-		return new DefaultDataSupportDefinition();
+		return DataSupportDefinitions.all;
 	}
 
 }
