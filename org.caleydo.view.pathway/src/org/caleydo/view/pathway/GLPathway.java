@@ -689,6 +689,9 @@ public class GLPathway
 
 		// Pathway texture height is subtracted from Y to align pathways to
 		// front level
+		gl.glEnable(GL2.GL_STENCIL_TEST);
+		gl.glClearStencil(0);
+		gl.glClear(GL2.GL_STENCIL);
 		textureOffset += PathwayRenderStyle.Z_OFFSET;
 		gl.glTranslatef(0, pathwayHeight, textureOffset);
 		gLPathwayAugmentationRenderer.renderPathway(gl, pathway, false);
@@ -700,22 +703,30 @@ public class GLPathway
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
 
 			gl.glEnable(GL2.GL_STENCIL_TEST);
-			gl.glStencilFunc(GL2.GL_EQUAL, 0, 1);
+			gl.glDisable(GL2.GL_DEPTH_TEST);
+			//gl.glStencilFunc(GL2.GL_EQUAL, 0, 1);
+			gl.glStencilFunc(GL2.GL_GREATER, 2, 0xff);
 			gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);
 			gl.glPushName(generalManager.getViewManager().getPickingManager()
 					.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
 			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, pathway, fPathwayTransparency, false);
 			gl.glPopName();
-			gl.glDisable(GL2.GL_STENCIL_TEST);
 
+
+			gl.glStencilFunc(GL2.GL_GREATER, 1, 0xff);
+			gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);
 			textureOffset -= 2f * PathwayRenderStyle.Z_OFFSET;
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
 			overlayBubbleSets(gl);
+			
+			gl.glEnable(GL2.GL_DEPTH_TEST);
+			gl.glDisable(GL2.GL_STENCIL_TEST);
 		}
 		// //
 		gl.glScalef(1 / vecScaling.x(), 1 / vecScaling.y(), 1 / vecScaling.z());
 		gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(), -vecTranslation.z());
 
+		gl.glDisable(GL2.GL_STENCIL_TEST);
 		gl.glPopMatrix();
 	}
 

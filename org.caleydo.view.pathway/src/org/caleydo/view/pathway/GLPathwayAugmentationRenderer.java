@@ -402,6 +402,21 @@ public class GLPathwayAugmentationRenderer {
 					gl.glPopName();
 					return;
 				}
+				
+				// create mask to prevent redrawing
+				gl.glEnable(GL2.GL_STENCIL_TEST);
+				gl.glColorMask(false, false, false, false);
+				gl.glDisable(GL2.GL_DEPTH_TEST);
+				//gl.glStencilFunc(GL2.GL_ALWAYS,2, 1);
+				gl.glStencilFunc(GL2.GL_ALWAYS,2, 0xff);
+				gl.glStencilOp(GL2.GL_REPLACE, GL2.GL_REPLACE, GL2.GL_REPLACE);
+
+				fillNodeDisplayList(gl, nodeWidth, nodeHeight);
+
+				gl.glDisable(GL2.GL_STENCIL_TEST);
+				gl.glColorMask(true, true, true, true);
+				gl.glEnable(GL2.GL_DEPTH_TEST);
+				
 
 				tmpNodeColor = new float[] { 0.f, 0.f, 0.f, 0.25f };
 				gl.glColor4fv(tmpNodeColor, 0);
@@ -420,20 +435,7 @@ public class GLPathwayAugmentationRenderer {
 					fillNodeDisplayListFrame(gl, nodeWidth, nodeHeight);
 				}
 
-				// create mask to prevent redrawing
-				gl.glEnable(GL2.GL_STENCIL_TEST);
-				gl.glClearStencil(0);
-				gl.glClear(GL2.GL_STENCIL);
-				gl.glColorMask(false, false, false, false);
-				gl.glDisable(GL2.GL_DEPTH_TEST);
-				gl.glStencilFunc(GL2.GL_ALWAYS, 1, 1);
-				gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
 
-				fillNodeDisplayList(gl, nodeWidth, nodeHeight);
-
-				gl.glDisable(GL2.GL_STENCIL_TEST);
-				gl.glColorMask(true, true, true, true);
-				gl.glEnable(GL2.GL_DEPTH_TEST);
 
 				break;
 			case compound:
@@ -462,6 +464,21 @@ public class GLPathwayAugmentationRenderer {
 				gl.glColor4fv(tmpNodeColor, 0);
 				gl.glCallList(compoundNodeDisplayListId);
 
+//				// create mask
+				gl.glEnable(GL2.GL_STENCIL_TEST);
+				gl.glColorMask(false, false, false, false);
+				gl.glDisable(GL2.GL_DEPTH_TEST);
+				gl.glDisable(GL2.GL_BLEND);
+				gl.glStencilFunc(GL2.GL_ALWAYS, 1, 0xff);
+				gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+//
+				gl.glCallList(compoundNodeDisplayListId);
+
+				gl.glDisable(GL2.GL_STENCIL_TEST);
+				gl.glColorMask(true, true, true, true);
+				gl.glEnable(GL2.GL_DEPTH_TEST);
+				gl.glEnable(GL2.GL_BLEND);
+				
 				break;
 			case group:
 
@@ -476,6 +493,21 @@ public class GLPathwayAugmentationRenderer {
 				gl.glLineWidth(1);
 				if (enableGeneMapping) {
 
+//					// create mask
+					gl.glEnable(GL2.GL_STENCIL_TEST);
+					gl.glColorMask(false, false, false, false);
+					gl.glDisable(GL2.GL_DEPTH_TEST);
+					gl.glDisable(GL2.GL_BLEND);
+					gl.glStencilFunc(GL2.GL_ALWAYS, 1, 0xff);
+					gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+//
+					gl.glCallList(enzymeNodeDisplayListId);
+
+					gl.glDisable(GL2.GL_STENCIL_TEST);
+					gl.glColorMask(true, true, true, true);
+					gl.glEnable(GL2.GL_DEPTH_TEST);
+					gl.glEnable(GL2.GL_BLEND);
+					
 					Average average = getExpressionAverage(vertexRep);
 					if (average != null)
 						tmpNodeColor = glPathwayView.getDataDomain().getColorMapper()
@@ -537,23 +569,23 @@ public class GLPathwayAugmentationRenderer {
 								gl.glEnd();
 
 								// create mask
-								gl.glEnable(GL2.GL_STENCIL_TEST);
-								gl.glColorMask(false, false, false, false);
-								gl.glDisable(GL2.GL_DEPTH_TEST);
-								gl.glStencilFunc(GL2.GL_ALWAYS, 1, 1);
-								gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
-
-								gl.glBegin(GL2.GL_QUADS);
-								gl.glColor4f(1, 1, 1, 1f);
-								gl.glVertex3f(x, y, PathwayRenderStyle.Z_OFFSET);
-								gl.glVertex3f(x + stdDev, y, PathwayRenderStyle.Z_OFFSET);
-								gl.glVertex3f(x + stdDev, 0, PathwayRenderStyle.Z_OFFSET);
-								gl.glVertex3f(x, 0, PathwayRenderStyle.Z_OFFSET);
-								gl.glEnd();
-
-								gl.glDisable(GL2.GL_STENCIL_TEST);
-								gl.glColorMask(true, true, true, true);
-								gl.glEnable(GL2.GL_DEPTH_TEST);
+//								gl.glEnable(GL2.GL_STENCIL_TEST);
+//								gl.glColorMask(false, false, false, false);
+//								gl.glDisable(GL2.GL_DEPTH_TEST);
+//								gl.glStencilFunc(GL2.GL_ALWAYS, 1, 1);
+//								gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+//
+//								gl.glBegin(GL2.GL_QUADS);
+//								gl.glColor4f(1, 1, 1, 1f);
+//								gl.glVertex3f(x, y, PathwayRenderStyle.Z_OFFSET);
+//								gl.glVertex3f(x + stdDev, y, PathwayRenderStyle.Z_OFFSET);
+//								gl.glVertex3f(x + stdDev, 0, PathwayRenderStyle.Z_OFFSET);
+//								gl.glVertex3f(x, 0, PathwayRenderStyle.Z_OFFSET);
+//								gl.glEnd();
+//
+//								gl.glDisable(GL2.GL_STENCIL_TEST);
+//								gl.glColorMask(true, true, true, true);
+//								gl.glEnable(GL2.GL_DEPTH_TEST);
 							}
 
 							// Handle selection highlighting of element
