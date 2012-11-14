@@ -569,10 +569,11 @@ public class GLPathwayAugmentationRenderer {
 									.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT)
 									* (float) average.getStandardDeviation() * 5.0f;
 							float x = pixelGLConverter
-									.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH
-											- PathwayRenderStyle.STD_DEV_BAR_PIXEL_WIDTH + 1);
+									.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH + 1 );
+											//- PathwayRenderStyle.STD_DEV_BAR_PIXEL_WIDTH + 1);
 							float y = -pixelGLConverter
-									.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT - 1);
+									.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT -1 );
+									//.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT - 1);
 
 							float stdBarWidth = pixelGLConverter
 									.getGLWidthForPixelWidth(PathwayRenderStyle.STD_DEV_BAR_PIXEL_WIDTH);
@@ -580,7 +581,7 @@ public class GLPathwayAugmentationRenderer {
 							// rendering the std-dev box
 							if (!stdDev.isNaN() && selectedSamplesVA.size() > 1) {
 
-								// opaque background
+//								// opaque background
 								gl.glColor4f(1, 1, 1, 1f);
 								gl.glBegin(GL2.GL_QUADS);
 								gl.glVertex3f(x, y - .001f, PathwayRenderStyle.Z_OFFSET);
@@ -605,6 +606,34 @@ public class GLPathwayAugmentationRenderer {
 								gl.glVertex3f(x + stdBarWidth, 0, PathwayRenderStyle.Z_OFFSET + 0.02f);
 								gl.glVertex3f(x, 0, PathwayRenderStyle.Z_OFFSET + 0.02f);
 								gl.glEnd();
+
+								
+////								// create mask
+								gl.glEnable(GL2.GL_STENCIL_TEST);
+								gl.glColorMask(false, false, false, false);
+								gl.glDisable(GL2.GL_DEPTH_TEST);
+								gl.glDisable(GL2.GL_BLEND);
+								gl.glStencilFunc(GL2.GL_ALWAYS, 2, 0xff);
+								gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+//			//			
+								gl.glBegin(GL2.GL_QUADS);
+								gl.glVertex3f(x, y , PathwayRenderStyle.Z_OFFSET);
+								gl.glVertex3f(x + stdBarWidth, y, PathwayRenderStyle.Z_OFFSET);
+								gl.glVertex3f(x + stdBarWidth, 0, PathwayRenderStyle.Z_OFFSET);
+								gl.glVertex3f(x, 0, PathwayRenderStyle.Z_OFFSET);
+								gl.glEnd();
+								gl.glBegin(GL2.GL_LINE_LOOP);
+								gl.glVertex3f(x, y, PathwayRenderStyle.Z_OFFSET + 0.02f);
+								gl.glVertex3f(x + stdBarWidth, y, PathwayRenderStyle.Z_OFFSET + 0.02f);
+								gl.glVertex3f(x + stdBarWidth, 0, PathwayRenderStyle.Z_OFFSET + 0.02f);
+								gl.glVertex3f(x, 0, PathwayRenderStyle.Z_OFFSET + 0.02f);
+								gl.glEnd();
+								
+								gl.glDisable(GL2.GL_STENCIL_TEST);
+								gl.glColorMask(true, true, true, true);
+								gl.glEnable(GL2.GL_DEPTH_TEST);
+								gl.glEnable(GL2.GL_BLEND);
+								
 
 							}
 
