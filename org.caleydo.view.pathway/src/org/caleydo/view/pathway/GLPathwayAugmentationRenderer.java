@@ -413,6 +413,9 @@ public class GLPathwayAugmentationRenderer {
 
 				fillNodeDisplayList(gl, nodeWidth, nodeHeight);
 
+				gl.glStencilFunc(GL2.GL_ALWAYS,2, 0xff);
+				fillNodeDisplayListFrame(gl, nodeWidth, nodeHeight);
+				
 				gl.glDisable(GL2.GL_STENCIL_TEST);
 				gl.glColorMask(true, true, true, true);
 				gl.glEnable(GL2.GL_DEPTH_TEST);
@@ -440,30 +443,6 @@ public class GLPathwayAugmentationRenderer {
 				break;
 			case compound:
 
-				EventBasedSelectionManager metabolicSelectionManager = glPathwayView.getMetaboliteSelectionManager();
-				// Handle selection highlighting of element
-				if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())
-						|| metabolicSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getName()
-								.hashCode())) {
-					tmpNodeColor = SelectionType.SELECTION.getColor();
-
-					gl.glColor4fv(tmpNodeColor, 0);
-					gl.glCallList(framedCompoundNodeDisplayListId);
-				}
-				else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())
-						|| metabolicSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getName()
-								.hashCode())) {
-					tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
-
-					gl.glColor4fv(tmpNodeColor, 0);
-					gl.glCallList(framedCompoundNodeDisplayListId);
-				}
-
-				tmpNodeColor = PathwayRenderStyle.COMPOUND_NODE_COLOR;
-
-				gl.glColor4fv(tmpNodeColor, 0);
-				gl.glCallList(compoundNodeDisplayListId);
-
 //				// create mask
 				gl.glEnable(GL2.GL_STENCIL_TEST);
 				gl.glColorMask(false, false, false, false);
@@ -473,11 +452,68 @@ public class GLPathwayAugmentationRenderer {
 				gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
 //
 				gl.glCallList(compoundNodeDisplayListId);
-
+				
 				gl.glDisable(GL2.GL_STENCIL_TEST);
 				gl.glColorMask(true, true, true, true);
 				gl.glEnable(GL2.GL_DEPTH_TEST);
 				gl.glEnable(GL2.GL_BLEND);
+
+				
+				EventBasedSelectionManager metabolicSelectionManager = glPathwayView.getMetaboliteSelectionManager();
+				// Handle selection highlighting of element
+				if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())
+						|| metabolicSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getName()
+								.hashCode())) {
+					tmpNodeColor = SelectionType.SELECTION.getColor();
+
+					gl.glColor4fv(tmpNodeColor, 0);
+					gl.glCallList(framedCompoundNodeDisplayListId);
+
+
+					gl.glEnable(GL2.GL_STENCIL_TEST);
+					gl.glColorMask(false, false, false, false);
+					gl.glDisable(GL2.GL_DEPTH_TEST);
+					gl.glDisable(GL2.GL_BLEND);
+					gl.glStencilFunc(GL2.GL_ALWAYS, 2, 0xff);
+					gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+					
+					gl.glCallList(framedCompoundNodeDisplayListId);
+
+					gl.glDisable(GL2.GL_STENCIL_TEST);
+					gl.glColorMask(true, true, true, true);
+					gl.glEnable(GL2.GL_DEPTH_TEST);
+					gl.glEnable(GL2.GL_BLEND);								
+					
+				}
+				else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())
+						|| metabolicSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getName()
+								.hashCode())) {
+					tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
+
+					gl.glColor4fv(tmpNodeColor, 0);
+					gl.glCallList(framedCompoundNodeDisplayListId);
+					
+					gl.glEnable(GL2.GL_STENCIL_TEST);
+					gl.glColorMask(false, false, false, false);
+					gl.glDisable(GL2.GL_DEPTH_TEST);
+					gl.glDisable(GL2.GL_BLEND);
+					gl.glStencilFunc(GL2.GL_ALWAYS, 2, 0xff);
+					gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+					
+					gl.glCallList(framedCompoundNodeDisplayListId);
+
+					gl.glDisable(GL2.GL_STENCIL_TEST);
+					gl.glColorMask(true, true, true, true);
+					gl.glEnable(GL2.GL_DEPTH_TEST);
+					gl.glEnable(GL2.GL_BLEND);								
+
+				}
+
+				tmpNodeColor = PathwayRenderStyle.COMPOUND_NODE_COLOR;
+
+				gl.glColor4fv(tmpNodeColor, 0);
+				gl.glCallList(compoundNodeDisplayListId);
+
 				
 				break;
 			case group:
@@ -490,6 +526,8 @@ public class GLPathwayAugmentationRenderer {
 				// new kegg data assign enzymes without mapping to "undefined"
 				// which we represent as other
 			case other:
+
+				
 				gl.glLineWidth(1);
 				if (enableGeneMapping) {
 
@@ -568,24 +606,6 @@ public class GLPathwayAugmentationRenderer {
 								gl.glVertex3f(x, 0, PathwayRenderStyle.Z_OFFSET + 0.02f);
 								gl.glEnd();
 
-								// create mask
-//								gl.glEnable(GL2.GL_STENCIL_TEST);
-//								gl.glColorMask(false, false, false, false);
-//								gl.glDisable(GL2.GL_DEPTH_TEST);
-//								gl.glStencilFunc(GL2.GL_ALWAYS, 1, 1);
-//								gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
-//
-//								gl.glBegin(GL2.GL_QUADS);
-//								gl.glColor4f(1, 1, 1, 1f);
-//								gl.glVertex3f(x, y, PathwayRenderStyle.Z_OFFSET);
-//								gl.glVertex3f(x + stdDev, y, PathwayRenderStyle.Z_OFFSET);
-//								gl.glVertex3f(x + stdDev, 0, PathwayRenderStyle.Z_OFFSET);
-//								gl.glVertex3f(x, 0, PathwayRenderStyle.Z_OFFSET);
-//								gl.glEnd();
-//
-//								gl.glDisable(GL2.GL_STENCIL_TEST);
-//								gl.glColorMask(true, true, true, true);
-//								gl.glEnable(GL2.GL_DEPTH_TEST);
 							}
 
 							// Handle selection highlighting of element
@@ -593,11 +613,13 @@ public class GLPathwayAugmentationRenderer {
 								tmpNodeColor = SelectionType.SELECTION.getColor();
 								gl.glColor4fv(tmpNodeColor, 0);
 								gl.glCallList(framedEnzymeNodeDisplayListId);
+								maskFramedEnzymeNode(gl);
 							}
 							else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
 								tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 								gl.glColor4fv(tmpNodeColor, 0);
 								gl.glCallList(framedEnzymeNodeDisplayListId);
+								maskFramedEnzymeNode(gl);
 							}
 						}
 						else {
@@ -610,11 +632,13 @@ public class GLPathwayAugmentationRenderer {
 								tmpNodeColor = SelectionType.SELECTION.getColor();
 								gl.glColor4fv(tmpNodeColor, 0);
 								gl.glCallList(upscaledFilledEnzymeNodeDisplayListId);
+								maskFramedEnzymeNode(gl);
 							}
 							else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
 								tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 								gl.glColor4fv(tmpNodeColor, 0);
 								gl.glCallList(upscaledFilledEnzymeNodeDisplayListId);
+								maskFramedEnzymeNode(gl);
 							}
 						}
 					}
@@ -636,11 +660,13 @@ public class GLPathwayAugmentationRenderer {
 							tmpNodeColor = SelectionType.SELECTION.getColor();
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glCallList(framedEnzymeNodeDisplayListId);
+							maskFramedEnzymeNode(gl);
 						}
 						else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
 							tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glCallList(framedEnzymeNodeDisplayListId);
+							maskFramedEnzymeNode(gl);
 						}
 					}
 				}
@@ -648,9 +674,11 @@ public class GLPathwayAugmentationRenderer {
 					// Handle selection highlighting of element
 					if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
 						tmpNodeColor = SelectionType.SELECTION.getColor();
+						maskFramedEnzymeNode(gl);
 					}
 					else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
 						tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
+						maskFramedEnzymeNode(gl);
 					}
 					else if (vertexSelectionManager.checkStatus(SelectionType.NORMAL, vertexRep.getID())) {
 						tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
@@ -667,9 +695,10 @@ public class GLPathwayAugmentationRenderer {
 						// Transparent node for picking
 						gl.glColor4f(0, 0, 0, 0);
 						gl.glCallList(enzymeNodeDisplayListId);
+						
 					}
-				}
-
+				}				
+				
 				break;
 		}
 
@@ -678,6 +707,24 @@ public class GLPathwayAugmentationRenderer {
 		gl.glPopName();
 	}
 
+	private void maskFramedEnzymeNode(final GL2 gl)
+	{
+		gl.glEnable(GL2.GL_STENCIL_TEST);
+		gl.glColorMask(false, false, false, false);
+		gl.glDisable(GL2.GL_DEPTH_TEST);
+		gl.glDisable(GL2.GL_BLEND);
+		gl.glStencilFunc(GL2.GL_ALWAYS, 1, 0xff);
+		gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+		gl.glStencilFunc(GL2.GL_ALWAYS, 2, 0xff);
+		
+		gl.glCallList(framedEnzymeNodeDisplayListId);
+
+		gl.glDisable(GL2.GL_STENCIL_TEST);
+		gl.glColorMask(true, true, true, true);
+		gl.glEnable(GL2.GL_DEPTH_TEST);
+		gl.glEnable(GL2.GL_BLEND);
+	}
+	
 	private void renderPolyVertex(GL2 gl, PathwayVertexRep vertexRep) {
 
 		// float[] tmpNodeColor = null;
