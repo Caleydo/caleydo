@@ -253,7 +253,8 @@ public class GLPathwayAugmentationRenderer {
 		float nodeHeight = glPathwayView.getPixelGLConverter().getGLHeightForPixelHeight(
 				PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
 
-		float scaleFactor = 1.4f;
+		//float scaleFactor = 1.4f;
+		float scaleFactor = 2.f;
 		nodeWidth *= scaleFactor;
 		nodeHeight *= scaleFactor;
 
@@ -271,7 +272,8 @@ public class GLPathwayAugmentationRenderer {
 		float nodeHeight = glPathwayView.getPixelGLConverter().getGLHeightForPixelHeight(
 				PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
 
-		float scaleFactor = 1.4f;
+		//float scaleFactor = 1.4f;
+		float scaleFactor = 2.f;
 		nodeWidth *= scaleFactor;
 		nodeHeight *= scaleFactor;
 
@@ -654,18 +656,60 @@ public class GLPathwayAugmentationRenderer {
 							// StratomeX
 							gl.glCallList(upscaledFilledEnzymeNodeDisplayListId);
 
+							gl.glEnable(GL2.GL_STENCIL_TEST);
+							gl.glColorMask(false, false, false, false);
+							gl.glDisable(GL2.GL_DEPTH_TEST);
+							gl.glDisable(GL2.GL_BLEND);
+							gl.glStencilFunc(GL2.GL_ALWAYS, 2, 0xff);
+							gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+							//
+							gl.glCallList(upscaledFilledEnzymeNodeDisplayListId);
+
+							gl.glDisable(GL2.GL_STENCIL_TEST);
+							gl.glColorMask(true, true, true, true);
+							gl.glEnable(GL2.GL_DEPTH_TEST);
+							gl.glEnable(GL2.GL_BLEND);
+							
 							// Handle selection highlighting of element
 							if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
 								tmpNodeColor = SelectionType.SELECTION.getColor();
 								gl.glColor4fv(tmpNodeColor, 0);
 								gl.glCallList(upscaledFilledEnzymeNodeDisplayListId);
-								maskFramedEnzymeNode(gl);
+								//maskFramedEnzymeNode(gl);
+								gl.glEnable(GL2.GL_STENCIL_TEST);
+								gl.glColorMask(false, false, false, false);
+								gl.glDisable(GL2.GL_DEPTH_TEST);
+								gl.glDisable(GL2.GL_BLEND);
+								//gl.glStencilFunc(GL2.GL_ALWAYS, 1, 0xff);
+								gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+								gl.glStencilFunc(GL2.GL_ALWAYS,2, 0xff);
+
+								gl.glCallList(upscaledFilledEnzymeNodeDisplayListId);
+
+								gl.glDisable(GL2.GL_STENCIL_TEST);
+								gl.glColorMask(true, true, true, true);
+								gl.glEnable(GL2.GL_DEPTH_TEST);
+								gl.glEnable(GL2.GL_BLEND);
 							}
 							else if (vertexSelectionManager.checkStatus(SelectionType.MOUSE_OVER, vertexRep.getID())) {
 								tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 								gl.glColor4fv(tmpNodeColor, 0);
 								gl.glCallList(upscaledFilledEnzymeNodeDisplayListId);
-								maskFramedEnzymeNode(gl);
+								//maskFramedEnzymeNode(gl);
+								gl.glEnable(GL2.GL_STENCIL_TEST);
+								gl.glColorMask(false, false, false, false);
+								gl.glDisable(GL2.GL_DEPTH_TEST);
+								gl.glDisable(GL2.GL_BLEND);
+								//gl.glStencilFunc(GL2.GL_ALWAYS, 1, 0xff);
+								gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+								gl.glStencilFunc(GL2.GL_ALWAYS, 2, 0xff);
+
+								gl.glCallList(upscaledFilledEnzymeNodeDisplayListId);
+
+								gl.glDisable(GL2.GL_STENCIL_TEST);
+								gl.glColorMask(true, true, true, true);
+								gl.glEnable(GL2.GL_DEPTH_TEST);
+								gl.glEnable(GL2.GL_BLEND);
 							}
 						}
 					}
@@ -739,7 +783,7 @@ public class GLPathwayAugmentationRenderer {
 		gl.glColorMask(false, false, false, false);
 		gl.glDisable(GL2.GL_DEPTH_TEST);
 		gl.glDisable(GL2.GL_BLEND);
-		gl.glStencilFunc(GL2.GL_ALWAYS, 1, 0xff);
+		//gl.glStencilFunc(GL2.GL_ALWAYS, 1, 0xff);
 		gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
 		gl.glStencilFunc(GL2.GL_ALWAYS, 2, 0xff);
 
