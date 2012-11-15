@@ -97,8 +97,8 @@ public class TablePerspectiveStatistics {
 	private void calculateAverageValue() {
 		averageValue = 0;
 		int count = 0;
-		for (Integer recordID : referenceTablePerspective.getRecordPerspective()
-				.getVirtualArray()) {
+		for (Integer recordID : referenceTablePerspective
+				.getRecordPerspective().getVirtualArray()) {
 
 			DimensionVirtualArray dimensionVA = referenceTablePerspective
 					.getDimensionPerspective().getVirtualArray();
@@ -108,8 +108,11 @@ public class TablePerspectiveStatistics {
 				return;
 			}
 			for (Integer dimensionID : dimensionVA) {
-				Float value = referenceTablePerspective.getDataDomain().getTable()
-						.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
+				Float value = referenceTablePerspective
+						.getDataDomain()
+						.getTable()
+						.getFloat(DataRepresentation.NORMALIZED, recordID,
+								dimensionID);
 				if (value != null && !Float.isNaN(value)) {
 					averageValue += value;
 					count++;
@@ -122,8 +125,8 @@ public class TablePerspectiveStatistics {
 	/**
 	 * This is optional! Read more: {@link #numberOfBucketsForHistogram}
 	 * 
-	 * @param numberOfBucketsForHistogram setter, see
-	 *            {@link #numberOfBucketsForHistogram}
+	 * @param numberOfBucketsForHistogram
+	 *            setter, see {@link #numberOfBucketsForHistogram}
 	 */
 	public void setNumberOfBucketsForHistogram(int numberOfBucketsForHistogram) {
 		this.numberOfBucketsForHistogram = numberOfBucketsForHistogram;
@@ -134,10 +137,11 @@ public class TablePerspectiveStatistics {
 	 */
 	public Histogram getHistogram() {
 		if (histogram == null)
-			histogram = calculateHistogram(referenceTablePerspective.getDataDomain()
-					.getTable(), referenceTablePerspective.getRecordPerspective()
-					.getVirtualArray(), referenceTablePerspective.getDimensionPerspective()
-					.getVirtualArray(), numberOfBucketsForHistogram);
+			histogram = calculateHistogram(referenceTablePerspective
+					.getDataDomain().getTable(), referenceTablePerspective
+					.getRecordPerspective().getVirtualArray(),
+					referenceTablePerspective.getDimensionPerspective()
+							.getVirtualArray(), numberOfBucketsForHistogram);
 		return histogram;
 	}
 
@@ -163,7 +167,8 @@ public class TablePerspectiveStatistics {
 		for (Integer dimensionID : dimensionVA) {
 			{
 				for (Integer recordID : recordVA) {
-					float value = dataTable.getFloat(DataRepresentation.NORMALIZED, recordID,
+					float value = dataTable.getFloat(
+							DataRepresentation.NORMALIZED, recordID,
 							dimensionID);
 
 					// this works because the values in the container are
@@ -224,13 +229,14 @@ public class TablePerspectiveStatistics {
 
 		DimensionVirtualArray dimensionVA = referenceTablePerspective
 				.getDimensionPerspective().getVirtualArray();
-		RecordVirtualArray recordVA = referenceTablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = referenceTablePerspective
+				.getRecordPerspective().getVirtualArray();
 
 		for (Integer recordID : recordVA) {
 
-			Average averageRecord = calculateAverage(dimensionVA, referenceTablePerspective
-					.getDataDomain().getTable(), recordID);
+			Average averageRecord = calculateAverage(dimensionVA,
+					referenceTablePerspective.getDataDomain().getTable(),
+					recordID);
 
 			averageRecords.add(averageRecord);
 		}
@@ -254,26 +260,35 @@ public class TablePerspectiveStatistics {
 
 		DimensionVirtualArray dimensionVA = referenceTablePerspective
 				.getDimensionPerspective().getVirtualArray();
-		RecordVirtualArray recordVA = referenceTablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = referenceTablePerspective
+				.getRecordPerspective().getVirtualArray();
 
 		for (Integer dimensionID : dimensionVA) {
-			Average averageDimension = calculateAverage(recordVA, referenceTablePerspective
-					.getDataDomain().getTable(), dimensionID);
+			Average averageDimension = calculateAverage(recordVA,
+					referenceTablePerspective.getDataDomain().getTable(),
+					dimensionID);
 			averageDimensions.add(averageDimension);
 		}
 	}
 
 	/**
 	 * <p>
-	 * Calculates the average of a dimension or row in the data table. Whether
-	 * the average is calculated for the dimension or row is determined by the
-	 * type of the {@link VirtualArray}.
+	 * Calculates the average and the standard deviation for the values of one
+	 * dimension or record in the data table. Whether the average is calculated
+	 * for the column or row is determined by the type of the
+	 * {@link VirtualArray}.
 	 * </p>
 	 * <p>
-	 * The objectID has to be of the "opposing" type, i.e. if the virtualArray
+	 * The objectID has to be of the "opposing" type, i.e., if the virtualArray
 	 * is of type {@link RecordVirtualArray}, the id has to be a dimension id.
 	 * </p>
+	 * <p>
+	 * The std-dev is calculated in the same loop as the average, according to
+	 * <a href="http://www.strchr.com/standard_deviation_in_one_pass">this
+	 * blog.</a>. The problems of this method discussed there doesn not apply
+	 * here since we use only values between 0 and 1.}
+	 * </p>
+	 * 
 	 * 
 	 * @param virtualArray
 	 * @param table
@@ -284,39 +299,56 @@ public class TablePerspectiveStatistics {
 			DataTable table, Integer objectID) {
 		Average averageDimension = new Average();
 		double sumOfValues = 0;
-		double sumDeviation = 0;
+		// sum of squares
+		double sqrSum = 0;
 
 		int nrValidValues = 0;
+
 		for (Integer virtualArrayID : virtualArray) {
 			Float value;
 			if (virtualArray instanceof RecordVirtualArray) {
-				value = table
-						.getFloat(DataRepresentation.NORMALIZED, virtualArrayID, objectID);
-			}
-			else {
-				value = table
-						.getFloat(DataRepresentation.NORMALIZED, objectID, virtualArrayID);
+				if (virtualArray.getIdType() != null
+						&& !virtualArray.getIdType().equals(
+								table.getDataDomain().getRecordIDType())) {
+					virtualArrayID = table
+							.getDataDomain()
+							.getRecordIDMappingManager()
+							.getID(virtualArray.getIdType(),
+									table.getDataDomain().getRecordIDType(),
+									virtualArrayID);
+					if (virtualArrayID == null)
+						continue;
+				}
+
+				value = table.getFloat(DataRepresentation.NORMALIZED,
+						virtualArrayID, objectID);
+			} else {
+				if (virtualArray.getIdType() != null
+						&& !virtualArray.getIdType().equals(
+								table.getDataDomain().getDimensionIDType())) {
+					virtualArrayID = table
+							.getDataDomain()
+							.getRecordIDMappingManager()
+							.getID(virtualArray.getIdType(),
+									table.getDataDomain().getDimensionIDType(),
+									virtualArrayID);
+					if (virtualArrayID == null)
+						continue;
+				}
+
+				value = table.getFloat(DataRepresentation.NORMALIZED, objectID,
+						virtualArrayID);
 			}
 			if (value != null && !value.isNaN()) {
 				sumOfValues += value;
+				sqrSum += Math.pow(value, 2);
 				nrValidValues++;
 			}
 		}
 		averageDimension.arithmeticMean = sumOfValues / nrValidValues;
+		averageDimension.standardDeviation = Math.sqrt(sqrSum / nrValidValues
+				- (Math.pow(averageDimension.arithmeticMean, 2)));
 
-		for (Integer recordID : virtualArray) {
-			Float value;
-			if (virtualArray instanceof RecordVirtualArray) {
-				value = table.getFloat(DataRepresentation.NORMALIZED, recordID, objectID);
-			}
-			else {
-				value = table.getFloat(DataRepresentation.NORMALIZED, objectID, recordID);
-			}
-			if (value != null && !value.isNaN()) {
-				sumDeviation += Math.pow(value - averageDimension.arithmeticMean, 2);
-			}
-		}
-		averageDimension.standardDeviation = Math.sqrt(sumDeviation / nrValidValues);
 		return averageDimension;
 	}
 

@@ -184,12 +184,13 @@ public class DataTable extends AUniqueObject {
 	public Float getFloat(DataRepresentation dataRepresentation,
 			Integer recordID, Integer dimensionID) {
 		try {
-			if (isColumnDimension)
+			if (isColumnDimension) {
 				return hashColumns.get(dimensionID).getFloat(
 						dataRepresentation, recordID);
-			else
-				return hashColumns.get(recordID).getFloat(dataRepresentation,
-						dimensionID);
+			} else {
+				AColumn column = hashColumns.get(recordID);
+				return column.getFloat(dataRepresentation, dimensionID);
+			}
 		} catch (NullPointerException npe) {
 
 			Logger.log(new Status(Status.ERROR, "DataTable",
@@ -573,7 +574,7 @@ public class DataTable extends AUniqueObject {
 
 	@Override
 	public void finalize() {
-		Logger.log(new Status(IStatus.INFO, this.toString(), "Set " + this
+		Logger.log(new Status(IStatus.INFO, this.toString(), "Data table  " + this
 				+ "destroyed"));
 	}
 
