@@ -186,13 +186,12 @@ public class GLPathwayAugmentationRenderer {
 					selectedSamplesVA = new RecordVirtualArray(glPathwayView.getSampleSelectionManager().getIDType(),
 							selectedSamplesArray);
 				else
-					selectedSamplesVA = new DimensionVirtualArray(glPathwayView.getSampleSelectionManager().getIDType(),
-							selectedSamplesArray);
+					selectedSamplesVA = new DimensionVirtualArray(
+							glPathwayView.getSampleSelectionManager().getIDType(), selectedSamplesArray);
 				break;
 			default:
 				throw new IllegalStateException("Unknown state when switching " + glPathwayView.getSampleMappingMode());
 		}
-
 
 	}
 
@@ -528,22 +527,23 @@ public class GLPathwayAugmentationRenderer {
 			case other:
 
 				gl.glLineWidth(1);
+
+				// // create mask
+				gl.glEnable(GL2.GL_STENCIL_TEST);
+				gl.glColorMask(false, false, false, false);
+				gl.glDisable(GL2.GL_DEPTH_TEST);
+				gl.glDisable(GL2.GL_BLEND);
+				gl.glStencilFunc(GL2.GL_ALWAYS, 1, 0xff);
+				gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
+				//
+				gl.glCallList(enzymeNodeDisplayListId);
+
+				gl.glDisable(GL2.GL_STENCIL_TEST);
+				gl.glColorMask(true, true, true, true);
+				gl.glEnable(GL2.GL_DEPTH_TEST);
+				gl.glEnable(GL2.GL_BLEND);
+
 				if (enableGeneMapping) {
-
-					// // create mask
-					gl.glEnable(GL2.GL_STENCIL_TEST);
-					gl.glColorMask(false, false, false, false);
-					gl.glDisable(GL2.GL_DEPTH_TEST);
-					gl.glDisable(GL2.GL_BLEND);
-					gl.glStencilFunc(GL2.GL_ALWAYS, 1, 0xff);
-					gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
-					//
-					gl.glCallList(enzymeNodeDisplayListId);
-
-					gl.glDisable(GL2.GL_STENCIL_TEST);
-					gl.glColorMask(true, true, true, true);
-					gl.glEnable(GL2.GL_DEPTH_TEST);
-					gl.glEnable(GL2.GL_BLEND);
 
 					Average average = getExpressionAverage(vertexRep);
 					if (average != null)
