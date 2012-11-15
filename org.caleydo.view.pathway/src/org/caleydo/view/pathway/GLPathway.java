@@ -1,16 +1,16 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
  * University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -72,7 +72,6 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
@@ -125,10 +124,9 @@ import com.jogamp.opengl.util.texture.Texture;
  * @author Alexander Lex
  */
 
-public class GLPathway
-	extends AGLView
-	implements ISingleTablePerspectiveBasedView, IViewCommandHandler, IEventBasedSelectionManagerUser,
-	IColorMappingUpdateListener {
+public class GLPathway extends AGLView implements
+		ISingleTablePerspectiveBasedView, IViewCommandHandler,
+		IEventBasedSelectionManagerUser, IColorMappingUpdateListener {
 
 	public static String VIEW_TYPE = "org.caleydo.view.pathway";
 
@@ -146,8 +144,9 @@ public class GLPathway
 	private PathwayItemManager pathwayItemManager;
 
 	/**
-	 * The maximal number of paths in the pathway that are looked up. The user specifies from which source to which
-	 * destination node the search will be triggered.
+	 * The maximal number of paths in the pathway that are looked up. The user
+	 * specifies from which source to which destination node the search will be
+	 * triggered.
 	 */
 	private final static int MAX_PATHS = 10;
 
@@ -164,14 +163,16 @@ public class GLPathway
 	private ESampleMappingMode sampleMappingMode = ESampleMappingMode.ALL;
 
 	/**
-	 * Selection manager for metabolites (compounds). Uses the hash value of compound names as id.
+	 * Selection manager for metabolites (compounds). Uses the hash value of
+	 * compound names as id.
 	 */
 	private EventBasedSelectionManager metaboliteSelectionManager;
 
 	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 	/**
-	 * Own texture manager is needed for each GL2 context, because textures cannot be bound to multiple GL2 contexts.
+	 * Own texture manager is needed for each GL2 context, because textures
+	 * cannot be bound to multiple GL2 contexts.
 	 */
 	private HashMap<GL, GLPathwayTextureManager> hashGLcontext2TextureManager;
 
@@ -222,25 +223,27 @@ public class GLPathway
 	/**
 	 * Constructor.
 	 */
-	public GLPathway(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLPathway(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		pathwayManager = PathwayManager.get();
 		pathwayItemManager = PathwayItemManager.get();
 
-		metaboliteSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("METABOLITE"));
+		metaboliteSelectionManager = new EventBasedSelectionManager(this,
+				IDType.getIDType("METABOLITE"));
 		metaboliteSelectionManager.registerEventListeners();
 
-		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
-				"org.caleydo.datadomain.pathway");
+		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
+				.getDataDomainByType("org.caleydo.datadomain.pathway");
 
 		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 
 		connectedElementRepresentationManager = generalManager.getViewManager()
 				.getConnectedElementRepresentationManager();
 
-		vertexSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType(EGeneIDTypes.PATHWAY_VERTEX_REP
-				.name()));
+		vertexSelectionManager = new EventBasedSelectionManager(this,
+				IDType.getIDType(EGeneIDTypes.PATHWAY_VERTEX_REP.name()));
 
 		vecScaling = new Vec3f(1, 1, 1);
 		vecTranslation = new Vec3f(0, 0, 0);
@@ -274,11 +277,13 @@ public class GLPathway
 			selectedPath = allPaths.get(selectedPathID);
 
 			if (selectedPath.getEdgeList().size() > 0 && !isShiftKeyDown) {
-				PathwayVertexRep startPrevVertex = selectedPath.getStartVertex();
+				PathwayVertexRep startPrevVertex = selectedPath
+						.getStartVertex();
 				PathwayVertexRep endPrevVertex = selectedPath.getEndVertex();
 				List<DefaultEdge> edgePrevList = selectedPath.getEdgeList();
-				previousSelectedPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(pathway, startPrevVertex,
-						endPrevVertex, edgePrevList, 0);
+				previousSelectedPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
+						pathway, startPrevVertex, endPrevVertex, edgePrevList,
+						0);
 			}
 
 		}
@@ -310,7 +315,8 @@ public class GLPathway
 	@Override
 	public void initialize() {
 		super.initialize();
-		gLPathwayAugmentationRenderer = new GLPathwayAugmentationRenderer(viewFrustum, this);
+		gLPathwayAugmentationRenderer = new GLPathwayAugmentationRenderer(
+				viewFrustum, this);
 		if (dataDomain != null)
 			gLPathwayAugmentationRenderer.enableGeneMapping(true);
 	}
@@ -321,7 +327,8 @@ public class GLPathway
 	}
 
 	@Override
-	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
+	public void initRemote(final GL2 gl, final AGLView glParentView,
+			final GLMouseListener glMouseListener) {
 		this.glMouseListener = glMouseListener;
 		init(gl);
 	}
@@ -396,7 +403,8 @@ public class GLPathway
 					return;
 				}
 
-				handlePathwayElementSelection(SelectionType.MOUSE_OVER, pick.getObjectID());
+				handlePathwayElementSelection(SelectionType.MOUSE_OVER,
+						pick.getObjectID());
 			}
 
 			@Override
@@ -408,10 +416,12 @@ public class GLPathway
 
 				// We do not handle picking events in pathways for StratomeX
 				if (glRemoteRenderingView != null
-						&& glRemoteRenderingView.getViewType().equals("org.caleydo.view.brick"))
+						&& glRemoteRenderingView.getViewType().equals(
+								"org.caleydo.view.brick"))
 					return;
 
-				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
+				handlePathwayElementSelection(SelectionType.SELECTION,
+						pick.getObjectID());
 			}
 
 			@Override
@@ -421,23 +431,24 @@ public class GLPathway
 					return;
 				}
 
-				PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager.getPathwayVertexRep(pick
+				PathwayVertexRep vertexRep = pathwayItemManager.getPathwayVertexRep(pick
 						.getObjectID());
 
 				// Load embedded pathway
 				if (vertexRep.getType() == EPathwayVertexType.map) {
-					PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(vertexRep.getName(),
-							EPathwayDatabaseType.KEGG);
+					PathwayGraph pathway = PathwayManager.get()
+							.getPathwayByTitle(vertexRep.getName(),
+									EPathwayDatabaseType.KEGG);
 
 					if (pathway != null) {
 						LoadPathwayEvent event = new LoadPathwayEvent();
 						event.setSender(this);
 						event.setPathwayID(pathway.getID());
 						event.setDataDomainID(dataDomain.getDataDomainID());
-						GeneralManager.get().getEventPublisher().triggerEvent(event);
+						GeneralManager.get().getEventPublisher()
+								.triggerEvent(event);
 					}
-				}
-				else {
+				} else {
 
 					// // Load pathways
 					// for (IGraphItem pathwayVertexGraphItem :
@@ -458,7 +469,8 @@ public class GLPathway
 
 				// same behavior as for single click except that
 				// pathways are also loaded
-				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
+				handlePathwayElementSelection(SelectionType.SELECTION,
+						pick.getObjectID());
 			}
 
 			@Override
@@ -468,29 +480,36 @@ public class GLPathway
 					return;
 				}
 
-				PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager.getPathwayVertexRep(pick
+				PathwayVertexRep vertexRep = pathwayItemManager.getPathwayVertexRep(pick
 						.getObjectID());
 
 				if (vertexRep.getType() == EPathwayVertexType.map) {
 
-					LoadPathwaysByPathwayItem menuItem = new LoadPathwaysByPathwayItem(PathwayManager.get()
-							.getPathwayByTitle(vertexRep.getName(), EPathwayDatabaseType.KEGG),
+					LoadPathwaysByPathwayItem menuItem = new LoadPathwaysByPathwayItem(
+							PathwayManager.get().getPathwayByTitle(
+									vertexRep.getName(),
+									EPathwayDatabaseType.KEGG),
 							dataDomain.getDataDomainID());
 					contextMenuCreator.addContextMenuItem(menuItem);
 
-				}
-				else if (vertexRep.getType() == EPathwayVertexType.gene) {
+				} else if (vertexRep.getType() == EPathwayVertexType.gene) {
 					for (PathwayVertex pathwayVertex : vertexRep.getPathwayVertices()) {
-						for (Integer davidID : pathwayItemManager.getDavidIdByPathwayVertex(pathwayVertex)) {
+						for (Integer davidID : pathwayItemManager
+								.getDavidIdByPathwayVertex(pathwayVertex)) {
 							GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-							contexMenuItemContainer.setDataDomain((ATableBasedDataDomain) dataDomain);
-							contexMenuItemContainer.setData(pathwayDataDomain.getDavidIDType(), davidID);
-							contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
+							contexMenuItemContainer.setDataDomain(dataDomain);
+							contexMenuItemContainer
+									.setData(
+											pathwayDataDomain.getDavidIDType(),
+											davidID);
+							contextMenuCreator
+									.addContextMenuItemContainer(contexMenuItemContainer);
 						}
 					}
 				}
 
-				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
+				handlePathwayElementSelection(SelectionType.SELECTION,
+						pick.getObjectID());
 			}
 		}, EPickingType.PATHWAY_ELEMENT_SELECTION.name());
 
@@ -534,20 +553,24 @@ public class GLPathway
 				}
 
 				pathwayTextureScaling = pathway.getHeight()
-						/ (float) pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight());
+						/ (float) pixelGLConverter
+								.getPixelHeightForGLHeight(viewFrustum
+										.getHeight());
 
-				pickX = (int) ((pickX - pixelGLConverter.getPixelWidthForGLWidth(vecTranslation.x())) * pathwayTextureScaling);
-				pickY = (int) ((pickY - pixelGLConverter.getPixelHeightForGLHeight(vecTranslation.y())) * pathwayTextureScaling);
+				pickX = (int) ((pickX - pixelGLConverter
+						.getPixelWidthForGLWidth(vecTranslation.x())) * pathwayTextureScaling);
+				pickY = (int) ((pickY - pixelGLConverter
+						.getPixelHeightForGLHeight(vecTranslation.y())) * pathwayTextureScaling);
 
 				// code adapted from documentation at
 				// http://docs.oracle.com/javase/6/docs/api/java/awt/image/PixelGrabber.html
 				int[] pixels = new int[1];
 				Image img = texRenderer.getImage();
-				PixelGrabber pxlGrabber = new PixelGrabber(img, pickX, pickY, 1, 1, pixels, 0, 1);
+				PixelGrabber pxlGrabber = new PixelGrabber(img, pickX, pickY,
+						1, 1, pixels, 0, 1);
 				try {
 					pxlGrabber.grabPixels();
-				}
-				catch (InterruptedException e) {
+				} catch (InterruptedException e) {
 					System.err.println("interrupted waiting for pixels!");
 					return;
 				}
@@ -559,8 +582,8 @@ public class GLPathway
 				// " pickedGreen:" + green + " pickedBlue:" + blue
 				// + " pickedAlpha:" + alpha);
 				// look up color
-				List<org.caleydo.core.util.color.Color> colorTable = (ColorManager.get())
-						.getColorList("qualitativeColors");
+				List<org.caleydo.core.util.color.Color> colorTable = (ColorManager
+						.get()).getColorList("qualitativeColors");
 				float[] cComponents = new float[4];
 				for (int i = 0; i < colorTable.size() - 2; i++) {
 					org.caleydo.core.util.color.Color c = colorTable.get(i);
@@ -594,10 +617,12 @@ public class GLPathway
 		if (pathway == null || !pathwayManager.hasItem(pathway.getID())) {
 			if (isDisplayListDirty) {
 				gl.glNewList(displayListIndex, GL2.GL_COMPILE);
-				renderEmptyViewText(gl, new String[] {
-						"Please select a pathway map from the pathway dropdown box in the toolbar.",
-						"To map experimental data select one of the available datasets from the dataset dropdown box.",
-						"Refer to http://help.caleydo.org for more information." });
+				renderEmptyViewText(
+						gl,
+						new String[] {
+								"Please select a pathway map from the pathway dropdown box in the toolbar.",
+								"To map experimental data select one of the available datasets from the dataset dropdown box.",
+								"Refer to http://help.caleydo.org for more information." });
 				gl.glEndList();
 				isDisplayListDirty = false;
 			}
@@ -623,15 +648,9 @@ public class GLPathway
 	public void display(final GL2 gl) {
 		checkForHits(gl);
 
-//		gl.glColor3f(1, 0, 0);
-//		gl.glBegin(GL2.GL_POLYGON);
-//		gl.glVertex3f(0, 0, 0);
-//		gl.glVertex3f(0, 1, 0);
-//		gl.glVertex3f(1, 1, 0);
-//		gl.glVertex3f(1, 0, 0);
-//		gl.glEnd();
 		
 		if (true) {
+
 			calculatePathwayScaling(gl, pathway);
 			rebuildPathwayDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
@@ -674,18 +693,24 @@ public class GLPathway
 	private void renderPathway(final GL2 gl, final PathwayGraph pathway) {
 
 		gl.glPushMatrix();
-		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
+		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(),
+				vecTranslation.z());
 		gl.glScalef(vecScaling.x(), vecScaling.y(), vecScaling.z());
 		float textureOffset = 0.0f;// to avoid z fighting
 		if (enablePathwayTexture) {
 			float fPathwayTransparency = 1.0f;
-			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, pathway, fPathwayTransparency, false);
+			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this,
+					pathway, fPathwayTransparency, false);
 		}
 
-		float pathwayHeight = pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight());
+		float pathwayHeight = pixelGLConverter
+				.getGLHeightForPixelHeight(pathway.getHeight());
 
 		// Pathway texture height is subtracted from Y to align pathways to
 		// front level
+		gl.glEnable(GL2.GL_STENCIL_TEST);
+		gl.glClearStencil(0);
+		gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
 		textureOffset += PathwayRenderStyle.Z_OFFSET;
 		gl.glTranslatef(0, pathwayHeight, textureOffset);
 		gLPathwayAugmentationRenderer.renderPathway(gl, pathway, false);
@@ -697,22 +722,34 @@ public class GLPathway
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
 
 			gl.glEnable(GL2.GL_STENCIL_TEST);
-			gl.glStencilFunc(GL2.GL_EQUAL, 0, 1);
+			gl.glDisable(GL2.GL_DEPTH_TEST);
+			// gl.glStencilFunc(GL2.GL_EQUAL, 0, 1);
+			gl.glStencilFunc(GL2.GL_GREATER, 2, 0xff);
 			gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);
-			gl.glPushName(generalManager.getViewManager().getPickingManager()
-					.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
-			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, pathway, fPathwayTransparency, false);
+			gl.glPushName(generalManager
+					.getViewManager()
+					.getPickingManager()
+					.getPickingID(uniqueID,
+							EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
+			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this,
+					pathway, fPathwayTransparency, false);
 			gl.glPopName();
-			gl.glDisable(GL2.GL_STENCIL_TEST);
 
+			gl.glStencilFunc(GL2.GL_GREATER, 1, 0xff);
+			gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);
 			textureOffset -= 2f * PathwayRenderStyle.Z_OFFSET;
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
 			overlayBubbleSets(gl);
+
+			gl.glEnable(GL2.GL_DEPTH_TEST);
+			gl.glDisable(GL2.GL_STENCIL_TEST);
 		}
 		// //
 		gl.glScalef(1 / vecScaling.x(), 1 / vecScaling.y(), 1 / vecScaling.z());
-		gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(), -vecTranslation.z());
+		gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(),
+				-vecTranslation.z());
 
+		gl.glDisable(GL2.GL_STENCIL_TEST);
 		gl.glPopMatrix();
 	}
 
@@ -739,8 +776,12 @@ public class GLPathway
 
 			// group0
 
-			gl.glPushName(generalManager.getViewManager().getPickingManager()
-					.getPickingID(uniqueID, EPickingType.PATHWAY_PATH_SELECTION.name(), allPaths.indexOf(path)));
+			gl.glPushName(generalManager
+					.getViewManager()
+					.getPickingManager()
+					.getPickingID(uniqueID,
+							EPickingType.PATHWAY_PATH_SELECTION.name(),
+							allPaths.indexOf(path)));
 			float[] colorValues = new float[3];
 			Integer outlineThickness;
 			bbGroupID++;
@@ -748,12 +789,12 @@ public class GLPathway
 				colorValues = SelectionType.SELECTION.getColor();
 				outlineThickness = 3;
 				// bubble sets do not allow to delete
-				bubblesetCanvas.addGroup(new Color(colorValues[0], colorValues[1], colorValues[2]), outlineThickness,
-						true);
-			}
-			else {
-				List<org.caleydo.core.util.color.Color> colorTable = (ColorManager.get())
-						.getColorList("qualitativeColors");
+				bubblesetCanvas
+						.addGroup(new Color(colorValues[0], colorValues[1],
+								colorValues[2]), outlineThickness, true);
+			} else {
+				List<org.caleydo.core.util.color.Color> colorTable = (ColorManager
+						.get()).getColorList("qualitativeColors");
 				int colorID;
 				// avoid the last two colors because they are close to orange
 				// (the selection color)
@@ -764,7 +805,8 @@ public class GLPathway
 				org.caleydo.core.util.color.Color c = colorTable.get(colorID);
 				outlineThickness = 1;
 				// bubble sets do not allow to delete
-				bubblesetCanvas.addGroup(new Color(c.r, c.g, c.b), outlineThickness, true);
+				bubblesetCanvas.addGroup(new Color(c.r, c.g, c.b),
+						outlineThickness, true);
 			}
 
 			if (path.getEndVertex() == path.getStartVertex()) {
@@ -773,12 +815,14 @@ public class GLPathway
 				bbItemH = sourceVertexRep.getHeight();
 				double posX = sourceVertexRep.getLowerLeftCornerX();
 				double posY = sourceVertexRep.getLowerLeftCornerY();
-				bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-			}
-			else {
+				bubblesetCanvas
+						.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
+			} else {
 				for (DefaultEdge edge : path.getEdgeList()) {
-					PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
-					PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
+					PathwayVertexRep sourceVertexRep = pathway
+							.getEdgeSource(edge);
+					PathwayVertexRep targetVertexRep = pathway
+							.getEdgeTarget(edge);
 
 					bbItemW = sourceVertexRep.getWidth();
 					bbItemH = sourceVertexRep.getHeight();
@@ -787,9 +831,11 @@ public class GLPathway
 					double tX = targetVertexRep.getLowerLeftCornerX();
 					double tY = targetVertexRep.getLowerLeftCornerY();
 
-					bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
+					bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW,
+							bbItemH);
 					//
-					bubblesetCanvas.addItem(bbGroupID, tX, tY, bbItemW, bbItemH);
+					bubblesetCanvas
+							.addItem(bbGroupID, tX, tY, bbItemW, bbItemH);
 					//
 					bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);
 					visitedNodes.add(sourceVertexRep);
@@ -864,6 +910,7 @@ public class GLPathway
 	}
 
 	private void overlayBubbleSets(GL2 gl) {
+
 		if (allPaths == null)
 			return;
 
@@ -874,11 +921,16 @@ public class GLPathway
 		}
 		bubbleSetsTexture = texRenderer.getTexture();
 
-		float textureWidth = pixelGLConverter.getGLWidthForPixelWidth(pathway.getWidth());
-		float textureHeight = pixelGLConverter.getGLHeightForPixelHeight(pathway.getHeight());
+		float textureWidth = pixelGLConverter.getGLWidthForPixelWidth(pathway
+				.getWidth());
+		float textureHeight = pixelGLConverter
+				.getGLHeightForPixelHeight(pathway.getHeight());
 
-		gl.glPushName(generalManager.getViewManager().getPickingManager()
-				.getPickingID(uniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
+		gl.glPushName(generalManager
+				.getViewManager()
+				.getPickingManager()
+				.getPickingID(uniqueID,
+						EPickingType.PATHWAY_TEXTURE_SELECTION.name(), 0));
 
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
@@ -954,7 +1006,8 @@ public class GLPathway
 		gLPathwayAugmentationRenderer.buildPathwayDisplayList(gl, pathway);
 	}
 
-	private void calculatePathwayScaling(final GL2 gl, final PathwayGraph pathway) {
+	private void calculatePathwayScaling(final GL2 gl,
+			final PathwayGraph pathway) {
 
 		if (hashGLcontext2TextureManager.get(gl) == null)
 			return;
@@ -967,10 +1020,13 @@ public class GLPathway
 					"Problem because pathway texture width or height is invalid!"));
 		}
 
-		float pathwayWidth = pixelGLConverter.getGLWidthForPixelWidth(pathwayPixelWidth);
-		float pathwayHeight = pixelGLConverter.getGLHeightForPixelHeight(pathwayPixelHeight);
+		float pathwayWidth = pixelGLConverter
+				.getGLWidthForPixelWidth(pathwayPixelWidth);
+		float pathwayHeight = pixelGLConverter
+				.getGLHeightForPixelHeight(pathwayPixelHeight);
 		float viewFrustumWidth = viewFrustum.getRight() - viewFrustum.getLeft();
-		float viewFrustumHeight = viewFrustum.getTop() - viewFrustum.getBottom();
+		float viewFrustumHeight = viewFrustum.getTop()
+				- viewFrustum.getBottom();
 
 		float pathwayAspectRatio = pathwayWidth / pathwayHeight;
 		float viewFrustumAspectRatio = viewFrustumWidth / viewFrustumHeight;
@@ -978,33 +1034,46 @@ public class GLPathway
 
 		if (isRenderedRemote()) {
 
-			if (viewFrustumAspectRatio < pathwayAspectRatio && pathwayWidth > viewFrustumWidth) {
+			if (viewFrustumAspectRatio < pathwayAspectRatio
+					&& pathwayWidth > viewFrustumWidth) {
 
-				vecScaling.setX((viewFrustum.getRight() - viewFrustum.getLeft()) / pathwayWidth);
+				vecScaling
+						.setX((viewFrustum.getRight() - viewFrustum.getLeft())
+								/ pathwayWidth);
 				vecScaling.setY(vecScaling.x());
 
-				vecTranslation.set(
-						(viewFrustum.getRight() - viewFrustum.getLeft() - pathwayWidth * vecScaling.x()) / 2.0f,
-						(viewFrustum.getTop() - viewFrustum.getBottom() - pathwayHeight * vecScaling.y()) / 2.0f, 0);
+				vecTranslation
+						.set((viewFrustum.getRight() - viewFrustum.getLeft() - pathwayWidth
+								* vecScaling.x()) / 2.0f, (viewFrustum.getTop()
+								- viewFrustum.getBottom() - pathwayHeight
+								* vecScaling.y()) / 2.0f, 0);
 				pathwayFitsViewFrustum = false;
 			}
 
-			if (viewFrustumAspectRatio >= pathwayAspectRatio && pathwayHeight > viewFrustumHeight) {
+			if (viewFrustumAspectRatio >= pathwayAspectRatio
+					&& pathwayHeight > viewFrustumHeight) {
 
-				vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom()) / pathwayHeight);
+				vecScaling
+						.setY((viewFrustum.getTop() - viewFrustum.getBottom())
+								/ pathwayHeight);
 				vecScaling.setX(vecScaling.y());
 
-				vecTranslation.set(
-						(viewFrustum.getRight() - viewFrustum.getLeft() - pathwayWidth * vecScaling.x()) / 2.0f,
-						(viewFrustum.getTop() - viewFrustum.getBottom() - pathwayHeight * vecScaling.y()) / 2.0f, 0);
+				vecTranslation
+						.set((viewFrustum.getRight() - viewFrustum.getLeft() - pathwayWidth
+								* vecScaling.x()) / 2.0f, (viewFrustum.getTop()
+								- viewFrustum.getBottom() - pathwayHeight
+								* vecScaling.y()) / 2.0f, 0);
 				pathwayFitsViewFrustum = false;
 			}
 
 			if (pathwayFitsViewFrustum) {
 				vecScaling.set(1, 1, 1f);
 
-				vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f - pathwayWidth / 2.0f,
-						(viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f - pathwayHeight / 2.0f, 0);
+				vecTranslation.set(
+						(viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f
+								- pathwayWidth / 2.0f,
+						(viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f
+								- pathwayHeight / 2.0f, 0);
 			}
 		}
 
@@ -1025,7 +1094,8 @@ public class GLPathway
 	}
 
 	public void enablePathwayTextures(final boolean bEnablePathwayTexture) {
-		gLPathwayAugmentationRenderer.enableEdgeRendering(!bEnablePathwayTexture);
+		gLPathwayAugmentationRenderer
+				.enableEdgeRendering(!bEnablePathwayTexture);
 		setDisplayListDirty();
 
 		this.enablePathwayTexture = bEnablePathwayTexture;
@@ -1037,7 +1107,8 @@ public class GLPathway
 		gLPathwayAugmentationRenderer.enableNeighborhood(bEnableNeighborhood);
 	}
 
-	private void createConnectionLines(SelectionType selectionType, int iConnectionID) {
+	private void createConnectionLines(SelectionType selectionType,
+			int iConnectionID) {
 		// // check in preferences if we should draw connection lines for mouse
 		// // over
 		// if
@@ -1090,12 +1161,13 @@ public class GLPathway
 		if (pathway == null)
 			return;
 
-		RecordVADelta delta = new RecordVADelta(tablePerspective.getRecordPerspective().getPerspectiveID(),
+		RecordVADelta delta = new RecordVADelta(tablePerspective
+				.getRecordPerspective().getPerspectiveID(),
 				pathwayDataDomain.getDavidIDType());
 
 		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
 			for (Integer davidID : vertexRep.getDavidIDs()) {
-				delta.add(VADeltaItem.create(type, (Integer) davidID));
+				delta.add(VADeltaItem.create(type, davidID));
 			}
 		}
 
@@ -1116,7 +1188,8 @@ public class GLPathway
 
 	@Override
 	public void initData() {
-		connectedElementRepresentationManager.clear(dataDomain.getRecordIDType());
+		connectedElementRepresentationManager.clear(dataDomain
+				.getRecordIDType());
 		super.initData();
 	}
 
@@ -1131,39 +1204,48 @@ public class GLPathway
 
 		enableGeneMappingListener = new EnableGeneMappingListener();
 		enableGeneMappingListener.setHandler(this);
-		eventPublisher.addListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
+		eventPublisher.addListener(EnableGeneMappingEvent.class,
+				enableGeneMappingListener);
 
 		switchDataRepresentationListener = new SwitchDataRepresentationListener();
 		switchDataRepresentationListener.setHandler(this);
-		eventPublisher.addListener(SwitchDataRepresentationEvent.class, switchDataRepresentationListener);
+		eventPublisher.addListener(SwitchDataRepresentationEvent.class,
+				switchDataRepresentationListener);
 
 		enRoutePathEventListener = new EnRoutePathEventListener();
 		enRoutePathEventListener.setHandler(this);
-		eventPublisher.addListener(EnRoutePathEvent.class, enRoutePathEventListener);
+		eventPublisher.addListener(EnRoutePathEvent.class,
+				enRoutePathEventListener);
 
 		selectPathModeEventListener = new SelectPathModeEventListener();
 		selectPathModeEventListener.setHandler(this);
-		eventPublisher.addListener(SelectPathModeEvent.class, selectPathModeEventListener);
+		eventPublisher.addListener(SelectPathModeEvent.class,
+				selectPathModeEventListener);
 
 		clearPathEventListener = new ClearPathEventListener();
 		clearPathEventListener.setHandler(this);
-		eventPublisher.addListener(ClearPathEvent.class, clearPathEventListener);
+		eventPublisher
+				.addListener(ClearPathEvent.class, clearPathEventListener);
 
 		addTablePerspectivesListener = new AddTablePerspectivesListener();
 		addTablePerspectivesListener.setHandler(this);
-		eventPublisher.addListener(AddTablePerspectivesEvent.class, addTablePerspectivesListener);
+		eventPublisher.addListener(AddTablePerspectivesEvent.class,
+				addTablePerspectivesListener);
 
 		sampleMappingModeListener = new SampleMappingModeListener();
 		sampleMappingModeListener.setHandler(this);
-		eventPublisher.addListener(SampleMappingModeEvent.class, sampleMappingModeListener);
+		eventPublisher.addListener(SampleMappingModeEvent.class,
+				sampleMappingModeListener);
 
 		updateColorMappingListener = new UpdateColorMappingListener();
 		updateColorMappingListener.setHandler(this);
-		eventPublisher.addListener(UpdateColorMappingEvent.class, updateColorMappingListener);
+		eventPublisher.addListener(UpdateColorMappingEvent.class,
+				updateColorMappingListener);
 
 		clearMappingListener = new ClearMappingListener();
 		clearMappingListener.setHandler(this);
-		eventPublisher.addListener(ClearMappingEvent.class, clearMappingListener);
+		eventPublisher.addListener(ClearMappingEvent.class,
+				clearMappingListener);
 
 	}
 
@@ -1172,7 +1254,8 @@ public class GLPathway
 		super.unregisterEventListeners();
 
 		if (enableGeneMappingListener != null) {
-			eventPublisher.removeListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
+			eventPublisher.removeListener(EnableGeneMappingEvent.class,
+					enableGeneMappingListener);
 			enableGeneMappingListener = null;
 		}
 
@@ -1222,7 +1305,8 @@ public class GLPathway
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedPathwayView serializedForm = new SerializedPathwayView(pathwayDataDomain.getDataDomainID(), this);
+		SerializedPathwayView serializedForm = new SerializedPathwayView(
+				pathwayDataDomain.getDataDomainID(), this);
 		// FIXME this needs to be reviewed - what is the unique, serializable ID
 		// of the pathway here?
 		if (pathway != null)
@@ -1230,7 +1314,8 @@ public class GLPathway
 
 		serializedForm.setPathSelectionMode(isPathSelectionMode);
 		serializedForm.setMappingMode(sampleMappingMode);
-		serializedForm.setDataDomainID(dataDomain != null ? dataDomain.getDataDomainID() : null);
+		serializedForm.setDataDomainID(dataDomain != null ? dataDomain
+				.getDataDomainID() : null);
 
 		System.out.println("Serializing Pathway: review me!");
 
@@ -1274,8 +1359,9 @@ public class GLPathway
 			return;
 		}
 		if (!(dataDomain instanceof GeneticDataDomain))
-			throw new IllegalArgumentException("Pathway view can handle only genetic data domain, tried to set: "
-					+ dataDomain);
+			throw new IllegalArgumentException(
+					"Pathway view can handle only genetic data domain, tried to set: "
+							+ dataDomain);
 
 		this.dataDomain = (GeneticDataDomain) dataDomain;
 
@@ -1285,8 +1371,11 @@ public class GLPathway
 		// only make a new sample selection manager if necessary due to
 		// different id category or because it wasn't initalized so far
 		if (sampleSelectionManager == null
-				|| !sampleSelectionManager.getIDType().getIDCategory()
-						.equals(this.dataDomain.getSampleIDType().getIDCategory())) {
+				|| !sampleSelectionManager
+						.getIDType()
+						.getIDCategory()
+						.equals(this.dataDomain.getSampleIDType()
+								.getIDCategory())) {
 			sampleSelectionManager = new EventBasedSelectionManager(this,
 					((GeneticDataDomain) dataDomain).getSampleIDType());
 		}
@@ -1302,14 +1391,15 @@ public class GLPathway
 
 		setDisplayListDirty();
 		if (tablePerspective != null) {
-			DataDomainUpdateEvent event = new DataDomainUpdateEvent(tablePerspective.getDataDomain());
+			DataDomainUpdateEvent event = new DataDomainUpdateEvent(
+					tablePerspective.getDataDomain());
 			eventPublisher.triggerEvent(event);
-		}
-		else {
+		} else {
 			dataDomain = null;
 		}
 
-		TablePerspectivesChangedEvent tbEvent = new TablePerspectivesChangedEvent(this);
+		TablePerspectivesChangedEvent tbEvent = new TablePerspectivesChangedEvent(
+				this);
 		eventPublisher.triggerEvent(tbEvent);
 
 	}
@@ -1352,10 +1442,15 @@ public class GLPathway
 			metaboliteSelectionManager.clearSelection(SelectionType.SELECTION);
 			metaboliteSelectionManager.triggerSelectionUpdateEvent();
 			// Add new vertex to internal selection manager
-			vertexSelectionManager.addToType(SelectionType.SELECTION, selectedPath.getEndVertex().getID());
-			int connectionID = generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION);
-			vertexSelectionManager.addConnectionID(connectionID, selectedPath.getEndVertex().getID());
-			connectedElementRepresentationManager.clear(vertexSelectionManager.getIDType(), SelectionType.SELECTION);
+			vertexSelectionManager.addToType(SelectionType.SELECTION,
+					selectedPath.getEndVertex().getID());
+			int connectionID = generalManager.getIDCreator().createID(
+					ManagedObjectType.CONNECTION);
+			vertexSelectionManager.addConnectionID(connectionID, selectedPath
+					.getEndVertex().getID());
+			connectedElementRepresentationManager
+					.clear(vertexSelectionManager.getIDType(),
+							SelectionType.SELECTION);
 			createConnectionLines(SelectionType.SELECTION, connectionID);
 			// SelectionDelta selectionDelta =
 			// createExternalSelectionDelta(vertexSelectionManager.getDelta());
@@ -1363,7 +1458,7 @@ public class GLPathway
 
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
-			event.setSelectionDelta((SelectionDelta) selectionDelta);
+			event.setSelectionDelta(selectionDelta);
 			eventPublisher.triggerEvent(event);
 
 			if (isControlKeyDown || this.isShiftKeyDown) {
@@ -1381,8 +1476,7 @@ public class GLPathway
 		PathwayVertexRep endVertex = previousSelectedPath.getEndVertex();
 		if (vertexRep == startVertex) {
 			generateSingleNodePath(vertexRep);
-		}
-		else {
+		} else {
 			for (int i = 0; i < edgeListPrev.size(); i++) {
 				DefaultEdge edge = edgeListPrev.get(i);
 				endVertex = pathway.getEdgeTarget(edge);
@@ -1411,8 +1505,7 @@ public class GLPathway
 				pathway, endVertex, MAX_PATHS);
 		if (vertexRep != endVertex) {
 			allPaths = pathAlgo.getPaths(vertexRep);
-		}
-		else {
+		} else {
 			allPaths = null;
 		}
 		if (allPaths == null) {
@@ -1420,10 +1513,10 @@ public class GLPathway
 			allPaths.add(previousSelectedPath);
 			selectedPathID = 0;
 			selectedPath = previousSelectedPath;
-		}
-		else {
+		} else {
 			List<DefaultEdge> edgeListPrev = previousSelectedPath.getEdgeList();
-			PathwayVertexRep startExtVertex = previousSelectedPath.getStartVertex();
+			PathwayVertexRep startExtVertex = previousSelectedPath
+					.getStartVertex();
 			int idx = 0;
 			for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
 				List<DefaultEdge> edgeListExt = new ArrayList<DefaultEdge>();
@@ -1444,8 +1537,8 @@ public class GLPathway
 	}
 
 	private void generateSingleNodePath(PathwayVertexRep vertexRep) {
-		GraphPath<PathwayVertexRep, DefaultEdge> path = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(pathway,
-				vertexRep, vertexRep, new ArrayList<DefaultEdge>(), 0);
+		GraphPath<PathwayVertexRep, DefaultEdge> path = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
+				pathway, vertexRep, vertexRep, new ArrayList<DefaultEdge>(), 0);
 		if (allPaths == null)
 			allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
 		else
@@ -1455,7 +1548,8 @@ public class GLPathway
 		selectedPathID = 0;
 	}
 
-	private void selectPath(PathwayVertexRep vertexRep, SelectionType selectionType) {
+	private void selectPath(PathwayVertexRep vertexRep,
+			SelectionType selectionType) {
 		if (!isPathStartSelected) {// ////////////////////////////////
 			if (isControlKeyDown) {// shrink previous selected path
 				shrinkSelectedPath(vertexRep);
@@ -1479,8 +1573,7 @@ public class GLPathway
 					isPathStartSelected = true;
 				}
 			}
-		}
-		else {// //////// select end node /////////////////////////
+		} else {// //////// select end node /////////////////////////
 			if (pathStartVertexRep == null)
 				return;
 			KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
@@ -1495,8 +1588,7 @@ public class GLPathway
 						selectedPathID = 0;
 					selectedPath = allPaths.get(selectedPathID);
 				}
-			}
-			else {
+			} else {
 				generateSingleNodePath(vertexRep);
 			}
 
@@ -1511,12 +1603,13 @@ public class GLPathway
 		isBubbleTextureDirty = true;
 	}
 
-	public void handlePathwayElementSelection(SelectionType selectionType, int externalID) {
+	public void handlePathwayElementSelection(SelectionType selectionType,
+			int externalID) {
 		setDisplayListDirty();
 		if (vertexSelectionManager.getElements(SelectionType.SELECTION).size() == 1) {
-			pathStartVertexRep = (PathwayVertexRep) pathwayItemManager
-					.getPathwayVertexRep((Integer) vertexSelectionManager.getElements(SelectionType.SELECTION)
-							.toArray()[0]);
+			pathStartVertexRep = pathwayItemManager
+					.getPathwayVertexRep((Integer) vertexSelectionManager
+							.getElements(SelectionType.SELECTION).toArray()[0]);
 		}
 
 		vertexSelectionManager.clearSelection(selectionType);
@@ -1525,10 +1618,12 @@ public class GLPathway
 			metaboliteSelectionManager.triggerSelectionUpdateEvent();
 		}
 
-		PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager.getPathwayVertexRep(externalID);
+		PathwayVertexRep vertexRep = pathwayItemManager
+				.getPathwayVertexRep(externalID);
 
 		if (vertexRep.getType() == EPathwayVertexType.compound) {
-			metaboliteSelectionManager.addToType(selectionType, vertexRep.getName().hashCode());
+			metaboliteSelectionManager.addToType(selectionType, vertexRep
+					.getName().hashCode());
 			metaboliteSelectionManager.triggerSelectionUpdateEvent();
 		}
 		// //////////////////////////////////////
@@ -1539,9 +1634,12 @@ public class GLPathway
 		// Add new vertex to internal selection manager
 		vertexSelectionManager.addToType(selectionType, vertexRep.getID());
 
-		int iConnectionID = generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION);
-		vertexSelectionManager.addConnectionID(iConnectionID, vertexRep.getID());
-		connectedElementRepresentationManager.clear(vertexSelectionManager.getIDType(), selectionType);
+		int iConnectionID = generalManager.getIDCreator().createID(
+				ManagedObjectType.CONNECTION);
+		vertexSelectionManager
+				.addConnectionID(iConnectionID, vertexRep.getID());
+		connectedElementRepresentationManager.clear(
+				vertexSelectionManager.getIDType(), selectionType);
 
 		createConnectionLines(selectionType, iConnectionID);
 
@@ -1551,7 +1649,7 @@ public class GLPathway
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
-		event.setSelectionDelta((SelectionDelta) selectionDelta);
+		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
 	}
 
@@ -1563,7 +1661,8 @@ public class GLPathway
 	}
 
 	/**
-	 * @param selectedPath setter, see {@link #selectedPath}
+	 * @param selectedPath
+	 *            setter, see {@link #selectedPath}
 	 */
 	public void setSelectedPath(PathwayPath selectedPath) {
 		if (selectedPath == null || selectedPath.getPathway() != pathway)
@@ -1601,14 +1700,16 @@ public class GLPathway
 	}
 
 	/**
-	 * @return the metaboliteSelectionManager, see {@link #metaboliteSelectionManager}
+	 * @return the metaboliteSelectionManager, see
+	 *         {@link #metaboliteSelectionManager}
 	 */
 	public EventBasedSelectionManager getMetaboliteSelectionManager() {
 		return metaboliteSelectionManager;
 	}
 
 	/**
-	 * @param isPathSelectionMode setter, see {@link #isPathSelectionMode}
+	 * @param isPathSelectionMode
+	 *            setter, see {@link #isPathSelectionMode}
 	 */
 	public void setPathSelectionMode(boolean isPathSelectionMode) {
 		this.isPathSelectionMode = isPathSelectionMode;
@@ -1647,13 +1748,15 @@ public class GLPathway
 
 	@Override
 	public List<TablePerspective> getTablePerspectives() {
-		ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>(1);
+		ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>(
+				1);
 		tablePerspectives.add(tablePerspective);
 		return tablePerspectives;
 	}
 
 	/**
-	 * @param sampleMappingMode setter, see {@link #sampleMappingMode}
+	 * @param sampleMappingMode
+	 *            setter, see {@link #sampleMappingMode}
 	 */
 	public void setSampleMappingMode(ESampleMappingMode sampleMappingMode) {
 		if (this.sampleMappingMode != sampleMappingMode)
