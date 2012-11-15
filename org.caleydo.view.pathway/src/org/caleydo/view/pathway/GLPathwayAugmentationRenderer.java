@@ -254,7 +254,7 @@ public class GLPathwayAugmentationRenderer {
 				PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
 
 		//float scaleFactor = 1.4f;
-		float scaleFactor = 2.f;
+		float scaleFactor = 3.f;
 		nodeWidth *= scaleFactor;
 		nodeHeight *= scaleFactor;
 
@@ -272,8 +272,7 @@ public class GLPathwayAugmentationRenderer {
 		float nodeHeight = glPathwayView.getPixelGLConverter().getGLHeightForPixelHeight(
 				PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
 
-		//float scaleFactor = 1.4f;
-		float scaleFactor = 2.f;
+		float scaleFactor = 3.f;
 		nodeWidth *= scaleFactor;
 		nodeHeight *= scaleFactor;
 
