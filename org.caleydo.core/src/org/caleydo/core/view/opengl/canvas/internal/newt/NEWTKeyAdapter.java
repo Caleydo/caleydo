@@ -21,6 +21,7 @@ package org.caleydo.core.view.opengl.canvas.internal.newt;
 
 
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
+import org.caleydo.core.view.opengl.canvas.IGLKeyListener.ESpecialKey;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener.IKeyEvent;
 
 import com.jogamp.newt.event.KeyEvent;
@@ -51,7 +52,7 @@ final class NEWTKeyAdapter implements KeyListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.jogamp.newt.event.KeyListener#keyPressed(com.jogamp.newt.event.KeyEvent)
 	 */
 	@Override
@@ -61,7 +62,7 @@ final class NEWTKeyAdapter implements KeyListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.jogamp.newt.event.KeyListener#keyReleased(com.jogamp.newt.event.KeyEvent)
 	 */
 	@Override
@@ -71,7 +72,7 @@ final class NEWTKeyAdapter implements KeyListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.jogamp.newt.event.KeyListener#keyTyped(com.jogamp.newt.event.KeyEvent)
 	 */
 	@Override
@@ -84,15 +85,31 @@ final class NEWTKeyAdapter implements KeyListener {
 	 * @return
 	 */
 	private static IKeyEvent wrap(KeyEvent e) {
-		return new AWTKeyEventAdapter(e);
+		return new NEWTKeyEventAdapter(e);
 	}
 
 
-	private static class AWTKeyEventAdapter implements IKeyEvent {
+	private static class NEWTKeyEventAdapter implements IKeyEvent {
 		private final KeyEvent event;
 
-		AWTKeyEventAdapter(KeyEvent event) {
+		NEWTKeyEventAdapter(KeyEvent event) {
 			this.event = event;
+		}
+
+		@Override
+		public boolean isKey(char c) {
+			return event.getKeyCode() == Character.toLowerCase(c) || event.getKeyCode() == Character.toUpperCase(c);
+		}
+
+		@Override
+		public boolean isKey(ESpecialKey c) {
+			switch (c) {
+			case CONTROL:
+				return event.getKeyCode() == KeyEvent.VK_CONTROL;
+			case SHIFT:
+				return event.getKeyCode() == KeyEvent.VK_SHIFT;
+			}
+			throw new IllegalStateException("unknown special key:" + c);
 		}
 
 		/*

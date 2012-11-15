@@ -21,6 +21,7 @@ package org.caleydo.core.view.opengl.canvas.internal.swt;
 
 
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
+import org.caleydo.core.view.opengl.canvas.IGLKeyListener.ESpecialKey;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener.IKeyEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -55,7 +56,7 @@ final class SWTKeyAdapter implements KeyListener {
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
-		listener.keyPressed(wrap(e));
+		listener.keyPressed(wrap(e, true));
 	}
 
 	/*
@@ -65,22 +66,40 @@ final class SWTKeyAdapter implements KeyListener {
 	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
-		listener.keyReleased(wrap(e));
+		listener.keyReleased(wrap(e, false));
 	}
 
 	/**
 	 * @param e
 	 * @return
 	 */
-	private static IKeyEvent wrap(KeyEvent e) {
-		return new SWTKeyEventAdapter(e);
+	private static IKeyEvent wrap(KeyEvent e, boolean pressed) {
+		return new SWTKeyEventAdapter(e, pressed);
 	}
 
 	private static class SWTKeyEventAdapter implements IKeyEvent {
 		private final KeyEvent event;
+		private final boolean pressed;
 
-		SWTKeyEventAdapter(KeyEvent event) {
+		SWTKeyEventAdapter(KeyEvent event, boolean pressed) {
 			this.event = event;
+			this.pressed = pressed;
+		}
+
+		@Override
+		public boolean isKey(char c) {
+			return event.keyCode == Character.toLowerCase(c) || event.keyCode == Character.toUpperCase(c);
+		}
+
+		@Override
+		public boolean isKey(ESpecialKey c) {
+			switch (c) {
+			case CONTROL:
+				return event.keyCode == SWT.CONTROL;
+			case SHIFT:
+				return event.keyCode == SWT.SHIFT;
+			}
+			throw new IllegalStateException("unknown special key:" + c);
 		}
 
 		/*
@@ -100,7 +119,12 @@ final class SWTKeyAdapter implements KeyListener {
 		 */
 		@Override
 		public boolean isControlDown() {
-			return (event.stateMask & SWT.CONTROL) != 0;
+			if (pressed)
+				// was down or is currently pressed
+				return (event.stateMask & SWT.CONTROL) != 0 || isKey(ESpecialKey.CONTROL);
+			else
+				// was down and was not currently released
+				return (event.stateMask & SWT.CONTROL) != 0 && !isKey(ESpecialKey.CONTROL);
 		}
 
 		/*
@@ -110,7 +134,10 @@ final class SWTKeyAdapter implements KeyListener {
 		 */
 		@Override
 		public boolean isShiftDown() {
-			return (event.stateMask & SWT.SHIFT) != 0;
+			if (pressed)
+				return (event.stateMask & SWT.SHIFT) != 0 || isKey(ESpecialKey.SHIFT);
+			else
+				return (event.stateMask & SWT.SHIFT) != 0 && !isKey(ESpecialKey.SHIFT);
 		}
 	}
 

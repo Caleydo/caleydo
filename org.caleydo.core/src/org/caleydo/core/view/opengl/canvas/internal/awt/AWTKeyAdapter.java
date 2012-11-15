@@ -23,6 +23,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
+import org.caleydo.core.view.opengl.canvas.IGLKeyListener.ESpecialKey;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener.IKeyEvent;
 
 /**
@@ -66,7 +67,7 @@ final class AWTKeyAdapter implements KeyListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
 	 */
 	@Override
@@ -88,6 +89,22 @@ final class AWTKeyAdapter implements KeyListener {
 
 		AWTKeyEventAdapter(KeyEvent event) {
 			this.event = event;
+		}
+
+		@Override
+		public boolean isKey(char c) {
+			return event.getKeyCode() == Character.toLowerCase(c) || event.getKeyCode() == Character.toUpperCase(c);
+		}
+
+		@Override
+		public boolean isKey(ESpecialKey c) {
+			switch (c) {
+			case CONTROL:
+				return event.getKeyCode() == KeyEvent.VK_CONTROL;
+			case SHIFT:
+				return event.getKeyCode() == KeyEvent.VK_SHIFT;
+			}
+			throw new IllegalStateException("unknown special key:" + c);
 		}
 
 		/*

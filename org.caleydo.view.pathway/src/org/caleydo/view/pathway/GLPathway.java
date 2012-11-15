@@ -73,7 +73,6 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
@@ -364,7 +363,7 @@ public class GLPathway
 			@Override
 			public void keyPressed(IKeyEvent e) {
 				// //comment_1/2:
-				if (e.isControlDown() && (e.getKeyCode() == 79)) { // ctrl +o
+				if (e.isControlDown() && (e.isKey('o'))) { // ctrl +o
 					setPathSelectionMode(!isPathSelectionMode);
 					getParentComposite().getDisplay().asyncExec(new Runnable() {
 						@Override
@@ -381,7 +380,6 @@ public class GLPathway
 
 			@Override
 			public void keyReleased(IKeyEvent e) {
-
 				isControlKeyDown = e.isControlDown();
 				isShiftKeyDown = e.isShiftDown();
 			}
@@ -633,7 +631,7 @@ public class GLPathway
 //		gl.glVertex3f(1, 1, 0);
 //		gl.glVertex3f(1, 0, 0);
 //		gl.glEnd();
-		
+
 		if (true) {
 			calculatePathwayScaling(gl, pathway);
 			rebuildPathwayDisplayList(gl, displayListIndex);
@@ -718,7 +716,7 @@ public class GLPathway
 			textureOffset -= 2f * PathwayRenderStyle.Z_OFFSET;
 			gl.glTranslatef(0.0f, 0.0f, textureOffset);
 			overlayBubbleSets(gl);
-			
+
 			gl.glEnable(GL2.GL_DEPTH_TEST);
 			gl.glDisable(GL2.GL_STENCIL_TEST);
 		}

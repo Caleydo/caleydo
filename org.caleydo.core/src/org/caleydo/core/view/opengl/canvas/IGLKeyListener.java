@@ -36,11 +36,26 @@ public interface IGLKeyListener {
 	 */
 	void keyReleased(IKeyEvent e);
 
+
 	public interface IKeyEvent {
+		boolean isKey(char c);
+
+		boolean isKey(ESpecialKey c);
+
 		int getKeyCode();
 
+		/**
+		 * @return whether the shift key was already down or become down
+		 */
 		boolean isShiftDown();
 
+		/**
+		 * @return whether the control key was already down or become down
+		 */
 		boolean isControlDown();
+	}
+
+	public enum ESpecialKey {
+		CONTROL, SHIFT
 	}
 }
