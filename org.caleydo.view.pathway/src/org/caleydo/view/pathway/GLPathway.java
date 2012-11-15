@@ -689,7 +689,7 @@ public class GLPathway
 		// front level
 		gl.glEnable(GL2.GL_STENCIL_TEST);
 		gl.glClearStencil(0);
-		gl.glClear(GL2.GL_STENCIL);
+		gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
 		textureOffset += PathwayRenderStyle.Z_OFFSET;
 		gl.glTranslatef(0, pathwayHeight, textureOffset);
 		gLPathwayAugmentationRenderer.renderPathway(gl, pathway, false);
@@ -876,6 +876,8 @@ public class GLPathway
 	}
 
 	private void overlayBubbleSets(GL2 gl) {
+
+		
 		if (allPaths == null)
 			return;
 
@@ -894,7 +896,8 @@ public class GLPathway
 
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
-
+			
+		
 		bubbleSetsTexture.enable(gl);
 		bubbleSetsTexture.bind(gl);
 		gl.glBegin(GL2.GL_QUADS);
