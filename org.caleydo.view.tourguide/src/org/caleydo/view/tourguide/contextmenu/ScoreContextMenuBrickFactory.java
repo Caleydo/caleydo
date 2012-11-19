@@ -20,27 +20,50 @@
 package org.caleydo.view.tourguide.contextmenu;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.gui.util.DisplayUtils;
+import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.stratomex.brick.IContextMenuBrickFactory;
 import org.caleydo.view.stratomex.column.BrickColumn;
+import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * @author Samuel Gratzl
- *
+ * 
  */
 public class ScoreContextMenuBrickFactory implements IContextMenuBrickFactory {
 
 	@Override
-	public Iterable<AContextMenuItem> createGroupEntries(TablePerspective referenceTable, BrickColumn referenceColumn) {
-		return Arrays.asList((AContextMenuItem) new ScoreGroupItem(referenceTable, referenceColumn));
+	public Iterable<AContextMenuItem> createGroupEntries(TablePerspective referenceTable, BrickColumn groupColumn) {
+		if (!isTourGuideVisible()) // show context menu only if the tour guide view is visible
+			return Collections.emptyList();
+		return Arrays.asList((AContextMenuItem) new ScoreGroupItem(referenceTable, groupColumn));
+	}
+
+	private static boolean isTourGuideVisible() {
+		final IWorkbench wb = PlatformUI.getWorkbench();
+		return DisplayUtils.syncExec(wb.getDisplay(), new SafeCallable<Boolean>() {
+			@Override
+			public Boolean call() {
+				IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
+				IWorkbenchPage page = win.getActivePage();
+				return page.findViewReference(VendingMachine.VIEW_TYPE) != null;
+			}
+		}).booleanValue();
 	}
 
 	@Override
-	public Iterable<AContextMenuItem> createBrickEntries(BrickColumn referenceColumn) {
+	public Iterable<AContextMenuItem> createStratification(BrickColumn referenceColumn) {
+		if (!isTourGuideVisible())
+			return Collections.emptyList();
 		return Arrays.asList(new ScoreColumnItem(referenceColumn), new ScoreAllGroupsInColumnItem(referenceColumn));
 	}
-
 
 }

@@ -17,26 +17,13 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.command.handler;
+package org.caleydo.view.tourguide;
 
+import org.caleydo.core.gui.command.AOpenViewHandler;
 import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.handlers.HandlerUtil;
 
-public class OpenViewHandler extends AbstractHandler implements IHandler {
-
-	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(VendingMachine.VIEW_TYPE);
-		} catch (PartInitException e) {
-			e.printStackTrace();
-		}
-
-		return null;
+public class OpenViewHandler extends AOpenViewHandler {
+	public OpenViewHandler() {
+		super(VendingMachine.VIEW_TYPE);
 	}
 }

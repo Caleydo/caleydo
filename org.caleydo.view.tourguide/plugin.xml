@@ -43,7 +43,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.tourguide.command.handler.OpenViewHandler"
+            defaultHandler="org.caleydo.view.tourguide.OpenViewHandler"
             id="org.caleydo.view.tourguide.command.open"
             name="Tour Guide">
       </command>

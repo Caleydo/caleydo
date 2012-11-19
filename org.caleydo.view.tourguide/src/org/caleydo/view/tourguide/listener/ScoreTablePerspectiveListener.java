@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.listener;
 
+import java.util.Collections;
+
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
@@ -38,9 +41,22 @@ public class ScoreTablePerspectiveListener
 		if (event instanceof ScoreTablePerspectiveEvent) {
 
 			ScoreTablePerspectiveEvent scoreGroupEvent = (ScoreTablePerspectiveEvent) event;
-			handler.setScoringReference(scoreGroupEvent.getScoreReferenceMode(),
-					scoreGroupEvent.getReferenceTablePerspectives(),
-					scoreGroupEvent.getReferenceBrickColumn());
+			TablePerspective strat = scoreGroupEvent.getReferenceStratification();
+			switch (scoreGroupEvent.getScoreReferenceMode()) {
+			case COLUMN:
+				handler.createStratificationScore(strat);
+				break;
+			case SINGLE_GROUP:
+				handler.createStratificationGroupScore(strat,
+						Collections.singleton(scoreGroupEvent.getReferenceBrickColumn().getTablePerspective()
+								.getRecordGroup()));
+				break;
+			case ALL_GROUPS_IN_COLUMN:
+				handler.createStratificationGroupScore(strat, strat.getRecordPerspective().getVirtualArray()
+						.getGroupList());
+				break;
+			}
 		}
 	}
 }
+

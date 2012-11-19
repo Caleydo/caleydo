@@ -21,24 +21,20 @@ package org.caleydo.view.tourguide.contextmenu;
 
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.stratomex.column.BrickColumn;
+import org.caleydo.view.tourguide.event.EScoreReferenceMode;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
-import org.caleydo.view.tourguide.vendingmachine.EScoreReferenceMode;
 
 /**
  * @author Marc Streit
- *
+ * 
  */
-public class ScoreAllGroupsInColumnItem
-	extends AContextMenuItem {
+public class ScoreAllGroupsInColumnItem extends AContextMenuItem {
 
 	public ScoreAllGroupsInColumnItem(BrickColumn referenceBrickColumn) {
-
 		setLabel("Score all groups in column");
 
-		ScoreTablePerspectiveEvent event = new ScoreTablePerspectiveEvent(
-				EScoreReferenceMode.ALL_GROUPS_IN_COLUMN, referenceBrickColumn
-						.getTablePerspective().getRecordSubTablePerspectives(),
-				referenceBrickColumn);
+		ScoreTablePerspectiveEvent event = new ScoreTablePerspectiveEvent(EScoreReferenceMode.ALL_GROUPS_IN_COLUMN,
+				referenceBrickColumn.getTablePerspective(), referenceBrickColumn);
 		event.setSender(this);
 		registerEvent(event);
 	}

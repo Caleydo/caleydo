@@ -1,25 +1,26 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionEvent;
 
@@ -27,7 +28,7 @@ import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionEvent;
  * Container for layouts that are stacked on top of each other. The column is a
  * {@link ElementLayout} and contains other ElementLayouts. It can be nested
  * into other containers
- * 
+ *
  * @author Alexander Lex
  */
 public class Column extends ALayoutContainer {
@@ -45,7 +46,7 @@ public class Column extends ALayoutContainer {
 	/**
 	 * Set flag signaling whether the content should be rendered from bottom to
 	 * top (default, true) or from top to bottom (false)
-	 * 
+	 *
 	 * @param isBottomUp
 	 */
 	public void setBottomUp(boolean isBottomUp) {
@@ -264,6 +265,7 @@ public class Column extends ALayoutContainer {
 
 	}
 
+	@Override
 	int getDynamicSizeUnitsX() {
 		int largestDynamicUnit = 0;
 		for (ElementLayout layout : elements) {
@@ -278,6 +280,7 @@ public class Column extends ALayoutContainer {
 	 * Recursively calculates the number of dynamic size units for its children
 	 * and returns the sum
 	 */
+	@Override
 	int getDynamicSizeUnitsY() {
 		int sumDynamicUnits = 0;
 		for (ElementLayout layout : elements) {

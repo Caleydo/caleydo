@@ -23,6 +23,7 @@
 package org.caleydo.core.data.perspective.table;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
@@ -63,8 +64,6 @@ public class TablePerspectiveStatistics {
 	private TTest tTest;
 
 	private AdjustedRandIndex adjustedRandIndex;
-
-	private JaccardIndex jaccardIndex;
 
 	/**
 	 * Optionally it is possible to specify the number of bins for the histogram
@@ -351,14 +350,4 @@ public class TablePerspectiveStatistics {
 
 		return averageDimension;
 	}
-
-	/**
-	 * @return the jaccardIndex, see {@link #jaccardIndex}
-	 */
-	public JaccardIndex getJaccardIndex() {
-		if (jaccardIndex == null)
-			jaccardIndex = new JaccardIndex(referenceTablePerspective);
-		return jaccardIndex;
-	}
-
 }

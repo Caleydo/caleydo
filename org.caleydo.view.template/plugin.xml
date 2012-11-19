@@ -43,18 +43,9 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.template.command.handler.OpenTemplateHandler"
+            defaultHandler="org.caleydo.view.template.OpenViewHandler"
             id="org.caleydo.view.template.command.opentemplate"
             name="Template">
       </command>
-   </extension>
-   <extension
-         id="org.caleydo.view.template"
-         name="TemplateViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="TemplateViewCreator"
-          class="org.caleydo.view.template.creator.ViewCreator" />
    </extension>
 </plugin>

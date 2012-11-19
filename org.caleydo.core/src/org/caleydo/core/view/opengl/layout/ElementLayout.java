@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,8 +21,12 @@ package org.caleydo.core.view.opengl.layout;
 
 import java.awt.Container;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.Zoomer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -58,7 +62,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * An ElementLayout also holds the {@link LayoutRenderer}s which define its
  * appearance.
  * </p>
- * 
+ *
  * @author Alexander Lex
  */
 public class ElementLayout {
@@ -174,7 +178,7 @@ public class ElementLayout {
 	/**
 	 * Calls {@link #destroy()} and deletes the display lists of all associated
 	 * {@link LayoutRenderer}s.
-	 * 
+	 *
 	 * @param gl
 	 */
 	protected void destroy(GL2 gl) {
@@ -199,7 +203,7 @@ public class ElementLayout {
 	/**
 	 * Set ids for the layout, which are used for events in case an element
 	 * doesn't fit into a {@link Container}
-	 * 
+	 *
 	 * @param managingClassID
 	 *            the id of the class to be called-back by this layout
 	 * @param an
@@ -213,7 +217,7 @@ public class ElementLayout {
 	/**
 	 * Set a flag specifying whether a frame, showing the extend of this layout
 	 * should be drawn. This is a debug option.
-	 * 
+	 *
 	 * @param debug
 	 */
 	public void setDebug(boolean debug) {
@@ -222,7 +226,7 @@ public class ElementLayout {
 
 	/**
 	 * Get the renderer for this layout
-	 * 
+	 *
 	 * @return
 	 */
 	public LayoutRenderer getRenderer() {
@@ -231,7 +235,7 @@ public class ElementLayout {
 
 	/**
 	 * Set the absolute size in GL coordinates of the element in x direction.
-	 * 
+	 *
 	 * @param absoluteSizeX
 	 */
 	public void setAbsoluteSizeX(float absoluteSizeX) {
@@ -241,7 +245,7 @@ public class ElementLayout {
 
 	/**
 	 * Set the absolute size in GL coordinates of the element in y direction.
-	 * 
+	 *
 	 * @param absoluteSizeX
 	 */
 	public void setAbsoluteSizeY(float absoluteSizeY) {
@@ -254,7 +258,7 @@ public class ElementLayout {
 	 * containing element this element occupies. The size has to be normalized
 	 * between 0 and 1, where 1 is the whole space available for the rendered
 	 * elements
-	 * 
+	 *
 	 * @param ratioSizeX
 	 *            the size of the element in relation to other elements in the
 	 *            same container on a scale of 0 to 1
@@ -272,7 +276,7 @@ public class ElementLayout {
 	 * containing element this element occupies. The size has to be normalized
 	 * between 0 and 1, where 1 is the whole space available for the rendered
 	 * elements
-	 * 
+	 *
 	 * @param ratioSizeY
 	 *            the size of the element in relation to other elements in the
 	 *            same container on a scale of 0 to 1
@@ -290,7 +294,7 @@ public class ElementLayout {
 	 * the size remains static even if the window size changes. This requires
 	 * the PixelGLConverte to be set (see
 	 * {@link #setPixelGLConverter(PixelGLConverter)}).
-	 * 
+	 *
 	 * @param pixelSizeX
 	 */
 	public void setPixelSizeX(int pixelSizeX) {
@@ -303,7 +307,7 @@ public class ElementLayout {
 	 * the size remains static even if the window size changes. This requires
 	 * the PixelGLConverte to be set (see
 	 * {@link #setPixelGLConverter(PixelGLConverter)}).
-	 * 
+	 *
 	 * @param pixelSizeY
 	 */
 	public void setPixelSizeY(int pixelSizeY) {
@@ -331,7 +335,7 @@ public class ElementLayout {
 	 * Get the scaled size of X. This is the absolute size actually used for
 	 * rendering. It is calculated from the size set via one of the set*
 	 * methods.
-	 * 
+	 *
 	 * @return
 	 */
 	public float getSizeScaledX() {
@@ -344,7 +348,7 @@ public class ElementLayout {
 	 * Get the scaled size of Y. This is the absolute size actually used for
 	 * rendering. It is calculated from the size set via one of the set*
 	 * methods.
-	 * 
+	 *
 	 * @return
 	 */
 	public float getSizeScaledY() {
@@ -357,7 +361,7 @@ public class ElementLayout {
 	 * Instruct the element to grab the remaining space in the x direction. If
 	 * multiple elements are defined to grab in one direction, the space is
 	 * shared evenly.
-	 * 
+	 *
 	 * @param grabX
 	 *            true if this element should grab remaining space, false if not
 	 */
@@ -370,7 +374,7 @@ public class ElementLayout {
 	 * Instruct the element to grab the remaining space in the y direction. If
 	 * multiple elements are defined to grab in one direction, the space is
 	 * shared evenly.
-	 * 
+	 *
 	 * @param grabY
 	 *            true if this element should grab remaining space, false if not
 	 */
@@ -381,7 +385,7 @@ public class ElementLayout {
 
 	/**
 	 * Set the color for the debug frame.
-	 * 
+	 *
 	 * @param red
 	 * @param green
 	 * @param blue
@@ -408,7 +412,7 @@ public class ElementLayout {
 	 * Returns true if the height of this element has been set statically
 	 * (either via {@link #setAbsoluteSizeY(float)} or
 	 * {@link #setPixelSizeY(int)})
-	 * 
+	 *
 	 * @return true if this is a static layout in y, else false
 	 */
 	public boolean isHeightStatic() {
@@ -423,7 +427,7 @@ public class ElementLayout {
 	/**
 	 * Returns true if the width of this element has been set statically (either
 	 * via {@link #setAbsoluteSizeX(float)} or {@link #setPixelSizeX(int)})
-	 * 
+	 *
 	 * @return true if this is a static layout in x, else false
 	 */
 	public boolean isWidthStatic() {
@@ -465,11 +469,23 @@ public class ElementLayout {
 		renderer.setElementLayout(this);
 	}
 
+	public List<LayoutRenderer> getBackgroundRenderer() {
+		if (backgroundRenderers == null)
+			return Collections.emptyList();
+		return Collections.unmodifiableList(backgroundRenderers);
+	}
+
 	public void addForeGroundRenderer(LayoutRenderer renderer) {
 		if (foregroundRenderers == null)
 			foregroundRenderers = new ArrayList<LayoutRenderer>(3);
 		foregroundRenderers.add(renderer);
 		renderer.setElementLayout(this);
+	}
+
+	public List<LayoutRenderer> getForegroundRenderer() {
+		if (foregroundRenderers == null)
+			return Collections.emptyList();
+		return Collections.unmodifiableList(foregroundRenderers);
 	}
 
 	public void clearBackgroundRenderers() {
@@ -507,7 +523,7 @@ public class ElementLayout {
 	 * Sets the rendering priority and therefore determines the point in time
 	 * this element layout is rendered if its {@link ALayoutContainer} uses
 	 * priority rendering.
-	 * 
+	 *
 	 * @param renderingPriority
 	 *            sets the priority of the rendering, where higher values have a
 	 *            higher priority
@@ -647,15 +663,15 @@ public class ElementLayout {
 	void setTranslateY(float translateY) {
 		this.translateY = translateY;
 	}
-	
-	
+
+
 	/**
 	 * Sets the display lists of all renderers of this layout dirty.
 	 */
 	void setRenderingDirty() {
 		if(isHidden)
 			return;
-		
+
 		if (foregroundRenderers != null) {
 			for (LayoutRenderer renderer : foregroundRenderers) {
 				renderer.setDisplayListDirty();
@@ -669,7 +685,7 @@ public class ElementLayout {
 		if (renderer != null) {
 			renderer.setDisplayListDirty();
 		}
-		
+
 	}
 
 	protected void updateSpacings() {
@@ -716,7 +732,7 @@ public class ElementLayout {
 
 	/**
 	 * Get the unscalable height part of this layout
-	 * 
+	 *
 	 * @return
 	 */
 	float getUnscalableElementHeight() {
@@ -736,7 +752,7 @@ public class ElementLayout {
 
 	/**
 	 * Get the unscalable height part of this layout
-	 * 
+	 *
 	 * @return
 	 */
 	float getUnscalableElementWidth() {

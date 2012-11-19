@@ -1,33 +1,36 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 /**
- * 
+ *
  */
 package org.caleydo.core.data.perspective.table;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -86,7 +89,7 @@ import org.caleydo.core.util.base.IDefaultLabelHolder;
  * <code>TablePerspective</code>s have the {@link #recordGroup}, resp. the
  * #dimensionGroup set, which are otherwise null.
  * </p>
- * 
+ *
  * @author Alexander Lex
  */
 @XmlType
@@ -94,8 +97,8 @@ import org.caleydo.core.util.base.IDefaultLabelHolder;
 public class TablePerspective implements IDefaultLabelHolder {
 
 	/** The static counter used to create unique ids */
-	private static int idCounter;
-	
+	private static final AtomicInteger idCounter = new AtomicInteger();
+
 	/** The unique id of the data container */
 	private int id;
 
@@ -191,7 +194,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 	}
 
 	{
-		id = ++idCounter;
+		id = idCounter.incrementAndGet();
 		tablePerspectiveStatistics = new TablePerspectiveStatistics(this);
 	}
 
@@ -264,7 +267,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 	/**
 	 * Checks whether the specified container id matches to the record
 	 * perspective in this {@link TablePerspective}
-	 * 
+	 *
 	 * @param recordPerspectiveID
 	 * @return true if the specified id equals the id of the perspective in this
 	 *         container
@@ -275,7 +278,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 
 	/**
 	 * Same as {@link #hasRecordPerspective(String)} for dimensions
-	 * 
+	 *
 	 * @param dimensionPerspectiveID
 	 * @return true if the specified id equals the id of the perspective in this
 	 *         container
@@ -306,9 +309,10 @@ public class TablePerspective implements IDefaultLabelHolder {
 
 	/**
 	 * Getter for {@link #label}, creates a default label if none was set
-	 * 
+	 *
 	 * @return
 	 */
+	@Override
 	public String getLabel() {
 		if (label == null)
 			label = dimensionPerspective.getLabel() + "/" + recordPerspective.getLabel();
@@ -376,7 +380,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 * the {@link RecordPerspective}, where the new {@link RecordPerspective}
 	 * contains the elements of the group. The {@link DimensionPerspective} is
 	 * the same as for this container.
-	 * 
+	 *
 	 * @return a new list of new {@link TablePerspective}s or null if no group
 	 *         list is set.
 	 */
@@ -421,7 +425,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 * the {@link RecordPerspective}, where the new {@link RecordPerspective}
 	 * contains the elements of the group. The {@link DimensionPerspective} is
 	 * the same as for this container.
-	 * 
+	 *
 	 * @return a new list of new {@link TablePerspective}s or null if no group
 	 *         list is set.
 	 */
@@ -498,7 +502,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 	@Override
 	public void setLabel(String label) {
 		this.label = label;
-		
+
 	}
 
 	@Override

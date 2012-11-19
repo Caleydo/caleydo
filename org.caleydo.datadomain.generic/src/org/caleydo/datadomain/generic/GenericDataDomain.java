@@ -45,7 +45,7 @@ public class GenericDataDomain
 	 * Counter used for determining the extension that together with the type
 	 * builds the data domain ID.
 	 */
-	private static AtomicInteger extensionID = new AtomicInteger();
+	private static final AtomicInteger extensionID = new AtomicInteger();
 
 	/**
 	 * Constructor.

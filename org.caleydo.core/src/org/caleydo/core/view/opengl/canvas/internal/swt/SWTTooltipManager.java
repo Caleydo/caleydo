@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.internal.swt;
 
+import org.caleydo.core.util.base.ConstantLabelProvider;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -23,17 +24,7 @@ public final class SWTTooltipManager extends APickingListener {
 	}
 
 	public SWTTooltipManager(Control control, final String label) {
-		this(control, new ILabelProvider() {
-			@Override
-			public String getLabel() {
-				return label;
-			}
-
-			@Override
-			public String getProviderName() {
-				throw new UnsupportedOperationException();
-			}
-		});
+		this(control, new ConstantLabelProvider(label));
 	}
 
 	@Override

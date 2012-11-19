@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.view.enroute.node.mode;
 
@@ -18,9 +18,9 @@ import org.caleydo.view.enroute.node.ComplexNode;
 
 /**
  * The preview mode for {@link ComplexNode}s.
- * 
+ *
  * @author Christian
- * 
+ *
  */
 public class ComplexNodePreviewMode extends ALayoutBasedNodeMode {
 
@@ -51,7 +51,7 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode {
 
 		ElementLayout labelLayout = new ElementLayout("label");
 		LabelRenderer labelRenderer = new LabelRenderer(view, node);
-		labelRenderer.setAlignment(LabelRenderer.ALIGN_CENTER);
+		labelRenderer.setAlignment(LabelRenderer.LabelAlignment.CENTER);
 
 		labelLayout.setRenderer(labelRenderer);
 		labelLayout.setPixelSizeY(16);
@@ -92,7 +92,7 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode {
 				ComplexNode parent = node.getParentNode();
 				if(parent != null)
 					view.selectBranch(parent);
-				else 
+				else
 					view.selectBranch(node);
 			}
 		}, EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());

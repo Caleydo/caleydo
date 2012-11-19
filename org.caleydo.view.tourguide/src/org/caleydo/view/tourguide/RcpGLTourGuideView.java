@@ -73,6 +73,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 		view = new VendingMachine(glCanvas, parentComposite, serializedView.getViewFrustum());
 		initializeView();
 		createPartControlGL();
+		stratomexListener.partActivated(getSite().getPage().getActivePartReference());
 	}
 
 	/* (non-Javadoc)
@@ -133,7 +134,7 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 		public void partActivated(IWorkbenchPartReference partRef) {
 			GLStratomex stratomex = null;
 			IWorkbenchPart part = partRef.getPart(false);
-			if (part instanceof RcpGLTourGuideView)
+			if (ignorePartChange(part))
 				return;
 			if (part instanceof RcpGLStratomexView) {
 				RcpGLStratomexView strat = (RcpGLStratomexView) part;
@@ -142,6 +143,11 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 			VendingMachine m = getView();
 			if (m != null)
 				m.switchToStratomex(stratomex);
+		}
+
+		private boolean ignorePartChange(IWorkbenchPart part) {
+			return part instanceof RcpGLTourGuideView
+					|| part.getClass().getCanonicalName().startsWith("org.caleydo.view.info");
 		}
 	};
 

@@ -1,26 +1,28 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout.util;
 
 import java.util.List;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -29,15 +31,20 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 /**
  * Renders a text within the given bounds of the ElementLayout. The text is
  * truncated if necessary.
- * 
+ *
  * @author Partl
  */
 public class LabelRenderer
 	extends APickableLayoutRenderer {
 
-	public static final int ALIGN_LEFT = 0;
-	public static final int ALIGN_CENTER = 1;
-	public static final int ALIGN_RIGHT = 2;
+	/**
+	 *
+	 */
+	private static final float PADDING_BOTTOM = 0.01f;
+
+	public enum LabelAlignment {
+		LEFT, CENTER, RIGHT
+	}
 
 	private boolean isPickable;
 	private ILabelProvider labelProvider;
@@ -52,7 +59,7 @@ public class LabelRenderer
 	/**
 	 * Specifies the alignment of the text.
 	 */
-	private int alignment = ALIGN_LEFT;
+	private LabelAlignment alignment = LabelAlignment.LEFT;
 
 	/**
 	 * Flag determines if text should rendered a little bit higher than the
@@ -68,15 +75,8 @@ public class LabelRenderer
 	 */
 	public LabelRenderer(AGLView view, ILabelProvider labelProvider, String pickingType, int id) {
 		super(view, pickingType, id);
-
 		this.isPickable = true;
 		this.labelProvider = labelProvider;
-	}
-
-	public LabelRenderer(AGLView view, ILabelProvider labelProvider) {
-		this.view = view;
-		this.labelProvider = labelProvider;
-		this.isPickable = false;
 	}
 
 	public LabelRenderer(AGLView view, ILabelProvider labelProvider,
@@ -98,32 +98,50 @@ public class LabelRenderer
 		this.label = label;
 	}
 
-	/**
-	 * @param label setter, see {@link #label}
-	 */
-	public void setLabel(String label) {
-		this.label = label;
+	public LabelRenderer(AGLView view, ILabelProvider labelProvider) {
+		this.view = view;
+		this.labelProvider = labelProvider;
+		this.isPickable = false;
 	}
 
 	/**
-	 * @return the label, see {@link #label}
+	 * @param alignment
+	 *            the alignment to set
 	 */
-	public String getLabel() {
-		return label;
-	}
-
-	/**
-	 * @param alignment setter, see {@link #alignment}
-	 */
-	public void setAlignment(int alignment) {
+	public LabelRenderer setAlignment(LabelAlignment alignment) {
 		this.alignment = alignment;
+		return this;
 	}
 
 	/**
 	 * @param paddingBottom setter, see {@link #usePaddingBottom}
 	 */
-	public void usePaddingBottom(boolean paddingBottom) {
+	public LabelRenderer usePaddingBottom(boolean paddingBottom) {
 		this.usePaddingBottom = paddingBottom;
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.caleydo.core.view.opengl.layout.util.APickableLayoutRenderer#addPickingID(java.lang.String, int)
+	 */
+	@Override
+	public APickableLayoutRenderer addPickingID(String pickingType, int id) {
+		isPickable = true;
+		return super.addPickingID(pickingType, id);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.caleydo.core.view.opengl.layout.util.APickableLayoutRenderer#addPickingIDs(java.util.List)
+	 */
+	@Override
+	public void addPickingIDs(List<Pair<String, Integer>> pickingIDs) {
+		if (pickingIDs != null && !pickingIDs.isEmpty())
+			isPickable = true;
+		super.addPickingIDs(pickingIDs);
 	}
 
 	@Override
@@ -165,21 +183,19 @@ public class LabelRenderer
 
 		float padding = 0;
 		if (usePaddingBottom)
-			padding = 0.01f;
+			padding = PADDING_BOTTOM;
 
 		switch (alignment) {
-			case ALIGN_CENTER:
-				textRenderer.renderTextInBounds(gl, label, x / 2.0f - textWidth / 2.0f
-						+ ySpacing + padding, 2 * ySpacing + padding, 0.1f, x, y - 2
-						* ySpacing);
-				break;
-			case ALIGN_RIGHT:
-				textRenderer.renderTextInBounds(gl, label, x - textWidth - 4 * ySpacing,
-						ySpacing + padding, 0.1f, x, y - 2 * ySpacing + padding);
-				break;
-			default:
-				textRenderer.renderTextInBounds(gl, label, 0, ySpacing + padding, 0.1f, x, y
-						- 2 * ySpacing + padding);
+		case CENTER:
+			textRenderer.renderTextInBounds(gl, label, x / 2.0f - textWidth / 2.0f + ySpacing + padding, 2 * ySpacing
+					+ padding, 0.1f, x, y - 2 * ySpacing);
+			break;
+		case RIGHT:
+			textRenderer.renderTextInBounds(gl, label, x - textWidth - 4 * ySpacing, ySpacing + padding, 0.1f, x, y - 2
+					* ySpacing + padding);
+			break;
+		default:
+			textRenderer.renderTextInBounds(gl, label, 0, ySpacing + padding, 0.1f, x, y - 2 * ySpacing + padding);
 		}
 	}
 

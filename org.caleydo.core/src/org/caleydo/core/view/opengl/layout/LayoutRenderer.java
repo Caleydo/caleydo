@@ -1,25 +1,26 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout;
 
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
@@ -49,19 +50,19 @@ import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
  * Every LayoutRenderer renders from (0, 0) to (x, y). An LayoutRenderer does
  * not take care of any spacings on the sides.
  * </p>
- * 
+ *
  * <p>
  * If a specific LayoutRenderer wants its content to be rendered in a display
  * list, {@link #permitsDisplayLists()} must return true. However, the use of
  * display lists also depends on whether the {@link LayoutManager} of the
  * associated <code>ElementLayout</code> permits display lists.
  * </p>
- * 
+ *
  * @author Alexander Lex
  * @author Christian Partl
  */
 public abstract class LayoutRenderer {
-	protected float x;
+	protected float x; // width would be a better name
 	protected float y;
 	protected boolean debugMode = true;
 
@@ -89,7 +90,7 @@ public abstract class LayoutRenderer {
 
 	/**
 	 * Rendering method.
-	 * 
+	 *
 	 * @param gl
 	 */
 	public final void render(GL2 gl) {
@@ -135,7 +136,7 @@ public abstract class LayoutRenderer {
 	 * renderer uses display lists ({@link #permitsDisplayLists()}) and and the
 	 * {@link LayoutManager} grants display list rendering (
 	 * {@link LayoutManager#isUseDisplayLists()}).
-	 * 
+	 *
 	 * @param gl
 	 */
 	protected abstract void renderContent(GL2 gl);
@@ -160,7 +161,7 @@ public abstract class LayoutRenderer {
 	/**
 	 * Set the limits of this renderer. The view must render within only these
 	 * limits.
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 */
@@ -183,7 +184,7 @@ public abstract class LayoutRenderer {
 
 	/**
 	 * To be overridden by subclass if needed.
-	 * 
+	 *
 	 * @return The minimum height in pixels required by the renderer.
 	 */
 	public int getMinHeightPixels() {
@@ -192,7 +193,7 @@ public abstract class LayoutRenderer {
 
 	/**
 	 * To be overridden by subclass if needed.
-	 * 
+	 *
 	 * @return The minimum width in pixels required by the renderer.
 	 */
 	public int getMinWidthPixels() {

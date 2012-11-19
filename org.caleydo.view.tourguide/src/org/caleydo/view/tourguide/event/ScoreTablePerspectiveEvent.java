@@ -19,13 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.event;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.view.stratomex.column.BrickColumn;
-import org.caleydo.view.tourguide.vendingmachine.EScoreReferenceMode;
 
 /**
  * Event for opening the vending machine within Stratomex with a specified
@@ -38,9 +34,10 @@ public class ScoreTablePerspectiveEvent
 	extends AEvent {
 
 	/**
-	 * Table perspectives that will be used for the scoring.
+	 * Table perspectives that will be used for the scoring. either a single group or a stratification depending on the
+	 * type
 	 */
-	private List<TablePerspective> referenceTablePerspectives;
+	private TablePerspective stratification;
 
 	private EScoreReferenceMode scoreReferenceMode;
 
@@ -48,29 +45,20 @@ public class ScoreTablePerspectiveEvent
 	 * The StratomeX reference column on which the user triggered the scoring.
 	 * This can be null if not triggered via StratomeX.
 	 */
-	private BrickColumn referenceBrickColumn;
+	private BrickColumn brickColumn;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param referenceTablePerspective TablePerspective to which the scoring
-	 *            will be calculated.
+	 * @param referenceTablePerspective
+	 *            TablePerspective to which the scoring will be calculated.
 	 */
-	public ScoreTablePerspectiveEvent(EScoreReferenceMode scoreReferenceMode,
-			List<TablePerspective> referenceTablePerspectives, BrickColumn referenceBrickColumn) {
+	public ScoreTablePerspectiveEvent(EScoreReferenceMode scoreReferenceMode, TablePerspective stratification,
+			BrickColumn brickColumn) {
 
 		this.scoreReferenceMode = scoreReferenceMode;
-		this.referenceTablePerspectives = referenceTablePerspectives;
-		this.referenceBrickColumn = referenceBrickColumn;
-	}
-
-	public ScoreTablePerspectiveEvent(EScoreReferenceMode scoreReferenceMode,
-			TablePerspective referenceTablePerspective, BrickColumn referenceBrickColumn) {
-
-		this.scoreReferenceMode = scoreReferenceMode;
-		this.referenceBrickColumn = referenceBrickColumn;
-		this.referenceTablePerspectives = new ArrayList<TablePerspective>();
-		referenceTablePerspectives.add(referenceTablePerspective);
+		this.stratification = stratification;
+		this.brickColumn = brickColumn;
 	}
 
 	@Override
@@ -79,33 +67,24 @@ public class ScoreTablePerspectiveEvent
 	}
 
 	/**
-	 * @return the referenceTablePerspectives, see
-	 *         {@link #referenceTablePerspectives}
+	 * @return the referenceStratification
 	 */
-	public List<TablePerspective> getReferenceTablePerspectives() {
-		return referenceTablePerspectives;
+	public TablePerspective getReferenceStratification() {
+		return stratification;
 	}
 
 	/**
-	 * @param referenceTablePerspectives setter, see
-	 *            {@link #referenceTablePerspectives}
-	 */
-	public void setReferenceTablePerspectives(List<TablePerspective> referenceTablePerspectives) {
-		this.referenceTablePerspectives = referenceTablePerspectives;
-	}
-
-	/**
-	 * @param referenceBrickColumn setter, see {@link #referenceBrickColumn}
+	 * @param referenceBrickColumn setter, see {@link #brickColumn}
 	 */
 	public void setReferenceBrickColumn(BrickColumn referenceBrickColumn) {
-		this.referenceBrickColumn = referenceBrickColumn;
+		this.brickColumn = referenceBrickColumn;
 	}
 
 	/**
-	 * @return the referenceBrickColumn, see {@link #referenceBrickColumn}
+	 * @return the referenceBrickColumn, see {@link #brickColumn}
 	 */
 	public BrickColumn getReferenceBrickColumn() {
-		return referenceBrickColumn;
+		return brickColumn;
 	}
 
 	/**

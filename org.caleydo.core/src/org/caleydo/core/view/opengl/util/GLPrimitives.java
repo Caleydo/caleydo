@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,31 +8,32 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.view.opengl.util;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 
 /**
  * Class that provides static methods for rendering circles and partial discs.
- * 
+ *
  * @author Christian Partl
  */
 public class GLPrimitives {
 
 	/**
 	 * Renders a partial disc using the specified parameters.
-	 * 
+	 *
 	 * @param glu
 	 *            GLU object that shall be used for drawing the partial disc.
 	 * @param fInnerRadius
@@ -65,7 +66,7 @@ public class GLPrimitives {
 
 	/**
 	 * Renders the border of a partial disc using the specified parameters.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 object that shall be used for drawing.
 	 * @param glu
@@ -104,7 +105,7 @@ public class GLPrimitives {
 
 	/**
 	 * Renders a filled circle.
-	 * 
+	 *
 	 * @param glu
 	 *            GLU object that shall be used for drawing the circle.
 	 * @param fRadius
@@ -125,7 +126,7 @@ public class GLPrimitives {
 
 	/**
 	 * Renders the border of a circle.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 object that shall be used for drawing.
 	 * @param glu
@@ -149,4 +150,23 @@ public class GLPrimitives {
 
 		glu.gluDeleteQuadric(quadric);
 	}
+
+	public static void fillRect(GL2 gl, float x, float y, float w, float h) {
+		gl.glBegin(GL2.GL_POLYGON);
+		gl.glVertex3f(x, y, 0);
+		gl.glVertex3f(w, y, 0);
+		gl.glVertex3f(w, h, 0);
+		gl.glVertex3f(x, h, 0);
+		gl.glEnd();
+	}
+
+	public static void drawRect(GL2 gl, float x, float y, float w, float h) {
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(x, y, 0);
+		gl.glVertex3f(w, y, 0);
+		gl.glVertex3f(w, h, 0);
+		gl.glVertex3f(x, h, 0);
+		gl.glEnd();
+	}
+
 }

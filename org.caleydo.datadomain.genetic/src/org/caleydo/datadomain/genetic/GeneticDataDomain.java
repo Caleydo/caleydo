@@ -63,7 +63,7 @@ public class GeneticDataDomain
 	 * Counter used for determining the extension that together with the type
 	 * builds the data domain ID.
 	 */
-	private static AtomicInteger extensionID = new AtomicInteger();
+	private static final AtomicInteger extensionID = new AtomicInteger();
 
 	private ReplaceRecordPerspectiveListener clinicalReplaceContentVirtualArrayListener;
 	private ForeignSelectionUpdateListener clinicalSelectionUpdateListener;
@@ -74,8 +74,7 @@ public class GeneticDataDomain
 	 * {@link DataDomainManager#createDataDomain(String)} instead.
 	 */
 	public GeneticDataDomain() {
-		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE
- + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER
+		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER
 				+ extensionID.getAndIncrement());
 	}
 

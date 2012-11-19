@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.view.enroute.node.mode;
 
@@ -9,7 +9,8 @@ import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
-import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
+import org.caleydo.core.view.opengl.layout.util.LabelRenderer.LabelAlignment;
+import org.caleydo.core.view.opengl.layout.util.Renderers;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.EPickingType;
@@ -21,9 +22,9 @@ import org.caleydo.view.enroute.node.RemoveNodeButtonAttributeRenderer;
 
 /**
  * The linearized mode for {@link GeneNode}s.
- * 
+ *
  * @author Christian
- * 
+ *
  */
 public class GeneNodeLinearizedMode extends AGeneNodeMode {
 
@@ -60,10 +61,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode {
 		baseColumn.addBackgroundRenderer(colorRenderer);
 
 		ElementLayout labelLayout = new ElementLayout("label");
-		LabelRenderer labelRenderer = new LabelRenderer(view, node);
-		labelRenderer.setAlignment(LabelRenderer.ALIGN_CENTER);
-
-		labelLayout.setRenderer(labelRenderer);
+		labelLayout.setRenderer(Renderers.createLabel(node, view).setAlignment(LabelAlignment.CENTER));
 		labelLayout.setPixelSizeY(16);
 
 		ElementLayout horizontalSpacing = new ElementLayout();

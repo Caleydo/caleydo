@@ -877,7 +877,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				// or a brick
 				ContextMenuCreator contextMenuCreator = stratomex.getContextMenuCreator();
 				if (brickColumn.getTablePerspective() == tablePerspective) {
-					//single item
+					// header brick
 					if (dataDomain instanceof GeneticDataDomain
 							&& !dataDomain.isColumnDimension()) {
 						contextMenuCreator
@@ -891,8 +891,12 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 									brickColumn.getTablePerspective(), brickColumn
 											.getTablePerspective()
 											.getDimensionPerspective()));
+
+					for (IContextMenuBrickFactory factory : contextMenuFactories)
+						for (AContextMenuItem item : factory.createStratification(brickColumn))
+							contextMenuCreator.addContextMenuItem(item);
 				} else {
-					//header brick
+					// group brick
 					// contextMenuCreator.addContextMenuItem(new
 					// CreatePathwayGroupFromDataItem(
 					// dataDomain, tablePerspective.getRecordPerspective()
@@ -909,10 +913,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(stratomex,
 						getBrickColumn().getTablePerspective().getID()));
-
-				for (IContextMenuBrickFactory factory : contextMenuFactories)
-					for (AContextMenuItem item : factory.createBrickEntries(brickColumn))
-						contextMenuCreator.addContextMenuItem(item);
 			}
 
 		};

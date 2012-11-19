@@ -157,8 +157,9 @@ public abstract class ALayoutContainer
 	 *
 	 * @param elementLayout
 	 */
-	public void add(ElementLayout elementLayout) {
+	public ALayoutContainer add(ElementLayout elementLayout) {
 		elements.add(elementLayout);
+		return this;
 	}
 
 	/**
@@ -170,6 +171,10 @@ public abstract class ALayoutContainer
 	 */
 	public void add(int index, ElementLayout elementLayout) {
 		elements.add(index, elementLayout);
+	}
+
+	public ElementLayout get(int index) {
+		return elements.get(index);
 	}
 
 	@Override

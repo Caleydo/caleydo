@@ -25,15 +25,15 @@ import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * extension point interface for creating context menu entries for the gl brick used for triggering scoring
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public interface IContextMenuBrickFactory {
 	public static final String EXTENSION_ID = "org.caleydo.view.stratomex.brick.contextmenu";
 
-	public Iterable<AContextMenuItem> createGroupEntries(TablePerspective referenceTable, BrickColumn referenceColumn);
+	public Iterable<AContextMenuItem> createGroupEntries(TablePerspective referenceTable, BrickColumn groupColumn);
 
-	public Iterable<AContextMenuItem> createBrickEntries(BrickColumn referenceColumn);
+	public Iterable<AContextMenuItem> createStratification(BrickColumn referenceColumn);
 
 }
