@@ -17,8 +17,8 @@
   <resources>
     <jar href="plugins/org.eclipse.equinox.launcher_1.2.0.v20110502.jar"/>
     <extension name="Caleydo feature" href="features/org.caleydo.rcp.feature_2.1.jnlp"/>
-    <property name="osgi.instance.area" value="@user.home/.caleydo_2.0"/>
-    <property name="osgi.configuration.area" value="@user.home/.caleydo_2.0/configuration"/>
+    <property name="osgi.instance.area" value="@user.home/.caleydo_2.1"/>
+    <property name="osgi.configuration.area" value="@user.home/.caleydo_2.1/configuration"/>
     <property name="eclipse.product" value="org.caleydo.core.product"/> 
     <property name="osgi.splashPath" value="file:/plugins/org.caleydo.core"/>
     <j2se version="1.6+" java-vm-args="-Xms512m -Xmx1024m -Xss16384k -XstartOnFirstThread"/>
