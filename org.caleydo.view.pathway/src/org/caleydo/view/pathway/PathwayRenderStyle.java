@@ -47,6 +47,7 @@ public class PathwayRenderStyle
 
 	public static final float[] STD_DEV_COLOR = new float[] { 49f / 255f, 163f / 255, 84f / 255, 1f };
 	public static final int STD_DEV_BAR_PIXEL_WIDTH = 6;
+	public static final int STD_DEV_BAR_PIXEL_HEIGHT = 6;
 
 	/**
 	 * The color of the neighborhood node with the distance to the clicked node
