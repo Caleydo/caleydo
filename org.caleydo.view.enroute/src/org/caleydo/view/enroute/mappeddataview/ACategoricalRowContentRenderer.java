@@ -19,14 +19,9 @@ package org.caleydo.view.enroute.mappeddataview;
 import java.util.ArrayList;
 import javax.media.opengl.GL2;
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
@@ -42,6 +37,8 @@ import org.caleydo.view.enroute.EPickingType;
  */
 public abstract class ACategoricalRowContentRenderer
 	extends ContentRenderer {
+
+	protected static final int MAX_HISTOGRAM_BAR_WIDTH_PIXELS = 20;
 
 	Histogram histogram;
 	boolean useShading = true;
@@ -60,8 +57,6 @@ public abstract class ACategoricalRowContentRenderer
 	public ACategoricalRowContentRenderer(IContentRendererInitializor contentRendererInitializor) {
 		super(contentRendererInitializor);
 	}
-
-
 
 	@Override
 	public void renderContent(GL2 gl) {
@@ -88,7 +83,14 @@ public abstract class ACategoricalRowContentRenderer
 	public void renderAverageBar(GL2 gl, ArrayList<SelectionType> selectionTypes) {
 		int bucketCount = 0;
 		float barWidth = y / histogram.size();
+		float maxBarWidth = parentView.getPixelGLConverter().getGLHeightForPixelHeight(MAX_HISTOGRAM_BAR_WIDTH_PIXELS);
+		float histogramStartY = 0;
+		if (barWidth > maxBarWidth) {
+			barWidth = maxBarWidth;
+			histogramStartY = (y - (float) histogram.size() * barWidth) / 2.0f;
+		}
 		float renderWith = x - parentView.getPixelGLConverter().getGLWidthForPixelWidth(20);
+
 		for (int bucketNumber = 0; bucketNumber < histogram.size(); bucketNumber++) {
 
 			if (parent.selectedBucketID == histogram.getBucketID(bucketNumber)) {
@@ -103,7 +105,7 @@ public abstract class ACategoricalRowContentRenderer
 			colorCalculator.setBaseColor(new Color(baseColor[0], baseColor[1], baseColor[2]));
 
 			// calculateColors(Algorithms.mergeListsToUniqueList(selectionTypes));
-			float lowerEdge = barWidth * bucketCount;
+			float lowerEdge = histogramStartY + barWidth * bucketCount;
 			float value = 0;
 			int nrValues = histogram.get(bucketNumber);
 			if (nrValues != 0)
