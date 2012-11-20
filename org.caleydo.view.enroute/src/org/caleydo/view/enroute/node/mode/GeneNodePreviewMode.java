@@ -33,7 +33,8 @@ import org.caleydo.view.enroute.node.GeneNode;
  * @author Christian
  *
  */
-public class GeneNodePreviewMode extends AGeneNodeMode {
+public class GeneNodePreviewMode
+	extends AGeneNodeMode {
 
 	protected static final int MIN_NODE_WIDTH_PIXELS = 70;
 	protected static final int SPACING_PIXELS = 2;
@@ -72,8 +73,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 		colorRenderer = new ColorRenderer(this);
 		colorRenderer.setView(view);
 		colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
-		colorRenderer
-				.addPickingID(EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+		colorRenderer.addPickingID(EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 		baseColumn.addBackgroundRenderer(colorRenderer);
 
 		ElementLayout labelLayout = new ElementLayout("label");
@@ -107,8 +107,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 		layoutManager.setBaseElementLayout(baseColumn);
 	}
 
-	private Column createPreviewRow(ElementLayout horizontalSpacing,
-			ElementLayout verticalSpacing) {
+	private Column createPreviewRow(ElementLayout horizontalSpacing, ElementLayout verticalSpacing) {
 
 		List<TablePerspective> tablePerspectives = view.getResolvedTablePerspectives();
 		List<Integer> davidIds = node.getMappedDavidIDs();
@@ -131,8 +130,8 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 
 		for (Integer davidId : davidIds) {
 			Row geneRow = new Row("geneRow");
-			ColorRenderer geneRowColorRenderer = new ColorRenderer(new float[] { 1, 1, 1,
-					1 }, new float[] { 0, 0, 0, 1 }, 1);
+			ColorRenderer geneRowColorRenderer = new ColorRenderer(new float[] { 1, 1, 1, 1 },
+					new float[] { 0, 0, 0, 1 }, 1);
 			geneRow.setRenderer(geneRowColorRenderer);
 			geneRow.setPixelSizeY(GENE_ROW_HEIGHT_PIXELS);
 			geneColumn.append(geneRow);
@@ -150,15 +149,15 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 				}
 
 				ContentRenderer tablePerspectivePreviewRenderer = null;
-				ContentRendererInitializor initializor = new ContentRendererInitializor(
-						tablePerspective, davidId, view.getMappedDataRenderer(), view);
+				ContentRendererInitializor initializor = new ContentRendererInitializor(tablePerspective, davidId,
+						view.getMappedDataRenderer(), view);
 				// FIXME: Bad hack to determine categorical data
-				if (currentDataDomain.getLabel().contains("Copy")) {
-					tablePerspectivePreviewRenderer = new CategoricalContentPreviewRenderer(
-							initializor);
-				} else {
-					tablePerspectivePreviewRenderer = new ContinuousContentPreviewRenderer(
-							initializor);
+				if (currentDataDomain.getLabel().toLowerCase().contains("copy")
+						|| currentDataDomain.getLabel().toLowerCase().contains("mutation")) {
+					tablePerspectivePreviewRenderer = new CategoricalContentPreviewRenderer(initializor);
+				}
+				else {
+					tablePerspectivePreviewRenderer = new ContinuousContentPreviewRenderer(initializor);
 				}
 
 				ElementLayout previewRendererLayout = new ElementLayout("prev");
@@ -174,8 +173,6 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 			geneRow.append(horizontalSpacing);
 			geneRow.append(columnSpacingLayout);
 		}
-
-
 
 		return geneColumn;
 	}
@@ -198,8 +195,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 			public void clicked(Pick pick) {
 				view.setExpandedBranchSummaryNode(null);
 				ComplexNode parent = node.getParentNode();
-				EventBasedSelectionManager selectionManager = view
-						.getGeneSelectionManager();
+				EventBasedSelectionManager selectionManager = view.getGeneSelectionManager();
 				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
 					selectionManager.removeFromType(SelectionType.MOUSE_OVER, davidId);
 				}
@@ -207,17 +203,16 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 
 				if (parent != null) {
 					view.selectBranch(parent);
-				} else {
+				}
+				else {
 					view.selectBranch(node);
 				}
 			}
 
 			@Override
 			public void mouseOver(Pick pick) {
-				EventBasedSelectionManager selectionManager = view
-						.getGeneSelectionManager();
-				EventBasedSelectionManager metaboliteSelectionManager = view
-						.getMetaboliteSelectionManager();
+				EventBasedSelectionManager selectionManager = view.getGeneSelectionManager();
+				EventBasedSelectionManager metaboliteSelectionManager = view.getMetaboliteSelectionManager();
 				metaboliteSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
@@ -230,8 +225,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 
 			@Override
 			public void mouseOut(Pick pick) {
-				EventBasedSelectionManager selectionManager = view
-						.getGeneSelectionManager();
+				EventBasedSelectionManager selectionManager = view.getGeneSelectionManager();
 				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
 					selectionManager.removeFromType(SelectionType.MOUSE_OVER, davidId);
 				}
@@ -246,8 +240,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 	@Override
 	public void unregisterPickingListeners() {
 		super.unregisterPickingListeners();
-		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(),
-				node.getNodeId());
+		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 	}
 
 }

@@ -72,11 +72,11 @@ public abstract class LayoutRenderer {
 	 * Determines whether a display list index has been generated for this
 	 * renderer.
 	 */
-	protected boolean hasDisplayListIndex = false;
+	private boolean hasDisplayListIndex = false;
 	/**
 	 * The index of the display list for this renderer.
 	 */
-	protected int displayListIndex;
+	private int displayListIndex;
 	/**
 	 * Determines whether the display list for this renderer should be rebuilt.
 	 */
@@ -176,7 +176,7 @@ public abstract class LayoutRenderer {
 
 	}
 
-	public void setElementLayout(ElementLayout elementLayout) {
+	void setElementLayout(ElementLayout elementLayout) {
 		this.elementLayout = elementLayout;
 		layoutManager = elementLayout.getLayoutManager();
 		// pixelGLConverter = layoutManger.getPixelGLConverter();
@@ -198,10 +198,6 @@ public abstract class LayoutRenderer {
 	 */
 	public int getMinWidthPixels() {
 		return 0;
-	}
-
-	protected PixelGLConverter getPixelGLConverter() {
-		return layoutManager.getPixelGLConverter();
 	}
 
 	/**

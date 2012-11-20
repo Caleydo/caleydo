@@ -47,7 +47,7 @@ public class ToolBar extends Row {
 	public ToolBar(String layoutName, final GLBrick brick) {
 		super(layoutName);
 		this.brick = brick;
-		addBackgroundRenderer(new ToolBarBackgroundRenderer());
+		addBackgroundRenderer(new ToolBarBackgroundRenderer(brick));
 
 		brickPickingListener = new APickingListener() {
 			@Override

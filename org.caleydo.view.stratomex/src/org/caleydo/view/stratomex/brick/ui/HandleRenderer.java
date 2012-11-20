@@ -97,8 +97,10 @@ public class HandleRenderer extends LayoutRenderer {
 			}
 		};
 
-		brick.getBrickColumn().getStratomexView()
-				.addTypePickingListener(brickPickingListener, EPickingType.BRICK.name());
+		brick.getBrickColumn()
+				.getStratomexView()
+				.addTypePickingListener(brickPickingListener,
+						EPickingType.BRICK.name());
 
 	}
 
@@ -108,84 +110,89 @@ public class HandleRenderer extends LayoutRenderer {
 		if (hide)
 			return;
 
-		float glHandleHeight = getPixelGLConverter()
+		float glHandleHeight = brick.getPixelGLConverter()
 				.getGLHeightForPixelHeight(handleSize);
-		float glHandleWidth = getPixelGLConverter().getGLWidthForPixelWidth(handleSize);
+		float glHandleWidth = brick.getPixelGLConverter()
+				.getGLWidthForPixelWidth(handleSize);
 
 		gl.glLineWidth(3);
 		gl.glColor3f(0.6f, 0.6f, 0.6f);
 
-//		if ((handles & RESIZE_HANDLE_LOWER_LEFT) > 0) {
-//			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-//					EPickingType.RESIZE_HANDLE_LOWER_LEFT.name(), 1));
-//			gl.glBegin(GL2.GL_LINES);
-//			gl.glVertex3f(0, 0, BUTTON_Z);
-//			gl.glVertex3f(glHandleWidth, 0, BUTTON_Z);
-//			gl.glVertex3f(0, 0, BUTTON_Z);
-//			gl.glVertex3f(0, glHandleHeight, BUTTON_Z);
-//			gl.glEnd();
-//			gl.glPopName();
-//		}
-//
-//		if ((handles & RESIZE_HANDLE_LOWER_RIGHT) > 0) {
-//			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-//					EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1));
-//			gl.glBegin(GL2.GL_LINES);
-//			gl.glVertex3f(x, 0, BUTTON_Z);
-//			gl.glVertex3f(x - glHandleWidth, 0, BUTTON_Z);
-//			gl.glVertex3f(x, 0, 0);
-//			gl.glVertex3f(x, glHandleHeight, BUTTON_Z);
-//			gl.glEnd();
-//			gl.glPopName();
-//		}
+		// if ((handles & RESIZE_HANDLE_LOWER_LEFT) > 0) {
+		// gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+		// EPickingType.RESIZE_HANDLE_LOWER_LEFT.name(), 1));
+		// gl.glBegin(GL2.GL_LINES);
+		// gl.glVertex3f(0, 0, BUTTON_Z);
+		// gl.glVertex3f(glHandleWidth, 0, BUTTON_Z);
+		// gl.glVertex3f(0, 0, BUTTON_Z);
+		// gl.glVertex3f(0, glHandleHeight, BUTTON_Z);
+		// gl.glEnd();
+		// gl.glPopName();
+		// }
+		//
+		// if ((handles & RESIZE_HANDLE_LOWER_RIGHT) > 0) {
+		// gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+		// EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1));
+		// gl.glBegin(GL2.GL_LINES);
+		// gl.glVertex3f(x, 0, BUTTON_Z);
+		// gl.glVertex3f(x - glHandleWidth, 0, BUTTON_Z);
+		// gl.glVertex3f(x, 0, 0);
+		// gl.glVertex3f(x, glHandleHeight, BUTTON_Z);
+		// gl.glEnd();
+		// gl.glPopName();
+		// }
 
-//		if ((handles & RESIZE_HANDLE_UPPER_RIGHT) > 0) {
-//			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-//					EPickingType.RESIZE_HANDLE_UPPER_RIGHT.name(), 1));
-//			gl.glBegin(GL2.GL_LINES);
-//			gl.glVertex3f(x, y, BUTTON_Z);
-//			gl.glVertex3f(x - glHandleWidth, y, BUTTON_Z);
-//			gl.glVertex3f(x, y, BUTTON_Z);
-//			gl.glVertex3f(x, y - glHandleHeight, BUTTON_Z);
-//			gl.glEnd();
-//			gl.glPopName();
-//		}
+		// if ((handles & RESIZE_HANDLE_UPPER_RIGHT) > 0) {
+		// gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+		// EPickingType.RESIZE_HANDLE_UPPER_RIGHT.name(), 1));
+		// gl.glBegin(GL2.GL_LINES);
+		// gl.glVertex3f(x, y, BUTTON_Z);
+		// gl.glVertex3f(x - glHandleWidth, y, BUTTON_Z);
+		// gl.glVertex3f(x, y, BUTTON_Z);
+		// gl.glVertex3f(x, y - glHandleHeight, BUTTON_Z);
+		// gl.glEnd();
+		// gl.glPopName();
+		// }
 
-//		if ((handles & RESIZE_HANDLE_UPPER_LEFT) > 0) {
-//			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-//					EPickingType.RESIZE_HANDLE_UPPER_LEFT.name(), 1));
-//			gl.glBegin(GL2.GL_LINES);
-//			gl.glVertex3f(0, y, BUTTON_Z);
-//			gl.glVertex3f(glHandleWidth, y, BUTTON_Z);
-//			gl.glVertex3f(0, y, 0);
-//			gl.glVertex3f(0, y - glHandleHeight, BUTTON_Z);
-//			gl.glEnd();
-//			gl.glPopName();
-//		}
+		// if ((handles & RESIZE_HANDLE_UPPER_LEFT) > 0) {
+		// gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+		// EPickingType.RESIZE_HANDLE_UPPER_LEFT.name(), 1));
+		// gl.glBegin(GL2.GL_LINES);
+		// gl.glVertex3f(0, y, BUTTON_Z);
+		// gl.glVertex3f(glHandleWidth, y, BUTTON_Z);
+		// gl.glVertex3f(0, y, 0);
+		// gl.glVertex3f(0, y - glHandleHeight, BUTTON_Z);
+		// gl.glEnd();
+		// gl.glPopName();
+		// }
 
 		if ((handles & MOVE_VERTICALLY_HANDLE) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 					EPickingType.MOVE_VERTICALLY_HANDLE.name(), brick.getID()));
 			// gl.glColor4f(1f, 1f, 1f, 1);
-			Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f - glHandleHeight,
+			Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f
+					- glHandleHeight, BUTTON_Z);
+			Vec3f lowerRightCorner = new Vec3f(0, y / 2.0f - glHandleHeight,
 					BUTTON_Z);
-			Vec3f lowerRightCorner = new Vec3f(0, y / 2.0f - glHandleHeight, BUTTON_Z);
 			Vec3f upperRightCorner = new Vec3f(0, y / 2.0f, BUTTON_Z);
-			Vec3f upperLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f, BUTTON_Z);
+			Vec3f upperLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f,
+					BUTTON_Z);
 
-			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_BACKGROUND,
-					upperRightCorner, upperLeftCorner, lowerLeftCorner, lowerRightCorner,
-					1, 1, 1, 1);
+			textureManager.renderTexture(gl,
+					EIconTextures.NAVIGATION_BACKGROUND, upperRightCorner,
+					upperLeftCorner, lowerLeftCorner, lowerRightCorner, 1, 1,
+					1, 1);
 
 			lowerLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f, BUTTON_Z);
 			lowerRightCorner = new Vec3f(0, y / 2.0f, BUTTON_Z);
 			upperRightCorner = new Vec3f(0, y / 2.0f + glHandleHeight, BUTTON_Z);
-			upperLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f + glHandleHeight,
-					BUTTON_Z);
+			upperLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f
+					+ glHandleHeight, BUTTON_Z);
 
-			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_BACKGROUND,
-					lowerLeftCorner, lowerRightCorner, upperRightCorner, upperLeftCorner,
-					1, 1, 1, 1);
+			textureManager.renderTexture(gl,
+					EIconTextures.NAVIGATION_BACKGROUND, lowerLeftCorner,
+					lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1,
+					1, 1);
 
 			// gl.glBegin(GL2.GL_QUADS);
 			// gl.glVertex3f(-glHandleWidth * 2.0f, y / 2.0f - glHandleHeight,
@@ -203,24 +210,29 @@ public class HandleRenderer extends LayoutRenderer {
 					brick.getBrickColumn().getStratomexView().getID(),
 					EPickingType.MOVE_HORIZONTALLY_HANDLE.name(),
 					brick.getBrickColumn().getID()));
-			
-			Vec3f lowerLeftCorner = new Vec3f(x / 2f - glHandleWidth, y ,
+
+			Vec3f lowerLeftCorner = new Vec3f(x / 2f - glHandleWidth, y,
 					BUTTON_Z);
 			Vec3f lowerRightCorner = new Vec3f(x / 2f, y, BUTTON_Z);
-			Vec3f upperLeftCorner = new Vec3f(x / 2f, y + glHandleHeight, BUTTON_Z);
-			Vec3f upperRightCorner = new Vec3f(x / 2f - glHandleWidth, y + glHandleHeight, BUTTON_Z);
+			Vec3f upperLeftCorner = new Vec3f(x / 2f, y + glHandleHeight,
+					BUTTON_Z);
+			Vec3f upperRightCorner = new Vec3f(x / 2f - glHandleWidth, y
+					+ glHandleHeight, BUTTON_Z);
 
-			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_BACKGROUND,
-					lowerRightCorner, upperLeftCorner, upperRightCorner, lowerLeftCorner,
-					1, 1, 1, 1);
+			textureManager.renderTexture(gl,
+					EIconTextures.NAVIGATION_BACKGROUND, lowerRightCorner,
+					upperLeftCorner, upperRightCorner, lowerLeftCorner, 1, 1,
+					1, 1);
 
 			lowerLeftCorner = new Vec3f(x / 2f + glHandleWidth, y, BUTTON_Z);
-			lowerRightCorner = new Vec3f(x / 2f,y, 1);
+			lowerRightCorner = new Vec3f(x / 2f, y, 1);
 			upperLeftCorner = new Vec3f(x / 2f, y + glHandleHeight, BUTTON_Z);
-			upperRightCorner = new Vec3f(x / 2f + glHandleWidth, y + glHandleHeight, BUTTON_Z);
-			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_BACKGROUND,
-					upperLeftCorner, lowerRightCorner, lowerLeftCorner, upperRightCorner,
-					1, 1, 1, 1);
+			upperRightCorner = new Vec3f(x / 2f + glHandleWidth, y
+					+ glHandleHeight, BUTTON_Z);
+			textureManager.renderTexture(gl,
+					EIconTextures.NAVIGATION_BACKGROUND, upperLeftCorner,
+					lowerRightCorner, lowerLeftCorner, upperRightCorner, 1, 1,
+					1, 1);
 
 			gl.glPopName();
 		}
@@ -240,12 +252,14 @@ public class HandleRenderer extends LayoutRenderer {
 
 			Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth, y, BUTTON_Z);
 			Vec3f lowerRightCorner = new Vec3f(0, y, BUTTON_Z);
-			Vec3f upperLeftCorner = new Vec3f(0, y - 2 * glHandleHeight, BUTTON_Z);
-			Vec3f upperRightCorner = new Vec3f(-glHandleWidth, y - 2 * glHandleHeight,
+			Vec3f upperLeftCorner = new Vec3f(0, y - 2 * glHandleHeight,
 					BUTTON_Z);
-			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE,
-					upperLeftCorner, lowerRightCorner, lowerLeftCorner, upperRightCorner,
-					1, 1, 1, 1);
+			Vec3f upperRightCorner = new Vec3f(-glHandleWidth, y - 2
+					* glHandleHeight, BUTTON_Z);
+			textureManager.renderTexture(gl,
+					EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, upperLeftCorner,
+					lowerRightCorner, lowerLeftCorner, upperRightCorner, 1, 1,
+					1, 1);
 
 			gl.glPopName();
 		}
@@ -256,18 +270,20 @@ public class HandleRenderer extends LayoutRenderer {
 
 			Vec3f lowerLeftCorner = new Vec3f(x, y, BUTTON_Z);
 			Vec3f lowerRightCorner = new Vec3f(x + glHandleWidth, y, BUTTON_Z);
-			Vec3f upperLeftCorner = new Vec3f(x + glHandleWidth, y - 2 * glHandleHeight,
+			Vec3f upperLeftCorner = new Vec3f(x + glHandleWidth, y - 2
+					* glHandleHeight, BUTTON_Z);
+			Vec3f upperRightCorner = new Vec3f(x, y - 2 * glHandleHeight,
 					BUTTON_Z);
-			Vec3f upperRightCorner = new Vec3f(x, y - 2 * glHandleHeight, BUTTON_Z);
-			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE,
-					lowerLeftCorner, upperRightCorner, upperLeftCorner, lowerRightCorner,
-					1, 1, 1, 1);
+			textureManager.renderTexture(gl,
+					EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, lowerLeftCorner,
+					upperRightCorner, upperLeftCorner, lowerRightCorner, 1, 1,
+					1, 1);
 
 			gl.glPopName();
 		}
 
 	}
-	
+
 	@Override
 	protected boolean permitsDisplayLists() {
 		return false;

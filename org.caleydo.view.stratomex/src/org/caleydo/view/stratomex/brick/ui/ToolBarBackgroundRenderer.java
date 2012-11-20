@@ -24,6 +24,7 @@ package org.caleydo.view.stratomex.brick.ui;
 
 import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.layout.BrickColors;
 import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
 
@@ -35,12 +36,19 @@ import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
  */
 public class ToolBarBackgroundRenderer extends LayoutRenderer {
 
+	private GLBrick brick;
+
+	public ToolBarBackgroundRenderer(GLBrick brick) {
+		this.brick = brick;
+	}
+
 	@Override
 	public void renderContent(GL2 gl) {
 
-		float height = getPixelGLConverter().getGLHeightForPixelHeight(
+		float height = brick.getPixelGLConverter().getGLHeightForPixelHeight(
 				DefaultBrickLayoutTemplate.BUTTON_HEIGHT_PIXELS + 2);
-		float spacing = getPixelGLConverter().getGLHeightForPixelHeight(2);
+		float spacing = brick.getPixelGLConverter()
+				.getGLHeightForPixelHeight(2);
 
 		gl.glColor3fv(BrickColors.BRICK_COLOR, 0);
 		gl.glBegin(GL2.GL_QUADS);
@@ -53,7 +61,7 @@ public class ToolBarBackgroundRenderer extends LayoutRenderer {
 		gl.glEnd();
 
 	}
-	
+
 	@Override
 	protected boolean permitsDisplayLists() {
 		return false;
