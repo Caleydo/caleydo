@@ -796,31 +796,63 @@ public class GLPathway
 					bbItemH = sourceVertexRep.getHeight();
 					double posX = sourceVertexRep.getLowerLeftCornerX();
 					double posY = sourceVertexRep.getLowerLeftCornerY();
+					if(!visitedNodes.contains(sourceVertexRep)){
+						visitedNodes.add(sourceVertexRep);	
+					}else{
+						double high=1.0;
+						double low=0.0;
+						double offX=Math.random() * (high - low) + low;
+						double offY=Math.random()* (high - low) + low;
+//						System.out.println("offX="+offX);
+//						System.out.println("offY="+offY);
+						posX+=offX;
+						posY+=offY;
+					}					
+					
 					double tX = targetVertexRep.getLowerLeftCornerX();
 					double tY = targetVertexRep.getLowerLeftCornerY();
+					
+					
 
 					bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
+					System.out.println("bubblesetCanvas.addItem(" + bbGroupID + "," + posX + "," + posY + "," + bbItemW + "," + bbItemH + ")");
 					//
-					bubblesetCanvas.addItem(bbGroupID, tX, tY, bbItemW, bbItemH);
+//					bubblesetCanvas.addItem(bbGroupID, tX, tY, bbItemW, bbItemH);
+//					System.out.println("bubblesetCanvas.addItem(" + bbGroupID + "," + tX + "," + tY + "," + bbItemW + "," + bbItemH + ")");
 					//
 					bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);
-					visitedNodes.add(sourceVertexRep);
+					System.out.println("bubblesetCanvas.addEdge(" + bbGroupID + "," + posX + "," + posY + "," + tX + "," + tY + ")");
+					
 				}
+				 DefaultEdge lastEdge =
+				 path.getEdgeList().get(path.getEdgeList().size()-1);
+				 if (lastEdge != null) {
+				 PathwayVertexRep targetVertexRep =
+				 pathway.getEdgeTarget(lastEdge);
+				 double posX = targetVertexRep.getLowerLeftCornerX();
+				 double posY = targetVertexRep.getLowerLeftCornerY();
+					if(!visitedNodes.contains(targetVertexRep)){
+						visitedNodes.add(targetVertexRep);	
+					}else{
+						double high=1.0;
+						double low=0.0;
+						double offX=Math.random() * (high - low) + low;
+						double offY=Math.random()* (high - low) + low;
+//						System.out.println("offX="+offX);
+//						System.out.println("offY="+offY);
+						posX+=offX;
+						posY+=offY;
+					}
+
+				 bbItemW = targetVertexRep.getWidth();
+				 bbItemH = targetVertexRep.getHeight();
+				 bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
+				 
+				 }
+		
 			}
 
-			// DefaultEdge lastEdge =
-			// path.getEdgeList().get(path.getEdgeList().size()-1);
-			// if (lastEdge != null) {
-			// PathwayVertexRep targetVertexRep =
-			// pathway.getEdgeTarget(lastEdge);
-			// double posX = targetVertexRep.getLowerLeftCornerX();
-			// double posY = targetVertexRep.getLowerLeftCornerY();
-			// bbItemW = targetVertexRep.getWidth();
-			// bbItemH = targetVertexRep.getHeight();
-			// bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-			// visitedNodes.add(targetVertexRep);
-			// }
-			gl.glPopName();
+		gl.glPopName();
 			//
 
 		}
