@@ -33,8 +33,11 @@ import org.caleydo.core.view.opengl.canvas.IGLFocusListener;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.IGLMouseListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 import com.jogamp.opengl.swt.GLCanvas;
 
@@ -50,6 +53,15 @@ final class SWTGLCanvas implements IGLCanvas {
 
 	SWTGLCanvas(GLCanvas canvas) {
 		this.canvas = canvas;
+		canvas.addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				// problem if the canvas is not the the top level widget, only release(...) will be called -> call it
+				// manually on disposing
+				if (!PlatformUI.getWorkbench().isClosing())
+					e.widget.dispose();
+			}
+		});
 		// wrap listeners for manually sending reshape events
 		canvas.addGLEventListener(new GLEventListener() {
 			int w = -1, h = -1;
