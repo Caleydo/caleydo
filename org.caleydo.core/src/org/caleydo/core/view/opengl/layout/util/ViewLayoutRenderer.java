@@ -33,10 +33,13 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
  * 
  * @author Alexander Lex
  */
-public class ViewLayoutRenderer
-	extends LayoutRenderer {
+public class ViewLayoutRenderer extends LayoutRenderer {
 
 	protected AGLView view;
+
+	public ViewLayoutRenderer() {
+
+	}
 
 	/**
 	 * Constructor taking an {@link AGLView} to be rendered by this renderer.
@@ -50,7 +53,7 @@ public class ViewLayoutRenderer
 	@Override
 	public void setLimits(float x, float y) {
 		super.setLimits(x, y);
-		
+
 		ViewFrustum viewFrustum = view.getViewFrustum();
 
 		if (viewFrustum == null) {
@@ -67,7 +70,8 @@ public class ViewLayoutRenderer
 	}
 
 	/**
-	 * @param view setter, see {@link #view}
+	 * @param view
+	 *            setter, see {@link #view}
 	 */
 	public void setView(AGLView view) {
 		this.view = view;
