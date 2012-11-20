@@ -100,17 +100,21 @@ public class ResourceLoader {
 
 	public Texture getTexture(String fileName) {
 		Texture texture;
+		
+		//use the real extension, not a guess
+		String extension = fileName.substring(fileName.lastIndexOf('.')+1);
 
+		//if AWT is not there, GIF is not supported only PNG,TGA,DDS and SGI
 		try {
 			if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
 				texture = TextureIO.newTexture(TextureIO.newTextureData(
 						GLProfile.getDefault(), loadResourceAsInputStream(fileName), true,
-						"GIF"));
+						extension));
 			}
 			else {
 
 				texture = TextureIO.newTexture(TextureIO.newTextureData(
-						GLProfile.getDefault(), new File(fileName), true, "GIF"));
+						GLProfile.getDefault(), new File(fileName), true, extension));
 			}
 		}
 		catch (Exception e) {
