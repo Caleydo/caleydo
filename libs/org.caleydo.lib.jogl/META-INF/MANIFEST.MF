@@ -19,6 +19,7 @@ Bundle-NativeCode:
  osname=Mac OS X;
  processor=x86;
  processor=x86_64;
+ processor=x86-64,
  processor=ppc,
  lib/jogl/linux/x86/libgluegen-rt.so;
  lib/jogl/linux/x86/libjogl_desktop.so;
