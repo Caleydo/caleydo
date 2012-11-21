@@ -103,7 +103,7 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		final IDSpecification proteinRowID = new IDSpecification("protein", "protein");
 		final IDSpecification microRNARowID = new IDSpecification("microRNA", "microRNA");
 		final IDSpecification clinicalRowID = new IDSpecification("TCGA_SAMPLE", "TCGA_SAMPLE");
-		
+
 		IDTypeParsingRules clinicalSampleIDTypeParsingRules = new IDTypeParsingRules();
 		clinicalSampleIDTypeParsingRules.setSubStringExpression("tcga\\-");
 		clinicalSampleIDTypeParsingRules.setToLowerCase(true);
@@ -227,9 +227,13 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 			IDSpecification sampleIDSpecification) {
 		File mutationFile = fileProvider.extractAnalysisRunFile(tumorAbbreviation + ".per_gene.mutation_counts.txt",
 				"Mutation_Significance", LEVEL);
+
+		if (mutationFile == null)
+			mutationFile = fileProvider.extractAnalysisRunFile(tumorAbbreviation + ".per_gene.mutation_counts.txt",
+					"MutSigRun2.0", LEVEL);
+
 		if (mutationFile == null)
 			return null;
-
 		DataSetDescription dataSet = new DataSetDescription();
 		dataSet.setDataSetName(dataSetName);
 		dataSet.setColor(dataSetType.getColor());
