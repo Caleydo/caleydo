@@ -393,8 +393,6 @@ public class GLPathwayAugmentationRenderer {
 
 		float canvasXPos = pixelGLConverter.getGLWidthForPixelWidth(vertexRep.getCenterX());
 		float canvasYPos = pixelGLConverter.getGLHeightForPixelHeight(vertexRep.getCenterY());
-		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(vertexRep.getWidth());
-		float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(vertexRep.getHeight());
 
 		gl.glTranslatef(canvasXPos, -canvasYPos, 0);
 
@@ -409,6 +407,9 @@ public class GLPathwayAugmentationRenderer {
 					gl.glPopName();
 					return;
 				}
+				
+				float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(vertexRep.getWidth());
+				float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(vertexRep.getHeight());
 
 				// create mask to prevent redrawing
 				gl.glEnable(GL2.GL_STENCIL_TEST);
@@ -545,8 +546,6 @@ public class GLPathwayAugmentationRenderer {
 				gl.glEnable(GL2.GL_BLEND);
 				if (enableGeneMapping) {
 
-
-
 					Average average = getExpressionAverage(vertexRep);
 					if (average != null)
 						tmpNodeColor = glPathwayView.getDataDomain().getColorMapper()
@@ -575,10 +574,8 @@ public class GLPathwayAugmentationRenderer {
 									
 							float x = pixelGLConverter
 									.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH + 1);
-							// - PathwayRenderStyle.STD_DEV_BAR_PIXEL_WIDTH + 1);
 							float y = -pixelGLConverter
 									.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT - 1);
-							// .getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT - 1);
 
 							float stdBarHeight = pixelGLConverter
 									.getGLWidthForPixelWidth(PathwayRenderStyle.STD_DEV_BAR_PIXEL_HEIGHT);

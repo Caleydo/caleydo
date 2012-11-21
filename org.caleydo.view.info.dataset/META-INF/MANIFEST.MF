@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Dataset Info
 Bundle-SymbolicName: org.caleydo.view.info.dataset;singleton:=true
-Bundle-Version: 2.1
-Require-Bundle: org.caleydo.core;bundle-version="2.1",
- org.caleydo.view.histogram;bundle-version="2.1",
- org.caleydo.datadomain.genetic;bundle-version="2.1"
+Bundle-Version: 2.2
+Require-Bundle: org.caleydo.core;bundle-version="2.2",
+ org.caleydo.view.histogram;bundle-version="2.2",
+ org.caleydo.datadomain.genetic;bundle-version="2.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: gleem.linalg,
  javax.media.opengl,

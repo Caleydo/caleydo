@@ -36,46 +36,30 @@ import org.eclipse.ui.splash.AbstractSplashHandler;
  * @author Marc Streit
  */
 public class InteractiveSplashHandler extends AbstractSplashHandler {
-	private ProgressBar progressBar;
-
-	private static Shell shell;
 
 	@Override
 	public void init(Shell splash) {
+		
 		// Store the shell
 		super.init(splash);
 
-		shell = splash;
-
 		// Create UI
 		createUI();
-
-		// Enter event loop and prevent the RCP application from
-		// loading until all work is done
-		doEventLoop();
-
-		splash.setText("Loading Caleydo...");
-	}
-
-	public static Shell getShell() {
-		return shell;
 	}
 
 	private void createUI() {
 		Shell splash = getSplash();
 
-		progressBar = new ProgressBar(splash, SWT.SMOOTH | SWT.BORDER);
-		progressBar.setBounds(20, 200, getSplash().getSize().x - 40, 25);
+		ProgressBar progressBar = new ProgressBar(splash, SWT.SMOOTH | SWT.BORDER);
+		progressBar.setBounds(20, 200, splash.getSize().x - 40, 25);
 
 		splash.setBackgroundMode(SWT.INHERIT_DEFAULT);
 
 		Label progressMessageLabel = new Label(splash, SWT.NONE);
 		progressMessageLabel.setText(" Loading...");
-		// label.setForeground(splash.getDisplay().getSystemColor
-		// (SWT.COLOR_BLACK));
 		progressMessageLabel
 				.setFont(new Font(splash.getDisplay(), "Arial", 10, SWT.NONE));
-		progressMessageLabel.setBounds(20, 230, getSplash().getSize().x - 40, 25);
+		progressMessageLabel.setBounds(20, 230, splash.getSize().x - 40, 25);
 		progressMessageLabel.setForeground(splash.getDisplay().getSystemColor(
 				SWT.COLOR_WHITE));
 
@@ -85,32 +69,9 @@ public class InteractiveSplashHandler extends AbstractSplashHandler {
 		versionLabel.setBounds(336, 185, 150, 20);
 		versionLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
-	
 		GeneralManager.get().getSWTGUIManager()
 				.setExternalProgressBarAndLabel(progressBar, progressMessageLabel);
-	}
-
-	private void doEventLoop() {
-		final Shell splash = getSplash();
-		if (splash.getDisplay().readAndDispatch() == false) {
-			splash.getDisplay().sleep();
-		}
-
-		// Make sure that splash screen remains the active window
-		splash.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				// nothing to do
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				Display.getDefault().syncExec(new Runnable() {
-					public void run() {
-						splash.forceActive();
-					}
-				});
-			}
-		});
+		
+		splash.setText("Loading Caleydo...");
 	}
 }
