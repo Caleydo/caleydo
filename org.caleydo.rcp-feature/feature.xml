@@ -2,7 +2,7 @@
 <feature
       id="org.caleydo.rcp.feature"
       label="Caleydo"
-      version="2.1"
+      version="2.2"
       provider-name="www.caleydo.org"
       plugin="org.caleydo.core"
       os="linux,macosx,win32"
