@@ -25,7 +25,7 @@ Caleydo is open-source software licenced under the GPL V3
 
    <launcherArgs>
       <programArgs>-data @noDefault</programArgs>
-      <vmArgs>-Xms512m -Xmx2048m -Djava.util.logging.config.file=data/logging/logging.properties -Xmx2048M -XX:MaxPermSize=256m -Dorg.caleydo.opengl=swt</vmArgs>
+      <vmArgs>-Xms512m -Xmx2048m -Djava.util.logging.config.file=data/logging/logging.properties -Xmx2048M -XX:MaxPermSize=256m -Dorg.caleydo.opengl=swt  -Djava.awt.headless=true</vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
