@@ -338,7 +338,7 @@ public class VendingMachine
 
 		busyState = EBusyState.ON;
 		List<ScoringElement> data = scoreQuery.apply(dataDomainQuery);
-		scoringTable.setData(data, this);
+		scoringTable.setData(data);
 		busyState = EBusyState.OFF;
 	}
 

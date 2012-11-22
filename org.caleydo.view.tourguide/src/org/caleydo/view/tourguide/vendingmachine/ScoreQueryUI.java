@@ -200,6 +200,8 @@ public class ScoreQueryUI extends Column {
 
 	protected void onSelectionChanged(PropertyChangeEvent evt) {
 		createColumns(this.query);
+		if (this.data != null)
+			setData(data);
 	}
 
 	protected void onOrderByChanged(PropertyChangeEvent evt) {
@@ -215,7 +217,9 @@ public class ScoreQueryUI extends Column {
 		if (scores.isEmpty())
 			return;
 		ContextMenuCreator creator = view.getContextMenuCreator();
-		creator.addContextMenuItem(new GenericContextMenuItem("Create Combined Score", new AddScoreColumnEvent(this)));
+		if (scores.size() >= 2)
+			creator.addContextMenuItem(new GenericContextMenuItem("Create Combined Score",
+					new AddScoreColumnEvent(this)));
 
 		Set<IScore> visible = new HashSet<>();
 		for (SortableColumnHeader c : this.columns)
@@ -252,7 +256,7 @@ public class ScoreQueryUI extends Column {
 		return data.get(selectedRow);
 	}
 
-	public void setData(List<ScoringElement> data, AGLView view) {
+	public void setData(List<ScoringElement> data) {
 		this.data = data;
 		this.clear();
 		this.add(createYSeparator(5));
@@ -260,7 +264,7 @@ public class ScoreQueryUI extends Column {
 		this.add(createYSeparator(5));
 		final int length = data.size();
 		for (int i = 0; i < length; ++i)
-			add(createRow(view, data.get(i), i)).add(createYSeparator(5));
+			add(createRow(this.view, data.get(i), i)).add(createYSeparator(5));
 		invalidate();
 	}
 
