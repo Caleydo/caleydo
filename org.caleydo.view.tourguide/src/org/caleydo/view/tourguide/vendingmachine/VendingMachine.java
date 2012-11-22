@@ -63,10 +63,17 @@ import org.caleydo.view.tourguide.data.score.AdjustedRankScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.JaccardIndexScore;
 import org.caleydo.view.tourguide.data.score.ProductScore;
+import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
+import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
+import org.caleydo.view.tourguide.listener.AddScoreColumnListener;
+import org.caleydo.view.tourguide.listener.RemoveScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreTablePerspectiveListener;
 import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI.ISelectionListener;
+import org.caleydo.view.tourguide.vendingmachine.ui.CreateCompositeScoreDialog;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Function;
 
@@ -222,6 +229,8 @@ public class VendingMachine
 	public void registerEventListeners() {
 		super.registerEventListeners();
 		listeners.register(ScoreTablePerspectiveEvent.class, new ScoreTablePerspectiveListener().setHandler(this));
+		listeners.register(AddScoreColumnEvent.class, new AddScoreColumnListener(this));
+		listeners.register(RemoveScoreColumnEvent.class, new RemoveScoreColumnListener(this));
 	}
 
 	@Override
@@ -237,21 +246,24 @@ public class VendingMachine
 
 	public void createStratificationScore(TablePerspective stratification) {
 		IScore score = Scores.get().addIfAbsent(new AdjustedRankScore(stratification));
-		scoreQuery.sortBy(score, ESorting.DESC);
-		scoreQuery.addSelection(score);
-		recomputeScores();
+		onAddColumn(score);
+	}
+
+	public void createStratificationGroupScore(TablePerspective stratification, Group group) {
+		IScore score = Scores.get().addIfAbsent(new JaccardIndexScore(stratification, group));
+		onAddColumn(score);
 	}
 
 	public void createStratificationGroupScore(TablePerspective stratification, Iterable<Group> groups) {
 		Scores manager = Scores.get();
 		Collection<IScore> scores = new ArrayList<>();
 		ProductScore composite = new ProductScore(stratification.getLabel(), scores);
-		for (Group group : groups)
+		for (Group group : groups) {
 			scores.add(manager.addIfAbsent(new JaccardIndexScore(stratification, group)));
-		scoreQuery.sortBy(composite, ESorting.DESC);
-		scoreQuery.addSelection(composite);
-		recomputeScores();
+		}
+		onAddColumn(composite);
 	}
+
 
 	{
 		// Highlight reference table
@@ -356,11 +368,11 @@ public class VendingMachine
 		}
 	}
 
-	public void onShowDataDomain(ATableBasedDataDomain dataDomain) {
+	private void onShowDataDomain(ATableBasedDataDomain dataDomain) {
 		recomputeScores();
 	}
 
-	public void onHideDataDomain(ATableBasedDataDomain dataDomain) {
+	private void onHideDataDomain(ATableBasedDataDomain dataDomain) {
 		boolean isCurrentlyVisible = false;
 		for (ScoringElement sp : scoringTable.getData()) {
 			if (sp.getStratification().getDataDomain().equals(dataDomain)) {
@@ -373,5 +385,37 @@ public class VendingMachine
 		// we have to update the list
 		recomputeScores();
 	}
+
+
+	public void onCreateNewScore() {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				new CreateCompositeScoreDialog(new Shell(), Scores.get().getScoreIDs(), scoringTable).open();
+			}
+		});
+	}
+
+	public void onAddColumn(IScore score) {
+		this.scoreQuery.sortBy(score, ESorting.DESC);
+		this.scoreQuery.addSelection(score);
+		recomputeScores();
+	}
+
+	public void onRemoveColumn(IScore score) {
+		ESorting bak = scoreQuery.getSorting(score);
+		scoreQuery.sortBy(score, ESorting.NONE);
+		scoreQuery.removeSelection(score);
+		if (bak != ESorting.NONE) // if it was relevant for sorting recompute
+			recomputeScores();
+	}
+
+	/**
+	 * @return
+	 */
+	public ScoreQueryUI getScoreQueryUI() {
+		return scoringTable;
+	}
+
 
 }

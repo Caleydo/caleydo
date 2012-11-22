@@ -26,7 +26,7 @@ import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
 
 /**
  * @author Marc Streit
- * 
+ *
  */
 public class ScoreAllGroupsInColumnItem extends AContextMenuItem {
 
@@ -34,7 +34,7 @@ public class ScoreAllGroupsInColumnItem extends AContextMenuItem {
 		setLabel("Score all groups in column");
 
 		ScoreTablePerspectiveEvent event = new ScoreTablePerspectiveEvent(EScoreReferenceMode.ALL_GROUPS_IN_COLUMN,
-				referenceBrickColumn.getTablePerspective(), referenceBrickColumn);
+				referenceBrickColumn);
 		event.setSender(this);
 		registerEvent(event);
 	}

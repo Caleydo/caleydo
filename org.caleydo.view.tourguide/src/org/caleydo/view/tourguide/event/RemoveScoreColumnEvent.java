@@ -17,23 +17,34 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.brick;
+package org.caleydo.view.tourguide.event;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.view.stratomex.column.BrickColumn;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.view.tourguide.data.score.IScore;
 
 /**
- * extension point interface for creating context menu entries for the gl brick used for triggering scoring
- *
  * @author Samuel Gratzl
  *
  */
-public interface IContextMenuBrickFactory {
-	public static final String EXTENSION_ID = "org.caleydo.view.stratomex.brick.contextmenu";
+public class RemoveScoreColumnEvent extends AEvent {
+	private IScore score;
 
-	public Iterable<AContextMenuItem> createGroupEntries(BrickColumn referenceColumn, TablePerspective groupTable);
+	public RemoveScoreColumnEvent() {
 
-	public Iterable<AContextMenuItem> createStratification(BrickColumn referenceColumn);
+	}
 
+	public RemoveScoreColumnEvent(IScore score, Object sender) {
+		this.score = score;
+		this.setSender(sender);
+	}
+
+	public IScore getScore() {
+		return score;
+	}
+
+	@Override
+	public boolean checkIntegrity() {
+		return score != null;
+	}
 }
+

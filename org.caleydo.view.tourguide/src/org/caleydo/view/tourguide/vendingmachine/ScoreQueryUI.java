@@ -31,10 +31,14 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.util.color.IColor;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
+import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -48,9 +52,12 @@ import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.tourguide.data.ESorting;
 import org.caleydo.view.tourguide.data.ScoreQuery;
+import org.caleydo.view.tourguide.data.Scores;
 import org.caleydo.view.tourguide.data.ScoringElement;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.ProductScore;
+import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
+import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.renderer.ScoreBarRenderer;
 
 import com.google.common.base.Function;
@@ -65,12 +72,14 @@ public class ScoreQueryUI extends Column {
 	private static final String SELECT_ROW = "SELECT_ROW";
 	private static final String SELECT_ROW_COLUMN = "SELECT_ROW_COLUMN";
 	private static final String ADD_TO_STRATOMEX = "ADD_TO_STATOMEX";
+	private static final String ADD_COLUMN = "ADD_COLUMN";
 
 	private static final IColor SELECTED_COLOR = Colors.YELLOW;
 
 	private static final int COL0_ADD_TO_STRATOMEX_WIDTH = 16;
 	private static final int COL1_LABEL_WIDTH = 220;
-	private static final int COLX_SCORE_WIDTH = 100;
+	private static final int COLX_SCORE_WIDTH = -1;
+	private static final int COL2_ADD_COLUMN_X_WIDTH = 16;
 
 	private static final int ROW_HEIGHT = 18;
 
@@ -85,6 +94,12 @@ public class ScoreQueryUI extends Column {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			onSelectionChanged(evt);
+		}
+	};
+	private final PropertyChangeListener orderByChanged = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			onOrderByChanged(evt);
 		}
 	};
 
@@ -103,7 +118,18 @@ public class ScoreQueryUI extends Column {
 			public void clicked(Pick pick) {
 				onSortBy(columns.get(pick.getObjectID()));
 			}
+
+			@Override
+			public void rightClicked(Pick pick) {
+				onShowColumnMenu(columns.get(pick.getObjectID()));
+			}
 		}, SORT_COLUMN);
+		view.addTypePickingListener(new APickingListener() {
+			@Override
+			public void clicked(Pick pick) {
+				onAddColumn();
+			}
+		}, ADD_COLUMN);
 		view.addTypePickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
@@ -125,6 +151,7 @@ public class ScoreQueryUI extends Column {
 		}, ADD_TO_STRATOMEX);
 	}
 
+
 	private void init() {
 		this.setBottomUp(false);
 		setGrabX(true);
@@ -136,10 +163,13 @@ public class ScoreQueryUI extends Column {
 	}
 
 	public void setQuery(ScoreQuery query) {
-		if (this.query != null)
+		if (this.query != null) {
 			this.query.removePropertyChangeListener(ScoreQuery.PROP_SELECTION, selectionChanged);
+			this.query.removePropertyChangeListener(ScoreQuery.PROP_ORDER_BY, orderByChanged);
+		}
 		this.query = query;
 		this.query.addPropertyChangeListener(ScoreQuery.PROP_SELECTION, selectionChanged);
+		this.query.addPropertyChangeListener(ScoreQuery.PROP_ORDER_BY, orderByChanged);
 		// initial
 		createColumns(query);
 	}
@@ -156,18 +186,53 @@ public class ScoreQueryUI extends Column {
 		int i = 0;
 		for (IScore column : query.getSelection()) {
 			SortableColumnHeader col = new SortableColumnHeader(column, i++, query.getSorting(column));
+			col.setGrabX(true);
 			this.headerRow.add(col).add(createXSeparator(3));
 			this.columns.add(col);
 		}
+		headerRow.add(createButton(view, new Button(ADD_COLUMN, 1, EIconTextures.GROUPER_COLLAPSE_PLUS)));
 		invalidate();
+	}
+
+	public ScoreQuery getQuery() {
+		return query;
 	}
 
 	protected void onSelectionChanged(PropertyChangeEvent evt) {
 		createColumns(this.query);
 	}
 
-	public ScoreQuery getQuery() {
-		return query;
+	protected void onOrderByChanged(PropertyChangeEvent evt) {
+		for (SortableColumnHeader col : columns) {
+			ESorting s = query.getSorting(col.getScoreID());
+			if (s != null)
+				col.setSort(s);
+		}
+	}
+
+	protected void onAddColumn() {
+		Collection<IScore> scores = Scores.get().getScoreIDs();
+		if (scores.isEmpty())
+			return;
+		ContextMenuCreator creator = view.getContextMenuCreator();
+		creator.addContextMenuItem(new GenericContextMenuItem("Create Combined Score", new AddScoreColumnEvent(this)));
+
+		Set<IScore> visible = new HashSet<>();
+		for (SortableColumnHeader c : this.columns)
+			visible.add(c.getScoreID());
+
+		for (IScore s : scores) {
+			if (visible.contains(s))
+				continue;
+			creator.addContextMenuItem(new GenericContextMenuItem("Add " + s.getLabel(), new AddScoreColumnEvent(s,
+					this)));
+		}
+	}
+
+	protected void onShowColumnMenu(SortableColumnHeader sortableColumnHeader) {
+		ContextMenuCreator creator = view.getContextMenuCreator();
+		creator.addContextMenuItem(new GenericContextMenuItem("Remove", new RemoveScoreColumnEvent(sortableColumnHeader
+				.getScoreID(), this)));
 	}
 
 	public Collection<IScore> getColumns() {
@@ -222,6 +287,7 @@ public class ScoreQueryUI extends Column {
 			int id = i << 8 + j++;
 			tr.add(createScoreValue(view, elem, header, id)).add(createXSeparator(3));
 		}
+		tr.add(createXSpacer(COL2_ADD_COLUMN_X_WIDTH));
 		tr.addBackgroundRenderer(new ColorRenderer(Colors.TRANSPARENT.getRGBA()));
 		return tr;
 	}
@@ -229,7 +295,7 @@ public class ScoreQueryUI extends Column {
 	private ElementLayout createScoreValue(AGLView view, ScoringElement elem, SortableColumnHeader header, int id) {
 		float value = header.getScoreID().getScore(elem);
 		String label = header.getScoreID().getRepr(elem);
-		ElementLayout l = wrap(new LabelRenderer(view, label).addPickingID(SELECT_ROW_COLUMN, id), -1);
+		ElementLayout l = wrap(new LabelRenderer(view, label).addPickingID(SELECT_ROW_COLUMN, id), COLX_SCORE_WIDTH);
 		l.addBackgroundRenderer(new ScoreBarRenderer(value, elem.getDataDomain().getColor()));
 		return l;
 	}
@@ -285,7 +351,6 @@ public class ScoreQueryUI extends Column {
 		public SortableColumnHeader(final IScore scoreID, int i, ESorting sorting) {
 			this.scoreID = scoreID;
 			this.sort = sorting;
-			setGrabX(true);
 			setBottomUp(false);
 			ElementLayout label = wrap(new LabelRenderer(view, scoreID, SORT_COLUMN, i), -1);
 			label.setGrabY(true);
@@ -297,10 +362,16 @@ public class ScoreQueryUI extends Column {
 			return scoreID;
 		}
 
-		public ESorting nextSorting() {
-			this.sort = this.sort.next();
+		public void setSort(ESorting sort) {
+			if (this.sort == sort)
+				return;
+			this.sort = sort;
 			get(1).setRenderer(new TextureRenderer(this.sort.getFileName(), view.getTextureManager()));
-			return sort;
+		}
+
+		public ESorting nextSorting() {
+			setSort(this.sort.next());
+			return this.sort;
 		}
 
 		@Override

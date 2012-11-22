@@ -36,15 +36,15 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * @author Samuel Gratzl
- * 
+ *
  */
 public class ScoreContextMenuBrickFactory implements IContextMenuBrickFactory {
 
 	@Override
-	public Iterable<AContextMenuItem> createGroupEntries(TablePerspective referenceTable, BrickColumn groupColumn) {
+	public Iterable<AContextMenuItem> createGroupEntries(BrickColumn referenceColumn, TablePerspective groupTable) {
 		if (!isTourGuideVisible()) // show context menu only if the tour guide view is visible
 			return Collections.emptyList();
-		return Arrays.asList((AContextMenuItem) new ScoreGroupItem(referenceTable, groupColumn));
+		return Arrays.asList((AContextMenuItem) new ScoreGroupItem(referenceColumn, groupTable));
 	}
 
 	private static boolean isTourGuideVisible() {

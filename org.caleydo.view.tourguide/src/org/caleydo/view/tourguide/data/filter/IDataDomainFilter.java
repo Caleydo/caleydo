@@ -26,8 +26,10 @@ import org.caleydo.core.util.collection.Pair;
 import com.google.common.base.Predicate;
 
 /**
+ * returns true if the element should resist in the selection
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public interface IDataDomainFilter extends Predicate<Pair<TablePerspective, Group>> {
 

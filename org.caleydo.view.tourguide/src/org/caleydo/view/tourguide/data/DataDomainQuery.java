@@ -64,6 +64,7 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 	private CompositeDataDomainFilter filter = new CompositeDataDomainFilter();
 
 	public DataDomainQuery() {
+		// TODO by ui
 		filter.add(new EmptyGroupFilter());
 		filter.add(new GroupNameFilter("Not Mutated"));
 		filter.add(new GroupNameFilter("Normal"));
@@ -78,7 +79,7 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 		Multimap<TablePerspective, Group> r = ArrayListMultimap.create();
 		for (TablePerspective strat : stratifications) {
 			for (Group group : strat.getRecordPerspective().getVirtualArray().getGroupList()) {
-				if (!filter.apply(Pair.make(strat, group)))
+				if (group == null || !filter.apply(Pair.make(strat, group)))
 					continue;
 				r.put(strat, group);
 			}

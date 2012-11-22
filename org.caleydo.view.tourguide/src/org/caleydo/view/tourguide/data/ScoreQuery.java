@@ -240,4 +240,12 @@ public class ScoreQuery implements Function<DataDomainQuery, List<ScoringElement
 		selection.add(score);
 		listeners.fireIndexedPropertyChange(PROP_SELECTION, selection.size() - 1, null, score);
 	}
+
+	public void removeSelection(IScore score) {
+		int i = selection.indexOf(score);
+		if (i < 0)
+			return;
+		selection.remove(score);
+		listeners.fireIndexedPropertyChange(PROP_SELECTION, i, score, null);
+	}
 }

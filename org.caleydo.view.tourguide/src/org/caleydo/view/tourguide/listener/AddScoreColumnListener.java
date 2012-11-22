@@ -19,9 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.listener;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
 import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
 
@@ -31,27 +31,22 @@ import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
  * @author Marc Streit
  *
  */
-public class ScoreTablePerspectiveListener
-	extends AEventListener<VendingMachine> {
+public class AddScoreColumnListener extends AEventListener<VendingMachine> {
 
+	public AddScoreColumnListener(VendingMachine m) {
+		setHandler(m);
+	}
 	@Override
 	public void handleEvent(AEvent event) {
-		if (event instanceof ScoreTablePerspectiveEvent) {
-
-			ScoreTablePerspectiveEvent scoreGroupEvent = (ScoreTablePerspectiveEvent) event;
-			TablePerspective strat = scoreGroupEvent.getReferenceBrickColumn().getTablePerspective();
-			switch (scoreGroupEvent.getScoreReferenceMode()) {
-			case COLUMN:
-				handler.createStratificationScore(strat);
-				break;
-			case SINGLE_GROUP:
-				handler.createStratificationGroupScore(strat, scoreGroupEvent.getGroup().getRecordGroup());
-				break;
-			case ALL_GROUPS_IN_COLUMN:
-				handler.createStratificationGroupScore(strat, strat.getRecordPerspective().getVirtualArray()
-						.getGroupList());
-				break;
-			}
+		if (!(event instanceof AddScoreColumnEvent))
+			return;
+		if (handler.getScoreQueryUI() != event.getSender())
+			return;
+		AddScoreColumnEvent e = (AddScoreColumnEvent) event;
+		if (e.isCreateNewScore())
+			handler.onCreateNewScore();
+		else {
+			handler.onAddColumn(e.getScore());
 		}
 	}
 }

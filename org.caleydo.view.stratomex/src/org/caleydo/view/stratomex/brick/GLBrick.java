@@ -904,7 +904,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 					// .getDimensionPerspective()));
 
 					for (IContextMenuBrickFactory factory : contextMenuFactories)
-						for (AContextMenuItem item : factory.createGroupEntries(tablePerspective, brickColumn))
+						for (AContextMenuItem item : factory.createGroupEntries(brickColumn, tablePerspective))
 							contextMenuCreator.addContextMenuItem(item);
 					selectElementsByGroup();
 				}

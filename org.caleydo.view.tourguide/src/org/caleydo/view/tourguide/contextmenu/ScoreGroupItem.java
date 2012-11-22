@@ -27,16 +27,16 @@ import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
 
 /**
  * @author Marc Streit
- * 
+ *
  */
 public class ScoreGroupItem extends AContextMenuItem {
 
-	public ScoreGroupItem(TablePerspective referenceTablePerspective, BrickColumn groupBrickColumn) {
+	public ScoreGroupItem(BrickColumn referenceColumn, TablePerspective groupTablePerspective) {
 
 		setLabel("Score group");
 
 		ScoreTablePerspectiveEvent event = new ScoreTablePerspectiveEvent(EScoreReferenceMode.SINGLE_GROUP,
-				referenceTablePerspective, groupBrickColumn);
+				referenceColumn, groupTablePerspective);
 		event.setSender(this);
 		registerEvent(event);
 	}

@@ -37,7 +37,7 @@ public class ScoreTablePerspectiveEvent
 	 * Table perspectives that will be used for the scoring. either a single group or a stratification depending on the
 	 * type
 	 */
-	private TablePerspective stratification;
+	private TablePerspective group;
 
 	private EScoreReferenceMode scoreReferenceMode;
 
@@ -47,17 +47,18 @@ public class ScoreTablePerspectiveEvent
 	 */
 	private BrickColumn brickColumn;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param referenceTablePerspective
-	 *            TablePerspective to which the scoring will be calculated.
-	 */
-	public ScoreTablePerspectiveEvent(EScoreReferenceMode scoreReferenceMode, TablePerspective stratification,
-			BrickColumn brickColumn) {
+	public ScoreTablePerspectiveEvent() {
 
+	}
+
+	public ScoreTablePerspectiveEvent(EScoreReferenceMode scoreReferenceMode, BrickColumn brickColumn) {
+		this(scoreReferenceMode, brickColumn, null);
+	}
+
+	public ScoreTablePerspectiveEvent(EScoreReferenceMode scoreReferenceMode, BrickColumn brickColumn,
+			TablePerspective group) {
 		this.scoreReferenceMode = scoreReferenceMode;
-		this.stratification = stratification;
+		this.group = group;
 		this.brickColumn = brickColumn;
 	}
 
@@ -66,11 +67,8 @@ public class ScoreTablePerspectiveEvent
 		return true;
 	}
 
-	/**
-	 * @return the referenceStratification
-	 */
-	public TablePerspective getReferenceStratification() {
-		return stratification;
+	public TablePerspective getGroup() {
+		return group;
 	}
 
 	/**

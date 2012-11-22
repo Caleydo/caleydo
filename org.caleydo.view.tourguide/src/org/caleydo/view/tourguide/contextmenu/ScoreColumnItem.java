@@ -26,7 +26,7 @@ import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
 
 /**
  * @author Marc Streit
- * 
+ *
  */
 public class ScoreColumnItem extends AContextMenuItem {
 
@@ -35,7 +35,7 @@ public class ScoreColumnItem extends AContextMenuItem {
 		setLabel("Score column");
 
 		ScoreTablePerspectiveEvent event = new ScoreTablePerspectiveEvent(EScoreReferenceMode.COLUMN,
-				referenceBrickColumn.getTablePerspective(), referenceBrickColumn);
+				referenceBrickColumn);
 		event.setSender(this);
 		registerEvent(event);
 	}
