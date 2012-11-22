@@ -30,11 +30,11 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
-import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.manager.AManager;
+import org.caleydo.core.manager.ConsoleFlags;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
@@ -66,8 +66,6 @@ import com.jogamp.opengl.util.FPSAnimator;
  * @author Alexander Lex
  */
 public class ViewManager extends AManager<IView> {
-
-	private final Map<IGLCanvas, List<AGLView>> hashGLCanvas2GLView = new HashMap<>();
 
 	private final Map<Integer, AGLView> hashGLViewID2GLView = new HashMap<>();
 
@@ -110,8 +108,7 @@ public class ViewManager extends AManager<IView> {
 	private final IGLCanvasFactory canvasFactory;
 
 	{
-		String kind = System.getProperty("org.caleydo.opengl", "awt");
-
+		String kind = ConsoleFlags.CANVAS_IMPLEMENTATION;
 		if ("awt".equalsIgnoreCase(kind)) {
 			canvasFactory = new AWTGLCanvasFactory();
 		} else if ("swt".equalsIgnoreCase(kind)) {
@@ -161,7 +158,6 @@ public class ViewManager extends AManager<IView> {
 			return false;
 
 		fpsAnimator.remove(glCanvas.asGLAutoDrawAble());
-		hashGLCanvas2GLView.remove(glCanvas);
 
 		return true;
 	}
@@ -299,11 +295,6 @@ public class ViewManager extends AManager<IView> {
 		if (glCanvas == null)
 			return;
 
-		if (!hashGLCanvas2GLView.containsKey(glCanvas)) {
-			hashGLCanvas2GLView.put(glCanvas, new ArrayList<AGLView>());
-		}
-
-		hashGLCanvas2GLView.get(glCanvas).add(glView);
 		glCanvas.addGLEventListener(glView);
 	}
 
@@ -351,7 +342,6 @@ public class ViewManager extends AManager<IView> {
 	 */
 	public void cleanup() {
 
-		hashGLCanvas2GLView.clear();
 		hashGLViewID2GLView.clear();
 		hashItems.clear();
 	}
@@ -385,10 +375,6 @@ public class ViewManager extends AManager<IView> {
 
 		if (parentGLCanvas != null) {
 			parentGLCanvas.removeGLEventListener(glView);
-
-			if (hashGLCanvas2GLView.containsKey(parentGLCanvas)) {
-				hashGLCanvas2GLView.get(parentGLCanvas).remove(glView);
-			}
 		}
 
 		hashGLViewID2GLView.remove(glView.getID());
@@ -494,8 +480,8 @@ public class ViewManager extends AManager<IView> {
 		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Add canvas to animator" + glCanvas));
 	}
 
-	public void unregisterGLCanvasFromAnimator(final GLCanvas glCanvas) {
-		fpsAnimator.remove(glCanvas);
+	public void unregisterGLCanvasFromAnimator(final IGLCanvas glCanvas) {
+		fpsAnimator.remove(glCanvas.asGLAutoDrawAble());
 	}
 
 	/**

@@ -36,12 +36,23 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 import com.jogamp.opengl.swt.GLCanvas;
+import com.jogamp.opengl.util.texture.TextureIO;
+import com.jogamp.opengl.util.texture.spi.awt.IIOTextureProvider;
+import com.jogamp.opengl.util.texture.spi.awt.IIOTextureWriter;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public class SWTGLCanvasFactory implements IGLCanvasFactory {
+
+	public SWTGLCanvasFactory() {
+		// disable awt as good as possible
+		System.setProperty("java.awt.headless", "true");
+		// re add texture provider from awt for javax.imageio as the flag disables them
+		TextureIO.addTextureProvider(new IIOTextureProvider());
+		TextureIO.addTextureWriter(new IIOTextureWriter());
+	}
 
 	@Override
 	public SWTGLCanvas create(GLCapabilitiesImmutable caps, Composite parent) {

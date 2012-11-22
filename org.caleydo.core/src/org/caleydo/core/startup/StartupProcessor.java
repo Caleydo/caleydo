@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,6 +22,7 @@ package org.caleydo.core.startup;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
+
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.PreferenceManager;
 import org.caleydo.core.startup.gui.CaleydoProjectWizard;
@@ -35,6 +36,7 @@ import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
+
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
@@ -44,7 +46,7 @@ import com.martiansoftware.jsap.UnflaggedOption;
 /**
  * Startup processor handles the creation of the startup procedure and its
  * execution.
- * 
+ *
  * @author Marc Streit
  */
 public class StartupProcessor {
@@ -77,6 +79,7 @@ public class StartupProcessor {
 		changeWorkspaceLocation();
 		GeneralManager.get().getSWTGUIManager();
 
+
 		if (startupProcedure == null) {
 			Shell shell = new Shell();
 			WizardDialog projectWizardDialog = new WizardDialog(shell,
@@ -84,6 +87,7 @@ public class StartupProcessor {
 
 			if (projectWizardDialog.open() == Window.CANCEL) {
 				shutdown();
+				return;
 			}
 		}
 

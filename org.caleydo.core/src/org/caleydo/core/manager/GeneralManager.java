@@ -1,25 +1,26 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.manager;
 
 import java.io.File;
+
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SWTGUIManager;
@@ -38,7 +39,7 @@ import org.eclipse.jface.preference.PreferenceStore;
 
 /**
  * General manager that contains all module managers.
- * 
+ *
  * @author Marc Streit
  */
 public class GeneralManager {
@@ -47,7 +48,7 @@ public class GeneralManager {
 	 * In release mode non-stable or student views are automatically removed
 	 * from the workbench.
 	 */
-	public static final boolean RELEASE_MODE = true;
+	public static final boolean RELEASE_MODE = !ConsoleFlags.EXPERIMENTAL_MODE;
 
 	/**
 	 * This is the current version of Caleydo. The value must be the same as
@@ -119,7 +120,7 @@ public class GeneralManager {
 	/**
 	 * Returns the general method as a singleton object. When first called the
 	 * general manager is created (lazy).
-	 * 
+	 *
 	 * @return singleton GeneralManager instance
 	 */
 	public static GeneralManager get() {
@@ -145,7 +146,7 @@ public class GeneralManager {
 	/**
 	 * Resource loader that is responsible for loading images, textures and data
 	 * files in the Caleydo framework. DO NOT LOAD YOUR FILES ON YOUR OWN!
-	 * 
+	 *
 	 * @return resource loader
 	 */
 	public ResourceLoader getResourceLoader() {
@@ -206,7 +207,7 @@ public class GeneralManager {
 	/**
 	 * Obtains the {@link SerializationManager} responsible for
 	 * xml-serialization related tasks
-	 * 
+	 *
 	 * @return the {@link SerializationManager} of this caleydo application
 	 */
 	public SerializationManager getSerializationManager() {
