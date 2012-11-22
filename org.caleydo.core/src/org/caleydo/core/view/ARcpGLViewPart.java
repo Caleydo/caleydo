@@ -31,7 +31,10 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Base class for all RCP views that use OpenGL.
@@ -62,6 +65,13 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 		glCanvas = createGLCanvas(minSizeComposite);
 		parentComposite = glCanvas.asComposite();
 		ViewManager.get().registerGLCanvasToAnimator(glCanvas);
+		minSizeComposite.addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				if (!PlatformUI.getWorkbench().isClosing())
+					ViewManager.get().unregisterGLCanvasFromAnimator(glCanvas);
+			}
+		});
 
 		minSizeComposite.setContent(parentComposite);
 
