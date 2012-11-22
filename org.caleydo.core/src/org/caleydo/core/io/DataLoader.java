@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.io;
 
@@ -36,6 +33,9 @@ import org.caleydo.core.id.IDTypeInitializer;
 import org.caleydo.core.io.parser.ascii.GroupingParser;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Creates datadomains, perspectives, etc based on a {@link DataSetDescription}
@@ -46,22 +46,25 @@ import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 public class DataLoader {
 
 	/**
-	 * Creates a {@link ATableBasedDataDomain} and loads the dataset and
-	 * groupings into it. Creates all necessary IDTypes for a dataset. Also does
-	 * the processing of the data.
+	 * Creates a {@link ATableBasedDataDomain} and loads the dataset and groupings into it. Creates all necessary
+	 * IDTypes for a dataset. Also does the processing of the data.
 	 *
 	 * @param dataSetDescription
 	 *            The information for how to create everything
+	 * @return the loaded {@link ATableBasedDataDomain} or null if an error occurred
 	 */
-	public static ATableBasedDataDomain loadData(DataSetDescription dataSetDescription)
-			throws FileNotFoundException, IOException {
+	public static ATableBasedDataDomain loadData(DataSetDescription dataSetDescription) {
 		IDTypeInitializer.initIDs(dataSetDescription);
-		ATableBasedDataDomain dataDomain = loadDataSet(dataSetDescription);
-		loadGroupings(dataDomain, dataSetDescription);
-		runDataProcessing(dataDomain, dataSetDescription);
-		return dataDomain;
+		try {
+			ATableBasedDataDomain dataDomain = loadDataSet(dataSetDescription);
+			loadGroupings(dataDomain, dataSetDescription);
+			runDataProcessing(dataDomain, dataSetDescription);
+			return dataDomain;
+		} catch (Exception e) {
+			Logger.log(new Status(IStatus.ERROR, "DataLoader", "Failed to load data.", e));
+			return null;
+		}
 	}
-
 
 	/**
 	 * Load a single grouping to a {@link ATableBasedDataDomain}
@@ -70,13 +73,10 @@ public class DataLoader {
 	 * @param groupingSpec
 	 *            the specification of the grouping
 	 * */
-	public static void loadGrouping(ATableBasedDataDomain dataDomain,
-			GroupingParseSpecification groupingSpec) {
-		ArrayList<GroupingParseSpecification> groupingList = new ArrayList<GroupingParseSpecification>(
-				1);
+	public static void loadGrouping(ATableBasedDataDomain dataDomain, GroupingParseSpecification groupingSpec) {
+		ArrayList<GroupingParseSpecification> groupingList = new ArrayList<GroupingParseSpecification>(1);
 		groupingList.add(groupingSpec);
-		IDCategory category = IDCategory.getIDCategory(groupingSpec
-				.getRowIDSpecification().getIdCategory());
+		IDCategory category = IDCategory.getIDCategory(groupingSpec.getRowIDSpecification().getIdCategory());
 
 		if (dataDomain.getRecordIDCategory().equals(category)) {
 			loadRecordGroupings(dataDomain, groupingList);
@@ -102,48 +102,40 @@ public class DataLoader {
 		IDSpecification rowIDSpecification = dataSetDescription.getRowIDSpecification();
 
 		if ((rowIDSpecification.isIDTypeGene() && !dataSetDescription.isTransposeMatrix())
-				|| (columnIDSpecification.isIDTypeGene() && dataSetDescription
-						.isTransposeMatrix())) {
+				|| (columnIDSpecification.isIDTypeGene() && dataSetDescription.isTransposeMatrix())) {
 
-			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
-					.createDataDomain("org.caleydo.datadomain.genetic",
-							dataSetDescription);
+			dataDomain = (ATableBasedDataDomain) DataDomainManager.get().createDataDomain(
+					"org.caleydo.datadomain.genetic", dataSetDescription);
 
-		} else if ((columnIDSpecification.isIDTypeGene() && !dataSetDescription
-				.isTransposeMatrix())
-				|| (rowIDSpecification.isIDTypeGene() && dataSetDescription
-						.isTransposeMatrix())) {
+		} else if ((columnIDSpecification.isIDTypeGene() && !dataSetDescription.isTransposeMatrix())
+				|| (rowIDSpecification.isIDTypeGene() && dataSetDescription.isTransposeMatrix())) {
 
-			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
-					.createDataDomain("org.caleydo.datadomain.genetic",
-							dataSetDescription);
+			dataDomain = (ATableBasedDataDomain) DataDomainManager.get().createDataDomain(
+					"org.caleydo.datadomain.genetic", dataSetDescription);
 
 		} else {
 
-			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
-					.createDataDomain("org.caleydo.datadomain.generic",
-							dataSetDescription);
+			dataDomain = (ATableBasedDataDomain) DataDomainManager.get().createDataDomain(
+					"org.caleydo.datadomain.generic", dataSetDescription);
 
 		}
-//		dataDomain.init();
+		// dataDomain.init();
 
 		boolean createDefaultRecordPerspective = true;
 
 		// the place the matrix is stored:
-		DataTableUtils.loadData(dataDomain, dataSetDescription, true,
-				createDefaultRecordPerspective);
+		DataTableUtils.loadData(dataDomain, dataSetDescription, true, createDefaultRecordPerspective);
 		return dataDomain;
 
 	}
 
 	/**
-	 * Loads all groupings for columns and rows that are specified in the
-	 * {@link DataSetDescription}. Respects transposition.
+	 * Loads all groupings for columns and rows that are specified in the {@link DataSetDescription}. Respects
+	 * transposition.
 	 *
 	 * @param dataSetDescription
 	 */
-	public static void loadGroupings(ATableBasedDataDomain dataDomain,
-			DataSetDescription dataSetDescription) {
+	public static void loadGroupings(ATableBasedDataDomain dataDomain, DataSetDescription dataSetDescription) {
 
 		List<GroupingParseSpecification> columnGroupingSpecifications = dataSetDescription
 				.getColumnGroupingSpecifications();
@@ -155,8 +147,7 @@ public class DataLoader {
 			}
 		}
 
-		List<GroupingParseSpecification> rowGroupingSpecifications = dataSetDescription
-				.getRowGroupingSpecifications();
+		List<GroupingParseSpecification> rowGroupingSpecifications = dataSetDescription.getRowGroupingSpecifications();
 		if (rowGroupingSpecifications != null) {
 
 			if (dataSetDescription.isTransposeMatrix()) {
@@ -179,12 +170,11 @@ public class DataLoader {
 
 		IDType targetIDType = dataDomain.getDimensionIDType();
 
-		List<PerspectiveInitializationData> dimensionPerspectivesInitData = parseGrouping(
-				dimensionGroupings, targetIDType);
+		List<PerspectiveInitializationData> dimensionPerspectivesInitData = parseGrouping(dimensionGroupings,
+				targetIDType);
 
 		for (PerspectiveInitializationData data : dimensionPerspectivesInitData) {
-			DimensionPerspective dimensionPerspective = new DimensionPerspective(
-					dataDomain);
+			DimensionPerspective dimensionPerspective = new DimensionPerspective(dataDomain);
 			dimensionPerspective.init(data);
 			dataDomain.getTable().registerDimensionPerspective(dimensionPerspective);
 		}
@@ -202,8 +192,7 @@ public class DataLoader {
 
 		IDType targetIDType = dataDomain.getRecordIDType();
 
-		List<PerspectiveInitializationData> dimensionPerspectivesInitData = parseGrouping(
-				recordGroupings, targetIDType);
+		List<PerspectiveInitializationData> dimensionPerspectivesInitData = parseGrouping(recordGroupings, targetIDType);
 
 		for (PerspectiveInitializationData data : dimensionPerspectivesInitData) {
 			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
@@ -213,16 +202,14 @@ public class DataLoader {
 	}
 
 	/**
-	 * Runs the parser on the groupings and returns a lisst of
-	 * {@link PerspectiveInitializationData}
+	 * Runs the parser on the groupings and returns a lisst of {@link PerspectiveInitializationData}
 	 *
 	 * @param groupingSpecifications
 	 * @param targetIDType
 	 * @return
 	 */
 	private static List<PerspectiveInitializationData> parseGrouping(
-			List<GroupingParseSpecification> groupingSpecifications,
-			IDType targetIDType) {
+			List<GroupingParseSpecification> groupingSpecifications, IDType targetIDType) {
 
 		List<PerspectiveInitializationData> perspectiveDatas = new ArrayList<PerspectiveInitializationData>();
 		for (GroupingParseSpecification groupingSpecification : groupingSpecifications) {
@@ -233,15 +220,12 @@ public class DataLoader {
 		return perspectiveDatas;
 	}
 
-	private static void runDataProcessing(ATableBasedDataDomain dataDomain,
-			DataSetDescription dataSetDescription) {
-		DataProcessingDescription dataProcessingDescription = dataSetDescription
-				.getDataProcessingDescription();
+	private static void runDataProcessing(ATableBasedDataDomain dataDomain, DataSetDescription dataSetDescription) {
+		DataProcessingDescription dataProcessingDescription = dataSetDescription.getDataProcessingDescription();
 		if (dataProcessingDescription == null)
 			return;
 
-		List<ClusterConfiguration> rowClusterConfigurations = dataProcessingDescription
-				.getRowClusterConfigurations();
+		List<ClusterConfiguration> rowClusterConfigurations = dataProcessingDescription.getRowClusterConfigurations();
 		if (rowClusterConfigurations != null) {
 			for (ClusterConfiguration clusterConfiguration : rowClusterConfigurations) {
 				if (dataSetDescription.isTransposeMatrix()) {
@@ -251,8 +235,7 @@ public class DataLoader {
 				}
 				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
 						.getDefaultDimensionPerspective());
-				clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable()
-						.getDefaultRecordPerspective());
+				clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable().getDefaultRecordPerspective());
 
 				dataDomain.startClustering(clusterConfiguration);
 			}
@@ -270,8 +253,7 @@ public class DataLoader {
 				}
 				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
 						.getDefaultDimensionPerspective());
-				clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable()
-						.getDefaultRecordPerspective());
+				clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable().getDefaultRecordPerspective());
 
 				dataDomain.startClustering(clusterConfiguration);
 			}
@@ -289,16 +271,14 @@ public class DataLoader {
 		clusterConfiguration.setOptionalTargetRecordPerspective(targetRecordPerspective);
 	}
 
-	private static void setUpDimensionClustering(
-			ClusterConfiguration clusterConfiguration, ATableBasedDataDomain dataDomain) {
+	private static void setUpDimensionClustering(ClusterConfiguration clusterConfiguration,
+			ATableBasedDataDomain dataDomain) {
 		clusterConfiguration.setClusterTarget(EClustererTarget.DIMENSION_CLUSTERING);
-		DimensionPerspective targetDimensionPerspective = new DimensionPerspective(
-				dataDomain);
+		DimensionPerspective targetDimensionPerspective = new DimensionPerspective(dataDomain);
 		dataDomain.getTable().registerDimensionPerspective(targetDimensionPerspective);
 
 		targetDimensionPerspective.setLabel(clusterConfiguration.toString(), false);
-		clusterConfiguration
-				.setOptionalTargetDimensionPerspective(targetDimensionPerspective);
+		clusterConfiguration.setOptionalTargetDimensionPerspective(targetDimensionPerspective);
 	}
 
 }

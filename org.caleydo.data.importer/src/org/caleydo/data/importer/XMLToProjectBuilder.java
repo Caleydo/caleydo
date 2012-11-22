@@ -1,27 +1,22 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.data.importer;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -37,8 +32,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectManager;
 
 /**
- * This class handles the creation of Caleydo project files. The class takes an
- * XML file as input.
+ * This class handles the creation of Caleydo project files. The class takes an XML file as input.
  *
  * @author Alexander Lex
  * @author Marc Streit
@@ -50,18 +44,14 @@ public class XMLToProjectBuilder {
 		GeneralManager.get().setDryMode(true);
 
 		Collection<ATableBasedDataDomain> dataDomains = new ArrayList<>();
-		try {
-			// Iterate over data type sets and trigger processing
-			for (DataSetDescription dataSetDescription : projectDescription.getDataSetDescriptionCollection()) {
-				dataDomains.add(DataLoader.loadData(dataSetDescription));
-			}
+
+		// Iterate over data type sets and trigger processing
+		for (DataSetDescription dataSetDescription : projectDescription.getDataSetDescriptionCollection()) {
+			ATableBasedDataDomain dataDomain = DataLoader.loadData(dataSetDescription);
+			if (dataDomain != null)
+				dataDomains.add(dataDomain);
 		}
-		catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
+
 		ProjectManager.save(projectFileOutputPath, true, dataDomains);
 
 		return dataDomains;
@@ -77,8 +67,7 @@ public class XMLToProjectBuilder {
 			serializableClasses[0] = DataSetDescription.class;
 			serializableClasses[1] = ProjectDescription.class;
 			return JAXBContext.newInstance(serializableClasses);
-		}
-		catch (JAXBException ex) {
+		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
 	}
@@ -91,8 +80,7 @@ public class XMLToProjectBuilder {
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 
 			dataTypeSetCollection = (ProjectDescription) unmarshaller.unmarshal(new File(file));
-		}
-		catch (JAXBException ex) {
+		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
 

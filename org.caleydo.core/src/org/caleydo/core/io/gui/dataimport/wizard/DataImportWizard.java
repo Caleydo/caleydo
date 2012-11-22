@@ -1,12 +1,11 @@
 /**
- * 
+ *
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+
 import org.caleydo.core.io.DataLoader;
 import org.caleydo.core.io.DataSetDescription;
 import org.eclipse.jface.dialogs.IPageChangeProvider;
@@ -14,18 +13,16 @@ import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.Wizard;
 
 /**
- * Wizard that guides the user through the different steps of importing a
- * dataset: 1. Dataset Specification, 2. Dataset Transformation, 3. Loading of
- * groupings. The user may finish the import after completing the first step.
- * 
+ * Wizard that guides the user through the different steps of importing a dataset: 1. Dataset Specification, 2. Dataset
+ * Transformation, 3. Loading of groupings. The user may finish the import after completing the first step.
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class DataImportWizard extends Wizard {
 
 	/**
-	 * The {@link DataSetDescription} specified by this wizard that is used to
-	 * load the dataset.
+	 * The {@link DataSetDescription} specified by this wizard that is used to load the dataset.
 	 */
 	private DataSetDescription dataSetDescription;
 
@@ -45,8 +42,7 @@ public class DataImportWizard extends Wizard {
 	private TransformDataPage transformDataPage;
 
 	/**
-	 * Determines whether all required data has been specified and the dialog
-	 * can be finished.
+	 * Determines whether all required data has been specified and the dialog can be finished.
 	 */
 	private boolean requiredDataSpecified = false;
 
@@ -63,18 +59,18 @@ public class DataImportWizard extends Wizard {
 	private Set<AImportDataPage> visitedPages = new HashSet<AImportDataPage>();
 
 	/**
-	 * 
+	 *
 	 */
 	public DataImportWizard() {
 		dataSetDescription = new DataSetDescription();
 		setWindowTitle("Data Import Wizard");
-//		setHelpAvailable(true);
+		// setHelpAvailable(true);
 	}
 
 	public DataImportWizard(DataSetDescription dataSetDescription) {
 		this.dataSetDescription = dataSetDescription;
 		setWindowTitle("Data Import Wizard");
-//		setHelpAvailable(true);
+		// setHelpAvailable(true);
 	}
 
 	@Override
@@ -99,29 +95,19 @@ public class DataImportWizard extends Wizard {
 	@Override
 	public boolean performFinish() {
 
-		if (visitedPages.contains(loadDataSetPage)
-				|| getContainer().getCurrentPage().equals(loadDataSetPage))
+		if (visitedPages.contains(loadDataSetPage) || getContainer().getCurrentPage().equals(loadDataSetPage))
 			loadDataSetPage.fillDataSetDescription();
-		if (visitedPages.contains(transformDataPage)
-				|| getContainer().getCurrentPage().equals(transformDataPage))
+		if (visitedPages.contains(transformDataPage) || getContainer().getCurrentPage().equals(transformDataPage))
 			transformDataPage.fillDataSetDescription();
-		if (visitedPages.contains(addGroupingsPage)
-				|| getContainer().getCurrentPage().equals(addGroupingsPage))
+		if (visitedPages.contains(addGroupingsPage) || getContainer().getCurrentPage().equals(addGroupingsPage))
 			addGroupingsPage.fillDataSetDescription();
 
 		// ATableBasedDataDomain dataDomain;
-		try {
-			DataLoader.loadData(dataSetDescription);
-		} catch (FileNotFoundException e1) {
-			// TODO do something intelligent
-			e1.printStackTrace();
-			throw new IllegalStateException();
 
-		} catch (IOException e1) {
-			// TODO do something intelligent
-			e1.printStackTrace();
-			throw new IllegalStateException();
-		}
+		DataLoader.loadData(dataSetDescription);
+
+		// todo handle failure
+
 		// try {
 		//
 		// String secondaryID = UUID.randomUUID().toString();

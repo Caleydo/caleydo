@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.data.importer.tcga;
 
@@ -55,7 +52,6 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 
 	private final String dataSetName;
 
-
 	private TCGADataSetBuilder(String tumorAbbreviation, EDataSetType datasetType, String dataSetName,
 			FirehoseProvider fileProvider, boolean loadSampledGenes) {
 		this.tumorAbbreviation = tumorAbbreviation;
@@ -72,20 +68,17 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 	}
 
 	public static ForkJoinTask<DataSetDescription> create(String tumorAbbreviation, EDataSetType datasetType,
-			String dataSetName,
-			FirehoseProvider fileProvider) {
+			String dataSetName, FirehoseProvider fileProvider) {
 		return create(tumorAbbreviation, datasetType, dataSetName, fileProvider, true);
 	}
 
 	public static ForkJoinTask<DataSetDescription> create(String tumorAbbreviation, EDataSetType datasetType,
-			FirehoseProvider fileProvider,
-			boolean loadSampledGenes) {
+			FirehoseProvider fileProvider, boolean loadSampledGenes) {
 		return create(tumorAbbreviation, datasetType, datasetType.getName(), fileProvider, loadSampledGenes);
 	}
 
 	public static ForkJoinTask<DataSetDescription> create(String tumorAbbreviation, EDataSetType datasetType,
-			String dataSetName,
-			FirehoseProvider fileProvider, boolean loadSampledGenes) {
+			String dataSetName, FirehoseProvider fileProvider, boolean loadSampledGenes) {
 		return new TCGADataSetBuilder(tumorAbbreviation, datasetType, dataSetName, fileProvider, loadSampledGenes);
 	}
 
@@ -174,8 +167,16 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		dataSet.setDataSetName(dataSetName);
 		dataSet.setColor(dataSetType.getColor());
 		dataSet.setDataSourcePath(matrixFile.getPath());
-		dataSet.setNumberOfHeaderLines(3);
-		dataSet.setDataCenter(0d);
+		if (loadSampledGenes) {
+			// the gct files have 3 header lines and are centered<
+			dataSet.setNumberOfHeaderLines(3);
+			dataSet.setDataCenter(0d);
+		} else {
+			// the files with all the genes have the ids in the first row, then a row with "signal" and then the data
+			dataSet.setNumberOfHeaderLines(2);
+			dataSet.setRowOfColumnIDs(0);
+
+		}
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
@@ -218,7 +219,7 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		dataSet.setDataProcessingDescription(dataProcessingDescription);
 		// here we turn on sampling to 1500
-		dataProcessingDescription.setNrRowsInSample(1500);
+		// dataProcessingDescription.setNrRowsInSample(1500);
 
 		return dataSet;
 	}
@@ -337,9 +338,9 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		// split into parts
 		String[][] parts = new String[data.size()][];
 		int maxCol = -1;
-		for(int i = 0; i < data.size(); ++i) {
-			 parts[i] = data.get(i).split("\t");
-			 if (parts[i].length > maxCol)
+		for (int i = 0; i < data.size(); ++i) {
+			parts[i] = data.get(i).split("\t");
+			if (parts[i].length > maxCol)
 				maxCol = parts[i].length;
 		}
 		data = null;

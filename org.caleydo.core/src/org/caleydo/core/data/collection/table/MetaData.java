@@ -1,35 +1,35 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ *
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.data.collection.table;
 
 import javax.naming.OperationNotSupportedException;
+
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.collection.dimension.NominalColumn;
 import org.caleydo.core.data.collection.dimension.NumericalColumn;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 /**
- * This class encapsulates all metadata related operations for DataTables.
- * Examples are size, depth and histograms.
- * 
+ * This class encapsulates all metadata related operations for DataTables. Examples are size, depth and histograms.
+ *
  * @author Alexander Lex
  */
 public class MetaData {
@@ -53,7 +53,7 @@ public class MetaData {
 
 	/**
 	 * Get the number of dimensions in a set
-	 * 
+	 *
 	 * @return
 	 */
 	public int size() {
@@ -65,9 +65,8 @@ public class MetaData {
 	}
 
 	/**
-	 * Get the depth of the set, which is the number of records, the length of
-	 * the dimensions
-	 * 
+	 * Get the depth of the set, which is the number of records, the length of the dimensions
+	 *
 	 * @return the number of elements in the dimensions contained in the list
 	 */
 	public int depth() {
@@ -104,7 +103,7 @@ public class MetaData {
 
 	/**
 	 * Get the minimum value in the table.
-	 * 
+	 *
 	 * @throws OperationNotSupportedException
 	 *             when executed on nominal data
 	 * @return the absolute minimum value in the set
@@ -118,7 +117,7 @@ public class MetaData {
 
 	/**
 	 * Get the maximum value in the table.
-	 * 
+	 *
 	 * @throws OperationNotSupportedException
 	 *             when executed on nominal data
 	 * @return the absolute minimum value in the set
@@ -131,9 +130,8 @@ public class MetaData {
 	}
 
 	/**
-	 * Set an artificial minimum for the datatable. All elements smaller than
-	 * that are clipped to this value in the representation. This only affects
-	 * the normalization, does not alter the raw data
+	 * Set an artificial minimum for the datatable. All elements smaller than that are clipped to this value in the
+	 * representation. This only affects the normalization, does not alter the raw data
 	 */
 	void setMin(double dMin) {
 		artificialMin = true;
@@ -141,9 +139,8 @@ public class MetaData {
 	}
 
 	/**
-	 * Set an artificial maximum for the DataTable. All elements smaller than
-	 * that are clipped to this value in the representation. This only affects
-	 * the normalization, does not alter the raw data
+	 * Set an artificial maximum for the DataTable. All elements smaller than that are clipped to this value in the
+	 * representation. This only affects the normalization, does not alter the raw data
 	 */
 	void setMax(double dMax) {
 		artificialMax = true;
@@ -152,13 +149,12 @@ public class MetaData {
 
 	/**
 	 * Gets the minimum value in the set in the specified data representation.
-	 * 
+	 *
 	 * @param dataRepresentation
 	 *            Data representation the minimum value shall be returned in.
 	 * @throws OperationNotSupportedException
 	 *             when executed on nominal data
-	 * @return The absolute minimum value in the set in the specified data
-	 *         representation.
+	 * @return The absolute minimum value in the set in the specified data representation.
 	 */
 	public double getMinAs(EDataTransformation dataRepresentation) {
 		if (min == Double.MAX_VALUE) {
@@ -173,13 +169,12 @@ public class MetaData {
 
 	/**
 	 * Gets the maximum value in the set in the specified data representation.
-	 * 
+	 *
 	 * @param dataRepresentation
 	 *            Data representation the maximum value shall be returned in.
 	 * @throws OperationNotSupportedException
 	 *             when executed on nominal data
-	 * @return The absolute maximum value in the set in the specified data
-	 *         representation.
+	 * @return The absolute maximum value in the set in the specified data representation.
 	 */
 	public double getMaxAs(EDataTransformation dataRepresentation) {
 		if (max == Double.MIN_VALUE) {
@@ -194,13 +189,12 @@ public class MetaData {
 
 	/**
 	 * Converts a raw value to the specified data representation.
-	 * 
+	 *
 	 * @param dRaw
 	 *            Raw value that shall be converted
 	 * @param dataRepresentation
 	 *            Data representation the raw value shall be converted to.
-	 * @return Value in the specified data representation converted from the raw
-	 *         value.
+	 * @return Value in the specified data representation converted from the raw value.
 	 */
 	private double getDataRepFromRaw(double dRaw, EDataTransformation dataRepresentation) {
 		switch (dataRepresentation) {
@@ -211,16 +205,13 @@ public class MetaData {
 		case LOG10:
 			return Math.log10(dRaw);
 		default:
-			throw new IllegalStateException(
-					"Conversion to data rep not implemented for data rep"
-							+ dataRepresentation);
+			throw new IllegalStateException("Conversion to data rep not implemented for data rep" + dataRepresentation);
 		}
 	}
 
 	/**
-	 * Converts the specified value into raw using the current external data
-	 * representation.
-	 * 
+	 * Converts the specified value into raw using the current external data representation.
+	 *
 	 * @param dNumber
 	 *            Value in the current external data representation.
 	 * @return Raw value converted from the specified value.
@@ -234,9 +225,7 @@ public class MetaData {
 		case LOG10:
 			return Math.pow(10, dNumber);
 		default:
-			throw new IllegalStateException(
-					"Conversion to raw not implemented for data rep"
-							+ table.externalDataTrans);
+			throw new IllegalStateException("Conversion to raw not implemented for data rep" + table.externalDataTrans);
 		}
 	}
 
@@ -263,9 +252,19 @@ public class MetaData {
 			}
 			if (dataCenter != null) {
 				if (min > dataCenter || max < dataCenter) {
-					throw new IllegalStateException("DataCentered was set to "
-							+ dataCenter + ", but min (" + min + ") is larger or max ("
-							+ max + ") is smaller than data center");
+					dataCenter = null;
+
+					Logger.log(new Status(
+							IStatus.WARNING,
+							this.toString(),
+							"DataCentered was set to "
+									+ dataCenter
+									+ ", but min ("
+									+ min
+									+ ") is larger or max ("
+									+ max
+									+ ") is smaller than data center. This means that the dataCenter was inccoretly set. Setting dataCenter to null!"));
+					return;
 				}
 
 				double lowerDelta = Math.abs(min - dataCenter);
@@ -278,8 +277,7 @@ public class MetaData {
 			}
 
 		} else if (table.hashColumns.get(0) instanceof NominalColumn<?>) {
-			throw new UnsupportedOperationException(
-					"No minimum or maximum can be calculated " + "on nominal data");
+			throw new UnsupportedOperationException("No minimum or maximum can be calculated " + "on nominal data");
 		}
 	}
 }
