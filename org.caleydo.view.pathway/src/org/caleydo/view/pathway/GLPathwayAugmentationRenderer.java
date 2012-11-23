@@ -1,16 +1,16 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
  * University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
@@ -44,7 +46,7 @@ import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 
 /**
  * Class responsible for rendering all augmentations on top of the pathway texture.
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -99,7 +101,7 @@ public class GLPathwayAugmentationRenderer {
 		selectedEdgeRepId = new ArrayList<Integer>();
 
 		pathwayItemManager = PathwayItemManager.get();
-		
+
 
 	}
 
@@ -291,7 +293,7 @@ public class GLPathwayAugmentationRenderer {
 
 		framedEnzymeNodeDisplayListId = gl.glGenLists(1);
 		framedMappedEnzymeNodeDisplayListId = gl.glGenLists(1);
-		
+
 		float nodeWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
 				PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH);
 		float nodeHeight = glPathwayView.getPixelGLConverter().getGLHeightForPixelHeight(
@@ -302,11 +304,11 @@ public class GLPathwayAugmentationRenderer {
 		onePxlWidth = pixelGLConverter.getGLWidthForPixelWidth(1);
 		onePxlHeight = pixelGLConverter.getGLHeightForPixelHeight(1);
 		stdDevBarHeight_1_third=(stdBarHeight/3f);
-		
+
 		gl.glNewList(framedEnzymeNodeDisplayListId, GL2.GL_COMPILE);
 		fillNodeDisplayListFrame(gl, nodeWidth+onePxlWidth, nodeHeight);
 		gl.glEndList();
-		
+
 		gl.glNewList(framedMappedEnzymeNodeDisplayListId, GL2.GL_COMPILE);
 		fillNodeDisplayListFrame(gl, nodeWidth+onePxlWidth, nodeHeight+(2f*stdDevBarHeight_1_third)-onePxlHeight);
 		gl.glEndList();
@@ -424,7 +426,7 @@ public class GLPathwayAugmentationRenderer {
 					gl.glPopName();
 					return;
 				}
-				
+
 				float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(vertexRep.getWidth());
 				float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(vertexRep.getHeight());
 
@@ -578,10 +580,10 @@ public class GLPathwayAugmentationRenderer {
 							gl.glDisable(GL2.GL_BLEND);
 							//gl.glStencilFunc(GL2.GL_EQUAL, 0, 1);
 							gl.glStencilFunc(GL2.GL_GREATER, 2, 0xff);
-							gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);							
+							gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);
 							//gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 							gl.glCallList(enzymeNodeDisplayListId);
-							
+
 							gl.glEnable(GL2.GL_DEPTH_TEST);
 							gl.glDisable(GL2.GL_STENCIL_TEST);
 							// gl.glBegin(GL.gl)
@@ -591,11 +593,8 @@ public class GLPathwayAugmentationRenderer {
 							// max std dev is 0.5 -> thus we multiply it with 2
 							Float stdDev = pixelGLConverter
 									.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH)
-									* (float) average.getStandardDeviation() * 5.0f;
-									//.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT)
-									//* (float) average.getStandardDeviation() * 5.0f;
-									
-									
+								* (float) average.getStandardDeviation() * 2.0f;
+
 							float x = pixelGLConverter
 									.getGLWidthForPixelWidth(PathwayRenderStyle.ENZYME_NODE_PIXEL_WIDTH + 1);
 							float y = -pixelGLConverter
@@ -604,7 +603,7 @@ public class GLPathwayAugmentationRenderer {
 
 							// rendering the std-dev box
 							if (!stdDev.isNaN() && selectedSamplesVA.size() > 1) {
-//////////////////////////////// v bars 
+//////////////////////////////// v bars
 //								// // opaque background
 //								gl.glColor4f(1, 1, 1, 1f);
 //								gl.glBegin(GL2.GL_QUADS);
@@ -656,7 +655,7 @@ public class GLPathwayAugmentationRenderer {
 //								gl.glColorMask(true, true, true, true);
 //								gl.glEnable(GL2.GL_DEPTH_TEST);
 //								gl.glEnable(GL2.GL_BLEND);
-								
+
 								//////////////////////////////// h bars
 								gl.glDisable(GL2.GL_BLEND);
 								gl.glColor4f(1, 1, 1, 1f);
@@ -664,10 +663,10 @@ public class GLPathwayAugmentationRenderer {
 								gl.glVertex3f(0, y -(2f*stdDevBarHeight_1_third), PathwayRenderStyle.Z_OFFSET);
 								gl.glVertex3f(0, y + stdDevBarHeight_1_third -onePxlHeight, PathwayRenderStyle.Z_OFFSET);
 								gl.glVertex3f(x, y + stdDevBarHeight_1_third -onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-								gl.glVertex3f(x, y -(2f*stdDevBarHeight_1_third), PathwayRenderStyle.Z_OFFSET);								
+								gl.glVertex3f(x, y -(2f*stdDevBarHeight_1_third), PathwayRenderStyle.Z_OFFSET);
 								gl.glEnd();
 
-								
+
 								gl.glColor4fv(PathwayRenderStyle.STD_DEV_COLOR, 0);
 								gl.glBegin(GL2.GL_QUADS);
 								gl.glVertex3f(0, y-(2f*stdDevBarHeight_1_third), PathwayRenderStyle.Z_OFFSET);
@@ -681,13 +680,13 @@ public class GLPathwayAugmentationRenderer {
 								gl.glColor4f(0, 0, 0, 1f);
 								gl.glLineWidth(1.f);
 								//gl.glEnable(GL2.GL_LINE_SMOOTH);
-									
-								gl.glDisable(GL2.GL_LINE_SMOOTH);								
-								gl.glBegin(GL2.GL_LINE_LOOP);							
+
+								gl.glDisable(GL2.GL_LINE_SMOOTH);
+								gl.glBegin(GL2.GL_LINE_LOOP);
 								gl.glVertex3f(0+onePxlWidth, y -(2f*stdDevBarHeight_1_third) , PathwayRenderStyle.Z_OFFSET);
 								gl.glVertex3f(0+onePxlWidth, y + stdDevBarHeight_1_third - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
 								gl.glVertex3f(x+onePxlWidth, y + stdDevBarHeight_1_third - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-								gl.glVertex3f(x+onePxlWidth, y -(2f*stdDevBarHeight_1_third) , PathwayRenderStyle.Z_OFFSET);		
+								gl.glVertex3f(x+onePxlWidth, y -(2f*stdDevBarHeight_1_third) , PathwayRenderStyle.Z_OFFSET);
 								gl.glEnd();
 
 								// // // create mask
@@ -702,14 +701,14 @@ public class GLPathwayAugmentationRenderer {
 									gl.glVertex3f(0, y -(2f*stdDevBarHeight_1_third), PathwayRenderStyle.Z_OFFSET);
 									gl.glVertex3f(0, y + stdDevBarHeight_1_third - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
 									gl.glVertex3f(x, y + stdDevBarHeight_1_third - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-									gl.glVertex3f(x, y -(2f*stdDevBarHeight_1_third), PathwayRenderStyle.Z_OFFSET);								
+									gl.glVertex3f(x, y -(2f*stdDevBarHeight_1_third), PathwayRenderStyle.Z_OFFSET);
 									gl.glEnd();
 //
-									gl.glBegin(GL2.GL_LINE_LOOP);							
+									gl.glBegin(GL2.GL_LINE_LOOP);
 									gl.glVertex3f(0+onePxlWidth, y -(2f*stdDevBarHeight_1_third) , PathwayRenderStyle.Z_OFFSET);
 									gl.glVertex3f(0+onePxlWidth, y + stdDevBarHeight_1_third - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
 									gl.glVertex3f(x+onePxlWidth, y + stdDevBarHeight_1_third - onePxlHeight, PathwayRenderStyle.Z_OFFSET);
-									gl.glVertex3f(x+onePxlWidth, y -(2f*stdDevBarHeight_1_third) , PathwayRenderStyle.Z_OFFSET);		
+									gl.glVertex3f(x+onePxlWidth, y -(2f*stdDevBarHeight_1_third) , PathwayRenderStyle.Z_OFFSET);
 									gl.glEnd();
 								//
 								gl.glDisable(GL2.GL_STENCIL_TEST);
@@ -718,7 +717,7 @@ public class GLPathwayAugmentationRenderer {
 								gl.glEnable(GL2.GL_BLEND);
 
 							}
-							
+
 							// Handle selection highlighting of element
 							if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
 								tmpNodeColor = SelectionType.SELECTION.getColor();
@@ -776,7 +775,7 @@ public class GLPathwayAugmentationRenderer {
 							gl.glColorMask(true, true, true, true);
 							gl.glEnable(GL2.GL_DEPTH_TEST);
 							gl.glEnable(GL2.GL_BLEND);
-							
+
 							// Handle selection highlighting of element
 							if (vertexSelectionManager.checkStatus(SelectionType.SELECTION, vertexRep.getID())) {
 								tmpNodeColor = SelectionType.SELECTION.getColor();
@@ -829,9 +828,9 @@ public class GLPathwayAugmentationRenderer {
 						gl.glColor4f(0, 0, 0, 0);
 						gl.glCallList(enzymeNodeDisplayListId);
 
-						
+
 						tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
-						gl.glColor4f(tmpNodeColor[0], tmpNodeColor[1], tmpNodeColor[2], 0.7f);						
+						gl.glColor4f(tmpNodeColor[0], tmpNodeColor[1], tmpNodeColor[2], 0.7f);
 //						gl.glCallList(compoundNodeDisplayListId);
 						float boxWidth = glPathwayView.getPixelGLConverter().getGLWidthForPixelWidth(
 								PathwayRenderStyle.COMPOUND_NODE_PIXEL_WIDTH);
@@ -839,7 +838,7 @@ public class GLPathwayAugmentationRenderer {
 								PathwayRenderStyle.COMPOUND_NODE_PIXEL_HEIGHT);
 						float y = -pixelGLConverter
 								.getGLHeightForPixelHeight(PathwayRenderStyle.ENZYME_NODE_PIXEL_HEIGHT);
-						
+
 						gl.glDisable(GL2.GL_DEPTH_TEST);
 						gl.glBegin(GL2.GL_QUADS);
 							gl.glNormal3f(0.0f, 0.0f, 1.0f);
@@ -1130,9 +1129,9 @@ public class GLPathwayAugmentationRenderer {
 
 	/**
 	 * Calculates the average value of the selected samples (taken from {@link #selectedSamplesVA}) selectedSamplesVA.
-	 * 
+	 *
 	 * FIXME: doesn't consider multi-mappings atm.
-	 * 
+	 *
 	 * @param vertexRep
 	 * @return
 	 */
