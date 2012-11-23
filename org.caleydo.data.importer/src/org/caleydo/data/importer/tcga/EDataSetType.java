@@ -71,6 +71,8 @@ public enum EDataSetType {
 			return "Mutation";
 		case clinical:
 			return "Clinical";
+		case mRNAseq:
+			return "mRNAseq";
 		case microRNA:
 			return "miR";
 		case microRNAseq:
