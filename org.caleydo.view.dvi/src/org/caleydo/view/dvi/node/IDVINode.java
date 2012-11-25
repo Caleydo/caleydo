@@ -22,7 +22,9 @@ package org.caleydo.view.dvi.node;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Pair;

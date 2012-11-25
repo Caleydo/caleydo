@@ -66,7 +66,6 @@ import org.caleydo.core.event.view.group.MergeContentGroupsEvent;
 import org.caleydo.core.event.view.group.MergeDimensionGroupsEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.gui.ExportDataDialog;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.mapping.color.IColorMappingUpdateListener;
 import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
@@ -97,8 +96,6 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
-import org.caleydo.core.view.vislink.RemoteRenderingTransformer;
 import org.caleydo.datadomain.pathway.contextmenu.container.GeneGroupContextMenuItemContainer;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
@@ -266,12 +263,6 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	// private org.eclipse.swt.graphics.Point upperLeftScreenPos = new
 	// org.eclipse.swt.graphics.Point(0, 0);
 
-	/**
-	 * Transformation utility object to transform and project view related
-	 * coordinates
-	 */
-	private RemoteRenderingTransformer selectionTransformer;
-
 	private RemoteLevelElement heatMapRemoteElement;
 
 	/**
@@ -303,8 +294,6 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		ArrayList<RemoteLevelElement> remoteLevelElementWhiteList = new ArrayList<RemoteLevelElement>();
 		remoteLevelElementWhiteList.add(heatMapRemoteElement);
-		selectionTransformer = new RemoteRenderingTransformer(uniqueID,
-				remoteLevelElementWhiteList);
 
 	}
 
@@ -768,10 +757,6 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	public void displayRemote(GL2 gl) {
 
 		display(gl);
-
-		ConnectedElementRepresentationManager cerm = GeneralManager.get()
-				.getViewManager().getConnectedElementRepresentationManager();
-		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 	}
 
@@ -2582,10 +2567,6 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		} else {
 			throw new IllegalStateException();
 		}
-
-		ConnectedElementRepresentationManager cerm = GeneralManager.get()
-				.getViewManager().getConnectedElementRepresentationManager();
-		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		if (!lazyMode)
 			checkForHits(gl);

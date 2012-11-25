@@ -21,11 +21,14 @@ package org.caleydo.view.dvi.layout.edge.rendering.connectors;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
+
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;

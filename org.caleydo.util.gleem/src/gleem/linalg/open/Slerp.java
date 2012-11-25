@@ -2,6 +2,7 @@ package gleem.linalg.open;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL2;
 
 /**

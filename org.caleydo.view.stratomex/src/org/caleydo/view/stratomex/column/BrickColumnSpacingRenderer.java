@@ -22,7 +22,9 @@ package org.caleydo.view.stratomex.column;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;

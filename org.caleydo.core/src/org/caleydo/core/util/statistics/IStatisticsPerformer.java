@@ -20,6 +20,7 @@
 package org.caleydo.core.util.statistics;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
 
 public interface IStatisticsPerformer {

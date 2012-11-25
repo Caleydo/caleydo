@@ -6,6 +6,7 @@ package org.caleydo.core.io.gui.dataimport.wizard;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.ColumnDescription;

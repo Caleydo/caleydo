@@ -23,6 +23,7 @@
 package org.caleydo.view.stratomex.brick.ui;
 
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.layout.BrickColors;

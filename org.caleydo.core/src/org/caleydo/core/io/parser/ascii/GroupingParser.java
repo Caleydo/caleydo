@@ -22,6 +22,7 @@ package org.caleydo.core.io.parser.ascii;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDMappingManager;

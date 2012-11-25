@@ -21,6 +21,7 @@ package org.caleydo.view.search;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.serialize.ASerializedView;
 
 /**

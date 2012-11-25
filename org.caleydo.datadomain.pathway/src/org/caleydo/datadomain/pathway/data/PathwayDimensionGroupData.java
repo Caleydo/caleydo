@@ -22,6 +22,7 @@ package org.caleydo.datadomain.pathway.data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;

@@ -20,6 +20,7 @@
 package org.caleydo.view.parcoords.preferences;
 
 import java.util.Collection;
+
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;

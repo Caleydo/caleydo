@@ -20,9 +20,12 @@
 package org.caleydo.view.dvi.layout.edge.rendering;
 
 import gleem.linalg.Vec3f;
+
 import java.awt.geom.Point2D;
 import java.util.List;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.dvi.Edge;
 import org.caleydo.view.dvi.GLDataViewIntegrator;

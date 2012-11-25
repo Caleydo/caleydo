@@ -6,6 +6,7 @@ package org.caleydo.core.io.gui.dataimport;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;

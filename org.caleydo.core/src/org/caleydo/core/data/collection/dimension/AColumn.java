@@ -21,6 +21,7 @@ package org.caleydo.core.data.collection.dimension;
 
 import java.util.EnumMap;
 import java.util.Iterator;
+
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.ICollection;
 import org.caleydo.core.data.collection.container.FloatContainer;

@@ -4,6 +4,7 @@
 package org.caleydo.view.enroute;
 
 import java.util.List;
+
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.color.Color;
 

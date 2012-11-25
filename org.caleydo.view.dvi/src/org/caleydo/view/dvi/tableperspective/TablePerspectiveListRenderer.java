@@ -23,7 +23,9 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;

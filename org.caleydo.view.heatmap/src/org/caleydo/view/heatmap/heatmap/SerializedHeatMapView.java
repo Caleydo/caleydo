@@ -21,6 +21,7 @@ package org.caleydo.view.heatmap.heatmap;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 

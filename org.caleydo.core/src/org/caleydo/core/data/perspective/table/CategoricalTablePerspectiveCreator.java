@@ -24,6 +24,7 @@ package org.caleydo.core.data.perspective.table;
  *******************************************************************************/
 import java.util.ArrayList;
 import java.util.List;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;

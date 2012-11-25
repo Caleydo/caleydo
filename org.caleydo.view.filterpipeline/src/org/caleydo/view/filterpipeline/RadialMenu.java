@@ -20,9 +20,12 @@
 package org.caleydo.view.filterpipeline;
 
 import gleem.linalg.Vec2f;
+
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.media.opengl.GL2;
+
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 

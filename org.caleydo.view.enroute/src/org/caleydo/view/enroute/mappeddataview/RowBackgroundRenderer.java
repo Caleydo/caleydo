@@ -20,6 +20,7 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 /**

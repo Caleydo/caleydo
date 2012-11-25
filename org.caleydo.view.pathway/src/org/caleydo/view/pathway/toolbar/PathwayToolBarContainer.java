@@ -18,6 +18,7 @@ package org.caleydo.view.pathway.toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.gui.toolbar.IToolBarItem;

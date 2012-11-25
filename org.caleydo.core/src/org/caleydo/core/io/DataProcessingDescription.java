@@ -20,6 +20,7 @@
 package org.caleydo.core.io;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 
 /**

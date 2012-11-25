@@ -21,8 +21,10 @@ package org.caleydo.view.info.selection;
 
 import java.util.HashMap;
 import java.util.Set;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionManager;

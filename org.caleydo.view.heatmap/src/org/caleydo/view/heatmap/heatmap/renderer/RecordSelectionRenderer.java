@@ -21,8 +21,11 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_LINE_WIDTH;
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
+
 import java.util.Set;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;

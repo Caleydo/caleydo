@@ -20,6 +20,7 @@
 package org.caleydo.view.stratomex.column;
 
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 

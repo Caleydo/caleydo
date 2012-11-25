@@ -21,6 +21,7 @@ package org.caleydo.view.treemap.layout.algorithm;
 
 import java.util.ArrayList;
 import java.util.Vector;
+
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.view.treemap.layout.ATreeMapNode;
 

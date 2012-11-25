@@ -21,6 +21,7 @@ package org.caleydo.core.io.parser.ascii;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;

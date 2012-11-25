@@ -20,12 +20,15 @@
 package org.caleydo.core.view.opengl.util.spline;
 
 import gleem.linalg.Vec3f;
+
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUtessellator;
+
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;

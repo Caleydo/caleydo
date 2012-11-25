@@ -20,6 +20,7 @@
 package org.caleydo.core.data.configuration;
 
 import java.util.List;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.io.gui.IDataOKListener;
 import org.eclipse.jface.dialogs.Dialog;

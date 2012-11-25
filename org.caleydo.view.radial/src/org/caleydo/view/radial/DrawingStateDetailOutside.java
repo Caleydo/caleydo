@@ -21,9 +21,11 @@ package org.caleydo.view.radial;
 
 import java.util.HashMap;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.clusterer.EDrawingStateType;

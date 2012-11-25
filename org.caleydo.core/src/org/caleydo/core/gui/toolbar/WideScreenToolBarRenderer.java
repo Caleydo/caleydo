@@ -21,6 +21,7 @@ package org.caleydo.core.gui.toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.caleydo.core.gui.toolbar.action.ClearSelectionsAction;
 import org.caleydo.core.gui.toolbar.action.SaveProjectAction;
 import org.caleydo.core.gui.toolbar.action.StartClusteringAction;

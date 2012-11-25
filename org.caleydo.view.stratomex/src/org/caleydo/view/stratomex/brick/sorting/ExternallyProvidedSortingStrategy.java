@@ -22,6 +22,7 @@ package org.caleydo.view.stratomex.brick.sorting;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;

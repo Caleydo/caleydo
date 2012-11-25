@@ -20,6 +20,7 @@
 package org.caleydo.core.view;
 
 import java.util.List;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.AddTablePerspectivesListener;

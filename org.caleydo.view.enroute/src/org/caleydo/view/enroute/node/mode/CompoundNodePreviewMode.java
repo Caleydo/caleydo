@@ -4,8 +4,10 @@
 package org.caleydo.view.enroute.node.mode;
 
 import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.picking.APickingListener;

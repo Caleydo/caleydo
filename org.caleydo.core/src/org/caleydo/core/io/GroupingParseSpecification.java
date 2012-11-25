@@ -20,7 +20,9 @@
 package org.caleydo.core.io;
 
 import java.util.ArrayList;
+
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.io.parser.ascii.GroupingParser;
 

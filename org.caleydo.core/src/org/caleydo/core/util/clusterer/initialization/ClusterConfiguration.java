@@ -21,6 +21,7 @@ package org.caleydo.core.util.clusterer.initialization;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.gui.toolbar.action.StartClusteringAction;

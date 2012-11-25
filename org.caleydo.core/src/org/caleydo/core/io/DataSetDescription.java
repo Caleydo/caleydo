@@ -24,8 +24,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.io.parser.ascii.TabularDataParser;

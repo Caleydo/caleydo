@@ -20,10 +20,13 @@
 package org.caleydo.view.heatmap.hierarchical;
 
 import gleem.linalg.Vec3f;
+
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.RecordSelectionManager;
@@ -37,6 +40,7 @@ import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 import com.jogamp.opengl.util.texture.TextureData;

@@ -20,6 +20,7 @@
 package org.caleydo.core.view.opengl.util.overlay;
 
 import java.awt.Point;
+
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
 
 /**

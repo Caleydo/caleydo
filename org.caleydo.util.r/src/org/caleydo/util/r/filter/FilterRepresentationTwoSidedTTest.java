@@ -20,6 +20,7 @@
 package org.caleydo.util.r.filter;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.RecordMetaFilter;
 import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;

@@ -20,6 +20,7 @@
 package org.caleydo.view.selectionbrowser;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;

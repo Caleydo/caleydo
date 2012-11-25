@@ -20,6 +20,7 @@
 package org.caleydo.core.data.filter.event;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.event.AEvent;
 

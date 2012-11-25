@@ -4,6 +4,7 @@
 package org.caleydo.core.io.gui.dataimport;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.gui.util.AHelpButtonDialog;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.GroupingParseSpecification;

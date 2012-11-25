@@ -20,7 +20,9 @@
 package org.caleydo.view.bookmark;
 
 import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;

@@ -20,6 +20,7 @@
 package org.caleydo.view.treemap;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
 import org.caleydo.view.treemap.toolbar.HierarchicalTreeMapToolBarContent;

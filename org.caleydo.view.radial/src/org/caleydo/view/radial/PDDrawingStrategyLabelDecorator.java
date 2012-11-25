@@ -21,6 +21,7 @@ package org.caleydo.view.radial;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;

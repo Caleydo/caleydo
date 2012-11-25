@@ -21,6 +21,7 @@ package org.caleydo.util.r;
 
 import java.util.ArrayList;
 import java.util.Set;
+
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;

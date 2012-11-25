@@ -20,6 +20,7 @@
 package org.caleydo.view.dvi.tableperspective.matrix;
 
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 
 class EmptyCellRenderer extends ColorRenderer {

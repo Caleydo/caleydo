@@ -40,8 +40,6 @@ public class SampleSelectionMode
 
 	private ESampleMappingMode mappingMode;
 
-	// public static final int TOOLBAR_WIDTH = 280;
-
 	/** mediator to handle actions triggered by the contributed element */
 	private PathwayToolBarMediator pathwayToolBarMediator;
 
@@ -70,8 +68,6 @@ public class SampleSelectionMode
 		allSamplesModeRadio
 				.setToolTipText("If selected an average of all samples of the chosen dataset is mapped onto the pathway nodes.");
 		
-		
-
 		Button selectedSampleModeRadio = new Button(buttonGroup, SWT.RADIO);
 		selectedSampleModeRadio.setText("Map selected Samples");
 		selectedSampleModeRadio
@@ -101,51 +97,9 @@ public class SampleSelectionMode
 			}
 		});
 
-		// GridData gd = new GridData(SWT.RIGHT, SWT.TOP, false, false);
-		// useAllButton.setLayoutData(gd);
-
-		// final List<GeneticDataDomain> candidateDataDomains =
-		// DataDomainManager.get().getDataDomainsByType(
-		// GeneticDataDomain.class);
-		// String[] datasetNames = new String[candidateDataDomains.size() + 1];
-		// datasetNames[0] = "No mapping Dataset";
-		// for (int datasetCount = 1; datasetCount <=
-		// candidateDataDomains.size(); datasetCount++) {
-		// datasetNames[datasetCount] = candidateDataDomains.get(datasetCount -
-		// 1).getDataSetDescription()
-		// .getDataSetName();
-		// }
-
-		// dataSetChooser.addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		//
-		// for (AGLView view : ViewManager.get().getAllGLViews()) {
-		// if (view instanceof GLPathway) {
-		// GLPathway pwView = (GLPathway) view;
-		// AddTablePerspectivesEvent addTablePerspectivesEvent = new
-		// AddTablePerspectivesEvent();
-		// addTablePerspectivesEvent.setReceiver(pwView);
-		// GeneticDataDomain dataDomain =
-		// candidateDataDomains.get(dataSetChooser.getSelectionIndex() - 1);
-		//
-		// addTablePerspectivesEvent.setDataDomainID(dataDomain.getDataDomainID());
-		// addTablePerspectivesEvent.addTablePerspecitve(dataDomain.getDefaultTablePerspective());
-		//
-		// GeneralManager.get().getEventPublisher().triggerEvent(addTablePerspectivesEvent);
-		// }
-		// }
-		// }
-		// });
-
 		return buttonGroup;
 
 	}
-
-	// @Override
-	// protected int computeWidth(Control control) {
-	// return TOOLBAR_WIDTH;
-	// }
 
 	public PathwayToolBarMediator getPathwayToolBarMediator() {
 		return pathwayToolBarMediator;

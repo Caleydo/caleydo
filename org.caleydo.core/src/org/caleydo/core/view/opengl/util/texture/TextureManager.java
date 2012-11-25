@@ -20,13 +20,17 @@
 package org.caleydo.core.view.opengl.util.texture;
 
 import gleem.linalg.Vec3f;
+
 import java.nio.IntBuffer;
 import java.util.HashMap;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 

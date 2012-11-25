@@ -21,11 +21,9 @@ package org.caleydo.core.view.opengl.canvas.internal;
 
 import javax.media.opengl.GLCapabilitiesImmutable;
 
-import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
-import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.eclipse.swt.widgets.Composite;
 
 /**

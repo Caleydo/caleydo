@@ -20,6 +20,7 @@
 package org.caleydo.core.data.perspective.table;
 
 import java.util.HashMap;
+
 import org.caleydo.core.manager.GeneralManager;
 
 /**

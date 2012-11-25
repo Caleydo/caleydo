@@ -4,10 +4,13 @@
 package org.caleydo.view.enroute.node.mode;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
+
 import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.node.ALinearizableNode;
 import org.caleydo.view.enroute.node.ANodeAttributeRenderer;

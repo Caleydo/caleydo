@@ -1,22 +1,23 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
  * University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.pathway.toolbar;
 
 import java.util.List;
+
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -39,7 +40,7 @@ import org.eclipse.swt.widgets.Control;
 
 /**
  * Drop down to select the dataset to be mapped in the pathway. Uses the default perspective.
- * 
+ *
  * @author Alexander Lex
  */
 public class DatasetSelectionBox
@@ -57,7 +58,7 @@ public class DatasetSelectionBox
 
 	/**
 	 * constructor as requested by ControlContribution
-	 * 
+	 *
 	 * @param str
 	 */
 	public DatasetSelectionBox(String str, IDataDomain mappingDataDomain) {
@@ -73,7 +74,7 @@ public class DatasetSelectionBox
 		dataSetChooser
 				.setToolTipText("Select which dataset should be used for mapping experimental data onto the nodes of the pathway.");
 		GridData gd = new GridData(SWT.RIGHT, SWT.TOP, false, false);
-		gd.widthHint = 120;
+		gd.widthHint = 100;
 		dataSetChooser.setLayoutData(gd);
 
 		final List<GeneticDataDomain> candidateDataDomains = DataDomainManager.get().getDataDomainsByType(

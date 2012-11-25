@@ -21,7 +21,9 @@ package org.caleydo.view.pathway;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -29,6 +31,7 @@ import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 

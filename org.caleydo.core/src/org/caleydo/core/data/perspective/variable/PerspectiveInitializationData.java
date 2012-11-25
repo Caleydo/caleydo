@@ -20,6 +20,7 @@
 package org.caleydo.core.data.perspective.variable;
 
 import java.util.List;
+
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.virtualarray.VirtualArray;

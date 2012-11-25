@@ -21,6 +21,7 @@ package org.caleydo.core.event.data;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.util.clusterer.EDrawingStateType;

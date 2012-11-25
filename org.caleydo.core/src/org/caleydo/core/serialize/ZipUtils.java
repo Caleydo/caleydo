@@ -25,6 +25,7 @@ import java.io.FileOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
 import org.caleydo.core.manager.GeneralManager;
 
 /**

@@ -23,6 +23,7 @@ import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;

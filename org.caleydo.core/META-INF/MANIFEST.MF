@@ -233,12 +233,6 @@ Export-Package:
    org.eclipse.swt.widgets,
    org.caleydo.core.io.gui,
    org.eclipse.jface.dialogs",
- org.caleydo.core.util.path;
-  uses:="org.caleydo.core.view.opengl.canvas,
-   org.caleydo.core.data.datadomain,
-   org.caleydo.core.view.opengl.util.hierarchy,
-   org.jgrapht.graph",
- org.caleydo.core.util.sound,
  org.caleydo.core.util.statistics;uses:="org.caleydo.core.data.perspective.table",
  org.caleydo.core.util.system,
  org.caleydo.core.view;
@@ -368,21 +362,14 @@ Export-Package:
    gleem.linalg,
    javax.media.opengl,
    org.caleydo.core.util.base",
- org.caleydo.core.view.opengl.util.drag;uses:="javax.media.opengl",
  org.caleydo.core.view.opengl.util.draganddrop;uses:="org.caleydo.core.view.opengl.mouse,org.caleydo.core.view.opengl.canvas,javax.media.opengl",
- org.caleydo.core.view.opengl.util.hierarchy;
-  uses:="gleem.linalg.open,
-   org.caleydo.core.view.opengl.canvas,
-   org.caleydo.core.manager,
-   org.caleydo.core.view,
-   org.caleydo.core.util.base",
+ org.caleydo.core.view.opengl.util.hierarchy,
  org.caleydo.core.view.opengl.util.overlay;uses:="org.caleydo.core.view.opengl.util",
  org.caleydo.core.view.opengl.util.overlay.infoarea;
   uses:="org.caleydo.core.view.opengl.camera,
    org.caleydo.core.id,
    gleem.linalg,
    javax.media.opengl",
- org.caleydo.core.view.opengl.util.slerp;uses:="gleem.linalg.open,org.caleydo.core.view.opengl.util.hierarchy",
  org.caleydo.core.view.opengl.util.spline;
   uses:="javax.media.opengl.glu,
    org.caleydo.core.view.opengl.canvas,

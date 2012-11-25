@@ -21,6 +21,7 @@ package org.caleydo.datadomain.pathway.contextmenu.item;
 
 import java.util.Arrays;
 import java.util.Set;
+
 import org.caleydo.core.event.view.pathway.LoadPathwaysByGeneEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;

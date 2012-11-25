@@ -20,6 +20,7 @@
 package org.caleydo.view.radial;
 
 import java.util.Collection;
+
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.selection.SelectionManager;

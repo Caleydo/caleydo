@@ -21,6 +21,7 @@ package org.caleydo.view.stratomex.brick.layout;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutConfiguration;

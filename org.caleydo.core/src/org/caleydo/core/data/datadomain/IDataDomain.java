@@ -20,6 +20,7 @@
 package org.caleydo.core.data.datadomain;
 
 import java.util.Set;
+
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.util.base.ILabelHolder;

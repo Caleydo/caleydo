@@ -21,15 +21,19 @@ package org.caleydo.core.view.opengl.util.overlay.infoarea;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
+
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
 import org.caleydo.core.view.opengl.renderstyle.InfoAreaRenderStyle;
+
 import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**

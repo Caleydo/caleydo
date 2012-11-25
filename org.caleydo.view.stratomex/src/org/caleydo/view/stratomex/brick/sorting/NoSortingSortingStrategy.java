@@ -20,6 +20,7 @@
 package org.caleydo.view.stratomex.brick.sorting;
 
 import java.util.List;
+
 import org.caleydo.view.stratomex.brick.GLBrick;
 
 /**

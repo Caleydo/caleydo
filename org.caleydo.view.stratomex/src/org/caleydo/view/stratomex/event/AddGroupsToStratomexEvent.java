@@ -20,6 +20,7 @@
 package org.caleydo.view.stratomex.event;
 
 import java.util.List;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.view.stratomex.GLStratomex;

@@ -22,7 +22,9 @@ package org.caleydo.view.treemap.layout;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;

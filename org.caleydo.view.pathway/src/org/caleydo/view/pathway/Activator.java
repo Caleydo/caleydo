@@ -20,6 +20,7 @@
 package org.caleydo.view.pathway;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
 import org.caleydo.view.pathway.toolbar.PathwayToolBarContent;

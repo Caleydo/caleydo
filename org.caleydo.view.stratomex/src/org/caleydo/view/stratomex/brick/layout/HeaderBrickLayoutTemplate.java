@@ -20,6 +20,7 @@
 package org.caleydo.view.stratomex.brick.layout;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;

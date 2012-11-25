@@ -21,6 +21,7 @@ package org.caleydo.view.dvi.tableperspective.matrix;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.caleydo.core.util.base.ILabelProvider;
 
 /**
