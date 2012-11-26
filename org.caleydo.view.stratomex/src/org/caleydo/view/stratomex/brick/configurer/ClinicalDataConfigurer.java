@@ -22,7 +22,11 @@ package org.caleydo.view.stratomex.brick.configurer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+
 import javax.media.opengl.GL2;
+
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -58,7 +62,8 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 
 	private ExternallyProvidedSortingStrategy sortingStrategy;
 	/**
-	 * The maximum time value that is mapped to the x axis of Kaplan Meier plots.
+	 * The maximum time value that is mapped to the x axis of Kaplan Meier
+	 * plots.
 	 */
 	private float maxTimeValue;
 
@@ -73,10 +78,15 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
-		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
-				.getBrick(), EPickingType.DIMENSION_GROUP, layoutTemplate
-				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
-				.getStratomexView()));
+		List<Pair<String, Integer>> pickingIDs = new ArrayList<Pair<String, Integer>>();
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.DIMENSION_GROUP
+				.name(), layoutTemplate.getDimensionGroup().getID()));
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE
+				.name(), layoutTemplate.getBrick().getID()));
+
+		headerBarElements.add(createCaptionLayout(layoutTemplate,
+				layoutTemplate.getBrick(), pickingIDs, layoutTemplate
+						.getDimensionGroup().getStratomexView()));
 
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
@@ -93,7 +103,8 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW_COMPACT);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_VIEW_COMPACT);
+		layoutTemplate
+				.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_VIEW_COMPACT);
 
 		layoutTemplate.showFooterBar(false);
 	}
@@ -109,10 +120,15 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
-		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
-				.getBrick(), EPickingType.DIMENSION_GROUP, layoutTemplate
-				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
-				.getStratomexView()));
+		List<Pair<String, Integer>> pickingIDs = new ArrayList<Pair<String, Integer>>();
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.DIMENSION_GROUP
+				.name(), layoutTemplate.getDimensionGroup().getID()));
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE
+				.name(), layoutTemplate.getBrick().getID()));
+
+		headerBarElements.add(createCaptionLayout(layoutTemplate,
+				layoutTemplate.getBrick(), pickingIDs, layoutTemplate
+						.getDimensionGroup().getStratomexView()));
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setHeaderBarElements(headerBarElements);
@@ -131,10 +147,15 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
-		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
-				.getBrick(), EPickingType.DIMENSION_GROUP, layoutTemplate
-				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
-				.getStratomexView()));
+		List<Pair<String, Integer>> pickingIDs = new ArrayList<Pair<String, Integer>>();
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.DIMENSION_GROUP
+				.name(), layoutTemplate.getDimensionGroup().getID()));
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE
+				.name(), layoutTemplate.getBrick().getID()));
+
+		headerBarElements.add(createCaptionLayout(layoutTemplate,
+				layoutTemplate.getBrick(), pickingIDs, layoutTemplate
+						.getDimensionGroup().getStratomexView()));
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setHeaderBarElements(headerBarElements);
@@ -150,9 +171,15 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
+		List<Pair<String, Integer>> pickingIDs = new ArrayList<Pair<String, Integer>>();
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK.name(),
+				layoutTemplate.getBrick().getID()));
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE
+				.name(), layoutTemplate.getBrick().getID()));
+
 		toolBarElements.add(createCaptionLayout(layoutTemplate,
-				layoutTemplate.getBrick(), EPickingType.BRICK, layoutTemplate.getBrick()
-						.getID(), layoutTemplate.getBrick()));
+				layoutTemplate.getBrick(), pickingIDs,
+				layoutTemplate.getBrick()));
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setToolBarElements(toolBarElements);
@@ -169,13 +196,14 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_VIEW);
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
-//		toolBarElements.add(createCaptionLayout(layoutTemplate,
-//				layoutTemplate.getBrick(), EPickingType.BRICK, layoutTemplate.getBrick()
-//						.getID(), layoutTemplate.getBrick()));
+		// toolBarElements.add(createCaptionLayout(layoutTemplate,
+		// layoutTemplate.getBrick(), EPickingType.BRICK,
+		// layoutTemplate.getBrick()
+		// .getID(), layoutTemplate.getBrick()));
 		ElementLayout leftPaddingLayout = new ElementLayout("padding");
 		leftPaddingLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		toolBarElements.add(leftPaddingLayout);
-		
+
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setToolBarElements(toolBarElements);
@@ -183,22 +211,24 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		layoutTemplate.showFooterBar(false);
 	}
 
-	private ElementLayout createCaptionLayout(ABrickLayoutConfiguration layoutTemplate,
-			AGLView labelProvider, EPickingType pickingType, int pickingID, AGLView view) {
+	private ElementLayout createCaptionLayout(
+			ABrickLayoutConfiguration layoutTemplate, AGLView labelProvider,
+			List<Pair<String, Integer>> pickingIDs, AGLView view) {
 
 		ElementLayout captionLayout = new ElementLayout("caption1");
 
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		LabelRenderer captionRenderer = new LabelRenderer(view, 
-				layoutTemplate.getBrick(), pickingType.name(), pickingID);
+		LabelRenderer captionRenderer = new LabelRenderer(view,
+				layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
 		return captionLayout;
 	}
 
-	private ElementLayout createSpacingLayout(ABrickLayoutConfiguration layoutTemplate,
+	private ElementLayout createSpacingLayout(
+			ABrickLayoutConfiguration layoutTemplate,
 			boolean isHorizontalSpacing) {
 
 		ElementLayout spacingLayout = new ElementLayout("spacingLayoutX");
@@ -214,14 +244,16 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 	}
 
 	@Override
-	public void setBrickViews(GLBrick brick, GL2 gl, GLMouseListener glMouseListener,
+	public void setBrickViews(GLBrick brick, GL2 gl,
+			GLMouseListener glMouseListener,
 			ABrickLayoutConfiguration brickLayout) {
 
 		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
 		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
 
 		KaplanMeierCreator viewCreator = new KaplanMeierCreator(maxTimeValue);
-		AGLView kaplanMeier = viewCreator.createRemoteView(brick, gl, glMouseListener);
+		AGLView kaplanMeier = viewCreator.createRemoteView(brick, gl,
+				glMouseListener);
 
 		LayoutRenderer kaplanMeierRenderer = new ViewLayoutRenderer(kaplanMeier);
 
@@ -233,8 +265,8 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 
 		brick.setLabel(label, true);
 
-		LayoutRenderer kaplanMeierSummaryRenderer = new KaplanMeierSummaryRenderer(brick,
-				label, EPickingType.BRICK.name(), brick.getID());
+		LayoutRenderer kaplanMeierSummaryRenderer = new KaplanMeierSummaryRenderer(
+				brick, label, EPickingType.BRICK.name(), brick.getID());
 		containedViewRenderers.put(EContainedViewType.KAPLAN_MEIER_SUMMARY,
 				kaplanMeierSummaryRenderer);
 
@@ -244,7 +276,8 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 				kaplanMeierSummaryCompactRenderer);
 
 		// FIXME this is not really a comapct view
-		containedViewRenderers.put(EContainedViewType.KAPLAN_MEIER_SUMMARY_COMPACT,
+		containedViewRenderers.put(
+				EContainedViewType.KAPLAN_MEIER_SUMMARY_COMPACT,
 				kaplanMeierSummaryRenderer);
 
 		brick.setViews(views);
@@ -261,7 +294,8 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 	 * @param sortingStrategy
 	 *            setter, see {@link #sortingStrategy}
 	 */
-	public void setSortingStrategy(ExternallyProvidedSortingStrategy sortingStrategy) {
+	public void setSortingStrategy(
+			ExternallyProvidedSortingStrategy sortingStrategy) {
 		this.sortingStrategy = sortingStrategy;
 	}
 
@@ -274,9 +308,10 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 	public int getDefaultWidth() {
 		return 100;
 	}
-	
+
 	/**
-	 * @param maxTimeValue setter, see {@link #maxTimeValue}
+	 * @param maxTimeValue
+	 *            setter, see {@link #maxTimeValue}
 	 */
 	public void setMaxTimeValue(float maxTimeValue) {
 		this.maxTimeValue = maxTimeValue;

@@ -20,7 +20,10 @@
 package org.caleydo.view.stratomex.brick.configurer;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -82,10 +85,15 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
+		List<Pair<String, Integer>> pickingIDs = new ArrayList<Pair<String, Integer>>();
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.DIMENSION_GROUP
+				.name(), layoutTemplate.getDimensionGroup().getID()));
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE
+				.name(), layoutTemplate.getBrick().getID()));
+
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getStratomexView(), layoutTemplate.getBrick(),
-				EPickingType.DIMENSION_GROUP.name(), layoutTemplate.getDimensionGroup()
-						.getID());
+				.getDimensionGroup().getStratomexView(),
+				layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -104,10 +112,15 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
+		List<Pair<String, Integer>> pickingIDs = new ArrayList<Pair<String, Integer>>();
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.DIMENSION_GROUP
+				.name(), layoutTemplate.getDimensionGroup().getID()));
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE
+				.name(), layoutTemplate.getBrick().getID()));
+
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getStratomexView(), layoutTemplate.getBrick(),
-				EPickingType.DIMENSION_GROUP.name(), layoutTemplate.getDimensionGroup()
-						.getID());
+				.getDimensionGroup().getStratomexView(),
+				layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -125,10 +138,15 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
+		List<Pair<String, Integer>> pickingIDs = new ArrayList<Pair<String, Integer>>();
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.DIMENSION_GROUP
+				.name(), layoutTemplate.getDimensionGroup().getID()));
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE
+				.name(), layoutTemplate.getBrick().getID()));
+
 		LabelRenderer captionRenderer = new LabelRenderer(
 				layoutTemplate.getDimensionGroup(), layoutTemplate.getBrick(),
-				EPickingType.DIMENSION_GROUP.name(), layoutTemplate.getDimensionGroup()
-						.getID());
+				pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -153,9 +171,15 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 
+		List<Pair<String, Integer>> pickingIDs = new ArrayList<Pair<String, Integer>>();
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK.name(),
+				layoutTemplate.getBrick().getID()));
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE
+				.name(), layoutTemplate.getBrick().getID()));
+
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getStratomexView(), layoutTemplate.getBrick(),
-				EPickingType.BRICK.name(), layoutTemplate.getBrick().getID());
+				.getDimensionGroup().getStratomexView(),
+				layoutTemplate.getBrick(), pickingIDs);
 
 		captionLayout.setRenderer(captionRenderer);
 
@@ -184,7 +208,8 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 							&& dimensionGroup.isGlobalViewSwitching()) {
 						dimensionGroup.switchBrickViews(button.getViewType());
 					} else {
-						brick.setBrickViewTypeAndConfigureSize(button.getViewType());
+						brick.setBrickViewTypeAndConfigureSize(button
+								.getViewType());
 					}
 					dimensionGroup.updateLayout();
 				}
@@ -219,8 +244,8 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 				toolBarElements.add(spacingLayoutX);
 			}
 		}
-		registerViewSwitchingButtons(layoutTemplate, viewSwitchingButtons, brick,
-				dimensionGroup);
+		registerViewSwitchingButtons(layoutTemplate, viewSwitchingButtons,
+				brick, dimensionGroup);
 
 		return toolBarElements;
 	}
@@ -247,9 +272,10 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		ElementLayout dimensionBarLaylout = new ElementLayout("dimensionBar");
 		dimensionBarLaylout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
 		dimensionBarLaylout.setRatioSizeX(1);
-		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick.getDataDomain()
-				.getTable().getDefaultDimensionPerspective().getVirtualArray(), brick
-				.getTablePerspective().getDimensionPerspective().getVirtualArray()));
+		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick
+				.getDataDomain().getTable().getDefaultDimensionPerspective()
+				.getVirtualArray(), brick.getTablePerspective()
+				.getDimensionPerspective().getVirtualArray()));
 
 		footerBarElements.add(dimensionBarLaylout);
 
@@ -317,7 +343,8 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 			}
 		}
 
-		ElementLayout ratioSpacingLayoutX = new ElementLayout("ratioSpacingLayoutX");
+		ElementLayout ratioSpacingLayoutX = new ElementLayout(
+				"ratioSpacingLayoutX");
 		ratioSpacingLayoutX.setRatioSizeX(1);
 		ratioSpacingLayoutX.setRatioSizeY(0);
 
@@ -325,8 +352,8 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 		// layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
 
-		registerViewSwitchingButtons(layoutTemplate, viewSwitchingButtons, brick,
-				dimensionGroup);
+		registerViewSwitchingButtons(layoutTemplate, viewSwitchingButtons,
+				brick, dimensionGroup);
 
 		return toolBarElements;
 	}
