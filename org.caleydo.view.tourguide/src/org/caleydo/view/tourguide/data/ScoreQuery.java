@@ -64,8 +64,8 @@ public class ScoreQuery implements Function<DataDomainQuery, List<ScoringElement
 
 	@Override
 	public List<ScoringElement> apply(DataDomainQuery query) {
-		final boolean noGroupScores = !Iterables.any(selection, isGroupScore);
-		final Pair<List<ProductScore>, Integer> pair = filterProductScores(selection);
+		final boolean noGroupScores = !Iterables.any(Scores.flatten(selection), isGroupScore);
+		final Pair<List<ProductScore>, Integer> pair = filterProductScores(Scores.flatten(selection));
 		final List<ProductScore> productScores = pair.getFirst();
 		final int factor = pair.getSecond();
 

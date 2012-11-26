@@ -2,6 +2,7 @@ package org.caleydo.view.tourguide.vendingmachine.ui;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.tourguide.data.score.CombinedScore;
@@ -30,9 +31,11 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import com.google.common.collect.Lists;
+
 public class CreateCompositeScoreDialog extends TitleAreaDialog {
 	// the root element to populate the viewer with
-	private final Collection<IScore> scores;
+	private final List<IScore> scores;
 	private final ScoreQueryUI sender;
 
 	// the visual selection widget group
@@ -46,7 +49,11 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 
 	public CreateCompositeScoreDialog(Shell shell, Collection<IScore> scores, ScoreQueryUI sender) {
 		super(shell);
-		this.scores = scores;
+		this.scores = Lists.newArrayList(scores);
+		for (IScore s : sender.getQuery().getSelection()) {
+			if (!scores.contains(s))
+				this.scores.add(0, s);
+		}
 		this.sender = sender;
 	}
 
@@ -112,6 +119,9 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 			}
 		});
 		scoresUI.setInput(scores);
+		for (IScore s : sender.getQuery().getSelection()) {
+			scoresUI.setChecked(s, true);
+		}
 		this.scoresDeco = new ControlDecoration(this.scoresUI.getControl(), SWT.TOP | SWT.RIGHT);
 		scoresDeco.setDescriptionText("Select at least two elements");
 		scoresDeco.setImage(image);
