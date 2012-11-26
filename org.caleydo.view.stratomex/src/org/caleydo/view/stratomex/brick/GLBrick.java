@@ -322,7 +322,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 			@Override
 			public void run() {
-				String r = ChangeNameDialog.show(getParentComposite().getShell(), "Rename '" + label + "' to", label);
+				String r = ChangeNameDialog.show(getParentComposite().getShell(), "Rename '" + getLabel() + "' to",
+						getLabel());
 				if (r != null) {
 					label = r;
 					tablePerspective.setLabel(label, false);
@@ -1381,5 +1382,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	 */
 	public GLStratomex getStratomex() {
 		return stratomex;
+	}
+
+	@Override
+	public void setTablePerspective(TablePerspective tablePerspective) {
+		super.setTablePerspective(tablePerspective);
+		label = tablePerspective.getLabel();
 	}
 }
