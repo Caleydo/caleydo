@@ -325,6 +325,7 @@ public class ScoreQueryUI extends Column {
 	private ElementLayout createScoreValue(AGLView view, ScoringElement elem, SortableColumnHeader header, int id) {
 		Row row = new Row();
 		row.setGrabY(true);
+		row.setXDynamic(true);
 		IScore underlyingScore = header.getScoreID();
 		if (underlyingScore instanceof ProductScore)
 			underlyingScore = elem.getSelected((ProductScore) underlyingScore);
