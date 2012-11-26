@@ -150,13 +150,13 @@ public class PreviewTableManager {
 			selectionButton.setVisible(true);
 			if (!selectionButton.getSelection()) {
 				colorTableColumnText(oldIDColumnIndex, Display.getCurrent()
-						.getSystemColor(SWT.COLOR_GRAY));
+						.getSystemColor(SWT.COLOR_DARK_GRAY));
 			}
 		}
 
 		if (numberOfHeaderRows < previewTable.getItemCount()) {
 			for (int i = 1; i < numberOfHeaderRows + 1; i++) {
-				colorTableRow(i, Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+				colorTableRow(i, Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY));
 			}
 		}
 
