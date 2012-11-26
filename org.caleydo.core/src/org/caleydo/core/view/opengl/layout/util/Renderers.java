@@ -20,7 +20,6 @@
 package org.caleydo.core.view.opengl.layout.util;
 
 import org.caleydo.core.util.base.ILabelProvider;
-import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
@@ -42,6 +41,6 @@ public final class Renderers {
 	}
 
 	public static LayoutRenderer createPickingRenderer(String pickingType, int pickingId, AGLView view) {
-		return new ColorRenderer(Colors.TRANSPARENT.getRGBA(), view).addPickingID(pickingType, pickingId);
+		return new PickingRenderer(view, pickingType, pickingId);
 	}
 }
