@@ -1,27 +1,29 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.stratomex.brick.configurer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -44,11 +46,10 @@ import org.caleydo.view.stratomex.brick.ui.FuelBarRenderer;
 import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
- * Abstract base class for brick configurers for table based data that provides
- * mainly helper functions.
- * 
+ * Abstract base class for brick configurers for table based data that provides mainly helper functions.
+ *
  * @author Partl
- * 
+ *
  */
 public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
@@ -69,8 +70,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		this.tablePerspective = dimensionGroupData;
 	}
 
-	protected ArrayList<ElementLayout> createHeaderBarElements(
-			HeaderBrickLayoutTemplate layoutTemplate) {
+	protected ArrayList<ElementLayout> createHeaderBarElements(HeaderBrickLayoutTemplate layoutTemplate) {
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
@@ -83,10 +83,13 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getStratomexView(), layoutTemplate.getBrick(),
-				EPickingType.DIMENSION_GROUP.name(), layoutTemplate.getDimensionGroup()
-						.getID());
+		List<Pair<String, Integer>> pickingIDs = new ArrayList<>();
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.DIMENSION_GROUP.name(), layoutTemplate
+				.getDimensionGroup().getID()));
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
+
+		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup().getStratomexView(),
+				layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -95,8 +98,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		return headerBarElements;
 	}
 
-	protected ArrayList<ElementLayout> createHeaderBarElements(
-			CompactHeaderBrickLayoutTemplate layoutTemplate) {
+	protected ArrayList<ElementLayout> createHeaderBarElements(CompactHeaderBrickLayoutTemplate layoutTemplate) {
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
@@ -105,10 +107,13 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getStratomexView(), layoutTemplate.getBrick(),
-				EPickingType.DIMENSION_GROUP.name(), layoutTemplate.getDimensionGroup()
-						.getID());
+		List<Pair<String, Integer>> pickingIDs = new ArrayList<>();
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.DIMENSION_GROUP.name(), layoutTemplate
+				.getDimensionGroup().getID()));
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
+
+		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup().getStratomexView(),
+				layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -116,8 +121,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		return headerBarElements;
 	}
 
-	protected ArrayList<ElementLayout> createHeaderBarElements(
-			TitleOnlyHeaderBrickLayoutTemplate layoutTemplate) {
+	protected ArrayList<ElementLayout> createHeaderBarElements(TitleOnlyHeaderBrickLayoutTemplate layoutTemplate) {
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
@@ -126,10 +130,13 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		LabelRenderer captionRenderer = new LabelRenderer(
-				layoutTemplate.getDimensionGroup(), layoutTemplate.getBrick(),
-				EPickingType.DIMENSION_GROUP.name(), layoutTemplate.getDimensionGroup()
-						.getID());
+		List<Pair<String, Integer>> pickingIDs = new ArrayList<>();
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.DIMENSION_GROUP.name(), layoutTemplate
+				.getDimensionGroup().getID()));
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
+
+		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup(),
+				layoutTemplate.getBrick(), pickingIDs);
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -138,15 +145,12 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 	}
 
 	/**
-	 * Create the elements which should be shown in the heading of cluster
-	 * bricks.
-	 * 
+	 * Create the elements which should be shown in the heading of cluster bricks.
+	 *
 	 * @param layoutTemplate
-	 * @return Returns null if no header bar should be shown, else the elements
-	 *         for the layout
+	 * @return Returns null if no header bar should be shown, else the elements for the layout
 	 */
-	protected ArrayList<ElementLayout> createHeaderBarElements(
-			DefaultBrickLayoutTemplate layoutTemplate) {
+	protected ArrayList<ElementLayout> createHeaderBarElements(DefaultBrickLayoutTemplate layoutTemplate) {
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
@@ -154,9 +158,12 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 
-		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getStratomexView(), layoutTemplate.getBrick(),
-				EPickingType.BRICK.name(), layoutTemplate.getBrick().getID());
+		List<Pair<String, Integer>> pickingIDs = new ArrayList<>();
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK.name(), layoutTemplate.getBrick().getID()));
+		pickingIDs.add(new Pair<String, Integer>(EPickingType.BRICK_TITLE.name(), layoutTemplate.getBrick().getID()));
+
+		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate.getDimensionGroup().getStratomexView(),
+				layoutTemplate.getBrick(), pickingIDs);
 
 		captionLayout.setRenderer(captionRenderer);
 
@@ -165,10 +172,9 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		return headerBarElements;
 	}
 
-	protected void registerViewSwitchingButtons(
-			final ABrickLayoutConfiguration layoutTemplate,
-			final ArrayList<BrickViewSwitchingButton> viewSwitchingButtons,
-			final GLBrick brick, final BrickColumn dimensionGroup) {
+	protected void registerViewSwitchingButtons(final ABrickLayoutConfiguration layoutTemplate,
+			final ArrayList<BrickViewSwitchingButton> viewSwitchingButtons, final GLBrick brick,
+			final BrickColumn dimensionGroup) {
 
 		for (final BrickViewSwitchingButton button : viewSwitchingButtons) {
 
@@ -195,8 +201,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		}
 	}
 
-	protected ArrayList<ElementLayout> createToolBarElements(
-			HeaderBrickLayoutTemplate layoutTemplate,
+	protected ArrayList<ElementLayout> createToolBarElements(HeaderBrickLayoutTemplate layoutTemplate,
 			ArrayList<BrickViewSwitchingButton> viewSwitchingButtons) {
 
 		final GLBrick brick = layoutTemplate.getBrick();
@@ -213,33 +218,29 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 			ElementLayout buttonLayout = new ElementLayout();
 			buttonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 			buttonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-			buttonLayout.setRenderer(new ButtonRenderer(button, brick, brick
-					.getTextureManager(), DefaultBrickLayoutTemplate.BUTTON_Z));
+			buttonLayout.setRenderer(new ButtonRenderer(button, brick, brick.getTextureManager(),
+					DefaultBrickLayoutTemplate.BUTTON_Z));
 			toolBarElements.add(buttonLayout);
 			if (i != viewSwitchingButtons.size() - 1) {
 				toolBarElements.add(spacingLayoutX);
 			}
 		}
-		registerViewSwitchingButtons(layoutTemplate, viewSwitchingButtons, brick,
-				dimensionGroup);
+		registerViewSwitchingButtons(layoutTemplate, viewSwitchingButtons, brick, dimensionGroup);
 
 		return toolBarElements;
 	}
 
-	protected ArrayList<ElementLayout> createFooterBarElements(
-			HeaderBrickLayoutTemplate layoutTemplate) {
+	protected ArrayList<ElementLayout> createFooterBarElements(HeaderBrickLayoutTemplate layoutTemplate) {
 		return createSummaryFooterBarElements(layoutTemplate);
 
 	}
 
-	protected ArrayList<ElementLayout> createFooterBarElements(
-			CompactHeaderBrickLayoutTemplate layoutTemplate) {
+	protected ArrayList<ElementLayout> createFooterBarElements(CompactHeaderBrickLayoutTemplate layoutTemplate) {
 		return createSummaryFooterBarElements(layoutTemplate);
 
 	}
 
-	private ArrayList<ElementLayout> createSummaryFooterBarElements(
-			ABrickLayoutConfiguration layoutTemplate) {
+	private ArrayList<ElementLayout> createSummaryFooterBarElements(ABrickLayoutConfiguration layoutTemplate) {
 
 		ArrayList<ElementLayout> footerBarElements = new ArrayList<ElementLayout>();
 
@@ -248,9 +249,9 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		ElementLayout dimensionBarLaylout = new ElementLayout("dimensionBar");
 		dimensionBarLaylout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
 		dimensionBarLaylout.setRatioSizeX(1);
-		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick.getDataDomain()
-				.getTable().getDefaultDimensionPerspective().getVirtualArray(), brick
-				.getTablePerspective().getDimensionPerspective().getVirtualArray()));
+		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick.getDataDomain().getTable()
+				.getDefaultDimensionPerspective().getVirtualArray(), brick.getTablePerspective()
+				.getDimensionPerspective().getVirtualArray()));
 
 		footerBarElements.add(dimensionBarLaylout);
 
@@ -258,26 +259,22 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 	}
 
-	protected ArrayList<ElementLayout> createFooterBarElements(
-			DefaultBrickLayoutTemplate layoutTemplate) {
+	protected ArrayList<ElementLayout> createFooterBarElements(DefaultBrickLayoutTemplate layoutTemplate) {
 
 		return createDefaultFooterBarElements(layoutTemplate);
 	}
 
-	protected ArrayList<ElementLayout> createFooterBarElements(
-			DetailBrickLayoutTemplate layoutTemplate) {
+	protected ArrayList<ElementLayout> createFooterBarElements(DetailBrickLayoutTemplate layoutTemplate) {
 
 		return createDefaultFooterBarElements(layoutTemplate);
 	}
 
-	protected ArrayList<ElementLayout> createFooterBarElements(
-			CollapsedBrickLayoutTemplate layoutTemplate) {
+	protected ArrayList<ElementLayout> createFooterBarElements(CollapsedBrickLayoutTemplate layoutTemplate) {
 
 		return createDefaultFooterBarElements(layoutTemplate);
 	}
 
-	private ArrayList<ElementLayout> createDefaultFooterBarElements(
-			ABrickLayoutConfiguration layoutTemplate) {
+	private ArrayList<ElementLayout> createDefaultFooterBarElements(ABrickLayoutConfiguration layoutTemplate) {
 		ArrayList<ElementLayout> footerBarElements = new ArrayList<ElementLayout>();
 
 		GLBrick brick = layoutTemplate.getBrick();
@@ -292,8 +289,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		return footerBarElements;
 	}
 
-	protected ArrayList<ElementLayout> createToolBarElements(
-			ABrickLayoutConfiguration layoutTemplate,
+	protected ArrayList<ElementLayout> createToolBarElements(ABrickLayoutConfiguration layoutTemplate,
 			ArrayList<BrickViewSwitchingButton> viewSwitchingButtons) {
 
 		final GLBrick brick = layoutTemplate.getBrick();
@@ -310,8 +306,8 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 			ElementLayout buttonLayout = new ElementLayout();
 			buttonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 			buttonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-			buttonLayout.setRenderer(new ButtonRenderer(button, brick, brick
-					.getTextureManager(), DefaultBrickLayoutTemplate.BUTTON_Z));
+			buttonLayout.setRenderer(new ButtonRenderer(button, brick, brick.getTextureManager(),
+					DefaultBrickLayoutTemplate.BUTTON_Z));
 			toolBarElements.add(buttonLayout);
 			if (i != viewSwitchingButtons.size() - 1) {
 				toolBarElements.add(spacingLayoutX);
@@ -326,8 +322,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 		// layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
 
-		registerViewSwitchingButtons(layoutTemplate, viewSwitchingButtons, brick,
-				dimensionGroup);
+		registerViewSwitchingButtons(layoutTemplate, viewSwitchingButtons, brick, dimensionGroup);
 
 		return toolBarElements;
 	}
