@@ -91,7 +91,7 @@ public class VendingMachine
  implements IGLRemoteRenderingView, ILayoutedElement, ISelectionListener {
 
 	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
-	public static final String VIEW_NAME = "Vending Machine";
+	public static final String VIEW_NAME = "Tour Guide";
 
 	private LayoutManager layoutManager;
 	private Column mainColumn;

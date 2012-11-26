@@ -33,6 +33,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.data.RankedListBuilders.IRankedListBuilder;
 import org.caleydo.view.tourguide.data.filter.CompositeScoreFilter;
+import org.caleydo.view.tourguide.data.score.EScoreType;
 import org.caleydo.view.tourguide.data.score.IBatchComputedGroupScore;
 import org.caleydo.view.tourguide.data.score.IComputedGroupScore;
 import org.caleydo.view.tourguide.data.score.IComputedStratificationScore;
@@ -133,7 +134,7 @@ public class ScoreQuery implements Function<DataDomainQuery, List<ScoringElement
 	private static final Predicate<IScore> isGroupScore = new Predicate<IScore>() {
 		@Override
 		public boolean apply(IScore in) {
-			return in.isGroupScore();
+			return in.getScoreType() == EScoreType.GROUP_SCORE;
 		}
 	};
 
@@ -247,5 +248,9 @@ public class ScoreQuery implements Function<DataDomainQuery, List<ScoringElement
 			return;
 		selection.remove(score);
 		listeners.fireIndexedPropertyChange(PROP_SELECTION, i, score, null);
+	}
+
+	public boolean isSorted() {
+		return !this.orderBy.isEmpty();
 	}
 }

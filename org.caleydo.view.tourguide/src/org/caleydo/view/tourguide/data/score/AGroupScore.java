@@ -57,7 +57,7 @@ public abstract class AGroupScore implements IScore {
 
 	@Override
 	public String getLabel() {
-		return stratification.getLabel() + ": " + group.getLabel();
+		return stratification.getRecordPerspective().getLabel() + ": " + group.getLabel();
 	}
 
 	@Override
@@ -80,8 +80,8 @@ public abstract class AGroupScore implements IScore {
 	}
 
 	@Override
-	public final boolean isGroupScore() {
-		return true;
+	public final EScoreType getScoreType() {
+		return EScoreType.GROUP_SCORE;
 	}
 
 	@Override

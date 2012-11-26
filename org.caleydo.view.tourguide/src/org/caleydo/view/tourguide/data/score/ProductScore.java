@@ -67,11 +67,11 @@ public class ProductScore implements ICompositeScore {
 	}
 
 	@Override
-	public boolean isGroupScore() {
+	public final EScoreType getScoreType() {
+		int maxOrdinal = 0;
 		for (IScore child : this)
-			if (child.isGroupScore())
-				return true;
-		return false;
+			maxOrdinal = Math.max(maxOrdinal, child.getScoreType().ordinal());
+		return EScoreType.values()[maxOrdinal];
 	}
 
 	@Override

@@ -27,7 +27,7 @@ import org.caleydo.view.tourguide.data.ScoringElement;
  *
  */
 public interface IScore extends ILabelProvider {
-	public boolean isGroupScore();
+	public EScoreType getScoreType();
 
 	public float getScore(ScoringElement elem);
 

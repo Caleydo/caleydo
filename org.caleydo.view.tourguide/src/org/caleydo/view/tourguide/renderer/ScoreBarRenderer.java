@@ -27,7 +27,7 @@ import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 public class ScoreBarRenderer extends LayoutRenderer {
-	private static final float PADDING = 0.015f;
+	private static final float PADDING = 0.0015f; // 0.015f;
 
 	private final float score;
 
@@ -41,9 +41,11 @@ public class ScoreBarRenderer extends LayoutRenderer {
 	@Override
 	public void renderContent(GL2 gl) {
 		if (!Float.isNaN(score)) {
-			float barWidth = x * score;
+			float padding = 0.0f; // layoutManager == null ? 0.001f :
+									// layoutManager.getPixelGLConverter().getPixelHeightForCurrentGLTransform(gl);
+			float barWidth = (x - 2 * padding) * score;
 			gl.glColor4fv(color.getRGBA(), 0);
-			fillRect(gl, PADDING, PADDING, barWidth - PADDING, y - PADDING);
+			fillRect(gl, padding, padding, barWidth, y - 2 * padding);
 		}
 	}
 

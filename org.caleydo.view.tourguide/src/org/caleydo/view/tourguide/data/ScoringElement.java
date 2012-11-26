@@ -61,7 +61,7 @@ public final class ScoringElement implements ILabelProvider {
 
 	@Override
 	public String getLabel() {
-		String label = stratification.getLabel();
+		String label = stratification.getRecordPerspective().getLabel();
 		if (group != null)
 			label += ": " + group.getLabel();
 		return label;

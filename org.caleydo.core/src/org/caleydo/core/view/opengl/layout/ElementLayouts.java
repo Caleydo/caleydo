@@ -20,7 +20,7 @@
 package org.caleydo.core.view.opengl.layout;
 
 import org.caleydo.core.util.base.ILabelProvider;
-import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
@@ -91,7 +91,7 @@ public final class ElementLayouts {
 		return l;
 	}
 
-	public static ElementLayout createColor(Color color, int width) {
+	public static ElementLayout createColor(IColor color, int width) {
 		ElementLayout l = new ElementLayout("color" + color);
 		l.setRenderer(new ColorRenderer(color.getRGBA()));
 		setWidth(l, width);

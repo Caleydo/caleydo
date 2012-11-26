@@ -56,13 +56,13 @@ public abstract class AStratificationScore implements IScore {
 	}
 
 	@Override
-	public final boolean isGroupScore() {
-		return false;
+	public final EScoreType getScoreType() {
+		return EScoreType.STRATIFICATION_SCORE;
 	}
 
 	@Override
 	public String getLabel() {
-		return reference.getLabel();
+		return reference.getRecordPerspective().getLabel();
 	}
 
 	@Override

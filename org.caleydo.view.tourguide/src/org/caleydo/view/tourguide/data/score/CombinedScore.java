@@ -77,11 +77,8 @@ public class CombinedScore implements ICompositeScore {
 	}
 
 	@Override
-	public boolean isGroupScore() {
-		for (IScore child : this)
-			if (child.isGroupScore())
-				return true;
-		return false;
+	public final EScoreType getScoreType() {
+		return EScoreType.STANDALONE_SCORE;
 	}
 
 	@Override

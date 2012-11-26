@@ -17,31 +17,12 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.layout.util;
-
-import org.caleydo.core.util.base.ILabelProvider;
-import org.caleydo.core.util.color.Colors;
-import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+package org.caleydo.view.tourguide.data.score;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public final class Renderers {
-	private Renderers() {
-
-	}
-
-	public static LabelRenderer createLabel(String label, AGLView view) {
-		return new LabelRenderer(view, label);
-	}
-
-	public static LabelRenderer createLabel(ILabelProvider label, AGLView view) {
-		return new LabelRenderer(view, label);
-	}
-
-	public static LayoutRenderer createPickingRenderer(String pickingType, int pickingId, AGLView view) {
-		return new ColorRenderer(Colors.TRANSPARENT.getRGBA(), view).addPickingID(pickingType, pickingId);
-	}
+public enum EScoreType {
+	STANDALONE_SCORE, STRATIFICATION_SCORE, GROUP_SCORE
 }

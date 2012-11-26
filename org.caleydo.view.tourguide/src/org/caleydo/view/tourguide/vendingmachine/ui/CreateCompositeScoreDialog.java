@@ -67,8 +67,8 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 		final Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_REQUIRED)
 				.getImage();
 
-
 		this.labelUI = new Text(c, SWT.BORDER);
+		labelUI.setText("Combined");
 		this.labelUI.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		this.labelDeco = new ControlDecoration(this.labelUI, SWT.TOP | SWT.RIGHT);
 		labelDeco.setDescriptionText("A label is required");
