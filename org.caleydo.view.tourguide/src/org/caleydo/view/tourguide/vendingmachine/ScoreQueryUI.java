@@ -87,7 +87,7 @@ public class ScoreQueryUI extends Column {
 
 	private static final int COL0_RANK_WIDTH = 20;
 
-	private static final int COLX_SCORE_WIDTH = 40;
+	private static final int COLX_SCORE_WIDTH = 75;
 	private static final int COL2_ADD_COLUMN_X_WIDTH = 16;
 
 	private static final int ROW_HEIGHT = 18;
@@ -199,6 +199,7 @@ public class ScoreQueryUI extends Column {
 		this.headerRow.setPixelSizeY(ROW_HEIGHT);
 		this.headerRow.add(createXSpacer(3));
 		this.headerRow.add(createXSpacer(COL0_RANK_WIDTH));
+		this.headerRow.add(createXSpacer(16));
 		this.headerRow.add(ReferenceElements.create(Colors.TRANSPARENT, new ConstantLabelProvider("Stratification"),
 				new ConstantLabelProvider("Group"), this.view));
 		this.headerRow.add(createXSpacer(3));
@@ -303,7 +304,9 @@ public class ScoreQueryUI extends Column {
 	private ElementLayout createRow(AGLView view, ScoringElement elem, int i) {
 		Row tr = new Row();
 		tr.setPixelSizeY(ROW_HEIGHT);
-		tr.add(createLabel(view, query.isSorted() ? "" + i : "", COL0_RANK_WIDTH));
+		tr.add(createLabel(view, query.isSorted() ? String.format("%d.", i + 1) : "", COL0_RANK_WIDTH));
+		tr.add(createXSpacer(3));
+		tr.add(createButton(view, new Button(ADD_TO_STRATOMEX, i, EIconTextures.GROUPER_COLLAPSE_PLUS)));
 		tr.add(createXSpacer(3));
 		ElementLayout source = ReferenceElements.create(elem.getStratification(), elem.getGroup(), this.view);
 		source.addBackgroundRenderer(createPickingRenderer(SELECT_ROW, i, this.view));

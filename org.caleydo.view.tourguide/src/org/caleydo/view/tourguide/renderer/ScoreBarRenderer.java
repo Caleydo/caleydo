@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.renderer;
 
+import static org.caleydo.core.view.opengl.util.GLPrimitives.drawRect;
 import static org.caleydo.core.view.opengl.util.GLPrimitives.fillRect;
 
 import javax.media.opengl.GL2;
@@ -43,10 +44,11 @@ public class ScoreBarRenderer extends LayoutRenderer {
 		if (!Float.isNaN(score)) {
 			float padding = 0.0f; // layoutManager == null ? 0.001f :
 									// layoutManager.getPixelGLConverter().getPixelHeightForCurrentGLTransform(gl);
-			float barWidth = (x - 2 * padding) * score;
+			float barWidth = (x - 2 * padding) * Math.max(score, 0);
 			gl.glColor4fv(color.getRGBA(), 0);
 			fillRect(gl, padding, padding, barWidth, y - 2 * padding);
 		}
+		drawRect(gl, 0, 0, x, y);
 	}
 
 	@Override
