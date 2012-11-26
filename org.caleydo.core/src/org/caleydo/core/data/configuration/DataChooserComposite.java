@@ -1,24 +1,24 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 /**
- * 
+ *
  */
 package org.caleydo.core.data.configuration;
 
@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Label;
  * Composite that lets a user determine which instance of
  * {@link ATableBasedDataDomain} and the respective {@link AVariablePerspective}
  * s to use.
- * 
+ *
  * @author Alexander Lex
  */
 public class DataChooserComposite extends Composite {
@@ -77,7 +77,7 @@ public class DataChooserComposite extends Composite {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param dataOKListener
 	 *            see {@link #dataOKListener}
 	 * @param parent
@@ -87,13 +87,13 @@ public class DataChooserComposite extends Composite {
 	 *            tablebased datadomains are available.
 	 * @param style
 	 *            the SWT style
-	 * 
+	 *
 	 */
 	public DataChooserComposite(IDataOKListener dataOKListener, Composite parent,
 			List<ATableBasedDataDomain> supportedDataDomains, int style) {
 		super(parent, style);
 		if (supportedDataDomains == null) {
-			supportedDataDomains = DataDomainManager.get().getDataDomainsByType(
+			this.supportedDataDomains = DataDomainManager.get().getDataDomainsByType(
 					ATableBasedDataDomain.class);
 		} else {
 			this.supportedDataDomains = supportedDataDomains;
@@ -269,7 +269,7 @@ public class DataChooserComposite extends Composite {
 	/**
 	 * Tells the caller whether all the data has been correctly chosen by the
 	 * user and is ready to be accessed
-	 * 
+	 *
 	 * @return true if the data is ready, else false.
 	 */
 	public final boolean isOK() {
