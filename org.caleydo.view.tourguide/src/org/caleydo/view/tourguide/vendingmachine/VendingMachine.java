@@ -66,9 +66,11 @@ import org.caleydo.view.tourguide.data.score.ProductScore;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
+import org.caleydo.view.tourguide.event.TourDataUpdateEvent;
 import org.caleydo.view.tourguide.listener.AddScoreColumnListener;
 import org.caleydo.view.tourguide.listener.RemoveScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreTablePerspectiveListener;
+import org.caleydo.view.tourguide.listener.TourDataUpdateListener;
 import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI.ISelectionListener;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateCompositeScoreDialog;
 import org.eclipse.swt.widgets.Composite;
@@ -79,16 +81,13 @@ import com.google.common.base.Function;
 
 /**
  * <p>
- * The vending machine for stratification and cluster comparisons using scoring
- * approach.
+ * The vending machine for stratification and cluster comparisons using scoring approach.
  * </p>
  *
  * @author Marc Streit
  */
 
-public class VendingMachine
-	extends AGLView
- implements IGLRemoteRenderingView, ILayoutedElement, ISelectionListener {
+public class VendingMachine extends AGLView implements IGLRemoteRenderingView, ILayoutedElement, ISelectionListener {
 
 	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
 	public static final String VIEW_NAME = "Tour Guide";
@@ -106,13 +105,15 @@ public class VendingMachine
 	private DataDomainQuery dataDomainQuery = new DataDomainQuery();
 	private ScoreQuery scoreQuery = new ScoreQuery();
 
+	private CaleydoTextRenderer textLargeRenderer;
+
 	public VendingMachine(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		dataDomainQuery.addPropertyChangeListener(DataDomainQuery.PROP_SELECTION, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				if(evt.getNewValue() == null)
+				if (evt.getNewValue() == null)
 					onHideDataDomain((ATableBasedDataDomain) evt.getOldValue());
 				else
 					onShowDataDomain((ATableBasedDataDomain) evt.getNewValue());
@@ -140,6 +141,7 @@ public class VendingMachine
 		detailLevel = EDetailLevel.HIGH;
 
 		textRenderer = new CaleydoTextRenderer(10);
+		textLargeRenderer = new CaleydoTextRenderer(24);
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 
 		initLayouts();
@@ -151,8 +153,7 @@ public class VendingMachine
 	}
 
 	@Override
-	public void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener) {
+	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 		this.glMouseListener = glMouseListener;
 		init(gl);
 	}
@@ -201,7 +202,10 @@ public class VendingMachine
 	@Override
 	public void display(GL2 gl) {
 		if (!hasActiveStratomex()) {
+			CaleydoTextRenderer tmp = textRenderer;
+			textRenderer = textLargeRenderer; // overwrite for large font
 			renderEmptyViewText(gl, "No Active Stratomex");
+			textRenderer = tmp;
 			return;
 		}
 
@@ -222,7 +226,7 @@ public class VendingMachine
 
 	@Override
 	public String toString() {
-		return "VendingMachine";
+		return "TourGuide";
 	}
 
 	@Override
@@ -231,6 +235,7 @@ public class VendingMachine
 		listeners.register(ScoreTablePerspectiveEvent.class, new ScoreTablePerspectiveListener().setHandler(this));
 		listeners.register(AddScoreColumnEvent.class, new AddScoreColumnListener(this));
 		listeners.register(RemoveScoreColumnEvent.class, new RemoveScoreColumnListener(this));
+		listeners.register(TourDataUpdateEvent.class, new TourDataUpdateListener(this));
 	}
 
 	@Override
@@ -264,7 +269,6 @@ public class VendingMachine
 		onAddColumn(composite);
 	}
 
-
 	{
 		// Highlight reference table
 		// TODO
@@ -288,7 +292,6 @@ public class VendingMachine
 		triggerEvent(event);
 
 		stratomex.addTablePerspective(newlySelectedTablePerspective);
-
 
 		BrickColumn brickColumn = brickColumnManager.getBrickColumn(newlySelectedTablePerspective);
 		brickColumn.getLayout().addBackgroundRenderer(
@@ -337,7 +340,22 @@ public class VendingMachine
 		scoringTable.setSelected(-1, -1); // select nothing
 
 		busyState = EBusyState.ON;
+		// Job job = new Job("Update Tour Guide") {
+		// @Override
+		// protected IStatus run(IProgressMonitor monitor) {
+		// List<ScoringElement> data = scoreQuery.apply(dataDomainQuery);
+		// GeneralManager.get().getEventPublisher()
+		// .triggerEvent(new TourDataUpdateEvent(VendingMachine.this, data));
+		// return Status.OK_STATUS;
+		// }
+		// };
+		// job.schedule();
 		List<ScoringElement> data = scoreQuery.apply(dataDomainQuery);
+		onDataUpdate(data);
+
+	}
+
+	public void onDataUpdate(List<ScoringElement> data) {
 		scoringTable.setData(data);
 		busyState = EBusyState.OFF;
 	}
@@ -386,7 +404,6 @@ public class VendingMachine
 		recomputeScores();
 	}
 
-
 	public void onCreateNewScore() {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
@@ -416,6 +433,5 @@ public class VendingMachine
 	public ScoreQueryUI getScoreQueryUI() {
 		return scoringTable;
 	}
-
 
 }

@@ -57,7 +57,7 @@ public class ScoreQuery implements Function<DataDomainQuery, List<ScoringElement
 	private static final int MAX_SORTING = 1;
 
 	private final PropertyChangeSupport listeners = new PropertyChangeSupport(this);
-	private List<IScore> selection = new ArrayList<>(Scores.get().getScoreIDs());
+	private List<IScore> selection = new ArrayList<>();
 	private CompositeScoreFilter filter = new CompositeScoreFilter();
 	private ScoreComparator orderBy = new ScoreComparator();
 	private int top = 35;
