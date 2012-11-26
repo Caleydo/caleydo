@@ -41,7 +41,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
@@ -140,9 +139,6 @@ public class ChooseProjectTypePage
 		this.createGeneticUseCaseTab(tabFolder);
 		this.createGeneralDataUseCaseTab(tabFolder);
 		this.createLoadProjectTab(tabFolder);
-
-		if (!GeneralManager.RELEASE_MODE)
-			this.createCollaborationClientTab(tabFolder);
 
 		// restore the previously selected tab
 		if (this.projectMode == null || this.projectMode.equals(ProjectMode.SAMPLE_PROJECT)) {
@@ -550,39 +546,6 @@ public class ChooseProjectTypePage
 				}
 			}
 		});
-	}
-
-	/**
-	 * Creates the tab for connecting a client to a already running
-	 * caleydo-server-application to get the use case and basic data from.
-	 *
-	 * @param tabFolder tab-widget to create the new tab-item in
-	 */
-	private void createCollaborationClientTab(TabFolder tabFolder) {
-		this.collaborationClientTab = new TabItem(tabFolder, SWT.NONE);
-		this.collaborationClientTab.setText("Connect to Server");
-
-		Composite composite = new Composite(tabFolder, SWT.NONE);
-		this.collaborationClientTab.setControl(composite);
-		composite.setLayout(new GridLayout(2, false));
-
-		Label networkNameLabel = new Label(composite, SWT.LEFT);
-		networkNameLabel.setText("Network Name:");
-		this.networkNameText = new Text(composite, SWT.BORDER);
-		this.networkNameText.setText("client");
-		GridData gd = new GridData();
-		gd.widthHint = 200;
-		this.networkNameText.setLayoutData(gd);
-
-		Label networkAddressLabel = new Label(composite, SWT.LEFT);
-		networkAddressLabel.setText("Server Address:");
-		this.networkAddressText = new Text(composite, SWT.BORDER);
-		this.networkAddressText.setText("127.0.0.1");
-		gd = new GridData();
-		gd.widthHint = 200;
-		this.networkAddressText.setLayoutData(gd);
-
-		this.setPageComplete(true);
 	}
 
 	public ProjectMode getProjectMode() {
