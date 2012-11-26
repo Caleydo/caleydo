@@ -28,6 +28,7 @@ import java.util.concurrent.RecursiveTask;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.ParsingRule;
@@ -188,27 +189,26 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 
 		dataSet.setColumnIDSpecification(columnIDSpecification);
 
-		// GroupingParseSpecification firehoseCnmfClustering = new
-		// GroupingParseSpecification(cnmfGroupingFile.getPath());
-		// firehoseCnmfClustering.setContainsColumnIDs(false);
-		// firehoseCnmfClustering.setRowIDSpecification(columnIDSpecification);
-		// firehoseCnmfClustering.setGroupingName("CNMF Clustering");
-		// dataSet.addColumnGroupingSpecification(firehoseCnmfClustering);
+		GroupingParseSpecification firehoseCnmfClustering = new GroupingParseSpecification(cnmfGroupingFile.getPath());
+		firehoseCnmfClustering.setContainsColumnIDs(false);
+		firehoseCnmfClustering.setRowIDSpecification(columnIDSpecification);
+		firehoseCnmfClustering.setGroupingName("CNMF Clustering");
+		dataSet.addColumnGroupingSpecification(firehoseCnmfClustering);
 
-		// try {
-		// File hierarchicalGroupingFile = fileProvider.extractAnalysisRunFile(tumorAbbreviation + ".allclusters.txt",
-		// hierarchicalArchiveName, LEVEL);
-		// if (hierarchicalGroupingFile == null)
-		// throw new IllegalStateException("can't extract: " + tumorAbbreviation + ".allclusters.txt");
-		// GroupingParseSpecification firehoseHierarchicalClustering = new GroupingParseSpecification(
-		// hierarchicalGroupingFile.getPath());
-		// firehoseHierarchicalClustering.setContainsColumnIDs(false);
-		// firehoseHierarchicalClustering.setRowIDSpecification(columnIDSpecification);
-		// firehoseHierarchicalClustering.setGroupingName("Hierchical Clustering");
-		// dataSet.addColumnGroupingSpecification(firehoseHierarchicalClustering);
-		// } catch (RuntimeException e) {
-		// System.err.println("can't extract hierarchical information " + e.getMessage());
-		// }
+		try {
+			File hierarchicalGroupingFile = fileProvider.extractAnalysisRunFile(tumorAbbreviation + ".allclusters.txt",
+					hierarchicalArchiveName, LEVEL);
+			if (hierarchicalGroupingFile == null)
+				throw new IllegalStateException("can't extract: " + tumorAbbreviation + ".allclusters.txt");
+			GroupingParseSpecification firehoseHierarchicalClustering = new GroupingParseSpecification(
+					hierarchicalGroupingFile.getPath());
+			firehoseHierarchicalClustering.setContainsColumnIDs(false);
+			firehoseHierarchicalClustering.setRowIDSpecification(columnIDSpecification);
+			firehoseHierarchicalClustering.setGroupingName("Hierarchical Clustering");
+			dataSet.addColumnGroupingSpecification(firehoseHierarchicalClustering);
+		} catch (RuntimeException e) {
+			System.err.println("can't extract hierarchical information " + e.getMessage());
+		}
 
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
 		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
