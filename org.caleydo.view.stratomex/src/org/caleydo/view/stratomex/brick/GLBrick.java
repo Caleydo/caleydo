@@ -314,15 +314,15 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 			@Override
 			public void run() {
-				ChangeNameDialog dialog = new ChangeNameDialog();
-				dialog.run(PlatformUI.getWorkbench().getDisplay(), label);
-				label = dialog.getResultingName();
-				tablePerspective.setLabel(label, false);
-				setDisplayListDirty();
+				String r = ChangeNameDialog.show(getParentComposite().getShell(), "Rename '" + label + "' to", label);
+				if (r != null) {
+					label = r;
+					tablePerspective.setLabel(label, false);
+					setDisplayListDirty();
 
-				if (brickLayoutConfiguration instanceof DefaultBrickLayoutTemplate)
-					((DefaultBrickLayoutTemplate) brickLayoutConfiguration)
-							.setHideCaption(false);
+					if (brickLayoutConfiguration instanceof DefaultBrickLayoutTemplate)
+						((DefaultBrickLayoutTemplate) brickLayoutConfiguration).setHideCaption(false);
+				}
 
 			}
 		});
