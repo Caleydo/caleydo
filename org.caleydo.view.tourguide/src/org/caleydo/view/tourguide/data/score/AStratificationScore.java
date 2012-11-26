@@ -19,8 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.score;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.format.Formatter;
@@ -32,7 +32,7 @@ import org.caleydo.view.tourguide.data.ScoringElement;
  */
 public abstract class AStratificationScore implements IScore {
 	protected TablePerspective reference;
-	protected Map<Integer, Float> scores = new HashMap<>();
+	protected Map<Integer, Float> scores = new ConcurrentHashMap<>();
 
 	public AStratificationScore() {
 

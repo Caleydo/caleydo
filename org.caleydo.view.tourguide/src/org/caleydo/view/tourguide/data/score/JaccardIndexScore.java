@@ -22,7 +22,9 @@ package org.caleydo.view.tourguide.data.score;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.transform;
 
+import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,16 +35,19 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.logging.Logger;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class JaccardIndexScore extends AGroupScore implements IComputedGroupScore {
+public class JaccardIndexScore extends AGroupScore implements IBatchComputedGroupScore {
+	private static final Logger log = Logger.create(JaccardIndexScore.class);
 	private final BitSet bitSet;
 	private final BitMapMapper toBitMap;
 
@@ -57,6 +62,48 @@ public class JaccardIndexScore extends AGroupScore implements IComputedGroupScor
 		Iterable<Pair<Group, BitSet>> bitsets = transform(filter(stratNGroups.entries(), notInCache), toBitMap);
 		for (Pair<Group, BitSet> entry : bitsets)
 			put(entry.getFirst(), computeJaccardIndex(group, bitSet, entry.getFirst(), entry.getSecond()));
+	}
+
+	@Override
+	public void apply(Collection<IBatchComputedGroupScore> batch, Multimap<TablePerspective, Group> stratNGroups) {
+		Multimap<IDType, JaccardIndexScore> byIDCat = ArrayListMultimap.create();
+		for (IBatchComputedGroupScore b : batch) {
+			JaccardIndexScore s = (JaccardIndexScore) b;
+			byIDCat.put(s.stratification.getRecordPerspective().getVirtualArray().getIdType(), s);
+		}
+		Set<TablePerspective> stratifications = stratNGroups.keySet();
+		log.info("computing jaccard score for " + stratifications.size() + " stratifications, with total "
+				+ stratNGroups.size() + " elements against: " + batch.size());
+		int i = 0;
+		for (TablePerspective strat : stratifications) { // for each against
+			log.info("next: strat " + (i++) + " " + strat.getLabel());
+			RecordVirtualArray va = strat.getRecordPerspective().getVirtualArray();
+			for (Group g : stratNGroups.get(strat)) { // for each group
+
+				for (IDType type : byIDCat.keySet()) { // for each id type
+					Collection<JaccardIndexScore> todo = new ArrayList<>();
+					for (JaccardIndexScore idElem : byIDCat.get(type)) {
+						// everything in cache?
+						if (!idElem.contains(strat, g))
+							todo.add(idElem);
+					}
+
+					if (todo.isEmpty())
+						continue;
+
+					boolean doMapIds = !type.equals(va.getIdType());
+					IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+							type.getIDCategory());
+					// create a bitset of this group
+					BitSet s = doMapIds ? createMappedIds(va, g, idMappingManager, type) : createIds(va, group);
+
+					for (JaccardIndexScore idElem : todo) { // compute scores
+						idElem.put(g, computeJaccardIndex(idElem.group, idElem.bitSet, g, s));
+					}
+				}
+			}
+		}
+		log.info("done");
 	}
 
 	private Predicate<Map.Entry<TablePerspective, Group>> notInCache = new Predicate<Map.Entry<TablePerspective, Group>>() {
