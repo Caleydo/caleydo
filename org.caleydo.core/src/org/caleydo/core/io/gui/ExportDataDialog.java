@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * File dialog for exporting data files.
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -73,7 +73,7 @@ public class ExportDataDialog
 
 	/**
 	 * Add data for group exports.
-	 * 
+	 *
 	 * @param genesToExport
 	 *            the list of genes to export
 	 * @param experimentsToExport
@@ -141,7 +141,7 @@ public class ExportDataDialog
 		});
 
 		dataChooserComposite = new DataChooserComposite(this, composite, null, SWT.NONE);
-		
+
 		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false);
 		gridData.horizontalSpan = 2;
 		dataChooserComposite.setLayoutData(gridData);
@@ -189,7 +189,7 @@ public class ExportDataDialog
 
 	/**
 	 * Called internally by listeners
-	 * 
+	 *
 	 * @return
 	 */
 	private final boolean checkOK() {
@@ -211,9 +211,7 @@ public class ExportDataDialog
 	@Override
 	protected void okPressed() {
 
-		DataTableExporter exporter = new DataTableExporter();
-
-		exporter.export(dataChooserComposite.getDataDomain(), sFileName,
+		DataTableExporter.export(dataChooserComposite.getDataDomain(), sFileName,
 			dataChooserComposite.getRecordPerspective(), dataChooserComposite.getDimensionPerspective(),
 			null, null, false);
 

@@ -20,8 +20,10 @@
 package org.caleydo.view.stratomex.brick;
 
 import java.awt.Point;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +33,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.export.DataTableExporter;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
@@ -80,6 +83,7 @@ import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
 import org.caleydo.view.stratomex.brick.contextmenu.CreateKaplanMeierSmallMultiplesGroupItem;
 import org.caleydo.view.stratomex.brick.contextmenu.CreatePathwaySmallMultiplesGroupItem;
+import org.caleydo.view.stratomex.brick.contextmenu.ExportBrickDataItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RemoveColumnItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RenameBrickItem;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
@@ -95,10 +99,12 @@ import org.caleydo.view.stratomex.dialog.CreateKaplanMeierSmallMultiplesGroupDia
 import org.caleydo.view.stratomex.dialog.CreatePathwayComparisonGroupDialog;
 import org.caleydo.view.stratomex.dialog.CreatePathwaySmallMultiplesGroupDialog;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
+import org.caleydo.view.stratomex.event.ExportBrickDataEvent;
 import org.caleydo.view.stratomex.event.OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent;
 import org.caleydo.view.stratomex.event.OpenCreatePathwayGroupDialogEvent;
 import org.caleydo.view.stratomex.event.OpenCreatePathwaySmallMultiplesGroupDialogEvent;
 import org.caleydo.view.stratomex.event.RenameEvent;
+import org.caleydo.view.stratomex.listener.ExportBrickDataEventListener;
 import org.caleydo.view.stratomex.listener.OpenCreateKaplanMeierSmallMultiplesGroupDialogListener;
 import org.caleydo.view.stratomex.listener.OpenCreatePathwayGroupDialogListener;
 import org.caleydo.view.stratomex.listener.OpenCreatePathwaySmallMultiplesGroupDialogListener;
@@ -108,7 +114,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
@@ -210,6 +219,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	private RelationsUpdatedListener relationsUpdateListener;
 	private OpenCreatePathwayGroupDialogListener openCreatePathwayGroupDialogListener;
 	private RenameListener renameListener;
+	private ExportBrickDataEventListener exportBrickDataEventListener;
 
 	private BrickState expandedBrickState;
 
@@ -721,6 +731,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		eventPublisher.addListener(OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent.class,
 				openCreateKaplanMeierSmallMultiplesGroupDialogListener);
 
+		exportBrickDataEventListener = new ExportBrickDataEventListener();
+		exportBrickDataEventListener.setHandler(this);
+		eventPublisher.addListener(ExportBrickDataEvent.class, exportBrickDataEventListener);
+
 	}
 
 	@Override
@@ -762,6 +776,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		if (openCreateKaplanMeierSmallMultiplesGroupDialogListener != null) {
 			eventPublisher.removeListener(openCreateKaplanMeierSmallMultiplesGroupDialogListener);
 			openCreateKaplanMeierSmallMultiplesGroupDialogListener = null;
+		}
+
+		if (exportBrickDataEventListener != null) {
+			eventPublisher.removeListener(exportBrickDataEventListener);
+			exportBrickDataEventListener = null;
 		}
 
 	}
@@ -862,6 +881,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(stratomex, getBrickColumn()
 						.getTablePerspective().getID()));
+				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, false));
+				contextMenuCreator.addContextMenuItem(new ExportBrickDataItem(GLBrick.this, true));
 			}
 
 		};
@@ -1388,5 +1409,35 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	public void setTablePerspective(TablePerspective tablePerspective) {
 		super.setTablePerspective(tablePerspective);
 		label = tablePerspective.getLabel();
+	}
+
+	public void exportData(final boolean exportIdentifiersOnly) {
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				FileDialog fileDialog = new FileDialog(new Shell(), SWT.SAVE);
+				fileDialog.setText("Save");
+				String[] filterExt = { "*.csv", "*.txt", "*.*" };
+				fileDialog.setFilterExtensions(filterExt);
+
+				fileDialog.setFileName("caleydo_export_" + new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())
+						+ ".csv");
+				String fileName = fileDialog.open();
+
+				if (fileName != null) {
+					if (exportIdentifiersOnly) {
+						DimensionPerspective dimensionPerspective = new DimensionPerspective();
+						dimensionPerspective.setVirtualArray(new DimensionVirtualArray());
+						DataTableExporter.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
+								dimensionPerspective, null, null, false);
+					} else {
+						DataTableExporter.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
+								tablePerspective.getDimensionPerspective(), null, null, false);
+					}
+				}
+			}
+		});
+
 	}
 }
