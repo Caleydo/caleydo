@@ -874,7 +874,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					for (IContextMenuBrickFactory factory : contextMenuFactories)
 						for (AContextMenuItem item : factory.createGroupEntries(brickColumn, tablePerspective))
 							contextMenuCreator.addContextMenuItem(item);
-					selectElementsByGroup();
+
+					// FIXME: if added, this line causes the context menu on the bricks to not appear
+					// selectElementsByGroup();
 				}
 
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
