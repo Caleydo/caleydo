@@ -775,6 +775,10 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		addIDPickingListener(this.getParentGLCanvas().createTooltip(tooltip), pickingType, pickedObjectID);
 	}
 
+	public final void addTypePickingTooltipListener(String tooltip, String pickingType) {
+		addTypePickingListener(this.getParentGLCanvas().createTooltip(tooltip), pickingType);
+	}
+
 	/**
 	 * Registers a {@link IPickingListener} for this view that is call whenever
 	 * an object of the specified type was picked, independent of the object's

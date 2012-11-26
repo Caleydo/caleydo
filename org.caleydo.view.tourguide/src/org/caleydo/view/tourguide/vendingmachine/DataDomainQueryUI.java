@@ -64,9 +64,16 @@ public class DataDomainQueryUI extends Column {
 			public void clicked(Pick pick) {
 				toggleSelection(rows.get(pick.getObjectID()));
 			}
+
+			@Override
+			public void rightClicked(Pick pick) {
+				toggleFilteredSelection(rows.get(pick.getObjectID()));
+			}
 		}, TOGGLE_DATA_DOMAIN);
+		view.addTypePickingTooltipListener("Toggle consider this Data Domain for scoring", TOGGLE_DATA_DOMAIN);
 		init(view);
 	}
+
 
 	public void init(AGLView view) {
 		this.setBottomUp(false);
@@ -106,6 +113,11 @@ public class DataDomainQueryUI extends Column {
 			query.addSelection(dataDomainRow.dataDomain);
 		else
 			query.removeSelection(dataDomainRow.dataDomain);
+	}
+
+	protected void toggleFilteredSelection(DataDomainRow dataDomainRow) {
+		// TODO Auto-generated method stub
+
 	}
 
 	private class DataDomainRow extends Row {

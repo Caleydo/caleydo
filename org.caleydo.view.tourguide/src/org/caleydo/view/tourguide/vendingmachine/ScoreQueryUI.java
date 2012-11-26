@@ -130,6 +130,8 @@ public class ScoreQueryUI extends Column {
 				onAddColumn();
 			}
 		}, ADD_COLUMN);
+		view.addTypePickingTooltipListener("Add another column", ADD_COLUMN);
+
 		view.addTypePickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
@@ -146,9 +148,11 @@ public class ScoreQueryUI extends Column {
 		view.addTypePickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
-				addToStratomex(pick.getObjectID());
+				onAddToStratomex(pick.getObjectID());
 			}
 		}, ADD_TO_STRATOMEX);
+		view.addTypePickingTooltipListener("Add this row to StratomeX", ADD_TO_STRATOMEX);
+
 	}
 
 
@@ -328,7 +332,9 @@ public class ScoreQueryUI extends Column {
 		return s;
 	}
 
-	protected void addToStratomex(int row) {
+	protected void onAddToStratomex(int row) {
+		if (this.selectedRow == row)
+			setSelected(-1, -1);
 		addToStratomexCallback.apply(data.get(row));
 	}
 
