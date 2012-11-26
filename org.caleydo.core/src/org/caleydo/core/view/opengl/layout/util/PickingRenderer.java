@@ -39,10 +39,10 @@ public class PickingRenderer extends APickableLayoutRenderer {
 
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor4f(1, 1, 1, 0);
-		gl.glVertex3f(0, 0, 0);
-		gl.glVertex3f(x, 0, 0);
-		gl.glVertex3f(x, y, 0);
-		gl.glVertex3f(0, y, 0);
+		gl.glVertex3f(0, 0, -0.01f);
+		gl.glVertex3f(x, 0, -0.01f);
+		gl.glVertex3f(x, y, -0.01f);
+		gl.glVertex3f(0, y, -0.01f);
 		gl.glEnd();
 		popNames(gl);
 	}
