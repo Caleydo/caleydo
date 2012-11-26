@@ -71,7 +71,6 @@ import org.caleydo.view.tourguide.renderer.ScoreBarRenderer;
 
 import com.google.common.base.Function;
 
-
 /**
  * @author Samuel Gratzl
  *
@@ -169,7 +168,6 @@ public class ScoreQueryUI extends Column {
 		view.addTypePickingTooltipListener("Add this row to StratomeX", ADD_TO_STRATOMEX);
 
 	}
-
 
 	private void init() {
 		this.setBottomUp(false);
@@ -347,11 +345,11 @@ public class ScoreQueryUI extends Column {
 		case GROUP_SCORE:
 			if (strat != null) {
 				row.add(createColor(strat.getDataDomain().getColor(), ReferenceElements.DATADOMAIN_TYPE_WIDTH));
-				row.add(createXSpacer(3));
-				row.add(createLabel(view, strat.getRecordPerspective(), ReferenceElements.STRATIFACTION_WIDTH));
+				// row.add(createXSpacer(3));
+				// row.add(createLabel(view, strat.getRecordPerspective(), ReferenceElements.STRATIFACTION_WIDTH));
 			} else {
-				row.add(createXSpacer(ReferenceElements.DATADOMAIN_TYPE_WIDTH + 3
-						+ ReferenceElements.STRATIFACTION_WIDTH));
+				// row.add(createXSpacer(ReferenceElements.DATADOMAIN_TYPE_WIDTH + 3
+				// + ReferenceElements.STRATIFACTION_WIDTH));
 			}
 			if (group != null) {
 				row.add(createXSpacer(3));
@@ -396,8 +394,7 @@ public class ScoreQueryUI extends Column {
 	public static int getOptimalWidth(EScoreType type) {
 		switch (type) {
 		case GROUP_SCORE:
-			return ReferenceElements.DATADOMAIN_TYPE_WIDTH + 3 + ReferenceElements.STRATIFACTION_WIDTH + 3
-					+ ReferenceElements.GROUP_WIDTH;
+			return ReferenceElements.DATADOMAIN_TYPE_WIDTH + 3 + ReferenceElements.GROUP_WIDTH;
 		case STRATIFICATION_SCORE:
 			return ReferenceElements.DATADOMAIN_TYPE_WIDTH + 3 + ReferenceElements.STRATIFACTION_WIDTH;
 		default:
@@ -444,7 +441,6 @@ public class ScoreQueryUI extends Column {
 			return;
 		query.sortBy(columnHeader.getScoreID(), columnHeader.nextSorting());
 	}
-
 
 	private class SortableColumnHeader extends Row {
 		private ESorting sort = ESorting.NONE;
