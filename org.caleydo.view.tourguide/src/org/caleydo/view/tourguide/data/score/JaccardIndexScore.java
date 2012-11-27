@@ -79,14 +79,20 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 		Set<TablePerspective> stratifications = stratNGroups.keySet();
 		log.info("computing jaccard score for " + stratifications.size() + " stratifications, with total "
 				+ stratNGroups.size() + " elements against: " + batch.size());
-		int i = 0;
+		if (Thread.interrupted()) // check if we should stop
+			return;
 		for (TablePerspective strat : stratifications) { // for each against
-			// log.info("next: strat " + (i++) + " " + strat.getLabel());
+			if (Thread.interrupted())
+				return;
+
 			RecordVirtualArray va = strat.getRecordPerspective().getVirtualArray();
 
 			for (Group g : stratNGroups.get(strat)) { // for each group
 
 				for (IDType targetType : byIDCat.keySet()) { // for each id type
+					if (Thread.interrupted())
+						return;
+
 					IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
 							targetType.getIDCategory());
 

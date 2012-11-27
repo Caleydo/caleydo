@@ -75,7 +75,7 @@ public final class Scores {
 		return new ArrayList<>(scores);
 	}
 
-	public Collection<IScore> flatten(IScore... scores) {
+	public static Collection<IScore> flatten(IScore... scores) {
 		return flatten(Arrays.asList(scores));
 	}
 

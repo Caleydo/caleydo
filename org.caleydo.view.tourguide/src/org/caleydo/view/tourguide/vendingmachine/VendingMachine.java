@@ -63,14 +63,18 @@ import org.caleydo.view.tourguide.data.score.JaccardIndexScore;
 import org.caleydo.view.tourguide.data.score.ProductScore;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
+import org.caleydo.view.tourguide.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
-import org.caleydo.view.tourguide.event.TourDataUpdateEvent;
 import org.caleydo.view.tourguide.listener.AddScoreColumnListener;
 import org.caleydo.view.tourguide.listener.RemoveScoreColumnListener;
+import org.caleydo.view.tourguide.listener.ScoreQueryReadyListener;
 import org.caleydo.view.tourguide.listener.ScoreTablePerspectiveListener;
-import org.caleydo.view.tourguide.listener.TourDataUpdateListener;
 import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI.ISelectionListener;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateCompositeScoreDialog;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -160,9 +164,10 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	public void displayLocal(GL2 gl) {
 		pickingManager.handlePicking(this, gl);
 
-		display(gl);
-		if (busyState != EBusyState.OFF) {
+		if (busyState == EBusyState.ON) {
 			renderBusyMode(gl);
+		} else {
+			display(gl);
 		}
 	}
 
@@ -233,7 +238,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		listeners.register(ScoreTablePerspectiveEvent.class, new ScoreTablePerspectiveListener().setHandler(this));
 		listeners.register(AddScoreColumnEvent.class, new AddScoreColumnListener(this));
 		listeners.register(RemoveScoreColumnEvent.class, new RemoveScoreColumnListener(this));
-		listeners.register(TourDataUpdateEvent.class, new TourDataUpdateListener(this));
+		listeners.register(ScoreQueryReadyEvent.class, new ScoreQueryReadyListener(this));
 	}
 
 	@Override
@@ -334,27 +339,26 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	}
 
 	private void recomputeScores() {
-		scoringTable.setSelected(-1, -1); // select nothing
-
-		busyState = EBusyState.ON;
-		// Job job = new Job("Update Tour Guide") {
-		// @Override
-		// protected IStatus run(IProgressMonitor monitor) {
-		// List<ScoringElement> data = scoreQuery.apply(dataDomainQuery);
-		// GeneralManager.get().getEventPublisher()
-		// .triggerEvent(new TourDataUpdateEvent(VendingMachine.this, data));
-		// return Status.OK_STATUS;
-		// }
-		// };
-		// job.schedule();
-		List<ScoringElement> data = scoreQuery.call();
-		onDataUpdate(data);
-
+		if (scoreQuery.isBusy()) {
+			scoringTable.setRunning(true);
+			Job job = new Job("Update Tour Guide") {
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					scoreQuery.waitTillComplete();
+					GeneralManager.get().getEventPublisher()
+							.triggerEvent(new ScoreQueryReadyEvent(VendingMachine.this));
+					return Status.OK_STATUS;
+				}
+			};
+			job.schedule();
+		} else {
+			onScoreQueryReady();
+		}
 	}
 
-	public void onDataUpdate(List<ScoringElement> data) {
-		scoringTable.setData(data);
-		busyState = EBusyState.OFF;
+	public void onScoreQueryReady() {
+		scoringTable.setRunning(false);
+		scoringTable.setData(scoreQuery.call());
 	}
 
 	@Override

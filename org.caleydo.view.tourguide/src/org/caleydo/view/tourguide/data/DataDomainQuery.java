@@ -44,9 +44,15 @@ import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.view.tourguide.data.filter.CompositeDataDomainFilter;
 import org.caleydo.view.tourguide.data.filter.EmptyGroupFilter;
 import org.caleydo.view.tourguide.data.filter.GroupNameFilter;
+import org.caleydo.view.tourguide.data.filter.IDataDomainFilter;
+import org.caleydo.view.tourguide.data.filter.StratificationNameFilter;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
 /**
@@ -55,6 +61,7 @@ import com.google.common.collect.Multimap;
  */
 public class DataDomainQuery implements SafeCallable<Collection<TablePerspective>>,
 		Function<Collection<TablePerspective>, Multimap<TablePerspective, Group>> {
+	public static final String PROP_FILTEr = "filter";
 	public static final String PROP_SELECTION = "selection";
 
 	private final static CategoricalTablePerspectiveCreator perspectiveCreator = new CategoricalTablePerspectiveCreator();
@@ -65,10 +72,10 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 	private CompositeDataDomainFilter filter = new CompositeDataDomainFilter();
 
 	private WeakReference<Collection<TablePerspective>> cache = null;
-	private WeakReference<Multimap<TablePerspective, Group>> cache2 = null;
 
 	public DataDomainQuery() {
 		// TODO by ui
+		filter.add(new StratificationNameFilter("Ungrouped"));
 		filter.add(new EmptyGroupFilter());
 		filter.add(new GroupNameFilter("Not Mutated"));
 		filter.add(new GroupNameFilter("Normal"));
@@ -78,11 +85,25 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 		return Collections.unmodifiableCollection(selection);
 	}
 
+	public void addFilter(IDataDomainFilter filter) {
+		this.filter.add(filter);
+		listeners.fireIndexedPropertyChange(PROP_FILTEr, this.filter.size() - 1, null, filter);
+	}
+
+	public void removeFilter(IDataDomainFilter filter) {
+		int i = this.filter.indexOf(filter);
+		if (i < 0)
+			return;
+		this.filter.remove(i);
+		listeners.fireIndexedPropertyChange(PROP_FILTEr, i, filter, null);
+	}
+
+	public List<IDataDomainFilter> getFilter() {
+		return Collections.unmodifiableList(filter);
+	}
+
 	@Override
 	public Multimap<TablePerspective, Group> apply(Collection<TablePerspective> stratifications) {
-		Multimap<TablePerspective, Group> c = cache2 != null ? cache2.get() : null;
-		if (c != null)
-			return c;
 		Multimap<TablePerspective, Group> r = ArrayListMultimap.create();
 		for (TablePerspective strat : stratifications) {
 			for (Group group : strat.getRecordPerspective().getVirtualArray().getGroupList()) {
@@ -91,7 +112,6 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 				r.put(strat, group);
 			}
 		}
-		cache2 = new WeakReference<>(r);
 		return r;
 	}
 
@@ -102,42 +122,56 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 			return c;
 		Collection<TablePerspective> stratifications = new ArrayList<TablePerspective>();
 		for (ATableBasedDataDomain dataDomain : selection) {
-			if (DataDomainOracle.isCategoricalDataDomain(dataDomain)) {
-				stratifications.addAll(dataDomain.getAllTablePerspectives());
-			} else {
-				// Take the first non ungrouped dimension perspective
-				String dimensionPerspectiveID = null;
-				for (String tmpDimensionPerspectiveID : dataDomain.getDimensionPerspectiveIDs()) {
-					DimensionPerspective per = dataDomain.getTable().getDimensionPerspective(tmpDimensionPerspectiveID);
-					if (isUngrouped(per))
-						continue;
-					dimensionPerspectiveID = tmpDimensionPerspectiveID;
-				}
-
-				Set<String> rowPerspectiveIDs = dataDomain.getRecordPerspectiveIDs();
-
-				// we ignore stratifications with only one group, which is the ungrouped default
-				if (rowPerspectiveIDs.size() == 1)
-					continue;
-
-				for (String rowPerspectiveID : rowPerspectiveIDs) {
-					boolean existsAlready = dataDomain.hasTablePerspective(rowPerspectiveID, dimensionPerspectiveID);
-
-					TablePerspective newTablePerspective = dataDomain.getTablePerspective(rowPerspectiveID,
-							dimensionPerspectiveID);
-
-					// We do not want to overwrite the state of already existing
-					// public table perspectives.
-					if (!existsAlready)
-						newTablePerspective.setPrivate(true);
-
-					stratifications.add(newTablePerspective);
-				}
-			}
+			stratifications.addAll(getStratifications(dataDomain));
 		}
 		cache = new WeakReference<>(stratifications);
 		return stratifications;
 	}
+
+	public Collection<TablePerspective> getStratifications(ATableBasedDataDomain dataDomain) {
+		if (DataDomainOracle.isCategoricalDataDomain(dataDomain)) {
+			return Lists.newArrayList(Iterables.filter(dataDomain.getAllTablePerspectives(),
+					Predicates.not(isUngroupedPredicate)));
+		} else {
+			// Take the first non ungrouped dimension perspective
+			String dimensionPerspectiveID = null;
+			for (String tmpDimensionPerspectiveID : dataDomain.getDimensionPerspectiveIDs()) {
+				DimensionPerspective per = dataDomain.getTable().getDimensionPerspective(tmpDimensionPerspectiveID);
+				if (isUngrouped(per))
+					continue;
+				dimensionPerspectiveID = tmpDimensionPerspectiveID;
+			}
+
+			Set<String> rowPerspectiveIDs = dataDomain.getRecordPerspectiveIDs();
+
+			// we ignore stratifications with only one group, which is the ungrouped default
+			if (rowPerspectiveIDs.size() == 1)
+				return Collections.emptyList();
+
+			Collection<TablePerspective> stratifications = new ArrayList<>(rowPerspectiveIDs.size());
+			for (String rowPerspectiveID : rowPerspectiveIDs) {
+				boolean existsAlready = dataDomain.hasTablePerspective(rowPerspectiveID, dimensionPerspectiveID);
+
+				TablePerspective newTablePerspective = dataDomain.getTablePerspective(rowPerspectiveID,
+						dimensionPerspectiveID);
+
+				// We do not want to overwrite the state of already existing
+				// public table perspectives.
+				if (!existsAlready)
+					newTablePerspective.setPrivate(true);
+
+				stratifications.add(newTablePerspective);
+			}
+			return stratifications;
+		}
+	}
+
+	private static final Predicate<TablePerspective> isUngroupedPredicate = new Predicate<TablePerspective>() {
+		@Override
+		public boolean apply(TablePerspective per) {
+			return per.getLabel().contains("Ungrouped");
+		}
+	};
 
 	private static boolean isUngrouped(DimensionPerspective per) {
 		return per.getLabel().contains("Ungrouped");
@@ -205,7 +239,6 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 		if (!selection.add(dataDomain))
 			return;
 		cache = null;
-		cache2 = null;
 		initDataDomain(dataDomain);
 		listeners.fireIndexedPropertyChange(PROP_SELECTION, selection.size() - 1, null, dataDomain);
 	}
@@ -217,7 +250,6 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 
 	public void removeSelection(ATableBasedDataDomain dataDomain) {
 		cache = null;
-		cache2 = null;
 		if (!selection.remove(dataDomain))
 			return;
 		listeners.fireIndexedPropertyChange(PROP_SELECTION, selection.size(), dataDomain, null);

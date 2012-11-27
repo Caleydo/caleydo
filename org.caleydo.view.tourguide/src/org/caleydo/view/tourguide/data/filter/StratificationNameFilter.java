@@ -17,38 +17,26 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.event;
+package org.caleydo.view.tourguide.data.filter;
 
-import java.util.List;
-
-import org.caleydo.core.event.AEvent;
-import org.caleydo.view.tourguide.data.ScoringElement;
-import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.collection.Pair;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class TourDataUpdateEvent extends AEvent {
-	private List<ScoringElement> data;
-	private VendingMachine view;
+public class StratificationNameFilter implements IDataDomainFilter {
+	private final String name;
 
-	public TourDataUpdateEvent(VendingMachine sender, List<ScoringElement> data) {
-		this.setSender(null);
-		this.view = sender;
-		this.data = data;
-	}
-
-	public VendingMachine getView() {
-		return view;
-	}
-
-	public List<ScoringElement> getData() {
-		return data;
+	public StratificationNameFilter(String name) {
+		this.name = name;
 	}
 
 	@Override
-	public boolean checkIntegrity() {
-		return true;
+	public boolean apply(Pair<TablePerspective, Group> pair) {
+		TablePerspective stratification = pair.getFirst();
+		return stratification == null || !name.equals(stratification.getRecordPerspective().getLabel());
 	}
 }

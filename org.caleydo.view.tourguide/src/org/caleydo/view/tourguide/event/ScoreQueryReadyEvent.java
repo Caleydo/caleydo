@@ -17,28 +17,29 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.listener;
+package org.caleydo.view.tourguide.event;
 
 import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
-import org.caleydo.view.tourguide.event.TourDataUpdateEvent;
 import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class TourDataUpdateListener extends AEventListener<VendingMachine> {
-	public TourDataUpdateListener(VendingMachine handler) {
-		setHandler(handler);
+public class ScoreQueryReadyEvent extends AEvent {
+	private VendingMachine view;
+
+	public ScoreQueryReadyEvent(VendingMachine sender) {
+		this.setSender(null);
+		this.view = sender;
+	}
+
+	public VendingMachine getView() {
+		return view;
 	}
 
 	@Override
-	public void handleEvent(AEvent event) {
-		TourDataUpdateEvent update = (TourDataUpdateEvent) event;
-		if (update.getView() != this.handler)
-			return;
-		handler.onDataUpdate(update.getData());
+	public boolean checkIntegrity() {
+		return true;
 	}
-
 }

@@ -67,6 +67,7 @@ import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.ProductScore;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
+import org.caleydo.view.tourguide.renderer.AnimatedTextureRenderer;
 import org.caleydo.view.tourguide.renderer.ScoreBarRenderer;
 
 import com.google.common.base.Function;
@@ -114,6 +115,7 @@ public class ScoreQueryUI extends Column {
 	private final ISelectionListener selectionListener;
 	private final AGLView view;
 	private final Function<ScoringElement, Void> addToStratomexCallback;
+	private boolean running;
 
 	public ScoreQueryUI(AGLView view, ISelectionListener listener, Function<ScoringElement, Void> addToStratomex) {
 		this.view = view;
@@ -281,6 +283,7 @@ public class ScoreQueryUI extends Column {
 	}
 
 	public void setData(List<ScoringElement> data) {
+		setSelected(-1, -1);
 		this.data = data;
 		this.clear();
 		this.add(createYSpacer(5));
@@ -415,6 +418,19 @@ public class ScoreQueryUI extends Column {
 			setBackgroundColor(row, SELECTED_COLOR);
 		}
 		selectionListener.onSelectionChanged(old, new_, getSelectScoreID(new_, col));
+	}
+
+	public void setRunning(boolean running) {
+		if (this.running == running)
+			return;
+		this.running = running;
+		if (!this.running)
+			this.clearForegroundRenderers();
+		else {
+			this.addForeGroundRenderer(new AnimatedTextureRenderer(EIconTextures.LOADING_CIRCLE.getFileName(), 20, view
+					.getTextureManager()));
+		}
+		invalidate();
 	}
 
 	private IScore getSelectScoreID(ScoringElement row, int col) {

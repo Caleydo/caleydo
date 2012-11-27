@@ -19,21 +19,34 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data;
 
+import java.beans.IndexedPropertyChangeEvent;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.view.tourguide.data.RankedListBuilders.IRankedListBuilder;
+import org.caleydo.view.tourguide.data.compute.ComputeBatchGroupScore;
+import org.caleydo.view.tourguide.data.compute.ComputeGroupScore;
+import org.caleydo.view.tourguide.data.compute.ComputeStratificationScore;
+import org.caleydo.view.tourguide.data.compute.ScoreComputer;
 import org.caleydo.view.tourguide.data.filter.CompositeScoreFilter;
+import org.caleydo.view.tourguide.data.filter.IDataDomainFilter;
 import org.caleydo.view.tourguide.data.score.EScoreType;
 import org.caleydo.view.tourguide.data.score.IBatchComputedGroupScore;
 import org.caleydo.view.tourguide.data.score.IComputedGroupScore;
@@ -42,7 +55,6 @@ import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.ProductScore;
 
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
@@ -64,67 +76,80 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 
 	private final DataDomainQuery query;
 
+	private final Deque<Future<?>> toCompute = new LinkedList<>();
+
 	public ScoreQuery(DataDomainQuery query) {
 		this.query = query;
+		this.query.addPropertyChangeListener(DataDomainQuery.PROP_SELECTION, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				IndexedPropertyChangeEvent ievt = (IndexedPropertyChangeEvent) evt;
+				if (ievt.getOldValue() == null) { // new value
+					onAddStratification((ATableBasedDataDomain) ievt.getNewValue());
+				}
+			}
+		});
+		this.query.addPropertyChangeListener(DataDomainQuery.PROP_FILTEr, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				IndexedPropertyChangeEvent ievt = (IndexedPropertyChangeEvent) evt;
+				if (ievt.getNewValue() == null) { // removed filter
+					onRemovedFilter((IDataDomainFilter) ievt.getOldValue());
+				}
+			}
+		});
+	}
 
+	/**
+	 * returns whether there are outstanding computations
+	 *
+	 * @return
+	 */
+	public boolean isBusy() {
+		for (Iterator<Future<?>> it = toCompute.iterator(); it.hasNext();) {
+			if (it.next().isDone())
+				it.remove();
+			else
+				return true;
+		}
+		return false;
+	}
+
+	public void waitTillComplete() {
+		for (Iterator<Future<?>> it = toCompute.iterator(); it.hasNext();) {
+			try {
+				it.next().get();
+			} catch (InterruptedException | ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			it.remove();
+		}
 	}
 
 	@Override
 	public List<ScoringElement> call() {
-		final boolean noGroupScores = !Iterables.any(Scores.flatten(selection), isGroupScore);
 		final Pair<List<ProductScore>, Integer> pair = filterProductScores(Scores.flatten(selection));
 		final List<ProductScore> productScores = pair.getFirst();
 		final int factor = pair.getSecond();
 
 		Collection<TablePerspective> stratifications = query.call();
-		compute(stratifications);
 
 		Map<IScore, IScore> selections = new HashMap<IScore, IScore>(productScores.size());
 		IRankedListBuilder builder;
-		if (noGroupScores) { // just stratifications
-			builder = RankedListBuilders.create(top, stratifications.size() * factor, filter, orderBy);
-			buildAll(builder, 0, productScores, selections, stratifications);
-		} else {
+		if (hasGroupScore(selection)) {
 			Multimap<TablePerspective, Group> stratNGroups = query.apply(stratifications);
-			compute(stratNGroups);
 			builder = RankedListBuilders.create(top, stratNGroups.size() * factor, filter, orderBy);
 			buildAll2(builder, 0, productScores, selections, stratNGroups);
+		} else { // just stratifications
+			builder = RankedListBuilders.create(top, stratifications.size() * factor, filter, orderBy);
+			buildAll(builder, 0, productScores, selections, stratifications);
 		}
 		return builder.build();
 	}
 
-
-	private void compute(Collection<TablePerspective> data) {
-		// all non group scores + computed scores
-		for (IScore s : Iterables
-				.filter(Scores.flatten(selection),
-						Predicates.and(Predicates.not(isGroupScore),
-								Predicates.instanceOf(IComputedStratificationScore.class)))) {
-			IComputedStratificationScore c = (IComputedStratificationScore) s;
-			c.apply(data);
-		}
-	}
-
-
-	private void compute(Multimap<TablePerspective, Group> data) {
-		// all non group scores + computed scores
-		Multimap<Class<? extends IBatchComputedGroupScore>, IBatchComputedGroupScore> batches = ArrayListMultimap.create();
-		for (IScore s : Iterables.filter(Scores.flatten(selection),
-				Predicates.and(isGroupScore, Predicates.instanceOf(IComputedGroupScore.class)))) {
-			if (s instanceof IBatchComputedGroupScore) {
-				IBatchComputedGroupScore c = (IBatchComputedGroupScore) s;
-				batches.put(c.getClass(), c);
-			} else {
-				IComputedGroupScore c = (IComputedGroupScore) s;
-				c.apply(data);
-			}
-		}
-		// compute batches
-		for (Class<? extends IBatchComputedGroupScore> batchType : batches.keySet()) {
-			Collection<IBatchComputedGroupScore> b = batches.get(batchType);
-			assert !b.isEmpty();
-			b.iterator().next().apply(b, data);
-		}
+	private static boolean hasGroupScore(Collection<IScore> scores) {
+		return Iterables.any(Scores.flatten(scores), isGroupScore);
 	}
 
 	private Pair<List<ProductScore>, Integer> filterProductScores(Collection<IScore> scores) {
@@ -233,6 +258,13 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 		return s == null ? ESorting.NONE : s;
 	}
 
+	/**
+	 * @return whether the query is ranked aka sorted in any kind
+	 */
+	public boolean isSorted() {
+		return !this.orderBy.isEmpty();
+	}
+
 	public void sortBy(IScore elem, ESorting sorting) {
 		ScoreComparator old = new ScoreComparator(orderBy);
 		if (sorting == ESorting.NONE)
@@ -249,6 +281,47 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	public void addSelection(IScore score) {
 		selection.add(score);
 		listeners.fireIndexedPropertyChange(PROP_SELECTION, selection.size() - 1, null, score);
+
+		submitComputation(Collections.singleton(score), null);
+	}
+
+	private void submitComputation(Iterable<IScore> score, Collection<TablePerspective> stratifications) {
+		Collection<IScore> scores = Scores.flatten(score);
+
+		// submit all stratifications computations
+		Iterable<IComputedStratificationScore> stratScores = Iterables.filter(scores, IComputedStratificationScore.class);
+		if (!Iterables.isEmpty(stratScores)) {
+			if (stratifications == null) // if null use the all
+				stratifications = query.call();
+			for (IComputedStratificationScore s : stratScores)
+				toCompute.add(ScoreComputer.submit(new ComputeStratificationScore(s, stratifications)));
+		}
+
+		// submit all gropu computations
+		Iterable<IComputedGroupScore> groupScores = Iterables.filter(scores, IComputedGroupScore.class);
+		if (!Iterables.isEmpty(groupScores)) {
+			if (stratifications == null)
+				stratifications = query.call();
+			Multimap<TablePerspective, Group> groups = query.apply(stratifications);
+
+			// split into batch and normal
+			Multimap<Class<? extends IBatchComputedGroupScore>, IBatchComputedGroupScore> batches = ArrayListMultimap
+					.create();
+			for (IComputedGroupScore s : groupScores) {
+				if (s instanceof IBatchComputedGroupScore) {
+					IBatchComputedGroupScore c = (IBatchComputedGroupScore) s;
+					batches.put(c.getClass(), c);
+				} else {
+					toCompute.add(ScoreComputer.submit(new ComputeGroupScore(s, groups)));
+				}
+			}
+			// compute batches
+			for (Class<? extends IBatchComputedGroupScore> batchType : batches.keySet()) {
+				Collection<IBatchComputedGroupScore> b = batches.get(batchType);
+				assert !b.isEmpty();
+				toCompute.add(ScoreComputer.submit(new ComputeBatchGroupScore(b, groups)));
+			}
+		}
 	}
 
 	public void removeSelection(IScore score) {
@@ -259,7 +332,13 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 		listeners.fireIndexedPropertyChange(PROP_SELECTION, i, score, null);
 	}
 
-	public boolean isSorted() {
-		return !this.orderBy.isEmpty();
+	protected void onRemovedFilter(IDataDomainFilter oldValue) {
+		// find out what groups have changed
+
+	}
+
+	protected void onAddStratification(ATableBasedDataDomain dataDomain) {
+		// compute all scores on the new stratifications
+		submitComputation(this.selection, query.getStratifications(dataDomain));
 	}
 }

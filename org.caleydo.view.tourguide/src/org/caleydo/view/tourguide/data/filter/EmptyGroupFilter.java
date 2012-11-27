@@ -30,6 +30,6 @@ import org.caleydo.core.util.collection.Pair;
 public class EmptyGroupFilter implements IDataDomainFilter {
 	@Override
 	public boolean apply(Pair<TablePerspective, Group> pair) {
-		return pair.getSecond().getSize() > 0;
+		return pair.getSecond() == null || pair.getSecond().getSize() > 0;
 	}
 }

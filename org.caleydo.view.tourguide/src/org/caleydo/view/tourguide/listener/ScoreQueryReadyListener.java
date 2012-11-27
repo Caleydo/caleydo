@@ -17,26 +17,28 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data.filter;
+package org.caleydo.view.tourguide.listener;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.view.tourguide.event.ScoreQueryReadyEvent;
+import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class GroupNameFilter implements IDataDomainFilter {
-	private final String name;
-
-	public GroupNameFilter(String name) {
-		this.name = name;
+public class ScoreQueryReadyListener extends AEventListener<VendingMachine> {
+	public ScoreQueryReadyListener(VendingMachine handler) {
+		setHandler(handler);
 	}
 
 	@Override
-	public boolean apply(Pair<TablePerspective, Group> pair) {
-		Group group = pair.getSecond();
-		return group == null || !name.equals(group.getLabel());
+	public void handleEvent(AEvent event) {
+		ScoreQueryReadyEvent update = (ScoreQueryReadyEvent) event;
+		if (update.getView() != this.handler)
+			return;
+		handler.onScoreQueryReady();
 	}
+
 }

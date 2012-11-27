@@ -17,26 +17,20 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data.filter;
+package org.caleydo.view.tourguide.data.compute;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.util.collection.Pair;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class GroupNameFilter implements IDataDomainFilter {
-	private final String name;
+public class ScoreComputer {
+	private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-	public GroupNameFilter(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public boolean apply(Pair<TablePerspective, Group> pair) {
-		Group group = pair.getSecond();
-		return group == null || !name.equals(group.getLabel());
+	public static Future<?> submit(Runnable task) {
+		return executor.submit(task);
 	}
 }
