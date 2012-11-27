@@ -61,7 +61,7 @@ import com.google.common.collect.Multimap;
  */
 public class DataDomainQuery implements SafeCallable<Collection<TablePerspective>>,
 		Function<Collection<TablePerspective>, Multimap<TablePerspective, Group>> {
-	public static final String PROP_FILTEr = "filter";
+	public static final String PROP_FILTER = "filter";
 	public static final String PROP_SELECTION = "selection";
 
 	private final static CategoricalTablePerspectiveCreator perspectiveCreator = new CategoricalTablePerspectiveCreator();
@@ -87,7 +87,7 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 
 	public void addFilter(IDataDomainFilter filter) {
 		this.filter.add(filter);
-		listeners.fireIndexedPropertyChange(PROP_FILTEr, this.filter.size() - 1, null, filter);
+		listeners.fireIndexedPropertyChange(PROP_FILTER, this.filter.size() - 1, null, filter);
 	}
 
 	public void removeFilter(IDataDomainFilter filter) {
@@ -95,7 +95,7 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 		if (i < 0)
 			return;
 		this.filter.remove(i);
-		listeners.fireIndexedPropertyChange(PROP_FILTEr, i, filter, null);
+		listeners.fireIndexedPropertyChange(PROP_FILTER, i, filter, null);
 	}
 
 	public List<IDataDomainFilter> getFilter() {

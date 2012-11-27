@@ -24,7 +24,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.util.format.Formatter;
 import org.caleydo.view.tourguide.data.ScoringElement;
 
 /**
@@ -92,13 +91,4 @@ public abstract class AGroupScore implements IScore {
 		Float f = scores.get(elem.getGroup().getID());
 		return f == null ? Float.NaN : f.floatValue();
 	}
-
-	@Override
-	public String getRepr(ScoringElement elem) {
-		float f = getScore(elem);
-		return Float.isNaN(f) ? "" : Formatter.formatNumber(f);
-	}
-
-
-
 }

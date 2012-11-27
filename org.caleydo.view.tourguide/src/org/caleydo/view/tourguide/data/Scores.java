@@ -79,8 +79,14 @@ public final class Scores {
 		return flatten(Arrays.asList(scores));
 	}
 
-	public static Collection<IScore> flatten(Iterable<IScore> scores) {
-		Collection<IScore> result = new HashSet<>();
+	/**
+	 * flattens the given scores, i.e. flat composites to a big flat set
+	 *
+	 * @param scores
+	 * @return
+	 */
+	public static Set<IScore> flatten(Iterable<IScore> scores) {
+		Set<IScore> result = new HashSet<>();
 		Deque<IScore> queue = Lists.newLinkedList(scores);
 		while (!queue.isEmpty()) {
 			IScore s = queue.pollFirst();

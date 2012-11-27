@@ -26,7 +26,12 @@ import org.caleydo.core.data.virtualarray.group.Group;
 
 import com.google.common.collect.Multimap;
 
-
+/**
+ * a special kind of {@link IComputedGroupScore} which computes a batch of the same scores at the same time
+ * 
+ * @author Samuel Gratzl
+ * 
+ */
 public interface IBatchComputedGroupScore extends IComputedGroupScore {
 	void apply(Collection<IBatchComputedGroupScore> batch, Multimap<TablePerspective, Group> stratNGroups);
 }

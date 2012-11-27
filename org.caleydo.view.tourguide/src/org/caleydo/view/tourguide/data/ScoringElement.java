@@ -35,6 +35,9 @@ import org.caleydo.view.tourguide.data.score.ProductScore;
 public final class ScoringElement implements ILabelProvider {
 	private final TablePerspective stratification;
 	private final Group group;
+	/**
+	 * product scores have different scores depending on the current scoring element, this map stores their selections
+	 */
 	private final Map<IScore, IScore> productSelections;
 
 	public ScoringElement(TablePerspective stratification) {

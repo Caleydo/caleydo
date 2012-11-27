@@ -24,7 +24,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.caleydo.core.util.format.Formatter;
 import org.caleydo.view.tourguide.data.ScoringElement;
 
 /**
@@ -67,6 +66,7 @@ public class CombinedScore implements ICompositeScore {
 		return Collections.unmodifiableCollection(children);
 	}
 
+	@Override
 	public int size() {
 		return children.size();
 	}
@@ -88,12 +88,6 @@ public class CombinedScore implements ICompositeScore {
 		for (IScore child : children)
 			data[i++] = child.getScore(elem);
 		return combine(data);
-	}
-
-	@Override
-	public String getRepr(ScoringElement elem) {
-		float f = getScore(elem);
-		return Float.isNaN(f) ? "" : Formatter.formatNumber(f);
 	}
 
 	/**

@@ -60,22 +60,41 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 
 /**
+ * container for all the score query elements + a way how to compute the scored scoring elements out of that query
+ *
  * @author Samuel Gratzl
  *
  */
 public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	public static final String PROP_ORDER_BY = "orderBy";
 	public static final String PROP_SELECTION = "selection";
+	// number of concurrent sortings
 	private static final int MAX_SORTING = 1;
 
 	private final PropertyChangeSupport listeners = new PropertyChangeSupport(this);
+
+	/**
+	 * the currently selected columns / scores
+	 */
 	private List<IScore> selection = new ArrayList<>();
+	/**
+	 * the currently applied filters to the scoring elements, e.g. min score
+	 */
 	private CompositeScoreFilter filter = new CompositeScoreFilter();
+	/**
+	 * the currentl order of the elements
+	 */
 	private ScoreComparator orderBy = new ScoreComparator();
+	/**
+	 * how many elements should be shown at max, the less the better memory behavior
+	 */
 	private int top = 35;
 
 	private final DataDomainQuery query;
 
+	/**
+	 * queue holding the tasks we are submitted to computed but not yet finished
+	 */
 	private final Deque<Future<?>> toCompute = new LinkedList<>();
 
 	public ScoreQuery(DataDomainQuery query) {
@@ -89,7 +108,7 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 				}
 			}
 		});
-		this.query.addPropertyChangeListener(DataDomainQuery.PROP_FILTEr, new PropertyChangeListener() {
+		this.query.addPropertyChangeListener(DataDomainQuery.PROP_FILTER, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				IndexedPropertyChangeEvent ievt = (IndexedPropertyChangeEvent) evt;
@@ -115,6 +134,9 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 		return false;
 	}
 
+	/**
+	 * blocks the current thread till all computations are done
+	 */
 	public void waitTillComplete() {
 		for (Iterator<Future<?>> it = toCompute.iterator(); it.hasNext();) {
 			try {
@@ -127,6 +149,9 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 		}
 	}
 
+	/**
+	 * executes this query and returns the resulting scoring element list
+	 */
 	@Override
 	public List<ScoringElement> call() {
 		final Pair<List<ProductScore>, Integer> pair = filterProductScores(Scores.flatten(selection));
@@ -137,7 +162,7 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 
 		Map<IScore, IScore> selections = new HashMap<IScore, IScore>(productScores.size());
 		IRankedListBuilder builder;
-		if (hasGroupScore(selection)) {
+		if (hasGroupScore(selection)) { // we need to show strat,group pairs
 			Multimap<TablePerspective, Group> stratNGroups = query.apply(stratifications);
 			builder = RankedListBuilders.create(top, stratNGroups.size() * factor, filter, orderBy);
 			buildAll2(builder, 0, productScores, selections, stratNGroups);
@@ -152,6 +177,12 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 		return Iterables.any(Scores.flatten(scores), isGroupScore);
 	}
 
+	/**
+	 * find all product scores and compute the multiplication factor of the rows
+	 *
+	 * @param scores
+	 * @return
+	 */
 	private Pair<List<ProductScore>, Integer> filterProductScores(Collection<IScore> scores) {
 		int factor = 1;
 		List<ProductScore> productScores = new ArrayList<>(scores.size());
@@ -265,6 +296,14 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 		return !this.orderBy.isEmpty();
 	}
 
+	/**
+	 * sort the query by the given element using the given order
+	 *
+	 * @param elem
+	 *            what
+	 * @param sorting
+	 *            how
+	 */
 	public void sortBy(IScore elem, ESorting sorting) {
 		ScoreComparator old = new ScoreComparator(orderBy);
 		if (sorting == ESorting.NONE)
@@ -278,6 +317,11 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 		listeners.firePropertyChange(PROP_ORDER_BY, old, orderBy);
 	}
 
+	/**
+	 * add another column to the query
+	 *
+	 * @param score
+	 */
 	public void addSelection(IScore score) {
 		selection.add(score);
 		listeners.fireIndexedPropertyChange(PROP_SELECTION, selection.size() - 1, null, score);
@@ -285,6 +329,29 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 		submitComputation(Collections.singleton(score), null);
 	}
 
+	public void removeSelection(IScore score) {
+		int i = selection.indexOf(score);
+		if (i < 0)
+			return;
+		selection.remove(score);
+		listeners.fireIndexedPropertyChange(PROP_SELECTION, i, score, null);
+	}
+
+	protected void onRemovedFilter(IDataDomainFilter oldValue) {
+		// TODO find out what groups have changed
+	}
+
+	protected void onAddStratification(ATableBasedDataDomain dataDomain) {
+		// compute all scores on the new stratifications
+		submitComputation(this.selection, query.getStratifications(dataDomain));
+	}
+
+	/**
+	 * triggers the computation of one or more scores on one or more stratifications
+	 *
+	 * @param score
+	 * @param stratifications
+	 */
 	private void submitComputation(Iterable<IScore> score, Collection<TablePerspective> stratifications) {
 		Collection<IScore> scores = Scores.flatten(score);
 
@@ -297,7 +364,7 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 				toCompute.add(ScoreComputer.submit(new ComputeStratificationScore(s, stratifications)));
 		}
 
-		// submit all gropu computations
+		// submit all group computations
 		Iterable<IComputedGroupScore> groupScores = Iterables.filter(scores, IComputedGroupScore.class);
 		if (!Iterables.isEmpty(groupScores)) {
 			if (stratifications == null)
@@ -322,23 +389,5 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 				toCompute.add(ScoreComputer.submit(new ComputeBatchGroupScore(b, groups)));
 			}
 		}
-	}
-
-	public void removeSelection(IScore score) {
-		int i = selection.indexOf(score);
-		if (i < 0)
-			return;
-		selection.remove(score);
-		listeners.fireIndexedPropertyChange(PROP_SELECTION, i, score, null);
-	}
-
-	protected void onRemovedFilter(IDataDomainFilter oldValue) {
-		// find out what groups have changed
-
-	}
-
-	protected void onAddStratification(ATableBasedDataDomain dataDomain) {
-		// compute all scores on the new stratifications
-		submitComputation(this.selection, query.getStratifications(dataDomain));
 	}
 }

@@ -26,8 +26,10 @@ import java.util.Map;
 import org.caleydo.view.tourguide.data.score.IScore;
 
 /**
+ * based on the sorting mapping act as a comparator to compare {@link ScoringElement}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class ScoreComparator extends LinkedHashMap<IScore, ESorting> implements Comparator<ScoringElement> {
 	private static final long serialVersionUID = 4297583469444630189L;

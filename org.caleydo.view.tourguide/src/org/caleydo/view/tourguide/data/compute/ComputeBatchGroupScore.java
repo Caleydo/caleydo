@@ -20,6 +20,7 @@ public class ComputeBatchGroupScore implements Runnable {
 
 	@Override
 	public void run() {
+		// select anly implementation and compute the whole batch
 		scores.iterator().next().apply(scores, data);
 	}
 }

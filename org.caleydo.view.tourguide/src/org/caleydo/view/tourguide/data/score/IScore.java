@@ -30,6 +30,4 @@ public interface IScore extends ILabelProvider {
 	public EScoreType getScoreType();
 
 	public float getScore(ScoringElement elem);
-
-	public String getRepr(ScoringElement elem);
 }

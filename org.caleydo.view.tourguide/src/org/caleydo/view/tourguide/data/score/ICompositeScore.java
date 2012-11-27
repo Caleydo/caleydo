@@ -27,4 +27,6 @@ import java.util.Collection;
  */
 public interface ICompositeScore extends IScore, Iterable<IScore> {
 	public Collection<IScore> getChildren();
+
+	public int size();
 }

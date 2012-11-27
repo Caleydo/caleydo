@@ -25,9 +25,11 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import com.google.common.collect.Multimap;
 
 /**
+ * declares that the given {@link IScore} must be computed on a group base
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public interface IComputedGroupScore {
+public interface IComputedGroupScore extends IScore {
 	void apply(Multimap<TablePerspective, Group> stratNGroups);
 }

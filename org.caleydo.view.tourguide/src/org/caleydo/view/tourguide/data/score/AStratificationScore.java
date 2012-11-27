@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.util.format.Formatter;
 import org.caleydo.view.tourguide.data.ScoringElement;
 
 /**
@@ -75,13 +74,6 @@ public abstract class AStratificationScore implements IScore {
 		TablePerspective p = elem.getStratification();
 		Float f = scores.get(p.getID());
 		return f == null ? Float.NaN : f.floatValue();
-	}
-
-
-	@Override
-	public String getRepr(ScoringElement elem) {
-		float f = getScore(elem);
-		return Float.isNaN(f) ? "" : Formatter.formatNumber(f);
 	}
 
 	/*

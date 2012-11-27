@@ -43,11 +43,16 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 /**
+ * implementation of the jaccard score to compare groups
+ *
  * @author Samuel Gratzl
  *
  */
 public class JaccardIndexScore extends AGroupScore implements IBatchComputedGroupScore {
 	private static final Logger log = Logger.create(JaccardIndexScore.class);
+	/**
+	 * my own group as bitset
+	 */
 	private final BitSet bitSet;
 	private final BitMapMapper toBitMap;
 
@@ -61,7 +66,7 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 	public void apply(Multimap<TablePerspective, Group> stratNGroups) {
 		Iterable<Pair<Group, BitSet>> bitsets = transform(filter(stratNGroups.entries(), notInCache), toBitMap);
 		for (Pair<Group, BitSet> entry : bitsets)
-			put(entry.getFirst(), computeJaccardIndex(group, bitSet, entry.getFirst(), entry.getSecond()));
+			put(entry.getFirst(), computeJaccardIndex(bitSet, entry.getSecond()));
 	}
 
 	@Override
@@ -112,7 +117,7 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 					BitSet s = doMapIds ? createMappedIds(va, g, idMappingManager, targetType) : createIds(va, g);
 
 					for (JaccardIndexScore idElem : todo) { // compute scores
-						idElem.put(g, computeJaccardIndex(idElem.group, idElem.bitSet, g, s));
+						idElem.put(g, computeJaccardIndex(idElem.bitSet, s));
 					}
 				}
 			}
@@ -127,7 +132,14 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 		}
 	};
 
-	private static float computeJaccardIndex(Group a, BitSet aBits, Group b, BitSet bBits) {
+	/**
+	 * actual implementation of the jaccard index based on bitsets
+	 *
+	 * @param aBits
+	 * @param bBits
+	 * @return
+	 */
+	private static float computeJaccardIndex(BitSet aBits, BitSet bBits) {
 		BitSet tmp = (BitSet) bBits.clone(); // local copy
 		tmp.and(aBits);
 		int intersection = tmp.cardinality();
@@ -155,6 +167,13 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 		}
 	}
 
+	/**
+	 * creates out of a group a bitset
+	 *
+	 * @param va
+	 * @param group
+	 * @return
+	 */
 	private static BitSet createIds(RecordVirtualArray va, Group group) {
 		BitSet b = new BitSet();
 		for (int i = group.getStartIndex(); i <= group.getEndIndex(); ++i) {
@@ -164,6 +183,15 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 		return b;
 	}
 
+	/**
+	 * creates out of a group a bitset but transform the id using the provided {@link IDMappingManager}
+	 * 
+	 * @param va
+	 * @param group
+	 * @param idMappingManager
+	 * @param target
+	 * @return
+	 */
 	private static BitSet createMappedIds(RecordVirtualArray va, Group group, IDMappingManager idMappingManager,
 			IDType target) {
 		BitSet b = new BitSet();

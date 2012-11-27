@@ -23,8 +23,10 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
 
 /**
+ * marker event showing that the score query is ready
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class ScoreQueryReadyEvent extends AEvent {
 	private VendingMachine view;

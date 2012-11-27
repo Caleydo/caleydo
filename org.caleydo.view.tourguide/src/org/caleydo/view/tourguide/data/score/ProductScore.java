@@ -24,7 +24,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.caleydo.core.util.format.Formatter;
 import org.caleydo.view.tourguide.data.ScoringElement;
 
 /**
@@ -72,6 +71,7 @@ public class ProductScore implements ICompositeScore {
 		return Collections.unmodifiableCollection(children);
 	}
 
+	@Override
 	public int size() {
 		return children.size();
 	}
@@ -93,14 +93,5 @@ public class ProductScore implements ICompositeScore {
 	public float getScore(ScoringElement elem) {
 		IScore child = elem.getSelected(this);
 		return child == null ? Float.NaN : child.getScore(elem);
-	}
-
-	@Override
-	public String getRepr(ScoringElement elem) {
-		IScore child = elem.getSelected(this);
-		if (child == null)
-			return "";
-		float f = child.getScore(elem);
-		return Float.isNaN(f) ? "" : String.format("%s (%s)", Formatter.formatNumber(f), elem.getLabel());
 	}
 }

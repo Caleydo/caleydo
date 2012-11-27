@@ -24,9 +24,11 @@ import java.util.Collection;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 
 /**
+ * declares that the given {@link IScore} must be computed on a stratification base
+ *
  * @author Samuel Gratzl
  *
  */
-public interface IComputedStratificationScore {
+public interface IComputedStratificationScore extends IScore {
 	void apply(Collection<TablePerspective> perspectives);
 }

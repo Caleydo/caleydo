@@ -21,6 +21,8 @@ package org.caleydo.view.tourguide.data;
 
 
 /**
+ * sort type indicator
+ *
  * @author Samuel Gratzl
  *
  */
@@ -37,6 +39,12 @@ public enum ESorting {
 		return values[(this.ordinal() - 1) % (values.length)];
 	}
 
+	/**
+	 * updates the compare result according to the current state
+	 * 
+	 * @param compare
+	 * @return
+	 */
 	public int apply(int compare) {
 		switch (this) {
 		case ASC:
