@@ -22,7 +22,7 @@ import org.caleydo.view.enroute.node.ComplexNode;
  * @author Christian
  *
  */
-public class ComplexNodePreviewMode extends ALayoutBasedNodeMode {
+public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements IComplexNodeMode {
 
 	public static final int MIN_NODE_WIDTH_PIXELS = 70;
 
@@ -106,5 +106,10 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode {
 				node.getNodeId());
 	}
 
+	@Override
+	public void updateSubNodePositions() {
+		// TODO implement
+
+	}
 
 }

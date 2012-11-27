@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.view.enroute.node.mode;
 
@@ -19,11 +19,11 @@ import org.caleydo.view.enroute.node.RemoveNodeButtonAttributeRenderer;
 
 /**
  * The linearized mode for {@link ComplexNode}s.
- * 
+ *
  * @author Christian
- * 
+ *
  */
-public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode {
+public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements IComplexNodeMode {
 
 	/**
 	 * @param view
@@ -32,13 +32,13 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode {
 		super(view);
 	}
 
+	@Override
 	public void apply(ALinearizableNode node) {
 		this.node = node;
 		unregisterPickingListeners();
 		registerPickingListeners();
 		attributeRenderers.clear();
-		RemoveNodeButtonAttributeRenderer attributeRenderer = new RemoveNodeButtonAttributeRenderer(
-				view, node);
+		RemoveNodeButtonAttributeRenderer attributeRenderer = new RemoveNodeButtonAttributeRenderer(view, node);
 
 		ComplexNode complexNode = (ComplexNode) node;
 
@@ -123,13 +123,27 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode {
 		super.unregisterPickingListeners();
 	}
 
-//	@Override
-//	public String getLabel() {
-//		return node.getCaption();
-//	}
+	// @Override
+	// public String getLabel() {
+	// return node.getCaption();
+	// }
 
 	@Override
 	public void render(GL2 gl, GLU glu) {
+		ComplexNode complexNode = (ComplexNode) node;
+
+		for (ALinearizableNode node : complexNode.getNodes()) {
+			node.render(gl, glu);
+		}
+
+		for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
+			attributeRenderer.render(gl);
+		}
+
+	}
+
+	@Override
+	public void updateSubNodePositions() {
 		ComplexNode complexNode = (ComplexNode) node;
 		Vec3f position = complexNode.getPosition();
 		float currentPositionY = position.y() + complexNode.getHeight() / 2.0f;
@@ -138,19 +152,15 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode {
 			float nodeHeight = node.getHeight();
 			currentPositionY -= nodeHeight / 2.0f;
 			node.setPosition(new Vec3f(position.x(), currentPositionY, position.z()));
-			node.render(gl, glu);
 			currentPositionY -= nodeHeight / 2.0f;
 		}
-		
-		for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
-			attributeRenderer.render(gl);
-		}
-
 	}
 
-//	@Override
-//	public boolean isLabelDefault() {
-//		return false;
-//	}
+
+
+	// @Override
+	// public boolean isLabelDefault() {
+	// return false;
+	// }
 
 }
