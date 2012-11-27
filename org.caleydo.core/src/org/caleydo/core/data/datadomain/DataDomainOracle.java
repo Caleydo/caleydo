@@ -32,7 +32,7 @@ public final class DataDomainOracle {
 		String label = dataDomain.getLabel();
 		if (dataDomain.getLabel() == null)
 			return false;
-		return label.toLowerCase().contains("mutation") || label.contains("copy");
+		return label.toLowerCase().contains("mutation") || label.toLowerCase().contains("copy");
 	}
 
 }
