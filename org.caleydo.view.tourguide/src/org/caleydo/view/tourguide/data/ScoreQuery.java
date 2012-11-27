@@ -31,6 +31,7 @@ import java.util.Map;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.view.tourguide.data.RankedListBuilders.IRankedListBuilder;
 import org.caleydo.view.tourguide.data.filter.CompositeScoreFilter;
 import org.caleydo.view.tourguide.data.score.EScoreType;
@@ -40,7 +41,6 @@ import org.caleydo.view.tourguide.data.score.IComputedStratificationScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.ProductScore;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ArrayListMultimap;
@@ -51,7 +51,7 @@ import com.google.common.collect.Multimap;
  * @author Samuel Gratzl
  *
  */
-public class ScoreQuery implements Function<DataDomainQuery, List<ScoringElement>> {
+public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	public static final String PROP_ORDER_BY = "orderBy";
 	public static final String PROP_SELECTION = "selection";
 	private static final int MAX_SORTING = 1;
@@ -62,8 +62,15 @@ public class ScoreQuery implements Function<DataDomainQuery, List<ScoringElement
 	private ScoreComparator orderBy = new ScoreComparator();
 	private int top = 35;
 
+	private final DataDomainQuery query;
+
+	public ScoreQuery(DataDomainQuery query) {
+		this.query = query;
+
+	}
+
 	@Override
-	public List<ScoringElement> apply(DataDomainQuery query) {
+	public List<ScoringElement> call() {
 		final boolean noGroupScores = !Iterables.any(Scores.flatten(selection), isGroupScore);
 		final Pair<List<ProductScore>, Integer> pair = filterProductScores(Scores.flatten(selection));
 		final List<ProductScore> productScores = pair.getFirst();
@@ -78,7 +85,7 @@ public class ScoreQuery implements Function<DataDomainQuery, List<ScoringElement
 			builder = RankedListBuilders.create(top, stratifications.size() * factor, filter, orderBy);
 			buildAll(builder, 0, productScores, selections, stratifications);
 		} else {
-			Multimap<TablePerspective, Group> stratNGroups = query.apply(query.call());
+			Multimap<TablePerspective, Group> stratNGroups = query.apply(stratifications);
 			compute(stratNGroups);
 			builder = RankedListBuilders.create(top, stratNGroups.size() * factor, filter, orderBy);
 			buildAll2(builder, 0, productScores, selections, stratNGroups);
@@ -89,13 +96,15 @@ public class ScoreQuery implements Function<DataDomainQuery, List<ScoringElement
 
 	private void compute(Collection<TablePerspective> data) {
 		// all non group scores + computed scores
-		for (IScore s : Iterables.filter(Scores.flatten(selection),
+		for (IScore s : Iterables
+				.filter(Scores.flatten(selection),
 						Predicates.and(Predicates.not(isGroupScore),
 								Predicates.instanceOf(IComputedStratificationScore.class)))) {
 			IComputedStratificationScore c = (IComputedStratificationScore) s;
 			c.apply(data);
 		}
 	}
+
 
 	private void compute(Multimap<TablePerspective, Group> data) {
 		// all non group scores + computed scores

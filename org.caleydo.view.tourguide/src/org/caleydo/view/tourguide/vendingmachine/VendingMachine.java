@@ -21,8 +21,6 @@ package org.caleydo.view.tourguide.vendingmachine;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -103,7 +101,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	private BrickColumnManager brickColumnManager;
 
 	private DataDomainQuery dataDomainQuery = new DataDomainQuery();
-	private ScoreQuery scoreQuery = new ScoreQuery();
+	private ScoreQuery scoreQuery = new ScoreQuery(dataDomainQuery);
 
 	private CaleydoTextRenderer textLargeRenderer;
 
@@ -261,10 +259,9 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 	public void createStratificationGroupScore(TablePerspective stratification, Iterable<Group> groups) {
 		Scores manager = Scores.get();
-		Collection<IScore> scores = new ArrayList<>();
-		ProductScore composite = new ProductScore(stratification.getLabel(), scores);
+		ProductScore composite = new ProductScore(stratification.getLabel());
 		for (Group group : groups) {
-			scores.add(manager.addIfAbsent(new JaccardIndexScore(stratification, group)));
+			composite.add(manager.addIfAbsent(new JaccardIndexScore(stratification, group)));
 		}
 		onAddColumn(composite);
 	}
@@ -350,7 +347,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		// }
 		// };
 		// job.schedule();
-		List<ScoringElement> data = scoreQuery.apply(dataDomainQuery);
+		List<ScoringElement> data = scoreQuery.call();
 		onDataUpdate(data);
 
 	}

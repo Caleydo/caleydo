@@ -76,8 +76,10 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 				+ stratNGroups.size() + " elements against: " + batch.size());
 		int i = 0;
 		for (TablePerspective strat : stratifications) { // for each against
-			log.info("next: strat " + (i++) + " " + strat.getLabel());
+			// log.info("next: strat " + (i++) + " " + strat.getLabel());
 			RecordVirtualArray va = strat.getRecordPerspective().getVirtualArray();
+			IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+					va.getIdType().getIDCategory());
 			for (Group g : stratNGroups.get(strat)) { // for each group
 
 				for (IDType type : byIDCat.keySet()) { // for each id type
@@ -92,8 +94,6 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 						continue;
 
 					boolean doMapIds = !type.equals(va.getIdType());
-					IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
-							type.getIDCategory());
 					// create a bitset of this group
 					BitSet s = doMapIds ? createMappedIds(va, g, idMappingManager, type) : createIds(va, group);
 
@@ -117,7 +117,7 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 		BitSet tmp = (BitSet) bBits.clone(); // local copy
 		tmp.and(aBits);
 		int intersection = tmp.cardinality();
-		int union = a.getSize() + b.getSize() - intersection;
+		int union = a.getSize()+b.getSize()-intersection;
 		float score = union == 0 ? 0.f : (float) intersection / union;
 		return score;
 	}
@@ -143,7 +143,7 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 
 	private static BitSet createIds(RecordVirtualArray va, Group group) {
 		BitSet b = new BitSet();
-		for (int i = 0; i < group.getSize(); ++i) {
+		for (int i = group.getStartIndex(); i <= group.getEndIndex(); ++i) {
 			int id = va.get(i);
 			b.set(id);
 		}
@@ -153,7 +153,7 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 	private static BitSet createMappedIds(RecordVirtualArray va, Group group, IDMappingManager idMappingManager,
 			IDType target) {
 		BitSet b = new BitSet();
-		for (int i = 0; i < group.getSize(); ++i) {
+		for (int i = group.getStartIndex(); i <= group.getEndIndex(); ++i) {
 			int id = va.get(i);
 			Set<Integer> ids = idMappingManager.getIDAsSet(va.getIdType(), target, id);
 			if (ids != null) {

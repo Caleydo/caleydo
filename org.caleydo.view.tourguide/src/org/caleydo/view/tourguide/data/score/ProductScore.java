@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.score;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -37,9 +38,23 @@ public class ProductScore implements ICompositeScore {
 	private final String label;
 	private final Collection<IScore> children;
 
+	public ProductScore(String label) {
+		this.label = label;
+		this.children = new ArrayList<>();
+	}
+
 	public ProductScore(String label, Collection<IScore> children) {
 		this.label = label;
-		this.children = children;
+		this.children = new ArrayList<>();
+		for (IScore child : children)
+			add(child);
+	}
+
+	public void add(IScore child) {
+		if (child instanceof ProductScore)
+			this.children.addAll(((ProductScore) child).getChildren());
+		else
+			this.children.add(child);
 	}
 
 	@Override

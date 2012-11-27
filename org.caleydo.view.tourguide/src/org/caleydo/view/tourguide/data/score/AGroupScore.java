@@ -43,6 +43,7 @@ public abstract class AGroupScore implements IScore {
 	public AGroupScore(TablePerspective stratification, Group group) {
 		this.stratification = stratification;
 		this.group = group;
+		put(this.group, Float.NaN); // add self
 	}
 
 	protected boolean contains(TablePerspective perspective, Group elem) {

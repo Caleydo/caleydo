@@ -21,6 +21,7 @@ package org.caleydo.view.tourguide.data;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -63,6 +64,9 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 	private Set<ATableBasedDataDomain> selection = new HashSet<>();
 	private CompositeDataDomainFilter filter = new CompositeDataDomainFilter();
 
+	private WeakReference<Collection<TablePerspective>> cache = null;
+	private WeakReference<Multimap<TablePerspective, Group>> cache2 = null;
+
 	public DataDomainQuery() {
 		// TODO by ui
 		filter.add(new EmptyGroupFilter());
@@ -76,6 +80,9 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 
 	@Override
 	public Multimap<TablePerspective, Group> apply(Collection<TablePerspective> stratifications) {
+		Multimap<TablePerspective, Group> c = cache2 != null ? cache2.get() : null;
+		if (c != null)
+			return c;
 		Multimap<TablePerspective, Group> r = ArrayListMultimap.create();
 		for (TablePerspective strat : stratifications) {
 			for (Group group : strat.getRecordPerspective().getVirtualArray().getGroupList()) {
@@ -84,11 +91,15 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 				r.put(strat, group);
 			}
 		}
+		cache2 = new WeakReference<>(r);
 		return r;
 	}
 
 	@Override
 	public Collection<TablePerspective> call() {
+		Collection<TablePerspective> c = cache != null ? cache.get() : null;
+		if (c != null)
+			return c;
 		Collection<TablePerspective> stratifications = new ArrayList<TablePerspective>();
 		for (ATableBasedDataDomain dataDomain : selection) {
 			if (DataDomainOracle.isCategoricalDataDomain(dataDomain)) {
@@ -124,6 +135,7 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 				}
 			}
 		}
+		cache = new WeakReference<>(stratifications);
 		return stratifications;
 	}
 
@@ -192,6 +204,8 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 	public void addSelection(ATableBasedDataDomain dataDomain) {
 		if (!selection.add(dataDomain))
 			return;
+		cache = null;
+		cache2 = null;
 		initDataDomain(dataDomain);
 		listeners.fireIndexedPropertyChange(PROP_SELECTION, selection.size() - 1, null, dataDomain);
 	}
@@ -202,6 +216,8 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 	}
 
 	public void removeSelection(ATableBasedDataDomain dataDomain) {
+		cache = null;
+		cache2 = null;
 		if (!selection.remove(dataDomain))
 			return;
 		listeners.fireIndexedPropertyChange(PROP_SELECTION, selection.size(), dataDomain, null);
