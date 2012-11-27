@@ -66,6 +66,11 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 
 	@Override
 	public void apply(Collection<IBatchComputedGroupScore> batch, Multimap<TablePerspective, Group> stratNGroups) {
+		applyImpl(batch, stratNGroups);
+	}
+
+	private static void applyImpl(Collection<IBatchComputedGroupScore> batch,
+			Multimap<TablePerspective, Group> stratNGroups) {
 		Multimap<IDType, JaccardIndexScore> byIDCat = ArrayListMultimap.create();
 		for (IBatchComputedGroupScore b : batch) {
 			JaccardIndexScore s = (JaccardIndexScore) b;
@@ -78,24 +83,27 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 		for (TablePerspective strat : stratifications) { // for each against
 			// log.info("next: strat " + (i++) + " " + strat.getLabel());
 			RecordVirtualArray va = strat.getRecordPerspective().getVirtualArray();
-			IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
-					va.getIdType().getIDCategory());
+
 			for (Group g : stratNGroups.get(strat)) { // for each group
 
-				for (IDType type : byIDCat.keySet()) { // for each id type
+				for (IDType targetType : byIDCat.keySet()) { // for each id type
+					IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+							targetType.getIDCategory());
+
+					// check what we really have to do
 					Collection<JaccardIndexScore> todo = new ArrayList<>();
-					for (JaccardIndexScore idElem : byIDCat.get(type)) {
+					for (JaccardIndexScore idElem : byIDCat.get(targetType)) {
 						// everything in cache?
-						if (!idElem.contains(strat, g))
+						// if (!idElem.contains(strat, g))
 							todo.add(idElem);
 					}
 
 					if (todo.isEmpty())
 						continue;
 
-					boolean doMapIds = !type.equals(va.getIdType());
+					boolean doMapIds = !targetType.equals(va.getIdType());
 					// create a bitset of this group
-					BitSet s = doMapIds ? createMappedIds(va, g, idMappingManager, type) : createIds(va, group);
+					BitSet s = doMapIds ? createMappedIds(va, g, idMappingManager, targetType) : createIds(va, g);
 
 					for (JaccardIndexScore idElem : todo) { // compute scores
 						idElem.put(g, computeJaccardIndex(idElem.group, idElem.bitSet, g, s));
@@ -117,7 +125,7 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 		BitSet tmp = (BitSet) bBits.clone(); // local copy
 		tmp.and(aBits);
 		int intersection = tmp.cardinality();
-		int union = aBits.cardinality() + aBits.cardinality() - intersection;
+		int union = aBits.cardinality() + bBits.cardinality() - intersection;
 		float score = union == 0 ? 0.f : (float) intersection / union;
 		return score;
 	}
