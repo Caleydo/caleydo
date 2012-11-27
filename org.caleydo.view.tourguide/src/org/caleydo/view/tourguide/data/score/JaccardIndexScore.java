@@ -117,7 +117,7 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 		BitSet tmp = (BitSet) bBits.clone(); // local copy
 		tmp.and(aBits);
 		int intersection = tmp.cardinality();
-		int union = a.getSize()+b.getSize()-intersection;
+		int union = aBits.cardinality() + aBits.cardinality() - intersection;
 		float score = union == 0 ? 0.f : (float) intersection / union;
 		return score;
 	}
