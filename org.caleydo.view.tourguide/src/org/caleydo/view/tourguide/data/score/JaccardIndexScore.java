@@ -94,7 +94,7 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 					Collection<JaccardIndexScore> todo = new ArrayList<>();
 					for (JaccardIndexScore idElem : byIDCat.get(targetType)) {
 						// everything in cache?
-						// if (!idElem.contains(strat, g))
+						if (!idElem.contains(strat, g))
 							todo.add(idElem);
 					}
 
