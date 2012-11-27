@@ -30,6 +30,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.event.view.RedrawViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
@@ -52,9 +53,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @author Alexander Lex
  */
-public class GLHistogram
-	extends AGLView
-	implements ISingleTablePerspectiveBasedView {
+public class GLHistogram extends AGLView implements ISingleTablePerspectiveBasedView {
 
 	private TablePerspective tablePerspective;
 	private ATableBasedDataDomain dataDomain;
@@ -128,7 +127,18 @@ public class GLHistogram
 		super.initData();
 		if ((tablePerspective != null) && (tablePerspective.getDataDomain().getTable().isDataHomogeneous())) {
 			if (histogram == null) {
-				histogram = tablePerspective.getContainerStatistics().getHistogram();
+				// FIXME Bad hack
+				if (dataDomain.getLabel().toLowerCase().contains("copy")) {
+					histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
+							.getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
+							.getVirtualArray(), 5);
+				} else if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
+					histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
+							.getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
+							.getVirtualArray(), 2);
+				} else {
+					histogram = tablePerspective.getContainerStatistics().getHistogram();
+				}
 			}
 		}
 
@@ -180,8 +190,7 @@ public class GLHistogram
 			// renderStyle.setDetailLevel(detailLevel);
 			if (detailLevel == EDetailLevel.LOW || detailLevel == EDetailLevel.MEDIUM) {
 				sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(HistogramRenderStyle.SIDE_SPACING_DETAIL_LOW);
-			}
-			else {
+			} else {
 				sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(SIDE_SPACING);
 			}
 		}
@@ -200,12 +209,33 @@ public class GLHistogram
 	private void renderHistogram(GL2 gl) {
 		if (histogram == null) {
 			if (dataDomain != null && tablePerspective != null) {
-				histogram = tablePerspective.getContainerStatistics().getHistogram();
-			}
-			else if (dataDomain != null) {
-				histogram = dataDomain.getDefaultTablePerspective().getContainerStatistics().getHistogram();
-			}
-			else {
+				// FIXME Bad hack
+				if (dataDomain.getLabel().toLowerCase().contains("copy")) {
+					histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
+							.getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
+							.getVirtualArray(), 5);
+				} else if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
+					histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
+							.getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
+							.getVirtualArray(), 2);
+				} else {
+					histogram = tablePerspective.getContainerStatistics().getHistogram();
+				}
+			} else if (dataDomain != null) {
+				TablePerspective defaultTablePerspective = dataDomain.getDefaultTablePerspective();
+				// FIXME Bad hack
+				if (dataDomain.getLabel().toLowerCase().contains("copy")) {
+					histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
+							defaultTablePerspective.getRecordPerspective().getVirtualArray(), defaultTablePerspective
+									.getDimensionPerspective().getVirtualArray(), 5);
+				} else if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
+					histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
+							defaultTablePerspective.getRecordPerspective().getVirtualArray(), defaultTablePerspective
+									.getDimensionPerspective().getVirtualArray(), 2);
+				} else {
+					histogram = defaultTablePerspective.getContainerStatistics().getHistogram();
+				}
+			} else {
 				return;
 			}
 		}
@@ -440,8 +470,7 @@ public class GLHistogram
 			fColorPointPositionOffset = fClickedPointX - sideSpacing - markerPoint.getMappingValue()
 					* (viewFrustum.getWidth() - 2 * sideSpacing);
 			fClickedPointX -= fColorPointPositionOffset;
-		}
-		else if (bUpdateColorPointPosition) {
+		} else if (bUpdateColorPointPosition) {
 			fClickedPointX -= fColorPointPositionOffset;
 		}
 
@@ -496,14 +525,12 @@ public class GLHistogram
 			if (fClickedPointX > 1)
 				fClickedPointX = 1;
 			markerPoint.setMappingValue(fClickedPointX);
-		}
-		else if (bUpdateLeftSpread) {
+		} else if (bUpdateLeftSpread) {
 			float fTargetValue = markerPoint.getMappingValue() - fClickedPointX;
 			if (fTargetValue < 0.01f)
 				fTargetValue = 0.01f;
 			markerPoint.setLeftSpread(fTargetValue);
-		}
-		else if (bUpdateRightSpread) {
+		} else if (bUpdateRightSpread) {
 			float fTargetValue = fClickedPointX - markerPoint.getMappingValue();
 			if (fTargetValue < 0.01f)
 				fTargetValue = 0.01f;
@@ -562,35 +589,36 @@ public class GLHistogram
 	@Override
 	public int getMinPixelHeight(EDetailLevel detailLevel) {
 		switch (detailLevel) {
-			case HIGH:
-				return 300;
-			case MEDIUM:
-				return 100;
-			case LOW:
-				return 40;
-			default:
-				return 40;
+		case HIGH:
+			return 300;
+		case MEDIUM:
+			return 100;
+		case LOW:
+			return 40;
+		default:
+			return 40;
 		}
 	}
 
 	@Override
 	public int getMinPixelWidth(EDetailLevel detailLevel) {
 		switch (detailLevel) {
-			case HIGH:
-				return 300;
-			case MEDIUM:
-				return 100;
-			case LOW:
-				return 40;
-			default:
-				return 40;
+		case HIGH:
+			return 300;
+		case MEDIUM:
+			return 100;
+		case LOW:
+			return 40;
+		default:
+			return 40;
 		}
 	}
 
 	/**
 	 * Determines color mode of histogram.
 	 *
-	 * @param useColor If false the histogram is rendered B/W
+	 * @param useColor
+	 *            If false the histogram is rendered B/W
 	 */
 	public void setUseColor(boolean useColor) {
 		this.useColor = useColor;
