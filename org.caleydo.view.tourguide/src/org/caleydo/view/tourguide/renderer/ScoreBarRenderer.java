@@ -19,17 +19,19 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.renderer;
 
-import static org.caleydo.core.view.opengl.util.GLPrimitives.drawRect;
 import static org.caleydo.core.view.opengl.util.GLPrimitives.fillRect;
 
+import java.awt.Color;
+
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.util.GLPrimitives;
 
 public class ScoreBarRenderer extends LayoutRenderer {
-	private static final float PADDING = 0.0015f; // 0.015f;
-
 	private final float score;
 
 	private final IColor color;
@@ -42,13 +44,32 @@ public class ScoreBarRenderer extends LayoutRenderer {
 	@Override
 	public void renderContent(GL2 gl) {
 		if (!Float.isNaN(score)) {
-			float padding = 0.0f; // layoutManager == null ? 0.001f :
-									// layoutManager.getPixelGLConverter().getPixelHeightForCurrentGLTransform(gl);
-			float barWidth = (x - 2 * padding) * Math.max(score, 0);
+			float paddingX = oneXPixel(gl) * 2;
+			float paddingY = oneYPixel(gl) * 2;
+			float barWidth = (x - 2 * paddingX) * Math.max(score, 0);
 			gl.glColor4fv(color.getRGBA(), 0);
-			fillRect(gl, padding, padding, barWidth, y - 2 * padding);
+			fillRect(gl, paddingX, paddingY, barWidth, y - 2 * paddingY);
 		}
-		drawRect(gl, 0, 0, x, y);
+		gl.glColor4fv(Colors.rgba(Color.black), 0);
+		gl.glPushAttrib(GL.GL_LINE_WIDTH);
+		gl.glLineWidth(1);
+		GLPrimitives.drawRect(gl, 0, 0, x, y);
+		gl.glPopAttrib();
+	}
+
+	/**
+	 * @return
+	 */
+	private float oneXPixel(GL2 gl) {
+		if (layoutManager == null)
+			return 0.001f;
+		return layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(1);
+	}
+
+	private float oneYPixel(GL2 gl) {
+		if (layoutManager == null)
+			return 0.001f;
+		return layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(1);
 	}
 
 	@Override

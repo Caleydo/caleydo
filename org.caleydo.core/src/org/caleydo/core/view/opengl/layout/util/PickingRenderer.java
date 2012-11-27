@@ -29,7 +29,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
  * @author Christian Partl
  */
 public class PickingRenderer extends APickableLayoutRenderer {
-	public PickingRenderer(AGLView view, String pickingType, int pickingID) {
+	public PickingRenderer(String pickingType, int pickingID, AGLView view) {
 		super(view, pickingType, pickingID);
 	}
 

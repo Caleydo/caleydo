@@ -17,31 +17,14 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.layout.util;
+package org.caleydo.core.view.opengl.layout.builder;
 
-import org.caleydo.core.util.base.ILabelProvider;
-import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.builder.LabelRendererBuilder;
-import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public final class Renderers {
-	private Renderers() {
-
-	}
-
-	public static LabelRenderer createLabel(String label, AGLView view) {
-		return new LabelRenderer(view, label);
-	}
-
-	public static LabelRenderer createLabel(ILabelProvider label, AGLView view) {
-		return new LabelRenderer(view, label);
-	}
-
-	public static LabelRendererBuilder createLabel(ILabelProvider label, CaleydoTextRenderer textRenderer) {
-		return new LabelRendererBuilder(textRenderer, label);
-	}
+public interface ILayoutRendererBuilder {
+	public LayoutRenderer build();
 }

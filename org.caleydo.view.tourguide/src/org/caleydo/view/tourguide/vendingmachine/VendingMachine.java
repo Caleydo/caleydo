@@ -69,7 +69,6 @@ import org.caleydo.view.tourguide.listener.AddScoreColumnListener;
 import org.caleydo.view.tourguide.listener.RemoveScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreQueryReadyListener;
 import org.caleydo.view.tourguide.listener.ScoreTablePerspectiveListener;
-import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI.ISelectionListener;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateCompositeScoreDialog;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -142,7 +141,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		super.renderStyle = renderStyle;
 		detailLevel = EDetailLevel.HIGH;
 
-		textRenderer = new CaleydoTextRenderer(10);
+		textRenderer = new CaleydoTextRenderer(12);
 		textLargeRenderer = new CaleydoTextRenderer(24);
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 

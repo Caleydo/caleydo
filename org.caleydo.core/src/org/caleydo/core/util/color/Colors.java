@@ -33,5 +33,14 @@ public final class Colors {
 	public static final IColor GREEN = new Color(0, 1, 0, 1);
 	public static final IColor BLUE = new Color(0, 0, 1, 1);
 	public static final IColor YELLOW = new Color(1, 1, 0, 1);
+	public static final IColor BLACK = new Color(0, 0, 0, 1);
 
+	public static IColor of(java.awt.Color color) {
+		return new Color(color.getRed() / 255.f, color.getGreen() / 255.f, color.getBlue() / 255.f,
+				color.getAlpha() / 255.f);
+	}
+
+	public static float[] rgba(java.awt.Color color) {
+		return of(color).getRGBA();
+	}
 }

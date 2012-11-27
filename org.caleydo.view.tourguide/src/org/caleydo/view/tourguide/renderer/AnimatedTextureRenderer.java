@@ -54,10 +54,10 @@ public class AnimatedTextureRenderer extends LayoutRenderer {
 		// last
 		// }
 
-		Vec3f lowerLeftCorner = new Vec3f(x * .3f, y * 0.3f, 0);
-		Vec3f lowerRightCorner = new Vec3f(x * .6f, y * 0.3f, 0);
-		Vec3f upperRightCorner = new Vec3f(x * .6f, y * .6f, 0);
-		Vec3f upperLeftCorner = new Vec3f(x * .3f, y * .6f, 0);
+		Vec3f lowerLeftCorner = new Vec3f(x * .3f, y * 0.3f, -0.02f);
+		Vec3f lowerRightCorner = new Vec3f(x * .6f, y * 0.3f, -0.02f);
+		Vec3f upperRightCorner = new Vec3f(x * .6f, y * .6f, -0.02f);
+		Vec3f upperLeftCorner = new Vec3f(x * .3f, y * .6f, -0.02f);
 
 		textureManager.renderTexture(gl, imagePath, lowerLeftCorner, lowerRightCorner,
 				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);

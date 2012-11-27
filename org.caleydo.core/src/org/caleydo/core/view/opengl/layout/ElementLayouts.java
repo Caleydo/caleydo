@@ -19,11 +19,12 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout;
 
+import org.caleydo.core.util.base.ConstantLabelProvider;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.layout.builder.ElementLayoutBuilder;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
-import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.layout.util.Renderers;
 import org.caleydo.core.view.opengl.util.button.Button;
@@ -38,22 +39,20 @@ public final class ElementLayouts {
 
 	}
 
+	public static ElementLayoutBuilder create() {
+		return new ElementLayoutBuilder();
+	}
+
 	public static ElementLayout createXSpacer(int width) {
-		ElementLayout x = new ElementLayout("xspace" + width);
-		setWidth(x, width);
-		return x;
+		return create().width(width).build();
 	}
 
 	public static ElementLayout createXSeparator(int width) {
-		ElementLayout l = createXSpacer(width);
-		l.setRenderer(new LineSeparatorRenderer(true));
-		return l;
+		return wrap(new LineSeparatorRenderer(true), width);
 	}
 
 	public static ElementLayout createYSpacer(int height) {
-		ElementLayout x = new ElementLayout("yspace" + height);
-		setHeight(x, height);
-		return x;
+		return create().height(height).build();
 	}
 
 	public static ElementLayout createYSeparator(int width) {
@@ -63,39 +62,15 @@ public final class ElementLayouts {
 	}
 
 	public static ElementLayout createLabel(AGLView view, String label, int width) {
-		ElementLayout l = new ElementLayout("label" + label);
-		setWidth(l, width);
-		l.setRenderer(Renderers.createLabel(label, view));
-		return l;
-	}
-
-	private static void setWidth(ElementLayout elem, int width) {
-		if (width < 0)
-			elem.setGrabX(true);
-		else
-			elem.setPixelSizeX(width);
-	}
-
-	private static void setHeight(ElementLayout elem, int height) {
-		if (height < 0)
-			elem.setGrabY(true);
-		else
-			elem.setPixelSizeY(height);
+		return createLabel(view, new ConstantLabelProvider(label), width);
 	}
 
 	public static ElementLayout createLabel(AGLView view, ILabelProvider label, int width) {
-		ElementLayout l = new ElementLayout("label" + label);
-		setWidth(l, width);
-		if (label != null)
-			l.setRenderer(new LabelRenderer(view, label));
-		return l;
+		return create().width(width).render(Renderers.createLabel(label, view.getTextRenderer())).build();
 	}
 
 	public static ElementLayout createColor(IColor color, int width) {
-		ElementLayout l = new ElementLayout("color" + color);
-		l.setRenderer(new ColorRenderer(color.getRGBA()));
-		setWidth(l, width);
-		return l;
+		return wrap(new ColorRenderer(color.getRGBA()), width);
 	}
 
 	public static ElementLayout createButton(AGLView view, Button button) {
@@ -103,17 +78,10 @@ public final class ElementLayouts {
 	}
 
 	public static ElementLayout createButton(AGLView view, Button button, int width, int height) {
-		ElementLayout b = new ElementLayout("button:" + button);
-		setWidth(b, width);
-		setHeight(b, height);
-		b.setRenderer(new ButtonRenderer(button, view));
-		return b;
+		return create().width(width).height(height).render(new ButtonRenderer(button, view)).build();
 	}
 
 	public static ElementLayout wrap(LayoutRenderer renderer, int width) {
-		ElementLayout b = new ElementLayout();
-		setWidth(b, width);
-		b.setRenderer(renderer);
-		return b;
+		return create().width(width).render(renderer).build();
 	}
 }
