@@ -1,10 +1,11 @@
 /**
- * 
+ *
  */
 package org.caleydo.core.io.gui.dataimport;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.caleydo.core.id.IDCategory;
@@ -16,18 +17,16 @@ import org.caleydo.core.util.collection.Pair;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 /**
  * Mediator for {@link ImportGroupingDialog}. This class is responsible for
  * setting the states of all widgets of the dialog and triggering actions
  * according to different events that occur in the dialog.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class ImportGroupingDialogMediator {
 
@@ -51,11 +50,6 @@ public class ImportGroupingDialogMediator {
 	 * The row id category for which groupings should be loaded.
 	 */
 	protected IDCategory rowIDCategory;
-
-	/**
-	 * The IDTypes available for {@link #rowIDCategory}.
-	 */
-	protected ArrayList<IDType> rowIDTypes = new ArrayList<IDType>();
 
 	/**
 	 * Matrix that stores the data for {@link #MAX_PREVIEW_TABLE_ROWS} rows and
@@ -162,17 +156,17 @@ public class ImportGroupingDialogMediator {
 	/**
 	 * Checks if all required fields of the {@link #dialog} are filled. If so
 	 * the {@link #groupingParseSpecification} is filled.
-	 * 
+	 *
 	 * @return True, when all required fields were filled, false otherwise.
 	 */
 	public boolean okPressed() {
-		if (dialog.fileNameTextField.getText().isEmpty()) {
+		if (dialog.loadFile.getFileName().isEmpty()) {
 			MessageDialog.openError(new Shell(), "Invalid Filename",
 					"Please specify a file to load");
 			return false;
 		}
 
-		if (dialog.rowIDCombo.getSelectionIndex() == -1) {
+		if (dialog.rowConfig.getIDType() == null) {
 			MessageDialog.openError(new Shell(), "Invalid Row ID Type",
 					"Please select the ID type of the rows");
 			return false;
@@ -193,8 +187,7 @@ public class ImportGroupingDialogMediator {
 		}
 		groupingParseSpecification.setColumns(selectedColumns);
 		IDSpecification rowIDSpecification = new IDSpecification();
-		IDType rowIDType = IDType.getIDType(dialog.rowIDCombo.getItem(dialog.rowIDCombo
-				.getSelectionIndex()));
+		IDType rowIDType = dialog.rowConfig.getIDType();
 		rowIDSpecification.setIdType(rowIDType.toString());
 		if (rowIDType.getIDCategory().getCategoryName().equals("GENE"))
 			rowIDSpecification.setIDTypeGene(true);
@@ -208,46 +201,24 @@ public class ImportGroupingDialogMediator {
 		}
 		groupingParseSpecification.setRowIDSpecification(rowIDSpecification);
 		groupingParseSpecification.setContainsColumnIDs(false);
-		groupingParseSpecification
-				.setGroupingName(dialog.groupingNameTextField.getText());
+		groupingParseSpecification.setGroupingName(dialog.label.getText());
 
 		return true;
 	}
 
-	/**
-	 * Opens a file dialog to specify the file that defines the groupings.
-	 */
-	public void openFileButtonPressed() {
-		FileDialog fileDialog = new FileDialog(new Shell());
-		fileDialog.setText("Open");
-		// fileDialog.setFilterPath(filePath);
-		String[] filterExt = { "*.csv;*.txt;*.gct", "*.*" };
-		fileDialog.setFilterExtensions(filterExt);
-
-		String inputFileName = fileDialog.open();
-
-		if (inputFileName == null)
-			return;
-		dialog.fileNameTextField.setText(inputFileName);
-		dialog.groupingNameTextField.setText(inputFileName.substring(
+	public void onSelectFile(String inputFileName) {
+		dialog.label.setText(inputFileName.substring(
 				inputFileName.lastIndexOf(File.separator) + 1,
 				inputFileName.lastIndexOf(".")));
 
 		groupingParseSpecification.setDataSourcePath(inputFileName);
 
-		dialog.fileNameTextField.setEnabled(false);
-		dialog.groupingNameTextField.setEnabled(true);
-		dialog.rowIDCombo.setEnabled(true);
-		dialog.numHeaderRowsSpinner.setEnabled(true);
-		dialog.columnOfRowIDSpinner.setEnabled(true);
+		dialog.label.setEnabled(true);
+		dialog.rowConfig.setEnabled(true);
 
-		Button[] delimiterButtons = dialog.delimiterRadioGroup.delimiterButtons;
-		for (Button button : delimiterButtons) {
-			button.setEnabled(true);
-		}
+		dialog.delimiterRadioGroup.setEnabled(true);
 
-		dialog.selectAllButton.setEnabled(true);
-		dialog.selectNoneButton.setEnabled(true);
+		dialog.selectAllNone.setEnabled(true);
 		dialog.showAllColumnsButton.setEnabled(true);
 
 		createDataPreviewTableFromFile(true);
@@ -293,45 +264,19 @@ public class ImportGroupingDialogMediator {
 	}
 
 	private void initWidgetsFromGroupParseSpecification() {
-		dialog.fileNameTextField.setText(groupingParseSpecification.getDataSourcePath());
-		dialog.fileNameTextField.setEnabled(false);
+		dialog.loadFile.setFileName(groupingParseSpecification.getDataSourcePath());
 
-		dialog.groupingNameTextField
+		dialog.label
 				.setText(groupingParseSpecification.getGroupingName());
-		dialog.groupingNameTextField.setEnabled(true);
+		dialog.label.setEnabled(true);
 
-		dialog.categoryIDLabel.setText(rowIDCategory.getCategoryName());
+		dialog.rowConfig.setCategoryID(rowIDCategory);
+		dialog.rowConfig.setNumHeaderRows(groupingParseSpecification.getNumberOfHeaderLines());
+		dialog.rowConfig.setColumnOfRowIds(groupingParseSpecification.getColumnOfRowIds() + 1);
 
-		dialog.numHeaderRowsSpinner.setSelection(groupingParseSpecification
-				.getNumberOfHeaderLines());
-		dialog.numHeaderRowsSpinner.setEnabled(true);
+		dialog.delimiterRadioGroup.setDelimeter(groupingParseSpecification.getDelimiter());
 
-		dialog.columnOfRowIDSpinner.setSelection(groupingParseSpecification
-				.getColumnOfRowIds() + 1);
-		dialog.columnOfRowIDSpinner.setEnabled(true);
-
-		Button[] delimiterButtons = dialog.delimiterRadioGroup.delimiterButtons;
-		boolean delimiterFound = false;
-		for (int i = 0; i < delimiterButtons.length - 2; i++) {
-			Button button = delimiterButtons[i];
-			if (((String) button.getData()).equals(groupingParseSpecification
-					.getDelimiter())) {
-				button.setSelection(true);
-				delimiterFound = true;
-			}
-			button.setEnabled(true);
-		}
-		if (!delimiterFound) {
-			delimiterButtons[delimiterButtons.length - 1].setSelection(true);
-			delimiterButtons[delimiterButtons.length - 1].setEnabled(true);
-			dialog.delimiterRadioGroup.customizedDelimiterTextField.setEnabled(true);
-		} else {
-			dialog.delimiterRadioGroup.customizedDelimiterTextField.setEnabled(false);
-		}
-
-		dialog.selectAllButton.setEnabled(true);
-
-		dialog.selectNoneButton.setEnabled(true);
+		dialog.selectAllNone.setEnabled(true);
 
 		ArrayList<Integer> selectedColumns = groupingParseSpecification.getColumns();
 
@@ -351,41 +296,24 @@ public class ImportGroupingDialogMediator {
 			dialog.selectedColumnButtons.get(columnIndex).setSelection(true);
 		}
 
-		fillIDTypeCombo(rowIDCategory, rowIDTypes, dialog.rowIDCombo);
-		dialog.rowIDCombo.setEnabled(true);
-		dialog.rowIDCombo.select(dialog.rowIDCombo.indexOf(groupingParseSpecification
-				.getRowIDSpecification().getIdType()));
+		dialog.rowConfig.setIDTypes(getPublicIDTypes(rowIDCategory),
+				IDType.getIDType(groupingParseSpecification.getRowIDSpecification().getIdType()));
 	}
 
 	private void initWidgetsWithDefaultValues() {
 
-		dialog.fileNameTextField.setText("");
-		dialog.fileNameTextField.setEnabled(false);
+		dialog.loadFile.setFileName("");
 
-		dialog.groupingNameTextField.setText("");
-		dialog.groupingNameTextField.setEnabled(false);
+		dialog.label.setText("");
+		dialog.label.setEnabled(false);
 
-		dialog.categoryIDLabel.setText(rowIDCategory.getCategoryName());
+		dialog.rowConfig.setCategoryID(rowIDCategory);
+		dialog.rowConfig.setIDTypes(getPublicIDTypes(rowIDCategory), null);
+		dialog.rowConfig.setEnabled(false);
 
-		fillIDTypeCombo(rowIDCategory, rowIDTypes, dialog.rowIDCombo);
-		dialog.rowIDCombo.setEnabled(false);
+		dialog.delimiterRadioGroup.setEnabled(false);
 
-		dialog.numHeaderRowsSpinner.setSelection(1);
-		dialog.numHeaderRowsSpinner.setEnabled(false);
-
-		dialog.columnOfRowIDSpinner.setSelection(1);
-		dialog.columnOfRowIDSpinner.setEnabled(false);
-
-		Button[] delimiterButtons = dialog.delimiterRadioGroup.delimiterButtons;
-		delimiterButtons[0].setSelection(true);
-		for (Button button : delimiterButtons) {
-			button.setEnabled(false);
-		}
-		dialog.delimiterRadioGroup.customizedDelimiterTextField.setEnabled(false);
-
-		dialog.selectAllButton.setEnabled(false);
-
-		dialog.selectNoneButton.setEnabled(false);
+		dialog.selectAllNone.setEnabled(false);
 
 		dialog.showAllColumnsButton.setEnabled(false);
 	}
@@ -393,14 +321,12 @@ public class ImportGroupingDialogMediator {
 	/**
 	 * Updates the preview table according to the number of the spinner.
 	 */
-	public void numHeaderRowsSpinnerModified() {
+	public void onNumHeaderRowsChanged(int numHeaderRows) {
 		try {
-			int numHeaderRows = dialog.numHeaderRowsSpinner.getSelection();
 			groupingParseSpecification.setNumberOfHeaderLines(numHeaderRows);
 			previewTableManager.updateTableColors(
 					groupingParseSpecification.getNumberOfHeaderLines(), -1,
 					groupingParseSpecification.getColumnOfRowIds() + 1);
-
 		} catch (NumberFormatException exc) {
 
 		}
@@ -410,11 +336,9 @@ public class ImportGroupingDialogMediator {
 	/**
 	 * Updates the preview table according to the number of the spinner.
 	 */
-	public void columnOfRowIDSpinnerModified() {
-		groupingParseSpecification.setColumnOfRowIds(dialog.columnOfRowIDSpinner
-				.getSelection() - 1);
-		previewTableManager.updateTableColors(
-				groupingParseSpecification.getNumberOfHeaderLines(), -1,
+	public void onColumnOfRowIDChanged(int column) {
+		groupingParseSpecification.setColumnOfRowIds(column - 1);
+		previewTableManager.updateTableColors(groupingParseSpecification.getNumberOfHeaderLines(), -1,
 				groupingParseSpecification.getColumnOfRowIds() + 1);
 	}
 
@@ -435,39 +359,17 @@ public class ImportGroupingDialogMediator {
 		updateWidgetsAccordingToTableChanges();
 	}
 
-	/**
-	 * Reloads the dataset using the delimiter specified by the
-	 * customizedDelimiterTextField.
-	 */
-	public void customizedDelimiterTextFieldModified() {
-		groupingParseSpecification
-				.setDelimiter(dialog.delimiterRadioGroup.customizedDelimiterTextField
-						.getText());
+	public void onDelimiterChanged(String delimiter) {
+		groupingParseSpecification.setDelimiter(delimiter);
 		createDataPreviewTableFromFile(true);
 	}
 
-	/**
-	 * Reloads the dataset using the delimiter specified by the selected button.
-	 * 
-	 * @param selectedButton
-	 */
-	public void delimiterRadioButtonSelected(Button selectedButton) {
-		if (selectedButton != dialog.delimiterRadioGroup.delimiterButtons[dialog.delimiterRadioGroup.delimiterButtons.length - 1]) {
-			dialog.delimiterRadioGroup.customizedDelimiterTextField.setEnabled(false);
-			groupingParseSpecification.setDelimiter((String) selectedButton.getData());
-			createDataPreviewTableFromFile(true);
-		} else {
-			dialog.delimiterRadioGroup.customizedDelimiterTextField.setEnabled(true);
-			groupingParseSpecification.setDelimiter(" ");
-			createDataPreviewTableFromFile(true);
-		}
-	}
 
 	/**
 	 * Creates the preview table from the file specified by
 	 * {@link #groupingParseSpecification}. Widgets of the {@link #dialog} are
 	 * updated accordingly.
-	 * 
+	 *
 	 * @param showOnlyPreviewColumns
 	 *            Determines whether {@link #MAX_PREVIEW_TABLE_COLUMNS}, or all
 	 *            columns of the file are shown.
@@ -507,7 +409,7 @@ public class ImportGroupingDialogMediator {
 					Float.parseFloat(text);
 					numFloatsFound++;
 					if (numFloatsFound >= 3) {
-						dialog.numHeaderRowsSpinner.setSelection(numHeaderRows);
+						dialog.rowConfig.setNumHeaderRows(numHeaderRows);
 						return;
 					}
 				} catch (Exception e) {
@@ -547,15 +449,11 @@ public class ImportGroupingDialogMediator {
 	}
 
 	protected void setMostProbableRecordIDType(IDType mostProbableRecordIDType) {
-
-		fillIDTypeCombo(rowIDCategory, rowIDTypes, dialog.rowIDCombo);
-		if (mostProbableRecordIDType != null)
-			dialog.rowIDCombo.select(rowIDTypes.indexOf(mostProbableRecordIDType));
+		dialog.rowConfig.setIDTypes(getPublicIDTypes(rowIDCategory), mostProbableRecordIDType);
 	}
 
 	protected void updateWidgetsAccordingToTableChanges() {
-		dialog.columnOfRowIDSpinner.setMaximum(totalNumberOfColumns);
-		dialog.numHeaderRowsSpinner.setMaximum(totalNumberOfRows);
+		dialog.rowConfig.setMaxDimension(totalNumberOfColumns, totalNumberOfRows);
 		// showAllColumnsButton.setSelection(false);
 		if (totalNumberOfColumns == (dialog.previewTable.getColumnCount() - 1)) {
 			dialog.showAllColumnsButton.setSelection(true);
@@ -575,44 +473,13 @@ public class ImportGroupingDialogMediator {
 		dialog.parentComposite.layout(true);
 	}
 
-	/**
-	 * @param idCategory
-	 * @param idTypes
-	 * @param idTypeCombo
-	 */
-	private void fillIDTypeCombo(IDCategory idCategory, ArrayList<IDType> idTypes,
-			Combo idTypeCombo) {
+	private static List<IDType> getPublicIDTypes(IDCategory idCategory) {
+		List<IDType> idTypes = new ArrayList<>(idCategory.getIdTypes());
 
-		ArrayList<IDType> allIDTypesOfCategory = new ArrayList<IDType>(
-				idCategory.getIdTypes());
-
-		// String previousSelection = null;
-		//
-		// if (idTypeCombo.getSelectionIndex() != -1) {
-		// previousSelection =
-		// idTypeCombo.getItem(idTypeCombo.getSelectionIndex());
-		// }
-		idTypeCombo.removeAll();
-		idTypes.clear();
-
-		for (IDType idType : allIDTypesOfCategory) {
-			if (!idType.isInternalType()) {
-				idTypes.add(idType);
-				idTypeCombo.add(idType.getTypeName());
-			}
-		}
-
-		// int selectionIndex = -1;
-		// if (previousSelection != null) {
-		// selectionIndex = idTypeCombo.indexOf(previousSelection);
-		// }
-		if (idTypes.size() == 1) {
-			idTypeCombo.setText(idTypeCombo.getItem(0));
-			idTypeCombo.select(0);
-		} else {
-//			idTypeCombo.setText("<Please Select>");
-			idTypeCombo.deselectAll();
-		}
+		for (Iterator<IDType> it = idTypes.iterator(); it.hasNext();)
+			if (it.next().isInternalType())
+				it.remove();
+		return idTypes;
 	}
 
 	protected ArrayList<IDCategory> getAvailableIDCategories() {
@@ -628,5 +495,6 @@ public class ImportGroupingDialogMediator {
 	public GroupingParseSpecification getGroupingParseSpecification() {
 		return groupingParseSpecification;
 	}
+
 
 }

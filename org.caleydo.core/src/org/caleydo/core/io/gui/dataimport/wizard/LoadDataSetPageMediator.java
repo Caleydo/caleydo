@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
@@ -31,10 +31,10 @@ import org.eclipse.swt.widgets.Shell;
  * Mediator for {@link LoadDataSetPage}. This class is responsible for setting
  * the states of all widgets of the page and triggering actions according to
  * different events that occur in the page.
- * 
- * 
+ *
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class LoadDataSetPageMediator {
 
@@ -206,14 +206,7 @@ public class LoadDataSetPageMediator {
 
 		page.buttonHomogeneous.setEnabled(fileSpecified);
 
-		Button[] delimiterButtons = page.delimiterRadioGroup.getDelimiterButtons();
-		delimiterButtons[0].setSelection(true);
-		for (Button button : delimiterButtons) {
-			button.setEnabled(fileSpecified);
-		}
-		page.delimiterRadioGroup.getCustomizedDelimiterTextField().setEnabled(
-				fileSpecified);
-
+		page.delimiterRadioGroup.setEnabled(fileSpecified);
 		page.selectAllButton.setEnabled(fileSpecified);
 
 		page.selectNoneButton.setEnabled(fileSpecified);
@@ -227,7 +220,7 @@ public class LoadDataSetPageMediator {
 	/**
 	 * Fills the idTypeCombos according to the IDCategory selected by the
 	 * idCategoryCombo.
-	 * 
+	 *
 	 * @param isColumnCategory
 	 *            Determines whether the column or row combo is affected.
 	 */
@@ -431,31 +424,9 @@ public class LoadDataSetPageMediator {
 				dataSetDescription.getColumnOfRowIds() + 1);
 	}
 
-	/**
-	 * Reloads the dataset using the delimiter specified by the selected button.
-	 * 
-	 * @param selectedButton
-	 */
-	public void delimiterRadioButtonSelected(Button selectedButton) {
-		if (selectedButton != page.delimiterRadioGroup.getDelimiterButtons()[page.delimiterRadioGroup
-				.getDelimiterButtons().length - 1]) {
-			page.delimiterRadioGroup.getCustomizedDelimiterTextField().setEnabled(false);
-			dataSetDescription.setDelimiter((String) selectedButton.getData());
-			createDataPreviewTableFromFile();
-		} else {
-			page.delimiterRadioGroup.getCustomizedDelimiterTextField().setEnabled(true);
-			dataSetDescription.setDelimiter(" ");
-			createDataPreviewTableFromFile();
-		}
-	}
 
-	/**
-	 * Reloads the dataset using the delimiter specified by the
-	 * customizedDelimiterTextField.
-	 */
-	public void customizedDelimiterTextFieldModified() {
-		dataSetDescription.setDelimiter(page.delimiterRadioGroup
-				.getCustomizedDelimiterTextField().getText());
+	public void onDelimiterChanged(String delimiter) {
+		dataSetDescription.setDelimiter(delimiter);
 		createDataPreviewTableFromFile();
 	}
 
@@ -671,8 +642,8 @@ public class LoadDataSetPageMediator {
 			}
 		}
 
-		if (maxProbability <= (float) 1.0f
-				/ (float) MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION)
+		if (maxProbability <= 1.0f
+				/ MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION)
 			mostProbableIDType = null;
 
 		return mostProbableIDType;
@@ -789,7 +760,7 @@ public class LoadDataSetPageMediator {
 	 * dimension creation definition consists of the definition which columns in
 	 * the data-CSV-file should be read, which should be skipped and the
 	 * dimension-labels.
-	 * 
+	 *
 	 * @return <code>true</code> if the preparation was successful,
 	 *         <code>false</code> otherwise
 	 */
@@ -830,7 +801,7 @@ public class LoadDataSetPageMediator {
 
 	/**
 	 * Creates a {@link ColumnDescription} for the specified column.
-	 * 
+	 *
 	 * @param columnIndex
 	 *            Index of the column in the file.
 	 * @return The ColumnDescription.

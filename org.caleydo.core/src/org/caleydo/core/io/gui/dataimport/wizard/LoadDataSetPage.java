@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.gui.dataimport.DelimiterRadioGroup;
+import org.caleydo.core.io.gui.dataimport.widget.DelimiterWidget;
+import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -31,9 +32,9 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * Page for loading the dataset from file.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class LoadDataSetPage extends AImportDataPage implements Listener {
 
@@ -166,7 +167,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	/**
 	 * Group of widgets for file delimiter specification.
 	 */
-	protected DelimiterRadioGroup delimiterRadioGroup;
+	protected DelimiterWidget delimiterRadioGroup;
 
 	/**
 	 * Mediator for this page.
@@ -206,8 +207,12 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 		// Delimiters
 
-		delimiterRadioGroup = new DelimiterRadioGroup();
-		delimiterRadioGroup.create(parentComposite, mediator);
+		delimiterRadioGroup = new DelimiterWidget(parentComposite, new ICallback<String>() {
+			@Override
+			public void on(String data) {
+				mediator.onDelimiterChanged(data);
+			}
+		});
 
 		Group columnSelectionGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		columnSelectionGroup.setText("Column Selection");
@@ -446,7 +451,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	/**
 	 * Creates a composite that contains the {@link #tableInfoLabel} and the
 	 * {@link #showAllColumnsButton}.
-	 * 
+	 *
 	 * @param parent
 	 */
 	protected void createTableInfo(Composite parent) {
