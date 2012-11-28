@@ -69,4 +69,17 @@
          </view>
       </perspectiveExtension>
    </extension>
+   <extension
+         point="org.caleydo.view.EmbeddedView">
+      <EmbeddingInfo
+            viewID="org.caleydo.view.parcoords">
+         <ParentView
+               viewCreator="org.caleydo.view.parcoords.RemoteViewCreator1"
+               viewID="org.caleydo.view.subgraph">
+            <EmbeddingID
+                  ID="org.caleydo.view.parcoords.EmbeddingID1">
+            </EmbeddingID>
+         </ParentView>
+      </EmbeddingInfo>
+   </extension>
 </plugin>
