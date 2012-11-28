@@ -15,9 +15,6 @@ import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.util.collection.Pair;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -29,7 +26,6 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class ImportGroupingDialogMediator {
-
 	/**
 	 * Maximum number of previewed rows in {@link #previewTable}.
 	 */
@@ -38,11 +34,9 @@ public class ImportGroupingDialogMediator {
 	/**
 	 * Maximum number of previewed columns in {@link #previewTable}.
 	 */
-	protected static final int MAX_PREVIEW_TABLE_COLUMNS = 10;
-
+	public static final int MAX_PREVIEW_TABLE_COLUMNS = 10;
 	/**
-	 * The maximum number of ids that are tested in order to determine the
-	 * {@link IDType}.
+	 * The maximum number of ids that are tested in order to determine the {@link IDType}.
 	 */
 	protected static final int MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION = 10;
 
@@ -79,20 +73,9 @@ public class ImportGroupingDialogMediator {
 	private GroupingParseSpecification groupingParseSpecification;
 
 	/**
-	 * Determines whether all columns of the data file shall be shown in the
-	 * {@link #previewTable}.
-	 */
-	protected boolean showAllColumns = false;
-
-	/**
 	 * Parser used to parse data files.
 	 */
 	private FilePreviewParser parser = new FilePreviewParser();
-
-	/**
-	 * Manager for {@link #previewTable} that extends its features.
-	 */
-	private PreviewTableManager previewTableManager;
 
 	/**
 	 * Determines, whether the widgets should be initialized from the
@@ -172,19 +155,8 @@ public class ImportGroupingDialogMediator {
 			return false;
 		}
 
-		ArrayList<Integer> selectedColumns = new ArrayList<Integer>();
-		for (int columnIndex = 0; columnIndex < totalNumberOfColumns; columnIndex++) {
-
-			if (groupingParseSpecification.getColumnOfRowIds() != columnIndex) {
-				if (columnIndex + 1 < dialog.previewTable.getColumnCount()) {
-					if (dialog.selectedColumnButtons.get(columnIndex).getSelection()) {
-						selectedColumns.add(columnIndex);
-					}
-				} else {
-					selectedColumns.add(columnIndex);
-				}
-			}
-		}
+		ArrayList<Integer> selectedColumns = new ArrayList<Integer>(dialog.previewTable.getSelectedColumns());
+		selectedColumns.remove(groupingParseSpecification.getColumnOfRowIds());
 		groupingParseSpecification.setColumns(selectedColumns);
 		IDSpecification rowIDSpecification = new IDSpecification();
 		IDType rowIDType = dialog.rowConfig.getIDType();
@@ -219,34 +191,7 @@ public class ImportGroupingDialogMediator {
 		dialog.delimiterRadioGroup.setEnabled(true);
 
 		dialog.selectAllNone.setEnabled(true);
-		dialog.showAllColumnsButton.setEnabled(true);
-
 		createDataPreviewTableFromFile(true);
-	}
-
-	/**
-	 * Selects all columns of the preview table of the {@link #dialog}.
-	 */
-	public void selectAllButtonPressed() {
-		for (int i = 0; i < dialog.selectedColumnButtons.size(); i++) {
-			Button button = dialog.selectedColumnButtons.get(i);
-			button.setSelection(true);
-			previewTableManager.colorTableColumnText(i + 1, Display.getCurrent()
-					.getSystemColor(SWT.COLOR_BLACK));
-		}
-	}
-
-	/**
-	 * Unselects all columns of the preview table of the {@link #dialog}.
-	 */
-	public void selectNoneButtonPressed() {
-		for (int i = 0; i < dialog.selectedColumnButtons.size(); i++) {
-			Button button = dialog.selectedColumnButtons.get(i);
-			button.setSelection(false);
-			if (i != groupingParseSpecification.getColumnOfRowIds())
-				previewTableManager.colorTableColumnText(i + 1, Display.getCurrent()
-						.getSystemColor(SWT.COLOR_GRAY));
-		}
 	}
 
 	/**
@@ -254,8 +199,6 @@ public class ImportGroupingDialogMediator {
 	 * called after all widgets of the dialog were created.
 	 */
 	public void guiCreated() {
-		previewTableManager = new PreviewTableManager(dialog.previewTable);
-
 		if (initFromGroupParseSpecification) {
 			initWidgetsFromGroupParseSpecification();
 		} else {
@@ -290,11 +233,7 @@ public class ImportGroupingDialogMediator {
 		} else {
 			createDataPreviewTableFromFile(true);
 		}
-		selectNoneButtonPressed();
-
-		for (Integer columnIndex : selectedColumns) {
-			dialog.selectedColumnButtons.get(columnIndex).setSelection(true);
-		}
+		dialog.previewTable.setSelectedColumns(selectedColumns);
 
 		dialog.rowConfig.setIDTypes(getPublicIDTypes(rowIDCategory),
 				IDType.getIDType(groupingParseSpecification.getRowIDSpecification().getIdType()));
@@ -314,8 +253,6 @@ public class ImportGroupingDialogMediator {
 		dialog.delimiterRadioGroup.setEnabled(false);
 
 		dialog.selectAllNone.setEnabled(false);
-
-		dialog.showAllColumnsButton.setEnabled(false);
 	}
 
 	/**
@@ -324,9 +261,9 @@ public class ImportGroupingDialogMediator {
 	public void onNumHeaderRowsChanged(int numHeaderRows) {
 		try {
 			groupingParseSpecification.setNumberOfHeaderLines(numHeaderRows);
-			previewTableManager.updateTableColors(
+			dialog.previewTable.updateTableColors(
 					groupingParseSpecification.getNumberOfHeaderLines(), -1,
-					groupingParseSpecification.getColumnOfRowIds() + 1);
+					groupingParseSpecification.getColumnOfRowIds());
 		} catch (NumberFormatException exc) {
 
 		}
@@ -338,30 +275,28 @@ public class ImportGroupingDialogMediator {
 	 */
 	public void onColumnOfRowIDChanged(int column) {
 		groupingParseSpecification.setColumnOfRowIds(column - 1);
-		previewTableManager.updateTableColors(groupingParseSpecification.getNumberOfHeaderLines(), -1,
-				groupingParseSpecification.getColumnOfRowIds() + 1);
+		dialog.previewTable.updateTableColors(groupingParseSpecification.getNumberOfHeaderLines(), -1,
+				groupingParseSpecification.getColumnOfRowIds());
 	}
 
-	/**
-	 * Loads all columns or the {@link #MAX_PREVIEW_TABLE_COLUMNS} into the
-	 * preview table, depending on the state of showAllColumnsButton of the
-	 * {@link #dialog}.
-	 */
-	public void showAllColumnsButtonPressed() {
-		showAllColumns = dialog.showAllColumnsButton.getSelection();
-		previewTableManager.createDataPreviewTableFromDataMatrix(dataMatrix,
-				showAllColumns ? totalNumberOfColumns : MAX_PREVIEW_TABLE_COLUMNS);
-		dialog.selectedColumnButtons = previewTableManager.getSelectedColumnButtons();
-		// determineRowIDType();
-		previewTableManager.updateTableColors(
-				groupingParseSpecification.getNumberOfHeaderLines(), -1,
-				groupingParseSpecification.getColumnOfRowIds() + 1);
-		updateWidgetsAccordingToTableChanges();
-	}
+
 
 	public void onDelimiterChanged(String delimiter) {
 		groupingParseSpecification.setDelimiter(delimiter);
 		createDataPreviewTableFromFile(true);
+	}
+
+	/**
+	 * Loads all columns or the {@link #MAX_PREVIEW_TABLE_COLUMNS} into the preview table, depending on the state of
+	 * showAllColumnsButton of the {@link #dialog}.
+	 */
+	public void onShowAllColumns(boolean showAllColumns) {
+		dialog.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, showAllColumns ? totalNumberOfColumns
+				: MAX_PREVIEW_TABLE_COLUMNS);
+		// determineRowIDType();
+		dialog.previewTable.updateTableColors(groupingParseSpecification.getNumberOfHeaderLines(), -1,
+				groupingParseSpecification.getColumnOfRowIds());
+		updateWidgetsAccordingToTableChanges();
 	}
 
 
@@ -380,17 +315,15 @@ public class ImportGroupingDialogMediator {
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();
 		totalNumberOfRows = parser.getTotalNumberOfRows();
-		previewTableManager
-				.createDataPreviewTableFromDataMatrix(dataMatrix,
-						showOnlyPreviewColumns ? MAX_PREVIEW_TABLE_COLUMNS
+		dialog.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix,
+				showOnlyPreviewColumns ? MAX_PREVIEW_TABLE_COLUMNS
 								: totalNumberOfColumns);
-		dialog.selectedColumnButtons = previewTableManager.getSelectedColumnButtons();
 		updateWidgetsAccordingToTableChanges();
 		determineRowIDType();
 		guessNumberOfHeaderRows();
-		previewTableManager.updateTableColors(
+		dialog.previewTable.updateTableColors(
 				groupingParseSpecification.getNumberOfHeaderLines(), -1,
-				groupingParseSpecification.getColumnOfRowIds() + 1);
+				groupingParseSpecification.getColumnOfRowIds());
 
 		dialog.parentComposite.pack();
 	}
@@ -400,7 +333,7 @@ public class ImportGroupingDialogMediator {
 		// be an id row
 		int numHeaderRows = 0;
 		for (int i = 0; i < dataMatrix.size(); i++) {
-			ArrayList<String> row = dataMatrix.get(i);
+			List<String> row = dataMatrix.get(i);
 			int numFloatsFound = 0;
 			for (int j = 0; j < row.size() && j < MAX_PREVIEW_TABLE_COLUMNS; j++) {
 				String text = row.get(j);
@@ -455,20 +388,8 @@ public class ImportGroupingDialogMediator {
 	protected void updateWidgetsAccordingToTableChanges() {
 		dialog.rowConfig.setMaxDimension(totalNumberOfColumns, totalNumberOfRows);
 		// showAllColumnsButton.setSelection(false);
-		if (totalNumberOfColumns == (dialog.previewTable.getColumnCount() - 1)) {
-			dialog.showAllColumnsButton.setSelection(true);
-		} else {
-			dialog.showAllColumnsButton.setSelection(false);
-		}
-		if (totalNumberOfColumns <= MAX_PREVIEW_TABLE_COLUMNS) {
-			dialog.showAllColumnsButton.setEnabled(false);
-		} else {
-			dialog.showAllColumnsButton.setEnabled(true);
-		}
-		dialog.tableInfoLabel.setText((dialog.previewTable.getColumnCount() - 1) + " of "
-				+ totalNumberOfColumns + " Columns shown");
-		dialog.tableInfoLabel.pack();
-		dialog.tableInfoLabel.getParent().pack(true);
+		dialog.previewTable.setTotalNumberOfColumns(totalNumberOfColumns);
+
 		dialog.parentComposite.pack(true);
 		dialog.parentComposite.layout(true);
 	}
@@ -496,5 +417,9 @@ public class ImportGroupingDialogMediator {
 		return groupingParseSpecification;
 	}
 
+
+	public void onSelectAllNone(boolean selectAll) {
+		dialog.previewTable.selectColumns(selectAll, groupingParseSpecification.getColumnOfRowIds());
+	}
 
 }

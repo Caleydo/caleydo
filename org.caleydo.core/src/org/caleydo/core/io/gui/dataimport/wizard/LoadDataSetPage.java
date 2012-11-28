@@ -3,16 +3,18 @@
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
-import java.util.ArrayList;
-
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.gui.dataimport.widget.BooleanCallback;
 import org.caleydo.core.io.gui.dataimport.widget.DelimiterWidget;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
+import org.caleydo.core.io.gui.dataimport.widget.LabelWidget;
+import org.caleydo.core.io.gui.dataimport.widget.LoadFileWidget;
+import org.caleydo.core.io.gui.dataimport.widget.PreviewTableWidget;
+import org.caleydo.core.io.gui.dataimport.widget.SelectAllNoneWidget;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -27,8 +29,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Page for loading the dataset from file.
@@ -41,11 +41,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	public static final String PAGE_NAME = "Load Dataset";
 
 	public static final String PAGE_DESCRIPTION = "Specify the dataset you want to load.";
-
-	/**
-	 * Text field for the name of the dataset.
-	 */
-	protected Text dataSetLabelTextField;
 
 	/**
 	 * Button to specify whether the dataset is homogeneous, i.e. all columns
@@ -69,17 +64,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	protected Composite parentComposite;
 
 	/**
-	 * Textfield for the input file name.
-	 */
-	protected Text fileNameTextField;
-
-	/**
-	 * Table that displays a preview of the data of the file specified by
-	 * {@link #inputFileName}.
-	 */
-	protected Table previewTable;
-
-	/**
 	 * Combo box to specify the row ID Type.
 	 */
 	protected Combo rowIDCombo;
@@ -90,15 +74,9 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	protected Combo columnIDCombo;
 
 	/**
-	 * List of buttons, each created for one column to specify whether this
-	 * column should be loaded or not.
+	 * Manager for {@link #previewTable} that extends its features.
 	 */
-	protected ArrayList<Button> selectedColumnButtons = new ArrayList<Button>();
-
-	/**
-	 * Table editors that are associated with {@link #selectedColumnButtons}.
-	 */
-	protected ArrayList<TableEditor> tableEditors = new ArrayList<TableEditor>();
+	protected PreviewTableWidget previewTable;
 
 	/**
 	 * Spinner used to define the index of the row that contains the column ids.
@@ -121,28 +99,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	 * contained.
 	 */
 	protected Spinner dataStartColumnSpinner;
-
-	/**
-	 * Button to specify whether all columns of the data file should be shown in
-	 * the {@link #previewTable}.
-	 */
-	protected Button showAllColumnsButton;
-
-	/**
-	 * Shows the total number columns in the data file and the number of
-	 * displayed columns of the {@link #previewTable}.
-	 */
-	protected Label tableInfoLabel;
-
-	/**
-	 * Button to select all columns of the {@link #previewTable}.
-	 */
-	protected Button selectAllButton;
-
-	/**
-	 * Button to deselect all columns of the {@link #previewTable}.
-	 */
-	protected Button selectNoneButton;
 
 	/**
 	 * Button to create a new {@link IDCategory}.
@@ -169,10 +125,17 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	 */
 	protected DelimiterWidget delimiterRadioGroup;
 
+	protected SelectAllNoneWidget selectAllNone;
+
+	protected LoadFileWidget loadFile;
+
+	protected LabelWidget label;
+
 	/**
 	 * Mediator for this page.
 	 */
 	private LoadDataSetPageMediator mediator;
+
 
 	public LoadDataSetPage(DataSetDescription dataSetDescription) {
 		super(PAGE_NAME, dataSetDescription);
@@ -190,12 +153,15 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		parentComposite.setLayout(layout);
 
 		// File Selection
+		loadFile = new LoadFileWidget(parentComposite, "Open Data File", new ICallback<String>() {
+			@Override
+			public void on(String data) {
+				mediator.onSelectFile(data);
+			}
+		});
 
-		createFileSelectionPart(parentComposite);
-
-		// Dataset Name
-
-		createDataSetNamePart(parentComposite);
+		// label
+		label = new LabelWidget(parentComposite, "Dataset Name");
 
 		// Row Config
 
@@ -214,42 +180,20 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 			}
 		});
 
-		Group columnSelectionGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		columnSelectionGroup.setText("Column Selection");
-		columnSelectionGroup.setLayout(new GridLayout(2, false));
-		columnSelectionGroup
-				.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
-		selectAllButton = new Button(columnSelectionGroup, SWT.PUSH);
-		selectAllButton.setText("Select All");
-		selectAllButton.addSelectionListener(new SelectionAdapter() {
-
+		selectAllNone = new SelectAllNoneWidget(parentComposite, new BooleanCallback() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				mediator.selectAllButtonPressed();
-			}
-		});
-		selectNoneButton = new Button(columnSelectionGroup, SWT.PUSH);
-		selectNoneButton.setText("Select None");
-		selectNoneButton.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				mediator.selectNoneButtonPressed();
+			public void on(boolean selectAll) {
+				mediator.onSelectAllNone(selectAll);
 			}
 		});
 
-		previewTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER
-				| SWT.FULL_SELECTION);
-		previewTable.setLinesVisible(true);
-		GridData gridData = new GridData(GridData.FILL_BOTH);
-		gridData.horizontalSpan = numGridCols;
-		gridData.heightHint = 300;
-		gridData.widthHint = 800;
-		previewTable.setLayoutData(gridData);
+		previewTable = new PreviewTableWidget(parentComposite, new BooleanCallback() {
+			@Override
+			public void on(boolean showAllColumns) {
+				mediator.onShowAllColumns(showAllColumns);
+			}
+		});
 
-		// Table info
-
-		createTableInfo(parentComposite);
 		mediator.guiCreated();
 
 		setControl(parentComposite);
@@ -397,41 +341,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		});
 	}
 
-	private void createFileSelectionPart(Composite parent) {
-
-		Group inputFileGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		inputFileGroup.setText("Input File");
-		inputFileGroup.setLayout(new GridLayout(2, false));
-		inputFileGroup.setLayoutData(new GridData(SWT.BEGINNING));
-
-		Button openFileButton = new Button(inputFileGroup, SWT.PUSH);
-		openFileButton.setText("Choose Data File...");
-
-		fileNameTextField = new Text(inputFileGroup, SWT.BORDER);
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gridData.widthHint = 250;
-		fileNameTextField.setLayoutData(gridData);
-		fileNameTextField.setEnabled(false);
-		fileNameTextField.addListener(SWT.Modify, this);
-
-		openFileButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-				mediator.openFileButtonPressed();
-			}
-		});
-	}
-
-	private void createDataSetNamePart(Composite parent) {
-		Group dataSetLabelGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		dataSetLabelGroup.setText("Dataset Name");
-		dataSetLabelGroup.setLayout(new GridLayout(1, false));
-		dataSetLabelGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-		dataSetLabelTextField = new Text(dataSetLabelGroup, SWT.BORDER);
-		dataSetLabelTextField.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-	}
-
 	private void createIDTypeGroup(Composite parent, boolean isColumnIDTypeGroup) {
 		Label idTypeLabel = new Label(parent, SWT.SHADOW_ETCHED_IN);
 		idTypeLabel.setText(isColumnIDTypeGroup ? "Column ID Type" : "Row ID Type");
@@ -446,41 +355,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		}
 
 		idCombo.addListener(SWT.Modify, this);
-	}
-
-	/**
-	 * Creates a composite that contains the {@link #tableInfoLabel} and the
-	 * {@link #showAllColumnsButton}.
-	 *
-	 * @param parent
-	 */
-	protected void createTableInfo(Composite parent) {
-		Composite tableInfoComposite = new Composite(parent, SWT.NONE);
-		tableInfoComposite.setLayout(new GridLayout(3, false));
-		tableInfoComposite.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true,
-				2, 1));
-
-		tableInfoLabel = new Label(tableInfoComposite, SWT.NONE);
-		tableInfoLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
-
-		Label separator = new Label(tableInfoComposite, SWT.SEPARATOR | SWT.VERTICAL);
-		GridData separatorGridData = new GridData(SWT.RIGHT, SWT.CENTER, false, false);
-		separatorGridData.heightHint = 16;
-		separator.setLayoutData(separatorGridData);
-		showAllColumnsButton = new Button(tableInfoComposite, SWT.CHECK);
-		showAllColumnsButton.setSelection(false);
-		showAllColumnsButton.setText("Show all Columns");
-		showAllColumnsButton
-				.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
-		showAllColumnsButton.setEnabled(false);
-		showAllColumnsButton.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				mediator.showAllColumnsButtonSelected();
-			}
-
-		});
 	}
 
 	private void createIDCategoryGroup(Composite parent, String groupLabel,
@@ -530,7 +404,7 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 
 	@Override
 	public boolean isPageComplete() {
-		if (fileNameTextField.getText().isEmpty()) {
+		if (loadFile.getFileName().isEmpty()) {
 			((DataImportWizard) getWizard()).setRequiredDataSpecified(false);
 			return false;
 		}

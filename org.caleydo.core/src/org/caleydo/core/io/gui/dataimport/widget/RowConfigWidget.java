@@ -50,7 +50,6 @@ public class RowConfigWidget {
 		this.group = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		group.setText("Row Configuration");
 		group.setLayout(new GridLayout(1, false));
-		group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
 		Composite leftConfigGroupPart = new Composite(group, SWT.NONE);
 		leftConfigGroupPart.setLayout(new GridLayout(2, false));
@@ -103,6 +102,10 @@ public class RowConfigWidget {
 				onColumnOfRowIDChanged.on(columnOfRowIDSpinner.getSelection());
 			}
 		});
+	}
+
+	public void setLayoutData(Object layoutData) {
+		this.group.setLayoutData(layoutData);
 	}
 
 	public void setEnabled(boolean enabled) {

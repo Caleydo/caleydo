@@ -16,15 +16,10 @@ import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.gui.dataimport.CreateIDTypeDialog;
 import org.caleydo.core.io.gui.dataimport.FilePreviewParser;
-import org.caleydo.core.io.gui.dataimport.PreviewTableManager;
 import org.caleydo.core.util.collection.Pair;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -69,10 +64,6 @@ public class LoadDataSetPageMediator {
 	 */
 	private ArrayList<IDCategory> registeredIDCategories;
 
-	/**
-	 * Manager for {@link #previewTable} that extends its features.
-	 */
-	private PreviewTableManager previewTableManager;
 
 	/**
 	 * Matrix that stores the data for {@link #MAX_PREVIEW_TABLE_ROWS} rows and
@@ -131,30 +122,15 @@ public class LoadDataSetPageMediator {
 	}
 
 	/**
-	 * Opens a file dialog to specify the file that defines the dataset.
-	 */
-	public void openFileButtonPressed() {
-		FileDialog fileDialog = new FileDialog(new Shell());
-		fileDialog.setText("Open");
-		String[] filterExt = { "*.csv;*.txt;*.gct", "*.*" };
-		fileDialog.setFilterExtensions(filterExt);
-
-		String inputFileName = fileDialog.open();
-
-		if (inputFileName == null)
-			return;
-
-		dataSetDescription.setDataSourcePath(inputFileName);
-		initWidgets();
-	}
-
-	/**
 	 * Initializes all widgets of the {@link #page}. This method should be
 	 * called after all widgets of the dialog were created.
 	 */
 	public void guiCreated() {
-		previewTableManager = new PreviewTableManager(page.previewTable);
+		initWidgets();
+	}
 
+	public void onSelectFile(String inputFileName) {
+		dataSetDescription.setDataSourcePath(inputFileName);
 		initWidgets();
 	}
 
@@ -163,13 +139,12 @@ public class LoadDataSetPageMediator {
 		String inputFileName = dataSetDescription.getDataSourcePath();
 		boolean fileSpecified = dataSetDescription.getDataSourcePath() != null;
 
-		page.fileNameTextField.setText(fileSpecified ? inputFileName : "");
-		page.fileNameTextField.setEnabled(false);
+		page.loadFile.setFileName(fileSpecified ? inputFileName : "");
 
-		page.dataSetLabelTextField.setText(fileSpecified ? inputFileName.substring(
+		page.label.setText(fileSpecified ? inputFileName.substring(
 				inputFileName.lastIndexOf(File.separator) + 1,
 				inputFileName.lastIndexOf(".")) : "");
-		page.dataSetLabelTextField.setEnabled(fileSpecified);
+		page.label.setEnabled(fileSpecified);
 
 		fillIDCategoryCombo(page.rowIDCategoryCombo);
 		page.rowIDCategoryCombo.setEnabled(fileSpecified);
@@ -207,11 +182,7 @@ public class LoadDataSetPageMediator {
 		page.buttonHomogeneous.setEnabled(fileSpecified);
 
 		page.delimiterRadioGroup.setEnabled(fileSpecified);
-		page.selectAllButton.setEnabled(fileSpecified);
-
-		page.selectNoneButton.setEnabled(fileSpecified);
-
-		page.showAllColumnsButton.setEnabled(fileSpecified);
+		page.selectAllNone.setEnabled(fileSpecified);
 
 		if (fileSpecified)
 			createDataPreviewTableFromFile();
@@ -300,10 +271,9 @@ public class LoadDataSetPageMediator {
 			dataSetDescription.setRowOfColumnIDs(numHeaderRows - 1);
 		}
 		dataSetDescription.setNumberOfHeaderLines(numHeaderRows);
-		previewTableManager.updateTableColors(
+		page.previewTable.updateTableColors(
 				dataSetDescription.getNumberOfHeaderLines(),
-				dataSetDescription.getRowOfColumnIDs() + 1,
-				dataSetDescription.getColumnOfRowIds() + 1);
+				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
 	}
 
 	/**
@@ -312,10 +282,9 @@ public class LoadDataSetPageMediator {
 	public void columnOfRowIDSpinnerModified() {
 		dataSetDescription
 				.setColumnOfRowIds(page.columnOfRowIDSpinner.getSelection() - 1);
-		previewTableManager.updateTableColors(
+		page.previewTable.updateTableColors(
 				dataSetDescription.getNumberOfHeaderLines(),
-				dataSetDescription.getRowOfColumnIDs() + 1,
-				dataSetDescription.getColumnOfRowIds() + 1);
+				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
 	}
 
 	/**
@@ -338,7 +307,7 @@ public class LoadDataSetPageMediator {
 		CreateIDTypeDialog dialog = new CreateIDTypeDialog(new Shell());
 		int status = dialog.open();
 
-		if (status == Dialog.OK) {
+		if (status == Window.OK) {
 			IDCategory newIDCategory = dialog.getIdCategory();
 			registeredIDCategories.add(newIDCategory);
 
@@ -387,7 +356,7 @@ public class LoadDataSetPageMediator {
 				isColumnIDType ? columnIDCategory : rowIDCategory);
 		int status = dialog.open();
 
-		if (status == Dialog.OK) {
+		if (status == Window.OK) {
 
 			IDType newIDType = dialog.getIdType();
 
@@ -418,10 +387,9 @@ public class LoadDataSetPageMediator {
 			page.numHeaderRowsSpinner.setSelection(idRowIndex);
 			dataSetDescription.setNumberOfHeaderLines(idRowIndex);
 		}
-		previewTableManager.updateTableColors(
+		page.previewTable.updateTableColors(
 				dataSetDescription.getNumberOfHeaderLines(),
-				dataSetDescription.getRowOfColumnIDs() + 1,
-				dataSetDescription.getColumnOfRowIds() + 1);
+				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
 	}
 
 
@@ -430,47 +398,16 @@ public class LoadDataSetPageMediator {
 		createDataPreviewTableFromFile();
 	}
 
-	/**
-	 * Selects all columns of the preview table of the {@link #dialog}.
-	 */
-	public void selectAllButtonPressed() {
-		for (int i = 0; i < page.selectedColumnButtons.size(); i++) {
-			Button button = page.selectedColumnButtons.get(i);
-			button.setSelection(true);
-			previewTableManager.colorTableColumnText(i + 1, Display.getCurrent()
-					.getSystemColor(SWT.COLOR_BLACK));
-		}
+	public void onSelectAllNone(boolean selectAll) {
+		page.previewTable.selectColumns(selectAll, dataSetDescription.getColumnOfRowIds());
 	}
 
-	/**
-	 * Unselects all columns of the preview table of the {@link #dialog}.
-	 */
-	public void selectNoneButtonPressed() {
-		for (int i = 0; i < page.selectedColumnButtons.size(); i++) {
-			Button button = page.selectedColumnButtons.get(i);
-			button.setSelection(false);
-			if (i != dataSetDescription.getColumnOfRowIds())
-				previewTableManager.colorTableColumnText(i + 1, Display.getCurrent()
-						.getSystemColor(SWT.COLOR_GRAY));
-		}
-	}
-
-	/**
-	 * Loads all columns or the {@link #MAX_PREVIEW_TABLE_COLUMNS} into the
-	 * preview table, depending on the state of showAllColumnsButton of the
-	 * {@link #page}.
-	 */
-	public void showAllColumnsButtonSelected() {
-		boolean showAllColumns = page.showAllColumnsButton.getSelection();
-		previewTableManager.createDataPreviewTableFromDataMatrix(dataMatrix,
+	public void onShowAllColumns(boolean showAllColumns) {
+		page.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix,
 				showAllColumns ? totalNumberOfColumns : MAX_PREVIEW_TABLE_COLUMNS);
-		page.selectedColumnButtons = previewTableManager.getSelectedColumnButtons();
-		// TODO: Disabled by alex, do we need this?
-		// determineIDTypes();
-		previewTableManager.updateTableColors(
+		page.previewTable.updateTableColors(
 				dataSetDescription.getNumberOfHeaderLines(),
-				dataSetDescription.getRowOfColumnIDs() + 1,
-				dataSetDescription.getColumnOfRowIds() + 1);
+				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
 		updateWidgetsAccordingToTableChanges();
 	}
 
@@ -483,17 +420,15 @@ public class LoadDataSetPageMediator {
 		DataImportWizard wizard = (DataImportWizard) page.getWizard();
 		wizard.setTotalNumberOfColumns(totalNumberOfColumns);
 		wizard.setTotalNumberOfRows(totalNumberOfRows);
-		previewTableManager.createDataPreviewTableFromDataMatrix(dataMatrix,
+		page.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix,
 				MAX_PREVIEW_TABLE_COLUMNS);
-		page.selectedColumnButtons = previewTableManager.getSelectedColumnButtons();
 		updateWidgetsAccordingToTableChanges();
 		determineIDTypes();
 		guessNumberOfHeaderRows();
 
-		previewTableManager.updateTableColors(
+		page.previewTable.updateTableColors(
 				dataSetDescription.getNumberOfHeaderLines(),
-				dataSetDescription.getRowOfColumnIDs() + 1,
-				dataSetDescription.getColumnOfRowIds() + 1);
+				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
 
 		page.parentComposite.pack();
 	}
@@ -608,21 +543,7 @@ public class LoadDataSetPageMediator {
 		page.columnOfRowIDSpinner.setMaximum(totalNumberOfColumns);
 		page.rowOfColumnIDSpinner.setMaximum(totalNumberOfRows);
 		page.numHeaderRowsSpinner.setMaximum(totalNumberOfRows);
-		if (totalNumberOfColumns == (page.previewTable.getColumnCount() - 1)) {
-			page.showAllColumnsButton.setSelection(true);
-		} else {
-			page.showAllColumnsButton.setSelection(false);
-		}
-		if (totalNumberOfColumns <= MAX_PREVIEW_TABLE_COLUMNS) {
-			page.showAllColumnsButton.setEnabled(false);
-		} else {
-			page.showAllColumnsButton.setEnabled(true);
-		}
-		page.tableInfoLabel.setText((page.previewTable.getColumnCount() - 1) + " of "
-				+ totalNumberOfColumns + " Columns shown");
-		page.tableInfoLabel.pack();
-		page.previewTable.pack();
-		page.tableInfoLabel.getParent().pack(true);
+		page.previewTable.setTotalNumberOfColumns(totalNumberOfColumns);
 		page.parentComposite.pack(true);
 		page.parentComposite.layout(true);
 	}
@@ -750,7 +671,7 @@ public class LoadDataSetPageMediator {
 		dataSetDescription.setRowIDSpecification(rowIDSpecification);
 
 		dataSetDescription.setDataHomogeneous(page.buttonHomogeneous.getSelection());
-		dataSetDescription.setDataSetName(page.dataSetLabelTextField.getText());
+		dataSetDescription.setDataSetName(page.label.getText());
 
 		readDimensionDefinition();
 	}
@@ -772,29 +693,17 @@ public class LoadDataSetPageMediator {
 
 		// the columnIndex here is the columnIndex of the previewTable. This is
 		// different by one from the index in the source csv.
-		for (int columnIndex = 0; columnIndex < totalNumberOfColumns; columnIndex++) {
+		for(Integer selected : page.previewTable.getSelectedColumns()) {
+			int columnIndex = selected.intValue();
+			if (columnIndex == dataSetDescription.getColumnOfRowIds())
+				continue;
+			inputPattern.add(createColumnDescription(columnIndex));
 
-			if (dataSetDescription.getColumnOfRowIds() != columnIndex) {
-				if (columnIndex + 1 < page.previewTable.getColumnCount()) {
-					if (page.selectedColumnButtons.get(columnIndex).getSelection()) {
-
-						// fixme this does not work for categorical data
-						inputPattern.add(createColumnDescription(columnIndex));
-
-						String labelText = dataMatrix.get(0).get(columnIndex);
-						dimensionLabels.add(labelText);
-					}
-				} else {
-					inputPattern.add(createColumnDescription(columnIndex));
-
-					String labelText = dataMatrix.get(0).get(columnIndex);
-					dimensionLabels.add(labelText);
-				}
-			}
+			String labelText = dataMatrix.get(0).get(columnIndex);
+			dimensionLabels.add(labelText);
 		}
-
 		dataSetDescription.setParsingPattern(inputPattern);
-		dataSetDescription.setDataSourcePath(page.fileNameTextField.getText());
+		dataSetDescription.setDataSourcePath(page.loadFile.getFileName());
 		// dataSetDescripton.setColumnLabels(dimidMappingManagerensionLabels);
 
 	}
@@ -811,7 +720,7 @@ public class LoadDataSetPageMediator {
 		// TODO: This is just a temporary solution to the problem of detecting
 		// NaN values: now we expect the column to be float, if one float is
 		// found, otherwise it is a string.
-		int testSize = page.previewTable.getItemCount() - 1;
+		int testSize = page.previewTable.getRowCount();
 		for (int rowIndex = dataSetDescription.getNumberOfHeaderLines(); rowIndex < testSize; rowIndex++) {
 			if (rowIndex != dataSetDescription.getRowOfColumnIDs()) {
 				String testString = dataMatrix.get(rowIndex).get(columnIndex);
@@ -834,5 +743,4 @@ public class LoadDataSetPageMediator {
 	public DataSetDescription getDataSetDescription() {
 		return dataSetDescription;
 	}
-
 }
