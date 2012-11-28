@@ -58,8 +58,12 @@ final class SWTGLCanvas implements IGLCanvas {
 			public void widgetDisposed(DisposeEvent e) {
 				// problem if the canvas is not the the top level widget, only release(...) will be called -> call it
 				// manually on disposing
-				if (!PlatformUI.getWorkbench().isClosing())
-					e.widget.dispose();
+				if (!PlatformUI.getWorkbench().isClosing()) {
+					// e.widget.dispose();
+					fireDispose(SWTGLCanvas.this.canvas);
+					SWTGLCanvas.this.canvas.getContext().destroy();
+					SWTGLCanvas.this.canvas.setRealized(false);
+				}
 			}
 		});
 		// wrap listeners for manually sending reshape events
@@ -91,7 +95,7 @@ final class SWTGLCanvas implements IGLCanvas {
 				if (w != drawable.getWidth() || h != drawable.getHeight() && w != -1) {
 					w = drawable.getWidth();
 					h = drawable.getHeight();
-					fireReshape(drawable, 0,0, drawable.getWidth(), drawable.getHeight());
+					fireReshape(drawable, 0, 0, drawable.getWidth(), drawable.getHeight());
 				}
 				fireDisplay(drawable);
 			}
