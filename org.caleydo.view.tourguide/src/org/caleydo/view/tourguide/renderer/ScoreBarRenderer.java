@@ -46,7 +46,7 @@ public class ScoreBarRenderer extends LayoutRenderer {
 		if (!Float.isNaN(score)) {
 			float paddingX = oneXPixel(gl) * 2;
 			float paddingY = oneYPixel(gl) * 2;
-			float barWidth = (x - 2 * paddingX) * Math.max(score, 0);
+			float barWidth = (x - 2 * paddingX) * Math.min(Math.max(score, 0), 1);
 			gl.glColor4fv(color.getRGBA(), 0);
 			fillRect(gl, paddingX, paddingY, barWidth, y - 2 * paddingY);
 		}

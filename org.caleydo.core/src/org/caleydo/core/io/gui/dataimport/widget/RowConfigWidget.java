@@ -19,10 +19,14 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui.dataimport.widget;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.util.collection.Pair;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -39,6 +43,11 @@ import org.eclipse.swt.widgets.Spinner;
  *
  */
 public class RowConfigWidget {
+	/**
+	 * The maximum number of ids that are tested in order to determine the {@link IDType}.
+	 */
+	private static final int MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION = 10;
+
 	private final Group group;
 	private final Spinner columnOfRowIDSpinner;
 	private final Spinner numHeaderRowsSpinner;
@@ -118,6 +127,13 @@ public class RowConfigWidget {
 
 	public void setCategoryID(IDCategory rowIDCategory) {
 		this.categoryIDLabel.setText(rowIDCategory.getCategoryName());
+		rowIDCombo.removeAll();
+		for (IDType type : rowIDCategory.getPublicIdTypes())
+			rowIDCombo.add(type.getTypeName());
+		if (rowIDCombo.getItemCount() == 1) {
+			rowIDCombo.select(0);
+			rowIDCombo.setEnabled(false);
+		}
 	}
 
 	public void setNumHeaderRows(int numberOfHeaderLines) {
@@ -133,16 +149,10 @@ public class RowConfigWidget {
 		numHeaderRowsSpinner.setMaximum(totalNumberOfRows);
 	}
 
-	public void setIDTypes(List<IDType> rowIDTypes, IDType selection) {
-		rowIDCombo.removeAll();
-		for (IDType type : rowIDTypes)
-			rowIDCombo.add(type.getTypeName());
-		if (selection != null)
-			rowIDCombo.select(rowIDTypes.indexOf(selection));
-		else if (rowIDTypes.size() == 1) {
-			rowIDCombo.select(0);
-			rowIDCombo.setEnabled(false);
-		}
+	public void setIDType(IDType selection) {
+		if (selection == null)
+			return;
+		rowIDCombo.setText(selection.getTypeName());
 	}
 
 	public IDType getIDType() {
@@ -151,6 +161,85 @@ public class RowConfigWidget {
 			return null;
 		String type = rowIDCombo.getItem(i);
 		return IDType.getIDType(type);
+	}
+
+	public void determineConfigFromPreview(List<? extends List<String>> dataMatrix, IDCategory rowIDCategory) {
+		guessNumberOfHeaderRows(dataMatrix);
+		determineRowIDType(dataMatrix, rowIDCategory);
+	}
+
+	private void guessNumberOfHeaderRows(List<? extends List<String>> dataMatrix) {
+		// In grouping case we can have 0 header rows as there does not have to
+		// be an id row
+		int numHeaderRows = 0;
+		for (int i = 0; i < dataMatrix.size(); i++) {
+			List<String> row = dataMatrix.get(i);
+			int numFloatsFound = 0;
+			for (int j = 0; j < row.size() && j < PreviewTableWidget.MAX_PREVIEW_TABLE_COLUMNS; j++) {
+				String text = row.get(j);
+				try {
+					// This currently only works for numerical values
+					Float.parseFloat(text);
+					numFloatsFound++;
+					if (numFloatsFound >= 3) {
+						this.setNumHeaderRows(numHeaderRows);
+						return;
+					}
+				} catch (Exception e) {
+
+				}
+			}
+			numHeaderRows++;
+		}
+	}
+
+	private void determineRowIDType(List<? extends List<String>> dataMatrix, IDCategory rowIDCategory) {
+		List<String> idList = new ArrayList<String>();
+		for (int i = 0; i < dataMatrix.size() && i < MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION; i++) {
+			List<String> row = dataMatrix.get(i);
+			idList.add(row.get(this.columnOfRowIDSpinner.getSelection()));
+		}
+
+		float maxProbability = 0;
+		IDType mostProbableIDType = null;
+		List<Pair<Float, IDType>> probabilityList = rowIDCategory
+				.getListOfIDTypeAffiliationProbabilities(idList, false);
+		if (probabilityList.size() > 0) {
+			Pair<Float, IDType> pair = probabilityList.get(0);
+			if (pair.getFirst() > maxProbability) {
+				maxProbability = pair.getFirst();
+				mostProbableIDType = pair.getSecond();
+			}
+		}
+
+		if (maxProbability < 0.0001f)
+			mostProbableIDType = null;
+
+		if (mostProbableIDType != null)
+			this.setIDType(mostProbableIDType);
+	}
+
+	/**
+	 * creates a new {@link IDSpecification} based on the selected {@link IDType}
+	 * 
+	 * @return
+	 */
+	public IDSpecification getIDSpecification() {
+		IDSpecification rowIDSpecification = new IDSpecification();
+		IDType rowIDType = this.getIDType();
+
+		rowIDSpecification.setIdType(rowIDType.toString());
+		if (rowIDType.getIDCategory().getCategoryName().equals("GENE"))
+			rowIDSpecification.setIDTypeGene(true);
+		rowIDSpecification.setIdCategory(rowIDType.getIDCategory().toString());
+		if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
+			// for REFSEQ_MRNA we ignore the .1, etc.
+			IDTypeParsingRules parsingRules = new IDTypeParsingRules();
+			parsingRules.setSubStringExpression("\\.");
+			parsingRules.setDefault(true);
+			rowIDSpecification.setIdTypeParsingRules(parsingRules);
+		}
+		return rowIDSpecification;
 	}
 
 }

@@ -17,43 +17,39 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.event;
+package org.caleydo.core.serialize;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.view.tourguide.data.score.IScore;
-import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
+import java.util.Collection;
+
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
+import org.caleydo.core.data.datadomain.IDataDomain;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddScoreColumnEvent extends AEvent {
-	private IScore score;
+public interface ISerializationAddon {
+	public Collection<Class<?>> getJAXBContextClasses();
 
-	public AddScoreColumnEvent() {
+	/**
+	 * @param dirName
+	 * @param unmarshaller
+	 * @param serializationData
+	 */
+	public void deserialize(String dirName, Unmarshaller unmarshaller, SerializationData data);
 
-	}
+	/**
+	 * @param toSave
+	 * @param marshaller
+	 * @param dirName
+	 */
+	public void serialize(Collection<? extends IDataDomain> toSave, Marshaller marshaller, String dirName);
 
-	public AddScoreColumnEvent(ScoreQueryUI sender) {
-		this(null, sender);
-	}
+	/**
+	 * @param serializationDataList
+	 */
+	public void load(SerializationData data);
 
-	public AddScoreColumnEvent(IScore score, ScoreQueryUI sender) {
-		this.score = score;
-		this.setSender(sender);
-	}
-
-	public boolean isCreateNewScore() {
-		return score == null;
-	}
-
-	public IScore getScore() {
-		return score;
-	}
-
-	@Override
-	public boolean checkIntegrity() {
-		return true;
-	}
 }
-

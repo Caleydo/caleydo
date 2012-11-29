@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.data.datadomain;
 
+import org.caleydo.core.data.perspective.table.CategoricalTablePerspectiveCreator;
+
 /**
  * helper class for encapsulating magic meta data information about a data domain
  *
@@ -26,6 +28,8 @@ package org.caleydo.core.data.datadomain;
  *
  */
 public final class DataDomainOracle {
+	private final static CategoricalTablePerspectiveCreator perspectiveCreator = new CategoricalTablePerspectiveCreator();
+
 	public static boolean isCategoricalDataDomain(IDataDomain dataDomain) {
 		if (dataDomain == null)
 			return false;
@@ -35,4 +39,8 @@ public final class DataDomainOracle {
 		return label.toLowerCase().contains("mutation") || label.toLowerCase().contains("copy");
 	}
 
+	public synchronized static void initDataDomain(ATableBasedDataDomain dataDomain) {
+		if (isCategoricalDataDomain(dataDomain))
+			perspectiveCreator.createAllTablePerspectives(dataDomain);
+	}
 }

@@ -21,10 +21,10 @@ package org.caleydo.view.tourguide.data.score;
 
 /**
  * score type describing which kind of reference is used
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public enum EScoreType {
-	STANDALONE_SCORE, STRATIFICATION_SCORE, GROUP_SCORE
+	STRATIFICATION_SCORE, GROUP_SCORE, STANDALONE_SCORE, STANDALONE_RANK
 }

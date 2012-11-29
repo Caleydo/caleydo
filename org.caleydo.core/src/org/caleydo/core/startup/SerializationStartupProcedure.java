@@ -27,7 +27,9 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.DataDomainSerializationData;
+import org.caleydo.core.serialize.ISerializationAddon;
 import org.caleydo.core.serialize.ProjectManager;
 import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.util.logging.Logger;
@@ -127,6 +129,10 @@ public class SerializationStartupProcedure
 			}
 
 		}
+
+		for (ISerializationAddon addon : GeneralManager.get().getSerializationManager().getAddons())
+			addon.load(serializationDataList);
+
 	}
 
 	public void loadSampleProject(boolean loadSampleProject) {

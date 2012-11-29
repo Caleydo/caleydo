@@ -45,6 +45,7 @@ public abstract class AGroupScore implements IScore {
 		put(this.group, Float.NaN); // add self
 	}
 
+
 	protected boolean contains(TablePerspective perspective, Group elem) {
 		// have the value or it the same stratification
 		return scores.containsKey(elem.getID()) || (perspective.equals(stratification));

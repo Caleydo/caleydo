@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
@@ -9,7 +9,6 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.gui.dataimport.ImportGroupingDialog;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 
@@ -17,10 +16,10 @@ import org.eclipse.swt.widgets.Shell;
  * Mediator for {@link AddGroupingsPage}. This class is responsible for setting
  * the states of all widgets of the page and triggering actions according to
  * different events that occur in the page.
- * 
- * 
+ *
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class AddGroupingsPageMediator {
 
@@ -78,15 +77,9 @@ public class AddGroupingsPageMediator {
 	private void addGrouping(IDCategory idCategory,
 			ArrayList<GroupingParseSpecification> groupingParseSpecifications,
 			List groupingList) {
-		ImportGroupingDialog importGroupingDialog = new ImportGroupingDialog(new Shell(),
-				idCategory);
-
-		int status = importGroupingDialog.open();
-
-		GroupingParseSpecification groupingParseSpecification = importGroupingDialog
-				.getGroupingParseSpecification();
-
-		if (status == Dialog.OK && groupingParseSpecification != null) {
+		ImportGroupingDialog importGroupingDialog = new ImportGroupingDialog(new Shell(), idCategory);
+		GroupingParseSpecification groupingParseSpecification = importGroupingDialog.call();
+		if (groupingParseSpecification != null) {
 			groupingParseSpecifications.add(groupingParseSpecification);
 			groupingList.add(groupingParseSpecification.getGroupingName());
 		}
@@ -117,16 +110,10 @@ public class AddGroupingsPageMediator {
 			GroupingParseSpecification selectedGroupingParseSpecification = groupingParseSpecifications
 					.get(groupingIndex);
 
-			ImportGroupingDialog importGroupingDialog = new ImportGroupingDialog(
-					new Shell(), selectedGroupingParseSpecification, idCategory);
-
-			int status = importGroupingDialog.open();
-
-			GroupingParseSpecification groupingParseSpecification = importGroupingDialog
-					.getGroupingParseSpecification();
-
-			if (status == Dialog.OK && groupingParseSpecification != null) {
-
+			ImportGroupingDialog importGroupingDialog = new ImportGroupingDialog(new Shell(), idCategory,
+					selectedGroupingParseSpecification);
+			GroupingParseSpecification groupingParseSpecification = importGroupingDialog.call();
+			if (groupingParseSpecification != null) {
 				groupingParseSpecifications.remove(groupingIndex);
 				groupingParseSpecifications
 						.add(groupingIndex, groupingParseSpecification);

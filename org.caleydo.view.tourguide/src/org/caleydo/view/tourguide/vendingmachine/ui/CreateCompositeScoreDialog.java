@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.tourguide.data.score.CombinedScore;
-import org.caleydo.view.tourguide.data.score.CombinedScore.ECombinedOperator;
+import org.caleydo.view.tourguide.data.score.ECombinedOperator;
 import org.caleydo.view.tourguide.data.score.ICompositeScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.ProductScore;

@@ -14,7 +14,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -32,6 +32,16 @@ import org.eclipse.swt.widgets.TableItem;
  *
  */
 public class PreviewTableWidget {
+	/**
+	 * Maximum number of previewed rows in {@link #previewTable}.
+	 */
+	public static final int MAX_PREVIEW_TABLE_ROWS = 50;
+
+	/**
+	 * Maximum number of previewed columns in {@link #previewTable}.
+	 */
+	public static final int MAX_PREVIEW_TABLE_COLUMNS = 10;
+
 	// not static to release it early
 	private final Color colorNormalRow = Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
 	private final Color colorId = Display.getCurrent().getSystemColor(SWT.COLOR_GREEN);
@@ -79,6 +89,7 @@ public class PreviewTableWidget {
 	 */
 	private final Label tableInfoLabel;
 
+
 	public PreviewTableWidget(Composite parent, final BooleanCallback onSelectAllColumnsCallback) {
 		previewTable = new Table(parent, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
 		previewTable.setLinesVisible(true);
@@ -88,16 +99,15 @@ public class PreviewTableWidget {
 		previewTable.setLayoutData(gridData);
 
 		Composite tableInfoComposite = new Composite(parent, SWT.NONE);
-		tableInfoComposite.setLayout(new GridLayout(4, false));
-		tableInfoComposite.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true, 2, 1));
+		RowLayout rowLayout = new RowLayout(SWT.HORIZONTAL);
+		tableInfoComposite.setLayout(rowLayout);
+		gridData = new GridData(SWT.RIGHT, SWT.TOP, true, false, 2, 1);
+		gridData.heightHint = 20;
+		tableInfoComposite.setLayoutData(gridData);
 
 		tableInfoLabel = new Label(tableInfoComposite, SWT.NONE);
-		tableInfoLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		Label separator = new Label(tableInfoComposite, SWT.SEPARATOR | SWT.VERTICAL);
-		GridData separatorGridData = new GridData(SWT.CENTER, SWT.CENTER, false, false);
-		separatorGridData.heightHint = 16;
-		separator.setLayoutData(separatorGridData);
+		new Label(tableInfoComposite, SWT.SEPARATOR | SWT.VERTICAL);
 
 		showAllColumnsButton = new Button(tableInfoComposite, SWT.CHECK);
 		showAllColumnsButton.setText("Show all Columns");
@@ -109,6 +119,8 @@ public class PreviewTableWidget {
 				onSelectAllColumnsCallback.on(showAllColumnsButton.getSelection());
 			}
 		});
+
+		tableInfoComposite.pack(true);
 	}
 
 	/**
@@ -303,12 +315,11 @@ public class PreviewTableWidget {
 	}
 
 
-	public void setTotalNumberOfColumns(int totalNumberOfColumns) {
+	public void updateVisibleColumns(int totalNumberOfColumns) {
 		int visibleColumns = getColumnCount();
 		showAllColumnsButton.setEnabled(visibleColumns <= totalNumberOfColumns);
 		tableInfoLabel.setText(visibleColumns + " of " + totalNumberOfColumns + " Columns shown");
-		tableInfoLabel.pack();
-		tableInfoLabel.getParent().pack(true);
+		tableInfoLabel.getParent().getParent().layout(true, true);
 	}
 
 	public int getColumnCount() {

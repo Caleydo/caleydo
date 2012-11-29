@@ -22,6 +22,7 @@ package org.caleydo.core.id;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -325,6 +326,15 @@ public class IDCategory {
 	 * @return the idTypes, see {@link #idTypes}
 	 */
 	public ArrayList<IDType> getIdTypes() {
+		return idTypes;
+	}
+
+	public List<IDType> getPublicIdTypes() {
+		List<IDType> idTypes = new ArrayList<>(this.getIdTypes());
+
+		for (Iterator<IDType> it = idTypes.iterator(); it.hasNext();)
+			if (it.next().isInternalType())
+				it.remove();
 		return idTypes;
 	}
 

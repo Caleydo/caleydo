@@ -17,43 +17,26 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.event;
+package org.caleydo.view.tourguide.data.serialize;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.view.tourguide.data.score.IScore;
-import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
+import org.caleydo.core.id.IDType;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddScoreColumnEvent extends AEvent {
-	private IScore score;
+public class IDTypeAdapter extends XmlAdapter<String, IDType> {
 
-	public AddScoreColumnEvent() {
-
-	}
-
-	public AddScoreColumnEvent(ScoreQueryUI sender) {
-		this(null, sender);
-	}
-
-	public AddScoreColumnEvent(IScore score, ScoreQueryUI sender) {
-		this.score = score;
-		this.setSender(sender);
-	}
-
-	public boolean isCreateNewScore() {
-		return score == null;
-	}
-
-	public IScore getScore() {
-		return score;
+	@Override
+	public IDType unmarshal(String v) throws Exception {
+		return v == null ? null : IDType.getIDType(v);
 	}
 
 	@Override
-	public boolean checkIntegrity() {
-		return true;
+	public String marshal(IDType v) throws Exception {
+		return v == null ? null : v.getTypeName();
 	}
-}
 
+}

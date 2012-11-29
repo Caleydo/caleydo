@@ -21,6 +21,7 @@ package org.caleydo.view.tourguide.vendingmachine;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Collection;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -31,6 +32,8 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventListeners;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.Colors;
@@ -56,16 +59,23 @@ import org.caleydo.view.tourguide.data.ESorting;
 import org.caleydo.view.tourguide.data.ScoreQuery;
 import org.caleydo.view.tourguide.data.Scores;
 import org.caleydo.view.tourguide.data.ScoringElement;
+import org.caleydo.view.tourguide.data.load.ExternalScoreParser;
+import org.caleydo.view.tourguide.data.load.ScoreParseSpecification;
+import org.caleydo.view.tourguide.data.load.ui.ImportExternalScoreDialog;
 import org.caleydo.view.tourguide.data.score.AGroupScore;
 import org.caleydo.view.tourguide.data.score.AdjustedRankScore;
+import org.caleydo.view.tourguide.data.score.EScoreType;
+import org.caleydo.view.tourguide.data.score.ExternalScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.JaccardIndexScore;
 import org.caleydo.view.tourguide.data.score.ProductScore;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
+import org.caleydo.view.tourguide.event.ImportExternalScoreEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
 import org.caleydo.view.tourguide.listener.AddScoreColumnListener;
+import org.caleydo.view.tourguide.listener.ImportExternalScoreListener;
 import org.caleydo.view.tourguide.listener.RemoveScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreQueryReadyListener;
 import org.caleydo.view.tourguide.listener.ScoreTablePerspectiveListener;
@@ -95,7 +105,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 	private LayoutManager layoutManager;
 	private Column mainColumn;
-	private ScoreQueryUI scoringTable;
+	private ScoreQueryUI scoreQueryUI;
 	private DataDomainQueryUI dataDomainSelector;
 
 	private final EventListeners listeners = new EventListeners();
@@ -183,15 +193,15 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		dataDomainSelector.setQuery(dataDomainQuery);
 		mainColumn.append(dataDomainSelector);
 
-		scoringTable = new ScoreQueryUI(this, this, new Function<ScoringElement, Void>() {
+		scoreQueryUI = new ScoreQueryUI(this, this, new Function<ScoringElement, Void>() {
 			@Override
 			public Void apply(ScoringElement elem) {
 				addToStratomex(elem);
 				return null;
 			}
 		});
-		scoringTable.setQuery(scoreQuery);
-		mainColumn.append(scoringTable);
+		scoreQueryUI.setQuery(scoreQuery);
+		mainColumn.append(scoreQueryUI);
 
 		layoutManager.updateLayout();
 	}
@@ -238,6 +248,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		listeners.register(AddScoreColumnEvent.class, new AddScoreColumnListener(this));
 		listeners.register(RemoveScoreColumnEvent.class, new RemoveScoreColumnListener(this));
 		listeners.register(ScoreQueryReadyEvent.class, new ScoreQueryReadyListener(this));
+		listeners.register(ImportExternalScoreEvent.class, new ImportExternalScoreListener(this));
 	}
 
 	@Override
@@ -339,7 +350,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 	private void recomputeScores() {
 		if (scoreQuery.isBusy()) {
-			scoringTable.setRunning(true);
+			scoreQueryUI.setRunning(true);
 			Job job = new Job("Update Tour Guide") {
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
@@ -356,8 +367,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	}
 
 	public void onScoreQueryReady() {
-		scoringTable.setRunning(false);
-		scoringTable.setData(scoreQuery.call());
+		scoreQueryUI.setRunning(false);
+		scoreQueryUI.setData(scoreQuery.call());
 	}
 
 	@Override
@@ -392,7 +403,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 	private void onHideDataDomain(ATableBasedDataDomain dataDomain) {
 		boolean isCurrentlyVisible = false;
-		for (ScoringElement sp : scoringTable.getData()) {
+		for (ScoringElement sp : scoreQueryUI.getData()) {
 			if (sp.getStratification().getDataDomain().equals(dataDomain)) {
 				isCurrentlyVisible = true;
 				break;
@@ -408,30 +419,62 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				new CreateCompositeScoreDialog(new Shell(), Scores.get().getScoreIDs(), scoringTable).open();
+				new CreateCompositeScoreDialog(new Shell(), Scores.get().getScoreIDs(), scoreQueryUI).open();
 			}
 		});
 	}
 
 	public void onAddColumn(IScore score) {
-		this.scoreQuery.sortBy(score, ESorting.DESC);
+		this.scoreQuery
+				.sortBy(score, score.getScoreType() == EScoreType.STANDALONE_RANK ? ESorting.ASC : ESorting.DESC);
 		this.scoreQuery.addSelection(score);
 		recomputeScores();
 	}
 
-	public void onRemoveColumn(IScore score) {
+	public void onRemoveColumn(IScore score, boolean removeFromSystem) {
 		ESorting bak = scoreQuery.getSorting(score);
 		scoreQuery.sortBy(score, ESorting.NONE);
 		scoreQuery.removeSelection(score);
+		if (removeFromSystem) {
+			Scores.get().remove(score);
+		}
 		if (bak != ESorting.NONE) // if it was relevant for sorting recompute
 			recomputeScores();
+	}
+
+	public void onImportExternalScore(final ATableBasedDataDomain dataDomain, final IDCategory category) {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				ScoreParseSpecification spec = new ImportExternalScoreDialog(new Shell(), category).call();
+				if (spec == null)
+					return;
+				IDType target;
+				if (dataDomain.getRecordIDCategory().equals(category))
+					target = dataDomain.getRecordIDType();
+				else
+					target = dataDomain.getDimensionIDType();
+
+				Collection<ExternalScore> scores = new ExternalScoreParser(spec, target).call();
+
+				final Scores scoreManager = Scores.get();
+
+				IScore last = null;
+				for (ExternalScore score : scores) {
+					last = scoreManager.addPersistentScoreIfAbsent(score);
+				}
+				if (last != null) // add the last newly created one to the list
+					triggerEvent(new AddScoreColumnEvent(last, scoreQueryUI));
+			}
+		});
 	}
 
 	/**
 	 * @return
 	 */
 	public ScoreQueryUI getScoreQueryUI() {
-		return scoringTable;
+		return scoreQueryUI;
 	}
+
 
 }

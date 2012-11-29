@@ -543,7 +543,7 @@ public class LoadDataSetPageMediator {
 		page.columnOfRowIDSpinner.setMaximum(totalNumberOfColumns);
 		page.rowOfColumnIDSpinner.setMaximum(totalNumberOfRows);
 		page.numHeaderRowsSpinner.setMaximum(totalNumberOfRows);
-		page.previewTable.setTotalNumberOfColumns(totalNumberOfColumns);
+		page.previewTable.updateVisibleColumns(totalNumberOfColumns);
 		page.parentComposite.pack(true);
 		page.parentComposite.layout(true);
 	}

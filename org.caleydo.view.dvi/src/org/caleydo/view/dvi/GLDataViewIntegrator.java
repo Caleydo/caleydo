@@ -58,10 +58,7 @@ import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.io.DataLoader;
-import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.GroupingParseSpecification;
-import org.caleydo.core.io.gui.dataimport.ImportGroupingDialog;
+import org.caleydo.core.io.gui.dataimport.ImportGroupingCommand;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
@@ -118,7 +115,6 @@ import org.caleydo.view.dvi.node.MultiTablePerspectiveViewNode;
 import org.caleydo.view.dvi.node.NodeCreator;
 import org.caleydo.view.dvi.node.ViewNode;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
@@ -1152,42 +1148,7 @@ public class GLDataViewIntegrator
 	 *            grouped.
 	 */
 	public void loadGrouping(final ATableBasedDataDomain dataDomain, final IDCategory idCategory) {
-		parentComposite.getDisplay().asyncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				ImportGroupingDialog dialog = new ImportGroupingDialog(new Shell(), idCategory);
-				// dialog.setRowIDCategory(idCategory);
-				int status = dialog.open();
-
-				if (status == Dialog.OK) {
-					GroupingParseSpecification groupingParseSpecification = dialog.getGroupingParseSpecification();
-					DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
-					if (dataDomain.getRecordIDCategory() == idCategory) {
-						if (dataDomain.isColumnDimension()) {
-							dataSetDescription.addRowGroupingSpecification(groupingParseSpecification);
-						}
-						else {
-							dataSetDescription.addColumnGroupingSpecification(groupingParseSpecification);
-						}
-					}
-					else {
-						if (dataDomain.isColumnDimension()) {
-							dataSetDescription.addColumnGroupingSpecification(groupingParseSpecification);
-						}
-						else {
-							dataSetDescription.addRowGroupingSpecification(groupingParseSpecification);
-						}
-					}
-
-					DataLoader.loadGrouping(dataDomain, groupingParseSpecification);
-
-					// DataLoader.loadGroupings(dataDomain,
-					// groupingParseSpecification);
-					// What now?
-				}
-			}
-		});
+		parentComposite.getDisplay().asyncExec(new ImportGroupingCommand(idCategory, dataDomain));
 	}
 
 	/**

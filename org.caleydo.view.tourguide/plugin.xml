@@ -71,4 +71,10 @@
          </view>
       </perspectiveExtension>
    </extension>
+   <extension
+         point="org.caleydo.serialize.addon">
+      <addon
+            class="org.caleydo.view.tourguide.data.serialize.TourGuideSerializationAddon">
+      </addon>
+   </extension>
 </plugin>

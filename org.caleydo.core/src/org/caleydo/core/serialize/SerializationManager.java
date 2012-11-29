@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -27,15 +27,19 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.manager.BasicInformation;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.RegistryFactory;
 
 /**
  * Central access point for xml-serialization related tasks.
- * 
+ *
  * @author Werner Puff
  * @author Alexander Lex
  * @author Marc Streit
  */
 public class SerializationManager {
+	private static final String EXTENSION_POINT = "org.caleydo.serialize.addon";
 
 	private static volatile SerializationManager instance = null;
 
@@ -47,7 +51,20 @@ public class SerializationManager {
 
 	private ArrayList<Class<?>> serializableTypes;
 
+	private Collection<ISerializationAddon> addons;
+
 	private SerializationManager() {
+		addons = new ArrayList<>();
+		try {
+			for (IConfigurationElement elem : RegistryFactory.getRegistry()
+					.getConfigurationElementsFor(EXTENSION_POINT)) {
+				final Object o = elem.createExecutableExtension("class");
+				if (o instanceof ISerializationAddon)
+					addons.add((ISerializationAddon) o);
+			}
+		} catch (CoreException ex) {
+			System.err.println(ex.getMessage());
+		}
 		try {
 			Collection<Class<? extends AEvent>> eventTypes = getSerializeableEventTypes();
 			Class<?>[] classes = new Class<?>[eventTypes.size()];
@@ -59,6 +76,8 @@ public class SerializationManager {
 			serializableTypes.add(DataDomainSerializationData.class);
 			serializableTypes.add(DataDomainList.class);
 			serializableTypes.add(BasicInformation.class);
+			for (ISerializationAddon addon : addons)
+				serializableTypes.addAll(addon.getJAXBContextClasses());
 
 			createNewProjectContext();
 		} catch (JAXBException ex) {
@@ -88,7 +107,7 @@ public class SerializationManager {
 
 	/**
 	 * Gets the {@link JAXBContext} used to serialize events.
-	 * 
+	 *
 	 * @return events-serialization {@link JAXBContext}.
 	 */
 	public JAXBContext getEventContext() {
@@ -97,7 +116,7 @@ public class SerializationManager {
 
 	/**
 	 * Gets the {@link JAXBContext} used during load/save caleydo projects.
-	 * 
+	 *
 	 * @return caleydo-project serialization {@link JAXBContext}.
 	 */
 	public JAXBContext getProjectContext() {
@@ -113,7 +132,7 @@ public class SerializationManager {
 
 	/**
 	 * Generates and returns a {@link Collection} of all events to serialize
-	 * 
+	 *
 	 * @return {@link Collection} of event-classes to transmit over the network
 	 */
 	public static Collection<Class<? extends AEvent>> getSerializeableEventTypes() {
@@ -124,5 +143,12 @@ public class SerializationManager {
 		eventTypes.add(AEvent.class);
 
 		return eventTypes;
+	}
+
+	/**
+	 * @return the addons
+	 */
+	public Collection<ISerializationAddon> getAddons() {
+		return addons;
 	}
 }

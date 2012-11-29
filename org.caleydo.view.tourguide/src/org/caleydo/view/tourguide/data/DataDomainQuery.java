@@ -35,7 +35,6 @@ import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
-import org.caleydo.core.data.perspective.table.CategoricalTablePerspectiveCreator;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -63,8 +62,6 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 		Function<Collection<TablePerspective>, Multimap<TablePerspective, Group>> {
 	public static final String PROP_FILTER = "filter";
 	public static final String PROP_SELECTION = "selection";
-
-	private final static CategoricalTablePerspectiveCreator perspectiveCreator = new CategoricalTablePerspectiveCreator();
 
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
@@ -239,13 +236,8 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 		if (!selection.add(dataDomain))
 			return;
 		cache = null;
-		initDataDomain(dataDomain);
+		DataDomainOracle.initDataDomain(dataDomain);
 		listeners.fireIndexedPropertyChange(PROP_SELECTION, selection.size() - 1, null, dataDomain);
-	}
-
-	private static void initDataDomain(ATableBasedDataDomain dataDomain) {
-		if (DataDomainOracle.isCategoricalDataDomain(dataDomain))
-			perspectiveCreator.createAllTablePerspectives(dataDomain);
 	}
 
 	public void removeSelection(ATableBasedDataDomain dataDomain) {

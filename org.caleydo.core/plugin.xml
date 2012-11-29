@@ -10,8 +10,9 @@
    <extension-point id="org.caleydo.view.ViewCategory" name="ViewCategory" schema="schema/org.caleydo.view.ViewCategory.exsd"/>
    <extension-point id="org.caleydo.datadomain.DataDomainInitialization" name="DataDomainInitialization" schema="schema/org.caleydo.datadomain.DataDomainInitialization.exsd"/>
    <extension-point id="org.caleydo.view.DataSupport" name="DataSupport" schema="schema/org.caleydo.view.DataSupport.exsd"/>
+   <extension-point id="org.caleydo.serialize.addon" name="Serialization Addon" schema="schema/org.caleydo.serialize.addon.exsd"/>
    <extension-point id="org.caleydo.view.EmbeddedView" name="EmbeddedView" schema="schema/org.caleydo.view.EmbeddedView.exsd"/>
-
+	
    <extension
          id="application"
          point="org.eclipse.core.runtime.applications">

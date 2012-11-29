@@ -22,7 +22,6 @@ package org.caleydo.core.serialize;
 import static org.caleydo.core.manager.GeneralManager.CALEYDO_HOME_PATH;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -283,6 +282,10 @@ public final class ProjectManager {
 			}
 		}
 
+		for (ISerializationAddon addon : serializationManager.getAddons()) {
+			addon.deserialize(dirName, unmarshaller, serializationData);
+		}
+
 		return serializationData;
 	}
 
@@ -409,6 +412,10 @@ public final class ProjectManager {
 
 		Marshaller marshaller = projectContext.createMarshaller();
 
+		for (ISerializationAddon addon : serializationManager.getAddons()) {
+			addon.serialize(toSave, marshaller, dirName);
+		}
+
 		File dataDomainFile = new File(dirName + DATA_DOMAIN_FILE);
 		List<ADataDomain> dataDomains = new ArrayList<ADataDomain>();
 
@@ -432,7 +439,7 @@ public final class ProjectManager {
 				try {
 					FileOperations.writeInputStreamToFile(dataDomainFileName, GeneralManager.get().getResourceLoader()
 							.getResource(sourceFileName));
-				} catch (FileNotFoundException e) {
+				} catch (IllegalStateException e) {
 					e.printStackTrace();
 					throw new IllegalStateException("Error saving project file", e);
 				}

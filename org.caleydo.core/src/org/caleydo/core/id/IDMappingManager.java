@@ -110,7 +110,7 @@ public class IDMappingManager {
 	/**
 	 * HashMap that contains all mappings identified by their MappingType.
 	 */
-	private HashMap<MappingType, Map<?, ?>> hashMappingType2Map;
+	private Map<MappingType, Map<?, ?>> hashMappingType2Map;
 
 	/**
 	 * Graph of mappings. IDTypes are the vertices of the graph, edges represent

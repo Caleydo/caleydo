@@ -17,6 +17,6 @@ public class RemoveScoreColumnListener extends AEventListener<VendingMachine> {
 		if (handler.getScoreQueryUI() != event.getSender())
 			return;
 		RemoveScoreColumnEvent e = (RemoveScoreColumnEvent) event;
-		handler.onRemoveColumn(e.getScore());
+		handler.onRemoveColumn(e.getScore(), e.isRemove());
 	}
 }

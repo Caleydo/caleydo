@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.caleydo.core.io.gui.dataimport;
+package org.caleydo.view.tourguide.data.load.ui;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.List;
 import org.caleydo.core.gui.util.AHelpButtonDialog;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.io.GroupingParseSpecification;
+import org.caleydo.core.io.gui.dataimport.PreviewTable;
 import org.caleydo.core.io.gui.dataimport.PreviewTable.IPreviewCallback;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
@@ -19,13 +19,19 @@ import org.caleydo.core.io.gui.dataimport.widget.LoadFileWidget;
 import org.caleydo.core.io.gui.dataimport.widget.RowConfigWidget;
 import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.util.link.LinkHandler;
+import org.caleydo.view.tourguide.data.load.ScoreParseSpecification;
+import org.caleydo.view.tourguide.data.score.ECombinedOperator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -34,7 +40,14 @@ import org.eclipse.swt.widgets.Shell;
  * @author Christian Partl
  *
  */
-public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCallable<GroupingParseSpecification> {
+public class ImportExternalScoreDialog extends AHelpButtonDialog implements SafeCallable<ScoreParseSpecification> {
+	/**
+	 * The row id category for which groupings should be loaded.
+	 */
+	private final IDCategory rowIDCategory;
+
+	private final ScoreParseSpecification spec;
+
 	/**
 	 * Composite that is the parent of all gui elements of this this.
 	 */
@@ -51,50 +64,30 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 
 	private PreviewTable previewTable;
 
-	/**
-	 * The row id category for which groupings should be loaded.
-	 */
-	private final IDCategory rowIDCategory;
+	private Combo operator;
 
-	/**
-	 * The {@link GroupingParseSpecification} created using this {@link #dialog} .
-	 */
-	private final GroupingParseSpecification spec;
+	private Button normalize;
 
-	/**
-	 * @param parentShell
-	 */
-	public ImportGroupingDialog(Shell parentShell, IDCategory rowIDCategory) {
+	public ImportExternalScoreDialog(Shell parentShell, IDCategory rowIDCategory) {
 		this(parentShell, rowIDCategory, null);
 	}
 
-	public ImportGroupingDialog(Shell parentShell, IDCategory rowIDCategory,
-			GroupingParseSpecification existing) {
+	public ImportExternalScoreDialog(Shell parentShell, IDCategory rowIDCategory, ScoreParseSpecification existing) {
 		super(parentShell);
 		this.rowIDCategory = rowIDCategory;
-		spec = new GroupingParseSpecification();
 		if (existing == null) {
+			spec = new ScoreParseSpecification();
 			spec.setDelimiter("\t");
 			spec.setNumberOfHeaderLines(1);
 		} else {
-			this.spec.setColumnIDSpecification(spec
-					.getColumnIDSpecification());
-			this.spec.setColumnOfRowIds(spec.getColumnOfRowIds());
-			this.spec.setColumns(spec.getColumns());
-			this.spec.setContainsColumnIDs(spec.isContainsColumnIDs());
-			this.spec.setDataSourcePath(spec.getDataSourcePath());
-			this.spec.setDelimiter(spec.getDelimiter());
-			this.spec.setGroupingName(spec.getGroupingName());
-			this.spec.setNumberOfHeaderLines(spec.getNumberOfHeaderLines());
-			this.spec.setRowIDSpecification(spec.getRowIDSpecification());
-			this.spec.setRowOfColumnIDs(spec.getRowOfColumnIDs());
+			this.spec = existing.clone();
 		}
 	}
 
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("Import Grouping");
+		newShell.setText("Import External Score");
 	}
 
 	@Override
@@ -105,14 +98,14 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		GridLayout layout = new GridLayout(numGridCols, false);
 		parentComposite.setLayout(layout);
 
-		loadFile = new LoadFileWidget(parentComposite, "Open Grouping File", new ICallback<String>() {
+		loadFile = new LoadFileWidget(parentComposite, "Open Score File", new ICallback<String>() {
 			@Override
 			public void on(String data) {
 				onSelectFile(data);
 			}
 		});
 
-		label = new LabelWidget(parentComposite, "Grouping Name");
+		label = new LabelWidget(parentComposite, "External Score Name");
 
 		rowConfig = new RowConfigWidget(parentComposite, new IntegerCallback() {
 			@Override
@@ -125,7 +118,27 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 				previewTable.onColumnOfRowIDChanged(data);
 			}
 		});
-		rowConfig.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+		rowConfig.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+		Group extra = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		extra.setText("Extra Settings");
+		extra.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		extra.setLayout(new GridLayout(2, false));
+		Label operatorLabel = new Label(extra, SWT.TOP | SWT.LEFT);
+		operatorLabel.setText("Combine Operator");
+		operatorLabel.setLayoutData(new GridData(SWT.LEFT));
+		this.operator = new Combo(extra, SWT.DROP_DOWN | SWT.READ_ONLY);
+		this.operator.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		this.operator
+				.setToolTipText("The operator to use if multiple scores needs to be combined for a single element");
+		this.operator.setItems(ECombinedOperator.names());
+		this.operator.setText(ECombinedOperator.MEAN.name());
+
+		Label normalizeLabel = new Label(extra, SWT.TOP | SWT.LEFT);
+		normalizeLabel.setLayoutData(new GridData(SWT.LEFT));
+		this.normalize = new Button(extra, SWT.CHECK);
+		this.normalize.setText("Normalize Scores");
+		this.normalize.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		previewTable = new PreviewTable(parentComposite, this.spec, new IPreviewCallback() {
 			@Override
@@ -170,7 +183,7 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 	private void initWidgetsFromGroupParseSpecification() {
 		this.loadFile.setFileName(spec.getDataSourcePath());
 
-		this.label.setText(spec.getGroupingName());
+		this.label.setText(spec.getRankingName());
 		this.label.setEnabled(true);
 
 		this.rowConfig.setCategoryID(rowIDCategory);
@@ -178,6 +191,9 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 		this.rowConfig.setColumnOfRowIds(spec.getColumnOfRowIds() + 1);
 
 		this.previewTable.generatePreview(spec.getColumns());
+
+		this.operator.select(spec.getOperator().ordinal());
+		this.normalize.setSelection(spec.isNormalizeScores());
 
 		this.rowConfig.setIDType(IDType.getIDType(spec.getRowIDSpecification().getIdType()));
 	}
@@ -208,16 +224,18 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 	}
 
 	private void save() {
-		ArrayList<Integer> selectedColumns = new ArrayList<Integer>(this.previewTable.getSelectedColumns());
+		List<Integer> selectedColumns = new ArrayList<Integer>(this.previewTable.getSelectedColumns());
 		selectedColumns.remove(spec.getColumnOfRowIds());
 		spec.setColumns(selectedColumns);
 		spec.setRowIDSpecification(this.rowConfig.getIDSpecification());
 		spec.setContainsColumnIDs(false);
-		spec.setGroupingName(this.label.getText());
+		spec.setNormalizeScores(this.normalize.getSelection());
+		spec.setOperator(ECombinedOperator.valueOf(this.operator.getText()));
+		spec.setRankingName(this.label.getText());
 	}
 
 	@Override
-	public GroupingParseSpecification call() {
+	public ScoreParseSpecification call() {
 		if (this.open() == Window.OK)
 			return this.spec;
 		else
@@ -227,7 +245,6 @@ public class ImportGroupingDialog extends AHelpButtonDialog implements SafeCalla
 	public void onSelectFile(String inputFileName) {
 		this.label.setText(inputFileName.substring(inputFileName.lastIndexOf(File.separator) + 1,
 				inputFileName.lastIndexOf(".")));
-
 		spec.setDataSourcePath(inputFileName);
 
 		this.label.setEnabled(true);

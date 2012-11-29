@@ -17,64 +17,50 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data.score;
+package org.caleydo.view.tourguide.data.serialize;
 
-import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.caleydo.view.tourguide.data.score.ExternalScore;
+
+import com.google.common.collect.Lists;
 
 /**
  * @author Samuel Gratzl
  *
  */
-@XmlType
-public final class ExternalStratificationScore extends AStratificationScore {
-	private String label;
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class PersistentScores implements Iterable<ExternalScore> {
+	@XmlElement
+	private Collection<ExternalScore> scores = new ArrayList<>();
 
-	public ExternalStratificationScore() {
+	public PersistentScores() {
 
 	}
 
-	public ExternalStratificationScore(String label) {
-		this.label = label;
+	public PersistentScores(Iterable<ExternalScore> scores) {
+		this.scores = Lists.newArrayList(scores);
+	}
+
+	public Collection<ExternalScore> getScores() {
+		return scores;
 	}
 
 	@Override
-	public String getLabel() {
-		return label;
+	public Iterator<ExternalScore> iterator() {
+		return scores == null ? Collections.<ExternalScore> emptyIterator() : scores.iterator();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((label == null) ? 0 : label.hashCode());
-		return result;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ExternalStratificationScore other = (ExternalStratificationScore) obj;
-		if (label == null) {
-			if (other.label != null)
-				return false;
-		} else if (!label.equals(other.label))
-			return false;
-		return true;
+	public void add(ExternalScore score) {
+		this.scores.add(score);
 	}
 }

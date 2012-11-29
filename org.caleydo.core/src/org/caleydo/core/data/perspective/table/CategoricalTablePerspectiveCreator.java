@@ -1,29 +1,31 @@
 /**
- * 
+ *
  */
 package org.caleydo.core.data.perspective.table;
 
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
@@ -40,46 +42,44 @@ import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Helper class that generates table perspectives for categorical datasets.
- * 
+ *
  * @author Marc Streit
- * 
+ *
  */
 public class CategoricalTablePerspectiveCreator {
 
 	/**
-	 * List holding all data domains for which we already have created the
-	 * categorial data.
+	 * List holding all data domains for which we already have created the categorical data.
+	 *
+	 * use the label instead of the real object to avoid a reference for unloading
 	 */
-	private List<ATableBasedDataDomain> initializedDataDomains = new ArrayList<ATableBasedDataDomain>();
+	private Set<String> alreadyDone = new HashSet<>();
 
 	public void createAllTablePerspectives(ATableBasedDataDomain dataDomain) {
-
 		// Make sure that the categorical initialized is only done once.
-		if (initializedDataDomains.contains(dataDomain))
+		if (alreadyDone.contains(dataDomain.getDataDomainID()))
 			return;
+		alreadyDone.add(dataDomain.getDataDomainID());
 
-		initializedDataDomains.add(dataDomain);
 
 		String rowPerspectiveID = null;
 		IDType rowIDType = null;
+		Iterable<Integer> rowIDs;
 
 		if (dataDomain.isColumnDimension()) {
 			rowPerspectiveID = dataDomain.getDefaultTablePerspective().getRecordPerspective()
 					.getPerspectiveID();
 			rowIDType = dataDomain.getRecordIDType();
-
-			for (int rowID : dataDomain.getRecordVA(rowPerspectiveID)) {
-				createTablePerspeciveByRowID(dataDomain, rowID, rowIDType, true);
-			}
-		}
-		else {
+			rowIDs = dataDomain.getRecordVA(rowPerspectiveID);
+		} else {
 			rowPerspectiveID = dataDomain.getDefaultTablePerspective()
 					.getDimensionPerspective().getPerspectiveID();
 			rowIDType = dataDomain.getDimensionIDType();
+			rowIDs = dataDomain.getDimensionVA(rowPerspectiveID);
+		}
 
-			for (int rowID : dataDomain.getDimensionVA(rowPerspectiveID)) {
-				createTablePerspeciveByRowID(dataDomain, rowID, rowIDType, true);
-			}
+		for (int rowID : rowIDs) {
+			createTablePerspeciveByRowID(dataDomain, rowID, rowIDType, true);
 		}
 
 		DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);

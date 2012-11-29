@@ -167,6 +167,7 @@ Export-Package:
    org.eclipse.swt.widgets,
    org.caleydo.core.io,
    org.eclipse.jface.dialogs",
+ org.caleydo.core.io.gui.dataimport.widget,
  org.caleydo.core.io.parser.ascii;
   uses:="org.caleydo.core.data.datadomain,
    org.caleydo.core.gui,

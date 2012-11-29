@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.score;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -31,10 +30,6 @@ import org.caleydo.view.tourguide.data.ScoringElement;
  *
  */
 public class CombinedScore implements ICompositeScore {
-	public enum ECombinedOperator {
-		MAX, MIN, MEAN, MEDIAN, PRODUCT, GEOMETRIC_MEAN
-	}
-
 	private final String label;
 	private final ECombinedOperator operator;
 	private final Collection<IScore> children;
@@ -87,60 +82,9 @@ public class CombinedScore implements ICompositeScore {
 		int i = 0;
 		for (IScore child : children)
 			data[i++] = child.getScore(elem);
-		return combine(data);
+		return operator.combine(data);
 	}
 
-	/**
-	 * @param data
-	 * @return
-	 */
-	private float combine(float[] data) {
-		float c = 0;
-		switch (operator) {
-		case MAX:
-			if (data.length == 0)
-				return Float.NaN;
-			c = data[0];
-			for (int i = 1; i < data.length; ++i)
-				c = Math.max(c, data[i]);
-			return c;
-		case MIN:
-			if (data.length == 0)
-				return Float.NaN;
-			c = data[0];
-			for (int i = 1; i < data.length; ++i)
-				c = Math.min(c, data[i]);
-			return c;
-		case MEAN:
-			if (data.length == 0)
-				return 0;
-			c = 0;
-			for (int i = 0; i < data.length; ++i)
-				c += data[i];
-			return c / data.length;
-		case PRODUCT:
-			if (data.length == 0)
-				return 1;
-			c = 1;
-			for (int i = 0; i < data.length; ++i)
-				c *= data[i];
-			return c;
-		case GEOMETRIC_MEAN:
-			if (data.length == 0)
-				return 1;
-			c = 1;
-			for (int i = 0; i < data.length; ++i)
-				c *= data[i];
-			return (float) Math.pow(c, 1. / data.length);
-		case MEDIAN:
-			Arrays.sort(data);
-			int center = data.length / 2;
-			if (data.length % 2 == 0)
-				return 0.5f * (data[center] + data[center + 1]);
-			else
-				return data[center + 1];
-		}
-		throw new IllegalStateException("unknown operator: " + operator);
-	}
+
 
 }

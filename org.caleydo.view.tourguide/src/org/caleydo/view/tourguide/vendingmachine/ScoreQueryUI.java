@@ -303,8 +303,10 @@ public class ScoreQueryUI extends Column {
 		if (!Float.isNaN(value)) {
 			ElementLayout valueEL = createLabel(Formatter.formatNumber(value), COLX_SCORE_WIDTH);
 			valueEL.setGrabY(true);
-			valueEL.addBackgroundRenderer(new ScoreBarRenderer(value, strat != null ? strat.getDataDomain().getColor()
-					: new Color(0, 0, 1, 0.25f)));
+			// add a score bar only if it not a rank
+			if (header.getScoreID().getScoreType() != EScoreType.STANDALONE_RANK)
+				valueEL.addBackgroundRenderer(new ScoreBarRenderer(value, strat != null ? strat.getDataDomain()
+						.getColor() : new Color(0, 0, 1, 0.25f)));
 			row.add(valueEL);
 		} else {
 			row.add(createXSpacer(COLX_SCORE_WIDTH));
@@ -521,7 +523,9 @@ public class ScoreQueryUI extends Column {
 	protected void onShowColumnMenu(SortableColumnHeader sortableColumnHeader) {
 		ContextMenuCreator creator = view.getContextMenuCreator();
 		creator.addContextMenuItem(new GenericContextMenuItem("Remove", new RemoveScoreColumnEvent(sortableColumnHeader
-				.getScoreID(), this)));
+				.getScoreID(), false, this)));
+		creator.addContextMenuItem(new GenericContextMenuItem("Remove And Forget", new RemoveScoreColumnEvent(
+				sortableColumnHeader.getScoreID(), true, this)));
 	}
 
 	protected void onAddToStratomex(int row) {

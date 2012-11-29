@@ -19,41 +19,51 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.event;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.event.AEvent;
-import org.caleydo.view.tourguide.data.score.IScore;
-import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
+import org.caleydo.core.id.IDCategory;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddScoreColumnEvent extends AEvent {
-	private IScore score;
+public class ImportExternalScoreEvent extends AEvent {
+	private IDCategory category;
+	private ATableBasedDataDomain dataDomain;
 
-	public AddScoreColumnEvent() {
+	public ImportExternalScoreEvent() {
 
 	}
 
-	public AddScoreColumnEvent(ScoreQueryUI sender) {
-		this(null, sender);
+	public ImportExternalScoreEvent(IDCategory category, ATableBasedDataDomain dataDomain) {
+		super();
+		this.category = category;
+		this.dataDomain = dataDomain;
 	}
 
-	public AddScoreColumnEvent(IScore score, ScoreQueryUI sender) {
-		this.score = score;
-		this.setSender(sender);
-	}
-
-	public boolean isCreateNewScore() {
-		return score == null;
-	}
-
-	public IScore getScore() {
-		return score;
-	}
-
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.caleydo.core.event.AEvent#checkIntegrity()
+	 */
 	@Override
 	public boolean checkIntegrity() {
-		return true;
+		return dataDomain != null && category != null;
 	}
+
+	/**
+	 * @return the category, see {@link #category}
+	 */
+	public IDCategory getCategory() {
+		return category;
+	}
+
+	/**
+	 * @return the dataDomain, see {@link #dataDomain}
+	 */
+	public ATableBasedDataDomain getDataDomain() {
+		return dataDomain;
+	}
+
 }
 

@@ -3,7 +3,7 @@
 <schema targetNamespace="org.caleydo.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.caleydo.core" id="org.caleydo.view.DataSupport" name="DataSupport"/>
+         <meta.schema plugin="org.caleydo.core" id="org.caleydo.serialize.addon" name="Serialization Addon"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -17,9 +17,9 @@
          </appInfo>
       </annotation>
       <complexType>
-         <choice>
-            <element ref="DataSupport"/>
-         </choice>
+         <sequence>
+            <element ref="addon"/>
+         </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
                <documentation>
@@ -47,7 +47,7 @@
       </complexType>
    </element>
 
-   <element name="DataSupport">
+   <element name="addon">
       <complexType>
          <attribute name="class" type="string" use="required">
             <annotation>
@@ -55,15 +55,8 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.caleydo.core.data.datadomain.IDataSupportDefinition"/>
+                  <meta.attribute kind="java" basedOn=":org.caleydo.core.serialize.ISerializationAddon"/>
                </appInfo>
-            </annotation>
-         </attribute>
-         <attribute name="viewID" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
             </annotation>
          </attribute>
       </complexType>

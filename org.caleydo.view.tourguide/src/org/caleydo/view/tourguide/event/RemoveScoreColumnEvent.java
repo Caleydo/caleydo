@@ -21,6 +21,7 @@ package org.caleydo.view.tourguide.event;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.view.tourguide.data.score.IScore;
+import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
 
 /**
  * @author Samuel Gratzl
@@ -28,14 +29,23 @@ import org.caleydo.view.tourguide.data.score.IScore;
  */
 public class RemoveScoreColumnEvent extends AEvent {
 	private IScore score;
+	private boolean remove;
 
 	public RemoveScoreColumnEvent() {
 
 	}
 
-	public RemoveScoreColumnEvent(IScore score, Object sender) {
+	public RemoveScoreColumnEvent(IScore score, boolean removeFromSystem, ScoreQueryUI sender) {
 		this.score = score;
+		this.remove = removeFromSystem;
 		this.setSender(sender);
+	}
+
+	/**
+	 * @return the remove, see {@link #remove}
+	 */
+	public boolean isRemove() {
+		return remove;
 	}
 
 	public IScore getScore() {

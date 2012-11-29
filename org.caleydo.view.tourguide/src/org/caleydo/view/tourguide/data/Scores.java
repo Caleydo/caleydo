@@ -28,8 +28,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+import org.caleydo.view.tourguide.data.score.ExternalScore;
 import org.caleydo.view.tourguide.data.score.ICompositeScore;
 import org.caleydo.view.tourguide.data.score.IScore;
+import org.caleydo.view.tourguide.data.serialize.ISerializeableScore;
 
 import com.google.common.collect.Lists;
 
@@ -47,15 +49,22 @@ public final class Scores {
 	// use a weak list for caching but also removing if we no longer need it
 	private final Set<IScore> scores = Collections.newSetFromMap(new WeakHashMap<IScore, Boolean>());
 	// not weak for externals
-	private final Set<IScore> persistentScores = new HashSet<>();
+	private final Set<ExternalScore> persistentScores = new HashSet<>();
 
 	private Scores() {
-
+		// Map<Integer, Float> v = new HashMap<>();
+		// v.put(1, 2.f);
+		// v.put(2, 2.f);
+		// addPersistentScoreIfAbsent(new ExternalScore("test", v));
 	}
 
-	public synchronized <T extends IScore> T addPersistentScoreIfAbsent(T score) {
+	public synchronized ExternalScore addPersistentScoreIfAbsent(ExternalScore score) {
 		this.persistentScores.add(score);
 		return addIfAbsent(score);
+	}
+
+	public Iterable<ExternalScore> getPersistentScores() {
+		return persistentScores;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -69,6 +78,12 @@ public final class Scores {
 			}
 			return null;
 		}
+	}
+
+	public synchronized void remove(IScore score) {
+		scores.remove(score);
+		if (score instanceof ISerializeableScore)
+			persistentScores.remove(score);
 	}
 
 	public synchronized Collection<IScore> getScoreIDs() {
@@ -96,4 +111,5 @@ public final class Scores {
 		return result;
 
 	}
+
 }

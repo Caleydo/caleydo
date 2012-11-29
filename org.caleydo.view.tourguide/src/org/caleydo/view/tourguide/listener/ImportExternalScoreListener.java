@@ -17,43 +17,36 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.event;
+package org.caleydo.view.tourguide.listener;
 
 import org.caleydo.core.event.AEvent;
-import org.caleydo.view.tourguide.data.score.IScore;
-import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.view.tourguide.event.ImportExternalScoreEvent;
+import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddScoreColumnEvent extends AEvent {
-	private IScore score;
-
-	public AddScoreColumnEvent() {
-
+public class ImportExternalScoreListener extends AEventListener<VendingMachine> {
+	/**
+	 * @param vendingMachine
+	 */
+	public ImportExternalScoreListener(VendingMachine vendingMachine) {
+		this.setHandler(vendingMachine);
 	}
 
-	public AddScoreColumnEvent(ScoreQueryUI sender) {
-		this(null, sender);
-	}
-
-	public AddScoreColumnEvent(IScore score, ScoreQueryUI sender) {
-		this.score = score;
-		this.setSender(sender);
-	}
-
-	public boolean isCreateNewScore() {
-		return score == null;
-	}
-
-	public IScore getScore() {
-		return score;
-	}
-
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.caleydo.core.event.AEventListener#handleEvent(org.caleydo.core.event.AEvent)
+	 */
 	@Override
-	public boolean checkIntegrity() {
-		return true;
+	public void handleEvent(AEvent event) {
+		assert event instanceof ImportExternalScoreEvent;
+		ImportExternalScoreEvent e = (ImportExternalScoreEvent) event;
+
+		this.handler.onImportExternalScore(e.getDataDomain(), e.getCategory());
 	}
 }
 
