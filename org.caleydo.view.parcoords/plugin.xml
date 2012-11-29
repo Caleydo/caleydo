@@ -76,9 +76,10 @@
          <ParentView
                viewCreator="org.caleydo.view.parcoords.RemoteViewCreator1"
                viewID="org.caleydo.view.subgraph">
-            <EmbeddingID
-                  ID="org.caleydo.view.parcoords.EmbeddingID1">
-            </EmbeddingID>
+            <Embedding
+                  ID="test"
+                  viewCreator="org.caleydo.view.parcoords.ParCoordsRemoteViewCreator">
+            </Embedding>
          </ParentView>
       </EmbeddingInfo>
    </extension>
