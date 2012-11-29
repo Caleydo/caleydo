@@ -108,6 +108,10 @@ public class ScoreParseSpecification extends MatrixDefinition implements Cloneab
 		return rankingName;
 	}
 
+	public boolean isRankParsing() {
+		return columns == null || columns.isEmpty();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *

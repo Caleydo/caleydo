@@ -22,6 +22,7 @@ package org.caleydo.view.tourguide.data.score;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -33,11 +34,15 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.view.tourguide.data.ScoringElement;
 import org.caleydo.view.tourguide.data.serialize.IDTypeAdapter;
 import org.caleydo.view.tourguide.data.serialize.ISerializeableScore;
@@ -55,6 +60,8 @@ import com.google.common.primitives.Floats;
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class ExternalScore implements ISerializeableScore {
+	private static final Logger log = Logger.create(ExternalScore.class);
+
 	private String label;
 	@XmlJavaTypeAdapter(IDTypeAdapter.class)
 	private IDType idType;
@@ -112,23 +119,41 @@ public final class ExternalScore implements ISerializeableScore {
 	@Override
 	public float getScore(ScoringElement elem) {
 		TablePerspective strat = elem.getStratification();
-		VirtualArray<?,?,?> va;
+		Iterator<Integer> it;
 		IDType target;
 
-		if (isCompatible(strat.getDimensionPerspective().getIdType())) {
-			target = strat.getDimensionPerspective().getIdType();
-			va = strat.getDimensionPerspective().getVirtualArray();
-		} else if (isCompatible(strat.getRecordPerspective().getIdType())) {
-			target = strat.getRecordPerspective().getIdType();
-			va = strat.getRecordPerspective().getVirtualArray();
+		final RecordPerspective recordPerspective = strat.getRecordPerspective();
+		final DimensionPerspective dimensionPerspective = strat.getDimensionPerspective();
+
+
+		if (isCompatible(dimensionPerspective.getIdType())) {
+			target = dimensionPerspective.getIdType();
+			DimensionVirtualArray va = dimensionPerspective.getVirtualArray();
+			//if we have a group and the group reduces my virtual array use it
+			if (elem.getGroup() != null
+					&& elem.getGroup().getPerspectiveID().equals(dimensionPerspective.getPerspectiveID()))
+				it = elem.getGroup().iterator(va);
+			else
+				it = va.iterator();
+		} else if (isCompatible(recordPerspective.getIdType())) {
+			target = recordPerspective.getIdType();
+			RecordVirtualArray va = recordPerspective.getVirtualArray();
+			// if we have a group and the group reduces my virtual array use it
+			if (elem.getGroup() != null
+					&& elem.getGroup().getPerspectiveID().equals(recordPerspective.getPerspectiveID()))
+				it = elem.getGroup().iterator(va);
+			else
+				it = va.iterator();
 		} else {
-			//can't map to either dimension
+			// can't map to either dimension
 			return Float.NaN;
 		}
-		Collection<Float> scores = new ArrayList<>(va.size());
+
+		Collection<Float> scores = new ArrayList<>();
+
 		try {
-			for (Integer id : va) {
-				Optional<Integer> my = mapping.get(Pair.make(target, id));
+			while (it.hasNext()) {
+				Optional<Integer> my = mapping.get(Pair.make(target, it.next()));
 				if (!my.isPresent())
 					continue;
 				Float s = this.scores.get(my.get());
@@ -137,26 +162,13 @@ public final class ExternalScore implements ISerializeableScore {
 				scores.add(s);
 			}
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.warn("can't get mapping value", e);
 		}
 		if (scores.isEmpty())
 			return Float.NaN;
 		if (scores.size() == 1)
 			return scores.iterator().next().floatValue();
 		return operator.combine(Floats.toArray(scores));
-
-//		Float f = null;
-//
-//		// if (elem.getGroup() != null) { // group mode
-//		// elem.getDataDomain().getRecordIDCategory()
-//		// elem.getStratification().
-//		// } else { // stratification mode
-//		// TablePerspective p = elem.getStratification();
-//		//
-//		// Float f = scores.get(normalize(p.getRecordPerspective().getLabel()));
-//		// }
-//		return f == null ? Float.NaN : f.floatValue();
 	}
 
 	@Override

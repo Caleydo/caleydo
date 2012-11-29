@@ -108,11 +108,24 @@ public class ExternalScoreParser extends ATextParser implements SafeCallable<Col
 			log.info("No path for ranking specified");
 			return;
 		}
+
+		if (spec.isRankParsing())
+			parseRank(reader);
+		else
+			parseScore(reader);
+
+	}
+
+	/**
+	 * @param reader
+	 * @throws IOException
+	 */
+	private void parseScore(BufferedReader reader) throws IOException {
 		final List<Integer> columnsToRead = spec.getColumns();
 
 		List<String> labels = new ArrayList<>();
 
-		if (columnsToRead.size() <= 1) {
+		if (columnsToRead.size() == 1) {
 			labels.add(spec.getRankingName());// skip header lines
 			skipLines(reader, spec.getNumberOfHeaderLines());
 		} else if (spec.getRowOfColumnIDs() == null) { // no dedicated columns, generate one
@@ -129,11 +142,10 @@ public class ExternalScoreParser extends ATextParser implements SafeCallable<Col
 
 		// parse data
 		@SuppressWarnings("unchecked")
-		HashMap<Integer, Float>[] scores = new HashMap[Math.max(1, columnsToRead.size())];
+		HashMap<Integer, Float>[] scores = new HashMap[columnsToRead.size()];
 		for (int i = 0; i < scores.length; ++i)
 			scores[i] = new HashMap<>();
 
-		int lineCounter = 0;
 		String line;
 		while ((line = reader.readLine()) != null) {
 			// read ID
@@ -143,52 +155,102 @@ public class ExternalScoreParser extends ATextParser implements SafeCallable<Col
 			if (mappedID == null)
 				continue;
 			// read data
-			if (columnsToRead.isEmpty()) {
-				scores[0].put(mappedID, lineCounter + 1.f);
-			} else {
-				for (int i = 0; i < columnsToRead.size(); ++i) {
-					String score = columns[columnsToRead.get(i)];
-					scores[i].put(mappedID, parseFloat(score));
-				}
-			}
-			lineCounter++;
-
-			if (lineCounter % 100 == 0) {
-				swtGuiManager.setProgressBarPercentage((int) (progressBarFactor * lineCounter));
-			}
-		}
-
-		// convert to external scores
-		if (columnsToRead.size() == 0) { // ranking
-			ExternalScore s = new ExternalScore(spec.getRankingName(), this.targetIDType, spec.getOperator(), true,
-					normalizeScores(scores[0]));
-			this.result.add(s);
-		} else { // multiple scores
 			for (int i = 0; i < columnsToRead.size(); ++i) {
-				ExternalScore s = new ExternalScore(labels.get(i), this.targetIDType, spec.getOperator(), false,
-						normalizeScores(scores[i]));
-				this.result.add(s);
+				String score = columns[columnsToRead.get(i)];
+				Float s = parseFloat(score);
+				if (s == null)
+					continue;
+				scores[i].put(mappedID, s);
 			}
 		}
 
+		for (int i = 0; i < scores.length; ++i) {
+			Map<Integer,Float> s = scores[i];
+			if (s.isEmpty())
+				continue;
+			if (spec.isNormalizeScores())
+				s = normalizeScores(s);
+			this.result.add(new ExternalScore(labels.get(i), this.targetIDType, spec.getOperator(), false, s));
+		}
 	}
 
+	/**
+	 * @param hashMap
+	 */
 	private Map<Integer, Float> normalizeScores(Map<Integer, Float> map) {
-		if (!spec.isNormalizeScores() || map.size() <= 1)
+		if (map.size() <= 1)
 			return map;
+
+		// 1. find min/max
 		Iterator<Float> it = map.values().iterator();
-		// FIXME implement me
+		float min, max;
+
+		min = max = it.next();
+		while (it.hasNext()) {
+			float v = it.next();
+			if (v < min)
+				min = v;
+			else if (v > max)
+				max = v;
+		}
+		// 2. transform
+		for (Map.Entry<Integer, Float> entry : map.entrySet()) {
+			float v = entry.getValue();
+			entry.setValue((v - min) / (max - min));
+		}
 		return map;
+	}
+
+	/**
+	 * @param reader
+	 * @throws IOException
+	 */
+	private void parseRank(BufferedReader reader) throws IOException {
+		skipLines(reader, spec.getNumberOfHeaderLines());
+
+		List<Integer> ranks = new ArrayList<>(this.numberOfLinesInFile < 0 ? 100 : this.numberOfLinesInFile);
+
+		String line;
+		while ((line = reader.readLine()) != null) {
+			// read ID
+			String[] columns = line.split(spec.getDelimiter());
+
+			Integer mappedID = extractID(columns);
+			if (mappedID == null)
+				continue;
+			// read data
+			ranks.add(mappedID);
+		}
+
+		if (ranks.isEmpty())
+			return;
+
+
+		float delta;
+		if (spec.isNormalizeScores()) { // convert to score
+			delta = -1.f / (ranks.size() - 1);
+		} else { // use rank
+			delta = 1.f;
+		}
+		Map<Integer, Float> scores = new HashMap<>(ranks.size());
+
+		float act = 1.f;
+		for (Integer rank : ranks) {
+			scores.put(rank, act);
+			act += delta;
+		}
+		result.add(new ExternalScore(spec.getRankingName(), this.targetIDType, spec.getOperator(), !spec
+				.isNormalizeScores(), scores));
 	}
 
 	private Float parseFloat(String score) {
 		if (score == null || score.trim().isEmpty())
-			return Float.NaN;
+			return null;
 		try {
 			return Float.parseFloat(score);
 		} catch (NumberFormatException e) {
 			log.warn("can't parse: " + score);
-			return Float.NaN;
+			return null;
 		}
 	}
 
