@@ -52,7 +52,7 @@
    <extension
          point="org.caleydo.view.ViewCategory">
       <ViewCategory
-            isDataView="false"
+            isDataView="true"
             isReleaseView="false"
             viewID="org.caleydo.view.subgraph">
       </ViewCategory>
