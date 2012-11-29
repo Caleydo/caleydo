@@ -218,8 +218,11 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		clusterConfiguration.setClusterAlgorithmConfiguration(kMeansAlgo);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		dataSet.setDataProcessingDescription(dataProcessingDescription);
-		// here we turn on sampling to 1500
-		// dataProcessingDescription.setNrRowsInSample(1500);
+
+		if (loadSampledGenes) {
+			// here we turn on sampling to 1500
+			dataProcessingDescription.setNrRowsInSample(1500);
+		}
 
 		return dataSet;
 	}
