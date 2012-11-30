@@ -92,7 +92,7 @@ public class ScoreQueryUI extends Column {
 
 	private static final IColor SELECTED_COLOR = Colors.YELLOW;
 
-	private static final int COL0_RANK_WIDTH = 20;
+	private static final int COL0_RANK_WIDTH = 25;
 
 	private static final int COLX_SCORE_WIDTH = 75;
 	private static final int COL2_ADD_COLUMN_X_WIDTH = 16;
@@ -306,7 +306,7 @@ public class ScoreQueryUI extends Column {
 			// add a score bar only if it not a rank
 			if (header.getScoreID().getScoreType() != EScoreType.STANDALONE_RANK)
 				valueEL.addBackgroundRenderer(new ScoreBarRenderer(value, strat != null ? strat.getDataDomain()
-						.getColor() : new Color(0, 0, 1, 0.25f)));
+						.getColor() : new Color(0, 0, 0, 0.2f)));
 			row.add(valueEL);
 		} else {
 			row.add(createXSpacer(COLX_SCORE_WIDTH));
