@@ -34,10 +34,12 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
@@ -130,8 +132,7 @@ public final class ExternalScore implements ISerializeableScore {
 			target = dimensionPerspective.getIdType();
 			DimensionVirtualArray va = dimensionPerspective.getVirtualArray();
 			//if we have a group and the group reduces my virtual array use it
-			if (elem.getGroup() != null
-					&& elem.getGroup().getPerspectiveID().equals(dimensionPerspective.getPerspectiveID()))
+			if (isMyGroup(elem.getGroup(), dimensionPerspective))
 				it = elem.getGroup().iterator(va);
 			else
 				it = va.iterator();
@@ -139,8 +140,7 @@ public final class ExternalScore implements ISerializeableScore {
 			target = recordPerspective.getIdType();
 			RecordVirtualArray va = recordPerspective.getVirtualArray();
 			// if we have a group and the group reduces my virtual array use it
-			if (elem.getGroup() != null
-					&& elem.getGroup().getPerspectiveID().equals(recordPerspective.getPerspectiveID()))
+			if (isMyGroup(elem.getGroup(), recordPerspective))
 				it = elem.getGroup().iterator(va);
 			else
 				it = va.iterator();
@@ -169,6 +169,17 @@ public final class ExternalScore implements ISerializeableScore {
 		if (scores.size() == 1)
 			return scores.iterator().next().floatValue();
 		return operator.combine(Floats.toArray(scores));
+	}
+
+	/**
+	 * @param group
+	 * @param dimensionPerspective
+	 * @return
+	 */
+	private static boolean isMyGroup(Group group, AVariablePerspective<?, ?, ?, ?> perspective) {
+		if (group == null || group.getPerspectiveID() == null)
+			return false;
+		return group.getPerspectiveID().equals(perspective.getPerspectiveID());
 	}
 
 	@Override
