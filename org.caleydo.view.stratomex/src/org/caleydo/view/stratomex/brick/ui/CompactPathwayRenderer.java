@@ -99,7 +99,7 @@ public class CompactPathwayRenderer extends LayoutRenderer {
 	}
 	
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 

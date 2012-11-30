@@ -155,7 +155,7 @@ public class BrickSpacingRenderer
 	}
 	
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 

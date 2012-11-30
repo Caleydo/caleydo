@@ -72,7 +72,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 		// float sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(8);
 		float sideSpacing = 0;
 
-		float height = pixelGLConverter.getGLHeightForPixelHeight(15);
+		float textHeight = pixelGLConverter.getGLHeightForPixelHeight(15);
 
 		float backgroundZ = 0;
 
@@ -99,16 +99,16 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 		gl.glEnd();
 		gl.glPopName();
 
-		float width = textRenderer.getRequiredTextWidth(label, height);
+		float textWidth = textRenderer.getRequiredTextWidth(label, textHeight);
 
 		float textXOffset = sideSpacing;
 
-		if (width < x) {
-			textXOffset = (x - width) / 2;
+		if (textWidth < x) {
+			textXOffset = (x - textWidth) / 2;
 		}
 
-		textRenderer.renderTextInBounds(gl, label, textXOffset, (y - height) / 2, 0.1f,
-				x, height);
+		textRenderer.renderTextInBounds(gl, label, textXOffset, (y - textHeight) / 2, 0.1f,
+				x, textHeight);
 
 	}
 
@@ -169,7 +169,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 	}
 
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 

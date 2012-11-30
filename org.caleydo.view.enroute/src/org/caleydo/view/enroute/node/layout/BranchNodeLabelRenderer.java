@@ -84,7 +84,7 @@ public class BranchNodeLabelRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 

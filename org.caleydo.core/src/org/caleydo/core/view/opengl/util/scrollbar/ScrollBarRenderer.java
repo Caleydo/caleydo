@@ -215,7 +215,7 @@ public class ScrollBarRenderer
 
 
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 }

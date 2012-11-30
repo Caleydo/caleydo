@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.view.enroute.mappeddataview;
 
@@ -17,7 +17,7 @@ import org.caleydo.core.util.color.Color;
 
 /**
  * @author Christian
- * 
+ *
  */
 public class CategoricalContentPreviewRenderer
 	extends ContentRenderer {
@@ -81,7 +81,7 @@ public class CategoricalContentPreviewRenderer
 
 		float step = 0;
 		if (sumValues != 0)
-			step = 0.85f * y / (float) sumValues;
+			step = 0.85f * y / sumValues;
 
 		float currentPositionY = 0;
 
@@ -129,7 +129,7 @@ public class CategoricalContentPreviewRenderer
 	}
 
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 }

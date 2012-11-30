@@ -125,7 +125,7 @@ public class OverviewDetailBandRenderer extends LayoutRenderer {
 	}
 	
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 }

@@ -88,7 +88,7 @@
 
    <element name="Embedding">
       <complexType>
-         <attribute name="ID" type="string" use="required">
+         <attribute name="embeddingID" type="string" use="required">
             <annotation>
                <documentation>
                   ID that specifies for which case, circumstance, location etc. the view is embedded in the parent view. Valid IDs are specified by the individual parent views.
@@ -102,6 +102,16 @@
                </documentation>
                <appInfo>
                   <meta.attribute kind="java" basedOn=":org.caleydo.core.view.IRemoteViewCreator"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string">
+            <annotation>
+               <documentation>
+                  Image icon thatis used to identify the embedded view, e.g., in a button.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
                </appInfo>
             </annotation>
          </attribute>

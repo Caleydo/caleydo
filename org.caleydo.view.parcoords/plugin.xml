@@ -78,6 +78,8 @@
                viewID="org.caleydo.view.subgraph">
             <Embedding
                   ID="test"
+                  embeddingID="test"
+                  icon="resources/icons/parcoords.png"
                   viewCreator="org.caleydo.view.parcoords.ParCoordsRemoteViewCreator">
             </Embedding>
          </ParentView>

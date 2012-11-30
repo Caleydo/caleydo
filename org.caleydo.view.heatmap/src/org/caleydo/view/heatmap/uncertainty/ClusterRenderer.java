@@ -215,7 +215,7 @@ public class ClusterRenderer extends LayoutRenderer {
 	}
 	
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 }

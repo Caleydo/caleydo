@@ -242,7 +242,7 @@ public class ColorRenderer extends APickableLayoutRenderer {
 	}
 
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 }

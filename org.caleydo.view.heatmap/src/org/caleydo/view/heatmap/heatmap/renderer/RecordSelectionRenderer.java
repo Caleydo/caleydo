@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -41,7 +41,7 @@ public class RecordSelectionRenderer extends AHeatMapRenderer {
 		// content selection
 		Set<Integer> selectedSet = heatMap.getRecordSelectionManager().getElements(
 				selectionType);
-		float width = x;
+
 		float yPosition = y;
 		float xPosition = 0;
 
@@ -71,8 +71,8 @@ public class RecordSelectionRenderer extends AHeatMapRenderer {
 					gl.glBegin(GL2.GL_LINE_LOOP);
 					gl.glVertex3f(xPosition, yPosition, z);
 					gl.glVertex3f(xPosition, yPosition + fieldHeight, z);
-					gl.glVertex3f(xPosition + width, yPosition + fieldHeight, z);
-					gl.glVertex3f(xPosition + width, yPosition, z);
+					gl.glVertex3f(xPosition + x, yPosition + fieldHeight, z);
+					gl.glVertex3f(xPosition + x, yPosition, z);
 					gl.glEnd();
 					gl.glPopName();
 				}
@@ -87,9 +87,9 @@ public class RecordSelectionRenderer extends AHeatMapRenderer {
 		renderSelection(gl, SelectionType.MOUSE_OVER);
 		renderSelection(gl, SelectionType.SELECTION);
 	}
-	
+
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 }

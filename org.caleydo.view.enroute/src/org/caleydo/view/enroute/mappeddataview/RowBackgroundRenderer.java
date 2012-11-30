@@ -70,7 +70,7 @@ public class RowBackgroundRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return true;
 	}
 

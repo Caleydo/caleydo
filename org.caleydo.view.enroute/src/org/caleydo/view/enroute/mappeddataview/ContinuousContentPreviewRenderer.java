@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.view.enroute.mappeddataview;
 
@@ -15,9 +15,9 @@ import org.caleydo.core.util.color.Color;
 
 /**
  * Preview renderer for continuous content.
- * 
+ *
  * @author Christian
- * 
+ *
  */
 public class ContinuousContentPreviewRenderer extends ContentRenderer {
 
@@ -153,7 +153,7 @@ public class ContinuousContentPreviewRenderer extends ContentRenderer {
 	}
 
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 

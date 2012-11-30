@@ -215,7 +215,7 @@ public class ButtonRenderer extends APickableLayoutRenderer {
 	}
 
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		// TODO Auto-generated method stub
 		return false;
 	}

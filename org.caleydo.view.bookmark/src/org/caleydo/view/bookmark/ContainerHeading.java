@@ -67,7 +67,7 @@ public class ContainerHeading extends LayoutRenderer implements ILayoutedElement
 	}
 
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 }

@@ -48,7 +48,7 @@ public class PickingRenderer extends APickableLayoutRenderer {
 	}
 
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 }

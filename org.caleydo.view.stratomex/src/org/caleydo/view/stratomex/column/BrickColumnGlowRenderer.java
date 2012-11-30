@@ -113,7 +113,7 @@ public class BrickColumnGlowRenderer
 	}
 	
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 

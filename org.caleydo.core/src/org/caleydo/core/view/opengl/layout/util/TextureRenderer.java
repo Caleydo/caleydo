@@ -60,7 +60,7 @@ public class TextureRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return true;
 	}
 

@@ -267,9 +267,9 @@ public class MultiFormRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		setDefaultRendererActive();
-		return currentRenderer.permitsDisplayLists();
+		return currentRenderer.permitsWrappingDisplayLists();
 	}
 
 	@Override
@@ -326,4 +326,5 @@ public class MultiFormRenderer extends LayoutRenderer {
 	public void setLazyViewCreation(boolean isLazyViewCreation) {
 		this.isLazyViewCreation = isLazyViewCreation;
 	}
+
 }

@@ -51,4 +51,18 @@
           name="HistogramViewCreator"
           class="org.caleydo.view.histogram.creator.ViewCreator" />
    </extension>
+   <extension
+         point="org.caleydo.view.EmbeddedView">
+      <EmbeddingInfo
+            viewID="org.caleydo.view.histogram">
+         <ParentView
+               viewID="org.caleydo.view.subgraph">
+            <Embedding
+                  ID="test"
+                  embeddingID="test"
+                  viewCreator="org.caleydo.view.histogram.HistogramRemoteViewCreator">
+            </Embedding>
+         </ParentView>
+      </EmbeddingInfo>
+   </extension>
 </plugin>

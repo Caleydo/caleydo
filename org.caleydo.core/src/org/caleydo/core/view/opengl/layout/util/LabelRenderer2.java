@@ -86,15 +86,15 @@ public class LabelRenderer2 extends LayoutRenderer {
 
 		float[] padding = this.padding.resolve(layoutManager.getPixelGLConverter());
 
-		float height = y - padding[1] + padding[3];
-		float width = x - padding[0] - padding[2];
-		float textWidth = textRenderer.getRequiredTextWidthWithMax(label, height, width);
+		float trimmedHeight = y - padding[1] + padding[3];
+		float trimmedWidth = x - padding[0] - padding[2];
+		float textWidth = textRenderer.getRequiredTextWidthWithMax(label, trimmedHeight, trimmedWidth);
 
 		float yPosition = padding[3];
 		float xPosition;
 		switch (alignment) {
 		case CENTER:
-			xPosition = padding[0] + width * 0.5f - textWidth * 0.5f;
+			xPosition = padding[0] + trimmedWidth * 0.5f - textWidth * 0.5f;
 			break;
 		case RIGHT:
 			xPosition = x - padding[2] - textWidth;
@@ -103,11 +103,11 @@ public class LabelRenderer2 extends LayoutRenderer {
 			xPosition = padding[0];
 			break;
 		}
-		textRenderer.renderTextInBounds(gl, label, xPosition, yPosition, 0.1f, width, height);
+		textRenderer.renderTextInBounds(gl, label, xPosition, yPosition, 0.1f, trimmedWidth, trimmedHeight);
 	}
 
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return true;
 	}
 }

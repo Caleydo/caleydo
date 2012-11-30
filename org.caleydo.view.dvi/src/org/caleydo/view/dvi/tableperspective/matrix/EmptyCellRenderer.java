@@ -83,7 +83,7 @@ class EmptyCellRenderer extends ColorRenderer {
 	}
 	
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 

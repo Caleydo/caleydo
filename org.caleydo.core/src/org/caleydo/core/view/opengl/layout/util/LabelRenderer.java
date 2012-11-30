@@ -200,7 +200,7 @@ public class LabelRenderer
 	}
 
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return true;
 	}
 }

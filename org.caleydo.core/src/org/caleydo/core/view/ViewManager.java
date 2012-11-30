@@ -582,7 +582,7 @@ public class ViewManager extends AManager<IView> {
 						if (parent.getAttribute("viewID").equals(parentView.getViewType())) {
 							IConfigurationElement[] embeddings = parent.getChildren("Embedding");
 							for (IConfigurationElement embedding : embeddings) {
-								if (embedding.getAttribute("ID").equals(embeddingID)) {
+								if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
 									IRemoteViewCreator viewCreator;
 									try {
 										viewCreator = (IRemoteViewCreator) embedding
@@ -628,7 +628,7 @@ public class ViewManager extends AManager<IView> {
 					if (parent.getAttribute("viewID").equals(remoteRenderingViewID)) {
 						IConfigurationElement[] embeddings = parent.getChildren("Embedding");
 						for (IConfigurationElement embedding : embeddings) {
-							if (embedding.getAttribute("ID").equals(embeddingID)) {
+							if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
 								viewIDs.add(embeddingInfo.getAttribute("viewID"));
 							}
 						}

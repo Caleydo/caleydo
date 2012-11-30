@@ -191,7 +191,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 	}
 	
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 }

@@ -136,7 +136,7 @@ public class BorderedAreaRenderer extends APickableLayoutRenderer {
 	}
 
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 

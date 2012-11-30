@@ -335,7 +335,7 @@ public class BrickColumnSpacingRenderer
 	}
 
 	@Override
-	protected boolean permitsDisplayLists() {
+	protected boolean permitsWrappingDisplayLists() {
 		return false;
 	}
 
