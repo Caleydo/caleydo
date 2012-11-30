@@ -59,7 +59,7 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 	public void init(GL2 gl) {
 		displayListIndex = gl.glGenLists(1);
 		detailLevel = EDetailLevel.HIGH;
-		multiFormRenderer = new MultiFormRenderer(this, true);
+		multiFormRenderer = new MultiFormRenderer(this, false);
 
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 
