@@ -22,6 +22,7 @@ package org.caleydo.view.tourguide.listener;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
+import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
 import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
 
@@ -31,22 +32,19 @@ import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
  * @author Marc Streit
  *
  */
-public class AddScoreColumnListener extends AEventListener<VendingMachine> {
+public class ScoreColumnListener extends AEventListener<VendingMachine> {
 
-	public AddScoreColumnListener(VendingMachine m) {
+	public ScoreColumnListener(VendingMachine m) {
 		setHandler(m);
 	}
 	@Override
 	public void handleEvent(AEvent event) {
-		if (!(event instanceof AddScoreColumnEvent))
-			return;
 		if (handler.getScoreQueryUI() != event.getSender())
 			return;
-		AddScoreColumnEvent e = (AddScoreColumnEvent) event;
-		if (e.isCreateNewScore())
-			handler.onCreateNewScore();
-		else {
-			handler.onAddColumn(e.getScore());
+		if (event instanceof AddScoreColumnEvent) {
+			handler.onAddColumn(((AddScoreColumnEvent) event).getScore());
+		} else if (event instanceof CreateScoreColumnEvent) {
+			handler.onCreateNewScore(((CreateScoreColumnEvent) event).isCreateCollapsedScore());
 		}
 	}
 }

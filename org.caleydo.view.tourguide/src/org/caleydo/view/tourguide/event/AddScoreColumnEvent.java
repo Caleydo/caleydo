@@ -34,17 +34,9 @@ public class AddScoreColumnEvent extends AEvent {
 
 	}
 
-	public AddScoreColumnEvent(ScoreQueryUI sender) {
-		this(null, sender);
-	}
-
 	public AddScoreColumnEvent(IScore score, ScoreQueryUI sender) {
 		this.score = score;
 		this.setSender(sender);
-	}
-
-	public boolean isCreateNewScore() {
-		return score == null;
 	}
 
 	public IScore getScore() {
@@ -53,7 +45,7 @@ public class AddScoreColumnEvent extends AEvent {
 
 	@Override
 	public boolean checkIntegrity() {
-		return true;
+		return score != null;
 	}
 }
 

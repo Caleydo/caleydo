@@ -52,7 +52,7 @@ import org.caleydo.view.tourguide.data.score.IBatchComputedGroupScore;
 import org.caleydo.view.tourguide.data.score.IComputedGroupScore;
 import org.caleydo.view.tourguide.data.score.IComputedStratificationScore;
 import org.caleydo.view.tourguide.data.score.IScore;
-import org.caleydo.view.tourguide.data.score.ProductScore;
+import org.caleydo.view.tourguide.data.score.CollapseScore;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
@@ -154,21 +154,21 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	 */
 	@Override
 	public List<ScoringElement> call() {
-		final Pair<List<ProductScore>, Integer> pair = filterProductScores(Scores.flatten(selection));
-		final List<ProductScore> productScores = pair.getFirst();
+		final Pair<List<CollapseScore>, Integer> pair = filterCollapseScore(Scores.flatten(selection));
+		final List<CollapseScore> collapseScores = pair.getFirst();
 		final int factor = pair.getSecond();
 
 		Collection<TablePerspective> stratifications = query.call();
 
-		Map<IScore, IScore> selections = new HashMap<IScore, IScore>(productScores.size());
+		Map<IScore, IScore> selections = new HashMap<IScore, IScore>(collapseScores.size());
 		IRankedListBuilder builder;
 		if (hasGroupScore(selection)) { // we need to show strat,group pairs
 			Multimap<TablePerspective, Group> stratNGroups = query.apply(stratifications);
 			builder = RankedListBuilders.create(top, stratNGroups.size() * factor, filter, orderBy);
-			buildAll2(builder, 0, productScores, selections, stratNGroups);
+			buildAll2(builder, 0, collapseScores, selections, stratNGroups);
 		} else { // just stratifications
 			builder = RankedListBuilders.create(top, stratifications.size() * factor, filter, orderBy);
-			buildAll(builder, 0, productScores, selections, stratifications);
+			buildAll(builder, 0, collapseScores, selections, stratifications);
 		}
 		return builder.build();
 	}
@@ -183,17 +183,17 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	 * @param scores
 	 * @return
 	 */
-	private Pair<List<ProductScore>, Integer> filterProductScores(Collection<IScore> scores) {
+	private Pair<List<CollapseScore>, Integer> filterCollapseScore(Collection<IScore> scores) {
 		int factor = 1;
-		List<ProductScore> productScores = new ArrayList<>(scores.size());
+		List<CollapseScore> result = new ArrayList<>(scores.size());
 		for (IScore s : scores) {
-			if (s instanceof ProductScore) {
-				ProductScore p = (ProductScore) s;
+			if (s instanceof CollapseScore) {
+				CollapseScore p = (CollapseScore) s;
 				factor *= p.size();
-				productScores.add(p);
+				result.add(p);
 			}
 		}
-		return Pair.make(productScores, factor);
+		return Pair.make(result, factor);
 	}
 
 	private static final Predicate<IScore> isGroupScore = new Predicate<IScore>() {
@@ -203,7 +203,7 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 		}
 	};
 
-	private static void buildAll(IRankedListBuilder builder, int i, List<ProductScore> composites,
+	private static void buildAll(IRankedListBuilder builder, int i, List<CollapseScore> composites,
 			Map<IScore, IScore> selections,
 			Collection<TablePerspective> stratifications) {
 		if (i == composites.size()) {
@@ -221,7 +221,7 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 		}
 	}
 
-	private static void buildAll2(IRankedListBuilder builder, int i, List<ProductScore> composites,
+	private static void buildAll2(IRankedListBuilder builder, int i, List<CollapseScore> composites,
 			Map<IScore, IScore> selections, Multimap<TablePerspective, Group> stratNGroups) {
 		if (i == composites.size()) {
 			// last one trigger

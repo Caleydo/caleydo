@@ -29,8 +29,8 @@ import java.util.concurrent.ExecutionException;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -59,10 +59,10 @@ import com.google.common.primitives.Floats;
  * @author Samuel Gratzl
  *
  */
-@XmlType
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class ExternalScore implements ISerializeableScore {
-	private static final Logger log = Logger.create(ExternalScore.class);
+public final class ExternalIDTypeScore implements ISerializeableScore {
+	private static final Logger log = Logger.create(ExternalIDTypeScore.class);
 
 	private String label;
 	@XmlJavaTypeAdapter(IDTypeAdapter.class)
@@ -85,11 +85,11 @@ public final class ExternalScore implements ISerializeableScore {
 				}
 			});
 
-	public ExternalScore() {
+	public ExternalIDTypeScore() {
 
 	}
 
-	public ExternalScore(String label, IDType idType, ECombinedOperator operator, boolean isRank,
+	public ExternalIDTypeScore(String label, IDType idType, ECombinedOperator operator, boolean isRank,
 			Map<Integer, Float> scores) {
 		this();
 		this.idType = idType;
@@ -198,7 +198,7 @@ public final class ExternalScore implements ISerializeableScore {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ExternalScore other = (ExternalScore) obj;
+		ExternalIDTypeScore other = (ExternalIDTypeScore) obj;
 		if (label == null) {
 			if (other.label != null)
 				return false;

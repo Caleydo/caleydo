@@ -33,16 +33,16 @@ import org.caleydo.view.tourguide.data.ScoringElement;
  * @author Samuel Gratzl
  *
  */
-public class ProductScore implements ICompositeScore {
+public class CollapseScore implements ICompositeScore {
 	private final String label;
 	private final Collection<IScore> children;
 
-	public ProductScore(String label) {
+	public CollapseScore(String label) {
 		this.label = label;
 		this.children = new ArrayList<>();
 	}
 
-	public ProductScore(String label, Collection<IScore> children) {
+	public CollapseScore(String label, Collection<IScore> children) {
 		this.label = label;
 		this.children = new ArrayList<>();
 		for (IScore child : children)
@@ -50,8 +50,8 @@ public class ProductScore implements ICompositeScore {
 	}
 
 	public void add(IScore child) {
-		if (child instanceof ProductScore)
-			this.children.addAll(((ProductScore) child).getChildren());
+		if (child instanceof CollapseScore)
+			this.children.addAll(((CollapseScore) child).getChildren());
 		else
 			this.children.add(child);
 	}

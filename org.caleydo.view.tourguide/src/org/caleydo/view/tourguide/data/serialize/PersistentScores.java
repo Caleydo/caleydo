@@ -26,10 +26,9 @@ import java.util.Iterator;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.caleydo.view.tourguide.data.score.ExternalScore;
 
 import com.google.common.collect.Lists;
 
@@ -39,28 +38,29 @@ import com.google.common.collect.Lists;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class PersistentScores implements Iterable<ExternalScore> {
-	@XmlElement
-	private Collection<ExternalScore> scores = new ArrayList<>();
+public class PersistentScores implements Iterable<ISerializeableScore> {
+	@XmlElementWrapper
+	@XmlAnyElement
+	private Collection<ISerializeableScore> scores = new ArrayList<>();
 
 	public PersistentScores() {
 
 	}
 
-	public PersistentScores(Iterable<ExternalScore> scores) {
+	public PersistentScores(Iterable<ISerializeableScore> scores) {
 		this.scores = Lists.newArrayList(scores);
 	}
 
-	public Collection<ExternalScore> getScores() {
+	public Collection<ISerializeableScore> getScores() {
 		return scores;
 	}
 
 	@Override
-	public Iterator<ExternalScore> iterator() {
-		return scores == null ? Collections.<ExternalScore> emptyIterator() : scores.iterator();
+	public Iterator<ISerializeableScore> iterator() {
+		return scores == null ? Collections.<ISerializeableScore> emptyIterator() : scores.iterator();
 	}
 
-	public void add(ExternalScore score) {
+	public void add(ISerializeableScore score) {
 		this.scores.add(score);
 	}
 }

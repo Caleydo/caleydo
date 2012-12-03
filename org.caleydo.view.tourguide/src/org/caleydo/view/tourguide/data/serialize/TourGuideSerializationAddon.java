@@ -32,7 +32,7 @@ import org.caleydo.core.serialize.ISerializationAddon;
 import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.view.tourguide.data.Scores;
-import org.caleydo.view.tourguide.data.score.ExternalScore;
+import org.caleydo.view.tourguide.data.score.ExternalIDTypeScore;
 
 import com.google.common.collect.Iterables;
 
@@ -47,7 +47,7 @@ public class TourGuideSerializationAddon implements ISerializationAddon {
 
 	@Override
 	public Collection<Class<?>> getJAXBContextClasses() {
-		return Arrays.asList(PersistentScores.class, ExternalScore.class);
+		return Arrays.asList(ExternalIDTypeScore.class, PersistentScores.class);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class TourGuideSerializationAddon implements ISerializationAddon {
 
 	@Override
 	public void serialize(Collection<? extends IDataDomain> toSave, Marshaller marshaller, String dirName) {
-		Iterable<ExternalScore> toPersist = Scores.get().getPersistentScores();
+		Iterable<ISerializeableScore> toPersist = Scores.get().getPersistentScores();
 		if (Iterables.isEmpty(toPersist))
 			return;
 		File f = new File(dirName, PERSISTENT_SCORES_XML);
@@ -82,7 +82,7 @@ public class TourGuideSerializationAddon implements ISerializationAddon {
 		PersistentScores scores = (PersistentScores) data.getAddonData(ADDON_KEY);
 		if (scores == null)
 			return;
-		for (ExternalScore s : scores)
+		for (ISerializeableScore s : scores)
 			Scores.get().addPersistentScoreIfAbsent(s);
 	}
 

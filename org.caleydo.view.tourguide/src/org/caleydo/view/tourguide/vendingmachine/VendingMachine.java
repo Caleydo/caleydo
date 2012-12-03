@@ -59,24 +59,25 @@ import org.caleydo.view.tourguide.data.ESorting;
 import org.caleydo.view.tourguide.data.ScoreQuery;
 import org.caleydo.view.tourguide.data.Scores;
 import org.caleydo.view.tourguide.data.ScoringElement;
-import org.caleydo.view.tourguide.data.load.ExternalScoreParser;
+import org.caleydo.view.tourguide.data.load.ExternalIDTypeScoreParser;
 import org.caleydo.view.tourguide.data.load.ScoreParseSpecification;
 import org.caleydo.view.tourguide.data.load.ui.ImportExternalScoreDialog;
 import org.caleydo.view.tourguide.data.score.AGroupScore;
 import org.caleydo.view.tourguide.data.score.AdjustedRankScore;
+import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.EScoreType;
-import org.caleydo.view.tourguide.data.score.ExternalScore;
+import org.caleydo.view.tourguide.data.score.ExternalIDTypeScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.JaccardIndexScore;
-import org.caleydo.view.tourguide.data.score.ProductScore;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
+import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ImportExternalScoreEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
-import org.caleydo.view.tourguide.listener.AddScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ImportExternalScoreListener;
 import org.caleydo.view.tourguide.listener.RemoveScoreColumnListener;
+import org.caleydo.view.tourguide.listener.ScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreQueryReadyListener;
 import org.caleydo.view.tourguide.listener.ScoreTablePerspectiveListener;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateCompositeScoreDialog;
@@ -245,7 +246,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	public void registerEventListeners() {
 		super.registerEventListeners();
 		listeners.register(ScoreTablePerspectiveEvent.class, new ScoreTablePerspectiveListener().setHandler(this));
-		listeners.register(AddScoreColumnEvent.class, new AddScoreColumnListener(this));
+		listeners.register(AddScoreColumnEvent.class, new ScoreColumnListener(this));
+		listeners.register(CreateScoreColumnEvent.class, new ScoreColumnListener(this));
 		listeners.register(RemoveScoreColumnEvent.class, new RemoveScoreColumnListener(this));
 		listeners.register(ScoreQueryReadyEvent.class, new ScoreQueryReadyListener(this));
 		listeners.register(ImportExternalScoreEvent.class, new ImportExternalScoreListener(this));
@@ -274,7 +276,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 	public void createStratificationGroupScore(TablePerspective stratification, Iterable<Group> groups) {
 		Scores manager = Scores.get();
-		ProductScore composite = new ProductScore(stratification.getLabel());
+		CollapseScore composite = new CollapseScore(stratification.getLabel());
 		for (Group group : groups) {
 			composite.add(manager.addIfAbsent(new JaccardIndexScore(stratification, group)));
 		}
@@ -415,11 +417,12 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		recomputeScores();
 	}
 
-	public void onCreateNewScore() {
+	public void onCreateNewScore(final boolean createCollapsedScore) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				new CreateCompositeScoreDialog(new Shell(), Scores.get().getScoreIDs(), scoreQueryUI).open();
+				new CreateCompositeScoreDialog(new Shell(), Scores.get().getScoreIDs(), scoreQueryUI,
+						createCollapsedScore).open();
 			}
 		});
 	}
@@ -455,12 +458,12 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 				else
 					target = dataDomain.getDimensionIDType();
 
-				Collection<ExternalScore> scores = new ExternalScoreParser(spec, target).call();
+				Collection<ExternalIDTypeScore> scores = new ExternalIDTypeScoreParser(spec, target).call();
 
 				final Scores scoreManager = Scores.get();
 
 				IScore last = null;
-				for (ExternalScore score : scores) {
+				for (ExternalIDTypeScore score : scores) {
 					last = scoreManager.addPersistentScoreIfAbsent(score);
 				}
 				if (last != null) // add the last newly created one to the list

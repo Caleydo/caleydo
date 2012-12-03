@@ -5,11 +5,11 @@ import java.util.Collection;
 import java.util.List;
 
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.CombinedScore;
 import org.caleydo.view.tourguide.data.score.ECombinedOperator;
 import org.caleydo.view.tourguide.data.score.ICompositeScore;
 import org.caleydo.view.tourguide.data.score.IScore;
-import org.caleydo.view.tourguide.data.score.ProductScore;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -37,6 +37,7 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 	// the root element to populate the viewer with
 	private final List<IScore> scores;
 	private final ScoreQueryUI sender;
+	private final boolean createCollapseScore;
 
 	// the visual selection widget group
 	private Text labelUI;
@@ -47,20 +48,22 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 	private ControlDecoration scoresDeco;
 
 
-	public CreateCompositeScoreDialog(Shell shell, Collection<IScore> scores, ScoreQueryUI sender) {
+	public CreateCompositeScoreDialog(Shell shell, Collection<IScore> scores, ScoreQueryUI sender,
+			boolean createCollapseScore) {
 		super(shell);
 		this.scores = Lists.newArrayList(scores);
 		for (IScore s : sender.getQuery().getSelection()) {
 			if (!scores.contains(s))
 				this.scores.add(0, s);
 		}
+		this.createCollapseScore = createCollapseScore;
 		this.sender = sender;
 	}
 
 	@Override
 	public void create() {
 		super.create();
-		this.setTitle("Create a new Combined Score");
+		this.setTitle("Create a new " + (createCollapseScore ? "Collapsed" : "Combined") + " Score");
 		this.setBlockOnOpen(false);
 	}
 
@@ -75,7 +78,7 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 				.getImage();
 
 		this.labelUI = new Text(c, SWT.BORDER);
-		labelUI.setText("Combined");
+		labelUI.setText((createCollapseScore ? "Collapsed" : "Combined"));
 		this.labelUI.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		this.labelDeco = new ControlDecoration(this.labelUI, SWT.TOP | SWT.RIGHT);
 		labelDeco.setDescriptionText("A label is required");
@@ -88,23 +91,25 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 			}
 		});
 
-		new Label(c, SWT.NONE).setText("Operator: ");
-		this.operatorUI = new Combo(c, SWT.DROP_DOWN | SWT.BORDER);
-		this.operatorUI.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		String[] items = new String[ECombinedOperator.values().length];
-		for(int i = 0; i < items.length; ++i)
-			items[i] = ECombinedOperator.values()[i].name();
-		this.operatorUI.setItems(items);
-		this.operatorDeco = new ControlDecoration(this.operatorUI, SWT.TOP | SWT.RIGHT);
-		operatorDeco.setDescriptionText("An operator is required");
-		operatorDeco.setImage(image);
-		operatorDeco.show(); // Hide deco if not in focus
-		operatorUI.addListener(SWT.FocusOut, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				validateOperator();
-			}
-		});
+		if (!createCollapseScore) {
+			new Label(c, SWT.NONE).setText("Operator: ");
+			this.operatorUI = new Combo(c, SWT.DROP_DOWN | SWT.BORDER);
+			this.operatorUI.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+			String[] items = new String[ECombinedOperator.values().length];
+			for (int i = 0; i < items.length; ++i)
+				items[i] = ECombinedOperator.values()[i].name();
+			this.operatorUI.setItems(items);
+			this.operatorDeco = new ControlDecoration(this.operatorUI, SWT.TOP | SWT.RIGHT);
+			operatorDeco.setDescriptionText("An operator is required");
+			operatorDeco.setImage(image);
+			operatorDeco.show(); // Hide deco if not in focus
+			operatorUI.addListener(SWT.FocusOut, new Listener() {
+				@Override
+				public void handleEvent(Event event) {
+					validateOperator();
+				}
+			});
+		}
 
 		Label l = new Label(c, SWT.NONE);
 		l.setText("Scores: ");
@@ -119,8 +124,10 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 			}
 		});
 		scoresUI.setInput(scores);
-		for (IScore s : sender.getQuery().getSelection()) {
-			scoresUI.setChecked(s, true);
+		if (!createCollapseScore) {
+			for (IScore s : sender.getQuery().getSelection()) {
+				scoresUI.setChecked(s, true);
+			}
 		}
 		this.scoresDeco = new ControlDecoration(this.scoresUI.getControl(), SWT.TOP | SWT.RIGHT);
 		scoresDeco.setDescriptionText("Select at least two elements");
@@ -136,6 +143,8 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 	}
 
 	private boolean validateOperator() {
+		if (createCollapseScore)
+			return true;
 		if (operatorUI.getSelectionIndex() == -1) {
 			operatorDeco.showHoverText("An operator is required");
 			return false;
@@ -154,14 +163,17 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 		if (!validateLabel() || !validateOperator() || !validateScores())
 			return;
 		String label = labelUI.getText();
-		int index = operatorUI.getSelectionIndex();
-		ECombinedOperator op = ECombinedOperator.values()[index];
 		Collection<IScore> children = new ArrayList<>();
 		for (Object score : scoresUI.getCheckedElements()) {
 			children.add((IScore) score);
 		}
-		ICompositeScore result = op == ECombinedOperator.PRODUCT ? new ProductScore(label, children) : new CombinedScore(label,
-				op, children);
+		ICompositeScore result;
+		if (createCollapseScore) {
+			result = new CollapseScore(label, children);
+		} else {
+			ECombinedOperator op = ECombinedOperator.values()[operatorUI.getSelectionIndex()];
+			result = new CombinedScore(label, op, children);
+		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new AddScoreColumnEvent(result, sender));
 		super.okPressed();
 	}

@@ -17,16 +17,36 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data.serialize;
+package org.caleydo.view.tourguide.event;
 
-import org.caleydo.view.tourguide.data.score.IScore;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
 
 /**
- * marker interface for a score that is being serializable
- * 
  * @author Samuel Gratzl
- * 
+ *
  */
-public interface ISerializeableScore extends IScore {
+public class CreateScoreColumnEvent extends AEvent {
+	private boolean createCollapsedScore;
 
+	public CreateScoreColumnEvent() {
+
+	}
+
+	public CreateScoreColumnEvent(boolean createCollapsedScore, ScoreQueryUI sender) {
+		this.createCollapsedScore = createCollapsedScore;
+		this.setSender(sender);
+	}
+
+	/**
+	 * @return the createCollapsedScore, see {@link #createCollapsedScore}
+	 */
+	public boolean isCreateCollapsedScore() {
+		return createCollapsedScore;
+	}
+
+	@Override
+	public boolean checkIntegrity() {
+		return true;
+	}
 }

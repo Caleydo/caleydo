@@ -28,7 +28,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import org.caleydo.view.tourguide.data.score.ExternalScore;
 import org.caleydo.view.tourguide.data.score.ICompositeScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.serialize.ISerializeableScore;
@@ -49,7 +48,7 @@ public final class Scores {
 	// use a weak list for caching but also removing if we no longer need it
 	private final Set<IScore> scores = Collections.newSetFromMap(new WeakHashMap<IScore, Boolean>());
 	// not weak for externals
-	private final Set<ExternalScore> persistentScores = new HashSet<>();
+	private final Set<ISerializeableScore> persistentScores = new HashSet<>();
 
 	private Scores() {
 		// Map<Integer, Float> v = new HashMap<>();
@@ -58,12 +57,12 @@ public final class Scores {
 		// addPersistentScoreIfAbsent(new ExternalScore("test", v));
 	}
 
-	public synchronized ExternalScore addPersistentScoreIfAbsent(ExternalScore score) {
+	public synchronized ISerializeableScore addPersistentScoreIfAbsent(ISerializeableScore score) {
 		this.persistentScores.add(score);
 		return addIfAbsent(score);
 	}
 
-	public Iterable<ExternalScore> getPersistentScores() {
+	public Iterable<ISerializeableScore> getPersistentScores() {
 		return persistentScores;
 	}
 

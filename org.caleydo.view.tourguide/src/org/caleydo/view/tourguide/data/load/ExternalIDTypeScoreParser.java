@@ -38,10 +38,10 @@ import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.parser.ascii.ATextParser;
 import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.view.tourguide.data.score.ExternalScore;
+import org.caleydo.view.tourguide.data.score.ExternalIDTypeScore;
 
-public class ExternalScoreParser extends ATextParser implements SafeCallable<Collection<ExternalScore>> {
-	private static final Logger log = Logger.create(ExternalScoreParser.class);
+public class ExternalIDTypeScoreParser extends ATextParser implements SafeCallable<Collection<ExternalIDTypeScore>> {
+	private static final Logger log = Logger.create(ExternalIDTypeScoreParser.class);
 
 	private final ScoreParseSpecification spec;
 
@@ -50,9 +50,9 @@ public class ExternalScoreParser extends ATextParser implements SafeCallable<Col
 	private final IDMappingManager idMapper;
 	private final IDTypeParsingRules parsingRules;
 
-	private final Collection<ExternalScore> result = new ArrayList<>();
+	private final Collection<ExternalIDTypeScore> result = new ArrayList<>();
 
-	public ExternalScoreParser(ScoreParseSpecification spec, IDType targetIDType) {
+	public ExternalIDTypeScoreParser(ScoreParseSpecification spec, IDType targetIDType) {
 		super(spec.getDataSourcePath());
 		this.spec = spec;
 		this.targetIDType = targetIDType;
@@ -71,7 +71,7 @@ public class ExternalScoreParser extends ATextParser implements SafeCallable<Col
 	}
 
 	@Override
-	public Collection<ExternalScore> call() {
+	public Collection<ExternalIDTypeScore> call() {
 		if (!this.loadData())
 			return Collections.emptyList();
 		return result;
@@ -170,7 +170,7 @@ public class ExternalScoreParser extends ATextParser implements SafeCallable<Col
 				continue;
 			if (spec.isNormalizeScores())
 				s = normalizeScores(s);
-			this.result.add(new ExternalScore(labels.get(i), this.targetIDType, spec.getOperator(), false, s));
+			this.result.add(new ExternalIDTypeScore(labels.get(i), this.targetIDType, spec.getOperator(), false, s));
 		}
 	}
 
@@ -239,7 +239,7 @@ public class ExternalScoreParser extends ATextParser implements SafeCallable<Col
 			scores.put(rank, act);
 			act += delta;
 		}
-		result.add(new ExternalScore(spec.getRankingName(), this.targetIDType, spec.getOperator(), !spec
+		result.add(new ExternalIDTypeScore(spec.getRankingName(), this.targetIDType, spec.getOperator(), !spec
 				.isNormalizeScores(), scores));
 	}
 

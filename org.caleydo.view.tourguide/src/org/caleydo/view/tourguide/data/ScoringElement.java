@@ -25,8 +25,8 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.IScore;
-import org.caleydo.view.tourguide.data.score.ProductScore;
 
 /**
  * @author Samuel Gratzl
@@ -36,30 +36,30 @@ public final class ScoringElement implements ILabelProvider {
 	private final TablePerspective stratification;
 	private final Group group;
 	/**
-	 * product scores have different scores depending on the current scoring element, this map stores their selections
+	 * collapse scores have different scores depending on the current scoring element, this map stores their selections
 	 */
-	private final Map<IScore, IScore> productSelections;
+	private final Map<IScore, IScore> collapseSelections;
 
 	public ScoringElement(TablePerspective stratification) {
 		this(stratification, null, null);
 	}
 
-	public ScoringElement(TablePerspective stratification, Map<IScore, IScore> productSelections) {
-		this(stratification, null, productSelections);
+	public ScoringElement(TablePerspective stratification, Map<IScore, IScore> collapseSelections) {
+		this(stratification, null, collapseSelections);
 	}
 
 	public ScoringElement(TablePerspective stratification, Group group) {
 		this(stratification, group, null);
 	}
 
-	public ScoringElement(TablePerspective stratification, Group group, Map<IScore, IScore> productSelections) {
+	public ScoringElement(TablePerspective stratification, Group group, Map<IScore, IScore> collapseSelections) {
 		this.stratification = stratification;
 		this.group = group;
-		this.productSelections = productSelections;
+		this.collapseSelections = collapseSelections;
 	}
 
-	public IScore getSelected(ProductScore productScore) {
-		return productSelections == null ? null : productSelections.get(productScore);
+	public IScore getSelected(CollapseScore collapseScore) {
+		return collapseSelections == null ? null : collapseSelections.get(collapseScore);
 	}
 
 	@Override

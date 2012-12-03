@@ -65,10 +65,11 @@ import org.caleydo.view.tourguide.data.Scores;
 import org.caleydo.view.tourguide.data.ScoringElement;
 import org.caleydo.view.tourguide.data.score.AGroupScore;
 import org.caleydo.view.tourguide.data.score.AStratificationScore;
+import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.EScoreType;
 import org.caleydo.view.tourguide.data.score.IScore;
-import org.caleydo.view.tourguide.data.score.ProductScore;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
+import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.renderer.AnimatedTextureRenderer;
 import org.caleydo.view.tourguide.renderer.ScoreBarRenderer;
@@ -260,8 +261,8 @@ public class ScoreQueryUI extends Column {
 		row.setGrabY(true);
 		row.setXDynamic(true);
 		IScore underlyingScore = header.getScoreID();
-		if (underlyingScore instanceof ProductScore)
-			underlyingScore = elem.getSelected((ProductScore) underlyingScore);
+		if (underlyingScore instanceof CollapseScore)
+			underlyingScore = elem.getSelected((CollapseScore) underlyingScore);
 		TablePerspective strat = resolveStratification(underlyingScore);
 		Group group = resolveGroup(underlyingScore);
 
@@ -427,8 +428,8 @@ public class ScoreQueryUI extends Column {
 		if (row == null || col < 0)
 			return null;
 		IScore s = columns.get(col).getScoreID();
-		if (s instanceof ProductScore)
-			s = row.getSelected((ProductScore) s);
+		if (s instanceof CollapseScore)
+			s = row.getSelected((CollapseScore) s);
 		return s;
 	}
 
@@ -503,8 +504,10 @@ public class ScoreQueryUI extends Column {
 			return;
 		ContextMenuCreator creator = view.getContextMenuCreator();
 		if (scores.size() >= 2) {
-			creator.addContextMenuItem(new GenericContextMenuItem("Create Combined Score",
-					new AddScoreColumnEvent(this)));
+			creator.addContextMenuItem(new GenericContextMenuItem("Create Combined Score", new CreateScoreColumnEvent(
+					false, this)));
+			creator.addContextMenuItem(new GenericContextMenuItem("Create Collapsed Score", new CreateScoreColumnEvent(
+					true, this)));
 			creator.addContextMenuItem(new SeparatorMenuItem());
 		}
 
