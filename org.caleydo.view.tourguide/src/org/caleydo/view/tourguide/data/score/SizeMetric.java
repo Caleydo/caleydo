@@ -19,12 +19,45 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.score;
 
+import org.caleydo.view.tourguide.data.ScoringElement;
+
 /**
- * score type describing which kind of reference is used
+ * simple metric returning the number of records i.e. size of the stratification / cluster
  *
  * @author Samuel Gratzl
  *
  */
-public enum EScoreType {
-	STRATIFICATION_SCORE, GROUP_SCORE, STANDALONE_SCORE, STANDALONE_METRIC
+public class SizeMetric implements IScore {
+	@Override
+	public String getLabel() {
+		return "Size";
+	}
+
+	@Override
+	public String getProviderName() {
+		return null;
+	}
+
+	@Override
+	public EScoreType getScoreType() {
+		return EScoreType.STANDALONE_METRIC;
+	}
+
+	@Override
+	public float getScore(ScoringElement elem) {
+		if (elem.getGroup() == null) {
+			return elem.getStratification().getNrRecords();
+		} else
+			return elem.getGroup().getSize();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof SizeMetric;
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
 }

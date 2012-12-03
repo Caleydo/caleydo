@@ -21,8 +21,6 @@ package org.caleydo.view.tourguide.renderer;
 
 import static org.caleydo.core.view.opengl.util.GLPrimitives.fillRect;
 
-import java.awt.Color;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
@@ -30,6 +28,7 @@ import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
+import org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle;
 
 public class ScoreBarRenderer extends LayoutRenderer {
 	private final float score;
@@ -38,7 +37,7 @@ public class ScoreBarRenderer extends LayoutRenderer {
 
 	public ScoreBarRenderer(float score, IColor color) {
 		this.score = score;
-		this.color = color;
+		this.color = color == null ? TourGuideRenderStyle.DEFAULT_SCORE_COLOR : color;
 	}
 
 	@Override
@@ -50,7 +49,7 @@ public class ScoreBarRenderer extends LayoutRenderer {
 			gl.glColor4fv(color.getRGBA(), 0);
 			fillRect(gl, paddingX, paddingY, barWidth, y - 2 * paddingY);
 		}
-		gl.glColor4fv(Colors.rgba(Color.black), 0);
+		gl.glColor4fv(Colors.rgba(java.awt.Color.black), 0);
 		gl.glPushAttrib(GL.GL_LINE_WIDTH);
 		gl.glLineWidth(1);
 		GLPrimitives.drawRect(gl, 0, 0, x, y);

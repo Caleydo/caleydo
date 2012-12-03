@@ -25,10 +25,21 @@ import static org.caleydo.core.view.opengl.layout.ElementLayouts.createXSpacer;
 import static org.caleydo.core.view.opengl.layout.ElementLayouts.createYSeparator;
 import static org.caleydo.core.view.opengl.layout.ElementLayouts.createYSpacer;
 import static org.caleydo.core.view.opengl.layout.ElementLayouts.wrap;
+import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.COL0_RANK_WIDTH;
+import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.COL2_ADD_COLUMN_X_WIDTH;
+import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.COL_SPACING;
+import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.DATADOMAIN_TYPE_WIDTH;
+import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.GROUP_WIDTH;
+import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.LABEL_PADDING;
+import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.ROW_HEIGHT;
+import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.ROW_SPACING;
+import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.SELECTED_COLOR;
+import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.STRATIFACTION_WIDTH;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -39,22 +50,18 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.ConstantLabelProvider;
 import org.caleydo.core.util.base.ILabelProvider;
-import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.util.color.IColor;
-import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.Padding;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.core.view.opengl.layout.util.Renderers;
-import org.caleydo.core.view.opengl.layout.util.TextureRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.button.Button;
@@ -63,16 +70,12 @@ import org.caleydo.view.tourguide.data.ESorting;
 import org.caleydo.view.tourguide.data.ScoreQuery;
 import org.caleydo.view.tourguide.data.Scores;
 import org.caleydo.view.tourguide.data.ScoringElement;
-import org.caleydo.view.tourguide.data.score.AGroupScore;
-import org.caleydo.view.tourguide.data.score.AStratificationScore;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
-import org.caleydo.view.tourguide.data.score.EScoreType;
 import org.caleydo.view.tourguide.data.score.IScore;
+import org.caleydo.view.tourguide.data.score.SizeMetric;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
-import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.renderer.AnimatedTextureRenderer;
-import org.caleydo.view.tourguide.renderer.ScoreBarRenderer;
 
 import com.google.common.base.Function;
 
@@ -81,29 +84,11 @@ import com.google.common.base.Function;
  *
  */
 public class ScoreQueryUI extends Column {
-	private static final int COL_SPACING = 3;
-	private static final int ROW_SPACING = 5;
-	private static final int ROW_HEIGHT = 18;
-
-	private static final String SORT_COLUMN = "SORT_COLUMN";
 	private static final String SELECT_ROW = "SELECT_ROW";
-	private static final String SELECT_ROW_COLUMN = "SELECT_ROW_COLUMN";
 	private static final String ADD_TO_STRATOMEX = "ADD_TO_STATOMEX";
 	private static final String ADD_COLUMN = "ADD_COLUMN";
 
-	private static final IColor SELECTED_COLOR = Colors.YELLOW;
-
-	private static final int COL0_RANK_WIDTH = 25;
-
-	private static final int COLX_SCORE_WIDTH = 75;
-	private static final int COL2_ADD_COLUMN_X_WIDTH = 16;
-
-	public static final int DATADOMAIN_TYPE_WIDTH = 16;
-	public static final int STRATIFACTION_WIDTH = 120;
-	public static final int GROUP_WIDTH = 80;
-
-
-	private final List<SortableColumnHeader> columns = new ArrayList<>();
+	private final List<AScoreColumn> columns = new ArrayList<>();
 	private Row headerRow;
 
 	private ElementLayout colSpacing = createXSpacer(COL_SPACING);
@@ -178,7 +163,7 @@ public class ScoreQueryUI extends Column {
 		this.headerRow.add(colSpacing);
 		int i = 0;
 		for (IScore column : query.getSelection()) {
-			SortableColumnHeader col = new SortableColumnHeader(column, i++, query.getSorting(column));
+			AScoreColumn col = ScoreColumns.create(column, i++, query.getSorting(column), view);
 			this.headerRow.add(col).add(colSpacing);
 			this.columns.add(col);
 		}
@@ -202,10 +187,7 @@ public class ScoreQueryUI extends Column {
 	}
 
 	private ElementLayout createLabel(ILabelProvider label, int width) {
-		return wrap(
-				Renderers.createLabel(label, view.getTextRenderer())
-						.padding(new Padding(Padding.EMode.PIXEL, 2, 6, 2, 4))
-				.build(), width);
+		return wrap(Renderers.createLabel(label, view.getTextRenderer()).padding(LABEL_PADDING).build(), width);
 	}
 
 	private void invalidate() {
@@ -227,9 +209,9 @@ public class ScoreQueryUI extends Column {
 		tr.add(source);
 		tr.add(colSpacing);
 		int j = 0;
-		for (SortableColumnHeader header : columns) {
+		for (AScoreColumn header : columns) {
 			int id = i << 8 + j++;
-			tr.add(createScoreValue(view, elem, header, id)).add(colSpacing);
+			tr.add(header.createValue(elem, id)).add(colSpacing);
 		}
 		tr.add(createXSpacer(COL2_ADD_COLUMN_X_WIDTH)); // for plus button
 		return tr;
@@ -254,126 +236,6 @@ public class ScoreQueryUI extends Column {
 			elem.add(createLabel(stratification, STRATIFACTION_WIDTH + GROUP_WIDTH));
 		}
 		return elem;
-	}
-
-	private ElementLayout createScoreValue(AGLView view, ScoringElement elem, SortableColumnHeader header, int id) {
-		Row row = new Row();
-		row.setGrabY(true);
-		row.setXDynamic(true);
-		IScore underlyingScore = header.getScoreID();
-		if (underlyingScore instanceof CollapseScore)
-			underlyingScore = elem.getSelected((CollapseScore) underlyingScore);
-		TablePerspective strat = resolveStratification(underlyingScore);
-		Group group = resolveGroup(underlyingScore);
-
-		switch (header.type) {
-		case STRATIFICATION_SCORE:
-			if (strat != null) {
-				row.add(createColor(strat.getDataDomain().getColor(), DATADOMAIN_TYPE_WIDTH));
-				row.add(colSpacing);
-				row.add(createLabel(strat.getRecordPerspective(), STRATIFACTION_WIDTH));
-			} else {
-				row.add(createXSpacer(DATADOMAIN_TYPE_WIDTH + COL_SPACING + STRATIFACTION_WIDTH));
-			}
-			row.add(colSpacing);
-			break;
-		case GROUP_SCORE:
-			if (strat != null) {
-				row.add(createColor(strat.getDataDomain().getColor(), DATADOMAIN_TYPE_WIDTH));
-				// row.add(xspace3);
-				// row.add(createLabel(view, strat.getRecordPerspective(), ReferenceElements.STRATIFACTION_WIDTH));
-			} else {
-				// row.add(createXSpacer(ReferenceElements.DATADOMAIN_TYPE_WIDTH + 3
-				// + ReferenceElements.STRATIFACTION_WIDTH));
-			}
-			if (group != null) {
-				row.add(colSpacing);
-				row.add(createLabel(group, GROUP_WIDTH));
-			} else {
-				row.add(createXSpacer(COL_SPACING + GROUP_WIDTH));
-			}
-			row.add(colSpacing);
-			break;
-		default:
-			row.add(createXSpacer(20));
-			break;
-		}
-
-		// render the real value
-		float value = header.getScoreID().getScore(elem);
-		if (!Float.isNaN(value)) {
-			ElementLayout valueEL = createLabel(Formatter.formatNumber(value), COLX_SCORE_WIDTH);
-			valueEL.setGrabY(true);
-			// add a score bar only if it not a rank
-			if (header.getScoreID().getScoreType() != EScoreType.STANDALONE_RANK)
-				valueEL.addBackgroundRenderer(new ScoreBarRenderer(value, strat != null ? strat.getDataDomain()
-						.getColor() : new Color(0, 0, 0, 0.2f)));
-			row.add(valueEL);
-		} else {
-			row.add(createXSpacer(COLX_SCORE_WIDTH));
-		}
-		row.addBackgroundRenderer(new PickingRenderer(SELECT_ROW_COLUMN, id, this.view));
-		return row;
-	}
-
-	private static TablePerspective resolveStratification(IScore score) {
-		if (score instanceof AStratificationScore)
-			return ((AStratificationScore) score).getReference();
-		if (score instanceof AGroupScore)
-			return ((AGroupScore) score).getStratification();
-		return null;
-	}
-
-	private static Group resolveGroup(IScore score) {
-		if (score instanceof AGroupScore)
-			return ((AGroupScore) score).getGroup();
-		return null;
-	}
-
-	public static int getOptimalWidth(EScoreType type) {
-		switch (type) {
-		case GROUP_SCORE:
-			return DATADOMAIN_TYPE_WIDTH + COL_SPACING + GROUP_WIDTH;
-		case STRATIFICATION_SCORE:
-			return DATADOMAIN_TYPE_WIDTH + COL_SPACING + STRATIFACTION_WIDTH;
-		default:
-			return 20;
-		}
-	}
-
-	private class SortableColumnHeader extends Row {
-		private ESorting sort = ESorting.NONE;
-		private final IScore scoreID;
-		private final EScoreType type;
-
-		public SortableColumnHeader(final IScore scoreID, int i, ESorting sorting) {
-			this.scoreID = scoreID;
-			this.sort = sorting;
-			this.type = scoreID.getScoreType();
-			setBottomUp(false);
-			setPixelSizeX(getOptimalWidth(type) + COL_SPACING + COLX_SCORE_WIDTH);
-			ElementLayout label = createLabel(scoreID, -1);
-			label.setGrabY(true);
-			add(label);
-			add(wrap(new TextureRenderer(sort.getFileName(), view.getTextureManager()), 16));
-			addBackgroundRenderer(new PickingRenderer(SORT_COLUMN, i, view));
-		}
-
-		public IScore getScoreID() {
-			return scoreID;
-		}
-
-		public void setSort(ESorting sort) {
-			if (this.sort == sort)
-				return;
-			this.sort = sort;
-			get(1).setRenderer(new TextureRenderer(this.sort.getFileName(), view.getTextureManager()));
-		}
-
-		public ESorting nextSorting() {
-			setSort(this.sort.next());
-			return this.sort;
-		}
 	}
 
 	public void setSelected(int row, int col) {
@@ -427,7 +289,7 @@ public class ScoreQueryUI extends Column {
 	private IScore getSelectScoreID(ScoringElement row, int col) {
 		if (row == null || col < 0)
 			return null;
-		IScore s = columns.get(col).getScoreID();
+		IScore s = columns.get(col).getScore();
 		if (s instanceof CollapseScore)
 			s = row.getSelected((CollapseScore) s);
 		return s;
@@ -444,9 +306,9 @@ public class ScoreQueryUI extends Column {
 
 			@Override
 			public void rightClicked(Pick pick) {
-				onShowColumnMenu(columns.get(pick.getObjectID()));
+				columns.get(pick.getObjectID()).onShowColumnMenu(ScoreQueryUI.this);
 			}
-		}, SORT_COLUMN);
+		}, AScoreColumn.SORT_COLUMN);
 		view.addTypePickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
@@ -468,7 +330,7 @@ public class ScoreQueryUI extends Column {
 				int id = pick.getObjectID();
 				setSelected(id >> 8, id & 0xFF);
 			}
-		}, SELECT_ROW_COLUMN);
+		}, AScoreColumn.SELECT_ROW_COLUMN);
 		view.addTypePickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
@@ -478,10 +340,10 @@ public class ScoreQueryUI extends Column {
 		view.addTypePickingTooltipListener("Add this row to StratomeX", ADD_TO_STRATOMEX);
 	}
 
-	protected void onSortBy(SortableColumnHeader columnHeader) {
+	protected void onSortBy(AScoreColumn columnHeader) {
 		if (query == null)
 			return;
-		query.sortBy(columnHeader.getScoreID(), columnHeader.nextSorting());
+		query.sortBy(columnHeader.getScore(), columnHeader.nextSorting());
 	}
 
 	protected void onSelectionChanged(PropertyChangeEvent evt) {
@@ -491,8 +353,8 @@ public class ScoreQueryUI extends Column {
 	}
 
 	protected void onOrderByChanged(PropertyChangeEvent evt) {
-		for (SortableColumnHeader col : columns) {
-			ESorting s = query.getSorting(col.getScoreID());
+		for (AScoreColumn col : columns) {
+			ESorting s = query.getSorting(col.getScore());
 			if (s != null)
 				col.setSort(s);
 		}
@@ -500,8 +362,7 @@ public class ScoreQueryUI extends Column {
 
 	protected void onAddColumn() {
 		Collection<IScore> scores = Scores.get().getScoreIDs();
-		if (scores.isEmpty())
-			return;
+
 		ContextMenuCreator creator = view.getContextMenuCreator();
 		if (scores.size() >= 2) {
 			creator.addContextMenuItem(new GenericContextMenuItem("Create Combined Score", new CreateScoreColumnEvent(
@@ -511,9 +372,15 @@ public class ScoreQueryUI extends Column {
 			creator.addContextMenuItem(new SeparatorMenuItem());
 		}
 
-		Set<IScore> visible = new HashSet<>();
-		for (SortableColumnHeader c : this.columns)
-			visible.add(c.getScoreID());
+		Set<IScore> visible = getVisibleColumns();
+
+		for (IScore simple : Arrays.asList(new SizeMetric())) {
+			if (visible.contains(simple))
+				continue;
+			creator.addContextMenuItem(new GenericContextMenuItem("Add " + simple.getLabel() + " Metric",
+					new AddScoreColumnEvent(simple, this)));
+		}
+		creator.addContextMenuItem(new SeparatorMenuItem());
 
 		for (IScore s : scores) {
 			if (visible.contains(s))
@@ -523,12 +390,11 @@ public class ScoreQueryUI extends Column {
 		}
 	}
 
-	protected void onShowColumnMenu(SortableColumnHeader sortableColumnHeader) {
-		ContextMenuCreator creator = view.getContextMenuCreator();
-		creator.addContextMenuItem(new GenericContextMenuItem("Remove", new RemoveScoreColumnEvent(sortableColumnHeader
-				.getScoreID(), false, this)));
-		creator.addContextMenuItem(new GenericContextMenuItem("Remove And Forget", new RemoveScoreColumnEvent(
-				sortableColumnHeader.getScoreID(), true, this)));
+	private Set<IScore> getVisibleColumns() {
+		Set<IScore> visible = new HashSet<>();
+		for (AScoreColumn c : this.columns)
+			visible.add(c.getScore());
+		return visible;
 	}
 
 	protected void onAddToStratomex(int row) {

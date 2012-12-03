@@ -429,7 +429,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 	public void onAddColumn(IScore score) {
 		this.scoreQuery
-				.sortBy(score, score.getScoreType() == EScoreType.STANDALONE_RANK ? ESorting.ASC : ESorting.DESC);
+				.sortBy(score, score.getScoreType() == EScoreType.STANDALONE_METRIC ? ESorting.ASC : ESorting.DESC);
 		this.scoreQuery.addSelection(score);
 		recomputeScores();
 	}
