@@ -331,6 +331,7 @@ Export-Package:
    org.caleydo.core.view.opengl.layout,
    javax.media.opengl,
    org.caleydo.core.util.base",
+ org.caleydo.core.view.opengl.layout.util.multiform,
  org.caleydo.core.view.opengl.miniview;uses:="javax.media.opengl",
  org.caleydo.core.view.opengl.miniview.slider;
   uses:="org.caleydo.core.view.opengl.mouse,

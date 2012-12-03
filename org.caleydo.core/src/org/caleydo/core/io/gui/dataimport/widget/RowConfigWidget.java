@@ -30,8 +30,11 @@ import org.caleydo.core.util.collection.Pair;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -53,6 +56,7 @@ public class RowConfigWidget {
 	private final Spinner numHeaderRowsSpinner;
 	private final Combo rowIDCombo;
 	private final Label categoryIDLabel;
+	private final Button defineParsingButton;
 
 	public RowConfigWidget(Composite parent, final IntegerCallback onNumHeaderRowsChanged,
 			final IntegerCallback onColumnOfRowIDChanged) {
@@ -61,19 +65,29 @@ public class RowConfigWidget {
 		group.setLayout(new GridLayout(1, false));
 
 		Composite leftConfigGroupPart = new Composite(group, SWT.NONE);
-		leftConfigGroupPart.setLayout(new GridLayout(2, false));
+		leftConfigGroupPart.setLayout(new GridLayout(3, false));
 		leftConfigGroupPart.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		Label idCategoryLabel = new Label(leftConfigGroupPart, SWT.SHADOW_ETCHED_IN);
 		idCategoryLabel.setText("Row ID Class");
 		idCategoryLabel.setLayoutData(new GridData(SWT.LEFT));
 		this.categoryIDLabel = new Label(leftConfigGroupPart, SWT.NONE);
+		categoryIDLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
 		Label idTypeLabel = new Label(leftConfigGroupPart, SWT.SHADOW_ETCHED_IN);
 		idTypeLabel.setText("Row ID Type");
 		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
 		this.rowIDCombo = new Combo(leftConfigGroupPart, SWT.DROP_DOWN | SWT.READ_ONLY);
 		rowIDCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		this.defineParsingButton = new Button(leftConfigGroupPart, SWT.PUSH);
+		defineParsingButton.setText("Define Parsing");
+		defineParsingButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				onDefineParsing();
+			}
+		});
 
 		Label startParseAtLineLabel = new Label(leftConfigGroupPart, SWT.NONE);
 		startParseAtLineLabel.setText("Number of Header Rows");
@@ -83,7 +97,7 @@ public class RowConfigWidget {
 		numHeaderRowsSpinner.setMaximum(Integer.MAX_VALUE);
 		numHeaderRowsSpinner.setIncrement(1);
 		numHeaderRowsSpinner.setSelection(1);
-		GridData gridData = new GridData(SWT.LEFT, SWT.FILL, false, true);
+		GridData gridData = new GridData(SWT.LEFT, SWT.FILL, false, true, 2, 1);
 		gridData.widthHint = 70;
 		numHeaderRowsSpinner.setLayoutData(gridData);
 		numHeaderRowsSpinner.addModifyListener(new ModifyListener() {
@@ -102,7 +116,7 @@ public class RowConfigWidget {
 		columnOfRowIDSpinner.setMaximum(Integer.MAX_VALUE);
 		columnOfRowIDSpinner.setIncrement(1);
 		columnOfRowIDSpinner.setSelection(1);
-		gridData = new GridData(SWT.LEFT, SWT.FILL, false, true);
+		gridData = new GridData(SWT.LEFT, SWT.FILL, false, true, 2, 1);
 		gridData.widthHint = 70;
 		columnOfRowIDSpinner.setLayoutData(gridData);
 		columnOfRowIDSpinner.addModifyListener(new ModifyListener() {
@@ -111,6 +125,11 @@ public class RowConfigWidget {
 				onColumnOfRowIDChanged.on(columnOfRowIDSpinner.getSelection());
 			}
 		});
+	}
+
+	protected void onDefineParsing() {
+		IDType idType = getIDType();
+		idType.getIdTypeParsingRules();
 	}
 
 	public void setLayoutData(Object layoutData) {
@@ -122,8 +141,8 @@ public class RowConfigWidget {
 		this.columnOfRowIDSpinner.setEnabled(enabled);
 		this.numHeaderRowsSpinner.setEnabled(enabled);
 		this.rowIDCombo.setEnabled(enabled);
+		this.defineParsingButton.setEnabled(enabled);
 	}
-
 
 	public void setCategoryID(IDCategory rowIDCategory) {
 		this.categoryIDLabel.setText(rowIDCategory.getCategoryName());
@@ -221,7 +240,7 @@ public class RowConfigWidget {
 
 	/**
 	 * creates a new {@link IDSpecification} based on the selected {@link IDType}
-	 * 
+	 *
 	 * @return
 	 */
 	public IDSpecification getIDSpecification() {

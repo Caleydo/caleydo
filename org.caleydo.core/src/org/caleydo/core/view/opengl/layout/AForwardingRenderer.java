@@ -22,68 +22,89 @@ package org.caleydo.core.view.opengl.layout;
 import javax.media.opengl.GL2;
 
 /**
- * Forwarding renderer that can be used as base class for wrappers/decorators of {@link IRenderer}.
+ * Forwarding renderer that can be used as base class for wrappers/decorators of {@link LayoutRenderer}.
  *
  * @author Christian Partl
  *
  */
-public abstract class AForwardingRenderer implements IRenderer {
+public class AForwardingRenderer extends LayoutRenderer {
 
 	/**
 	 * Renderer that is forwarded to.
 	 */
-	protected IRenderer renderer;
+	protected LayoutRenderer currentRenderer;
 
 	public AForwardingRenderer() {
 	}
 
-	public AForwardingRenderer(IRenderer renderer) {
-		this.renderer = renderer;
+	public AForwardingRenderer(LayoutRenderer renderer) {
+		this.currentRenderer = renderer;
 	}
 
 	@Override
-	public void setLimits(float minX, float minY, float maxX, float maxY) {
-		renderer.setLimits(minX, minY, maxX, maxY);
+	public void setDisplayListDirty() {
+		super.setDisplayListDirty();
+		currentRenderer.setDisplayListDirty();
 	}
 
 	@Override
-	public boolean prepare() {
-		return renderer.prepare();
+	protected void setElementLayout(ElementLayout elementLayout) {
+		super.setElementLayout(elementLayout);
+		currentRenderer.setElementLayout(elementLayout);
 	}
 
 	@Override
-	public void render(GL2 gl) {
-		renderer.render(gl);
+	public void destroy(GL2 gl) {
+		super.destroy(gl);
+		currentRenderer.destroy(gl);
 	}
 
 	@Override
-	public boolean permitsWrappingDisplayLists() {
-		return renderer.permitsWrappingDisplayLists();
+	public void setLimits(float x, float y) {
+		super.setLimits(x, y);
+		currentRenderer.setLimits(x, y);
+	}
+
+	@Override
+	protected void prepare() {
+		currentRenderer.prepare();
+		if (currentRenderer.isDisplayListDirty())
+			super.setDisplayListDirty();
+	}
+
+	@Override
+	protected void renderContent(GL2 gl) {
+		currentRenderer.renderContent(gl);
+	}
+
+	@Override
+	protected boolean permitsWrappingDisplayLists() {
+		return currentRenderer.permitsWrappingDisplayLists();
 	}
 
 	@Override
 	public int getMinHeightPixels() {
-		return renderer.getMinHeightPixels();
+		return currentRenderer.getMinHeightPixels();
 	}
 
 	@Override
 	public int getMinWidthPixels() {
-		return renderer.getMinWidthPixels();
+		return currentRenderer.getMinWidthPixels();
 	}
 
 	/**
 	 * @param renderer
 	 *            setter, see {@link renderer}
 	 */
-	public void setRenderer(IRenderer renderer) {
-		this.renderer = renderer;
+	public void setRenderer(LayoutRenderer renderer) {
+		this.currentRenderer = renderer;
 	}
 
 	/**
-	 * @return the renderer, see {@link #renderer}
+	 * @return the renderer, see {@link #currentRenderer}
 	 */
-	public IRenderer getRenderer() {
-		return renderer;
+	public LayoutRenderer getRenderer() {
+		return currentRenderer;
 	}
 
 }

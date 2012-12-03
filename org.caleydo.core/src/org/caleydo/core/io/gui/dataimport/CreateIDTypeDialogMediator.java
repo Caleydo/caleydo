@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.core.io.gui.dataimport;
 
@@ -15,18 +15,16 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Mediator for {@link CreateIDTypeDialog}. This class is responsible for
- * setting the states of all widgets of the dialog and triggering actions
- * according to different events that occur in the dialog.
- * 
+ * Mediator for {@link CreateIDTypeDialog}. This class is responsible for setting the states of all widgets of the
+ * dialog and triggering actions according to different events that occur in the dialog.
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class CreateIDTypeDialogMediator {
 
 	/**
-	 * {@link IDCategory} created or used for the creation of the
-	 * {@link #idType} by the {@link #dialog}.
+	 * {@link IDCategory} created or used for the creation of the {@link #idType} by the {@link #dialog}.
 	 */
 	private IDCategory idCategory;
 
@@ -69,19 +67,9 @@ public class CreateIDTypeDialogMediator {
 		// }
 	}
 
-	public void useRegExButtonSelected() {
-		dialog.replacementRegExTextField.setEnabled(dialog.useRegExButton.getSelection());
-		dialog.replacementStringTextField
-				.setEnabled(dialog.useRegExButton.getSelection());
-		dialog.substringRegExTextField.setEnabled(dialog.useRegExButton.getSelection());
-		dialog.replacementRegExLabel.setEnabled(dialog.useRegExButton.getSelection());
-		dialog.replacementStringLabel.setEnabled(dialog.useRegExButton.getSelection());
-		dialog.substringRegExLabel.setEnabled(dialog.useRegExButton.getSelection());
-	}
-
 	/**
-	 * Initializes all widgets of the {@link #dialog}. This method should be
-	 * called after all widgets of the dialog were created.
+	 * Initializes all widgets of the {@link #dialog}. This method should be called after all widgets of the dialog were
+	 * created.
 	 */
 	public void guiCreated() {
 		if (!createIDCategory) {
@@ -94,14 +82,13 @@ public class CreateIDTypeDialogMediator {
 		dialog.dataTypeCombo.add("Number");
 		dialog.dataTypeCombo.add("Text");
 
-		dialog.useRegExButton.setSelection(false);
-		useRegExButtonSelected();
+		dialog.idParsingRulesWidget.setEnabled(false);
 	}
 
 	/**
-	 * Checks if all required fields of the {@link #dialog} are filled. If so
-	 * the {@link #idCategory} and {@link #idType} are created.
-	 * 
+	 * Checks if all required fields of the {@link #dialog} are filled. If so the {@link #idCategory} and
+	 * {@link #idType} are created.
+	 *
 	 * @return True, when all required fields were filled, false otherwise.
 	 */
 	public boolean okPressed() {
@@ -110,8 +97,7 @@ public class CreateIDTypeDialogMediator {
 
 		if (createIDCategory) {
 			if (categoryName.isEmpty()) {
-				MessageDialog.openError(new Shell(), "Invalid Class Name",
-						"Please specify a class name");
+				MessageDialog.openError(new Shell(), "Invalid Class Name", "Please specify a class name");
 				return false;
 			}
 
@@ -125,14 +111,12 @@ public class CreateIDTypeDialogMediator {
 		}
 
 		if (typeName.isEmpty()) {
-			MessageDialog.openError(new Shell(), "Invalid ID Type Name",
-					"Please specify an ID type name");
+			MessageDialog.openError(new Shell(), "Invalid ID Type Name", "Please specify an ID type name");
 			return false;
 		}
 
 		if (dialog.dataTypeCombo.getSelectionIndex() == -1) {
-			MessageDialog.openError(new Shell(), "Invalid Data Type",
-					"Please select a data type");
+			MessageDialog.openError(new Shell(), "Invalid Data Type", "Please select a data type");
 			return false;
 		}
 
@@ -158,22 +142,18 @@ public class CreateIDTypeDialogMediator {
 			idCategory = IDCategory.registerCategory(categoryName);
 
 			// Create primary IDType
-			IDType primaryIDType = IDType.registerType(categoryName + "_INT", idCategory,
-					EDataType.INT);
+			IDType primaryIDType = IDType.registerType(categoryName + "_INT", idCategory, EDataType.INT);
 			primaryIDType.setInternalType(true);
 			idCategory.setPrimaryMappingType(primaryIDType);
 		}
 
-		idType = IDType.registerType(typeName, idCategory,
-				dataTypeMap.get(dialog.dataTypeCombo.getSelectionIndex()));
+		idType = IDType.registerType(typeName, idCategory, dataTypeMap.get(dialog.dataTypeCombo.getSelectionIndex()));
 
-		if (dialog.useRegExButton.getSelection()) {
+		if (dialog.idParsingRulesWidget.isEnabled()) {
 			IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
-			idTypeParsingRules.setReplacementExpression(
-					dialog.replacementStringTextField.getText(),
-					dialog.replacementRegExTextField.getText());
-			idTypeParsingRules.setSubStringExpression(dialog.substringRegExTextField
-					.getText());
+			idTypeParsingRules.setReplacementExpression(dialog.idParsingRulesWidget.getReplacementString(),
+					dialog.idParsingRulesWidget.getReplacingExpression());
+			idTypeParsingRules.setSubStringExpression(dialog.idParsingRulesWidget.getSubStringExpression());
 			idTypeParsingRules.setDefault(true);
 			idType.setIdTypeParsingRules(idTypeParsingRules);
 		}

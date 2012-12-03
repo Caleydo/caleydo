@@ -167,7 +167,7 @@ public abstract class LayoutRenderer {
 
 	}
 
-	void setElementLayout(ElementLayout elementLayout) {
+	protected void setElementLayout(ElementLayout elementLayout) {
 		this.elementLayout = elementLayout;
 		layoutManager = elementLayout.getLayoutManager();
 		// pixelGLConverter = layoutManger.getPixelGLConverter();
@@ -196,6 +196,13 @@ public abstract class LayoutRenderer {
 	 */
 	public void setDisplayListDirty() {
 		this.isDisplayListDirty = true;
+	}
+
+	/**
+	 * @return the isDisplayListDirty, see {@link #isDisplayListDirty}
+	 */
+	public boolean isDisplayListDirty() {
+		return isDisplayListDirty;
 	}
 
 	@Override

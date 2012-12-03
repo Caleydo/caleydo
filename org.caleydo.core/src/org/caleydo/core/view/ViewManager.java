@@ -640,6 +640,38 @@ public class ViewManager extends AManager<IView> {
 		return viewIDs;
 	}
 
+	public String getRemotePlugInViewIcon(String viewID, String remoteRenderingViewID, String embeddingID) {
+
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint point = registry.getExtensionPoint("org.caleydo.view.EmbeddedView");
+		IExtension[] extensions = point.getExtensions();
+
+		for (IExtension extension : extensions) {
+			IConfigurationElement[] embeddingInfos = extension.getConfigurationElements();
+			for (IConfigurationElement embeddingInfo : embeddingInfos) {
+				if (embeddingInfo.getAttribute("viewID").equals(viewID)) {
+					IConfigurationElement[] parentViews = embeddingInfo.getChildren("ParentView");
+					for (IConfigurationElement parent : parentViews) {
+						if (parent.getAttribute("viewID").equals(remoteRenderingViewID)) {
+							IConfigurationElement[] embeddings = parent.getChildren("Embedding");
+							for (IConfigurationElement embedding : embeddings) {
+								if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
+									String iconPath = embedding.getAttribute("icon");
+									if (iconPath != null && iconPath == "") {
+										return null;
+									}
+									return iconPath;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
 	public synchronized void initializeUnserializedViews() {
 		if (!areSerializedViewsInitialized) {
 			areSerializedViewsInitialized = true;
