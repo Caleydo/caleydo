@@ -21,7 +21,7 @@ import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.core.view.opengl.layout.MultiFormRenderer;
+import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.eclipse.swt.widgets.Composite;
 
@@ -59,7 +59,7 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 	public void init(GL2 gl) {
 		displayListIndex = gl.glGenLists(1);
 		detailLevel = EDetailLevel.HIGH;
-		multiFormRenderer = new MultiFormRenderer(this, false);
+		multiFormRenderer = new MultiFormRenderer(this, true);
 
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 
@@ -183,9 +183,11 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 	private void createRemoteRenderedViews() {
 		if (remoteRenderedViewIDs == null) {
 			remoteRenderedViewIDs = ViewManager.get().getRemotePlugInViewIDs(VIEW_TYPE, "test");
+			int currentRendererID = -1;
 			for (String viewID : remoteRenderedViewIDs) {
-				multiFormRenderer.addView(viewID, "test", tablePerspectives);
+				currentRendererID = multiFormRenderer.addView(viewID, "test", tablePerspectives);
 			}
+			multiFormRenderer.removeRenderer(currentRendererID, true);
 			baseElementLayout.setRenderer(multiFormRenderer);
 			setDisplayListDirty();
 		}
