@@ -23,10 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.view.ViewManager;
+import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
 public class ContextMenuCreator {
-
+	private static final SeparatorMenuItem SEPARATOR = new SeparatorMenuItem();
 	private final List<AContextMenuItem> menuItems = new ArrayList<>();
 
 	/**
@@ -37,6 +38,10 @@ public class ContextMenuCreator {
 
 	public synchronized void clear() {
 		menuItems.clear();
+	}
+
+	public synchronized void addSeparator() {
+		menuItems.add(SEPARATOR);
 	}
 
 	public synchronized void addContextMenuItem(AContextMenuItem menuItem) {

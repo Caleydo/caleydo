@@ -22,12 +22,20 @@ package org.caleydo.core.view.contextmenu;
 import org.caleydo.core.event.AEvent;
 
 /**
+ * generic implementation of a context menu item
+ *
  * @author Samuel Gratzl
  *
  */
 public class GenericContextMenuItem extends AContextMenuItem {
 	public GenericContextMenuItem(String label, AEvent event) {
 		setLabel(label);
+		registerEvent(event);
+	}
+
+	public GenericContextMenuItem(String label, EContextMenuType type, AEvent event) {
+		setLabel(label);
+		setType(type);
 		registerEvent(event);
 	}
 }

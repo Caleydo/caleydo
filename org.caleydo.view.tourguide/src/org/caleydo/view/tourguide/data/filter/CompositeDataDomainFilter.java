@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.filter;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -29,7 +29,7 @@ import org.caleydo.core.util.collection.Pair;
  * @author Samuel Gratzl
  *
  */
-public class CompositeDataDomainFilter extends ArrayList<IDataDomainFilter> implements IDataDomainFilter {
+public class CompositeDataDomainFilter extends HashSet<IDataDomainFilter> implements IDataDomainFilter {
 	private static final long serialVersionUID = -8763101069844506294L;
 
 	@Override

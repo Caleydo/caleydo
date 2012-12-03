@@ -47,12 +47,13 @@ import org.caleydo.view.tourguide.data.compute.ComputeStratificationScore;
 import org.caleydo.view.tourguide.data.compute.ScoreComputer;
 import org.caleydo.view.tourguide.data.filter.CompositeScoreFilter;
 import org.caleydo.view.tourguide.data.filter.IDataDomainFilter;
+import org.caleydo.view.tourguide.data.filter.IScoreFilter;
+import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.EScoreType;
 import org.caleydo.view.tourguide.data.score.IBatchComputedGroupScore;
 import org.caleydo.view.tourguide.data.score.IComputedGroupScore;
 import org.caleydo.view.tourguide.data.score.IComputedStratificationScore;
 import org.caleydo.view.tourguide.data.score.IScore;
-import org.caleydo.view.tourguide.data.score.CollapseScore;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
@@ -68,6 +69,9 @@ import com.google.common.collect.Multimap;
 public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	public static final String PROP_ORDER_BY = "orderBy";
 	public static final String PROP_SELECTION = "selection";
+	public static final String PROP_TOP = "top";
+	public static final String PROP_FILTER = "filter";
+
 	// number of concurrent sortings
 	private static final int MAX_SORTING = 1;
 
@@ -245,6 +249,32 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	}
 
 	/**
+	 * @return the filter, see {@link #filter}
+	 */
+	public Collection<IScoreFilter> getFilter() {
+		return Collections.unmodifiableSet(filter);
+	}
+
+	public void setFilters(Collection<IScoreFilter> f) {
+		this.filter.clear();
+		this.filter.addAll(f);
+		listeners.firePropertyChange(PROP_FILTER, null, this.filter);
+	}
+
+	public void addFilter(IScoreFilter filter) {
+		if (this.filter.contains(filter))
+			return;
+		this.filter.add(filter);
+		listeners.fireIndexedPropertyChange(PROP_FILTER, this.filter.size() - 1, null, filter);
+	}
+
+	public void updatedFilter(IScoreFilter filter) {
+		if (!this.filter.contains(filter))
+			return;
+		listeners.fireIndexedPropertyChange(PROP_FILTER, -1, filter, filter);
+	}
+
+	/**
 	 * @param listener
 	 * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.beans.PropertyChangeListener)
 	 */
@@ -334,7 +364,29 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 		if (i < 0)
 			return;
 		selection.remove(score);
+
+		// remove all related filters
+		for (Iterator<IScoreFilter> it = this.filter.iterator(); it.hasNext();) {
+			if (it.next().getReference() == score)
+				it.remove();
+		}
+
 		listeners.fireIndexedPropertyChange(PROP_SELECTION, i, score, null);
+
+	}
+
+	public int getTop() {
+		return top;
+	}
+
+	/**
+	 * @param top
+	 *            the top to set
+	 */
+	public void setTop(int top) {
+		if (this.top == top)
+			return;
+		listeners.firePropertyChange(PROP_TOP, this.top, this.top = top);
 	}
 
 	protected void onRemovedFilter(IDataDomainFilter oldValue) {

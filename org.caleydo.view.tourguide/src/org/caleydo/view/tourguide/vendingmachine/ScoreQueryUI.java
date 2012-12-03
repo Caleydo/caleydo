@@ -54,7 +54,6 @@ import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
-import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -62,6 +61,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.core.view.opengl.layout.util.Renderers;
+import org.caleydo.core.view.opengl.layout.util.TextureRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.button.Button;
@@ -75,7 +75,11 @@ import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.SizeMetric;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
+import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.renderer.AnimatedTextureRenderer;
+import org.caleydo.view.tourguide.vendingmachine.ui.ScoreFilterDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 import com.google.common.base.Function;
 
@@ -87,6 +91,7 @@ public class ScoreQueryUI extends Column {
 	private static final String SELECT_ROW = "SELECT_ROW";
 	private static final String ADD_TO_STRATOMEX = "ADD_TO_STATOMEX";
 	private static final String ADD_COLUMN = "ADD_COLUMN";
+	private static final String EDIT_FILTER = "EDIT_FILTER";
 
 	private final List<AScoreColumn> columns = new ArrayList<>();
 	private Row headerRow;
@@ -156,7 +161,7 @@ public class ScoreQueryUI extends Column {
 		this.columns.clear();
 		this.headerRow.setPixelSizeY(ROW_HEIGHT);
 		this.headerRow.add(colSpacing);
-		this.headerRow.add(createXSpacer(COL0_RANK_WIDTH));
+		this.headerRow.add(createEditFilter());
 		this.headerRow.add(createXSpacer(16));
 		this.headerRow.add(createReference(Colors.TRANSPARENT, new ConstantLabelProvider("Stratification"),
 				new ConstantLabelProvider("Group")));
@@ -169,6 +174,19 @@ public class ScoreQueryUI extends Column {
 		}
 		headerRow.add(createButton(view, new Button(ADD_COLUMN, 1, EIconTextures.GROUPER_COLLAPSE_PLUS)));
 		invalidate();
+	}
+
+	private ElementLayout createEditFilter() {
+		Row row = new Row();
+		row.setPixelSizeX(COL0_RANK_WIDTH);
+		// row.setLeftToRight(false);
+		row.setGrabY(true);
+		ElementLayout b = wrap(
+				new TextureRenderer("resources/icons/view/tourguide/table_filter.png", view.getTextureManager()), 16);
+		b.setGrabY(true);
+		b.addBackgroundRenderer(new PickingRenderer(EDIT_FILTER, 1, view));
+		row.append(b);
+		return row;
 	}
 
 	public void setData(List<ScoringElement> data) {
@@ -286,6 +304,13 @@ public class ScoreQueryUI extends Column {
 		invalidate();
 	}
 
+	/**
+	 * @return the running, see {@link #running}
+	 */
+	public boolean isRunning() {
+		return running;
+	}
+
 	private IScore getSelectScoreID(ScoringElement row, int col) {
 		if (row == null || col < 0)
 			return null;
@@ -306,7 +331,7 @@ public class ScoreQueryUI extends Column {
 
 			@Override
 			public void rightClicked(Pick pick) {
-				columns.get(pick.getObjectID()).onShowColumnMenu(ScoreQueryUI.this);
+				onShowColumnMenu(columns.get(pick.getObjectID()));
 			}
 		}, AScoreColumn.SORT_COLUMN);
 		view.addTypePickingListener(new APickingListener() {
@@ -338,6 +363,13 @@ public class ScoreQueryUI extends Column {
 			}
 		}, ADD_TO_STRATOMEX);
 		view.addTypePickingTooltipListener("Add this row to StratomeX", ADD_TO_STRATOMEX);
+		view.addTypePickingListener(new APickingListener() {
+			@Override
+			public void clicked(Pick pick) {
+				onEditFilter();
+			}
+		}, EDIT_FILTER);
+		view.addTypePickingTooltipListener("Edit Score Filters", EDIT_FILTER);
 	}
 
 	protected void onSortBy(AScoreColumn columnHeader) {
@@ -360,6 +392,16 @@ public class ScoreQueryUI extends Column {
 		}
 	}
 
+	protected void onShowColumnMenu(AScoreColumn column) {
+		ContextMenuCreator creator = view.getContextMenuCreator();
+		creator.addContextMenuItem(new GenericContextMenuItem("Remove", new RemoveScoreColumnEvent(column.getScore(),
+				false, this)));
+		creator.addContextMenuItem(new GenericContextMenuItem("Remove And Forget", new RemoveScoreColumnEvent(column
+				.getScore(), true, this)));
+		creator.addSeparator();
+		// creator.addContextMenuItem(new GenericContextMenuItem("Edit Filter", new ))
+	}
+
 	protected void onAddColumn() {
 		Collection<IScore> scores = Scores.get().getScoreIDs();
 
@@ -369,7 +411,7 @@ public class ScoreQueryUI extends Column {
 					false, this)));
 			creator.addContextMenuItem(new GenericContextMenuItem("Create Collapsed Score", new CreateScoreColumnEvent(
 					true, this)));
-			creator.addContextMenuItem(new SeparatorMenuItem());
+			creator.addSeparator();
 		}
 
 		Set<IScore> visible = getVisibleColumns();
@@ -380,7 +422,7 @@ public class ScoreQueryUI extends Column {
 			creator.addContextMenuItem(new GenericContextMenuItem("Add " + simple.getLabel() + " Metric",
 					new AddScoreColumnEvent(simple, this)));
 		}
-		creator.addContextMenuItem(new SeparatorMenuItem());
+		creator.addSeparator();
 
 		for (IScore s : scores) {
 			if (visible.contains(s))
@@ -402,6 +444,16 @@ public class ScoreQueryUI extends Column {
 			setSelected(-1, -1);
 		addToStratomexCallback.apply(data.get(row));
 	}
+
+	protected void onEditFilter() {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				new ScoreFilterDialog(new Shell(), getVisibleColumns(), ScoreQueryUI.this).open();
+			}
+		});
+	}
+
 
 
 }

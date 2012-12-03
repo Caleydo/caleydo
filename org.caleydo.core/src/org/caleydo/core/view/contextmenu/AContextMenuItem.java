@@ -41,12 +41,53 @@ public abstract class AContextMenuItem {
 
 	private final List<AEvent> events = new ArrayList<>();
 
+	/**
+	 * advanced context menu types: radio and check
+	 */
+	private EContextMenuType type = EContextMenuType.NORMAL;
+	/**
+	 * state of an advanced context menu type
+	 */
+	private boolean state;
+
 	public void setLabel(String label) {
 		this.label = label;
 	}
 
 	public String getLabel() {
 		return label;
+	}
+
+	/**
+	 * @param type
+	 *            the type to set
+	 */
+	public AContextMenuItem setType(EContextMenuType type) {
+		this.type = type;
+		return this;
+	}
+
+	/**
+	 * @return the type, see {@link #type}
+	 */
+	public EContextMenuType getType() {
+		return type;
+	}
+
+	/**
+	 * @param state
+	 *            the state to set
+	 */
+	public AContextMenuItem setState(boolean state) {
+		this.state = state;
+		return this;
+	}
+
+	/**
+	 * @return the state, see {@link #state}
+	 */
+	public boolean isState() {
+		return state;
 	}
 
 	/**
@@ -80,5 +121,9 @@ public abstract class AContextMenuItem {
 	 */
 	public List<AContextMenuItem> getSubMenuItems() {
 		return subMenuItems;
+	}
+
+	public enum EContextMenuType {
+		NORMAL, RADIO, CHECK
 	}
 }

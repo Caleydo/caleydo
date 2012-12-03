@@ -87,16 +87,23 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 		listeners.fireIndexedPropertyChange(PROP_FILTER, this.filter.size() - 1, null, filter);
 	}
 
-	public void removeFilter(IDataDomainFilter filter) {
-		int i = this.filter.indexOf(filter);
-		if (i < 0)
+	public void updateFilter(IDataDomainFilter filter) {
+		if (!this.filter.contains(filter))
 			return;
-		this.filter.remove(i);
-		listeners.fireIndexedPropertyChange(PROP_FILTER, i, filter, null);
+		this.cache = null;
 	}
 
-	public List<IDataDomainFilter> getFilter() {
-		return Collections.unmodifiableList(filter);
+	public void removeFilter(IDataDomainFilter filter) {
+		if (!this.filter.contains(filter))
+			return;
+
+		this.filter.remove(filter);
+		this.cache = null;
+		listeners.fireIndexedPropertyChange(PROP_FILTER, this.filter.size(), filter, null);
+	}
+
+	public Collection<IDataDomainFilter> getFilter() {
+		return Collections.unmodifiableSet(filter);
 	}
 
 	@Override

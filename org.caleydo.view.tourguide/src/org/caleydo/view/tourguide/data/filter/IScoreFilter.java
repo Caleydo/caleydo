@@ -20,6 +20,7 @@
 package org.caleydo.view.tourguide.data.filter;
 
 import org.caleydo.view.tourguide.data.ScoringElement;
+import org.caleydo.view.tourguide.data.score.IScore;
 
 import com.google.common.base.Predicate;
 
@@ -28,5 +29,5 @@ import com.google.common.base.Predicate;
  *
  */
 public interface IScoreFilter extends Predicate<ScoringElement> {
-
+	public IScore getReference();
 }

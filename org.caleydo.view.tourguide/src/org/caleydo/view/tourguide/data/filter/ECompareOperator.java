@@ -19,28 +19,58 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.filter;
 
-import java.util.HashSet;
-
-import org.caleydo.view.tourguide.data.ScoringElement;
-import org.caleydo.view.tourguide.data.score.IScore;
+import org.caleydo.core.util.base.ILabelProvider;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class CompositeScoreFilter extends HashSet<IScoreFilter> implements IScoreFilter {
-	private static final long serialVersionUID = -8763101069844506294L;
+public enum ECompareOperator implements ILabelProvider {
+	IS_NOT_NA, GE, GT, LE, LT;
 
-	@Override
-	public IScore getReference() {
-		return null;
+	public boolean apply(float a, float b) {
+		switch(this) {
+		case IS_NOT_NA:
+			return !Float.isNaN(a);
+		case GE:
+			return !Float.isNaN(a) && a >= b;
+		case GT:
+			return !Float.isNaN(a) && a > b;
+		case LE:
+			return !Float.isNaN(a) && a <= b;
+		case LT:
+			return !Float.isNaN(a) && a < b;
+		}
+		throw new IllegalStateException("unknown compare operator " + this);
 	}
 
 	@Override
-	public boolean apply(ScoringElement elem) {
-		for (IScoreFilter child : this)
-			if (!child.apply(elem))
-				return false;
-		return true;
+	public String getLabel() {
+		switch (this) {
+		case IS_NOT_NA:
+			return "is not NA";
+		case GE:
+			return "Greater Equal (>=)";
+		case GT:
+			return "Greater Than (>)";
+		case LE:
+			return "Less Equal (<=)";
+		case LT:
+			return "Less Than (<)";
+		}
+		throw new IllegalStateException("unknown compare operator " + this);
+	}
+
+	@Override
+	public String getProviderName() {
+		return null;
+	}
+
+	public static String[] getLabels() {
+		ECompareOperator[] values = values();
+		String[] names = new String[values.length];
+		for (int i = 0; i < values.length; ++i)
+			names[i] = values[i].getLabel();
+		return names;
 	}
 }

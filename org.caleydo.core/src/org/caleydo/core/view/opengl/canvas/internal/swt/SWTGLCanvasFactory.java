@@ -20,95 +20,22 @@
 package org.caleydo.core.view.opengl.canvas.internal.swt;
 
 
-import java.util.List;
-
 import javax.media.opengl.GLCapabilitiesImmutable;
 
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
-import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 
 import com.jogamp.opengl.swt.GLCanvas;
-import com.jogamp.opengl.util.texture.TextureIO;
-import com.jogamp.opengl.util.texture.spi.awt.IIOTextureProvider;
-import com.jogamp.opengl.util.texture.spi.awt.IIOTextureWriter;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class SWTGLCanvasFactory implements IGLCanvasFactory {
-
-	public SWTGLCanvasFactory() {
-		// disable awt as good as possible
-		System.setProperty("java.awt.headless", "true");
-		// re add texture provider from awt for javax.imageio as the flag disables them
-		TextureIO.addTextureProvider(new IIOTextureProvider());
-		TextureIO.addTextureWriter(new IIOTextureWriter());
-	}
+public class SWTGLCanvasFactory extends ASWTBasedCanvasFactory {
 
 	@Override
 	public SWTGLCanvas create(GLCapabilitiesImmutable caps, Composite parent) {
 		GLCanvas canvas = new GLCanvas(parent, SWT.NO_BACKGROUND, caps, null, null);
 		return new SWTGLCanvas(canvas);
-	}
-
-	@Override
-	public void showPopupMenu(final AGLView view, final Iterable<AContextMenuItem> items) {
-		final Composite parent = view.getParentComposite();
-		parent.getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				Menu m = new Menu(parent);
-				for (AContextMenuItem menuItem : items) {
-					create(m, menuItem);
-				}
-				m.setLocation(parent.getDisplay().getCursorLocation());
-				m.setVisible(true);
-			}
-		});
-
-	}
-
-	private void create(Menu parent, final AContextMenuItem item) {
-		if (item instanceof SeparatorMenuItem) {
-			new MenuItem(parent, SWT.SEPARATOR);
-			return;
-		}
-
-		List<AContextMenuItem> subItems = item.getSubMenuItems();
-		if (!subItems.isEmpty()) {
-			MenuItem menuItem = new MenuItem(parent, SWT.CASCADE);
-			menuItem.setText(item.getLabel());
-
-			Menu submenu = new Menu(parent);
-			for (AContextMenuItem subMenuItem : subItems) {
-				create(submenu, subMenuItem);
-			}
-			menuItem.setMenu(submenu);
-		} else {
-			MenuItem menuItem = new MenuItem(parent, SWT.PUSH);
-			menuItem.setText(item.getLabel());
-			menuItem.addSelectionListener(new SelectionListener() {
-
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					item.triggerEvent();
-				}
-
-				@Override
-				public void widgetDefaultSelected(SelectionEvent e) {
-					// TODO Auto-generated method stub
-
-				}
-			});
-		}
 	}
 }

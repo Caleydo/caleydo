@@ -19,20 +19,11 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.canvas.internal.newt;
 
-import java.util.List;
-
 import javax.media.opengl.GLCapabilitiesImmutable;
 
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
-import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
+import org.caleydo.core.view.opengl.canvas.internal.swt.ASWTBasedCanvasFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 
 import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.newt.swt.NewtCanvasSWT;
@@ -41,7 +32,7 @@ import com.jogamp.newt.swt.NewtCanvasSWT;
  * @author Samuel Gratzl
  *
  */
-public class NEWTGLCanvasFactory implements IGLCanvasFactory {
+public class NEWTGLCanvasFactory extends ASWTBasedCanvasFactory {
 
 	@Override
 	public NEWTGLCanvas create(GLCapabilitiesImmutable caps, Composite parent) {
@@ -50,54 +41,4 @@ public class NEWTGLCanvasFactory implements IGLCanvasFactory {
 		return new NEWTGLCanvas(canvas, composite);
 	}
 
-	@Override
-	public void showPopupMenu(final AGLView view, final Iterable<AContextMenuItem> items) {
-		final Composite parent = view.getParentComposite();
-		parent.getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				Menu m = new Menu(parent);
-				for (AContextMenuItem menuItem : items) {
-					create(m, menuItem);
-				}
-				m.setLocation(parent.getDisplay().getCursorLocation());
-				m.setVisible(true);
-			}
-		});
-
-	}
-
-	private void create(Menu parent, final AContextMenuItem item) {
-		if (item instanceof SeparatorMenuItem) {
-			new MenuItem(parent, SWT.SEPARATOR);
-			return;
-		}
-
-		List<AContextMenuItem> subItems = item.getSubMenuItems();
-		if (!subItems.isEmpty()) {
-			MenuItem menuItem = new MenuItem(parent, SWT.CASCADE);
-			menuItem.setText(item.getLabel());
-
-			Menu submenu = new Menu(parent);
-			for (AContextMenuItem subMenuItem : subItems) {
-				create(submenu, subMenuItem);
-			}
-			menuItem.setMenu(submenu);
-		} else {
-			MenuItem menuItem = new MenuItem(parent, SWT.PUSH);
-			menuItem.setText(item.getLabel());
-			menuItem.addSelectionListener(new SelectionListener() {
-
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					item.triggerEvent();
-				}
-
-				@Override
-				public void widgetDefaultSelected(SelectionEvent e) {
-
-				}
-			});
-		}
-	}
 }

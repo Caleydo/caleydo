@@ -17,28 +17,38 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data.filter;
+package org.caleydo.view.tourguide.event;
 
-import org.caleydo.view.tourguide.data.ScoringElement;
-import org.caleydo.view.tourguide.data.score.IScore;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.view.tourguide.data.filter.IDataDomainFilter;
+import org.caleydo.view.tourguide.vendingmachine.DataDomainQueryUI;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class CutOffScoreFilter implements IScoreFilter {
-	private final IScore score;
-	private final float cutoff;
+public class UpdateFilterColumnEvent extends AEvent {
+	private IDataDomainFilter filter;
 
-	public CutOffScoreFilter(IScore score, float cutoff) {
-		super();
-		this.score = score;
-		this.cutoff = cutoff;
+	public UpdateFilterColumnEvent() {
+
+	}
+
+	public UpdateFilterColumnEvent(IDataDomainFilter filter, DataDomainQueryUI sender) {
+		this.filter = filter;
+		this.setSender(sender);
+	}
+
+	/**
+	 * @return the filter, see {@link #filter}
+	 */
+	public IDataDomainFilter getFilter() {
+		return filter;
 	}
 
 	@Override
-	public boolean apply(ScoringElement elem) {
-		return score.getScore(elem) > cutoff;
+	public boolean checkIntegrity() {
+		return filter != null;
 	}
-
 }
+

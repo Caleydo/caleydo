@@ -28,10 +28,12 @@ import java.util.List;
 
 import javax.media.opengl.GLCapabilitiesImmutable;
 import javax.media.opengl.awt.GLCanvas;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingUtilities;
 
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
@@ -92,8 +94,18 @@ public class AWTGLCanvasFactory implements IGLCanvasFactory {
 			submenu.setText(item.getLabel());
 			parent.add(submenu);
 		} else {
-			JMenuItem menuItem = new JMenuItem();
-			menuItem.setText(item.getLabel());
+			JMenuItem menuItem;
+			switch (item.getType()) {
+			case CHECK:
+				menuItem = new JCheckBoxMenuItem(item.getLabel(), item.isState());
+				break;
+			case RADIO:
+				menuItem = new JRadioButtonMenuItem(item.getLabel(), item.isState());
+				break;
+			default:
+				menuItem = new JMenuItem(item.getLabel());
+				break;
+			}
 			menuItem.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {

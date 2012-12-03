@@ -104,6 +104,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
 	public static final String VIEW_NAME = "Tour Guide";
 
+
 	private LayoutManager layoutManager;
 	private Column mainColumn;
 	private ScoreQueryUI scoreQueryUI;
@@ -138,6 +139,18 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 			}
 		});
 		scoreQuery.addPropertyChangeListener(ScoreQuery.PROP_SELECTION, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				recomputeScores();
+			}
+		});
+		scoreQuery.addPropertyChangeListener(ScoreQuery.PROP_TOP, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				recomputeScores();
+			}
+		});
+		scoreQuery.addPropertyChangeListener(ScoreQuery.PROP_FILTER, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				recomputeScores();
@@ -351,6 +364,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	}
 
 	private void recomputeScores() {
+		if (scoreQueryUI.isRunning())
+			return;
 		if (scoreQuery.isBusy()) {
 			scoreQueryUI.setRunning(true);
 			Job job = new Job("Update Tour Guide") {
@@ -364,7 +379,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 			};
 			job.schedule();
 		} else {
-			onScoreQueryReady();
+			GeneralManager.get().getEventPublisher().triggerEvent(new ScoreQueryReadyEvent(VendingMachine.this));
 		}
 	}
 

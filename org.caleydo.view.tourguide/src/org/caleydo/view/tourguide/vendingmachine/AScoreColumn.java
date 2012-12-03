@@ -29,8 +29,6 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.ConstantLabelProvider;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.view.contextmenu.ContextMenuCreator;
-import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -42,7 +40,6 @@ import org.caleydo.view.tourguide.data.ScoringElement;
 import org.caleydo.view.tourguide.data.score.AGroupScore;
 import org.caleydo.view.tourguide.data.score.AStratificationScore;
 import org.caleydo.view.tourguide.data.score.IScore;
-import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.renderer.ScoreBarRenderer;
 import org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle;
 
@@ -75,15 +72,6 @@ public abstract class AScoreColumn extends Row {
 
 	protected final ElementLayout createLabel(ILabelProvider label, int width) {
 		return wrap(Renderers.createLabel(label, view.getTextRenderer()).padding(LABEL_PADDING).build(), width);
-	}
-
-
-	public void onShowColumnMenu(ScoreQueryUI sender) {
-		ContextMenuCreator creator = view.getContextMenuCreator();
-		creator.addContextMenuItem(new GenericContextMenuItem("Remove",
-				new RemoveScoreColumnEvent(score, false, sender)));
-		creator.addContextMenuItem(new GenericContextMenuItem("Remove And Forget", new RemoveScoreColumnEvent(score,
-				true, sender)));
 	}
 
 	/**
