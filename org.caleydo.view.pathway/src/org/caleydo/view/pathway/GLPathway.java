@@ -741,6 +741,13 @@ public class GLPathway
 
 		int bbGroupID = -1;
 		HashSet<PathwayVertexRep> visitedNodes = new HashSet<PathwayVertexRep>();
+		int numNodes=0;
+		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
+			numNodes+=path.getEdgeList().size();
+			numNodes++;
+		}
+		int pos=1;
+		double nodeOffsetScale=2.0;
 		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
 			// updateSingleBubbleSet(gl, path, bbGroupID,visitedNodes);
 			if (path == null)
@@ -801,14 +808,15 @@ public class GLPathway
 					}else{
 						double high=1.0;
 						double low=0.0;
-						double offX=Math.random() * (high - low) + low;
-						double offY=Math.random()* (high - low) + low;
+						//double offX=Math.random() * (high - low) + low;
+						double offX=nodeOffsetScale*((double)(pos/numNodes)) * (high - low) + low;
+						double offY=nodeOffsetScale*((double)(pos/numNodes))* (high - low) + low;
 //						System.out.println("offX="+offX);
 //						System.out.println("offY="+offY);
 						posX+=offX;
 						posY+=offY;
 					}					
-					
+					pos++;
 					double tX = targetVertexRep.getLowerLeftCornerX();
 					double tY = targetVertexRep.getLowerLeftCornerY();
 					
@@ -836,8 +844,8 @@ public class GLPathway
 					}else{
 						double high=1.0;
 						double low=0.0;
-						double offX=Math.random() * (high - low) + low;
-						double offY=Math.random()* (high - low) + low;
+						double offX=nodeOffsetScale*((double)(pos/numNodes)) * (high - low) + low;
+						double offY=nodeOffsetScale*((double)(pos/numNodes)) * (high - low) + low;
 //						System.out.println("offX="+offX);
 //						System.out.println("offY="+offY);
 						posX+=offX;
