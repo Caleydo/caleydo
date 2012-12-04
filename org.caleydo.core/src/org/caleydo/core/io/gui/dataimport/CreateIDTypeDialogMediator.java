@@ -48,6 +48,11 @@ public class CreateIDTypeDialogMediator {
 	 */
 	private CreateIDTypeDialog dialog;
 
+	/**
+	 * Parsing rules for the id type.
+	 */
+	IDTypeParsingRules idTypeParsingRules;
+
 	public CreateIDTypeDialogMediator(CreateIDTypeDialog dialog) {
 		this.dialog = dialog;
 		createIDCategory = true;
@@ -138,6 +143,21 @@ public class CreateIDTypeDialogMediator {
 			return false;
 		}
 
+		if (dialog.idParsingRulesWidget.isEnabled()) {
+			if (dialog.idParsingRulesWidget.getReplacingExpression() == null
+					&& dialog.idParsingRulesWidget.getSubStringExpression() == null) {
+				MessageDialog.openError(new Shell(), "Incomplete Parsing Definition",
+						"At least one expression (replacing or substring) must be specified.");
+				return false;
+			}
+
+			idTypeParsingRules = new IDTypeParsingRules();
+			idTypeParsingRules.setReplacementExpression(dialog.idParsingRulesWidget.getReplacementString(),
+					dialog.idParsingRulesWidget.getReplacingExpression());
+			idTypeParsingRules.setSubStringExpression(dialog.idParsingRulesWidget.getSubStringExpression());
+			idTypeParsingRules.setDefault(true);
+		}
+
 		if (createIDCategory) {
 			idCategory = IDCategory.registerCategory(categoryName);
 
@@ -149,12 +169,7 @@ public class CreateIDTypeDialogMediator {
 
 		idType = IDType.registerType(typeName, idCategory, dataTypeMap.get(dialog.dataTypeCombo.getSelectionIndex()));
 
-		if (dialog.idParsingRulesWidget.isEnabled()) {
-			IDTypeParsingRules idTypeParsingRules = new IDTypeParsingRules();
-			idTypeParsingRules.setReplacementExpression(dialog.idParsingRulesWidget.getReplacementString(),
-					dialog.idParsingRulesWidget.getReplacingExpression());
-			idTypeParsingRules.setSubStringExpression(dialog.idParsingRulesWidget.getSubStringExpression());
-			idTypeParsingRules.setDefault(true);
+		if (idTypeParsingRules != null) {
 			idType.setIdTypeParsingRules(idTypeParsingRules);
 		}
 
@@ -180,6 +195,13 @@ public class CreateIDTypeDialogMediator {
 	 */
 	public boolean isCreateIDCategory() {
 		return createIDCategory;
+	}
+
+	/**
+	 * @return the idTypeParsingRules, see {@link #idTypeParsingRules}, if defined, null otherwise.
+	 */
+	public IDTypeParsingRules getIdTypeParsingRules() {
+		return idTypeParsingRules;
 	}
 
 }

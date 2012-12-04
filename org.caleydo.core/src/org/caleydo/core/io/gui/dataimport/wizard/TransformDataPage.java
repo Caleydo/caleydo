@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
@@ -21,11 +21,10 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Page that offers the possibility to transform the dataset, such as data
- * logarithmation or table transpose.
- * 
+ * Page that offers the possibility to transform the dataset, such as data logarithmation or table transpose.
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class TransformDataPage extends AImportDataPage implements Listener {
 
@@ -141,7 +140,7 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 
 		createDataCenterGroup(parentComposite);
 
-		mediator.guiCreated();
+		// mediator.guiCreated();
 
 		setControl(parentComposite);
 	}
@@ -150,18 +149,16 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 		dataTranspositionGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		dataTranspositionGroup.setText("Data Transposition");
 		dataTranspositionGroup.setLayout(new GridLayout(2, false));
-		dataTranspositionGroup
-				.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+		dataTranspositionGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		Label transpositionExplanationLabel = new Label(dataTranspositionGroup, SWT.WRAP);
 		transpositionExplanationLabel
 				.setText("Caleydo assumes a limited number of dimensions and a lot of records.  You typically want to observe a variation in records over dimensions, where dimensions would be, for example points in time, and records expression values of genes. Dimensions do not necessarely map to columns in a source file and equally  records must not be the rows in your file. If you select this option you choose to show the rows in the file as dimensions and the columns in the file as records.");
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
-		gridData.widthHint = 200;
+		gridData.widthHint = 600;
 		transpositionExplanationLabel.setLayoutData(gridData);
 		swapRowsWithColumnsButton = new Button(dataTranspositionGroup, SWT.CHECK);
-		swapRowsWithColumnsButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
-				true, 2, 1));
+		swapRowsWithColumnsButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 		swapRowsWithColumnsButton.setText("Swap Rows and Columns");
 		swapRowsWithColumnsButton.addSelectionListener(new SelectionAdapter() {
 
@@ -181,14 +178,9 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 
 		Label dateCenterExplanationLabel = new Label(dataCenterGroup, SWT.WRAP);
 		dateCenterExplanationLabel
-				.setText("The data center is a balue that, if set, determines a neutral center point of the data. A"
-						+ " common example is that 0 is the neutral value, lower values are in the"
-						+ " negative and larger values are in the positive range. If the data center is "
-						+ " set it is assumed that the extend into both, positive and negative"
-						+ " direction is the same. For example, for a dataset [-0.5, 0.7] with a center set at"
-						+ " 0, the value range will be set to -0.7 to 0.7.");
+				.setText("The data center is a balue that, if set, determines a neutral center point of the data. A common example is that 0 is the neutral value, lower values are in the negative and larger values are in the positive range. If the data center is set it is assumed that the extend into both, positive and negative direction is the same. For example, for a dataset [-0.5, 0.7] with a center set at 0, the value range will be set to -0.7 to 0.7.");
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
-		gridData.widthHint = 200;
+		gridData.widthHint = 600;
 		dateCenterExplanationLabel.setLayoutData(gridData);
 		useDataCenterButton = new Button(dataCenterGroup, SWT.CHECK);
 		// useDataCenterButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
@@ -301,8 +293,7 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 		scalingGroup.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
 		Label scalingExplanationLabel = new Label(scalingGroup, SWT.WRAP);
-		scalingExplanationLabel
-				.setText("Specify the way every data point should be scaled.");
+		scalingExplanationLabel.setText("Specify the way every data point should be scaled.");
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gridData.widthHint = 200;
 		scalingExplanationLabel.setLayoutData(gridData);

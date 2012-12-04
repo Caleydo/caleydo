@@ -15,6 +15,7 @@ import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.gui.dataimport.CreateIDTypeDialog;
+import org.caleydo.core.io.gui.dataimport.DefineIDParsingDialog;
 import org.caleydo.core.io.gui.dataimport.FilePreviewParser;
 import org.caleydo.core.util.collection.Pair;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -23,9 +24,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Mediator for {@link LoadDataSetPage}. This class is responsible for setting
- * the states of all widgets of the page and triggering actions according to
- * different events that occur in the page.
+ * Mediator for {@link LoadDataSetPage}. This class is responsible for setting the states of all widgets of the page and
+ * triggering actions according to different events that occur in the page.
  *
  *
  * @author Christian Partl
@@ -44,8 +44,7 @@ public class LoadDataSetPageMediator {
 	protected static final int MAX_PREVIEW_TABLE_COLUMNS = 10;
 
 	/**
-	 * The maximum number of ids that are tested in order to determine the
-	 * {@link IDType}.
+	 * The maximum number of ids that are tested in order to determine the {@link IDType}.
 	 */
 	protected static final int MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION = 10;
 
@@ -64,10 +63,8 @@ public class LoadDataSetPageMediator {
 	 */
 	private ArrayList<IDCategory> registeredIDCategories;
 
-
 	/**
-	 * Matrix that stores the data for {@link #MAX_PREVIEW_TABLE_ROWS} rows and
-	 * all columns of the data file.
+	 * Matrix that stores the data for {@link #MAX_PREVIEW_TABLE_ROWS} rows and all columns of the data file.
 	 */
 	protected ArrayList<ArrayList<String>> dataMatrix;
 
@@ -106,8 +103,17 @@ public class LoadDataSetPageMediator {
 	 */
 	protected DataSetDescription dataSetDescription;
 
-	public LoadDataSetPageMediator(LoadDataSetPage page,
-			DataSetDescription dataSetDescription) {
+	/**
+	 * Parsing rules for the row id.
+	 */
+	protected IDTypeParsingRules rowIDTypeParsingRules;
+
+	/**
+	 * Parsing rules for the column id.
+	 */
+	protected IDTypeParsingRules columnIDTypeParsingRules;
+
+	public LoadDataSetPageMediator(LoadDataSetPage page, DataSetDescription dataSetDescription) {
 		this.page = page;
 		this.dataSetDescription = dataSetDescription;
 		dataSetDescription.setDelimiter("\t");
@@ -122,8 +128,8 @@ public class LoadDataSetPageMediator {
 	}
 
 	/**
-	 * Initializes all widgets of the {@link #page}. This method should be
-	 * called after all widgets of the dialog were created.
+	 * Initializes all widgets of the {@link #page}. This method should be called after all widgets of the dialog were
+	 * created.
 	 */
 	public void guiCreated() {
 		initWidgets();
@@ -141,8 +147,7 @@ public class LoadDataSetPageMediator {
 
 		page.loadFile.setFileName(fileSpecified ? inputFileName : "");
 
-		page.label.setText(fileSpecified ? inputFileName.substring(
-				inputFileName.lastIndexOf(File.separator) + 1,
+		page.label.setText(fileSpecified ? inputFileName.substring(inputFileName.lastIndexOf(File.separator) + 1,
 				inputFileName.lastIndexOf(".")) : "");
 		page.label.setEnabled(fileSpecified);
 
@@ -153,21 +158,23 @@ public class LoadDataSetPageMediator {
 		page.columnIDCategoryCombo.setEnabled(fileSpecified);
 
 		fillIDTypeCombo(rowIDCategory, rowIDTypes, page.rowIDCombo);
-		page.rowIDCombo.setEnabled(fileSpecified
-				&& (page.rowIDCategoryCombo.getSelectionIndex() != -1));
+		page.rowIDCombo.setEnabled(fileSpecified && (page.rowIDCategoryCombo.getSelectionIndex() != -1));
 
 		fillIDTypeCombo(columnIDCategory, columnIDTypes, page.columnIDCombo);
-		page.columnIDCombo.setEnabled(fileSpecified
-				&& (page.columnIDCategoryCombo.getSelectionIndex() != -1));
+		page.columnIDCombo.setEnabled(fileSpecified && (page.columnIDCategoryCombo.getSelectionIndex() != -1));
 
 		page.createRowIDCategoryButton.setEnabled(fileSpecified);
 
 		page.createColumnIDCategoryButton.setEnabled(fileSpecified);
 
-		page.createRowIDTypeButton.setEnabled(fileSpecified
-				&& (page.rowIDCategoryCombo.getSelectionIndex() != -1));
+		page.createRowIDTypeButton.setEnabled(fileSpecified && (page.rowIDCategoryCombo.getSelectionIndex() != -1));
 
 		page.createColumnIDTypeButton.setEnabled(fileSpecified
+				&& (page.columnIDCategoryCombo.getSelectionIndex() != -1));
+
+		page.defineRowIDParsingButton.setEnabled(fileSpecified && (page.rowIDCategoryCombo.getSelectionIndex() != -1));
+
+		page.defineColumnIDParsingButton.setEnabled(fileSpecified
 				&& (page.columnIDCategoryCombo.getSelectionIndex() != -1));
 
 		page.numHeaderRowsSpinner.setSelection(1);
@@ -188,9 +195,72 @@ public class LoadDataSetPageMediator {
 			createDataPreviewTableFromFile();
 	}
 
+	public void onDefineRowIDParsing() {
+		IDType idType = getRowIDType();
+		IDTypeParsingRules templateIdTypeParsingRules = rowIDTypeParsingRules;
+		if (idType != null && templateIdTypeParsingRules == null) {
+			templateIdTypeParsingRules = idType.getIdTypeParsingRules();
+		}
+
+		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), templateIdTypeParsingRules);
+		int status = dialog.open();
+
+		if (status == Window.OK) {
+			rowIDTypeParsingRules = dialog.getIdTypeParsingRules();
+		}
+	}
+
+	public void onDefineColumnIDParsing() {
+		IDType idType = getColumnIDType();
+		IDTypeParsingRules templateIdTypeParsingRules = columnIDTypeParsingRules;
+		if (idType != null && templateIdTypeParsingRules == null) {
+			templateIdTypeParsingRules = idType.getIdTypeParsingRules();
+		}
+
+		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), templateIdTypeParsingRules);
+		int status = dialog.open();
+
+		if (status == Window.OK) {
+			columnIDTypeParsingRules = dialog.getIdTypeParsingRules();
+		}
+	}
+
+	private IDType getRowIDType() {
+		int i = page.rowIDCombo.getSelectionIndex();
+		if (i < 0)
+			return null;
+		String type = page.rowIDCombo.getItem(i);
+		return IDType.getIDType(type);
+	}
+
+	private IDType getColumnIDType() {
+		int i = page.columnIDCombo.getSelectionIndex();
+		if (i < 0)
+			return null;
+		String type = page.columnIDCombo.getItem(i);
+		return IDType.getIDType(type);
+	}
+
+	public void idTypeComboModified(boolean isColumnIDType) {
+		if (isColumnIDType) {
+			if (page.columnIDCombo.getSelectionIndex() != -1) {
+				page.defineColumnIDParsingButton.setEnabled(true);
+			} else {
+				page.defineColumnIDParsingButton.setEnabled(false);
+			}
+			columnIDTypeParsingRules = null;
+		} else {
+			if (page.rowIDCombo.getSelectionIndex() != -1) {
+				page.defineRowIDParsingButton.setEnabled(true);
+			} else {
+				page.defineRowIDParsingButton.setEnabled(false);
+			}
+			rowIDTypeParsingRules = null;
+		}
+	}
+
 	/**
-	 * Fills the idTypeCombos according to the IDCategory selected by the
-	 * idCategoryCombo.
+	 * Fills the idTypeCombos according to the IDCategory selected by the idCategoryCombo.
 	 *
 	 * @param isColumnCategory
 	 *            Determines whether the column or row combo is affected.
@@ -211,26 +281,23 @@ public class LoadDataSetPageMediator {
 
 					boolean groupingParseSpecificationsRemoved = false;
 					for (GroupingParseSpecification groupingParseSpecification : columnGroupingSpecifications) {
-						String categoryString = groupingParseSpecification
-								.getRowIDSpecification().getIdCategory();
+						String categoryString = groupingParseSpecification.getRowIDSpecification().getIdCategory();
 						if (IDCategory.getIDCategory(categoryString) != columnIDCategory) {
-							dataSetDescription.getColumnGroupingSpecifications().remove(
-									groupingParseSpecification);
+							dataSetDescription.getColumnGroupingSpecifications().remove(groupingParseSpecification);
 							groupingParseSpecificationsRemoved = true;
 						}
 					}
 
 					if (groupingParseSpecificationsRemoved) {
-						MessageDialog
-								.openInformation(new Shell(), "Grouping Removed",
-										"At least one column grouping was removed due to the change of the column ID class.");
+						MessageDialog.openInformation(new Shell(), "Grouping Removed",
+								"At least one column grouping was removed due to the change of the column ID class.");
 					}
 				}
 			}
 		} else {
 			if (page.rowIDCategoryCombo.getSelectionIndex() != -1) {
-				rowIDCategory = IDCategory.getIDCategory(page.rowIDCategoryCombo
-						.getItem(page.rowIDCategoryCombo.getSelectionIndex()));
+				rowIDCategory = IDCategory.getIDCategory(page.rowIDCategoryCombo.getItem(page.rowIDCategoryCombo
+						.getSelectionIndex()));
 				fillIDTypeCombo(rowIDCategory, rowIDTypes, page.rowIDCombo);
 				page.rowIDCombo.setEnabled(true);
 				page.createRowIDTypeButton.setEnabled(true);
@@ -241,19 +308,16 @@ public class LoadDataSetPageMediator {
 
 					boolean groupingParseSpecificationsRemoved = false;
 					for (GroupingParseSpecification groupingParseSpecification : rowGroupingSpecifications) {
-						String categoryString = groupingParseSpecification
-								.getRowIDSpecification().getIdCategory();
+						String categoryString = groupingParseSpecification.getRowIDSpecification().getIdCategory();
 						if (IDCategory.getIDCategory(categoryString) != rowIDCategory) {
-							dataSetDescription.getRowGroupingSpecifications().remove(
-									groupingParseSpecification);
+							dataSetDescription.getRowGroupingSpecifications().remove(groupingParseSpecification);
 							groupingParseSpecificationsRemoved = true;
 						}
 					}
 
 					if (groupingParseSpecificationsRemoved) {
-						MessageDialog
-								.openInformation(new Shell(), "Grouping Removed",
-										"At least one row grouping was removed due to the change of the row ID class.");
+						MessageDialog.openInformation(new Shell(), "Grouping Removed",
+								"At least one row grouping was removed due to the change of the row ID class.");
 					}
 				}
 			}
@@ -271,8 +335,7 @@ public class LoadDataSetPageMediator {
 			dataSetDescription.setRowOfColumnIDs(numHeaderRows - 1);
 		}
 		dataSetDescription.setNumberOfHeaderLines(numHeaderRows);
-		page.previewTable.updateTableColors(
-				dataSetDescription.getNumberOfHeaderLines(),
+		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
 				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
 	}
 
@@ -280,24 +343,22 @@ public class LoadDataSetPageMediator {
 	 * Updates the preview table according to the number of the spinner.
 	 */
 	public void columnOfRowIDSpinnerModified() {
-		dataSetDescription
-				.setColumnOfRowIds(page.columnOfRowIDSpinner.getSelection() - 1);
-		page.previewTable.updateTableColors(
-				dataSetDescription.getNumberOfHeaderLines(),
+		dataSetDescription.setColumnOfRowIds(page.columnOfRowIDSpinner.getSelection() - 1);
+		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
 				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
 	}
 
 	/**
-	 * Opens a dialog to create a new {@link IDCategory}. The value of
-	 * rowIDCategoryCombo is set to the newly created category.
+	 * Opens a dialog to create a new {@link IDCategory}. The value of rowIDCategoryCombo is set to the newly created
+	 * category.
 	 */
 	public void createRowIDCategoryButtonSelected() {
 		createIDCategory(false);
 	}
 
 	/**
-	 * Opens a dialog to create a new {@link IDCategory}. The value of
-	 * columnIDCategoryCombo is set to the newly created category.
+	 * Opens a dialog to create a new {@link IDCategory}. The value of columnIDCategoryCombo is set to the newly created
+	 * category.
 	 */
 	public void createColumnIDCategoryButtonSelected() {
 		createIDCategory(true);
@@ -323,37 +384,36 @@ public class LoadDataSetPageMediator {
 			fillIDCategoryCombo(page.columnIDCategoryCombo);
 			if (isColumnCategory) {
 				columnIDCategory = newIDCategory;
-				page.columnIDCategoryCombo.select(page.columnIDCategoryCombo
-						.indexOf(columnIDCategory.getCategoryName()));
+				page.columnIDCategoryCombo
+						.select(page.columnIDCategoryCombo.indexOf(columnIDCategory.getCategoryName()));
 				fillIDTypeCombo(columnIDCategory, columnIDTypes, page.columnIDCombo);
+				// columnIDTypeParsingRules = dialog.getIdTypeParsingRules();
 			} else {
 				rowIDCategory = newIDCategory;
-				page.rowIDCategoryCombo.select(page.rowIDCategoryCombo
-						.indexOf(rowIDCategory.getCategoryName()));
+				page.rowIDCategoryCombo.select(page.rowIDCategoryCombo.indexOf(rowIDCategory.getCategoryName()));
 				fillIDTypeCombo(rowIDCategory, rowIDTypes, page.rowIDCombo);
+				// rowIDTypeParsingRules = dialog.getIdTypeParsingRules();
 			}
 		}
 	}
 
 	/**
-	 * Opens a dialog to create a new {@link IDType}. The value of rowIDCombo is
-	 * set to the newly created category.
+	 * Opens a dialog to create a new {@link IDType}. The value of rowIDCombo is set to the newly created category.
 	 */
 	public void createRowIDTypeButtonSelected() {
 		createIDType(false);
 	}
 
 	/**
-	 * Opens a dialog to create a new {@link IDType}. The value of columnIDCombo
-	 * is set to the newly created category.
+	 * Opens a dialog to create a new {@link IDType}. The value of columnIDCombo is set to the newly created category.
 	 */
 	public void createColumnIDTypeButtonSelected() {
 		createIDType(true);
 	}
 
 	private void createIDType(boolean isColumnIDType) {
-		CreateIDTypeDialog dialog = new CreateIDTypeDialog(new Shell(),
-				isColumnIDType ? columnIDCategory : rowIDCategory);
+		CreateIDTypeDialog dialog = new CreateIDTypeDialog(new Shell(), isColumnIDType ? columnIDCategory
+				: rowIDCategory);
 		int status = dialog.open();
 
 		if (status == Window.OK) {
@@ -367,11 +427,13 @@ public class LoadDataSetPageMediator {
 				if (selectionIndex != -1) {
 					page.columnIDCombo.select(selectionIndex);
 				}
+				// columnIDTypeParsingRules = dialog.getIdTypeParsingRules();
 			} else {
 				int selectionIndex = page.rowIDCombo.indexOf(newIDType.getTypeName());
 				if (selectionIndex != -1) {
 					page.rowIDCombo.select(selectionIndex);
 				}
+				// rowIDTypeParsingRules = dialog.getIdTypeParsingRules();
 			}
 		}
 	}
@@ -387,11 +449,9 @@ public class LoadDataSetPageMediator {
 			page.numHeaderRowsSpinner.setSelection(idRowIndex);
 			dataSetDescription.setNumberOfHeaderLines(idRowIndex);
 		}
-		page.previewTable.updateTableColors(
-				dataSetDescription.getNumberOfHeaderLines(),
+		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
 				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
 	}
-
 
 	public void onDelimiterChanged(String delimiter) {
 		dataSetDescription.setDelimiter(delimiter);
@@ -403,31 +463,28 @@ public class LoadDataSetPageMediator {
 	}
 
 	public void onShowAllColumns(boolean showAllColumns) {
-		page.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix,
-				showAllColumns ? totalNumberOfColumns : MAX_PREVIEW_TABLE_COLUMNS);
-		page.previewTable.updateTableColors(
-				dataSetDescription.getNumberOfHeaderLines(),
+		page.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, showAllColumns ? totalNumberOfColumns
+				: MAX_PREVIEW_TABLE_COLUMNS);
+		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
 				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
 		updateWidgetsAccordingToTableChanges();
 	}
 
 	public void createDataPreviewTableFromFile() {
-		parser.parse(dataSetDescription.getDataSourcePath(),
-				dataSetDescription.getDelimiter(), false, MAX_PREVIEW_TABLE_ROWS);
+		parser.parse(dataSetDescription.getDataSourcePath(), dataSetDescription.getDelimiter(), false,
+				MAX_PREVIEW_TABLE_ROWS);
 		dataMatrix = parser.getDataMatrix();
 		totalNumberOfColumns = parser.getTotalNumberOfColumns();
 		totalNumberOfRows = parser.getTotalNumberOfRows();
 		DataImportWizard wizard = (DataImportWizard) page.getWizard();
 		wizard.setTotalNumberOfColumns(totalNumberOfColumns);
 		wizard.setTotalNumberOfRows(totalNumberOfRows);
-		page.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix,
-				MAX_PREVIEW_TABLE_COLUMNS);
+		page.previewTable.createDataPreviewTableFromDataMatrix(dataMatrix, MAX_PREVIEW_TABLE_COLUMNS);
 		updateWidgetsAccordingToTableChanges();
 		determineIDTypes();
 		guessNumberOfHeaderRows();
 
-		page.previewTable.updateTableColors(
-				dataSetDescription.getNumberOfHeaderLines(),
+		page.previewTable.updateTableColors(dataSetDescription.getNumberOfHeaderLines(),
 				dataSetDescription.getRowOfColumnIDs(), dataSetDescription.getColumnOfRowIds());
 
 		page.parentComposite.pack();
@@ -461,16 +518,14 @@ public class LoadDataSetPageMediator {
 	private void determineIDTypes() {
 
 		List<String> rowIDList = new ArrayList<String>();
-		for (int i = 0; i < dataMatrix.size()
-				&& i < MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION; i++) {
+		for (int i = 0; i < dataMatrix.size() && i < MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION; i++) {
 			ArrayList<String> row = dataMatrix.get(i);
 			rowIDList.add(row.get(dataSetDescription.getColumnOfRowIds()));
 		}
 
 		List<String> columnIDList = new ArrayList<String>();
 		ArrayList<String> idRow = dataMatrix.get(dataSetDescription.getRowOfColumnIDs());
-		for (int i = 0; i < idRow.size()
-				&& i < MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION; i++) {
+		for (int i = 0; i < idRow.size() && i < MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION; i++) {
 			columnIDList.add(idRow.get(i));
 		}
 
@@ -480,34 +535,27 @@ public class LoadDataSetPageMediator {
 		setMostProbableIDTypes(mostProbableRowIDType, mostProbableColumnIDType);
 	}
 
-	protected void setMostProbableIDTypes(IDType mostProbableRowIDType,
-			IDType mostProbableColumnIDType) {
+	protected void setMostProbableIDTypes(IDType mostProbableRowIDType, IDType mostProbableColumnIDType) {
 
-		if (mostProbableRowIDType != null
-				&& mostProbableColumnIDType == null
-				&& mostProbableRowIDType.getIDCategory() == IDCategory
-						.getIDCategory("GENE")) {
+		if (mostProbableRowIDType != null && mostProbableColumnIDType == null
+				&& mostProbableRowIDType.getIDCategory() == IDCategory.getIDCategory("GENE")) {
 			mostProbableColumnIDType = IDType.getIDType("SAMPLE");
 		}
 
-		if (mostProbableColumnIDType != null
-				&& mostProbableRowIDType == null
-				&& mostProbableColumnIDType.getIDCategory() == IDCategory
-						.getIDCategory("GENE")) {
+		if (mostProbableColumnIDType != null && mostProbableRowIDType == null
+				&& mostProbableColumnIDType.getIDCategory() == IDCategory.getIDCategory("GENE")) {
 			mostProbableRowIDType = IDType.getIDType("SAMPLE");
 		}
 
-		setMostProbableIDType(mostProbableRowIDType, page.rowIDCategoryCombo,
-				page.rowIDCombo, rowIDTypes, false);
-		setMostProbableIDType(mostProbableColumnIDType, page.columnIDCategoryCombo,
-				page.columnIDCombo, columnIDTypes, true);
+		setMostProbableIDType(mostProbableRowIDType, page.rowIDCategoryCombo, page.rowIDCombo, rowIDTypes, false);
+		setMostProbableIDType(mostProbableColumnIDType, page.columnIDCategoryCombo, page.columnIDCombo, columnIDTypes,
+				true);
 	}
 
-	private void setMostProbableIDType(IDType mostProbableIDType, Combo idCategoryCombo,
-			Combo idTypeCombo, ArrayList<IDType> idTypes, boolean isColumnIDType) {
+	private void setMostProbableIDType(IDType mostProbableIDType, Combo idCategoryCombo, Combo idTypeCombo,
+			ArrayList<IDType> idTypes, boolean isColumnIDType) {
 		if (mostProbableIDType != null) {
-			int index = registeredIDCategories
-					.indexOf(mostProbableIDType.getIDCategory());
+			int index = registeredIDCategories.indexOf(mostProbableIDType.getIDCategory());
 			idCategoryCombo.select(index);
 			if (isColumnIDType) {
 				columnIDCategory = mostProbableIDType.getIDCategory();
@@ -522,9 +570,11 @@ public class LoadDataSetPageMediator {
 			if (isColumnIDType) {
 				columnIDCategory = null;
 				page.createColumnIDTypeButton.setEnabled(false);
+				page.defineColumnIDParsingButton.setEnabled(false);
 			} else {
 				rowIDCategory = null;
 				page.createRowIDTypeButton.setEnabled(false);
+				page.defineRowIDParsingButton.setEnabled(false);
 			}
 			idCategoryCombo.deselectAll();
 			idTypeCombo.deselectAll();
@@ -552,8 +602,8 @@ public class LoadDataSetPageMediator {
 		float maxProbability = 0;
 		IDType mostProbableIDType = null;
 		for (IDCategory idCategory : getAvailableIDCategories()) {
-			List<Pair<Float, IDType>> probabilityList = idCategory
-					.getListOfIDTypeAffiliationProbabilities(idList, false);
+			List<Pair<Float, IDType>> probabilityList = idCategory.getListOfIDTypeAffiliationProbabilities(idList,
+					false);
 			if (probabilityList.size() > 0) {
 				Pair<Float, IDType> pair = probabilityList.get(0);
 				if (pair.getFirst() > maxProbability) {
@@ -563,8 +613,7 @@ public class LoadDataSetPageMediator {
 			}
 		}
 
-		if (maxProbability <= 1.0f
-				/ MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION)
+		if (maxProbability <= 1.0f / MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION)
 			mostProbableIDType = null;
 
 		return mostProbableIDType;
@@ -574,8 +623,7 @@ public class LoadDataSetPageMediator {
 
 		String previousSelection = null;
 		if (idCategoryCombo.getSelectionIndex() != -1) {
-			previousSelection = idCategoryCombo.getItem(idCategoryCombo
-					.getSelectionIndex());
+			previousSelection = idCategoryCombo.getItem(idCategoryCombo.getSelectionIndex());
 		}
 
 		idCategoryCombo.removeAll();
@@ -599,13 +647,11 @@ public class LoadDataSetPageMediator {
 
 	}
 
-	private void fillIDTypeCombo(IDCategory idCategory, ArrayList<IDType> idTypes,
-			Combo idTypeCombo) {
+	private void fillIDTypeCombo(IDCategory idCategory, ArrayList<IDType> idTypes, Combo idTypeCombo) {
 
 		if (idCategory == null)
 			return;
-		ArrayList<IDType> allIDTypesOfCategory = new ArrayList<IDType>(
-				idCategory.getIdTypes());
+		ArrayList<IDType> allIDTypesOfCategory = new ArrayList<IDType>(idCategory.getIdTypes());
 
 		String previousSelection = null;
 
@@ -644,13 +690,14 @@ public class LoadDataSetPageMediator {
 	public void fillDataSetDescription() {
 
 		IDSpecification rowIDSpecification = new IDSpecification();
-		IDType rowIDType = IDType.getIDType(page.rowIDCombo.getItem(page.rowIDCombo
-				.getSelectionIndex()));
+		IDType rowIDType = IDType.getIDType(page.rowIDCombo.getItem(page.rowIDCombo.getSelectionIndex()));
 		rowIDSpecification.setIdType(rowIDType.toString());
 		if (rowIDType.getIDCategory().getCategoryName().equals("GENE"))
 			rowIDSpecification.setIDTypeGene(true);
 		rowIDSpecification.setIdCategory(rowIDType.getIDCategory().toString());
-		if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
+		if (rowIDTypeParsingRules != null) {
+			rowIDSpecification.setIdTypeParsingRules(rowIDTypeParsingRules);
+		} else if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
 			// for REFSEQ_MRNA we ignore the .1, etc.
 			IDTypeParsingRules parsingRules = new IDTypeParsingRules();
 			parsingRules.setSubStringExpression("\\.");
@@ -659,13 +706,15 @@ public class LoadDataSetPageMediator {
 		}
 
 		IDSpecification columnIDSpecification = new IDSpecification();
-		IDType columnIDType = IDType.getIDType(page.columnIDCombo
-				.getItem(page.columnIDCombo.getSelectionIndex()));
+		IDType columnIDType = IDType.getIDType(page.columnIDCombo.getItem(page.columnIDCombo.getSelectionIndex()));
 		// columnIDTypes.get(page.columnIDCombo.getSelectionIndex());
 		columnIDSpecification.setIdType(columnIDType.toString());
 		if (columnIDType.getIDCategory().getCategoryName().equals("GENE"))
 			columnIDSpecification.setIDTypeGene(true);
 		columnIDSpecification.setIdCategory(columnIDType.getIDCategory().toString());
+		if (columnIDTypeParsingRules != null) {
+			columnIDSpecification.setIdTypeParsingRules(columnIDTypeParsingRules);
+		}
 
 		dataSetDescription.setColumnIDSpecification(columnIDSpecification);
 		dataSetDescription.setRowIDSpecification(rowIDSpecification);
@@ -677,13 +726,11 @@ public class LoadDataSetPageMediator {
 	}
 
 	/**
-	 * prepares the dimension creation definition from the preview table. The
-	 * dimension creation definition consists of the definition which columns in
-	 * the data-CSV-file should be read, which should be skipped and the
+	 * prepares the dimension creation definition from the preview table. The dimension creation definition consists of
+	 * the definition which columns in the data-CSV-file should be read, which should be skipped and the
 	 * dimension-labels.
 	 *
-	 * @return <code>true</code> if the preparation was successful,
-	 *         <code>false</code> otherwise
+	 * @return <code>true</code> if the preparation was successful, <code>false</code> otherwise
 	 */
 	private void readDimensionDefinition() {
 		ArrayList<String> dimensionLabels = new ArrayList<String>();
@@ -693,7 +740,7 @@ public class LoadDataSetPageMediator {
 
 		// the columnIndex here is the columnIndex of the previewTable. This is
 		// different by one from the index in the source csv.
-		for(Integer selected : page.previewTable.getSelectedColumns()) {
+		for (Integer selected : page.previewTable.getSelectedColumns()) {
 			int columnIndex = selected.intValue();
 			if (columnIndex == dataSetDescription.getColumnOfRowIds())
 				continue;
@@ -727,8 +774,7 @@ public class LoadDataSetPageMediator {
 				try {
 					if (!testString.isEmpty()) {
 						Float.parseFloat(testString);
-						return new ColumnDescription(columnIndex, "FLOAT",
-								ColumnDescription.CONTINUOUS);
+						return new ColumnDescription(columnIndex, "FLOAT", ColumnDescription.CONTINUOUS);
 					}
 				} catch (NumberFormatException nfe) {
 				}

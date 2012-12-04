@@ -6,6 +6,7 @@ package org.caleydo.core.io.gui.dataimport;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.gui.dataimport.widget.IDParsingRulesWidget;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
@@ -136,7 +137,7 @@ public class CreateIDTypeDialog extends Dialog {
 		typeNameTextField = new Text(parentComposite, SWT.BORDER);
 		typeNameTextField.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		idParsingRulesWidget = new IDParsingRulesWidget(parentComposite);
+		idParsingRulesWidget = new IDParsingRulesWidget(parentComposite, null, true);
 
 		mediator.guiCreated();
 
@@ -162,5 +163,12 @@ public class CreateIDTypeDialog extends Dialog {
 	 */
 	public IDType getIdType() {
 		return mediator.getIdType();
+	}
+
+	/**
+	 * @return The parsing rules for the id type, if they have been specified, null otherwise.
+	 */
+	public IDTypeParsingRules getIdTypeParsingRules() {
+		return mediator.getIdTypeParsingRules();
 	}
 }

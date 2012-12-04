@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.core.io.gui.dataimport.wizard;
 
@@ -10,10 +10,10 @@ import org.caleydo.core.io.DataSetDescription;
  * Mediator for {@link TransformDataPage}. This class is responsible for setting
  * the states of all widgets of the page and triggering actions according to
  * different events that occur in the page.
- * 
- * 
+ *
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class TransformDataPageMediator {
 

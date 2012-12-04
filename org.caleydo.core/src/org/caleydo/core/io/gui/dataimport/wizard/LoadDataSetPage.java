@@ -6,6 +6,7 @@ package org.caleydo.core.io.gui.dataimport.wizard;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.io.gui.dataimport.widget.BooleanCallback;
 import org.caleydo.core.io.gui.dataimport.widget.DelimiterWidget;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
@@ -43,14 +44,12 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	public static final String PAGE_DESCRIPTION = "Specify the dataset you want to load.";
 
 	/**
-	 * Button to specify whether the dataset is homogeneous, i.e. all columns
-	 * have the same scale.
+	 * Button to specify whether the dataset is homogeneous, i.e. all columns have the same scale.
 	 */
 	protected Button buttonHomogeneous;
 
 	/**
-	 * Combo box to specify the {@link IDCategory} for the columns of the
-	 * dataset.
+	 * Combo box to specify the {@link IDCategory} for the columns of the dataset.
 	 */
 	protected Combo columnIDCategoryCombo;
 	/**
@@ -89,14 +88,12 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	protected Spinner columnOfRowIDSpinner;
 
 	/**
-	 * Spinner used to define the index of the row from where on data is
-	 * contained.
+	 * Spinner used to define the index of the row from where on data is contained.
 	 */
 	protected Spinner numHeaderRowsSpinner;
 
 	/**
-	 * Spinner used to define the index of the column from where on data is
-	 * contained.
+	 * Spinner used to define the index of the column from where on data is contained.
 	 */
 	protected Spinner dataStartColumnSpinner;
 
@@ -121,6 +118,16 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	protected Button createColumnIDTypeButton;
 
 	/**
+	 * Button that opens a dialog to define the {@link IDTypeParsingRules} for the row id type.
+	 */
+	protected Button defineRowIDParsingButton;
+
+	/**
+	 * Button that opens a dialog to define the {@link IDTypeParsingRules} for the column id type.
+	 */
+	protected Button defineColumnIDParsingButton;
+
+	/**
 	 * Group of widgets for file delimiter specification.
 	 */
 	protected DelimiterWidget delimiterRadioGroup;
@@ -135,7 +142,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 	 * Mediator for this page.
 	 */
 	private LoadDataSetPageMediator mediator;
-
 
 	public LoadDataSetPage(DataSetDescription dataSetDescription) {
 		super(PAGE_NAME, dataSetDescription);
@@ -248,9 +254,8 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		});
 
 		Composite rightConfigGroupPart = new Composite(rowConfigGroup, SWT.NONE);
-		rightConfigGroupPart.setLayout(new GridLayout(1, false));
-		rightConfigGroupPart
-				.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
+		rightConfigGroupPart.setLayout(new GridLayout(2, false));
+		rightConfigGroupPart.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
 
 		createRowIDCategoryButton = createNewIDCategoryButton(rightConfigGroupPart);
 		createRowIDCategoryButton.addSelectionListener(new SelectionAdapter() {
@@ -269,11 +274,22 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 				mediator.createRowIDTypeButtonSelected();
 			}
 		});
+
+		defineRowIDParsingButton = new Button(rightConfigGroupPart, SWT.PUSH);
+		defineRowIDParsingButton.setText("Define Parsing");
+		defineRowIDParsingButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				mediator.onDefineRowIDParsing();
+			}
+		});
 	}
 
 	private Button createNewIDCategoryButton(Composite parent) {
 		Button createIDCategoryButton = new Button(parent, SWT.PUSH);
 		createIDCategoryButton.setText("New");
+		createIDCategoryButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 2, 1));
 
 		return createIDCategoryButton;
 	}
@@ -319,9 +335,8 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		createDataPropertiesGroup(leftConfigGroupPart);
 
 		Composite rightConfigGroupPart = new Composite(columnConfigGroup, SWT.NONE);
-		rightConfigGroupPart.setLayout(new GridLayout(1, false));
-		rightConfigGroupPart
-				.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
+		rightConfigGroupPart.setLayout(new GridLayout(2, false));
+		rightConfigGroupPart.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, true));
 
 		createColumnIDCategoryButton = createNewIDCategoryButton(rightConfigGroupPart);
 		createColumnIDCategoryButton.addSelectionListener(new SelectionAdapter() {
@@ -339,9 +354,19 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 				mediator.createColumnIDTypeButtonSelected();
 			}
 		});
+
+		defineColumnIDParsingButton = new Button(rightConfigGroupPart, SWT.PUSH);
+		defineColumnIDParsingButton.setText("Define Parsing");
+		defineColumnIDParsingButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				mediator.onDefineColumnIDParsing();
+			}
+		});
 	}
 
-	private void createIDTypeGroup(Composite parent, boolean isColumnIDTypeGroup) {
+	private void createIDTypeGroup(Composite parent, final boolean isColumnIDTypeGroup) {
 		Label idTypeLabel = new Label(parent, SWT.SHADOW_ETCHED_IN);
 		idTypeLabel.setText(isColumnIDTypeGroup ? "Column ID Type" : "Row ID Type");
 		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
@@ -355,10 +380,16 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		}
 
 		idCombo.addListener(SWT.Modify, this);
+		idCombo.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+				mediator.idTypeComboModified(isColumnIDTypeGroup);
+			}
+		});
 	}
 
-	private void createIDCategoryGroup(Composite parent, String groupLabel,
-			final boolean isColumnCategory) {
+	private void createIDCategoryGroup(Composite parent, String groupLabel, final boolean isColumnCategory) {
 		Label recordIDCategoryGroup = new Label(parent, SWT.SHADOW_ETCHED_IN);
 		recordIDCategoryGroup.setText(groupLabel);
 		recordIDCategoryGroup.setLayoutData(new GridData(SWT.LEFT));
@@ -434,7 +465,6 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		if (getWizard().getContainer().getCurrentPage() != null)
 			getWizard().getContainer().updateButtons();
 	}
-
 
 	@Override
 	public void pageActivated() {

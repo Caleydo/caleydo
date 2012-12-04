@@ -26,7 +26,9 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
+import org.caleydo.core.io.gui.dataimport.DefineIDParsingDialog;
 import org.caleydo.core.util.collection.Pair;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -39,6 +41,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 
 /**
@@ -57,6 +60,11 @@ public class RowConfigWidget {
 	private final Combo rowIDCombo;
 	private final Label categoryIDLabel;
 	private final Button defineParsingButton;
+
+	/**
+	 * Parsing rules defined for the row id.
+	 */
+	private IDTypeParsingRules idTypeParsingRules;
 
 	public RowConfigWidget(Composite parent, final IntegerCallback onNumHeaderRowsChanged,
 			final IntegerCallback onColumnOfRowIDChanged) {
@@ -79,6 +87,12 @@ public class RowConfigWidget {
 		idTypeLabel.setLayoutData(new GridData(SWT.LEFT));
 		this.rowIDCombo = new Combo(leftConfigGroupPart, SWT.DROP_DOWN | SWT.READ_ONLY);
 		rowIDCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		rowIDCombo.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				idTypeParsingRules = null;
+			}
+		});
 
 		this.defineParsingButton = new Button(leftConfigGroupPart, SWT.PUSH);
 		defineParsingButton.setText("Define Parsing");
@@ -128,8 +142,19 @@ public class RowConfigWidget {
 	}
 
 	protected void onDefineParsing() {
+
 		IDType idType = getIDType();
-		idType.getIdTypeParsingRules();
+		IDTypeParsingRules templateIdTypeParsingRules = idTypeParsingRules;
+		if (idType != null && templateIdTypeParsingRules == null) {
+			templateIdTypeParsingRules = idType.getIdTypeParsingRules();
+		}
+
+		DefineIDParsingDialog dialog = new DefineIDParsingDialog(new Shell(), templateIdTypeParsingRules);
+		int status = dialog.open();
+
+		if (status == Window.OK) {
+			idTypeParsingRules = dialog.getIdTypeParsingRules();
+		}
 	}
 
 	public void setLayoutData(Object layoutData) {
@@ -251,7 +276,9 @@ public class RowConfigWidget {
 		if (rowIDType.getIDCategory().getCategoryName().equals("GENE"))
 			rowIDSpecification.setIDTypeGene(true);
 		rowIDSpecification.setIdCategory(rowIDType.getIDCategory().toString());
-		if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
+		if (idTypeParsingRules != null) {
+			rowIDSpecification.setIdTypeParsingRules(idTypeParsingRules);
+		} else if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
 			// for REFSEQ_MRNA we ignore the .1, etc.
 			IDTypeParsingRules parsingRules = new IDTypeParsingRules();
 			parsingRules.setSubStringExpression("\\.");
