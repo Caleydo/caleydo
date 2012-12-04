@@ -177,9 +177,13 @@ public final class ExternalIDTypeScore implements ISerializeableScore {
 	 * @return
 	 */
 	private static boolean isMyGroup(Group group, AVariablePerspective<?, ?, ?, ?> perspective) {
-		if (group == null || group.getPerspectiveID() == null)
+		if (group == null)
 			return false;
-		return group.getPerspectiveID().equals(perspective.getPerspectiveID());
+		for (Group g : perspective.getVirtualArray().getGroupList())
+			if (g.equals(group))
+				return true;
+		return false;
+		// return group.getPerspectiveID().equals(perspective.getPerspectiveID());
 	}
 
 	@Override
