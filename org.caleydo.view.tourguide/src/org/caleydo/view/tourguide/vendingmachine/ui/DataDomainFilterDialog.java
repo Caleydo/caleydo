@@ -1,17 +1,16 @@
 package org.caleydo.view.tourguide.vendingmachine.ui;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+import org.caleydo.core.io.gui.dataimport.widget.BooleanCallback;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.view.tourguide.data.ScoreQuery;
-import org.caleydo.view.tourguide.data.filter.CompareScoreFilter;
-import org.caleydo.view.tourguide.data.filter.ECompareOperator;
-import org.caleydo.view.tourguide.data.filter.IScoreFilter;
-import org.caleydo.view.tourguide.data.score.IScore;
+import org.caleydo.view.tourguide.data.DataDomainQuery;
+import org.caleydo.view.tourguide.data.filter.EStringCompareOperator;
+import org.caleydo.view.tourguide.data.filter.GroupNameCompareDomainFilter;
+import org.caleydo.view.tourguide.data.filter.IDataDomainFilter;
+import org.caleydo.view.tourguide.data.filter.SpecificDataDomainFilter;
 import org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle;
-import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -22,44 +21,33 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Spinner;
 
-import com.google.common.collect.Lists;
-
-public class ScoreFilterDialog extends TitleAreaDialog {
+public class DataDomainFilterDialog extends TitleAreaDialog {
 	// the root element to populate the viewer with
-	private final List<IScore> scores;
-	private final ScoreQueryUI sender;
-	private final ScoreQuery query;
+	private final SpecificDataDomainFilter filter;
+	private final DataDomainQuery query;
+	private final BooleanCallback hasFilterAfterwardsCallback;
 
-	// the visual selection widget group
-	private Spinner topUI;
-
-	private List<ScoreFilterWidget> filters = new ArrayList<>();
-	private Combo addScoreFilter;
+	private List<DataDomainFilterWidget> filters = new ArrayList<>();
 	private Composite filterContainer;
 
-	public ScoreFilterDialog(Shell shell, Collection<IScore> scores, ScoreQueryUI sender) {
+	public DataDomainFilterDialog(Shell shell, DataDomainQuery query, SpecificDataDomainFilter filter,
+			BooleanCallback hasFilterAfterwardsCallback) {
 		super(shell);
-		this.scores = Lists.newArrayList(scores);
-		this.sender = sender;
-		this.query = sender.getQuery();
+		this.query = query;
+		this.filter = filter;
 		this.filters = new ArrayList<>();
-		for (IScoreFilter f : this.query.getFilter()) {
-			if (f.getReference() != null)
-				this.scores.remove(f.getReference());
-		}
+		this.hasFilterAfterwardsCallback = hasFilterAfterwardsCallback;
 	}
 
 	@Override
 	public void create() {
 		super.create();
-		this.setTitle("Edit Score Filters");
+		this.setTitle("Edit Data Domain Filters for " + filter.getDataDomain().getLabel());
 		this.setBlockOnOpen(false);
 	}
 
@@ -68,14 +56,6 @@ public class ScoreFilterDialog extends TitleAreaDialog {
 		Composite c = new Composite((Composite) super.createDialogArea(parent), SWT.NONE);
 		c.setLayout(new GridLayout(2, false));
 		c.setLayoutData(new GridData(GridData.FILL_BOTH));
-		new Label(c, SWT.NONE).setText("Show only the first x Entries: ");
-
-		this.topUI = new Spinner(c, SWT.BORDER);
-		this.topUI.setMinimum(1);
-		this.topUI.setMaximum(100);
-		this.topUI.setIncrement(1);
-		this.topUI.setSelection(this.sender.getQuery().getTop());
-		this.topUI.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		addRowAdder(parent).setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
@@ -89,9 +69,9 @@ public class ScoreFilterDialog extends TitleAreaDialog {
 		this.filterContainer = new Composite(scrolledComposite, SWT.NONE);
 		filterContainer.setLayout(new GridLayout(4, false));
 
-		for (IScoreFilter f : query.getFilter()) {
-			if (f instanceof CompareScoreFilter) {
-				addFilterRow(f);
+		for (IDataDomainFilter f : this.filter) {
+			if (f instanceof GroupNameCompareDomainFilter) {
+				addFilterRow((GroupNameCompareDomainFilter) f);
 			}
 		}
 
@@ -103,9 +83,9 @@ public class ScoreFilterDialog extends TitleAreaDialog {
 		return c;
 	}
 
-	private void addFilterRow(final IScoreFilter f) {
+	private void addFilterRow(final GroupNameCompareDomainFilter f) {
 		final int i = this.filters.size();
-		this.filters.add(new ScoreFilterWidget(filterContainer, ((CompareScoreFilter) f)));
+		this.filters.add(new DataDomainFilterWidget(filterContainer, f));
 		Button removeRow = new Button(filterContainer, SWT.PUSH);
 		removeRow.setImage(GeneralManager.get().getResourceLoader()
 				.getImage(filterContainer.getDisplay(), TourGuideRenderStyle.ICON_DELETE_ROW));
@@ -126,10 +106,7 @@ public class ScoreFilterDialog extends TitleAreaDialog {
 		r.center = true;
 		parent.setLayout(r);
 
-		new Label(parent, SWT.NONE).setText("Add New");
-		this.addScoreFilter = new Combo(parent, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
-		for (IScore score : scores)
-			addScoreFilter.add(score.getLabel());
+		new Label(parent, SWT.NONE).setText("Add New Filter: ");
 		Button addRow = new Button(parent, SWT.PUSH);
 		addRow.setImage(GeneralManager.get().getResourceLoader()
 				.getImage(parent.getDisplay(), TourGuideRenderStyle.ICON_ADD_ROW));
@@ -144,17 +121,11 @@ public class ScoreFilterDialog extends TitleAreaDialog {
 	}
 
 	protected void onAddFilter() {
-		int i = this.addScoreFilter.getSelectionIndex();
-		if (i < 0)
-			return;
-		this.addScoreFilter.select(-1);
-		this.addScoreFilter.remove(i);
-		IScore s = this.scores.remove(i);
-		addFilterRow(new CompareScoreFilter(s, ECompareOperator.IS_NOT_NA, 0.1f));
+		addFilterRow(new GroupNameCompareDomainFilter(EStringCompareOperator.NOT_EQUAL, ""));
 		this.filterContainer.layout(true);
 	}
 
-	protected void onRemoveFilter(IScoreFilter f, int i) {
+	protected void onRemoveFilter(GroupNameCompareDomainFilter f, int i) {
 		this.filters.remove(i);
 		Control[] arr = filterContainer.getChildren();
 		for (int j = i * 4; j < i * 4 + 4; ++j)
@@ -174,11 +145,11 @@ public class ScoreFilterDialog extends TitleAreaDialog {
 	}
 
 	private void save() {
-		query.setTop(this.topUI.getSelection());
-		Collection<IScoreFilter> f = new ArrayList<>();
-		for(ScoreFilterWidget w: this.filters) {
-			f.add(w.save());
+		filter.clear();
+		for (DataDomainFilterWidget w : this.filters) {
+			filter.add(w.save());
 		}
-		query.setFilters(f);
+		query.updateFilter(filter);
+		hasFilterAfterwardsCallback.on(!filter.isEmpty());
 	}
 }

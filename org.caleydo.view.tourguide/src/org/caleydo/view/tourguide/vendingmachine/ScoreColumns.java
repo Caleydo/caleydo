@@ -39,31 +39,38 @@ import org.caleydo.view.tourguide.data.score.IScore;
 
 /**
  * factory class for different score column renderers
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class ScoreColumns {
 
 	public static AScoreColumn create(IScore score, int i, ESorting sorting, AGLView view) {
 		switch (score.getScoreType()) {
-		case STANDALONE_METRIC:
-			return new MetricScoreColumn(score, i, sorting, view);
-		case STANDALONE_SCORE:
-			return new ScoreScoreColumn(score, i, sorting, view);
+		case RANK:
+			return new ScoreScoreColumn(score, i, sorting, true, view);
+		case SCORE:
+			return new ScoreScoreColumn(score, i, sorting, false, view);
+		case GROUP_RANK:
+			return new GroupScoreColumn(score, i, sorting, true, view);
 		case GROUP_SCORE:
-			return new GroupScoreColumn(score, i, sorting, view);
+			return new GroupScoreColumn(score, i, sorting, false, view);
+		case STRATIFICATION_RANK:
+			return new StratificationScoreColumn(score, i, sorting, true, view);
 		case STRATIFICATION_SCORE:
-			return new StratificationScoreColumn(score, i, sorting, view);
+			return new StratificationScoreColumn(score, i, sorting, false, view);
 		}
 		throw new IllegalStateException("not implemented");
 	}
 
 
 	private static class StratificationScoreColumn extends AScoreColumn {
-		protected StratificationScoreColumn(IScore scoreID, int i, ESorting sorting, AGLView view) {
+		private final boolean rank;
+
+		protected StratificationScoreColumn(IScore scoreID, int i, ESorting sorting, boolean rank, AGLView view) {
 			super(scoreID, i, sorting, view);
 			setPixelSizeX(COLX_SCORE_WIDTH + COL_SPACING + DATADOMAIN_TYPE_WIDTH + COL_SPACING + STRATIFACTION_WIDTH);
+			this.rank = rank;
 		}
 
 		@Override
@@ -73,7 +80,11 @@ public class ScoreColumns {
 				underlyingScore = elem.getSelected((CollapseScore) underlyingScore);
 			TablePerspective strat = resolveStratification(underlyingScore);
 
-			addScoreValue(row, elem, strat);
+			if (rank)
+				addRankValue(row, elem);
+			else
+				addScoreValue(row, elem, strat);
+
 			row.add(colSpacing);
 			// create label
 			if (strat != null) {
@@ -87,9 +98,12 @@ public class ScoreColumns {
 	}
 
 	private static class GroupScoreColumn extends AScoreColumn {
-		protected GroupScoreColumn(IScore scoreID, int i, ESorting sorting, AGLView view) {
+		private final boolean rank;
+
+		protected GroupScoreColumn(IScore scoreID, int i, ESorting sorting, boolean rank, AGLView view) {
 			super(scoreID, i, sorting, view);
 			setPixelSizeX(COLX_SCORE_WIDTH + COL_SPACING + DATADOMAIN_TYPE_WIDTH + COL_SPACING + GROUP_WIDTH);
+			this.rank = rank;
 		}
 
 		@Override
@@ -100,7 +114,10 @@ public class ScoreColumns {
 			TablePerspective strat = resolveStratification(underlyingScore);
 			Group group = resolveGroup(underlyingScore);
 
-			addScoreValue(row, elem, strat);
+			if (rank)
+				addRankValue(row, elem);
+			else
+				addScoreValue(row, elem, strat);
 
 			row.add(colSpacing);
 			// create label
@@ -119,26 +136,20 @@ public class ScoreColumns {
 	}
 
 	private static class ScoreScoreColumn extends AScoreColumn {
-		protected ScoreScoreColumn(IScore scoreID, int i, ESorting sorting, AGLView view) {
+		private final boolean rank;
+
+		protected ScoreScoreColumn(IScore scoreID, int i, ESorting sorting, boolean rank, AGLView view) {
 			super(scoreID, i, sorting, view);
 			setPixelSizeX(COLX_SCORE_WIDTH);
+			this.rank = rank;
 		}
 
 		@Override
 		protected void addScoreSpecific(Row row, ScoringElement elem) {
-			addScoreValue(row, elem, null);
-		}
-	}
-
-	private static class MetricScoreColumn extends AScoreColumn {
-		protected MetricScoreColumn(IScore scoreID, int i, ESorting sorting, AGLView view) {
-			super(scoreID, i, sorting, view);
-			setPixelSizeX(COLX_SCORE_WIDTH);
-		}
-
-		@Override
-		protected void addScoreSpecific(Row row, ScoringElement elem) {
-			addMetricValue(row, elem);
+			if (rank)
+				addRankValue(row, elem);
+			else
+				addScoreValue(row, elem, null);
 		}
 	}
 }

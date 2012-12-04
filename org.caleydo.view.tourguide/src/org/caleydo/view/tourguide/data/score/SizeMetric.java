@@ -40,7 +40,7 @@ public class SizeMetric implements IScore {
 
 	@Override
 	public EScoreType getScoreType() {
-		return EScoreType.STANDALONE_METRIC;
+		return EScoreType.RANK;
 	}
 
 	@Override

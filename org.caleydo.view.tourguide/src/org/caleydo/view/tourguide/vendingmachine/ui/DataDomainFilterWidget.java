@@ -19,64 +19,46 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.vendingmachine.ui;
 
-import org.caleydo.view.tourguide.data.filter.CompareScoreFilter;
-import org.caleydo.view.tourguide.data.filter.ECompareOperator;
+import org.caleydo.view.tourguide.data.filter.EStringCompareOperator;
+import org.caleydo.view.tourguide.data.filter.GroupNameCompareDomainFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Spinner;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class ScoreFilterWidget {
-	private final CompareScoreFilter filter;
+public class DataDomainFilterWidget {
+	private final GroupNameCompareDomainFilter filter;
 	private final Combo operatorUI;
-	private final Spinner referenceUI;
-	private final boolean isInt;
+	private final Text operandUI;
 
 	/**
 	 * @param filter
 	 */
-	public ScoreFilterWidget(Composite parent, CompareScoreFilter filter) {
+	public DataDomainFilterWidget(Composite parent, GroupNameCompareDomainFilter filter) {
 		this.filter = filter;
 		Label l = new Label(parent, SWT.NONE);
-		l.setText(filter.getReference().getLabel());
-		GridData d = new GridData(SWT.LEFT, SWT.CENTER, true, false);
-		d.widthHint = 200;
+		l.setText("Group Name X");
+		GridData d = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		l.setLayoutData(d);
 		this.operatorUI = new Combo(parent, SWT.READ_ONLY);
 		this.operatorUI.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-		this.operatorUI.setItems(ECompareOperator.getLabels());
+		this.operatorUI.setItems(EStringCompareOperator.getLabels());
 		this.operatorUI.setText(filter.getOp().getLabel());
 
-		this.isInt = filter.getReference().getScoreType().isRank();
-		this.referenceUI = new Spinner(parent, SWT.BORDER);
-		this.referenceUI.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-		this.referenceUI.setMinimum(Integer.MIN_VALUE);
-		this.referenceUI.setMaximum(Integer.MAX_VALUE);
-		if (this.isInt) {
-			// int
-			this.referenceUI.setSelection((int) filter.getAgainst());
-		} else {
-			// float
-			this.referenceUI.setSelection((int) (filter.getAgainst() * 1000));
-			this.referenceUI.setDigits(3);
-			this.referenceUI.setIncrement(100);
-			this.referenceUI.setSelection(500);
-		}
+		this.operandUI = new Text(parent, SWT.BORDER);
+		this.operandUI.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		this.operandUI.setText(filter.getOperand());
 	}
 
-	public CompareScoreFilter save() {
-		if (this.isInt)
-			this.filter.setAgainst(referenceUI.getSelection());
-		else {
-			this.filter.setAgainst(referenceUI.getSelection() / 1000.f);
-		}
-		this.filter.setOp(ECompareOperator.values()[operatorUI.getSelectionIndex()]);
+	public GroupNameCompareDomainFilter save() {
+		this.filter.setOperand(operandUI.getText());
+		this.filter.setOp(EStringCompareOperator.values()[operatorUI.getSelectionIndex()]);
 		return this.filter;
 	}
 

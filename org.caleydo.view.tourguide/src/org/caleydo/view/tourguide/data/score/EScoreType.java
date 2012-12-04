@@ -26,5 +26,14 @@ package org.caleydo.view.tourguide.data.score;
  *
  */
 public enum EScoreType {
-	STRATIFICATION_SCORE, GROUP_SCORE, STANDALONE_SCORE, STANDALONE_METRIC
+	SCORE, RANK, STRATIFICATION_SCORE, STRATIFICATION_RANK, GROUP_SCORE, GROUP_RANK;
+
+
+	public boolean needsGroup() {
+		return this == GROUP_SCORE || this == GROUP_RANK;
+	}
+
+	public boolean isRank() {
+		return this == RANK || this == STRATIFICATION_RANK || this == GROUP_RANK;
+	}
 }

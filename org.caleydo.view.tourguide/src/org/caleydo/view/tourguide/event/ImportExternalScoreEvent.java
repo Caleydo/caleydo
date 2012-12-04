@@ -21,25 +21,29 @@ package org.caleydo.view.tourguide.event;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.event.AEvent;
-import org.caleydo.core.id.IDCategory;
+import org.caleydo.view.tourguide.data.serialize.ISerializeableScore;
 
 /**
  * @author Samuel Gratzl
  *
  */
 public class ImportExternalScoreEvent extends AEvent {
-	private IDCategory category;
 	private ATableBasedDataDomain dataDomain;
+	private boolean inDimensionDirection;
+	private Class<? extends ISerializeableScore> type;
 
 	public ImportExternalScoreEvent() {
 
 	}
 
-	public ImportExternalScoreEvent(IDCategory category, ATableBasedDataDomain dataDomain) {
+	public ImportExternalScoreEvent(ATableBasedDataDomain dataDomain, boolean inDimensionDirection,
+			Class<? extends ISerializeableScore> type) {
 		super();
-		this.category = category;
 		this.dataDomain = dataDomain;
+		this.inDimensionDirection = inDimensionDirection;
+		this.type = type;
 	}
+
 
 	/*
 	 * (non-Javadoc)
@@ -48,14 +52,21 @@ public class ImportExternalScoreEvent extends AEvent {
 	 */
 	@Override
 	public boolean checkIntegrity() {
-		return dataDomain != null && category != null;
+		return dataDomain != null && type != null;
 	}
 
 	/**
-	 * @return the category, see {@link #category}
+	 * @return the type, see {@link #type}
 	 */
-	public IDCategory getCategory() {
-		return category;
+	public Class<? extends ISerializeableScore> getType() {
+		return type;
+	}
+
+	/**
+	 * @return the inDimensionDirection, see {@link #inDimensionDirection}
+	 */
+	public boolean isInDimensionDirection() {
+		return inDimensionDirection;
 	}
 
 	/**

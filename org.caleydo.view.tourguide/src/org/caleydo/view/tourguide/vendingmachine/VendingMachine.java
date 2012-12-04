@@ -21,7 +21,6 @@ package org.caleydo.view.tourguide.vendingmachine;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Collection;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -32,8 +31,6 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventListeners;
-import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.color.Colors;
@@ -59,16 +56,13 @@ import org.caleydo.view.tourguide.data.ESorting;
 import org.caleydo.view.tourguide.data.ScoreQuery;
 import org.caleydo.view.tourguide.data.Scores;
 import org.caleydo.view.tourguide.data.ScoringElement;
-import org.caleydo.view.tourguide.data.load.ExternalIDTypeScoreParser;
-import org.caleydo.view.tourguide.data.load.ScoreParseSpecification;
-import org.caleydo.view.tourguide.data.load.ui.ImportExternalScoreDialog;
+import org.caleydo.view.tourguide.data.load.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.data.score.AGroupScore;
 import org.caleydo.view.tourguide.data.score.AdjustedRankScore;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
-import org.caleydo.view.tourguide.data.score.EScoreType;
-import org.caleydo.view.tourguide.data.score.ExternalIDTypeScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.JaccardIndexScore;
+import org.caleydo.view.tourguide.data.serialize.ISerializeableScore;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ImportExternalScoreEvent;
@@ -100,7 +94,6 @@ import com.google.common.base.Function;
  */
 
 public class VendingMachine extends AGLView implements IGLRemoteRenderingView, ILayoutedElement, ISelectionListener {
-
 	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
 	public static final String VIEW_NAME = "Tour Guide";
 
@@ -130,6 +123,12 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 					onHideDataDomain((ATableBasedDataDomain) evt.getOldValue());
 				else
 					onShowDataDomain((ATableBasedDataDomain) evt.getNewValue());
+			}
+		});
+		dataDomainQuery.addPropertyChangeListener(DataDomainQuery.PROP_FILTER, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				recomputeScores();
 			}
 		});
 		scoreQuery.addPropertyChangeListener(ScoreQuery.PROP_ORDER_BY, new PropertyChangeListener() {
@@ -443,8 +442,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	}
 
 	public void onAddColumn(IScore score) {
-		this.scoreQuery
-				.sortBy(score, score.getScoreType() == EScoreType.STANDALONE_METRIC ? ESorting.ASC : ESorting.DESC);
+		this.scoreQuery.sortBy(score, score.getScoreType().isRank() ? ESorting.ASC : ESorting.DESC);
 		this.scoreQuery.addSelection(score);
 		recomputeScores();
 	}
@@ -460,31 +458,10 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 			recomputeScores();
 	}
 
-	public void onImportExternalScore(final ATableBasedDataDomain dataDomain, final IDCategory category) {
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				ScoreParseSpecification spec = new ImportExternalScoreDialog(new Shell(), category).call();
-				if (spec == null)
-					return;
-				IDType target;
-				if (dataDomain.getRecordIDCategory().equals(category))
-					target = dataDomain.getRecordIDType();
-				else
-					target = dataDomain.getDimensionIDType();
-
-				Collection<ExternalIDTypeScore> scores = new ExternalIDTypeScoreParser(spec, target).call();
-
-				final Scores scoreManager = Scores.get();
-
-				IScore last = null;
-				for (ExternalIDTypeScore score : scores) {
-					last = scoreManager.addPersistentScoreIfAbsent(score);
-				}
-				if (last != null) // add the last newly created one to the list
-					triggerEvent(new AddScoreColumnEvent(last, scoreQueryUI));
-			}
-		});
+	public void onImportExternalScore(final ATableBasedDataDomain dataDomain, boolean dimensionDirection,
+			Class<? extends ISerializeableScore> type) {
+		Display.getDefault().asyncExec(
+				new ImportExternalScoreCommand(dataDomain, dimensionDirection, type, scoreQueryUI));
 	}
 
 	/**

@@ -24,10 +24,14 @@ import java.util.Arrays;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 
 /**
+ * a abstraction of a padding used by label renderer
+ *
  * @author Samuel Gratzl
  *
  */
 public class Padding {
+	public static final Padding NONE = new Padding(EMode.GL, 0);
+
 	private final float[] padding;
 	private final EMode mode;
 

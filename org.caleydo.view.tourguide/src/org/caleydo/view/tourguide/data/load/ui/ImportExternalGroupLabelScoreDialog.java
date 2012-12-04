@@ -7,19 +7,17 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.gui.util.AHelpButtonDialog;
-import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.gui.dataimport.PreviewTable;
 import org.caleydo.core.io.gui.dataimport.PreviewTable.IPreviewCallback;
 import org.caleydo.core.io.gui.dataimport.widget.ICallback;
 import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.caleydo.core.io.gui.dataimport.widget.LabelWidget;
 import org.caleydo.core.io.gui.dataimport.widget.LoadFileWidget;
-import org.caleydo.core.io.gui.dataimport.widget.RowConfigWidget;
 import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.util.link.LinkHandler;
-import org.caleydo.view.tourguide.data.load.ScoreParseSpecification;
+import org.caleydo.view.tourguide.data.load.GroupLabelParseSpecification;
 import org.caleydo.view.tourguide.data.score.ECombinedOperator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
@@ -40,13 +38,16 @@ import org.eclipse.swt.widgets.Shell;
  * @author Christian Partl
  *
  */
-public class ImportExternalScoreDialog extends AHelpButtonDialog implements SafeCallable<ScoreParseSpecification> {
+public class ImportExternalGroupLabelScoreDialog extends AHelpButtonDialog implements
+		SafeCallable<GroupLabelParseSpecification> {
 	/**
 	 * The row id category for which groupings should be loaded.
 	 */
-	private final IDCategory rowIDCategory;
+	private final ATableBasedDataDomain dataDomain;
 
-	private final ScoreParseSpecification spec;
+	private final boolean inDimensionDirection;
+
+	private final GroupLabelParseSpecification spec;
 
 	/**
 	 * Composite that is the parent of all gui elements of this this.
@@ -60,7 +61,7 @@ public class ImportExternalScoreDialog extends AHelpButtonDialog implements Safe
 
 	private LoadFileWidget loadFile;
 
-	private RowConfigWidget rowConfig;
+	private RowStratificationConfigWidget rowConfig;
 
 	private PreviewTable previewTable;
 
@@ -68,15 +69,20 @@ public class ImportExternalScoreDialog extends AHelpButtonDialog implements Safe
 
 	private Button normalize;
 
-	public ImportExternalScoreDialog(Shell parentShell, IDCategory rowIDCategory) {
-		this(parentShell, rowIDCategory, null);
+	public ImportExternalGroupLabelScoreDialog(Shell parentShell,  ATableBasedDataDomain dataDomain,
+			boolean inDimensionDirection) {
+		this(parentShell, dataDomain, inDimensionDirection, null);
 	}
 
-	public ImportExternalScoreDialog(Shell parentShell, IDCategory rowIDCategory, ScoreParseSpecification existing) {
+	public ImportExternalGroupLabelScoreDialog(Shell parentShell, ATableBasedDataDomain dataDomain,
+			boolean inDimensionDirection,
+			GroupLabelParseSpecification existing) {
 		super(parentShell);
-		this.rowIDCategory = rowIDCategory;
+		this.dataDomain = dataDomain;
+		this.inDimensionDirection = inDimensionDirection;
+
 		if (existing == null) {
-			spec = new ScoreParseSpecification();
+			spec = new GroupLabelParseSpecification();
 			spec.setDelimiter("\t");
 			spec.setNumberOfHeaderLines(1);
 		} else {
@@ -107,17 +113,18 @@ public class ImportExternalScoreDialog extends AHelpButtonDialog implements Safe
 
 		label = new LabelWidget(parentComposite, "External Score Name");
 
-		rowConfig = new RowConfigWidget(parentComposite, new IntegerCallback() {
-			@Override
-			public void on(int data) {
-				previewTable.onNumHeaderRowsChanged(data);
-			}
-		}, new IntegerCallback() {
-			@Override
-			public void on(int data) {
-				previewTable.onColumnOfRowIDChanged(data);
-			}
-		});
+		rowConfig = new RowStratificationConfigWidget(parentComposite, dataDomain, inDimensionDirection,
+				new IntegerCallback() {
+					@Override
+					public void on(int data) {
+						previewTable.onNumHeaderRowsChanged(data);
+					}
+				}, new IntegerCallback() {
+					@Override
+					public void on(int data) {
+						previewTable.onColumnOfRowIDChanged(data);
+					}
+				});
 		rowConfig.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		Group extra = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
@@ -186,7 +193,6 @@ public class ImportExternalScoreDialog extends AHelpButtonDialog implements Safe
 		this.label.setText(spec.getRankingName());
 		this.label.setEnabled(true);
 
-		this.rowConfig.setCategoryID(rowIDCategory);
 		this.rowConfig.setNumHeaderRows(spec.getNumberOfHeaderLines());
 		this.rowConfig.setColumnOfRowIds(spec.getColumnOfRowIds() + 1);
 
@@ -195,7 +201,7 @@ public class ImportExternalScoreDialog extends AHelpButtonDialog implements Safe
 		this.operator.select(spec.getOperator().ordinal());
 		this.normalize.setSelection(spec.isNormalizeScores());
 
-		this.rowConfig.setIDType(IDType.getIDType(spec.getRowIDSpecification().getIdType()));
+		this.rowConfig.setPerspectiveKey(spec.getPerspectiveKey());
 	}
 
 	private void initWidgetsWithDefaultValues() {
@@ -205,7 +211,6 @@ public class ImportExternalScoreDialog extends AHelpButtonDialog implements Safe
 		this.label.setText("");
 		this.label.setEnabled(false);
 
-		this.rowConfig.setCategoryID(rowIDCategory);
 		this.rowConfig.setEnabled(false);
 	}
 
@@ -216,8 +221,8 @@ public class ImportExternalScoreDialog extends AHelpButtonDialog implements Safe
 			return false;
 		}
 
-		if (this.rowConfig.getIDType() == null) {
-			MessageDialog.openError(new Shell(), "Invalid Row ID Type", "Please select the ID type of the rows");
+		if (this.rowConfig.getPerspectiveKey() == null) {
+			MessageDialog.openError(new Shell(), "Invalid Row Stratification Selection", "Please select the Stratification for which scores should be imported");
 			return false;
 		}
 		return true;
@@ -227,7 +232,7 @@ public class ImportExternalScoreDialog extends AHelpButtonDialog implements Safe
 		List<Integer> selectedColumns = new ArrayList<Integer>(this.previewTable.getSelectedColumns());
 		selectedColumns.remove(spec.getColumnOfRowIds());
 		spec.setColumns(selectedColumns);
-		spec.setRowIDSpecification(this.rowConfig.getIDSpecification());
+		spec.setPerspectiveKey(this.rowConfig.getPerspectiveKey());
 		spec.setContainsColumnIDs(false);
 		spec.setNormalizeScores(this.normalize.getSelection());
 		spec.setOperator(ECombinedOperator.valueOf(this.operator.getText()));
@@ -235,7 +240,7 @@ public class ImportExternalScoreDialog extends AHelpButtonDialog implements Safe
 	}
 
 	@Override
-	public ScoreParseSpecification call() {
+	public GroupLabelParseSpecification call() {
 		if (this.open() == Window.OK)
 			return this.spec;
 		else
@@ -256,7 +261,7 @@ public class ImportExternalScoreDialog extends AHelpButtonDialog implements Safe
 	protected void onPreviewChanged(int totalNumberOfColumns, int totalNumberOfRows,
 			List<? extends List<String>> dataMatrix) {
 		this.rowConfig.setMaxDimension(totalNumberOfColumns, totalNumberOfRows);
-		this.rowConfig.determineConfigFromPreview(dataMatrix, this.rowIDCategory);
+		this.rowConfig.determineConfigFromPreview(dataMatrix);
 		parentComposite.pack();
 		parentComposite.layout(true);
 	}

@@ -101,7 +101,7 @@ public final class ExternalIDTypeScore implements ISerializeableScore {
 
 	@Override
 	public final EScoreType getScoreType() {
-		return isRank ? EScoreType.STANDALONE_METRIC : EScoreType.STANDALONE_SCORE;
+		return isRank ? EScoreType.RANK : EScoreType.SCORE;
 	}
 
 	@Override

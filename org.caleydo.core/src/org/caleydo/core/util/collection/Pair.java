@@ -104,7 +104,7 @@ public class Pair<T, E> implements Comparable<Pair<T, E>> {
 
 	@Override
 	public String toString() {
-		return "<" + first.toString() + ", " + second.toString() + ">";
+		return "<" + first + ", " + second + ">";
 	}
 
 	@Override

@@ -49,7 +49,6 @@ import org.caleydo.view.tourguide.data.filter.CompositeScoreFilter;
 import org.caleydo.view.tourguide.data.filter.IDataDomainFilter;
 import org.caleydo.view.tourguide.data.filter.IScoreFilter;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
-import org.caleydo.view.tourguide.data.score.EScoreType;
 import org.caleydo.view.tourguide.data.score.IBatchComputedGroupScore;
 import org.caleydo.view.tourguide.data.score.IComputedGroupScore;
 import org.caleydo.view.tourguide.data.score.IComputedStratificationScore;
@@ -203,7 +202,7 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	private static final Predicate<IScore> isGroupScore = new Predicate<IScore>() {
 		@Override
 		public boolean apply(IScore in) {
-			return in.getScoreType() == EScoreType.GROUP_SCORE;
+			return in.getScoreType().needsGroup();
 		}
 	};
 

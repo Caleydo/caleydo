@@ -41,16 +41,15 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.view.tourguide.data.filter.CompositeDataDomainFilter;
+import org.caleydo.view.tourguide.data.filter.DefaultStratificationDomainFilter;
+import org.caleydo.view.tourguide.data.filter.EStringCompareOperator;
 import org.caleydo.view.tourguide.data.filter.EmptyGroupFilter;
-import org.caleydo.view.tourguide.data.filter.GroupNameFilter;
+import org.caleydo.view.tourguide.data.filter.GroupNameCompareDomainFilter;
 import org.caleydo.view.tourguide.data.filter.IDataDomainFilter;
-import org.caleydo.view.tourguide.data.filter.StratificationNameFilter;
+import org.caleydo.view.tourguide.data.filter.SpecificDataDomainFilter;
 
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
@@ -71,11 +70,29 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 	private WeakReference<Collection<TablePerspective>> cache = null;
 
 	public DataDomainQuery() {
-		// TODO by ui
-		filter.add(new StratificationNameFilter("Ungrouped"));
 		filter.add(new EmptyGroupFilter());
-		filter.add(new GroupNameFilter("Not Mutated"));
-		filter.add(new GroupNameFilter("Normal"));
+		filter.add(new DefaultStratificationDomainFilter());
+		// create an intelligent default filter
+		filter.addAll(createDefaultFilters());
+	}
+
+	/**
+	 * intelligent guess of good default filters
+	 *
+	 * @return
+	 */
+	private static Collection<IDataDomainFilter> createDefaultFilters() {
+		Collection<IDataDomainFilter> filter = new ArrayList<>();
+		for (ATableBasedDataDomain dataDomain : DataDomainManager.get().getDataDomainsByType(
+				ATableBasedDataDomain.class)) {
+			SpecificDataDomainFilter f = new SpecificDataDomainFilter(dataDomain);
+			if (dataDomain.getLabel().equalsIgnoreCase("Mutations"))
+				f.add(new GroupNameCompareDomainFilter(EStringCompareOperator.EQUAL_IGNORECASE, "Mutated"));
+			else if (dataDomain.getLabel().contains("Copy"))
+				f.add(new GroupNameCompareDomainFilter(EStringCompareOperator.NOT_EQUAL_IGNORECASE, "Normal"));
+			filter.add(f);
+		}
+		return filter;
 	}
 
 	public Collection<ATableBasedDataDomain> getSelection() {
@@ -91,6 +108,7 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 		if (!this.filter.contains(filter))
 			return;
 		this.cache = null;
+		listeners.fireIndexedPropertyChange(PROP_FILTER, this.filter.size() - 1, null, filter);
 	}
 
 	public void removeFilter(IDataDomainFilter filter) {
@@ -134,8 +152,12 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 
 	public Collection<TablePerspective> getStratifications(ATableBasedDataDomain dataDomain) {
 		if (DataDomainOracle.isCategoricalDataDomain(dataDomain)) {
-			return Lists.newArrayList(Iterables.filter(dataDomain.getAllTablePerspectives(),
-					Predicates.not(isUngroupedPredicate)));
+			List<TablePerspective> result = Lists.newArrayList();
+			for (TablePerspective per : dataDomain.getAllTablePerspectives()) {
+				if (filter.apply(Pair.make(per, (Group) null)))
+					result.add(per);
+			}
+			return result;
 		} else {
 			// Take the first non ungrouped dimension perspective
 			String dimensionPerspectiveID = null;
@@ -164,18 +186,14 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 				if (!existsAlready)
 					newTablePerspective.setPrivate(true);
 
+				if (!filter.apply(Pair.make(newTablePerspective, (Group) null)))
+					continue;
+
 				stratifications.add(newTablePerspective);
 			}
 			return stratifications;
 		}
 	}
-
-	private static final Predicate<TablePerspective> isUngroupedPredicate = new Predicate<TablePerspective>() {
-		@Override
-		public boolean apply(TablePerspective per) {
-			return per.getLabel().contains("Ungrouped");
-		}
-	};
 
 	private static boolean isUngrouped(DimensionPerspective per) {
 		return per.getLabel().contains("Ungrouped");

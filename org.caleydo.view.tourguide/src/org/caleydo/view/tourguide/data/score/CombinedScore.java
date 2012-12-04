@@ -73,7 +73,7 @@ public class CombinedScore implements ICompositeScore {
 
 	@Override
 	public final EScoreType getScoreType() {
-		return EScoreType.STANDALONE_SCORE;
+		return EScoreType.STRATIFICATION_SCORE;
 	}
 
 	@Override

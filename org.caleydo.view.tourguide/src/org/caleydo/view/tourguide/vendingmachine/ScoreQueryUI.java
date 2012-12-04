@@ -77,6 +77,7 @@ import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.renderer.AnimatedTextureRenderer;
+import org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.vendingmachine.ui.ScoreFilterDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -181,8 +182,8 @@ public class ScoreQueryUI extends Column {
 		row.setPixelSizeX(COL0_RANK_WIDTH);
 		// row.setLeftToRight(false);
 		row.setGrabY(true);
-		ElementLayout b = wrap(
-				new TextureRenderer("resources/icons/view/tourguide/table_filter.png", view.getTextureManager()), 16);
+		ElementLayout b = wrap(new TextureRenderer(TourGuideRenderStyle.ICON_TABLE_FILTER, view.getTextureManager()),
+				16);
 		b.setGrabY(true);
 		b.addBackgroundRenderer(new PickingRenderer(EDIT_FILTER, 1, view));
 		row.append(b);

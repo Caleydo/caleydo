@@ -19,24 +19,34 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.load;
 
-import javax.xml.bind.annotation.XmlType;
+import java.util.Map;
 
-@XmlType
-public class ScoreParseSpecification extends AExternalScoreParseSpecification {
-	public ScoreParseSpecification() {
-	}
+import org.caleydo.view.tourguide.data.score.ExternalGroupLabelScore;
 
-	public ScoreParseSpecification(String dataSourcePath) {
-		super(dataSourcePath);
+public class ExternalGroupLabelScoreParser extends AExternalScoreParser<GroupLabelParseSpecification, String> {
+
+	public ExternalGroupLabelScoreParser(GroupLabelParseSpecification spec) {
+		super(spec);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see java.lang.Object#clone()
+	 * @see org.caleydo.view.tourguide.data.load.AExternalScoreParser#extractID(java.lang.String)
 	 */
 	@Override
-	public ScoreParseSpecification clone() {
-		return (ScoreParseSpecification) super.clone();
+	protected String extractID(String originalID) {
+		return originalID;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.caleydo.view.tourguide.data.load.AExternalScoreParser#addScore(java.lang.String, boolean, java.util.Map)
+	 */
+	@Override
+	protected ExternalGroupLabelScore createScore(String label, boolean isRank, Map<String, Float> scores) {
+		return new ExternalGroupLabelScore(label, spec.getPerspectiveKey(), isRank, scores);
+	}
+
 }

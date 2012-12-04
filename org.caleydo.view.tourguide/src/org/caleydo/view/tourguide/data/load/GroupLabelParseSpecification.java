@@ -22,21 +22,39 @@ package org.caleydo.view.tourguide.data.load;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType
-public class ScoreParseSpecification extends AExternalScoreParseSpecification {
-	public ScoreParseSpecification() {
+public class GroupLabelParseSpecification extends AExternalScoreParseSpecification {
+	private String perspectiveKey;
+
+	public GroupLabelParseSpecification() {
 	}
 
-	public ScoreParseSpecification(String dataSourcePath) {
+	public GroupLabelParseSpecification(String dataSourcePath, String perspectiveKey) {
 		super(dataSourcePath);
+		this.perspectiveKey = perspectiveKey;
+	}
+
+	/**
+	 * @return the perspectiveKey, see {@link #perspectiveKey}
+	 */
+	public String getPerspectiveKey() {
+		return perspectiveKey;
+	}
+
+	/**
+	 * @param perspectiveKey
+	 *            the perspectiveKey to set
+	 */
+	public void setPerspectiveKey(String perspectiveKey) {
+		this.perspectiveKey = perspectiveKey;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see java.lang.Object#clone()
+	 * @see org.caleydo.view.tourguide.data.load.AExternalScoreParseSpecification#clone()
 	 */
 	@Override
-	public ScoreParseSpecification clone() {
-		return (ScoreParseSpecification) super.clone();
+	public GroupLabelParseSpecification clone() {
+		return (GroupLabelParseSpecification) super.clone();
 	}
 }

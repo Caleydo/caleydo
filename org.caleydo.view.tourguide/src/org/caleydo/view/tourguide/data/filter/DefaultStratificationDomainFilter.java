@@ -24,19 +24,15 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 
 /**
+ * filter out if the table perspective is a default record perspective
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public class GroupNameFilter implements IDataDomainFilter {
-	private final String name;
-
-	public GroupNameFilter(String name) {
-		this.name = name;
-	}
+public class DefaultStratificationDomainFilter implements IDataDomainFilter {
 
 	@Override
 	public boolean apply(Pair<TablePerspective, Group> pair) {
-		Group group = pair.getSecond();
-		return group == null || !name.equals(group.getLabel());
+		return !pair.getFirst().getRecordPerspective().isDefault();
 	}
 }

@@ -46,7 +46,7 @@ public class ImportExternalScoreListener extends AEventListener<VendingMachine> 
 		assert event instanceof ImportExternalScoreEvent;
 		ImportExternalScoreEvent e = (ImportExternalScoreEvent) event;
 
-		this.handler.onImportExternalScore(e.getDataDomain(), e.getCategory());
+		this.handler.onImportExternalScore(e.getDataDomain(), e.isInDimensionDirection(), e.getType());
 	}
 }
 

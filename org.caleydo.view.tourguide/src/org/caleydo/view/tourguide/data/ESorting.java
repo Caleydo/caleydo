@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data;
 
+import org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle;
 
 /**
  * sort type indicator
@@ -41,7 +42,7 @@ public enum ESorting {
 
 	/**
 	 * updates the compare result according to the current state
-	 * 
+	 *
 	 * @param compare
 	 * @return
 	 */
@@ -61,11 +62,11 @@ public enum ESorting {
 	public String getFileName() {
 		switch (this) {
 		case ASC:
-			return "resources/icons/view/tourguide/sort_ascending.png";
+			return TourGuideRenderStyle.ICON_SORT_ASC;
 		case DESC:
-			return "resources/icons/view/tourguide/sort_descending.png";
+			return TourGuideRenderStyle.ICON_SORT_DESC;
 		case NONE:
-			return "resources/icons/view/tourguide/sort_none.png";
+			return TourGuideRenderStyle.ICON_SORT_NONE;
 		default:
 			throw new IllegalStateException("unknown sorting");
 		}

@@ -120,7 +120,7 @@ public abstract class AScoreColumn extends Row {
 		}
 	}
 
-	protected final void addMetricValue(Row row, ScoringElement elem) {
+	protected final void addRankValue(Row row, ScoringElement elem) {
 		// render the real value
 		float value = this.score.getScore(elem);
 		if (!Float.isNaN(value)) {

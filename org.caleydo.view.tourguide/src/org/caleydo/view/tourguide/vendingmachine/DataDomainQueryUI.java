@@ -25,26 +25,33 @@ import static org.caleydo.core.view.opengl.layout.ElementLayouts.createXSpacer;
 import static org.caleydo.core.view.opengl.layout.ElementLayouts.createYSpacer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.io.gui.dataimport.widget.BooleanCallback;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.Padding;
+import org.caleydo.core.view.opengl.layout.Padding.EMode;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.util.button.Button;
-import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.tourguide.data.DataDomainQuery;
+import org.caleydo.view.tourguide.data.filter.IDataDomainFilter;
+import org.caleydo.view.tourguide.data.filter.SpecificDataDomainFilter;
+import org.caleydo.view.tourguide.data.score.ExternalGroupLabelScore;
+import org.caleydo.view.tourguide.data.score.ExternalIDTypeScore;
 import org.caleydo.view.tourguide.event.ImportExternalScoreEvent;
+import org.caleydo.view.tourguide.renderer.AdvancedTextureRenderer;
+import org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle;
+import org.caleydo.view.tourguide.vendingmachine.ui.DataDomainFilterDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * TODO: support filter, ala cutoff or categorical levels
@@ -80,7 +87,8 @@ public class DataDomainQueryUI extends Column {
 				toggleFilteredSelection(rows.get(pick.getObjectID()));
 			}
 		}, TOGGLE_DATA_DOMAIN);
-		view.addTypePickingTooltipListener("Toggle consider this Data Domain for scoring", TOGGLE_DATA_DOMAIN);
+		view.addTypePickingTooltipListener("Left-Click: Add/Remove to Query \nRight-Click: Edit Filter",
+				TOGGLE_DATA_DOMAIN);
 		view.addTypePickingListener(new APickingListener() {
 			@Override
 			public void rightClicked(Pick pick) {
@@ -111,8 +119,17 @@ public class DataDomainQueryUI extends Column {
 	public void setQuery(DataDomainQuery query) {
 		this.query = query;
 		Collection<ATableBasedDataDomain> current = query.getSelection();
-		for (DataDomainRow row : rows)
+
+		for (DataDomainRow row : rows) {
 			row.setSelected(current.contains(row.dataDomain));
+			for (IDataDomainFilter f : query.getFilter()) {
+				if (f instanceof SpecificDataDomainFilter
+						&& ((SpecificDataDomainFilter) f).getDataDomain().equals(row.dataDomain)) {
+					row.setFilter((SpecificDataDomainFilter) f);
+					break;
+				}
+			}
+		}
 		if (this.layoutManager != null)
 			updateSubLayout();
 	}
@@ -132,29 +149,66 @@ public class DataDomainQueryUI extends Column {
 	}
 
 	protected void toggleFilteredSelection(DataDomainRow dataDomainRow) {
-		// TODO Auto-generated method stub
+		if (dataDomainRow.getFilter() != null)
+			onEditFilter(dataDomainRow, dataDomainRow.getFilter());
 	}
+
+	/**
+	 * @param dataDomainRow
+	 * @param f
+	 */
+	private void onEditFilter(final DataDomainRow dataDomainRow, final SpecificDataDomainFilter f) {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				new DataDomainFilterDialog(new Shell(), query, f, new BooleanCallback() {
+					@Override
+					public void on(boolean data) {
+						dataDomainRow.setHasFilter(data);
+					}
+				}).open();
+			}
+		});
+	}
+
 
 	protected void onOpenDataDomainContextMenu(DataDomainRow dataDomainRow) {
 		ContextMenuCreator creator = view.getContextMenuCreator();
 		ATableBasedDataDomain dataDomain = dataDomainRow.dataDomain;
-		for (IDCategory cat : Arrays.asList(dataDomain.getDimensionIDCategory(), dataDomain.getRecordIDCategory())) {
-			creator.addContextMenuItem(new GenericContextMenuItem("Load Scoring for "
-					+ cat.getCategoryName(), new ImportExternalScoreEvent(cat, dataDomain)));
-		}
+		creator.addContextMenuItem(new GenericContextMenuItem("Load Scoring for "
+				+ dataDomain.getDimensionIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain, true,
+				ExternalIDTypeScore.class)));
+		creator.addContextMenuItem(new GenericContextMenuItem("Load Scoring for "
+				+ dataDomain.getRecordIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain, false,
+				ExternalIDTypeScore.class)));
+		creator.addContextMenuItem(new GenericContextMenuItem("Load Grouping Scoring for "
+				+ dataDomain.getDimensionIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain, true,
+				ExternalGroupLabelScore.class)));
+		creator.addContextMenuItem(new GenericContextMenuItem("Load Grouping Scoring for "
+				+ dataDomain.getRecordIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain, false,
+				ExternalGroupLabelScore.class)));
 	}
 
 	private class DataDomainRow extends Row {
-		private final Button button;
 		private final ATableBasedDataDomain dataDomain;
+		private final ElementLayout button;
+		private SpecificDataDomainFilter filter;
 
 		public DataDomainRow(AGLView view, ATableBasedDataDomain dataDomain, int i) {
 			this.dataDomain = dataDomain;
-			this.button = new Button(TOGGLE_DATA_DOMAIN, i, EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
+
 			this.setGrabX(true);
 			this.setPixelSizeY(ROW_HEIGHT);
 
-			this.append(createToggleButton(view));
+			this.button = new ElementLayout("dataSetButtonLayout");
+			button.setPixelSizeX(COL0_BUTTON);
+			button.setRenderer(new AdvancedTextureRenderer(TourGuideRenderStyle.ICON_ACCEPT_DISABLE, view
+					.getTextureManager()));
+			button.addBackgroundRenderer(new PickingRenderer(TOGGLE_DATA_DOMAIN, i, view));
+			button.addForeGroundRenderer(new AdvancedTextureRenderer(null, view.getTextureManager(), new Padding(
+					EMode.PIXEL, 10, 10, 0, 0)));
+
+			this.append(button);
 			this.append(colSpacer);
 			this.append(createColor(dataDomain.getColor(), COL1_DATADOMAIN_TYPE));
 			this.append(colSpacer);
@@ -163,23 +217,47 @@ public class DataDomainQueryUI extends Column {
 			this.append(l);
 		}
 
+		/**
+		 * @param filter
+		 *            the filter to set
+		 */
+		public void setFilter(SpecificDataDomainFilter filter) {
+			this.filter = filter;
+			setHasFilter(!filter.isEmpty());
+		}
 
-		private ElementLayout createToggleButton(AGLView view) {
-			ElementLayout elem = new ElementLayout("dataSetButtonLayout");
-			elem.setPixelSizeX(COL0_BUTTON);
-			elem.setRenderer(new ButtonRenderer(button, view).setZCoordinate(1));
-			return elem;
+		/**
+		 * @return the filter, see {@link #filter}
+		 */
+		public SpecificDataDomainFilter getFilter() {
+			return filter;
 		}
 
 		public boolean isSelected() {
-			return button.isSelected();
+			return TourGuideRenderStyle.ICON_ACCEPT.equals(getButtonRenderer().getImagePath());
 		}
 		public void toggleSelected() {
-			button.setSelected(!isSelected());
+			setSelected(!isSelected());
+		}
+
+		private AdvancedTextureRenderer getButtonRenderer() {
+			return (AdvancedTextureRenderer) button.getRenderer();
 		}
 
 		public void setSelected(boolean selected) {
-			button.setSelected(selected);
+			AdvancedTextureRenderer buttonRenderer = getButtonRenderer();
+			if (selected)
+				buttonRenderer.setImagePath(TourGuideRenderStyle.ICON_ACCEPT);
+			else
+				buttonRenderer.setImagePath(TourGuideRenderStyle.ICON_ACCEPT_DISABLE);
+		}
+
+		public void setHasFilter(boolean hasFilter) {
+			AdvancedTextureRenderer m = (AdvancedTextureRenderer) button.getForegroundRenderer().get(0);
+			if (hasFilter)
+				m.setImagePath(TourGuideRenderStyle.ICON_FILTER);
+			else
+				m.setImagePath(null);
 		}
 
 	}
