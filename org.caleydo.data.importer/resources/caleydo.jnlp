@@ -4,10 +4,21 @@
     codebase="http://data.icg.tugraz.at/caleydo/download/webstart_2.2/" 
     href="JNLP_NAME">
   <information>
-    <title>Caleydo - visualization for molecular biology</title>  
+    <title>Caleydo 2.2 Webstart</title>  
     <vendor>www.caleydo.org</vendor>
-    <homepage href="caleydo.org" /> 
-    <description>Caleydo - visualization for molecular biology</description> 
+    <description>Caleydo - visualization for molecular biology</description>  
+    <icon href="../caleydo.png"/>
+    <homepage href="http://www.caleydo.org" />
+    <!-- 
+    THIS TELLS THE CLIENT TO PUT A SHORTCUT IN BOTH THE 
+    DESKTOP AND MENU AND TO LAUNCH THE ONLINE VERSION. 
+    HOWEVER, I'M THINKING THAT IF THE ONLINE VERSION IS
+    NOT AVAILABLE THEN THAT IS WHEN THE OFFLINE-ALLOWED
+    KICKS IN -->
+    <shortcut online="true">
+      <desktop/>
+      <menu/>
+    </shortcut>
   </information>
  
   <security>
