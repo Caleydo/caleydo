@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,9 +22,9 @@ package org.caleydo.core.view.opengl.util.button;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
- * Class representing a button. It holds several properties of a button to be displayed. The rendering should
- * be done by a {@link ButtonRenderer}.
- * 
+ * Class representing a button. It holds several properties of a button to be displayed. The rendering should be done by
+ * a {@link ButtonRenderer}.
+ *
  * @author Christian Partl
  */
 public class Button {
@@ -32,7 +32,10 @@ public class Button {
 	private boolean isSelected;
 	private boolean isVisible;
 	private int buttonID;
-	private EIconTextures iconTexture;
+	/**
+	 * Path to the image that shall be used as icon for the button.
+	 */
+	private String iconPath;
 	private String pickingType;
 
 	/**
@@ -51,6 +54,14 @@ public class Button {
 		this.setIconTexture(iconTexture);
 	}
 
+	public Button(String pickingType, int buttonID, String iconPath) {
+		isSelected = false;
+		setVisible(true);
+		this.buttonID = buttonID;
+		this.pickingType = pickingType;
+		this.iconPath = iconPath;
+	}
+
 	/**
 	 * @return ID used for picking.
 	 */
@@ -60,7 +71,7 @@ public class Button {
 
 	/**
 	 * Sets the ID used for picking.
-	 * 
+	 *
 	 * @param buttonID
 	 */
 	public void setButtonID(int buttonID) {
@@ -76,7 +87,7 @@ public class Button {
 
 	/**
 	 * Sets the Picking type of the button.
-	 * 
+	 *
 	 * @param pickingType
 	 */
 	public void setPickingType(String pickingType) {
@@ -92,7 +103,7 @@ public class Button {
 
 	/**
 	 * Sets whether the button shall be selected.
-	 * 
+	 *
 	 * @param isSelected
 	 */
 	public void setSelected(boolean isSelected) {
@@ -101,18 +112,26 @@ public class Button {
 
 	/**
 	 * Sets the texture for the button.
-	 * 
+	 *
 	 * @param iconTexture
 	 */
 	public void setIconTexture(EIconTextures iconTexture) {
-		this.iconTexture = iconTexture;
+		this.iconPath = iconTexture.getFileName();
 	}
 
 	/**
-	 * @return Texture of button.
+	 * @param iconPath
+	 *            setter, see {@link iconPath}
 	 */
-	public EIconTextures getIconTexture() {
-		return iconTexture;
+	public void setIconPath(String iconPath) {
+		this.iconPath = iconPath;
+	}
+
+	/**
+	 * @return the iconPath, see {@link #iconPath}
+	 */
+	public String getIconPath() {
+		return iconPath;
 	}
 
 	public void setVisible(boolean isVisible) {

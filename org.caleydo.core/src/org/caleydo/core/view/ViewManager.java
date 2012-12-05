@@ -19,7 +19,9 @@
  *******************************************************************************/
 package org.caleydo.core.view;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -50,6 +52,7 @@ import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -63,6 +66,7 @@ import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.osgi.framework.Bundle;
 
 import com.jogamp.opengl.util.FPSAnimator;
 
@@ -657,7 +661,16 @@ public class ViewManager extends AManager<IView> {
 							for (IConfigurationElement embedding : embeddings) {
 								if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
 									String iconPath = embedding.getAttribute("icon");
-									if (iconPath != null && iconPath == "") {
+									if (iconPath == null || iconPath == "") {
+										return null;
+									}
+
+									Bundle viewPlugin = Platform.getBundle(embedding.getContributor().getName());
+
+									URL iconURL = viewPlugin.getEntry(iconPath);
+									try {
+										iconPath = FileLocator.toFileURL(iconURL).getPath();
+									} catch (IOException e) {
 										return null;
 									}
 									return iconPath;

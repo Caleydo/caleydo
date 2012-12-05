@@ -21,6 +21,7 @@ package org.caleydo.core.view.opengl.util.button;
 
 import gleem.linalg.Vec3f;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -168,19 +169,19 @@ public class ButtonRenderer extends APickableLayoutRenderer {
 
 		switch (textureRotation) {
 		case TEXTURE_ROTATION_0:
-			textureManager.renderTexture(gl, button.getIconTexture(), lowerLeftCorner,
+			textureManager.renderTexture(gl, button.getIconPath(), lowerLeftCorner,
 					lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 			break;
 		case TEXTURE_ROTATION_90:
-			textureManager.renderTexture(gl, button.getIconTexture(), lowerRightCorner,
+			textureManager.renderTexture(gl, button.getIconPath(), lowerRightCorner,
 					upperRightCorner, upperLeftCorner, lowerLeftCorner, 1, 1, 1, 1);
 			break;
 		case TEXTURE_ROTATION_180:
-			textureManager.renderTexture(gl, button.getIconTexture(), upperRightCorner,
+			textureManager.renderTexture(gl, button.getIconPath(), upperRightCorner,
 					upperLeftCorner, lowerLeftCorner, lowerRightCorner, 1, 1, 1, 1);
 			break;
 		case TEXTURE_ROTATION_270:
-			textureManager.renderTexture(gl, button.getIconTexture(), upperLeftCorner,
+			textureManager.renderTexture(gl, button.getIconPath(), upperLeftCorner,
 					lowerLeftCorner, lowerRightCorner, upperRightCorner, 1, 1, 1, 1);
 			break;
 		}
@@ -200,7 +201,7 @@ public class ButtonRenderer extends APickableLayoutRenderer {
 
 			gl.glLineWidth(1);
 			gl.glColor3f(0.3f, 0.3f, 0.3f);
-			gl.glBegin(GL2.GL_LINE_LOOP);
+			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(0, 0, zCoordinate);
 			gl.glVertex3f(x, 0, zCoordinate);
 			gl.glVertex3f(x, y, zCoordinate);

@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.layout.util.multiform;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -22,9 +24,9 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 /**
  * Renderer that allows to switch between different remotely rendered {@link AGLView}s or {@link LayoutRenderer}s and
  * handles remote view creation.
- *
+ * 
  * @author Christian Partl
- *
+ * 
  */
 public class MultiFormRenderer extends AForwardingRenderer {
 
@@ -59,20 +61,15 @@ public class MultiFormRenderer extends AForwardingRenderer {
 	private ARendererInfo currentRendererInfo;
 
 	/**
-	 * Determines whether a default renderer is currently used without setting a renderer active.
-	 */
-	private boolean isDefaultRenderer = true;
-
-	/**
 	 * Set of {@link IMultiFormChangeListener}s that are informed, when this multiform renderer changes.
 	 */
 	private Set<IMultiFormChangeListener> changeListeners = new HashSet<>();
 
 	/**
 	 * Abstract base class for renderer information that is used by {@link MultiFormRenderer}.
-	 *
+	 * 
 	 * @author Christian Partl
-	 *
+	 * 
 	 */
 	private abstract class ARendererInfo {
 
@@ -87,21 +84,27 @@ public class MultiFormRenderer extends AForwardingRenderer {
 		protected String iconPath;
 
 		/**
+		 * Determines, whether the associated renderer is active.
+		 */
+		protected boolean isActive = false;
+
+		/**
 		 * Performs all necessary operations to set the associated rendering entity active in {@link MultiFormRenderer}.
 		 */
 		abstract void setActive();
 
 		/**
 		 * Called in every render cycle to prepare the renderer.
-		 *
+		 * 
 		 * @param gl
 		 */
 		abstract void prepareRenderer(GL2 gl);
+
 	}
 
 	/**
 	 * Info that holds necessary information for remote rendered views.
-	 *
+	 * 
 	 * @author Christian Partl
 	 */
 	private class ViewInfo extends ARendererInfo {
@@ -139,6 +142,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 			currentRenderer.setLimits(x, y);
 			MultiFormRenderer.this.isDisplayListDirty = true;
 			currentRenderer.setDisplayListDirty();
+			isActive = true;
 		}
 
 		@Override
@@ -152,7 +156,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Info that holds necessary information for {@link LayoutRenderer}s.
-	 *
+	 * 
 	 * @author Christian Partl
 	 */
 	private class LayoutRendererInfo extends ARendererInfo {
@@ -167,6 +171,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 			currentRenderer.setLimits(x, y);
 			MultiFormRenderer.this.isDisplayListDirty = true;
 			currentRenderer.setDisplayListDirty();
+			isActive = true;
 		}
 
 		@Override
@@ -183,7 +188,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 	/**
 	 * Adds a view to this {@link MultiFormRenderer}. Depending on whether lazy view creation is being used, the view is
 	 * created immediately or the first time it is used.
-	 *
+	 * 
 	 * @param viewID
 	 *            ID specifying the view type.
 	 * @param embeddingID
@@ -213,11 +218,6 @@ public class MultiFormRenderer extends AForwardingRenderer {
 		info.rendererID = rendererID;
 		rendererInfos.put(rendererID, info);
 
-		// Set default renderer and info in case no activate is performed
-		if (currentRendererInfo == null) {
-			setDefaultRenderer(info, viewRenderer);
-		}
-
 		notifyAdded(rendererID);
 
 		return rendererID;
@@ -225,7 +225,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Adds a {@link LayoutRenderer} to this {@link MultiFormRenderer}.
-	 *
+	 * 
 	 * @param renderer
 	 *            The renderer to be added.
 	 * @param iconPath
@@ -237,7 +237,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 	public int addLayoutRenderer(LayoutRenderer renderer, String iconPath) {
 		LayoutRendererInfo info = new LayoutRendererInfo();
 		info.renderer = renderer;
-		if (info.iconPath == null) {
+		if (iconPath == null) {
 			info.iconPath = EIconTextures.NO_ICON_AVAILABLE.getFileName();
 		} else {
 			info.iconPath = iconPath;
@@ -247,11 +247,6 @@ public class MultiFormRenderer extends AForwardingRenderer {
 		info.rendererID = rendererID;
 		rendererInfos.put(rendererID, info);
 
-		// Set default renderer and info in case no activate is performed
-		if (currentRendererInfo == null) {
-			setDefaultRenderer(info, renderer);
-		}
-
 		notifyAdded(rendererID);
 
 		return rendererID;
@@ -259,7 +254,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Removes a renderer specified by its ID.
-	 *
+	 * 
 	 * @param rendererID
 	 *            ID of the renderer.
 	 * @param destroy
@@ -279,12 +274,11 @@ public class MultiFormRenderer extends AForwardingRenderer {
 				GeneralManager.get().getViewManager().unregisterGLView(view);
 			}
 		} else {
-			LayoutRenderer renderer = ((LayoutRendererInfo) info).renderer;
-			// The current renderer has already been destroyed by super
-			if (currentRenderer != renderer) {
-				GL2 gl = remoteRenderingView.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2();
-				((LayoutRendererInfo) info).renderer.destroy(gl);
-			}
+			GL2 gl = remoteRenderingView.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2();
+			((LayoutRendererInfo) info).renderer.destroy(gl);
+		}
+		if (info == currentRendererInfo) {
+			currentRendererInfo = null;
 		}
 
 		notifyRemoved(rendererID);
@@ -293,7 +287,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 	/**
 	 * Gets the file path of the icon that is associated with the {@link AGLView} or {@link LayoutRenderer} specified by
 	 * the provided renderer ID.
-	 *
+	 * 
 	 * @param rendererID
 	 *            ID that specifies the view or renderer.
 	 * @return File path of the associated Icon. Null, if no renderer or view is associated with the specified ID.
@@ -306,24 +300,42 @@ public class MultiFormRenderer extends AForwardingRenderer {
 		return null;
 	}
 
-	private void setDefaultRenderer(ARendererInfo info, LayoutRenderer renderer) {
-		isDefaultRenderer = true;
-		currentRendererInfo = info;
-		currentRenderer = renderer;
+	/**
+	 * @return The renderer ID of the currently active renderer. -1, if no renderer has been set active.
+	 */
+	public int getActiveRendererID() {
+		return (currentRendererInfo != null && currentRendererInfo.isActive) ? currentRendererInfo.rendererID : -1;
 	}
 
-	private void setDefaultRendererActive() {
-		if (isDefaultRenderer) {
+	/**
+	 * Ensures,if possible, that there is a valid renderer ready to display content.
+	 * 
+	 * @return True, if a valid renderer could be set, false otherwise.
+	 */
+	private boolean ensureValidRenderer() {
+
+		if (currentRendererInfo == null) {
+			List<Integer> idList = new ArrayList<>(rendererInfos.keySet());
+			if (idList.size() > 0) {
+				Collections.sort(idList);
+				currentRendererInfo = rendererInfos.get(idList.get(0));
+			} else {
+				return false;
+			}
+		}
+
+		if (!currentRendererInfo.isActive) {
 			currentRendererInfo.setActive();
-			isDefaultRenderer = false;
 			notifyActive(currentRendererInfo.rendererID, -1);
 		}
+
+		return true;
 	}
 
 	/**
 	 * Sets a {@link AGLView} or {@link LayoutRenderer} previously added to this {@link MultiFormRenderer} active, so
 	 * that it will be rendered. If the specified identifier is invalid, no operation is performed.
-	 *
+	 * 
 	 * @param rendererID
 	 *            Identifier that specifies a view or layout renderer.
 	 */
@@ -331,16 +343,19 @@ public class MultiFormRenderer extends AForwardingRenderer {
 		ARendererInfo info = rendererInfos.get(rendererID);
 		if (info != null) {
 			int previousRendererID = currentRendererInfo != null ? currentRendererInfo.rendererID : -1;
+			if (currentRendererInfo != null) {
+				previousRendererID = currentRendererInfo.rendererID;
+				currentRendererInfo.isActive = false;
+			}
 			currentRendererInfo = info;
 			info.setActive();
-			isDefaultRenderer = false;
 			notifyActive(rendererID, previousRendererID);
 		}
 	}
 
 	/**
 	 * Creates a view using the given view info.
-	 *
+	 * 
 	 * @param viewInfo
 	 * @return
 	 */
@@ -351,7 +366,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Gets the {@link AGLView} associated with the provided rendererID.
-	 *
+	 * 
 	 * @param rendererID
 	 *            Identifier that specifies the view.
 	 * @return The view that is associated with the specified ID. Null, if no view corresponds to this ID.
@@ -373,7 +388,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Gets the {@link LayoutRenderer} associated with the provided rendererID.
-	 *
+	 * 
 	 * @param rendererID
 	 *            Identifier that specifies the layout.
 	 * @return The renderer that is associated with the specified ID. Null, if no renderer corresponds to this ID.
@@ -421,56 +436,65 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	@Override
 	protected void renderContent(GL2 gl) {
-		setDefaultRendererActive();
+		if (!ensureValidRenderer())
+			return;
 		currentRendererInfo.prepareRenderer(gl);
 		super.renderContent(gl);
 	}
 
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
-		setDefaultRendererActive();
+		if (!ensureValidRenderer())
+			return false;
 		return super.permitsWrappingDisplayLists();
 	}
 
 	@Override
 	protected void prepare() {
-		setDefaultRendererActive();
+		if (!ensureValidRenderer())
+			return;
 		super.setDisplayListDirty();
 	}
 
 	@Override
 	public void setDisplayListDirty() {
-		setDefaultRendererActive();
+		if (!ensureValidRenderer())
+			return;
 		super.setDisplayListDirty();
 	}
 
 	@Override
 	public boolean isDisplayListDirty() {
-		setDefaultRendererActive();
+		if (!ensureValidRenderer())
+			return false;
 		return super.isDisplayListDirty();
 	}
 
 	@Override
 	public void setLimits(float x, float y) {
-		setDefaultRendererActive();
+		if (!ensureValidRenderer())
+			return;
 		super.setLimits(x, y);
 	}
 
 	@Override
 	public int getMinHeightPixels() {
-		setDefaultRendererActive();
+		if (!ensureValidRenderer())
+			return 0;
 		return currentRenderer.getMinHeightPixels();
 	}
 
 	@Override
 	public int getMinWidthPixels() {
-		setDefaultRendererActive();
+		if (!ensureValidRenderer())
+			return 0;
 		return currentRenderer.getMinWidthPixels();
 	}
 
 	@Override
 	protected void setElementLayout(ElementLayout elementLayout) {
-		setDefaultRendererActive();
+		if (!ensureValidRenderer())
+			return;
 		super.setElementLayout(elementLayout);
 	}
 
@@ -491,7 +515,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Adds a {@link IMultiFormChangeListener} to this {@link MultiFormRenderer}, if it is not already added.
-	 *
+	 * 
 	 * @param listener
 	 */
 	public void addChangeListener(IMultiFormChangeListener listener) {
@@ -500,7 +524,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Removes a {@link IMultiFormChangeListener} from this {@link MultiFormRenderer}.
-	 *
+	 * 
 	 * @param listener
 	 */
 	public void removeChangeListener(IMultiFormChangeListener listener) {
@@ -509,7 +533,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Notifies all registered {@link IMultiFormChangeListener}s of the change of the currently active renderer.
-	 *
+	 * 
 	 * @param currentRendererID
 	 *            ID of the renderer that is now set active.
 	 * @param previousRendererID
@@ -523,7 +547,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Notifies all registered {@link IMultiFormChangeListener}s of the added renderer.
-	 *
+	 * 
 	 * @param rendererID
 	 *            ID of the renderer that was added.
 	 */
@@ -535,7 +559,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Notifies all registered {@link IMultiFormChangeListener}s of the removed renderer.
-	 *
+	 * 
 	 * @param rendererID
 	 *            ID of the renderer that was removed.
 	 */

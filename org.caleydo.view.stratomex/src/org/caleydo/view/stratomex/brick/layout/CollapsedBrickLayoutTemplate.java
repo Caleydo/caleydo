@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -39,9 +39,9 @@ import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * Brick layout for a compact overview containing a view and a small fuel bar.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
@@ -108,7 +108,7 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		Column baseColumn = new Column("baseColumn");
 		baseColumn.setFrameColor(0, 1, 0, 1);
-		
+
 		// ElementLayout fuelBarLayout = new ElementLayout("fuelBarLayout");
 		// fuelBarLayout.setFrameColor(0, 1, 0, 1);
 		//
@@ -265,7 +265,7 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	/**
 	 * Sets the elements that should appear in the footer bar. The elements will
 	 * placed from left to right using the order of the specified list.
-	 * 
+	 *
 	 * @param footerBarElements
 	 */
 	public void setFooterBarElements(ArrayList<ElementLayout> footerBarElements) {
@@ -274,7 +274,7 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	/**
 	 * Sets whether the footer bar shall be displayed.
-	 * 
+	 *
 	 * @param showFooterBar
 	 */
 	public void showFooterBar(boolean showFooterBar) {

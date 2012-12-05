@@ -161,34 +161,37 @@ public class ElementLayout {
 		return layoutManager;
 	}
 
-	public void destroy() {
+	/**
+	 * Destroys the element layout, associated {@link LayoutRenderer}s.
+	 *
+	 * @param gl
+	 */
+	public void destroy(GL2 gl) {
 		if (zoomer != null) {
 			zoomer.destroy();
 			zoomer = null;
 		}
-	}
-
-	/**
-	 * Destroys the element layout and associated {@link LayoutRenderer}s.
-	 *
-	 * @param gl
-	 */
-	protected void destroy(GL2 gl) {
-		destroy();
 		if (renderer != null)
 			renderer.destroy(gl);
+		renderer = null;
 
 		if (foregroundRenderers != null) {
 			for (LayoutRenderer foregroundRenderer : foregroundRenderers) {
 				foregroundRenderer.destroy(gl);
 			}
+			foregroundRenderers.clear();
+			backgroundRenderers = null;
 		}
+
 
 		if (backgroundRenderers != null) {
 			for (LayoutRenderer foregroundRenderer : backgroundRenderers) {
 				foregroundRenderer.destroy(gl);
 			}
+			backgroundRenderers.clear();
+			backgroundRenderers = null;
 		}
+
 
 	}
 

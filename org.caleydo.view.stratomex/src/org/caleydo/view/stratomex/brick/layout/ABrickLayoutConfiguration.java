@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -36,9 +36,9 @@ import org.caleydo.view.stratomex.column.BrickColumn;
 /**
  * Base class are intended to specify the elements and their layout for
  * different appearances of a brick.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 
@@ -77,7 +77,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 
 	/**
 	 * Sets the renderer for the view element of a brick.
-	 * 
+	 *
 	 * @param viewRenderer
 	 */
 	public void setViewRenderer(LayoutRenderer viewRenderer) {
@@ -86,7 +86,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 
 	/**
 	 * Gets the renderer for the view element of a brick.
-	 * 
+	 *
 	 * @return viewRenderer
 	 */
 	public LayoutRenderer getViewRenderer() {
@@ -113,7 +113,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 
 	/**
 	 * Sets the view types that are valid for the layout.
-	 * 
+	 *
 	 * @param validViewTypes
 	 */
 	public void setValidViewTypes(HashSet<EContainedViewType> validViewTypes) {
@@ -122,7 +122,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 
 	/**
 	 * Sets the default view type for the layout.
-	 * 
+	 *
 	 * @param validViewTypes
 	 */
 	public void setDefaultViewType(EContainedViewType defaultViewType) {
@@ -157,7 +157,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	/**
 	 * Sets, whether view switching by this brick should affect other bricks in
 	 * the dimension group.
-	 * 
+	 *
 	 * @param isGlobalViewSwitching
 	 */
 	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
@@ -165,7 +165,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 
 	/**
 	 * Sets whether the brick resizing is currently locked.
-	 * 
+	 *
 	 * @param lockResizing
 	 */
 	public abstract void setLockResizing(boolean lockResizing);
@@ -174,7 +174,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	 * Gets the layout that represents the collapsed version of the current
 	 * layout. If no further collapsing is possible, the current layout is
 	 * returned.
-	 * 
+	 *
 	 * @return
 	 */
 	public abstract ABrickLayoutConfiguration getCollapsedLayoutTemplate();
@@ -183,7 +183,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	 * Gets the layout that represents the expanded version of the current
 	 * layout. If no further expansion is possible, the current layout is
 	 * returned.
-	 * 
+	 *
 	 * @return
 	 */
 	public abstract ABrickLayoutConfiguration getExpandedLayoutTemplate();
@@ -328,7 +328,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	 */
 	public void destroy() {
 		if (viewLayout != null) {
-			viewLayout.destroy();
+			viewLayout.destroy(brick.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2());
 			viewLayout = null;
 		}
 	}

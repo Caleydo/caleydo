@@ -33,21 +33,17 @@ import org.caleydo.core.util.collection.Pair;
  *
  * @author Alexander Lex
  */
-public abstract class ALayoutContainer
-	extends ElementLayout
-	implements Iterable<ElementLayout> {
+public abstract class ALayoutContainer extends ElementLayout implements Iterable<ElementLayout> {
 
 	/**
-	 * Flag signaling whether the x-size of the container should be calculated
-	 * as the sum of it's parts (true), or if some size indication (either
-	 * scaled or not scaled) is given (false)
+	 * Flag signaling whether the x-size of the container should be calculated as the sum of it's parts (true), or if
+	 * some size indication (either scaled or not scaled) is given (false)
 	 */
 	protected boolean isXDynamic = false;
 
 	/**
-	 * Flag signaling whether the y-size of the container should be calculated
-	 * as the sum of it's parts (true), or if some size indication (either
-	 * scaled or not scaled) is given (false)
+	 * Flag signaling whether the y-size of the container should be calculated as the sum of it's parts (true), or if
+	 * some size indication (either scaled or not scaled) is given (false)
 	 */
 	protected boolean isYDynamic = false;
 
@@ -57,42 +53,29 @@ public abstract class ALayoutContainer
 	protected ArrayList<ElementLayout> elements = new ArrayList<ElementLayout>();
 
 	/**
-	 * The currently available bottom distance for the layout. Use if only this
-	 * sub-part of the layout is updated
+	 * The currently available bottom distance for the layout. Use if only this sub-part of the layout is updated
 	 */
 	protected float bottom;
 	/**
-	 * The currently available top distance for the layout. Use if only this
-	 * sub-part of the layout is updated
+	 * The currently available top distance for the layout. Use if only this sub-part of the layout is updated
 	 */
 	protected float top;
 	/**
-	 * The currently available left distance for the layout. Use if only this
-	 * sub-part of the layout is updated
+	 * The currently available left distance for the layout. Use if only this sub-part of the layout is updated
 	 */
 	protected float left;
 	/**
-	 * The currently available right distance for the layout. Use if only this
-	 * sub-part of the layout is updated
+	 * The currently available right distance for the layout. Use if only this sub-part of the layout is updated
 	 */
 	protected float right;
 
 	/**
-	 * Determines whether the layout elements of this container are rendered in
-	 * an order according to their priority.
+	 * Determines whether the layout elements of this container are rendered in an order according to their priority.
 	 */
 	protected boolean isPriorityRendereing = false;
 
 	public ALayoutContainer() {
 		super();
-	}
-
-	@Override
-	public void destroy() {
-		super.destroy();
-		for (ElementLayout element : elements) {
-			element.destroy();
-		}
 	}
 
 	public ALayoutContainer(String layoutName) {
@@ -107,8 +90,7 @@ public abstract class ALayoutContainer
 		if (isPriorityRendereing) {
 			List<Pair<Integer, ElementLayout>> sortedList = new ArrayList<Pair<Integer, ElementLayout>>();
 			for (ElementLayout element : elements) {
-				sortedList.add(new Pair<Integer, ElementLayout>(
-						element.getRenderingPriority(), element));
+				sortedList.add(new Pair<Integer, ElementLayout>(element.getRenderingPriority(), element));
 			}
 
 			Collections.sort(sortedList);
@@ -117,8 +99,7 @@ public abstract class ALayoutContainer
 			for (Pair<Integer, ElementLayout> pair : sortedList) {
 				pair.getSecond().render(gl);
 			}
-		}
-		else {
+		} else {
 			for (ElementLayout element : elements) {
 				element.render(gl);
 			}
@@ -126,18 +107,16 @@ public abstract class ALayoutContainer
 	}
 
 	/**
-	 * Set flag signaling whether the x-size of the container should be
-	 * calculated as the sum of it's parts (true), or if some size indication
-	 * (either scaled or not scaled) is given (false)
+	 * Set flag signaling whether the x-size of the container should be calculated as the sum of it's parts (true), or
+	 * if some size indication (either scaled or not scaled) is given (false)
 	 */
 	public void setXDynamic(boolean isXDynamic) {
 		this.isXDynamic = isXDynamic;
 	}
 
 	/**
-	 * Set flag signaling whether the y-size of the container should be
-	 * calculated as the sum of it's parts (true), or if some size indication
-	 * (either scaled or not scaled) is given (false)
+	 * Set flag signaling whether the y-size of the container should be calculated as the sum of it's parts (true), or
+	 * if some size indication (either scaled or not scaled) is given (false)
 	 */
 	public void setYDynamic(boolean isYDynamic) {
 		this.isYDynamic = isYDynamic;
@@ -163,8 +142,7 @@ public abstract class ALayoutContainer
 	}
 
 	/**
-	 * Add an element to the container at the specified index. Subsequent
-	 * layouts will be shifted to the right.
+	 * Add an element to the container at the specified index. Subsequent layouts will be shifted to the right.
 	 *
 	 * @param index
 	 * @param elementLayout
@@ -199,8 +177,7 @@ public abstract class ALayoutContainer
 		else
 			name = super.toString();
 
-		return ("Container " + name + " with " + elements.size() + " elements. height: "
-				+ sizeScaledY + ", widht: " + sizeScaledX);
+		return ("Container " + name + " with " + elements.size() + " elements. height: " + sizeScaledY + ", widht: " + sizeScaledX);
 	}
 
 	public int size() {
@@ -217,9 +194,8 @@ public abstract class ALayoutContainer
 
 	// --------------------- End of Public Interface ---------------------
 
-	protected abstract void calculateSubElementScales(float availableWidth,
-			float availableHeight, Integer numberOfDynamicSizeUnitsX,
-			Integer numberOfDynamicSizeUnitsY);
+	protected abstract void calculateSubElementScales(float availableWidth, float availableHeight,
+			Integer numberOfDynamicSizeUnitsX, Integer numberOfDynamicSizeUnitsY);
 
 	protected void calculateTransforms(float bottom, float left, float top, float right) {
 		this.bottom = bottom;
@@ -257,12 +233,13 @@ public abstract class ALayoutContainer
 	}
 
 	@Override
-	protected void destroy(GL2 gl) {
+	public void destroy(GL2 gl) {
 		super.destroy(gl);
 
 		for (ElementLayout elementLayout : elements) {
 			elementLayout.destroy(gl);
 		}
+		elements.clear();
 	}
 
 	public ArrayList<ElementLayout> getElements() {
@@ -270,17 +247,16 @@ public abstract class ALayoutContainer
 	}
 
 	/**
-	 * @return True, if this layout container renders its elements in an order
-	 *         (concerning the time) according to their priority, false
-	 *         otherwise.
+	 * @return True, if this layout container renders its elements in an order (concerning the time) according to their
+	 *         priority, false otherwise.
 	 */
 	public boolean isPriorityRendereing() {
 		return isPriorityRendereing;
 	}
 
 	/**
-	 * Sets whether this layout container renders its elements in an order
-	 * (concerning the time) according to their priority.
+	 * Sets whether this layout container renders its elements in an order (concerning the time) according to their
+	 * priority.
 	 *
 	 * @param isPriorityRendereing
 	 */

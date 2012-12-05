@@ -60,6 +60,7 @@
             <Embedding
                   ID="test"
                   embeddingID="test"
+                  icon="resources/icons/histogram.png"
                   viewCreator="org.caleydo.view.histogram.HistogramRemoteViewCreator">
             </Embedding>
          </ParentView>
