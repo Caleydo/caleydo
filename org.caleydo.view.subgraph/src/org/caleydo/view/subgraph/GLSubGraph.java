@@ -19,10 +19,15 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
+import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
+import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.eclipse.swt.widgets.Composite;
 
 public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedView, IGLRemoteRenderingView {
@@ -39,7 +44,7 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 
 	private Set<String> remoteRenderedViewIDs;
 
-	private ElementLayout baseElementLayout;
+	private Column baseColumn;
 
 	private AddTablePerspectivesListener addTablePerspectivesListener;
 
@@ -63,10 +68,10 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 
-		baseElementLayout = new ElementLayout();
-		baseElementLayout.setRatioSizeX(1);
-		baseElementLayout.setRatioSizeY(1);
-		layoutManager.setBaseElementLayout(baseElementLayout);
+		baseColumn = new Column();
+		baseColumn.setRatioSizeX(1);
+		baseColumn.setRatioSizeY(1);
+		layoutManager.setBaseElementLayout(baseColumn);
 
 	}
 
@@ -187,8 +192,14 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 			for (String viewID : remoteRenderedViewIDs) {
 				currentRendererID = multiFormRenderer.addView(viewID, "test", tablePerspectives);
 			}
-			multiFormRenderer.removeRenderer(currentRendererID, true);
-			baseElementLayout.setRenderer(multiFormRenderer);
+			LayoutRenderer customRenderer = new BorderedAreaRenderer();
+			multiFormRenderer.addLayoutRenderer(customRenderer, EIconTextures.ARROW_DOWN.getFileName());
+
+			MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer, this);
+			baseColumn.add(viewSwitchingBar);
+			ElementLayout multiformRendererLayout = new ElementLayout();
+			multiformRendererLayout.setRenderer(multiFormRenderer);
+			baseColumn.add(multiformRendererLayout);
 			setDisplayListDirty();
 		}
 	}
