@@ -347,7 +347,7 @@ public class TableBasedDataNode
 	public void update() {
 
 		retrieveTablePerspectives();
-		if (dataDomain.getRecordPerspectiveIDs().size() > 1 || dataDomain.getDimensionPerspectiveIDs().size() > 1) {
+		if (dataDomain.getRecordPerspectiveIDs().size() > 0 || dataDomain.getDimensionPerspectiveIDs().size() > 0) {
 			toggleTablePerspectiveButton.setVisible(true);
 		}
 		currentState.apply();
@@ -375,6 +375,8 @@ public class TableBasedDataNode
 		// }
 
 		Set<String> recordPerspectiveIDs = dataDomain.getRecordPerspectiveIDs();
+		if (recordPerspectiveIDs == null)
+			return;
 
 		List<Pair<String, RecordPerspective>> parentRecordPerspectives = new ArrayList<Pair<String, RecordPerspective>>();
 		Map<RecordPerspective, List<Pair<String, RecordPerspective>>> childRecordPerspectiveLists = new HashMap<RecordPerspective, List<Pair<String, RecordPerspective>>>();
