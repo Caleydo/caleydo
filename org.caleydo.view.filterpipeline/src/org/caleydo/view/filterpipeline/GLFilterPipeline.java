@@ -105,31 +105,29 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	private FilterType filterType = FilterType.RECORD;
 
 	/**
-	 * First filter to be displayed. All filters before are hidden and the
-	 * height of the first filter shall fill the whole view.
+	 * First filter to be displayed. All filters before are hidden and the height of the first filter shall fill the
+	 * whole view.
 	 */
 	private int firstFilter = 0;
 
 	/**
-	 * The filtered items of this filter will be ignored, so that we can see
-	 * what the filter pipeline would look like without this filter.
+	 * The filtered items of this filter will be ignored, so that we can see what the filter pipeline would look like
+	 * without this filter.
 	 *
 	 * Set to -1 if no filter should be ignored.
 	 */
 	private int ignoredFilter = -1;
 
 	/**
-	 * The filter which should be showed in full size, which showing all
-	 * filtered items, even those which don't arrive as input because they have
-	 * been filtered before.
+	 * The filter which should be showed in full size, which showing all filtered items, even those which don't arrive
+	 * as input because they have been filtered before.
 	 *
 	 * Set to -1 if no filter should be showed full sized.
 	 */
 	private int fullSizedFilter = -1;
 
 	/**
-	 * The size a filter should have in OpenGL units. The x value is absolute,
-	 * the y value is per 100 elements
+	 * The size a filter should have in OpenGL units. The x value is absolute, the y value is per 100 elements
 	 */
 	private Vec2f filterSize = null;
 
@@ -147,8 +145,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	 * Constructor.
 	 *
 	 */
-	public GLFilterPipeline(IGLCanvas glCanvas, Composite parentComposite,
-			ViewFrustum viewFrustum) {
+	public GLFilterPipeline(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -162,22 +159,19 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		displayListIndex = gl.glGenLists(1);
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new FilterPipelineRenderStyle(viewFrustum);
-		selectionManager = new SelectionManager(IDType.registerType("filter_"
-				+ hashCode(), IDCategory.registerCategory("filter"), EDataType.INT));
+		selectionManager = new SelectionManager(IDType.registerType("filter_" + hashCode(),
+				IDCategory.registerCategory("filter"), EDataType.INT));
 
 		super.renderStyle = renderStyle;
 		detailLevel = EDetailLevel.HIGH;
 
 		background = new Background(uniqueID, pickingManager, renderStyle);
 
-		radialMenu = new RadialMenu(this, textureManager.getIconTexture(gl,
-				EIconTextures.FILTER_PIPELINE_MENU_ITEM));
+		radialMenu = new RadialMenu(this, textureManager.getIconTexture(EIconTextures.FILTER_PIPELINE_MENU_ITEM));
 		// radialMenu.addEntry( null );
 		// radialMenu.addEntry( null );
-		radialMenu.addEntry(textureManager.getIconTexture(gl,
-				EIconTextures.FILTER_PIPELINE_DELETE));
-		radialMenu.addEntry(textureManager.getIconTexture(gl,
-				EIconTextures.FILTER_PIPELINE_EDIT));
+		radialMenu.addEntry(textureManager.getIconTexture(EIconTextures.FILTER_PIPELINE_DELETE));
+		radialMenu.addEntry(textureManager.getIconTexture(EIconTextures.FILTER_PIPELINE_EDIT));
 
 		// filterMenu = new FilterMenu(renderStyle, pickingManager, iUniqueID);
 
@@ -207,8 +201,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	}
 
 	@Override
-	public void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener) {
+	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 		// Register keyboard listener to GL2 canvas
 		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
 			@Override
@@ -279,14 +272,12 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 
 				if (filter.getId() == firstFilter) {
 					// show input for first filter
-					textRenderer.renderText(gl, "" + filter.getInput().size(), 0.05f,
-							filter.getRepresentation().getPosition().y()
-									+ filter.getRepresentation().getHeightLeft() + 0.05f,
-							0.9f, 0.004f, 20);
+					textRenderer.renderText(gl, "" + filter.getInput().size(), 0.05f, filter.getRepresentation()
+							.getPosition().y()
+							+ filter.getRepresentation().getHeightLeft() + 0.05f, 0.9f, 0.004f, 20);
 				} else {
-					displayCollapseArrow(gl, filter.getId(), filter.getRepresentation()
-							.getPosition().x()
-							- 0.062f * filterSize.x() - 0.15f);
+					displayCollapseArrow(gl, filter.getId(), filter.getRepresentation().getPosition().x() - 0.062f
+							* filterSize.x() - 0.15f);
 				}
 
 				if (filter.getId() == fullSizedFilter
@@ -294,11 +285,10 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 
 					Vec2f pos = filter.getRepresentation().getPosition();
 
-					float fullHeightLeft = (filterList.get(0).getInput().size() * filterSize
-							.y()) / 100.f;
+					float fullHeightLeft = (filterList.get(0).getInput().size() * filterSize.y()) / 100.f;
 
-					float fullHeightRight = ((filterList.get(0).getInput().size() - filter
-							.getSizeVADelta()) * filterSize.y()) / 100.f;
+					float fullHeightRight = ((filterList.get(0).getInput().size() - filter.getSizeVADelta()) * filterSize
+							.y()) / 100.f;
 
 					gl.glBegin(GL2.GL_QUADS);
 					gl.glColor4f(153 / 255.f, 213 / 255.f, 148 / 255.f, 0.3f);
@@ -341,16 +331,14 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	}
 
 	private void displayCollapseArrow(GL2 gl, int id, float left) {
-		int iPickingID = pickingManager.getPickingID(uniqueID,
-				PickingType.FILTERPIPE_START_ARROW, id);
+		int iPickingID = pickingManager.getPickingID(uniqueID, PickingType.FILTERPIPE_START_ARROW, id);
 		float bottom = 0.025f;
 		float halfSize = 0.075f;
 
 		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
-		Texture arrowTexture = textureManager.getIconTexture(gl,
-				EIconTextures.HEAT_MAP_ARROW);
+		Texture arrowTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_ARROW);
 		arrowTexture.enable(gl);
 		arrowTexture.bind(gl);
 		TextureCoords texCoords = arrowTexture.getImageTexCoords();
@@ -391,8 +379,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int externalID, Pick pick) {
 		int newFullSizedFilter = -1;
 
 		switch (pickingMode) {
@@ -437,8 +424,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 				}
 
 				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
-				dragAndDropController.addDraggable(filterList.get(externalID)
-						.getRepresentation());
+				dragAndDropController.addDraggable(filterList.get(externalID).getRepresentation());
 				break;
 			case RIGHT_CLICKED:
 				radialMenu.show(externalID, mousePosition);
@@ -534,10 +520,8 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 
 	private void updateMousePosition(GL2 gl) {
 		try {
-			float windowCoords[] = GLCoordinateUtils
-					.convertWindowCoordinatesToWorldCoordinates(gl,
-							glMouseListener.getPickedPoint().x,
-							glMouseListener.getPickedPoint().y);
+			float windowCoords[] = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
+					glMouseListener.getPickedPoint().x, glMouseListener.getPickedPoint().y);
 
 			mousePosition.set(windowCoords[0], windowCoords[1]);
 		} catch (Exception e) {
@@ -555,16 +539,13 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		else if (firstFilter < 0)
 			firstFilter = 0;
 
-		filterSize = new Vec2f((viewFrustum.getWidth() - 0.1f)
-				/ (filterList.size() - firstFilter),
+		filterSize = new Vec2f((viewFrustum.getWidth() - 0.1f) / (filterList.size() - firstFilter),
 
 		// 100 elements will be high exactly 1 unit. So we need to scale
 		// it that the largest (== first) filter fits.
-				(viewFrustum.getHeight() - 0.4f)
-						/ (filterList.get(firstFilter).getInput().size() / 100.f));
+				(viewFrustum.getHeight() - 0.4f) / (filterList.get(firstFilter).getInput().size() / 100.f));
 
-		Vec2f filterPosition = new Vec2f(0.12f, renderStyle.FILTER_SPACING_BOTTOM), width = new Vec2f(
-				filterSize.x(), 0);
+		Vec2f filterPosition = new Vec2f(0.12f, renderStyle.FILTER_SPACING_BOTTOM), width = new Vec2f(filterSize.x(), 0);
 
 		filterSize.setX(filterSize.x() * 0.945f);
 
@@ -601,10 +582,8 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 
 		reEvaluateFilterListener = new ReEvaluateFilterListener();
 		reEvaluateFilterListener.setHandler(this);
-		eventPublisher.addListener(ReEvaluateRecordFilterListEvent.class,
-				reEvaluateFilterListener);
-		eventPublisher.addListener(ReEvaluateDimensionFilterListEvent.class,
-				reEvaluateFilterListener);
+		eventPublisher.addListener(ReEvaluateRecordFilterListEvent.class, reEvaluateFilterListener);
+		eventPublisher.addListener(ReEvaluateDimensionFilterListEvent.class, reEvaluateFilterListener);
 
 		setFilterTypeListener = new SetFilterTypeListener();
 		setFilterTypeListener.setHandler(this);
@@ -642,15 +621,11 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		filterList.clear();
 		int filterID = 0;
 
-		RecordFilterManager recordFilterManager = tablePerspective.getRecordPerspective()
-				.getFilterManager();
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
-				.getVirtualArray();
+		RecordFilterManager recordFilterManager = tablePerspective.getRecordPerspective().getFilterManager();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
-		DimensionFilterManager dimensionFilterManager = tablePerspective
-				.getDimensionPerspective().getFilterManager();
+		DimensionFilterManager dimensionFilterManager = tablePerspective.getDimensionPerspective().getFilterManager();
 
 		VirtualArray<?, ?, ?> currentVA;
 		FilterManager<?, ?, ?, ?> filterManager;
@@ -664,15 +639,13 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		}
 
 		for (Filter<?> filter : filterManager.getFilterPipe()) {
-			FilterItem<?> filterItem = new FilterItem(filterID++, filter, pickingManager,
-					uniqueID);
+			FilterItem<?> filterItem = new FilterItem(filterID++, filter, pickingManager, uniqueID);
 
 			if (filter instanceof RecordMetaOrFilter)
-				filterItem.setRepresentation(new FilterRepresentationMetaOrAdvanced(
-						renderStyle, pickingManager, uniqueID));
+				filterItem.setRepresentation(new FilterRepresentationMetaOrAdvanced(renderStyle, pickingManager,
+						uniqueID));
 			else
-				filterItem.setRepresentation(new FilterRepresentation(renderStyle,
-						pickingManager, uniqueID));
+				filterItem.setRepresentation(new FilterRepresentation(renderStyle, pickingManager, uniqueID));
 
 			filterList.add(filterItem);
 		}
@@ -704,20 +677,17 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		if (table.getUncertainty().getNormalizedUncertainty() != null)
 			return;
 
-		RecordFilter contentFilter = new RecordFilter(tablePerspective
-				.getRecordPerspective().getPerspectiveID());
+		RecordFilter contentFilter = new RecordFilter(tablePerspective.getRecordPerspective().getPerspectiveID());
 		contentFilter.setDataDomain(dataDomain);
 		contentFilter.setLabel("Signal-To-Noise Ratio Filter");
 
 		table.getUncertainty().calculateRawAverageUncertainty(
 				tablePerspective.getDimensionPerspective().getPerspectiveID());
 
-		Histogram histogram = HistogramCreator.createHistogram(table.getUncertainty()
-				.getRawUncertainty());
+		Histogram histogram = HistogramCreator.createHistogram(table.getUncertainty().getRawUncertainty());
 
-		FilterRepresentationSNR filterRep = new FilterRepresentationSNR(tablePerspective
-				.getRecordPerspective().getPerspectiveID(), tablePerspective.getDimensionPerspective()
-				.getPerspectiveID());
+		FilterRepresentationSNR filterRep = new FilterRepresentationSNR(tablePerspective.getRecordPerspective()
+				.getPerspectiveID(), tablePerspective.getDimensionPerspective().getPerspectiveID());
 		filterRep.setFilter(contentFilter);
 		filterRep.setTable(table);
 		filterRep.setHistogram(histogram);
@@ -743,8 +713,8 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
-			IDType idType, int id) throws InvalidAttributeValueException {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
+			throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
 	}

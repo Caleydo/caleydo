@@ -85,25 +85,21 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * </p>
  * <h2>Creating a View</h2>
  * <p>
- * Views may only be instantiated using the
- * {@link ViewManager#createGLView(Class, GLCanvas, ViewFrustum)}. As a
- * consequence, the constructor of the view may have only those two arguments
- * (GLCanvas, ViewFrustum). Otherwise, the creation will fail.
+ * Views may only be instantiated using the {@link ViewManager#createGLView(Class, GLCanvas, ViewFrustum)}. As a
+ * consequence, the constructor of the view may have only those two arguments (GLCanvas, ViewFrustum). Otherwise, the
+ * creation will fail.
  * </p>
  * <p>
- * After the object is created, set the dataDomain (if your view is a
- * {@link IDataDomainBasedView}). If your view is rendered remotely (i.e.
- * embedded in anothre view) you MUST call
- * {@link #setRemoteRenderingGLView(IGLRemoteRenderingView)} now! Then you MUST
- * call {@link #initialize()}. This method initializes the event listeners and
- * other things.
+ * After the object is created, set the dataDomain (if your view is a {@link IDataDomainBasedView}). If your view is
+ * rendered remotely (i.e. embedded in anothre view) you MUST call
+ * {@link #setRemoteRenderingGLView(IGLRemoteRenderingView)} now! Then you MUST call {@link #initialize()}. This method
+ * initializes the event listeners and other things.
  * </p>
  *
  * @author Marc Streit
  * @author Alexander Lex
  */
-public abstract class AGLView extends AView implements GLEventListener, IResettableView,
-		IMouseWheelHandler {
+public abstract class AGLView extends AView implements GLEventListener, IResettableView, IMouseWheelHandler {
 
 	protected final static int EMPTY_VIEW_TEXT_HEIGHT_PIXELS = 26;
 
@@ -112,8 +108,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	/**
-	 * The canvas rendering the view. The canvas also holds the
-	 * {@link PixelGLConverter}
+	 * The canvas rendering the view. The canvas also holds the {@link PixelGLConverter}
 	 */
 	protected IGLCanvas parentGLCanvas;
 
@@ -137,24 +132,21 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	protected PixelGLConverter pixelGLConverter = null;
 
 	/**
-	 * The views current aspect ratio. Value gets updated when reshape is called
-	 * by the JOGL2 animator.
+	 * The views current aspect ratio. Value gets updated when reshape is called by the JOGL2 animator.
 	 */
 	protected float aspectRatio = 1f;
 
 	protected EDetailLevel detailLevel = EDetailLevel.HIGH;
 
 	/**
-	 * The remote level element in which the view is placed. This variable is
-	 * only set when the view is rendered remote.
+	 * The remote level element in which the view is placed. This variable is only set when the view is rendered remote.
 	 */
 	protected RemoteLevelElement remoteLevelElement;
 
 	protected IGLRemoteRenderingView glRemoteRenderingView;
 
 	/**
-	 * Flag determining whether the display list is invalid and has to be
-	 * rebuild
+	 * Flag determining whether the display list is invalid and has to be rebuild
 	 */
 	protected boolean isDisplayListDirty = true;
 
@@ -185,20 +177,17 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	protected CaleydoTextRenderer textRenderer;
 
 	/**
-	 * True if the mouse is currently over this view. If lazyMode is true then
-	 * the picking does not need to be rendered
+	 * True if the mouse is currently over this view. If lazyMode is true then the picking does not need to be rendered
 	 */
 	protected boolean lazyMode;
 
 	/**
-	 * picking listeners that are notified only for picks with a specific id /
-	 * type combination. The key of the map is the type, the key of the internal
-	 * map is the pickedObjectID
+	 * picking listeners that are notified only for picks with a specific id / type combination. The key of the map is
+	 * the type, the key of the internal map is the pickedObjectID
 	 */
 	private HashMap<String, HashMap<Integer, Set<IPickingListener>>> idPickingListeners;
 	/**
-	 * Picking listeners that are notified for all picks of a type. The key of
-	 * the map is the type.
+	 * Picking listeners that are notified for all picks of a type. The key of the map is the type.
 	 */
 	private HashMap<String, Set<IPickingListener>> typePickingListeners;
 
@@ -211,19 +200,18 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	private boolean focusGained = false;
 
 	/**
-	 * Constructor. If the glCanvas object is null - then the view is rendered
-	 * remote.
+	 * Constructor. If the glCanvas object is null - then the view is rendered remote.
 	 *
 	 * @param viewType
 	 *            TODO
 	 * @param viewName
 	 *            TODO
 	 */
-	protected AGLView(IGLCanvas glCanvas, final Composite parentComposite,
-			final ViewFrustum viewFrustum, String viewType, String viewName) {
+	protected AGLView(IGLCanvas glCanvas, final Composite parentComposite, final ViewFrustum viewFrustum,
+			String viewType, String viewName) {
 
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW),
-				parentComposite, viewType, viewName);
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW), parentComposite, viewType,
+				viewName);
 
 		parentGLCanvas = glCanvas;
 
@@ -298,8 +286,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		gl.glShadeModel(GL2.GL_SMOOTH); // Enables Smooth Shading
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // white Background
 		gl.glClearDepth(1.0f); // Depth Buffer Setup
-		gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT
-				| GL2.GL_STENCIL_BUFFER_BIT);
+		gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT | GL2.GL_STENCIL_BUFFER_BIT);
 
 		gl.glEnable(GL2.GL_DEPTH_TEST);
 		gl.glDepthFunc(GL2.GL_LEQUAL);
@@ -373,8 +360,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 			gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 
 			gl.glTranslatef(position.x(), position.y(), position.z());
-			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(),
-					rot_Vec3f.y(), rot_Vec3f.z());
+			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
 
 			displayLocal(gl);
 
@@ -409,19 +395,17 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 	/**
 	 * <p>
-	 * Method responsible for initialization of the data. It is intended to be
-	 * overridden, all subclasses must use this method to initialize their
-	 * members related to {@link AView#table}.
+	 * Method responsible for initialization of the data. It is intended to be overridden, all subclasses must use this
+	 * method to initialize their members related to {@link AView#table}.
 	 * </p>
 	 */
 	public void initData() {
 	}
 
 	/**
-	 * Clears all selections, meaning that no element is selected or deselected
-	 * after this method was called. Everything returns to "normal". Note that
-	 * virtual array manipulations are not considered selections and are
-	 * therefore not retable.
+	 * Clears all selections, meaning that no element is selected or deselected after this method was called. Everything
+	 * returns to "normal". Note that virtual array manipulations are not considered selections and are therefore not
+	 * retable.
 	 */
 	// public abstract void clearAllSelections();
 
@@ -481,26 +465,22 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	public abstract void init(final GL2 gl);
 
 	/**
-	 * Initialization for gl called by the local instance Has to call init
-	 * internally!
+	 * Initialization for gl called by the local instance Has to call init internally!
 	 *
 	 * @param gl
 	 */
 	protected abstract void initLocal(final GL2 gl);
 
 	/**
-	 * Initialization for gl called by a managing view has to call init
-	 * internally!
+	 * Initialization for gl called by a managing view has to call init internally!
 	 *
 	 * @param gl
 	 */
-	public abstract void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener);
+	public abstract void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener);
 
 	/**
-	 * GL2 display method that has to be called in all cases manually, either by
-	 * {@link #displayLocal(GL)} or {@link #displayRemote(GL)}. It must be
-	 * responsible for rendering the scene. It is also called by the picking
+	 * GL2 display method that has to be called in all cases manually, either by {@link #displayLocal(GL)} or
+	 * {@link #displayRemote(GL)}. It must be responsible for rendering the scene. It is also called by the picking
 	 * manager.
 	 *
 	 * @param gl
@@ -508,16 +488,13 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	public abstract void display(final GL2 gl);
 
 	@Override
-	public final synchronized void queueEvent(
-			AEventListener<? extends IListenerOwner> listener, AEvent event) {
-		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener,
-				event));
+	public final synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
+		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener, event));
 	}
 
 	/**
-	 * This method should be called every display cycle when it is save to
-	 * change the state of the object. It processes all the previously submitted
-	 * events.
+	 * This method should be called every display cycle when it is save to change the state of the object. It processes
+	 * all the previously submitted events.
 	 */
 	public final void processEvents() {
 		Pair<AEventListener<? extends IListenerOwner>, AEvent> pair;
@@ -529,24 +506,19 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 	/**
 	 * <p>
-	 * This method is called by the animator of a registered class. It should
-	 * not be called by anyone else, but has to call the local
-	 * {@link #display(GL)}, where the actual rendering must happen. If a view
-	 * is rendered remote, this method may not be called - instead use
-	 * {@link #displayRemote(GL)}.
+	 * This method is called by the animator of a registered class. It should not be called by anyone else, but has to
+	 * call the local {@link #display(GL)}, where the actual rendering must happen. If a view is rendered remote, this
+	 * method may not be called - instead use {@link #displayRemote(GL)}.
 	 * </p>
 	 * <p>
 	 * Typically a displayLocal should contain:
 	 * <ul>
-	 * <li>a call to {@link #processEvents()}, where the event queue is
-	 * processed</li>
-	 * <li>a call to the {@link #processEvents()} method of all views it renders
-	 * locally</li>
-	 * <li>this has to be followed by a check whether the view is active, using
-	 * {@link #isVisible}. If the view is inactive it should return at this
-	 * point.</li>
-	 * <li>a call to the {@link PickingManager#handlePicking(AGLView, GL)}
-	 * method, which renders the scene in picking mode.</li>
+	 * <li>a call to {@link #processEvents()}, where the event queue is processed</li>
+	 * <li>a call to the {@link #processEvents()} method of all views it renders locally</li>
+	 * <li>this has to be followed by a check whether the view is active, using {@link #isVisible}. If the view is
+	 * inactive it should return at this point.</li>
+	 * <li>a call to the {@link PickingManager#handlePicking(AGLView, GL)} method, which renders the scene in picking
+	 * mode.</li>
 	 * <li>and finally a call to the local display</li>
 	 * </ul>
 	 *
@@ -555,11 +527,9 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	protected abstract void displayLocal(final GL2 gl);
 
 	/**
-	 * Intended for external use when another instance of a view manages the
-	 * scene. This is specially designed for composite views. Has to call
-	 * display internally! The steps necessary in {@link #displayLocal(GL)},
-	 * such as handling of events and picking have to be taken care of the
-	 * instance calling this method.
+	 * Intended for external use when another instance of a view manages the scene. This is specially designed for
+	 * composite views. Has to call display internally! The steps necessary in {@link #displayLocal(GL)}, such as
+	 * handling of events and picking have to be taken care of the instance calling this method.
 	 *
 	 * @param gl
 	 */
@@ -586,9 +556,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	/**
-	 * Set the level of detail to be displayed, choose from the options in
-	 * {@link EDetailLevel}. If the specified detail level differs from the
-	 * current {@link #setDisplayListDirty()} is called.
+	 * Set the level of detail to be displayed, choose from the options in {@link EDetailLevel}. If the specified detail
+	 * level differs from the current {@link #setDisplayListDirty()} is called.
 	 *
 	 * @param detailLevel
 	 */
@@ -602,10 +571,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	private void updateDetailMode() {
 		EDetailLevel newDetailLevel;
 		int pixelWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth());
-		int pixelHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
-				.getHeight());
-		if (pixelHeight > getMinPixelHeight(EDetailLevel.HIGH)
-				&& pixelWidth > getMinPixelWidth(EDetailLevel.HIGH)) {
+		int pixelHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight());
+		if (pixelHeight > getMinPixelHeight(EDetailLevel.HIGH) && pixelWidth > getMinPixelWidth(EDetailLevel.HIGH)) {
 			newDetailLevel = EDetailLevel.HIGH;
 		} else if (pixelHeight > getMinPixelHeight(EDetailLevel.MEDIUM)
 				&& pixelWidth > getMinPixelWidth(EDetailLevel.MEDIUM)) {
@@ -664,11 +631,9 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 					try {
 						PickingType type = PickingType.valueOf(pickingType);
 						try {
-							handlePickingEvents(type, ePickingMode, pickedObjectID,
-									tempPick);
+							handlePickingEvents(type, ePickingMode, pickedObjectID, tempPick);
 						} catch (Exception e) {
-							Logger.log(new Status(Status.ERROR, this.toString(),
-									"Caught exception when picking", e));
+							Logger.log(new Status(Status.ERROR, this.toString(), "Caught exception when picking", e));
 						}
 					} catch (IllegalArgumentException e) {
 					}
@@ -682,8 +647,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 			contextMenuCreator.open(this);
 	}
 
-	protected void handlePicking(String pickingType, PickingMode pickingMode,
-			int pickedObjectID, Pick pick) {
+	protected void handlePicking(String pickingType, PickingMode pickingMode, int pickedObjectID, Pick pick) {
 
 		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
 
@@ -706,8 +670,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		}
 	}
 
-	private void notifyPickingListener(IPickingListener pickingListener,
-			PickingMode pickingMode, Pick pick) {
+	private void notifyPickingListener(IPickingListener pickingListener, PickingMode pickingMode, Pick pick) {
 		if (pickingListener == null)
 			return;
 
@@ -734,19 +697,17 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	/**
-	 * Registers a {@link IPickingListener} for this view that is called when
-	 * objects with the specified pickingType <b>and</b> ID are picked.
+	 * Registers a {@link IPickingListener} for this view that is called when objects with the specified pickingType
+	 * <b>and</b> ID are picked.
 	 *
 	 * @param pickingListener
 	 *            the picking listener that should be called on picking event
 	 * @param pickingType
-	 *            the picking type. Take care that the type is unique for a
-	 *            view.
+	 *            the picking type. Take care that the type is unique for a view.
 	 * @param pickedObjectID
 	 *            the id identifying the picked object
 	 */
-	public void addIDPickingListener(IPickingListener pickingListener,
-			String pickingType, int pickedObjectID) {
+	public void addIDPickingListener(IPickingListener pickingListener, String pickingType, int pickedObjectID) {
 		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
 		if (map == null) {
 			map = new HashMap<Integer, Set<IPickingListener>>();
@@ -780,20 +741,16 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	/**
-	 * Registers a {@link IPickingListener} for this view that is call whenever
-	 * an object of the specified type was picked, independent of the object's
-	 * picking id.
+	 * Registers a {@link IPickingListener} for this view that is call whenever an object of the specified type was
+	 * picked, independent of the object's picking id.
 	 *
-	 * @see AGLView#addIDPickingListener(IPickingListener, String, int) for
-	 *      picking id dependent
+	 * @see AGLView#addIDPickingListener(IPickingListener, String, int) for picking id dependent
 	 * @param pickingListener
 	 *            the picking listener that should be called on picking event
 	 * @param pickingType
-	 *            the picking type. Take care that the type is unique for a
-	 *            view.
+	 *            the picking type. Take care that the type is unique for a view.
 	 */
-	public void addTypePickingListener(IPickingListener pickingListener,
-			String pickingType) {
+	public void addTypePickingListener(IPickingListener pickingListener, String pickingType) {
 		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
 		if (pickingListeners == null) {
 			pickingListeners = new HashSet<IPickingListener>();
@@ -809,15 +766,14 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	/**
-	 * Removes the specified {@link IPickingListener} for single ids that has
-	 * been added with the specified picking type and id.
+	 * Removes the specified {@link IPickingListener} for single ids that has been added with the specified picking type
+	 * and id.
 	 *
 	 * @param pickingListener
 	 * @param pickingType
 	 * @param pickedObjectID
 	 */
-	public void removeIDPickingListener(IPickingListener pickingListener,
-			String pickingType, int pickedObjectID) {
+	public void removeIDPickingListener(IPickingListener pickingListener, String pickingType, int pickedObjectID) {
 		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
 		if (map == null) {
 			return;
@@ -831,14 +787,12 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	/**
-	 * Removes the specified {@link IPickingListener} for the specified picking
-	 * type
+	 * Removes the specified {@link IPickingListener} for the specified picking type
 	 *
 	 * @param pickingListener
 	 * @param pickingType
 	 */
-	public void removeTypePickingListener(IPickingListener pickingListener,
-			String pickingType) {
+	public void removeTypePickingListener(IPickingListener pickingListener, String pickingType) {
 		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
 		if (pickingListeners == null) {
 			return;
@@ -848,13 +802,11 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 	/**
 	 * <p>
-	 * Remove the specified picking listener from wherever it is registered with
-	 * this view.
+	 * Remove the specified picking listener from wherever it is registered with this view.
 	 * </p>
 	 * <p>
 	 * Using {@link #removeIDPickingListener(IPickingListener, String, int)} or
-	 * {@link #removeAllTypePickingListeners(String)} is preferred to using this
-	 * method for performance reasons.
+	 * {@link #removeAllTypePickingListeners(String)} is preferred to using this method for performance reasons.
 	 *
 	 * @param pickingListener
 	 */
@@ -919,8 +871,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	/**
-	 * This method is called every time a method occurs. It should take care of
-	 * reacting appropriately to the events.
+	 * This method is called every time a method occurs. It should take care of reacting appropriately to the events.
 	 *
 	 * @param pickingType
 	 *            the Picking type, held in EPickingType
@@ -929,14 +880,12 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 * @param pickingID
 	 *            the name specified for an element with glPushName
 	 * @param pick
-	 *            the pick object which can be useful to retrieve for example
-	 *            the mouse position when the pick occurred
-	 * @deprecated replaced by picking listeners. No longer abstract since it's
-	 *             not necessary for views to implement
+	 *            the pick object which can be useful to retrieve for example the mouse position when the pick occurred
+	 * @deprecated replaced by picking listeners. No longer abstract since it's not necessary for views to implement
 	 */
 	@Deprecated
-	protected void handlePickingEvents(final PickingType pickingType,
-			final PickingMode pickingMode, final int pickingID, final Pick pick) {
+	protected void handlePickingEvents(final PickingType pickingType, final PickingMode pickingMode,
+			final int pickingID, final Pick pick) {
 	}
 
 	public final IViewCamera getViewCamera() {
@@ -944,8 +893,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	/**
-	 * Broadcast elements only with a given type. This is used only for pathways
-	 * so that the genes in a pathway are removed when it is closed
+	 * Broadcast elements only with a given type. This is used only for pathways so that the genes in a pathway are
+	 * removed when it is closed
 	 */
 	@Deprecated
 	public void broadcastElements(EVAOperation type) {
@@ -963,12 +912,10 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		return glRemoteRenderingView != null;
 	}
 
-	public final void setRemoteRenderingGLView(
-			IGLRemoteRenderingView glRemoteRenderingView) {
+	public final void setRemoteRenderingGLView(IGLRemoteRenderingView glRemoteRenderingView) {
 		this.glRemoteRenderingView = glRemoteRenderingView;
 		pixelGLConverter = glRemoteRenderingView.getPixelGLConverter();
-		ViewManager.get().registerRemoteRenderedView(this,
-				(AGLView) glRemoteRenderingView);
+		ViewManager.get().registerRemoteRenderedView(this, (AGLView) glRemoteRenderingView);
 		// pixelGLConverter = new
 		// PixelGLConverter(glRemoteRenderingView.getViewFrustum(),
 		// parentGLCanvas);
@@ -1007,7 +954,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 		// TODO bad hack here, frustum wrong or renderStyle null
 
-		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.LOADING);
+		Texture tempTexture = textureManager.getIconTexture(EIconTextures.LOADING);
 		tempTexture.enable(gl);
 		tempTexture.bind(gl);
 
@@ -1036,8 +983,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		tempTexture.disable(gl);
 
 		// gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
-		Texture circleTexture = textureManager.getIconTexture(gl,
-				EIconTextures.LOADING_CIRCLE);
+		Texture circleTexture = textureManager.getIconTexture(EIconTextures.LOADING_CIRCLE);
 		circleTexture.enable(gl);
 		circleTexture.bind(gl);
 		texCoords = circleTexture.getImageTexCoords();
@@ -1072,12 +1018,11 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	/**
-	 * Enables the busy mode, which renders the loading dialog and disables the
-	 * picking. This method may be overridden if different behaviour is desired.
+	 * Enables the busy mode, which renders the loading dialog and disables the picking. This method may be overridden
+	 * if different behaviour is desired.
 	 *
 	 * @param bBusyMode
-	 *            true if the busy mode should be enabled, false if it should be
-	 *            disabled
+	 *            true if the busy mode should be enabled, false if it should be disabled
 	 */
 	public void enableBusyMode(final boolean bBusyMode) {
 		if (!bBusyMode && busyState == EBusyState.ON) {
@@ -1129,8 +1074,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	/**
-	 * Check whether the view is visible. If not, it should not be rendered.
-	 * Note that events should be processed anyway.
+	 * Check whether the view is visible. If not, it should not be rendered. Note that events should be processed
+	 * anyway.
 	 *
 	 * @return true if it is visible
 	 */
@@ -1146,11 +1091,9 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 */
 	protected void renderSymbol(GL2 gl, EIconTextures texture, float buttonSize) {
 
-		float xButtonOrigin = viewFrustum.getLeft() + viewFrustum.getWidth() / 2
-				- buttonSize / 2;
-		float yButtonOrigin = viewFrustum.getBottom() + viewFrustum.getHeight() / 2
-				- buttonSize / 2;
-		Texture tempTexture = textureManager.getIconTexture(gl, texture);
+		float xButtonOrigin = viewFrustum.getLeft() + viewFrustum.getWidth() / 2 - buttonSize / 2;
+		float yButtonOrigin = viewFrustum.getBottom() + viewFrustum.getHeight() / 2 - buttonSize / 2;
+		Texture tempTexture = textureManager.getIconTexture(texture);
 		tempTexture.enable(gl);
 		tempTexture.bind(gl);
 
@@ -1188,8 +1131,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	/**
-	 * Destroys this view by removing data common in all views and calling
-	 * {@link #destroyViewSpecificContent(GL2)}.
+	 * Destroys this view by removing data common in all views and calling {@link #destroyViewSpecificContent(GL2)}.
 	 *
 	 * @param gl
 	 */
@@ -1198,16 +1140,14 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		this.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 
 		pickingManager.removeViewSpecificData(uniqueID);
-		generalManager.getViewManager().getConnectedElementRepresentationManager()
-				.clearAll();
+		generalManager.getViewManager().getConnectedElementRepresentationManager().clearAll();
 		unregisterEventListeners();
 		destroyViewSpecificContent(gl);
 	}
 
 	/**
-	 * In this method subclasses should remove all view specific content,
-	 * especially GL resources such as display lists. Note that there is no need
-	 * to take care about remote rendered views.
+	 * In this method subclasses should remove all view specific content, especially GL resources such as display lists.
+	 * Note that there is no need to take care about remote rendered views.
 	 *
 	 * @param gl
 	 */
@@ -1231,44 +1171,40 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	/**
-	 * @return The minimum height in pixels the view currently requires to show
-	 *         its content properly. The default implementation in the base
-	 *         class calls {@link #getMinPixelheight()} with
-	 *         {@link EDetailLevel#LOW}
+	 * @return The minimum height in pixels the view currently requires to show its content properly. The default
+	 *         implementation in the base class calls {@link #getMinPixelheight()} with {@link EDetailLevel#LOW}
 	 */
 	public int getMinPixelHeight() {
 		return getMinPixelHeight(EDetailLevel.LOW);
 	}
 
 	/**
-	 * @return The minimum width in pixels the view currently requires to show
-	 *         its content properly. The default implementation in the base
-	 *         class calls {@link #getMinPixelWidth()} with
-	 *         {@link EDetailLevel#LOW}
+	 * @return The minimum width in pixels the view currently requires to show its content properly. The default
+	 *         implementation in the base class calls {@link #getMinPixelWidth()} with {@link EDetailLevel#LOW}
 	 */
 	public int getMinPixelWidth() {
 		return getMinPixelWidth(EDetailLevel.LOW);
 	}
 
 	/**
-	 * @return The minimum height in pixels the view requires to show its
-	 *         content properly with the specified detail level.
+	 * @return The minimum height in pixels the view requires to show its content properly with the specified detail
+	 *         level.
 	 */
 	public int getMinPixelHeight(EDetailLevel detailLevel) {
 		return 0;
 	}
 
 	/**
-	 * @return The minimum width in pixels the view requires to show its content
-	 *         properly with the specified detail level.
+	 * @return The minimum width in pixels the view requires to show its content properly with the specified detail
+	 *         level.
 	 */
 	public int getMinPixelWidth(EDetailLevel detailLevel) {
 		return 0;
 	}
 
 	/**
-	 * Gets the highest possible detail level the view is able to display its
-	 * content with, using the specified width and height.
+	 * Gets the highest possible detail level the view is able to display its content with, using the specified width
+	 * and height.
 	 *
 	 * @param pixelHeight
 	 * @param pixelWidth
@@ -1279,8 +1215,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	/**
-	 * Sets the boolean lazy mode which determines if the mouse is over the
-	 * canvas.
+	 * Sets the boolean lazy mode which determines if the mouse is over the canvas.
 	 *
 	 * @param lazyMode
 	 */
@@ -1298,8 +1233,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	/**
-	 * Register any mouseWheelListener that may be interested in being notified
-	 * when the mouse wheel is moved
+	 * Register any mouseWheelListener that may be interested in being notified when the mouse wheel is moved
 	 *
 	 * @param listener
 	 */
@@ -1341,8 +1275,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	/**
-	 * Method recursively determines the top level GL view. Picking listeners
-	 * for instance need to be registered to the top level GL view.
+	 * Method recursively determines the top level GL view. Picking listeners for instance need to be registered to the
+	 * top level GL view.
 	 *
 	 * @return the top level GL view
 	 */
@@ -1378,9 +1312,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	/**
-	 * Renders a message in the center of the view. This method is intended to
-	 * be used for displaying messages that indicate what a user should do when
-	 * the view is empty.
+	 * Renders a message in the center of the view. This method is intended to be used for displaying messages that
+	 * indicate what a user should do when the view is empty.
 	 *
 	 * @param gl
 	 * @param lines
@@ -1391,18 +1324,16 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		if (textRenderer == null)
 			textRenderer = new CaleydoTextRenderer(24);
 
-		float textHeight = pixelGLConverter
-				.getGLHeightForPixelHeight(EMPTY_VIEW_TEXT_HEIGHT_PIXELS);
+		float textHeight = pixelGLConverter.getGLHeightForPixelHeight(EMPTY_VIEW_TEXT_HEIGHT_PIXELS);
 		float safetySpacing = pixelGLConverter.getGLHeightForPixelHeight(3);
 		textRenderer.setColor(0, 0, 0, 1);
-		float linePositionY = viewFrustum.getHeight() / 2.0f
-				+ textHeight * lines.length / 2.0f;
+		float linePositionY = viewFrustum.getHeight() / 2.0f + textHeight * lines.length / 2.0f;
 		for (String line : lines) {
 			float requiredWidth = textRenderer.getRequiredTextWidth(line, textHeight);
 			float linePositionX = viewFrustum.getWidth() / 2.0f - requiredWidth / 2.0f;
 
-			textRenderer.renderTextInBounds(gl, line, linePositionX, linePositionY, 0,
-					requiredWidth + safetySpacing, textHeight);
+			textRenderer.renderTextInBounds(gl, line, linePositionX, linePositionY, 0, requiredWidth + safetySpacing,
+					textHeight);
 			linePositionY -= textHeight;
 		}
 	}

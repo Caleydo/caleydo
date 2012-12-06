@@ -66,8 +66,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * @author Michael Lafer
  */
 
-public class GLHierarchicalTreeMap extends ATableBasedView implements
-		IGLRemoteRenderingView {
+public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteRenderingView {
 	public static String VIEW_TYPE = "org.caleydo.view.treemap.hierarchical";
 
 	public static String VIEW_NAME = "Hierarchical Treemap";
@@ -110,8 +109,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLHierarchicalTreeMap(IGLCanvas glCanvas, Composite parentComposite,
-			ViewFrustum viewFrustum) {
+	public GLHierarchicalTreeMap(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -159,8 +157,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 	}
 
 	@Override
-	public void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener) {
+	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
 		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
@@ -230,8 +227,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 
 			displayThumbnailTreemaps(gl);
 
-			mainTreeMapView.getViewFrustum().setTop(
-					(float) (viewFrustum.getTop() - viewFrustum.getHeight() * 0.2));
+			mainTreeMapView.getViewFrustum().setTop((float) (viewFrustum.getTop() - viewFrustum.getHeight() * 0.2));
 			mainTreeMapView.getViewFrustum().setBottom(viewFrustum.getBottom());
 			mainTreeMapView.getViewFrustum().setLeft(viewFrustum.getLeft());
 			mainTreeMapView.getViewFrustum().setRight(viewFrustum.getRight());
@@ -251,44 +247,37 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 		int maxThumbNailViews = MAX_THUMBNAILS;
 
 		// double thumbNailWidth = 0.26;
-		double thumbNailWidth = (1 - xMargin * (maxThumbNailViews + 1))
-				/ maxThumbNailViews;
+		double thumbNailWidth = (1 - xMargin * (maxThumbNailViews + 1)) / maxThumbNailViews;
 		double thumbNailHeight = THUMBNAIL_HEIGHT;
 		double xOffset = 0;
 		// double yOffset = 0;
 		if (thumbnailTreemapViews.size() > 3)
-			drawArrow(gl, (float) xOffset, (float) (1.0f - yMargin - thumbNailHeight),
-					(float) (xOffset + xMargin), 1 - yMargin);
-		for (int i = Math.max(0, thumbnailTreemapViews.size() - maxThumbNailViews); i < thumbnailTreemapViews
-				.size(); i++) {
+			drawArrow(gl, (float) xOffset, (float) (1.0f - yMargin - thumbNailHeight), (float) (xOffset + xMargin),
+					1 - yMargin);
+		for (int i = Math.max(0, thumbnailTreemapViews.size() - maxThumbNailViews); i < thumbnailTreemapViews.size(); i++) {
 			xOffset += xMargin;
 
 			GLTreeMap treemap = thumbnailTreemapViews.get(i);
 
-			treemap.getViewFrustum().setLeft(
-					(float) (viewFrustum.getLeft() + viewFrustum.getWidth() * xOffset));
+			treemap.getViewFrustum().setLeft((float) (viewFrustum.getLeft() + viewFrustum.getWidth() * xOffset));
 			treemap.getViewFrustum().setRight(
-					(float) (viewFrustum.getLeft() + viewFrustum.getWidth()
-							* (xOffset + thumbNailWidth)));
+					(float) (viewFrustum.getLeft() + viewFrustum.getWidth() * (xOffset + thumbNailWidth)));
 			treemap.getViewFrustum().setBottom(
-					(float) (viewFrustum.getTop() - viewFrustum.getHeight()
-							* (yMargin + thumbNailHeight)));
-			treemap.getViewFrustum().setTop(
-					viewFrustum.getTop() - viewFrustum.getHeight() * yMargin);
+					(float) (viewFrustum.getTop() - viewFrustum.getHeight() * (yMargin + thumbNailHeight)));
+			treemap.getViewFrustum().setTop(viewFrustum.getTop() - viewFrustum.getHeight() * yMargin);
 
 			// gl.glPushMatrix();
 			// gl.glTranslated(viewFrustum.getWidth() * xOffset,
 			// viewFrustum.getHeight() * (1.0 - yMargin - thumbNailHeight), 0);
-			gl.glPushName(pickingManager.getPickingID(getID(),
-					PickingType.TREEMAP_THUMBNAILVIEW_SELECTED, i));
+			gl.glPushName(pickingManager.getPickingID(getID(), PickingType.TREEMAP_THUMBNAILVIEW_SELECTED, i));
 			treemap.displayRemote(gl);
 			gl.glPopName();
 			// gl.glPopMatrix();
 
 			xOffset += thumbNailWidth;
 
-			drawArrow(gl, (float) xOffset, (float) (1.0f - yMargin - thumbNailHeight),
-					(float) (xOffset + xMargin), 1 - yMargin);
+			drawArrow(gl, (float) xOffset, (float) (1.0f - yMargin - thumbNailHeight), (float) (xOffset + xMargin),
+					1 - yMargin);
 		}
 	}
 
@@ -320,11 +309,9 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 	@Override
 	protected void renderSymbol(GL2 gl, EIconTextures texture, float buttonSize) {
 
-		float xButtonOrigin = viewFrustum.getLeft() + viewFrustum.getWidth() / 2
-				- buttonSize / 2;
-		float yButtonOrigin = viewFrustum.getBottom() + viewFrustum.getHeight() / 2
-				- buttonSize / 2;
-		Texture tempTexture = textureManager.getIconTexture(gl, texture);
+		float xButtonOrigin = viewFrustum.getLeft() + viewFrustum.getWidth() / 2 - buttonSize / 2;
+		float yButtonOrigin = viewFrustum.getBottom() + viewFrustum.getHeight() / 2 - buttonSize / 2;
+		Texture tempTexture = textureManager.getIconTexture(texture);
 		tempTexture.enable(gl);
 		tempTexture.bind(gl);
 
@@ -349,8 +336,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 
 	public void zoomIn() {
 		// System.out.println("zooming!!!!!");
-		Set<Integer> elements = mainTreeMapView.getSelectionManager().getElements(
-				SelectionType.SELECTION);
+		Set<Integer> elements = mainTreeMapView.getSelectionManager().getElements(SelectionType.SELECTION);
 		if (elements.size() == 1 /* && thumbnailTreemapViews.size() < 3 */) {
 
 			ClusterNode dataRoot = tablePerspective.getRecordPerspective().getTree()
@@ -358,13 +344,11 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 
 			mainTreeMapView.setRemotePickingManager(null, 0);
 			mainTreeMapView.clearAllSelections();
-			mainTreeMapView.getSelectionManager().addToType(SelectionType.SELECTION,
-					dataRoot.getID());
+			mainTreeMapView.getSelectionManager().addToType(SelectionType.SELECTION, dataRoot.getID());
 			mainTreeMapView.setDrawLabel(false);
 
 			@SuppressWarnings("unchecked")
-			Vector<GLTreeMap> beginThumbnails = (Vector<GLTreeMap>) thumbnailTreemapViews
-					.clone();
+			Vector<GLTreeMap> beginThumbnails = (Vector<GLTreeMap>) thumbnailTreemapViews.clone();
 
 			mainTreeMapView.setInteractive(false);
 			thumbnailTreemapViews.add(mainTreeMapView);
@@ -382,9 +366,8 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 			mainTreeMapView.setZoomActive(true);
 			mainTreeMapView.initData();
 
-			animationControle.initAnimation(this, beginMainView, mainTreeMapView,
-					beginThumbnails, thumbnailTreemapViews,
-					AnimationControle.ZOOM_IN_ANIMATION);
+			animationControle.initAnimation(this, beginMainView, mainTreeMapView, beginThumbnails,
+					thumbnailTreemapViews, AnimationControle.ZOOM_IN_ANIMATION);
 			animationControle.setActive(true);
 
 			setDisplayListDirty();
@@ -409,17 +392,15 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 				thumbnailTreemapViews.remove(i);
 			}
 
-			Vector<GLTreeMap> beginThumbnails = (Vector<GLTreeMap>) thumbnailTreemapViews
-					.clone();
+			Vector<GLTreeMap> beginThumbnails = (Vector<GLTreeMap>) thumbnailTreemapViews.clone();
 
 			thumbnailTreemapViews.remove(index);
 
 			mainTreeMapView.setDrawLabel(true);
 			mainTreeMapView.setRemotePickingManager(pickingManager, getID());
 
-			animationControle.initAnimation(this, beginMainView, mainTreeMapView,
-					beginThumbnails, thumbnailTreemapViews,
-					AnimationControle.ZOOM_OUT_ANIMATION);
+			animationControle.initAnimation(this, beginMainView, mainTreeMapView, beginThumbnails,
+					thumbnailTreemapViews, AnimationControle.ZOOM_OUT_ANIMATION);
 			animationControle.setActive(true);
 
 			setDisplayListDirty();
@@ -438,28 +419,23 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 	}
 
 	/**
-	 * Invokes the zoom out function when a thumbnail treemap is clicked or
-	 * delegates events to the embedded treemap.
+	 * Invokes the zoom out function when a thumbnail treemap is clicked or delegates events to the embedded treemap.
 	 */
 	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int externalID, Pick pick) {
 		// System.out.println(pickingType + " " + pickingMode + ": " +
 		// externalID);
-		if (pickingType == PickingType.TREEMAP_THUMBNAILVIEW_SELECTED
-				&& pickingMode == PickingMode.DOUBLE_CLICKED) {
+		if (pickingType == PickingType.TREEMAP_THUMBNAILVIEW_SELECTED && pickingMode == PickingMode.DOUBLE_CLICKED) {
 			zoomOut(externalID);
 		} else
-			mainTreeMapView.handleRemotePickingEvents(pickingType, pickingMode,
-					externalID, pick);
+			mainTreeMapView.handleRemotePickingEvents(pickingType, pickingMode, externalID, pick);
 
 	}
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedTreeMapView serializedForm = new SerializedTreeMapView(
-				this);
-			return serializedForm;
+		SerializedTreeMapView serializedForm = new SerializedTreeMapView(this);
+		return serializedForm;
 	}
 
 	@Override
@@ -517,8 +493,8 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
-		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
-				(int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
+		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, (int) fHeatMapHeight, 0,
+				(int) fHeatMapWidth, -20, 20);
 
 		GLTreeMap treemap = new GLTreeMap(parentGLCanvas, parentComposite, viewFrustum);
 		treemap.setDataDomain(dataDomain);
@@ -543,12 +519,11 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
-			IDType idType, int id) throws InvalidAttributeValueException {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
+			throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {

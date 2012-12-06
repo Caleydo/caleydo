@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -82,11 +82,9 @@ public class DetailToolBar extends LayoutRenderer {
 
 		Texture tempTexture;
 
-		if (heatMap.getRecordSelectionManager().getNumberOfElements(
-				GLHeatMap.SELECTION_HIDDEN) > 0) {
+		if (heatMap.getRecordSelectionManager().getNumberOfElements(GLHeatMap.SELECTION_HIDDEN) > 0) {
 
-			tempTexture = iconManager.getIconTexture(gl,
-					EIconTextures.COMPARER_SHOW_HIDDEN);
+			tempTexture = iconManager.getIconTexture(EIconTextures.COMPARER_SHOW_HIDDEN);
 
 			tempTexture.enable(gl);
 			tempTexture.bind(gl);
@@ -94,8 +92,7 @@ public class DetailToolBar extends LayoutRenderer {
 
 			gl.glColor4f(1, 1, 1, 1);
 			gl.glTranslatef(sideSpacing, spacing, 0);
-			gl.glPushName(pickingManager.getPickingID(heatMap.getID(),
-					PickingType.HEAT_MAP_HIDE_HIDDEN_ELEMENTS, 1));
+			gl.glPushName(pickingManager.getPickingID(heatMap.getID(), PickingType.HEAT_MAP_HIDE_HIDDEN_ELEMENTS, 1));
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(0, 0, buttonZ);
@@ -113,11 +110,8 @@ public class DetailToolBar extends LayoutRenderer {
 		}
 		float secondButtonOffset = 2 * sideSpacing + buttonSize;
 
-		int nrTotal = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray()
-				.size();
-		int nrVisible = nrTotal
-				- heatMap.getRecordSelectionManager().getNumberOfElements(
-						GLHeatMap.SELECTION_HIDDEN);
+		int nrTotal = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray().size();
+		int nrVisible = nrTotal - heatMap.getRecordSelectionManager().getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
 
 		String content;
 		if (nrVisible == nrTotal)
@@ -157,7 +151,7 @@ public class DetailToolBar extends LayoutRenderer {
 		gl.glTranslatef(-secondButtonOffset, -spacing * 2, 0);
 
 	}
-	
+
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
 		return false;

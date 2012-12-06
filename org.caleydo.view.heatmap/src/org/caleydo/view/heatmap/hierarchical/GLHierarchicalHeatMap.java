@@ -951,15 +951,15 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		Texture TextureMaskNeg = null;
 
 		if (bRenderDendrogramBackgroundWhite) {
-			TextureMask = textureManager.getIconTexture(gl,
+			TextureMask = textureManager.getIconTexture(
 					EIconTextures.NAVIGATION_MASK_CURVE_WHITE);
-			TextureMaskNeg = textureManager.getIconTexture(gl,
+			TextureMaskNeg = textureManager.getIconTexture(
 					EIconTextures.NAVIGATION_MASK_CURVE_NEG_WHITE);
 			gl.glColor4f(1, 1, 1, 1);
 		} else {
-			TextureMask = textureManager.getIconTexture(gl,
+			TextureMask = textureManager.getIconTexture(
 					EIconTextures.NAVIGATION_MASK_CURVE);
-			TextureMaskNeg = textureManager.getIconTexture(gl,
+			TextureMaskNeg = textureManager.getIconTexture(
 					EIconTextures.NAVIGATION_MASK_CURVE_NEG);
 			gl.glColor4fv(DENDROGRAM_BACKROUND, 0);
 		}
@@ -1138,10 +1138,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			Texture tempTexture = null;
 			if (dimensionVA.getGroupList().get(i).getSelectionType() == SelectionType.SELECTION) {
-				tempTexture = textureManager.getIconTexture(gl,
+				tempTexture = textureManager.getIconTexture(
 						EIconTextures.HEAT_MAP_GROUP_SELECTED);
 			} else {
-				tempTexture = textureManager.getIconTexture(gl,
+				tempTexture = textureManager.getIconTexture(
 						EIconTextures.HEAT_MAP_GROUP_NORMAL);
 			}
 
@@ -1221,10 +1221,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			Texture tempTexture = null;
 
 			if (dimensionVA.getGroupList().get(i).getSelectionType() == SelectionType.SELECTION) {
-				tempTexture = textureManager.getIconTexture(gl,
+				tempTexture = textureManager.getIconTexture(
 						EIconTextures.HEAT_MAP_GROUP_SELECTED);
 			} else {
-				tempTexture = textureManager.getIconTexture(gl,
+				tempTexture = textureManager.getIconTexture(
 						EIconTextures.HEAT_MAP_GROUP_NORMAL);
 			}
 
@@ -1301,12 +1301,12 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			Texture tempTexture = null;
 
 			if (recordVA.getGroupList().get(i).getSelectionType() == SelectionType.SELECTION) {
-				tempTexture = textureManager.getIconTexture(gl,
+				tempTexture = textureManager.getIconTexture(
 						EIconTextures.HEAT_MAP_GROUP_SELECTED);
 			}
 
 			else {
-				tempTexture = textureManager.getIconTexture(gl,
+				tempTexture = textureManager.getIconTexture(
 						EIconTextures.HEAT_MAP_GROUP_NORMAL);
 			}
 
@@ -1396,10 +1396,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				Texture tempTexture = null;
 
 				if (recordVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
-					tempTexture = textureManager.getIconTexture(gl,
+					tempTexture = textureManager.getIconTexture(
 							EIconTextures.HEAT_MAP_GROUP_SELECTED);
 				} else {
-					tempTexture = textureManager.getIconTexture(gl,
+					tempTexture = textureManager.getIconTexture(
 							EIconTextures.HEAT_MAP_GROUP_NORMAL);
 				}
 				gl.glPushName(pickingManager.getPickingID(uniqueID,
@@ -1452,10 +1452,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		Texture tempTexture = null;
 
 		if (recordVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
-			tempTexture = textureManager.getIconTexture(gl,
+			tempTexture = textureManager.getIconTexture(
 					EIconTextures.HEAT_MAP_GROUP_SELECTED);
 		} else {
-			tempTexture = textureManager.getIconTexture(gl,
+			tempTexture = textureManager.getIconTexture(
 					EIconTextures.HEAT_MAP_GROUP_NORMAL);
 		}
 
@@ -1534,10 +1534,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				Texture tempTexture = null;
 
 				if (recordVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
-					tempTexture = textureManager.getIconTexture(gl,
+					tempTexture = textureManager.getIconTexture(
 							EIconTextures.HEAT_MAP_GROUP_SELECTED);
 				} else {
-					tempTexture = textureManager.getIconTexture(gl,
+					tempTexture = textureManager.getIconTexture(
 							EIconTextures.HEAT_MAP_GROUP_NORMAL);
 				}
 
@@ -1589,10 +1589,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		Texture tempTexture = null;
 
 		if (recordVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
-			tempTexture = textureManager.getIconTexture(gl,
+			tempTexture = textureManager.getIconTexture(
 					EIconTextures.HEAT_MAP_GROUP_SELECTED);
 		} else {
-			tempTexture = textureManager.getIconTexture(gl,
+			tempTexture = textureManager.getIconTexture(
 					EIconTextures.HEAT_MAP_GROUP_NORMAL);
 		}
 
@@ -2149,7 +2149,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			float fSizeHeatmapArrow = renderStyle.getSizeHeatmapArrow();
 
-			Texture tempTexture = textureManager.getIconTexture(gl,
+			Texture tempTexture = textureManager.getIconTexture(
 					EIconTextures.HEAT_MAP_ARROW);
 			tempTexture.enable(gl);
 			tempTexture.bind(gl);
@@ -2338,7 +2338,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		gl.glColor4f(1, 1, 1, 1);
 
-		Texture tempTexture = textureManager.getIconTexture(gl,
+		Texture tempTexture = textureManager.getIconTexture(
 				EIconTextures.HEAT_MAP_ARROW);
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		tempTexture.enable(gl);
@@ -2414,7 +2414,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
-		Texture tempTexture = textureManager.getIconTexture(gl,
+		Texture tempTexture = textureManager.getIconTexture(
 				EIconTextures.HEAT_MAP_ARROW);
 		tempTexture.enable(gl);
 		tempTexture.bind(gl);
@@ -3117,7 +3117,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
-			Texture textureMaskNeg = textureManager.getIconTexture(gl,
+			Texture textureMaskNeg = textureManager.getIconTexture(
 					EIconTextures.NAVIGATION_MASK_CURVE_NEG_WHITE);
 			textureMaskNeg.enable(gl);
 			textureMaskNeg.bind(gl);
@@ -3156,7 +3156,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
-			Texture tempTexture = textureManager.getIconTexture(gl,
+			Texture tempTexture = textureManager.getIconTexture(
 					EIconTextures.HEAT_MAP_ARROW);
 			tempTexture.enable(gl);
 			tempTexture.bind(gl);
@@ -3235,7 +3235,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
-			Texture textureMaskNeg = textureManager.getIconTexture(gl,
+			Texture textureMaskNeg = textureManager.getIconTexture(
 					EIconTextures.NAVIGATION_MASK_CURVE_NEG_WHITE);
 			textureMaskNeg.enable(gl);
 			textureMaskNeg.bind(gl);
@@ -3273,7 +3273,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
-			Texture tempTexture = textureManager.getIconTexture(gl,
+			Texture tempTexture = textureManager.getIconTexture(
 					EIconTextures.HEAT_MAP_ARROW);
 			tempTexture.enable(gl);
 			tempTexture.bind(gl);
