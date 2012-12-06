@@ -39,7 +39,8 @@ public class Histogram {
 	private ArrayList<Integer> histogram;
 
 	/** Dedicated bucket for NAN values */
-	private Integer nanCount;
+	private Integer nanCount = 0;
+
 	/**
 	 * Contains the IDs of the elements in the buckets in the ArrayList and an Identifier as the first member of the
 	 * pair. Same order as {@link #histogram}.
@@ -47,7 +48,7 @@ public class Histogram {
 	private ArrayList<ArrayList<Integer>> ids;
 
 	/** Same as {@link #ids} but for the dedicate NAN bucket */
-	private ArrayList<Integer> nanIDs;
+	private ArrayList<Integer> nanIDs = new ArrayList<Integer>();
 
 	private int sizeOfBiggestBucket = -1;
 
@@ -98,6 +99,7 @@ public class Histogram {
 	}
 
 	public void addNAN(Integer objectID) {
+
 		nanCount += 1;
 		nanIDs.add(objectID);
 	}
