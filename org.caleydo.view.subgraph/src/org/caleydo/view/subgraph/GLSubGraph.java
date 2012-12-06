@@ -195,6 +195,17 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 			LayoutRenderer customRenderer = new BorderedAreaRenderer();
 			multiFormRenderer.addLayoutRenderer(customRenderer, EIconTextures.ARROW_DOWN.getFileName());
 
+			// TextureRenderer textureRenderer = new TextureRenderer("resources/tissue_images/ebene_0.bmp",
+			// textureManager);
+			List<String> areaImagePaths = new ArrayList<>(2);
+			areaImagePaths.add("resources/tissue_images/ebene_1.bmp");
+			areaImagePaths.add("resources/tissue_images/ebene_2.bmp");
+			areaImagePaths.add("resources/tissue_images/ebene_3.bmp");
+			areaImagePaths.add("resources/tissue_images/ebene_4.bmp");
+			TissueRenderer textureRenderer = new TissueRenderer(this, "resources/tissue_images/ebene_0.bmp",
+					areaImagePaths);
+			multiFormRenderer.addLayoutRenderer(textureRenderer, EIconTextures.ARROW_DOWN.getFileName());
+
 			MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer, this);
 			baseColumn.add(viewSwitchingBar);
 			ElementLayout multiformRendererLayout = new ElementLayout();
