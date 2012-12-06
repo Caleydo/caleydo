@@ -116,6 +116,9 @@ abstract class AExternalScoreParser<T extends AExternalScoreParseSpecification, 
 				Float s = parseFloat(score);
 				if (s == null)
 					continue;
+				if (scores[i].containsKey(mappedID)) {
+					System.err.println("double");
+				}
 				scores[i].put(mappedID, s);
 			}
 		}

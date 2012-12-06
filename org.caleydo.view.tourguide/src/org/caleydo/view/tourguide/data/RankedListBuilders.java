@@ -31,9 +31,9 @@ import org.caleydo.view.tourguide.data.filter.IScoreFilter;
 
 /**
  * utility factory class which wraps the algorithm to create the final sorted list with a fixed size
- * 
+ *
  * There are two strategies depending on the total amount of elements:
- * 
+ *
  * a: collect in a big array and to a collections sort afterwards
  *
  * b: collect incrementally using insort techniques
@@ -51,7 +51,7 @@ public class RankedListBuilders {
 
 	public static IRankedListBuilder create(int maxSize, int numberOfElements, IScoreFilter filter,
 			Comparator<ScoringElement> comparator) {
-		if (maxSize * 5 < numberOfElements)
+		if (maxSize * 5 < numberOfElements) // TODO better strategy
 			return new InsertionRankedListBuilder(maxSize, comparator, filter);
 		else
 			return new QuickSortRankedListBuilder(numberOfElements, maxSize, comparator, filter);

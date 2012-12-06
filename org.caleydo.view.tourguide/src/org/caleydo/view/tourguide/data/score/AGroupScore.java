@@ -31,6 +31,7 @@ import org.caleydo.view.tourguide.data.ScoringElement;
  *
  */
 public abstract class AGroupScore implements IScore {
+	private String label;
 	protected TablePerspective stratification;
 	protected Group group;
 	protected Map<Integer, Float> scores = new ConcurrentHashMap<>();
@@ -39,7 +40,8 @@ public abstract class AGroupScore implements IScore {
 
 	}
 
-	public AGroupScore(TablePerspective stratification, Group group) {
+	public AGroupScore(String label, TablePerspective stratification, Group group) {
+		this.label = label == null ? stratification.getRecordPerspective().getLabel() + ": " + group.getLabel() : label;
 		this.stratification = stratification;
 		this.group = group;
 		put(this.group, Float.NaN); // add self
@@ -58,7 +60,7 @@ public abstract class AGroupScore implements IScore {
 
 	@Override
 	public String getLabel() {
-		return stratification.getRecordPerspective().getLabel() + ": " + group.getLabel();
+		return label;
 	}
 
 	@Override

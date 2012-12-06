@@ -96,6 +96,11 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	private final DataDomainQuery query;
 
 	/**
+	 * flags indicator whether always the group resolution should be performed or only on demand
+	 */
+	private boolean forceGroups;
+
+	/**
 	 * queue holding the tasks we are submitted to computed but not yet finished
 	 */
 	private final Deque<Future<?>> toCompute = new LinkedList<>();
@@ -123,8 +128,15 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	}
 
 	/**
+	 * @return the query, see {@link #query}
+	 */
+	public DataDomainQuery getQuery() {
+		return query;
+	}
+
+	/**
 	 * returns whether there are outstanding computations
-	 *
+	 * 
 	 * @return
 	 */
 	public boolean isBusy() {

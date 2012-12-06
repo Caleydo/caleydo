@@ -57,7 +57,11 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 	private final BitMapMapper toBitMap;
 
 	public JaccardIndexScore(TablePerspective stratification, Group group) {
-		super(stratification, group);
+		this(null, stratification, group);
+	}
+
+	public JaccardIndexScore(String label, TablePerspective stratification, Group group) {
+		super(label, stratification, group);
 		toBitMap = new BitMapMapper(stratification.getRecordPerspective().getVirtualArray().getIdType());
 		bitSet = createIds(new BitSetIDSet(), stratification.getRecordPerspective().getVirtualArray(), group);
 	}

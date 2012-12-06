@@ -407,13 +407,17 @@ public class ScoreQueryUI extends Column {
 		Collection<IScore> scores = Scores.get().getScoreIDs();
 
 		ContextMenuCreator creator = view.getContextMenuCreator();
+		creator.addContextMenuItem(new GenericContextMenuItem("Create Jaccard Index Score", new CreateScoreColumnEvent(
+				CreateScoreColumnEvent.Type.JACCARD, this)));
+		creator.addContextMenuItem(new GenericContextMenuItem("Create Adjusted Rank Score", new CreateScoreColumnEvent(
+				CreateScoreColumnEvent.Type.ADJUSTED_RANK, this)));
 		if (scores.size() >= 2) {
 			creator.addContextMenuItem(new GenericContextMenuItem("Create Combined Score", new CreateScoreColumnEvent(
-					false, this)));
+					CreateScoreColumnEvent.Type.COMBINED, this)));
 			creator.addContextMenuItem(new GenericContextMenuItem("Create Collapsed Score", new CreateScoreColumnEvent(
-					true, this)));
-			creator.addSeparator();
+					CreateScoreColumnEvent.Type.COLLAPSED, this)));
 		}
+		creator.addSeparator();
 
 		Set<IScore> visible = getVisibleColumns();
 

@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
@@ -39,10 +40,11 @@ public class ScoreFilterDialog extends TitleAreaDialog {
 
 	// the visual selection widget group
 	private Spinner topUI;
+	private Button forceGroupsUI;
 
 	private List<ScoreFilterWidget> filters = new ArrayList<>();
 	private Combo addScoreFilter;
-	private Composite filterContainer;
+	private Group filterContainer;
 
 	public ScoreFilterDialog(Shell shell, Collection<IScore> scores, ScoreQueryUI sender) {
 		super(shell);
@@ -86,7 +88,8 @@ public class ScoreFilterDialog extends TitleAreaDialog {
 		scrolledComposite.setExpandVertical(true);
 		scrolledComposite.setExpandHorizontal(true);
 
-		this.filterContainer = new Composite(scrolledComposite, SWT.NONE);
+		this.filterContainer = new Group(scrolledComposite, SWT.NONE);
+		filterContainer.setText("Active Filters:");
 		filterContainer.setLayout(new GridLayout(4, false));
 
 		for (IScoreFilter f : query.getFilter()) {

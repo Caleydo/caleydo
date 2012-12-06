@@ -17,40 +17,21 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.event;
+package org.caleydo.view.tourguide.vendingmachine.ui;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
+import org.caleydo.core.util.base.ILabelProvider;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class CreateScoreColumnEvent extends AEvent {
-	private Type type;
-
-	public enum Type {
-		COMBINED, COLLAPSED, JACCARD, ADJUSTED_RANK
-	}
-
-	public CreateScoreColumnEvent() {
-
-	}
-
-	public CreateScoreColumnEvent(Type type, ScoreQueryUI sender) {
-		this.type = type;
-		this.setSender(sender);
-	}
-
-	/**
-	 * @return the type, see {@link #type}
-	 */
-	public Type getType() {
-		return type;
-	}
-
+public class CaleydoLabelProvider extends org.eclipse.jface.viewers.LabelProvider {
 	@Override
-	public boolean checkIntegrity() {
-		return true;
+	public String getText(Object element) {
+		if (element instanceof ILabelProvider) {
+			return ((ILabelProvider) element).getLabel();
+		}
+		return super.getText(element);
 	}
 }
+

@@ -74,7 +74,9 @@ import org.caleydo.view.tourguide.listener.RemoveScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreQueryReadyListener;
 import org.caleydo.view.tourguide.listener.ScoreTablePerspectiveListener;
+import org.caleydo.view.tourguide.vendingmachine.ui.CreateAdjustedRankScoreDialog;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateCompositeScoreDialog;
+import org.caleydo.view.tourguide.vendingmachine.ui.CreateJaccardIndexScoreDialog;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -431,12 +433,24 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		recomputeScores();
 	}
 
-	public void onCreateNewScore(final boolean createCollapsedScore) {
+	public void onCreateNewScore(final CreateScoreColumnEvent.Type type) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				new CreateCompositeScoreDialog(new Shell(), Scores.get().getScoreIDs(), scoreQueryUI,
-						createCollapsedScore).open();
+				switch (type) {
+				case COMBINED:
+					new CreateCompositeScoreDialog(new Shell(), Scores.get().getScoreIDs(), scoreQueryUI, false).open();
+					break;
+				case COLLAPSED:
+					new CreateCompositeScoreDialog(new Shell(), Scores.get().getScoreIDs(), scoreQueryUI, true).open();
+					break;
+				case JACCARD:
+					new CreateJaccardIndexScoreDialog(new Shell(), scoreQueryUI).open();
+					break;
+				case ADJUSTED_RANK:
+					new CreateAdjustedRankScoreDialog(new Shell(), scoreQueryUI).open();
+					break;
+				}
 			}
 		});
 	}

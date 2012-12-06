@@ -44,7 +44,7 @@ public class ScoreColumnListener extends AEventListener<VendingMachine> {
 		if (event instanceof AddScoreColumnEvent) {
 			handler.onAddColumn(((AddScoreColumnEvent) event).getScore());
 		} else if (event instanceof CreateScoreColumnEvent) {
-			handler.onCreateNewScore(((CreateScoreColumnEvent) event).isCreateCollapsedScore());
+			handler.onCreateNewScore(((CreateScoreColumnEvent) event).getType());
 		}
 	}
 }

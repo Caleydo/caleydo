@@ -19,8 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.vendingmachine.ui;
 
+import org.caleydo.view.tourguide.data.filter.CompareDomainFilter;
 import org.caleydo.view.tourguide.data.filter.EStringCompareOperator;
-import org.caleydo.view.tourguide.data.filter.GroupNameCompareDomainFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
@@ -33,17 +33,20 @@ import org.eclipse.swt.widgets.Text;
  *
  */
 public class DataDomainFilterWidget {
-	private final GroupNameCompareDomainFilter filter;
+	private final CompareDomainFilter filter;
 	private final Combo operatorUI;
 	private final Text operandUI;
 
 	/**
 	 * @param filter
 	 */
-	public DataDomainFilterWidget(Composite parent, GroupNameCompareDomainFilter filter) {
+	public DataDomainFilterWidget(Composite parent, CompareDomainFilter filter) {
 		this.filter = filter;
 		Label l = new Label(parent, SWT.NONE);
-		l.setText("Group Name X");
+		if (filter.isAgainstStratification())
+			l.setText("Stratification X");
+		else
+			l.setText("Group X");
 		GridData d = new GridData(SWT.LEFT, SWT.CENTER, false, false);
 		l.setLayoutData(d);
 		this.operatorUI = new Combo(parent, SWT.READ_ONLY);
@@ -56,7 +59,7 @@ public class DataDomainFilterWidget {
 		this.operandUI.setText(filter.getOperand());
 	}
 
-	public GroupNameCompareDomainFilter save() {
+	public CompareDomainFilter save() {
 		this.filter.setOperand(operandUI.getText());
 		this.filter.setOp(EStringCompareOperator.values()[operatorUI.getSelectionIndex()]);
 		return this.filter;

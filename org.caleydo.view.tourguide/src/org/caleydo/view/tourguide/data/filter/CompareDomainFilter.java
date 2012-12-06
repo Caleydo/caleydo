@@ -27,13 +27,22 @@ import org.caleydo.core.util.collection.Pair;
  * @author Samuel Gratzl
  *
  */
-public class GroupNameCompareDomainFilter implements IDataDomainFilter {
+public class CompareDomainFilter implements IDataDomainFilter {
+	private final boolean againstStratification;
 	private String operand;
 	private EStringCompareOperator op;
 
-	public GroupNameCompareDomainFilter(EStringCompareOperator op, String operand) {
+	public CompareDomainFilter(EStringCompareOperator op, String operand, boolean againstStratification) {
 		this.operand = operand;
 		this.op = op;
+		this.againstStratification = againstStratification;
+	}
+
+	/**
+	 * @return the againstStratification, see {@link #againstStratification}
+	 */
+	public boolean isAgainstStratification() {
+		return againstStratification;
 	}
 
 	/**
@@ -68,8 +77,12 @@ public class GroupNameCompareDomainFilter implements IDataDomainFilter {
 
 	@Override
 	public boolean apply(Pair<TablePerspective, Group> pair) {
-		Group group = pair.getSecond();
-		return group == null || op.apply(group.getLabel(), operand);
+		if (againstStratification) {
+			return op.apply(pair.getFirst().getRecordPerspective().getLabel(), operand);
+		} else {
+			Group group = pair.getSecond();
+			return group == null || op.apply(group.getLabel(), operand);
+		}
 	}
 
 	/*
@@ -81,6 +94,7 @@ public class GroupNameCompareDomainFilter implements IDataDomainFilter {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (againstStratification ? 1231 : 1237);
 		result = prime * result + ((op == null) ? 0 : op.hashCode());
 		result = prime * result + ((operand == null) ? 0 : operand.hashCode());
 		return result;
@@ -99,7 +113,9 @@ public class GroupNameCompareDomainFilter implements IDataDomainFilter {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		GroupNameCompareDomainFilter other = (GroupNameCompareDomainFilter) obj;
+		CompareDomainFilter other = (CompareDomainFilter) obj;
+		if (againstStratification != other.againstStratification)
+			return false;
 		if (op != other.op)
 			return false;
 		if (operand == null) {
@@ -109,5 +125,6 @@ public class GroupNameCompareDomainFilter implements IDataDomainFilter {
 			return false;
 		return true;
 	}
+
 
 }

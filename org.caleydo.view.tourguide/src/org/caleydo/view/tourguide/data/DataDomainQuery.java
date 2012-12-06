@@ -40,11 +40,11 @@ import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.execution.SafeCallable;
+import org.caleydo.view.tourguide.data.filter.CompareDomainFilter;
 import org.caleydo.view.tourguide.data.filter.CompositeDataDomainFilter;
 import org.caleydo.view.tourguide.data.filter.DefaultStratificationDomainFilter;
 import org.caleydo.view.tourguide.data.filter.EStringCompareOperator;
 import org.caleydo.view.tourguide.data.filter.EmptyGroupFilter;
-import org.caleydo.view.tourguide.data.filter.GroupNameCompareDomainFilter;
 import org.caleydo.view.tourguide.data.filter.IDataDomainFilter;
 import org.caleydo.view.tourguide.data.filter.SpecificDataDomainFilter;
 
@@ -87,9 +87,9 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 				ATableBasedDataDomain.class)) {
 			SpecificDataDomainFilter f = new SpecificDataDomainFilter(dataDomain);
 			if (dataDomain.getLabel().equalsIgnoreCase("Mutations"))
-				f.add(new GroupNameCompareDomainFilter(EStringCompareOperator.EQUAL_IGNORECASE, "Mutated"));
+				f.add(new CompareDomainFilter(EStringCompareOperator.EQUAL_IGNORECASE, "Mutated", false));
 			else if (dataDomain.getLabel().contains("Copy"))
-				f.add(new GroupNameCompareDomainFilter(EStringCompareOperator.NOT_EQUAL_IGNORECASE, "Normal"));
+				f.add(new CompareDomainFilter(EStringCompareOperator.NOT_EQUAL_IGNORECASE, "Normal", false));
 			filter.add(f);
 		}
 		return filter;

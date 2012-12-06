@@ -6,8 +6,8 @@ import java.util.List;
 import org.caleydo.core.io.gui.dataimport.widget.BooleanCallback;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.tourguide.data.DataDomainQuery;
+import org.caleydo.view.tourguide.data.filter.CompareDomainFilter;
 import org.caleydo.view.tourguide.data.filter.EStringCompareOperator;
-import org.caleydo.view.tourguide.data.filter.GroupNameCompareDomainFilter;
 import org.caleydo.view.tourguide.data.filter.IDataDomainFilter;
 import org.caleydo.view.tourguide.data.filter.SpecificDataDomainFilter;
 import org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle;
@@ -23,6 +23,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
@@ -33,7 +34,7 @@ public class DataDomainFilterDialog extends TitleAreaDialog {
 	private final BooleanCallback hasFilterAfterwardsCallback;
 
 	private List<DataDomainFilterWidget> filters = new ArrayList<>();
-	private Composite filterContainer;
+	private Group filterContainer;
 
 	public DataDomainFilterDialog(Shell shell, DataDomainQuery query, SpecificDataDomainFilter filter,
 			BooleanCallback hasFilterAfterwardsCallback) {
@@ -66,12 +67,13 @@ public class DataDomainFilterDialog extends TitleAreaDialog {
 		scrolledComposite.setExpandVertical(true);
 		scrolledComposite.setExpandHorizontal(true);
 
-		this.filterContainer = new Composite(scrolledComposite, SWT.NONE);
+		this.filterContainer = new Group(scrolledComposite, SWT.NONE);
+		this.filterContainer.setText("Active Filters:");
 		filterContainer.setLayout(new GridLayout(4, false));
 
 		for (IDataDomainFilter f : this.filter) {
-			if (f instanceof GroupNameCompareDomainFilter) {
-				addFilterRow((GroupNameCompareDomainFilter) f);
+			if (f instanceof CompareDomainFilter) {
+				addFilterRow((CompareDomainFilter) f);
 			}
 		}
 
@@ -83,16 +85,16 @@ public class DataDomainFilterDialog extends TitleAreaDialog {
 		return c;
 	}
 
-	private void addFilterRow(final GroupNameCompareDomainFilter f) {
-		final int i = this.filters.size();
-		this.filters.add(new DataDomainFilterWidget(filterContainer, f));
+	private void addFilterRow(final CompareDomainFilter f) {
+		final DataDomainFilterWidget w = new DataDomainFilterWidget(filterContainer, f);
+		this.filters.add(w);
 		Button removeRow = new Button(filterContainer, SWT.PUSH);
 		removeRow.setImage(GeneralManager.get().getResourceLoader()
 				.getImage(filterContainer.getDisplay(), TourGuideRenderStyle.ICON_DELETE_ROW));
 		removeRow.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				onRemoveFilter(f, i);
+				onRemoveFilter(w);
 			}
 		});
 	}
@@ -107,29 +109,44 @@ public class DataDomainFilterDialog extends TitleAreaDialog {
 		parent.setLayout(r);
 
 		new Label(parent, SWT.NONE).setText("Add New Filter: ");
+
 		Button addRow = new Button(parent, SWT.PUSH);
 		addRow.setImage(GeneralManager.get().getResourceLoader()
 				.getImage(parent.getDisplay(), TourGuideRenderStyle.ICON_ADD_ROW));
+		addRow.setText("Add Stratification Filter");
+		addRow.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				onAddFilter(true);
+			}
+		});
+
+		addRow = new Button(parent, SWT.PUSH);
+		addRow.setImage(GeneralManager.get().getResourceLoader()
+				.getImage(parent.getDisplay(), TourGuideRenderStyle.ICON_ADD_ROW));
+		addRow.setText("Add Group Filter");
 	    addRow.addSelectionListener(new SelectionAdapter() {
 	    	@Override
 	    	public void widgetSelected(SelectionEvent e) {
-				onAddFilter();
+				onAddFilter(false);
 	    	}
 		});
 
 	    return parent;
 	}
 
-	protected void onAddFilter() {
-		addFilterRow(new GroupNameCompareDomainFilter(EStringCompareOperator.NOT_EQUAL, ""));
+	protected void onAddFilter(boolean stratificationFilter) {
+		addFilterRow(new CompareDomainFilter(EStringCompareOperator.NOT_EQUAL, "", stratificationFilter));
 		this.filterContainer.layout(true);
 	}
 
-	protected void onRemoveFilter(GroupNameCompareDomainFilter f, int i) {
+	protected void onRemoveFilter(DataDomainFilterWidget w) {
+		int i = this.filters.indexOf(w);
 		this.filters.remove(i);
 		Control[] arr = filterContainer.getChildren();
 		for (int j = i * 4; j < i * 4 + 4; ++j)
 			arr[j].dispose();
+		this.filterContainer.layout(true);
 	}
 
 	private boolean validate() {
