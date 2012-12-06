@@ -302,7 +302,9 @@ public class TransformDataPage extends AImportDataPage implements Listener {
 		scalingMethodLabel.setText("Scaling Method");
 
 		scalingCombo = new Combo(scalingGroup, SWT.DROP_DOWN | SWT.READ_ONLY);
-
+		gridData = new GridData();
+		gridData.widthHint = 100;
+		scalingCombo.setLayoutData(gridData);
 		scalingCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
