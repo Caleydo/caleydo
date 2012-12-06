@@ -35,15 +35,16 @@ import org.caleydo.view.tourguide.data.ScoringElement;
  */
 public class CollapseScore implements ICompositeScore {
 	private final String label;
+	private final ECollapseOperator op;
 	private final Collection<IScore> children;
 
 	public CollapseScore(String label) {
-		this.label = label;
-		this.children = new ArrayList<>();
+		this(label, ECollapseOperator.NONE, Collections.<IScore> emptyList());
 	}
 
-	public CollapseScore(String label, Collection<IScore> children) {
+	public CollapseScore(String label, ECollapseOperator op, Collection<IScore> children) {
 		this.label = label;
+		this.op = op;
 		this.children = new ArrayList<>();
 		for (IScore child : children)
 			add(child);
@@ -81,6 +82,10 @@ public class CollapseScore implements ICompositeScore {
 		return label;
 	}
 
+	public ECollapseOperator getOp() {
+		return op;
+	}
+
 	@Override
 	public final EScoreType getScoreType() {
 		int maxOrdinal = 0;
@@ -91,7 +96,7 @@ public class CollapseScore implements ICompositeScore {
 
 	@Override
 	public float getScore(ScoringElement elem) {
-		IScore child = elem.getSelected(this);
-		return child == null ? Float.NaN : child.getScore(elem);
+		IScore current = elem.getSelected(this);
+		return current == null ? Float.NaN : op.apply(elem, current, children);
 	}
 }

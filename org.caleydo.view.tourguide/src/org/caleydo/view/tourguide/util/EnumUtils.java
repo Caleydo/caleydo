@@ -17,52 +17,41 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data.filter;
+package org.caleydo.view.tourguide.util;
 
 import org.caleydo.core.util.base.ILabelProvider;
 
 /**
+ * collection of utility function for managing enums
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public enum ECompareOperator implements ILabelProvider {
-	IS_NOT_NA, GE, GT, LE, LT;
+public class EnumUtils {
+	private EnumUtils() {
 
-	public boolean apply(float a, float b) {
-		switch(this) {
-		case IS_NOT_NA:
-			return !Float.isNaN(a);
-		case GE:
-			return !Float.isNaN(a) && a >= b;
-		case GT:
-			return !Float.isNaN(a) && a > b;
-		case LE:
-			return !Float.isNaN(a) && a <= b;
-		case LT:
-			return !Float.isNaN(a) && a < b;
-		}
-		throw new IllegalStateException("unknown compare operator " + this);
 	}
 
-	@Override
-	public String getLabel() {
-		switch (this) {
-		case IS_NOT_NA:
-			return "is not NA";
-		case GE:
-			return "Greater Equal (>=)";
-		case GT:
-			return "Greater Than (>)";
-		case LE:
-			return "Less Equal (<=)";
-		case LT:
-			return "Less Than (<)";
-		}
-		throw new IllegalStateException("unknown compare operator " + this);
+	public static <E extends Enum<E>> String[] getNames(Class<E> clazz) {
+		E[] values = clazz.getEnumConstants();
+		String[] n = new String[values.length];
+		for (int i = 0; i < values.length; ++i)
+			n[i] = values[i].name();
+		return n;
 	}
 
-	@Override
-	public String getProviderName() {
+	public static <E extends Enum<E> & ILabelProvider> String[] getLabels(Class<E> clazz) {
+		E[] values = clazz.getEnumConstants();
+		String[] n = new String[values.length];
+		for (int i = 0; i < values.length; ++i)
+			n[i] = values[i].getLabel();
+		return n;
+	}
+
+	public static <E extends Enum<E> & ILabelProvider> E valueOfByLabels(Class<E> clazz, String label) {
+		for (E value : clazz.getEnumConstants())
+			if (value.getLabel().equals(label))
+				return value;
 		return null;
 	}
 }

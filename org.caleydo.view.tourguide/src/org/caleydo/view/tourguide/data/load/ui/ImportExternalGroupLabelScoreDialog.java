@@ -19,6 +19,7 @@ import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.util.link.LinkHandler;
 import org.caleydo.view.tourguide.data.load.GroupLabelParseSpecification;
 import org.caleydo.view.tourguide.data.score.ECombinedOperator;
+import org.caleydo.view.tourguide.util.EnumUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -138,7 +139,7 @@ public class ImportExternalGroupLabelScoreDialog extends AHelpButtonDialog imple
 		this.operator.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 		this.operator
 				.setToolTipText("The operator to use if multiple scores needs to be combined for a single element");
-		this.operator.setItems(ECombinedOperator.names());
+		this.operator.setItems(EnumUtils.getNames(ECombinedOperator.class));
 		this.operator.setText(ECombinedOperator.MEAN.name());
 
 		Label normalizeLabel = new Label(extra, SWT.TOP | SWT.LEFT);

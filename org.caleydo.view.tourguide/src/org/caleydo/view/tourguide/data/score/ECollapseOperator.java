@@ -17,21 +17,57 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.vendingmachine.ui;
+package org.caleydo.view.tourguide.data.score;
+
+import java.util.Collection;
 
 import org.caleydo.core.util.base.ILabelProvider;
+import org.caleydo.view.tourguide.data.ScoringElement;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class CaleydoLabelProvider extends org.eclipse.jface.viewers.LabelProvider {
+public enum ECollapseOperator implements ILabelProvider {
+	NONE, MUTUTAL_EXCLUSIVE;
+
 	@Override
-	public String getText(Object element) {
-		if (element instanceof ILabelProvider) {
-			return ((ILabelProvider) element).getLabel();
+	public String getLabel() {
+		switch (this) {
+		case NONE:
+			return "None";
+		case MUTUTAL_EXCLUSIVE:
+			return "Mutual Exclusive";
+
+		default:
+			throw new IllegalStateException("invalid enum: " + this);
 		}
-		return super.getText(element);
 	}
+
+	@Override
+	public String getProviderName() {
+		return null;
+	}
+
+	public float apply(ScoringElement elem, IScore current, Collection<IScore> all) {
+		switch (this) {
+		case NONE:
+			return current.getScore(elem);
+		case MUTUTAL_EXCLUSIVE:
+			// see #984: high score to the current one and a low score to all the others
+			float base = current.getScore(elem);
+			float[] others = new float[all.size() - 1];
+			int i = 0;
+			for (IScore s : all) {
+				if (s == current)
+					continue;
+				others[i++] = s.getScore(elem);
+			}
+			return base - ECombinedOperator.MEAN.apply(others);
+		default:
+			throw new IllegalStateException("invalid enum: " + this);
+		}
+	}
+
 }
 

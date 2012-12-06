@@ -21,6 +21,7 @@ package org.caleydo.view.tourguide.vendingmachine.ui;
 
 import org.caleydo.view.tourguide.data.filter.CompareScoreFilter;
 import org.caleydo.view.tourguide.data.filter.ECompareOperator;
+import org.caleydo.view.tourguide.util.EnumUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
@@ -50,7 +51,7 @@ public class ScoreFilterWidget {
 		l.setLayoutData(d);
 		this.operatorUI = new Combo(parent, SWT.READ_ONLY);
 		this.operatorUI.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-		this.operatorUI.setItems(ECompareOperator.getLabels());
+		this.operatorUI.setItems(EnumUtils.getLabels(ECompareOperator.class));
 		this.operatorUI.setText(filter.getOp().getLabel());
 
 		this.isInt = filter.getReference().getScoreType().isRank();

@@ -146,8 +146,9 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 		}
 
 		private boolean ignorePartChange(IWorkbenchPart part) {
-			return part instanceof RcpGLTourGuideView
-					|| part.getClass().getCanonicalName().startsWith("org.caleydo.view.info");
+			final String canonicalName = part.getClass().getCanonicalName();
+			return part instanceof RcpGLTourGuideView || canonicalName.startsWith("org.caleydo.view.info")
+					|| canonicalName.startsWith("org.caleydo.core.gui.toolbar");
 		}
 	};
 

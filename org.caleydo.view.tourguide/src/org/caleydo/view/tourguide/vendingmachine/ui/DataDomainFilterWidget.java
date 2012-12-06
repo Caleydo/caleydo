@@ -21,6 +21,7 @@ package org.caleydo.view.tourguide.vendingmachine.ui;
 
 import org.caleydo.view.tourguide.data.filter.CompareDomainFilter;
 import org.caleydo.view.tourguide.data.filter.EStringCompareOperator;
+import org.caleydo.view.tourguide.util.EnumUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
@@ -51,7 +52,7 @@ public class DataDomainFilterWidget {
 		l.setLayoutData(d);
 		this.operatorUI = new Combo(parent, SWT.READ_ONLY);
 		this.operatorUI.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-		this.operatorUI.setItems(EStringCompareOperator.getLabels());
+		this.operatorUI.setItems(EnumUtils.getLabels(EStringCompareOperator.class));
 		this.operatorUI.setText(filter.getOp().getLabel());
 
 		this.operandUI = new Text(parent, SWT.BORDER);

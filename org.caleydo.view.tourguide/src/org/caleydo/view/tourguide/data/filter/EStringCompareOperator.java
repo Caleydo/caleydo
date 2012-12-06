@@ -82,12 +82,4 @@ public enum EStringCompareOperator implements ILabelProvider {
 	public String getProviderName() {
 		return null;
 	}
-
-	public static String[] getLabels() {
-		EStringCompareOperator[] values = values();
-		String[] names = new String[values.length];
-		for (int i = 0; i < values.length; ++i)
-			names[i] = values[i].getLabel();
-		return names;
-	}
 }

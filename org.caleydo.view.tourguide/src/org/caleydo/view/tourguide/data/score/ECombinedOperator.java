@@ -83,12 +83,4 @@ public enum ECombinedOperator implements Function<float[], Float> {
 		}
 		throw new IllegalStateException("unknown operator: " + this);
 	}
-
-	public static String[] names() {
-		ECombinedOperator[] values = values();
-		String[] names = new String[values.length];
-		for (int i = 0; i < values.length; ++i)
-			names[i] = values[i].name();
-		return names;
-	}
 }

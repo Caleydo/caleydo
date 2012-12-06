@@ -40,7 +40,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -78,6 +77,7 @@ import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.renderer.AnimatedTextureRenderer;
 import org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle;
+import org.caleydo.view.tourguide.util.LabelComparator;
 import org.caleydo.view.tourguide.vendingmachine.ui.ScoreFilterDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -404,7 +404,8 @@ public class ScoreQueryUI extends Column {
 	}
 
 	protected void onAddColumn() {
-		Collection<IScore> scores = Scores.get().getScoreIDs();
+		List<IScore> scores = new ArrayList<>(Scores.get().getScoreIDs());
+		Collections.sort(scores, new LabelComparator());
 
 		ContextMenuCreator creator = view.getContextMenuCreator();
 		creator.addContextMenuItem(new GenericContextMenuItem("Create Jaccard Index Score", new CreateScoreColumnEvent(

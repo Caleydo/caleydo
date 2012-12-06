@@ -17,51 +17,28 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data;
+package org.caleydo.view.tourguide.util;
 
 import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
-import org.caleydo.view.tourguide.data.score.IScore;
+import org.caleydo.core.util.base.ILabelProvider;
 
 /**
- * based on the sorting mapping act as a comparator to compare {@link ScoringElement}
- *
+ * comparator based on labels
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public class ScoreComparator extends LinkedHashMap<IScore, ESorting> implements Comparator<ScoringElement> {
-	private static final long serialVersionUID = 4297583469444630189L;
-
-	public ScoreComparator() {
-	}
-
-	public ScoreComparator(ScoreComparator other) {
-		super(other);
-	}
-
+public class LabelComparator implements Comparator<ILabelProvider> {
 	@Override
-	public int compare(ScoringElement o1, ScoringElement o2) {
-		for (Map.Entry<IScore, ESorting> entry : entrySet()) {
-			IScore s = entry.getKey();
-			int c = entry.getValue().apply(compare(s.getScore(o1), s.getScore(o2)));
-			if (c != 0)
-				return c;
-		}
-		int c = o1.getDataDomain().getLabel().compareTo(o2.getDataDomain().getLabel());
-		if (c != 0)
-			return c;
+	public int compare(ILabelProvider o1, ILabelProvider o2) {
+		if (o1 == o2)
+			return 0;
+		if (o1 == null)
+			return -1;
+		if (o2 == null)
+			return +1;
 		return o1.getLabel().compareTo(o2.getLabel());
 	}
-
-	private int compare(float s1, float s2) {
-		if (s1 == s2)
-			return 0;
-		if (Float.isNaN(s1))
-			return -1;
-		if (Float.isNaN(s2))
-			return +1;
-		return Float.compare(s1, s2);
-	}
 }
+

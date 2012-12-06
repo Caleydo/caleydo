@@ -7,10 +7,12 @@ import java.util.List;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.CombinedScore;
+import org.caleydo.view.tourguide.data.score.ECollapseOperator;
 import org.caleydo.view.tourguide.data.score.ECombinedOperator;
 import org.caleydo.view.tourguide.data.score.ICompositeScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
+import org.caleydo.view.tourguide.util.EnumUtils;
 import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.fieldassist.ControlDecoration;
@@ -91,25 +93,29 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 			}
 		});
 
-		if (!createCollapseScore) {
-			new Label(c, SWT.NONE).setText("Operator: ");
-			this.operatorUI = new Combo(c, SWT.DROP_DOWN | SWT.BORDER);
-			this.operatorUI.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-			String[] items = new String[ECombinedOperator.values().length];
-			for (int i = 0; i < items.length; ++i)
-				items[i] = ECombinedOperator.values()[i].name();
+		new Label(c, SWT.NONE).setText("Operator: ");
+		this.operatorUI = new Combo(c, SWT.DROP_DOWN | SWT.BORDER);
+		this.operatorUI.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		String[] items;
+		if (createCollapseScore) {
+			items = EnumUtils.getLabels(ECollapseOperator.class);
 			this.operatorUI.setItems(items);
-			this.operatorDeco = new ControlDecoration(this.operatorUI, SWT.TOP | SWT.RIGHT);
-			operatorDeco.setDescriptionText("An operator is required");
-			operatorDeco.setImage(image);
-			operatorDeco.show(); // Hide deco if not in focus
-			operatorUI.addListener(SWT.FocusOut, new Listener() {
-				@Override
-				public void handleEvent(Event event) {
-					validateOperator();
-				}
-			});
+			this.operatorUI.select(ECollapseOperator.NONE.ordinal());
+		} else {
+			items = EnumUtils.getNames(ECombinedOperator.class);
+			this.operatorUI.setItems(items);
+			this.operatorUI.select(ECombinedOperator.MEAN.ordinal());
 		}
+		this.operatorDeco = new ControlDecoration(this.operatorUI, SWT.TOP | SWT.RIGHT);
+		operatorDeco.setDescriptionText("An operator is required");
+		operatorDeco.setImage(image);
+		operatorDeco.show(); // Hide deco if not in focus
+		operatorUI.addListener(SWT.FocusOut, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				validateOperator();
+			}
+		});
 
 		Label l = new Label(c, SWT.NONE);
 		l.setText("Scores: ");
@@ -169,7 +175,8 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 		}
 		ICompositeScore result;
 		if (createCollapseScore) {
-			result = new CollapseScore(label, children);
+			ECollapseOperator op = ECollapseOperator.values()[operatorUI.getSelectionIndex()];
+			result = new CollapseScore(label, op, children);
 		} else {
 			ECombinedOperator op = ECombinedOperator.values()[operatorUI.getSelectionIndex()];
 			result = new CombinedScore(label, op, children);

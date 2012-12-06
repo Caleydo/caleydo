@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data.filter;
+package org.caleydo.view.tourguide.util.ui;
 
 import org.caleydo.core.util.base.ILabelProvider;
 
@@ -25,44 +25,13 @@ import org.caleydo.core.util.base.ILabelProvider;
  * @author Samuel Gratzl
  *
  */
-public enum ECompareOperator implements ILabelProvider {
-	IS_NOT_NA, GE, GT, LE, LT;
-
-	public boolean apply(float a, float b) {
-		switch(this) {
-		case IS_NOT_NA:
-			return !Float.isNaN(a);
-		case GE:
-			return !Float.isNaN(a) && a >= b;
-		case GT:
-			return !Float.isNaN(a) && a > b;
-		case LE:
-			return !Float.isNaN(a) && a <= b;
-		case LT:
-			return !Float.isNaN(a) && a < b;
-		}
-		throw new IllegalStateException("unknown compare operator " + this);
-	}
-
+public class CaleydoLabelProvider extends org.eclipse.jface.viewers.LabelProvider {
 	@Override
-	public String getLabel() {
-		switch (this) {
-		case IS_NOT_NA:
-			return "is not NA";
-		case GE:
-			return "Greater Equal (>=)";
-		case GT:
-			return "Greater Than (>)";
-		case LE:
-			return "Less Equal (<=)";
-		case LT:
-			return "Less Than (<)";
+	public String getText(Object element) {
+		if (element instanceof ILabelProvider) {
+			return ((ILabelProvider) element).getLabel();
 		}
-		throw new IllegalStateException("unknown compare operator " + this);
-	}
-
-	@Override
-	public String getProviderName() {
-		return null;
+		return super.getText(element);
 	}
 }
+
