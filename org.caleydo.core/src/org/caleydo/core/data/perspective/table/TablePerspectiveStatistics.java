@@ -160,9 +160,6 @@ public class TablePerspectiveStatistics {
 			numberOfBuckets = (int) Math.sqrt(recordVA.size());
 		Histogram histogram = new Histogram(numberOfBuckets);
 
-		// FloatCContainerIterator iterator =
-		// ((FloatCContainer)
-		// hashCContainers.get(DataRepresentation.NORMALIZED)).iterator(recordVA);
 		for (Integer dimensionID : dimensionVA) {
 			{
 				for (Integer recordID : recordVA) {
@@ -172,10 +169,10 @@ public class TablePerspectiveStatistics {
 
 					// this works because the values in the container are
 					// already noramlized
-					int iIndex = (int) (value * numberOfBuckets);
-					if (iIndex == numberOfBuckets)
-						iIndex--;
-					histogram.add(iIndex, recordID);
+					int bucketIndex = (int) (value * numberOfBuckets);
+					if (bucketIndex == numberOfBuckets)
+						bucketIndex--;
+					histogram.add(bucketIndex, recordID);
 				}
 			}
 		}
