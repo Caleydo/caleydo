@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.startup;
 
-import java.io.File;
-
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.util.HelpButtonWizardDialog;
@@ -74,8 +72,7 @@ public class GeneticGUIStartupProcedure
 
 		if (this.loadSampleData) {
 			DataSetDescription dataSetDescription = new DataSetDescription();
-			dataSetDescription.setDataSourcePath(REAL_DATA_SAMPLE_FILE.replace("/",
-					File.separator));
+			dataSetDescription.setDataSourcePath(REAL_DATA_SAMPLE_FILE);
 			dataSetDescription.setMathFilterMode(EDataTransformation.LOG2
 					.getHumanReadableRep());
 			dataImportWizard = new DataImportWizard(dataSetDescription);
