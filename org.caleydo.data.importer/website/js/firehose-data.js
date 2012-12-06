@@ -462,7 +462,7 @@ function renderControls( data, tumorIndex, element ) {
 		"<p>On 16 October 2012 Apple released a <a href=\"http://support.apple.com/kb/HT5493\">security patch and update called \"Java for OS X 2012-006\"</a> for Java on Mac OS X 10.7 and later.</p>" +
 		"<p>This update removed the Java 1.6 Runtime Enviroment provided by Apple and users were asked to replace an new Java 1.7 Runtime Enviroment provided by Oracle.</p>" +
 		"<p>Unfortunately, <b>Caleydo StratomeX WebStart</b> <i>currently does not work</i> with the Oracle Java 1.7 Runtime Environment for Mac OS X due to incompatibilities with 3rd party libraries used by StratomeX.</p>" + 
-		"<p>Please <a href=\"http://www.icg.tugraz.at/project/caleydo/download-caleydo/caleydo-application-download\ ">download the standalone release for MacOS X</a> until this problem can be resolved.</p>" );
+		"<p>Please <a href=\"http://www.icg.tugraz.at/project/caleydo/download-caleydo/caleydo-application-download\ \">download the standalone release for MacOS X</a> until this problem can be resolved.</p>" );
 	});	
 	
 	$(".btn").tooltip({
