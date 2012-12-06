@@ -21,11 +21,16 @@ import java.util.ArrayList;
 /**
  * Histogram holds the data structure of a histogram. It is based on an ArrayList<Integer> and maps the relevant
  * functions directly. It adds the functionality of keeping score of the biggest element.
+ * <p>
+ * The buckets have a unique ID across all instances of Histogram. This id is a running increment starting with
+ * {@link #firstBucketID}.
+ * </p>
  *
  * @author Alexander Lex
  */
 public class Histogram {
 
+	/** Static counter for buckets to guarantee unique bucket IDs */
 	private static int bucketCounter = 0;
 
 	/**
@@ -44,12 +49,13 @@ public class Histogram {
 	/** Same as {@link #ids} but for the dedicate NAN bucket */
 	private ArrayList<Integer> nanIDs;
 
-	int sizeOfBiggestBucket = -1;
+	private int sizeOfBiggestBucket = -1;
 
-	float min;
-	float max;
+	private float min;
+	private float max;
 
-	int firstBucketID;
+	/** The id of the first bucket in this histogram instance. */
+	private int firstBucketID;
 
 	/**
 	 * Constructor initializing the Histogram with the specified number of buckets
