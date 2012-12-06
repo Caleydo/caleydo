@@ -409,8 +409,8 @@ public class ScoreQueryUI extends Column {
 		ContextMenuCreator creator = view.getContextMenuCreator();
 		creator.addContextMenuItem(new GenericContextMenuItem("Create Jaccard Index Score", new CreateScoreColumnEvent(
 				CreateScoreColumnEvent.Type.JACCARD, this)));
-		creator.addContextMenuItem(new GenericContextMenuItem("Create Adjusted Rank Score", new CreateScoreColumnEvent(
-				CreateScoreColumnEvent.Type.ADJUSTED_RANK, this)));
+		creator.addContextMenuItem(new GenericContextMenuItem("Create Adjusted Rand Score", new CreateScoreColumnEvent(
+				CreateScoreColumnEvent.Type.ADJUSTED_RAND, this)));
 		if (scores.size() >= 2) {
 			creator.addContextMenuItem(new GenericContextMenuItem("Create Combined Score", new CreateScoreColumnEvent(
 					CreateScoreColumnEvent.Type.COMBINED, this)));

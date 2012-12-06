@@ -27,7 +27,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.tourguide.data.DataDomainQuery;
 import org.caleydo.view.tourguide.data.Scores;
-import org.caleydo.view.tourguide.data.score.AdjustedRankScore;
+import org.caleydo.view.tourguide.data.score.AdjustedRandScore;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
@@ -52,7 +52,7 @@ import org.eclipse.swt.widgets.Text;
  * @author Samuel Gratzl
  *
  */
-public class CreateAdjustedRankScoreDialog extends TitleAreaDialog {
+public class CreateAdjustedRandScoreDialog extends TitleAreaDialog {
 
 	private final ScoreQueryUI sender;
 
@@ -60,7 +60,7 @@ public class CreateAdjustedRankScoreDialog extends TitleAreaDialog {
 	private ComboViewer dataDomainUI;
 	private ComboViewer stratificationUI;
 
-	public CreateAdjustedRankScoreDialog(Shell shell, ScoreQueryUI sender) {
+	public CreateAdjustedRandScoreDialog(Shell shell, ScoreQueryUI sender) {
 		super(shell);
 		this.sender = sender;
 	}
@@ -68,7 +68,7 @@ public class CreateAdjustedRankScoreDialog extends TitleAreaDialog {
 	@Override
 	public void create() {
 		super.create();
-		this.setTitle("Create a new Adjusted Rank Index Score");
+		this.setTitle("Create a new Adjusted Rand Index Score");
 		this.setBlockOnOpen(false);
 	}
 
@@ -149,11 +149,11 @@ public class CreateAdjustedRankScoreDialog extends TitleAreaDialog {
 			Scores manager = Scores.get();
 			CollapseScore composite = new CollapseScore(label);
 			for (TablePerspective g : (Iterable<TablePerspective>) stratificationUI.getInput()) {
-				composite.add(manager.addIfAbsent(new AdjustedRankScore(g)));
+				composite.add(manager.addIfAbsent(new AdjustedRandScore(g)));
 			}
 			s = composite;
 		} else { // score single
-			s = Scores.get().addIfAbsent(new AdjustedRankScore(strat));
+			s = Scores.get().addIfAbsent(new AdjustedRandScore(strat));
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new AddScoreColumnEvent(s, sender));
 	}

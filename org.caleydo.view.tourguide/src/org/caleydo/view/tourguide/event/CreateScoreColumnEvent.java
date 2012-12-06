@@ -30,7 +30,7 @@ public class CreateScoreColumnEvent extends AEvent {
 	private Type type;
 
 	public enum Type {
-		COMBINED, COLLAPSED, JACCARD, ADJUSTED_RANK
+		COMBINED, COLLAPSED, JACCARD, ADJUSTED_RAND
 	}
 
 	public CreateScoreColumnEvent() {

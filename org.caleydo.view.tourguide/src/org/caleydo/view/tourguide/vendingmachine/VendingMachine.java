@@ -58,7 +58,7 @@ import org.caleydo.view.tourguide.data.Scores;
 import org.caleydo.view.tourguide.data.ScoringElement;
 import org.caleydo.view.tourguide.data.load.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.data.score.AGroupScore;
-import org.caleydo.view.tourguide.data.score.AdjustedRankScore;
+import org.caleydo.view.tourguide.data.score.AdjustedRandScore;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.JaccardIndexScore;
@@ -74,7 +74,7 @@ import org.caleydo.view.tourguide.listener.RemoveScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreQueryReadyListener;
 import org.caleydo.view.tourguide.listener.ScoreTablePerspectiveListener;
-import org.caleydo.view.tourguide.vendingmachine.ui.CreateAdjustedRankScoreDialog;
+import org.caleydo.view.tourguide.vendingmachine.ui.CreateAdjustedRandScoreDialog;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateCompositeScoreDialog;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateJaccardIndexScoreDialog;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -279,7 +279,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	}
 
 	public void createStratificationScore(TablePerspective stratification) {
-		IScore score = Scores.get().addIfAbsent(new AdjustedRankScore(stratification));
+		IScore score = Scores.get().addIfAbsent(new AdjustedRandScore(stratification));
 		onAddColumn(score);
 	}
 
@@ -447,8 +447,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 				case JACCARD:
 					new CreateJaccardIndexScoreDialog(new Shell(), scoreQueryUI).open();
 					break;
-				case ADJUSTED_RANK:
-					new CreateAdjustedRankScoreDialog(new Shell(), scoreQueryUI).open();
+				case ADJUSTED_RAND:
+					new CreateAdjustedRandScoreDialog(new Shell(), scoreQueryUI).open();
 					break;
 				}
 			}

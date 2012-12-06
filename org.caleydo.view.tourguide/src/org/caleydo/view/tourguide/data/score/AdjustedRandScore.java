@@ -27,13 +27,13 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
  * @author Samuel Gratzl
  *
  */
-public class AdjustedRankScore extends AStratificationScore implements IComputedStratificationScore {
+public class AdjustedRandScore extends AStratificationScore implements IComputedStratificationScore {
 
-	public AdjustedRankScore() {
+	public AdjustedRandScore() {
 		super();
 	}
 
-	public AdjustedRankScore(TablePerspective reference) {
+	public AdjustedRandScore(TablePerspective reference) {
 		super(reference);
 	}
 
