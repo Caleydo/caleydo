@@ -3,8 +3,6 @@ package org.caleydo.view.subgraph;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
-import org.caleydo.view.subgraph.toolbar.SubGraphToolBarContent;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -32,14 +30,12 @@ public class Activator extends AbstractUIPlugin {
 	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
 	 * )
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 
 		registerDataDomains();
-
-		ToolBarContentFactory.get().addToolBarContent(GLSubGraph.VIEW_TYPE,
-				false, new SubGraphToolBarContent());
 	}
 
 	/*
@@ -49,6 +45,7 @@ public class Activator extends AbstractUIPlugin {
 	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
 	 * )
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
