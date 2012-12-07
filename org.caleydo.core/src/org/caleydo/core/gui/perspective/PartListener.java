@@ -22,18 +22,10 @@ package org.caleydo.core.gui.perspective;
 import java.util.List;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.gui.toolbar.AToolBarContent;
-import org.caleydo.core.gui.toolbar.IToolBarItem;
-import org.caleydo.core.gui.toolbar.ToolBarContainer;
-import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.core.view.IView;
-import org.eclipse.jface.action.ControlContribution;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
@@ -82,8 +74,6 @@ public class PartListener implements IPartListener2 {
 
 			glViewPart.getGLView().setVisible(true);
 		}
-
-		drawInlineToolBar(viewPart);
 	}
 
 	@Override
@@ -124,8 +114,6 @@ public class PartListener implements IPartListener2 {
 		}
 
 		CaleydoRCPViewPart viewPart = (CaleydoRCPViewPart) activePart;
-
-		drawInlineToolBar(viewPart);
 		updateSupportViews(viewPart);
 
 		// Make sure that keyboard listener gets the events
@@ -176,38 +164,6 @@ public class PartListener implements IPartListener2 {
 
 	@Override
 	public void partBroughtToTop(IWorkbenchPartReference partRef) {
-	}
-
-	/**
-	 * Draws the toolbar items within the views default toolbar (inline)
-	 * 
-	 * @param viewPartcreatePartControl
-	 *            view to add the toolbar items
-	 */
-	private void drawInlineToolBar(CaleydoRCPViewPart viewPart) {
-		List<IView> views = getAllViews(viewPart);
-
-		ToolBarContentFactory contentFactory = ToolBarContentFactory.get();
-		List<AToolBarContent> toolBarContents = contentFactory
-				.getToolBarContent(views);
-
-		final IToolBarManager toolBarManager = viewPart.getViewSite()
-				.getActionBars().getToolBarManager();
-
-		toolBarManager.removeAll();
-		for (AToolBarContent toolBarContent : toolBarContents) {
-			for (ToolBarContainer container : toolBarContent.getInlineToolBar()) {
-				for (IToolBarItem item : container.getToolBarItems()) {
-					if (item instanceof IAction) {
-						toolBarManager.add((IAction) item);
-					} else if (item instanceof ControlContribution) {
-						toolBarManager.add((ControlContribution) item);
-					}
-				}
-				toolBarManager.add(new Separator());
-			}
-		}
-		toolBarManager.update(true);
 	}
 
 	/**

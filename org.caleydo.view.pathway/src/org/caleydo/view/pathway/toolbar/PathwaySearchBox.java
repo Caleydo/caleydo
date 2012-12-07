@@ -1,16 +1,16 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
  * University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -19,12 +19,13 @@ package org.caleydo.view.pathway.toolbar;
 import java.util.Collection;
 
 import org.caleydo.core.event.view.browser.ChangeURLEvent;
-import org.caleydo.core.gui.toolbar.IToolBarItem;
+import org.caleydo.core.event.view.pathway.LoadPathwayEvent;
 import org.caleydo.core.gui.util.SearchBox;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.pathway.GLPathway;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -36,28 +37,23 @@ import org.eclipse.swt.widgets.Control;
 
 /**
  * Drop down style toolbar-contribution to select pathway.
- * 
+ *
  * @author Marc Streit
  */
-public class PathwaySearchBox
-	extends ControlContribution
-	implements IToolBarItem {
+public class PathwaySearchBox extends ControlContribution {
 
 	public static final int TOOLBAR_WIDTH = 500;
 
-	/** mediator to handle actions triggered by the contributed element */
-	private PathwayToolBarMediator pathwayToolBarMediator;
-
-	private int pathwayID = -1;
+	private GLPathway glPathwayView;
 
 	/**
 	 * constructor as requested by ControlContribution
-	 * 
-	 * @param str
+	 *
 	 */
-	public PathwaySearchBox(String str, int pathwayID) {
-		super(str);
-		this.pathwayID = pathwayID;
+	public PathwaySearchBox(GLPathway glPathwayView) {
+		super("");
+
+		this.glPathwayView = glPathwayView;
 	}
 
 	@Override
@@ -69,10 +65,10 @@ public class PathwaySearchBox
 		pathwaySearchBox.setItems(items);
 		pathwaySearchBox.setTextLimit(90);
 
-		if (PathwayManager.get().hasItem(pathwayID)) {
-			PathwayGraph pathway = PathwayManager.get().getItem(pathwayID);
-			pathwaySearchBox.setText(pathway.getTitle() + " (" + pathway.getType().getName() + ")");
-		}
+		// if (PathwayManager.get().hasItem(pathwayID)) {
+		// PathwayGraph pathway = PathwayManager.get().getItem(pathwayID);
+		// pathwaySearchBox.setText(pathway.getTitle() + " (" + pathway.getType().getName() + ")");
+		// }
 
 		pathwaySearchBox.addFocusListener(new FocusAdapter() {
 			@Override
@@ -135,19 +131,12 @@ public class PathwaySearchBox
 		return TOOLBAR_WIDTH;
 	}
 
-	public PathwayToolBarMediator getPathwayToolBarMediator() {
-		return pathwayToolBarMediator;
-	}
-
-	public void setPathwayToolBarMediator(PathwayToolBarMediator pathwayToolBarMediator) {
-		this.pathwayToolBarMediator = pathwayToolBarMediator;
-	}
-
 	/**
 	 * Method gets a pathway title and tries to determine the pathway ID. If this is successful the load pathway event
 	 * is triggered.
-	 * 
-	 * @param entity Pathway search title
+	 *
+	 * @param entity
+	 *            Pathway search title
 	 * @return
 	 */
 	private boolean loadPathway(String entity) {
@@ -155,11 +144,9 @@ public class PathwaySearchBox
 
 		if (entity.contains(EPathwayDatabaseType.KEGG.getName())) {
 			ePathwayDatabaseType = EPathwayDatabaseType.KEGG;
-		}
-		else if (entity.contains(EPathwayDatabaseType.BIOCARTA.getName())) {
+		} else if (entity.contains(EPathwayDatabaseType.BIOCARTA.getName())) {
 			ePathwayDatabaseType = EPathwayDatabaseType.BIOCARTA;
-		}
-		else
+		} else
 			return false;
 
 		entity = entity.substring(0, entity.indexOf(" ("));
@@ -169,12 +156,18 @@ public class PathwaySearchBox
 		if (pathway == null)
 			return false;
 
-		pathwayToolBarMediator.loadPathway(pathway);
-
-		ChangeURLEvent event = new ChangeURLEvent();
+		LoadPathwayEvent event = new LoadPathwayEvent();
 		event.setSender(this);
-		event.setUrl(pathway.getExternalLink());
+		event.setPathwayID(pathway.getID());
+
+		if (glPathwayView.getDataDomain() != null)
+			event.setDataDomainID(glPathwayView.getDataDomain().getDataDomainID());
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
+
+		ChangeURLEvent changeURLEvent = new ChangeURLEvent();
+		changeURLEvent.setSender(this);
+		changeURLEvent.setUrl(pathway.getExternalLink());
+		GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
 
 		return true;
 	}

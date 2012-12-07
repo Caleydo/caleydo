@@ -10,8 +10,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: gleem.linalg,
  javax.media.opengl,
  org.caleydo.data.loader
-Export-Package: org.caleydo.view.tourguide,
- org.caleydo.view.tourguide.toolbar
+Export-Package: org.caleydo.view.tourguide
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.tourguide.Activator

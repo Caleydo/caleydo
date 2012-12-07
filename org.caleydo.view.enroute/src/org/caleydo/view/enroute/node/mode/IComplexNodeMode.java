@@ -19,11 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.node.mode;
 
-import gleem.linalg.Vec3f;
-
-import org.caleydo.view.enroute.GLEnRoutePathway;
-import org.caleydo.view.enroute.node.ALinearizableNode;
-import org.caleydo.view.enroute.node.ComplexNode;
 
 /**
  * Abstract base class for complex node modes.

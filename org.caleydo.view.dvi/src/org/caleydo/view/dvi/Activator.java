@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.dvi;
 
-import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
-import org.caleydo.view.dvi.toolbar.DVIToolBarContent;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -49,9 +47,6 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-
-		ToolBarContentFactory.get().addToolBarContent(GLDataViewIntegrator.VIEW_TYPE, false,
-				new DVIToolBarContent());
 	}
 
 	/*

@@ -21,7 +21,6 @@ import java.util.List;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -44,13 +43,9 @@ import org.eclipse.swt.widgets.Control;
  * @author Alexander Lex
  */
 public class DatasetSelectionBox
-	extends ControlContribution
-	implements IToolBarItem {
+ extends ControlContribution {
 
 	public static final int TOOLBAR_WIDTH = 300;
-
-	/** mediator to handle actions triggered by the contributed element */
-	private PathwayToolBarMediator pathwayToolBarMediator;
 
 	private Combo dataSetChooser;
 
@@ -59,10 +54,9 @@ public class DatasetSelectionBox
 	/**
 	 * constructor as requested by ControlContribution
 	 *
-	 * @param str
 	 */
-	public DatasetSelectionBox(String str, IDataDomain mappingDataDomain) {
-		super(str);
+	public DatasetSelectionBox(IDataDomain mappingDataDomain) {
+		super("Select Data");
 		this.mappingDataDomain = mappingDataDomain;
 	}
 
@@ -130,13 +124,5 @@ public class DatasetSelectionBox
 	@Override
 	protected int computeWidth(Control control) {
 		return TOOLBAR_WIDTH;
-	}
-
-	public PathwayToolBarMediator getPathwayToolBarMediator() {
-		return pathwayToolBarMediator;
-	}
-
-	public void setPathwayToolBarMediator(PathwayToolBarMediator pathwayToolBarMediator) {
-		this.pathwayToolBarMediator = pathwayToolBarMediator;
 	}
 }

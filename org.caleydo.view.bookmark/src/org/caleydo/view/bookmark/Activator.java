@@ -22,8 +22,6 @@ package org.caleydo.view.bookmark;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
-import org.caleydo.view.bookmark.toolbar.BookmarkToolBarContent;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -47,8 +45,6 @@ public class Activator extends Plugin {
 		plugin = this;
 
 		registerDataDomains();
-		ToolBarContentFactory.get().addToolBarContent(GLBookmarkView.VIEW_TYPE, false,
-				new BookmarkToolBarContent());
 	}
 
 	/*

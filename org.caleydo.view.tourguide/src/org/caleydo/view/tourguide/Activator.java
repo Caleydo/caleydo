@@ -19,9 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide;
 
-import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
-import org.caleydo.view.tourguide.toolbar.TourGuideToolBarContent;
-import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -43,9 +40,6 @@ public class Activator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-
-		ToolBarContentFactory.get().addToolBarContent(VendingMachine.VIEW_TYPE, false,
-				new TourGuideToolBarContent());
 	}
 
 	/*

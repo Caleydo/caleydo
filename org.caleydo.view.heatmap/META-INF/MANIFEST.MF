@@ -12,8 +12,7 @@ Export-Package: org.caleydo.view.heatmap,
  org.caleydo.view.heatmap.dendrogram,
  org.caleydo.view.heatmap.heatmap,
  org.caleydo.view.heatmap.heatmap.template,
- org.caleydo.view.heatmap.hierarchical,
- org.caleydo.view.heatmap.toolbar
+ org.caleydo.view.heatmap.hierarchical
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.heatmap.Activator

@@ -22,7 +22,9 @@ package org.caleydo.view.stratomex;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import org.caleydo.core.gui.toolbar.action.OpenOnlineHelpAction;
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.view.stratomex.toolbar.ConnectionsModeGUI;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -49,8 +51,7 @@ public class RcpGLStratomexView extends ARcpGLViewPart {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		GLStratomex stratomex = new GLStratomex(glCanvas, parentComposite,
-				serializedView.getViewFrustum());
+		GLStratomex stratomex = new GLStratomex(glCanvas, parentComposite, serializedView.getViewFrustum());
 		view = stratomex;
 		initializeView();
 
@@ -59,7 +60,7 @@ public class RcpGLStratomexView extends ARcpGLViewPart {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.caleydo.core.view.CaleydoRCPViewPart#getView()
 	 */
 	@Override
@@ -78,4 +79,13 @@ public class RcpGLStratomexView extends ARcpGLViewPart {
 		return GLStratomex.VIEW_TYPE;
 	}
 
+	@Override
+	public void addToolBarContent() {
+
+		toolBarManager.add(new ConnectionsModeGUI());
+		toolBarManager.add(new OpenOnlineHelpAction(
+				"http://www.icg.tugraz.at/project/caleydo/help/caleydo-2.0/stratomex", true));
+
+		toolBarManager.update(true);
+	}
 }

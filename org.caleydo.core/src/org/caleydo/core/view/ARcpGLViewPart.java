@@ -57,6 +57,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
+
 		minSizeComposite = new MinimumSizeComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
 		minSizeComposite.setMinSize(0, 0);
 		minSizeComposite.setExpandHorizontal(true);
@@ -74,7 +75,6 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 		});
 
 		minSizeComposite.setContent(parentComposite);
-
 	}
 
 	protected IGLCanvas createGLCanvas(Composite parent) {
@@ -92,6 +92,8 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 
 	public void createPartControlGL() {
 		GeneralManager.get().getViewManager().registerRCPView(this, view);
+
+		addToolBarContent();
 	}
 
 	@Override

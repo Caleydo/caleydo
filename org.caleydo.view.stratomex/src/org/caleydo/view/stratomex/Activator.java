@@ -22,9 +22,7 @@ package org.caleydo.view.stratomex;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
 import org.caleydo.view.stratomex.brick.GLBrick;
-import org.caleydo.view.stratomex.toolbar.StratomexToolBarContent;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -48,9 +46,6 @@ public class Activator extends Plugin {
 		plugin = this;
 
 		registerDataDomains();
-
-		ToolBarContentFactory.get().addToolBarContent(GLStratomex.VIEW_TYPE, false,
-				new StratomexToolBarContent());
 	}
 
 	/*

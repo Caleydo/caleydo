@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -37,6 +37,7 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.gui.toolbar.action.UseRandomSamplingAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
@@ -57,7 +58,7 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * Filter view showing a pipeline of filters for a data table.
- * 
+ *
  * @author Marc Streit
  */
 public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner {
@@ -301,58 +302,8 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		parentComposite.layout();
 	}
 
-	// @Override
-	// public void setDataDomain(ATableBasedDataDomain dataDomain) {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	//
-	// @Override
-	// public ATableBasedDataDomain getDataDomain() {
-	// // TODO Auto-generated method stub
-	// return null;
-	// }
-	//
-	// @Override
-	// public void initialize() {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	//
-	// @Override
-	// public ASerializedView getSerializableRepresentation() {
-	// // TODO Auto-generated method stub
-	// return null;
-	// }
-	//
-	// @Override
-	// public void initFromSerializableRepresentation(ASerializedView
-	// serializedView) {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	//
-	// @Override
-	// public String getViewType() {
-	// // TODO Auto-generated method stub
-	// return null;
-	// }
-	//
-	// @Override
-	// public int getID() {
-	// // TODO Auto-generated method stub
-	// return 0;
-	// }
-	//
-	// @Override
-	// public void setRecordPerspectiveID(String recordPerspectiveID) {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	//
-	// @Override
-	// public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
-	// // TODO Auto-generated method stub
-	//
-	// }
+	@Override
+	public void addToolBarContent() {
+		toolBarManager.add(new UseRandomSamplingAction());
+	}
 }

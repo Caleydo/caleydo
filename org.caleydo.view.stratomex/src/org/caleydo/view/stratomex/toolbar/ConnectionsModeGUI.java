@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.toolbar;
 
-import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.stratomex.event.ConnectionsModeEvent;
 import org.eclipse.jface.action.ControlContribution;
@@ -33,10 +32,10 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Slider;
 
-public class ConnectionsModeGUI extends ControlContribution implements IToolBarItem {
+public class ConnectionsModeGUI extends ControlContribution {
 
-	protected ConnectionsModeGUI(String id) {
-		super(id);
+	public ConnectionsModeGUI() {
+		super("Trend Highlight Mode");
 	}
 
 	@Override
@@ -82,5 +81,5 @@ public class ConnectionsModeGUI extends ControlContribution implements IToolBarI
 		radios[0].addListener(SWT.Selection, listener);
 
 		return composite;
-	};
+	}
 }

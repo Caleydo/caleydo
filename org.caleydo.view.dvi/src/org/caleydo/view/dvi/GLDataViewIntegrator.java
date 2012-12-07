@@ -59,6 +59,7 @@ import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.gui.dataimport.ImportGroupingCommand;
+import org.caleydo.core.io.gui.dataimport.ImportGroupingDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.base.IDefaultLabelHolder;

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,32 +8,45 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.gui.toolbar;
+package org.caleydo.core.gui.toolbar.action;
 
-import java.util.List;
+import org.caleydo.core.util.link.LinkHandler;
+import org.caleydo.data.loader.ResourceLoader;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.ui.PlatformUI;
 
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Group;
+public class OpenOnlineHelpAction extends Action {
 
-public interface IToolBarRenderer {
+	public static final String TEXT = "Help";
+	public static final String ICON = "resources/icons/general/help_16.png";
 
-	public abstract Runnable createRenderJob(RcpToolBarView toolBarView, List<AToolBarContent> toolBarContents);
+	private String url;
 
-	public abstract GridLayout createLayout();
+	public OpenOnlineHelpAction(String url, boolean useSmallIcon) {
+		this.url = url;
+		setText(TEXT);
+		setToolTipText(TEXT);
+		setImageDescriptor(ImageDescriptor.createFromImage(useSmallIcon ? new ResourceLoader().getImage(PlatformUI
+				.getWorkbench().getDisplay(), ICON) : JFaceResources.getImage(Dialog.DLG_IMG_HELP)));
+		setChecked(false);
+	}
 
-	public abstract void addGeneralToolBarActions(Group group);
-
-	public abstract GridData createStandardGridData();
-
-	public abstract int calcWrapCount(int size);
+	@Override
+	public void run() {
+		super.run();
+		setChecked(false);
+		LinkHandler.openLink(url);
+	}
 }

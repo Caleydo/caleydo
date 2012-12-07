@@ -22,8 +22,6 @@ package org.caleydo.view.filterpipeline;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
-import org.caleydo.view.filterpipeline.toolbar.FilterPipelineToolBarContent;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -47,9 +45,6 @@ public class Activator extends Plugin {
 		plugin = this;
 
 		registerDataDomains();
-
-		ToolBarContentFactory.get().addToolBarContent(GLFilterPipeline.VIEW_TYPE, false,
-				new FilterPipelineToolBarContent());
 	}
 
 	/*

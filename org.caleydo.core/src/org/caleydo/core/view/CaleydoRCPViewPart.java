@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -56,6 +56,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -66,12 +67,11 @@ import org.eclipse.ui.part.ViewPart;
 
 /**
  * Base class for all RCP views available in Caleydo.
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
-public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOwner,
-		IExtendedSelectionUpdateHandler {
+public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOwner, IExtendedSelectionUpdateHandler {
 
 	/** serialized representation of the view to initialize the view itself */
 	protected ASerializedView serializedView;
@@ -86,8 +86,7 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 	protected AView view;
 
 	/**
-	 * Flat determines whether a view changes its content when another data
-	 * domain is selected.
+	 * Flat determines whether a view changes its content when another data domain is selected.
 	 */
 	protected boolean isSupportView = false;
 
@@ -95,11 +94,13 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 
 	protected ExtendedSelectionUpdateListener selectionUpdateListener;
 
+	protected IToolBarManager toolBarManager;
+
 	@Override
 	public void init(IViewSite site) throws PartInitException {
 		super.init(site);
 		eventPublisher = GeneralManager.get().getEventPublisher();
-
+		toolBarManager = getViewSite().getActionBars().getToolBarManager();
 		registerEventListeners();
 	}
 
@@ -109,15 +110,21 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 		parentComposite.setLayout(new GridLayout(1, false));
 	}
 
+	/**
+	 * Empty toolbar in base classe. If views need a toolbar, they need to override this method.
+	 */
+	public void addToolBarContent() {
+
+	}
+
 	@Override
 	public void setPartName(String partName) {
 		super.setPartName(partName);
 	}
 
 	/**
-	 * Generates and returns a list of all views, caleydo-view-parts and
-	 * gl-views, contained in this view.
-	 * 
+	 * Generates and returns a list of all views, caleydo-view-parts and gl-views, contained in this view.
+	 *
 	 * @return list of all views contained in this view
 	 */
 	public List<IView> getAllViews() {
@@ -147,21 +154,18 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 
 	/**
 	 * <p>
-	 * If applicable initializes the {@link #view} with the {@link ADataDomain}
-	 * and the {@link TablePerspective}, or with multiple TablePerspectives as
-	 * they are specified in the {@link #serializedView}.
+	 * If applicable initializes the {@link #view} with the {@link ADataDomain} and the {@link TablePerspective}, or
+	 * with multiple TablePerspectives as they are specified in the {@link #serializedView}.
 	 * </p>
 	 * <p>
-	 * Calls {@link AGLView#initialize()} and
-	 * {@link IView#initFromSerializableRepresentation(ASerializedView)} with
-	 * the {@link #serializedView} variable.
+	 * Calls {@link AGLView#initialize()} and {@link IView#initFromSerializableRepresentation(ASerializedView)} with the
+	 * {@link #serializedView} variable.
 	 * </p>
 	 */
 	protected void initializeView() {
 		if (view instanceof IDataDomainBasedView<?>) {
 			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					((ASerializedSingleTablePerspectiveBasedView) serializedView)
-							.getDataDomainID());
+					((ASerializedSingleTablePerspectiveBasedView) serializedView).getDataDomainID());
 			@SuppressWarnings("unchecked")
 			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
@@ -171,14 +175,12 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 
 			ASerializedSingleTablePerspectiveBasedView serializedSingleTablePerspectiveBasedView = (ASerializedSingleTablePerspectiveBasedView) serializedView;
 
-			ATableBasedDataDomain tDataDomain = (ATableBasedDataDomain) DataDomainManager
-					.get().getDataDomainByID(
-							serializedSingleTablePerspectiveBasedView.getDataDomainID());
+			ATableBasedDataDomain tDataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+					serializedSingleTablePerspectiveBasedView.getDataDomainID());
 
 			if (tDataDomain != null) {
 				TablePerspective tablePerspective = tDataDomain
-						.getTablePerspective(serializedSingleTablePerspectiveBasedView
-								.getTablePerspectiveKey());
+						.getTablePerspective(serializedSingleTablePerspectiveBasedView.getTablePerspectiveKey());
 				// In case the stored TablePerspective is not available in this
 				// run
 				if (tablePerspective == null) {
@@ -193,24 +195,21 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 			IMultiTablePerspectiveBasedView multiTablePerspectiveBasedView = (IMultiTablePerspectiveBasedView) view;
 			ASerializedMultiTablePerspectiveBasedView serializedMultiTablePerspectiveBasedView = (ASerializedMultiTablePerspectiveBasedView) serializedView;
 
-			if (serializedMultiTablePerspectiveBasedView
-					.getDataDomainAndTablePerspectiveKeys() != null) {
+			if (serializedMultiTablePerspectiveBasedView.getDataDomainAndTablePerspectiveKeys() != null) {
 				boolean inconsistentSerializedView = false;
 				for (Pair<String, String> data : serializedMultiTablePerspectiveBasedView
 						.getDataDomainAndTablePerspectiveKeys()) {
 
-					ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
-							.get().getDataDomainByID(data.getFirst());
-					TablePerspective tablePerspective = ((ATableBasedDataDomain) dataDomain)
-							.getTablePerspective(data.getSecond());
+					ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
+							.getDataDomainByID(data.getFirst());
+					TablePerspective tablePerspective = dataDomain.getTablePerspective(data.getSecond());
 					if (tablePerspective == null) {
 						inconsistentSerializedView = true;
 						break;
 					}
-					if (multiTablePerspectiveBasedView.getDataSupportDefinition()
-							.isDataDomainSupported(tablePerspective.getDataDomain())) {
-						multiTablePerspectiveBasedView
-								.addTablePerspective(tablePerspective);
+					if (multiTablePerspectiveBasedView.getDataSupportDefinition().isDataDomainSupported(
+							tablePerspective.getDataDomain())) {
+						multiTablePerspectiveBasedView.addTablePerspective(tablePerspective);
 					}
 				}
 				if (inconsistentSerializedView) {
@@ -224,19 +223,15 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 	}
 
 	/**
-	 * Determines and sets the dataDomain to the {@link #serializedView} based
-	 * on the following rules:
+	 * Determines and sets the dataDomain to the {@link #serializedView} based on the following rules:
 	 * <ul>
 	 * <li>If no dataDomain is registered, null is returned</li>
-	 * <li>If a dataDomainID is set in the serializable representation this is
-	 * used</li>
-	 * <li>Else if there is exactly one loaded dataDomain which the view can
-	 * this is used</li>
-	 * <li>Else if there was a dataDomainID provided during the creation of the
-	 * view</li>
+	 * <li>If a dataDomainID is set in the serializable representation this is used</li>
+	 * <li>Else if there is exactly one loaded dataDomain which the view can this is used</li>
+	 * <li>Else if there was a dataDomainID provided during the creation of the view</li>
 	 * <li>Else an exception is thrown</li>
 	 * <ul>
-	 * 
+	 *
 	 * @param serializedView
 	 */
 	protected void determineDataConfiguration(ASerializedView serializedView) {
@@ -247,19 +242,15 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 	 * Determines and sets the dataDomain based on the following rules:
 	 * <ul>
 	 * <li>If no dataDomain is registered, null is returned</li>
-	 * <li>If a dataDomainID is set in the serializable representation this is
-	 * used</li>
-	 * <li>Else if there is exactly one loaded dataDomain which the view can
-	 * this is used</li>
-	 * <li>Else if there was a dataDomainID provided during the creation of the
-	 * view</li>
+	 * <li>If a dataDomainID is set in the serializable representation this is used</li>
+	 * <li>Else if there is exactly one loaded dataDomain which the view can this is used</li>
+	 * <li>Else if there was a dataDomainID provided during the creation of the view</li>
 	 * <li>Else an exception is thrown</li>
 	 * <ul>
-	 * 
+	 *
 	 * @param serializedView
 	 */
-	protected void determineDataConfiguration(ASerializedView serializedView,
-			boolean letUserChoose) {
+	protected void determineDataConfiguration(ASerializedView serializedView, boolean letUserChoose) {
 
 		if (!(serializedView instanceof ASerializedSingleTablePerspectiveBasedView))
 			return;
@@ -272,31 +263,26 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 		// check whether the data domain ID was provided during the view
 		// creation
 		if (dataDomainID == null) {
-			RCPViewInitializationData rcpViewInitData = RCPViewManager.get()
-					.getRCPViewInitializationData(this.getViewSite().getSecondaryId());
+			RCPViewInitializationData rcpViewInitData = RCPViewManager.get().getRCPViewInitializationData(
+					this.getViewSite().getSecondaryId());
 			if (rcpViewInitData != null) {
 				dataDomainID = rcpViewInitData.getDataDomainID();
 
 				TablePerspective tablePerspective = rcpViewInitData.getTablePerspective();
 				serializedTopLevelDataView.setDataDomainID(dataDomainID);
 				if (tablePerspective != null) {
-					serializedTopLevelDataView.setTablePerspectiveKey(tablePerspective
-							.getTablePerspectiveKey());
+					serializedTopLevelDataView.setTablePerspectiveKey(tablePerspective.getTablePerspectiveKey());
 
 				} else {
-					serializedTopLevelDataView
-							.setTablePerspectiveKey(((ATableBasedDataDomain) DataDomainManager
-									.get().getDataDomainByID(dataDomainID))
-									.getDefaultTablePerspective()
-									.getTablePerspectiveKey());
+					serializedTopLevelDataView.setTablePerspectiveKey(((ATableBasedDataDomain) DataDomainManager.get()
+							.getDataDomainByID(dataDomainID)).getDefaultTablePerspective().getTablePerspectiveKey());
 				}
 			}
 		}
 
 		// ask the user to choose the data domain ID
 		if (dataDomainID == null) {
-			ArrayList<ATableBasedDataDomain> availableDomains = DataDomainManager.get()
-					.getAssociationManager()
+			ArrayList<ATableBasedDataDomain> availableDomains = DataDomainManager.get().getAssociationManager()
 					.getTableBasedDataDomainsForView(serializedView.getViewType());
 
 			ArrayList<ATableBasedDataDomain> supportedDataDomains = new ArrayList<ATableBasedDataDomain>(
@@ -307,8 +293,7 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 					.getConfigurationElementsFor("org.caleydo.view.DataSupport");
 			IConfigurationElement dataSupportConfigForCurrentView = null;
 			for (IConfigurationElement configurationElement : dataSupportConfigElements) {
-				if (configurationElement.getAttribute("viewID").equals(
-						serializedView.getViewType())) {
+				if (configurationElement.getAttribute("viewID").equals(serializedView.getViewType())) {
 					dataSupportConfigForCurrentView = configurationElement;
 					break;
 				}
@@ -331,38 +316,30 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 				}
 			}
 
-			DataConfiguration config = DataConfigurationChooser
-					.determineDataConfiguration(
-							dataSupportConfigForCurrentView == null ? availableDomains
-									: supportedDataDomains,
-							serializedView.getViewLabel(), letUserChoose);
+			DataConfiguration config = DataConfigurationChooser.determineDataConfiguration(
+					dataSupportConfigForCurrentView == null ? availableDomains : supportedDataDomains,
+					serializedView.getViewLabel(), letUserChoose);
 
 			// for some views its ok if initially no data is set
-			if (config.getDataDomain() == null
-					|| config.getDimensionPerspective() == null
+			if (config.getDataDomain() == null || config.getDimensionPerspective() == null
 					|| config.getRecordPerspective() == null)
 				return;
 
-			serializedTopLevelDataView.setDataDomainID(config.getDataDomain()
-					.getDataDomainID());
+			serializedTopLevelDataView.setDataDomainID(config.getDataDomain().getDataDomainID());
 			serializedTopLevelDataView.setTablePerspectiveKey(config
 					.getDataDomain()
-					.getTablePerspective(
-							config.getRecordPerspective().getPerspectiveID(),
-							config.getDimensionPerspective().getPerspectiveID())
-					.getTablePerspectiveKey());
+					.getTablePerspective(config.getRecordPerspective().getPerspectiveID(),
+							config.getDimensionPerspective().getPerspectiveID()).getTablePerspectiveKey());
 		}
 	}
 
 	/**
-	 * Creates a default serialized form ({@link ASerializedView}) of the
-	 * contained gl-view
+	 * Creates a default serialized form ({@link ASerializedView}) of the contained gl-view
 	 */
 	public abstract void createDefaultSerializedView();
 
 	/**
-	 * Setting an external serialized view. Needed for RCP views that are
-	 * embedded in another RCP view.
+	 * Setting an external serialized view. Needed for RCP views that are embedded in another RCP view.
 	 */
 	public void setExternalSerializedView(ASerializedView serializedView) {
 		this.serializedView = serializedView;
@@ -394,8 +371,7 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 			}
 			if (serializedView instanceof ASerializedSingleTablePerspectiveBasedView
 					&& DataDomainManager.get().getDataDomainByID(
-							((ASerializedSingleTablePerspectiveBasedView) serializedView)
-									.getDataDomainID()) == null) {
+							((ASerializedSingleTablePerspectiveBasedView) serializedView).getDataDomainID()) == null) {
 				serializedView = null;
 			}
 			if (serializedView instanceof ASerializedMultiTablePerspectiveBasedView) {
@@ -442,9 +418,9 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 	}
 
 	/**
-	 * Returns the purpose of a view. Support views change its content upon
-	 * selection of a different data domain in another view.
-	 * 
+	 * Returns the purpose of a view. Support views change its content upon selection of a different data domain in
+	 * another view.
+	 *
 	 * @return
 	 */
 	public boolean isSupportView() {
@@ -473,8 +449,8 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 		if (!isSupportView())
 			return;
 
-		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
-				.get().getDataDomainByID(dataDomainID);
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+				dataDomainID);
 		if (dataDomain == null)
 			return;
 
@@ -486,8 +462,7 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 	}
 
 	@Override
-	public synchronized void queueEvent(
-			final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
+	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
 
 		if (parentComposite == null || parentComposite.isDisposed())
 			return;
