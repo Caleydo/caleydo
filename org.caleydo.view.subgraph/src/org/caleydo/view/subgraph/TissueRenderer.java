@@ -94,21 +94,26 @@ public class TissueRenderer extends LayoutRenderer {
 		}
 
 		float rendererAspectRatio = x / y;
-		float imageAspectRatio = (float) baseImage.getImageWidth() / (float) baseImage.getImageHeight();
+		float imageAspectRatio = (float) baseImage.getWidth() / (float) baseImage.getHeight();
 		float renderWidth;
 		float renderHeight;
 		if (rendererAspectRatio > imageAspectRatio) {
-			renderWidth = (y / baseImage.getImageHeight()) * x;
+			renderWidth = (y / baseImage.getHeight()) * baseImage.getWidth();
 			renderHeight = y;
 		} else {
 			renderWidth = x;
-			renderHeight = (x / baseImage.getImageWidth()) * y;
+			renderHeight = (x / baseImage.getWidth()) * baseImage.getHeight();
 		}
 
-		Vec3f lowerLeftCorner = new Vec3f(0, 0, 0);
-		Vec3f lowerRightCorner = new Vec3f(renderWidth, 0, 0);
-		Vec3f upperRightCorner = new Vec3f(renderWidth, renderHeight, 0);
-		Vec3f upperLeftCorner = new Vec3f(0, renderHeight, 0);
+		float left = x / 2.0f - renderWidth / 2.0f;
+		float right = x / 2.0f + renderWidth / 2.0f;
+		float bottom = y / 2.0f - renderHeight / 2.0f;
+		float top = y / 2.0f + renderHeight / 2.0f;
+
+		Vec3f lowerLeftCorner = new Vec3f(left, bottom, 0);
+		Vec3f lowerRightCorner = new Vec3f(right, bottom, 0);
+		Vec3f upperRightCorner = new Vec3f(right, top, 0);
+		Vec3f upperLeftCorner = new Vec3f(left, top, 0);
 
 		textureManager.renderTexture(gl, baseImage, lowerLeftCorner, lowerRightCorner, upperRightCorner,
 				upperLeftCorner, 1, 1, 1, 1);
