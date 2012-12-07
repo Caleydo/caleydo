@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -55,14 +55,14 @@ import org.caleydo.view.stratomex.brick.ui.RectangleCoordinates;
 import org.eclipse.core.runtime.Status;
 
 /**
- * 
+ *
  * Renders the connection band between the dimension groups.
- * 
+ *
  * FIXME: Improve documentation
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
- * 
+ *
  */
 public class BrickColumnSpacingRenderer
 	extends LayoutRenderer
@@ -347,10 +347,10 @@ public class BrickColumnSpacingRenderer
 		gl.glPushName(pickingID);
 		gl.glColor4f(1f, 1f, 1f, 0);
 		gl.glBegin(GL2.GL_POLYGON);
-		gl.glVertex3f(0, 0,-0.5f);
-		gl.glVertex3f(x, 0,-0.5f);
-		gl.glVertex3f(x, y,-0.5f);
-		gl.glVertex3f(0, y,-0.5f);
+		gl.glVertex3f(0, 0, -0.2f);
+		gl.glVertex3f(x, 0, -0.2f);
+		gl.glVertex3f(x, y, -0.2f);
+		gl.glVertex3f(0, y, -0.2f);
 		gl.glEnd();
 		gl.glPopName();
 	}
@@ -437,7 +437,7 @@ public class BrickColumnSpacingRenderer
 			if (rightDimGroup != null) {
 				leftCenterBrickBottom = stratomex.getArchBottomY();
 				leftCenterBrickTop = stratomex.getArchTopY();
-				
+
 			}
 		}
 
@@ -474,7 +474,7 @@ public class BrickColumnSpacingRenderer
 			if (leftDimGroup != null) {
 				rightCenterBrickBottom = stratomex.getArchBottomY();
 				rightCenterBrickTop = stratomex.getArchTopY();
-				
+
 			}
 		}
 
