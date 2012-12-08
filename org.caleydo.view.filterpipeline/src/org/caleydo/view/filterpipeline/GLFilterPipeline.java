@@ -28,6 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
@@ -180,11 +181,11 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 20));
 		textRenderer.setColor(0, 0, 0, 1);
 
-		gl.glEnable(GL2.GL_BLEND);
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
-		gl.glEnable(GL2.GL_LINE_SMOOTH);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glEnable(GL2.GL_POLYGON_SMOOTH);
-		gl.glHint(GL2.GL_POLYGON_SMOOTH_HINT, GL2.GL_NICEST);
+		gl.glHint(GL2.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST);
 	}
 
 	@Override
@@ -335,8 +336,8 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		float bottom = 0.025f;
 		float halfSize = 0.075f;
 
-		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		Texture arrowTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_ARROW);
 		arrowTexture.enable(gl);
@@ -388,6 +389,8 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		case MOUSE_OVER:
 			// filterMenu.handleClearMouseOver();
 			break;
+		default:
+			break;
 		}
 
 		switch (pickingType) {
@@ -438,6 +441,8 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 				}
 				dragAndDropController.setDropArea(filterList.get(externalID));
 				break;
+			default:
+				break;
 			}
 			break;
 		// -----------------------------------------------------------------
@@ -460,6 +465,8 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				// filterMenu.setFilter(null);
 				break;
+			default:
+				break;
 			}
 			break;
 		// -----------------------------------------------------------------
@@ -477,7 +484,11 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 			case DRAGGED:
 				dragAndDropController.setDropArea(background);
 				break;
+			default:
+				break;
 			}
+			break;
+		default:
 			break;
 		}
 

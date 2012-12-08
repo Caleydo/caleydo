@@ -112,8 +112,8 @@ import org.caleydo.view.stratomex.listener.RelationsUpdatedListener;
 import org.caleydo.view.stratomex.listener.RenameListener;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.RegistryFactory;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -1151,7 +1151,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				dialog.create();
 				dialog.setBlockOnOpen(true);
 
-				if (dialog.open() == Status.OK) {
+				if (dialog.open() == IStatus.OK) {
 
 					List<PathwayTablePerspective> pathwayTablePerspectives = dialog.getPathwayTablePerspective();
 
@@ -1186,7 +1186,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				dialog.create();
 				dialog.setBlockOnOpen(true);
 
-				if (dialog.open() == Status.OK) {
+				if (dialog.open() == IStatus.OK) {
 
 					List<TablePerspective> kaplanMeierDimensionGroupDataList = dialog
 							.getKaplanMeierDimensionGroupDataList();
@@ -1270,7 +1270,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 				dialog.setBlockOnOpen(true);
 
-				if (dialog.open() == Status.OK) {
+				if (dialog.open() == IStatus.OK) {
 
 					PathwayDimensionGroupData pathwayDimensionGroupData = dialog.getPathwayDimensionGroupData();
 

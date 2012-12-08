@@ -25,6 +25,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -273,14 +274,14 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 				(highlightBand) ? 1 : 0.5f);
 		connectionBandRenderer.render(gl, bandPoints);
 		gl.glColor4fv(color.getRGBA(), 0);
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = 0; i < bandPoints.size() / 2; i++) {
 			gl.glVertex3f(bandPoints.get(i).x(), bandPoints.get(i).y(),
 					bandPoints.get(i).z());
 		}
 		gl.glEnd();
 
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = bandPoints.size() / 2; i < bandPoints.size(); i++) {
 			gl.glVertex3f(bandPoints.get(i).x(), bandPoints.get(i).y(),
 					bandPoints.get(i).z());

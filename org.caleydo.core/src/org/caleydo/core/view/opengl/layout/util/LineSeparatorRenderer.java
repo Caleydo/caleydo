@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout.util;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -35,7 +36,7 @@ public class LineSeparatorRenderer extends LayoutRenderer {
 	protected void renderContent(GL2 gl) {
 		gl.glColor3f(0.3f, 0.3f, 0.3f);
 		gl.glLineWidth(1);
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 
 		if (isVertical) {
 			gl.glVertex3f(x / 2.0f, 0, 0);

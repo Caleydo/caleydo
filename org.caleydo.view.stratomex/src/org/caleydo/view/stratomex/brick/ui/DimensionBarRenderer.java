@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.brick.ui;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
@@ -111,7 +112,7 @@ public class DimensionBarRenderer extends LayoutRenderer {
 
 		gl.glLineWidth(1);
 		gl.glColor3f(0.1f, 0.1f, 0.1f);
-		gl.glBegin(GL2.GL_LINE_LOOP);
+		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(x, 0, 0);
 		gl.glVertex3f(x, y, 0);

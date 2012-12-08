@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -24,7 +24,9 @@ import gleem.linalg.Vec3f;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2ES1;
 import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
@@ -98,9 +100,9 @@ public class HeatMapUtil {
 					textureBuffer.rewind();
 
 					TextureData texData = new TextureData(GLProfile.getDefault(),
-							GL2.GL_RGBA /* internalFormat */, numDimensions /* height */,
+							GL.GL_RGBA /* internalFormat */, numDimensions /* height */,
 							numSamplesInTexture /* width */, 0 /* border */,
-							GL2.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */,
+							GL.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */,
 							false /* mipmap */, false /* dataIsCompressed */,
 							false /* mustFlipVertically */, textureBuffer, null);
 
@@ -139,13 +141,13 @@ public class HeatMapUtil {
 			textureDrawingHeight = elementHeight * texture.getHeight();
 			texture.enable(gl);
 			texture.bind(gl);
-			gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_REPLACE);
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
-					GL2.GL_NEAREST);
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
-					GL2.GL_NEAREST);
+			gl.glTexEnvi(GL2ES1.GL_TEXTURE_ENV, GL2ES1.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
+					GL.GL_NEAREST);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
+					GL.GL_NEAREST);
 			TextureCoords texCoords = texture.getImageTexCoords();
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2d(texCoords.left(), texCoords.top());
@@ -169,11 +171,11 @@ public class HeatMapUtil {
 		RecordGroupList contentGroupList = recordVA.getGroupList();
 
 		if (contentGroupList != null) {
-			float sampleHeight = totalHeight / ((float) recordVA.size());
+			float sampleHeight = totalHeight / (recordVA.size());
 			float groupPositionY = totalHeight;
 
 			gl.glColor4f(1, 1, 1, 1);
-			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			int groupIndex = 0;
 			for (Group group : contentGroupList) {
 				int numSamplesGroup = group.getSize();
@@ -196,7 +198,7 @@ public class HeatMapUtil {
 
 				gl.glPopName();
 				if (groupIndex < contentGroupList.size() - 1) {
-					gl.glBegin(GL2.GL_LINES);
+					gl.glBegin(GL.GL_LINES);
 					gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), 1.0f);
 					gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y(), 1.0f);
 					gl.glEnd();

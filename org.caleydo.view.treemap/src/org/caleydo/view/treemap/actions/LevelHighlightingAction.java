@@ -88,6 +88,5 @@ public class LevelHighlightingAction extends ControlContribution {
 		});
 
 		return composite;
-	};
-
+	}
 }

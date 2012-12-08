@@ -28,6 +28,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.manager.GeneralManager;
@@ -395,14 +396,14 @@ public class PickingManager {
 		IntBuffer pickingBuffer = Buffers.newDirectIntBuffer(PICKING_BUFSIZE);
 		int iHitCount = -1;
 		int viewport[] = new int[4];
-		gl.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
+		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
 
 		gl.glSelectBuffer(PICKING_BUFSIZE, pickingBuffer);
 		gl.glRenderMode(GL2.GL_SELECT);
 
 		gl.glInitNames();
 
-		gl.glMatrixMode(GL2.GL_PROJECTION);
+		gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
 

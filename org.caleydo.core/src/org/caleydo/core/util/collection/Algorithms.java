@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -97,7 +98,7 @@ public class Algorithms {
 		if (numberOfSamples == null || sourceList.size() < numberOfSamples)
 			return sourceList;
 
-		Logger.log(new Status(Status.INFO, "Sampling in core util.Algorithms",
+		Logger.log(new Status(IStatus.INFO, "Sampling in core util.Algorithms",
 				"Sampling a list of size " + sourceList.size() + " to " + numberOfSamples
 						+ " values."));
 		Collections.shuffle(sourceList);

@@ -27,6 +27,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.id.IDType;
@@ -119,7 +120,7 @@ public class GLInPlaceInfoRenderer {
 			else {
 				gl.glColor4fv(InfoAreaRenderStyle.INFO_AREA_BORDER_COLOR, 0);
 				gl.glLineWidth(InfoAreaRenderStyle.INFO_AREA_BORDER_WIDTH);
-				gl.glBegin(GL2.GL_LINE_STRIP);
+				gl.glBegin(GL.GL_LINE_STRIP);
 			}
 			gl.glVertex3f(fXLowerLeft, fYLowerLeft, fZValue);
 			gl.glVertex3f(fXLowerLeft + fWidth, fYLowerLeft, fZValue);

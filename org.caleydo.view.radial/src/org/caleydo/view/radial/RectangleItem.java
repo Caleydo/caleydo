@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.radial;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 /**
@@ -62,7 +63,7 @@ public class RectangleItem extends ALabelItem {
 	@Override
 	public void draw(GL2 gl) {
 
-		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		gl.glColor3fv(fArColor, 0);
 

@@ -44,6 +44,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -276,7 +277,7 @@ public class KgmlSaxHandler
 						Integer.valueOf(entrezID));
 
 				if (davidIDs == null) {
-					Logger.log(new Status(Status.INFO, this.toString(), "No david mapping for Entrez ID: " + entrezID));
+					Logger.log(new Status(IStatus.INFO, this.toString(), "No david mapping for Entrez ID: " + entrezID));
 					continue;
 				}
 

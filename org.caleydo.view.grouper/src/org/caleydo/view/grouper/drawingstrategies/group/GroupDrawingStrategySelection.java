@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.grouper.drawingstrategies.group;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
@@ -48,7 +49,7 @@ public class GroupDrawingStrategySelection extends AGroupDrawingStrategyRectangu
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.GROUPER_GROUP_SELECTION, groupRepresentation.getID()));
-		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
 		gl.glColor4fv(renderStyle.getGroupColorForLevel(groupRepresentation
 				.getHierarchyLevel()), 0);
@@ -80,7 +81,7 @@ public class GroupDrawingStrategySelection extends AGroupDrawingStrategyRectangu
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.GROUPER_GROUP_SELECTION, groupRepresentation.getID()));
-		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
 		gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);
 

@@ -26,6 +26,7 @@ import java.util.Map;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -167,7 +168,7 @@ public class IDType {
 				idType = new IDType(typeName, idCategory, columnType);
 				registeredTypes.put(typeName, idType);
 				idCategory.addIDType(idType);
-				Logger.log(new Status(Status.INFO, "IDType", "Registering IDType " + typeName));
+				Logger.log(new Status(IStatus.INFO, "IDType", "Registering IDType " + typeName));
 			}
 			return idType;
 		}
@@ -184,12 +185,12 @@ public class IDType {
 			return;
 		synchronized (IDType.class) {
 			if (registeredTypes.containsKey(idType.getTypeName())) {
-				Logger.log(new Status(Status.INFO, "IDType", "Unregistered IDType " + idType.getTypeName()));
+				Logger.log(new Status(IStatus.INFO, "IDType", "Unregistered IDType " + idType.getTypeName()));
 				registeredTypes.remove(idType.getTypeName());
 				idType.setTypeName("INVALID");
 				idType.getIDCategory().removeIDType(idType);
 			} else {
-				Logger.log(new Status(Status.INFO, "IDType", "Unable to unregister IDType " + idType.getTypeName()
+				Logger.log(new Status(IStatus.INFO, "IDType", "Unable to unregister IDType " + idType.getTypeName()
 						+ " because it does not exist."));
 			}
 		}

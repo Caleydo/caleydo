@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -66,7 +66,7 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * Selection browser that is located in the side-bar.
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -287,7 +287,7 @@ public class SelectionBrowserView extends ASWTView implements ISelectionUpdateHa
 		SelectionDelta selectionDelta = recordSelectionManager.getDelta();
 		SelectionUpdateEvent event2 = new SelectionUpdateEvent();
 		event2.setSender(this);
-		event2.setSelectionDelta((SelectionDelta) selectionDelta);
+		event2.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event2);
 		lblTest.setText(tmpString + " deleted.");
 		updateContentTree();
@@ -323,7 +323,7 @@ public class SelectionBrowserView extends ASWTView implements ISelectionUpdateHa
 		SelectionDelta selectionDelta = recordSelectionManager.getDelta();
 		SelectionUpdateEvent event2 = new SelectionUpdateEvent();
 		event2.setSender(this);
-		event2.setSelectionDelta((SelectionDelta) selectionDelta);
+		event2.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event2);
 
 		lblTest.setText(tmpString + " merged into " + firstSelectionType.toString() + ".");
@@ -392,7 +392,7 @@ public class SelectionBrowserView extends ASWTView implements ISelectionUpdateHa
 	/**
 	 * handling method for updates about the info text displayed in the this
 	 * info-area
-	 * 
+	 *
 	 * @param info
 	 *            short-info of the sender to display
 	 */

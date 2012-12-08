@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.radial;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
@@ -67,7 +68,7 @@ public class PDDrawingStrategyExpressionColor extends APDDrawingStrategyChildInd
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
-		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
 			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(), fRadius,
@@ -99,7 +100,7 @@ public class PDDrawingStrategyExpressionColor extends APDDrawingStrategyChildInd
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.RAD_HIERARCHY_PDISC_SELECTION, pdDiscToDraw.getElementID()));
-		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
 			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);

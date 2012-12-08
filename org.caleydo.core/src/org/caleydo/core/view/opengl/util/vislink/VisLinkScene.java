@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,6 +23,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.gui.preferences.PreferenceConstants;
@@ -36,7 +37,7 @@ import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
  * should be drawn at the same time). If one wants to draw all lines at the same time, only one stage is
  * needed. Otherwise, the lines of stage n would be drawn after stage n-1 has finished (all lines are
  * completely drawn).
- * 
+ *
  * @author Oliver Pimas
  * @version 2009-10-21
  */
@@ -56,7 +57,7 @@ public class VisLinkScene {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param connectionLinesAllViews
 	 *            Connection lines of the scene
 	 */
@@ -67,7 +68,7 @@ public class VisLinkScene {
 
 	/**
 	 * Renders the connection line of the scene.
-	 * 
+	 *
 	 * @param gl
 	 *            The GL-object
 	 */
@@ -103,7 +104,7 @@ public class VisLinkScene {
 
 	/**
 	 * Renders the scene with simple connection lines (visual links). No halo-effect or animation available.
-	 * 
+	 *
 	 * @param gl
 	 *            The GL-object
 	 */
@@ -115,7 +116,7 @@ public class VisLinkScene {
 
 	/**
 	 * Renders the scene with polygonal connection lines (visual links)
-	 * 
+	 *
 	 * @param gl
 	 *            The GL-object
 	 */
@@ -129,7 +130,7 @@ public class VisLinkScene {
 		if ((style == EVisLinkStyleType.SHADOW_VISLINK) || (style == EVisLinkStyleType.HALO_VISLINK)) {
 
 			// clear stencil buffer
-			gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
+			gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
 			int hlAAQuality = 1;
 			boolean halo = false;
 
@@ -178,7 +179,7 @@ public class VisLinkScene {
 		}
 
 		// background (halo or shadow) done, render frontline
-		gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
+		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
 
 		width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
 		color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
@@ -198,29 +199,29 @@ public class VisLinkScene {
 
 	/**
 	 * Enables the stencil buffer
-	 * 
+	 *
 	 * @param gl
 	 *            The GL-object
 	 */
 	protected void enableStencilBuffer(GL2 gl) {
-		gl.glStencilFunc(GL2.GL_NOTEQUAL, 0x1, 0x1);
-		gl.glStencilOp(GL2.GL_KEEP, GL2.GL_REPLACE, GL2.GL_REPLACE);
-		gl.glEnable(GL2.GL_STENCIL_TEST);
+		gl.glStencilFunc(GL.GL_NOTEQUAL, 0x1, 0x1);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_REPLACE, GL.GL_REPLACE);
+		gl.glEnable(GL.GL_STENCIL_TEST);
 	}
 
 	/**
 	 * Disables the stencil buffer
-	 * 
+	 *
 	 * @param gl
 	 *            The GL-object
 	 */
 	protected void disableStencilBuffer(GL2 gl) {
-		gl.glDisable(GL2.GL_STENCIL_TEST);
+		gl.glDisable(GL.GL_STENCIL_TEST);
 	}
 
 	/**
 	 * Resets the animation
-	 * 
+	 *
 	 * @param time
 	 *            the time the animation started
 	 */
@@ -231,7 +232,7 @@ public class VisLinkScene {
 
 	/**
 	 * Calculates the number of segments to be drawn for animation
-	 * 
+	 *
 	 * @return number of segments to be drawn
 	 */
 	public float percentageOfSegmentsToDraw() {
@@ -247,7 +248,7 @@ public class VisLinkScene {
 
 	/**
 	 * Renders the scene with animated polygonal connection lines (visual links)
-	 * 
+	 *
 	 * @param gl
 	 *            The GL-object
 	 */
@@ -272,7 +273,7 @@ public class VisLinkScene {
 		if ((style == EVisLinkStyleType.SHADOW_VISLINK) || (style == EVisLinkStyleType.HALO_VISLINK)) {
 
 			// clear stencil buffer
-			gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
+			gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
 			int hlAAQuality = 1;
 			boolean halo = false;
 
@@ -332,7 +333,7 @@ public class VisLinkScene {
 		}
 
 		// background (halo or shadow) done, render frontline
-		gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
+		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
 		width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
 		color = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR;
 
@@ -364,7 +365,7 @@ public class VisLinkScene {
 
 	/**
 	 * Returns the number of stages for animation.
-	 * 
+	 *
 	 * @return Number of stages for animation
 	 */
 	protected int numberOfStages() {

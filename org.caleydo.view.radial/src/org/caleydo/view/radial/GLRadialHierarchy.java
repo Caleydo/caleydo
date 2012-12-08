@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
@@ -173,9 +174,9 @@ public class GLRadialHierarchy extends ATableBasedView {
 	@Override
 	public void init(GL2 gl) {
 		displayListIndex = gl.glGenLists(1);
-		gl.glEnable(GL2.GL_LINE_SMOOTH);
-		gl.glEnable(GL2.GL_BLEND);
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glEnable(GL.GL_LINE_SMOOTH);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	@Override
@@ -579,6 +580,8 @@ public class GLRadialHierarchy extends ATableBasedView {
 			default:
 				return;
 			}
+			break;
+		default:
 			break;
 		}
 	}

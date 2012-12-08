@@ -22,6 +22,7 @@ package org.caleydo.view.radial;
 import java.awt.Font;
 import java.util.ArrayList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
@@ -184,7 +185,7 @@ public class LabelManager {
 		gl.glLoadIdentity();
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.LABEL_TEXT_COLOR, 0);
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		gl.glVertex3f(fXCenter + fSegmentXCenter, fYCenter + fSegmentYCenter, 0);
 		gl.glVertex3f(fXCenter + fBendPointX, fYCenter + fBendPointY, 0);
 		if (fSegmentXCenter <= 0) {

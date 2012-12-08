@@ -115,6 +115,7 @@ import org.caleydo.view.dvi.node.IDVINode;
 import org.caleydo.view.dvi.node.MultiTablePerspectiveViewNode;
 import org.caleydo.view.dvi.node.NodeCreator;
 import org.caleydo.view.dvi.node.ViewNode;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -1071,7 +1072,7 @@ public class GLDataViewIntegrator
 			}
 		}
 		catch (Exception e) {
-			Logger.log(new Status(Status.ERROR, this.toString(), "Failed to create Graph Layout", e));
+			Logger.log(new Status(IStatus.ERROR, this.toString(), "Failed to create Graph Layout", e));
 		}
 
 		setApplyAutomaticLayout(true);

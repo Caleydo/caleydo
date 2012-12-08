@@ -31,6 +31,7 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -85,12 +86,12 @@ public class IDCategory {
 			throw new IllegalArgumentException("categoryName was null");
 
 		if (registeredCategories.containsKey(categoryName)) {
-			Logger.log(new Status(Status.INFO, "IDCategory", "IDCategory " + categoryName
+			Logger.log(new Status(IStatus.INFO, "IDCategory", "IDCategory " + categoryName
 					+ " already registered previously."));
 			return registeredCategories.get(categoryName);
 		}
 
-		Logger.log(new Status(Status.INFO, "IDCategory", "Registered new IDCategory " + categoryName + "."));
+		Logger.log(new Status(IStatus.INFO, "IDCategory", "Registered new IDCategory " + categoryName + "."));
 
 		IDCategory idCategory = new IDCategory(categoryName);
 		registeredCategories.put(categoryName, idCategory);

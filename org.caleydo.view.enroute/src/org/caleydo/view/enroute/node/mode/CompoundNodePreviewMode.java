@@ -5,6 +5,7 @@ package org.caleydo.view.enroute.node.mode;
 
 import gleem.linalg.Vec3f;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
@@ -73,7 +74,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 		gl.glEnd();
 
 		gl.glColor4f(0, 0, 0, 1);
-		gl.glBegin(GL2.GL_LINE_LOOP);
+		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(leftX, bottomY, nodePosition.z());
 		gl.glVertex3f(leftX + width, bottomY, nodePosition.z());
 		gl.glVertex3f(leftX + width, bottomY + height, nodePosition.z());

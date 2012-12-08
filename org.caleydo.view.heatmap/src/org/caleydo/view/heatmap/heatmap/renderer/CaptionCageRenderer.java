@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.heatmap.heatmap.renderer;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -63,7 +64,7 @@ public class CaptionCageRenderer extends AHeatMapRenderer {
 			// }
 			fieldHeight = recordSpacing.getFieldHeight(recordID);
 
-			gl.glBegin(GL2.GL_LINE_STRIP);
+			gl.glBegin(GL.GL_LINE_STRIP);
 			gl.glVertex3f(xPosition, yPosition, 0);
 			// gl.glVertex3f(xPosition , yPosition - fieldHeight, 0);
 			// gl.glVertex3f(xPosition + x, yPosition - fieldHeight, 0);
@@ -74,7 +75,7 @@ public class CaptionCageRenderer extends AHeatMapRenderer {
 
 		}
 		// }
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(x, 0, 0);
 		gl.glVertex3f(x, y, 0);

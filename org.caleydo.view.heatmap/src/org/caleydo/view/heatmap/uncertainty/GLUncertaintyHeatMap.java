@@ -347,7 +347,11 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 			case MOUSE_OVER:
 				break;
+			default:
+				break;
 			}
+			break;
+		default:
 			break;
 		}
 	}

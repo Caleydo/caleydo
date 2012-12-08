@@ -24,6 +24,7 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -66,7 +67,7 @@ public class IDTypeInitializer {
 			rowIDSpecification.setIDSpecification(dataSetDescription.getDataSetName()
 					+ "_row", dataSetDescription.getDataSetName() + "_row");
 			dataSetDescription.setRowIDSpecification(rowIDSpecification);
-			Logger.log(new Status(Status.INFO, "DataLoader",
+			Logger.log(new Status(IStatus.INFO, "DataLoader",
 					"Automatically creating row ID specification for "
 							+ dataSetDescription.getDataSetName()));
 
@@ -78,7 +79,7 @@ public class IDTypeInitializer {
 			columnIDSpecification.setIDSpecification(dataSetDescription.getDataSetName()
 					+ "_column", dataSetDescription.getDataSetName() + "_column");
 			dataSetDescription.setColumnIDSpecification(columnIDSpecification);
-			Logger.log(new Status(Status.INFO, "DataLoader",
+			Logger.log(new Status(IStatus.INFO, "DataLoader",
 					"Automatically creating column ID specification for "
 							+ dataSetDescription.getDataSetName()));
 		}

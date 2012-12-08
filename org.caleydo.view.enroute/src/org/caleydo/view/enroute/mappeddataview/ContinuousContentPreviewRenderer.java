@@ -5,6 +5,7 @@ package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.Average;
@@ -89,7 +90,7 @@ public class ContinuousContentPreviewRenderer extends ContentRenderer {
 		gl.glVertex3d(0, 0.8f * y, z);
 		gl.glEnd();
 
-		gl.glBegin(GL2.GL_LINE_LOOP);
+		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(0, 0, z);
 		// gl.glColor3f(color[0] * 1.1f, color[1] * 1.1f, color[2] * 1.1f);
 		gl.glVertex3f(x, 0, z);
@@ -113,7 +114,7 @@ public class ContinuousContentPreviewRenderer extends ContentRenderer {
 
 		gl.glColor3f(0.2f, 0.2f, 0.2f);
 		gl.glLineWidth(0.1f);
-		gl.glBegin(GL2.GL_LINE_LOOP);
+		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(0, 0, z);
 		gl.glVertex3f(x, 0, z);
 		gl.glVertex3d(x, average.getArithmeticMean() * 0.8f * y, z);

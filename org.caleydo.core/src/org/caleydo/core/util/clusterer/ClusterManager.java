@@ -68,7 +68,7 @@ public class ClusterManager {
 	 *         {@link AVariablePerspective}s.
 	 */
 	public ClusterResult cluster(ClusterConfiguration clusterConfiguration) {
-		Logger.log(new Status(Status.INFO, this.toString(),
+		Logger.log(new Status(IStatus.INFO, this.toString(),
 				"Started clustering with clusterConfiguration: " + clusterConfiguration));
 		try {
 			ClusterResult clusterResult = null;
@@ -109,7 +109,7 @@ public class ClusterManager {
 			return clusterResult;
 		}
 		catch (final Exception e) {
-			Logger.log(new Status(Status.ERROR, this.toString(), "Clustering failed", e));
+			Logger.log(new Status(IStatus.ERROR, this.toString(), "Clustering failed", e));
 
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 				@Override

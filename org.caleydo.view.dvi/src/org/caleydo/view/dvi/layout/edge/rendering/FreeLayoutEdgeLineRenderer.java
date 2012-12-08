@@ -24,6 +24,7 @@ import gleem.linalg.Vec3f;
 import java.awt.geom.Point2D;
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
@@ -68,7 +69,7 @@ public class FreeLayoutEdgeLineRenderer extends AEdgeLineRenderer {
 		Vec3f centerPoint = startPoint;
 		float distanceDelta = centerPoint.minus(endPoint).lengthSquared();
 
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		for (Vec3f point : curvePoints) {
 			gl.glVertex3f(point.x(), point.y(), point.z());
 			float distanceStart = point.minus(startPoint).lengthSquared();

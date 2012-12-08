@@ -25,6 +25,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Set;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.util.AGLGUIElement;
@@ -182,7 +183,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 		float fTextHeight = getTextHeight(textRenderer);
 		Vec3f vecPosition = groupRepresentation.getPosition();
 
-		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		beginGUIElement(gl, groupRepresentation.getHierarchyPosition());
 
@@ -235,7 +236,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 
 		beginGUIElement(gl, groupRepresentation.getHierarchyPosition());
 
-		gl.glBegin(GL2.GL_LINE_LOOP);
+		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(vecPosition.x(), vecPosition.y(), vecPosition.z());
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), vecPosition.z());
 		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() - fHeight,
@@ -361,7 +362,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 		gl.glLineWidth(2.0f);
 
 		gl.glColor3f(0.0f, 0.0f, 0.0f);
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecPosition.x(),
 				vecPosition.y() - alDropPositions.get(iDropPositionIndex),
 				groupRepresentation.getPosition().z());

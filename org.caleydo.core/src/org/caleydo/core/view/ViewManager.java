@@ -209,7 +209,7 @@ public class ViewManager extends AManager<IView> {
 		}
 
 		hashGLViewID2GLView.put(glView.getID(), glView);
-		Logger.log(new Status(Status.INFO, this.toString(), "Registering view: " + glView));
+		Logger.log(new Status(IStatus.INFO, this.toString(), "Registering view: " + glView));
 		NewViewEvent event = new NewViewEvent(glView);
 		event.setSender(this);
 		generalManager.getEventPublisher().triggerEvent(event);

@@ -21,6 +21,7 @@ package org.caleydo.core.startup;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -38,12 +39,12 @@ public class Application implements IApplication {
 	public Object start(IApplicationContext context) throws Exception {
 		try {
 
-			Logger.log(new Status(Status.INFO, this.toString(), "Starting Caleydo"));
+			Logger.log(new Status(IStatus.INFO, this.toString(), "Starting Caleydo"));
 			GeneralManager.get().getPreferenceStore();
 
 			StartupProcessor.get().initStartupProcudure(context.getArguments());
 		} catch (Exception e) {
-			Logger.log(new Status(Status.ERROR, this.toString(),
+			Logger.log(new Status(IStatus.ERROR, this.toString(),
 					"Caught exception, crashing.", e));
 			throw e;
 		}

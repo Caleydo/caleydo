@@ -178,7 +178,7 @@ public class DataTable extends AUniqueObject {
 			}
 		} catch (NullPointerException npe) {
 
-			Logger.log(new Status(Status.ERROR, "DataTable", "Data table does not contain a value for record: "
+			Logger.log(new Status(IStatus.ERROR, "DataTable", "Data table does not contain a value for record: "
 					+ recordID + " and dimension " + dimensionID));
 			return null;
 		}

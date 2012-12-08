@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,6 +22,7 @@ package org.caleydo.view.pathway;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.logging.Logger;
@@ -37,7 +38,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
 
 /**
  * OpenGL2 pathway texture manager
- * 
+ *
  * @author Marc Streit
  */
 public class GLPathwayTextureManager {
@@ -102,8 +103,8 @@ public class GLPathwayTextureManager {
 		float textureWidth = containingView.getPixelGLConverter().getGLWidthForPixelWidth(pathway.getWidth());
 		float textureHeight = containingView.getPixelGLConverter().getGLHeightForPixelHeight(pathway.getHeight());
 
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_NEAREST);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_NEAREST);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
 
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
@@ -127,7 +128,7 @@ public class GLPathwayTextureManager {
 			gl.glLineWidth(1);
 		}
 
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		gl.glVertex3f(0.0f, 0.0f, 0.0f);
 		gl.glVertex3f(textureWidth, 0.0f, 0.0f);
 		gl.glVertex3f(textureWidth, textureHeight, 0.0f);
@@ -139,7 +140,7 @@ public class GLPathwayTextureManager {
 	/**
 	 * Method supports lazy loading of pathway textures if they are not present
 	 * at that time.
-	 * 
+	 *
 	 * @param PathwayGraph
 	 * @return Pathway texture
 	 */

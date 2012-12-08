@@ -45,11 +45,8 @@ public class TablePerspectiveRenderer extends ADraggableColorRenderer {
 	protected int textRotation = 0;
 	protected int textHeightPixels;
 
-	public TablePerspectiveRenderer(TablePerspective tablePerspective, AGLView view,
-			IDVINode node, float[] color) {
-		super(color,
-				new float[] { color[0] - 0.2f, color[1] - 0.2f, color[2] - 0.2f, 1f }, 2,
-				view);
+	public TablePerspectiveRenderer(TablePerspective tablePerspective, AGLView view, IDVINode node, float[] color) {
+		super(color, new float[] { color[0] - 0.2f, color[1] - 0.2f, color[2] - 0.2f, 1f }, 2, view);
 		this.setTablePerspective(tablePerspective);
 		this.view = view;
 		this.node = node;
@@ -69,72 +66,40 @@ public class TablePerspectiveRenderer extends ADraggableColorRenderer {
 			float textPositionX = 0;
 			switch (textRotation) {
 			case TEXT_ROTATION_0:
-				textRenderer.renderTextInBounds(
-						gl,
-						tablePerspective.getLabel(),
+				textRenderer.renderTextInBounds(gl, tablePerspective.getLabel(),
 						pixelGLConverter.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS),
-						pixelGLConverter.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS),
-						0.1f,
-						x
-								- 2
-								* pixelGLConverter
-										.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS),
+						pixelGLConverter.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS), 0.1f,
+						x - 2 * pixelGLConverter.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS),
 						pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels));
 				break;
 
 			case TEXT_ROTATION_90:
 
 				gl.glPushMatrix();
-				textPositionX = pixelGLConverter
-						.getGLHeightForPixelHeight(textHeightPixels - 2)
-						+ (x - pixelGLConverter
-								.getGLHeightForPixelHeight(textHeightPixels - 2)) / 2.0f;
+				textPositionX = pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels - 2)
+						+ (x - pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels - 2)) / 2.0f;
 
-				gl.glTranslatef(textPositionX,
-						pixelGLConverter.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
-						0.2f);
+				gl.glTranslatef(textPositionX, pixelGLConverter.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS), 0.2f);
 				gl.glRotatef(90, 0, 0, 1);
-				textRenderer.renderTextInBounds(
-						gl,
-						tablePerspective.getLabel(),
-						0,
-						0,
-						0,
-						y
-								- pixelGLConverter
-										.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
+				textRenderer.renderTextInBounds(gl, tablePerspective.getLabel(), 0, 0, 0,
+						y - pixelGLConverter.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
 						pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels));
 				gl.glPopMatrix();
 				break;
 			case TEXT_ROTATION_270:
 
 				gl.glPushMatrix();
-				textPositionX = (x - pixelGLConverter
-						.getGLHeightForPixelHeight(textHeightPixels - 2)) / 2.0f;
-				gl.glTranslatef(
-						textPositionX,
-						y
-								- pixelGLConverter
-										.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
+				textPositionX = (x - pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels - 2)) / 2.0f;
+				gl.glTranslatef(textPositionX, y - pixelGLConverter.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
 						0.2f);
 				gl.glRotatef(-90, 0, 0, 1);
-				textRenderer.renderTextInBounds(
-						gl,
-						tablePerspective.getLabel(),
-						0,
-						0,
-						0,
-						y
-								- pixelGLConverter
-										.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
+				textRenderer.renderTextInBounds(gl, tablePerspective.getLabel(), 0, 0, 0,
+						y - pixelGLConverter.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
 						pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels));
 				gl.glPopMatrix();
 				break;
 			}
-			;
-
 		}
-
 	}
 
 	public void setTablePerspective(TablePerspective dimensionGroupData) {

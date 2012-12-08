@@ -23,6 +23,7 @@ import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 
 import java.util.ArrayList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
@@ -159,7 +160,7 @@ public class ClusterRenderer extends LayoutRenderer {
 			// if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1)
 			// == false) {
 			gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 
 			gl.glVertex3f(0, height - heightElem * index, SELECTION_Z);
 			gl.glVertex3f(x, height - heightElem * index, SELECTION_Z);
@@ -176,7 +177,7 @@ public class ClusterRenderer extends LayoutRenderer {
 			// if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1)
 			// == false) {
 			gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(0, height - heightElem * index, SELECTION_Z);
 			gl.glVertex3f(x, height - heightElem * index, SELECTION_Z);
 			gl.glEnd();

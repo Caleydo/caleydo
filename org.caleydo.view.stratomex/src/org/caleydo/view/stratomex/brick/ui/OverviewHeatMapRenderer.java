@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,6 +21,7 @@ package org.caleydo.view.stratomex.brick.ui;
 
 import java.util.ArrayList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
@@ -33,9 +34,9 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
  * Renderer for an overview heatmap of values specified by recordVA and
  * dimensionVA. It shows the average values per dimension and optionally the
  * average values + and - the standard deviation per dimension.
- * 
+ *
  * @author Christian Partl
- * 
+ *
  */
 public class OverviewHeatMapRenderer extends LayoutRenderer {
 
@@ -47,7 +48,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param recordVA
 	 * @param dimensionVA
 	 * @param set
@@ -112,7 +113,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 		if (heatMapValuesMean.size() > 15)
 			renderTriangles = false;
 
-		float heatMapElementWidth = x / (float) heatMapValuesMean.size();
+		float heatMapElementWidth = x / heatMapValuesMean.size();
 
 		if (showStandardDeviation) {
 
@@ -123,7 +124,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 			float currentPositionY = 0;
 
 			if (renderTriangles)
-				gl.glBegin(GL2.GL_TRIANGLES);
+				gl.glBegin(GL.GL_TRIANGLES);
 			else
 				gl.glBegin(GL2.GL_QUADS);
 
@@ -179,7 +180,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 			gl.glEnd();
 
 			if (renderTriangles)
-				gl.glBegin(GL2.GL_TRIANGLES);
+				gl.glBegin(GL.GL_TRIANGLES);
 			else
 				gl.glBegin(GL2.GL_QUADS);
 
@@ -212,7 +213,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 			if (heatMapValuesMean.size() <= 20) {
 				gl.glLineWidth(1);
 				gl.glColor4f(1, 1, 1, 1);
-				gl.glBegin(GL2.GL_LINES);
+				gl.glBegin(GL.GL_LINES);
 				currentPositionX = heatMapElementWidth;
 				for (int i = 0; i < heatMapValuesMean.size() - 1; i++) {
 					gl.glVertex3f(currentPositionX, 0, 0);
@@ -252,7 +253,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 			if (heatMapValuesMean.size() <= 20) {
 				gl.glLineWidth(1);
 				gl.glColor4f(1, 1, 1, 1);
-				gl.glBegin(GL2.GL_LINES);
+				gl.glBegin(GL.GL_LINES);
 				currentPositionX = heatMapElementWidth;
 				for (int i = 0; i < heatMapValuesMean.size() - 1; i++) {
 					gl.glVertex3f(currentPositionX, 0, 0);
@@ -277,7 +278,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 		return 150;
 		// return Math.max(150, 16 * heatMapValuesMean.size());
 	}
-	
+
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
 		return false;

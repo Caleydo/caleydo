@@ -24,6 +24,7 @@ import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 
 import java.util.Set;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
@@ -68,7 +69,7 @@ public class RecordSelectionRenderer extends AHeatMapRenderer {
 
 					float z = SELECTION_Z * selectionType.getPriority();
 
-					gl.glBegin(GL2.GL_LINE_LOOP);
+					gl.glBegin(GL.GL_LINE_LOOP);
 					gl.glVertex3f(xPosition, yPosition, z);
 					gl.glVertex3f(xPosition, yPosition + fieldHeight, z);
 					gl.glVertex3f(xPosition + x, yPosition + fieldHeight, z);

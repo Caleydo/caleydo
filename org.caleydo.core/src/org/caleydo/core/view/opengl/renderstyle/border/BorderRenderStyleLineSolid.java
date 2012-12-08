@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.renderstyle.border;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 public class BorderRenderStyleLineSolid
@@ -53,7 +54,7 @@ public class BorderRenderStyleLineSolid
 		gl.glLineWidth(iBorderWidth);
 
 		if (bBorderLeft) {
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 			gl.glColor4f(vBorderColor.get(0), vBorderColor.get(1), vBorderColor.get(2), vBorderColor.get(3));
 			gl.glVertex3f(0, 0, 0);
 			gl.glVertex3f(0, fHeight, 0);
@@ -63,7 +64,7 @@ public class BorderRenderStyleLineSolid
 		gl.glTranslatef(0f, fHeight, 0f);
 
 		if (bBorderTop) {
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 			gl.glColor4f(vBorderColor.get(0), vBorderColor.get(1), vBorderColor.get(2), vBorderColor.get(3));
 			gl.glVertex3f(0, 0, 0);
 			gl.glVertex3f(fWidth, 0, 0);
@@ -73,7 +74,7 @@ public class BorderRenderStyleLineSolid
 		gl.glTranslatef(fWidth, 0f, 0f);
 
 		if (bBorderRight) {
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 			gl.glColor4f(vBorderColor.get(0), vBorderColor.get(1), vBorderColor.get(2), vBorderColor.get(3));
 			gl.glVertex3f(0, 0, 0);
 			gl.glVertex3f(0, -fHeight, 0);
@@ -83,7 +84,7 @@ public class BorderRenderStyleLineSolid
 		gl.glTranslatef(0f, -fHeight, 0f);
 
 		if (bBorderBottom) {
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 			gl.glColor4f(vBorderColor.get(0), vBorderColor.get(1), vBorderColor.get(2), vBorderColor.get(3));
 			gl.glVertex3f(0, 0, 0);
 			gl.glVertex3f(-fWidth, 0, 0);

@@ -227,7 +227,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 		gl.glColor3f(0, 0, 0);
 		gl.glLineWidth(0.5f);
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		gl.glVertex3f(0, y / 3, z);
 		gl.glVertex3d(average.getArithmeticMean() * x, y / 3, z);
 		gl.glVertex3d(average.getArithmeticMean() * x, y / 3 * 2, z);

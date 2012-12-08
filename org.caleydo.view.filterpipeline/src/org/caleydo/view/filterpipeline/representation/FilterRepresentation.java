@@ -26,6 +26,7 @@ import gleem.linalg.Vec2f;
 
 import java.util.Set;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionManager;
@@ -140,7 +141,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 
 			renderShape(
 					gl,
-					GL2.GL_LINE_LOOP,
+					GL.GL_LINE_LOOP,
 					(selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION
 							.getColor() : SelectionType.MOUSE_OVER.getColor(), Z_POS_MARK);
 		}
@@ -198,7 +199,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 
 		gl.glLineWidth(1);
 		// Render outline of filter
-		renderShape(gl, GL2.GL_LINE_LOOP, renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER);
+		renderShape(gl, GL.GL_LINE_LOOP, renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER);
 
 		// Render uncertainty line
 		if (filter.getUncertaintyOutput() == null)
@@ -215,7 +216,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 					Z_POS_BODY);
 
 			// Render delimiter line between certain and uncertain area
-			renderShape(gl, GL2.GL_LINE_LOOP, vPos, vSize.x(), 0, 0, heightLeft,
+			renderShape(gl, GL.GL_LINE_LOOP, vPos, vSize.x(), 0, 0, heightLeft,
 					uncertaintyHeightRight, renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER);
 		}
 
@@ -255,7 +256,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 
 		gl.glColor4fv(borderColor, 0);
 		gl.glLineWidth(1);
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		{
 			gl.glVertex3fv(topLeft, 0);
 			gl.glVertex3fv(topRight, 0);
@@ -307,7 +308,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	public void handleDragOver(GL2 gl, Set<IDraggable> draggables,
 			float mouseCoordinateX, float mouseCoordinateY) {
 		gl.glLineWidth(5);
-		renderShape(gl, GL2.GL_LINE_LOOP, renderStyle.DRAG_OVER_COLOR, Z_POS_DRAG_OVER);
+		renderShape(gl, GL.GL_LINE_LOOP, renderStyle.DRAG_OVER_COLOR, Z_POS_DRAG_OVER);
 	}
 
 	@Override

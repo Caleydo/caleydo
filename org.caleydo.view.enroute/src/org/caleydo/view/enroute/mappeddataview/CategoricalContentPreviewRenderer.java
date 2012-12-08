@@ -5,6 +5,7 @@ package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.Histogram;
@@ -55,7 +56,6 @@ public class CategoricalContentPreviewRenderer
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void renderContent(GL2 gl) {
 		if (geneID == null)
@@ -116,7 +116,7 @@ public class CategoricalContentPreviewRenderer
 
 			gl.glColor3f(0.2f, 0.2f, 0.2f);
 			gl.glLineWidth(0.1f);
-			gl.glBegin(GL2.GL_LINE_LOOP);
+			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(0, currentPositionY, z);
 			gl.glVertex3d(x, currentPositionY, z);
 			gl.glVertex3d(x, currentPositionY + currentBarHeight, z);

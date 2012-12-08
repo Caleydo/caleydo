@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -24,6 +24,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
@@ -37,7 +38,7 @@ import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 
 /**
  * @author Thomas Geymayer
- * 
+ *
  */
 public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMetaOr {
 	private int displayListOutput = -1;
@@ -97,7 +98,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 					scaleY * heightRight, renderStyle.getFilterColor(i),
 					Z_POS_BODY + 0.1f);
 			gl.glLineWidth(1);
-			renderShape(gl, GL2.GL_LINE_LOOP, curPos, subFilterWidth,
+			renderShape(gl, GL.GL_LINE_LOOP, curPos, subFilterWidth,
 					scaleY * heightLeft, scaleY * heightRight,
 					renderStyle.FILTER_BORDER_COLOR, Z_POS_BORDER + 0.1f);
 			gl.glPopName();
@@ -114,7 +115,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 			if (mouseOverItem == i) {
 				// render mouse over
 				gl.glLineWidth(SelectionType.MOUSE_OVER.getLineWidth());
-				renderShape(gl, GL2.GL_LINE_LOOP, curPos, subFilterWidth, scaleY
+				renderShape(gl, GL.GL_LINE_LOOP, curPos, subFilterWidth, scaleY
 						* heightLeft, scaleY * heightRight,
 						SelectionType.MOUSE_OVER.getColor(), Z_POS_MARK);
 			}
@@ -140,7 +141,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 			// Steps of output of total meta filter
 			int outputSteps = 0;
 
-			gl.glDisable(GL2.GL_DEPTH_TEST);
+			gl.glDisable(GL.GL_DEPTH_TEST);
 			gl.glLineWidth(1);
 
 			for (Intersection intersection : intersections) {
@@ -174,7 +175,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 				outputSteps += intersection.numElements;
 			}
 
-			gl.glEnable(GL2.GL_DEPTH_TEST);
+			gl.glEnable(GL.GL_DEPTH_TEST);
 			gl.glEndList();
 		}
 
@@ -187,7 +188,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 
 			renderShape(
 					gl,
-					GL2.GL_LINE_LOOP,
+					GL.GL_LINE_LOOP,
 					(selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION
 							.getColor() : SelectionType.MOUSE_OVER.getColor(), Z_POS_MARK);
 		}
@@ -195,7 +196,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 
 	/**
 	 * Calculate the scaling factor for the subfilters
-	 * 
+	 *
 	 * @return
 	 */
 	private float calculateFilterScalingY() {
@@ -221,7 +222,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 
 	/**
 	 * Render the input as an nurbs band
-	 * 
+	 *
 	 * @param gl
 	 */
 	private void renderInputBand(GL2 gl, Vec2f topLeft, Vec2f topRight, Vec2f bottomLeft,
@@ -251,7 +252,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 		// Band border
 		gl.glLineWidth(1);
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		{
 			for (Vec3f point : topCurve.getCurvePoints())
 				gl.glVertex3f(point.x(), point.y(), point.z());
@@ -261,7 +262,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 		// Band border
 		NURBSCurve bottomCurve = new NURBSCurve(bottomInputPoints,
 				NUMBER_OF_SPLINE_POINTS);
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		{
 			for (Vec3f point : bottomCurve.getCurvePoints())
 				gl.glVertex3f(point.x(), point.y(), point.z());

@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
@@ -52,6 +53,7 @@ import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.ui.RectangleCoordinates;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -297,7 +299,7 @@ public class BrickColumnSpacingRenderer
 						continue;
 					recordID = recordIDs.iterator().next();
 					if (recordIDs.size() > 1) {
-						Logger.log(new Status(Status.WARNING, this.toString(),
+						Logger.log(new Status(IStatus.WARNING, this.toString(),
 								"Multi-Mapping, not handled"));
 					}
 				}
@@ -361,7 +363,7 @@ public class BrickColumnSpacingRenderer
 			gl.glColor3fv(DRAG_AND_DROP_MARKER_COLOR, 0);
 			gl.glLineWidth(3);
 
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 			if (isVertical) {
 				gl.glVertex3f(x / 2f, 0, 1f);
 				gl.glVertex3f(x / 2f, y, 1f);

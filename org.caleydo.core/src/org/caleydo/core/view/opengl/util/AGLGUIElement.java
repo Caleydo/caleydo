@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,11 +23,12 @@ import gleem.linalg.Vec3f;
 
 import java.nio.IntBuffer;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 /**
  * Abstract base class for all GUI elements that require a minimum size.
- * 
+ *
  * @author Christian Partl
  */
 public abstract class AGLGUIElement {
@@ -43,7 +44,7 @@ public abstract class AGLGUIElement {
 	 * smaller than the minimum size. Use endGUIElement to end this effect. Note, that calls of glTranslate
 	 * between beginGUIElement and endGUIElement may affect the minimum size scaling and are therefore not
 	 * recommended. Call these methods beforehand.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 context.
 	 * @param scalingPivot
@@ -65,7 +66,7 @@ public abstract class AGLGUIElement {
 	 * endGUIElement will be scaled if smaller than the minimum size. Note, that calls of glTranslate between
 	 * beginGUIElement and endGUIElement may affect the minimum size scaling and are therefore not
 	 * recommended. Call these methods beforehand.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 context.
 	 */
@@ -82,7 +83,7 @@ public abstract class AGLGUIElement {
 
 	/**
 	 * Sets the minimum size of the gui element.
-	 * 
+	 *
 	 * @param minSize
 	 *            Minimum size the gui element should have.
 	 */
@@ -93,7 +94,7 @@ public abstract class AGLGUIElement {
 	/**
 	 * Gets the size the specified value would have when scaling it. Note that the scaling is dependent on the
 	 * current window size and the minimum size of the gui element.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 context.
 	 * @param value
@@ -107,7 +108,7 @@ public abstract class AGLGUIElement {
 	/**
 	 * Gets the size the specified value would have when scaling it. Note that the scaling is dependent on the
 	 * current window size and the minimum size of the gui element.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 context.
 	 * @param value
@@ -124,7 +125,7 @@ public abstract class AGLGUIElement {
 	/**
 	 * Gets the size the specified value would have when scaling it. Note that the scaling is dependent on the
 	 * current window size and the minimum size of the gui element.
-	 * 
+	 *
 	 * @param viewportWidth
 	 *            Width of the viewport.
 	 * @param value
@@ -148,7 +149,7 @@ public abstract class AGLGUIElement {
 	/**
 	 * When submitting a scaled length this returns the value of the unscaled length. Note that the scaling is
 	 * dependent on the current window size and the minimum size of the gui element.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 context.
 	 * @param value
@@ -162,7 +163,7 @@ public abstract class AGLGUIElement {
 	/**
 	 * Calculates the current scaling dependent on the current window size and the minimum size of the gui
 	 * element.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 context.
 	 * @param useWidthAsReference
@@ -172,7 +173,7 @@ public abstract class AGLGUIElement {
 	 */
 	private float getScaling(GL2 gl, boolean useWidthAsReference) {
 		IntBuffer buffer = IntBuffer.allocate(4);
-		gl.glGetIntegerv(GL2.GL_VIEWPORT, buffer);
+		gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
 		int currentSize = 0;
 		if (useWidthAsReference) {
 			currentSize = buffer.get(2);
@@ -193,7 +194,7 @@ public abstract class AGLGUIElement {
 	/**
 	 * Calculates the position the specified position will have when drawn, i.e. calculates the scaled
 	 * position.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 Context.
 	 * @param position
@@ -213,7 +214,7 @@ public abstract class AGLGUIElement {
 
 	/**
 	 * Does the same as getScaledPosition, just for a single coordinate instead of three.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 Context.
 	 * @param coordinate
@@ -232,7 +233,7 @@ public abstract class AGLGUIElement {
 	/**
 	 * Calculates the position that has to be used for drawing when the result should be the specified
 	 * position, i.e. the inverse scaled position is calculated.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 context.
 	 * @param scaledPosition
@@ -252,7 +253,7 @@ public abstract class AGLGUIElement {
 
 	/**
 	 * Does the same as getRealPositionFromScaledPosition, just for a single coordinate instead of three.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 context.
 	 * @param scaledCoordinate

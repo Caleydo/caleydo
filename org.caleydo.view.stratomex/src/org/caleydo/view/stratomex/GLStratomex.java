@@ -100,6 +100,7 @@ import org.caleydo.view.stratomex.listener.ConnectionsModeListener;
 import org.caleydo.view.stratomex.listener.GLStratomexKeyListener;
 import org.caleydo.view.stratomex.listener.ReplaceTablePerspectiveListener;
 import org.caleydo.view.stratomex.listener.SplitBrickListener;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
@@ -110,8 +111,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  */
 
-public class GLStratomex extends AGLView implements
-		IMultiTablePerspectiveBasedView, IGLRemoteRenderingView,
+public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedView, IGLRemoteRenderingView,
 		IViewCommandHandler, ISelectionUpdateHandler {
 
 	public static String VIEW_TYPE = "org.caleydo.view.stratomex";
@@ -173,14 +173,13 @@ public class GLStratomex extends AGLView implements
 	private ElementLayout rightBrickColumnSpacing;
 
 	/**
-	 * The id category used to map between the records of the dimension groups.
-	 * Only data with the same recordIDCategory can be connected
+	 * The id category used to map between the records of the dimension groups. Only data with the same recordIDCategory
+	 * can be connected
 	 */
 	private IDCategory recordIDCategory;
 
 	/**
-	 * The selection manager for the records, used for highlighting the visual
-	 * links
+	 * The selection manager for the records, used for highlighting the visual links
 	 */
 	private RecordSelectionManager recordSelectionManager;
 
@@ -190,8 +189,7 @@ public class GLStratomex extends AGLView implements
 	private int selectedConnectionBandID = -1;
 
 	/**
-	 * Determines the connection focus highlight dynamically in a range between
-	 * 0 and 1
+	 * Determines the connection focus highlight dynamically in a range between 0 and 1
 	 */
 	private float connectionsFocusFactor;
 
@@ -199,13 +197,11 @@ public class GLStratomex extends AGLView implements
 	private int movedBrickColumn = -1;
 
 	/**
-	 * The position of the mouse in the previous render cycle when dragging
-	 * columns
+	 * The position of the mouse in the previous render cycle when dragging columns
 	 */
 	private float previousXCoordinate = Float.NaN;
 	/**
-	 * If the mouse is dragged further out to the left than possible, this is
-	 * set to where it was
+	 * If the mouse is dragged further out to the left than possible, this is set to where it was
 	 */
 	private float leftLimitXCoordinate = Float.NaN;
 	/** Same as {@link #leftLimitXCoordinate} for the right side */
@@ -228,8 +224,7 @@ public class GLStratomex extends AGLView implements
 	 * Constructor.
 	 *
 	 */
-	public GLStratomex(IGLCanvas glCanvas, Composite parentComposite,
-			ViewFrustum viewFrustum) {
+	public GLStratomex(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -289,24 +284,20 @@ public class GLStratomex extends AGLView implements
 	}
 
 	private void initLeftLayout() {
-		initSideLayout(leftColumnLayout, 0,
-				brickColumnManager.getCenterColumnStartIndex());
+		initSideLayout(leftColumnLayout, 0, brickColumnManager.getCenterColumnStartIndex());
 	}
 
 	private void initRightLayout() {
-		initSideLayout(rightColumnLayout,
-				brickColumnManager.getRightColumnStartIndex(),
-				brickColumnManager.getBrickColumns().size());
+		initSideLayout(rightColumnLayout, brickColumnManager.getRightColumnStartIndex(), brickColumnManager
+				.getBrickColumns().size());
 	}
 
 	public int getSideArchWidthPixels() {
-		return pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()
-				* ARCH_STAND_WIDTH_PERCENT);
+		return pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT);
 	}
 
 	/**
-	 * Init the layout for the center region, showing the horizontal bar of the
-	 * arch plus all sub-bricks above and below
+	 * Init the layout for the center region, showing the horizontal bar of the arch plus all sub-bricks above and below
 	 */
 	private void initCenterLayout() {
 
@@ -315,19 +306,15 @@ public class GLStratomex extends AGLView implements
 		if (isRightDetailShown || isLeftDetailShown) {
 			archInnerWidth = 0;
 		} else {
-			archInnerWidth = viewFrustum.getWidth()
-					* (ARCH_STAND_WIDTH_PERCENT + 0.024f);
+			archInnerWidth = viewFrustum.getWidth() * (ARCH_STAND_WIDTH_PERCENT + 0.024f);
 		}
 
-		archHeight = pixelGLConverter
-				.getGLHeightForPixelHeight(ARCH_PIXEL_HEIGHT);
-		archBottomY = viewFrustum.getHeight() * ARCH_BOTTOM_PERCENT
-				- archHeight;
+		archHeight = pixelGLConverter.getGLHeightForPixelHeight(ARCH_PIXEL_HEIGHT);
+		archBottomY = viewFrustum.getHeight() * ARCH_BOTTOM_PERCENT - archHeight;
 
 		archTopY = archBottomY + archHeight;
 
-		int numberOfFocusColumns = brickColumnManager
-				.getRightColumnStartIndex()
+		int numberOfFocusColumns = brickColumnManager.getRightColumnStartIndex()
 				- brickColumnManager.getCenterColumnStartIndex();
 
 		centerRowLayout = new Row("centerRowLayout");
@@ -341,14 +328,10 @@ public class GLStratomex extends AGLView implements
 
 		// Handle special case where center contains no groups
 		if (numberOfFocusColumns < 1) {
-			columnSpacingRenderer = new BrickColumnSpacingRenderer(null,
-					connectionRenderer, null, null, this);
+			columnSpacingRenderer = new BrickColumnSpacingRenderer(null, connectionRenderer, null, null, this);
 		} else {
-			columnSpacingRenderer = new BrickColumnSpacingRenderer(null,
-					connectionRenderer, null, brickColumnManager
-							.getBrickColumns().get(
-									brickColumnManager
-											.getCenterColumnStartIndex()), this);
+			columnSpacingRenderer = new BrickColumnSpacingRenderer(null, connectionRenderer, null, brickColumnManager
+					.getBrickColumns().get(brickColumnManager.getCenterColumnStartIndex()), this);
 		}
 
 		leftBrickColumnSpacing.setRenderer(columnSpacingRenderer);
@@ -366,30 +349,25 @@ public class GLStratomex extends AGLView implements
 
 			ElementLayout dynamicColumnSpacing;
 
-			BrickColumn column = brickColumnManager.getBrickColumns().get(
-					columnIndex);
+			BrickColumn column = brickColumnManager.getBrickColumns().get(columnIndex);
 			column.setCollapsed(false);
 			column.setArchHeight(ARCH_PIXEL_HEIGHT);
 			centerRowLayout.append(column.getLayout());
 
 			if (columnIndex != brickColumnManager.getRightColumnStartIndex() - 1) {
 				dynamicColumnSpacing = new ElementLayout("dynamicDimGrSpacing");
-				columnSpacingRenderer = new BrickColumnSpacingRenderer(
-						relationAnalyzer, connectionRenderer, column,
-						brickColumnManager.getBrickColumns().get(
-								columnIndex + 1), this);
+				columnSpacingRenderer = new BrickColumnSpacingRenderer(relationAnalyzer, connectionRenderer, column,
+						brickColumnManager.getBrickColumns().get(columnIndex + 1), this);
 				dynamicColumnSpacing.setGrabX(true);
 				dynamicColumnSpacing.setRenderer(columnSpacingRenderer);
 				centerRowLayout.append(dynamicColumnSpacing);
 
 			} else {
 				rightBrickColumnSpacing = new ElementLayout("lastDimGrSpacing");
-				columnSpacingRenderer = new BrickColumnSpacingRenderer(null,
-						connectionRenderer, column, null, this);
+				columnSpacingRenderer = new BrickColumnSpacingRenderer(null, connectionRenderer, column, null, this);
 
 				if (numberOfFocusColumns > 1)
-					rightBrickColumnSpacing
-							.setPixelSizeX(BRICK_COLUMN_SIDE_SPACING);
+					rightBrickColumnSpacing.setPixelSizeX(BRICK_COLUMN_SIDE_SPACING);
 				else
 					rightBrickColumnSpacing.setGrabX(true);
 
@@ -411,14 +389,12 @@ public class GLStratomex extends AGLView implements
 	 * @param columnStartIndex
 	 * @param columnEndIndex
 	 */
-	private void initSideLayout(Column columnLayout, int columnStartIndex,
-			int columnEndIndex) {
+	private void initSideLayout(Column columnLayout, int columnStartIndex, int columnEndIndex) {
 
 		columnLayout.setFrameColor(1, 1, 0, 1);
 		columnLayout.setBottomUp(true);
 		columnLayout.clear();
-		columnLayout.setRenderer(new ColorRenderer(new float[] { 0.7f, 0.7f,
-				0.7f, 1f }));
+		columnLayout.setRenderer(new ColorRenderer(new float[] { 0.7f, 0.7f, 0.7f, 1f }));
 
 		ElementLayout columnSpacing = new ElementLayout("firstSideDimGrSpacing");
 		columnSpacing.setGrabY(true);
@@ -429,14 +405,10 @@ public class GLStratomex extends AGLView implements
 
 		// Handle special case where arch stand contains no groups
 		if (columnStartIndex == 0 || columnStartIndex == columnEndIndex) {
-			brickColumnSpacingRenderer = new BrickColumnSpacingRenderer(null,
-					connectionRenderer, null, null, this);
+			brickColumnSpacingRenderer = new BrickColumnSpacingRenderer(null, connectionRenderer, null, null, this);
 		} else {
-			brickColumnSpacingRenderer = new BrickColumnSpacingRenderer(null,
-					connectionRenderer, null, brickColumnManager
-							.getBrickColumns().get(
-									brickColumnManager
-											.getCenterColumnStartIndex()), this);
+			brickColumnSpacingRenderer = new BrickColumnSpacingRenderer(null, connectionRenderer, null,
+					brickColumnManager.getBrickColumns().get(brickColumnManager.getCenterColumnStartIndex()), this);
 		}
 
 		columnSpacing.setRenderer(brickColumnSpacingRenderer);
@@ -445,8 +417,7 @@ public class GLStratomex extends AGLView implements
 
 		for (int columnIndex = columnStartIndex; columnIndex < columnEndIndex; columnIndex++) {
 
-			BrickColumn column = brickColumnManager.getBrickColumns().get(
-					columnIndex);
+			BrickColumn column = brickColumnManager.getBrickColumns().get(columnIndex);
 
 			column.getLayout().setAbsoluteSizeY(archSideWidth);
 			column.setArchHeight(-1);
@@ -457,8 +428,7 @@ public class GLStratomex extends AGLView implements
 			columnSpacing = new ElementLayout("sideDimGrSpacing");
 			columnSpacing.setGrabY(true);
 
-			brickColumnSpacingRenderer = new BrickColumnSpacingRenderer(null,
-					null, column, null, this);
+			brickColumnSpacingRenderer = new BrickColumnSpacingRenderer(null, null, column, null, this);
 			columnLayout.append(columnSpacing);
 
 			columnSpacing.setRenderer(brickColumnSpacingRenderer);
@@ -485,8 +455,7 @@ public class GLStratomex extends AGLView implements
 	}
 
 	@Override
-	public void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener) {
+	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
 		this.glMouseListener = glMouseListener;
 		init(gl);
@@ -515,12 +484,9 @@ public class GLStratomex extends AGLView implements
 		if (tablePerspectives == null || tablePerspectives.isEmpty()) {
 			if (isDisplayListDirty) {
 				gl.glNewList(displayListIndex, GL2.GL_COMPILE);
-				renderEmptyViewText(
-						gl,
-						new String[] {
-								"Please use the Data-View Integrator to assign ",
-								"one or multiple dataset(s) to StratomeX.",
-								"Refer to http://help.caleydo.org for more information." });
+				renderEmptyViewText(gl, new String[] { "Please use the Data-View Integrator to assign ",
+						"one or multiple dataset(s) to StratomeX.",
+						"Refer to http://help.caleydo.org for more information." });
 				gl.glEndList();
 				isDisplayListDirty = false;
 			}
@@ -529,8 +495,7 @@ public class GLStratomex extends AGLView implements
 
 			if (!uninitializedSubViews.isEmpty()) {
 				while (uninitializedSubViews.peek() != null) {
-					uninitializedSubViews.poll().initRemote(gl, this,
-							glMouseListener);
+					uninitializedSubViews.poll().initRemote(gl, this, glMouseListener);
 				}
 				initLayouts();
 			}
@@ -548,8 +513,7 @@ public class GLStratomex extends AGLView implements
 				isLayoutDirty = false;
 
 				layoutManager.updateLayout();
-				float minWidth = pixelGLConverter
-						.getGLWidthForPixelWidth(BRICK_COLUMN_SPACING_MIN_PIXEL_WIDTH);
+				float minWidth = pixelGLConverter.getGLWidthForPixelWidth(BRICK_COLUMN_SPACING_MIN_PIXEL_WIDTH);
 				for (ElementLayout layout : centerRowLayout) {
 					if (!(layout.getRenderer() instanceof BrickColumnSpacingRenderer))
 						continue;
@@ -640,8 +604,7 @@ public class GLStratomex extends AGLView implements
 	}
 
 	/**
-	 * Switches to detail mode where the detail brick is on the right side of
-	 * the specified column
+	 * Switches to detail mode where the detail brick is on the right side of the specified column
 	 *
 	 * @param focusColumn
 	 *            the column that contains the focus brick
@@ -669,8 +632,7 @@ public class GLStratomex extends AGLView implements
 	}
 
 	/**
-	 * Switches to detail mode where the detail brick is on the left side of the
-	 * specified column.
+	 * Switches to detail mode where the detail brick is on the left side of the specified column.
 	 *
 	 * @param focusColumn
 	 *            the column that contains the detail brick
@@ -713,8 +675,8 @@ public class GLStratomex extends AGLView implements
 	}
 
 	/**
-	 * Handles the left-right dragging of the whole dimension group. Does
-	 * collision handling and moves dimension groups to the sides if necessary.
+	 * Handles the left-right dragging of the whole dimension group. Does collision handling and moves dimension groups
+	 * to the sides if necessary.
 	 *
 	 * @param gl
 	 */
@@ -731,9 +693,8 @@ public class GLStratomex extends AGLView implements
 
 		Point currentPoint = glMouseListener.getPickedPoint();
 
-		float[] pointCordinates = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-						currentPoint.y);
+		float[] pointCordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+				currentPoint.y);
 
 		if (Float.isNaN(previousXCoordinate)) {
 			previousXCoordinate = pointCordinates[0];
@@ -781,8 +742,7 @@ public class GLStratomex extends AGLView implements
 		int count = 0;
 		for (ElementLayout layout : centerRowLayout) {
 			if (layout.getRenderer() instanceof BrickColumnSpacingRenderer) {
-				spacingRenderer = (BrickColumnSpacingRenderer) layout
-						.getRenderer();
+				spacingRenderer = (BrickColumnSpacingRenderer) layout.getRenderer();
 				if (spacingRenderer.getRightDimGroup() != null) {
 					if (spacingRenderer.getRightDimGroup().getID() == movedBrickColumn) {
 						leftSpacing = layout;
@@ -811,8 +771,7 @@ public class GLStratomex extends AGLView implements
 
 		float leftSizeX = leftSpacing.getSizeScaledX();
 		float rightSizeX = rightSpacing.getSizeScaledX();
-		float minWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(BRICK_COLUMN_SPACING_MIN_PIXEL_WIDTH);
+		float minWidth = pixelGLConverter.getGLWidthForPixelWidth(BRICK_COLUMN_SPACING_MIN_PIXEL_WIDTH);
 
 		if (change > 0) {
 			// moved to the right, change is positive
@@ -835,11 +794,9 @@ public class GLStratomex extends AGLView implements
 						break;
 					}
 					rightIndex += 2;
-					ElementLayout spacing = centerRowLayout.getElements().get(
-							rightIndex);
+					ElementLayout spacing = centerRowLayout.getElements().get(rightIndex);
 					if (spacing.getSizeScaledX() - remainingChange > minWidth + 0.001f) {
-						spacing.setAbsoluteSizeX(spacing.getSizeScaledX()
-								- remainingChange);
+						spacing.setAbsoluteSizeX(spacing.getSizeScaledX() - remainingChange);
 						remainingChange = 0;
 						break;
 					} else {
@@ -851,8 +808,7 @@ public class GLStratomex extends AGLView implements
 						spacing.setAbsoluteSizeX(minWidth);
 					}
 				}
-				leftSpacing.setAbsoluteSizeX(leftSizeX + change
-						- remainingChange);
+				leftSpacing.setAbsoluteSizeX(leftSizeX + change - remainingChange);
 			}
 
 		} else {
@@ -876,13 +832,11 @@ public class GLStratomex extends AGLView implements
 						break;
 					}
 					leftIndex -= 2;
-					ElementLayout spacing = centerRowLayout.getElements().get(
-							leftIndex);
+					ElementLayout spacing = centerRowLayout.getElements().get(leftIndex);
 					if (spacing.getSizeScaledX() + remainingChange > minWidth + 0.001f) {
 						// the whole change fits in the first spacing left of
 						// the source
-						spacing.setAbsoluteSizeX(spacing.getSizeScaledX()
-								+ remainingChange);
+						spacing.setAbsoluteSizeX(spacing.getSizeScaledX() + remainingChange);
 						remainingChange = 0;
 						break;
 					} else {
@@ -895,8 +849,7 @@ public class GLStratomex extends AGLView implements
 						spacing.setAbsoluteSizeX(minWidth);
 					}
 				}
-				rightSpacing.setAbsoluteSizeX(rightSizeX - change
-						+ remainingChange);
+				rightSpacing.setAbsoluteSizeX(rightSizeX - change + remainingChange);
 			}
 
 		}
@@ -916,10 +869,8 @@ public class GLStratomex extends AGLView implements
 			@Override
 			public void rightClicked(Pick pick) {
 
-				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick
-						.getObjectID(), true));
-				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick
-						.getObjectID(), false));
+				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getObjectID(), true));
+				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getObjectID(), false));
 			}
 
 		}, EPickingType.BRICK_CONNECTION_BAND.name());
@@ -928,10 +879,9 @@ public class GLStratomex extends AGLView implements
 			@Override
 			public void clicked(Pick pick) {
 				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingStartPosition(pick
-						.getPickedPoint());
-				dragAndDropController.addDraggable((BrickColumn) generalManager
-						.getViewManager().getGLView(pick.getObjectID()));
+				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
+				dragAndDropController.addDraggable((BrickColumn) generalManager.getViewManager().getGLView(
+						pick.getObjectID()));
 				dragAndDropController.setDraggingMode("DimensionGroupDrag");
 
 			}
@@ -957,19 +907,16 @@ public class GLStratomex extends AGLView implements
 			@Override
 			public void dragged(Pick pick) {
 
-				if (dragAndDropController.isDragging()
-						&& dragAndDropController.getDraggingMode() != null
-						&& dragAndDropController.getDraggingMode().equals(
-								"DimensionGroupDrag")) {
-					dragAndDropController.setDropArea(brickColumnManager
-							.getBrickColumnSpacers().get(pick.getObjectID()));
+				if (dragAndDropController.isDragging() && dragAndDropController.getDraggingMode() != null
+						&& dragAndDropController.getDraggingMode().equals("DimensionGroupDrag")) {
+					dragAndDropController.setDropArea(brickColumnManager.getBrickColumnSpacers()
+							.get(pick.getObjectID()));
 				} else {
 					if (dragAndDropController.isDragging()) {
 
 					}
 				}
-			};
-
+			}
 		}, EPickingType.DIMENSION_GROUP_SPACER.name());
 
 		addTypePickingListener(new APickingListener() {
@@ -977,15 +924,13 @@ public class GLStratomex extends AGLView implements
 			public void clicked(Pick pick) {
 				isHorizontalMoveDraggingActive = true;
 				movedBrickColumn = pick.getObjectID();
-			};
-
+			}
 		}, EPickingType.MOVE_HORIZONTALLY_HANDLE.name());
 	}
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedStratomexView serializedForm = new SerializedStratomexView(
-				this);
+		SerializedStratomexView serializedForm = new SerializedStratomexView(this);
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -1001,20 +946,16 @@ public class GLStratomex extends AGLView implements
 
 		addGroupsToStratomexListener = new AddGroupsToStratomexListener();
 		addGroupsToStratomexListener.setHandler(this);
-		eventPublisher.addListener(AddGroupsToStratomexEvent.class,
-				addGroupsToStratomexListener);
-		eventPublisher.addListener(AddTablePerspectivesEvent.class,
-				addGroupsToStratomexListener);
+		eventPublisher.addListener(AddGroupsToStratomexEvent.class, addGroupsToStratomexListener);
+		eventPublisher.addListener(AddTablePerspectivesEvent.class, addGroupsToStratomexListener);
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class,
-				clearSelectionsListener);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
 		trendHighlightModeListener = new ConnectionsModeListener();
 		trendHighlightModeListener.setHandler(this);
-		eventPublisher.addListener(ConnectionsModeEvent.class,
-				trendHighlightModeListener);
+		eventPublisher.addListener(ConnectionsModeEvent.class, trendHighlightModeListener);
 
 		splitBrickListener = new SplitBrickListener();
 		splitBrickListener.setHandler(this);
@@ -1022,13 +963,11 @@ public class GLStratomex extends AGLView implements
 
 		removeTablePerspectiveListener = new RemoveTablePerspectiveListener();
 		removeTablePerspectiveListener.setHandler(this);
-		eventPublisher.addListener(RemoveTablePerspectiveEvent.class,
-				removeTablePerspectiveListener);
+		eventPublisher.addListener(RemoveTablePerspectiveEvent.class, removeTablePerspectiveListener);
 
 		replaceTablePerspectiveListener = new ReplaceTablePerspectiveListener();
 		replaceTablePerspectiveListener.setHandler(this);
-		eventPublisher.addListener(ReplaceTablePerspectiveEvent.class,
-				replaceTablePerspectiveListener);
+		eventPublisher.addListener(ReplaceTablePerspectiveEvent.class, replaceTablePerspectiveListener);
 
 	}
 
@@ -1120,67 +1059,50 @@ public class GLStratomex extends AGLView implements
 	 * Creates a column for each TablePerspective supplied
 	 * </p>
 	 * <p>
-	 * As StratomeX can only map between data sets that share a mapping between
-	 * records, the imprinting of the IDType and IDCategory for the records is
-	 * done here if there is no data set yet.
+	 * As StratomeX can only map between data sets that share a mapping between records, the imprinting of the IDType
+	 * and IDCategory for the records is done here if there is no data set yet.
 	 * </p>
 	 *
 	 * @param newTablePerspectives
 	 * @param brickConfigurer
-	 *            The brick configurer can be specified externally (e.g.,
-	 *            pathways, kaplan meier). If null, the
+	 *            The brick configurer can be specified externally (e.g., pathways, kaplan meier). If null, the
 	 *            {@link NumericalDataConfigurer} will be used.
 	 */
-	public void addTablePerspectives(
-			List<TablePerspective> newTablePerspectives,
-			IBrickConfigurer brickConfigurer) {
+	public void addTablePerspectives(List<TablePerspective> newTablePerspectives, IBrickConfigurer brickConfigurer) {
 
 		if (newTablePerspectives == null || newTablePerspectives.size() == 0) {
-			Logger.log(new Status(Status.WARNING, this.toString(),
+			Logger.log(new Status(IStatus.WARNING, this.toString(),
 					"newTablePerspectives in addTablePerspectives was null or empty"));
 			return;
 		}
 
 		// if this is the first data container set, we imprint StratomeX
 		if (recordIDCategory == null) {
-			ATableBasedDataDomain dataDomain = newTablePerspectives.get(0)
-					.getDataDomain();
+			ATableBasedDataDomain dataDomain = newTablePerspectives.get(0).getDataDomain();
 			imprintVisBricks(dataDomain);
 		}
 
-		ArrayList<BrickColumn> brickColumns = brickColumnManager
-				.getBrickColumns();
+		ArrayList<BrickColumn> brickColumns = brickColumnManager.getBrickColumns();
 
 		for (TablePerspective tablePerspective : newTablePerspectives) {
 			if (tablePerspective == null) {
-				Logger.log(new Status(Status.ERROR, this.toString(),
-						"Data container was null."));
+				Logger.log(new Status(IStatus.ERROR, this.toString(), "Data container was null."));
 				continue;
 			}
-			if (!tablePerspective.getDataDomain().getTable()
-					.isDataHomogeneous()
-					&& brickConfigurer == null) {
-				Logger.log(new Status(
-						Status.WARNING,
-						this.toString(),
+			if (!tablePerspective.getDataDomain().getTable().isDataHomogeneous() && brickConfigurer == null) {
+				Logger.log(new Status(IStatus.WARNING, this.toString(),
 						"Tried to add inhomogeneous table perspective without brick configurerer. Currently not supported."));
 				continue;
 			}
-			if (!tablePerspective.getDataDomain().getRecordIDCategory()
-					.equals(recordIDCategory)) {
-				Logger.log(new Status(
-						Status.ERROR,
-						this.toString(),
-						"Data container "
-								+ tablePerspective
-								+ "does not match the recordIDCategory of Visbricks - no mapping possible."));
+			if (!tablePerspective.getDataDomain().getRecordIDCategory().equals(recordIDCategory)) {
+				Logger.log(new Status(IStatus.ERROR, this.toString(), "Data container " + tablePerspective
+						+ "does not match the recordIDCategory of Visbricks - no mapping possible."));
 				continue;
 			}
 
 			boolean columnExists = false;
 			for (BrickColumn brickColumn : brickColumns) {
-				if (brickColumn.getTablePerspective().getID() == tablePerspective
-						.getID()) {
+				if (brickColumn.getTablePerspective().getID() == tablePerspective.getID()) {
 					columnExists = true;
 					break;
 				}
@@ -1190,28 +1112,20 @@ public class GLStratomex extends AGLView implements
 				BrickColumn brickColumn = (BrickColumn) GeneralManager
 						.get()
 						.getViewManager()
-						.createGLView(
-								BrickColumn.class,
-								getParentGLCanvas(),
-								parentComposite,
-								new ViewFrustum(
-										CameraProjectionMode.ORTHOGRAPHIC, 0,
-										1, 0, 1, -1, 1));
+						.createGLView(BrickColumn.class, getParentGLCanvas(), parentComposite,
+								new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1, -1, 1));
 
 				/**
-				 * If no brick configurer was specified in the
-				 * {@link AddGroupsToVisBricksEvent}, then the numerical
+				 * If no brick configurer was specified in the {@link AddGroupsToVisBricksEvent}, then the numerical
 				 * configurer is created by default
 				 **/
 				if (brickConfigurer == null) {
 					// FIXME this is a hack to make tablePerspectives that have
 					// only one dimension categorical data
 					if (tablePerspective.getNrDimensions() == 1) {
-						brickConfigurer = new CategoricalDataConfigurer(
-								tablePerspective);
+						brickConfigurer = new CategoricalDataConfigurer(tablePerspective);
 					} else {
-						brickConfigurer = new NumericalDataConfigurer(
-								tablePerspective);
+						brickConfigurer = new NumericalDataConfigurer(tablePerspective);
 					}
 				}
 
@@ -1223,8 +1137,7 @@ public class GLStratomex extends AGLView implements
 				brickColumn.setStratomex(this);
 				brickColumn.initialize();
 
-				brickColumns.add(brickColumnManager.getRightColumnStartIndex(),
-						brickColumn);
+				brickColumns.add(brickColumnManager.getRightColumnStartIndex(), brickColumn);
 				tablePerspectives.add(tablePerspective);
 
 				uninitializedSubViews.add(brickColumn);
@@ -1235,13 +1148,11 @@ public class GLStratomex extends AGLView implements
 				// dataDomains.add(tablePerspective.getDataDomain());
 				// }
 
-				brickColumnManager.setRightColumnStartIndex(brickColumnManager
-						.getRightColumnStartIndex() + 1);
+				brickColumnManager.setRightColumnStartIndex(brickColumnManager.getRightColumnStartIndex() + 1);
 			}
 		}
 
-		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(
-				this);
+		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
@@ -1249,8 +1160,7 @@ public class GLStratomex extends AGLView implements
 	@Override
 	public void removeTablePerspective(int tablePerspectiveID) {
 
-		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives
-				.iterator();
+		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives.iterator();
 
 		while (tablePerspectiveIterator.hasNext()) {
 			TablePerspective container = tablePerspectiveIterator.next();
@@ -1261,8 +1171,7 @@ public class GLStratomex extends AGLView implements
 
 		brickColumnManager.removeBrickColumn(tablePerspectiveID);
 		initLayouts();
-		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(
-				this);
+		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
@@ -1273,17 +1182,14 @@ public class GLStratomex extends AGLView implements
 	}
 
 	/**
-	 * Replaces an old tablePerspective with a new one whil keeping the column
-	 * at the same place.
+	 * Replaces an old tablePerspective with a new one whil keeping the column at the same place.
 	 *
 	 * @param newTablePerspective
 	 * @param oldTablePerspective
 	 */
-	public void replaceTablePerspective(TablePerspective newTablePerspective,
-			TablePerspective oldTablePerspective) {
+	public void replaceTablePerspective(TablePerspective newTablePerspective, TablePerspective oldTablePerspective) {
 
-		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives
-				.iterator();
+		Iterator<TablePerspective> tablePerspectiveIterator = tablePerspectives.iterator();
 		while (tablePerspectiveIterator.hasNext()) {
 			TablePerspective tempPerspective = tablePerspectiveIterator.next();
 			if (tempPerspective.equals(oldTablePerspective)) {
@@ -1297,16 +1203,14 @@ public class GLStratomex extends AGLView implements
 				column.replaceTablePerspective(newTablePerspective);
 			}
 		}
-		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(
-				this);
+		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		eventPublisher.triggerEvent(event);
 
 	}
 
 	/**
-	 * Imprints VisBricks to a particular record ID Category by setting the
-	 * {@link #recordIDCategory}, and initializes the
-	 * {@link #recordSelectionManager}.
+	 * Imprints VisBricks to a particular record ID Category by setting the {@link #recordIDCategory}, and initializes
+	 * the {@link #recordSelectionManager}.
 	 *
 	 * @param dataDomain
 	 */
@@ -1317,8 +1221,7 @@ public class GLStratomex extends AGLView implements
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
-			int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
 		super.reshape(drawable, x, y, width, height);
 
@@ -1332,8 +1235,7 @@ public class GLStratomex extends AGLView implements
 		super.setDisplayListDirty();
 	}
 
-	public void moveColumn(BrickColumnSpacingRenderer spacer,
-			BrickColumn movedColumn, BrickColumn referenceColumn) {
+	public void moveColumn(BrickColumnSpacingRenderer spacer, BrickColumn movedColumn, BrickColumn referenceColumn) {
 		movedColumn.getLayout().reset();
 		clearColumnSpacerHighlight();
 
@@ -1346,8 +1248,7 @@ public class GLStratomex extends AGLView implements
 		for (ElementLayout leftLayout : leftColumnLayout.getElements()) {
 			if (spacer == leftLayout.getRenderer()) {
 
-				brickColumnManager.setCenterColumnStartIndex(brickColumnManager
-						.getCenterColumnStartIndex() + 1);
+				brickColumnManager.setCenterColumnStartIndex(brickColumnManager.getCenterColumnStartIndex() + 1);
 
 				columns.remove(movedColumn);
 				if (referenceColumn == null) {
@@ -1365,16 +1266,13 @@ public class GLStratomex extends AGLView implements
 			for (ElementLayout rightLayout : rightColumnLayout.getElements()) {
 				if (spacer == rightLayout.getRenderer()) {
 
-					brickColumnManager
-							.setRightColumnStartIndex(brickColumnManager
-									.getRightColumnStartIndex() - 1);
+					brickColumnManager.setRightColumnStartIndex(brickColumnManager.getRightColumnStartIndex() - 1);
 
 					columns.remove(movedColumn);
 					if (referenceColumn == null) {
 						columns.add(columns.size(), movedColumn);
 					} else {
-						columns.add(columns.indexOf(referenceColumn) + 1,
-								movedColumn);
+						columns.add(columns.indexOf(referenceColumn) + 1, movedColumn);
 					}
 
 					insertComplete = true;
@@ -1387,26 +1285,18 @@ public class GLStratomex extends AGLView implements
 			for (ElementLayout centerLayout : centerRowLayout.getElements()) {
 				if (spacer == centerLayout.getRenderer()) {
 
-					if (columns.indexOf(movedColumn) < brickColumnManager
-							.getCenterColumnStartIndex())
+					if (columns.indexOf(movedColumn) < brickColumnManager.getCenterColumnStartIndex())
 						brickColumnManager
-								.setCenterColumnStartIndex(brickColumnManager
-										.getCenterColumnStartIndex() - 1);
-					else if (columns.indexOf(movedColumn) >= brickColumnManager
-							.getRightColumnStartIndex())
-						brickColumnManager
-								.setRightColumnStartIndex(brickColumnManager
-										.getRightColumnStartIndex() + 1);
+								.setCenterColumnStartIndex(brickColumnManager.getCenterColumnStartIndex() - 1);
+					else if (columns.indexOf(movedColumn) >= brickColumnManager.getRightColumnStartIndex())
+						brickColumnManager.setRightColumnStartIndex(brickColumnManager.getRightColumnStartIndex() + 1);
 
 					columns.remove(movedColumn);
 					if (referenceColumn == null) {
-						columns.add(
-								brickColumnManager.getCenterColumnStartIndex(),
-								movedColumn);
+						columns.add(brickColumnManager.getCenterColumnStartIndex(), movedColumn);
 					} else {
 
-						columns.add(columns.indexOf(referenceColumn) + 1,
-								movedColumn);
+						columns.add(columns.indexOf(referenceColumn) + 1, movedColumn);
 
 					}
 
@@ -1428,20 +1318,17 @@ public class GLStratomex extends AGLView implements
 		// Clear previous spacer highlights
 		for (ElementLayout element : centerRowLayout.getElements()) {
 			if (element.getRenderer() instanceof BrickColumnSpacingRenderer)
-				((BrickColumnSpacingRenderer) element.getRenderer())
-						.setRenderSpacer(false);
+				((BrickColumnSpacingRenderer) element.getRenderer()).setRenderSpacer(false);
 		}
 
 		for (ElementLayout element : leftColumnLayout.getElements()) {
 			if (element.getRenderer() instanceof BrickColumnSpacingRenderer)
-				((BrickColumnSpacingRenderer) element.getRenderer())
-						.setRenderSpacer(false);
+				((BrickColumnSpacingRenderer) element.getRenderer()).setRenderSpacer(false);
 		}
 
 		for (ElementLayout element : rightColumnLayout.getElements()) {
 			if (element.getRenderer() instanceof BrickColumnSpacingRenderer)
-				((BrickColumnSpacingRenderer) element.getRenderer())
-						.setRenderSpacer(false);
+				((BrickColumnSpacingRenderer) element.getRenderer()).setRenderSpacer(false);
 		}
 	}
 
@@ -1460,8 +1347,7 @@ public class GLStratomex extends AGLView implements
 		if (centerRowLayout != null) {
 			for (ElementLayout elementLayout : centerRowLayout.getElements()) {
 				if (elementLayout.getRenderer() instanceof BrickColumnSpacingRenderer) {
-					((BrickColumnSpacingRenderer) elementLayout.getRenderer())
-							.init();
+					((BrickColumnSpacingRenderer) elementLayout.getRenderer()).init();
 				}
 			}
 		}
@@ -1481,13 +1367,12 @@ public class GLStratomex extends AGLView implements
 	}
 
 	/**
-	 * Set whether the last resize of any sub-brick was to the left(true) or to
-	 * the right. Important for determining, which brick to kick next.
+	 * Set whether the last resize of any sub-brick was to the left(true) or to the right. Important for determining,
+	 * which brick to kick next.
 	 *
 	 * @param lastResizeDirectionWasToLeft
 	 */
-	public void setLastResizeDirectionWasToLeft(
-			boolean lastResizeDirectionWasToLeft) {
+	public void setLastResizeDirectionWasToLeft(boolean lastResizeDirectionWasToLeft) {
 		this.lastResizeDirectionWasToLeft = lastResizeDirectionWasToLeft;
 	}
 
@@ -1507,8 +1392,7 @@ public class GLStratomex extends AGLView implements
 		return (GLStratomexKeyListener) glKeyListener;
 	}
 
-	public void handleTrendHighlightMode(boolean connectionsOn,
-			boolean connectionsHighlightDynamic, float focusFactor) {
+	public void handleTrendHighlightMode(boolean connectionsOn, boolean connectionsHighlightDynamic, float focusFactor) {
 
 		this.connectionsOn = connectionsOn;
 		this.connectionsHighlightDynamic = connectionsHighlightDynamic;
@@ -1534,33 +1418,28 @@ public class GLStratomex extends AGLView implements
 	}
 
 	/**
-	 * @return the hashConnectionBandIDToRecordVA, see
-	 *         {@link #hashConnectionBandIDToRecordVA}
+	 * @return the hashConnectionBandIDToRecordVA, see {@link #hashConnectionBandIDToRecordVA}
 	 */
 	public HashMap<Integer, BrickConnection> getHashConnectionBandIDToRecordVA() {
 		return hashConnectionBandIDToRecordVA;
 	}
 
 	/**
-	 * @return the hashTablePerspectivesToConnectionBandID, see
-	 *         {@link #hashRowPerspectivesToConnectionBandID}
+	 * @return the hashTablePerspectivesToConnectionBandID, see {@link #hashRowPerspectivesToConnectionBandID}
 	 */
 	public HashMap<RecordPerspective, HashMap<RecordPerspective, BrickConnection>> getHashTablePerspectivesToConnectionBandID() {
 		return hashRowPerspectivesToConnectionBandID;
 	}
 
-	public void selectElementsByConnectionBandID(
-			RecordPerspective recordPerspective1,
+	public void selectElementsByConnectionBandID(RecordPerspective recordPerspective1,
 			RecordPerspective recordPerspective2) {
 
 		BrickConnection connectionBand = null;
-		HashMap<RecordPerspective, BrickConnection> tmp = hashRowPerspectivesToConnectionBandID
-				.get(recordPerspective1);
+		HashMap<RecordPerspective, BrickConnection> tmp = hashRowPerspectivesToConnectionBandID.get(recordPerspective1);
 		if (tmp != null) {
 			connectionBand = tmp.get(recordPerspective2);
 		} else {
-			connectionBand = hashRowPerspectivesToConnectionBandID.get(
-					recordPerspective2).get(recordPerspective1);
+			connectionBand = hashRowPerspectivesToConnectionBandID.get(recordPerspective2).get(recordPerspective1);
 		}
 
 		if (connectionBand != null)
@@ -1569,29 +1448,21 @@ public class GLStratomex extends AGLView implements
 
 	public void selectElementsByConnectionBandID(int connectionBandID) {
 
-		recordSelectionManager.clearSelection(recordSelectionManager
-				.getSelectionType());
+		recordSelectionManager.clearSelection(recordSelectionManager.getSelectionType());
 
 		// Create volatile selection type
-		volatileBandSelectionType = new SelectionType(
-				"Volatile band selection type", recordSelectionManager
-						.getSelectionType().getColor(), 1, true, true, 1);
+		volatileBandSelectionType = new SelectionType("Volatile band selection type", recordSelectionManager
+				.getSelectionType().getColor(), 1, true, true, 1);
 
 		volatileBandSelectionType.setManaged(false);
 
-		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
-				volatileBandSelectionType);
-		GeneralManager.get().getEventPublisher()
-				.triggerEvent(selectionTypeEvent);
+		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(volatileBandSelectionType);
+		GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
 
-		BrickConnection connectionBand = hashConnectionBandIDToRecordVA
-				.get(connectionBandID);
-		RecordVirtualArray recordVA = connectionBand
-				.getSharedRecordVirtualArray();
+		BrickConnection connectionBand = hashConnectionBandIDToRecordVA.get(connectionBandID);
+		RecordVirtualArray recordVA = connectionBand.getSharedRecordVirtualArray();
 		for (Integer recordID : recordVA) {
-			recordSelectionManager.addToType(
-					recordSelectionManager.getSelectionType(),
-					recordVA.getIdType(), recordID);
+			recordSelectionManager.addToType(recordSelectionManager.getSelectionType(), recordVA.getIdType(), recordID);
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -1602,22 +1473,19 @@ public class GLStratomex extends AGLView implements
 		// however, if we don't send it, we don't see the selection in the
 		// selection info view. to fix this, we need to redesign the selection
 		// info view.
-		event.setDataDomainID(connectionBand.getLeftBrick().getDataDomain()
-				.getDataDomainID());
+		event.setDataDomainID(connectionBand.getLeftBrick().getDataDomain().getDataDomainID());
 		eventPublisher.triggerEvent(event);
 
 		updateConnectionLinesBetweenColumns();
 	}
 
 	/**
-	 * Splits a brick into two portions: those values that are in the band
-	 * identified through the connection band id and the others.
+	 * Splits a brick into two portions: those values that are in the band identified through the connection band id and
+	 * the others.
 	 */
 	public void splitBrick(Integer connectionBandID, boolean isSplitLeftBrick) {
-		BrickConnection brickConnection = hashConnectionBandIDToRecordVA
-				.get(connectionBandID);
-		RecordVirtualArray sharedRecordVA = brickConnection
-				.getSharedRecordVirtualArray();
+		BrickConnection brickConnection = hashConnectionBandIDToRecordVA.get(connectionBandID);
+		RecordVirtualArray sharedRecordVA = brickConnection.getSharedRecordVirtualArray();
 
 		RecordPerspective sourcePerspective;
 		RecordVirtualArray sourceVA;
@@ -1629,11 +1497,9 @@ public class GLStratomex extends AGLView implements
 			sourceBrick = brickConnection.getRightBrick();
 		}
 
-		sourcePerspective = sourceBrick.getBrickColumn().getTablePerspective()
-				.getRecordPerspective();
+		sourcePerspective = sourceBrick.getBrickColumn().getTablePerspective().getRecordPerspective();
 		sourceVA = sourcePerspective.getVirtualArray();
-		sourceGroupIndex = sourceBrick.getTablePerspective().getRecordGroup()
-				.getGroupIndex();
+		sourceGroupIndex = sourceBrick.getTablePerspective().getRecordGroup().getGroupIndex();
 
 		boolean idNeedsConverting = false;
 		if (!sourceVA.getIdType().equals(sharedRecordVA.getIdType())) {
@@ -1650,15 +1516,13 @@ public class GLStratomex extends AGLView implements
 			remainingGroupIDs.add(id);
 		}
 
-		IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
-				.getIDMappingManager(sourceVA.getIdType().getIDCategory());
+		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+				sourceVA.getIdType().getIDCategory());
 
 		if (idNeedsConverting) {
-			RecordVirtualArray mappedSharedRecordVA = new RecordVirtualArray(
-					sourceVA.getIdType());
+			RecordVirtualArray mappedSharedRecordVA = new RecordVirtualArray(sourceVA.getIdType());
 			for (Integer recordID : sharedRecordVA) {
-				recordID = idMappingManager.getID(sharedRecordVA.getIdType(),
-						sourceVA.getIdType(), recordID);
+				recordID = idMappingManager.getID(sharedRecordVA.getIdType(), sourceVA.getIdType(), recordID);
 				if (recordID == null || recordID == -1)
 					continue;
 				mappedSharedRecordVA.append(recordID);
@@ -1670,8 +1534,7 @@ public class GLStratomex extends AGLView implements
 		// split
 		for (Integer recordID : sharedRecordVA) {
 
-			Iterator<Integer> remainingGroupIDIterator = remainingGroupIDs
-					.iterator();
+			Iterator<Integer> remainingGroupIDIterator = remainingGroupIDs.iterator();
 			while (remainingGroupIDIterator.hasNext()) {
 				Integer id = remainingGroupIDIterator.next();
 				if (id.equals(recordID)) {
@@ -1683,42 +1546,31 @@ public class GLStratomex extends AGLView implements
 		sourceVA.getGroupList().updateGroupInfo();
 
 		List<Integer> newIDs = new ArrayList<Integer>(sourceVA.size());
-		List<Integer> groupSizes = new ArrayList<Integer>(sourceVA
-				.getGroupList().size() + 1);
-		List<String> groupNames = new ArrayList<String>(sourceVA.getGroupList()
-				.size() + 1);
-		List<Integer> sampleElements = new ArrayList<Integer>(sourceVA
-				.getGroupList().size() + 1);
+		List<Integer> groupSizes = new ArrayList<Integer>(sourceVA.getGroupList().size() + 1);
+		List<String> groupNames = new ArrayList<String>(sourceVA.getGroupList().size() + 1);
+		List<Integer> sampleElements = new ArrayList<Integer>(sourceVA.getGroupList().size() + 1);
 
 		// build up the data for the perspective
 		int sizeCounter = 0;
-		for (Integer groupIndex = 0; groupIndex < sourceVA.getGroupList()
-				.size(); groupIndex++) {
+		for (Integer groupIndex = 0; groupIndex < sourceVA.getGroupList().size(); groupIndex++) {
 			if (groupIndex == sourceGroupIndex) {
 				newIDs.addAll(sharedRecordVA.getIDs());
 				groupSizes.add(sharedRecordVA.size());
 				sampleElements.add(sizeCounter);
 				sizeCounter += sharedRecordVA.size();
-				groupNames.add(sourceVA.getGroupList().get(groupIndex)
-						.getLabel()
-						+ " Split 1");
+				groupNames.add(sourceVA.getGroupList().get(groupIndex).getLabel() + " Split 1");
 
 				newIDs.addAll(remainingGroupIDs);
 				groupSizes.add(remainingGroupIDs.size());
 				sampleElements.add(sizeCounter);
 				sizeCounter += remainingGroupIDs.size();
-				groupNames.add(sourceVA.getGroupList().get(groupIndex)
-						.getLabel()
-						+ " Split 2");
+				groupNames.add(sourceVA.getGroupList().get(groupIndex).getLabel() + " Split 2");
 			} else {
 				newIDs.addAll(sourceVA.getIDsOfGroup(groupIndex));
-				groupSizes.add(sourceVA.getGroupList().get(groupIndex)
-						.getSize());
+				groupSizes.add(sourceVA.getGroupList().get(groupIndex).getSize());
 				sampleElements.add(sizeCounter);
-				sizeCounter += sourceVA.getGroupList().get(groupIndex)
-						.getSize();
-				groupNames.add(sourceVA.getGroupList().get(groupIndex)
-						.getLabel());
+				sizeCounter += sourceVA.getGroupList().get(groupIndex).getSize();
+				groupNames.add(sourceVA.getGroupList().get(groupIndex).getLabel());
 			}
 
 		}
@@ -1758,8 +1610,7 @@ public class GLStratomex extends AGLView implements
 		}
 		for (TablePerspective tablePerspective : tablePerspectives) {
 			if (tablePerspective instanceof PathwayTablePerspective) {
-				dataDomains.add(((PathwayTablePerspective) tablePerspective)
-						.getPathwayDataDomain());
+				dataDomains.add(((PathwayTablePerspective) tablePerspective).getPathwayDataDomain());
 			} else {
 				dataDomains.add(tablePerspective.getDataDomain());
 			}

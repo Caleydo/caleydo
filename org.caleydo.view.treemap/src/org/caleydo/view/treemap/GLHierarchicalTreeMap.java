@@ -373,8 +373,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 			setDisplayListDirty();
 
 		}
-
-	};
+	}
 
 	public void zoomOut() {
 		zoomOut(thumbnailTreemapViews.size() - 1);

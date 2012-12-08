@@ -22,6 +22,7 @@ package org.caleydo.core.data.collection.container;
 import java.util.ArrayList;
 
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -106,7 +107,7 @@ public class NumericalContainer<T extends Number>
 		if (min > max)
 			throw new IllegalArgumentException("Minimum was bigger as maximum");
 		if(min == max)
-			Logger.log(new Status(Status.WARNING, this.toString(), "Min was the same as max. This is not very interesting to visualize."));
+			Logger.log(new Status(IStatus.WARNING, this.toString(), "Min was the same as max. This is not very interesting to visualize."));
 
 		float[] fArTmpTarget = new float[alContainer.size()];
 

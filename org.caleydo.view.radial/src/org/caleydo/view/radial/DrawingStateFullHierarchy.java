@@ -22,6 +22,7 @@ package org.caleydo.view.radial;
 import java.util.HashMap;
 import java.util.Set;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
@@ -257,7 +258,7 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 		}
 
 		if (parentIndicatorType != SelectionType.NORMAL) {
-			gl.glPushClientAttrib(GL2.GL_COLOR_BUFFER_BIT);
+			gl.glPushClientAttrib(GL.GL_COLOR_BUFFER_BIT);
 			if (parentIndicatorType == SelectionType.SELECTION)
 				gl.glColor3fv(SelectionType.SELECTION.getColor(), 0);
 			else

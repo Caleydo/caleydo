@@ -18,6 +18,7 @@ package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.Histogram;
@@ -139,7 +140,7 @@ public abstract class ACategoricalRowContentRenderer
 
 			gl.glColor3f(0, 0, 0);
 			gl.glLineWidth(0.5f);
-			gl.glBegin(GL2.GL_LINE_STRIP);
+			gl.glBegin(GL.GL_LINE_STRIP);
 			gl.glVertex3f(0, lowerEdge, z);
 			gl.glVertex3d(barHeight, lowerEdge, z);
 			gl.glVertex3d(barHeight, lowerEdge + barWidth, z);

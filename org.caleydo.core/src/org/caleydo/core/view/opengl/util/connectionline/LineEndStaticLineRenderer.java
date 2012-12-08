@@ -26,6 +26,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -84,7 +85,7 @@ public class LineEndStaticLineRenderer extends ALineEndRenderer {
 
 		gl.glLineWidth(lineWidth);
 		gl.glColor4fv(lineColor, 0);
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		if (isHorizontalLine) {
 			gl.glVertex3f(lineEnd.x() - halfLineLength, lineEnd.y(), lineEnd.z());
 			gl.glVertex3f(lineEnd.x() + halfLineLength, lineEnd.y(), lineEnd.z());

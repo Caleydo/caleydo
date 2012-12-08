@@ -22,6 +22,7 @@ package org.caleydo.core.data.collection.container;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -115,7 +116,7 @@ public class FloatContainer implements INumericalContainer {
 		if (min > max)
 			throw new IllegalArgumentException("Minimum was bigger as maximum");
 		if(min == max)
-			Logger.log(new Status(Status.WARNING, this.toString(), "Min was the same as max. This is not very interesting to visualize."));
+			Logger.log(new Status(IStatus.WARNING, this.toString(), "Min was the same as max. This is not very interesting to visualize."));
 
 		return new FloatContainer(ConversionTools.normalize(container, (float) min,
 				(float) max));
@@ -172,7 +173,7 @@ public class FloatContainer implements INumericalContainer {
 			}
 
 			if (Float.isInfinite(current)) {
-				Logger.log(new Status(Status.WARNING, this.toString(),
+				Logger.log(new Status(IStatus.WARNING, this.toString(),
 						"Value for normalization was infinity at index " + counter + ": "
 								+ current));
 				continue;

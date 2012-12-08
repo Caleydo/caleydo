@@ -150,7 +150,7 @@ public class CollisionAvoidanceRoutingStrategy implements IEdgeRoutingStrategy {
 					//
 					// gl.glLineWidth(1);
 					// gl.glColor3f(0, 0, 1);
-					// gl.glBegin(GL2.GL_LINE_LOOP);
+					// gl.glBegin(GL.GL_LINE_LOOP);
 					// gl.glVertex2d(box.getMinX(), box.getMinY());
 					// gl.glVertex2d(box.getMaxX(), box.getMinY());
 					// gl.glVertex2d(box.getMaxX(), box.getMaxY());

@@ -24,6 +24,7 @@ package org.caleydo.view.filterpipeline.representation;
 
 import gleem.linalg.Vec3f;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
@@ -112,7 +113,7 @@ public class FilterMenu extends AGLGUIElement implements IRenderable {
 		}
 
 		if (mouseOverItem >= 0) {
-			gl.glBegin(GL2.GL_LINE_LOOP);
+			gl.glBegin(GL.GL_LINE_LOOP);
 			{
 				gl.glColor3f(0.5f, 0.2f, 0.9f);
 				gl.glLineWidth(2);

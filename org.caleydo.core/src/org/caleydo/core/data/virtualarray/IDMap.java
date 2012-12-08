@@ -47,7 +47,7 @@ class IDMap {
 		if (!isHashIDToIndexDirty)
 			return;
 
-		// Logger.log(new Status(Status.INFO, "core", "Rebuilding index map for VA:" + virtualArray));
+		// Logger.log(new Status(IStatus.INFO, "core", "Rebuilding index map for VA:" + virtualArray));
 
 		hashIDToIndex.clear();
 

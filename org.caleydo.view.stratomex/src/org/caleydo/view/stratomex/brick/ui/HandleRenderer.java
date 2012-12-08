@@ -123,7 +123,7 @@ public class HandleRenderer extends LayoutRenderer {
 		// if ((handles & RESIZE_HANDLE_LOWER_LEFT) > 0) {
 		// gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 		// EPickingType.RESIZE_HANDLE_LOWER_LEFT.name(), 1));
-		// gl.glBegin(GL2.GL_LINES);
+		// gl.glBegin(GL.GL_LINES);
 		// gl.glVertex3f(0, 0, BUTTON_Z);
 		// gl.glVertex3f(glHandleWidth, 0, BUTTON_Z);
 		// gl.glVertex3f(0, 0, BUTTON_Z);
@@ -135,7 +135,7 @@ public class HandleRenderer extends LayoutRenderer {
 		// if ((handles & RESIZE_HANDLE_LOWER_RIGHT) > 0) {
 		// gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 		// EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1));
-		// gl.glBegin(GL2.GL_LINES);
+		// gl.glBegin(GL.GL_LINES);
 		// gl.glVertex3f(x, 0, BUTTON_Z);
 		// gl.glVertex3f(x - glHandleWidth, 0, BUTTON_Z);
 		// gl.glVertex3f(x, 0, 0);
@@ -147,7 +147,7 @@ public class HandleRenderer extends LayoutRenderer {
 		// if ((handles & RESIZE_HANDLE_UPPER_RIGHT) > 0) {
 		// gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 		// EPickingType.RESIZE_HANDLE_UPPER_RIGHT.name(), 1));
-		// gl.glBegin(GL2.GL_LINES);
+		// gl.glBegin(GL.GL_LINES);
 		// gl.glVertex3f(x, y, BUTTON_Z);
 		// gl.glVertex3f(x - glHandleWidth, y, BUTTON_Z);
 		// gl.glVertex3f(x, y, BUTTON_Z);
@@ -159,7 +159,7 @@ public class HandleRenderer extends LayoutRenderer {
 		// if ((handles & RESIZE_HANDLE_UPPER_LEFT) > 0) {
 		// gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 		// EPickingType.RESIZE_HANDLE_UPPER_LEFT.name(), 1));
-		// gl.glBegin(GL2.GL_LINES);
+		// gl.glBegin(GL.GL_LINES);
 		// gl.glVertex3f(0, y, BUTTON_Z);
 		// gl.glVertex3f(glHandleWidth, y, BUTTON_Z);
 		// gl.glVertex3f(0, y, 0);

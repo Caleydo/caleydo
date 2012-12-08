@@ -24,6 +24,7 @@ import gleem.linalg.Vec2f;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -70,7 +71,7 @@ public class RadialMenu {
 
 		gl.glTranslatef(position.x(), position.y(), 0.95f);
 
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		{
 			for (int i = 0; i < entries.size(); ++i) {
 				if (i == activeEntry)
@@ -85,7 +86,7 @@ public class RadialMenu {
 		}
 		gl.glEnd();
 
-		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		for (int i = 0; i < entries.size(); ++i) {
 			gl.glPushMatrix();
@@ -97,7 +98,7 @@ public class RadialMenu {
 				entryBackground.bind(gl);
 				TextureCoords texCoords = entryBackground.getImageTexCoords();
 
-				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 				gl.glBegin(GL2.GL_QUADS);
 				{
@@ -131,7 +132,7 @@ public class RadialMenu {
 				texture.bind(gl);
 				texCoords = texture.getImageTexCoords();
 
-				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			}
 
 			gl.glBegin(GL2.GL_QUADS);

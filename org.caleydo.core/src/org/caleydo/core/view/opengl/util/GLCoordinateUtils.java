@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,11 +21,12 @@ package org.caleydo.core.view.opengl.util;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 
 /**
  * Helper class for converting coordinates
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -34,7 +35,7 @@ public class GLCoordinateUtils {
 	/**
 	 * Converts window coordinates to world coordinates. You need to specify the x and y values of the
 	 * position, plus the z value, scaled to 0 and 1 where 0 is the near and 1 is the far clipping plane
-	 * 
+	 *
 	 * @param gl
 	 * @param iWindowCoordinatePositionX
 	 *            the x position of the point you want to convert
@@ -57,11 +58,11 @@ public class GLCoordinateUtils {
 		int realy = 0;// GL2 y coord pos
 		double[] wcoord = new double[4];// wx, wy, wz;// returned xyz coords
 		int viewport[] = new int[4];
-		gl.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
+		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
 		//
 		// gl.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
-		gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, mvmatrix, 0);
-		gl.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projmatrix, 0);
+		gl.glGetDoublev(GLMatrixFunc.GL_MODELVIEW_MATRIX, mvmatrix, 0);
+		gl.glGetDoublev(GLMatrixFunc.GL_PROJECTION_MATRIX, projmatrix, 0);
 
 		/* note viewport[3] is height of window in pixels */
 		realy = viewport[3] - iWindowCoordinatePositionY - 1;
@@ -90,7 +91,7 @@ public class GLCoordinateUtils {
 	/**
 	 * Convenience version of {@link #convertWindowCoordinatesToWorldCoordinates(GL, int, int, float)} which
 	 * assumes z to be 0.3, which is accurate for the bottom of the bucket
-	 * 
+	 *
 	 * @param gl
 	 * @param iWindowCoordinatePositionX
 	 * @param iWindowCoordinatePositionY

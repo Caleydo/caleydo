@@ -407,7 +407,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 			if (new_column instanceof AGroupScore) {
 				// FIXME highlight connection between groups
-				AGroupScore a = (AGroupScore) new_column;
+				// AGroupScore a = (AGroupScore) new_column;
 				// a.getStratification();
 				// triggerEvent(new SelectElementsEvent(this, new_.get
 				// // new_..getReferenceTablePerspective().getRecordPerspective()));

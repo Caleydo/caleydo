@@ -21,6 +21,7 @@ package org.caleydo.view.grouper.drawingstrategies.group;
 
 import gleem.linalg.Vec3f;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.view.grouper.GrouperRenderStyle;
@@ -86,7 +87,7 @@ public class GroupDrawingStrategyDragged extends AGroupDrawingStrategyRectangula
 
 		Vec3f vecPosition = new Vec3f(fMouseCoordinateX + fRealRelDraggingPosX,
 				fMouseCoordinateY + fRealRelDraggingPosY, 0.2f);
-		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		gl.glColor4fv(fColor, 0);
 

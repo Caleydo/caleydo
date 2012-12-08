@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -44,12 +44,10 @@ import org.eclipse.swt.widgets.Label;
 
 /**
  * Data meta view showing details about a data table.
- * 
+ *
  * @author Marc Streit
  */
-public class RcpDatasetInfoView
-	extends CaleydoRCPViewPart
-	implements IDataDomainBasedView<IDataDomain> {
+public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomainBasedView<IDataDomain> {
 
 	public static String VIEW_TYPE = "org.caleydo.view.info.dataset";
 
@@ -82,8 +80,7 @@ public class RcpDatasetInfoView
 
 		try {
 			viewContext = JAXBContext.newInstance(SerializedDatasetInfoView.class);
-		}
-		catch (JAXBException ex) {
+		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
 	}
@@ -105,7 +102,7 @@ public class RcpDatasetInfoView
 		nameLabel.setLayoutData(gridData);
 
 		if (dataDomain == null) {
-			setDataDomain((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+			setDataDomain(DataDomainManager.get().getDataDomainByID(
 					((ASerializedSingleTablePerspectiveBasedView) serializedView).getDataDomainID()));
 		}
 
@@ -189,8 +186,7 @@ public class RcpDatasetInfoView
 			((GLHistogram) histogramView.getGLView()).setDataDomain(tableBasedDD);
 			((GLHistogram) histogramView.getGLView()).setDisplayListDirty();
 			// }
-		}
-		else {
+		} else {
 			histogramExpandBar.setVisible(false);
 			recordLabel.setVisible(false);
 			dimensionLabel.setVisible(false);

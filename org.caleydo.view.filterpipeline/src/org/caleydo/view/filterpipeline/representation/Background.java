@@ -25,6 +25,7 @@ package org.caleydo.view.filterpipeline.representation;
 import java.util.List;
 import java.util.Set;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.picking.PickingManager;
@@ -104,7 +105,7 @@ public class Background implements IRenderable, IDropArea {
 			return;
 
 		gl.glLineWidth(renderStyle.DRAG_LINE_WIDTH);
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		{
 			gl.glColor4fv(renderStyle.DRAG_LINE_COLOR, 0);
 			gl.glVertex3f(dropPositions[nearestDropPositionId],

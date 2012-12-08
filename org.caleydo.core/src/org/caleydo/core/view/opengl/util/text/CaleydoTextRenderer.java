@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,6 +23,7 @@ import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.nio.IntBuffer;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -32,7 +33,7 @@ import com.jogamp.opengl.util.awt.TextRenderer;
 /**
  * Wrapper for TextRenderer that provides methods to draw text with a specified
  * minimum size (no matter what's the current size of the view).
- * 
+ *
  * @author Christian Partl
  * @author Alexander Lex
  */
@@ -46,7 +47,7 @@ public class CaleydoTextRenderer
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param font
 	 * @param antialiased
 	 * @param useFractionalMetrics
@@ -65,7 +66,7 @@ public class CaleydoTextRenderer
 	/**
 	 * Convenience method to render text with a specified minimum size without
 	 * having to call begin3DRendering and end3DRendering.
-	 * 
+	 *
 	 * @param gl GL2 context.
 	 * @param text Text to render
 	 * @param x X coordinate of the text.
@@ -91,7 +92,7 @@ public class CaleydoTextRenderer
 	 * render several instances at a time. If you have only one string, use
 	 * {@link #renderText(GL2, String, float, float, float, float, int)}
 	 * instead.
-	 * 
+	 *
 	 * @param gl GL2 context.
 	 * @param text Text to render
 	 * @param x X coordinate of the text.
@@ -112,7 +113,7 @@ public class CaleydoTextRenderer
 	/**
 	 * Gets scaled bounds of the specified text according to the specified
 	 * parameters.
-	 * 
+	 *
 	 * @param gl GL2 context.
 	 * @param text Text to calculate the bounds for.
 	 * @param scaling Scaling of the text.
@@ -134,7 +135,7 @@ public class CaleydoTextRenderer
 	/**
 	 * Calculates the scaling factor taking the minimum text size into
 	 * consideration.
-	 * 
+	 *
 	 * @param gl GL2 context.
 	 * @param scaling Normal scaling of the text.
 	 * @param minSize Minimum text size.
@@ -142,7 +143,7 @@ public class CaleydoTextRenderer
 	 */
 	private float calculateScaling(GL2 gl, float scaling, int minSize) {
 		IntBuffer buffer = IntBuffer.allocate(4);
-		gl.glGetIntegerv(GL2.GL_VIEWPORT, buffer);
+		gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
 		int currentWidth = buffer.get(2);
 
 		float referenceWidth = minSize / (float) referenceBounds.getHeight() * 500.0f;
@@ -161,7 +162,7 @@ public class CaleydoTextRenderer
 	 * Render the text at the position specified (lower left corner) within the
 	 * bounding box The height is scaled to fit, the string is truncated to fit
 	 * the width
-	 * 
+	 *
 	 * @param gl
 	 * @param text
 	 * @param xPosition x of lower left corner
@@ -181,10 +182,10 @@ public class CaleydoTextRenderer
 		double requiredWidth = boundsForWidth.getWidth() * scaling;
 		if (requiredWidth > width) {
 			double truncateFactor = width / requiredWidth;
-			
+
 			if (truncateFactor < 0)
 				truncateFactor = 0;
-			
+
 			int length = (int) (text.length() * truncateFactor);
 			if (length >= 0)
 				text = text.substring(0, length);
@@ -205,7 +206,7 @@ public class CaleydoTextRenderer
 	 * Render the text at the position specified (lower left corner) with the
 	 * specified rotation within the bounding box. The height is scaled to fit,
 	 * the string is truncated to fit the width.
-	 * 
+	 *
 	 * @param gl
 	 * @param text
 	 * @param xPosition x of lower left corner
@@ -249,7 +250,7 @@ public class CaleydoTextRenderer
 
 	/**
 	 * Calculates the required width of a text with a specified height.
-	 * 
+	 *
 	 * @param text
 	 * @param height
 	 * @return Required width of the text
@@ -273,7 +274,7 @@ public class CaleydoTextRenderer
 	/**
 	 * Same as {@link #getRequiredTextWidth(String, float)}, but returns the
 	 * specified maximum width if the required text width exceeds this maximum.
-	 * 
+	 *
 	 * @param text
 	 * @param height
 	 * @param maxWidth
@@ -287,7 +288,7 @@ public class CaleydoTextRenderer
 
 	/**
 	 * Set the color of the text
-	 * 
+	 *
 	 * @param color
 	 */
 	public void setColor(float[] color) {

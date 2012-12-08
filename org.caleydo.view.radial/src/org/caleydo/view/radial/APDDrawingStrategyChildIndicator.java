@@ -21,6 +21,7 @@ package org.caleydo.view.radial;
 
 import gleem.linalg.Vec2f;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
@@ -146,7 +147,7 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 			Vec2f vecTriangleTop, float fRotationAngle) {
 
 		gl.glPushMatrix();
-		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		gl.glTranslatef(vecTriangleTop.x(), vecTriangleTop.y(), -0.1f);
 		gl.glRotatef(fRotationAngle, 0, 0, 1);
@@ -158,7 +159,7 @@ public abstract class APDDrawingStrategyChildIndicator extends APDDrawingStrateg
 		gl.glVertex3f(-fHalfWidth, -fHeight, 0);
 		gl.glEnd();
 
-		gl.glBegin(GL2.GL_LINE_LOOP);
+		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(fHalfWidth, -fHeight, 0);
 		gl.glVertex3f(-fHalfWidth, -fHeight, 0);

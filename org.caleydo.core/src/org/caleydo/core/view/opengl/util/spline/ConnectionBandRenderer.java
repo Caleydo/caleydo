@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -25,7 +25,9 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.fixedfunc.GLLightingFunc;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUtessellator;
 
@@ -35,7 +37,7 @@ import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 
 /**
  * FIXME documentation
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  * @author Christian Partl
@@ -65,7 +67,7 @@ public class ConnectionBandRenderer {
 		GLU.gluTessCallback(tobj, GLU.GLU_TESS_ERROR, tessCallback);// errorCallback);
 		GLU.gluTessCallback(tobj, GLU.GLU_TESS_COMBINE, tessCallback);// combineCallback);
 
-		gl.glShadeModel(GL2.GL_SMOOTH);
+		gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
 	}
 
 	public void renderTestBand(GL2 gl) {
@@ -90,7 +92,7 @@ public class ConnectionBandRenderer {
 		GLU.gluTessCallback(tobj, GLU.GLU_TESS_COMBINE, tessCallback);// combineCallback);
 
 		/* smooth shaded, self-intersecting star */
-		gl.glShadeModel(GL2.GL_SMOOTH);
+		gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
 		GLU.gluTessProperty(tobj, //
 				GLU.GLU_TESS_WINDING_RULE, //
 				GLU.GLU_TESS_WINDING_POSITIVE);
@@ -108,7 +110,7 @@ public class ConnectionBandRenderer {
 
 	/**
 	 * Renders a curve by interpolating the specified line points.
-	 * 
+	 *
 	 * @param gl
 	 * @param linePoints
 	 *            Points that shall be interpolated with a curve. Note that the
@@ -119,7 +121,7 @@ public class ConnectionBandRenderer {
 	public void renderInterpolatedCurve(GL2 gl, List<Point2D> linePoints) {
 
 		List<Vec3f> curvePoints = calcInterpolatedCurve(gl, linePoints);
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		for (Vec3f point : curvePoints) {
 			gl.glVertex3f(point.x(), point.y(), point.z());
 		}
@@ -128,7 +130,7 @@ public class ConnectionBandRenderer {
 
 	/**
 	 * Calculates a curve by interpolating the specified line points.
-	 * 
+	 *
 	 * @param gl
 	 * @param linePoints
 	 *            Points that shall be interpolated with a curve. Note that the
@@ -150,7 +152,7 @@ public class ConnectionBandRenderer {
 
 	/**
 	 * Renders a curved band by interpolating the specified points.
-	 * 
+	 *
 	 * @param gl
 	 * @param linePoints
 	 *            Points that shall be interpolated with a curved band. Note
@@ -172,7 +174,7 @@ public class ConnectionBandRenderer {
 
 	/**
 	 * Calculates a curved band by interpolating the specified points.
-	 * 
+	 *
 	 * @param gl
 	 * @param linePoints
 	 *            Points that shall be interpolated with a curved band. Note
@@ -202,7 +204,7 @@ public class ConnectionBandRenderer {
 
 	/**
 	 * Renders a band around the specified line points.
-	 * 
+	 *
 	 * @param gl
 	 * @param linePoints
 	 *            Points directing the band at its center.
@@ -218,7 +220,7 @@ public class ConnectionBandRenderer {
 
 	/**
 	 * Calculates a band around the specified line points.
-	 * 
+	 *
 	 * @param gl
 	 * @param linePoints
 	 *            Points directing the band at its center.
@@ -306,7 +308,7 @@ public class ConnectionBandRenderer {
 
 		}
 
-		// gl.glBegin(GL2.GL_LINE_STRIP);
+		// gl.glBegin(GL.GL_LINE_STRIP);
 		// for (int i = 0; i < bandPoints1.size(); i++) {
 		// gl.glVertex3f(bandPoints1.get(i).x(), bandPoints1.get(i).y(),
 		// bandPoints1.get(i).z());
@@ -314,7 +316,7 @@ public class ConnectionBandRenderer {
 		// }
 		// gl.glEnd();
 		//
-		// gl.glBegin(GL2.GL_LINES);
+		// gl.glBegin(GL.GL_LINES);
 		// for (int i = 0; i < bandPoints1.size(); i++) {
 		// gl.glVertex3f(bandPoints1.get(i).x(), bandPoints1.get(i).y(),
 		// bandPoints1.get(i).z());
@@ -323,7 +325,7 @@ public class ConnectionBandRenderer {
 		// }
 		// gl.glEnd();
 		//
-		// gl.glBegin(GL2.GL_LINE_STRIP);
+		// gl.glBegin(GL.GL_LINE_STRIP);
 		// for (int i = 0; i < bandPoints2.size(); i++) {
 		// gl.glVertex3f(bandPoints2.get(i).x(), bandPoints2.get(i).y(),
 		// bandPoints2.get(i).z());
@@ -376,9 +378,9 @@ public class ConnectionBandRenderer {
 			inputPoints[pointIndex][1] = points.get(pointIndex).y();
 			inputPoints[pointIndex][2] = points.get(pointIndex).z();
 		}
-		gl.glShadeModel(GL2.GL_SMOOTH);
-		gl.glEnable(GL2.GL_BLEND);
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		// glu.gluTessProperty(tobj, //
 		// GLU.GLU_TESS_WINDING_RULE, //
 		// GLU.GLU_TESS_WINDING_POSITIVE);
@@ -411,7 +413,7 @@ public class ConnectionBandRenderer {
 	 * Same as
 	 * {@link #renderStraightBand(GL2, float[], float[], float[], float[], boolean, float, int, float[], float)}
 	 * but with an additional option to only render the outline
-	 * 
+	 *
 	 * @param gl
 	 * @param leftTopPos
 	 * @param leftBottomPos
@@ -446,12 +448,12 @@ public class ConnectionBandRenderer {
 			gl.glColor4f(color[0], color[1], color[2], opacity
 					* OPACITY_INCREASE_FACTOR_OUTLINE);
 
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(leftTopPos[0], leftTopPos[1], 0);
 		gl.glVertex3f(rightTopPos[0], rightTopPos[1], 0);
 		gl.glEnd();
 
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(rightBottomPos[0], rightBottomPos[1], 0);
 		gl.glVertex3f(leftBottomPos[0], leftBottomPos[1], 0);
 		gl.glEnd();
@@ -495,7 +497,7 @@ public class ConnectionBandRenderer {
 	 * Same as
 	 * {@link #renderSingleBand(GL2, float[], float[], float[], float[], boolean, float, int, float[])}
 	 * with an additional option to render only the band outline
-	 * 
+	 *
 	 * @param gl
 	 * @param leftTopPos
 	 * @param leftBottomPos
@@ -539,7 +541,7 @@ public class ConnectionBandRenderer {
 		else
 			gl.glColor4f(color[0], color[1], color[2], color[3] * 2);
 
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = 0; i < outputPoints.size(); i++) {
 			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints
 					.get(i).z());
@@ -564,7 +566,7 @@ public class ConnectionBandRenderer {
 
 		// Band border
 		// gl.glLineWidth(1);
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = 0; i < points.size(); i++) {
 			gl.glVertex3f(points.get(i).x(), points.get(i).y(), points.get(i).z());
 		}
@@ -615,7 +617,7 @@ public class ConnectionBandRenderer {
 		else
 			gl.glColor4f(color[0], color[1], color[2], opacity * 2);
 
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = 0; i < outputPoints.size(); i++) {
 			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints
 					.get(i).z());
@@ -642,7 +644,7 @@ public class ConnectionBandRenderer {
 
 		// Band border
 		// gl.glLineWidth(1);
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = 0; i < points.size(); i++) {
 			gl.glVertex3f(points.get(i).x(), points.get(i).y(), points.get(i).z());
 		}
@@ -696,7 +698,7 @@ public class ConnectionBandRenderer {
 		// Band border
 		gl.glLineWidth(2);
 
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = 0; i < outputPoints.size(); i++) {
 			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints
 					.get(i).z());
@@ -750,7 +752,7 @@ public class ConnectionBandRenderer {
 		else
 			gl.glColor4f(color[0], color[1], color[2], opacity * 2);
 
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = 0; i < outputPoints.size(); i++) {
 			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints
 					.get(i).z());
@@ -790,7 +792,7 @@ public class ConnectionBandRenderer {
 
 		// Band border
 		// gl.glLineWidth(1);
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = 0; i < points.size(); i++) {
 			gl.glVertex3f(points.get(i).x(), points.get(i).y(), points.get(i).z());
 		}

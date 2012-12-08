@@ -38,9 +38,9 @@ import org.caleydo.view.enroute.node.mode.ALinearizeableNodeMode;
 
 /**
  * Base class for all nodes that can be linearized.
- *
- * @author Christian
- *
+ * 
+ * @author Christian Partl
+ * 
  */
 public abstract class ALinearizableNode extends ANode implements ILabelProvider {
 

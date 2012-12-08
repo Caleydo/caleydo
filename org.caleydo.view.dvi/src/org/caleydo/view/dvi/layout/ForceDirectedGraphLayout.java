@@ -451,7 +451,6 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 			forceMax = 0.0;
 
 			Object nodeMax = null;
-			;
 			Point2D force;
 
 			for (Object node : nodesToLayout) {

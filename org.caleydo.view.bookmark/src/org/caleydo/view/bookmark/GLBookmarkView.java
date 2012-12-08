@@ -56,9 +56,8 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * The list heat map that shows elements on the right of a view that have been
- * selected. It is registered to special listeners that are triggered in such a
- * event. Other than that it is equivalent to the {@link GLHeatMap}
+ * The list heat map that shows elements on the right of a view that have been selected. It is registered to special
+ * listeners that are triggered in such a event. Other than that it is equivalent to the {@link GLHeatMap}
  *
  * @author Alexander Lex
  */
@@ -67,7 +66,6 @@ public class GLBookmarkView extends ATableBasedView {
 	public static String VIEW_TYPE = "org.caleydo.view.bookmark";
 
 	public static String VIEW_NAME = "Bookmarks";
-
 
 	// private ColorMapping colorMapper;
 
@@ -93,8 +91,8 @@ public class GLBookmarkView extends ATableBasedView {
 
 	class PickingIDManager {
 		/**
-		 * A hash map that hashes the picking ID of an element to the
-		 * BookmarkContainer and the id internal to the bookmark container
+		 * A hash map that hashes the picking ID of an element to the BookmarkContainer and the id internal to the
+		 * bookmark container
 		 */
 		private HashMap<Integer, Pair<IDCategory, Integer>> pickingIDToBookmarkContainer;
 		private int idCount = 0;
@@ -105,10 +103,9 @@ public class GLBookmarkView extends ATableBasedView {
 
 		public int getPickingID(ABookmarkContainer<?> container, int privateID) {
 
-			int pickingID = pickingManager.getPickingID(uniqueID,
-					PickingType.BOOKMARK_ELEMENT, idCount);
-			pickingIDToBookmarkContainer.put(idCount++, new Pair<IDCategory, Integer>(
-					container.getCategory(), privateID));
+			int pickingID = pickingManager.getPickingID(uniqueID, PickingType.BOOKMARK_ELEMENT, idCount);
+			pickingIDToBookmarkContainer.put(idCount++, new Pair<IDCategory, Integer>(container.getCategory(),
+					privateID));
 			return pickingID;
 		}
 
@@ -125,8 +122,7 @@ public class GLBookmarkView extends ATableBasedView {
 	/**
 	 * Constructor.
 	 */
-	public GLBookmarkView(IGLCanvas glCanvas, Composite parentComposite,
-			ViewFrustum viewFrustum) {
+	public GLBookmarkView(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -217,8 +213,7 @@ public class GLBookmarkView extends ATableBasedView {
 	}
 
 	/**
-	 * Builds a display list of graphical elements that do not have to be
-	 * updated in every frame.
+	 * Builds a display list of graphical elements that do not have to be updated in every frame.
 	 *
 	 * @param gl
 	 *            GL2 context.
@@ -233,13 +228,14 @@ public class GLBookmarkView extends ATableBasedView {
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int externalID, Pick pick) {
 		switch (pickingType) {
 		case BOOKMARK_ELEMENT:
 			Pair<IDCategory, Integer> pair = pickingIDManager.getPrivateID(externalID);
-			hashCategoryToBookmarkContainer.get(pair.getFirst()).handleEvents(
-					pickingType, pickingMode, pair.getSecond(), pick);
+			hashCategoryToBookmarkContainer.get(pair.getFirst()).handleEvents(pickingType, pickingMode,
+					pair.getSecond(), pick);
+		default:
+			break;
 		}
 	}
 
@@ -252,24 +248,19 @@ public class GLBookmarkView extends ATableBasedView {
 		if (dataDomain.getDataDomainID() != event.getDataDomainID())
 			return;
 
-		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(event
-				.getIDType().getIDCategory());
+		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(event.getIDType().getIDCategory());
 		if (container == null)
-			throw new IllegalStateException("Can not handle bookmarks of type "
-					+ event.getIDType().getIDCategory());
+			throw new IllegalStateException("Can not handle bookmarks of type " + event.getIDType().getIDCategory());
 
 		container.handleNewBookmarkEvent(event);
 		layoutManager.updateLayout();
 		setDisplayListDirty();
 	}
 
-	public <IDDataType> void handleRemoveBookmarkEvent(
-			RemoveBookmarkEvent<IDDataType> event) {
-		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(event
-				.getIDType().getIDCategory());
+	public <IDDataType> void handleRemoveBookmarkEvent(RemoveBookmarkEvent<IDDataType> event) {
+		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(event.getIDType().getIDCategory());
 		if (container == null)
-			throw new IllegalStateException("Can not handle bookmarks of type "
-					+ event.getIDType().getIDCategory());
+			throw new IllegalStateException("Can not handle bookmarks of type " + event.getIDType().getIDCategory());
 
 		container.handleRemoveBookmarkEvent(event);
 		layoutManager.updateLayout();
@@ -294,8 +285,7 @@ public class GLBookmarkView extends ATableBasedView {
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedBookmarkView serializedForm = new SerializedBookmarkView(
-				this);
+		SerializedBookmarkView serializedForm = new SerializedBookmarkView(this);
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -303,8 +293,8 @@ public class GLBookmarkView extends ATableBasedView {
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		// EIDCategory category = ;
-		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer
-				.get(selectionDelta.getIDType().getIDCategory());
+		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(selectionDelta.getIDType()
+				.getIDCategory());
 		if (container != null)
 			container.handleSelectionUpdate(selectionDelta);
 
@@ -312,8 +302,7 @@ public class GLBookmarkView extends ATableBasedView {
 	}
 
 	@Override
-	public void handleSelectionCommand(IDCategory category,
-			SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(IDCategory category, SelectionCommand selectionCommand) {
 		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(category);
 		if (container != null)
 			container.handleSelectionCommand(selectionCommand);
@@ -340,26 +329,22 @@ public class GLBookmarkView extends ATableBasedView {
 		// mainColumn.setPixelGLConverter(pixelGLConverter);
 		layoutManager.setBaseElementLayout(mainColumn);
 
-		RecordBookmarkContainer geneContainer = new RecordBookmarkContainer(this,
-				dataDomain.getRecordIDCategory(), dataDomain.getRecordIDCategory()
-						.getPrimaryMappingType());
+		RecordBookmarkContainer geneContainer = new RecordBookmarkContainer(this, dataDomain.getRecordIDCategory(),
+				dataDomain.getRecordIDCategory().getPrimaryMappingType());
 		mainColumn.append(geneContainer.getLayout());
 
-		hashCategoryToBookmarkContainer.put(dataDomain.getRecordIDCategory(),
-				geneContainer);
+		hashCategoryToBookmarkContainer.put(dataDomain.getRecordIDCategory(), geneContainer);
 		bookmarkContainers.add(geneContainer);
 
-		DimensionBookmarkContainer experimentContainer = new DimensionBookmarkContainer(
-				this);
+		DimensionBookmarkContainer experimentContainer = new DimensionBookmarkContainer(this);
 		mainColumn.append(experimentContainer.getLayout());
-		hashCategoryToBookmarkContainer.put(dataDomain.getDimensionIDCategory(),
-				experimentContainer);
+		hashCategoryToBookmarkContainer.put(dataDomain.getDimensionIDCategory(), experimentContainer);
 		bookmarkContainers.add(experimentContainer);
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
-			IDType idType, int id) throws InvalidAttributeValueException {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
+			throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -369,7 +354,6 @@ public class GLBookmarkView extends ATableBasedView {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {

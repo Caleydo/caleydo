@@ -34,6 +34,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -133,7 +134,7 @@ public class PathwayItemManager {
 
 				geneIDMappingManager.getIDAsSet(davidIDType, pathwayVertexIDType, davidId);
 				if (existingVerticeIDs.size() > 1) {
-					Logger.log(new Status(Status.WARNING, this.toString(),
+					Logger.log(new Status(IStatus.WARNING, this.toString(),
 							"There was a multi-mapping from vertex to davidIDType. This shouldn't happen. Using only the first hit."));
 				}
 				Integer vertexID = existingVerticeIDs.iterator().next();

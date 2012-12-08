@@ -37,7 +37,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2ES1;
 import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -120,9 +122,8 @@ import com.jogamp.opengl.util.texture.TextureIO;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class GLHierarchicalHeatMap extends ATableBasedView implements
-		IContentGroupsActionHandler, IDimensionGroupsActionHandler,
-		IClusterNodeEventReceiver, INewContentGroupInfoHandler, IGLRemoteRenderingView,
+public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGroupsActionHandler,
+		IDimensionGroupsActionHandler, IClusterNodeEventReceiver, INewContentGroupInfoHandler, IGLRemoteRenderingView,
 		IColorMappingUpdateListener {
 	public static String VIEW_TYPE = "org.caleydo.view.heatmap.hierarchical";
 
@@ -149,14 +150,12 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	private int numberOfRecords = 0;
 	/**
-	 * if only a small number of genes is in the data set, level_1 (overViewBar)
-	 * will not be rendered
+	 * if only a small number of genes is in the data set, level_1 (overViewBar) will not be rendered
 	 */
 	private boolean bSkipLevel1 = false;
 	private final static int MIN_SAMPLES_SKIP_LEVEL_1 = 200;
 	/**
-	 * if only a small number of genes is in the data set, level_2 (textures)
-	 * will not be rendered
+	 * if only a small number of genes is in the data set, level_2 (textures) will not be rendered
 	 */
 	private boolean bSkipLevel2 = false;
 	private final static int MIN_SAMPLES_SKIP_LEVEL_2 = 120;
@@ -176,14 +175,14 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	private Point pickingPointLevel2 = null;
 	private int iPickedSampleLevel2 = 0;
 	/**
-	 * the first content entry shown in level 3 relative to level 2, i.e. n for
-	 * this would be iFirstSampleLevel1 + n in absolutes
+	 * the first content entry shown in level 3 relative to level 2, i.e. n for this would be iFirstSampleLevel1 + n in
+	 * absolutes
 	 */
 	private int iFirstSampleLevel2 = 0;
 
 	/**
-	 * the last content entry shown in level 3 relative to level 2, i.e. n for
-	 * this would be iLastSampleLevel1 + n in absolutes
+	 * the last content entry shown in level 3 relative to level 2, i.e. n for this would be iLastSampleLevel1 + n in
+	 * absolutes
 	 */
 	private int iLastSampleLevel2 = 0;
 
@@ -271,8 +270,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 * @param glCanvas
 	 * @param viewFrustum
 	 */
-	public GLHierarchicalHeatMap(IGLCanvas glCanvas, Composite parentComposite,
-			ViewFrustum viewFrustum) {
+	public GLHierarchicalHeatMap(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -315,8 +313,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	/**
-	 * Function responsible for initialization of hierarchy levels. Depending on
-	 * the amount of samples in the data set 1, 2, or 3 levels are used.
+	 * Function responsible for initialization of hierarchy levels. Depending on the amount of samples in the data set
+	 * 1, 2, or 3 levels are used.
 	 */
 	private void initHierarchy() {
 
@@ -345,8 +343,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			bSkipLevel1 = false;
 			bSkipLevel2 = false;
 
-			iNrTextures = (int) Math.ceil((double) numberOfRecords
-					/ MAX_SAMPLES_PER_TEXTURE);
+			iNrTextures = (int) Math.ceil((double) numberOfRecords / MAX_SAMPLES_PER_TEXTURE);
 
 			if (iNrTextures <= 1)
 				iSamplesPerTexture = numberOfRecords;
@@ -384,8 +381,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	public void initRemote(GL2 gl, final AGLView glParentView,
-			GLMouseListener glMouseListener) {
+	public void initRemote(GL2 gl, final AGLView glParentView, GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
 		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
@@ -402,8 +398,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	/**
-	 * Init (reset) the positions of cursors used for highlighting selected
-	 * elements in stage 1 (overviewBar)
+	 * Init (reset) the positions of cursors used for highlighting selected elements in stage 1 (overviewBar)
 	 *
 	 * @param
 	 */
@@ -415,15 +410,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			iSamplesLevel2 = iNumberSample;
 
 		if (iSamplesLevel2 % 2 == 0) {
-			iFirstSampleLevel1 = iPickedSampleLevel1
-					- (int) Math.floor((double) iSamplesLevel2 / 2) + 1;
-			iLastSampleLevel1 = iPickedSampleLevel1
-					+ (int) Math.floor((double) iSamplesLevel2 / 2);
+			iFirstSampleLevel1 = iPickedSampleLevel1 - (int) Math.floor((double) iSamplesLevel2 / 2) + 1;
+			iLastSampleLevel1 = iPickedSampleLevel1 + (int) Math.floor((double) iSamplesLevel2 / 2);
 		} else {
-			iFirstSampleLevel1 = iPickedSampleLevel1
-					- (int) Math.ceil((double) iSamplesLevel2 / 2);
-			iLastSampleLevel1 = iPickedSampleLevel1
-					+ (int) Math.floor((double) iSamplesLevel2 / 2);
+			iFirstSampleLevel1 = iPickedSampleLevel1 - (int) Math.ceil((double) iSamplesLevel2 / 2);
+			iLastSampleLevel1 = iPickedSampleLevel1 + (int) Math.floor((double) iSamplesLevel2 / 2);
 		}
 
 		if (iPickedSampleLevel1 < iSamplesLevel2 / 2) {
@@ -431,8 +422,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			iFirstSampleLevel1 = 0;
 			iLastSampleLevel1 = iSamplesLevel2 - 1;
 		} else if (iPickedSampleLevel1 > iNumberSample - 1 - iSamplesLevel2 / 2) {
-			iPickedSampleLevel1 = (int) Math.ceil((double) iNumberSample - iSamplesLevel2
-					/ 2);
+			iPickedSampleLevel1 = (int) Math.ceil((double) iNumberSample - iSamplesLevel2 / 2);
 			iLastSampleLevel1 = iNumberSample - 1;
 			iFirstSampleLevel1 = iNumberSample - iSamplesLevel2;
 		}
@@ -440,8 +430,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	/**
-	 * Init (reset) the positions of cursors used for highlighting selected
-	 * elements in stage 2 (texture)
+	 * Init (reset) the positions of cursors used for highlighting selected elements in stage 2 (texture)
 	 *
 	 * @param
 	 */
@@ -450,15 +439,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (bSkipLevel2) {
 			iSamplesPerHeatmap = (int) Math.floor((double) iSamplesPerTexture / 3);
 			if (iSamplesPerHeatmap % 2 == 0) {
-				iFirstSampleLevel2 = iPickedSampleLevel2
-						- (int) Math.floor((double) iSamplesPerHeatmap / 2) + 1;
-				iLastSampleLevel2 = iPickedSampleLevel2
-						+ (int) Math.floor((double) iSamplesPerHeatmap / 2);
+				iFirstSampleLevel2 = iPickedSampleLevel2 - (int) Math.floor((double) iSamplesPerHeatmap / 2) + 1;
+				iLastSampleLevel2 = iPickedSampleLevel2 + (int) Math.floor((double) iSamplesPerHeatmap / 2);
 			} else {
-				iFirstSampleLevel2 = iPickedSampleLevel2
-						- (int) Math.ceil((double) iSamplesPerHeatmap / 2);
-				iLastSampleLevel2 = iPickedSampleLevel2
-						+ (int) Math.floor((double) iSamplesPerHeatmap / 2);
+				iFirstSampleLevel2 = iPickedSampleLevel2 - (int) Math.ceil((double) iSamplesPerHeatmap / 2);
+				iLastSampleLevel2 = iPickedSampleLevel2 + (int) Math.floor((double) iSamplesPerHeatmap / 2);
 			}
 		}
 
@@ -478,8 +463,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	/**
-	 * Function calculates number of textures and fills array lists to avoid
-	 * NPEs after initialization.
+	 * Function calculates number of textures and fills array lists to avoid NPEs after initialization.
 	 *
 	 * @param
 	 */
@@ -529,10 +513,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			Texture tempTextur;
 
-			RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-					.getVirtualArray();
-			DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
-					.getVirtualArray();
+			RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+			DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 			int iTextureHeight = recordVA.size();
 			int iTextureWidth = dimensionVA.size();
@@ -544,32 +526,27 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			for (Integer recordIndex : recordVA) {
 				for (Integer iDimensionIndex : dimensionVA) {
-					if (recordSelectionManager.checkStatus(SelectionType.DESELECTED,
-							recordIndex)) {
+					if (recordSelectionManager.checkStatus(SelectionType.DESELECTED, recordIndex)) {
 						fOpacity = 0.3f;
 					} else {
 						fOpacity = 1.0f;
 					}
 
-					fLookupValue = dataDomain.getTable().getFloat(
-							dimensionDataRepresentation, recordIndex, iDimensionIndex);
+					fLookupValue = dataDomain.getTable().getFloat(dimensionDataRepresentation, recordIndex,
+							iDimensionIndex);
 
-					float[] fArMappingColor = dataDomain.getColorMapper().getColor(
-							fLookupValue);
+					float[] fArMappingColor = dataDomain.getColorMapper().getColor(fLookupValue);
 
-					float[] fArRgba = { fArMappingColor[0], fArMappingColor[1],
-							fArMappingColor[2], fOpacity };
+					float[] fArRgba = { fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity };
 
 					FbTemp.put(fArRgba);
 				}
 			}
 			FbTemp.rewind();
 
-			TextureData texData = new TextureData(GLProfile.getDefault(),
-					GL2.GL_RGBA /* internalFormat */, iTextureWidth /* height */,
-					iTextureHeight /* width */, 0 /* border */,
-					GL2.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */,
-					false /* mipmap */, false /* dataIsCompressed */,
+			TextureData texData = new TextureData(GLProfile.getDefault(), GL.GL_RGBA /* internalFormat */,
+					iTextureWidth /* height */, iTextureHeight /* width */, 0 /* border */, GL.GL_RGBA /* pixelFormat */,
+					GL2.GL_FLOAT /* pixelType */, false /* mipmap */, false /* dataIsCompressed */,
 					false /* mustFlipVertically */, FbTemp, null);
 
 			tempTextur = TextureIO.newTexture(0);
@@ -585,10 +562,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			Texture tempTextur;
 
-			RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-					.getVirtualArray();
-			DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
-					.getVirtualArray();
+			RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+			DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 			int iTextureHeight = recordVA.size();
 			int iTextureWidth = dimensionVA.size();
 
@@ -603,13 +578,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 				if (itextures == iNrTextures - 1) {
 					numberSamples.add(iTextureHeight - iSamplesPerTexture * itextures);
-					FbTemp[itextures] = FloatBuffer
-							.allocate((iTextureHeight - iSamplesPerTexture * itextures)
-									* iTextureWidth * 4);
+					FbTemp[itextures] = FloatBuffer.allocate((iTextureHeight - iSamplesPerTexture * itextures)
+							* iTextureWidth * 4);
 				} else {
 					numberSamples.add(iSamplesPerTexture);
-					FbTemp[itextures] = FloatBuffer.allocate(iSamplesPerTexture
-							* iTextureWidth * 4);
+					FbTemp[itextures] = FloatBuffer.allocate(iSamplesPerTexture * iTextureWidth * 4);
 				}
 			}
 
@@ -619,34 +592,27 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			for (Integer recordID : recordVA) {
 				iCount++;
 				for (Integer dimensionID : dimensionVA) {
-					if (recordSelectionManager.checkStatus(SelectionType.DESELECTED,
-							recordID)) {
+					if (recordSelectionManager.checkStatus(SelectionType.DESELECTED, recordID)) {
 						fOpacity = 0.3f;
 					} else {
 						fOpacity = 1.0f;
 					}
 
-					fLookupValue = dataDomain.getTable().getFloat(
-							dimensionDataRepresentation, recordID, dimensionID);
+					fLookupValue = dataDomain.getTable().getFloat(dimensionDataRepresentation, recordID, dimensionID);
 
-					float[] fArMappingColor = dataDomain.getColorMapper().getColor(
-							fLookupValue);
+					float[] fArMappingColor = dataDomain.getColorMapper().getColor(fLookupValue);
 
-					float[] fArRgba = { fArMappingColor[0], fArMappingColor[1],
-							fArMappingColor[2], fOpacity };
+					float[] fArRgba = { fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity };
 
 					FbTemp[iTextureCounter].put(fArRgba);
 				}
 				if (iCount >= numberSamples.get(iTextureCounter)) {
 					FbTemp[iTextureCounter].rewind();
 
-					TextureData texData = new TextureData(GLProfile.getDefault(),
-							GL2.GL_RGBA /* internalFormat */, iTextureWidth /* height */,
-							numberSamples.get(iTextureCounter) /* width */,
-							0 /* border */, GL2.GL_RGBA /* pixelFormat */,
-							GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
-							false /* dataIsCompressed */, false /* mustFlipVertically */,
-							FbTemp[iTextureCounter], null);
+					TextureData texData = new TextureData(GLProfile.getDefault(), GL.GL_RGBA /* internalFormat */,
+							iTextureWidth /* height */, numberSamples.get(iTextureCounter) /* width */, 0 /* border */,
+							GL.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
+							false /* dataIsCompressed */, false /* mustFlipVertically */, FbTemp[iTextureCounter], null);
 
 					tempTextur = TextureIO.newTexture(0);
 					tempTextur.updateImage(gl, texData);
@@ -669,8 +635,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
-		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
-				(int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
+		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, (int) fHeatMapHeight, 0,
+				(int) fHeatMapWidth, -20, 20);
 
 		glHeatMapView = new GLHeatMap(parentGLCanvas, parentComposite, viewFrustum);
 
@@ -679,8 +645,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
 		recordPerspective.init(null);
 
-		TablePerspective embeddedHMContainer = new TablePerspective(dataDomain,
-				recordPerspective, tablePerspective.getDimensionPerspective());
+		TablePerspective embeddedHMContainer = new TablePerspective(dataDomain, recordPerspective,
+				tablePerspective.getDimensionPerspective());
 
 		glHeatMapView.setTablePerspective(embeddedHMContainer);
 
@@ -705,11 +671,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
-		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
-				(int) fHeatMapHeight, 0, (int) fHeatMapWidth, -20, 20);
+		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, (int) fHeatMapHeight, 0,
+				(int) fHeatMapWidth, -20, 20);
 
-		glRecordDendrogramView = new GLDendrogram<RecordGroupList>(parentGLCanvas,
-				parentComposite, viewFrustum, true);
+		glRecordDendrogramView = new GLDendrogram<RecordGroupList>(parentGLCanvas, parentComposite, viewFrustum, true);
 		glRecordDendrogramView.setRemoteRenderingGLView(this);
 		glRecordDendrogramView.setTablePerspective(tablePerspective);
 		glRecordDendrogramView.setDataDomain(dataDomain);
@@ -717,8 +682,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		glRecordDendrogramView.initData();
 		glRecordDendrogramView.setRenderUntilCut(recordDendrogramRenderCut);
 
-		glDimensionDendrogramView = new GLDendrogram<DimensionGroupList>(parentGLCanvas,
-				parentComposite, viewFrustum, false);
+		glDimensionDendrogramView = new GLDendrogram<DimensionGroupList>(parentGLCanvas, parentComposite, viewFrustum,
+				false);
 		glDimensionDendrogramView.setRemoteRenderingGLView(this);
 		glDimensionDendrogramView.setTablePerspective(tablePerspective);
 		glDimensionDendrogramView.setDataDomain(dataDomain);
@@ -790,8 +755,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				return;
 			// for (Integer mouseOverElement : setMouseOverElements) {
 
-			int index = tablePerspective.getRecordPerspective().getVirtualArray()
-					.indexOf(mouseOverElement);
+			int index = tablePerspective.getRecordPerspective().getVirtualArray().indexOf(mouseOverElement);
 
 			// selected element is in level 3
 			if (index >= (iFirstSampleLevel1 + iFirstSampleLevel2)
@@ -803,8 +767,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			else if (index >= iFirstSampleLevel1 && index < iLastSampleLevel1) {
 				// System.out.println("in range of level 2 --> move level 3");
 				iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
-				iLastSampleLevel2 = index + iSamplesPerHeatmap / 2 - iFirstSampleLevel1
-						- 1;
+				iLastSampleLevel2 = index + iSamplesPerHeatmap / 2 - iFirstSampleLevel1 - 1;
 				if (iFirstSampleLevel2 < 0) {
 					iFirstSampleLevel2 = 0;
 					iLastSampleLevel2 = iSamplesPerHeatmap - 1;
@@ -830,19 +793,15 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				} else if (iLastSampleLevel1 > numberOfRecords) {
 					iFirstSampleLevel1 = numberOfRecords - iSamplesLevel2;
 					iLastSampleLevel1 = numberOfRecords;
-					iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2
-							- iFirstSampleLevel1;
-					iLastSampleLevel2 = index + iSamplesPerHeatmap / 2
-							- iFirstSampleLevel1;
+					iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
+					iLastSampleLevel2 = index + iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
 					if (iLastSampleLevel2 > iSamplesLevel2) {
 						iFirstSampleLevel2 = iSamplesLevel2 - iSamplesPerHeatmap;
 						iLastSampleLevel2 = iSamplesLevel2;
 					}
 				} else {
-					iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2
-							- iFirstSampleLevel1;
-					iLastSampleLevel2 = index + iSamplesPerHeatmap / 2
-							- iFirstSampleLevel1;
+					iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
+					iLastSampleLevel2 = index + iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
 				}
 			}
 			hasDataWindowChanged = true;
@@ -862,8 +821,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	@Override
 	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
-		if (!(tablePerspective.getDimensionPerspective().getPerspectiveID()
-				.equals(dimensionPerspectiveID)))
+		if (!(tablePerspective.getDimensionPerspective().getPerspectiveID().equals(dimensionPerspectiveID)))
 			return;
 		super.handleDimensionVAUpdate(dimensionPerspectiveID);
 
@@ -872,8 +830,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
-		if (!(tablePerspective.getRecordPerspective().getPerspectiveID()
-				.equals(recordPerspectiveID)))
+		if (!(tablePerspective.getRecordPerspective().getPerspectiveID().equals(recordPerspectiveID)))
 			return;
 		super.handleRecordVAUpdate(recordPerspectiveID);
 
@@ -895,8 +852,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 * @param fYOrigin
 	 * @param fFontScaling
 	 */
-	private void renderCaption(GL2 gl, String sLabel, float fXOrigin, float fYOrigin,
-			float fFontScaling) {
+	private void renderCaption(GL2 gl, String sLabel, float fXOrigin, float fYOrigin, float fFontScaling) {
 		textRenderer.setColor(1, 1, 1, 1);
 		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 		gl.glTranslatef(fXOrigin, fYOrigin, 0);
@@ -916,8 +872,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 * @param startpoint2
 	 * @param endpoint2
 	 */
-	private void renderSelectedDomain(GL2 gl, Vec3f startpoint1, Vec3f endpoint1,
-			Vec3f startpoint2, Vec3f endpoint2) {
+	private void renderSelectedDomain(GL2 gl, Vec3f startpoint1, Vec3f endpoint1, Vec3f startpoint2, Vec3f endpoint2) {
 		float fthickness = (endpoint1.x() - startpoint1.x()) / 4;
 
 		// Scaling factor for textures: endpoint1.y() > startpoint1.y()
@@ -951,16 +906,12 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		Texture TextureMaskNeg = null;
 
 		if (bRenderDendrogramBackgroundWhite) {
-			TextureMask = textureManager.getIconTexture(
-					EIconTextures.NAVIGATION_MASK_CURVE_WHITE);
-			TextureMaskNeg = textureManager.getIconTexture(
-					EIconTextures.NAVIGATION_MASK_CURVE_NEG_WHITE);
+			TextureMask = textureManager.getIconTexture(EIconTextures.NAVIGATION_MASK_CURVE_WHITE);
+			TextureMaskNeg = textureManager.getIconTexture(EIconTextures.NAVIGATION_MASK_CURVE_NEG_WHITE);
 			gl.glColor4f(1, 1, 1, 1);
 		} else {
-			TextureMask = textureManager.getIconTexture(
-					EIconTextures.NAVIGATION_MASK_CURVE);
-			TextureMaskNeg = textureManager.getIconTexture(
-					EIconTextures.NAVIGATION_MASK_CURVE_NEG);
+			TextureMask = textureManager.getIconTexture(EIconTextures.NAVIGATION_MASK_CURVE);
+			TextureMaskNeg = textureManager.getIconTexture(EIconTextures.NAVIGATION_MASK_CURVE_NEG);
 			gl.glColor4fv(DENDROGRAM_BACKROUND, 0);
 		}
 
@@ -981,26 +932,20 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		// fill gap
 		gl.glBegin(GL2.GL_QUADS);
 		if (bHandleEndpoint1LowerStartpoint1) {
-			gl.glVertex3f(endpoint1.x() - 1 * fthickness, startpoint1.y() - fthickness
-					* fScalFactor3, endpoint1.z());
-			gl.glVertex3f(endpoint1.x() - 2 * fthickness, startpoint1.y() - fthickness
-					* fScalFactor3, endpoint1.z());
+			gl.glVertex3f(endpoint1.x() - 1 * fthickness, startpoint1.y() - fthickness * fScalFactor3, endpoint1.z());
+			gl.glVertex3f(endpoint1.x() - 2 * fthickness, startpoint1.y() - fthickness * fScalFactor3, endpoint1.z());
 		} else {
-			gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() - fthickness
-					* fScalFactor1, endpoint1.z());
-			gl.glVertex3f(endpoint1.x() - 2 * fthickness, endpoint1.y() - fthickness
-					* fScalFactor1, endpoint1.z());
+			gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() - fthickness * fScalFactor1, endpoint1.z());
+			gl.glVertex3f(endpoint1.x() - 2 * fthickness, endpoint1.y() - fthickness * fScalFactor1, endpoint1.z());
 		}
 
-		gl.glVertex3f(endpoint2.x() - 2 * fthickness, endpoint2.y() + fthickness
-				* fScalFactor2, endpoint2.z());
-		gl.glVertex3f(endpoint2.x() - 1 * fthickness, endpoint2.y() + fthickness
-				* fScalFactor2, endpoint2.z());
+		gl.glVertex3f(endpoint2.x() - 2 * fthickness, endpoint2.y() + fthickness * fScalFactor2, endpoint2.z());
+		gl.glVertex3f(endpoint2.x() - 1 * fthickness, endpoint2.y() + fthickness * fScalFactor2, endpoint2.z());
 		gl.glEnd();
 
 		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 		gl.glColor4f(1, 1, 1, 1);
-		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		TextureMask.enable(gl);
 		TextureMask.bind(gl);
@@ -1013,11 +958,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.top());
 		gl.glVertex3f(startpoint1.x() + 1 * fthickness, startpoint1.y(), startpoint1.z());
 		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.bottom());
-		gl.glVertex3f(startpoint1.x() + 1 * fthickness, startpoint1.y() + fthickness
-				* fScalFactor1, startpoint1.z());
+		gl.glVertex3f(startpoint1.x() + 1 * fthickness, startpoint1.y() + fthickness * fScalFactor1, startpoint1.z());
 		gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.bottom());
-		gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y() + fthickness
-				* fScalFactor1, startpoint1.z());
+		gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y() + fthickness * fScalFactor1, startpoint1.z());
 		gl.glEnd();
 
 		gl.glBegin(GL2.GL_POLYGON);
@@ -1026,11 +969,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.top());
 		gl.glVertex3f(startpoint2.x() + 1 * fthickness, startpoint2.y(), startpoint2.z());
 		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.bottom());
-		gl.glVertex3f(startpoint2.x() + 1 * fthickness, startpoint2.y() - fthickness
-				* fScalFactor2, startpoint2.z());
+		gl.glVertex3f(startpoint2.x() + 1 * fthickness, startpoint2.y() - fthickness * fScalFactor2, startpoint2.z());
 		gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.bottom());
-		gl.glVertex3f(startpoint2.x() + 2 * fthickness, startpoint2.y() - fthickness
-				* fScalFactor2, startpoint2.z());
+		gl.glVertex3f(startpoint2.x() + 2 * fthickness, startpoint2.y() - fthickness * fScalFactor2, startpoint2.z());
 		gl.glEnd();
 
 		if (bHandleEndpoint1LowerStartpoint1) {
@@ -1040,11 +981,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.top());
 			gl.glVertex3f(endpoint1.x(), endpoint1.y(), endpoint1.z());
 			gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.bottom());
-			gl.glVertex3f(endpoint1.x(), endpoint1.y() + fthickness * fScalFactor3,
-					endpoint1.z());
+			gl.glVertex3f(endpoint1.x(), endpoint1.y() + fthickness * fScalFactor3, endpoint1.z());
 			gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.bottom());
-			gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() + fthickness
-					* fScalFactor3, endpoint1.z());
+			gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() + fthickness * fScalFactor3, endpoint1.z());
 			gl.glEnd();
 		}
 
@@ -1057,11 +996,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.bottom());
-		gl.glVertex3f(endpoint1.x() - 2 * fthickness, endpoint1.y() - fthickness
-				* fScalFactor1, endpoint1.z());
+		gl.glVertex3f(endpoint1.x() - 2 * fthickness, endpoint1.y() - fthickness * fScalFactor1, endpoint1.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.bottom());
-		gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() - fthickness
-				* fScalFactor1, endpoint1.z());
+		gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() - fthickness * fScalFactor1, endpoint1.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.top());
 		gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y(), endpoint1.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.top());
@@ -1070,11 +1007,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.bottom());
-		gl.glVertex3f(endpoint2.x() - 2 * fthickness, endpoint2.y() + fthickness
-				* fScalFactor2, endpoint2.z());
+		gl.glVertex3f(endpoint2.x() - 2 * fthickness, endpoint2.y() + fthickness * fScalFactor2, endpoint2.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.bottom());
-		gl.glVertex3f(endpoint2.x() - 1 * fthickness, endpoint2.y() + fthickness
-				* fScalFactor2, endpoint2.z());
+		gl.glVertex3f(endpoint2.x() - 1 * fthickness, endpoint2.y() + fthickness * fScalFactor2, endpoint2.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.top());
 		gl.glVertex3f(endpoint2.x() - 1 * fthickness, endpoint2.y(), endpoint2.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.top());
@@ -1084,22 +1019,20 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (bHandleEndpoint1LowerStartpoint1) {
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.bottom());
-			gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y() - fthickness
-					* fScalFactor3, startpoint1.z());
+			gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y() - fthickness * fScalFactor3,
+					startpoint1.z());
 			gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.bottom());
-			gl.glVertex3f(startpoint1.x() + 3 * fthickness, startpoint1.y() - fthickness
-					* fScalFactor3, startpoint1.z());
+			gl.glVertex3f(startpoint1.x() + 3 * fthickness, startpoint1.y() - fthickness * fScalFactor3,
+					startpoint1.z());
 			gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.top());
-			gl.glVertex3f(startpoint1.x() + 3 * fthickness, startpoint1.y(),
-					startpoint1.z());
+			gl.glVertex3f(startpoint1.x() + 3 * fthickness, startpoint1.y(), startpoint1.z());
 			gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.top());
-			gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y(),
-					startpoint1.z());
+			gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y(), startpoint1.z());
 			gl.glEnd();
 		}
 
 		TextureMaskNeg.disable(gl);
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glPopAttrib();
 	}
 
@@ -1109,8 +1042,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 * @param gl
 	 */
 	private void renderClassAssignmentsExperimentsLevel2(final GL2 gl) {
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
-				.getVirtualArray();
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 		if (dimensionVA.getGroupList() == null)
 			return;
 
@@ -1135,18 +1067,15 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			float classWidth = groupList.get(i).getSize() * fWidthSamples;
 
 			gl.glColor4f(1, 1, 1, 1);
-			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			Texture tempTexture = null;
 			if (dimensionVA.getGroupList().get(i).getSelectionType() == SelectionType.SELECTION) {
-				tempTexture = textureManager.getIconTexture(
-						EIconTextures.HEAT_MAP_GROUP_SELECTED);
+				tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_GROUP_SELECTED);
 			} else {
-				tempTexture = textureManager.getIconTexture(
-						EIconTextures.HEAT_MAP_GROUP_NORMAL);
+				tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_GROUP_NORMAL);
 			}
 
-			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.HIER_HEAT_MAP_DIMENSION_GROUP, i));
+			gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_DIMENSION_GROUP, i));
 
 			tempTexture.enable(gl);
 			tempTexture.bind(gl);
@@ -1165,16 +1094,15 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glEnd();
 
 			tempTexture.disable(gl);
-			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			gl.glPopName();
 
 			if (i == iNrClasses - 1)
 				return;
 
 			gl.glColor4fv(BACKGROUND_COLOR, 0);
-			gl.glBegin(GL2.GL_LINES);
-			gl.glVertex3f(fxpos + classWidth, 0 - fHeightClusterVisualization,
-					CLUSTER_BORDERS_Z);
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(fxpos + classWidth, 0 - fHeightClusterVisualization, CLUSTER_BORDERS_Z);
 			gl.glVertex3f(fxpos + classWidth, fHeight, CLUSTER_BORDERS_Z);
 			gl.glEnd();
 
@@ -1189,8 +1117,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 */
 	private void renderClassAssignmentsExperimentsLevel3(final GL2 gl) {
 
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
-				.getVirtualArray();
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 		if (dimensionVA.getGroupList() == null)
 			return;
 
@@ -1202,8 +1129,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float fHeightClusterVisualization = renderStyle.getWidthClusterVisualization();
 
 		if (dimensionDendrogramActive || dimensionDendrogramRenderCut)
-			fHeight = viewFrustum.getHeight()
-					- renderStyle.getHeightExperimentDendrogram();
+			fHeight = viewFrustum.getHeight() - renderStyle.getHeightExperimentDendrogram();
 		else
 			fHeight = viewFrustum.getHeight();
 
@@ -1217,19 +1143,16 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			float classWidth = groupList.get(i).getSize() * fWidthSamples;
 
 			gl.glColor4f(1, 1, 1, 1);
-			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			Texture tempTexture = null;
 
 			if (dimensionVA.getGroupList().get(i).getSelectionType() == SelectionType.SELECTION) {
-				tempTexture = textureManager.getIconTexture(
-						EIconTextures.HEAT_MAP_GROUP_SELECTED);
+				tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_GROUP_SELECTED);
 			} else {
-				tempTexture = textureManager.getIconTexture(
-						EIconTextures.HEAT_MAP_GROUP_NORMAL);
+				tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_GROUP_NORMAL);
 			}
 
-			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.HIER_HEAT_MAP_DIMENSION_GROUP, i));
+			gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_DIMENSION_GROUP, i));
 
 			tempTexture.enable(gl);
 			tempTexture.bind(gl);
@@ -1248,16 +1171,15 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glEnd();
 
 			tempTexture.disable(gl);
-			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			gl.glPopName();
 
 			if (i == iNrClasses - 1)
 				return;
 
 			gl.glColor4fv(BACKGROUND_COLOR, 0);
-			gl.glBegin(GL2.GL_LINES);
-			gl.glVertex3f(fxpos + classWidth, 0 - fHeightClusterVisualization,
-					CLUSTER_BORDERS_Z);
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(fxpos + classWidth, 0 - fHeightClusterVisualization, CLUSTER_BORDERS_Z);
 			gl.glVertex3f(fxpos + classWidth, fHeight, CLUSTER_BORDERS_Z);
 			gl.glEnd();
 
@@ -1271,8 +1193,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 * @param gl
 	 */
 	private void renderClassAssignmentsGenesLevel1(final GL2 gl) {
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 		if (recordVA.getGroupList() == null)
 			return;
 
@@ -1297,21 +1218,18 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			float classHeight = groupList.get(i).getSize() * fHeightSamples;
 
 			gl.glColor4f(1, 1, 1, 1);
-			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			Texture tempTexture = null;
 
 			if (recordVA.getGroupList().get(i).getSelectionType() == SelectionType.SELECTION) {
-				tempTexture = textureManager.getIconTexture(
-						EIconTextures.HEAT_MAP_GROUP_SELECTED);
+				tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_GROUP_SELECTED);
 			}
 
 			else {
-				tempTexture = textureManager.getIconTexture(
-						EIconTextures.HEAT_MAP_GROUP_NORMAL);
+				tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_GROUP_NORMAL);
 			}
 
-			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.HEAT_MAP_RECORD_GROUP, i));
+			gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HEAT_MAP_RECORD_GROUP, i));
 
 			tempTexture.enable(gl);
 			tempTexture.bind(gl);
@@ -1330,7 +1248,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glEnd();
 
 			tempTexture.disable(gl);
-			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			gl.glPopName();
 
 			if (i == iNrClasses - 1) {
@@ -1339,9 +1257,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			}
 
 			gl.glColor4fv(BACKGROUND_COLOR, 0);
-			gl.glBegin(GL2.GL_LINES);
-			gl.glVertex3f(fWidthClusterVisualization, fyPos - classHeight,
-					CLUSTER_BORDERS_Z);
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(fWidthClusterVisualization, fyPos - classHeight, CLUSTER_BORDERS_Z);
 			gl.glVertex3f(-fWidthLevel1, fyPos - classHeight, CLUSTER_BORDERS_Z);
 			gl.glEnd();
 
@@ -1358,8 +1275,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 */
 	private void renderClassAssignmentsGenesLevel2(final GL2 gl) {
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		// FIXME: Class assignments could be rendered using HeatMapUtil
 		if (recordVA.getGroupList() == null)
@@ -1392,18 +1308,15 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			if (iCounter == recordVA.getGroupList().get(iIdxCluster).getSize()) {
 
 				gl.glColor4f(1, 1, 1, 1);
-				gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+				gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 				Texture tempTexture = null;
 
 				if (recordVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
-					tempTexture = textureManager.getIconTexture(
-							EIconTextures.HEAT_MAP_GROUP_SELECTED);
+					tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_GROUP_SELECTED);
 				} else {
-					tempTexture = textureManager.getIconTexture(
-							EIconTextures.HEAT_MAP_GROUP_NORMAL);
+					tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_GROUP_NORMAL);
 				}
-				gl.glPushName(pickingManager.getPickingID(uniqueID,
-						PickingType.HEAT_MAP_RECORD_GROUP, iIdxCluster));
+				gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HEAT_MAP_RECORD_GROUP, iIdxCluster));
 
 				tempTexture.enable(gl);
 				tempTexture.bind(gl);
@@ -1416,22 +1329,19 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 				gl.glVertex3f(0 + fWidthClusterVisualization, fHeight, FIELD_Z);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
-				gl.glVertex3f(0 + fWidthClusterVisualization, fHeight - fHeightSamples
-						* iCnt, FIELD_Z);
+				gl.glVertex3f(0 + fWidthClusterVisualization, fHeight - fHeightSamples * iCnt, FIELD_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.top());
 				gl.glVertex3f(0, fHeight - fHeightSamples * iCnt, FIELD_Z);
 				gl.glEnd();
 
 				tempTexture.disable(gl);
-				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 				gl.glPopName();
 
 				gl.glColor4fv(BACKGROUND_COLOR, 0);
-				gl.glBegin(GL2.GL_LINES);
-				gl.glVertex3f(fWidthClusterVisualization,
-						fHeight - fHeightSamples * iCnt, CLUSTER_BORDERS_Z);
-				gl.glVertex3f(-fWidthLevel2, fHeight - fHeightSamples * iCnt,
-						CLUSTER_BORDERS_Z);
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(fWidthClusterVisualization, fHeight - fHeightSamples * iCnt, CLUSTER_BORDERS_Z);
+				gl.glVertex3f(-fWidthLevel2, fHeight - fHeightSamples * iCnt, CLUSTER_BORDERS_Z);
 				gl.glEnd();
 
 				fHeight -= fHeightSamples * iCnt;
@@ -1448,19 +1358,16 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		}
 
 		gl.glColor4f(1, 1, 1, 1);
-		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 		Texture tempTexture = null;
 
 		if (recordVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
-			tempTexture = textureManager.getIconTexture(
-					EIconTextures.HEAT_MAP_GROUP_SELECTED);
+			tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_GROUP_SELECTED);
 		} else {
-			tempTexture = textureManager.getIconTexture(
-					EIconTextures.HEAT_MAP_GROUP_NORMAL);
+			tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_GROUP_NORMAL);
 		}
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.HEAT_MAP_RECORD_GROUP, iIdxCluster));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HEAT_MAP_RECORD_GROUP, iIdxCluster));
 
 		tempTexture.enable(gl);
 		tempTexture.bind(gl);
@@ -1479,7 +1386,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glEnd();
 
 		tempTexture.disable(gl);
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glPopName();
 
 		gl.glTranslatef(-fWidthLevel2, 0, 0);
@@ -1492,8 +1399,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 * @param gl
 	 */
 	private void renderClassAssignmentsGenesLevel3(final GL2 gl) {
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		if (recordVA.getGroupList() == null)
 			return;
@@ -1501,8 +1407,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float fHeight = 0;
 
 		if (dimensionDendrogramActive || dimensionDendrogramRenderCut)
-			fHeight = viewFrustum.getHeight()
-					- renderStyle.getHeightExperimentDendrogram();
+			fHeight = viewFrustum.getHeight() - renderStyle.getHeightExperimentDendrogram();
 		else
 			fHeight = viewFrustum.getHeight();
 
@@ -1530,19 +1435,16 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			if (iCounter == recordVA.getGroupList().get(iIdxCluster).getSize()) {
 
 				gl.glColor4f(1, 1, 1, 1);
-				gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+				gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 				Texture tempTexture = null;
 
 				if (recordVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
-					tempTexture = textureManager.getIconTexture(
-							EIconTextures.HEAT_MAP_GROUP_SELECTED);
+					tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_GROUP_SELECTED);
 				} else {
-					tempTexture = textureManager.getIconTexture(
-							EIconTextures.HEAT_MAP_GROUP_NORMAL);
+					tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_GROUP_NORMAL);
 				}
 
-				gl.glPushName(pickingManager.getPickingID(uniqueID,
-						PickingType.HEAT_MAP_RECORD_GROUP, iIdxCluster));
+				gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HEAT_MAP_RECORD_GROUP, iIdxCluster));
 
 				tempTexture.enable(gl);
 				tempTexture.bind(gl);
@@ -1555,20 +1457,19 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 				gl.glVertex3f(fWidthEHM + fWidthClusterVisualization, fHeight, FIELD_Z);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
-				gl.glVertex3f(fWidthEHM + fWidthClusterVisualization, fHeight
-						- fHeightSamples * iCnt, FIELD_Z);
+				gl.glVertex3f(fWidthEHM + fWidthClusterVisualization, fHeight - fHeightSamples * iCnt, FIELD_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.top());
 				gl.glVertex3f(fWidthEHM, fHeight - fHeightSamples * iCnt, FIELD_Z);
 				gl.glEnd();
 
 				tempTexture.disable(gl);
-				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 				gl.glPopName();
 
 				gl.glColor4fv(BACKGROUND_COLOR, 0);
-				gl.glBegin(GL2.GL_LINES);
-				gl.glVertex3f(fWidthEHM + fWidthClusterVisualization, fHeight
-						- fHeightSamples * iCnt, CLUSTER_BORDERS_Z);
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(fWidthEHM + fWidthClusterVisualization, fHeight - fHeightSamples * iCnt,
+						CLUSTER_BORDERS_Z);
 				gl.glVertex3f(0, fHeight - fHeightSamples * iCnt, CLUSTER_BORDERS_Z);
 				gl.glEnd();
 
@@ -1585,19 +1486,16 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		}
 
 		gl.glColor4f(1, 1, 1, 1);
-		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 		Texture tempTexture = null;
 
 		if (recordVA.getGroupList().get(iIdxCluster).getSelectionType() == SelectionType.SELECTION) {
-			tempTexture = textureManager.getIconTexture(
-					EIconTextures.HEAT_MAP_GROUP_SELECTED);
+			tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_GROUP_SELECTED);
 		} else {
-			tempTexture = textureManager.getIconTexture(
-					EIconTextures.HEAT_MAP_GROUP_NORMAL);
+			tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_GROUP_NORMAL);
 		}
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.HEAT_MAP_RECORD_GROUP, iIdxCluster));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HEAT_MAP_RECORD_GROUP, iIdxCluster));
 
 		tempTexture.enable(gl);
 		tempTexture.bind(gl);
@@ -1616,7 +1514,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glEnd();
 
 		tempTexture.disable(gl);
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glPopName();
 	}
 
@@ -1645,18 +1543,15 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			textures.get(iNrTextures - i - 1).enable(gl);
 			textures.get(iNrTextures - i - 1).bind(gl);
-			gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_REPLACE);
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
-					GL2.GL_NEAREST);
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
-					GL2.GL_NEAREST);
-			TextureCoords texCoords = textures.get(iNrTextures - i - 1)
-					.getImageTexCoords();
+			gl.glTexEnvi(GL2ES1.GL_TEXTURE_ENV, GL2ES1.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+			TextureCoords texCoords = textures.get(iNrTextures - i - 1).getImageTexCoords();
 
-			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.HEAT_MAP_TEXTURE_SELECTION, iNrTextures - i));
+			gl.glPushName(pickingManager
+					.getPickingID(uniqueID, PickingType.HEAT_MAP_TEXTURE_SELECTION, iNrTextures - i));
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2d(texCoords.left(), texCoords.top());
 			gl.glVertex3f(0, fyOffset, 0);
@@ -1675,8 +1570,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	/**
-	 * Render marker in OverviewBar for visualization of the currently (in stage
-	 * 2) rendered part
+	 * Render marker in OverviewBar for visualization of the currently (in stage 2) rendered part
 	 *
 	 * @param gl
 	 */
@@ -1693,71 +1587,60 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float fHeightElem = fHeight / numberOfRecords;
 
 		if (bIsDraggingActiveLevel1 == false && bIsDraggingWholeBlockLevel1 == false) {
-			fPosCursorFirstElementLevel1 = viewFrustum.getHeight() - iFirstSampleLevel1
-					* fHeightElem;
-			fPosCursorLastElementLevel1 = viewFrustum.getHeight()
-					- (iLastSampleLevel1 + 1) * fHeightElem;
+			fPosCursorFirstElementLevel1 = viewFrustum.getHeight() - iFirstSampleLevel1 * fHeightElem;
+			fPosCursorLastElementLevel1 = viewFrustum.getHeight() - (iLastSampleLevel1 + 1) * fHeightElem;
 		}
 
 		// selected domain level 1
-		startpoint1 = new Vec3f(fWidthLevel1 + fOffsetClusterVis,
-				fPosCursorFirstElementLevel1, 0);
-		endpoint1 = new Vec3f(fWidthLevel1 + GAP_BETWEEN_LEVELS + fOffsetClusterVis,
-				fHeight, 0);
-		startpoint2 = new Vec3f(fWidthLevel1 + fOffsetClusterVis,
-				fPosCursorLastElementLevel1, 0);
+		startpoint1 = new Vec3f(fWidthLevel1 + fOffsetClusterVis, fPosCursorFirstElementLevel1, 0);
+		endpoint1 = new Vec3f(fWidthLevel1 + GAP_BETWEEN_LEVELS + fOffsetClusterVis, fHeight, 0);
+		startpoint2 = new Vec3f(fWidthLevel1 + fOffsetClusterVis, fPosCursorLastElementLevel1, 0);
 		endpoint2 = new Vec3f(fWidthLevel1 + GAP_BETWEEN_LEVELS + fOffsetClusterVis, 0, 0);
 		renderSelectedDomain(gl, startpoint1, endpoint1, startpoint2, endpoint2);
 
 		gl.glLineWidth(2f);
 
 		gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
-		gl.glBegin(GL2.GL_LINE_LOOP);
+		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(0, fPosCursorFirstElementLevel1, 0);
 		gl.glVertex3f(fWidthLevel1, fPosCursorFirstElementLevel1, 0);
 		gl.glVertex3f(fWidthLevel1, fPosCursorLastElementLevel1, 0);
 		gl.glVertex3f(0, fPosCursorLastElementLevel1, 0);
 		gl.glEnd();
 
-		gl.glBegin(GL2.GL_LINE_LOOP);
-		gl.glVertex3f(0, viewFrustum.getHeight()
-				- (iFirstSampleLevel1 + iFirstSampleLevel2) * fHeightElem, 0);
-		gl.glVertex3f(fWidthLevel1 + 0.1f, viewFrustum.getHeight()
-				- (iFirstSampleLevel1 + iFirstSampleLevel2) * fHeightElem, 0);
-		gl.glVertex3f(fWidthLevel1 + 0.1f, viewFrustum.getHeight()
-				- ((iFirstSampleLevel1 + iLastSampleLevel2) + 1) * fHeightElem, 0);
-		gl.glVertex3f(0, viewFrustum.getHeight()
-				- ((iFirstSampleLevel1 + iLastSampleLevel2) + 1) * fHeightElem, 0);
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(0, viewFrustum.getHeight() - (iFirstSampleLevel1 + iFirstSampleLevel2) * fHeightElem, 0);
+		gl.glVertex3f(fWidthLevel1 + 0.1f, viewFrustum.getHeight() - (iFirstSampleLevel1 + iFirstSampleLevel2)
+				* fHeightElem, 0);
+		gl.glVertex3f(fWidthLevel1 + 0.1f, viewFrustum.getHeight() - ((iFirstSampleLevel1 + iLastSampleLevel2) + 1)
+				* fHeightElem, 0);
+		gl.glVertex3f(0, viewFrustum.getHeight() - ((iFirstSampleLevel1 + iLastSampleLevel2) + 1) * fHeightElem, 0);
 		gl.glEnd();
 
 		if (bRenderCaption == true) {
-			renderCaption(gl, "nr:" + iSamplesLevel2, 0.0f, viewFrustum.getHeight()
-					- iPickedSampleLevel1 * fHeightElem, 0.004f);
+			renderCaption(gl, "nr:" + iSamplesLevel2, 0.0f,
+					viewFrustum.getHeight() - iPickedSampleLevel1 * fHeightElem, 0.004f);
 		}
 
 		gl.glColor4f(1f, 1f, 1f, 1f);
 	}
 
 	/**
-	 * Render marker next to OverviewBar for visualization of selected elements
-	 * in the data set
+	 * Render marker next to OverviewBar for visualization of selected elements in the data set
 	 *
 	 * @param gl
 	 */
 	private void renderSelectedElementsLevel1(GL2 gl) {
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		float fHeight = viewFrustum.getHeight();
 		float fWidthLevel1 = renderStyle.getWidthLevel1();
 
 		float fHeightElem = fHeight / numberOfRecords;
 
-		java.util.Set<Integer> setMouseOverElements = recordSelectionManager
-				.getElements(SelectionType.MOUSE_OVER);
-		java.util.Set<Integer> setSelectedElements = recordSelectionManager
-				.getElements(SelectionType.SELECTION);
+		java.util.Set<Integer> setMouseOverElements = recordSelectionManager.getElements(SelectionType.MOUSE_OVER);
+		java.util.Set<Integer> setSelectedElements = recordSelectionManager.getElements(SelectionType.SELECTION);
 
 		gl.glLineWidth(2f);
 
@@ -1767,10 +1650,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1) == false) {
 				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
-				gl.glBegin(GL2.GL_LINES);
+				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(fWidthLevel1, fHeight - fHeightElem * index, SELECTION_Z);
-				gl.glVertex3f(fWidthLevel1 + 0.1f, fHeight - fHeightElem * index,
-						SELECTION_Z);
+				gl.glVertex3f(fWidthLevel1 + 0.1f, fHeight - fHeightElem * index, SELECTION_Z);
 				gl.glEnd();
 			}
 		}
@@ -1781,10 +1663,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1) == false) {
 				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
-				gl.glBegin(GL2.GL_LINES);
+				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(fWidthLevel1, fHeight - fHeightElem * index, SELECTION_Z);
-				gl.glVertex3f(fWidthLevel1 + 0.1f, fHeight - fHeightElem * index,
-						SELECTION_Z);
+				gl.glVertex3f(fWidthLevel1 + 0.1f, fHeight - fHeightElem * index, SELECTION_Z);
 				gl.glEnd();
 			}
 		}
@@ -1809,14 +1690,13 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.HIER_HEAT_MAP_FIELD_SELECTION, 1));
-		// gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
-		// GL2.GL_REPLACE);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_NEAREST);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_NEAREST);
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_FIELD_SELECTION, 1));
+		// gl.glTexEnvi(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE,
+		// GL.GL_REPLACE);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
 
 		if (bSkipLevel1) {
 			Texture TexTemp1 = textures.get(0);
@@ -1858,10 +1738,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			if (iNrTexturesInUse == 1) {
 
-				float fScalingFirstElement = (float) iFirstElementFirstTexture
-						/ numberSamples.get(iFirstTexture);
-				float fScalingLastElement = (float) (iLastElementLastTexture + 1)
-						/ numberSamples.get(iFirstTexture);
+				float fScalingFirstElement = (float) iFirstElementFirstTexture / numberSamples.get(iFirstTexture);
+				float fScalingLastElement = (float) (iLastElementLastTexture + 1) / numberSamples.get(iFirstTexture);
 
 				Texture TexTemp1 = textures.get(iFirstTexture);
 				TexTemp1.enable(gl);
@@ -1871,14 +1749,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glBegin(GL2.GL_QUADS);
 				gl.glTexCoord2d(texCoords1.left(), texCoords1.top() * fScalingLastElement);
 				gl.glVertex3f(0, 0, 0);
-				gl.glTexCoord2d(texCoords1.left(), texCoords1.bottom()
-						+ fScalingFirstElement);
+				gl.glTexCoord2d(texCoords1.left(), texCoords1.bottom() + fScalingFirstElement);
 				gl.glVertex3f(0, fHeight, 0);
-				gl.glTexCoord2d(texCoords1.right(), texCoords1.bottom()
-						+ fScalingFirstElement);
+				gl.glTexCoord2d(texCoords1.right(), texCoords1.bottom() + fScalingFirstElement);
 				gl.glVertex3f(fWidthLevel2, fHeight, 0);
-				gl.glTexCoord2d(texCoords1.right(), texCoords1.top()
-						* fScalingLastElement);
+				gl.glTexCoord2d(texCoords1.right(), texCoords1.top() * fScalingLastElement);
 				gl.glVertex3f(fWidthLevel2, 0, 0);
 				gl.glEnd();
 
@@ -1886,13 +1761,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			} else if (iNrTexturesInUse == 2) {
 
-				float fScalingLastTexture = (float) (iLastElementLastTexture + 1)
-						/ iSamplesLevel2;
+				float fScalingLastTexture = (float) (iLastElementLastTexture + 1) / iSamplesLevel2;
 
 				float fRatioFirstTexture = (float) (numberSamples.get(iFirstTexture) - iFirstElementFirstTexture)
 						/ numberSamples.get(iFirstTexture);
-				float fRatioLastTexture = (float) (iLastElementLastTexture + 1)
-						/ numberSamples.get(iLastTexture);
+				float fRatioLastTexture = (float) (iLastElementLastTexture + 1) / numberSamples.get(iLastTexture);
 
 				Texture TexTemp1 = textures.get(iFirstTexture);
 				TexTemp1.enable(gl);
@@ -1902,11 +1775,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glBegin(GL2.GL_QUADS);
 				gl.glTexCoord2d(texCoords1.left(), texCoords1.top());
 				gl.glVertex3f(0, fHeight * fScalingLastTexture, 0);
-				gl.glTexCoord2d(texCoords1.left(), texCoords1.bottom()
-						+ (1 - fRatioFirstTexture));
+				gl.glTexCoord2d(texCoords1.left(), texCoords1.bottom() + (1 - fRatioFirstTexture));
 				gl.glVertex3f(0, fHeight, 0);
-				gl.glTexCoord2d(texCoords1.right(), texCoords1.bottom()
-						+ (1 - fRatioFirstTexture));
+				gl.glTexCoord2d(texCoords1.right(), texCoords1.bottom() + (1 - fRatioFirstTexture));
 				gl.glVertex3f(fWidthLevel2, fHeight, 0);
 				gl.glTexCoord2d(texCoords1.right(), texCoords1.top());
 				gl.glVertex3f(fWidthLevel2, fHeight * fScalingLastTexture, 0);
@@ -1914,7 +1785,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 				TexTemp1.disable(gl);
 
-				// gl.glBegin(GL2.GL_LINES);
+				// gl.glBegin(GL.GL_LINES);
 				// gl.glVertex3f(viewFrustum.getWidth(), fHeight *
 				// fScalingLastTexture, 0);
 				// gl.glVertex3f(0, fHeight * fScalingLastTexture, 0);
@@ -1939,15 +1810,12 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				TexTemp2.disable(gl);
 			} else if (iNrTexturesInUse == 3) {
 
-				float fScalingFirstTexture = (float) (iSamplesPerTexture - iFirstElementFirstTexture)
-						/ iSamplesLevel2;
-				float fScalingLastTexture = (float) (iLastElementLastTexture + 1)
-						/ iSamplesLevel2;
+				float fScalingFirstTexture = (float) (iSamplesPerTexture - iFirstElementFirstTexture) / iSamplesLevel2;
+				float fScalingLastTexture = (float) (iLastElementLastTexture + 1) / iSamplesLevel2;
 
 				float fRatioFirstTexture = (float) (numberSamples.get(iLastTexture) - iFirstElementFirstTexture)
 						/ numberSamples.get(iFirstTexture);
-				float fRatioLastTexture = (float) (iLastElementLastTexture + 1)
-						/ numberSamples.get(iLastTexture);
+				float fRatioLastTexture = (float) (iLastElementLastTexture + 1) / numberSamples.get(iLastTexture);
 
 				Texture TexTemp1 = textures.get(iFirstTexture);
 				TexTemp1.enable(gl);
@@ -1957,11 +1825,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glBegin(GL2.GL_QUADS);
 				gl.glTexCoord2d(texCoords1.left(), texCoords1.top());
 				gl.glVertex3f(0, fHeight * (1 - fScalingFirstTexture), 0);
-				gl.glTexCoord2d(texCoords1.left(), texCoords1.bottom()
-						+ (1 - fRatioFirstTexture));
+				gl.glTexCoord2d(texCoords1.left(), texCoords1.bottom() + (1 - fRatioFirstTexture));
 				gl.glVertex3f(0, fHeight, 0);
-				gl.glTexCoord2d(texCoords1.right(), texCoords1.bottom()
-						+ (1 - fRatioFirstTexture));
+				gl.glTexCoord2d(texCoords1.right(), texCoords1.bottom() + (1 - fRatioFirstTexture));
 				gl.glVertex3f(fWidthLevel2, fHeight, 0);
 				gl.glTexCoord2d(texCoords1.right(), texCoords1.top());
 				gl.glVertex3f(fWidthLevel2, fHeight * (1 - fScalingFirstTexture), 0);
@@ -1969,7 +1835,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 				TexTemp1.disable(gl);
 
-				// gl.glBegin(GL2.GL_LINES);
+				// gl.glBegin(GL.GL_LINES);
 				// gl.glVertex3f(viewFrustum.getWidth(), fHeight * (1 -
 				// fScalingFirstTexture), 0);
 				// gl.glVertex3f(0, fHeight * (1 - fScalingFirstTexture), 0);
@@ -1993,7 +1859,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 				TexTemp2.disable(gl);
 
-				// gl.glBegin(GL2.GL_LINES);
+				// gl.glBegin(GL.GL_LINES);
 				// gl.glVertex3f(viewFrustum.getWidth(), fHeight *
 				// fScalingLastTexture, 0);
 				// gl.glVertex3f(0, fHeight * fScalingLastTexture, 0);
@@ -2018,8 +1884,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				TexTemp3.disable(gl);
 
 			} else {
-				throw new IllegalStateException(
-						"Number of textures is bigger than 3 - something went wrong");
+				throw new IllegalStateException("Number of textures is bigger than 3 - something went wrong");
 			}
 		}
 
@@ -2029,8 +1894,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	private void renderSubTreeLevel2(GL2 gl) {
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		if (tablePerspective.getRecordPerspective().getTree() != null) {
 			gl.glTranslatef(renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS / 2, 0, 0);
@@ -2040,21 +1904,18 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			float fHeightSubTree = viewFrustum.getHeight();
 
-			glRecordDendrogramView.renderSubTreeFromIndexToIndex(gl, iFirstSampleLevel1,
-					iLastSampleLevel1, iSamplesLevel2, GAP_BETWEEN_LEVELS / 2,
-					fHeightSubTree);
+			glRecordDendrogramView.renderSubTreeFromIndexToIndex(gl, iFirstSampleLevel1, iLastSampleLevel1,
+					iSamplesLevel2, GAP_BETWEEN_LEVELS / 2, fHeightSubTree);
 
 			if (recordVA.getGroupList() != null)
 				gl.glTranslatef(-renderStyle.getWidthClusterVisualization(), 0, 0);
 
-			gl.glTranslatef(-(renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS / 2), 0,
-					0);
+			gl.glTranslatef(-(renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS / 2), 0, 0);
 		}
 	}
 
 	private void renderSubTreeLevel3(GL2 gl) {
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 		// render sub tree for level 3
 		if (tablePerspective.getRecordPerspective().getTree() != null) {
 
@@ -2063,16 +1924,15 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			float fHeightSubTree = 0;
 			if (dimensionDendrogramActive || dimensionDendrogramRenderCut)
-				fHeightSubTree = viewFrustum.getHeight()
-						- renderStyle.getHeightExperimentDendrogram();
+				fHeightSubTree = viewFrustum.getHeight() - renderStyle.getHeightExperimentDendrogram();
 			else
 				fHeightSubTree = viewFrustum.getHeight();
 
 			int from = iFirstSampleLevel1 + iFirstSampleLevel2;
 			int to = iFirstSampleLevel1 + iLastSampleLevel2;
 
-			glRecordDendrogramView.renderSubTreeFromIndexToIndex(gl, from, to,
-					iSamplesPerHeatmap, GAP_BETWEEN_LEVELS / 2, fHeightSubTree);
+			glRecordDendrogramView.renderSubTreeFromIndexToIndex(gl, from, to, iSamplesPerHeatmap,
+					GAP_BETWEEN_LEVELS / 2, fHeightSubTree);
 
 			if (recordVA.getGroupList() != null)
 				gl.glTranslatef(-2 * renderStyle.getWidthClusterVisualization(), 0, 0);
@@ -2081,8 +1941,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	/**
-	 * Render marker in Texture for visualization of the currently (in stage 3)
-	 * rendered part
+	 * Render marker in Texture for visualization of the currently (in stage 3) rendered part
 	 *
 	 * @param gl
 	 */
@@ -2102,39 +1961,29 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		gl.glColor4f(1, 1, 0, 1);
 		gl.glLineWidth(2f);
-		gl.glBegin(GL2.GL_LINE_LOOP);
-		gl.glVertex3f(0, viewFrustum.getHeight() - iFirstSampleLevel2
-				* fHeightSampleLevel2, 0);
-		gl.glVertex3f(fWidthLevel2, viewFrustum.getHeight() - iFirstSampleLevel2
-				* fHeightSampleLevel2, 0);
-		gl.glVertex3f(fWidthLevel2, viewFrustum.getHeight() - (iLastSampleLevel2 + 1)
-				* fHeightSampleLevel2, 0);
-		gl.glVertex3f(0, viewFrustum.getHeight() - (iLastSampleLevel2 + 1)
-				* fHeightSampleLevel2, 0);
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(0, viewFrustum.getHeight() - iFirstSampleLevel2 * fHeightSampleLevel2, 0);
+		gl.glVertex3f(fWidthLevel2, viewFrustum.getHeight() - iFirstSampleLevel2 * fHeightSampleLevel2, 0);
+		gl.glVertex3f(fWidthLevel2, viewFrustum.getHeight() - (iLastSampleLevel2 + 1) * fHeightSampleLevel2, 0);
+		gl.glVertex3f(0, viewFrustum.getHeight() - (iLastSampleLevel2 + 1) * fHeightSampleLevel2, 0);
 		gl.glEnd();
 
 		if (bIsDraggingActiveLevel2 == false) {
-			fPosCursorFirstElementLevel2 = viewFrustum.getHeight() - iFirstSampleLevel2
-					* fHeightSampleLevel2;
-			fPosCursorLastElementLevel2 = viewFrustum.getHeight()
-					- (iLastSampleLevel2 + 1) * fHeightSampleLevel2;
+			fPosCursorFirstElementLevel2 = viewFrustum.getHeight() - iFirstSampleLevel2 * fHeightSampleLevel2;
+			fPosCursorLastElementLevel2 = viewFrustum.getHeight() - (iLastSampleLevel2 + 1) * fHeightSampleLevel2;
 		}
 
-		startpoint1 = new Vec3f(fWidthLevel2 + fOffsetClusterVis, viewFrustum.getHeight()
-				- iFirstSampleLevel2 * fHeightSampleLevel2, 0);
+		startpoint1 = new Vec3f(fWidthLevel2 + fOffsetClusterVis, viewFrustum.getHeight() - iFirstSampleLevel2
+				* fHeightSampleLevel2, 0);
 
 		if (dimensionDendrogramActive || dimensionDendrogramRenderCut)
-			endpoint1 = new Vec3f(
-					fWidthLevel2 + GAP_BETWEEN_LEVELS + fOffsetClusterVis,
-					viewFrustum.getHeight() - renderStyle.getHeightExperimentDendrogram(),
-					0);
+			endpoint1 = new Vec3f(fWidthLevel2 + GAP_BETWEEN_LEVELS + fOffsetClusterVis, viewFrustum.getHeight()
+					- renderStyle.getHeightExperimentDendrogram(), 0);
 		else
-			endpoint1 = new Vec3f(fWidthLevel2 + GAP_BETWEEN_LEVELS + fOffsetClusterVis,
-					viewFrustum.getHeight(), 0);
-		startpoint2 = new Vec3f(fWidthLevel2 + fOffsetClusterVis, viewFrustum.getHeight()
-				- (iLastSampleLevel2 + 1) * fHeightSampleLevel2, 0);
-		endpoint2 = new Vec3f(fWidthLevel2 + GAP_BETWEEN_LEVELS + fOffsetClusterVis,
-				0.0f, 0);
+			endpoint1 = new Vec3f(fWidthLevel2 + GAP_BETWEEN_LEVELS + fOffsetClusterVis, viewFrustum.getHeight(), 0);
+		startpoint2 = new Vec3f(fWidthLevel2 + fOffsetClusterVis, viewFrustum.getHeight() - (iLastSampleLevel2 + 1)
+				* fHeightSampleLevel2, 0);
+		endpoint2 = new Vec3f(fWidthLevel2 + GAP_BETWEEN_LEVELS + fOffsetClusterVis, 0.0f, 0);
 
 		renderSelectedDomain(gl, startpoint1, endpoint1, startpoint2, endpoint2);
 
@@ -2142,15 +1991,14 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		{
 			gl.glLineWidth(1f);
 			gl.glColor4f(1, 0, 0, 1);
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(fWidthLevel2, 0.0f, BUTTON_Z);
 			gl.glVertex3f(fWidthLevel2, -0.4f, BUTTON_Z);
 			gl.glEnd();
 
 			float fSizeHeatmapArrow = renderStyle.getSizeHeatmapArrow();
 
-			Texture tempTexture = textureManager.getIconTexture(
-					EIconTextures.HEAT_MAP_ARROW);
+			Texture tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_ARROW);
 			tempTexture.enable(gl);
 			tempTexture.bind(gl);
 
@@ -2158,8 +2006,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			gl.glColor4f(1, 1, 1, 1);
 
-			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.HIER_HEAT_MAP_INFOCUS_SELECTION, 1));
+			gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_INFOCUS_SELECTION, 1));
 			if (bIsHeatmapInFocus) {
 				gl.glBegin(GL2.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
@@ -2167,8 +2014,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glTexCoord2f(texCoords.right(), texCoords.top());
 				gl.glVertex3f(fWidthLevel2, -0.4f + fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-				gl.glVertex3f(fWidthLevel2 - fSizeHeatmapArrow,
-						-0.4f + fSizeHeatmapArrow, BUTTON_Z);
+				gl.glVertex3f(fWidthLevel2 - fSizeHeatmapArrow, -0.4f + fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 				gl.glVertex3f(fWidthLevel2 - fSizeHeatmapArrow, -0.4f, BUTTON_Z);
 				gl.glEnd();
@@ -2179,8 +2025,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 				gl.glVertex3f(fWidthLevel2, -0.4f + fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.top());
-				gl.glVertex3f(fWidthLevel2 - fSizeHeatmapArrow,
-						-0.4f + fSizeHeatmapArrow, BUTTON_Z);
+				gl.glVertex3f(fWidthLevel2 - fSizeHeatmapArrow, -0.4f + fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
 				gl.glVertex3f(fWidthLevel2 - fSizeHeatmapArrow, -0.4f, BUTTON_Z);
 				gl.glEnd();
@@ -2191,24 +2036,20 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		}
 
 		if (bRenderCaption == true) {
-			renderCaption(gl, "Number Samples:" + iSamplesPerHeatmap, 0.0f,
-					viewFrustum.getHeight() - iPickedSampleLevel2 * fHeightSampleLevel2,
-					0.005f);
+			renderCaption(gl, "Number Samples:" + iSamplesPerHeatmap, 0.0f, viewFrustum.getHeight()
+					- iPickedSampleLevel2 * fHeightSampleLevel2, 0.005f);
 		}
 	}
 
 	/**
-	 * Render marker in Texture (level 2) for visualization of selected elements
-	 * in the data set
+	 * Render marker in Texture (level 2) for visualization of selected elements in the data set
 	 *
 	 * @param gl
 	 */
 	private void renderSelectedElementsLevel2(GL2 gl) {
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		// float fFieldWith = viewFrustum.getWidth() / 4.0f * fAnimationScale;
 		float fWidthLevel2 = renderStyle.getWidthLevel2() * fScalingLevel2;
@@ -2219,19 +2060,16 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glLineStipple(2, (short) 0xAAAA);
 
 		gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
-		java.util.Set<Integer> selectedSet = dimensionSelectionManager
-				.getElements(SelectionType.MOUSE_OVER);
+		java.util.Set<Integer> selectedSet = dimensionSelectionManager.getElements(SelectionType.MOUSE_OVER);
 		int iColumnIndex = 0;
 		for (int iTempLine : dimensionVA) {
 			for (Integer iCurrentLine : selectedSet) {
 				if (iTempLine == iCurrentLine) {
-					gl.glBegin(GL2.GL_LINE_LOOP);
+					gl.glBegin(GL.GL_LINE_LOOP);
 					gl.glVertex3f(iColumnIndex * fExpWidth, 0, SELECTION_Z);
 					gl.glVertex3f((iColumnIndex + 1) * fExpWidth, 0, SELECTION_Z);
-					gl.glVertex3f((iColumnIndex + 1) * fExpWidth,
-							viewFrustum.getHeight(), SELECTION_Z);
-					gl.glVertex3f(iColumnIndex * fExpWidth, viewFrustum.getHeight(),
-							SELECTION_Z);
+					gl.glVertex3f((iColumnIndex + 1) * fExpWidth, viewFrustum.getHeight(), SELECTION_Z);
+					gl.glVertex3f(iColumnIndex * fExpWidth, viewFrustum.getHeight(), SELECTION_Z);
 					gl.glEnd();
 				}
 			}
@@ -2244,13 +2082,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		for (int iTempLine : dimensionVA) {
 			for (Integer iCurrentLine : selectedSet) {
 				if (iTempLine == iCurrentLine) {
-					gl.glBegin(GL2.GL_LINE_LOOP);
+					gl.glBegin(GL.GL_LINE_LOOP);
 					gl.glVertex3f(iLineIndex * fExpWidth, 0, SELECTION_Z);
 					gl.glVertex3f((iLineIndex + 1) * fExpWidth, 0, SELECTION_Z);
-					gl.glVertex3f((iLineIndex + 1) * fExpWidth, viewFrustum.getHeight(),
-							SELECTION_Z);
-					gl.glVertex3f(iLineIndex * fExpWidth, viewFrustum.getHeight(),
-							SELECTION_Z);
+					gl.glVertex3f((iLineIndex + 1) * fExpWidth, viewFrustum.getHeight(), SELECTION_Z);
+					gl.glVertex3f(iLineIndex * fExpWidth, viewFrustum.getHeight(), SELECTION_Z);
 					gl.glEnd();
 				}
 			}
@@ -2259,61 +2095,49 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		gl.glDisable(GL2.GL_LINE_STIPPLE);
 
-		java.util.Set<Integer> setMouseOverElements = recordSelectionManager
-				.getElements(SelectionType.MOUSE_OVER);
+		java.util.Set<Integer> setMouseOverElements = recordSelectionManager.getElements(SelectionType.MOUSE_OVER);
 		gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 
 		for (Integer mouseOverElement : setMouseOverElements) {
 
 			int selectedElement = recordVA.indexOf(mouseOverElement.intValue());
 
-			if (selectedElement >= iFirstSampleLevel1
-					&& selectedElement <= iLastSampleLevel1) {
+			if (selectedElement >= iFirstSampleLevel1 && selectedElement <= iLastSampleLevel1) {
 
 				gl.glLineWidth(2f);
-				gl.glBegin(GL2.GL_LINE_LOOP);
-				gl.glVertex3f(-0.0f, viewFrustum.getHeight()
-						- (selectedElement - iFirstSampleLevel1) * fHeightSample,
+				gl.glBegin(GL.GL_LINE_LOOP);
+				gl.glVertex3f(-0.0f, viewFrustum.getHeight() - (selectedElement - iFirstSampleLevel1) * fHeightSample,
 						SELECTION_Z);
-				gl.glVertex3f(fWidthLevel2 + 0.1f, viewFrustum.getHeight()
-						- (selectedElement - iFirstSampleLevel1) * fHeightSample,
-						SELECTION_Z);
-				gl.glVertex3f(fWidthLevel2 + 0.1f, viewFrustum.getHeight()
-						- (selectedElement + 1 - iFirstSampleLevel1) * fHeightSample,
-						SELECTION_Z);
-				gl.glVertex3f(-0.0f, viewFrustum.getHeight()
-						- (selectedElement + 1 - iFirstSampleLevel1) * fHeightSample,
-						SELECTION_Z);
+				gl.glVertex3f(fWidthLevel2 + 0.1f, viewFrustum.getHeight() - (selectedElement - iFirstSampleLevel1)
+						* fHeightSample, SELECTION_Z);
+				gl.glVertex3f(fWidthLevel2 + 0.1f, viewFrustum.getHeight() - (selectedElement + 1 - iFirstSampleLevel1)
+						* fHeightSample, SELECTION_Z);
+				gl.glVertex3f(-0.0f, viewFrustum.getHeight() - (selectedElement + 1 - iFirstSampleLevel1)
+						* fHeightSample, SELECTION_Z);
 				gl.glEnd();
 
 			}
 		}
 
-		java.util.Set<Integer> setSelectedElements = recordSelectionManager
-				.getElements(SelectionType.SELECTION);
+		java.util.Set<Integer> setSelectedElements = recordSelectionManager.getElements(SelectionType.SELECTION);
 		gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 
 		for (Integer iSelectedElement : setSelectedElements) {
 
 			int selectedElement = recordVA.indexOf(iSelectedElement.intValue());
 
-			if (selectedElement >= iFirstSampleLevel1
-					&& selectedElement <= iLastSampleLevel1) {
+			if (selectedElement >= iFirstSampleLevel1 && selectedElement <= iLastSampleLevel1) {
 
 				gl.glLineWidth(2f);
-				gl.glBegin(GL2.GL_LINE_LOOP);
-				gl.glVertex3f(-0.0f, viewFrustum.getHeight()
-						- (selectedElement - iFirstSampleLevel1) * fHeightSample,
+				gl.glBegin(GL.GL_LINE_LOOP);
+				gl.glVertex3f(-0.0f, viewFrustum.getHeight() - (selectedElement - iFirstSampleLevel1) * fHeightSample,
 						SELECTION_Z);
-				gl.glVertex3f(fWidthLevel2 + 0.1f, viewFrustum.getHeight()
-						- (selectedElement - iFirstSampleLevel1) * fHeightSample,
-						SELECTION_Z);
-				gl.glVertex3f(fWidthLevel2 + 0.1f, viewFrustum.getHeight()
-						- (selectedElement + 1 - iFirstSampleLevel1) * fHeightSample,
-						SELECTION_Z);
-				gl.glVertex3f(-0.0f, viewFrustum.getHeight()
-						- (selectedElement + 1 - iFirstSampleLevel1) * fHeightSample,
-						SELECTION_Z);
+				gl.glVertex3f(fWidthLevel2 + 0.1f, viewFrustum.getHeight() - (selectedElement - iFirstSampleLevel1)
+						* fHeightSample, SELECTION_Z);
+				gl.glVertex3f(fWidthLevel2 + 0.1f, viewFrustum.getHeight() - (selectedElement + 1 - iFirstSampleLevel1)
+						* fHeightSample, SELECTION_Z);
+				gl.glVertex3f(-0.0f, viewFrustum.getHeight() - (selectedElement + 1 - iFirstSampleLevel1)
+						* fHeightSample, SELECTION_Z);
 				gl.glEnd();
 
 			}
@@ -2338,42 +2162,37 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		gl.glColor4f(1, 1, 1, 1);
 
-		Texture tempTexture = textureManager.getIconTexture(
-				EIconTextures.HEAT_MAP_ARROW);
-		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		Texture tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_ARROW);
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 		tempTexture.enable(gl);
 		tempTexture.bind(gl);
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
 		// Polygon for iFirstElement-Cursor
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.HIER_HEAT_MAP_CURSOR_LEVEL1, 1));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_CURSOR_LEVEL1, 1));
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel1, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorFirstElementLevel1, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fSizeHeatmapArrow,
-				fPosCursorFirstElementLevel1 + fSizeHeatmapArrow, BUTTON_Z);
+		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorFirstElementLevel1 + fSizeHeatmapArrow, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
 		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel1 + fSizeHeatmapArrow, BUTTON_Z);
 		gl.glEnd();
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glPopName();
 
 		// Polygon for iLastElement-Cursor
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.HIER_HEAT_MAP_CURSOR_LEVEL1, 2));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_CURSOR_LEVEL1, 2));
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 		gl.glVertex3f(0.0f, fPosCursorLastElementLevel1, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorLastElementLevel1, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorLastElementLevel1 - fSizeHeatmapArrow,
-				BUTTON_Z);
+		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorLastElementLevel1 - fSizeHeatmapArrow, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
 		gl.glVertex3f(0.0f, fPosCursorLastElementLevel1 - fSizeHeatmapArrow, BUTTON_Z);
 		gl.glEnd();
@@ -2381,12 +2200,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		tempTexture.disable(gl);
 
-		// gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		// fill gap between cursor
 		gl.glColor4fv(DRAGGING_CURSOR_COLOR, 0);
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL1, 1));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL1, 1));
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorLastElementLevel1, BUTTON_Z);
 		gl.glVertex3f(0.0f, fPosCursorLastElementLevel1, BUTTON_Z);
@@ -2400,8 +2218,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	/**
-	 * Render cursor used for controlling hierarchical heat map (e.g. next
-	 * Texture, previous Texture, set heatmap in focus)
+	 * Render cursor used for controlling hierarchical heat map (e.g. next Texture, previous Texture, set heatmap in
+	 * focus)
 	 *
 	 * @param gl
 	 */
@@ -2413,41 +2231,36 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
-		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
-		Texture tempTexture = textureManager.getIconTexture(
-				EIconTextures.HEAT_MAP_ARROW);
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+		Texture tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_ARROW);
 		tempTexture.enable(gl);
 		tempTexture.bind(gl);
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
 		// Polygon for iFirstElement-Cursor
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.HIER_HEAT_MAP_CURSOR_LEVEL2, 1));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_CURSOR_LEVEL2, 1));
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel2, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorFirstElementLevel2, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fSizeHeatmapArrow,
-				fPosCursorFirstElementLevel2 + fSizeHeatmapArrow, BUTTON_Z);
+		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorFirstElementLevel2 + fSizeHeatmapArrow, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
 		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel2 + fSizeHeatmapArrow, BUTTON_Z);
 		gl.glEnd();
 		gl.glPopName();
 
 		// Polygon for iLastElement-Cursor
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.HIER_HEAT_MAP_CURSOR_LEVEL2, 2));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_CURSOR_LEVEL2, 2));
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 		gl.glVertex3f(0.0f, fPosCursorLastElementLevel2, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorLastElementLevel2, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorLastElementLevel2 - fSizeHeatmapArrow,
-				BUTTON_Z);
+		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorLastElementLevel2 - fSizeHeatmapArrow, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
 		gl.glVertex3f(0.0f, fPosCursorLastElementLevel2 - fSizeHeatmapArrow, BUTTON_Z);
 		gl.glEnd();
@@ -2455,12 +2268,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		tempTexture.disable(gl);
 		gl.glPopAttrib();
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		// fill gap between cursor
 		gl.glColor4fv(DRAGGING_CURSOR_COLOR, 0);
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL2, 1));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL2, 1));
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorLastElementLevel2, BUTTON_Z);
 		gl.glVertex3f(0.0f, fPosCursorLastElementLevel2, BUTTON_Z);
@@ -2510,8 +2322,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		// cluster dragging only allowed in case of partition based cluster
 		// result
-		if (bDragDropExpGroup
-				&& tablePerspective.getDimensionPerspective().getTree() == null) {
+		if (bDragDropExpGroup && tablePerspective.getDimensionPerspective().getTree() == null) {
 			handleDragDropGroupExperiments(gl);
 			if (glMouseListener.wasMouseReleased()) {
 				bDragDropExpGroup = false;
@@ -2577,8 +2388,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float fright = 0.0f;
 		float top = viewFrustum.getTop();
 
-		float fleftOffset = 0.1f + renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS
-				+ renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS;
+		float fleftOffset = 0.1f + renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS + renderStyle.getWidthLevel2()
+				* fScalingLevel2 + GAP_BETWEEN_LEVELS;
 
 		if (recordDendrogramActive || recordDendrogramRenderCut)
 			fleftOffset += renderStyle.getWidthGeneDendrogram();
@@ -2597,13 +2408,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (dimensionDendrogramActive || dimensionDendrogramRenderCut)
 			top -= renderStyle.getHeightExperimentDendrogram();
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
 				glHeatMapView.getID()));
 
 		heatMapRemoteElement.getTransform().getTranslation().set(fleftOffset, 0, 0);
-		heatMapRemoteElement.getTransform().getScale()
-				.set(fright / 8, 1 * aspectRatio, 1);
+		heatMapRemoteElement.getTransform().getScale().set(fright / 8, 1 * aspectRatio, 1);
 		// heatMapRemoteElement.getTransform().getTranslation().set(0, 0, 0);
 		// heatMapRemoteElement.getTransform().getScale().set(1, 0.5f, 1);
 
@@ -2641,11 +2450,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			gl.glTranslatef(0f, fOffsety, 0f);
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION,
-					glDimensionDendrogramView.getID()));
+					PickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION, glDimensionDendrogramView.getID()));
 			glDimensionDendrogramView.getViewFrustum().setTop(1.65f);
-			glDimensionDendrogramView.getViewFrustum().setRight(
-					renderStyle.getWidthLevel3());
+			glDimensionDendrogramView.getViewFrustum().setRight(renderStyle.getWidthLevel3());
 			glDimensionDendrogramView.setRenderUntilCut(dimensionDendrogramRenderCut);
 
 			if (bFirstStartExperimentDendrogram) {
@@ -2665,8 +2472,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (recordDendrogramActive || recordDendrogramRenderCut) {
 
 			gl.glTranslatef(0f, 0.4f, 0f);
-			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION,
+			gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION,
 					glRecordDendrogramView.getID()));
 			glRecordDendrogramView.getViewFrustum().setTop(viewFrustum.getTop() - 0.6f);
 			glRecordDendrogramView.getViewFrustum().setRight(1.7f);
@@ -2689,8 +2495,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float fright = 0.0f;
 		float ftop = viewFrustum.getTop() - 0.2f;
 
-		float fleftOffset = 0.1f + renderStyle.getWidthLevel2() * fScalingLevel2
-				+ GAP_BETWEEN_LEVELS;
+		float fleftOffset = 0.1f + renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS;
 
 		if (tablePerspective.getRecordPerspective().getVirtualArray().getGroupList() != null)
 			fleftOffset += renderStyle.getWidthClusterVisualization();
@@ -2711,8 +2516,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		glHeatMapView.getViewFrustum().setTop(ftop);
 		glHeatMapView.getViewFrustum().setRight(fright);
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
 				glHeatMapView.getID()));
 		glHeatMapView.displayRemote(gl);
 		gl.glPopName();
@@ -2725,11 +2529,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			gl.glTranslatef(0f, fOffsety, 0f);
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION,
-					glDimensionDendrogramView.getID()));
+					PickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION, glDimensionDendrogramView.getID()));
 			glDimensionDendrogramView.getViewFrustum().setTop(1.65f);
-			glDimensionDendrogramView.getViewFrustum().setRight(
-					renderStyle.getWidthLevel3());
+			glDimensionDendrogramView.getViewFrustum().setRight(renderStyle.getWidthLevel3());
 			glDimensionDendrogramView.setRenderUntilCut(dimensionDendrogramRenderCut);
 
 			if (bFirstStartExperimentDendrogram) {
@@ -2749,8 +2551,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (recordDendrogramActive || recordDendrogramRenderCut) {
 
 			gl.glTranslatef(0f, 0.4f, 0f);
-			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION,
+			gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION,
 					glRecordDendrogramView.getID()));
 			glRecordDendrogramView.getViewFrustum().setTop(viewFrustum.getTop() - 0.6f);
 			glRecordDendrogramView.getViewFrustum().setRight(1.7f);
@@ -2789,8 +2590,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		glHeatMapView.getViewFrustum().setTop(ftop);
 		glHeatMapView.getViewFrustum().setRight(fright);
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
 				glHeatMapView.getID()));
 		glHeatMapView.displayRemote(gl);
 		gl.glPopName();
@@ -2804,11 +2604,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			gl.glTranslatef(0f, fOffsety, 0f);
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION,
-					glDimensionDendrogramView.getID()));
+					PickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION, glDimensionDendrogramView.getID()));
 			glDimensionDendrogramView.getViewFrustum().setTop(1.45f);
-			glDimensionDendrogramView.getViewFrustum().setRight(
-					renderStyle.getWidthLevel3());
+			glDimensionDendrogramView.getViewFrustum().setRight(renderStyle.getWidthLevel3());
 			glDimensionDendrogramView.setRenderUntilCut(dimensionDendrogramRenderCut);
 
 			if (bFirstStartExperimentDendrogram) {
@@ -2828,8 +2626,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (recordDendrogramActive || recordDendrogramRenderCut) {
 
 			gl.glTranslatef(0f, 0.4f, 0f);
-			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION,
+			gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION,
 					glRecordDendrogramView.getID()));
 			glRecordDendrogramView.getViewFrustum().setTop(ftop - 0.6f);
 			glRecordDendrogramView.getViewFrustum().setRight(1.7f);
@@ -2955,8 +2752,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	private void renderViewsLevel_1_2_3_Active(GL2 gl) {
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		renderClassAssignmentsGenesLevel1(gl);
 
@@ -2994,18 +2790,16 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (recordVA.getGroupList() != null)
 			gl.glTranslatef(-renderStyle.getWidthClusterVisualization(), 0, 0);
 
-		gl.glTranslatef(
-				0.3f + renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2()
-						* fScalingLevel2 + GAP_BETWEEN_LEVELS, 0, 0);
+		gl.glTranslatef(0.3f + renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2() * fScalingLevel2
+				+ GAP_BETWEEN_LEVELS, 0, 0);
 		renderSubTreeLevel3(gl);
 		gl.glTranslatef(
-				-(0.3f + renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2()
-						* fScalingLevel2 + GAP_BETWEEN_LEVELS), 0, 0);
+				-(0.3f + renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS),
+				0, 0);
 
 		if (recordVA.getGroupList() != null)
 			gl.glTranslatef(2 * renderStyle.getWidthClusterVisualization(), 0, 0);
-		gl.glTranslatef(renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2()
-				* fScalingLevel2, 0, 0);
+		gl.glTranslatef(renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2() * fScalingLevel2, 0, 0);
 		gl.glTranslatef(1 * GAP_BETWEEN_LEVELS, 0, 0);
 
 		renderCursorLevel2(gl);
@@ -3017,8 +2811,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		renderExperimentDendrogramBackground(gl);
 		gl.glTranslatef(-2 * GAP_BETWEEN_LEVELS, 0, 0);
 
-		gl.glTranslatef(-(renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2()
-				* fScalingLevel2), 0, 0);
+		gl.glTranslatef(-(renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2() * fScalingLevel2), 0, 0);
 
 		if (recordVA.getGroupList() != null)
 			gl.glTranslatef(-2 * renderStyle.getWidthClusterVisualization(), 0, 0);
@@ -3027,8 +2820,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	private void renderViewsLevel_2_3_Active(GL2 gl) {
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		if (pickingPointLevel2 != null)
 			handleTexturePickingLevel2(gl);
@@ -3040,12 +2832,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		renderGeneDendrogramBackground(gl);
 
 		renderClassAssignmentsExperimentsLevel2(gl);
-		gl.glTranslatef(renderStyle.getWidthLevel2() * fScalingLevel2
-				+ GAP_BETWEEN_LEVELS / 3, 0, 0);
+		gl.glTranslatef(renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS / 3, 0, 0);
 		renderSubTreeLevel3(gl);
-		gl.glTranslatef(
-				-(renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS / 3),
-				0, 0);
+		gl.glTranslatef(-(renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS / 3), 0, 0);
 
 		if (recordVA.getGroupList() != null)
 			gl.glTranslatef(renderStyle.getWidthClusterVisualization(), 0, 0);
@@ -3082,8 +2871,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		float fWidthCurveTexture = GAP_BETWEEN_LEVELS / 4;
 
-		if (bSkipLevel1 && bSkipLevel2
-				&& (dimensionDendrogramActive || dimensionDendrogramRenderCut)) {
+		if (bSkipLevel1 && bSkipLevel2 && (dimensionDendrogramActive || dimensionDendrogramRenderCut)) {
 			fHeight -= renderStyle.getHeightExperimentDendrogram();
 		}
 
@@ -3098,27 +2886,24 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glEnd();
 
 			gl.glBegin(GL2.GL_QUADS);
-			gl.glVertex3f(-fWidthGeneDendrogram + fWidthCurveTexture, fHeight
-					- fWidthCurveTexture, 0);
+			gl.glVertex3f(-fWidthGeneDendrogram + fWidthCurveTexture, fHeight - fWidthCurveTexture, 0);
 			gl.glVertex3f(-fWidthGeneDendrogram, fHeight - fWidthCurveTexture, 0);
 			gl.glVertex3f(-fWidthGeneDendrogram, +fWidthCurveTexture, 0);
-			gl.glVertex3f(-fWidthGeneDendrogram + fWidthCurveTexture,
-					+fWidthCurveTexture, 0);
+			gl.glVertex3f(-fWidthGeneDendrogram + fWidthCurveTexture, +fWidthCurveTexture, 0);
 			gl.glEnd();
 
 			gl.glLineWidth(1f);
 			gl.glColor4f(1, 0, 0, 1);
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(-fWidthGeneDendrogram, fHeight, 0);
 			gl.glVertex3f(-fWidthGeneDendrogram, -0.4f, 0);
 			gl.glEnd();
 
 			gl.glColor4f(1, 1, 1, 1);
 			gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
-			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
-			Texture textureMaskNeg = textureManager.getIconTexture(
-					EIconTextures.NAVIGATION_MASK_CURVE_NEG_WHITE);
+			Texture textureMaskNeg = textureManager.getIconTexture(EIconTextures.NAVIGATION_MASK_CURVE_NEG_WHITE);
 			textureMaskNeg.enable(gl);
 			textureMaskNeg.bind(gl);
 
@@ -3128,8 +2913,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.bottom());
 			gl.glVertex3f(-fWidthGeneDendrogram, fHeight - fWidthCurveTexture, 0);
 			gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.bottom());
-			gl.glVertex3f(-fWidthGeneDendrogram + fWidthCurveTexture, fHeight
-					- fWidthCurveTexture, 0);
+			gl.glVertex3f(-fWidthGeneDendrogram + fWidthCurveTexture, fHeight - fWidthCurveTexture, 0);
 			gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.top());
 			gl.glVertex3f(-fWidthGeneDendrogram + fWidthCurveTexture, fHeight, 0);
 			gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.top());
@@ -3138,8 +2922,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.bottom());
-			gl.glVertex3f(-fWidthGeneDendrogram + fWidthCurveTexture, fWidthCurveTexture,
-					0);
+			gl.glVertex3f(-fWidthGeneDendrogram + fWidthCurveTexture, fWidthCurveTexture, 0);
 			gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.bottom());
 			gl.glVertex3f(-fWidthGeneDendrogram, fWidthCurveTexture, 0);
 			gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.top());
@@ -3148,16 +2931,15 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glVertex3f(-fWidthGeneDendrogram + fWidthCurveTexture, 0, 0);
 			gl.glEnd();
 			textureMaskNeg.disable(gl);
-			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			gl.glPopAttrib();
 		}
 
 		if (tablePerspective.getRecordPerspective().getTree() != null) {
 
-			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
-			Texture tempTexture = textureManager.getIconTexture(
-					EIconTextures.HEAT_MAP_ARROW);
+			Texture tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_ARROW);
 			tempTexture.enable(gl);
 			tempTexture.bind(gl);
 
@@ -3172,8 +2954,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glTexCoord2f(texCoords.right(), texCoords.top());
 				gl.glVertex3f(-fWidthGeneDendrogram, -0.4f + fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-				gl.glVertex3f(-fWidthGeneDendrogram + fSizeHeatmapArrow, -0.4f
-						+ fSizeHeatmapArrow, BUTTON_Z);
+				gl.glVertex3f(-fWidthGeneDendrogram + fSizeHeatmapArrow, -0.4f + fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 				gl.glVertex3f(-fWidthGeneDendrogram + fSizeHeatmapArrow, -0.4f, BUTTON_Z);
 				gl.glEnd();
@@ -3184,8 +2965,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 				gl.glVertex3f(-fWidthGeneDendrogram, -0.4f + fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.top());
-				gl.glVertex3f(-fWidthGeneDendrogram + fSizeHeatmapArrow, -0.4f
-						+ fSizeHeatmapArrow, BUTTON_Z);
+				gl.glVertex3f(-fWidthGeneDendrogram + fSizeHeatmapArrow, -0.4f + fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
 				gl.glVertex3f(-fWidthGeneDendrogram + fSizeHeatmapArrow, -0.4f, BUTTON_Z);
 				gl.glEnd();
@@ -3193,7 +2973,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glPopName();
 
 			tempTexture.disable(gl);
-			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		}
 	}
 
@@ -3219,24 +2999,22 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glVertex3f(fWidthCurveTexture, fHeight, 0);
 			gl.glVertex3f(fWidthLevel3 - fWidthCurveTexture, fHeight, 0);
-			gl.glVertex3f(fWidthLevel3 - fWidthCurveTexture,
-					fHeight - fWidthCurveTexture, 0);
+			gl.glVertex3f(fWidthLevel3 - fWidthCurveTexture, fHeight - fWidthCurveTexture, 0);
 			gl.glVertex3f(fWidthCurveTexture, fHeight - fWidthCurveTexture, 0);
 			gl.glEnd();
 
 			gl.glLineWidth(1f);
 			gl.glColor4f(1, 0, 0, 1);
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(0, fHeight, 0);
 			gl.glVertex3f(fWidthLevel3 + 0.4f, fHeight, 0);
 			gl.glEnd();
 
 			gl.glColor4f(1, 1, 1, 1);
 			gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
-			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
-			Texture textureMaskNeg = textureManager.getIconTexture(
-					EIconTextures.NAVIGATION_MASK_CURVE_NEG_WHITE);
+			Texture textureMaskNeg = textureManager.getIconTexture(EIconTextures.NAVIGATION_MASK_CURVE_NEG_WHITE);
 			textureMaskNeg.enable(gl);
 			textureMaskNeg.bind(gl);
 
@@ -3255,8 +3033,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.bottom());
-			gl.glVertex3f(fWidthLevel3 - fWidthCurveTexture,
-					fHeight - fWidthCurveTexture, 0);
+			gl.glVertex3f(fWidthLevel3 - fWidthCurveTexture, fHeight - fWidthCurveTexture, 0);
 			gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.bottom());
 			gl.glVertex3f(fWidthLevel3, fHeight - fWidthCurveTexture, 0);
 			gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.top());
@@ -3265,30 +3042,28 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glVertex3f(fWidthLevel3 - fWidthCurveTexture, fHeight, 0);
 			gl.glEnd();
 			textureMaskNeg.disable(gl);
-			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			gl.glPopAttrib();
 		}
 
 		if (!tablePerspective.getDimensionPerspective().isTreeDefaultTree()) {
 
-			gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
-			Texture tempTexture = textureManager.getIconTexture(
-					EIconTextures.HEAT_MAP_ARROW);
+			Texture tempTexture = textureManager.getIconTexture(EIconTextures.HEAT_MAP_ARROW);
 			tempTexture.enable(gl);
 			tempTexture.bind(gl);
 
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
-			gl.glPushName(pickingManager.getPickingID(uniqueID,
-					PickingType.HIER_HEAT_MAP_ACTIVATE_STORAGE_DENDROGRAM, 1));
+			gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.HIER_HEAT_MAP_ACTIVATE_STORAGE_DENDROGRAM,
+					1));
 			if (dimensionDendrogramActive) {
 				gl.glBegin(GL2.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
 				gl.glVertex3f(fWidthLevel3 + 0.4f - fSizeHeatmapArrow, fHeight, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-				gl.glVertex3f(fWidthLevel3 + 0.4f - fSizeHeatmapArrow, fHeight
-						- fSizeHeatmapArrow, BUTTON_Z);
+				gl.glVertex3f(fWidthLevel3 + 0.4f - fSizeHeatmapArrow, fHeight - fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 				gl.glVertex3f(fWidthLevel3 + 0.4f, fHeight - fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.top());
@@ -3299,8 +3074,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 				gl.glVertex3f(fWidthLevel3 + 0.4f - fSizeHeatmapArrow, fHeight, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
-				gl.glVertex3f(fWidthLevel3 + 0.4f - fSizeHeatmapArrow, fHeight
-						- fSizeHeatmapArrow, BUTTON_Z);
+				gl.glVertex3f(fWidthLevel3 + 0.4f - fSizeHeatmapArrow, fHeight - fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.top());
 				gl.glVertex3f(fWidthLevel3 + 0.4f, fHeight - fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -3310,13 +3084,12 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glPopName();
 
 			tempTexture.disable(gl);
-			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		}
 	}
 
 	/**
-	 * Sets the data shown in the embedded heat map based on the selected area
-	 * in the first two levels
+	 * Sets the data shown in the embedded heat map based on the selected area in the first two levels
 	 */
 	private void setEmbeddedHeatMapData() {
 		hasDataWindowChanged = false;
@@ -3324,8 +3097,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		if (offset < 0) {
 			throw new IllegalStateException("First Sample Level 1 (" + iFirstSampleLevel1
-					+ ") was smaller than First Sample Level 2 (" + iFirstSampleLevel2
-					+ ")");
+					+ ") was smaller than First Sample Level 2 (" + iFirstSampleLevel2 + ")");
 		}
 
 		// every time we change the window of the embedded heat map we need to
@@ -3338,8 +3110,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		ArrayList<Integer> embeddedRecords = new ArrayList<Integer>();
 
@@ -3353,8 +3124,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		}
 		data.setData(embeddedRecords);
 		glHeatMapView.getTablePerspective().getRecordPerspective().init(data);
-		glHeatMapView.handleRecordVAUpdate(glHeatMapView.getTablePerspective()
-				.getRecordPerspective().getPerspectiveID());
+		glHeatMapView.handleRecordVAUpdate(glHeatMapView.getTablePerspective().getRecordPerspective()
+				.getPerspectiveID());
 
 	}
 
@@ -3376,23 +3147,18 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float[] fArPickingCoords = new float[3];
 
 		if (pickingPointLevel1 != null) {
-			fArPickingCoords = GLCoordinateUtils
-					.convertWindowCoordinatesToWorldCoordinates(gl, pickingPointLevel1.x,
-							pickingPointLevel1.y);
+			fArPickingCoords = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pickingPointLevel1.x,
+					pickingPointLevel1.y);
 			fOffsety = viewFrustum.getHeight() - fArPickingCoords[1] + 0.4f;
 			iPickedSampleLevel1 = (int) Math.ceil((double) fOffsety / fHeightSample);
 			pickingPointLevel1 = null;
 
 			if (iSamplesLevel2 % 2 == 0) {
-				iFirstSampleLevel1 = iPickedSampleLevel1
-						- (int) Math.floor((double) iSamplesLevel2 / 2) + 1;
-				iLastSampleLevel1 = iPickedSampleLevel1
-						+ (int) Math.floor((double) iSamplesLevel2 / 2);
+				iFirstSampleLevel1 = iPickedSampleLevel1 - (int) Math.floor((double) iSamplesLevel2 / 2) + 1;
+				iLastSampleLevel1 = iPickedSampleLevel1 + (int) Math.floor((double) iSamplesLevel2 / 2);
 			} else {
-				iFirstSampleLevel1 = iPickedSampleLevel1
-						- (int) Math.ceil((double) iSamplesLevel2 / 2);
-				iLastSampleLevel1 = iPickedSampleLevel1
-						+ (int) Math.floor((double) iSamplesLevel2 / 2);
+				iFirstSampleLevel1 = iPickedSampleLevel1 - (int) Math.ceil((double) iSamplesLevel2 / 2);
+				iLastSampleLevel1 = iPickedSampleLevel1 + (int) Math.floor((double) iSamplesLevel2 / 2);
 			}
 
 			if (iPickedSampleLevel1 < iSamplesLevel2 / 2) {
@@ -3400,8 +3166,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				iFirstSampleLevel1 = 0;
 				iLastSampleLevel1 = iSamplesLevel2 - 1;
 			} else if (iPickedSampleLevel1 > iNumberSample - 1 - iSamplesLevel2 / 2) {
-				iPickedSampleLevel1 = (int) Math.ceil((double) iNumberSample
-						- iSamplesLevel2 / 2);
+				iPickedSampleLevel1 = (int) Math.ceil((double) iNumberSample - iSamplesLevel2 / 2);
 				iLastSampleLevel1 = iNumberSample - 1;
 				iFirstSampleLevel1 = iNumberSample - iSamplesLevel2;
 			}
@@ -3422,23 +3187,18 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float[] fArPickingCoords = new float[3];
 
 		if (pickingPointLevel2 != null) {
-			fArPickingCoords = GLCoordinateUtils
-					.convertWindowCoordinatesToWorldCoordinates(gl, pickingPointLevel2.x,
-							pickingPointLevel2.y);
+			fArPickingCoords = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pickingPointLevel2.x,
+					pickingPointLevel2.y);
 			fOffsety = viewFrustum.getHeight() - fArPickingCoords[1] + 0.4f;
 			iPickedSampleLevel2 = (int) Math.ceil((double) fOffsety / fHeightSample);
 			pickingPointLevel2 = null;
 
 			if (iSamplesLevel2 % 2 == 0) {
-				iFirstSampleLevel2 = iPickedSampleLevel2
-						- (int) Math.floor((double) iSamplesPerHeatmap / 2) + 1;
-				iLastSampleLevel2 = iPickedSampleLevel2
-						+ (int) Math.floor((double) iSamplesPerHeatmap / 2);
+				iFirstSampleLevel2 = iPickedSampleLevel2 - (int) Math.floor((double) iSamplesPerHeatmap / 2) + 1;
+				iLastSampleLevel2 = iPickedSampleLevel2 + (int) Math.floor((double) iSamplesPerHeatmap / 2);
 			} else {
-				iFirstSampleLevel2 = iPickedSampleLevel2
-						- (int) Math.ceil((double) iSamplesPerHeatmap / 2);
-				iLastSampleLevel2 = iPickedSampleLevel2
-						+ (int) Math.floor((double) iSamplesPerHeatmap / 2) - 1;
+				iFirstSampleLevel2 = iPickedSampleLevel2 - (int) Math.ceil((double) iSamplesPerHeatmap / 2);
+				iLastSampleLevel2 = iPickedSampleLevel2 + (int) Math.floor((double) iSamplesPerHeatmap / 2) - 1;
 			}
 
 			if (iPickedSampleLevel2 < iSamplesPerHeatmap / 2) {
@@ -3446,8 +3206,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				iFirstSampleLevel2 = 0;
 				iLastSampleLevel2 = iSamplesPerHeatmap - 1;
 			} else if (iPickedSampleLevel2 > iNumberSample - 1 - iSamplesPerHeatmap / 2) {
-				iPickedSampleLevel2 = (int) Math.ceil((double) iNumberSample
-						- iSamplesPerHeatmap / 2);
+				iPickedSampleLevel2 = (int) Math.ceil((double) iNumberSample - iSamplesPerHeatmap / 2);
 				iLastSampleLevel2 = iNumberSample - 1;
 				iFirstSampleLevel2 = iNumberSample - iSamplesPerHeatmap;
 			}
@@ -3463,8 +3222,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 */
 	private void handleDragDropGroupExperiments(final GL2 gl) {
 
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
-				.getVirtualArray();
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		Point currentPoint = glMouseListener.getPickedPoint();
 		float[] fArTargetWorldCoordinates = new float[3];
@@ -3486,9 +3244,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		int currentElement;
 
-		fArTargetWorldCoordinates = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-						currentPoint.y);
+		fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+				currentPoint.y);
 
 		DimensionGroupList groupList = dimensionVA.getGroupList();
 
@@ -3502,8 +3259,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float fHeight = viewFrustum.getHeight();
 
 		if (fArTargetWorldCoordinates[0] > fleftOffset
-				&& fArTargetWorldCoordinates[0] < fleftOffset
-						+ renderStyle.getWidthLevel3()) {
+				&& fArTargetWorldCoordinates[0] < fleftOffset + renderStyle.getWidthLevel3()) {
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glVertex3f(fArTargetWorldCoordinates[0], fHeight, 0);
 			gl.glVertex3f(fArTargetWorldCoordinates[0], fHeight - 0.1f, 0);
@@ -3534,7 +3290,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		gl.glLineWidth(6f);
 		gl.glColor3f(1, 0, 0);
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(fPosDropMarker, fHeight, 0);
 		gl.glVertex3f(fPosDropMarker, fHeight - 0.2f, 0);
 		gl.glEnd();
@@ -3571,12 +3327,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		float fHeightSample = (fHeight - 0.4f) / iNumberSample;
 
-		fArTargetWorldCoordinates = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-						currentPoint.y);
+		fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+				currentPoint.y);
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		RecordGroupList groupList = recordVA.getGroupList();
 
@@ -3616,7 +3370,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		gl.glLineWidth(6f);
 		gl.glColor3f(1, 0, 0);
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(0, fPosDropMarker, 0);
 		gl.glVertex3f(0.2f, fPosDropMarker, 0);
 		gl.glEnd();
@@ -3645,19 +3399,16 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float[] fArTargetWorldCoordinates = new float[3];
 		float[] fArDraggedPoint = new float[3];
 
-		fArTargetWorldCoordinates = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-						currentPoint.y);
+		fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+				currentPoint.y);
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		if (glMouseListener.wasMouseReleased()) {
 			// bSplitGroupGene = false;
 
-			fArDraggedPoint = GLCoordinateUtils
-					.convertWindowCoordinatesToWorldCoordinates(gl, DraggingPoint.x,
-							DraggingPoint.y);
+			fArDraggedPoint = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, DraggingPoint.x,
+					DraggingPoint.y);
 
 			float fYPosDrag = fArDraggedPoint[1] - 0.4f;
 			float fYPosRelease = fArTargetWorldCoordinates[1] - 0.4f;
@@ -3666,10 +3417,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			int iNrSamples = recordVA.size();
 			float fHeightSample = fHeight / iNrSamples;
 
-			int iFirstSample = iNrSamples
-					- (int) Math.floor((double) fYPosDrag / fHeightSample);
-			int iLastSample = iNrSamples
-					- (int) Math.ceil((double) fYPosRelease / fHeightSample);
+			int iFirstSample = iNrSamples - (int) Math.floor((double) fYPosDrag / fHeightSample);
+			int iLastSample = iNrSamples - (int) Math.ceil((double) fYPosRelease / fHeightSample);
 
 			if (recordVA.getGroupList().split(iGroupToSplit, iFirstSample, iLastSample) == false)
 				System.out.println("Operation not allowed!!");
@@ -3687,19 +3436,16 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float[] fArTargetWorldCoordinates = new float[3];
 		float[] fArDraggedPoint = new float[3];
 
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
-				.getVirtualArray();
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
-		fArTargetWorldCoordinates = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-						currentPoint.y);
+		fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+				currentPoint.y);
 
 		if (glMouseListener.wasMouseReleased()) {
 			// bSplitGroupExp = false;
 
-			fArDraggedPoint = GLCoordinateUtils
-					.convertWindowCoordinatesToWorldCoordinates(gl, DraggingPoint.x,
-							DraggingPoint.y);
+			fArDraggedPoint = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, DraggingPoint.x,
+					DraggingPoint.y);
 
 			float fXPosDrag = fArDraggedPoint[0] - 0.7f;
 			float fXPosRelease = fArTargetWorldCoordinates[0] - 0.7f;
@@ -3711,15 +3457,13 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			int iFirstSample = (int) Math.floor((double) fXPosDrag / fWidthSample);
 			int iLastSample = (int) Math.ceil((double) fXPosRelease / fWidthSample);
 
-			if (dimensionVA.getGroupList()
-					.split(iGroupToSplit, iLastSample, iFirstSample) == false)
+			if (dimensionVA.getGroupList().split(iGroupToSplit, iLastSample, iFirstSample) == false)
 				System.out.println("Operation not allowed!!");
 		}
 	}
 
 	/**
-	 * Function used for updating position of block (block of elements rendered
-	 * in level 2) in case of dragging
+	 * Function used for updating position of block (block of elements rendered in level 2) in case of dragging
 	 *
 	 * @param gl
 	 */
@@ -3729,9 +3473,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float[] fArTargetWorldCoordinates = new float[3];
 		int iselElement;
 
-		fArTargetWorldCoordinates = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-						currentPoint.y);
+		fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+				currentPoint.y);
 
 		float fTextureHeight = viewFrustum.getHeight() - 0.6f;
 		float fStep = fTextureHeight / numberOfRecords;
@@ -3741,26 +3484,18 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (iSamplesLevel2 % 2 == 0) {
 			if ((iselElement - (int) Math.floor((double) iSamplesLevel2 / 2) + 1) >= 0
 					&& (iselElement + (int) Math.floor((double) iSamplesLevel2 / 2)) < numberOfRecords) {
-				iFirstSampleLevel1 = iselElement
-						- (int) Math.floor((double) iSamplesLevel2 / 2) + 1;
-				fPosCursorFirstElementLevel1 = fTextureHeight
-						- (iFirstSampleLevel1 * fStep);
-				iLastSampleLevel1 = iselElement
-						+ (int) Math.floor((double) iSamplesLevel2 / 2);
-				fPosCursorLastElementLevel1 = fTextureHeight
-						- ((iLastSampleLevel1 + 1) * fStep);
+				iFirstSampleLevel1 = iselElement - (int) Math.floor((double) iSamplesLevel2 / 2) + 1;
+				fPosCursorFirstElementLevel1 = fTextureHeight - (iFirstSampleLevel1 * fStep);
+				iLastSampleLevel1 = iselElement + (int) Math.floor((double) iSamplesLevel2 / 2);
+				fPosCursorLastElementLevel1 = fTextureHeight - ((iLastSampleLevel1 + 1) * fStep);
 			}
 		} else {
 			if ((iselElement - (int) Math.ceil((double) iSamplesLevel2 / 2)) >= 0
 					&& (iselElement + (int) Math.floor((double) iSamplesLevel2 / 2)) < numberOfRecords) {
-				iFirstSampleLevel1 = iselElement
-						- (int) Math.ceil((double) iSamplesLevel2 / 2);
-				fPosCursorFirstElementLevel1 = fTextureHeight
-						- (iFirstSampleLevel1 * fStep);
-				iLastSampleLevel1 = iselElement
-						+ (int) Math.floor((double) iSamplesLevel2 / 2);
-				fPosCursorLastElementLevel1 = fTextureHeight
-						- ((iLastSampleLevel1 + 1) * fStep);
+				iFirstSampleLevel1 = iselElement - (int) Math.ceil((double) iSamplesLevel2 / 2);
+				fPosCursorFirstElementLevel1 = fTextureHeight - (iFirstSampleLevel1 * fStep);
+				iLastSampleLevel1 = iselElement + (int) Math.floor((double) iSamplesLevel2 / 2);
+				fPosCursorLastElementLevel1 = fTextureHeight - ((iLastSampleLevel1 + 1) * fStep);
 			}
 		}
 
@@ -3775,8 +3510,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	/**
-	 * Function used for updating position of block (block of elements rendered
-	 * in level 3) in case of dragging
+	 * Function used for updating position of block (block of elements rendered in level 3) in case of dragging
 	 *
 	 * @param gl
 	 */
@@ -3786,9 +3520,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		float[] fArTargetWorldCoordinates = new float[3];
 		int iselElement;
 
-		fArTargetWorldCoordinates = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-						currentPoint.y);
+		fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+				currentPoint.y);
 
 		float fTextureHeight = viewFrustum.getHeight() - 0.6f;
 		float fStep = fTextureHeight / iSamplesLevel2;
@@ -3798,26 +3531,18 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (iSamplesPerHeatmap % 2 == 0) {
 			if ((iselElement - (int) Math.floor((double) iSamplesPerHeatmap / 2) + 1) >= 0
 					&& (iselElement + (int) Math.floor((double) iSamplesPerHeatmap / 2)) < iSamplesLevel2) {
-				iFirstSampleLevel2 = iselElement
-						- (int) Math.floor((double) iSamplesPerHeatmap / 2) + 1;
-				fPosCursorFirstElementLevel2 = fTextureHeight
-						- (iFirstSampleLevel2 * fStep);
-				iLastSampleLevel2 = iselElement
-						+ (int) Math.floor((double) iSamplesPerHeatmap / 2);
-				fPosCursorLastElementLevel2 = fTextureHeight
-						- ((iLastSampleLevel2 + 1) * fStep);
+				iFirstSampleLevel2 = iselElement - (int) Math.floor((double) iSamplesPerHeatmap / 2) + 1;
+				fPosCursorFirstElementLevel2 = fTextureHeight - (iFirstSampleLevel2 * fStep);
+				iLastSampleLevel2 = iselElement + (int) Math.floor((double) iSamplesPerHeatmap / 2);
+				fPosCursorLastElementLevel2 = fTextureHeight - ((iLastSampleLevel2 + 1) * fStep);
 			}
 		} else {
 			if ((iselElement - (int) Math.ceil((double) iSamplesPerHeatmap / 2)) >= 0
 					&& (iselElement + (int) Math.floor((double) iSamplesPerHeatmap / 2)) < iSamplesLevel2) {
-				iFirstSampleLevel2 = iselElement
-						- (int) Math.ceil((double) iSamplesPerHeatmap / 2);
-				fPosCursorFirstElementLevel2 = fTextureHeight
-						- (iFirstSampleLevel2 * fStep);
-				iLastSampleLevel2 = iselElement
-						+ (int) Math.floor((double) iSamplesPerHeatmap / 2);
-				fPosCursorLastElementLevel2 = fTextureHeight
-						- ((iLastSampleLevel2 + 1) * fStep);
+				iFirstSampleLevel2 = iselElement - (int) Math.ceil((double) iSamplesPerHeatmap / 2);
+				fPosCursorFirstElementLevel2 = fTextureHeight - (iFirstSampleLevel2 * fStep);
+				iLastSampleLevel2 = iselElement + (int) Math.floor((double) iSamplesPerHeatmap / 2);
+				fPosCursorLastElementLevel2 = fTextureHeight - ((iLastSampleLevel2 + 1) * fStep);
 			}
 		}
 
@@ -3842,9 +3567,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		int iselElement;
 		int iNrSamples;
 
-		fArTargetWorldCoordinates = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-						currentPoint.y);
+		fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+				currentPoint.y);
 
 		float fTextureHeight = viewFrustum.getHeight() - 0.6f;
 		float fStep = fTextureHeight / numberOfRecords;
@@ -3852,10 +3576,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		// cursor for iFirstElement
 		if (iDraggedCursorLevel1 == 1) {
-			if (fYPosMouse > fPosCursorLastElementLevel1
-					&& fYPosMouse <= viewFrustum.getHeight() - 0.6f) {
-				iselElement = (int) Math.floor((double) (fTextureHeight - fYPosMouse)
-						/ fStep);
+			if (fYPosMouse > fPosCursorLastElementLevel1 && fYPosMouse <= viewFrustum.getHeight() - 0.6f) {
+				iselElement = (int) Math.floor((double) (fTextureHeight - fYPosMouse) / fStep);
 				iNrSamples = iLastSampleLevel1 - iselElement + 1;
 				if (iNrSamples >= MIN_SAMPLES_LEVEL_2 && iNrSamples < MAX_SAMPLES_LEVEL_2) {
 					fPosCursorFirstElementLevel1 = fYPosMouse;
@@ -3872,8 +3594,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		// cursor for iLastElement
 		if (iDraggedCursorLevel1 == 2) {
 			if (fYPosMouse < fPosCursorFirstElementLevel1 && fYPosMouse >= 0.0f) {
-				iselElement = (int) Math.floor((double) (fTextureHeight - fYPosMouse)
-						/ fStep);
+				iselElement = (int) Math.floor((double) (fTextureHeight - fYPosMouse) / fStep);
 				iNrSamples = iselElement - iFirstSampleLevel1 + 1;
 				if (iNrSamples >= MIN_SAMPLES_LEVEL_2 && iNrSamples < MAX_SAMPLES_LEVEL_2) {
 					fPosCursorLastElementLevel1 = fYPosMouse;
@@ -3909,9 +3630,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		int iselElement;
 		int iNrSamples;
 
-		fArTargetWorldCoordinates = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-						currentPoint.y);
+		fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+				currentPoint.y);
 
 		float fTextureHeight = viewFrustum.getHeight() - 0.6f;
 		float fStep = fTextureHeight / iSamplesLevel2;
@@ -3919,13 +3639,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		// cursor for iFirstElement
 		if (iDraggedCursorLevel2 == 1) {
-			if (fYPosMouse > fPosCursorLastElementLevel2
-					&& fYPosMouse <= viewFrustum.getHeight() - 0.6f) {
-				iselElement = (int) Math.floor((double) (fTextureHeight - fYPosMouse)
-						/ fStep);
+			if (fYPosMouse > fPosCursorLastElementLevel2 && fYPosMouse <= viewFrustum.getHeight() - 0.6f) {
+				iselElement = (int) Math.floor((double) (fTextureHeight - fYPosMouse) / fStep);
 				iNrSamples = iLastSampleLevel2 - iselElement + 1;
-				if (iNrSamples >= MIN_SAMPLES_PER_HEATMAP
-						&& iNrSamples < MAX_SAMPLES_PER_HEATMAP) {
+				if (iNrSamples >= MIN_SAMPLES_PER_HEATMAP && iNrSamples < MAX_SAMPLES_PER_HEATMAP) {
 					fPosCursorFirstElementLevel2 = fYPosMouse;
 					iFirstSampleLevel2 = iselElement;
 					iSamplesPerHeatmap = iLastSampleLevel2 - iFirstSampleLevel2 + 1;
@@ -3940,11 +3657,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		// cursor for iLastElement
 		if (iDraggedCursorLevel2 == 2) {
 			if (fYPosMouse < fPosCursorFirstElementLevel2 && fYPosMouse >= 0.0f) {
-				iselElement = (int) Math.floor((double) (fTextureHeight - fYPosMouse)
-						/ fStep);
+				iselElement = (int) Math.floor((double) (fTextureHeight - fYPosMouse) / fStep);
 				iNrSamples = iselElement - iFirstSampleLevel2 + 1;
-				if (iNrSamples >= MIN_SAMPLES_PER_HEATMAP
-						&& iNrSamples < MAX_SAMPLES_PER_HEATMAP) {
+				if (iNrSamples >= MIN_SAMPLES_PER_HEATMAP && iNrSamples < MAX_SAMPLES_PER_HEATMAP) {
 					fPosCursorLastElementLevel2 = fYPosMouse;
 					iLastSampleLevel2 = iselElement;
 					iSamplesPerHeatmap = iLastSampleLevel2 - iFirstSampleLevel2 + 1;
@@ -3975,16 +3690,13 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int pickingID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int pickingID, Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
 
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
-				.getVirtualArray();
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		switch (pickingType) {
 
@@ -4021,10 +3733,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				// bEnableMerge,
 				// bEnableInterchange, bEnableExport);
 				groupContextMenuItemContainer.setDataDomain(dataDomain);
-				groupContextMenuItemContainer.setData(recordIDType,
-						recordVA.getIDsOfGroup(pickingID));
-				contextMenuCreator
-						.addContextMenuItemContainer(groupContextMenuItemContainer);
+				groupContextMenuItemContainer.setData(recordIDType, recordVA.getIDsOfGroup(pickingID));
+				contextMenuCreator.addContextMenuItemContainer(groupContextMenuItemContainer);
 
 				if (recordVA.getGroupList().get(pickingID).getSelectionType() == SelectionType.SELECTION)
 					break;
@@ -4093,6 +3803,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				// .getNrElements());
 				// setDisplayListDirty();
 				break;
+			default:
+				break;
 			}
 			break;
 
@@ -4101,9 +3813,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			switch (pickingMode) {
 			case RIGHT_CLICKED:
 
-				boolean bEnableInterchange = false;
-				boolean bEnableMerge = false;
-				boolean bEnableExport = true;
+				// boolean bEnableInterchange = false;
+				// boolean bEnableMerge = false;
+				// boolean bEnableExport = true;
 				int iNrSelectedGroups = 0;
 
 				DimensionGroupList tempGroupList = dimensionVA.getGroupList();
@@ -4113,13 +3825,13 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 						iNrSelectedGroups++;
 				}
 
-				if (iNrSelectedGroups >= 2) {
+				// if (iNrSelectedGroups >= 2) {
 
-					bEnableMerge = true;
+				// bEnableMerge = true;
 
-					if (iNrSelectedGroups == 2)
-						bEnableInterchange = true;
-				}
+				// if (iNrSelectedGroups == 2)
+				// bEnableInterchange = true;
+				// }
 
 				// FIXME CONTEXT MENU
 				// GroupContextMenuItemContainer groupContextMenuItemContainer =
@@ -4182,6 +3894,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				// }
 				setDisplayListDirty();
 				break;
+			default:
+				break;
 			}
 			break;
 		// handle click on button for setting EHM in focus
@@ -4196,6 +3910,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				glDimensionDendrogramView.setRedrawDendrogram();
 				setDisplayListDirty();
 				break;
+			default:
+				break;
 			}
 			break;
 
@@ -4204,12 +3920,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			switch (pickingMode) {
 
 			case CLICKED:
-				dimensionDendrogramActive = dimensionDendrogramActive == true ? false
-						: true;
+				dimensionDendrogramActive = dimensionDendrogramActive == true ? false : true;
 
 				if (dimensionDendrogramActive == true) {
-					float highDendro = glDimensionDendrogramView.getViewFrustum()
-							.getHeight();
+					float highDendro = glDimensionDendrogramView.getViewFrustum().getHeight();
 
 					if (highDendro > 0.5 && highDendro <= 1.5f)
 						renderStyle.setHeightExperimentDendrogram(highDendro);
@@ -4218,10 +3932,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 				} else {
 					float fPosCut = glDimensionDendrogramView.getPositionOfCut();
-					float highDendro = glDimensionDendrogramView.getViewFrustum()
-							.getHeight();
-					renderStyle
-							.setHeightExperimentDendrogram(highDendro - fPosCut + 0.1f);
+					float highDendro = glDimensionDendrogramView.getViewFrustum().getHeight();
+					renderStyle.setHeightExperimentDendrogram(highDendro - fPosCut + 0.1f);
 					dimensionDendrogramRenderCut = true;
 				}
 
@@ -4230,6 +3942,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				glRecordDendrogramView.setRedrawDendrogram();
 				glHeatMapView.setDisplayListDirty();
 				setDisplayListDirty();
+				break;
+			default:
 				break;
 			}
 			break;
@@ -4242,8 +3956,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				recordDendrogramActive = recordDendrogramActive == true ? false : true;
 
 				if (recordDendrogramActive == true) {
-					float widthDendro = glRecordDendrogramView.getViewFrustum()
-							.getWidth();
+					float widthDendro = glRecordDendrogramView.getViewFrustum().getWidth();
 
 					if (widthDendro > 0.5 && widthDendro <= 1.7f)
 						renderStyle.setWidthGeneDendrogram(widthDendro - 0.1f);
@@ -4260,6 +3973,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				glDimensionDendrogramView.setRedrawDendrogram();
 				glHeatMapView.setDisplayListDirty();
 				setDisplayListDirty();
+				break;
+			default:
 				break;
 			}
 			break;
@@ -4283,6 +3998,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				iDraggedCursorLevel1 = pickingID;
 				setDisplayListDirty();
 				break;
+			default:
+				break;
 			}
 			break;
 
@@ -4303,6 +4020,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				bDisableCursorDraggingLevel1 = true;
 				iDraggedCursorLevel1 = pickingID;
 				setDisplayListDirty();
+				break;
+			default:
 				break;
 			}
 			break;
@@ -4372,6 +4091,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				break;
 			}
 			break;
+		default:
+			break;
 
 		// // handle click on level 3 (EHM)
 		// case HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION:
@@ -4404,8 +4125,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
-			IDType idType, int iDimensionIndex) {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType,
+			int iDimensionIndex) {
 
 		return null;
 	}
@@ -4442,10 +4163,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	@SuppressWarnings("unused")
 	private void activateGroupHandling() {
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
-				.getVirtualArray();
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		if (recordVA.getGroupList() == null) {
 			RecordGroupList groupList = new RecordGroupList();
@@ -4508,8 +4227,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedHierarchicalHeatMapView serializedForm = new SerializedHierarchicalHeatMapView(
-				this);
+		SerializedHierarchicalHeatMapView serializedForm = new SerializedHierarchicalHeatMapView(this);
 		return serializedForm;
 	}
 
@@ -4517,8 +4235,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	public void handleInterchangeContentGroups() {
 		Tree<ClusterNode> tree = null;
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 		tree = tablePerspective.getRecordPerspective().getTree();
 		RecordGroupList groupList = recordVA.getGroupList();
 
@@ -4561,8 +4278,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				Shell shell = new Shell();
 				MessageBox messageBox = new MessageBox(shell, SWT.CANCEL);
 				messageBox.setText("Warning");
-				messageBox
-						.setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
+				messageBox.setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
 				messageBox.open();
 			}
 		});
@@ -4574,33 +4290,27 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		contentGroupExportingListener = new RecordGroupExportingListener();
 		contentGroupExportingListener.setHandler(this);
-		eventPublisher.addListener(ExportContentGroupsEvent.class,
-				contentGroupExportingListener);
+		eventPublisher.addListener(ExportContentGroupsEvent.class, contentGroupExportingListener);
 
 		dimensionGroupExportingListener = new DimensionGroupExportingListener();
 		dimensionGroupExportingListener.setHandler(this);
-		eventPublisher.addListener(ExportDimensionGroupsEvent.class,
-				dimensionGroupExportingListener);
+		eventPublisher.addListener(ExportDimensionGroupsEvent.class, dimensionGroupExportingListener);
 
 		contentGroupInterchangingListener = new RecordGroupInterChangingActionListener();
 		contentGroupInterchangingListener.setHandler(this);
-		eventPublisher.addListener(InterchangeContentGroupsEvent.class,
-				contentGroupInterchangingListener);
+		eventPublisher.addListener(InterchangeContentGroupsEvent.class, contentGroupInterchangingListener);
 
 		dimensionGroupInterchangingListener = new DimensionGroupInterChangingActionListener();
 		dimensionGroupInterchangingListener.setHandler(this);
-		eventPublisher.addListener(InterchangeDimensionGroupsEvent.class,
-				dimensionGroupInterchangingListener);
+		eventPublisher.addListener(InterchangeDimensionGroupsEvent.class, dimensionGroupInterchangingListener);
 
 		contentGroupMergingListener = new RecordGroupMergingActionListener();
 		contentGroupMergingListener.setHandler(this);
-		eventPublisher.addListener(MergeContentGroupsEvent.class,
-				contentGroupMergingListener);
+		eventPublisher.addListener(MergeContentGroupsEvent.class, contentGroupMergingListener);
 
 		dimensionGroupMergingListener = new DimensionGroupMergingActionListener();
 		dimensionGroupMergingListener.setHandler(this);
-		eventPublisher.addListener(MergeDimensionGroupsEvent.class,
-				dimensionGroupMergingListener);
+		eventPublisher.addListener(MergeDimensionGroupsEvent.class, dimensionGroupMergingListener);
 
 		updateViewListener = new UpdateColorMappingListener();
 		updateViewListener.setHandler(this);
@@ -4608,13 +4318,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		clusterNodeMouseOverListener = new ClusterNodeSelectionListener();
 		clusterNodeMouseOverListener.setHandler(this);
-		eventPublisher.addListener(ClusterNodeSelectionEvent.class,
-				clusterNodeMouseOverListener);
+		eventPublisher.addListener(ClusterNodeSelectionEvent.class, clusterNodeMouseOverListener);
 
 		newGroupInfoActionListener = new NewContentGroupInfoActionListener();
 		newGroupInfoActionListener.setHandler(this);
-		eventPublisher.addListener(NewRecordGroupInfoEvent.class,
-				newGroupInfoActionListener);
+		eventPublisher.addListener(NewRecordGroupInfoEvent.class, newGroupInfoActionListener);
 
 	}
 
@@ -4891,14 +4599,12 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	public void handleNewContentGroupInfo(String perspectiveID,
-			RecordGroupList groupList, boolean bDeleteTree) {
+	public void handleNewContentGroupInfo(String perspectiveID, RecordGroupList groupList, boolean bDeleteTree) {
 
 		Tree<ClusterNode> tree = null;
 
 		if (perspectiveID.equals(tablePerspective.getRecordPerspective().getPerspectiveID())) {
-			tablePerspective.getRecordPerspective().getVirtualArray()
-					.setGroupList(groupList);
+			tablePerspective.getRecordPerspective().getVirtualArray().setGroupList(groupList);
 			tree = tablePerspective.getRecordPerspective().getTree();
 		} else {
 			return;
@@ -4928,10 +4634,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	@Override
 	public void handleExportContentGroups() {
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		ArrayList<Integer> genesToExport = new ArrayList<Integer>();
 		ArrayList<Integer> experimentsToExport = new ArrayList<Integer>();
@@ -4967,10 +4671,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	@Override
 	public void handleExportDimensionGroups() {
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		ArrayList<Integer> genesToExport = new ArrayList<Integer>();
 		ArrayList<Integer> experimentsToExport = new ArrayList<Integer>();
@@ -5004,8 +4706,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	}
 
-	private void openExportDialog(final ArrayList<Integer> genesToExport,
-			final ArrayList<Integer> experimentsToExport) {
+	private void openExportDialog(final ArrayList<Integer> genesToExport, final ArrayList<Integer> experimentsToExport) {
 
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 
@@ -5061,8 +4762,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			int iLastSelected = selGroups.size() - 1;
 
 			// merge last and the one before last
-			if (groupList.merge(va, selGroups.get(iLastSelected - 1),
-					selGroups.get(iLastSelected)) == false) {
+			if (groupList.merge(va, selGroups.get(iLastSelected - 1), selGroups.get(iLastSelected)) == false) {
 				System.out.println("Problem during merge!!!");
 				return;
 			}
@@ -5076,8 +4776,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	@Override
 	public void handleMergeDimensionGroups() {
-		DimensionVirtualArray va = tablePerspective.getDimensionPerspective()
-				.getVirtualArray();
+		DimensionVirtualArray va = tablePerspective.getDimensionPerspective().getVirtualArray();
 		Tree<ClusterNode> tree = tablePerspective.getDimensionPerspective().getTree();
 
 		DimensionGroupList groupList = va.getGroupList();
@@ -5110,8 +4809,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			int iLastSelected = selGroups.size() - 1;
 
 			// merge last and the one before last
-			if (groupList.merge(va, selGroups.get(iLastSelected - 1),
-					selGroups.get(iLastSelected)) == false) {
+			if (groupList.merge(va, selGroups.get(iLastSelected - 1), selGroups.get(iLastSelected)) == false) {
 				System.out.println("Problem during merge!!!");
 				return;
 			}

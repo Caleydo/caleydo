@@ -586,7 +586,7 @@ public class IDMappingManager {
 			path = DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
 		}
 		catch (IllegalArgumentException e) {
-			Logger.log(new Status(Status.ERROR, this.toString(), "One of the data types " + source + " and "
+			Logger.log(new Status(IStatus.ERROR, this.toString(), "One of the data types " + source + " and "
 					+ destination + " is not registered with this IDMappingManager."));
 
 			// data type is not in the mapping
@@ -594,7 +594,7 @@ public class IDMappingManager {
 		}
 
 		if (path == null) {
-			Logger.log(new Status(Status.ERROR, this.toString(), "No mapping path found between " + source + " and "
+			Logger.log(new Status(IStatus.ERROR, this.toString(), "No mapping path found between " + source + " and "
 					+ destination));
 			return null;
 		}

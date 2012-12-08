@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,13 +23,14 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 
 /**
  * VisLink offers static and non-static methods to render a connection line.
- * 
+ *
  * @author Oliver Pimas
  * @version 2009-10-21
  */
@@ -40,7 +41,7 @@ public class VisLink {
 
 	/**
 	 * Constructor (for straight lines)
-	 * 
+	 *
 	 * @param srcPoint
 	 *            Specifies the source point
 	 * @param dstPoint
@@ -63,7 +64,7 @@ public class VisLink {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param controlPoints
 	 *            Specifies the set of control points of which the spline is generated.
 	 * @param offset
@@ -95,7 +96,7 @@ public class VisLink {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param controlPoints
 	 *            Specifies the set of control points of which the spline is generated.
 	 * @param offset
@@ -133,7 +134,7 @@ public class VisLink {
 	 * Creates a visual link. Static method. When the number of control points is 2, this method renders a
 	 * straight line. If the number of control points is greater then 2, a curved line (using NURBS) is
 	 * rendered.
-	 * 
+	 *
 	 * @param gl
 	 *            The GL2 object
 	 * @param controlPoints
@@ -162,7 +163,7 @@ public class VisLink {
 
 	/**
 	 * Creates a straight visual link. Static method.
-	 * 
+	 *
 	 * @param gl
 	 *            The GL2 object
 	 * @param srcPoint
@@ -179,7 +180,7 @@ public class VisLink {
 	/**
 	 * Called for creating a curved visual link. This method is not recommended when drawing visual links with
 	 * higher width, which would cause v-shaped gaps to appear at the intersections.
-	 * 
+	 *
 	 * @param gl
 	 *            The GL2 object
 	 * @param shadow
@@ -190,7 +191,7 @@ public class VisLink {
 		if (shadow == true) {
 			gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
 			gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2.0f);
-			gl.glBegin(GL2.GL_LINE_STRIP);
+			gl.glBegin(GL.GL_LINE_STRIP);
 			for (int i = 0; i < linePoints.size(); i++)
 				gl.glVertex3f(linePoints.get(i).x(), linePoints.get(i).y(), linePoints.get(i).z());
 			gl.glEnd();
@@ -201,7 +202,7 @@ public class VisLink {
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
 
 		// the spline
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = 0; i < linePoints.size(); i++)
 			gl.glVertex3f(linePoints.get(i).x(), linePoints.get(i).y(), linePoints.get(i).z());
 		gl.glEnd();
@@ -209,7 +210,7 @@ public class VisLink {
 
 	/**
 	 * Called for creating a straight visual link.
-	 * 
+	 *
 	 * @param gl
 	 *            The GL2 object
 	 * @param vecSrcPoint
@@ -225,7 +226,7 @@ public class VisLink {
 		if (shadow == true) {
 			gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
 			gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2.0f);
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z() - 0.001f);
 			gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z() - 0.001f);
 			gl.glEnd();
@@ -236,7 +237,7 @@ public class VisLink {
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
 
 		// the line
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z());
 		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z());
 		gl.glEnd();
@@ -244,7 +245,7 @@ public class VisLink {
 
 	/**
 	 * Generates vertices for a polygon line from a given set of curve points.
-	 * 
+	 *
 	 * @param gl
 	 *            The GL2 Object
 	 * @param curvePoints
@@ -294,7 +295,7 @@ public class VisLink {
 
 	/**
 	 * Generates a vector which is from the viewpoint normal on the line.
-	 * 
+	 *
 	 * @param v1
 	 *            point k-1
 	 * @param v2
@@ -313,7 +314,7 @@ public class VisLink {
 	/**
 	 * Generates a vector which is from the viewpoint normal on the line. This direction vector is inverse to
 	 * the one returned by directionVec(...)
-	 * 
+	 *
 	 * @param v1
 	 *            point k-1
 	 * @param v2
@@ -333,7 +334,7 @@ public class VisLink {
 	 * Checks if the given array is a valid rgba value. If the values are < 0 or > 1 they are capped to this
 	 * limits. If the array contains less then 4 values, IllegalArgumentException is thrown. If the array
 	 * contains more then 4 values, the values beyond the 4th are ignored.
-	 * 
+	 *
 	 * @param rgba
 	 *            Specifies the array to be checked
 	 * @throws IllegalArgumentException
@@ -352,7 +353,7 @@ public class VisLink {
 
 	/**
 	 * Returns the number of line-segments
-	 * 
+	 *
 	 * @return The number of line-segments
 	 */
 	public int numberOfSegments() {
@@ -362,7 +363,7 @@ public class VisLink {
 
 	/**
 	 * Returns the number of line-points
-	 * 
+	 *
 	 * @return The number of line-points
 	 */
 	public int numberOfLinePoints() {
@@ -371,7 +372,7 @@ public class VisLink {
 
 	/**
 	 * Renders a polygon-line with the given attributes
-	 * 
+	 *
 	 * @param gl
 	 *            The GL-object
 	 * @param controlPoints
@@ -418,7 +419,7 @@ public class VisLink {
 
 	/**
 	 * Draws a polygon line with the given attributes
-	 * 
+	 *
 	 * @param gl
 	 *            The GL-object
 	 * @param width
@@ -494,7 +495,7 @@ public class VisLink {
 
 	/**
 	 * Draws a point to smooth the start and end of the line
-	 * 
+	 *
 	 * @param gl
 	 *            The GL-object
 	 * @param point
@@ -505,14 +506,14 @@ public class VisLink {
 	void drawRoundedEndSegment(GL2 gl, Vec3f point, float width) {
 		gl.glPointSize(width * 3); // FIXME: width calculation to be corrected
 		// gl.glPointSize( (calculateEuclideanDistance(vertices.get(0), vertices.get(1))) * 100);
-		gl.glBegin(GL2.GL_POINTS);
+		gl.glBegin(GL.GL_POINTS);
 		gl.glVertex3f(point.x(), point.y(), point.z());
 		gl.glEnd();
 	}
 
 	/**
 	 * Draws the first n segments of a polygon line with the given attributes
-	 * 
+	 *
 	 * @param gl
 	 *            The GL-object
 	 * @param width
@@ -600,7 +601,7 @@ public class VisLink {
 	/**
 	 * Draws the first n segments of a polygon line with the given attributes in inverse direction (so it
 	 * actually draws the last n segments)
-	 * 
+	 *
 	 * @param gl
 	 *            The GL-object
 	 * @param width
@@ -686,7 +687,7 @@ public class VisLink {
 
 	/**
 	 * Calculates the euclidean distance between two points
-	 * 
+	 *
 	 * @param srcPoint
 	 *            The source point
 	 * @param dstPoint
@@ -1096,13 +1097,13 @@ public class VisLink {
 	// texture.enable();
 	// texture.bind();
 	//
-	// gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_REPLACE);
-	// // gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_MODULATE);
-	// // gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_BLEND);
-	// // gl.glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_DECAL);
+	// gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
+	// // gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL2.GL_MODULATE);
+	// // gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_BLEND);
+	// // gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL2.GL_DECAL);
 	//
-	// // gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_REPEAT);
-	// // gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
+	// // gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL2.GL_REPEAT);
+	// // gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
 	// TextureCoords texCoords = texture.getImageTexCoords();
 	//
 	// // the spline
@@ -1129,22 +1130,22 @@ public class VisLink {
 	// halo[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 2;
 	//
 	// // int[] curBlendFunc = new int[5];
-	// // gl.glGetIntegerv(GL2.GL_BLEND_SRC_RGB, curBlendFunc, 0);
-	// // gl.glGetIntegerv(GL2.GL_BLEND_DST_RGB, curBlendFunc, 1);
-	// // gl.glGetIntegerv(GL2.GL_BLEND_SRC_ALPHA, curBlendFunc, 2);
-	// // gl.glGetIntegerv(GL2.GL_BLEND_DST_ALPHA, curBlendFunc, 3);
-	// // gl.glGetIntegerv(GL2.GL_BLEND_EQUATION, curBlendFunc, 4);
+	// // gl.glGetIntegerv(GL.GL_BLEND_SRC_RGB, curBlendFunc, 0);
+	// // gl.glGetIntegerv(GL.GL_BLEND_DST_RGB, curBlendFunc, 1);
+	// // gl.glGetIntegerv(GL.GL_BLEND_SRC_ALPHA, curBlendFunc, 2);
+	// // gl.glGetIntegerv(GL.GL_BLEND_DST_ALPHA, curBlendFunc, 3);
+	// // gl.glGetIntegerv(GL.GL_BLEND_EQUATION, curBlendFunc, 4);
 	//
 	// // System.out.println(curBlendFunc[0] + "  " + curBlendFunc[1] + "  " + curBlendFunc[2] + "  " +
 	// curBlendFunc[3]);
 	//
-	// // gl.glBlendFunc(GL2.GL_SRC_ALPHA_SATURATE, GL2.GL_ONE);
-	// // gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+	// // gl.glBlendFunc(GL.GL_SRC_ALPHA_SATURATE, GL.GL_ONE);
+	// // gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 	// // gl.glBlendColor(halo[0], halo[1], halo[2], halo[3]);
-	// // gl.glBlendFuncSeparate(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA, GL2.GL_SRC_ALPHA,
-	// GL2.GL_ONE_MINUS_SRC_ALPHA);
-	// // gl.glBlendFuncSeparate(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA, GL2.GL_SRC_ALPHA,
-	// GL2.GL_ONE_MINUS_SRC_ALPHA); // standard
+	// // gl.glBlendFuncSeparate(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA, GL.GL_SRC_ALPHA,
+	// GL.GL_ONE_MINUS_SRC_ALPHA);
+	// // gl.glBlendFuncSeparate(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA, GL.GL_SRC_ALPHA,
+	// GL.GL_ONE_MINUS_SRC_ALPHA); // standard
 	//
 	// // gl.glLogicOp(GL2.GL_SET);
 	// // gl.glBlendEquation(GL2.GL_LOGIC_OP);
@@ -1212,12 +1213,12 @@ public class VisLink {
 	//
 	// int[] txtnumber = new int[1];
 	// gl.glGenTextures(1, txtnumber, 0); // Create 1 Texture
-	// gl.glBindTexture(GL2.GL_TEXTURE_2D, txtnumber[0]); // Bind The Texture
-	// gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, GL2.GL_LUMINANCE, TEXTURE_SIZE, TEXTURE_SIZE, 0,
+	// gl.glBindTexture(GL.GL_TEXTURE_2D, txtnumber[0]); // Bind The Texture
+	// gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL2.GL_LUMINANCE, TEXTURE_SIZE, TEXTURE_SIZE, 0,
 	// GL2.GL_LUMINANCE,
 	// GL2.GL_UNSIGNED_BYTE, data); // Build Texture Using Information In data
-	// gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR);
-	// gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
+	// gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+	// gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
 	//
 	// return txtnumber[0]; // Return The Texture ID
 	// }
@@ -1255,13 +1256,13 @@ public class VisLink {
 	// gl.glViewport(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
 	//
 	// gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
-	// gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+	// gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 	//
 	// polygonLine(gl, false);
 	//
 	// // Copy Our ViewPort To The Blur Texture (From 0,0 To 128,128... No Border)
-	// gl.glBindTexture(GL2.GL_TEXTURE_2D, blurTexture[0]);
-	// gl.glCopyTexImage2D(GL2.GL_TEXTURE_2D, 0, GL2.GL_LUMINANCE, 0, 0, TEXTURE_SIZE, TEXTURE_SIZE, 0);
+	// gl.glBindTexture(GL.GL_TEXTURE_2D, blurTexture[0]);
+	// gl.glCopyTexImage2D(GL.GL_TEXTURE_2D, 0, GL2.GL_LUMINANCE, 0, 0, TEXTURE_SIZE, TEXTURE_SIZE, 0);
 	// }
 	//
 	//
@@ -1277,14 +1278,14 @@ public class VisLink {
 	// float alpha = 0.2f; // Starting Alpha Value
 	//
 	// // Disable AutoTexture Coordinates
-	// // gl.glDisable(GL2.GL_TEXTURE_GEN_S);
-	// // gl.glDisable(GL2.GL_TEXTURE_GEN_T);
+	// // gl.glDisable(GL.GL_TEXTURE_GEN_S);
+	// // gl.glDisable(GL.GL_TEXTURE_GEN_T);
 	//
-	// gl.glEnable(GL2.GL_TEXTURE_2D); // Enable 2D Texture Mapping
-	// gl.glDisable(GL2.GL_DEPTH_TEST); // Disable Depth Testing
-	// gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE); // Set Blending Mode
-	// gl.glEnable(GL2.GL_BLEND); // Enable Blending
-	// gl.glBindTexture(GL2.GL_TEXTURE_2D, blurTexture[0]); // Bind To The Blur Texture
+	// gl.glEnable(GL.GL_TEXTURE_2D); // Enable 2D Texture Mapping
+	// gl.glDisable(GL.GL_DEPTH_TEST); // Disable Depth Testing
+	// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE); // Set Blending Mode
+	// gl.glEnable(GL.GL_BLEND); // Enable Blending
+	// gl.glBindTexture(GL.GL_TEXTURE_2D, blurTexture[0]); // Bind To The Blur Texture
 	// viewOrtho(gl); // Switch To An Ortho View
 	//
 	// float alphainc = alpha / times; // alphainc=0.2f / Times To Render Blur
@@ -1312,10 +1313,10 @@ public class VisLink {
 	//
 	// viewPerspective(gl); // Switch To A Perspective View
 	//
-	// gl.glEnable(GL2.GL_DEPTH_TEST); // Enable Depth Testing
-	// gl.glDisable(GL2.GL_TEXTURE_2D);
-	// gl.glDisable(GL2.GL_BLEND); // Disable Blending
-	// gl.glBindTexture(GL2.GL_TEXTURE_2D, 0); // Unbind The Blur Texture
+	// gl.glEnable(GL.GL_DEPTH_TEST); // Enable Depth Testing
+	// gl.glDisable(GL.GL_TEXTURE_2D);
+	// gl.glDisable(GL.GL_BLEND); // Disable Blending
+	// gl.glBindTexture(GL.GL_TEXTURE_2D, 0); // Unbind The Blur Texture
 	// }
 	//
 	//
@@ -1333,18 +1334,18 @@ public class VisLink {
 	// // for the fbo.
 	// int[] colorBuffer = new int[1];
 	// gl.glGenTextures(1, colorBuffer, 0); // Create 1 Texture
-	// gl.glBindTexture(GL2.GL_TEXTURE_2D, colorBuffer[0]); // Bind The Texture
-	// gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, GL2.GL_RGBA,TEXTURE_SIZE, TEXTURE_SIZE,0, GL2.GL_RGBA,
+	// gl.glBindTexture(GL.GL_TEXTURE_2D, colorBuffer[0]); // Bind The Texture
+	// gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA,TEXTURE_SIZE, TEXTURE_SIZE,0, GL.GL_RGBA,
 	// GL2.GL_UNSIGNED_BYTE, BufferUtil.newByteBuffer(TEXTURE_SIZE * TEXTURE_SIZE * 4));
-	// gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR);
-	// gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
+	// gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+	// gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
 	//
 	// // Attach the texture to the frame buffer as the color attachment. This
 	// // will cause the results of rendering to the FBO to be written in the blur texture.
-	// gl.glFramebufferTexture2DEXT(GL2.GL_FRAMEBUFFER_EXT, GL2.GL_COLOR_ATTACHMENT0_EXT, GL2.GL_TEXTURE_2D,
+	// gl.glFramebufferTexture2DEXT(GL2.GL_FRAMEBUFFER_EXT, GL2.GL_COLOR_ATTACHMENT0_EXT, GL.GL_TEXTURE_2D,
 	// colorBuffer[0], 0);
 	//
-	// gl.glBindTexture(GL2.GL_TEXTURE_2D, 0);
+	// gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
 	//
 	// // Create a 24-bit TEXTURE_SIZE x TEXTURE_SIZE depth buffer for the FBO.
 	// // We need this to get correct rendering results.

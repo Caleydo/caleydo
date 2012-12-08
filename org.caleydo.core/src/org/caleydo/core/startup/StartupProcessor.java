@@ -105,7 +105,7 @@ public class StartupProcessor {
 			argumentString += argument + " ";
 		}
 		argumentString += "]";
-		Logger.log(new Status(Status.INFO, this.toString(), "Application arguments: "
+		Logger.log(new Status(IStatus.INFO, this.toString(), "Application arguments: "
 				+ argumentString));
 
 		JSAP jsap = new JSAP();
@@ -126,7 +126,7 @@ public class StartupProcessor {
 			// check whether the command line was valid, and if it wasn't,
 			// display usage information and exit.
 			if (!config.success()) {
-				Logger.log(new Status(Status.ERROR, this.toString(),
+				Logger.log(new Status(IStatus.ERROR, this.toString(),
 						"Failed to parse program line arguments with JSAP: "
 								+ argumentString));
 
@@ -152,7 +152,7 @@ public class StartupProcessor {
 		} catch (JSAPException e) {
 			e.printStackTrace();
 
-			Logger.log(new Status(Status.ERROR, this.toString(),
+			Logger.log(new Status(IStatus.ERROR, this.toString(),
 					"Error during parsing of program arguments", e));
 			handleJSAPError(jsap);
 		}

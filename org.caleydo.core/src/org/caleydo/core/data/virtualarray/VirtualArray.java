@@ -35,6 +35,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -253,7 +254,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 			Integer currentIndex = indices.get(count);
 			if (currentIndex == previousIndex || currentIndex < 0
 					|| currentIndex > previousIndex) {
-				Logger.log(new Status(Status.INFO, "org.caleydo.core", "Cannot remove index: "
+				Logger.log(new Status(IStatus.INFO, "org.caleydo.core", "Cannot remove index: "
 						+ currentIndex + " from VA " + this));
 				continue;
 			}

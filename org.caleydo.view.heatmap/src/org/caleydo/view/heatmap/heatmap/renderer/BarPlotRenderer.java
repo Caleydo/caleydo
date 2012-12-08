@@ -23,6 +23,7 @@ import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
 
 import java.util.ArrayList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.RecordSelectionManager;
@@ -176,7 +177,7 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 	private void renderVLine(final GL2 gl, final float fYPosition,
 			final float fXPosition, final float fFieldHeight, float[] rgba) {
 
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glColor4fv(rgba, 0);
 		gl.glLineWidth(1f);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);

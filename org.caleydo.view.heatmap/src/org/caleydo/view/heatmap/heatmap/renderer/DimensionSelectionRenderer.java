@@ -25,6 +25,7 @@ import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 
 import java.util.Set;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
@@ -73,7 +74,7 @@ public class DimensionSelectionRenderer extends AHeatMapRenderer {
 					gl.glPushName(heatMap.getPickingManager().getPickingID(
 							heatMap.getID(), PickingType.HEAT_MAP_DIMENSION_SELECTION,
 							selectedColumn));
-					gl.glBegin(GL2.GL_LINE_LOOP);
+					gl.glBegin(GL.GL_LINE_LOOP);
 					gl.glVertex3f(xPosition, y, z);
 					gl.glVertex3f(xPosition, 0, z);
 					gl.glVertex3f(xPosition + recordSpacing.getFieldWidth(), 0, z);

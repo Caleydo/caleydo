@@ -345,7 +345,7 @@ public abstract class ATableBasedView extends AGLView implements
 						id = item.getID();
 						idType = recordIDType;
 						if (tablePerspective == null) {
-							Logger.log(new Status(Status.ERROR, this.toString(),
+							Logger.log(new Status(IStatus.ERROR, this.toString(),
 									"tablePerspective was null"));
 							return;
 						}

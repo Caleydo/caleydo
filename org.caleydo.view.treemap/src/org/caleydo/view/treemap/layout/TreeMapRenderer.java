@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.graph.tree.Tree;
@@ -198,7 +199,7 @@ public class TreeMapRenderer {
 	private void paintRectangle(GL2 gl, float x, float y, float xmax, float ymax, float[] color, float lineWdith) {
 		gl.glLineWidth(lineWdith);
 
-		gl.glBegin(GL2.GL_LINE_LOOP);
+		gl.glBegin(GL.GL_LINE_LOOP);
 
 		gl.glColor4f(color[0], color[1], color[2], 1);
 
@@ -240,7 +241,7 @@ public class TreeMapRenderer {
 		if (bDrawNodeFrame) {
 			gl.glColor3f(frameColor.getColorComponents(null)[0], frameColor.getColorComponents(null)[1], frameColor.getColorComponents(null)[2]);
 			gl.glLineWidth(2);
-			gl.glBegin(GL2.GL_LINE_LOOP);
+			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(x, y, 0);
 			gl.glVertex3f(x, ymax, 0);
 			gl.glVertex3f(xmax, ymax, 0);

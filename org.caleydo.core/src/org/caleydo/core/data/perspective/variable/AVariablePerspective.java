@@ -44,6 +44,7 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -318,7 +319,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	@Deprecated
 	public void setVirtualArray(VA virtualArray) {
 		if (virtualArray == null) {
-			Logger.log(new Status(Status.ERROR, "org.caleydo.core",
+			Logger.log(new Status(IStatus.ERROR, "org.caleydo.core",
 					"Virtual array to be set was null"));
 			return;
 		}

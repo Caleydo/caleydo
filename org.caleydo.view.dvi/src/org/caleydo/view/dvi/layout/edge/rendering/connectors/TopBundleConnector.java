@@ -279,7 +279,7 @@ public class TopBundleConnector extends ABundleConnector {
 			// || (anchorVec.y() < 0 && bandVec.y() > 0)
 			// || (anchorVec.x() > 0 && bandVec.x() < 0)
 
-			// gl.glBegin(GL2.GL_LINES);
+			// gl.glBegin(GL.GL_LINES);
 			// gl.glVertex3d(0, minY, 3);
 			// gl.glVertex3d(5, minY, 3);
 			// gl.glEnd();

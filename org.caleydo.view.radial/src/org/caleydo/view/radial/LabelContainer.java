@@ -21,6 +21,7 @@ package org.caleydo.view.radial;
 
 import java.util.ArrayList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -190,7 +191,7 @@ public class LabelContainer {
 		gl.glLoadIdentity();
 
 		if (bDrawLabelBackground) {
-			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
+			gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 			gl.glColor4fv(RadialHierarchyRenderStyle.LABEL_BACKGROUND_COLOR, 0);
 
 			gl.glBegin(GL2.GL_POLYGON);

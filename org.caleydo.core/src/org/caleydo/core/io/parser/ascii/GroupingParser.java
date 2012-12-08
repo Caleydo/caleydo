@@ -34,6 +34,7 @@ import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -82,7 +83,7 @@ public class GroupingParser extends ATextParser {
 				.getIDMappingManager(sourceIDType.getIDCategory());
 
 		if (groupingSpecifications.getDataSourcePath() == null) {
-			Logger.log(new Status(Status.INFO, this.toString(),
+			Logger.log(new Status(IStatus.INFO, this.toString(),
 					"No path for grouping specified"));
 			return;
 		}
@@ -177,7 +178,7 @@ public class GroupingParser extends ATextParser {
 				Integer mappedID = idMappingManager.getID(sourceIDType, targetIDType,
 						originalID);
 				if (mappedID == null) {
-					Logger.log(new Status(Status.WARNING, this.toString(),
+					Logger.log(new Status(IStatus.WARNING, this.toString(),
 							"Could not map id: " + originalID));
 					continue;
 				}

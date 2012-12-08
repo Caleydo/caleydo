@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
@@ -489,7 +490,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		int remainingItemCount = dataVector.size();
 		float ySingleSampleSize = plotHeight / dataVector.size();
 
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		gl.glVertex3f(leftAxisSpacing, bottomAxisSpacing + plotHeight, 1);
 
 		for (int binIndex = 0; binIndex < Math.abs(maxAxisTime); binIndex++) {

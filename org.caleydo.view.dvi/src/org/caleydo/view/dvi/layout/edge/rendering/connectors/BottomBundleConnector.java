@@ -234,7 +234,7 @@ public class BottomBundleConnector
 			// if (!use4ControlPointsForBandBundleConnection)
 			// distanceScaling = 1;
 
-			// gl.glBegin(GL2.GL_LINES);
+			// gl.glBegin(GL.GL_LINES);
 			// gl.glVertex2d(fixedX, 0);
 			// gl.glVertex2d(fixedX, 4);
 			// gl.glEnd();
@@ -290,7 +290,7 @@ public class BottomBundleConnector
 				// || (anchorVec.x() > 0 && bandVec.x() < 0)
 				// ||
 
-				// gl.glBegin(GL2.GL_LINES);
+				// gl.glBegin(GL.GL_LINES);
 				// gl.glVertex3d(0, maxY, 3);
 				// gl.glVertex3d(5, maxY, 3);
 				// gl.glEnd();

@@ -22,7 +22,9 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.DataTableDataType;
@@ -265,7 +267,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 			gl.glVertex3f(spacing * (iCount + 1) + sideSpacing, sideSpacing, 0);
 			gl.glEnd();
 
-			gl.glBegin(GL2.GL_LINE);
+			gl.glBegin(GL2GL3.GL_LINE);
 			gl.glVertex3f(0, 0, 0);
 			gl.glVertex3f(2, 2, 2);
 			gl.glEnd();
@@ -333,7 +335,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 				// the left spread line
 				gl.glColor3fv(SPREAD_LINE_COLOR, 0);
 				gl.glPushName(iLeftSpreadPickingID);
-				gl.glBegin(GL2.GL_LINES);
+				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() - fLeftSpread) * fRenderWidth, 0, 0.1f);
 				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() - fLeftSpread) * fRenderWidth,
 						viewFrustum.getHeight(), 0.1f);
@@ -380,7 +382,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 				// the right spread line
 				gl.glColor3fv(SPREAD_LINE_COLOR, 0);
 				gl.glPushName(iRightSpreadPickingID);
-				gl.glBegin(GL2.GL_LINES);
+				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() + fRightSpread) * fRenderWidth, 0, 0.01f);
 				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() + fRightSpread) * fRenderWidth,
 						viewFrustum.getHeight(), 0.01f);
@@ -395,7 +397,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 			// gl.glColor3f(0, 0, 1);
 			// if (!bIsFirstOrLast)
 			// gl.glPushName(iColorLinePickingID);
-			// gl.glBegin(GL2.GL_LINES);
+			// gl.glBegin(GL.GL_LINES);
 			// gl.glVertex3f(SIDE_SPACING + markerPoint.getValue() *
 			// fRenderWidth,
 			// 0, 0);
@@ -427,7 +429,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 
 		// textRenderer.begin3DRendering();
 		// textRenderer.setColor(0, 0, 0, 1);
-		// gl.glDisable(GL2.GL_DEPTH_TEST);
+		// gl.glDisable(GL.GL_DEPTH_TEST);
 
 		// textRenderer.draw3D(text, sideSpacing + normalizedValue * fRenderWidth +
 		// HistogramRenderStyle.CAPTION_SPACING,

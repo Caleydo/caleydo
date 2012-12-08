@@ -129,7 +129,7 @@ public abstract class AEventListener<T extends IListenerOwner> {
 	public void queueEvent(AEvent event) {
 		// if (event.getSender() == null) {
 		// GeneralManager.get().getLogger().log(
-		// new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "handling " + this.getClass().getName()
+		// new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID, "handling " + this.getClass().getName()
 		// + " with sender==null"));
 		// }
 		if (event.getSender() != this.getHandler()) {

@@ -190,7 +190,7 @@ public class Column extends ALayoutContainer {
 		}
 
 		if (availableHeight < -0.5) {
-			// Logger.log(new Status(Status.ERROR, "org.caleydo.core",
+			// Logger.log(new Status(IStatus.ERROR, "org.caleydo.core",
 			// "Layout elements in " + this
 			// + "don't fit by " + availableHeight));
 			if (managingClassID != -1 && layoutID != -1) {

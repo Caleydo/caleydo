@@ -21,6 +21,7 @@ package org.caleydo.view.bookmark;
 
 import java.util.ArrayList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
@@ -115,7 +116,7 @@ public abstract class ABookmark extends LayoutRenderer implements ILayoutedEleme
 			float height = layout.getSizeScaledY();
 			gl.glLineWidth(1);
 			gl.glColor3fv(highlightColor, 0);
-			gl.glBegin(GL2.GL_LINE_LOOP);
+			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(xOrigin, yOrigin, 0);
 			gl.glVertex3f(xOrigin + width, yOrigin, 0);
 			gl.glVertex3f(xOrigin + width, yOrigin + height, 0);

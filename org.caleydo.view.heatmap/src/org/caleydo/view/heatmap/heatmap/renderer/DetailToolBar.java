@@ -69,7 +69,7 @@ public class DetailToolBar extends LayoutRenderer {
 		// // Band border
 		// gl.glLineWidth(2);
 		// gl.glColor4f(0, 0, 0, 0.6f);
-		// gl.glBegin(GL2.GL_LINE_STRIP);
+		// gl.glBegin(GL.GL_LINE_STRIP);
 		// for (int i = 0; i < points.size(); i++)
 		// gl.glVertex3f(points.get(i).x(), points.get(i).y(), 0f);
 		// gl.glEnd();

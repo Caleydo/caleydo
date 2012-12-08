@@ -396,7 +396,7 @@ public class XmlParserManager
 				reader.setProperty(Parser.schemaProperty, htmlSchema);
 			}
 
-			// generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+			// generalManager.getLogger().log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
 			// "Start parsing file " + sFileName));
 
 			reader.parse(inputSource);
@@ -408,7 +408,7 @@ public class XmlParserManager
 				inputSource.getCharacterStream().close();
 			}
 
-			// generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+			// generalManager.getLogger().log(new Status(IStatus.WARNING, GeneralManager.PLUGIN_ID,
 			// "Finished parsing file " + sFileName));
 
 		}

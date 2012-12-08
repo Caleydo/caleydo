@@ -140,7 +140,7 @@ public class GeneticDataDomain
 	// // GeneticIDMappingHelper.get().getDavidIDFromDimensionIndex(iCount);
 	//
 	// if (iDavidID == null) {
-	// // generalManager.getLogger().log(new Status(Status.WARNING,
+	// // generalManager.getLogger().log(new Status(IStatus.WARNING,
 	// // GeneralManager.PLUGIN_ID,
 	// // "Cannot resolve gene to DAVID ID!"));
 	// continue;

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.filter.RecordFilter;
@@ -87,7 +88,7 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 			heightRight = vSize.y() * (subFilterSizes[mouseOverItem] / 100.f);
 			gl.glLineWidth(SelectionType.MOUSE_OVER.getLineWidth());
 
-			renderShape(gl, GL2.GL_LINE_LOOP, SelectionType.MOUSE_OVER.getColor(),
+			renderShape(gl, GL.GL_LINE_LOOP, SelectionType.MOUSE_OVER.getColor(),
 					Z_POS_MARK);
 		}
 
@@ -101,7 +102,7 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 
 			renderShape(
 					gl,
-					GL2.GL_LINE_LOOP,
+					GL.GL_LINE_LOOP,
 					(selectionType == SelectionType.SELECTION) ? SelectionType.SELECTION
 							.getColor() : SelectionType.MOUSE_OVER.getColor(), Z_POS_MARK);
 		}

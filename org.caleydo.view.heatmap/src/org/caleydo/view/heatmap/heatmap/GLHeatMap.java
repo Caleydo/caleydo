@@ -384,6 +384,8 @@ public class GLHeatMap
 				detailedRenderingTemplate.setStaticLayouts();
 				setDisplayListDirty();
 				break;
+		default:
+			break;
 		}
 	}
 

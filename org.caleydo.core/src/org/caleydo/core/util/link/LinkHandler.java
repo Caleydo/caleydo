@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -85,7 +86,7 @@ public class LinkHandler {
 						}
 					}
 				} catch (Exception exception) {
-					Logger.log(new Status(Status.ERROR, "LinkHandler",
+					Logger.log(new Status(IStatus.ERROR, "LinkHandler",
 							"Caught exception while handling a link: \n" + link,
 							exception));
 				}
@@ -123,7 +124,7 @@ public class LinkHandler {
 			else
 				return false;
 		} catch (IllegalThreadStateException e) {
-			Logger.log(new Status(Status.ERROR, "LinkHandler", "Process didn't complete",
+			Logger.log(new Status(IStatus.ERROR, "LinkHandler", "Process didn't complete",
 					e));
 			return false;
 		}

@@ -2,6 +2,7 @@ package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
@@ -69,7 +70,7 @@ public class CopyNumberRowContentRenderer
 		// float[] tempBottomBarColor = bottomBarColor;
 
 		gl.glColor3f(0, 0, 0);
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(0, 0.5f * y, z);
 		gl.glVertex3f(x, 0.5f * y, z);
 		gl.glEnd();

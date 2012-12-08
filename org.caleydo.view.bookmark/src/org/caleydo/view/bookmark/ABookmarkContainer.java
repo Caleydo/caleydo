@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -69,7 +69,7 @@ import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
  * Bookmark containers do not allow duplicate entries - every element can be
  * present only once.
  * </p>
- * 
+ *
  * @author Alexander Lex
  */
 abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
@@ -115,7 +115,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param manager
 	 *            The gl view managing the container.
 	 * @param category
@@ -151,7 +151,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
 	/**
 	 * Returns the containerDimensions {@link GLBookmarkView} needs to place the
 	 * containers
-	 * 
+	 *
 	 * @return
 	 */
 	// Dimensions getDimensions() {
@@ -160,7 +160,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
 
 	/**
 	 * Returns the category of the container
-	 * 
+	 *
 	 * @return
 	 */
 	IDCategory getCategory() {
@@ -169,7 +169,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
 
 	/**
 	 * Renders the heading for the category and the items.
-	 * 
+	 *
 	 * @param gl
 	 */
 	void render(GL2 gl) {
@@ -178,7 +178,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
 
 	/**
 	 * Handles the picking events and triggers selection events
-	 * 
+	 *
 	 * @param pickingMode
 	 *            for example mouse-over or clicked
 	 * @param externalID
@@ -226,12 +226,14 @@ abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
 			event.setDataDomainID(manager.getDataDomain().getDataDomainID());
-			event.setSelectionDelta((SelectionDelta) selectionDelta);
+			event.setSelectionDelta(selectionDelta);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 			break;
 
 		case BOOKMARK_CONTAINER_HEADING:
 
+			break;
+		default:
 			break;
 		}
 
@@ -239,7 +241,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
 
 	/**
 	 * Handles new bookmarks. Uses the information in the event.
-	 * 
+	 *
 	 * @param <IDDataType>
 	 *            The data type of the id, typically Integer or String
 	 * @param event
@@ -250,7 +252,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
 
 	/**
 	 * Handles the removal of bookmarks by using the informatinon in the event.
-	 * 
+	 *
 	 * @param <IDDataType>
 	 *            The data type of the id, typically Integer or String
 	 * @param event
@@ -280,7 +282,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
 
 	/**
 	 * Handles updates to the selections coming from external sources
-	 * 
+	 *
 	 * @param selectionDelta
 	 *            the information about the updates
 	 */
@@ -290,7 +292,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
 
 	/**
 	 * Handles updates of the selection manager triggered by external sources.
-	 * 
+	 *
 	 * @param selectionCommand
 	 *            the information what to do with the selection manager
 	 */

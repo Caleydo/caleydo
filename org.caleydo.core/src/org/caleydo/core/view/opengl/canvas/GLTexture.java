@@ -21,6 +21,7 @@ package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -126,7 +127,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 		if (currentSelectionType != SelectionType.NORMAL) {
 			gl.glColor3fv(currentSelectionType.getColor(), 0);
 			gl.glLineWidth(4);
-			gl.glBegin(GL2.GL_LINE_LOOP);
+			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
 			gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(),
 					viewFrustum.getBottom(), 0);

@@ -31,6 +31,7 @@ import org.caleydo.core.id.MappingType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -185,7 +186,7 @@ public class IDMappingParser extends ATextParser {
 				} else
 					throw new IllegalStateException("Unsupported data type!");
 			} catch (NumberFormatException nfe) {
-				Logger.log(new Status(Status.ERROR, this.toString(),
+				Logger.log(new Status(IStatus.ERROR, this.toString(),
 						"Caught NFE: could not parse: " + mappingType, nfe));
 
 			} catch (ArrayIndexOutOfBoundsException boundEx) {

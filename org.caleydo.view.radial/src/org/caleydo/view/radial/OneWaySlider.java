@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -26,6 +26,7 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -41,7 +42,7 @@ import com.jogamp.opengl.util.awt.TextRenderer;
 /**
  * Represents a slider that can be dragged in one direction only. Moving the
  * slider into the other direction can only be performed indirectly.
- * 
+ *
  * @author Christian Partl
  */
 public class OneWaySlider extends AGLGUIElement {
@@ -72,7 +73,7 @@ public class OneWaySlider extends AGLGUIElement {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param vecPosition
 	 *            Position of the slider.
 	 * @param fWidth
@@ -122,7 +123,7 @@ public class OneWaySlider extends AGLGUIElement {
 
 	/**
 	 * Draws the slider using the specified parameters.
-	 * 
+	 *
 	 * @param gl
 	 *            GL2 object that shall be used for drawing.
 	 * @param pickingManager
@@ -151,7 +152,7 @@ public class OneWaySlider extends AGLGUIElement {
 
 		gl.glPushName(pickingManager.getPickingID(viewID,
 				PickingType.RAD_HIERARCHY_SLIDER_BODY_SELECTION, iSliderBodyID));
-		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 
 		gl.glColor3f(0.6f, 0.6f, 0.6f);
 		gl.glBegin(GL2.GL_POLYGON);
@@ -219,7 +220,7 @@ public class OneWaySlider extends AGLGUIElement {
 	/**
 	 * Determines the scaling of a specified text that is needed for this text
 	 * to fit into the sliding element.
-	 * 
+	 *
 	 * @param sText
 	 *            Text the scaling shall be calculated for.
 	 * @return Scaling factor for the specified text.
@@ -239,7 +240,7 @@ public class OneWaySlider extends AGLGUIElement {
 
 	/**
 	 * Method that handles the dragging of the slider.
-	 * 
+	 *
 	 * @param gl
 	 *            Gl object.
 	 * @param glMouseListener
@@ -291,7 +292,7 @@ public class OneWaySlider extends AGLGUIElement {
 
 	/**
 	 * Handles the selection of the different slider parts.
-	 * 
+	 *
 	 * @param pickingType
 	 *            Type of the selected element.
 	 * @return True, if the slider button has been selected, false otherwise.
@@ -316,6 +317,8 @@ public class OneWaySlider extends AGLGUIElement {
 		case RAD_HIERARCHY_SLIDER_SELECTION:
 			bIsDragging = true;
 			bIsDraggingFirstTime = true;
+			break;
+		default:
 			break;
 		}
 

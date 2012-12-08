@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,7 +21,6 @@ package org.caleydo.view.histogram;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ChooseColorMappingDialog;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
@@ -60,7 +59,7 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				openColorMapDialog();
-				
+
 			}
 		});
 
@@ -84,12 +83,12 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 		}
 
 		updateColorMappingPreview();
-		
-		Button changeColorButton = new Button (histoComposite, SWT.PUSH);
+
+		Button changeColorButton = new Button(histoComposite, SWT.PUSH);
 		changeColorButton.setText("Colormap");
 		changeColorButton.setToolTipText("Choose a colormap for this dataset");
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
-//		gridData.heightHint = 20;
+		// gridData.heightHint = 20;
 		gridData.grabExcessHorizontalSpace = true;
 		changeColorButton.setLayoutData(gridData);
 		changeColorButton.addMouseListener(new MouseAdapter() {
@@ -114,22 +113,20 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 	/**
 	 * Opens the {@link ChooseColorMappingDialog}.
 	 */
-	private void openColorMapDialog()
-	{
-		ChooseColorMappingDialog dialog = new ChooseColorMappingDialog(new Shell(
-				SWT.APPLICATION_MODAL), dataDomain);
+	private void openColorMapDialog() {
+		ChooseColorMappingDialog dialog = new ChooseColorMappingDialog(new Shell(SWT.APPLICATION_MODAL), dataDomain);
 		// dialog.setPossibleDataDomains(availableDomains);
 		dialog.setBlockOnOpen(true);
 		dialog.open();
 
 		updateColorMappingPreview();
 	}
+
 	private void updateColorMappingPreview() {
 
-		if(!dataDomain.getTable().isDataHomogeneous())
+		if (!dataDomain.getTable().isDataHomogeneous())
 			return;
-		ArrayList<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper()
-				.getMarkerPoints();
+		ArrayList<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper().getMarkerPoints();
 
 		Color[] alColor = new Color[markerPoints.size()];
 		int[] colorMarkerPoints = new int[markerPoints.size() - 1];
@@ -137,12 +134,10 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 
 			float normalizedValue = markerPoints.get(iCount - 1).getMappingValue();
 
-			double correspondingValue = ((ATableBasedDataDomain) dataDomain).getTable()
-					.getRawForNormalized(normalizedValue);
+			double correspondingValue = (dataDomain).getTable().getRawForNormalized(normalizedValue);
 
 			if (labels != null)
-				labels.get(iCount - 1)
-						.setText(Formatter.formatNumber(correspondingValue));
+				labels.get(iCount - 1).setText(Formatter.formatNumber(correspondingValue));
 
 			int colorMarkerPoint = (int) (100 * normalizedValue);
 
@@ -153,8 +148,7 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 
 			int[] color = markerPoints.get(iCount - 1).getIntColor();
 
-			alColor[iCount - 1] = new Color(PlatformUI.getWorkbench().getDisplay(),
-					color[0], color[1], color[2]);
+			alColor[iCount - 1] = new Color(PlatformUI.getWorkbench().getDisplay(), color[0], color[1], color[2]);
 		}
 
 		colorMappingPreview.setBackground(alColor, colorMarkerPoints);
@@ -164,17 +158,17 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 	@Override
 	public void handleClearSelections() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void registerEventListeners() {
 
 		super.registerEventListeners();
 
-//		clearSelectionsListener = new SelectionCommandListener();
-//		clearSelectionsListener.setHandler(this);
-//		eventPublisher.addListener(SelectionCommandEvent.class, clearSelectionsListener);
+		// clearSelectionsListener = new SelectionCommandListener();
+		// clearSelectionsListener.setHandler(this);
+		// eventPublisher.addListener(SelectionCommandEvent.class, clearSelectionsListener);
 	}
 
 	@Override
@@ -186,10 +180,10 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 			eventPublisher.removeListener(updateViewListener);
 			updateViewListener = null;
 		}
-//		if (clearSelectionsListener != null) {
-//			eventPublisher.removeListener(clearSelectionsListener);
-//			clearSelectionsListener = null;
-//		}
+		// if (clearSelectionsListener != null) {
+		// eventPublisher.removeListener(clearSelectionsListener);
+		// clearSelectionsListener = null;
+		// }
 	}
 
 }

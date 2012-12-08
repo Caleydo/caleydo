@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.graph.tree.ClusterNode;
@@ -427,7 +428,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				PickingType.GROUPER_BACKGROUND_SELECTION, 0));
 
-		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 		gl.glColor3f(1.0f, 1.0f, 1.0f);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0.0f, 0.0f, Z);
@@ -715,6 +716,8 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 			default:
 				return;
 			}
+			break;
+		default:
 			break;
 		}
 	}

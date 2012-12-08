@@ -52,8 +52,8 @@ public class TesselationCallback
 		double[] pointer;
 		if (vertexData instanceof double[]) {
 			pointer = (double[]) vertexData;
-			// gl.glEnable(GL2.GL_BLEND);
-			// gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+			// gl.glEnable(GL.GL_BLEND);
+			// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			// gl.glColor4f(0f,0f,0f, 0.5f);
 			// gl.glColor3dv(pointer, 3);
 			gl.glVertex3dv(pointer, 0);

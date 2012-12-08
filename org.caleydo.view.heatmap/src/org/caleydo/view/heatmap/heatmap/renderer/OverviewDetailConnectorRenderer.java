@@ -21,6 +21,7 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 
 import gleem.linalg.Vec3f;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -155,7 +156,7 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 
 		gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
 		gl.glColor4f(1, 1, 1, 1);
-		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		textureMask.enable(gl);
 		textureMask.bind(gl);
@@ -242,7 +243,7 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 		}
 
 		textureMaskNeg.disable(gl);
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glPopAttrib();
 	}
 

@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
@@ -118,9 +119,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex (responsible for PC)
  * @author Marc Streit
  */
-public class GLParallelCoordinates
-	extends ATableBasedView
-	implements IGLRemoteRenderingView {
+public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteRenderingView {
 
 	public static String VIEW_TYPE = "org.caleydo.view.parcoords";
 	public static String VIEW_NAME = "Parallel Coordinates";
@@ -128,9 +127,8 @@ public class GLParallelCoordinates
 	private PickingType draggedObject;
 
 	/**
-	 * Hashes a gate id, which is made up of an axis id + the last three digits
-	 * a gate counter (per axis) to a pair of values which make up the upper and
-	 * lower gate tip
+	 * Hashes a gate id, which is made up of an axis id + the last three digits a gate counter (per axis) to a pair of
+	 * values which make up the upper and lower gate tip
 	 */
 	private HashMap<Integer, AGate> hashGates;
 	/**
@@ -139,14 +137,12 @@ public class GLParallelCoordinates
 	private HashMap<Integer, ArrayList<Integer>> hashIsGateBlocking;
 
 	/**
-	 * HashMap for the gates that are used to remove selections across all axes,
-	 * when the set is homogeneous
+	 * HashMap for the gates that are used to remove selections across all axes, when the set is homogeneous
 	 */
 	private HashMap<Integer, Gate> hashMasterGates;
 
 	/**
-	 * Gate counter used for unique ID retrieval for gates. It is shared between
-	 * regular and master gates
+	 * Gate counter used for unique ID retrieval for gates. It is shared between regular and master gates
 	 */
 	private int iGateCounter = 0;
 
@@ -304,7 +300,7 @@ public class GLParallelCoordinates
 		processEvents();
 		// displayVBO(gl);
 
-		gl.glEnable(GL2.GL_BLEND);
+		gl.glEnable(GL.GL_BLEND);
 
 		gl.glTranslatef(xSideSpacing, fYTranslation, 0.0f);
 
@@ -368,9 +364,8 @@ public class GLParallelCoordinates
 	}
 
 	/**
-	 * Sends a bookmark event containing all elements which are currently
-	 * visible in the pcs, if the number of elements is less than 20. If it's
-	 * more than 20 an error message is displayed.
+	 * Sends a bookmark event containing all elements which are currently visible in the pcs, if the number of elements
+	 * is less than 20. If it's more than 20 an error message is displayed.
 	 */
 	public void bookmarkElements() {
 
@@ -418,8 +413,7 @@ public class GLParallelCoordinates
 	}
 
 	/**
-	 * Initialize the gates. The gate heights are saved in two lists, which
-	 * contain the rendering height of the gate
+	 * Initialize the gates. The gate heights are saved in two lists, which contain the rendering height of the gate
 	 */
 	private void initGates() {
 		hashGates = new HashMap<Integer, AGate>();
@@ -432,11 +426,12 @@ public class GLParallelCoordinates
 	}
 
 	/**
-	 * Build polyline display list. Renders coordinate system, polylines and
-	 * gates, by calling the render methods
+	 * Build polyline display list. Renders coordinate system, polylines and gates, by calling the render methods
 	 *
-	 * @param gl GL2 context
-	 * @param iGLDisplayListIndex the index of the display list
+	 * @param gl
+	 *            GL2 context
+	 * @param iGLDisplayListIndex
+	 *            the index of the display list
 	 */
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
@@ -445,8 +440,7 @@ public class GLParallelCoordinates
 			gl.glTranslatef(-xSideSpacing, -fYTranslation, 0.0f);
 			renderSymbol(gl, EIconTextures.PAR_COORDS_SYMBOL, 2);
 			gl.glTranslatef(+xSideSpacing, fYTranslation, 0.0f);
-		}
-		else {
+		} else {
 
 			if (dataDomain.getTable().isDataHomogeneous() && !isRenderedRemote()) {
 				renderMasterGate(gl);
@@ -468,16 +462,15 @@ public class GLParallelCoordinates
 	}
 
 	/**
-	 * Polyline rendering method. All polylines that are contained in the
-	 * polylineSelectionManager and are of the selection type specified in
-	 * renderMode
+	 * Polyline rendering method. All polylines that are contained in the polylineSelectionManager and are of the
+	 * selection type specified in renderMode
 	 *
-	 * FIXME this needs to be changed to iterate over the virtual array,
-	 * considering the deselected elements
+	 * FIXME this needs to be changed to iterate over the virtual array, considering the deselected elements
 	 *
-	 * @param gl the GL2 context
-	 * @param renderMode the type of selection in the selection manager to
-	 *            render
+	 * @param gl
+	 *            the GL2 context
+	 * @param renderMode
+	 *            the type of selection in the selection manager to render
 	 */
 	private void renderNormalPolylines(GL2 gl, SelectionType selectionType) {
 
@@ -538,7 +531,7 @@ public class GLParallelCoordinates
 		}
 
 		if (!renderCaption) {
-			gl.glBegin(GL2.GL_LINE_STRIP);
+			gl.glBegin(GL.GL_LINE_STRIP);
 		}
 
 		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
@@ -556,7 +549,7 @@ public class GLParallelCoordinates
 			}
 			if (dimensionCount != 0) {
 				if (renderCaption) {
-					gl.glBegin(GL2.GL_LINES);
+					gl.glBegin(GL.GL_LINES);
 				}
 
 				gl.glVertex3f(previousX, previousY * renderStyle.getAxisHeight(), renderState.zDepth);
@@ -575,11 +568,9 @@ public class GLParallelCoordinates
 
 					sRawValue = Formatter.formatNumber(table.getFloat(DataRepresentation.RAW, recordID, dimensionID));
 
-				}
-				else if (rawDataType == RawDataType.STRING) {
+				} else if (rawDataType == RawDataType.STRING) {
 					sRawValue = table.getRaw(dimensionID, recordID);
-				}
-				else
+				} else
 					throw new IllegalStateException("Unknown Raw Data Type Type");
 
 				renderBoxedYValues(gl, currentX, currentY * renderStyle.getAxisHeight(), sRawValue, selectionType);
@@ -600,10 +591,10 @@ public class GLParallelCoordinates
 	}
 
 	/**
-	 * Render the coordinate system of the parallel coordinates, including the
-	 * axis captions and axis-specific buttons
+	 * Render the coordinate system of the parallel coordinates, including the axis captions and axis-specific buttons
 	 *
-	 * @param gl the gl context
+	 * @param gl
+	 *            the gl context
 	 * @param iNumberAxis
 	 */
 	private void renderCoordinateSystem(GL2 gl) {
@@ -617,7 +608,7 @@ public class GLParallelCoordinates
 		gl.glLineWidth(X_AXIS_LINE_WIDTH);
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.X_AXIS_SELECTION, 1));
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 
 		gl.glVertex3f(renderStyle.getXAxisStart(), 0.0f, 0.0f);
 		gl.glVertex3f(renderStyle.getXAxisEnd(), 0.0f, 0.0f);
@@ -639,14 +630,12 @@ public class GLParallelCoordinates
 				gl.glLineWidth(Y_AXIS_SELECTED_LINE_WIDTH);
 				gl.glEnable(GL2.GL_LINE_STIPPLE);
 				gl.glLineStipple(2, (short) 0xAAAA);
-			}
-			else if (mouseOverSet.contains(dimensionVA.get(count))) {
+			} else if (mouseOverSet.contains(dimensionVA.get(count))) {
 				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 				gl.glLineWidth(Y_AXIS_MOUSE_OVER_LINE_WIDTH);
 				gl.glEnable(GL2.GL_LINE_STIPPLE);
 				gl.glLineStipple(2, (short) 0xAAAA);
-			}
-			else {
+			} else {
 				gl.glColor4fv(Y_AXIS_COLOR, 0);
 				gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 			}
@@ -654,7 +643,7 @@ public class GLParallelCoordinates
 			int axisPickingID = pickingManager.getPickingID(uniqueID, PickingType.Y_AXIS_SELECTION,
 					dimensionVA.get(count));
 			gl.glPushName(axisPickingID);
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(fXPosition, 0, AXIS_Z);
 			gl.glVertex3f(fXPosition, renderStyle.getAxisHeight(), AXIS_Z);
 
@@ -684,13 +673,12 @@ public class GLParallelCoordinates
 
 							renderNumber(gl, Formatter.formatNumber(fNumber), fXPosition - fWidth - AXIS_MARKER_WIDTH,
 									fCurrentHeight - fHeightHalf);
-						}
-						else {
+						} else {
 							// TODO: dimension based access
 						}
 					}
 					gl.glColor3fv(Y_AXIS_COLOR, 0);
-					gl.glBegin(GL2.GL_LINES);
+					gl.glBegin(GL.GL_LINES);
 					gl.glVertex3f(fXPosition - AXIS_MARKER_WIDTH, fCurrentHeight, AXIS_Z);
 					gl.glVertex3f(fXPosition + AXIS_MARKER_WIDTH, fCurrentHeight, AXIS_Z);
 					gl.glEnd();
@@ -762,7 +750,7 @@ public class GLParallelCoordinates
 				iPickingID = -1;
 				float fYDropOrigin = -PCRenderStyle.AXIS_BUTTONS_Y_OFFSET;
 
-				gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+				gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 				// the gate add button
 				float fYGateAddOrigin = renderStyle.getAxisHeight();
@@ -799,8 +787,7 @@ public class GLParallelCoordinates
 						if (!bWasAxisMoved) {
 							dropTexture = EIconTextures.DROP_NORMAL;
 						}
-					}
-					else {
+					} else {
 						textureManager.renderGUITexture(gl, EIconTextures.DROP_NORMAL, lowerLeftCorner,
 								lowerRightCorner, upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
 					}
@@ -835,8 +822,7 @@ public class GLParallelCoordinates
 					gl.glEnd();
 					gl.glPopName();
 
-				}
-				else {
+				} else {
 					iPickingID = pickingManager.getPickingID(uniqueID, PickingType.MOVE_AXIS, count);
 
 					gl.glPushAttrib(GL2.GL_CURRENT_BIT | GL2.GL_LINE_BIT);
@@ -855,7 +841,7 @@ public class GLParallelCoordinates
 					gl.glPopAttrib();
 
 				}
-				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			}
 
 			count++;
@@ -863,8 +849,7 @@ public class GLParallelCoordinates
 	}
 
 	/**
-	 * Render the gates and update the fArGateHeights for the
-	 * selection/unselection
+	 * Render the gates and update the fArGateHeights for the selection/unselection
 	 *
 	 * @param gl
 	 * @param iNumberAxis
@@ -907,7 +892,7 @@ public class GLParallelCoordinates
 
 		float fXOrigin = pixelGLConverter.getGLWidthForPixelWidth(0);
 
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(fXOrigin, 0, AXIS_Z);
 		gl.glVertex3f(fXOrigin, renderStyle.getAxisHeight(), AXIS_Z);
 		gl.glVertex3f(fXOrigin - AXIS_MARKER_WIDTH, 0, AXIS_Z);
@@ -916,7 +901,7 @@ public class GLParallelCoordinates
 		gl.glVertex3f(fXOrigin + AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), AXIS_Z);
 		gl.glEnd();
 
-		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		// the gate add button
 		float fYGateAddOrigin = renderStyle.getAxisHeight();
@@ -934,7 +919,7 @@ public class GLParallelCoordinates
 
 		gl.glPopName();
 
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		for (Integer iGateID : hashMasterGates.keySet()) {
 			Gate gate = hashMasterGates.get(iGateID);
@@ -1130,8 +1115,7 @@ public class GLParallelCoordinates
 
 					if (currentValue <= gate.getUpperValue() && currentValue >= gate.getLowerValue()) {
 						bIsBlocking = true;
-					}
-					else {
+					} else {
 						bIsBlocking = false;
 						break;
 					}
@@ -1171,8 +1155,7 @@ public class GLParallelCoordinates
 	}
 
 	/**
-	 * TODO: revise this, not very performance friendly, especially the clearing
-	 * of the DESELECTED
+	 * TODO: revise this, not very performance friendly, especially the clearing of the DESELECTED
 	 */
 
 	private void handleUnselection() {
@@ -1221,339 +1204,364 @@ public class GLParallelCoordinates
 
 		SelectionType selectionType;
 		switch (pickingType) {
-			case PCS_VIEW_SELECTION:
+		case PCS_VIEW_SELECTION:
+			break;
+		case POLYLINE_SELECTION:
+			switch (pickingMode) {
+
+			case CLICKED:
+				selectionType = SelectionType.SELECTION;
+				if (bAngularBrushingSelectPolyline) {
+					bAngularBrushingSelectPolyline = false;
+					bIsAngularBrushingActive = true;
+					iSelectedLineID = pickingID;
+					linePick = pick;
+					bIsAngularBrushingFirstTime = true;
+				}
+
 				break;
-			case POLYLINE_SELECTION:
-				switch (pickingMode) {
-
-					case CLICKED:
-						selectionType = SelectionType.SELECTION;
-						if (bAngularBrushingSelectPolyline) {
-							bAngularBrushingSelectPolyline = false;
-							bIsAngularBrushingActive = true;
-							iSelectedLineID = pickingID;
-							linePick = pick;
-							bIsAngularBrushingFirstTime = true;
-						}
-
-						break;
-					case MOUSE_OVER:
-						selectionType = SelectionType.MOUSE_OVER;
-						break;
-
-					case RIGHT_CLICKED:
-						selectionType = SelectionType.SELECTION;
-
-						GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-						contexMenuItemContainer.setDataDomain(dataDomain);
-						contexMenuItemContainer.setData(recordIDType, pickingID);
-						contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
-
-						break;
-
-					default:
-						return;
-
-				}
-
-				if (recordSelectionManager.checkStatus(selectionType, pickingID)) {
-					break;
-				}
-
-				connectedElementRepresentationManager.clear(recordSelectionManager.getIDType(), selectionType);
-
-				recordSelectionManager.clearSelection(selectionType);
-
-				recordSelectionManager.addToType(selectionType, pickingID);
-				recordSelectionManager.addConnectionID(
-						generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION), pickingID);
-
-				// if (ePolylineDataType == EIDType.EXPRESSION_INDEX &&
-				// !bAngularBrushingSelectPolyline) {
-				if (!bAngularBrushingSelectPolyline) {
-					// //
-					// SelectionCommand command = new SelectionCommand(
-					// ESelectionCommandType.CLEAR, selectionType);
-					// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX,
-					// command);
-
-					SelectionDelta selectionDelta = recordSelectionManager.getDelta();
-					prepareVisualLinkingInformation(selectionDelta);
-					SelectionUpdateEvent event = new SelectionUpdateEvent();
-					event.setSender(this);
-					event.setDataDomainID(dataDomain.getDataDomainID());
-					event.setSelectionDelta(selectionDelta);
-					eventPublisher.triggerEvent(event);
-				}
-
-				setDisplayListDirty();
+			case MOUSE_OVER:
+				selectionType = SelectionType.MOUSE_OVER;
 				break;
 
-			case X_AXIS_SELECTION:
+			case RIGHT_CLICKED:
+				selectionType = SelectionType.SELECTION;
+
+				GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
+				contexMenuItemContainer.setDataDomain(dataDomain);
+				contexMenuItemContainer.setData(recordIDType, pickingID);
+				contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
+
 				break;
-			case Y_AXIS_SELECTION:
 
-				switch (pickingMode) {
-					case CLICKED:
-						selectionType = SelectionType.SELECTION;
-						break;
+			default:
+				return;
 
-					case MOUSE_OVER:
-						selectionType = SelectionType.MOUSE_OVER;
-						break;
-					case RIGHT_CLICKED:
-						selectionType = SelectionType.SELECTION;
+			}
 
-						AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-								+ dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType, pickingID,
-								dataDomain.getDataDomainID());
-						contextMenuCreator.addContextMenuItem(menuItem);
+			if (recordSelectionManager.checkStatus(selectionType, pickingID)) {
+				break;
+			}
 
-					default:
-						return;
+			connectedElementRepresentationManager.clear(recordSelectionManager.getIDType(), selectionType);
 
-				}
+			recordSelectionManager.clearSelection(selectionType);
 
-				dimensionSelectionManager.clearSelection(selectionType);
-				dimensionSelectionManager.addToType(selectionType, pickingID);
+			recordSelectionManager.addToType(selectionType, pickingID);
+			recordSelectionManager.addConnectionID(
+					generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION), pickingID);
 
-				dimensionSelectionManager.addConnectionID(
-						generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION), pickingID);
-
-				connectedElementRepresentationManager.clear(dimensionSelectionManager.getIDType(), selectionType);
-
-				// triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
-				// axisSelectionManager
-				// .getDelta(), null);
-
+			// if (ePolylineDataType == EIDType.EXPRESSION_INDEX &&
+			// !bAngularBrushingSelectPolyline) {
+			if (!bAngularBrushingSelectPolyline) {
+				// //
 				// SelectionCommand command = new SelectionCommand(
 				// ESelectionCommandType.CLEAR, selectionType);
-				// sendSelectionCommandEvent(eAxisDataType, command);
+				// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX,
+				// command);
 
-				SelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
-				// if (dimensionSelectionManager.getIDType() ==
-				// EIDType.EXPERIMENT_INDEX) {
+				SelectionDelta selectionDelta = recordSelectionManager.getDelta();
 				prepareVisualLinkingInformation(selectionDelta);
-				// }
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
 				event.setDataDomainID(dataDomain.getDataDomainID());
 				event.setSelectionDelta(selectionDelta);
 				eventPublisher.triggerEvent(event);
+			}
 
+			setDisplayListDirty();
+			break;
+
+		case X_AXIS_SELECTION:
+			break;
+		case Y_AXIS_SELECTION:
+
+			switch (pickingMode) {
+			case CLICKED:
+				selectionType = SelectionType.SELECTION;
+				break;
+
+			case MOUSE_OVER:
+				selectionType = SelectionType.MOUSE_OVER;
+				break;
+			case RIGHT_CLICKED:
+				selectionType = SelectionType.SELECTION;
+
+				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+						+ dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType, pickingID,
+						dataDomain.getDataDomainID());
+				contextMenuCreator.addContextMenuItem(menuItem);
+
+			default:
+				return;
+
+			}
+
+			dimensionSelectionManager.clearSelection(selectionType);
+			dimensionSelectionManager.addToType(selectionType, pickingID);
+
+			dimensionSelectionManager.addConnectionID(
+					generalManager.getIDCreator().createID(ManagedObjectType.CONNECTION), pickingID);
+
+			connectedElementRepresentationManager.clear(dimensionSelectionManager.getIDType(), selectionType);
+
+			// triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
+			// axisSelectionManager
+			// .getDelta(), null);
+
+			// SelectionCommand command = new SelectionCommand(
+			// ESelectionCommandType.CLEAR, selectionType);
+			// sendSelectionCommandEvent(eAxisDataType, command);
+
+			SelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
+			// if (dimensionSelectionManager.getIDType() ==
+			// EIDType.EXPERIMENT_INDEX) {
+			prepareVisualLinkingInformation(selectionDelta);
+			// }
+			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSender(this);
+			event.setDataDomainID(dataDomain.getDataDomainID());
+			event.setSelectionDelta(selectionDelta);
+			eventPublisher.triggerEvent(event);
+
+			setDisplayListDirty();
+			break;
+		case GATE_TIP_SELECTION:
+			switch (pickingMode) {
+			case MOUSE_OVER:
+				iDraggedGateNumber = pickingID;
+				draggedObject = PickingType.GATE_TIP_SELECTION;
 				setDisplayListDirty();
 				break;
-			case GATE_TIP_SELECTION:
-				switch (pickingMode) {
-					case MOUSE_OVER:
-						iDraggedGateNumber = pickingID;
-						draggedObject = PickingType.GATE_TIP_SELECTION;
-						setDisplayListDirty();
-						break;
-					case CLICKED:
-						bIsDraggingActive = true;
-						draggedObject = PickingType.GATE_TIP_SELECTION;
-						iDraggedGateNumber = pickingID;
-						break;
-				// case DRAGGED:
-				// bIsDraggingActive = true;
-				// draggedObject = EPickingType.GATE_TIP_SELECTION;
-				// iDraggedGateNumber = externalID;
-				// break;
-
-				}
+			case CLICKED:
+				bIsDraggingActive = true;
+				draggedObject = PickingType.GATE_TIP_SELECTION;
+				iDraggedGateNumber = pickingID;
 				break;
-			case GATE_BOTTOM_SELECTION:
-				switch (pickingMode) {
-					case MOUSE_OVER:
-						iDraggedGateNumber = pickingID;
-						draggedObject = PickingType.GATE_BOTTOM_SELECTION;
-						setDisplayListDirty();
-						break;
-					case CLICKED:
-						bIsDraggingActive = true;
-						draggedObject = PickingType.GATE_BOTTOM_SELECTION;
-						iDraggedGateNumber = pickingID;
-						break;
-				}
+			// case DRAGGED:
+			// bIsDraggingActive = true;
+			// draggedObject = EPickingType.GATE_TIP_SELECTION;
+			// iDraggedGateNumber = externalID;
+			// break;
+			default:
 				break;
 
-			case GATE_BODY_SELECTION:
-				switch (pickingMode) {
-					case MOUSE_OVER:
-						iDraggedGateNumber = pickingID;
-						draggedObject = PickingType.GATE_BODY_SELECTION;
-						setDisplayListDirty();
-						break;
-					case CLICKED:
-						bIsDraggingActive = true;
-						bIsGateDraggingFirstTime = true;
-						draggedObject = PickingType.GATE_BODY_SELECTION;
-						iDraggedGateNumber = pickingID;
-						break;
-				}
+			}
+			break;
+		case GATE_BOTTOM_SELECTION:
+			switch (pickingMode) {
+			case MOUSE_OVER:
+				iDraggedGateNumber = pickingID;
+				draggedObject = PickingType.GATE_BOTTOM_SELECTION;
+				setDisplayListDirty();
 				break;
-			case PC_ICON_SELECTION:
-				switch (pickingMode) {
-					case CLICKED:
-
-						break;
-				}
+			case CLICKED:
+				bIsDraggingActive = true;
+				draggedObject = PickingType.GATE_BOTTOM_SELECTION;
+				iDraggedGateNumber = pickingID;
 				break;
-			case REMOVE_AXIS:
-				switch (pickingMode) {
-					case MOUSE_OVER:
-						dropTexture = EIconTextures.DROP_DELETE;
-						iChangeDropOnAxisNumber = pickingID;
-						break;
-					case CLICKED:
-						DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
-								.getVirtualArray();
-						if (dimensionVA.occurencesOf(dimensionVA.get(pickingID)) == 1) {
-							removeGate(dimensionVA.get(pickingID));
-						}
+			default:
+				break;
+			}
+			break;
 
-						DimensionVADelta vaDelta = new DimensionVADelta(tablePerspective.getDimensionPerspective()
-								.getPerspectiveID(), dimensionIDType);
-						vaDelta.add(VADeltaItem.remove(pickingID));
+		case GATE_BODY_SELECTION:
+			switch (pickingMode) {
+			case MOUSE_OVER:
+				iDraggedGateNumber = pickingID;
+				draggedObject = PickingType.GATE_BODY_SELECTION;
+				setDisplayListDirty();
+				break;
+			case CLICKED:
+				bIsDraggingActive = true;
+				bIsGateDraggingFirstTime = true;
+				draggedObject = PickingType.GATE_BODY_SELECTION;
+				iDraggedGateNumber = pickingID;
+				break;
+			default:
+				break;
+			}
+			break;
+		case PC_ICON_SELECTION:
+			switch (pickingMode) {
+			case CLICKED:
 
-						Integer dimensionID = dimensionVA.get(pickingID);
-						triggerDimensionFilterEvent(vaDelta, "Removed " + dataDomain.getDimensionLabel(dimensionID));
-						setDisplayListDirty();
-						resetAxisSpacing();
-						break;
+				break;
+			default:
+				break;
+			}
+			break;
+		case REMOVE_AXIS:
+			switch (pickingMode) {
+			case MOUSE_OVER:
+				dropTexture = EIconTextures.DROP_DELETE;
+				iChangeDropOnAxisNumber = pickingID;
+				break;
+			case CLICKED:
+				DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+				if (dimensionVA.occurencesOf(dimensionVA.get(pickingID)) == 1) {
+					removeGate(dimensionVA.get(pickingID));
 				}
+
+				DimensionVADelta vaDelta = new DimensionVADelta(tablePerspective.getDimensionPerspective()
+						.getPerspectiveID(), dimensionIDType);
+				vaDelta.add(VADeltaItem.remove(pickingID));
+
+				Integer dimensionID = dimensionVA.get(pickingID);
+				triggerDimensionFilterEvent(vaDelta, "Removed " + dataDomain.getDimensionLabel(dimensionID));
+				setDisplayListDirty();
+				resetAxisSpacing();
+				break;
+			default:
+				break;
+			}
+			break;
+
+		case MOVE_AXIS:
+			switch (pickingMode) {
+			case CLICKED:
+				bWasAxisMoved = true;
+				bWasAxisDraggedFirstTime = true;
+				iMovedAxisPosition = pickingID;
+				setDisplayListDirty();
+			case MOUSE_OVER:
+				dropTexture = EIconTextures.DROP_MOVE;
+				iChangeDropOnAxisNumber = pickingID;
+				setDisplayListDirty();
+				break;
+			default:
+				break;
+			}
+			break;
+
+		case DUPLICATE_AXIS:
+			switch (pickingMode) {
+			case MOUSE_OVER:
+				dropTexture = EIconTextures.DROP_DUPLICATE;
+				iChangeDropOnAxisNumber = pickingID;
+				break;
+			case CLICKED:
+				if (pickingID >= 0) {
+					// dimensionVA.copy(pickingID);
+					DimensionVADelta vaDelta = new DimensionVADelta(tablePerspective.getDimensionPerspective()
+							.getPerspectiveID(), dimensionIDType);
+					vaDelta.add(VADeltaItem.copy(pickingID));
+					triggerDimensionFilterEvent(
+							vaDelta,
+							"Copied "
+									+ dataDomain.getDimensionLabel(tablePerspective.getDimensionPerspective()
+											.getVirtualArray().get(pickingID)));
+
+					setDisplayListDirty();
+					// resetSelections();
+					// initGates();
+					resetAxisSpacing();
+					break;
+				}
+			default:
+				break;
+			}
+			break;
+		case ADD_GATE:
+			switch (pickingMode) {
+			case CLICKED:
+				hasFilterChanged = true;
+				AGate gate;
+				DataTable table = dataDomain.getTable();
+				if (table.isDataHomogeneous()) {
+					gate = new Gate(++iGateCounter, pickingID, (float) table.getRawForNormalized(0),
+							(float) table.getRawForNormalized(0.5f), table, renderStyle);
+				} else {
+					gate = new NominalGate(++iGateCounter, pickingID, 0, 0.5f, table, renderStyle);
+				}
+				hashGates.put(this.iGateCounter, gate);
+				hashIsGateBlocking.put(this.iGateCounter, new ArrayList<Integer>());
+				handleUnselection();
+				triggerSelectionUpdate();
+				setDisplayListDirty();
+
+				break;
+			default:
+				break;
+			}
+			break;
+		case ADD_MASTER_GATE:
+			switch (pickingMode) {
+			case CLICKED:
+				hasFilterChanged = true;
+				DataTable table = dataDomain.getTable();
+				Gate gate = new Gate(++iGateCounter, -1, (float) table.getRawForNormalized(0),
+						(float) table.getRawForNormalized(0.5f), table, renderStyle);
+				gate.setMasterGate(true);
+				hashMasterGates.put(iGateCounter, gate);
+				hashIsGateBlocking.put(iGateCounter, new ArrayList<Integer>());
+				handleUnselection();
+				triggerSelectionUpdate();
+				setDisplayListDirty();
+				break;
+			default:
+				break;
+			}
+			break;
+
+		case REMOVE_GATE:
+			switch (pickingMode) {
+			case CLICKED:
+				hasFilterChanged = true;
+				// either the gate belongs to the normal or to the
+				// master gates
+				if (hashGates.remove(pickingID) == null)
+					hashMasterGates.remove(pickingID);
+
+				hashIsGateBlocking.remove(pickingID);
+
+				handleUnselection();
+				triggerSelectionUpdate();
+				setDisplayListDirty();
+				break;
+			default:
+				break;
+			}
+			break;
+		case ANGULAR_UPPER:
+			switch (pickingMode) {
+			case CLICKED:
+				bIsAngularDraggingActive = true;
+			case DRAGGED:
+				bIsAngularDraggingActive = true;
+			default:
+				break;
+			}
+			break;
+
+		case ANGULAR_LOWER:
+			switch (pickingMode) {
+			case CLICKED:
+				bIsAngularDraggingActive = true;
+			case DRAGGED:
+				bIsAngularDraggingActive = true;
+			default:
+				break;
+			}
+			break;
+		case REMOVE_NAN:
+			switch (pickingMode) {
+			case CLICKED:
+				hasFilterChanged = true;
+				if (hashExcludeNAN.containsKey(pickingID)) {
+					hashExcludeNAN.remove(pickingID);
+				} else {
+					hashExcludeNAN.put(pickingID, null);
+				}
+				setDisplayListDirty();
+				break;
+			default:
 				break;
 
-			case MOVE_AXIS:
-				switch (pickingMode) {
-					case CLICKED:
-						bWasAxisMoved = true;
-						bWasAxisDraggedFirstTime = true;
-						iMovedAxisPosition = pickingID;
-						setDisplayListDirty();
-					case MOUSE_OVER:
-						dropTexture = EIconTextures.DROP_MOVE;
-						iChangeDropOnAxisNumber = pickingID;
-						setDisplayListDirty();
-						break;
-				}
-				break;
-
-			case DUPLICATE_AXIS:
-				switch (pickingMode) {
-					case MOUSE_OVER:
-						dropTexture = EIconTextures.DROP_DUPLICATE;
-						iChangeDropOnAxisNumber = pickingID;
-						break;
-					case CLICKED:
-						if (pickingID >= 0) {
-							// dimensionVA.copy(pickingID);
-							DimensionVADelta vaDelta = new DimensionVADelta(tablePerspective.getDimensionPerspective()
-									.getPerspectiveID(), dimensionIDType);
-							vaDelta.add(VADeltaItem.copy(pickingID));
-							triggerDimensionFilterEvent(
-									vaDelta,
-									"Copied "
-											+ dataDomain.getDimensionLabel(tablePerspective.getDimensionPerspective()
-													.getVirtualArray().get(pickingID)));
-
-							setDisplayListDirty();
-							// resetSelections();
-							// initGates();
-							resetAxisSpacing();
-							break;
-						}
-				}
-				break;
-			case ADD_GATE:
-				switch (pickingMode) {
-					case CLICKED:
-						hasFilterChanged = true;
-						AGate gate;
-						DataTable table = dataDomain.getTable();
-						if (table.isDataHomogeneous()) {
-							gate = new Gate(++iGateCounter, pickingID, (float) table.getRawForNormalized(0),
-									(float) table.getRawForNormalized(0.5f), table, renderStyle);
-						}
-						else {
-							gate = new NominalGate(++iGateCounter, pickingID, 0, 0.5f, table, renderStyle);
-						}
-						hashGates.put(this.iGateCounter, gate);
-						hashIsGateBlocking.put(this.iGateCounter, new ArrayList<Integer>());
-						handleUnselection();
-						triggerSelectionUpdate();
-						setDisplayListDirty();
-
-						break;
-				}
-				break;
-			case ADD_MASTER_GATE:
-				switch (pickingMode) {
-					case CLICKED:
-						hasFilterChanged = true;
-						DataTable table = dataDomain.getTable();
-						Gate gate = new Gate(++iGateCounter, -1, (float) table.getRawForNormalized(0),
-								(float) table.getRawForNormalized(0.5f), table, renderStyle);
-						gate.setMasterGate(true);
-						hashMasterGates.put(iGateCounter, gate);
-						hashIsGateBlocking.put(iGateCounter, new ArrayList<Integer>());
-						handleUnselection();
-						triggerSelectionUpdate();
-						setDisplayListDirty();
-						break;
-				}
-				break;
-
-			case REMOVE_GATE:
-				switch (pickingMode) {
-					case CLICKED:
-						hasFilterChanged = true;
-						// either the gate belongs to the normal or to the
-						// master gates
-						if (hashGates.remove(pickingID) == null)
-							hashMasterGates.remove(pickingID);
-
-						hashIsGateBlocking.remove(pickingID);
-
-						handleUnselection();
-						triggerSelectionUpdate();
-						setDisplayListDirty();
-						break;
-				}
-				break;
-			case ANGULAR_UPPER:
-				switch (pickingMode) {
-					case CLICKED:
-						bIsAngularDraggingActive = true;
-					case DRAGGED:
-						bIsAngularDraggingActive = true;
-				}
-				break;
-
-			case ANGULAR_LOWER:
-				switch (pickingMode) {
-					case CLICKED:
-						bIsAngularDraggingActive = true;
-					case DRAGGED:
-						bIsAngularDraggingActive = true;
-				}
-				break;
-			case REMOVE_NAN:
-				switch (pickingMode) {
-					case CLICKED:
-						hasFilterChanged = true;
-						if (hashExcludeNAN.containsKey(pickingID)) {
-							hashExcludeNAN.remove(pickingID);
-						}
-						else {
-							hashExcludeNAN.put(pickingID, null);
-						}
-						setDisplayListDirty();
-						break;
-
-				}
-				break;
+			}
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -1610,8 +1618,7 @@ public class GLParallelCoordinates
 			// EDataRepresentation.NORMALIZED, iAxisID);
 			alElementReps.add(new ElementConnectionInformation(idType, uniqueID, x, y, 0.0f));
 
-		}
-		else if (idType.equals(recordIDType)) {
+		} else if (idType.equals(recordIDType)) {
 
 			x = viewFrustum.getLeft() + renderStyle.getXSpacing();
 			y = dataDomain.getTable().getFloat(DataRepresentation.NORMALIZED, id, dimensionVA.get(0));
@@ -1623,8 +1630,7 @@ public class GLParallelCoordinates
 
 			if (Float.isNaN(y)) {
 				y = NAN_Y_OFFSET * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
-			}
-			else {
+			} else {
 				y = y * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
 			}
 			alElementReps.add(new ElementConnectionInformation(idType, uniqueID, x, y, 0.0f));
@@ -1718,14 +1724,14 @@ public class GLParallelCoordinates
 		gl.glLineWidth(ANGLUAR_LINE_WIDTH);
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.ANGULAR_UPPER, iPosition));
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecTriangleOrigin.x(), vecTriangleOrigin.y(), vecTriangleOrigin.z() + 0.02f);
 		gl.glVertex3f(vecUpperPoint.x(), vecUpperPoint.y(), vecUpperPoint.z() + 0.02f);
 		gl.glEnd();
 		gl.glPopName();
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.ANGULAR_UPPER, iPosition));
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecTriangleOrigin.x(), vecTriangleOrigin.y(), vecTriangleOrigin.z() + 0.02f);
 		gl.glVertex3f(vecLowerPoint.x(), vecLowerPoint.y(), vecLowerPoint.z() + 0.02f);
 		gl.glEnd();
@@ -1996,8 +2002,7 @@ public class GLParallelCoordinates
 				renderMode = "remote";
 			return ("PCs, " + renderMode + ", " + iNumElements + " elements" + " Axis DT: "
 					+ dimensionSelectionManager.getIDType() + " Polyline DT:" + recordSelectionManager.getIDType());
-		}
-		else
+		} else
 			return super.toString();
 	}
 
@@ -2096,7 +2101,7 @@ public class GLParallelCoordinates
 	// // gl.glEnableClientState( GL2.GL_COLOR_ARRAY )
 	// gl.glVertexPointer(2, GL2.GL_FLOAT, 0, 0);
 	// gl.glDrawArrays(GL.GL_LINE_STRIP, 0, vertexBufferIndices[0]);
-	// gl.glDrawElements(GL2.GL_LINES, indices.length, GL2.GL_UNSIGNED_INT,
+	// gl.glDrawElements(GL.GL_LINES, indices.length, GL2.GL_UNSIGNED_INT,
 	// indexBuffer);
 	// gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
 	// gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
@@ -2116,7 +2121,7 @@ public class GLParallelCoordinates
 	// // gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
 	// //
 	// // // gl.glColorPointer(3, GL2.GL_FLOAT, 0, colorBuffer);
-	// // gl.glDrawElements(GL2.GL_LINE_STRIP, indices.length,
+	// // gl.glDrawElements(GL.GL_LINE_STRIP, indices.length,
 	// // GL2.GL_UNSIGNED_INT,
 	// // indexBuffer);
 	// // gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
@@ -2149,7 +2154,7 @@ public class GLParallelCoordinates
 	// // for (int i = 0; i < indices.length; i++)
 	// // indicesBuf.put(indices[i]);
 	// // indicesBuf.rewind();
-	// // gl.glDrawElements(GL2.GL_LINE_STRIP, 4, GL2.GL_UNSIGNED_INT,
+	// // gl.glDrawElements(GL.GL_LINE_STRIP, 4, GL2.GL_UNSIGNED_INT,
 	// // indicesBuf);
 	// //
 	// // gl.glFlush();
@@ -2158,14 +2163,14 @@ public class GLParallelCoordinates
 	@Override
 	public int getMinPixelHeight(EDetailLevel detailLevel) {
 		switch (detailLevel) {
-			case HIGH:
-				return 400;
-			case MEDIUM:
-				return 200;
-			case LOW:
-				return 50;
-			default:
-				return 50;
+		case HIGH:
+			return 400;
+		case MEDIUM:
+			return 200;
+		case LOW:
+			return 50;
+		default:
+			return 50;
 		}
 	}
 
@@ -2185,19 +2190,19 @@ public class GLParallelCoordinates
 	public void setDetailLevel(EDetailLevel detailLevel) {
 		super.setDetailLevel(detailLevel);
 		switch (detailLevel) {
-			case LOW:
-				numberOfRandomElements = 50;
-				break;
-			case MEDIUM:
-				numberOfRandomElements = 100;
-				break;
-			case HIGH:
-				numberOfRandomElements = generalManager.getPreferenceStore().getInt(
-						PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT);
-				break;
+		case LOW:
+			numberOfRandomElements = 50;
+			break;
+		case MEDIUM:
+			numberOfRandomElements = 100;
+			break;
+		case HIGH:
+			numberOfRandomElements = generalManager.getPreferenceStore().getInt(
+					PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT);
+			break;
 
-			default:
-				break;
+		default:
+			break;
 		}
 	}
 

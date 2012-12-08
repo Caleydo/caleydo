@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -60,7 +61,7 @@ public class RowBackgroundRenderer extends LayoutRenderer {
 
 		gl.glLineWidth(1);
 		gl.glColor4fv(MappedDataRenderer.FRAME_COLOR, 0);
-		gl.glBegin(GL2.GL_LINE_LOOP);
+		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(0, 0, frameZ);
 		gl.glVertex3f(0, y, frameZ);
 		gl.glVertex3f(x, y, frameZ);

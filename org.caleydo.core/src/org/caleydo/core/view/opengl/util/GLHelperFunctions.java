@@ -21,6 +21,7 @@ package org.caleydo.core.view.opengl.util;
 
 import gleem.linalg.Vec3f;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -36,7 +37,7 @@ public class GLHelperFunctions {
 	public static void drawAxis(final GL2 gl) {
 
 		gl.glLineWidth(3);
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glColor4f(1, 0, 0, 1);
 		gl.glVertex3f(-1, 0, 0);
 		gl.glVertex3f(1, 0, 0);
@@ -52,7 +53,7 @@ public class GLHelperFunctions {
 	public static void drawViewFrustum(final GL2 gl, final ViewFrustum viewFrustum) {
 
 		gl.glColor3f(1, 0, 0);
-		gl.glBegin(GL2.GL_LINE_LOOP);
+		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 1);
 		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getBottom(), 1);
 		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(),
@@ -66,7 +67,7 @@ public class GLHelperFunctions {
 
 		gl.glColor4f(1, 0, 0, 1);
 		gl.glLineWidth(3);
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecPoint.x() - 10, vecPoint.y(), vecPoint.z());
 		gl.glVertex3f(vecPoint.x() + 10, vecPoint.y(), vecPoint.z());
 		gl.glVertex3f(vecPoint.x(), vecPoint.y() - 10, vecPoint.z());
@@ -88,7 +89,7 @@ public class GLHelperFunctions {
 
 		gl.glColor4f(1, 0, 0, 1);
 		gl.glLineWidth(0.5f);
-		gl.glBegin(GL2.GL_LINES);
+		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(x - 0.5f, y, z);
 		gl.glVertex3f(x + 0.5f, y, z);
 		gl.glVertex3f(x, y - 0.5f, z);

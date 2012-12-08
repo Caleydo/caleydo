@@ -23,6 +23,7 @@ import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Map;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.collection.Pair;
@@ -174,13 +175,13 @@ class TopDownTablePerspectiveMatrixRenderingStrategy
 					+ parentIndent + childIndent, textPositionY, 0.1f, captionColumnWidth - childIndent - parentIndent
 					- 2 * captionSpacingX, textHeight);
 
-			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
+			gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
 			gl.glColor3f(0, 0, 0);
 			if ((row.parentContainer != null) && (i != 0) && (rows.get(i - 1) != row.parentContainer)) {
 				gl.glColor3f(0.5f, 0.5f, 0.5f);
 			}
 			gl.glLineWidth(1);
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(currentPositionX + childIndent, currentPositionY, 0.15f);
 			gl.glVertex3f(x, currentPositionY, 0.15f);
 			gl.glEnd();
@@ -202,7 +203,7 @@ class TopDownTablePerspectiveMatrixRenderingStrategy
 			}
 			float currentColumnWidth = columnWidth * column.numSubdivisions;
 
-			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
+			gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
 
 			float childIndent = 0;
 			float parentIndent = 0;
@@ -274,7 +275,7 @@ class TopDownTablePerspectiveMatrixRenderingStrategy
 				gl.glEnd();
 
 				// gl.glColor3f(1,1,1);
-				// gl.glBegin(GL2.GL_LINES);
+				// gl.glBegin(GL.GL_LINES);
 				// gl.glVertex3f(currentPositionX, y - captionRowHeight
 				// - captionSpacingY, 1);
 				// gl.glVertex3f(currentPositionX, y - childIndent, 1);
@@ -298,7 +299,7 @@ class TopDownTablePerspectiveMatrixRenderingStrategy
 				gl.glColor3f(0.5f, 0.5f, 0.5f);
 			}
 			gl.glLineWidth(1);
-			gl.glBegin(GL2.GL_LINES);
+			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(currentPositionX, 0, 0.1f);
 			gl.glVertex3f(currentPositionX, y - childIndent, 0.1f);
 			// for (int i = 1; i < column.numSubdivisions; i++) {

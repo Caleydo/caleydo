@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -26,6 +26,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
@@ -35,7 +36,7 @@ import com.jogamp.opengl.util.awt.Overlay;
 
 /**
  * Class implements the overlay info area.
- * 
+ *
  * @author Marc Streit
  * @deprecated Use status line + tooltip approach
  */
@@ -63,7 +64,7 @@ public class GLOverlayInfoRenderer {
 
 	/**
 	 * Set the data to be rendered.
-	 * 
+	 *
 	 * @param uniqueID
 	 * @param eInputDataTypes
 	 * @param pickedPoint
@@ -80,7 +81,7 @@ public class GLOverlayInfoRenderer {
 		int iLineCount = 0;
 
 		int viewport[] = new int[4];
-		gl.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
+		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
 
 		int panelHeight = 0;
 		if (sAlContent.isEmpty()) {

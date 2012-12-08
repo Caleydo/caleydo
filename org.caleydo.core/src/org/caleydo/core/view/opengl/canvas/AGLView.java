@@ -31,9 +31,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2ES1;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
+import javax.media.opengl.fixedfunc.GLLightingFunc;
+import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.AEvent;
@@ -71,6 +74,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
@@ -283,28 +287,28 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		fpsCounter = new FPSCounter(drawable, 16);
 		fpsCounter.setColor(0.5f, 0.5f, 0.5f, 1);
 
-		gl.glShadeModel(GL2.GL_SMOOTH); // Enables Smooth Shading
+		gl.glShadeModel(GLLightingFunc.GL_SMOOTH); // Enables Smooth Shading
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // white Background
 		gl.glClearDepth(1.0f); // Depth Buffer Setup
-		gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT | GL2.GL_STENCIL_BUFFER_BIT);
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
 
-		gl.glEnable(GL2.GL_DEPTH_TEST);
-		gl.glDepthFunc(GL2.GL_LEQUAL);
+		gl.glEnable(GL.GL_DEPTH_TEST);
+		gl.glDepthFunc(GL.GL_LEQUAL);
 
-		gl.glEnable(GL2.GL_BLEND);
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		// gl.glEnable(GL2.GL_POINT_SMOOTH);
-		// gl.glHint(GL2.GL_POINT_SMOOTH_HINT, GL2.GL_NICEST);
-		gl.glEnable(GL2.GL_LINE_SMOOTH);
-		gl.glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_NICEST);
+		// gl.glHint(GL2.GL_POINT_SMOOTH_HINT, GL.GL_NICEST);
+		gl.glEnable(GL.GL_LINE_SMOOTH);
+		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
 		// gl.glEnable(GL2.GL_POLYGON_SMOOTH);
-		// gl.glHint(GL2.GL_POLYGON_SMOOTH_HINT, GL2.GL_NICEST);
+		// gl.glHint(GL2.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST);
 
-		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
+		gl.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 
-		gl.glEnable(GL2.GL_COLOR_MATERIAL);
-		gl.glColorMaterial(GL2.GL_FRONT, GL2.GL_DIFFUSE);
+		gl.glEnable(GLLightingFunc.GL_COLOR_MATERIAL);
+		gl.glColorMaterial(GL.GL_FRONT, GLLightingFunc.GL_DIFFUSE);
 
 		glMouseListener.addGLCanvas(this);
 		pixelGLConverter = new PixelGLConverter(viewFrustum, parentGLCanvas);
@@ -353,11 +357,11 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 			ViewManager.get().executePendingRemoteViewDestruction(gl, this);
 
 			// load identity matrix
-			gl.glMatrixMode(GL2.GL_MODELVIEW);
+			gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 			gl.glLoadIdentity();
 
 			// clear screen
-			gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
 			gl.glTranslatef(position.x(), position.y(), position.z());
 			gl.glRotatef(viewCamera.getCameraRotationGrad(rot_Vec3f), rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
@@ -386,7 +390,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		GL2 gl = drawable.getGL().getGL2();
 
 		gl.glViewport(x, y, width, height);
-		gl.glMatrixMode(GL2.GL_PROJECTION);
+		gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 		gl.glLoadIdentity();
 
 		viewFrustum.setProjectionMatrix(gl, aspectRatio);
@@ -431,15 +435,15 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		// if (this instanceof GLHeatMap && ((GLHeatMap) this).isInListMode())
 		// return;
 		//
-		gl.glClear(GL2.GL_STENCIL_BUFFER_BIT);
+		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
 		gl.glColorMask(false, false, false, false);
 		gl.glClearStencil(0); // Clear The Stencil Buffer To 0
-		gl.glEnable(GL2.GL_DEPTH_TEST); // Enables Depth Testing
-		gl.glDepthFunc(GL2.GL_LEQUAL); // The Type Of Depth Testing To Do
-		gl.glEnable(GL2.GL_STENCIL_TEST);
-		gl.glStencilFunc(GL2.GL_ALWAYS, 1, 1);
-		gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_REPLACE);
-		gl.glDisable(GL2.GL_DEPTH_TEST);
+		gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
+		gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
+		gl.glEnable(GL.GL_STENCIL_TEST);
+		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
+		gl.glDisable(GL.GL_DEPTH_TEST);
 
 		// Clip region that renders in stencil buffer (in this case the
 		// frustum)
@@ -450,10 +454,10 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
 		gl.glEnd();
 
-		gl.glEnable(GL2.GL_DEPTH_TEST);
+		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glColorMask(true, true, true, true);
-		gl.glStencilFunc(GL2.GL_EQUAL, 1, 1);
-		gl.glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP, GL2.GL_KEEP);
+		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 
 	}
 
@@ -633,7 +637,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 						try {
 							handlePickingEvents(type, ePickingMode, pickedObjectID, tempPick);
 						} catch (Exception e) {
-							Logger.log(new Status(Status.ERROR, this.toString(), "Caught exception when picking", e));
+							Logger.log(new Status(IStatus.ERROR, this.toString(), "Caught exception when picking", e));
 						}
 					} catch (IllegalArgumentException e) {
 					}
@@ -1120,7 +1124,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	public void dispose(GLAutoDrawable drawable) {
 		if (PlatformUI.getWorkbench().isClosing())
 			return;
-		Logger.log(new Status(Status.INFO, toString(), "Disposing view"));
+		Logger.log(new Status(IStatus.INFO, toString(), "Disposing view"));
 
 		GL2 gl = drawable.getGL().getGL2();
 		// First, destroy the remote views, then unregister, otherwise the

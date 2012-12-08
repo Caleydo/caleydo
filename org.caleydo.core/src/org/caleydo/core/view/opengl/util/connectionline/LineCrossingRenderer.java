@@ -27,6 +27,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.List;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -94,7 +95,7 @@ public class LineCrossingRenderer extends ARelativeLinePositionRenderer {
 		gl.glTranslatef(-relativePositionOnLine.x(), -relativePositionOnLine.y(), 0);
 		gl.glLineWidth(lineWidth);
 		gl.glColor4fv(lineColor, 0);
-		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glBegin(GL.GL_LINE_STRIP);
 		gl.glVertex3f(linePoint1.x(), linePoint1.y(), linePoint1.z());
 		gl.glVertex3f(linePoint2.x(), linePoint2.y(), linePoint1.z());
 		gl.glEnd();

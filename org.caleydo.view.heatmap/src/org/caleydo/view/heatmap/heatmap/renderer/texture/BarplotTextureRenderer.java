@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,7 +22,9 @@ package org.caleydo.view.heatmap.heatmap.renderer.texture;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2ES1;
 import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.collection.table.DataTable;
@@ -78,8 +80,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 			textureHeight = numberOfElements = uncertaintyVA.size();
 		}
 
-		numberOfTextures = (int) Math.ceil((double) numberOfElements
-				/ MAX_SAMPLES_PER_TEXTURE);
+		numberOfTextures = (int) Math.ceil((double) numberOfElements / MAX_SAMPLES_PER_TEXTURE);
 
 		if (numberOfTextures <= 1)
 			samplesPerTexture = numberOfElements;
@@ -99,13 +100,11 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 			if (iTexture == numberOfTextures - 1) {
 				numberSamples.add(textureHeight - samplesPerTexture * iTexture);
-				floatBuffer[iTexture] = FloatBuffer
-						.allocate((textureHeight - samplesPerTexture * iTexture)
-								* textureWidth * 4);
+				floatBuffer[iTexture] = FloatBuffer.allocate((textureHeight - samplesPerTexture * iTexture)
+						* textureWidth * 4);
 			} else {
 				numberSamples.add(samplesPerTexture);
-				floatBuffer[iTexture] = FloatBuffer.allocate(samplesPerTexture
-						* textureWidth * 4);
+				floatBuffer[iTexture] = FloatBuffer.allocate(samplesPerTexture * textureWidth * 4);
 			}
 		}
 
@@ -143,12 +142,10 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 			if (contentCount >= numberSamples.get(textureCounter)) {
 				floatBuffer[textureCounter].rewind();
 
-				TextureData texData = new TextureData(GLProfile.getDefault(),
-						GL2.GL_RGBA /* internalFormat */, textureWidth /* height */,
-						numberSamples.get(textureCounter) /* width */, 0 /* border */,
-						GL2.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */,
-						true /* mipmap */, false /* dataIsCompressed */,
-						false /* mustFlipVertically */, floatBuffer[textureCounter], null);
+				TextureData texData = new TextureData(GLProfile.getDefault(), GL.GL_RGBA /* internalFormat */,
+						textureWidth /* height */, numberSamples.get(textureCounter) /* width */, 0 /* border */,
+						GL.GL_RGBA /* pixelFormat */, GL.GL_FLOAT /* pixelType */, true /* mipmap */,
+						false /* dataIsCompressed */, false /* mustFlipVertically */, floatBuffer[textureCounter], null);
 
 				tempTexture = TextureIO.newTexture(0);
 				tempTexture.updateImage(gl, texData);
@@ -162,9 +159,8 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 	}
 
-	public void init(GL2 gl, GLUncertaintyHeatMap glUncHeatmap, DataTable set,
-			RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA,
-			ColorMapper colorMapper) {
+	public void init(GL2 gl, GLUncertaintyHeatMap glUncHeatmap, DataTable set, RecordVirtualArray recordVA,
+			DimensionVirtualArray dimensionVA, ColorMapper colorMapper) {
 
 		this.glUncHeatmap = glUncHeatmap;
 		this.dimensionVA = dimensionVA;
@@ -190,15 +186,12 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 			textures.get(numberOfTextures - i - 1).enable(gl);
 			textures.get(numberOfTextures - i - 1).bind(gl);
-			gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_REPLACE);
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
-					GL2.GL_NEAREST);
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
-					GL2.GL_NEAREST);
-			TextureCoords texCoords = textures.get(numberOfTextures - i - 1)
-					.getImageTexCoords();
+			gl.glTexEnvi(GL2ES1.GL_TEXTURE_ENV, GL2ES1.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+			TextureCoords texCoords = textures.get(numberOfTextures - i - 1).getImageTexCoords();
 
 			// gl.glPushName(pickingManager.getPickingID(uniqueID,
 			// EPickingType.HIER_HEAT_MAP_TEXTURE_SELECTION, numberOfTextures -

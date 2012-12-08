@@ -77,8 +77,7 @@ import org.eclipse.ui.PlatformUI;
  *
  * @author Marc Streit
  */
-public class RcpSearchView
-	extends CaleydoRCPViewPart {
+public class RcpSearchView extends CaleydoRCPViewPart {
 
 	private List<GeneticDataDomain> geneticDataDomains;
 
@@ -239,9 +238,9 @@ public class RcpSearchView
 			@Override
 			public void keyPressed(KeyEvent event) {
 				switch (event.keyCode) {
-					case SWT.CR: {
-						startSearch();
-					}
+				case SWT.CR: {
+					startSearch();
+				}
 				}
 			}
 		});
@@ -508,8 +507,7 @@ public class RcpSearchView
 						davidID)) {
 					sRefSeqIDs += refSeqID + " ";
 				}
-			}
-			catch (NullPointerException npe) {
+			} catch (NullPointerException npe) {
 				sRefSeqIDs = "<No Mapping>";
 			}
 
@@ -535,8 +533,7 @@ public class RcpSearchView
 						geneticDataDomain.getGeneIDType(), davidID);
 				if (expressionIndices != null && expressionIndices.size() > 0) {
 					foundInDataSet.add("Found");
-				}
-				else
+				} else
 					foundInDataSet.add("Not found");
 			}
 
@@ -608,8 +605,7 @@ public class RcpSearchView
 						if (tableItem.getText(dataDomainCount).equalsIgnoreCase("FOUND")) {
 							createContextMenuItemsForDataDomain(menu, tableItem,
 									geneticDataDomains.get(dataDomainCount));
-						}
-						else {
+						} else {
 							MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
 							openInBrowserMenuItem.setText("Not loaded");
 						}
@@ -735,11 +731,10 @@ public class RcpSearchView
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 							.showView("org.caleydo.view.dvi");
-				}
-				catch (PartInitException e1) {
+				} catch (PartInitException e1) {
 					e1.printStackTrace();
 				}
-			};
+			}
 		});
 
 	}
@@ -772,13 +767,12 @@ public class RcpSearchView
 						try {
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 									.showView("org.caleydo.view.browser");
-						}
-						catch (PartInitException e1) {
+						} catch (PartInitException e1) {
 							e1.printStackTrace();
 						}
 
 						searchViewMediator.loadURLInBrowser(((PathwayGraph) tableItem.getData()).getExternalLink());
-					};
+					}
 				});
 
 				MenuItem loadPathwayInBucketMenuItem = new MenuItem(menu, SWT.PUSH);
@@ -794,13 +788,12 @@ public class RcpSearchView
 						try {
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 									.showView("org.caleydo.view.bucket");
-						}
-						catch (PartInitException e1) {
+						} catch (PartInitException e1) {
 							e1.printStackTrace();
 						}
 
 						searchViewMediator.loadPathway(((PathwayGraph) tableItem.getData()).getID());
-					};
+					}
 				});
 			}
 		});
