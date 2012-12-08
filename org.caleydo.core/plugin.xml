@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension-point id="org.caleydo.plex.GroupwareManager" name="GroupwareManager" schema="schema/org.caleydo.plex.GroupwareManager.exsd"/>
    <extension-point id="org.caleydo.data.pathway.PathwayResourceLoader" name="PathwayResourceLoader" schema="schema/org.caleydo.data.pathway.PathwayResourceLoader.exsd"/>
    <extension-point id="org.caleydo.util.statistics.StatisticsPerformer" name="StatisticsPerformer" schema="schema/org.caleydo.util.statistics.StatisticsPerformer.exsd"/>
    <extension-point id="org.caleydo.datadomain.DataDomain" name="DataDomain" schema="schema/org.caleydo.datadomain.DataDomain.exsd"/>

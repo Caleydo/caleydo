@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,22 +8,23 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.view.opengl.camera;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 /**
  * Defines viewing volume of a OpenGL2 view.
- * 
+ *
  * @author Michael Kalkusch
  * @author Marc Streit
  * @author Alexander Lex
@@ -50,7 +51,7 @@ public class ViewFrustum {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param projectionMode
 	 * @param left
 	 * @param right
@@ -138,7 +139,7 @@ public class ViewFrustum {
 	/**
 	 * Define whether to consider aspect ratios when setting the projection matrix. This guarantees
 	 * rectangular appearance of views
-	 * 
+	 *
 	 * @param bConsiderAspectRatio
 	 * @deprecated Because fAspectRatio should not be used any more.
 	 */
@@ -149,7 +150,7 @@ public class ViewFrustum {
 
 	/**
 	 * Sets the projection matrix, according to the projection mode defined in the frustum
-	 * 
+	 *
 	 * @param gl
 	 *            the GL2 context
 	 * @param fAspectRatio
@@ -188,7 +189,7 @@ public class ViewFrustum {
 			gl.glFrustum(left, right, bottom, top, getNear(), getFar());
 		}
 
-		gl.glMatrixMode(GL2.GL_MODELVIEW);
+		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 	}
 
 	@Override

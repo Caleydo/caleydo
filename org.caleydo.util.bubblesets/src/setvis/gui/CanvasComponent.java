@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package setvis.gui;
 
@@ -37,17 +37,17 @@ import setvis.shape.ShapeSimplifier;
 
 /**
  * The component for maintaining and displaying the rectangles.
- * 
+ *
  * @author Joschi <josua.krause@googlemail.com>
- * 
+ *
  */
 public class CanvasComponent extends JComponent implements Canvas {
 
     /**
      * A class to identify a given rectangle.
-     * 
+     *
      * @author Joschi <josua.krause@googlemail.com>
-     * 
+     *
      */
     public class Position {
         /**
@@ -63,7 +63,7 @@ public class CanvasComponent extends JComponent implements Canvas {
 
         /**
          * Generates a Position object.
-         * 
+         *
          * @param groupID
          *            The group id.
          * @param rect
@@ -91,7 +91,7 @@ public class CanvasComponent extends JComponent implements Canvas {
     private final List<Color> colorList;
     private final List<Integer> outlineThickness;
     private final List<Boolean> isVisibleList;
-    
+
 
     /**
      * The mouse and mouse motion listener for the interaction.
@@ -120,8 +120,8 @@ public class CanvasComponent extends JComponent implements Canvas {
         // the last mouse position
         private Point p = null;
 
-        // the items to move or an empty list if the background is moved
-        private List<Position> items = null;
+		// the items to move or an empty list if the background is moved
+		private List<Position> items = null;
 
         @Override
         public void mousePressed(final MouseEvent e) {
@@ -155,7 +155,7 @@ public class CanvasComponent extends JComponent implements Canvas {
 
         /**
          * Moves {@link #items} by the difference of the given positions.
-         * 
+         *
          * @param from
          *            The previous position.
          * @param to
@@ -222,11 +222,11 @@ public class CanvasComponent extends JComponent implements Canvas {
      */
     private double zoom;
 
-    
+
     private int selectionID;
     /**
      * Creates a canvas component.
-     * 
+     *
      * @param shaper
      *            The shape generator for the outlines.
      */
@@ -237,7 +237,7 @@ public class CanvasComponent extends JComponent implements Canvas {
         edges = new ArrayList<List<Line2D>>();
         colorList = new ArrayList<Color>();
         outlineThickness= new ArrayList<Integer>();
-        isVisibleList= new ArrayList<Boolean>();;
+		isVisibleList = new ArrayList<Boolean>();
         addGroup(new Color(1,0,0),1,true);
         dx = 0.0;
         dy = 0.0;
@@ -335,7 +335,7 @@ public class CanvasComponent extends JComponent implements Canvas {
 
     /**
      * Zooms to the on screen (in components coordinates) position.
-     * 
+     *
      * @param x
      *            The x coordinate.
      * @param y
@@ -412,7 +412,7 @@ public class CanvasComponent extends JComponent implements Canvas {
 
     /**
      * Notifies all canvas listeners.
-     * 
+     *
      * @param changes
      *            The changes of the canvas as defined in
      *            {@link CanvasListener#canvasChanged(int)}.
@@ -431,7 +431,7 @@ public class CanvasComponent extends JComponent implements Canvas {
     /**
      * Signalizes that something has changed. This results in clearing the
      * outline cache, notifying the parent and a call to {@link #repaint()}.
-     * 
+     *
      * @param changes
      *            The changes of the canvas as defined in
      *            {@link CanvasListener#canvasChanged(int)}.
@@ -451,7 +451,7 @@ public class CanvasComponent extends JComponent implements Canvas {
         isVisibleList.add(true);
         invalidateOutlines(CanvasListener.GROUPS);
     }
-    
+
     public void addGroup(Color  aColor, Integer borderThickness, boolean isVisible) {
         curItemGroup = items.size();
         items.add(new LinkedList<Rectangle2D>());
@@ -459,10 +459,10 @@ public class CanvasComponent extends JComponent implements Canvas {
         outlineThickness.add(borderThickness);
         colorList.add(aColor);
         isVisibleList.add(isVisible);
-        invalidateOutlines(CanvasListener.GROUPS);        
+        invalidateOutlines(CanvasListener.GROUPS);
     }
-    
-    
+
+
     @Override
     public void removeLastGroup() {
         final int last = items.size() - 1;
@@ -502,13 +502,13 @@ public class CanvasComponent extends JComponent implements Canvas {
     	items.get(curItemGroup).clear();
     	edges.get(curItemGroup).clear();
     }
-    
+
     /**
      * removes current group without updating the outline.
      * this allows to remove ALL groups
      */
     public void removeCurrentGroup()
-    {    	
+    {
         if (items.size() < 1) {
             return;
         }
@@ -519,7 +519,7 @@ public class CanvasComponent extends JComponent implements Canvas {
         isVisibleList.remove(curItemGroup);
         --curItemGroup;
     }
-    
+
     @Override
     public void setCurrentGroup(final int curItemGroup) {
         this.curItemGroup = curItemGroup;
@@ -560,7 +560,7 @@ public class CanvasComponent extends JComponent implements Canvas {
 
     /**
      * Calculates the real coordinate of the given input in screen coordinates.
-     * 
+     *
      * @param s
      *            The coordinate in screen coordinates. Due to uniform zooming
      *            both horizontal and vertical coordinates can be converted.
@@ -572,7 +572,7 @@ public class CanvasComponent extends JComponent implements Canvas {
 
     /**
      * Calculates the real coordinate from the components coordinate.
-     * 
+     *
      * @param x
      *            The components x coordinate.
      * @return The real coordinate.
@@ -583,7 +583,7 @@ public class CanvasComponent extends JComponent implements Canvas {
 
     /**
      * Calculates the real coordinate from the components coordinate.
-     * 
+     *
      * @param y
      *            The components y coordinate.
      * @return The real coordinate.
@@ -604,7 +604,7 @@ public class CanvasComponent extends JComponent implements Canvas {
         group.add(new Line2D.Double(sx, sy, ex, ey));
         notifyCanvasListeners(CanvasListener.ITEMS);
     }
-    
+
     @Override
     public void addItem(final int groupID, final double tx, final double ty,
             final double width, final double height) {
@@ -639,7 +639,7 @@ public class CanvasComponent extends JComponent implements Canvas {
 	        			Line2D nEdge1;
 	        			Line2D nEdge2;
 	        			Line2D nEdge3;
-	        			
+
 	        			if(edge.getY1()>noneBSetRect.getX())
 	        			{
 		        	        sx = edge.getX1();
@@ -679,7 +679,7 @@ public class CanvasComponent extends JComponent implements Canvas {
 		        	        ex = edge.getX1();
 		        	        ey = edge.getY1();
 		        			nEdge3=new Line2D.Double(sx, sy, ex, ey);
-	        			}	        	        
+	        			}
 	        			//
 	        			newEdges.add(nEdge1);
 	        			newEdges.add(nEdge2);
@@ -691,9 +691,9 @@ public class CanvasComponent extends JComponent implements Canvas {
 	        	}//for loop
 	        	edges.set(i,newEdges);
 	        }//for edges.size
-    	}//while 
+    	}//while
     }
-    
+
     @Override
     public List<Position> getItemsAt(final double tx, final double ty) {
         final double x = getXForScreen(tx);
@@ -751,7 +751,7 @@ public class CanvasComponent extends JComponent implements Canvas {
     {
     	selectionID=id;
     }
-    
+
     @Override
     public void paint(final Graphics gfx) {
         boolean textChanged = false;
@@ -778,9 +778,9 @@ public class CanvasComponent extends JComponent implements Canvas {
         // zoom the scene
         g2d.scale(zoom, zoom);
         final float step = 1f / count;
-        float hue = 0f;
-        int pos = 0;
-        int controlPoints = 0;
+		float hue = 0f;
+		int pos = 0;
+		int controlPoints = 0;
         // draw the outlines
         for (int i = items.size()-1; i >=0 ; i--) {
         	if(i==selectionID)
@@ -792,8 +792,8 @@ public class CanvasComponent extends JComponent implements Canvas {
         	final Color c = colorList.get(i);
             final Color t = new Color(~0x80000000 & c.getRGB(), true);
         	//final Color t = colorList.get(i);//new Color(~0x80000000 & c.getRGB(), true);
-        	
-        	
+
+
             final Shape gs = groupShapes[i];
             if (gs != null) {
                 g2d.setColor(t);
@@ -818,30 +818,30 @@ public class CanvasComponent extends JComponent implements Canvas {
             hue += step;
             ++pos;
         }
-        
+
         //render selected set
      	if(isVisibleList.get(selectionID))
      	{
         	final Color c = colorList.get(selectionID);
             final Color t = new Color(~0x80000000 & c.getRGB(), true);
         	//final Color t = colorList.get(i);//new Color(~0x80000000 & c.getRGB(), true);
-        	
-       	
+
+
             final Shape gs = groupShapes[selectionID];
-            if (gs != null) 
+            if (gs != null)
             {
                 g2d.setColor(t);
                 g2d.fill(gs);
                 g2d.setColor(c);
                 g2d.setStroke(new BasicStroke(outlineThickness.get(selectionID)));
                 g2d.draw(gs);
-                if (drawPoints) 
+                if (drawPoints)
                 {
                     g2d.setColor(Color.BLACK);
                     final PathIterator pi = gs
                             .getPathIterator(new AffineTransform());
                     final double[] coords = new double[6];
-                    while (!pi.isDone()) 
+                    while (!pi.isDone())
                     {
                         pi.currentSegment(coords);
                         g2d.fill(new Rectangle2D.Double(coords[0] - 0.5,
@@ -852,7 +852,7 @@ public class CanvasComponent extends JComponent implements Canvas {
                 }
             }
         }
-        
+
 //        hue = 0f;
 //        pos = 0;
 //        int rects = 0;

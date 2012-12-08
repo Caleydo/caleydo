@@ -31,6 +31,7 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.Histogram;
@@ -346,7 +347,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 
 		gl.glPushName(iPickingID);
 
-		gl.glMatrixMode(GL2.GL_MODELVIEW_MATRIX);
+		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW_MATRIX);
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
 
@@ -459,7 +460,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 			case CLICKED:
 				firstFilter = externalID;
 				updateFilterSize();
-				// break; Fall through...
+				//$FALL-THROUGH$
 			case MOUSE_OVER:
 				// reset all mouse over actions
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);

@@ -69,22 +69,16 @@ public class GLBookmarkView extends ATableBasedView {
 
 	// private ColorMapping colorMapper;
 
-	protected BookmarkRenderStyle renderStyle;
-
 	/** A hash map that associated the Category with the container */
 	private HashMap<IDCategory, ABookmarkContainer<?>> hashCategoryToBookmarkContainer;
 	/** A list of bookmark containers, to preserve the ordering */
 	private ArrayList<ABookmarkContainer<?>> bookmarkContainers;
 
 	private BookmarkListener bookmarkListener;
-	private SelectionUpdateListener selectionUpdateListener;
-	private SelectionCommandListener selectionCommandListener;
 
 	private PickingIDManager pickingIDManager;
 
 	private RemoveBookmarkListener removeBookmarkListener;
-
-	protected ATableBasedDataDomain dataDomain;
 
 	/** The class responsible for rendering the template */
 	private LayoutManager layoutManager;
@@ -234,6 +228,7 @@ public class GLBookmarkView extends ATableBasedView {
 			Pair<IDCategory, Integer> pair = pickingIDManager.getPrivateID(externalID);
 			hashCategoryToBookmarkContainer.get(pair.getFirst()).handleEvents(pickingType, pickingMode,
 					pair.getSecond(), pick);
+			break;
 		default:
 			break;
 		}

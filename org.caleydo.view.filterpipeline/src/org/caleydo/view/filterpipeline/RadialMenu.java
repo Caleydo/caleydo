@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -46,7 +47,7 @@ public class RadialMenu {
 	private int activeEntry = -1;
 
 	/**
-	 * 
+	 *
 	 * @param listener
 	 * @param entryBackground
 	 */
@@ -56,7 +57,7 @@ public class RadialMenu {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param gl
 	 */
 	public void render(GL2 gl) {
@@ -65,7 +66,7 @@ public class RadialMenu {
 
 		float angle = (float) ((2 * Math.PI) / entries.size());
 
-		gl.glMatrixMode(GL2.GL_MODELVIEW_MATRIX);
+		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW_MATRIX);
 		gl.glPushMatrix();
 		gl.glLoadIdentity();
 
@@ -174,7 +175,7 @@ public class RadialMenu {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param gl
 	 * @param mousePos
 	 */
@@ -209,7 +210,7 @@ public class RadialMenu {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void handleMouseReleased() {
 		if (!visible)
@@ -222,7 +223,7 @@ public class RadialMenu {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param externalID
 	 * @param mousePosition
 	 */
@@ -233,7 +234,7 @@ public class RadialMenu {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param icon
 	 */
 	public void addEntry(Texture icon) {

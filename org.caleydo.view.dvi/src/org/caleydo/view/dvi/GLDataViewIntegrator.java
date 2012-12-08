@@ -365,7 +365,7 @@ public class GLDataViewIntegrator
 
 		gl.glEndList();
 
-		// gl.glMatrixMode(GL2.GL_MODELVIEW);
+		// gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		// gl.glPushMatrix();
 		// gl.glTranslatef(2, 2, 2);
 		// pixelGLConverter.getGLWidthForCurrentGLTransform(gl);

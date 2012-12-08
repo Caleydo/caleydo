@@ -795,7 +795,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					iPickingID = pickingManager.getPickingID(uniqueID, PickingType.MOVE_AXIS, count);
 					gl.glColor4f(0, 0, 0, 0f);
 					gl.glPushName(iPickingID);
-					gl.glBegin(GL2.GL_TRIANGLES);
+					gl.glBegin(GL.GL_TRIANGLES);
 					gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
 					gl.glVertex3f(fXButtonOrigin + 0.08f, fYDropOrigin - 0.3f, AXIS_Z + 0.01f);
 					gl.glVertex3f(fXButtonOrigin - 0.08f, fYDropOrigin - 0.3f, AXIS_Z + 0.01f);
@@ -805,7 +805,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					iPickingID = pickingManager.getPickingID(uniqueID, PickingType.DUPLICATE_AXIS, count);
 					// gl.glColor4f(0, 1, 0, 0.5f);
 					gl.glPushName(iPickingID);
-					gl.glBegin(GL2.GL_TRIANGLES);
+					gl.glBegin(GL.GL_TRIANGLES);
 					gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
 					gl.glVertex3f(fXButtonOrigin - 0.08f, fYDropOrigin - 0.21f, AXIS_Z + 0.01f);
 					gl.glVertex3f(fXButtonOrigin - 0.23f, fYDropOrigin - 0.21f, AXIS_Z + 0.01f);
@@ -815,7 +815,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 					iPickingID = pickingManager.getPickingID(uniqueID, PickingType.REMOVE_AXIS, count);
 					// gl.glColor4f(0, 0, 1, 0.5f);
 					gl.glPushName(iPickingID);
-					gl.glBegin(GL2.GL_TRIANGLES);
+					gl.glBegin(GL.GL_TRIANGLES);
 					gl.glVertex3f(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.01f);
 					gl.glVertex3f(fXButtonOrigin + 0.08f, fYDropOrigin - 0.21f, AXIS_Z + 0.01f);
 					gl.glVertex3f(fXButtonOrigin + 0.23f, fYDropOrigin - 0.21f, AXIS_Z + 0.01f);

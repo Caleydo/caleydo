@@ -23,6 +23,7 @@ import java.nio.FloatBuffer;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
+import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -147,7 +148,7 @@ public class PixelGLConverter {
 	public float getGLHeightForCurrentGLTransform(GL2 gl) {
 		FloatBuffer buffer = FloatBuffer.wrap(new float[16]);
 
-		gl.glGetFloatv(GL2.GL_MODELVIEW_MATRIX, buffer);
+		gl.glGetFloatv(GLMatrixFunc.GL_MODELVIEW_MATRIX, buffer);
 
 		return buffer.get(13);
 	}
@@ -156,7 +157,7 @@ public class PixelGLConverter {
 	public float getGLWidthForCurrentGLTransform(GL2 gl) {
 		FloatBuffer buffer = FloatBuffer.wrap(new float[16]);
 
-		gl.glGetFloatv(GL2.GL_MODELVIEW_MATRIX, buffer);
+		gl.glGetFloatv(GLMatrixFunc.GL_MODELVIEW_MATRIX, buffer);
 
 		return buffer.get(12);
 	}

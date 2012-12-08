@@ -1225,20 +1225,20 @@ public class VisLink {
 	//
 	// private void viewOrtho(GL2 gl) // Set Up An Ortho View
 	// {
-	// gl.glMatrixMode(GL2.GL_PROJECTION); // Select Projection
+	// gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION); // Select Projection
 	// gl.glPushMatrix(); // Push The Matrix
 	// gl.glLoadIdentity(); // Reset The Matrix
 	// gl.glOrtho(0, viewportWidth, viewportHeight, 0, -1, 1); // Select Ortho Mode (640x480)
-	// gl.glMatrixMode(GL2.GL_MODELVIEW); // Select Modelview Matrix
+	// gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW); // Select Modelview Matrix
 	// gl.glPushMatrix(); // Push The Matrix
 	// gl.glLoadIdentity(); // Reset The Matrix
 	// }
 	//
 	// private void viewPerspective(GL2 gl) // Set Up A Perspective View
 	// {
-	// gl.glMatrixMode(GL2.GL_PROJECTION); // Select Projection
+	// gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION); // Select Projection
 	// gl.glPopMatrix(); // Pop The Matrix
-	// gl.glMatrixMode(GL2.GL_MODELVIEW); // Select Modelview
+	// gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW); // Select Modelview
 	// gl.glPopMatrix(); // Pop The Matrix
 	// }
 	//
