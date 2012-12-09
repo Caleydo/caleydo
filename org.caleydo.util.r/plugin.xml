@@ -6,8 +6,6 @@
         name="RStatisticsPerformer"
         point="org.caleydo.util.statistics.StatisticsPerformer">
         <StatisticsPerformer
-          id="org.caleydo.util.r.RStatisticsPerformer"
-          name="RStatisticsPeformer"
           class="org.caleydo.util.r.RStatisticsPerformer" />
    </extension>
 </plugin>

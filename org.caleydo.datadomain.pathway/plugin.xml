@@ -6,8 +6,6 @@
         name="PathwayDataDomain"
         point="org.caleydo.datadomain.DataDomain">
         <DataDomain
-          id="org.caleydo.datadomain.DataDomain"
-          name="PathwayDataDomain"
           class="org.caleydo.datadomain.pathway.PathwayDataDomain" />
    </extension>
 </plugin>

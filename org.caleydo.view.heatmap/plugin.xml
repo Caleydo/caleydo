@@ -70,51 +70,6 @@
             name="Uncertainty Heat Map">
       </command>
    </extension>
-   <extension
-         id="org.caleydo.view.heatmap"
-         name="HeatMapViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="HeatMapViewCreator"
-          class="org.caleydo.view.heatmap.creator.ViewCreatorHeatMap" />
-   </extension>
-      <extension
-         id="org.caleydo.view.heatmap.hierarchical"
-         name="HierarchicalHeatMapViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="HierarchicalHeatMapViewCreator"
-          class="org.caleydo.view.heatmap.creator.ViewCreatorHierarchicalHeatMap" />
-   </extension>
-         <extension
-         id="org.caleydo.view.heatmap.uncertainty"
-         name="UncertaintyHeatMapViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="UncertaintyHeatMapViewCreator"
-          class="org.caleydo.view.heatmap.creator.ViewCreatorUncertaintyHeatMap" />
-   </extension>
-      <extension
-         id="org.caleydo.view.dendrogram.horizontal"
-         name="DendrogramHorizontalViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="DendrogramHorizontalViewCreator"
-          class="org.caleydo.view.heatmap.creator.ViewCreatorDendrogramHorizontal" />
-   </extension>
-      <extension
-         id="org.caleydo.view.dendrogram.vertical"
-         name="DendrogramVerticalViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="DendrogramVerticalViewCreator"
-          class="org.caleydo.view.heatmap.creator.ViewCreatorDendrogramVertical" />
-   </extension>
       <extension
             point="org.caleydo.view.ViewCategory">
          <ViewCategory

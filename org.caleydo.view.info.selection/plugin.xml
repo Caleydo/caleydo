@@ -39,13 +39,4 @@
             name="Selection Info">
       </command>
    </extension>
-   <extension
-         id="org.caleydo.view.info"
-         name="InfoViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="SelectionInfoViewCreator"
-          class="org.caleydo.view.info.selection.creator.ViewCreator" />
-   </extension>
 </plugin>

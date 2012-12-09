@@ -6,8 +6,6 @@
         name="KEGGPathwayResourceLoader"
         point="org.caleydo.data.pathway.PathwayResourceLoader">
         <PathwayResourceLoader
-          id="org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader"
-          name="KEGGPathwayResourceLoader"
           class="org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader" />
   </extension>
 

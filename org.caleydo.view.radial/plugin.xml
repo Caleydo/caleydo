@@ -48,13 +48,4 @@
             name="Radial Hierarchy">
       </command>
    </extension>
-   <extension
-         id="org.caleydo.view.radial"
-         name="RadialHierarchyViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="RadialHierarchyViewCreator"
-          class="org.caleydo.view.radial.creator.ViewCreator" />
-   </extension>
 </plugin>

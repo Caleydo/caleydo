@@ -41,15 +41,6 @@
       </command>
    </extension>
    <extension
-         id="org.caleydo.view.visbricks"
-         name="VisBricksViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="StratomexViewCreator"
-          class="org.caleydo.view.stratomex.creator.ViewCreator" />
-   </extension>
-   <extension
          point="org.caleydo.view.ViewCategory">
       <ViewCategory
             isDataView="false"

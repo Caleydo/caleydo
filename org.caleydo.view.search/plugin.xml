@@ -36,15 +36,6 @@
       </command>
    </extension>
    <extension
-         id="org.caleydo.view.genesearch"
-         name="GeneSearchViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="SearchViewCreator"
-          class="org.caleydo.view.search.creator.ViewCreator" />
-   </extension>
-   <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
             targetID="org.caleydo.core.gui.perspective">

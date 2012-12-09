@@ -20,13 +20,4 @@
             name="Kaplan Meier">
       </command>
    </extension>
-   <extension
-         id="org.caleydo.view.kaplanmeier"
-         name="KaplanMeierViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="KaplanMeierViewCreator"
-          class="org.caleydo.view.kaplanmeier.creator.ViewCreator" />
-   </extension>
 </plugin>

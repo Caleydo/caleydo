@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -28,7 +28,7 @@ import org.xml.sax.SAXException;
 
 /**
  * SAX handler for loading KEGG imagemaps.
- * 
+ *
  * @author Marc Streit
  * @author Michael Kalkusch
  */
@@ -45,8 +45,8 @@ public class PathwayImageMapSaxHandler extends AXmlParserHandler {
 	}
 
 	@Override
-	public void startElement(String namespaceURI, String sSimpleName,
-			String sQualifiedName, Attributes attributes) throws SAXException {
+	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName, Attributes attributes)
+			throws SAXException {
 
 		String sElementName = sSimpleName;
 		this.attributes = attributes;
@@ -65,8 +65,7 @@ public class PathwayImageMapSaxHandler extends AXmlParserHandler {
 	}
 
 	@Override
-	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
-			throws SAXException {
+	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName) throws SAXException {
 
 		// emit("</"+sName+">");
 
@@ -75,8 +74,7 @@ public class PathwayImageMapSaxHandler extends AXmlParserHandler {
 		if (null != eName) {
 			if (eName.equals(openingTag)) {
 				/**
-				 * section (xml block) finished, call callback function from
-				 * XmlParserManager
+				 * section (xml block) finished, call callback function from XmlParserManager
 				 */
 				xmlParserManager.sectionFinishedByHandler(this);
 			}
@@ -84,8 +82,7 @@ public class PathwayImageMapSaxHandler extends AXmlParserHandler {
 	}
 
 	/**
-	 * Reacts on the elements of the imagemap tag. An example imagemap tag looks
-	 * like this:
+	 * Reacts on the elements of the imagemap tag. An example imagemap tag looks like this:
 	 */
 	protected void handleImageMapTag() {
 
@@ -105,14 +102,13 @@ public class PathwayImageMapSaxHandler extends AXmlParserHandler {
 	}
 
 	/**
-	 * Reacts on the elements of the area tag. An example area tag looks like
-	 * this: <area shape="rect" coords="439,63,558,98"
-	 * link="data/XML/pathways/map01196.html" />
+	 * Reacts on the elements of the area tag. An example area tag looks like this: <area shape="rect"
+	 * coords="439,63,558,98" link="data/XML/pathways/map01196.html" />
 	 */
 	protected void handleAreaTag() {
 
 		String sCoords = "";
-		String sImageLink = "";
+		// String sImageLink = "";
 		String sShape = "";
 		Rectangle rectArea = new Rectangle();
 
@@ -126,7 +122,7 @@ public class PathwayImageMapSaxHandler extends AXmlParserHandler {
 			if (sAttributeName.equals("coords")) {
 				sCoords = attributes.getValue(iAttributeIndex);
 			} else if (sAttributeName.equals("link")) {
-				sImageLink = attributes.getValue(iAttributeIndex);
+				// sImageLink = attributes.getValue(iAttributeIndex);
 			} else if (sAttributeName.equals("shape")) {
 				sShape = attributes.getValue(iAttributeIndex);
 			}
@@ -142,8 +138,7 @@ public class PathwayImageMapSaxHandler extends AXmlParserHandler {
 
 		rectArea.x = Integer.parseInt(token.nextToken());
 		rectArea.y = Integer.parseInt(token.nextToken());
-		rectArea.add(Integer.parseInt(token.nextToken()),
-				Integer.parseInt(token.nextToken()));
+		rectArea.add(Integer.parseInt(token.nextToken()), Integer.parseInt(token.nextToken()));
 
 		// ((PathwayManager)
 		// generalManager.getPathwayManager()).getCurrentPathwayImageMap().addArea(rectArea,

@@ -308,7 +308,7 @@ public final class ProjectManager {
 	 * @param fileName
 	 *            name of the file to save the project in.
 	 */
-	public static void save(String fileName) {
+	public void save(String fileName) {
 		save(fileName, false, DataDomainManager.get().getDataDomains());
 	}
 
@@ -498,6 +498,7 @@ public final class ProjectManager {
 	 * @param dirName
 	 *            name of the directory to save the views to.
 	 */
+	@SuppressWarnings("restriction")
 	private static void saveWorkbenchData(String dirName) {
 		// see https://bugs.eclipse.org/bugs/show_bug.cgi?id=2369
 		// -> if this is implemented than a much cleaner solution can be used to persist the application model

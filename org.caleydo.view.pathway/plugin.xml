@@ -2,15 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         id="org.caleydo.view.pathway"
-         name="PathwayViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="PathwayViewCreator"
-          class="org.caleydo.view.pathway.creator.ViewCreator" />
-   </extension>
-   <extension
          point="org.eclipse.ui.views">
       <view
             allowMultiple="true"

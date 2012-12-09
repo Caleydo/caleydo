@@ -45,15 +45,6 @@
       </menuContribution>
    </extension>
    <extension
-         id="org.caleydo.view.datagraph"
-         name="DataGraphViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="DVIViewCreator"
-          class="org.caleydo.view.dvi.creator.ViewCreator" />
-   </extension>
-   <extension
          point="org.caleydo.view.ViewCategory">
       <ViewCategory
             isDataView="false"

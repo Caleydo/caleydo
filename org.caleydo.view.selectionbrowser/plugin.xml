@@ -46,13 +46,4 @@
             name="Selection Browser">
       </command>
    </extension>
-   <extension
-         id="org.caleydo.view.selectionbrowser"
-         name="SelectionBrowserViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="SelectionBrowserViewCreator"
-          class="org.caleydo.view.selectionbrowser.creator.ViewCreator" />
-   </extension>
 </plugin>

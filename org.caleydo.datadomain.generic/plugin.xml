@@ -6,8 +6,6 @@
         name="GenericDataDomain"
         point="org.caleydo.datadomain.DataDomain">
         <DataDomain
-          id="org.caleydo.datadomain.DataDomain"
-          name="GenericDataDomain"
           class="org.caleydo.datadomain.generic.GenericDataDomain" />
    </extension>
    <extension
@@ -15,8 +13,6 @@
          name="GenericDataDomainInitialization"
          point="org.caleydo.datadomain.DataDomainInitialization">
           <DataDomainInitialization
-          id="org.caleydo.datadomain.DataDomainInitialization"
-          name="GenericDataDomainInitialization"
           class="org.caleydo.datadomain.generic.GenericDataDomainInitialization" />
    </extension>
 </plugin>

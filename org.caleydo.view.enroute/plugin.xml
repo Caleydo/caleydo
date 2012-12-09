@@ -47,15 +47,6 @@
       </menuContribution>
    </extension>
    <extension
-         id="org.caleydo.view.linearizedpathway"
-         name="LinearizedPathwayViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="enRoutePathwayViewCreator"
-          class="org.caleydo.view.enroute.creator.ViewCreator" />
-   </extension>
-   <extension
          point="org.caleydo.view.ViewCategory">
       <ViewCategory
             isDataView="false"

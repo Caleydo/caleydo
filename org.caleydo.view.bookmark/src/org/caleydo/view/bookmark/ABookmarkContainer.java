@@ -146,7 +146,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
 	@Override
 	public ElementLayout getLayout() {
 		return containerLayout;
-	};
+	}
 
 	/**
 	 * Returns the containerDimensions {@link GLBookmarkView} needs to place the

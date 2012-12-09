@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -38,9 +38,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * The element manager is in charge for handling the items. Items are vertices
- * and edges. The class is implemented as a Singleton.
- * 
+ * The element manager is in charge for handling the items. Items are vertices and edges. The class is implemented as a
+ * Singleton.
+ *
  * @author Marc Streit
  */
 public class PathwayItemManager {
@@ -77,9 +77,8 @@ public class PathwayItemManager {
 	}
 
 	/**
-	 * Returns the pathway item manager as a singleton object. When first called
-	 * the manager is created (lazy).
-	 * 
+	 * Returns the pathway item manager as a singleton object. When first called the manager is created (lazy).
+	 *
 	 * @return singleton PathwayItemManager instance
 	 */
 	public static PathwayItemManager get() {
@@ -94,10 +93,13 @@ public class PathwayItemManager {
 
 	/**
 	 * Creates a general (aka non-gene) pathway vertex
-	 * 
-	 * @param name the name of the vertex
-	 * @param type the type of the vertex, e.g. "gene"
-	 * @param externalLink a link to a web resource about the vertex
+	 *
+	 * @param name
+	 *            the name of the vertex
+	 * @param type
+	 *            the type of the vertex, e.g. "gene"
+	 * @param externalLink
+	 *            a link to a web resource about the vertex
 	 */
 	public PathwayVertex createVertex(final String name, final String type, final String externalLink) {
 
@@ -112,11 +114,15 @@ public class PathwayItemManager {
 
 	/**
 	 * Creates a vertex that can be mapped to a gene.
-	 * 
-	 * @param name the name of the vertex
-	 * @param type the type of the vertex, e.g. "gene"
-	 * @param externalLink a link to a web resource about the vertex
-	 * @param mappingDavidIDs the davidIDType ids that map to this vertex
+	 *
+	 * @param name
+	 *            the name of the vertex
+	 * @param type
+	 *            the type of the vertex, e.g. "gene"
+	 * @param externalLink
+	 *            a link to a web resource about the vertex
+	 * @param mappingDavidIDs
+	 *            the davidIDType ids that map to this vertex
 	 * @return
 	 */
 	public ArrayList<PathwayVertex> createGeneVertex(final String name, final String type, final String externalLink,
@@ -139,8 +145,7 @@ public class PathwayItemManager {
 				}
 				Integer vertexID = existingVerticeIDs.iterator().next();
 				vertex = hashVertexIDToVertex.get(vertexID);
-			}
-			else {
+			} else {
 				vertex = createVertex(name, type, externalLink);
 				geneIDMappingManager.addMapping(davidIDType, davidId, pathwayVertexIDType, vertex.getID());
 				// hashDavidIdToPathwayVertexGraphItem.put(davidId,
@@ -159,11 +164,12 @@ public class PathwayItemManager {
 	}
 
 	/**
-	 * Creates a rectangular {@link PathwayVertexRep} and registers it in the ID
-	 * manager
-	 * 
-	 * @param parentPathway the pathway the rep belongs to
-	 * @param vertices the vertices this rep is associated with
+	 * Creates a rectangular {@link PathwayVertexRep} and registers it in the ID manager
+	 *
+	 * @param parentPathway
+	 *            the pathway the rep belongs to
+	 * @param vertices
+	 *            the vertices this rep is associated with
 	 * @param name
 	 * @param shapeType
 	 * @param height
@@ -186,16 +192,17 @@ public class PathwayItemManager {
 	}
 
 	/**
-	 * Creates polygonal a {@link PathwayVertexRep} and registers it in the ID
-	 * manager. The shape of this vertex is specified as a list of points in the
-	 * coords parameter.
-	 * 
-	 * @param parentPathway the pathway the rep belongs to
-	 * @param vertices the vertices this rep is associated with
+	 * Creates polygonal a {@link PathwayVertexRep} and registers it in the ID manager. The shape of this vertex is
+	 * specified as a list of points in the coords parameter.
+	 *
+	 * @param parentPathway
+	 *            the pathway the rep belongs to
+	 * @param vertices
+	 *            the vertices this rep is associated with
 	 * @param name
 	 * @param shapeType
-	 * @param coords a string with the coordinates comma separated. e.g.
-	 *            13,25,15,26,... alternating between x and y values
+	 * @param coords
+	 *            a string with the coordinates comma separated. e.g. 13,25,15,26,... alternating between x and y values
 	 * @return
 	 */
 	public PathwayVertexRep createVertexRep(final PathwayGraph parentPathway, final ArrayList<PathwayVertex> vertices,
@@ -209,9 +216,8 @@ public class PathwayItemManager {
 	}
 
 	/**
-	 * Registers a pathwayVertexRep to it's pathway, its vertices and to the id
-	 * mapping manager
-	 * 
+	 * Registers a pathwayVertexRep to it's pathway, its vertices and to the id mapping manager
+	 *
 	 * @param parentPathway
 	 * @param vertices
 	 * @param pathwayVertexRep
@@ -228,7 +234,7 @@ public class PathwayItemManager {
 					pathwayVertexRep.getID());
 		}
 
-		hashPathwayVertexRepIDToPathwayVertexRep.put(pathwayVertexRep.getID(), (PathwayVertexRep) pathwayVertexRep);
+		hashPathwayVertexRepIDToPathwayVertexRep.put(pathwayVertexRep.getID(), pathwayVertexRep);
 	}
 
 	public PathwayVertexGroupRep createVertexGroupRep(final PathwayGraph parentPathway) {
@@ -240,8 +246,7 @@ public class PathwayItemManager {
 		parentPathway.addVertex(pathwayVertexGroupRep);
 		pathwayVertexGroupRep.setPathway(parentPathway);
 
-		hashPathwayVertexRepIDToPathwayVertexRep.put(pathwayVertexGroupRep.getID(),
-				(PathwayVertexRep) pathwayVertexGroupRep);
+		hashPathwayVertexRepIDToPathwayVertexRep.put(pathwayVertexGroupRep.getID(), pathwayVertexGroupRep);
 
 		return pathwayVertexGroupRep;
 	}
@@ -263,9 +268,9 @@ public class PathwayItemManager {
 	}
 
 	/**
-	 * Returns a davidIDType ID for the specified <code>PathwayVertex</code>. If
-	 * no davidIDType ID can be found, -1 is returned.
-	 * 
+	 * Returns a davidIDType ID for the specified <code>PathwayVertex</code>. If no davidIDType ID can be found, -1 is
+	 * returned.
+	 *
 	 * @param pathwayVertexIDType
 	 * @return the davidID or null if no mapping was found
 	 */
@@ -278,9 +283,8 @@ public class PathwayItemManager {
 	}
 
 	/**
-	 * Returns all davidIDType IDs of all vertices stored in the
-	 * <code>PathwayVertexRep</code>. If no davidIDs can be resolved an empty
-	 * list is returned.
+	 * Returns all davidIDType IDs of all vertices stored in the <code>PathwayVertexRep</code>. If no davidIDs can be
+	 * resolved an empty list is returned.
 	 */
 	public ArrayList<Integer> getDavidIDsByPathwayVertexRep(PathwayVertexRep pathwayVertexRep) {
 		ArrayList<Integer> davidIDs = new ArrayList<Integer>();

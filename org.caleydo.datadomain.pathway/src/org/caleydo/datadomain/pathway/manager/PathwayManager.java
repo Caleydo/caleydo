@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -57,13 +57,11 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
 /**
- * The pathway manager is in charge of creating and handling the pathways. The
- * class is implemented as a singleton.
- * 
+ * The pathway manager is in charge of creating and handling the pathways. The class is implemented as a singleton.
+ *
  * @author Marc Streit
  */
-public class PathwayManager
-	extends AManager<PathwayGraph> {
+public class PathwayManager extends AManager<PathwayGraph> {
 
 	private volatile static PathwayManager pathwayManager;
 
@@ -79,16 +77,15 @@ public class PathwayManager
 	private HashMap<EPathwayDatabaseType, PathwayDatabase> hashPathwayDatabase;
 
 	/**
-	 * Root pathway contains all nodes that are loaded into the system.
-	 * Therefore it represents the overall topological network. (The root
-	 * pathway is independent from the representation of the nodes.)
+	 * Root pathway contains all nodes that are loaded into the system. Therefore it represents the overall topological
+	 * network. (The root pathway is independent from the representation of the nodes.)
 	 */
 	private DirectedGraph<PathwayVertex, DefaultEdge> rootPathwayGraph = new DefaultDirectedGraph<PathwayVertex, DefaultEdge>(
 			DefaultEdge.class);
 
 	/**
-	 * Used for pathways where only images can be loaded. The image map defines
-	 * the clickable regions on that pathway image.
+	 * Used for pathways where only images can be loaded. The image map defines the clickable regions on that pathway
+	 * image.
 	 */
 	private PathwayImageMap currentPathwayImageMap;
 
@@ -101,9 +98,8 @@ public class PathwayManager
 	}
 
 	/**
-	 * Returns the pathway manager as a singleton object. When first called the
-	 * manager is created (lazy).
-	 * 
+	 * Returns the pathway manager as a singleton object. When first called the manager is created (lazy).
+	 *
 	 * @return singleton PathwayManager instance
 	 */
 	public static PathwayManager get() {
@@ -241,8 +237,7 @@ public class PathwayManager
 		while (!pathwayLoadingFinished) {
 			try {
 				Thread.sleep(1000);
-			}
-			catch (InterruptedException e) {
+			} catch (InterruptedException e) {
 				throw new IllegalThreadStateException("Pathway loader thread has been interrupted!");
 			}
 		}
@@ -263,20 +258,17 @@ public class PathwayManager
 
 				keggPathwayResourceLoader = (IPathwayResourceLoader) ce[0].createExecutableExtension("class");
 
-			}
-			else if (type == EPathwayDatabaseType.BIOCARTA) {
+			} else if (type == EPathwayDatabaseType.BIOCARTA) {
 
 				IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
 				IExtension ext = ep.getExtension("org.caleydo.data.pathway.biocarta.BioCartaPathwayResourceLoader");
 				IConfigurationElement[] ce = ext.getConfigurationElements();
 
 				biocartaPathwayResourceLoader = (IPathwayResourceLoader) ce[0].createExecutableExtension("class");
-			}
-			else {
+			} else {
 				throw new IllegalStateException("Unknown pathway database " + type);
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Could not load " + type.getName()
 					+ " pathways."));
 		}
@@ -286,8 +278,7 @@ public class PathwayManager
 
 		if (type == EPathwayDatabaseType.KEGG) {
 			return keggPathwayResourceLoader;
-		}
-		else if (type == EPathwayDatabaseType.BIOCARTA) {
+		} else if (type == EPathwayDatabaseType.BIOCARTA) {
 			return biocartaPathwayResourceLoader;
 		}
 
@@ -320,25 +311,20 @@ public class PathwayManager
 
 			if (organism == Organism.HOMO_SAPIENS) {
 				fileName = "data/pathway_list_KEGG_homo_sapiens.txt";
-			}
-			else if (organism == Organism.MUS_MUSCULUS) {
+			} else if (organism == Organism.MUS_MUSCULUS) {
 				fileName = "data/pathway_list_KEGG_mus_musculus.txt";
-			}
-			else {
+			} else {
 				throw new IllegalStateException("Cannot load pathways from organism " + organism);
 			}
 
 			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread("Loading KEGG Pathways...");
-		}
-		else if (pathwayDatabase.getType() == EPathwayDatabaseType.BIOCARTA) {
+		} else if (pathwayDatabase.getType() == EPathwayDatabaseType.BIOCARTA) {
 
 			if (organism == Organism.HOMO_SAPIENS) {
 				fileName = "data/pathway_list_BIOCARTA_homo_sapiens.txt";
-			}
-			else if (organism == Organism.MUS_MUSCULUS) {
+			} else if (organism == Organism.MUS_MUSCULUS) {
 				fileName = "data/pathway_list_BIOCARTA_mus_musculus.txt";
-			}
-			else {
+			} else {
 				throw new IllegalStateException("Cannot load pathways from organism " + organism);
 			}
 
@@ -386,11 +372,9 @@ public class PathwayManager
 				}
 			}
 
-		}
-		catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			throw new IllegalStateException("Pathway list file " + fileName + " not found.");
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			throw new IllegalStateException("Error reading data from pathway list file: " + fileName);
 		}
 
@@ -400,7 +384,7 @@ public class PathwayManager
 
 	/**
 	 * Returns all pathways where a specific gene is contained at least once.
-	 * 
+	 *
 	 * @param idType
 	 * @param id
 	 * @return a Set of PathwayGraphs or null if no such mapping exists
@@ -412,7 +396,7 @@ public class PathwayManager
 
 		IDMappingManager geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idType);
 		Set<Integer> vertexRepIDs = geneIDMappingManager.getIDAsSet(idType, PathwayVertexRep.getIdType(), id);
-		if(vertexRepIDs == null)
+		if (vertexRepIDs == null)
 			return null;
 		for (Integer vertexRepID : vertexRepIDs) {
 
@@ -424,7 +408,7 @@ public class PathwayManager
 
 	/**
 	 * Returns all pathways where a specific gene is contained at least once.
-	 * 
+	 *
 	 * @param idType
 	 * @param geneIDs
 	 * @return a Set of PathwayGraphs or null if no such mapping exists
@@ -436,8 +420,7 @@ public class PathwayManager
 		HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
 		for (Integer gene : geneIDs) {
 
-			Set<Integer> davids = ((GeneticDataDomain) dataDomain).getGeneIDMappingManager().getIDAsSet(idType,
-					davidIDType, gene);
+			Set<Integer> davids = dataDomain.getGeneIDMappingManager().getIDAsSet(idType, davidIDType, gene);
 			if (davids == null || davids.size() == 0)
 				continue;
 			for (Integer david : davids) {

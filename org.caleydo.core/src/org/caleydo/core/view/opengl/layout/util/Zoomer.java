@@ -273,10 +273,10 @@ public class Zoomer implements IMouseWheelHandler, IScrollBarUpdateHandler {
 
 		previousZoomScale = currentZoomScale;
 
-		gl.glDisable(GL2.GL_CLIP_PLANE0);
-		gl.glDisable(GL2.GL_CLIP_PLANE1);
-		gl.glDisable(GL2.GL_CLIP_PLANE2);
-		gl.glDisable(GL2.GL_CLIP_PLANE3);
+		gl.glDisable(GL2ES1.GL_CLIP_PLANE0);
+		gl.glDisable(GL2ES1.GL_CLIP_PLANE1);
+		gl.glDisable(GL2ES1.GL_CLIP_PLANE2);
+		gl.glDisable(GL2ES1.GL_CLIP_PLANE3);
 
 		if (currentZoomScale == 1.0f)
 			return;

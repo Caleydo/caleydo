@@ -48,13 +48,4 @@
             name="Filter">
       </command>
    </extension>
-   <extension
-         id="org.caleydo.view.filter"
-         name="ViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="ViewCreator"
-          class="org.caleydo.view.filter.creator.ViewCreator" />
-   </extension>
 </plugin>

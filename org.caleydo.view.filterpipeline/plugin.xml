@@ -48,13 +48,4 @@
             name="Filter Pipeline">
       </command>
    </extension>
-   <extension
-         id="org.caleydo.view.template"
-         name="TemplateViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="FilterPipelineViewCreator"
-          class="org.caleydo.view.filterpipeline.creator.ViewCreator" />
-   </extension>
 </plugin>

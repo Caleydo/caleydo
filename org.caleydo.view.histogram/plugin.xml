@@ -43,15 +43,6 @@
       </command>
    </extension>
    <extension
-         id="org.caleydo.view.histogram"
-         name="HistogramViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="HistogramViewCreator"
-          class="org.caleydo.view.histogram.creator.ViewCreator" />
-   </extension>
-   <extension
          point="org.caleydo.view.EmbeddedView">
       <EmbeddingInfo
             viewID="org.caleydo.view.histogram">

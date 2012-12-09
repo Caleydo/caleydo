@@ -6,8 +6,6 @@
         name="GeneticDataDomain"
         point="org.caleydo.datadomain.DataDomain">
         <DataDomain
-          id="org.caleydo.datadomain.DataDomain"
-          name="GeneticDataDomain"
           class="org.caleydo.datadomain.genetic.GeneticDataDomain" />
    </extension>
    <extension
@@ -15,8 +13,6 @@
         name="GeneticDataDomainInitialization"
         point="org.caleydo.datadomain.DataDomainInitialization">
         <DataDomainInitialization
-          id="org.caleydo.datadomain.DataDomainInitialization"
-          name="GeneticDataDomainInitialization"
           class="org.caleydo.datadomain.genetic.GeneticDataDomainInitialization" />
    </extension>
 </plugin>

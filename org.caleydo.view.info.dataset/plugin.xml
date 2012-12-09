@@ -40,13 +40,4 @@
             name="Dataset Info">
       </command>
    </extension>
-   <extension
-         id="org.caleydo.view.info.dataset"
-         name="InfoDataSetViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="DatasetInfoViewCreator"
-          class="org.caleydo.view.info.dataset.creator.ViewCreator" />
-   </extension>
 </plugin>

@@ -48,14 +48,4 @@
             name="Bookmark">
       </command>
    </extension>
-   <extension
-         id="org.caleydo.view.bookmark"
-         name="BookmarkViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="BookmarkViewCreator"
-          class="org.caleydo.view.bookmark.creator.ViewCreator" />
-   </extension>
-
 </plugin>
