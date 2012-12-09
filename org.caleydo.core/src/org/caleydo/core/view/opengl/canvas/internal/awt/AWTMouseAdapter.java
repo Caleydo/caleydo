@@ -21,6 +21,7 @@ package org.caleydo.core.view.opengl.canvas.internal.awt;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -104,75 +105,42 @@ final class AWTMouseAdapter implements MouseListener, MouseMotionListener, Mouse
 			this.event = event;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#getPoint()
-		 */
 		@Override
 		public Point getPoint() {
 			return event.getPoint();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#getClickCount()
-		 */
 		@Override
 		public int getClickCount() {
 			return event.getClickCount();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#getWheelRotation()
-		 */
 		@Override
 		public int getWheelRotation() {
 			return (event instanceof MouseWheelEvent) ? ((MouseWheelEvent) event).getWheelRotation() : 0;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#getButton()
-		 */
 		@Override
 		public int getButton() {
 			return event.getButton();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#isButtonDown(int)
-		 */
 		@Override
 		public boolean isButtonDown(int button) {
 			switch (button) {
 			case 1:
-				return (event.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0;
+				return (event.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) != 0;
 			case 2:
-				return (event.getModifiersEx() & MouseEvent.BUTTON2_DOWN_MASK) != 0;
+				return (event.getModifiersEx() & InputEvent.BUTTON2_DOWN_MASK) != 0;
 			case 3:
-				return (event.getModifiersEx() & MouseEvent.BUTTON3_DOWN_MASK) != 0;
+				return (event.getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0;
 			}
 			return false;
 		}
 
-
-		/*
-		 * (non-Javadoc)
-		 *
-		 * @see org.caleydo.core.view.opengl.canvas.IGLMouseListener.IMouseEvent#getParentSize()
-		 */
 		@Override
 		public Dimension getParentSize() {
 			return event.getComponent().getSize();
 		}
-
 	}
-
 }

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,49 +8,25 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
 /**
- * List of all possible pickable elements. Every type of element which should be pickable must be registered
- * here.
- * 
+ * List of all possible pickable elements. Every type of element which should be pickable must be registered here.
+ *
  * @author Alexander Lex
  * @deprecated replace with strings
  */
 @Deprecated
 public enum PickingType {
-	BACKGROUND,
-	BACKGROUND_HYPERBOLIC,
-
-	// bucket
-	BUCKET_MOVE_IN_ICON_SELECTION,
-	BUCKET_MOVE_OUT_ICON_SELECTION,
-	BUCKET_MOVE_LEFT_ICON_SELECTION,
-	BUCKET_MOVE_RIGHT_ICON_SELECTION,
-
-	REMOTE_VIEW_LOCK,
-	REMOTE_VIEW_REMOVE,
-	REMOTE_VIEW_DRAG,
-	REMOTE_VIEW_SELECTION,
-	INTERFACE_SELECTION,
-	DATA_DOMAIN_SELECTION,
-	NEXT_DATA_DOMAIN_SELECTION,
-
-	/** A remote level element is the place-holder for a view, basically the wall behind a view */
-	REMOTE_LEVEL_ELEMENT,
-	MEMO_PAD_SELECTION,
-
-	// selection panel
-	SELECTION_PANEL_ITEM,
 
 	// parallel coordinates
 	POLYLINE_SELECTION,
@@ -91,8 +67,7 @@ public enum PickingType {
 	HIER_HEAT_MAP_INFOCUS_SELECTION,
 	HIER_HEAT_MAP_ACTIVATE_HORIZONTAL_DENDROGRAM,
 	/**
-	 * Button that triggers wheter dimension dendrogram shows the whole tree, or only the tree till the
-	 * cut-off
+	 * Button that triggers wheter dimension dendrogram shows the whole tree, or only the tree till the cut-off
 	 */
 	HIER_HEAT_MAP_ACTIVATE_STORAGE_DENDROGRAM,
 	HIER_HEAT_MAP_CURSOR_LEVEL1,
@@ -118,10 +93,6 @@ public enum PickingType {
 	RAD_HIERARCHY_SLIDER_SELECTION,
 	RAD_HIERARCHY_SLIDER_BODY_SELECTION,
 	RAD_HIERARCHY_SLIDER_BUTTON_SELECTION,
-	// tissue viewer
-	TISSUE_SELECTION,
-
-
 
 	// scatterplot
 
@@ -135,25 +106,6 @@ public enum PickingType {
 	GROUPER_BACKGROUND_SELECTION,
 	GROUPER_COLLAPSE_BUTTON_SELECTION,
 
-	// Matchmaker
-	COMPARE_LEFT_EMBEDDED_VIEW_SELECTION,
-	COMPARE_RIGHT_EMBEDDED_VIEW_SELECTION,
-	COMPARE_GROUP_1_SELECTION,
-	COMPARE_GROUP_2_SELECTION,
-	COMPARE_GROUP_3_SELECTION,
-	COMPARE_GROUP_4_SELECTION,
-	COMPARE_GROUP_5_SELECTION,
-	COMPARE_GROUP_6_SELECTION,
-	COMPARE_OVERVIEW_SLIDER_BODY_SELECTION,
-	COMPARE_OVERVIEW_SLIDER_ARROW_UP_SELECTION,
-	COMPARE_OVERVIEW_SLIDER_ARROW_DOWN_SELECTION,
-	COMPARE_SET_BAR_ITEM_SELECTION,
-	COMPARE_DENDROGRAM_BUTTON_SELECTION,
-	COMPARE_SELECTION_WINDOW_SELECTION,
-	COMPARE_SELECTION_WINDOW_ARROW_LEFT_SELECTION,
-	COMPARE_SELECTION_WINDOW_ARROW_RIGHT_SELECTION,
-	COMPARE_RIBBON_SELECTION,
-
 	// treemap
 	TREEMAP_ELEMENT_SELECTED,
 	TREEMAP_THUMBNAILVIEW_SELECTED,
@@ -163,9 +115,6 @@ public enum PickingType {
 	FILTERPIPE_FILTER,
 	FILTERPIPE_SUB_FILTER,
 	FILTERPIPE_START_ARROW,
-
-	// tag cloud
-	TAG_DIMENSION_CHANGE,
 
 	ZOOM_SCROLLBAR;
 }
