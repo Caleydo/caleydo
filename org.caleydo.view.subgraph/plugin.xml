@@ -40,15 +40,6 @@
             name="SubGraph">
       </command>
    </extension>
-      <extension
-         id="org.caleydo.view.subgraph"
-         name="SubGraphViewCreator"
-         point="org.caleydo.view.ViewCreator">
-         <ViewCreator
-          id="org.caleydo.view.ViewCreator"
-          name="SubgraphViewCreator"
-          class="org.caleydo.view.subgraph.creator.ViewCreator" />
-   </extension>
    <extension
          point="org.caleydo.view.ViewCategory">
       <ViewCategory
