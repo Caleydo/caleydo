@@ -34,7 +34,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Base class for all RCP views that use OpenGL.
@@ -69,7 +68,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 		minSizeComposite.addDisposeListener(new DisposeListener() {
 			@Override
 			public void widgetDisposed(DisposeEvent e) {
-				if (!PlatformUI.getWorkbench().isClosing())
+				// if (!PlatformUI.getWorkbench().isClosing())
 					ViewManager.get().unregisterGLCanvasFromAnimator(glCanvas);
 			}
 		});
