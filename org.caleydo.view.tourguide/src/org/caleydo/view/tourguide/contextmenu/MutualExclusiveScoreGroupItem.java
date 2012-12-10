@@ -17,16 +17,27 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.event;
+package org.caleydo.view.tourguide.contextmenu;
+
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.view.stratomex.column.BrickColumn;
+import org.caleydo.view.tourguide.event.EScoreReferenceMode;
+import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
 
 /**
- * Possible modes for scoring against a reference table perspective.
- *
  * @author Marc Streit
  *
  */
-public enum EScoreReferenceMode {
-	COLUMN,
-	ALL_GROUPS_IN_COLUMN,
- SINGLE_GROUP, MUTUAL_EXCLUSIVE_GROUP;
+public class MutualExclusiveScoreGroupItem extends AContextMenuItem {
+
+	public MutualExclusiveScoreGroupItem(BrickColumn referenceColumn, TablePerspective groupTablePerspective) {
+
+		setLabel("Create Mutual Exclusive Score");
+
+		ScoreTablePerspectiveEvent event = new ScoreTablePerspectiveEvent(EScoreReferenceMode.MUTUAL_EXCLUSIVE_GROUP,
+				referenceColumn, groupTablePerspective);
+		event.setSender(this);
+		registerEvent(event);
+	}
 }

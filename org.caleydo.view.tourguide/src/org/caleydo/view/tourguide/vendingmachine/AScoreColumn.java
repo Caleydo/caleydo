@@ -37,9 +37,9 @@ import org.caleydo.core.view.opengl.layout.util.Renderers;
 import org.caleydo.core.view.opengl.layout.util.TextureRenderer;
 import org.caleydo.view.tourguide.data.ESorting;
 import org.caleydo.view.tourguide.data.ScoringElement;
-import org.caleydo.view.tourguide.data.score.AGroupScore;
-import org.caleydo.view.tourguide.data.score.AStratificationScore;
+import org.caleydo.view.tourguide.data.score.IGroupScore;
 import org.caleydo.view.tourguide.data.score.IScore;
+import org.caleydo.view.tourguide.data.score.IStratificationScore;
 import org.caleydo.view.tourguide.renderer.ScoreBarRenderer;
 import org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle;
 
@@ -134,16 +134,14 @@ public abstract class AScoreColumn extends Row {
 	}
 
 	protected static TablePerspective resolveStratification(IScore score) {
-		if (score instanceof AStratificationScore)
-			return ((AStratificationScore) score).getReference();
-		if (score instanceof AGroupScore)
-			return ((AGroupScore) score).getStratification();
+		if (score instanceof IStratificationScore)
+			return ((IStratificationScore) score).getStratification();
 		return null;
 	}
 
 	protected static Group resolveGroup(IScore score) {
-		if (score instanceof AGroupScore)
-			return ((AGroupScore) score).getGroup();
+		if (score instanceof IGroupScore)
+			return ((IGroupScore) score).getGroup();
 		return null;
 	}
 }

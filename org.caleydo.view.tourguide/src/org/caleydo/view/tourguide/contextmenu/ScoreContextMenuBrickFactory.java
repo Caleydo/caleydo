@@ -44,7 +44,8 @@ public class ScoreContextMenuBrickFactory implements IContextMenuBrickFactory {
 	public Iterable<AContextMenuItem> createGroupEntries(BrickColumn referenceColumn, TablePerspective groupTable) {
 		if (!isTourGuideVisible()) // show context menu only if the tour guide view is visible
 			return Collections.emptyList();
-		return Arrays.asList((AContextMenuItem) new ScoreGroupItem(referenceColumn, groupTable));
+		return Arrays.asList(new ScoreGroupItem(referenceColumn, groupTable), new MutualExclusiveScoreGroupItem(
+				referenceColumn, groupTable));
 	}
 
 	private static boolean isTourGuideVisible() {

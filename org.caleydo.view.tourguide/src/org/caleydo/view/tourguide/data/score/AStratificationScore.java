@@ -29,7 +29,7 @@ import org.caleydo.view.tourguide.data.ScoringElement;
  * @author Samuel Gratzl
  *
  */
-public abstract class AStratificationScore implements IScore {
+public abstract class AStratificationScore implements IStratificationScore {
 	protected TablePerspective reference;
 	protected Map<Integer, Float> scores = new ConcurrentHashMap<>();
 
@@ -50,7 +50,8 @@ public abstract class AStratificationScore implements IScore {
 		scores.put(elem.getID(), value);
 	}
 
-	public TablePerspective getReference() {
+	@Override
+	public TablePerspective getStratification() {
 		return reference;
 	}
 

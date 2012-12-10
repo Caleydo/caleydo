@@ -47,6 +47,9 @@ public class ScoreTablePerspectiveListener
 			case SINGLE_GROUP:
 				handler.createStratificationGroupScore(strat, scoreGroupEvent.getGroup().getRecordGroup());
 				break;
+			case MUTUAL_EXCLUSIVE_GROUP:
+				handler.createMutualExclusiveGroupScore(strat, scoreGroupEvent.getGroup().getRecordGroup());
+				break;
 			case ALL_GROUPS_IN_COLUMN:
 				handler.createStratificationGroupScore(strat, strat.getRecordPerspective().getVirtualArray()
 						.getGroupList());

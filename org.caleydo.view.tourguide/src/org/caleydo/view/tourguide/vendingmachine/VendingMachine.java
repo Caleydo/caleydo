@@ -21,6 +21,8 @@ package org.caleydo.view.tourguide.vendingmachine;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -62,6 +64,7 @@ import org.caleydo.view.tourguide.data.score.AdjustedRandScore;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.JaccardIndexScore;
+import org.caleydo.view.tourguide.data.score.MutualExclusiveScore;
 import org.caleydo.view.tourguide.data.serialize.ISerializeableScore;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
@@ -288,6 +291,19 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		onAddColumn(score);
 	}
 
+	public void createMutualExclusiveGroupScore(TablePerspective stratification, Group act) {
+		Scores manager = Scores.get();
+		Collection<JaccardIndexScore> scores = new ArrayList<>();
+		JaccardIndexScore actScore = null;
+		for (Group group : stratification.getRecordPerspective().getVirtualArray().getGroupList()) {
+			JaccardIndexScore s = manager.addIfAbsent(new JaccardIndexScore(stratification, group));
+			scores.add(s);
+			if (group.equals(act))
+				actScore = s;
+		}
+		onAddColumn(manager.addIfAbsent(new MutualExclusiveScore(actScore, scores)));
+	}
+
 	public void createStratificationGroupScore(TablePerspective stratification, Iterable<Group> groups) {
 		Scores manager = Scores.get();
 		CollapseScore composite = new CollapseScore(stratification.getLabel());
@@ -367,7 +383,6 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	private void recomputeScores() {
 		if (scoreQueryUI.isRunning())
 			return;
-		new Throwable().printStackTrace();
 		if (scoreQuery.isBusy()) {
 			scoreQueryUI.setRunning(true);
 			Job job = new Job("Update Tour Guide") {

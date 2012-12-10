@@ -30,7 +30,7 @@ import org.caleydo.view.tourguide.data.ScoringElement;
  * @author Samuel Gratzl
  *
  */
-public abstract class AGroupScore implements IScore {
+public abstract class AGroupScore implements IGroupScore {
 	private String label;
 	protected TablePerspective stratification;
 	protected Group group;
@@ -71,6 +71,7 @@ public abstract class AGroupScore implements IScore {
 	/**
 	 * @return the stratification
 	 */
+	@Override
 	public TablePerspective getStratification() {
 		return stratification;
 	}
@@ -78,6 +79,7 @@ public abstract class AGroupScore implements IScore {
 	/**
 	 * @return the group
 	 */
+	@Override
 	public Group getGroup() {
 		return group;
 	}
