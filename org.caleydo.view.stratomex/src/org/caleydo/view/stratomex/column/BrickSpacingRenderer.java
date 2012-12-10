@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -37,9 +37,9 @@ import org.caleydo.view.stratomex.brick.GLBrick;
 /**
  * Renderer for spacings between bricks inside of a {@link BrickColumn}. This
  * class is responsible for handling drops of bricks that shall be reordered.
- * 
+ *
  * @author Christian
- * 
+ *
  */
 public class BrickSpacingRenderer
 	extends LayoutRenderer
@@ -88,12 +88,12 @@ public class BrickSpacingRenderer
 		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
 				EPickingType.BRICK_SPACER.name() + dimensionGroup.getID(), id));
 
-		gl.glColor4f(1, 0, 0, 0);
+		gl.glColor4f(1, 1, 1, 0);
 		gl.glBegin(GL2.GL_QUADS);
-		gl.glVertex3f(-width / 2.0f, 0, 0);
-		gl.glVertex3f(width / 2.0f, 0, 0);
-		gl.glVertex3f(width / 2.0f, y, 0);
-		gl.glVertex3f(-width / 2.0f, y, 0);
+		gl.glVertex3f(-width / 2.0f, 0, -0.5f);
+		gl.glVertex3f(width / 2.0f, 0, -0.5f);
+		gl.glVertex3f(width / 2.0f, y, -0.5f);
+		gl.glVertex3f(-width / 2.0f, y, -0.5f);
 		gl.glEnd();
 
 		if (renderDropIndicator)
@@ -154,7 +154,7 @@ public class BrickSpacingRenderer
 	{
 		this.lowerBrick = lowerBrick;
 	}
-	
+
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
 		return false;
