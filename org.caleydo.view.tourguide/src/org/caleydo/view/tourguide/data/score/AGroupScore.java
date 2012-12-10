@@ -48,13 +48,13 @@ public abstract class AGroupScore implements IScore {
 	}
 
 
-	protected boolean contains(TablePerspective perspective, Group elem) {
+	public boolean contains(TablePerspective perspective, Group elem) {
 		// have the value or it the same stratification
 		return scores.containsKey(elem.getID()) || (perspective.equals(stratification));
 	}
 
 
-	protected void put(Group elem, float value) {
+	public void put(Group elem, float value) {
 		scores.put(elem.getID(), value);
 	}
 

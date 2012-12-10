@@ -1,6 +1,7 @@
-package org.caleydo.view.tourguide.data;
+package org.caleydo.view.tourguide.data.compute;
 
 import java.util.BitSet;
+import java.util.Collection;
 import java.util.Iterator;
 
 public class BitSetIDSet implements IDSet {
@@ -16,6 +17,12 @@ public class BitSetIDSet implements IDSet {
 	public void set(int id) {
 		s.set(id);
 		this.size++;
+	}
+
+	@Override
+	public void setAll(Collection<Integer> ids) {
+		for (int id : ids)
+			set(id);
 	}
 
 	@Override

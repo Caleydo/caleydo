@@ -367,12 +367,14 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	private void recomputeScores() {
 		if (scoreQueryUI.isRunning())
 			return;
+		new Throwable().printStackTrace();
 		if (scoreQuery.isBusy()) {
 			scoreQueryUI.setRunning(true);
 			Job job = new Job("Update Tour Guide") {
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					scoreQuery.waitTillComplete();
+					System.out.println("sending ready");
 					GeneralManager.get().getEventPublisher()
 							.triggerEvent(new ScoreQueryReadyEvent(VendingMachine.this));
 					return Status.OK_STATUS;
@@ -380,11 +382,13 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 			};
 			job.schedule();
 		} else {
+			System.out.println("not busy");
 			GeneralManager.get().getEventPublisher().triggerEvent(new ScoreQueryReadyEvent(VendingMachine.this));
 		}
 	}
 
 	public void onScoreQueryReady() {
+		System.out.println("ready");
 		scoreQueryUI.setRunning(false);
 		scoreQueryUI.setData(scoreQuery.call());
 	}
@@ -456,20 +460,15 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	}
 
 	public void onAddColumn(IScore score) {
-		this.scoreQuery.sortBy(score, score.getScoreType().isRank() ? ESorting.ASC : ESorting.DESC);
 		this.scoreQuery.addSelection(score);
-		recomputeScores();
 	}
 
 	public void onRemoveColumn(IScore score, boolean removeFromSystem) {
-		ESorting bak = scoreQuery.getSorting(score);
 		scoreQuery.sortBy(score, ESorting.NONE);
 		scoreQuery.removeSelection(score);
 		if (removeFromSystem) {
 			Scores.get().remove(score);
 		}
-		if (bak != ESorting.NONE) // if it was relevant for sorting recompute
-			recomputeScores();
 	}
 
 	public void onImportExternalScore(final ATableBasedDataDomain dataDomain, boolean dimensionDirection,

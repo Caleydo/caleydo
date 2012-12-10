@@ -41,12 +41,12 @@ public abstract class AStratificationScore implements IScore {
 		this.reference = reference;
 	}
 
-	protected boolean contains(TablePerspective elem) {
+	public boolean contains(TablePerspective elem) {
 		// have in cache or the same
 		return scores.containsKey(elem.getID()) || reference.equals(elem);
 	}
 
-	protected void put(TablePerspective elem, float value) {
+	public void put(TablePerspective elem, float value) {
 		scores.put(elem.getID(), value);
 	}
 

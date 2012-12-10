@@ -56,6 +56,8 @@ import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.Padding;
+import org.caleydo.core.view.opengl.layout.Padding.EMode;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
@@ -75,7 +77,7 @@ import org.caleydo.view.tourguide.data.score.SizeMetric;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
-import org.caleydo.view.tourguide.renderer.AnimatedTextureRenderer;
+import org.caleydo.view.tourguide.renderer.AdvancedTextureRenderer;
 import org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.util.LabelComparator;
 import org.caleydo.view.tourguide.vendingmachine.ui.ScoreFilterDialog;
@@ -299,8 +301,9 @@ public class ScoreQueryUI extends Column {
 		if (!this.running)
 			this.clearForegroundRenderers();
 		else {
-			this.addForeGroundRenderer(new AnimatedTextureRenderer(EIconTextures.LOADING_CIRCLE.getFileName(), 20, view
-					.getTextureManager()));
+			Padding p = new Padding(EMode.PROPORTIONAL, .3f);
+			this.addForeGroundRenderer(new AdvancedTextureRenderer(EIconTextures.LOADING_CIRCLE.getFileName(), view
+					.getTextureManager(), p).setZ(-.02f));
 		}
 		invalidate();
 	}

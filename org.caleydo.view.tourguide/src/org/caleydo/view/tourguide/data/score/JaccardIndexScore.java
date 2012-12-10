@@ -19,27 +19,16 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.score;
 
-import static com.google.common.collect.Iterables.filter;
-import static com.google.common.collect.Iterables.transform;
-
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.id.IDMappingManager;
-import org.caleydo.core.id.IDMappingManagerRegistry;
-import org.caleydo.core.id.IDType;
-import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.util.logging.Logger;
-import org.caleydo.view.tourguide.data.BitSetIDSet;
-import org.caleydo.view.tourguide.data.HashSetIDSet;
-import org.caleydo.view.tourguide.data.IDSet;
+import org.caleydo.view.tourguide.data.compute.IDSet;
+import org.caleydo.view.tourguide.data.compute.IDSetScoreComputes;
+import org.caleydo.view.tourguide.data.compute.IDSetScoreComputes.IIDSetGroupScoreFun;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -51,10 +40,25 @@ import com.google.common.collect.Multimap;
  *
  */
 public class JaccardIndexScore extends AGroupScore implements IBatchComputedGroupScore {
-	private static final Logger log = Logger.create(JaccardIndexScore.class);
+	private final static IIDSetGroupScoreFun jaccardIndex = new IIDSetGroupScoreFun() {
+		@Override
+		public float apply(IDSet a, IDSet b, Predicate<Integer> inB) {
+			int mappabledifference = 0;
+			int intersection = 0;
+			for (Integer ai : a) {
+				if (b.contains(ai))
+					intersection++;
+				else if (inB.apply(ai))
+					mappabledifference++;
+			}
+			// bs elements + those of a that are mappable to the other one
+			int union = b.size() + mappabledifference;
 
-	private final IDSet bitSet;
-	private final BitMapMapper toBitMap;
+			float score = union == 0 ? 0.f : (float) intersection / union;
+			return score;
+		}
+	};
+
 
 	public JaccardIndexScore(TablePerspective stratification, Group group) {
 		this(null, stratification, group);
@@ -62,15 +66,11 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 
 	public JaccardIndexScore(String label, TablePerspective stratification, Group group) {
 		super(label, stratification, group);
-		toBitMap = new BitMapMapper(stratification.getRecordPerspective().getVirtualArray().getIdType());
-		bitSet = createIds(new BitSetIDSet(), stratification.getRecordPerspective().getVirtualArray(), group);
 	}
 
 	@Override
 	public void apply(Multimap<TablePerspective, Group> stratNGroups) {
-		Iterable<Pair<Group, IDSet>> bitsets = transform(filter(stratNGroups.entries(), notInCache), toBitMap);
-		for (Pair<Group, IDSet> entry : bitsets)
-			put(entry.getFirst(), computeJaccardIndex(bitSet, entry.getSecond()));
+		apply(Collections.<IBatchComputedGroupScore> singleton(this), stratNGroups);
 	}
 
 	@Override
@@ -80,151 +80,19 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 
 	private static void applyImpl(Collection<IBatchComputedGroupScore> batch,
 			Multimap<TablePerspective, Group> stratNGroups) {
-		Multimap<IDType, JaccardIndexScore> byIDCat = ArrayListMultimap.create();
+		Multimap<TablePerspective, AGroupScore> against = ArrayListMultimap.create();
 		for (IBatchComputedGroupScore b : batch) {
-			JaccardIndexScore s = (JaccardIndexScore) b;
-			byIDCat.put(s.stratification.getRecordPerspective().getVirtualArray().getIdType(), s);
-		}
-		Set<TablePerspective> stratifications = stratNGroups.keySet();
-		log.info("computing jaccard score for " + stratifications.size() + " stratifications, with total "
-				+ stratNGroups.size() + " elements against: " + batch.size());
-		if (Thread.interrupted()) // check if we should stop
-			return;
-
-		Collection<JaccardIndexScore> todo = new ArrayList<>();
-		IDSet s = new HashSetIDSet();
-
-		for (TablePerspective strat : stratifications) { // for each against
-			if (Thread.interrupted())
-				return;
-
-			final RecordVirtualArray va = strat.getRecordPerspective().getVirtualArray();
-			for (Group g : stratNGroups.get(strat)) { // for each group
-
-				for (IDType targetType : byIDCat.keySet()) { // for each id type
-					if (Thread.interrupted())
-						return;
-
-					IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
-							targetType.getIDCategory());
-
-					todo.clear();
-					// check what we really have to do
-					for (JaccardIndexScore idElem : byIDCat.get(targetType)) {
-						// everything in cache?
-						if (!idElem.contains(strat, g))
-							todo.add(idElem);
-					}
-					if (todo.isEmpty())
-						continue;
-
-					boolean doMapIds = !targetType.equals(va.getIdType());
-					// create a bitset of this group
-
-					s = doMapIds ? createMappedIds(s, va, g, idMappingManager, targetType) : createIds(s, va, g);
-					// int sSize = s.cardinality();
-
-					for (JaccardIndexScore idElem : todo) { // compute scores
-						idElem.put(g, computeJaccardIndex(idElem.bitSet, s));
-					}
+			AGroupScore s = (AGroupScore) b;
+			// not all cached?
+			for (Map.Entry<TablePerspective, Group> g : stratNGroups.entries()) {
+				if (!s.contains(g.getKey(), g.getValue())) {
+					against.put(s.stratification, s);
+					break;
 				}
 			}
 		}
-		log.info("done");
+		new IDSetScoreComputes(stratNGroups, against, jaccardIndex).run();
 	}
 
-	private Predicate<Map.Entry<TablePerspective, Group>> notInCache = new Predicate<Map.Entry<TablePerspective, Group>>() {
-		@Override
-		public boolean apply(Map.Entry<TablePerspective, Group> entry) {
-			return !contains(entry.getKey(), entry.getValue());
-		}
-	};
 
-	private static float computeJaccardIndex(IDSet aBits, IDSet bBits) {
-		IDSet tmp;
-		// iterate over those, which is faster
-		if (aBits.isFastIteration() && bBits.isFastIteration()) {
-			if (aBits.size() < bBits.size()) { // iterate over smaller
-				tmp = aBits;
-				aBits = bBits;
-				bBits = tmp;
-			}
-		} else if (aBits.isFastIteration()) { // use the faster one
-			tmp = aBits;
-			aBits = bBits;
-			bBits = tmp;
-		}
-
-		int intersection = 0;
-		for (Integer b : bBits) {
-			if (aBits.contains(b))
-				intersection++;
-		}
-		int union = aBits.size() + bBits.size() - intersection;
-		float score = union == 0 ? 0.f : (float) intersection / union;
-		return score;
-	}
-
-	private static class BitMapMapper implements Function<Map.Entry<TablePerspective, Group>, Pair<Group, IDSet>> {
-		private final IDType referenceIDType;
-		private final IDMappingManager mappingManager;
-
-		public BitMapMapper(IDType referenceIDType) {
-			this.referenceIDType = referenceIDType;
-			this.mappingManager = IDMappingManagerRegistry.get().getIDMappingManager(referenceIDType.getIDCategory());
-		}
-
-		@Override
-		public Pair<Group, IDSet> apply(Map.Entry<TablePerspective, Group> entry) {
-			RecordVirtualArray va = entry.getKey().getRecordPerspective().getVirtualArray();
-			Group group = entry.getValue();
-			boolean doMapIds = !referenceIDType.equals(va.getIdType());
-			IDSet s = doMapIds ? createMappedIds(new HashSetIDSet(), va, group, mappingManager, referenceIDType)
-					: createIds(new HashSetIDSet(), va, group);
-			return Pair.make(entry.getValue(), s);
-		}
-	}
-
-	/**
-	 * creates out of a group a bitset
-	 *
-	 * @param va
-	 * @param group
-	 * @return
-	 */
-	private static IDSet createIds(IDSet b, RecordVirtualArray va, Group group) {
-		b.clear();
-		for (int i = group.getStartIndex(); i <= group.getEndIndex(); ++i) {
-			int id = va.get(i);
-			b.set(id);
-		}
-		return b;
-	}
-
-	/**
-	 * creates out of a group a bitset but transform the id using the provided {@link IDMappingManager}
-	 *
-	 * @param va
-	 * @param group
-	 * @param idMappingManager
-	 * @param target
-	 * @return
-	 */
-	private static IDSet createMappedIds(IDSet b, RecordVirtualArray va, Group group,
-			IDMappingManager idMappingManager,
-			IDType target) {
-		b.clear();
-		for (int i = group.getStartIndex(); i <= group.getEndIndex(); ++i) {
-			int id = va.get(i);
-			Set<Integer> ids = idMappingManager.getIDAsSet(va.getIdType(), target, id);
-			if (ids != null) {
-				id = ids.iterator().next();
-				if (ids.size() > 2) {
-					System.out.println("Multi-Mapping");
-				}
-			}
-			b.set(id);
-		}
-		return b;
-	}
 }

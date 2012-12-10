@@ -157,10 +157,6 @@ public class CreateJaccardIndexScoreDialog extends TitleAreaDialog {
 		}
 	}
 
-	private static boolean isBlank(String t) {
-		return t == null || t.trim().length() == 0;
-	}
-
 	@Override
 	protected void okPressed() {
 		if (!validate())

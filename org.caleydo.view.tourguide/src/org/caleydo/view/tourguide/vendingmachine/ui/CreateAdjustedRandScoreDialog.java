@@ -149,7 +149,9 @@ public class CreateAdjustedRandScoreDialog extends TitleAreaDialog {
 		if (strat == null) { // score all
 			Scores manager = Scores.get();
 			CollapseScore composite = new CollapseScore(label);
-			for (TablePerspective g : (Iterable<TablePerspective>) stratificationUI.getInput()) {
+			@SuppressWarnings("unchecked")
+			Iterable<TablePerspective> it = (Iterable<TablePerspective>) stratificationUI.getInput();
+			for (TablePerspective g : it) {
 				composite.add(manager.addIfAbsent(new AdjustedRandScore(g)));
 			}
 			s = composite;

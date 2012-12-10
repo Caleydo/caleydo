@@ -36,7 +36,7 @@ public class Padding {
 	private final EMode mode;
 
 	public enum EMode {
-		GL, PIXEL
+		GL, PIXEL, PROPORTIONAL
 	}
 
 	public Padding(EMode mode, float padding) {
@@ -61,7 +61,7 @@ public class Padding {
 	 * @param pixelGLConverter
 	 * @return
 	 */
-	public float[] resolve(PixelGLConverter pixelGLConverter) {
+	public float[] resolve(PixelGLConverter pixelGLConverter, float width, float height) {
 		switch(mode) {
 		case GL:
 			return padding;
@@ -70,6 +70,8 @@ public class Padding {
 			float h = pixelGLConverter.getGLHeightForPixelHeight(1);
 			return new float[]{ padding[0]*w,padding[1]*h,padding[2]*w,padding[3]*h};
 		}
+		case PROPORTIONAL:
+			return new float[] { padding[0] * width, padding[1] * height, padding[2] * width, padding[3] * height };
 		default:
 			throw new IllegalStateException();
 		}

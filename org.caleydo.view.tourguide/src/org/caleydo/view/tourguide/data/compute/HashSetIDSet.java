@@ -1,5 +1,6 @@
-package org.caleydo.view.tourguide.data;
+package org.caleydo.view.tourguide.data.compute;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -15,6 +16,11 @@ public class HashSetIDSet implements IDSet {
 	@Override
 	public void set(int id) {
 		s.add(id);
+	}
+
+	@Override
+	public void setAll(Collection<Integer> ids) {
+		s.addAll(ids);
 	}
 
 	@Override
@@ -36,4 +42,15 @@ public class HashSetIDSet implements IDSet {
 	public Iterator<Integer> iterator() {
 		return s.iterator();
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return String.format("HashSetIDSet (%d)", size());
+	}
+
 }

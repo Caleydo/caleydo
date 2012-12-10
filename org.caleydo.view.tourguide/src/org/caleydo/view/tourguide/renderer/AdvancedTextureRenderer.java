@@ -36,6 +36,7 @@ public class AdvancedTextureRenderer extends LayoutRenderer {
 	private final TextureManager textureManager;
 	private final Padding padding;
 	private String imagePath;
+	private float z;
 
 	/**
 	 * Constructor.
@@ -52,6 +53,26 @@ public class AdvancedTextureRenderer extends LayoutRenderer {
 		this.imagePath = imagePath;
 		this.textureManager = textureManager;
 		this.padding = padding == null ? Padding.NONE : padding;
+		this.z = 0;
+	}
+
+	/**
+	 * @param z
+	 *            the z to set
+	 */
+	public AdvancedTextureRenderer setZ(float z) {
+		if (this.z == z)
+			return this;
+		this.z = z;
+		setDisplayListDirty();
+		return this;
+	}
+
+	/**
+	 * @return the z, see {@link #z}
+	 */
+	public float getZ() {
+		return z;
 	}
 
 	/**
@@ -77,11 +98,11 @@ public class AdvancedTextureRenderer extends LayoutRenderer {
 	protected void renderContent(GL2 gl) {
 		if (this.imagePath == null)
 			return;
-		float[] p = padding.resolve(layoutManager.getPixelGLConverter());
-		Vec3f lowerLeftCorner = new Vec3f(p[0], p[3], 0);
-		Vec3f lowerRightCorner = new Vec3f(x - p[2], p[3], 0);
-		Vec3f upperRightCorner = new Vec3f(x - p[2], y - p[1], 0);
-		Vec3f upperLeftCorner = new Vec3f(p[0], y - p[1], 0);
+		float[] p = padding.resolve(layoutManager.getPixelGLConverter(), x, y);
+		Vec3f lowerLeftCorner = new Vec3f(p[0], p[3], z);
+		Vec3f lowerRightCorner = new Vec3f(x - p[2], p[3], z);
+		Vec3f upperRightCorner = new Vec3f(x - p[2], y - p[1], z);
+		Vec3f upperLeftCorner = new Vec3f(p[0], y - p[1], z);
 
 		textureManager.renderTexture(gl, imagePath, lowerLeftCorner, lowerRightCorner,
 				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);

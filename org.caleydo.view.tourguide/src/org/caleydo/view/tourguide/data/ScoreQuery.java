@@ -96,11 +96,6 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	private final DataDomainQuery query;
 
 	/**
-	 * flags indicator whether always the group resolution should be performed or only on demand
-	 */
-	private boolean forceGroups;
-
-	/**
 	 * queue holding the tasks we are submitted to computed but not yet finished
 	 */
 	private final Deque<Future<?>> toCompute = new LinkedList<>();
@@ -136,31 +131,36 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 
 	/**
 	 * returns whether there are outstanding computations
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isBusy() {
+		return getNextUndone() != null;
+	}
+
+	private synchronized Future<?> getNextUndone() {
 		for (Iterator<Future<?>> it = toCompute.iterator(); it.hasNext();) {
-			if (it.next().isDone())
+			Future<?> f = it.next();
+			if (f.isDone())
 				it.remove();
 			else
-				return true;
+				return f;
 		}
-		return false;
+		return null;
 	}
 
 	/**
 	 * blocks the current thread till all computations are done
 	 */
 	public void waitTillComplete() {
-		for (Iterator<Future<?>> it = toCompute.iterator(); it.hasNext();) {
+		Future<?> next;
+		while ((next = getNextUndone()) != null) {
 			try {
-				it.next().get();
+				next.get();
 			} catch (InterruptedException | ExecutionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			it.remove();
 		}
 	}
 
@@ -346,6 +346,11 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	 *            how
 	 */
 	public void sortBy(IScore elem, ESorting sorting) {
+		ScoreComparator old = sortByImpl(elem, sorting);
+		listeners.firePropertyChange(PROP_ORDER_BY, old, orderBy);
+	}
+
+	private ScoreComparator sortByImpl(IScore elem, ESorting sorting) {
 		ScoreComparator old = new ScoreComparator(orderBy);
 		if (sorting == ESorting.NONE)
 			orderBy.remove(elem);
@@ -355,7 +360,7 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 			}
 			orderBy.put(elem, sorting);
 		}
-		listeners.firePropertyChange(PROP_ORDER_BY, old, orderBy);
+		return old;
 	}
 
 	/**
@@ -365,9 +370,11 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	 */
 	public void addSelection(IScore score) {
 		selection.add(score);
-		listeners.fireIndexedPropertyChange(PROP_SELECTION, selection.size() - 1, null, score);
-
+		sortByImpl(score, score.getScoreType().isRank() ? ESorting.ASC : ESorting.DESC);
 		submitComputation(Collections.singleton(score), null);
+
+
+		listeners.fireIndexedPropertyChange(PROP_SELECTION, selection.size() - 1, null, score);
 	}
 
 	public void removeSelection(IScore score) {

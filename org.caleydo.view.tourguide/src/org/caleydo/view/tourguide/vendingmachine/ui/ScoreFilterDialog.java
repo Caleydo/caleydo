@@ -40,7 +40,6 @@ public class ScoreFilterDialog extends TitleAreaDialog {
 
 	// the visual selection widget group
 	private Spinner topUI;
-	private Button forceGroupsUI;
 
 	private List<ScoreFilterWidget> filters = new ArrayList<>();
 	private Combo addScoreFilter;

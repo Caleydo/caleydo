@@ -144,12 +144,12 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 			if (m != null)
 				m.switchToStratomex(stratomex);
 		}
-
-		private boolean ignorePartChange(IWorkbenchPart part) {
-			final String canonicalName = part.getClass().getCanonicalName();
-			return part instanceof RcpGLTourGuideView || canonicalName.startsWith("org.caleydo.view.info")
-					|| canonicalName.startsWith("org.caleydo.core.gui.toolbar");
-		}
 	};
+
+	private static boolean ignorePartChange(IWorkbenchPart part) {
+		final String canonicalName = part.getClass().getCanonicalName();
+		return part instanceof RcpGLTourGuideView || canonicalName.startsWith("org.caleydo.view.info")
+				|| canonicalName.startsWith("org.caleydo.core.gui.toolbar");
+	}
 
 }

@@ -21,6 +21,7 @@ package org.caleydo.core.id;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -36,6 +37,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
+
+import com.google.common.base.Function;
 
 /**
  * <p>
@@ -662,28 +665,59 @@ public class IDMappingManager {
 	 * @return If no mapping is found, null, otherwise the Set containing the
 	 *         corresponding ID(s).
 	 */
-	@SuppressWarnings("unchecked")
 	public synchronized <K, V> Set<V> getIDAsSet(IDType source, IDType destination, K sourceID) {
+		Function<K, Set<V>> fun = getIDMappingFunction(source, destination);
+		if (fun == null)
+			return null;
+		return fun.apply(sourceID);
+	}
 
-		Set<V> setResult = new HashSet<V>();
-
+	/**
+	 * see {@link #getIDAsSet(IDType, IDType, Object)} but returns a function that can be used to map multiple ids at
+	 * once
+	 *
+	 * @param source
+	 * @param destination
+	 * @return
+	 */
+	public synchronized <K, V> Function<K, Set<V>> getIDMappingFunction(IDType source, IDType destination) {
 		if (source.equals(destination)) {
-			setResult.add((V) sourceID);
-			return setResult;
+			return new IdentityMappingFunction<K, V>();
 		}
+
+		// first resolve path
 		List<MappingType> path;
 		try {
 			path = DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
 		}
 		catch (IllegalArgumentException e) {
 			Logger.log(new Status(IStatus.INFO, toString(), "No mapping found between " + source + " and "
-					+ destination + " for: " + sourceID));
+					+ destination));
 			return null;
 		}
-		Object currentID = sourceID;
-
 		if (path == null)
 			return null;
+
+		final List<MappingType> p = path;
+
+		return new Function<K, Set<V>>() {
+			@Override
+			public Set<V> apply(K sourceID) {
+				return getIDsAsSetImpl(p, sourceID);
+			}
+		};
+	}
+
+	private static class IdentityMappingFunction<K, V> implements Function<K, Set<V>> {
+		@Override
+		public Set<V> apply(K sourceID) {
+			return Collections.singleton((V) sourceID);
+		}
+	}
+
+	private <V, K> Set<V> getIDsAsSetImpl(Iterable<MappingType> path, K sourceID) {
+		// resolve ids
+		Object currentID = sourceID;
 
 		Set<Object> keys = null;
 		Collection<Object> values = new ArrayList<Object>();
@@ -691,7 +725,17 @@ public class IDMappingManager {
 		for (MappingType edge : path) {
 			Map<?, ?> currentMap = hashMappingType2Map.get(edge);
 
-			if (keys != null) {
+			if (keys == null) { // first edge or a single id
+				if (edge.isMultiMap()) {
+					keys = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(currentID);
+					if ((keys == null) || (keys.isEmpty()))
+						return null;
+				} else {
+					currentID = currentMap.get(currentID);
+					if (currentID == null)
+						return null;
+				}
+			} else {
 				for (Object key : keys) {
 					if (edge.isMultiMap()) {
 						Set<Object> temp = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(key);
@@ -707,32 +751,14 @@ public class IDMappingManager {
 				if (values.isEmpty())
 					return null;
 
-				keys = new HashSet<Object>();
-				for (Object value : values) {
-					keys.add(value);
-				}
+				keys = new HashSet<Object>(values);
 				values.clear();
 			}
-			else {
-				if (edge.isMultiMap()) {
-					keys = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(currentID);
-					if ((keys == null) || (keys.isEmpty()))
-						return null;
-				}
-				else {
-					currentID = currentMap.get(currentID);
-					if (currentID == null)
-						return null;
-				}
-
-			}
 		}
-		if (keys != null)
+		if (keys != null) // multiple keys found
 			return (Set<V>) keys;
 
-		setResult.add((V) currentID);
-
-		return setResult;
+		return Collections.singleton((V) currentID);
 	}
 
 	// public void printGraph() {
