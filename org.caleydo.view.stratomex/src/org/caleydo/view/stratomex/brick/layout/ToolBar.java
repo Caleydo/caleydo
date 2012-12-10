@@ -23,6 +23,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.ATimedMouseOutPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
@@ -50,9 +51,11 @@ public class ToolBar extends Row {
 		this.brick = brick;
 		addBackgroundRenderer(new ToolBarBackgroundRenderer(brick));
 
-		brickPickingListener = new APickingListener() {
+		brickPickingListener = new ATimedMouseOutPickingListener() {
+
 			@Override
 			public void mouseOver(Pick pick) {
+				super.mouseOver(pick);
 				if (pick.getObjectID() == brick.getID())
 					hide = false;
 				else
@@ -60,7 +63,8 @@ public class ToolBar extends Row {
 			}
 
 			@Override
-			public void mouseOut(Pick pick) {
+			protected void timedMouseOut(Pick pick) {
+				// TODO Auto-generated method stub
 				if (pick.getObjectID() == brick.getID())
 					hide = true;
 			}
@@ -85,8 +89,7 @@ public class ToolBar extends Row {
 
 	@Override
 	public void destroy(GL2 gl) {
-		brick.getBrickColumn()
-				.getStratomexView()
+		brick.getBrickColumn().getStratomexView()
 				.removeTypePickingListener(brickPickingListener, EPickingType.BRICK.name());
 		super.destroy(gl);
 	}

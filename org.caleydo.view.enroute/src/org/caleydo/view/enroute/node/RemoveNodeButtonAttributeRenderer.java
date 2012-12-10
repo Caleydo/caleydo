@@ -126,13 +126,6 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 						view.setDisplayListDirty();
 					}
 				}
-
-				@Override
-				public void mouseOut(Pick pick) {
-					if (showRemoveButton) {
-						super.mouseOut(pick);
-					}
-				}
 			};
 
 			view.addIDPickingListener(showButtonPickingListener,

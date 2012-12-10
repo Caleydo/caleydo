@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.caleydo.core.view.opengl.picking;
 
@@ -9,9 +9,9 @@ package org.caleydo.core.view.opengl.picking;
  * then easily realize UI elements showing up on {@link #mouseOver(Pick)} of an
  * object and disappearing a specified time after the
  * <code>mouseOut(Pick)</code>.
- * 
+ *
  * @author Christian
- * 
+ *
  */
 public abstract class ATimedMouseOutPickingListener extends APickingListener {
 
@@ -40,7 +40,7 @@ public abstract class ATimedMouseOutPickingListener extends APickingListener {
 	 * time {@link #mouseOut(Pick)} was called. If {@link #mouseOver(Pick)} is
 	 * called before this method will not be called until the next
 	 * <code>mouseOut(Pick)</code> resets the timer.
-	 * 
+	 *
 	 * @param pick
 	 */
 	protected abstract void timedMouseOut(Pick pick);
@@ -56,7 +56,7 @@ public abstract class ATimedMouseOutPickingListener extends APickingListener {
 	}
 
 	@Override
-	public void mouseOut(final Pick pick) {
+	public final void mouseOut(final Pick pick) {
 		setCurrentMouseOver(false);
 		Runnable runnable = new Runnable() {
 
