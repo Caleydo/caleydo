@@ -83,6 +83,15 @@ public class TissueRenderer extends LayoutRenderer {
 		areaImages = new ArrayList<>(this.markedAreaImagePaths.size());
 	}
 
+	public TissueRenderer(AGLView view, Texture baseImage, List<Texture> markedAreaImages) {
+		this.view = view;
+		this.baseImage = baseImage;
+		this.areaImages = markedAreaImages;
+		baseImagePath = null;
+		markedAreaImagePaths = null;
+		areaImages = new ArrayList<>(this.markedAreaImagePaths.size());
+	}
+
 	@Override
 	protected void renderContent(GL2 gl) {
 		TextureManager textureManager = view.getTextureManager();
