@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -107,18 +107,15 @@ public enum EIconTextures {
 
 	DATA_FLIPPER_CONNECTION_STRAIGHT("resources/icons/view/dataflipper/connection_straight.png"),
 	DATA_FLIPPER_CONNECTION_CORNER("resources/icons/view/dataflipper/connection_corner.png"),
-	DATA_FLIPPER_GUIDANCE_CONNECTION_STRAIGHT(
-		"resources/icons/view/dataflipper/guidance_connection_straight.png"),
+	DATA_FLIPPER_GUIDANCE_CONNECTION_STRAIGHT("resources/icons/view/dataflipper/guidance_connection_straight.png"),
 	DATA_FLIPPER_GUIDANCE_CONNECTION_STRAIGHT_HIGHLIGHT(
-		"resources/icons/view/dataflipper/guidance_connection_straight_highlight.png"),
+			"resources/icons/view/dataflipper/guidance_connection_straight_highlight.png"),
 	DATA_FLIPPER_DATA_ICON_BACKGROUND("resources/icons/view/dataflipper/data_icon_background.png"),
 	DATA_FLIPPER_DATA_ICON_BACKGROUND_ROUND("resources/icons/view/dataflipper/data_icon_background_round.png"),
 	DATA_FLIPPER_DATA_ICON_BACKGROUND_ROUND_HIGHLIGHTED(
-		"resources/icons/view/dataflipper/data_icon_background_round_highlighted.png"),
-	DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED(
-		"resources/icons/view/dataflipper/view_icon_background_rounded.png"),
-	DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE(
-		"resources/icons/view/dataflipper/view_icon_background_square.png"),
+			"resources/icons/view/dataflipper/data_icon_background_round_highlighted.png"),
+	DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED("resources/icons/view/dataflipper/view_icon_background_rounded.png"),
+	DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE("resources/icons/view/dataflipper/view_icon_background_square.png"),
 	DATA_FLIPPER_EXCLAMATION_MARK("resources/icons/view/dataflipper/exclamation_mark.png"),
 	DATA_FLIPPER_TASK("resources/icons/view/dataflipper/task.png"),
 	DATA_FLIPPER_TASK_BACKGROUND("resources/icons/view/dataflipper/task_background.png"),
@@ -133,7 +130,7 @@ public enum EIconTextures {
 	LOADING_CIRCLE("resources/loading/loading_circle.png"),
 
 	CELL_MODEL("resources/models/cell.jpg"),
-	TISSUE_SAMPLE("resources/sample/tissue.jpg"),
+	TISSUE_SAMPLE("resources/icons/view/tissue/tissue.png"),
 
 	// context menu elements
 	CM_LOAD_DEPENDING_PATHWAYS("/resources/context_menu/load_depending_pathways.png"),
@@ -163,12 +160,10 @@ public enum EIconTextures {
 
 	/** Linearized Pathway */
 	ABSTRACT_BAR_ICON("resources/icons/view/enroute/abstract_mode.png"),
-	
+
 	TAGCLOUD_ICON("resources/icons/view/tagclouds/icon.png"),
 	NAVIGATION_BACKGROUND("resources/icons/general/navigation.png"),
 	PIN("resources/icons/general/pin.png");
-	
-	
 
 	private String sFileName;
 
