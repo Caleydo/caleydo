@@ -133,7 +133,7 @@ public final class ExternalIDTypeScore implements ISerializeableScore {
 			DimensionVirtualArray va = dimensionPerspective.getVirtualArray();
 			//if we have a group and the group reduces my virtual array use it
 			if (isMyGroup(elem.getGroup(), dimensionPerspective))
-				it = elem.getGroup().iterator(va);
+				it = va.getIDsOfGroup(elem.getGroup().getGroupIndex()).iterator();
 			else
 				it = va.iterator();
 		} else if (isCompatible(recordPerspective.getIdType())) {
@@ -141,7 +141,7 @@ public final class ExternalIDTypeScore implements ISerializeableScore {
 			RecordVirtualArray va = recordPerspective.getVirtualArray();
 			// if we have a group and the group reduces my virtual array use it
 			if (isMyGroup(elem.getGroup(), recordPerspective))
-				it = elem.getGroup().iterator(va);
+				it = va.getIDsOfGroup(elem.getGroup().getGroupIndex()).iterator();
 			else
 				it = va.iterator();
 		} else {

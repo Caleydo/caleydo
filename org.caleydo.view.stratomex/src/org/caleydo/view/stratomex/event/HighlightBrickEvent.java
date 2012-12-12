@@ -22,70 +22,49 @@ package org.caleydo.view.stratomex.event;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.util.color.IColor;
 import org.caleydo.view.stratomex.GLStratomex;
 
 /**
+ * triggers that the
+ *
  * @author Samuel Gratzl
  *
  */
-public class SelectElementsEvent extends AEvent {
-
+public class HighlightBrickEvent extends AEvent {
+	private TablePerspective stratification;
 	private GLStratomex receiver;
+	private IColor color;
+	private Group group;
 
-	private TablePerspective aStrat;
-	private Group aGroup;
-	private TablePerspective bStrat;
-	private Group bGroup;
-
-	public SelectElementsEvent() {
-
-	}
-
-	public SelectElementsEvent(TablePerspective aStrat, Group aGroup, TablePerspective bStrat, Group bGroup,
-			GLStratomex receiver, Object sender) {
+	public HighlightBrickEvent(TablePerspective stratification, GLStratomex receiver, Object sender, IColor color) {
 		this.setSender(sender);
 		this.receiver = receiver;
-		this.aStrat = aStrat;
-		this.aGroup = aGroup;
-		this.bStrat = bStrat;
-		this.bGroup = bGroup;
+		this.stratification = stratification;
+		this.color = color;
 	}
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.event.AEvent#checkIntegrity()
-	 */
-	@Override
-	public boolean checkIntegrity() {
-		return aStrat != null && aGroup != null && bStrat != null && bGroup != null;
+
+	public HighlightBrickEvent(TablePerspective stratification, Group group, GLStratomex receiver, Object sender,
+			IColor color) {
+		this.setSender(sender);
+		this.stratification = stratification;
+		this.group = group;
+		this.receiver = receiver;
+		this.color = color;
 	}
 
 	/**
-	 * @return the aGroup, see {@link #aGroup}
+	 * @return true if the specified element should be highlighted or stopping highlighting it
 	 */
-	public Group getaGroup() {
-		return aGroup;
+	public boolean isHighlight() {
+		return color != null;
 	}
 
 	/**
-	 * @return the aStrat, see {@link #aStrat}
+	 * @return the color, see {@link #color}
 	 */
-	public TablePerspective getaStrat() {
-		return aStrat;
-	}
-
-	/**
-	 * @return the bGroup, see {@link #bGroup}
-	 */
-	public Group getbGroup() {
-		return bGroup;
-	}
-
-	/**
-	 * @return the bStrat, see {@link #bStrat}
-	 */
-	public TablePerspective getbStrat() {
-		return bStrat;
+	public IColor getColor() {
+		return color;
 	}
 
 	/**
@@ -95,4 +74,26 @@ public class SelectElementsEvent extends AEvent {
 		return receiver;
 	}
 
+	/**
+	 * @return the stratification, see {@link #stratification}
+	 */
+	public TablePerspective getStratification() {
+		return stratification;
+	}
+
+	/**
+	 * @return the group, see {@link #group}
+	 */
+	public Group getGroup() {
+		return group;
+	}
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.caleydo.core.event.AEvent#checkIntegrity()
+	 */
+	@Override
+	public boolean checkIntegrity() {
+		return stratification != null && receiver != null;
+	}
 }

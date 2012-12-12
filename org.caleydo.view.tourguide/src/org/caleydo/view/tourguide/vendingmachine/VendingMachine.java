@@ -31,12 +31,11 @@ import javax.media.opengl.GLAutoDrawable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventListeners;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.color.Colors;
-import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
+import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
+import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -49,9 +48,6 @@ import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.column.BrickColumn;
-import org.caleydo.view.stratomex.column.BrickColumnGlowRenderer;
-import org.caleydo.view.stratomex.column.BrickColumnManager;
 import org.caleydo.view.tourguide.SerializedTourGuideView;
 import org.caleydo.view.tourguide.data.DataDomainQuery;
 import org.caleydo.view.tourguide.data.ESorting;
@@ -59,7 +55,6 @@ import org.caleydo.view.tourguide.data.ScoreQuery;
 import org.caleydo.view.tourguide.data.Scores;
 import org.caleydo.view.tourguide.data.ScoringElement;
 import org.caleydo.view.tourguide.data.load.ImportExternalScoreCommand;
-import org.caleydo.view.tourguide.data.score.AGroupScore;
 import org.caleydo.view.tourguide.data.score.AdjustedRandScore;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.IScore;
@@ -77,6 +72,7 @@ import org.caleydo.view.tourguide.listener.RemoveScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreQueryReadyListener;
 import org.caleydo.view.tourguide.listener.ScoreTablePerspectiveListener;
+import org.caleydo.view.tourguide.listener.StratomexRemoveTablePerspectiveListener;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateAdjustedRandScoreDialog;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateCompositeScoreDialog;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateJaccardIndexScoreDialog;
@@ -88,8 +84,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import com.google.common.base.Function;
-
 /**
  * <p>
  * The vending machine for stratification and cluster comparisons using scoring approach.
@@ -98,7 +92,7 @@ import com.google.common.base.Function;
  * @author Marc Streit
  */
 
-public class VendingMachine extends AGLView implements IGLRemoteRenderingView, ILayoutedElement, ISelectionListener {
+public class VendingMachine extends AGLView implements IGLRemoteRenderingView, ILayoutedElement {
 	public static final String VIEW_TYPE = "org.caleydo.view.tool.tourguide";
 	public static final String VIEW_NAME = "Tour Guide";
 
@@ -110,9 +104,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 	private final EventListeners listeners = new EventListeners();
 
-	private GLStratomex stratomex;
-	private BrickColumnManager brickColumnManager;
-
+	private StratomexAdapter stratomex = new StratomexAdapter();
 	private DataDomainQuery dataDomainQuery = new DataDomainQuery();
 	private ScoreQuery scoreQuery = new ScoreQuery(dataDomainQuery);
 
@@ -211,13 +203,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		dataDomainSelector.setQuery(dataDomainQuery);
 		mainColumn.append(dataDomainSelector);
 
-		scoreQueryUI = new ScoreQueryUI(this, this, new Function<ScoringElement, Void>() {
-			@Override
-			public Void apply(ScoringElement elem) {
-				addToStratomex(elem);
-				return null;
-			}
-		});
+		scoreQueryUI = new ScoreQueryUI(this, this.stratomex);
 		scoreQueryUI.setQuery(scoreQuery);
 		mainColumn.append(scoreQueryUI);
 
@@ -231,7 +217,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 	@Override
 	public void display(GL2 gl) {
-		if (!hasActiveStratomex()) {
+		if (!stratomex.hasOne()) {
 			CaleydoTextRenderer tmp = textRenderer;
 			textRenderer = textLargeRenderer; // overwrite for large font
 			renderEmptyViewText(gl, "No Active Stratomex");
@@ -239,14 +225,14 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 			return;
 		}
 
+		//before the picking
+		stratomex.triggerDelayedEvents();
+
 		checkForHits(gl);
+
 		processEvents();
 
 		layoutManager.render(gl);
-	}
-
-	private boolean hasActiveStratomex() {
-		return stratomex != null;
 	}
 
 	@Override
@@ -268,6 +254,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		listeners.register(RemoveScoreColumnEvent.class, new RemoveScoreColumnListener(this));
 		listeners.register(ScoreQueryReadyEvent.class, new ScoreQueryReadyListener(this));
 		listeners.register(ImportExternalScoreEvent.class, new ImportExternalScoreListener(this));
+		listeners.register(RemoveTablePerspectiveEvent.class, new StratomexRemoveTablePerspectiveListener(this));
 	}
 
 	@Override
@@ -313,51 +300,9 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		onAddColumn(composite);
 	}
 
-	{
-		// Highlight reference table
-		// TODO
-		// referenceBrickColumn.getLayout().addBackgroundRenderer(
-		// new BrickColumnGlowRenderer(REFERENCE_SELECTION_COLOR, referenceBrickColumn,
-		// false));
-	}
-
-	private static void triggerEvent(AEvent event) {
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
-	}
-
-	private void addTablePerspectiveToStratomex(TablePerspective newlySelectedTablePerspective) {
-
-		if (!hasActiveStratomex())
-			return;
-		// FIXME as event
-		AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(newlySelectedTablePerspective);
-		event.setReceiver(stratomex);
-		event.setSender(this);
-		triggerEvent(event);
-
-		stratomex.addTablePerspective(newlySelectedTablePerspective);
-
-		BrickColumn brickColumn = brickColumnManager.getBrickColumn(newlySelectedTablePerspective);
-		brickColumn.getLayout().addBackgroundRenderer(
-				new BrickColumnGlowRenderer(Colors.YELLOW.getRGBA(), brickColumn, false));
-		brickColumn.getLayout().updateSubLayout();
-	}
-
-	private void addToStratomex(ScoringElement elem) {
-		if (!hasActiveStratomex())
-			return;
-		AddTablePerspectivesEvent event = new AddTablePerspectivesEvent(elem.getStratification());
-		event.setReceiver(stratomex);
-		event.setSender(this);
-		triggerEvent(event);
-	}
-
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 
-		// TODO: remove button picking listeners
-		// this.removeAllIDPickingListeners(DATASET_BUTTON_PICKING_TYPE,
-		// DATASET_BUTTON_PICKING_ID);
 	}
 
 	@Override
@@ -375,9 +320,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	 * @param stratomex
 	 */
 	public void switchToStratomex(GLStratomex stratomex) {
-		this.stratomex = stratomex;
-		this.brickColumnManager = stratomex == null ? null : stratomex.getBrickColumnManager();
-		setDisplayListDirty();
+		if (this.stratomex.setStratomex(stratomex))
+			setDisplayListDirty();
 	}
 
 	private void recomputeScores() {
@@ -400,38 +344,13 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 			System.out.println("not busy");
 			GeneralManager.get().getEventPublisher().triggerEvent(new ScoreQueryReadyEvent(VendingMachine.this));
 		}
+
 	}
 
 	public void onScoreQueryReady() {
 		System.out.println("ready");
 		scoreQueryUI.setRunning(false);
 		scoreQueryUI.setData(scoreQuery.call());
-	}
-
-	@Override
-	public void onSelectionChanged(ScoringElement old, ScoringElement new_, IScore new_column) {
-		if (!hasActiveStratomex())
-			return;
-		int replaceIndex = -1;
-		if (old != null) { // remove old
-			TablePerspective stratification = old.getStratification();
-			replaceIndex = brickColumnManager.indexOfBrickColumn(brickColumnManager.getBrickColumn(stratification));
-			stratomex.removeTablePerspective(stratification.getID());
-		}
-		if (new_ != null) {
-			TablePerspective stratification = new_.getStratification();
-			addTablePerspectiveToStratomex(stratification);
-			if (replaceIndex >= 0)
-				brickColumnManager.moveBrickColumn(brickColumnManager.getBrickColumn(stratification), replaceIndex);
-
-			if (new_column instanceof AGroupScore) {
-				// FIXME highlight connection between groups
-				// AGroupScore a = (AGroupScore) new_column;
-				// a.getStratification();
-				// triggerEvent(new SelectElementsEvent(this, new_.get
-				// // new_..getReferenceTablePerspective().getRecordPerspective()));
-			}
-		}
 	}
 
 	private void onShowDataDomain(ATableBasedDataDomain dataDomain) {
@@ -499,5 +418,17 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		return scoreQueryUI;
 	}
 
+	/**
+	 * @param receiver
+	 * @param tablePerspectiveID
+	 */
+	public void onStratomexRemoveBrick(IMultiTablePerspectiveBasedView receiver, int tablePerspectiveID) {
+		if (!stratomex.is(receiver))
+			return;
+		final ScoringElement selected = this.scoreQueryUI.getSelected();
+		if (selected != null && selected.getStratification().getID() == tablePerspectiveID) {
+			this.scoreQueryUI.setSelected(-1, -1);
+		}
+	}
 
 }

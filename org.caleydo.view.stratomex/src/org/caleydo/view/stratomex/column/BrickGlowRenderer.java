@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,31 +23,32 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
+import org.caleydo.view.stratomex.brick.GLBrick;
 
-public class BrickColumnGlowRenderer
+public class BrickGlowRenderer
 	extends ColorRenderer
 {
 
-	private BrickColumn dimensionGroup;
-	private boolean renderWhenDimensionGroupIsCollapsed;
+	private GLBrick brick;
+	private boolean renderWhenInOverviewMode;
 
-	public BrickColumnGlowRenderer(float[] color, BrickColumn dimensionGroup,
+	public BrickGlowRenderer(float[] color, GLBrick dimensionGroup,
 			boolean renderWhenDimensionGroupIsCollapsed)
 	{
 		super(color);
-		this.dimensionGroup = dimensionGroup;
-		this.renderWhenDimensionGroupIsCollapsed = renderWhenDimensionGroupIsCollapsed;
+		this.brick = dimensionGroup;
+		this.renderWhenInOverviewMode = renderWhenDimensionGroupIsCollapsed;
 	}
 
 	@Override
 	public void renderContent(GL2 gl)
 	{
-		if (dimensionGroup.isCollapsed() != renderWhenDimensionGroupIsCollapsed)
+		if (brick.isInOverviewMode() != renderWhenInOverviewMode)
 			return;
 
-		if (renderWhenDimensionGroupIsCollapsed)
+		if (renderWhenInOverviewMode)
 		{
-			PixelGLConverter pixelGLConverter = dimensionGroup.getPixelGLConverter();
+			PixelGLConverter pixelGLConverter = brick.getPixelGLConverter();
 			float overlapX = pixelGLConverter.getGLWidthForPixelWidth(10);
 			float overlapY = pixelGLConverter.getGLWidthForPixelWidth(10);
 
@@ -110,7 +111,7 @@ public class BrickColumnGlowRenderer
 		}
 
 	}
-	
+
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
 		return false;

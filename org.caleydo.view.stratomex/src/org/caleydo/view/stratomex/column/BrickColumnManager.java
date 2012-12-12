@@ -123,8 +123,9 @@ public class BrickColumnManager {
 				if (count < rightColumnStartIndex) {
 					rightColumnStartIndex--;
 				}
+			} else {
+				count++;
 			}
-			count++;
 		}
 	}
 }

@@ -666,7 +666,7 @@ public class IDMappingManager {
 	 *         corresponding ID(s).
 	 */
 	public synchronized <K, V> Set<V> getIDAsSet(IDType source, IDType destination, K sourceID) {
-		Function<K, Set<V>> fun = getIDMappingFunction(source, destination);
+		Function<K, Set<V>> fun = getIDTypeMapper(source, destination);
 		if (fun == null)
 			return null;
 		return fun.apply(sourceID);
@@ -680,9 +680,9 @@ public class IDMappingManager {
 	 * @param destination
 	 * @return
 	 */
-	public synchronized <K, V> Function<K, Set<V>> getIDMappingFunction(IDType source, IDType destination) {
+	public synchronized <K, V> IIDTypeMapper<K, V> getIDTypeMapper(IDType source, IDType destination) {
 		if (source.equals(destination)) {
-			return new IdentityMappingFunction<K, V>();
+			return new IdentityIDTypeMapper<K, V>(source);
 		}
 
 		// first resolve path
@@ -698,67 +698,162 @@ public class IDMappingManager {
 		if (path == null)
 			return null;
 
-		final List<MappingType> p = path;
-
-		return new Function<K, Set<V>>() {
-			@Override
-			public Set<V> apply(K sourceID) {
-				return getIDsAsSetImpl(p, sourceID);
-			}
-		};
+		return new IDTypeMapper<>(path, source, destination);
 	}
 
-	private static class IdentityMappingFunction<K, V> implements Function<K, Set<V>> {
+	public class IDTypeMapper<K, V> implements IIDTypeMapper<K, V> {
+		private final List<MappingType> path;
+		private final IDType source;
+		private final IDType target;
+
+		private IDTypeMapper(List<MappingType> path, IDType source, IDType target) {
+			this.path = path;
+			this.source = source;
+			this.target = target;
+		}
+
+		/**
+		 * @return the source, see {@link #source}
+		 */
+		@Override
+		public IDType getSource() {
+			return source;
+		}
+
+		/**
+		 * @return the target, see {@link #target}
+		 */
+		@Override
+		public IDType getTarget() {
+			return target;
+		}
+
 		@Override
 		public Set<V> apply(K sourceID) {
-			return Collections.singleton((V) sourceID);
-		}
-	}
+			// resolve ids
+			Object currentID = sourceID;
 
-	private <V, K> Set<V> getIDsAsSetImpl(Iterable<MappingType> path, K sourceID) {
-		// resolve ids
-		Object currentID = sourceID;
+			Set<Object> keys = null;
+			Collection<Object> values = new ArrayList<Object>();
 
-		Set<Object> keys = null;
-		Collection<Object> values = new ArrayList<Object>();
+			for (MappingType edge : path) {
+				Map<?, ?> currentMap = hashMappingType2Map.get(edge);
 
-		for (MappingType edge : path) {
-			Map<?, ?> currentMap = hashMappingType2Map.get(edge);
-
-			if (keys == null) { // first edge or a single id
-				if (edge.isMultiMap()) {
-					keys = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(currentID);
-					if ((keys == null) || (keys.isEmpty()))
-						return null;
-				} else {
-					currentID = currentMap.get(currentID);
-					if (currentID == null)
-						return null;
-				}
-			} else {
-				for (Object key : keys) {
+				if (keys == null) { // first edge or a single id
 					if (edge.isMultiMap()) {
-						Set<Object> temp = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(key);
-						if (temp != null)
-							values.addAll(temp);
+						keys = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(currentID);
+						if ((keys == null) || (keys.isEmpty()))
+							return null;
+					} else {
+						currentID = currentMap.get(currentID);
+						if (currentID == null)
+							return null;
 					}
-					else {
+				} else {
+					for (Object key : keys) {
+						if (edge.isMultiMap()) {
+							Set<Object> temp = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(key);
+							if (temp != null)
+								values.addAll(temp);
+						} else {
+							Object value = currentMap.get(key);
+							if (value != null)
+								values.add(value);
+						}
+					}
+					if (values.isEmpty())
+						return null;
+
+					keys = new HashSet<Object>(values);
+					values.clear();
+				}
+			}
+			if (keys != null) // multiple keys found
+				return (Set<V>) keys;
+
+			return Collections.singleton((V) currentID);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 *
+		 * @see org.caleydo.core.id.IIDTypeMapper#apply(java.util.Set)
+		 */
+		@Override
+		public Set<V> apply(Collection<K> sourceIds) {
+			Set<Object> ping = new HashSet<Object>(sourceIds); // current
+			Set<Object> pong = new HashSet<>(sourceIds.size()); // next
+			Set<Object> tmp;
+
+			for (MappingType edge : path) {
+				Map<?, ?> currentMap = hashMappingType2Map.get(edge);
+				for (Object key : ping) {
+					if (edge.isMultiMap()) {
+						tmp = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(key);
+						if (tmp != null)
+							pong.addAll(tmp);
+					} else {
 						Object value = currentMap.get(key);
 						if (value != null)
-							values.add(value);
+							pong.add(value);
 					}
 				}
-				if (values.isEmpty())
-					return null;
+				if (pong.isEmpty()) // no next at all found, abort
+					return Collections.emptySet();
 
-				keys = new HashSet<Object>(values);
-				values.clear();
+				// swap current and next
+				tmp = ping;
+				ping = pong;
+				pong = tmp;
+				// prepare for next round
+				pong.clear();
 			}
+			return (Set<V>) ping;
 		}
-		if (keys != null) // multiple keys found
-			return (Set<V>) keys;
 
-		return Collections.singleton((V) currentID);
+		@Override
+		public boolean isMapAble(K sourceId) {
+			return !apply(Collections.singleton(sourceId)).isEmpty();
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result + ((source == null) ? 0 : source.hashCode());
+			result = prime * result + ((target == null) ? 0 : target.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			@SuppressWarnings("rawtypes")
+			IDTypeMapper other = (IDTypeMapper) obj;
+			if (!getOuterType().equals(other.getOuterType()))
+				return false;
+			if (source == null) {
+				if (other.source != null)
+					return false;
+			} else if (!source.equals(other.source))
+				return false;
+			if (target == null) {
+				if (other.target != null)
+					return false;
+			} else if (!target.equals(other.target))
+				return false;
+			return true;
+		}
+
+		private IDMappingManager getOuterType() {
+			return IDMappingManager.this;
+		}
 	}
 
 	// public void printGraph() {

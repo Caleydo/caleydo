@@ -40,6 +40,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -84,8 +85,6 @@ import org.caleydo.view.tourguide.vendingmachine.ui.ScoreFilterDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import com.google.common.base.Function;
-
 /**
  * @author Samuel Gratzl
  *
@@ -119,15 +118,13 @@ public class ScoreQueryUI extends Column {
 		}
 	};
 
-	private final ISelectionListener selectionListener;
 	private final AGLView view;
-	private final Function<ScoringElement, Void> addToStratomexCallback;
 	private boolean running;
+	private final StratomexAdapter stratomex;
 
-	public ScoreQueryUI(AGLView view, ISelectionListener listener, Function<ScoringElement, Void> addToStratomex) {
+	public ScoreQueryUI(AGLView view, StratomexAdapter stratomex) {
 		this.view = view;
-		this.selectionListener = listener;
-		this.addToStratomexCallback = addToStratomex;
+		this.stratomex = stratomex;
 		init();
 		initListeners(view);
 
@@ -272,8 +269,9 @@ public class ScoreQueryUI extends Column {
 			getTableRow(selectedRow).addBackgroundRenderer(new ColorRenderer(SELECTED_COLOR.getRGBA()));
 			getTableRow(selectedRow).updateSubLayout();
 		}
-		selectionListener.onSelectionChanged(old, new_, getSelectScoreID(new_, col));
+		stratomex.updatePreview(old, new_, getSelectScoreID(new_, col), getVisibleColumns(new_));
 	}
+
 
 	private ElementLayout getTableRow(int i) {
 		return get(3 + (i) * 2); // 1 border 2 for header *2 for spacing
@@ -322,6 +320,19 @@ public class ScoreQueryUI extends Column {
 		if (s instanceof CollapseScore)
 			s = row.getSelected((CollapseScore) s);
 		return s;
+	}
+
+	private Collection<IScore> getVisibleColumns(ScoringElement row) {
+		if (row == null)
+			return null;
+		Collection<IScore> r = new ArrayList<>();
+		for (AScoreColumn column : this.columns) {
+			IScore s = column.getScore();
+			if (s instanceof CollapseScore)
+				s = row.getSelected((CollapseScore) s);
+			r.add(s);
+		}
+		return r;
 	}
 
 	// ############## EVENT HANDLING
@@ -449,9 +460,7 @@ public class ScoreQueryUI extends Column {
 	}
 
 	protected void onAddToStratomex(int row) {
-		if (this.selectedRow == row)
-			setSelected(-1, -1);
-		addToStratomexCallback.apply(data.get(row));
+		stratomex.addToStratomex(data.get(row));
 	}
 
 	protected void onEditFilter() {
@@ -468,5 +477,6 @@ public class ScoreQueryUI extends Column {
 }
 
 interface ISelectionListener {
-	public void onSelectionChanged(ScoringElement old_, ScoringElement new_, IScore new_column);
+	public void onSelectionChanged(ScoringElement old_, ScoringElement new_, IScore selectedColumn,
+			Collection<IScore> visibleColumns);
 }

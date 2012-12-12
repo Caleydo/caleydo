@@ -6,7 +6,20 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class HashSetIDSet implements IDSet {
-	private final Set<Integer> s = new HashSet<>(1024);
+	private final Set<Integer> s;
+
+	public HashSetIDSet() {
+		this.s = new HashSet<>(1024);
+	}
+
+	/**
+	 * !! uses the given set for data storage
+	 * 
+	 * @param s
+	 */
+	public HashSetIDSet(final Set<Integer> s) {
+		this.s = s;
+	}
 
 	@Override
 	public boolean contains(int id) {
@@ -45,7 +58,7 @@ public class HashSetIDSet implements IDSet {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

@@ -21,40 +21,41 @@ package org.caleydo.view.tourguide.data.compute;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.view.tourguide.data.score.AGroupScore;
 import org.caleydo.view.tourguide.util.Grouper;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Multimap;
 
 /**
+ * helper command to perform a computation on a group by group base, e.g. jaccard index
+ *
  * @author Samuel Gratzl
  *
  */
 public class IDSetScoreComputes implements Runnable {
 	private static final Logger log = Logger.create(IDSetScoreComputes.class);
 	private final Map<Pair<Group, IDType>, IDSet> sets = new HashMap<>();
-	private final Map<Pair<IDType, IDType>, Function<Integer, Set<Integer>>> mappers = new HashMap<>();
+	private final Map<Pair<IDType, IDType>, IIDTypeMapper<Integer, Integer>> mappers = new HashMap<>();
 	private final IIDSetGroupScoreFun fun;
 	private final Multimap<TablePerspective, Group> a;
 	private final Multimap<TablePerspective, AGroupScore> b;
 
-	public IDSetScoreComputes(Multimap<TablePerspective, Group> stratNGroups,
-			Multimap<TablePerspective, AGroupScore> against, IIDSetGroupScoreFun fun) {
+	public IDSetScoreComputes(Multimap<TablePerspective, Group> a,
+			Multimap<TablePerspective, AGroupScore> b, IIDSetGroupScoreFun fun) {
 		this.fun = fun;
-		this.a = stratNGroups;
-		this.b = against;
+		this.a = a;
+		this.b = b;
 	}
 
 	@Override
@@ -77,7 +78,7 @@ public class IDSetScoreComputes implements Runnable {
 					// can't map
 					continue;
 				}
-				final Predicate<Integer> mapAble = in(sourceType, targetType);
+				final Predicate<Integer> target2Source = in(targetType, sourceType);
 
 				for (TablePerspective targetStrat : as.get(targetType)) {
 					for (TablePerspective sourceStrat : bs.get(sourceType)) {
@@ -87,7 +88,7 @@ public class IDSetScoreComputes implements Runnable {
 									continue;
 								IDSet aSet = get(targetStrat, targetGroup, targetType); // in target notation
 								IDSet bSet = get(sourceStrat, sourceGroup.getGroup(), targetType); // in target notation
-								sourceGroup.put(targetGroup, fun.apply(aSet, bSet, mapAble));
+								sourceGroup.put(targetGroup, fun.apply(aSet, bSet, target2Source));
 							}
 						}
 					}
@@ -102,30 +103,30 @@ public class IDSetScoreComputes implements Runnable {
 		System.out.println("done in " + w);
 	}
 
-	private Predicate<Integer> in(final IDType target, final IDType source) {
+	private Predicate<Integer> in(final IDType source, final IDType target) {
 		final Map<Integer, Boolean> cache = new HashMap<>();
 		return new Predicate<Integer>() {
 			@Override
 			public boolean apply(Integer sourceId) {
-				if (cache.containsKey(sourceId))
+				if (cache.containsKey(sourceId)) {
 					return cache.get(sourceId);
-				Function<Integer, Set<Integer>> mapper = getMapper(source, target);
+				}
+				IIDTypeMapper<Integer, Integer> mapper = getMapper(source, target);
 				if (mapper == null)
 					return false;
-				Set<Integer> s = mapper.apply(sourceId);
-				boolean r = s != null && !s.isEmpty();
+				boolean r = mapper.isMapAble(sourceId);
 				cache.put(sourceId, r);
 				return r;
 			}
 		};
 	}
 
-	private Function<Integer, Set<Integer>> getMapper(IDType source, IDType target) {
+	private IIDTypeMapper<Integer, Integer> getMapper(IDType source, IDType target) {
 		// find way
-		Function<Integer, Set<Integer>> mapper = mappers.get(Pair.make(source, target));
+		IIDTypeMapper<Integer, Integer> mapper = mappers.get(Pair.make(source, target));
 		if (mapper == null) {
 			mapper = IDMappingManagerRegistry.get().getIDMappingManager(target.getIDCategory())
-					.getIDMappingFunction(source, target);
+						.getIDTypeMapper(source, target);
 			mappers.put(Pair.make(source, target), mapper);
 		}
 		return mapper;
@@ -136,26 +137,23 @@ public class IDSetScoreComputes implements Runnable {
 			return sets.get(Pair.make(group, target));
 
 		IDType source = strat.getRecordPerspective().getIdType();
-		// find way
-		Function<Integer, Set<Integer>> mapper = getMapper(source, target);
+
+		IIDTypeMapper<Integer, Integer> mapper = getMapper(source, target);
 		if (mapper == null)
 			return null;
 
 		RecordVirtualArray va = strat.getRecordPerspective().getVirtualArray();
-		IDSet b = new HashSetIDSet();
-		for (int i = group.getStartIndex(); i <= group.getEndIndex(); ++i) {
-			int id = va.get(i);
-			Set<Integer> ids = mapper.apply(id);
-			if (ids != null) {
-				b.setAll(ids);
-			}
-		}
+		IDSet b = new HashSetIDSet(mapper.apply(va.getIDsOfGroup(group.getGroupIndex())));
 
 		sets.put(Pair.make(group, target), b);
 		return b;
 	}
 
 	public interface IIDSetGroupScoreFun {
+		/**
+		 * applies an operation given the IDSet of A, B, denoted in the IDType of A and a predicate whether an id of A
+		 * can be converted to B
+		 */
 		float apply(IDSet a, IDSet b, Predicate<Integer> a2B);
 	}
 }

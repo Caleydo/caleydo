@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.io.gui.dataimport.widget.BooleanCallback;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
@@ -59,7 +60,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Samuel Gratzl
  *
  */
-public class DataDomainQueryUI extends Column {
+public class DataDomainQueryUI extends Row {
 	private static final String TOGGLE_DATA_DOMAIN = "TOGGLE_DATA_DOMAIN";
 	private static final String DATADOMAIN_SELECTION = "DATADOMAIN_SELECTION";
 	private static final int COL0_BUTTON = 20;
@@ -100,20 +101,39 @@ public class DataDomainQueryUI extends Column {
 
 
 	public void init() {
-		this.setBottomUp(false);
-		setGrabX(true);
-		setYDynamic(true);
+		this.setGrabX(true);
 
 		final ElementLayout rowSpace = createYSpacer(3);
 
-		this.add(createYSpacer(20));
+		Column numerical = new Column();
+		numerical.setBottomUp(false);
+		numerical.setGrabX(true);
+		numerical.setYDynamic(true);
+		numerical.add(createYSpacer(20));
+		this.add(numerical);
+		int num = 0;
+
+		Column categorical = new Column();
+		categorical.setBottomUp(false);
+		categorical.setGrabX(true);
+		categorical.setYDynamic(true);
+		categorical.add(createYSpacer(20));
+		int cat = 0;
+		this.add(categorical);
 
 		int i = 0;
 		for (ATableBasedDataDomain dataDomain : DataDomainQuery.allDataDomains()) {
 			DataDomainRow r = new DataDomainRow(view, dataDomain, i++);
 			rows.add(r);
-			this.add(r).add(rowSpace);
+			if (DataDomainOracle.isCategoricalDataDomain(dataDomain)) {
+				categorical.add(r).add(rowSpace);
+				cat++;
+			} else {
+				numerical.add(r).add(rowSpace);
+				num++;
+			}
 		}
+		this.setPixelSizeY(20 + Math.max(cat, num) * (3 + ROW_HEIGHT));
 	}
 
 	public void setQuery(DataDomainQuery query) {

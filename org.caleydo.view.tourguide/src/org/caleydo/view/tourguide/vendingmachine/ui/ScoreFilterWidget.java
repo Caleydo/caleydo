@@ -23,6 +23,8 @@ import org.caleydo.view.tourguide.data.filter.CompareScoreFilter;
 import org.caleydo.view.tourguide.data.filter.ECompareOperator;
 import org.caleydo.view.tourguide.util.EnumUtils;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -59,6 +61,20 @@ public class ScoreFilterWidget {
 		this.referenceUI.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		this.referenceUI.setMinimum(Integer.MIN_VALUE);
 		this.referenceUI.setMaximum(Integer.MAX_VALUE);
+		this.referenceUI.setEnabled(filter.getOp() != ECompareOperator.IS_NOT_NA);
+		this.operatorUI.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int i = operatorUI.getSelectionIndex();
+				if (i < 0)
+					referenceUI.setEnabled(false);
+				else {
+					ECompareOperator op = ECompareOperator.values()[i];
+					referenceUI.setEnabled(op != ECompareOperator.IS_NOT_NA);
+				}
+			}
+		});
+
 		if (this.isInt) {
 			// int
 			this.referenceUI.setSelection((int) filter.getAgainst());

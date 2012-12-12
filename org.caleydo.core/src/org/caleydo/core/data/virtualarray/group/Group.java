@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.data.virtualarray.group;
 
-import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -27,7 +26,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
 
 /**
@@ -240,34 +238,6 @@ public class Group implements IDefaultLabelHolder {
 	public String getPerspectiveID() {
 		return perspectiveID;
 	}
-
-	/**
-	 * returns an iterator which iterate over this group using the virtual array
-	 * 
-	 * @param va
-	 * @return
-	 */
-	public Iterator<Integer> iterator(final VirtualArray<?, ?, ?> va) {
-		return new Iterator<Integer>() {
-			private int act = getStartIndex();
-			private final int last = getEndIndex();
-
-			@Override
-			public boolean hasNext() {
-				return act <= last;
-			}
-			@Override
-			public Integer next() {
-				return va.get(act++);
-			}
-
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-		};
-	}
-
 
 	@Override
 	public void setLabel(String label, boolean isDefaultLabel) {

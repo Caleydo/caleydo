@@ -49,6 +49,7 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
+import org.caleydo.core.event.EventListeners;
 import org.caleydo.core.event.data.ClearSelectionsEvent;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
@@ -94,11 +95,15 @@ import org.caleydo.view.stratomex.column.BrickColumnManager;
 import org.caleydo.view.stratomex.column.BrickColumnSpacingRenderer;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.stratomex.event.ConnectionsModeEvent;
+import org.caleydo.view.stratomex.event.HighlightBrickEvent;
+import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.stratomex.event.SplitBrickEvent;
 import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
 import org.caleydo.view.stratomex.listener.ConnectionsModeListener;
 import org.caleydo.view.stratomex.listener.GLStratomexKeyListener;
+import org.caleydo.view.stratomex.listener.HighlightBrickEventListener;
 import org.caleydo.view.stratomex.listener.ReplaceTablePerspectiveListener;
+import org.caleydo.view.stratomex.listener.SelectElementsListener;
 import org.caleydo.view.stratomex.listener.SplitBrickListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -133,6 +138,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	private SplitBrickListener splitBrickListener;
 	private RemoveTablePerspectiveListener removeTablePerspectiveListener;
 	private ReplaceTablePerspectiveListener replaceTablePerspectiveListener;
+	private EventListeners listeners = new EventListeners();
 
 	private BrickColumnManager brickColumnManager;
 
@@ -969,6 +975,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		replaceTablePerspectiveListener.setHandler(this);
 		eventPublisher.addListener(ReplaceTablePerspectiveEvent.class, replaceTablePerspectiveListener);
 
+		listeners.register(HighlightBrickEvent.class, new HighlightBrickEventListener(this));
+		listeners.register(SelectElementsEvent.class, new SelectElementsListener().setHandler(this));
 	}
 
 	@Override
@@ -1004,6 +1012,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 			eventPublisher.removeListener(replaceTablePerspectiveListener);
 			replaceTablePerspectiveListener = null;
 		}
+		listeners.unregisterAll();
 	}
 
 	@Override
@@ -1439,11 +1448,13 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		if (tmp != null) {
 			connectionBand = tmp.get(recordPerspective2);
 		} else {
-			connectionBand = hashRowPerspectivesToConnectionBandID.get(recordPerspective2).get(recordPerspective1);
+			tmp = hashRowPerspectivesToConnectionBandID.get(recordPerspective2);
+			if (tmp != null)
+				connectionBand = tmp.get(recordPerspective1);
 		}
 
 		if (connectionBand != null)
-			selectedConnectionBandID = connectionBand.getConnectionBandID();
+			selectElementsByConnectionBandID(connectionBand.getConnectionBandID());
 	}
 
 	public void selectElementsByConnectionBandID(int connectionBandID) {

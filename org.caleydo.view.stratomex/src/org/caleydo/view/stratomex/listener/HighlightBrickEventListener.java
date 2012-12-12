@@ -19,53 +19,58 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.listener;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.column.BrickColumn;
+import org.caleydo.view.stratomex.column.BrickColumnGlowRenderer;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
-import org.caleydo.view.stratomex.event.SelectElementsEvent;
+import org.caleydo.view.stratomex.event.HighlightBrickEvent;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class SelectElementsListener extends AEventListener<GLStratomex> {
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.event.AEventListener#handleEvent(org.caleydo.core.event.AEvent)
-	 */
-	@Override
-	public void handleEvent(AEvent event) {
-		SelectElementsEvent e = (SelectElementsEvent) event;
-		if (e.getReceiver() != handler)
-			return;
-
-		BrickColumnManager manager = handler.getBrickColumnManager();
-
-		RecordPerspective a = findRecordPerspective(manager, e.getaStrat(), e.getaGroup());
-		RecordPerspective b = findRecordPerspective(manager, e.getbStrat(), e.getbGroup());
-		if (a == null || b == null)
-			return;
-		getHandler().selectElementsByConnectionBandID(a, b);
+public class HighlightBrickEventListener extends AEventListener<GLStratomex> {
+	public HighlightBrickEventListener(GLStratomex handler) {
+		this.setHandler(handler);
 	}
 
-	private static RecordPerspective findRecordPerspective(BrickColumnManager manager, TablePerspective strat,
-			Group group) {
-		BrickColumn column = manager.getBrickColumn(strat);
-		if (column == null)
-			return null;
-		for (GLBrick brick : column.getBricks()) {
-			if (group.equals(brick.getTablePerspective().getRecordGroup())) {
-				return brick.getTablePerspective().getRecordPerspective();
+	@Override
+	public void handleEvent(AEvent aevent) {
+		HighlightBrickEvent event = (HighlightBrickEvent)aevent;
+		if (event.getReceiver() != handler)
+			return;
+		BrickColumnManager manager = handler.getBrickColumnManager();
+		BrickColumn brickColumn = manager.getBrickColumn(event.getStratification());
+		if (brickColumn == null)
+			return;
+
+		ElementLayout layout = null;
+		if (event.getGroup() == null) {
+			layout = brickColumn.getLayout();
+		} else {
+			Group g = event.getGroup();
+			for (GLBrick brick : brickColumn.getBricks()) {
+				if (g.equals(brick.getTablePerspective().getRecordGroup())) {
+					layout = brick.getLayout();
+					break;
+				}
 			}
 		}
-		return null;
+		if (layout == null)
+			return;
+
+		if (!event.isHighlight()) {
+			layout.clearBackgroundRenderers();
+		} else {
+			layout.addBackgroundRenderer(new BrickColumnGlowRenderer(event.getColor().getRGBA(), brickColumn, false));
+		}
+		if (layout.getLayoutManager() != null)
+			layout.updateSubLayout();
 	}
 
 }
