@@ -177,7 +177,7 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 
 		Map<IScore, IScore> selections = new HashMap<IScore, IScore>(collapseScores.size());
 		IRankedListBuilder builder;
-		if (hasGroupScore(selection)) { // we need to show strat,group pairs
+		if (isGroupQuery()) { // we need to show strat,group pairs
 			Multimap<TablePerspective, Group> stratNGroups = query.apply(stratifications);
 			builder = RankedListBuilders.create(top, stratNGroups.size() * factor, filter, orderBy);
 			buildAll2(builder, 0, collapseScores, selections, stratNGroups);
@@ -188,8 +188,8 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 		return builder.build();
 	}
 
-	private static boolean hasGroupScore(Collection<IScore> scores) {
-		return Iterables.any(Scores.flatten(scores), isGroupScore);
+	public boolean isGroupQuery() {
+		return Iterables.any(Scores.flatten(selection), isGroupScore);
 	}
 
 	/**

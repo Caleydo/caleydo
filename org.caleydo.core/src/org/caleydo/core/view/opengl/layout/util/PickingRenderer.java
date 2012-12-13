@@ -21,6 +21,8 @@ package org.caleydo.core.view.opengl.layout.util;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
 /**
@@ -29,8 +31,20 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
  * @author Christian Partl
  */
 public class PickingRenderer extends APickableLayoutRenderer {
+	private IColor color;
+
 	public PickingRenderer(String pickingType, int pickingID, AGLView view) {
 		super(view, pickingType, pickingID);
+		this.color = Colors.TRANSPARENT;
+	}
+
+	/**
+	 * @param color
+	 *            setter, see {@link color}
+	 */
+	public void setColor(IColor color) {
+		this.color = color;
+		setDisplayListDirty();
 	}
 
 	@Override
@@ -38,7 +52,7 @@ public class PickingRenderer extends APickableLayoutRenderer {
 		pushNames(gl);
 
 		gl.glBegin(GL2.GL_QUADS);
-		gl.glColor4f(1, 1, 1, 0);
+		gl.glColor4fv(this.color.getRGBA(), 0);
 		gl.glVertex3f(0, 0, -0.01f);
 		gl.glVertex3f(x, 0, -0.01f);
 		gl.glVertex3f(x, y, -0.01f);

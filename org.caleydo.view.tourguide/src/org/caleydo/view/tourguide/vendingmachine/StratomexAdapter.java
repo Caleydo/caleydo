@@ -123,7 +123,7 @@ public class StratomexAdapter {
 		this.brickColumns.clear();
 	}
 
-	public void updatePreview(ScoringElement old, ScoringElement new_, IScore column, Collection<IScore> visibleColumns) {
+	public void updatePreview(ScoringElement old, ScoringElement new_, Collection<IScore> visibleColumns) {
 		if (!hasOne())
 			return;
 		TablePerspective strat = new_ == null ? null : new_.getStratification();

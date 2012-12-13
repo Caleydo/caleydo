@@ -60,15 +60,15 @@ public class ScoreBarRenderer extends LayoutRenderer {
 	 * @return
 	 */
 	private float oneXPixel(GL2 gl) {
-		if (layoutManager == null)
+		if (elementLayout.getLayoutManager() == null)
 			return 0.001f;
-		return layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(1);
+		return elementLayout.getLayoutManager().getPixelGLConverter().getGLHeightForPixelHeight(1);
 	}
 
 	private float oneYPixel(GL2 gl) {
-		if (layoutManager == null)
+		if (elementLayout.getLayoutManager() == null)
 			return 0.001f;
-		return layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(1);
+		return elementLayout.getLayoutManager().getPixelGLConverter().getGLHeightForPixelHeight(1);
 	}
 
 	@Override

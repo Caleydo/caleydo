@@ -98,7 +98,7 @@ public class AdvancedTextureRenderer extends LayoutRenderer {
 	protected void renderContent(GL2 gl) {
 		if (this.imagePath == null)
 			return;
-		float[] p = padding.resolve(layoutManager.getPixelGLConverter(), x, y);
+		float[] p = padding.resolve(elementLayout.getLayoutManager().getPixelGLConverter(), x, y);
 		Vec3f lowerLeftCorner = new Vec3f(p[0], p[3], z);
 		Vec3f lowerRightCorner = new Vec3f(x - p[2], p[3], z);
 		Vec3f upperRightCorner = new Vec3f(x - p[2], y - p[1], z);

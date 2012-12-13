@@ -17,25 +17,24 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.vendingmachine;
+package org.caleydo.view.tourguide.vendingmachine.col;
 
 import static org.caleydo.core.view.opengl.layout.ElementLayouts.createXSpacer;
 import static org.caleydo.core.view.opengl.layout.ElementLayouts.wrap;
-import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.COL_SPACING;
-import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.LABEL_PADDING;
+
+import java.util.List;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.ConstantLabelProvider;
-import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
-import org.caleydo.core.view.opengl.layout.util.Renderers;
 import org.caleydo.core.view.opengl.layout.util.TextureRenderer;
 import org.caleydo.view.tourguide.data.ESorting;
+import org.caleydo.view.tourguide.data.ScoreQuery;
 import org.caleydo.view.tourguide.data.ScoringElement;
 import org.caleydo.view.tourguide.data.score.IGroupScore;
 import org.caleydo.view.tourguide.data.score.IScore;
@@ -49,30 +48,34 @@ import org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle;
  * @author Samuel Gratzl
  *
  */
-public abstract class AScoreColumn extends Row {
+public abstract class AQueryColumn extends ATableColumn {
 	public static final String SORT_COLUMN = "SORT_COLUMN";
-	public static final String SELECT_ROW_COLUMN = "SELECT_ROW_COLUMN";
 
-	protected final ElementLayout colSpacing = createXSpacer(COL_SPACING);
+	protected final IScore score;
+	private final int index;
+
 
 	private ESorting sort = ESorting.NONE;
-	protected final IScore score;
-	protected final AGLView view;
 
-	protected AScoreColumn(final IScore scoreID, int i, ESorting sorting, AGLView view) {
+	protected AQueryColumn(AGLView view, final IScore scoreID, int i, ESorting sorting) {
+		super(view);
 		this.score = scoreID;
 		this.sort = sorting;
-		this.view = view;
-		ElementLayout label = createLabel(scoreID, -1);
-		label.setGrabY(true);
-		add(label);
-		add(wrap(new TextureRenderer(sort.getFileName(), view.getTextureManager()), 16));
-		addBackgroundRenderer(new PickingRenderer(SORT_COLUMN, i, view));
+		this.index = i;
+		this.init();
 	}
 
-	protected final ElementLayout createLabel(ILabelProvider label, int width) {
-		return wrap(Renderers.createLabel(label, view.getTextRenderer()).padding(LABEL_PADDING).build(), width);
+	@Override
+	protected ElementLayout createHeader() {
+		Row r = new Row();
+		ElementLayout label = createLabel(this.score, -1);
+		label.setGrabY(true);
+		r.add(label);
+		r.add(wrap(new TextureRenderer(sort.getFileName(), view.getTextureManager()), 16));
+		r.addBackgroundRenderer(new PickingRenderer(SORT_COLUMN, index, view));
+		return r;
 	}
+
 
 	/**
 	 * @return the score, see {@link #score}
@@ -85,7 +88,7 @@ public abstract class AScoreColumn extends Row {
 		if (this.sort == sort)
 			return;
 		this.sort = sort;
-		get(1).setRenderer(new TextureRenderer(this.sort.getFileName(), view.getTextureManager()));
+		((Row) this.th).get(1).setRenderer(new TextureRenderer(this.sort.getFileName(), view.getTextureManager()));
 	}
 
 	public final ESorting nextSorting() {
@@ -93,13 +96,20 @@ public abstract class AScoreColumn extends Row {
 		return this.sort;
 	}
 
-	public final ElementLayout createValue(ScoringElement elem, int id) {
+	@Override
+	public void setData(List<ScoringElement> data, ScoreQuery query) {
+		this.clearBody();
+		for (int i = 0; i < data.size(); ++i) {
+			this.addTd(createValue(data.get(i), i), i);
+		}
+	}
+
+	public ElementLayout createValue(ScoringElement elem, int id) {
 		Row row = new Row();
 		row.setGrabY(true);
 		row.setXDynamic(true);
 
 		addScoreSpecific(row, elem);
-		row.addBackgroundRenderer(new PickingRenderer(SELECT_ROW_COLUMN, id, this.view));
 		return row;
 	}
 

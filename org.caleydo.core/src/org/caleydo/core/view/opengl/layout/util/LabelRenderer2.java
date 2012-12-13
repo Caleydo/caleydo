@@ -84,7 +84,7 @@ public class LabelRenderer2 extends LayoutRenderer {
 
 		textRenderer.setColor(textColor.getRGBA());
 
-		float[] padding = this.padding.resolve(layoutManager.getPixelGLConverter(), x, y);
+		float[] padding = this.padding.resolve(elementLayout.getLayoutManager().getPixelGLConverter(), x, y);
 
 		float trimmedHeight = y - padding[1] + padding[3];
 		float trimmedWidth = x - padding[0] - padding[2];

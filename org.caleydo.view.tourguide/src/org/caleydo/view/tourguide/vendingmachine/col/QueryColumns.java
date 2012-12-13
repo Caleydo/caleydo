@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.vendingmachine;
+package org.caleydo.view.tourguide.vendingmachine.col;
 
 
 import static org.caleydo.core.view.opengl.layout.ElementLayouts.createColor;
@@ -43,9 +43,9 @@ import org.caleydo.view.tourguide.data.score.IScore;
  * @author Samuel Gratzl
  *
  */
-public class ScoreColumns {
+public class QueryColumns {
 
-	public static AScoreColumn create(IScore score, int i, ESorting sorting, AGLView view) {
+	public static AQueryColumn create(IScore score, int i, ESorting sorting, AGLView view) {
 		switch (score.getScoreType()) {
 		case RANK:
 			return new ScoreScoreColumn(score, i, sorting, true, view);
@@ -64,11 +64,11 @@ public class ScoreColumns {
 	}
 
 
-	private static class StratificationScoreColumn extends AScoreColumn {
+	private static class StratificationScoreColumn extends AQueryColumn {
 		private final boolean rank;
 
 		protected StratificationScoreColumn(IScore scoreID, int i, ESorting sorting, boolean rank, AGLView view) {
-			super(scoreID, i, sorting, view);
+			super(view, scoreID, i, sorting);
 			setPixelSizeX(COLX_SCORE_WIDTH + COL_SPACING + DATADOMAIN_TYPE_WIDTH + COL_SPACING + STRATIFACTION_WIDTH);
 			this.rank = rank;
 		}
@@ -97,11 +97,11 @@ public class ScoreColumns {
 		}
 	}
 
-	private static class GroupScoreColumn extends AScoreColumn {
+	private static class GroupScoreColumn extends AQueryColumn {
 		private final boolean rank;
 
 		protected GroupScoreColumn(IScore scoreID, int i, ESorting sorting, boolean rank, AGLView view) {
-			super(scoreID, i, sorting, view);
+			super(view, scoreID, i, sorting);
 			setPixelSizeX(COLX_SCORE_WIDTH + COL_SPACING + DATADOMAIN_TYPE_WIDTH + COL_SPACING + GROUP_WIDTH);
 			this.rank = rank;
 		}
@@ -135,11 +135,11 @@ public class ScoreColumns {
 		}
 	}
 
-	private static class ScoreScoreColumn extends AScoreColumn {
+	private static class ScoreScoreColumn extends AQueryColumn {
 		private final boolean rank;
 
 		protected ScoreScoreColumn(IScore scoreID, int i, ESorting sorting, boolean rank, AGLView view) {
-			super(scoreID, i, sorting, view);
+			super(view, scoreID, i, sorting);
 			setPixelSizeX(COLX_SCORE_WIDTH);
 			this.rank = rank;
 		}

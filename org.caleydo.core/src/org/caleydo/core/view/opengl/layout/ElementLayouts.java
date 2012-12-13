@@ -44,7 +44,7 @@ public final class ElementLayouts {
 	}
 
 	public static ElementLayout createXSpacer(int width) {
-		return create().width(width).build();
+		return create().width(width).height(1).build();
 	}
 
 	public static ElementLayout createXSeparator(int width) {
@@ -52,7 +52,7 @@ public final class ElementLayouts {
 	}
 
 	public static ElementLayout createYSpacer(int height) {
-		return create().height(height).build();
+		return create().height(height).width(1).build();
 	}
 
 	public static ElementLayout createYSeparator(int width) {
@@ -83,5 +83,11 @@ public final class ElementLayouts {
 
 	public static ElementLayout wrap(LayoutRenderer renderer, int width) {
 		return create().width(width).render(renderer).build();
+	}
+
+	public static ElementLayout scrollAlbe(AGLView view, ElementLayout content) {
+		ScrolledLayoutElement l = new ScrolledLayoutElement(view);
+		l.setContent(content);
+		return l;
 	}
 }

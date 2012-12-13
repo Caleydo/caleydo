@@ -46,6 +46,7 @@ import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.ElementLayouts;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -182,11 +183,13 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		mainColumn.setBottomUp(false);
 
 		layoutManager.setBaseElementLayout(mainColumn);
-		layoutManager.setUseDisplayLists(false);
+		layoutManager.setUseDisplayLists(true);
 
 		dataDomainSelector = new DataDomainQueryUI(this);
 		dataDomainSelector.setQuery(dataDomainQuery);
 		mainColumn.append(dataDomainSelector);
+
+		mainColumn.append(ElementLayouts.createYSpacer(20));
 
 		scoreQueryUI = new ScoreQueryUI(this, this.stratomex);
 		scoreQueryUI.setQuery(scoreQuery);
@@ -412,7 +415,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		stratomex.removeBrick(tablePerspectiveID);
 		final ScoringElement selected = this.scoreQueryUI.getSelected();
 		if (selected != null && selected.getStratification().getID() == tablePerspectiveID) {
-			this.scoreQueryUI.setSelected(-1, -1);
+			this.scoreQueryUI.setSelected(-1);
 		}
 	}
 
