@@ -55,7 +55,7 @@ public class AddToStratomexColumn extends ATableColumn {
 		row.setGrabX(true);
 		// row.setLeftToRight(false);
 		ElementLayout b = wrap(new TextureRenderer(TourGuideRenderStyle.ICON_TABLE_FILTER, view.getTextureManager()),
-				16);
+				-1);
 		b.setGrabY(true);
 		b.addBackgroundRenderer(new PickingRenderer(ScoreQueryUI.EDIT_FILTER, 1, view));
 		row.append(b);

@@ -55,8 +55,9 @@ public final class ElementLayouts {
 		return create().height(height).width(1).build();
 	}
 
-	public static ElementLayout createYSeparator(int width) {
-		ElementLayout l = createYSpacer(width);
+	public static ElementLayout createYSeparator(int height) {
+		ElementLayout l = createYSpacer(height);
+		l.setGrabX(true);
 		l.setRenderer(new LineSeparatorRenderer(false));
 		return l;
 	}

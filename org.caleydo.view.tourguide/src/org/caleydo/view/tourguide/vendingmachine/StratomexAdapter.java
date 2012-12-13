@@ -236,7 +236,7 @@ public class StratomexAdapter {
 		if (!hasOne())
 			return;
 		TablePerspective strat = elem.getStratification();
-		if (currentPreview.equals(strat)) { // its the preview
+		if (strat.equals(currentPreview)) { // its the preview
 			temporaryPreview = false; // definitely explicit
 			removePreview();
 		} else if (!contains(strat)) { // add it not existing

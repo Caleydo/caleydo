@@ -20,7 +20,6 @@
 package org.caleydo.view.tourguide.vendingmachine.col;
 
 import static org.caleydo.core.view.opengl.layout.ElementLayouts.createColor;
-import static org.caleydo.core.view.opengl.layout.ElementLayouts.createXSpacer;
 import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.COL_SPACING;
 import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.DATADOMAIN_TYPE_WIDTH;
 import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.GROUP_WIDTH;
@@ -50,7 +49,6 @@ public class MatchColumn extends ATableColumn {
 		super(view);
 		this.init();
 		updateHeader(false);
-		this.setXDynamic(true);
 	}
 
 	@Override
@@ -88,18 +86,16 @@ public class MatchColumn extends ATableColumn {
 	}
 
 	private void recomputeWidth(List<ScoringElement> data) {
-		int longestStrat = "Stratificat".length();
-		int longestGroup = "Group ".length();
+		int longestStrat = getTextWidth("Stratification") - DATADOMAIN_TYPE_WIDTH;
+		int longestGroup = getTextWidth("Group");
 		for (int i = 0; i < data.size(); ++i) {
 			ScoringElement elem = data.get(i);
 			TablePerspective strat = elem.getStratification();
 			Group g = elem.getGroup();
-			longestStrat = Math.max(strat.getRecordPerspective().getLabel().length(), longestStrat);
+			longestStrat = Math.max(getTextWidth(strat.getRecordPerspective()), longestStrat);
 			if (g != null)
-				longestGroup = Math.max(g.getLabel().length(), longestGroup);
+				longestGroup = Math.max(getTextWidth(g), longestGroup);
 		}
-		longestStrat = guessWidth(longestStrat);
-		longestGroup = guessWidth(longestGroup);
 		this.groupWidth = Math.min(250, longestGroup);
 		if (longestGroup > 0)
 			this.stratWidth = Math.min(250, longestStrat);
@@ -108,25 +104,16 @@ public class MatchColumn extends ATableColumn {
 		invalidWidth = (!this.wasGroupQuery && (!data.isEmpty() && data.get(0).getGroup() == null));
 	}
 
-	/**
-	 * guesses the length of the text to render in pixels
-	 *
-	 * @param textLength
-	 * @return
-	 */
-	private static int guessWidth(int textLength) {
-		return textLength * 8;
-	}
-
 	private void updateHeader(boolean isGroupQuery) {
 		Row header = (Row) th;
 		this.wasGroupQuery = isGroupQuery;
 		header.clear();
-		header.add(createXSpacer(DATADOMAIN_TYPE_WIDTH + COL_SPACING));
-		header.add(createLabel("Stratification", stratWidth));
+		header.add(createLabel("Stratification", DATADOMAIN_TYPE_WIDTH + COL_SPACING + stratWidth));
+		this.setPixelSizeX(DATADOMAIN_TYPE_WIDTH + COL_SPACING + stratWidth);
 		if (isGroupQuery) {
 			header.add(colSpacing);
 			header.add(createLabel("Group", groupWidth));
+			this.setPixelSizeX(DATADOMAIN_TYPE_WIDTH + COL_SPACING + stratWidth + COL_SPACING + groupWidth);
 		}
 		header.setXDynamic(true);
 	}

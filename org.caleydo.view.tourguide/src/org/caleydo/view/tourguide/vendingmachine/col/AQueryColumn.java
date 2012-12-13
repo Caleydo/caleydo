@@ -134,7 +134,7 @@ public abstract class AQueryColumn extends ATableColumn {
 		// render the real value
 		float value = this.score.getScore(elem);
 		if (!Float.isNaN(value)) {
-			ElementLayout valueEL = createLabel(new ConstantLabelProvider(Formatter.formatNumber(value)),
+			ElementLayout valueEL = createRightLabel(new ConstantLabelProvider(Formatter.formatNumber(value)),
 					TourGuideRenderStyle.COLX_SCORE_WIDTH);
 			valueEL.setGrabY(true);
 			row.add(valueEL);

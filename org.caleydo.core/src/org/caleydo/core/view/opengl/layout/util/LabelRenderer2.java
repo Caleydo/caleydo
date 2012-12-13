@@ -86,7 +86,7 @@ public class LabelRenderer2 extends LayoutRenderer {
 
 		float[] padding = this.padding.resolve(elementLayout.getLayoutManager().getPixelGLConverter(), x, y);
 
-		float trimmedHeight = y - padding[1] + padding[3];
+		float trimmedHeight = y - padding[1] - padding[3];
 		float trimmedWidth = x - padding[0] - padding[2];
 		float textWidth = textRenderer.getRequiredTextWidthWithMax(label, trimmedHeight, trimmedWidth);
 

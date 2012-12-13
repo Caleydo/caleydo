@@ -67,12 +67,11 @@ public abstract class ATableColumn extends Column {
 	protected void clearBody() {
 		this.clear();
 		this.add(th);
-		this.add(rowSpacing);
-		this.add(rowSpacing);
-		this.setPixelSizeY(th.getPixelSizeX() + ROW_SPACING * 2);
+		this.add(createYSpacer(5));
+		this.setPixelSizeY(th.getPixelSizeX() + 5);
 	}
 
-	protected void addTd(ElementLayout td, int i) {
+	protected final void addTd(ElementLayout td, int i) {
 		td.setGrabY(false);
 		td.setPixelSizeY(ROW_HEIGHT);
 		if (i >= 0)
@@ -81,7 +80,8 @@ public abstract class ATableColumn extends Column {
 		this.setPixelSizeY(this.getPixelSizeY() + ROW_HEIGHT + ROW_SPACING);
 	}
 
-	public ElementLayout getTd(int i) {
+
+	public final ElementLayout getTd(int i) {
 		List<ElementLayout> elem = this.getElements();
 		int pos = 3 + i * 2;
 		if (elem.size() <= pos)
@@ -89,12 +89,29 @@ public abstract class ATableColumn extends Column {
 		return elem.get(pos);
 	}
 
-	protected ElementLayout createLabel(String label, int width) {
+	protected final ElementLayout createLabel(String label, int width) {
 		return createLabel(new ConstantLabelProvider(label), width);
 	}
 
-	protected ElementLayout createLabel(ILabelProvider label, int width) {
+	protected final ElementLayout createLabel(ILabelProvider label, int width) {
 		return wrap(Renderers.createLabel(label, view.getTextRenderer()).padding(LABEL_PADDING).build(), width);
+	}
+
+	protected final int getTextWidth(String text) {
+		float height = ROW_HEIGHT - LABEL_PADDING.get(1) - LABEL_PADDING.get(3);
+		int width = Math.round(this.view.getTextRenderer().getRequiredTextWidth(text,
+				height));
+		width += LABEL_PADDING.get(0) + LABEL_PADDING.get(2) + 3;
+		return width;
+	}
+
+	protected final int getTextWidth(ILabelProvider text) {
+		return getTextWidth(text.getLabel());
+	}
+
+	protected final ElementLayout createRightLabel(ILabelProvider label, int width) {
+		return wrap(Renderers.createLabel(label, view.getTextRenderer()).padding(LABEL_PADDING).alignRight().build(),
+				width);
 	}
 
 	/**

@@ -19,8 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.vendingmachine;
 
+import static org.caleydo.core.view.opengl.layout.ElementLayouts.createXSeparator;
 import static org.caleydo.core.view.opengl.layout.ElementLayouts.createXSpacer;
-import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.COL_SPACING;
 import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.SELECTED_COLOR;
 
 import java.beans.PropertyChangeEvent;
@@ -82,8 +82,6 @@ public class ScoreQueryUI extends Row {
 	private final List<AQueryColumn> queryColumns = new ArrayList<>();
 	private final List<ATableColumn> columns = new ArrayList<>();
 
-	private ElementLayout colSpacing = createXSpacer(COL_SPACING);
-
 	private int selectedRow = -1;
 	private List<ScoringElement> data = Collections.emptyList();
 
@@ -116,7 +114,7 @@ public class ScoreQueryUI extends Row {
 	private void init() {
 		this.setLeftToRight(true);
 		setXDynamic(true);
-		setYDynamic(true);
+		setGrabY(true);
 
 	}
 
@@ -147,8 +145,18 @@ public class ScoreQueryUI extends Row {
 		}
 		this.columns.add(new AddQueryColumn(view));
 
-		for (ATableColumn col : this.columns)
-			this.add(colSpacing).add(col);
+		final ElementLayout colSpace = createXSpacer(1);
+		this.add(colSpace);
+		this.add(columns.get(0));
+		this.add(colSpace);
+		this.add(columns.get(1));
+		this.add(colSpace);
+		this.add(columns.get(2));
+		for (AQueryColumn col : this.queryColumns)
+			this.add(createXSeparator(5)).add(col);
+		this.add(colSpace);
+		this.add(columns.get(columns.size() - 1));
+
 		invalidate();
 	}
 

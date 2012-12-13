@@ -20,10 +20,9 @@
 package org.caleydo.view.tourguide.vendingmachine.col;
 
 
-import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.COL0_RANK_WIDTH;
-
 import java.util.List;
 
+import org.caleydo.core.util.base.ConstantLabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.view.tourguide.data.ScoreQuery;
@@ -32,7 +31,7 @@ import org.caleydo.view.tourguide.data.ScoringElement;
 public class RankColumn extends ATableColumn {
 	public RankColumn(AGLView view) {
 		super(view);
-		this.setPixelSizeX(COL0_RANK_WIDTH);
+		this.setPixelSizeX(getTextWidth("99."));
 		init();
 	}
 
@@ -48,6 +47,6 @@ public class RankColumn extends ATableColumn {
 			return;
 		}
 		for (int i = 0; i < data.size(); ++i)
-			this.addTd(createLabel(String.format("%d.", i + 1), COL0_RANK_WIDTH), i);
+			this.addTd(createRightLabel(new ConstantLabelProvider(String.format("%d.", i + 1)), -1), i);
 	}
 }

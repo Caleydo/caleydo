@@ -76,4 +76,8 @@ public class Padding {
 			throw new IllegalStateException();
 		}
 	}
+
+	public float get(int direction) {
+		return this.padding[direction];
+	}
 }

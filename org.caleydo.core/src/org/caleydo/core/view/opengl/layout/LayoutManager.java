@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -32,7 +32,7 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
  * The LayoutManager is responsible for rendering all the elements specified in
  * its set {@link #template}. It contains a reference to the view frustum and
  * initializes the calculation of spacing once the view frustum is changed.
- * 
+ *
  * @author Alexander Lex
  */
 public class LayoutManager {
@@ -134,7 +134,7 @@ public class LayoutManager {
 
 	/**
 	 * Recursively render the layout of all elements
-	 * 
+	 *
 	 * @param gl
 	 */
 	public void render(GL2 gl) {
@@ -145,7 +145,7 @@ public class LayoutManager {
 
 	/**
 	 * Deletes the display lists of {@link #displayListsToDelete}.
-	 * 
+	 *
 	 * @param gl
 	 */
 	protected void deleteDisplayListsOfDestroyedRenderers(GL2 gl) {
@@ -162,18 +162,19 @@ public class LayoutManager {
 	 * Deletes the display lists of all {@link LayoutRenderer}s of this
 	 * LayoutManager. This method must be called when the
 	 * <code>LayoutManager</code> is no longer used.
-	 * 
+	 *
 	 * @param gl
 	 */
 	public void destroy(GL2 gl) {
 		deleteDisplayListsOfDestroyedRenderers(gl);
 
-		baseElementLayout.destroy(gl);
+		if (baseElementLayout != null)
+			baseElementLayout.destroy(gl);
 	}
 
 	/**
 	 * Calculate the size and positions of the layout elements in the template
-	 * 
+	 *
 	 * @param totalWidth
 	 * @param totalHeight
 	 */
@@ -194,7 +195,7 @@ public class LayoutManager {
 	/**
 	 * Set the base element layout - which is the topmost layout containing all
 	 * other element layouts
-	 * 
+	 *
 	 * @param baseElementLayout
 	 */
 	public void setBaseElementLayout(ElementLayout baseElementLayout) {
@@ -220,7 +221,7 @@ public class LayoutManager {
 	 * Adds the index of a display list that shall be deleted in the next render
 	 * cycle. This method is intended to be used by {@link LayoutRenderer}s that
 	 * will be destroyed only.
-	 * 
+	 *
 	 * @param displayListIndex
 	 */
 	protected void addDisplayListToDelete(int displayListIndex) {

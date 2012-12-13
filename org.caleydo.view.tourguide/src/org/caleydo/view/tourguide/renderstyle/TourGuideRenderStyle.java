@@ -32,13 +32,13 @@ public class TourGuideRenderStyle extends GeneralRenderStyle {
 		super(viewFrustum);
 	}
 
-	public static final int COLX_SCORE_WIDTH = 75;
+	public static final int COLX_SCORE_WIDTH = 70;
 
 	public static final int COL_SPACING = 3;
 	public static final int ROW_SPACING = 5;
 	public static final int ROW_HEIGHT = 18;
 
-	public static final Padding LABEL_PADDING = new Padding(Padding.EMode.PIXEL, 2, 6, 2, 4);
+	public static final Padding LABEL_PADDING = new Padding(Padding.EMode.PIXEL, 2, 0, 2, 3);
 
 	public static final IColor SELECTED_COLOR = Colors.YELLOW;
 	public static final IColor DEFAULT_SCORE_COLOR = new Color(0, 0, 0, 0.2f);

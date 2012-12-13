@@ -65,7 +65,7 @@ public class DataDomainQueryUI extends Row {
 	private static final String DATADOMAIN_SELECTION = "DATADOMAIN_SELECTION";
 	private static final int COL0_BUTTON = 20;
 	private static final int COL1_DATADOMAIN_TYPE = 16;
-	private static final int COL3_NAME = -1;
+	private static final int COL3_NAME = 100;
 	private static final int ROW_HEIGHT = 18;
 
 	private final List<DataDomainRow> rows = new ArrayList<>();
@@ -107,7 +107,7 @@ public class DataDomainQueryUI extends Row {
 
 		Column numerical = new Column();
 		numerical.setBottomUp(false);
-		numerical.setGrabX(true);
+		numerical.setPixelSizeX(COL0_BUTTON + 3 + COL1_DATADOMAIN_TYPE + 3 + COL3_NAME);
 		numerical.setYDynamic(true);
 		numerical.add(createYSpacer(20));
 		this.add(numerical);
