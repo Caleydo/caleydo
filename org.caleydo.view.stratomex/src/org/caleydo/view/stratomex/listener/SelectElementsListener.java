@@ -19,15 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.listener;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.brick.GLBrick;
-import org.caleydo.view.stratomex.column.BrickColumn;
-import org.caleydo.view.stratomex.column.BrickColumnManager;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
 
 /**
@@ -46,26 +40,6 @@ public class SelectElementsListener extends AEventListener<GLStratomex> {
 		if (e.getReceiver() != handler)
 			return;
 
-		BrickColumnManager manager = handler.getBrickColumnManager();
-
-		RecordPerspective a = findRecordPerspective(manager, e.getaStrat(), e.getaGroup());
-		RecordPerspective b = findRecordPerspective(manager, e.getbStrat(), e.getbGroup());
-		if (a == null || b == null)
-			return;
-		getHandler().selectElementsByConnectionBandID(a, b);
+		handler.selectElements(e.getIds(), e.getIdType(), e.getDataDomainID());
 	}
-
-	private static RecordPerspective findRecordPerspective(BrickColumnManager manager, TablePerspective strat,
-			Group group) {
-		BrickColumn column = manager.getBrickColumn(strat);
-		if (column == null)
-			return null;
-		for (GLBrick brick : column.getBricks()) {
-			if (group.equals(brick.getTablePerspective().getRecordGroup())) {
-				return brick.getTablePerspective().getRecordPerspective();
-			}
-		}
-		return null;
-	}
-
 }

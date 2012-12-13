@@ -21,25 +21,35 @@ package org.caleydo.view.tourguide.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
+import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
 
 /**
  * listens for remove events of the stratomex brick columns
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-public class StratomexRemoveTablePerspectiveListener extends AEventListener<VendingMachine> {
+public class StratomexTablePerspectiveListener extends AEventListener<VendingMachine> {
 
-	public StratomexRemoveTablePerspectiveListener(VendingMachine vendingMachine) {
+	public StratomexTablePerspectiveListener(VendingMachine vendingMachine) {
 		setHandler(vendingMachine);
 	}
 
 	@Override
 	public void handleEvent(AEvent event) {
-		RemoveTablePerspectiveEvent e = (RemoveTablePerspectiveEvent) event;
-		handler.onStratomexRemoveBrick(e.getReceiver(), e.getTablePerspectiveID());
+		if (event instanceof RemoveTablePerspectiveEvent) {
+			RemoveTablePerspectiveEvent e = (RemoveTablePerspectiveEvent) event;
+			handler.onStratomexRemoveBrick(e.getReceiver(), e.getTablePerspectiveID());
+		} else if (event instanceof AddTablePerspectivesEvent) {
+			AddTablePerspectivesEvent e = (AddTablePerspectivesEvent) event;
+			handler.onStratomexAddBricks(e.getReceiver(), e.getTablePerspectives());
+		} else if (event instanceof ReplaceTablePerspectiveEvent) {
+			ReplaceTablePerspectiveEvent e = (ReplaceTablePerspectiveEvent) event;
+			handler.onStratomexReplaceBricks(e.getViewID(), e.getOldPerspective(), e.getNewPerspective());
+		}
 	}
 
 }

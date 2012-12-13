@@ -32,9 +32,12 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListeners;
+import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
+import org.caleydo.core.view.ITablePerspectiveBasedView;
+import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -72,7 +75,7 @@ import org.caleydo.view.tourguide.listener.RemoveScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreQueryReadyListener;
 import org.caleydo.view.tourguide.listener.ScoreTablePerspectiveListener;
-import org.caleydo.view.tourguide.listener.StratomexRemoveTablePerspectiveListener;
+import org.caleydo.view.tourguide.listener.StratomexTablePerspectiveListener;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateAdjustedRandScoreDialog;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateCompositeScoreDialog;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateJaccardIndexScoreDialog;
@@ -122,37 +125,19 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 					onShowDataDomain((ATableBasedDataDomain) evt.getNewValue());
 			}
 		});
-		dataDomainQuery.addPropertyChangeListener(DataDomainQuery.PROP_FILTER, new PropertyChangeListener() {
+		final PropertyChangeListener recomputeListener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				recomputeScores();
 			}
-		});
-		scoreQuery.addPropertyChangeListener(ScoreQuery.PROP_ORDER_BY, new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				recomputeScores();
-			}
-		});
-		scoreQuery.addPropertyChangeListener(ScoreQuery.PROP_SELECTION, new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				recomputeScores();
-			}
-		});
-		scoreQuery.addPropertyChangeListener(ScoreQuery.PROP_TOP, new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				recomputeScores();
-			}
-		});
-		scoreQuery.addPropertyChangeListener(ScoreQuery.PROP_FILTER, new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				recomputeScores();
-			}
-		});
+		};
+		dataDomainQuery.addPropertyChangeListener(DataDomainQuery.PROP_FILTER, recomputeListener);
+		scoreQuery.addPropertyChangeListener(ScoreQuery.PROP_ORDER_BY, recomputeListener);
+		scoreQuery.addPropertyChangeListener(ScoreQuery.PROP_SELECTION, recomputeListener);
+		scoreQuery.addPropertyChangeListener(ScoreQuery.PROP_TOP, recomputeListener);
+		scoreQuery.addPropertyChangeListener(ScoreQuery.PROP_FILTER, recomputeListener);
 	}
+
 
 	@Override
 	public void init(GL2 gl) {
@@ -225,9 +210,6 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 			return;
 		}
 
-		//before the picking
-		stratomex.triggerDelayedEvents();
-
 		checkForHits(gl);
 
 		processEvents();
@@ -254,7 +236,9 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		listeners.register(RemoveScoreColumnEvent.class, new RemoveScoreColumnListener(this));
 		listeners.register(ScoreQueryReadyEvent.class, new ScoreQueryReadyListener(this));
 		listeners.register(ImportExternalScoreEvent.class, new ImportExternalScoreListener(this));
-		listeners.register(RemoveTablePerspectiveEvent.class, new StratomexRemoveTablePerspectiveListener(this));
+		listeners.register(RemoveTablePerspectiveEvent.class, new StratomexTablePerspectiveListener(this));
+		listeners.register(AddTablePerspectivesEvent.class, new StratomexTablePerspectiveListener(this));
+		listeners.register(ReplaceTablePerspectiveEvent.class, new StratomexTablePerspectiveListener(this));
 	}
 
 	@Override
@@ -302,7 +286,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
-
+		this.stratomex.cleanUp();
 	}
 
 	@Override
@@ -425,10 +409,24 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	public void onStratomexRemoveBrick(IMultiTablePerspectiveBasedView receiver, int tablePerspectiveID) {
 		if (!stratomex.is(receiver))
 			return;
+		stratomex.removeBrick(tablePerspectiveID);
 		final ScoringElement selected = this.scoreQueryUI.getSelected();
 		if (selected != null && selected.getStratification().getID() == tablePerspectiveID) {
 			this.scoreQueryUI.setSelected(-1, -1);
 		}
+	}
+
+	public void onStratomexAddBricks(ITablePerspectiveBasedView receiver, Collection<TablePerspective> tablePerspectives) {
+		if (!stratomex.is(receiver))
+			return;
+		stratomex.addBricks(tablePerspectives);
+	}
+
+	public void onStratomexReplaceBricks(Integer receiver, TablePerspective oldPerspective,
+			TablePerspective newPerspective) {
+		if (!stratomex.is(receiver))
+			return;
+		stratomex.replaceBricks(oldPerspective, newPerspective);
 	}
 
 }

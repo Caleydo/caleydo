@@ -25,7 +25,6 @@ import java.util.Map;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.collection.Pair;
@@ -45,8 +44,8 @@ import com.google.common.collect.Multimap;
  */
 public class IDSetScoreComputes implements Runnable {
 	private static final Logger log = Logger.create(IDSetScoreComputes.class);
+	private final CachedIDTypeMapper mapper = new CachedIDTypeMapper();
 	private final Map<Pair<Group, IDType>, IDSet> sets = new HashMap<>();
-	private final Map<Pair<IDType, IDType>, IIDTypeMapper<Integer, Integer>> mappers = new HashMap<>();
 	private final IIDSetGroupScoreFun fun;
 	private final Multimap<TablePerspective, Group> a;
 	private final Multimap<TablePerspective, AGroupScore> b;
@@ -78,7 +77,7 @@ public class IDSetScoreComputes implements Runnable {
 					// can't map
 					continue;
 				}
-				final Predicate<Integer> target2Source = in(targetType, sourceType);
+				final Predicate<Integer> target2Source = mapper.in(targetType, sourceType);
 
 				for (TablePerspective targetStrat : as.get(targetType)) {
 					for (TablePerspective sourceStrat : bs.get(sourceType)) {
@@ -103,42 +102,13 @@ public class IDSetScoreComputes implements Runnable {
 		System.out.println("done in " + w);
 	}
 
-	private Predicate<Integer> in(final IDType source, final IDType target) {
-		final Map<Integer, Boolean> cache = new HashMap<>();
-		return new Predicate<Integer>() {
-			@Override
-			public boolean apply(Integer sourceId) {
-				if (cache.containsKey(sourceId)) {
-					return cache.get(sourceId);
-				}
-				IIDTypeMapper<Integer, Integer> mapper = getMapper(source, target);
-				if (mapper == null)
-					return false;
-				boolean r = mapper.isMapAble(sourceId);
-				cache.put(sourceId, r);
-				return r;
-			}
-		};
-	}
-
-	private IIDTypeMapper<Integer, Integer> getMapper(IDType source, IDType target) {
-		// find way
-		IIDTypeMapper<Integer, Integer> mapper = mappers.get(Pair.make(source, target));
-		if (mapper == null) {
-			mapper = IDMappingManagerRegistry.get().getIDMappingManager(target.getIDCategory())
-						.getIDTypeMapper(source, target);
-			mappers.put(Pair.make(source, target), mapper);
-		}
-		return mapper;
-	}
-
 	private IDSet get(TablePerspective strat, Group group, IDType target) {
 		if (sets.containsKey(Pair.make(group, target)))
 			return sets.get(Pair.make(group, target));
 
 		IDType source = strat.getRecordPerspective().getIdType();
 
-		IIDTypeMapper<Integer, Integer> mapper = getMapper(source, target);
+		IIDTypeMapper<Integer, Integer> mapper = this.mapper.get(source, target);
 		if (mapper == null)
 			return null;
 

@@ -19,9 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex.event;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.id.IDType;
 import org.caleydo.view.stratomex.GLStratomex;
 
 /**
@@ -31,24 +30,21 @@ import org.caleydo.view.stratomex.GLStratomex;
 public class SelectElementsEvent extends AEvent {
 
 	private GLStratomex receiver;
+	private Iterable<Integer> ids;
+	private IDType idType;
 
-	private TablePerspective aStrat;
-	private Group aGroup;
-	private TablePerspective bStrat;
-	private Group bGroup;
+
 
 	public SelectElementsEvent() {
 
 	}
 
-	public SelectElementsEvent(TablePerspective aStrat, Group aGroup, TablePerspective bStrat, Group bGroup,
+	public SelectElementsEvent(Iterable<Integer> ids, IDType idType,
 			GLStratomex receiver, Object sender) {
 		this.setSender(sender);
 		this.receiver = receiver;
-		this.aStrat = aStrat;
-		this.aGroup = aGroup;
-		this.bStrat = bStrat;
-		this.bGroup = bGroup;
+		this.ids = ids;
+		this.idType = idType;
 	}
 	/*
 	 * (non-Javadoc)
@@ -57,37 +53,22 @@ public class SelectElementsEvent extends AEvent {
 	 */
 	@Override
 	public boolean checkIntegrity() {
-		return aStrat != null && aGroup != null && bStrat != null && bGroup != null;
+		return ids != null && idType != null;
 	}
 
 	/**
-	 * @return the aGroup, see {@link #aGroup}
+	 * @return the ids, see {@link #ids}
 	 */
-	public Group getaGroup() {
-		return aGroup;
+	public Iterable<Integer> getIds() {
+		return ids;
 	}
 
 	/**
-	 * @return the aStrat, see {@link #aStrat}
+	 * @return the idType, see {@link #idType}
 	 */
-	public TablePerspective getaStrat() {
-		return aStrat;
+	public IDType getIdType() {
+		return idType;
 	}
-
-	/**
-	 * @return the bGroup, see {@link #bGroup}
-	 */
-	public Group getbGroup() {
-		return bGroup;
-	}
-
-	/**
-	 * @return the bStrat, see {@link #bStrat}
-	 */
-	public TablePerspective getbStrat() {
-		return bStrat;
-	}
-
 	/**
 	 * @return the receiver, see {@link #receiver}
 	 */

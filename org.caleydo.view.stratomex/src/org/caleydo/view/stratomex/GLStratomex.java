@@ -1458,7 +1458,12 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	}
 
 	public void selectElementsByConnectionBandID(int connectionBandID) {
+		BrickConnection connectionBand = hashConnectionBandIDToRecordVA.get(connectionBandID);
+		RecordVirtualArray recordVA = connectionBand.getSharedRecordVirtualArray();
+		selectElements(recordVA, recordVA.getIdType(), connectionBand.getLeftBrick().getDataDomain().getDataDomainID());
+	}
 
+	public void selectElements(Iterable<Integer> ids, IDType idType, String dataDomainID) {
 		recordSelectionManager.clearSelection(recordSelectionManager.getSelectionType());
 
 		// Create volatile selection type
@@ -1470,10 +1475,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(volatileBandSelectionType);
 		GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
 
-		BrickConnection connectionBand = hashConnectionBandIDToRecordVA.get(connectionBandID);
-		RecordVirtualArray recordVA = connectionBand.getSharedRecordVirtualArray();
-		for (Integer recordID : recordVA) {
-			recordSelectionManager.addToType(recordSelectionManager.getSelectionType(), recordVA.getIdType(), recordID);
+		for (Integer recordID : ids) {
+			recordSelectionManager.addToType(recordSelectionManager.getSelectionType(), idType, recordID);
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -1484,11 +1487,12 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		// however, if we don't send it, we don't see the selection in the
 		// selection info view. to fix this, we need to redesign the selection
 		// info view.
-		event.setDataDomainID(connectionBand.getLeftBrick().getDataDomain().getDataDomainID());
+		event.setDataDomainID(dataDomainID);
 		eventPublisher.triggerEvent(event);
 
 		updateConnectionLinesBetweenColumns();
 	}
+
 
 	/**
 	 * Splits a brick into two portions: those values that are in the band identified through the connection band id and

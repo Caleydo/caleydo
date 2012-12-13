@@ -220,7 +220,12 @@ public class ScoreQueryUI extends Column {
 		tr.setPixelSizeY(ROW_HEIGHT);
 		tr.add(createLabel(query.isSorted() ? String.format("%d.", i + 1) : "", COL0_RANK_WIDTH));
 		tr.add(colSpacing);
-		tr.add(createButton(view, new Button(ADD_TO_STRATOMEX, i, EIconTextures.GROUPER_COLLAPSE_PLUS)));
+		// button only available if not already part of stratomex
+		if (this.stratomex.contains(elem.getStratification())) {
+			tr.add(createXSpacer(16));
+		} else {
+			tr.add(createButton(view, new Button(ADD_TO_STRATOMEX, i, EIconTextures.GROUPER_COLLAPSE_PLUS)));
+		}
 		tr.add(colSpacing);
 		ElementLayout source = createReference(elem.getStratification(), elem.getGroup());
 		source.addBackgroundRenderer(new PickingRenderer(SELECT_ROW, i, this.view));

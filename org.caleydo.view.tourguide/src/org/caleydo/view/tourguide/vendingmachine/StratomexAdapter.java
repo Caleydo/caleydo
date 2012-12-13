@@ -19,25 +19,35 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.vendingmachine;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Colors;
-import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
+import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.event.HighlightBrickEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.tourguide.data.ScoringElement;
+import org.caleydo.view.tourguide.data.compute.CachedIDTypeMapper;
+import org.caleydo.view.tourguide.data.score.CollapseScore;
+import org.caleydo.view.tourguide.data.score.ICompositeScore;
 import org.caleydo.view.tourguide.data.score.IGroupScore;
 import org.caleydo.view.tourguide.data.score.IScore;
+import org.caleydo.view.tourguide.data.score.IStratificationScore;
 
 /**
  * facade / adapter to {@link GLStratomex} to hide the communication details
@@ -48,13 +58,10 @@ import org.caleydo.view.tourguide.data.score.IScore;
 public class StratomexAdapter {
 	private GLStratomex receiver;
 
-	private TablePerspective currentPreview = null;
-	private Group currentPreviewGroup = null;
+	private List<TablePerspective> brickColumns = new ArrayList<>();
 
-	/**
-	 * caches events that can't be send now but must be send in a later frame
-	 */
-	private Collection<AEvent> delayedEvents = new ArrayList<>();
+	private TablePerspective currentPreview = null;
+	private boolean temporaryPreview = false;
 
 	/**
 	 * binds this adapter to a concrete stratomex instance
@@ -67,7 +74,43 @@ public class StratomexAdapter {
 			return false;
 		this.cleanUp();
 		this.receiver = receiver;
+		if (this.receiver != null) {
+			this.brickColumns.addAll(this.receiver.getTablePerspectives());
+		}
 		return true;
+	}
+
+	/**
+	 * @param stratification
+	 * @return
+	 */
+	public boolean contains(TablePerspective stratification) {
+		for (TablePerspective t : this.brickColumns)
+			if (t.equals(stratification))
+				return true;
+		return false;
+	}
+
+	public void removeBrick(int tablePerspectiveID) {
+		for (Iterator<TablePerspective> it = brickColumns.iterator(); it.hasNext();) {
+			if (it.next().getID() == tablePerspectiveID) {
+				it.remove();
+				break;
+			}
+		}
+	}
+
+	public void addBricks(Collection<TablePerspective> tablePerspectives) {
+		this.brickColumns.addAll(tablePerspectives);
+	}
+
+	public void replaceBricks(TablePerspective oldPerspective, TablePerspective newPerspective) {
+		for (ListIterator<TablePerspective> it = brickColumns.listIterator(); it.hasNext();) {
+			if (it.next().equals(oldPerspective)) {
+				it.set(newPerspective);
+				break;
+			}
+		}
 	}
 
 	/**
@@ -75,71 +118,113 @@ public class StratomexAdapter {
 	 */
 	public void cleanUp() {
 		if (currentPreview != null) {
-			removeBrickColumn(currentPreview);
-			this.currentPreview = null;
+			removePreview();
 		}
-	}
-
-	/**
-	 * see {@link #delayedEvents}
-	 */
-	public void triggerDelayedEvents() {
-		for (AEvent event : delayedEvents)
-			triggerEvent(event);
-		delayedEvents.clear();
+		this.brickColumns.clear();
 	}
 
 	public void updatePreview(ScoringElement old, ScoringElement new_, IScore column, Collection<IScore> visibleColumns) {
 		if (!hasOne())
 			return;
 		TablePerspective strat = new_ == null ? null : new_.getStratification();
-		Group g = new_ == null ? null : new_.getGroup();
 
 		// handle stratification changes
-		if (currentPreview != null && strat != null) {
-			if (!currentPreview.equals(strat)) { // not same stratification
-				updateBrickColumn(currentPreview, strat);
-				this.currentPreview = strat;
-				this.currentPreviewGroup = null;
+		if (currentPreview != null && strat != null) { // update
+			if (!temporaryPreview || !currentPreview.equals(strat)) { // not same stratification
+				if (!temporaryPreview || contains(strat)) {
+					removePreview();
+					createPreview(strat);
+				} else {
+					updatePreview(currentPreview, strat);
+					this.currentPreview = strat;
+				}
 			}
-		} else if (currentPreview != null) {
-			removeBrickColumn(currentPreview);
-			this.currentPreview = null;
-			this.currentPreviewGroup = null;
-		} else if (new_ != null) {
-			createBrickColumn(strat);
-			hightlightBrickColumn(strat);
-			this.currentPreview = strat;
+		} else if (currentPreview != null) { // last
+			removePreview();
+		} else if (new_ != null) { // first
+			createPreview(strat);
 		}
 
-		// handle group changes
-		if (currentPreviewGroup != null && g != null) {
-			if (!currentPreviewGroup.equals(g)) {
-				unhighlightBrick(currentPreview, currentPreviewGroup);
-				highlightBrick(strat, g);
-				currentPreviewGroup = g;
-			}
-		} else if (currentPreviewGroup != null) {
-			unhighlightBrick(currentPreview, currentPreviewGroup);
-			currentPreviewGroup = null;
-		} else if (g != null) {
-			highlightBrick(strat, g);
-			currentPreviewGroup = g;
-		}
-
-		// handle connection changes
-		if (column instanceof IGroupScore) {
-			TablePerspective otherStrat = ((IGroupScore) column).getStratification();
-			Group other = ((IGroupScore) column).getGroup();
-			selectBand(currentPreview, currentPreviewGroup, otherStrat, other);
-		}
+		// highlight connection band
+		if (new_ != null)
+			hightlightRows(new_, visibleColumns);
 	}
 
+	private void createPreview(TablePerspective strat) {
+		this.temporaryPreview = !contains(strat);
+		if (this.temporaryPreview) // create a new one if it is temporary
+			createBrickColumn(strat);
+		hightlightBrickColumn(strat);
+		this.currentPreview = strat;
+	}
 
+	private void removePreview() {
+		if (temporaryPreview) // if it is just temporary remove it
+			removeBrickColumn(currentPreview);
+		else
+			// otherwise just lowlight it
+			unhightlightBrickColumn(currentPreview);
+		this.currentPreview = null;
+	}
 
-	private void selectBand(TablePerspective aStrat, Group aGroup, TablePerspective bStrat, Group bGroup) {
-		// one frame later
-		delayedEvents.add(new SelectElementsEvent(aStrat, aGroup, bStrat, bGroup, receiver, this));
+	private void hightlightRows(ScoringElement new_, Collection<IScore> visibleColumns) {
+		TablePerspective strat = new_.getStratification();
+		Group group = new_.getGroup();
+
+		//select nearest score
+		Collection<IStratificationScore> relevant = filterRelevantColumns(new_, visibleColumns);
+
+		IDType target = strat.getRecordPerspective().getIdType();
+		for(IStratificationScore elem : relevant) {
+			IDType type = elem.getStratification().getRecordPerspective().getIdType();
+			if (!target.getIDCategory().equals(type.getIDCategory()))
+				continue;
+			if (!target.equals(type))
+				target = target.getIDCategory().getPrimaryMappingType();
+		}
+
+		CachedIDTypeMapper mapper = new CachedIDTypeMapper();
+
+		//compute the intersection of all
+		IDType source = strat.getRecordPerspective().getIdType();
+
+		RecordVirtualArray va = strat.getRecordPerspective().getVirtualArray();
+		Collection<Integer> ids = (group == null )? va.getIDs(): va.getIDsOfGroup(group.getGroupIndex());
+
+		if (!relevant.isEmpty()) {
+			Collection<Integer> intersection = new ArrayList<>(mapper.get(source, target).apply(ids));
+			for (IStratificationScore score : relevant) {
+				va = score.getStratification().getRecordPerspective().getVirtualArray();
+				Group g = (score instanceof IGroupScore) ? ((IGroupScore) score).getGroup() : null;
+				ids = (g == null) ? va.getIDs() : va.getIDsOfGroup(g.getGroupIndex());
+				Set<Integer> mapped = mapper.get(score.getStratification().getRecordPerspective().getIdType(), target)
+						.apply(ids);
+				for (Iterator<Integer> it = intersection.iterator(); it.hasNext();) {
+					if (!mapped.contains(it.next())) // not part of
+						it.remove();
+				}
+			}
+			ids = intersection;
+		}
+
+		AEvent event = new SelectElementsEvent(ids, target, receiver, this);
+		event.setDataDomainID(strat.getDataDomain().getDataDomainID());
+		triggerEvent(event);
+	}
+
+	private Set<IStratificationScore> filterRelevantColumns(ScoringElement new_,
+			Collection<IScore> columns) {
+		Set<IStratificationScore> relevant = new HashSet<>();
+		for(IScore score : columns) {
+			if (score instanceof CollapseScore)
+				score = new_.getSelected((CollapseScore)score);
+			if (score instanceof IStratificationScore)
+				relevant.add((IStratificationScore)score);
+			if (score instanceof ICompositeScore) {
+				relevant.addAll(filterRelevantColumns(new_, ((ICompositeScore) score).getChildren()));
+			}
+		}
+		return relevant;
 	}
 
 	/**
@@ -151,13 +236,10 @@ public class StratomexAdapter {
 		if (!hasOne())
 			return;
 		TablePerspective strat = elem.getStratification();
-		if (currentPreview == strat) {
-			unhightlightBrickColumn(strat);
-			if (currentPreviewGroup != null)
-				unhighlightBrick(currentPreview, currentPreviewGroup);
-			currentPreview = null;
-			currentPreviewGroup = null;
-		} else {
+		if (currentPreview.equals(strat)) { // its the preview
+			temporaryPreview = false; // definitely explicit
+			removePreview();
+		} else if (!contains(strat)) { // add it not existing
 			createBrickColumn(strat);
 		}
 	}
@@ -168,7 +250,7 @@ public class StratomexAdapter {
 		triggerEvent(event);
 	}
 
-	private void updateBrickColumn(TablePerspective from, TablePerspective to) {
+	private void updatePreview(TablePerspective from, TablePerspective to) {
 		triggerEvent(new ReplaceTablePerspectiveEvent(receiver.getID(), to, from));
 	}
 
@@ -182,14 +264,6 @@ public class StratomexAdapter {
 
 	private void hightlightBrickColumn(TablePerspective strat) {
 		triggerEvent(new HighlightBrickEvent(strat, receiver, this, Colors.YELLOW));
-	}
-
-	private void highlightBrick(TablePerspective strat, Group group) {
-		triggerEvent(new HighlightBrickEvent(strat, group, receiver, this, Colors.of(Color.ORANGE.darker())));
-	}
-
-	private void unhighlightBrick(TablePerspective strat, Group group) {
-		triggerEvent(new HighlightBrickEvent(strat, group, receiver, this, null));
 	}
 
 	private void triggerEvent(AEvent event) {
@@ -209,7 +283,14 @@ public class StratomexAdapter {
 	/**
 	 * @return checks if the given receiver is the currently bound stratomex
 	 */
-	public boolean is(IMultiTablePerspectiveBasedView receiver) {
+	public boolean is(ITablePerspectiveBasedView receiver) {
 		return this.receiver == receiver && this.receiver != null;
+	}
+
+	/**
+	 * @return checks if the given receiver is the currently bound stratomex
+	 */
+	public boolean is(Integer receiverID) {
+		return this.receiver != null && this.receiver.getID() == receiverID;
 	}
 }
