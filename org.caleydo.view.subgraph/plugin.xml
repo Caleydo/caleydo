@@ -21,12 +21,21 @@
                id="org.caleydo.menu.view"
                label="View">
             <menu
-                  id="org.caleydo.menu.view.visualization"
-                  label="Visualizations">
+                  id="org.caleydo.menu.view.experimental"
+                  label="Experimental">
                <command
                      commandId="org.caleydo.view.subgraph.command.opensubgraph"
                      icon="resources/icons/icon.png"
                      style="push">
+                  <visibleWhen
+                        checkEnabled="false">
+                     <with
+                           variable="org.caleydo.core.isReleaseState">
+                        <equals
+                              value="releaseVersion">
+                        </equals>
+                     </with>
+                  </visibleWhen>                     
                </command>
             </menu>
          </menu>
