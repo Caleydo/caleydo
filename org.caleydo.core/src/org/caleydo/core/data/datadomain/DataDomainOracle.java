@@ -19,7 +19,16 @@
  *******************************************************************************/
 package org.caleydo.core.data.datadomain;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 import org.caleydo.core.data.perspective.table.CategoricalTablePerspectiveCreator;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
+import org.caleydo.core.id.IIDTypeMapper;
+import org.caleydo.core.util.collection.Pair;
 
 /**
  * helper class for encapsulating magic meta data information about a data domain
@@ -42,5 +51,31 @@ public final class DataDomainOracle {
 	public synchronized static void initDataDomain(ATableBasedDataDomain dataDomain) {
 		if (isCategoricalDataDomain(dataDomain))
 			perspectiveCreator.createAllTablePerspectives(dataDomain);
+	}
+
+	public static boolean isClinical(IDataDomain dataDomain) {
+		return dataDomain.getLabel().toLowerCase().equals("clinical");
+	}
+
+	public static ATableBasedDataDomain getClinicalDataDomain() {
+		for(ATableBasedDataDomain dd : DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class))
+			if (isClinical(dd))
+				return dd;
+		return null;
+	}
+
+	public static Collection<Pair<Integer,String>> getClinicalVariables() {
+		ATableBasedDataDomain clinical = getClinicalDataDomain();
+		if (clinical == null)
+			return Collections.emptyList();
+		DimensionVirtualArray va = clinical.getTable().getDefaultDimensionPerspective().getVirtualArray();
+		IDMappingManager manager = IDMappingManagerRegistry.get().getIDMappingManager(va.getIdType());
+		IIDTypeMapper<Integer,String> mapper = manager.getIDTypeMapper(va.getIdType(), va.getIdType().getIDCategory().getHumanReadableIDType());
+
+		Collection<Pair<Integer,String>> result = new ArrayList<>();
+		for(Integer id : va) {
+			result.add(Pair.make(id, mapper.apply(id).iterator().next()));
+		}
+		return result;
 	}
 }

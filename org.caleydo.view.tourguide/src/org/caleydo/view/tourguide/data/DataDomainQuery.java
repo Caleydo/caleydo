@@ -199,16 +199,12 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 		return per.getLabel().contains("Ungrouped");
 	}
 
-	private static boolean filterDataDomain(ATableBasedDataDomain dataDomain) {
-		return dataDomain.getLabel().toLowerCase().equals("clinical");
-	}
-
 	public static List<ATableBasedDataDomain> allDataDomains() {
 		List<ATableBasedDataDomain> dataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(
 				ATableBasedDataDomain.class));
 
 		for (Iterator<ATableBasedDataDomain> it = dataDomains.iterator(); it.hasNext();)
-			if (filterDataDomain(it.next()))
+			if (DataDomainOracle.isClinical(it.next()))
 				it.remove();
 
 		// Sort data domains alphabetically

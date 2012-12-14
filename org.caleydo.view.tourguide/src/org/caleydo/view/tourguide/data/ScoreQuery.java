@@ -41,7 +41,6 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.view.tourguide.data.RankedListBuilders.IRankedListBuilder;
-import org.caleydo.view.tourguide.data.compute.ComputeBatchGroupScore;
 import org.caleydo.view.tourguide.data.compute.ComputeGroupScore;
 import org.caleydo.view.tourguide.data.compute.ComputeStratificationScore;
 import org.caleydo.view.tourguide.data.compute.ScoreComputer;
@@ -49,14 +48,13 @@ import org.caleydo.view.tourguide.data.filter.CompositeScoreFilter;
 import org.caleydo.view.tourguide.data.filter.IDataDomainFilter;
 import org.caleydo.view.tourguide.data.filter.IScoreFilter;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
-import org.caleydo.view.tourguide.data.score.IBatchComputedGroupScore;
 import org.caleydo.view.tourguide.data.score.IComputedGroupScore;
 import org.caleydo.view.tourguide.data.score.IComputedStratificationScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
 /**
@@ -441,23 +439,7 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 				stratifications = query.call();
 			Multimap<TablePerspective, Group> groups = query.apply(stratifications);
 
-			// split into batch and normal
-			Multimap<Class<? extends IBatchComputedGroupScore>, IBatchComputedGroupScore> batches = ArrayListMultimap
-					.create();
-			for (IComputedGroupScore s : groupScores) {
-				if (s instanceof IBatchComputedGroupScore) {
-					IBatchComputedGroupScore c = (IBatchComputedGroupScore) s;
-					batches.put(c.getClass(), c);
-				} else {
-					toCompute.add(ScoreComputer.submit(new ComputeGroupScore(s, groups)));
-				}
-			}
-			// compute batches
-			for (Class<? extends IBatchComputedGroupScore> batchType : batches.keySet()) {
-				Collection<IBatchComputedGroupScore> b = batches.get(batchType);
-				assert !b.isEmpty();
-				toCompute.add(ScoreComputer.submit(new ComputeBatchGroupScore(b, groups)));
-			}
+			toCompute.add(ScoreComputer.submit(new ComputeGroupScore(groups, Lists.newArrayList(groupScores))));
 		}
 	}
 }

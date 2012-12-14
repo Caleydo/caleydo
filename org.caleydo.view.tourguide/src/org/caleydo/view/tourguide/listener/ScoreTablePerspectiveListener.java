@@ -19,9 +19,12 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.listener;
 
+import java.util.Collections;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.view.tourguide.event.LogRankScoreTablePerspectiveEvent;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
 import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
 
@@ -34,25 +37,43 @@ import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
 public class ScoreTablePerspectiveListener
 	extends AEventListener<VendingMachine> {
 
+	public ScoreTablePerspectiveListener(VendingMachine handler) {
+		this.setHandler(handler);
+	}
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof ScoreTablePerspectiveEvent) {
-
-			ScoreTablePerspectiveEvent scoreGroupEvent = (ScoreTablePerspectiveEvent) event;
-			TablePerspective strat = scoreGroupEvent.getReferenceBrickColumn().getTablePerspective();
-			switch (scoreGroupEvent.getScoreReferenceMode()) {
+			ScoreTablePerspectiveEvent e = (ScoreTablePerspectiveEvent) event;
+			TablePerspective strat = e.getStratification();
+			switch (e.getScoreReferenceMode()) {
 			case COLUMN:
 				handler.createStratificationScore(strat);
 				break;
 			case SINGLE_GROUP:
-				handler.createStratificationGroupScore(strat, scoreGroupEvent.getGroup().getRecordGroup());
+				handler.createStratificationGroupScore(strat, Collections.singleton(e.getGroup().getRecordGroup()));
 				break;
 			case MUTUAL_EXCLUSIVE_GROUP:
-				handler.createMutualExclusiveGroupScore(strat, scoreGroupEvent.getGroup().getRecordGroup());
+				handler.createMutualExclusiveGroupScore(strat, e.getGroup().getRecordGroup());
 				break;
 			case ALL_GROUPS_IN_COLUMN:
 				handler.createStratificationGroupScore(strat, strat.getRecordPerspective().getVirtualArray()
 						.getGroupList());
+				break;
+			}
+		} else if (event instanceof LogRankScoreTablePerspectiveEvent) {
+			LogRankScoreTablePerspectiveEvent e = (LogRankScoreTablePerspectiveEvent) event;
+			TablePerspective strat = e.getStratification();
+			switch (e.getMode()) {
+			case SINGLE_GROUP:
+				handler.createLogRankGroupScore(e.getClinicalVariable(), strat,
+						Collections.singleton(e.getGroup().getRecordGroup()));
+				break;
+			case ALL_GROUPS_IN_COLUMN:
+				handler.createLogRankGroupScore(e.getClinicalVariable(), strat, strat.getRecordPerspective()
+						.getVirtualArray()
+						.getGroupList());
+				break;
+			default:
 				break;
 			}
 		}

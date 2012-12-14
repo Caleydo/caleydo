@@ -19,19 +19,11 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.score;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
+import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.view.tourguide.data.compute.IDSet;
-import org.caleydo.view.tourguide.data.compute.IDSetScoreComputes;
-import org.caleydo.view.tourguide.data.compute.IDSetScoreComputes.IIDSetGroupScoreFun;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
+import org.caleydo.core.id.IDType;
 
 /**
  * implementation of the jaccard score to compare groups
@@ -39,27 +31,7 @@ import com.google.common.collect.Multimap;
  * @author Samuel Gratzl
  *
  */
-public class JaccardIndexScore extends AGroupScore implements IBatchComputedGroupScore {
-	private final static IIDSetGroupScoreFun jaccardIndex = new IIDSetGroupScoreFun() {
-		@Override
-		public float apply(IDSet a, IDSet b, Predicate<Integer> inB) {
-			int mappabledifference = 0;
-			int intersection = 0;
-			for (Integer ai : a) {
-				if (b.contains(ai))
-					intersection++;
-				else if (inB.apply(ai))
-					mappabledifference++;
-			}
-			// bs elements + those of a that are mappable to the other one
-			int union = b.size() + mappabledifference;
-
-			float score = union == 0 ? 0.f : (float) intersection / union;
-			return score;
-		}
-	};
-
-
+public class JaccardIndexScore extends AGroupScore implements IComputedGroupScore {
 	public JaccardIndexScore(TablePerspective stratification, Group group) {
 		this(null, stratification, group);
 	}
@@ -69,30 +41,20 @@ public class JaccardIndexScore extends AGroupScore implements IBatchComputedGrou
 	}
 
 	@Override
-	public void apply(Multimap<TablePerspective, Group> stratNGroups) {
-		apply(Collections.<IBatchComputedGroupScore> singleton(this), stratNGroups);
+	public IDType getTargetType(TablePerspective as) {
+		return as.getRecordPerspective().getIdType();
 	}
 
 	@Override
-	public void apply(Collection<IBatchComputedGroupScore> batch, Multimap<TablePerspective, Group> stratNGroups) {
-		applyImpl(batch, stratNGroups);
-	}
-
-	private static void applyImpl(Collection<IBatchComputedGroupScore> batch,
-			Multimap<TablePerspective, Group> stratNGroups) {
-		Multimap<TablePerspective, AGroupScore> against = ArrayListMultimap.create();
-		for (IBatchComputedGroupScore b : batch) {
-			AGroupScore s = (AGroupScore) b;
-			// not all cached?
-			for (Map.Entry<TablePerspective, Group> g : stratNGroups.entries()) {
-				if (!s.contains(g.getKey(), g.getValue())) {
-					against.put(s.stratification, s);
-					break;
-				}
-			}
+	public float compute(Set<Integer> a, Set<Integer> b) {
+		int intersection = 0;
+		for (Integer ai : a) {
+			if (b.contains(ai))
+				intersection++;
 		}
-		new IDSetScoreComputes(stratNGroups, against, jaccardIndex).run();
+		int union = b.size() + a.size();
+
+		float score = union == 0 ? 0.f : (float) intersection / union;
+		return score;
 	}
-
-
 }

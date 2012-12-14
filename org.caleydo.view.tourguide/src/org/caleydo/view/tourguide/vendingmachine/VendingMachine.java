@@ -63,11 +63,13 @@ import org.caleydo.view.tourguide.data.score.AdjustedRandScore;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.JaccardIndexScore;
+import org.caleydo.view.tourguide.data.score.LogRankScore;
 import org.caleydo.view.tourguide.data.score.MutualExclusiveScore;
 import org.caleydo.view.tourguide.data.serialize.ISerializeableScore;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ImportExternalScoreEvent;
+import org.caleydo.view.tourguide.event.LogRankScoreTablePerspectiveEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
@@ -87,6 +89,8 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
+import com.google.common.collect.Iterables;
 
 /**
  * <p>
@@ -233,7 +237,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-		listeners.register(ScoreTablePerspectiveEvent.class, new ScoreTablePerspectiveListener().setHandler(this));
+		listeners.register(ScoreTablePerspectiveEvent.class, new ScoreTablePerspectiveListener(this));
+		listeners.register(LogRankScoreTablePerspectiveEvent.class, new ScoreTablePerspectiveListener(this));
 		listeners.register(AddScoreColumnEvent.class, new ScoreColumnListener(this));
 		listeners.register(CreateScoreColumnEvent.class, new ScoreColumnListener(this));
 		listeners.register(RemoveScoreColumnEvent.class, new RemoveScoreColumnListener(this));
@@ -260,9 +265,18 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		onAddColumn(score);
 	}
 
-	public void createStratificationGroupScore(TablePerspective stratification, Group group) {
-		IScore score = Scores.get().addIfAbsent(new JaccardIndexScore(stratification, group));
-		onAddColumn(score);
+	public void createStratificationGroupScore(TablePerspective strat, Iterable<Group> groups) {
+		Scores manager = Scores.get();
+		if (Iterables.size(groups) == 1) {
+			IScore score = Scores.get().addIfAbsent(new JaccardIndexScore(strat, groups.iterator().next()));
+			onAddColumn(score);
+		} else {
+			CollapseScore composite = new CollapseScore(strat.getLabel());
+			for (Group group : groups) {
+				composite.add(manager.addIfAbsent(new JaccardIndexScore(strat, group)));
+			}
+			onAddColumn(composite);
+		}
 	}
 
 	public void createMutualExclusiveGroupScore(TablePerspective stratification, Group act) {
@@ -278,14 +292,21 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		onAddColumn(manager.addIfAbsent(new MutualExclusiveScore(actScore, scores)));
 	}
 
-	public void createStratificationGroupScore(TablePerspective stratification, Iterable<Group> groups) {
+	public void createLogRankGroupScore(Integer clinicalVariable, TablePerspective strat, Iterable<Group> groups) {
 		Scores manager = Scores.get();
-		CollapseScore composite = new CollapseScore(stratification.getLabel());
-		for (Group group : groups) {
-			composite.add(manager.addIfAbsent(new JaccardIndexScore(stratification, group)));
+		if (Iterables.size(groups) == 1) {
+			IScore score = Scores.get()
+					.addIfAbsent(new LogRankScore(clinicalVariable, strat, groups.iterator().next()));
+			onAddColumn(score);
+		} else {
+			CollapseScore composite = new CollapseScore(strat.getLabel());
+			for (Group group : groups) {
+				composite.add(manager.addIfAbsent(new LogRankScore(clinicalVariable, strat, group)));
+			}
+			onAddColumn(composite);
 		}
-		onAddColumn(composite);
 	}
+
 
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {

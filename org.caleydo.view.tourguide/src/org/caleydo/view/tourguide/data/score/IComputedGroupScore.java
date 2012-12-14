@@ -19,17 +19,24 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.score;
 
+import java.util.Set;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-
-import com.google.common.collect.Multimap;
+import org.caleydo.core.id.IDType;
 
 /**
  * declares that the given {@link IScore} must be computed on a group base
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-public interface IComputedGroupScore extends IScore {
-	void apply(Multimap<TablePerspective, Group> stratNGroups);
+public interface IComputedGroupScore extends IGroupScore {
+	public boolean contains(TablePerspective a, Group ag);
+
+	public void put(Group ag, float value);
+
+	public IDType getTargetType(TablePerspective as);
+
+	public float compute(Set<Integer> a, Set<Integer> b);
 }

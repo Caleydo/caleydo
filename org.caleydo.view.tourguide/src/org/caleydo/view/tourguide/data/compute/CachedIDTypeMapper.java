@@ -25,9 +25,11 @@ import java.util.Map;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
-import org.caleydo.core.util.collection.Pair;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 
 /**
  * @author Samuel Gratzl
@@ -35,33 +37,42 @@ import com.google.common.base.Predicate;
  */
 public class CachedIDTypeMapper {
 
-	private final Map<Pair<IDType, IDType>, IIDTypeMapper<Integer, Integer>> mappers = new HashMap<>();
+	private final Table<IDType, IDType, IIDTypeMapper<Integer, Integer>> mappers = HashBasedTable.create();
+	private final Table<IDType, IDType, Predicate<Integer>> predicates = HashBasedTable.create();
 
 	public Predicate<Integer> in(final IDType source, final IDType target) {
-		final Map<Integer, Boolean> cache = new HashMap<>();
-		return new Predicate<Integer>() {
-			@Override
-			public boolean apply(Integer sourceId) {
-				if (cache.containsKey(sourceId)) {
-					return cache.get(sourceId);
+		if (source == target)
+			return Predicates.alwaysTrue();
+		// find way
+		Predicate<Integer> mapper = predicates.get(source, target);
+		if (mapper == null) {
+			final Map<Integer, Boolean> cache = new HashMap<>();
+			mapper = new Predicate<Integer>() {
+				@Override
+				public boolean apply(Integer sourceId) {
+					if (cache.containsKey(sourceId)) {
+						return cache.get(sourceId);
+					}
+					IIDTypeMapper<Integer, Integer> mapper = get(source, target);
+					if (mapper == null)
+						return false;
+					boolean r = mapper.isMapAble(sourceId);
+					cache.put(sourceId, r);
+					return r;
 				}
-				IIDTypeMapper<Integer, Integer> mapper = get(source, target);
-				if (mapper == null)
-					return false;
-				boolean r = mapper.isMapAble(sourceId);
-				cache.put(sourceId, r);
-				return r;
-			}
-		};
+			};
+			predicates.put(source, target, mapper);
+		}
+		return mapper;
 	}
 
 	public IIDTypeMapper<Integer, Integer> get(IDType source, IDType target) {
 		// find way
-		IIDTypeMapper<Integer, Integer> mapper = mappers.get(Pair.make(source, target));
+		IIDTypeMapper<Integer, Integer> mapper = mappers.get(source, target);
 		if (mapper == null) {
 			mapper = IDMappingManagerRegistry.get().getIDMappingManager(target.getIDCategory())
 					.getIDTypeMapper(source, target);
-			mappers.put(Pair.make(source, target), mapper);
+			mappers.put(source, target, mapper);
 		}
 		return mapper;
 	}

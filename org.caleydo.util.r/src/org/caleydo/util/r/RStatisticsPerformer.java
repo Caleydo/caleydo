@@ -1,25 +1,27 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.util.r;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.Histogram;
@@ -31,16 +33,15 @@ import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.EventListeners;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.data.StatisticsFoldChangeReductionEvent;
 import org.caleydo.core.event.data.StatisticsPValueReductionEvent;
 import org.caleydo.core.event.data.StatisticsTwoSidedTTestReductionEvent;
-import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.util.r.filter.FilterRepresentationFoldChange;
@@ -56,12 +57,11 @@ import org.rosuda.JRI.Rengine;
 
 public class RStatisticsPerformer
 	implements IStatisticsPerformer, IListenerOwner {
+	private static final Logger log = Logger.create(RStatisticsPerformer.class);
 
 	private Rengine engine;
 
-	private StatisticsPValueReductionListener statisticsPValueReductionListener = null;
-	private StatisticsFoldChangeReductionListener statisticsFoldChangeReductionListener = null;
-	private StatisticsTwoSidedTTestReductionListener statisticsTwoSidedTTestReductionListener = null;
+	private final EventListeners listeners = new EventListeners();
 
 	public RStatisticsPerformer() {
 
@@ -83,74 +83,36 @@ public class RStatisticsPerformer
 		//
 		// String path = properties.getProperty("java.library.path");
 		if (!Rengine.versionCheck()) {
-			System.err
-					.println("** Version mismatch - Java files don't match library version.");
+			log.error("** Version mismatch - Java files don't match library version.");
 			return;
 		}
 
-		System.out.println("Creating Rengine (with arguments)");
+		log.info("Creating Rengine (with arguments)");
 		String[] args = new String[1];
 		args[0] = "--no-save";
 		engine = new Rengine(args, false, new RConsole());
-		System.out.println("Rengine created, waiting for R");
+		log.info("Rengine created, waiting for R");
 		// the engine creates R is a new thread, so we should wait until
 		// it's
 		// ready
 		if (!engine.waitForR()) {
-			System.out.println("Cannot load R");
+			log.error("Cannot load R");
 			return;
 		}
 	}
 
 	@Override
 	public void registerEventListeners() {
-
-		statisticsPValueReductionListener = new StatisticsPValueReductionListener();
-		statisticsPValueReductionListener.setHandler(this);
-		GeneralManager
-				.get()
-				.getEventPublisher()
-				.addListener(StatisticsPValueReductionEvent.class,
-						statisticsPValueReductionListener);
-
-		statisticsFoldChangeReductionListener = new StatisticsFoldChangeReductionListener();
-		statisticsFoldChangeReductionListener.setHandler(this);
-		GeneralManager
-				.get()
-				.getEventPublisher()
-				.addListener(StatisticsFoldChangeReductionEvent.class,
-						statisticsFoldChangeReductionListener);
-
-		statisticsTwoSidedTTestReductionListener = new StatisticsTwoSidedTTestReductionListener();
-		statisticsTwoSidedTTestReductionListener.setHandler(this);
-		GeneralManager
-				.get()
-				.getEventPublisher()
-				.addListener(StatisticsTwoSidedTTestReductionEvent.class,
-						statisticsTwoSidedTTestReductionListener);
+		listeners.register(StatisticsPValueReductionEvent.class, new StatisticsPValueReductionListener(this));
+		listeners.register(StatisticsFoldChangeReductionEvent.class, new StatisticsFoldChangeReductionListener(this));
+		listeners.register(StatisticsTwoSidedTTestReductionEvent.class, new StatisticsTwoSidedTTestReductionListener(
+				this));
 	}
 
 	// TODO: never called!
 	@Override
 	public void unregisterEventListeners() {
-
-		if (statisticsPValueReductionListener != null) {
-			GeneralManager.get().getEventPublisher()
-					.removeListener(statisticsPValueReductionListener);
-			statisticsPValueReductionListener = null;
-		}
-
-		if (statisticsFoldChangeReductionListener != null) {
-			GeneralManager.get().getEventPublisher()
-					.removeListener(statisticsFoldChangeReductionListener);
-			statisticsFoldChangeReductionListener = null;
-		}
-
-		if (statisticsTwoSidedTTestReductionListener != null) {
-			GeneralManager.get().getEventPublisher()
-					.removeListener(statisticsTwoSidedTTestReductionListener);
-			statisticsTwoSidedTTestReductionListener = null;
-		}
+		listeners.unregisterAll();
 	}
 
 	@Override
@@ -181,85 +143,49 @@ public class RStatisticsPerformer
 		// GeneralManager.get().getEventPublisher().triggerEvent(openViewEvent);
 	}
 
-	public float adjustedRandIndex(TablePerspective container1, TablePerspective container2) {
+	@Override
+	public synchronized float adjustedRandIndex(TablePerspective container1, TablePerspective container2) {
 		try {
+			final RecordVirtualArray va1 = container1.getRecordPerspective().getVirtualArray();
+			final RecordVirtualArray va2 = container2.getRecordPerspective().getVirtualArray();
+			IIDTypeMapper<Integer, Integer> mapper = IDMappingManagerRegistry.get()
+					.getIDMappingManager(va1.getIdType())
+.getIDTypeMapper(va2.getIdType(), va1.getIdType());
 
-			// int[] array = new int[] { 1, 1, 1, 2, 2, 2, 2, 2 };
-			// int[] array_2 = new int[] { 1, 1, 1, 0, 2, 2, 3, 2};
+			final int va1GroupSize = va1.getGroupList().size();
+			final int va2GroupSize = va2.getGroupList().size();
 
-			REXP scores;
+			// map all of va2 to va1
+			List<Set<Integer>> va2groups = new ArrayList<>(va2GroupSize);
+			for (int i = 0; i < va2GroupSize; ++i) {
+				va2groups.add(mapper.apply(va2.getIDsOfGroup(i)));
+			}
 
-			RecordVirtualArray va1 = container1.getRecordPerspective().getVirtualArray();
-			RecordVirtualArray va2 = container2.getRecordPerspective().getVirtualArray();
-
+			// we want a list of ids
 			int[] set1 = new int[va1.size()];
 			int[] set2 = new int[va1.size()];
-
 			int globalVAIndex = 0;
-			boolean isMatchingGroupFound = false;
-
-			// System.out.println("group list 1: "+ va1.getGroupList());
-			// System.out.println("group list 2: "+ va2.getGroupList());
 
 			// System.out.println("Size left table " +va1.size());
 
-			for (Group group : va1.getGroupList()) {
-
-				for (int vaIndex = group.getStartIndex(); vaIndex < group.getEndIndex(); vaIndex++) {
-
-					int id = va1.get(vaIndex);
-
-					for (Group group2 : va2.getGroupList()) {
-
-						for (int vaIndex2 = group2.getStartIndex(); vaIndex2 < group2
-								.getEndIndex(); vaIndex2++) {
-							{
-								int id2 = va2.get(vaIndex2);
-
-								if (va1.getIdType() != va2.getIdType()) {
-									IDMappingManager idMappingManager = IDMappingManagerRegistry
-											.get().getIDMappingManager(
-													va1.getIdType().getIDCategory());
-									Set<Integer> ids = idMappingManager.getIDAsSet(
-											va2.getIdType(), va1.getIdType(), id2);
-
-									if (ids != null) {
-										id2 = ids.iterator().next();
-										if (ids.size() > 2) {
-											System.out.println("Multi-Mapping");
-										}
-									}
-								}
-
-								if (id == id2) {
-									set2[globalVAIndex] = group2.getID();
-									isMatchingGroupFound = true;
-									break;
-								}
-							}
-						}
-
-						if (isMatchingGroupFound) {
+			for (int i = 0; i < va1GroupSize; ++i) {
+				for (Integer id : va1.getIDsOfGroup(i)) {
+					// search in which this id is in the other stratification
+					for (int j = 0; j < va2GroupSize; ++j) {
+						if (va2groups.get(j).contains(id)) {
+							// have a match
+							set1[globalVAIndex] = i;
+							set2[globalVAIndex] = j;
+							globalVAIndex++;
 							break;
 						}
-					}
-
-					if (isMatchingGroupFound) {
-						isMatchingGroupFound = false;
-						globalVAIndex++;
-						set1[globalVAIndex] = group.getID();
 					}
 				}
 			}
 
-			int[] finalSet1 = new int[globalVAIndex];
-			int[] finalSet2 = new int[globalVAIndex];
-
 			// we need to cut the array to only include the found matches
-			for (int index = 0; index < globalVAIndex; index++) {
-				finalSet1[index] = set1[index];
-				finalSet2[index] = set2[index];
-			}
+			int[] finalSet1 = Arrays.copyOf(set1, globalVAIndex);
+			int[] finalSet2 = Arrays.copyOf(set2, globalVAIndex);
 
 			// System.out.println("Matches found " +globalVAIndex);
 
@@ -270,7 +196,7 @@ public class RStatisticsPerformer
 			engine.assign("set2", finalSet2);
 
 			engine.eval("library(clues)");
-			scores = engine.eval("adjustedRand(set1,set2)");
+			REXP scores = engine.eval("adjustedRand(set1,set2)");
 			// System.out.println("Adjusted rand index result: " + scores);
 
 			// double[] result = scores.asDoubleArray();
@@ -280,7 +206,7 @@ public class RStatisticsPerformer
 
 		}
 		catch (Exception e) {
-			Logger.log(new Status(IStatus.ERROR, toString(), "Could not run R commands", e));
+			log.error("Could not run R commands", e);
 		}
 
 		return -1;
@@ -298,7 +224,7 @@ public class RStatisticsPerformer
 	 * </p>
 	 */
 	@Override
-	public void foldChange(TablePerspective container1, TablePerspective container2,
+	public synchronized void foldChange(TablePerspective container1, TablePerspective container2,
 			boolean betweenRecords) {
 
 		// Do nothing if the operations was already performed earlier
@@ -547,12 +473,6 @@ public class RStatisticsPerformer
 	@Override
 	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener,
 			AEvent event) {
-
-		if (event instanceof StatisticsPValueReductionEvent)
-			statisticsPValueReductionListener.handleEvent(event);
-		else if (event instanceof StatisticsFoldChangeReductionEvent)
-			statisticsFoldChangeReductionListener.handleEvent(event);
-		else if (event instanceof StatisticsTwoSidedTTestReductionEvent)
-			statisticsTwoSidedTTestReductionListener.handleEvent(event);
+		listener.handleEvent(event);
 	}
 }

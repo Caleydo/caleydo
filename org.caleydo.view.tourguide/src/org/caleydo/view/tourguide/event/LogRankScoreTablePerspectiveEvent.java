@@ -22,37 +22,29 @@ package org.caleydo.view.tourguide.event;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 
-/**
- * Event for opening the vending machine within Stratomex with a specified
- * reference table perspective and the brick column.
- *
- * @author Marc Streit
- *
- */
-public class ScoreTablePerspectiveEvent
+public class LogRankScoreTablePerspectiveEvent
 	extends AEvent {
 
-	/**
-	 * Table perspectives that will be used for the scoring. either a single group or a stratification depending on the
-	 * type
-	 */
-	private TablePerspective group;
-
-	private EScoreReferenceMode scoreReferenceMode;
-
+	private EScoreReferenceMode mode;
 	private TablePerspective stratification;
+	private TablePerspective group;
+	private Integer clinicalVariable;
 
-	public ScoreTablePerspectiveEvent() {
+
+	public LogRankScoreTablePerspectiveEvent() {
 
 	}
 
-	public ScoreTablePerspectiveEvent(EScoreReferenceMode scoreReferenceMode, TablePerspective stratification) {
-		this(scoreReferenceMode, stratification, null);
+	public LogRankScoreTablePerspectiveEvent(Integer clinicalVariable, EScoreReferenceMode mode,
+			TablePerspective stratification) {
+		this(clinicalVariable, mode, stratification, null);
 	}
 
-	public ScoreTablePerspectiveEvent(EScoreReferenceMode scoreReferenceMode, TablePerspective stratification,
+	public LogRankScoreTablePerspectiveEvent(Integer clinicalVariable, EScoreReferenceMode mode,
+			TablePerspective stratification,
 			TablePerspective group) {
-		this.scoreReferenceMode = scoreReferenceMode;
+		this.clinicalVariable = clinicalVariable;
+		this.mode = mode;
 		this.group = group;
 		this.stratification = stratification;
 	}
@@ -67,6 +59,13 @@ public class ScoreTablePerspectiveEvent
 	}
 
 	/**
+	 * @return the clinicalVariable, see {@link #clinicalVariable}
+	 */
+	public Integer getClinicalVariable() {
+		return clinicalVariable;
+	}
+
+	/**
 	 * @return the stratification, see {@link #stratification}
 	 */
 	public TablePerspective getStratification() {
@@ -74,16 +73,9 @@ public class ScoreTablePerspectiveEvent
 	}
 
 	/**
-	 * @param scoreReferenceMode setter, see {@link #scoreReferenceMode}
+	 * @return the scoreReferenceMode, see {@link #mode}
 	 */
-	public void setScoreReferenceMode(EScoreReferenceMode scoreReferenceMode) {
-		this.scoreReferenceMode = scoreReferenceMode;
-	}
-
-	/**
-	 * @return the scoreReferenceMode, see {@link #scoreReferenceMode}
-	 */
-	public EScoreReferenceMode getScoreReferenceMode() {
-		return scoreReferenceMode;
+	public EScoreReferenceMode getMode() {
+		return mode;
 	}
 }

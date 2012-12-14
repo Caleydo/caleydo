@@ -43,6 +43,8 @@ public class PickingRenderer extends APickableLayoutRenderer {
 	 *            setter, see {@link color}
 	 */
 	public void setColor(IColor color) {
+		if (this.color.equals(color))
+			return;
 		this.color = color;
 		setDisplayListDirty();
 	}
