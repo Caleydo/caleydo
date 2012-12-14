@@ -30,18 +30,16 @@ import org.eclipse.ui.IPerspectiveFactory;
 public class GenomePerspective
 	implements IPerspectiveFactory {
 
-	public static IFolderLayout mainViewFolder;
-
 	@Override
 	public void createInitialLayout(final IPageLayout layout) {
 
 		layout.setEditorAreaVisible(false);
 
 		Rectangle rectDisplay = Display.getCurrent().getPrimaryMonitor().getBounds();
-		float fRatio = (float) RcpToolBarView.TOOLBAR_WIDTH / rectDisplay.width;
+		float ratio = (float) RcpToolBarView.TOOLBAR_WIDTH / rectDisplay.width;
 
 		IFolderLayout topLeft =
-			layout.createFolder("topLeft", IPageLayout.LEFT, fRatio, IPageLayout.ID_EDITOR_AREA);
+			layout.createFolder("topLeft", IPageLayout.LEFT, ratio, IPageLayout.ID_EDITOR_AREA);
 		topLeft.addView(RcpToolBarView.ID);
 
 		IFolderLayout middleLeft = layout.createFolder("middleLeft", IPageLayout.BOTTOM, 0.2f, "topLeft");

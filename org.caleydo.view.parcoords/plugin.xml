@@ -20,12 +20,21 @@
                id="org.caleydo.menu.view"
                label="View">
             <menu
-                  id="org.caleydo.menu.view.visualization"
-                  label="Visualizations">
+                  id="org.caleydo.menu.view.experimental"
+                  label="Experimental">
                <command
                      commandId="org.caleydo.view.parcoords.command.openparcoords"
                      icon="resources/icons/parcoords.png"
                      style="push">
+                  <visibleWhen
+                        checkEnabled="false">
+                     <with
+                           variable="org.caleydo.core.isReleaseState">
+                        <equals
+                              value="releaseVersion">
+                        </equals>
+                     </with>
+                  </visibleWhen>                     
                </command>
             </menu>
          </menu>
@@ -43,7 +52,7 @@
          point="org.caleydo.view.ViewCategory">
       <ViewCategory
             isDataView="true"
-            isReleaseView="true"
+            isReleaseView="false"
             viewID="org.caleydo.view.parcoords">
       </ViewCategory>
    </extension>
