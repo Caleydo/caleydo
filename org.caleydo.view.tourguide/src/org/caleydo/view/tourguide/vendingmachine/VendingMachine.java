@@ -60,6 +60,9 @@ import org.caleydo.view.tourguide.data.ESorting;
 import org.caleydo.view.tourguide.data.ScoreQuery;
 import org.caleydo.view.tourguide.data.Scores;
 import org.caleydo.view.tourguide.data.ScoringElement;
+import org.caleydo.view.tourguide.data.filter.CompareScoreFilter;
+import org.caleydo.view.tourguide.data.filter.ECompareOperator;
+import org.caleydo.view.tourguide.data.filter.IScoreFilter;
 import org.caleydo.view.tourguide.data.load.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.data.score.AdjustedRandScore;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
@@ -76,6 +79,7 @@ import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RenameScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
+import org.caleydo.view.tourguide.event.ToggleNaNFilterScoreColumnEvent;
 import org.caleydo.view.tourguide.listener.ImportExternalScoreListener;
 import org.caleydo.view.tourguide.listener.ScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreQueryReadyListener;
@@ -243,7 +247,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	public void registerEventListeners() {
 		super.registerEventListeners();
 		listeners.register(new ScoreTablePerspectiveListener(this), ScoreTablePerspectiveEvent.class, LogRankScoreTablePerspectiveEvent.class);
-		listeners.register(new ScoreColumnListener(this), AddScoreColumnEvent.class, RenameScoreColumnEvent.class, RemoveScoreColumnEvent.class, CreateScoreColumnEvent.class);
+		listeners.register(new ScoreColumnListener(this), AddScoreColumnEvent.class, RenameScoreColumnEvent.class,
+				RemoveScoreColumnEvent.class, CreateScoreColumnEvent.class, ToggleNaNFilterScoreColumnEvent.class);
 		listeners.register(ScoreQueryReadyEvent.class, new ScoreQueryReadyListener(this));
 		listeners.register(ImportExternalScoreEvent.class, new ImportExternalScoreListener(this));
 		listeners.register(new StratomexTablePerspectiveListener(this), AddTablePerspectivesEvent.class, RemoveTablePerspectiveEvent.class, ReplaceTablePerspectiveEvent.class);
@@ -341,7 +346,6 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					scoreQuery.waitTillComplete();
-					System.out.println("sending ready");
 					GeneralManager.get().getEventPublisher()
 							.triggerEvent(new ScoreQueryReadyEvent(VendingMachine.this));
 					return Status.OK_STATUS;
@@ -349,14 +353,12 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 			};
 			job.schedule();
 		} else {
-			System.out.println("not busy");
 			GeneralManager.get().getEventPublisher().triggerEvent(new ScoreQueryReadyEvent(VendingMachine.this));
 		}
 
 	}
 
 	public void onScoreQueryReady() {
-		System.out.println("ready");
 		scoreQueryUI.setRunning(false);
 		scoreQueryUI.setData(scoreQuery.call());
 	}
@@ -468,6 +470,21 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 				}
 			}
 		});
+	}
+
+	public void onToggleNaNFilter(IScore score) {
+		for (IScoreFilter s : scoreQuery.getFilter()) {
+			if (!(s instanceof CompareScoreFilter))
+				continue;
+			CompareScoreFilter cs = ((CompareScoreFilter) s);
+			if (cs.getReference() == score && cs.getOp() == ECompareOperator.IS_NOT_NA) {
+				// remove the filter
+				scoreQuery.removeFilter(s);
+				return;
+			}
+		}
+		// wasn't there add the filter
+		scoreQuery.addFilter(new CompareScoreFilter(score, ECompareOperator.IS_NOT_NA, 0.5f));
 	}
 
 }

@@ -26,6 +26,7 @@ import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RenameScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
+import org.caleydo.view.tourguide.event.ToggleNaNFilterScoreColumnEvent;
 import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
 
 /**
@@ -53,6 +54,9 @@ public class ScoreColumnListener extends AEventListener<VendingMachine> {
 		} else if (event instanceof RenameScoreColumnEvent) {
 			RenameScoreColumnEvent e = (RenameScoreColumnEvent) event;
 			handler.onRename(e.getColumn());
+		} else if (event instanceof ToggleNaNFilterScoreColumnEvent) {
+			ToggleNaNFilterScoreColumnEvent e = (ToggleNaNFilterScoreColumnEvent) event;
+			handler.onToggleNaNFilter(e.getScore());
 		}
 	}
 }

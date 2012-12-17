@@ -17,47 +17,35 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data.score;
+package org.caleydo.view.tourguide.event;
 
-import org.caleydo.view.tourguide.data.ScoringElement;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.view.tourguide.data.score.IScore;
+import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
 
 /**
- * simple metric returning the number of records i.e. size of the stratification / cluster
- *
  * @author Samuel Gratzl
  *
  */
-public class SizeMetric implements IScore {
-	private static SizeMetric instance = new SizeMetric();
+public class ToggleNaNFilterScoreColumnEvent extends AEvent {
+	private IScore score;
 
-	public static SizeMetric get() {
-		return instance;
-	}
-
-	private SizeMetric() {
+	public ToggleNaNFilterScoreColumnEvent() {
 
 	}
 
-	@Override
-	public String getLabel() {
-		return "Size";
+	public ToggleNaNFilterScoreColumnEvent(IScore score, ScoreQueryUI sender) {
+		this.score = score;
+		this.setSender(sender);
 	}
 
-	@Override
-	public String getProviderName() {
-		return null;
+	public IScore getScore() {
+		return score;
 	}
 
 	@Override
-	public EScoreType getScoreType() {
-		return EScoreType.RANK;
-	}
-
-	@Override
-	public float getScore(ScoringElement elem) {
-		if (elem.getGroup() == null) {
-			return elem.getStratification().getNrRecords();
-		} else
-			return elem.getGroup().getSize();
+	public boolean checkIntegrity() {
+		return score != null;
 	}
 }
+

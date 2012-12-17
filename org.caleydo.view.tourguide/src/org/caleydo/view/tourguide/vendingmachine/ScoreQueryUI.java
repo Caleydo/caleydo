@@ -35,6 +35,7 @@ import java.util.Set;
 
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -51,6 +52,9 @@ import org.caleydo.view.tourguide.data.ESorting;
 import org.caleydo.view.tourguide.data.ScoreQuery;
 import org.caleydo.view.tourguide.data.Scores;
 import org.caleydo.view.tourguide.data.ScoringElement;
+import org.caleydo.view.tourguide.data.filter.CompareScoreFilter;
+import org.caleydo.view.tourguide.data.filter.ECompareOperator;
+import org.caleydo.view.tourguide.data.filter.IScoreFilter;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.SizeMetric;
@@ -58,6 +62,7 @@ import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RenameScoreColumnEvent;
+import org.caleydo.view.tourguide.event.ToggleNaNFilterScoreColumnEvent;
 import org.caleydo.view.tourguide.renderer.AdvancedTextureRenderer;
 import org.caleydo.view.tourguide.util.LabelComparator;
 import org.caleydo.view.tourguide.vendingmachine.col.AQueryColumn;
@@ -338,7 +343,24 @@ public class ScoreQueryUI extends Row {
 		creator.addContextMenuItem(new GenericContextMenuItem("Remove And Forget", new RemoveScoreColumnEvent(column
 				.getScore(), true, this)));
 		creator.addSeparator();
+
+		{
+			boolean hasNanFilter = hasNaNFilter(column.getScore());
+			creator.addContextMenuItem(new GenericContextMenuItem("Enable NaN Filter", EContextMenuType.CHECK,
+					new ToggleNaNFilterScoreColumnEvent(column.getScore(), this)).setState(hasNanFilter));
+		}
 		// creator.addContextMenuItem(new GenericContextMenuItem("Edit Filter", new ))
+	}
+
+	private boolean hasNaNFilter(IScore score) {
+		for (IScoreFilter s : query.getFilter()) {
+			if (!(s instanceof CompareScoreFilter))
+				continue;
+			CompareScoreFilter cs = ((CompareScoreFilter) s);
+			if (cs.getReference() == score && cs.getOp() == ECompareOperator.IS_NOT_NA)
+				return true;
+		}
+		return false;
 	}
 
 	protected void onAddColumn() {
@@ -352,7 +374,7 @@ public class ScoreQueryUI extends Row {
 				CreateScoreColumnEvent.Type.LOG_RANK, this)));
 		creator.addContextMenuItem(new GenericContextMenuItem("Create Adjusted Rand Score", new CreateScoreColumnEvent(
 				CreateScoreColumnEvent.Type.ADJUSTED_RAND, this)));
-		if (scores.size() >= 2) {
+		if (scores.size() >= 2 || this.queryColumns.size() >= 2) {
 			creator.addContextMenuItem(new GenericContextMenuItem("Create Combined Score", new CreateScoreColumnEvent(
 					CreateScoreColumnEvent.Type.COMBINED, this)));
 			creator.addContextMenuItem(new GenericContextMenuItem("Create Collapsed Score", new CreateScoreColumnEvent(
@@ -362,7 +384,7 @@ public class ScoreQueryUI extends Row {
 
 		Set<IScore> visible = getVisibleColumns();
 
-		for (IScore simple : Arrays.asList(new SizeMetric())) {
+		for (IScore simple : Arrays.asList(SizeMetric.get())) {
 			if (visible.contains(simple))
 				continue;
 			creator.addContextMenuItem(new GenericContextMenuItem("Add " + simple.getLabel() + " Metric",

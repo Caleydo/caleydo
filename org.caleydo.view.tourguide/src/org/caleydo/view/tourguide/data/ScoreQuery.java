@@ -283,6 +283,12 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 		listeners.fireIndexedPropertyChange(PROP_FILTER, -1, filter, filter);
 	}
 
+	public void removeFilter(IScoreFilter filter) {
+		if (!this.filter.remove(filter))
+			return;
+		listeners.fireIndexedPropertyChange(PROP_FILTER, -1, filter, null);
+	}
+
 	/**
 	 * @param listener
 	 * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.beans.PropertyChangeListener)
