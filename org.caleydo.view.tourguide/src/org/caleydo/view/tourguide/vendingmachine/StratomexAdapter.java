@@ -66,6 +66,8 @@ import com.google.common.base.Objects;
 public class StratomexAdapter {
 	private GLStratomex receiver;
 
+	private final List<AEvent> delayedEvents = new ArrayList<>();
+
 	private List<TablePerspective> brickColumns = new ArrayList<>();
 
 	private TablePerspective currentPreview = null;
@@ -82,6 +84,12 @@ public class StratomexAdapter {
 		previewSelectionType.setManaged(false);
 
 		triggerEvent(new SelectionTypeEvent(previewSelectionType));
+	}
+
+	public void sendDelayedEvents() {
+		for (AEvent event : delayedEvents)
+			triggerEvent(event);
+		delayedEvents.clear();
 	}
 
 	public void cleanUp() {
@@ -196,12 +204,12 @@ public class StratomexAdapter {
 		this.temporaryPreview = !contains(strat);
 		if (this.temporaryPreview) // create a new one if it is temporary
 			createBrickColumn(strat);
-		hightlightBrickColumn(strat);
 		this.currentPreview = strat;
 		if (group != null) {
 			hightlightBrick(strat, group);
 			currentPreviewGroup = group;
-		}
+		} else
+			hightlightBrickColumn(strat);
 	}
 
 	private void removePreview() {
@@ -209,9 +217,10 @@ public class StratomexAdapter {
 			removeBrickColumn(currentPreview);
 		else {
 			// otherwise just lowlight it
-			unhighlightBrickColumn(currentPreview);
 			if (currentPreviewGroup != null)
 				unhighlightBrick(currentPreview, currentPreviewGroup);
+			else
+				unhighlightBrickColumn(currentPreview);
 		}
 		this.currentPreview = null;
 		this.currentPreviewGroup = null;
@@ -327,7 +336,7 @@ public class StratomexAdapter {
 	private void unhighlightBrick(TablePerspective strat, Group g) {
 		if (g == null)
 			return;
-		triggerEvent(new HighlightBrickEvent(strat, g, receiver, this, null));
+		triggerDelayedEvent(new HighlightBrickEvent(strat, g, receiver, this, null));
 	}
 
 	private void hightlightBrickColumn(TablePerspective strat) {
@@ -339,7 +348,7 @@ public class StratomexAdapter {
 	private void hightlightBrick(TablePerspective strat, Group g) {
 		if (g == null)
 			return;
-		triggerEvent(new HighlightBrickEvent(strat, g, receiver, this, STRATOMEX_TEMP_GROUP));
+		triggerDelayedEvent(new HighlightBrickEvent(strat, g, receiver, this, STRATOMEX_TEMP_GROUP));
 	}
 
 	private void triggerEvent(AEvent event) {
@@ -347,6 +356,12 @@ public class StratomexAdapter {
 			return;
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
+	}
+
+	private void triggerDelayedEvent(AEvent event) {
+		if (event == null)
+			return;
+		delayedEvents.add(event);
 	}
 
 	/**

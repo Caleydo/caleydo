@@ -226,6 +226,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 			return;
 		}
 
+		stratomex.sendDelayedEvents();
+
 		checkForHits(gl);
 
 		processEvents();
