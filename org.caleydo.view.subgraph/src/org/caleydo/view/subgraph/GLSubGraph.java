@@ -24,6 +24,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
+import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -193,7 +194,20 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 				currentRendererID = multiFormRenderer.addView(viewID, "test", tablePerspectives);
 			}
 			LayoutRenderer customRenderer = new BorderedAreaRenderer();
-			multiFormRenderer.addLayoutRenderer(customRenderer, EIconTextures.ARROW_DOWN.getFileName());
+			IEmbeddedVisualizationInfo visInfo = new IEmbeddedVisualizationInfo() {
+
+				@Override
+				public EScalingEntity getPrimaryWidthScalingEntity() {
+					return null;
+				}
+
+				@Override
+				public EScalingEntity getPrimaryHeightScalingEntity() {
+					return null;
+				}
+			};
+
+			multiFormRenderer.addLayoutRenderer(customRenderer, EIconTextures.ARROW_DOWN.getFileName(), visInfo, false);
 
 			// TextureRenderer textureRenderer = new TextureRenderer("resources/tissue_images/ebene_0.bmp",
 			// textureManager);
@@ -204,7 +218,8 @@ public class GLSubGraph extends AGLView implements IMultiTablePerspectiveBasedVi
 			areaImagePaths.add("resources/tissue_images/ebene_4.bmp");
 			TissueRenderer textureRenderer = new TissueRenderer(this, "resources/tissue_images/ebene_0.bmp",
 					areaImagePaths);
-			multiFormRenderer.addLayoutRenderer(textureRenderer, EIconTextures.ARROW_DOWN.getFileName());
+			multiFormRenderer
+					.addLayoutRenderer(textureRenderer, EIconTextures.ARROW_DOWN.getFileName(), visInfo, false);
 
 			MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer, this);
 			baseColumn.add(viewSwitchingBar);
