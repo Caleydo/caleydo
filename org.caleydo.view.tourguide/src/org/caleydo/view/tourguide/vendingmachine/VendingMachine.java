@@ -82,6 +82,7 @@ import org.caleydo.view.tourguide.listener.StratomexTablePerspectiveListener;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateAdjustedRandScoreDialog;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateCompositeScoreDialog;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateJaccardIndexScoreDialog;
+import org.caleydo.view.tourguide.vendingmachine.ui.CreateLogRankScoreDialog;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -395,6 +396,9 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 					break;
 				case ADJUSTED_RAND:
 					new CreateAdjustedRandScoreDialog(new Shell(), scoreQueryUI).open();
+					break;
+				case LOG_RANK:
+					new CreateLogRankScoreDialog(new Shell(), scoreQueryUI).open();
 					break;
 				}
 			}

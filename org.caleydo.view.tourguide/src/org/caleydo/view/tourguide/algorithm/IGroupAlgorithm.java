@@ -17,37 +17,14 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data.score;
+package org.caleydo.view.tourguide.algorithm;
 
 import java.util.Set;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.id.IDType;
-import org.caleydo.view.tourguide.algorithm.JaccardIndex;
-
 /**
- * implementation of the jaccard score to compare groups
- *
  * @author Samuel Gratzl
  *
  */
-public class JaccardIndexScore extends AGroupScore implements IComputedGroupScore {
-	public JaccardIndexScore(TablePerspective stratification, Group group) {
-		this(null, stratification, group);
-	}
-
-	public JaccardIndexScore(String label, TablePerspective stratification, Group group) {
-		super(label, stratification, group);
-	}
-
-	@Override
-	public IDType getTargetType(TablePerspective as) {
-		return as.getRecordPerspective().getIdType();
-	}
-
-	@Override
-	public float compute(Set<Integer> a, Set<Integer> b) {
-		return JaccardIndex.get().compute(a, b);
-	}
+public interface IGroupAlgorithm {
+	float compute(Set<Integer> a, Set<Integer> b);
 }

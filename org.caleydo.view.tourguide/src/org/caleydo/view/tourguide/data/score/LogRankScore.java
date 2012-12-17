@@ -19,19 +19,18 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.score;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
+import org.caleydo.view.tourguide.algorithm.LogRank;
+
+import com.google.common.collect.Iterables;
 
 /**
  * @author Samuel Gratzl
@@ -40,6 +39,7 @@ import org.caleydo.core.id.IDType;
 public class LogRankScore extends AGroupScore implements IComputedGroupScore {
 	private final ATableBasedDataDomain clinical = DataDomainOracle.getClinicalDataDomain();
 	private final Integer clinicalVariable;
+	private final String clinicialVariableLabel;
 
 	public LogRankScore(Integer clinicalVariable, TablePerspective stratification, Group group) {
 		this(null, clinicalVariable, stratification, group);
@@ -48,10 +48,26 @@ public class LogRankScore extends AGroupScore implements IComputedGroupScore {
 	public LogRankScore(String label, Integer clinicalVariable, TablePerspective stratification, Group group) {
 		super(label, stratification, group);
 		this.clinicalVariable = clinicalVariable;
+		this.clinicialVariableLabel = resolveHumanReadable(clinical.getDimensionIDType(), clinicalVariable);
+	}
+
+	private static String resolveHumanReadable(IDType idType, Integer var) {
+		IIDTypeMapper<Integer, String> mapper = IDMappingManagerRegistry.get().getIDMappingManager(idType)
+				.getIDTypeMapper(idType, idType.getIDCategory().getHumanReadableIDType());
+		if (mapper == null)
+			return "";
+		return Iterables.getFirst(mapper.apply(var), "");
 	}
 
 	public Integer getClinicalVariable() {
 		return clinicalVariable;
+	}
+
+	/**
+	 * @return the clinicialVariableLabel, see {@link #clinicialVariableLabel}
+	 */
+	public String getClinicialVariableLabel() {
+		return clinicialVariableLabel;
 	}
 
 	@Override
@@ -61,53 +77,6 @@ public class LogRankScore extends AGroupScore implements IComputedGroupScore {
 
 	@Override
 	public float compute(Set<Integer> a, Set<Integer> b) {
-		// http://en.wikipedia.org/wiki/Logrank_test and
-		// Survival Analysis: A Self-Learning Text
-		// 1. resolve data
-		List<Float> as = getValues(a, this.clinicalVariable);
-		List<Float> bs = getValues(b, this.clinicalVariable);
-		SortedSet<Float> distinct = new TreeSet<>(as);
-		distinct.addAll(bs);
-		int ai = 0, bi = 0;
-
-		float nom = 0, denom = 0;
-
-		for (float j : distinct) {
-			// 1
-			float o1j = 0;
-			while (ai < as.size() && as.get(ai) == j) {
-				o1j++; // find act
-				ai++;
-			}
-			float n1j = as.size() - ai; // rest
-			// 2
-			float o2j = 0;
-			while (bi < bs.size() && bs.get(bi) == j) {
-				o2j++; // find act
-				bi++;
-			}
-			float n2j = bs.size() - bi; // rest
-
-			float e1j = n1j == 0 ? 0 : (o1j + o2j) * n1j / (n1j + n2j);
-			float vj = (n1j == 0 || n2j == 0) ? 0 : (n1j * n2j * (o1j + o2j) * (n1j + n2j - o1j - o2j))
-					/ ((n1j + n2j) * (n1j + n2j) * (n1j + n2j - 1));
-
-			nom += o1j - e1j;
-			denom += vj;
-		}
-		float z = (nom * nom) / denom;
-		return z;
-	}
-
-	private List<Float> getValues(Iterable<Integer> a, Integer col) {
-		List<Float> r = new ArrayList<>();
-		for (Integer row : a) {
-			Float v = clinical.getTable().getFloat(DataRepresentation.RAW, row, col);
-			if (v == null)
-				continue;
-			r.add(v);
-		}
-		Collections.sort(r);
-		return r;
+		return LogRank.get(clinicalVariable, clinical).compute(a, a);
 	}
 }

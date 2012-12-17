@@ -17,37 +17,34 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data.score;
+package org.caleydo.view.tourguide.algorithm;
 
 import java.util.Set;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.id.IDType;
-import org.caleydo.view.tourguide.algorithm.JaccardIndex;
-
 /**
- * implementation of the jaccard score to compare groups
- *
  * @author Samuel Gratzl
  *
  */
-public class JaccardIndexScore extends AGroupScore implements IComputedGroupScore {
-	public JaccardIndexScore(TablePerspective stratification, Group group) {
-		this(null, stratification, group);
+public class JaccardIndex implements IGroupAlgorithm {
+	private static final JaccardIndex instance = new JaccardIndex();
+
+	public static JaccardIndex get() {
+		return instance;
 	}
 
-	public JaccardIndexScore(String label, TablePerspective stratification, Group group) {
-		super(label, stratification, group);
-	}
+	private JaccardIndex() {
 
-	@Override
-	public IDType getTargetType(TablePerspective as) {
-		return as.getRecordPerspective().getIdType();
 	}
-
 	@Override
 	public float compute(Set<Integer> a, Set<Integer> b) {
-		return JaccardIndex.get().compute(a, b);
+		int intersection = 0;
+		for (Integer ai : a) {
+			if (b.contains(ai))
+				intersection++;
+		}
+		int union = b.size() + a.size();
+
+		float score = union == 0 ? 0.f : (float) intersection / union;
+		return score;
 	}
 }
