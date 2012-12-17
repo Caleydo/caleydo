@@ -19,8 +19,13 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.vendingmachine;
 
+import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.STRATOMEX_SELECTED_ELEMENTS;
+import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.STRATOMEX_TEMP_COLUMN;
+import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.STRATOMEX_TEMP_GROUP;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -28,13 +33,14 @@ import java.util.ListIterator;
 import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
@@ -49,6 +55,8 @@ import org.caleydo.view.tourguide.data.score.IGroupScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.IStratificationScore;
 
+import com.google.common.base.Objects;
+
 /**
  * facade / adapter to {@link GLStratomex} to hide the communication details
  *
@@ -61,8 +69,36 @@ public class StratomexAdapter {
 	private List<TablePerspective> brickColumns = new ArrayList<>();
 
 	private TablePerspective currentPreview = null;
+	private Group currentPreviewGroup = null;
+
 	private boolean temporaryPreview = false;
 
+	private final SelectionType previewSelectionType;
+
+	public StratomexAdapter() {
+		// Create volatile selection type
+		previewSelectionType = new SelectionType("Tour Guide preview selection type",
+				STRATOMEX_SELECTED_ELEMENTS.getRGBA(), 1, true, true, 1);
+		previewSelectionType.setManaged(false);
+
+		triggerEvent(new SelectionTypeEvent(previewSelectionType));
+	}
+
+	public void cleanUp() {
+		cleanupPreview();
+		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(previewSelectionType);
+		selectionTypeEvent.setRemove(true);
+		triggerEvent(selectionTypeEvent);
+	}
+
+	private void cleanupPreview() {
+		if (currentPreview != null) {
+			TablePerspective bak = currentPreview;
+			removePreview();
+			clearHighlightRows(bak);
+		}
+		this.brickColumns.clear();
+	}
 	/**
 	 * binds this adapter to a concrete stratomex instance
 	 *
@@ -72,7 +108,7 @@ public class StratomexAdapter {
 	public boolean setStratomex(GLStratomex receiver) {
 		if (this.receiver == receiver)
 			return false;
-		this.cleanUp();
+		this.cleanupPreview();
 		this.receiver = receiver;
 		if (this.receiver != null) {
 			this.brickColumns.addAll(this.receiver.getTablePerspectives());
@@ -98,6 +134,10 @@ public class StratomexAdapter {
 				break;
 			}
 		}
+		if (currentPreview != null && currentPreview.getID() == tablePerspectiveID) {
+			currentPreview = null;
+			currentPreviewGroup = null;
+		}
 	}
 
 	public void addBricks(Collection<TablePerspective> tablePerspectives) {
@@ -113,58 +153,76 @@ public class StratomexAdapter {
 		}
 	}
 
-	/**
-	 *
-	 */
-	public void cleanUp() {
-		if (currentPreview != null) {
-			removePreview();
-		}
-		this.brickColumns.clear();
-	}
-
 	public void updatePreview(ScoringElement old, ScoringElement new_, Collection<IScore> visibleColumns) {
 		if (!hasOne())
 			return;
 		TablePerspective strat = new_ == null ? null : new_.getStratification();
+		Group group = new_ == null ? null : new_.getGroup();
 
 		// handle stratification changes
 		if (currentPreview != null && strat != null) { // update
-			if (!temporaryPreview || !currentPreview.equals(strat)) { // not same stratification
+			if (currentPreview.equals(strat)) {
+				if (!Objects.equal(currentPreviewGroup, group)) {
+					unhighlightBrick(currentPreview, currentPreviewGroup);
+					hightlightBrick(currentPreview, group);
+					currentPreviewGroup = group;
+				}
+			} else { // not same stratification
 				if (!temporaryPreview || contains(strat)) {
 					removePreview();
-					createPreview(strat);
+					createPreview(strat, group);
 				} else {
 					updatePreview(currentPreview, strat);
 					this.currentPreview = strat;
+					hightlightBrick(currentPreview, group);
+					currentPreviewGroup = group;
 				}
 			}
 		} else if (currentPreview != null) { // last
 			removePreview();
 		} else if (new_ != null) { // first
-			createPreview(strat);
+			createPreview(strat, group);
 		}
 
 		// highlight connection band
 		if (new_ != null)
 			hightlightRows(new_, visibleColumns);
+		else if (old != null) {
+			clearHighlightRows(old.getStratification());
+		}
 	}
 
-	private void createPreview(TablePerspective strat) {
+	private void createPreview(TablePerspective strat, Group group) {
 		this.temporaryPreview = !contains(strat);
 		if (this.temporaryPreview) // create a new one if it is temporary
 			createBrickColumn(strat);
 		hightlightBrickColumn(strat);
 		this.currentPreview = strat;
+		if (group != null) {
+			hightlightBrick(strat, group);
+			currentPreviewGroup = group;
+		}
 	}
 
 	private void removePreview() {
 		if (temporaryPreview) // if it is just temporary remove it
 			removeBrickColumn(currentPreview);
-		else
+		else {
 			// otherwise just lowlight it
-			unhightlightBrickColumn(currentPreview);
+			unhighlightBrickColumn(currentPreview);
+			if (currentPreviewGroup != null)
+				unhighlightBrick(currentPreview, currentPreviewGroup);
+		}
 		this.currentPreview = null;
+		this.currentPreviewGroup = null;
+	}
+
+	private void clearHighlightRows(TablePerspective strat) {
+		AEvent event = new SelectElementsEvent(Collections.<Integer> emptyList(), strat.getRecordPerspective()
+				.getIdType(),
+				this.previewSelectionType, receiver, this);
+		event.setDataDomainID(strat.getDataDomain().getDataDomainID());
+		triggerEvent(event);
 	}
 
 	private void hightlightRows(ScoringElement new_, Collection<IScore> visibleColumns) {
@@ -207,7 +265,7 @@ public class StratomexAdapter {
 			ids = intersection;
 		}
 
-		AEvent event = new SelectElementsEvent(ids, target, receiver, this);
+		AEvent event = new SelectElementsEvent(ids, target, this.previewSelectionType, receiver, this);
 		event.setDataDomainID(strat.getDataDomain().getDataDomainID());
 		triggerEvent(event);
 	}
@@ -255,15 +313,33 @@ public class StratomexAdapter {
 	}
 
 	private void removeBrickColumn(TablePerspective strat) {
+		if (strat == null)
+			return;
 		triggerEvent(new RemoveTablePerspectiveEvent(strat.getID(), receiver));
 	}
 
-	private void unhightlightBrickColumn(TablePerspective strat) {
+	private void unhighlightBrickColumn(TablePerspective strat) {
+		if (strat == null)
+			return;
 		triggerEvent(new HighlightBrickEvent(strat, receiver, this, null));
 	}
 
+	private void unhighlightBrick(TablePerspective strat, Group g) {
+		if (g == null)
+			return;
+		triggerEvent(new HighlightBrickEvent(strat, g, receiver, this, null));
+	}
+
 	private void hightlightBrickColumn(TablePerspective strat) {
-		triggerEvent(new HighlightBrickEvent(strat, receiver, this, Colors.YELLOW));
+		if (strat == null)
+			return;
+		triggerEvent(new HighlightBrickEvent(strat, receiver, this, STRATOMEX_TEMP_COLUMN));
+	}
+
+	private void hightlightBrick(TablePerspective strat, Group g) {
+		if (g == null)
+			return;
+		triggerEvent(new HighlightBrickEvent(strat, g, receiver, this, STRATOMEX_TEMP_GROUP));
 	}
 
 	private void triggerEvent(AEvent event) {

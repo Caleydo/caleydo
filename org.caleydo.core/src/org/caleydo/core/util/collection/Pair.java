@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.util.collection;
 
+import com.google.common.base.Function;
+
 
 /**
  * A pair of values, inspired by STL Caution: when using the compare function
@@ -123,7 +125,7 @@ public class Pair<T, E> implements Comparable<Pair<T, E>> {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -137,7 +139,7 @@ public class Pair<T, E> implements Comparable<Pair<T, E>> {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -160,6 +162,34 @@ public class Pair<T, E> implements Comparable<Pair<T, E>> {
 		} else if (!second.equals(other.second))
 			return false;
 		return true;
+	}
+
+	/**
+	 * returns a {@link Function}, which maps the pair to the first element
+	 * 
+	 * @return
+	 */
+	public static final <T1, T2> Function<Pair<T1, T2>, T1> mapFirst() {
+		return new Function<Pair<T1,T2>,T1>() {
+			@Override
+			public T1 apply(Pair<T1, T2> arg0) {
+				return arg0 == null ? null : arg0.getFirst();
+			}
+		};
+	}
+
+	/**
+	 * returns a {@link Function}, which maps the pair to the second element
+	 * 
+	 * @return
+	 */
+	public static final <T1, T2> Function<Pair<T1, T2>, T2> mapSecond() {
+		return new Function<Pair<T1, T2>, T2>() {
+			@Override
+			public T2 apply(Pair<T1, T2> arg0) {
+				return arg0 == null ? null : arg0.getSecond();
+			}
+		};
 	}
 
 }

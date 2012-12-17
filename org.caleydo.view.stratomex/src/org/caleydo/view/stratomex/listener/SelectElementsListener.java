@@ -40,6 +40,6 @@ public class SelectElementsListener extends AEventListener<GLStratomex> {
 		if (e.getReceiver() != handler)
 			return;
 
-		handler.selectElements(e.getIds(), e.getIdType(), e.getDataDomainID());
+		handler.selectElements(e.getIds(), e.getIdType(), e.getDataDomainID(), e.getSelectionType());
 	}
 }

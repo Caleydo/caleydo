@@ -41,7 +41,6 @@ import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.ClearSelectionsListener;
 import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
@@ -217,8 +216,6 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	private HashMap<Integer, BrickConnection> hashConnectionBandIDToRecordVA = new HashMap<Integer, BrickConnection>();
 
 	private HashMap<RecordPerspective, HashMap<RecordPerspective, BrickConnection>> hashRowPerspectivesToConnectionBandID = new HashMap<RecordPerspective, HashMap<RecordPerspective, BrickConnection>>();
-
-	private SelectionType volatileBandSelectionType;
 
 	private int connectionBandIDCounter = 0;
 
@@ -1460,23 +1457,15 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	public void selectElementsByConnectionBandID(int connectionBandID) {
 		BrickConnection connectionBand = hashConnectionBandIDToRecordVA.get(connectionBandID);
 		RecordVirtualArray recordVA = connectionBand.getSharedRecordVirtualArray();
-		selectElements(recordVA, recordVA.getIdType(), connectionBand.getLeftBrick().getDataDomain().getDataDomainID());
+		selectElements(recordVA, recordVA.getIdType(), connectionBand.getLeftBrick().getDataDomain().getDataDomainID(),
+				recordSelectionManager.getSelectionType());
 	}
 
-	public void selectElements(Iterable<Integer> ids, IDType idType, String dataDomainID) {
-		recordSelectionManager.clearSelection(recordSelectionManager.getSelectionType());
-
-		// Create volatile selection type
-		volatileBandSelectionType = new SelectionType("Volatile band selection type", recordSelectionManager
-				.getSelectionType().getColor(), 1, true, true, 1);
-
-		volatileBandSelectionType.setManaged(false);
-
-		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(volatileBandSelectionType);
-		GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
+	public void selectElements(Iterable<Integer> ids, IDType idType, String dataDomainID, SelectionType selectionType) {
+		recordSelectionManager.clearSelection(selectionType);
 
 		for (Integer recordID : ids) {
-			recordSelectionManager.addToType(recordSelectionManager.getSelectionType(), idType, recordID);
+			recordSelectionManager.addToType(selectionType, idType, recordID);
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
