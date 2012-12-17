@@ -23,6 +23,8 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
+import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
+import org.caleydo.view.tourguide.event.RenameScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
 import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
 
@@ -45,6 +47,12 @@ public class ScoreColumnListener extends AEventListener<VendingMachine> {
 			handler.onAddColumn(((AddScoreColumnEvent) event).getScore());
 		} else if (event instanceof CreateScoreColumnEvent) {
 			handler.onCreateNewScore(((CreateScoreColumnEvent) event).getType());
+		} else if (event instanceof RemoveScoreColumnEvent) {
+			RemoveScoreColumnEvent e = (RemoveScoreColumnEvent) event;
+			handler.onRemoveColumn(e.getScore(), e.isRemove());
+		} else if (event instanceof RenameScoreColumnEvent) {
+			RenameScoreColumnEvent e = (RenameScoreColumnEvent) event;
+			handler.onRename(e.getColumn());
 		}
 	}
 }

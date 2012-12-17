@@ -17,40 +17,34 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.event;
+package org.caleydo.core.util.base;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.base.ILabelProvider;
 
 /**
- * utility class to hold a list of event listeners to register and remove them all in an convinced way
- *
+ * default implementation of an {@link ILabelProvider}
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public final class EventListeners {
-	private static final EventPublisher EVENT_PUBLISHER = GeneralManager.get().getEventPublisher();
+public class DefaultLabelProvider implements ILabelProvider {
+	private String label;
 
-	private final Collection<AEventListener<?>> listeners = new ArrayList<>();
-
-	public final void register(Class<? extends AEvent> event, AEventListener<?> listener) {
-		listeners.add(listener);
-		EVENT_PUBLISHER.addListener(event, listener);
-	}
-	@SafeVarargs
-	public final void register(AEventListener<?> listener, Class<? extends AEvent>... events) {
-		listeners.add(listener);
-		for (Class<? extends AEvent> event : events)
-			EVENT_PUBLISHER.addListener(event, listener);
+	public DefaultLabelProvider(String label) {
+		this.label = label;
 	}
 
-	public final void unregisterAll() {
-		for (AEventListener<?> listener : listeners) {
-			EVENT_PUBLISHER.removeListener(listener);
-		}
-		listeners.clear();
+	@Override
+	public final String getLabel() {
+		return label;
 	}
 
+	public final void setLabel(String label) {
+		this.label = label;
+	}
+
+	@Override
+	public String getProviderName() {
+		return null;
+	}
 }

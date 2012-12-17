@@ -33,8 +33,10 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListeners;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
+import org.caleydo.core.gui.util.RenameNameDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -71,10 +73,10 @@ import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ImportExternalScoreEvent;
 import org.caleydo.view.tourguide.event.LogRankScoreTablePerspectiveEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
+import org.caleydo.view.tourguide.event.RenameScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
 import org.caleydo.view.tourguide.listener.ImportExternalScoreListener;
-import org.caleydo.view.tourguide.listener.RemoveScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreQueryReadyListener;
 import org.caleydo.view.tourguide.listener.ScoreTablePerspectiveListener;
@@ -90,6 +92,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 import com.google.common.collect.Iterables;
 
@@ -198,6 +201,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 		scoreQueryUI = new ScoreQueryUI(this, this.stratomex);
 		scoreQueryUI.setQuery(scoreQuery);
+		// mainColumn.append(ElementLayouts.scrollAlbe(this, scoreQueryUI));
 		mainColumn.append(scoreQueryUI);
 
 		layoutManager.updateLayout();
@@ -238,16 +242,11 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-		listeners.register(ScoreTablePerspectiveEvent.class, new ScoreTablePerspectiveListener(this));
-		listeners.register(LogRankScoreTablePerspectiveEvent.class, new ScoreTablePerspectiveListener(this));
-		listeners.register(AddScoreColumnEvent.class, new ScoreColumnListener(this));
-		listeners.register(CreateScoreColumnEvent.class, new ScoreColumnListener(this));
-		listeners.register(RemoveScoreColumnEvent.class, new RemoveScoreColumnListener(this));
+		listeners.register(new ScoreTablePerspectiveListener(this), ScoreTablePerspectiveEvent.class, LogRankScoreTablePerspectiveEvent.class);
+		listeners.register(new ScoreColumnListener(this), AddScoreColumnEvent.class, RenameScoreColumnEvent.class, RemoveScoreColumnEvent.class, CreateScoreColumnEvent.class);
 		listeners.register(ScoreQueryReadyEvent.class, new ScoreQueryReadyListener(this));
 		listeners.register(ImportExternalScoreEvent.class, new ImportExternalScoreListener(this));
-		listeners.register(RemoveTablePerspectiveEvent.class, new StratomexTablePerspectiveListener(this));
-		listeners.register(AddTablePerspectivesEvent.class, new StratomexTablePerspectiveListener(this));
-		listeners.register(ReplaceTablePerspectiveEvent.class, new StratomexTablePerspectiveListener(this));
+		listeners.register(new StratomexTablePerspectiveListener(this), AddTablePerspectivesEvent.class, RemoveTablePerspectiveEvent.class, ReplaceTablePerspectiveEvent.class);
 	}
 
 	@Override
@@ -262,7 +261,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	}
 
 	public void createStratificationScore(TablePerspective stratification) {
-		IScore score = Scores.get().addIfAbsent(new AdjustedRandScore(stratification));
+		IScore score = Scores.get().addIfAbsent(new AdjustedRandScore(null, stratification));
 		onAddColumn(score);
 	}
 
@@ -455,6 +454,20 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		if (!stratomex.is(receiver))
 			return;
 		stratomex.replaceBricks(oldPerspective, newPerspective);
+	}
+
+	public void onRename(final DefaultLabelProvider l) {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				String r = RenameNameDialog.show(getParentComposite().getShell(), "Rename '" + l.getLabel() + "' to",
+						l.getLabel());
+				if (r != null) {
+					l.setLabel(r);
+					setDisplayListDirty();
+				}
+			}
+		});
 	}
 
 }

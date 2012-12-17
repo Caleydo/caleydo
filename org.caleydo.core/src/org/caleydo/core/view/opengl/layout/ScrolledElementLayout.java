@@ -20,6 +20,7 @@
 package org.caleydo.core.view.opengl.layout;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL2ES1;
 
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -32,11 +33,11 @@ import org.caleydo.core.view.opengl.util.scrollbar.ScrollBarRenderer;
 
 /**
  * TODO not working
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-public final class ScrolledLayoutElement extends Row implements IScrollBarUpdateHandler {
+public final class ScrolledElementLayout extends Row implements IScrollBarUpdateHandler {
 
 	private final AGLView view;
 	private final DragAndDropController dndController;
@@ -47,17 +48,18 @@ public final class ScrolledLayoutElement extends Row implements IScrollBarUpdate
 	private float originX;
 	private float originY;
 
-	private ElementLayout content;
 	private ScrolledContent wrapper;
 
-	public ScrolledLayoutElement(AGLView parentView) {
+	public ScrolledElementLayout(AGLView parentView) {
 		this.view = parentView;
 		dndController = new DragAndDropController(parentView);
 
 		this.setLeftToRight(false);
-		vScrollBar = new ScrollBar(0, 10, 5, 5, PickingType.ZOOM_SCROLLBAR, parentView.createNewScrollBarID(), this);
+		vScrollBar = new ScrollBar(0, 10, 0, 5, PickingType.ZOOM_SCROLLBAR, parentView.createNewScrollBarID(), this);
 		ElementLayout vBar = ElementLayouts.wrap(new ScrollBarRenderer(vScrollBar, view, false, dndController), 10);
 		vBar.setGrabY(true);
+		vBar.setPixelSizeX(10);
+		vBar.addBackgroundRenderer(new ColorRenderer(Colors.GREEN.getRGBA()));
 		this.add(vBar);
 
 		Column tmp = new Column();
@@ -82,67 +84,49 @@ public final class ScrolledLayoutElement extends Row implements IScrollBarUpdate
 	 *            setter, see {@link content}
 	 */
 	public void setContent(ElementLayout content) {
-		this.content = content;
-		this.content.addBackgroundRenderer(new ColorRenderer(Colors.BLUE.getRGBA()));
+		content.addBackgroundRenderer(new ColorRenderer(Colors.BLUE.getRGBA()));
+		wrapper.clear();
+		wrapper.add(content);
 	}
 
-	private class ScrolledContent extends ElementLayout {
+	private class ScrolledContent extends Row {
 		@Override
-		void render(GL2 gl) {
+		public void render(GL2 gl) {
+			beginScrolling(gl);
 			super.render(gl);
-			if (this.isHidden)
-				return;
-			// render content
-			if (content != null) {
-				beginScrolling(gl);
-				content.render(gl);
-				endScrolling(gl);
-			}
-		}
-
-		@Override
-		void setRenderingDirty() {
-			if (isHidden)
-				return;
-			super.setRenderingDirty();
-			if (content != null)
-				content.setRenderingDirty();
-		}
-
-		@Override
-		void setLayoutManager(LayoutManager layoutManager) {
-			super.setLayoutManager(layoutManager);
-			if (content != null)
-				content.setLayoutManager(layoutManager);
-		}
-
-		@Override
-		public void destroy(GL2 gl) {
-			super.destroy(gl);
-			if (content != null)
-				content.destroy(gl);
+			endScrolling(gl);
 		}
 
 		@Override
 		public void updateSubLayout() {
-			if (isHidden)
-				return;
-			calculateScales(totalWidth, totalHeight, dynamicSizeUnitsX, dynamicSizeUnitsY);
-			updateSpacings();
-			if (content != null) {
-				content.calculateScales(totalWidth, totalHeight, dynamicSizeUnitsX, dynamicSizeUnitsY);
-			}
+			super.updateSubLayout();
+			System.out.println("updateSubLayout");
 		}
 
+		/*
+		 * (non-Javadoc)
+		 *
+		 * @see org.caleydo.core.view.opengl.layout.ALayoutContainer#updateSpacings()
+		 */
 		@Override
 		protected void updateSpacings() {
-			if (isHidden)
-				return;
 			super.updateSpacings();
-			if (content != null)
-				content.updateSpacings();
+			System.out.println("updateSpacings");
+			System.out.println(this.getSizeScaledX() + " " + this.getSizeScaledY() + "-> " + get(0).getSizeScaledX()
+					+ " " + get(0).getSizeScaledY());
+			updateScrollBars();
 		}
 
+		/*
+		 * (non-Javadoc)
+		 *
+		 * @see org.caleydo.core.view.opengl.layout.Row#calculateTransforms(float, float, float, float)
+		 */
+		@Override
+		protected void calculateTransforms(float bottom, float left, float top, float right) {
+			super.calculateTransforms(bottom, left, top, right);
+			System.out.println("calculateTransforms");
+		}
 	}
 
 
@@ -155,14 +139,14 @@ public final class ScrolledLayoutElement extends Row implements IScrollBarUpdate
 		double[] clipPlane3 = new double[] { -1.0, 0.0, 0.0, width };
 		double[] clipPlane4 = new double[] { 0.0, -1.0, 0.0, height };
 
-		// gl.glClipPlane(GL2ES1.GL_CLIP_PLANE0, clipPlane1, 0);
-		// gl.glClipPlane(GL2ES1.GL_CLIP_PLANE1, clipPlane2, 0);
-		// gl.glClipPlane(GL2ES1.GL_CLIP_PLANE2, clipPlane3, 0);
-		// gl.glClipPlane(GL2ES1.GL_CLIP_PLANE3, clipPlane4, 0);
-		// gl.glEnable(GL2ES1.GL_CLIP_PLANE0);
-		// gl.glEnable(GL2ES1.GL_CLIP_PLANE1);
-		// gl.glEnable(GL2ES1.GL_CLIP_PLANE2);
-		// gl.glEnable(GL2ES1.GL_CLIP_PLANE3);
+		gl.glClipPlane(GL2ES1.GL_CLIP_PLANE0, clipPlane1, 0);
+		gl.glClipPlane(GL2ES1.GL_CLIP_PLANE1, clipPlane2, 0);
+		gl.glClipPlane(GL2ES1.GL_CLIP_PLANE2, clipPlane3, 0);
+		gl.glClipPlane(GL2ES1.GL_CLIP_PLANE3, clipPlane4, 0);
+		gl.glEnable(GL2ES1.GL_CLIP_PLANE0);
+		gl.glEnable(GL2ES1.GL_CLIP_PLANE1);
+		gl.glEnable(GL2ES1.GL_CLIP_PLANE2);
+		gl.glEnable(GL2ES1.GL_CLIP_PLANE3);
 
 		// viewportPositionX = pixelGLConverter.getPixelWidthForCurrentGLTransform(gl);
 		// viewportPositionY = pixelGLConverter.getPixelHeightForCurrentGLTransform(gl);
@@ -189,6 +173,11 @@ public final class ScrolledLayoutElement extends Row implements IScrollBarUpdate
 		//
 		gl.glPushMatrix();
 		gl.glTranslatef(originX, originY, 0);
+
+	}
+
+	public void updateScrollBars() {
+		// TODO Auto-generated method stub
 
 	}
 

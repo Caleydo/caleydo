@@ -27,8 +27,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.data.ScoringElement;
 import org.caleydo.view.tourguide.data.serialize.ISerializeableScore;
+
+import com.google.common.base.Objects;
 
 /**
  * external score which contains a score per group of a stratification, identified by its label
@@ -38,21 +41,19 @@ import org.caleydo.view.tourguide.data.serialize.ISerializeableScore;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class ExternalGroupLabelScore implements ISerializeableScore {
-
-	private String label;
+public final class ExternalGroupLabelScore extends DefaultLabelProvider implements ISerializeableScore {
 	private String perspectiveKey;
 	private boolean isRank;
 	private Map<String, Float> scores = new HashMap<>();
 
 	public ExternalGroupLabelScore() {
-
+		super("");
 	}
 
 	public ExternalGroupLabelScore(String label, String perspectiveKey, boolean isRank,
 			Map<String, Float> scores) {
+		super(label);
 		this.perspectiveKey = perspectiveKey;
-		this.label = label;
 		this.isRank = isRank;
 		this.scores.putAll(scores);
 	}
@@ -60,11 +61,6 @@ public final class ExternalGroupLabelScore implements ISerializeableScore {
 	@Override
 	public final EScoreType getScoreType() {
 		return isRank ? EScoreType.GROUP_RANK : EScoreType.GROUP_SCORE;
-	}
-
-	@Override
-	public String getLabel() {
-		return label;
 	}
 
 	@Override
@@ -90,10 +86,7 @@ public final class ExternalGroupLabelScore implements ISerializeableScore {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((label == null) ? 0 : label.hashCode());
-		return result;
+		return Objects.hashCode(getLabel(), perspectiveKey, isRank);
 	}
 
 	@Override
@@ -105,10 +98,11 @@ public final class ExternalGroupLabelScore implements ISerializeableScore {
 		if (getClass() != obj.getClass())
 			return false;
 		ExternalGroupLabelScore other = (ExternalGroupLabelScore) obj;
-		if (label == null) {
-			if (other.label != null)
-				return false;
-		} else if (!label.equals(other.label))
+		if (Objects.equal(perspectiveKey, other.perspectiveKey))
+			return false;
+		if (Objects.equal(isRank, other.isRank))
+			return false;
+		if (Objects.equal(getLabel(), other.getLabel()))
 			return false;
 		return true;
 	}

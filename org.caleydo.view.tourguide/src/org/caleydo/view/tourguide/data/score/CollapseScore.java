@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
+import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.data.ScoringElement;
 
 /**
@@ -33,8 +34,7 @@ import org.caleydo.view.tourguide.data.ScoringElement;
  * @author Samuel Gratzl
  *
  */
-public class CollapseScore implements ICompositeScore {
-	private final String label;
+public class CollapseScore extends DefaultLabelProvider implements ICompositeScore {
 	private final ECollapseOperator op;
 	private final Collection<IScore> children;
 
@@ -43,7 +43,7 @@ public class CollapseScore implements ICompositeScore {
 	}
 
 	public CollapseScore(String label, ECollapseOperator op, Collection<IScore> children) {
-		this.label = label;
+		super(label);
 		this.op = op;
 		this.children = new ArrayList<>();
 		for (IScore child : children)
@@ -55,11 +55,6 @@ public class CollapseScore implements ICompositeScore {
 			this.children.addAll(((CollapseScore) child).getChildren());
 		else
 			this.children.add(child);
-	}
-
-	@Override
-	public String getProviderName() {
-		return null;
 	}
 
 	@Override
@@ -75,11 +70,6 @@ public class CollapseScore implements ICompositeScore {
 	@Override
 	public int size() {
 		return children.size();
-	}
-
-	@Override
-	public String getLabel() {
-		return label;
 	}
 
 	public ECollapseOperator getOp() {
@@ -99,4 +89,44 @@ public class CollapseScore implements ICompositeScore {
 		IScore current = elem.getSelected(this);
 		return current == null ? Float.NaN : op.apply(elem, current, children);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((children == null) ? 0 : children.hashCode());
+		result = prime * result + ((op == null) ? 0 : op.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CollapseScore other = (CollapseScore) obj;
+		if (children == null) {
+			if (other.children != null)
+				return false;
+		} else if (!children.equals(other.children))
+			return false;
+		if (op != other.op)
+			return false;
+		return true;
+	}
+
+
 }

@@ -33,8 +33,8 @@ public class AdjustedRandScore extends AStratificationScore implements IComputed
 		super();
 	}
 
-	public AdjustedRandScore(TablePerspective reference) {
-		super(reference);
+	public AdjustedRandScore(String label, TablePerspective reference) {
+		super(label, reference);
 	}
 
 	@Override

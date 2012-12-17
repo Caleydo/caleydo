@@ -83,7 +83,7 @@ public abstract class ATableColumn extends Column {
 
 	public final ElementLayout getTd(int i) {
 		List<ElementLayout> elem = this.getElements();
-		int pos = 3 + i * 2;
+		int pos = 2 + i * 2;
 		if (elem.size() <= pos)
 			return null;
 		return elem.get(pos);

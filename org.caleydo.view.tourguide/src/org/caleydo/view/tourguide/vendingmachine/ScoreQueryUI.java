@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
@@ -56,6 +57,7 @@ import org.caleydo.view.tourguide.data.score.SizeMetric;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
+import org.caleydo.view.tourguide.event.RenameScoreColumnEvent;
 import org.caleydo.view.tourguide.renderer.AdvancedTextureRenderer;
 import org.caleydo.view.tourguide.util.LabelComparator;
 import org.caleydo.view.tourguide.vendingmachine.col.AQueryColumn;
@@ -191,6 +193,7 @@ public class ScoreQueryUI extends Row {
 					continue;
 				((PickingRenderer) renderers.get(0)).setColor(Colors.TRANSPARENT);
 			}
+			layoutManager.setRenderingDirty();
 		}
 		selectedRow = row;
 		ScoringElement new_ = null;
@@ -205,6 +208,7 @@ public class ScoreQueryUI extends Row {
 					continue;
 				((PickingRenderer) renderers.get(0)).setColor(SELECTED_COLOR);
 			}
+			layoutManager.setRenderingDirty();
 		}
 		invalidate();
 		stratomex.updatePreview(old, new_, getVisibleColumns(new_));
@@ -324,6 +328,11 @@ public class ScoreQueryUI extends Row {
 
 	protected void onShowColumnMenu(AQueryColumn column) {
 		ContextMenuCreator creator = view.getContextMenuCreator();
+		if (column.getScore() instanceof DefaultLabelProvider) {
+			creator.addContextMenuItem(new GenericContextMenuItem("Rename", new RenameScoreColumnEvent(
+					(DefaultLabelProvider) column.getScore(), this)));
+			creator.addSeparator();
+		}
 		creator.addContextMenuItem(new GenericContextMenuItem("Remove", new RemoveScoreColumnEvent(column.getScore(),
 				false, this)));
 		creator.addContextMenuItem(new GenericContextMenuItem("Remove And Forget", new RemoveScoreColumnEvent(column

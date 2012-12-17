@@ -25,12 +25,8 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.view.tourguide.algorithm.LogRank;
-
-import com.google.common.collect.Iterables;
 
 /**
  * @author Samuel Gratzl
@@ -48,15 +44,7 @@ public class LogRankScore extends AGroupScore implements IComputedGroupScore {
 	public LogRankScore(String label, Integer clinicalVariable, TablePerspective stratification, Group group) {
 		super(label, stratification, group);
 		this.clinicalVariable = clinicalVariable;
-		this.clinicialVariableLabel = resolveHumanReadable(clinical.getDimensionIDType(), clinicalVariable);
-	}
-
-	private static String resolveHumanReadable(IDType idType, Integer var) {
-		IIDTypeMapper<Integer, String> mapper = IDMappingManagerRegistry.get().getIDMappingManager(idType)
-				.getIDTypeMapper(idType, idType.getIDCategory().getHumanReadableIDType());
-		if (mapper == null)
-			return "";
-		return Iterables.getFirst(mapper.apply(var), "");
+		this.clinicialVariableLabel = clinical.getDimensionLabel(clinicalVariable);
 	}
 
 	public Integer getClinicalVariable() {

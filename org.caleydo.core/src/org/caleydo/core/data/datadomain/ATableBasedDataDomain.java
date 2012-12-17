@@ -79,6 +79,7 @@ import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
@@ -1030,9 +1031,10 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		}
 
 		int count = 0;
+		IIDTypeMapper<Integer, Integer> mapper = recordIDMappingManager.getIDTypeMapper(foreignRecordVA.getIdType(),
+				recordIDType);
 		for (Integer foreignVAID : foreignRecordVA) {
-			Set<Integer> localVAIDS = recordIDMappingManager.getIDAsSet(
-					foreignRecordVA.getIdType(), recordIDType, foreignVAID);
+			Set<Integer> localVAIDS = mapper.apply(foreignVAID);
 			if (localVAIDS == null)
 				continue;
 			for (Integer localVAID : localVAIDS) {

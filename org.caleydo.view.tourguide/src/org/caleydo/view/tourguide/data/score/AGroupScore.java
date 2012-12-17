@@ -24,24 +24,24 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.data.ScoringElement;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public abstract class AGroupScore implements IGroupScore {
-	private String label;
+public abstract class AGroupScore extends DefaultLabelProvider implements IGroupScore {
 	protected TablePerspective stratification;
 	protected Group group;
 	protected Map<Integer, Float> scores = new ConcurrentHashMap<>();
 
 	public AGroupScore() {
-
+		super("");
 	}
 
 	public AGroupScore(String label, TablePerspective stratification, Group group) {
-		this.label = label == null ? stratification.getRecordPerspective().getLabel() + ": " + group.getLabel() : label;
+		super(label == null ? stratification.getRecordPerspective().getLabel() + ": " + group.getLabel() : label);
 		this.stratification = stratification;
 		this.group = group;
 		put(this.group, Float.NaN); // add self
@@ -56,11 +56,6 @@ public abstract class AGroupScore implements IGroupScore {
 
 	public void put(Group elem, float value) {
 		scores.put(elem.getID(), value);
-	}
-
-	@Override
-	public String getLabel() {
-		return label;
 	}
 
 	@Override
@@ -96,4 +91,46 @@ public abstract class AGroupScore implements IGroupScore {
 		Float f = scores.get(elem.getGroup().getID());
 		return f == null ? Float.NaN : f.floatValue();
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((group == null) ? 0 : group.hashCode());
+		result = prime * result + ((stratification == null) ? 0 : stratification.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AGroupScore other = (AGroupScore) obj;
+		if (group == null) {
+			if (other.group != null)
+				return false;
+		} else if (!group.equals(other.group))
+			return false;
+		if (stratification == null) {
+			if (other.stratification != null)
+				return false;
+		} else if (!stratification.equals(other.stratification))
+			return false;
+		return true;
+	}
+
 }

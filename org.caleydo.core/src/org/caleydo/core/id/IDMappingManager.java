@@ -292,8 +292,9 @@ public class IDMappingManager {
 
 						codeResolvedMap = new HashMap<Integer, Integer>();
 
+						IIDTypeMapper<KeyType, Integer> mapper = getIDTypeMapper(originValueType, destValueType);
 						for (KeyType key : srcMap.keySet()) {
-							Set<Integer> resolvedIDs = getIDAsSet(originValueType, destValueType, key);
+							Set<Integer> resolvedIDs = mapper.apply(key);
 
 							if (resolvedIDs == null) {
 								continue;
@@ -306,10 +307,10 @@ public class IDMappingManager {
 					else {
 						codeResolvedMap = new MultiHashMap<Integer, Integer>();
 						MultiHashMap<Integer, String> srcMultiMap = (MultiHashMap<Integer, String>) srcMap;
-
+						IIDTypeMapper<String, Integer> mapper = getIDTypeMapper(originValueType, destValueType);
 						for (KeyType key : srcMap.keySet()) {
 							for (String sID : srcMultiMap.getAll(key)) {
-								Set<Integer> resolvedIDs = getIDAsSet(originValueType, destValueType, sID);
+								Set<Integer> resolvedIDs = mapper.apply(sID);
 
 								if (resolvedIDs == null) {
 									continue;
@@ -339,8 +340,9 @@ public class IDMappingManager {
 					if (!originalMappingType.isMultiMap()) {
 						codeResolvedMap = new HashMap<String, Integer>();
 
+						IIDTypeMapper<ValueType, String> mapper = getIDTypeMapper(originValueType, destValueType);
 						for (KeyType key : srcMap.keySet()) {
-							Set<String> resolvedIDs = getIDAsSet(originValueType, destValueType, srcMap.get(key));
+							Set<String> resolvedIDs = mapper.apply(srcMap.get(key));
 							if (resolvedIDs == null)
 								continue;
 							for (String resolvedID : resolvedIDs) {
@@ -352,9 +354,10 @@ public class IDMappingManager {
 						codeResolvedMap = new MultiHashMap<String, Integer>();
 						MultiHashMap<String, String> srcMultiMap = (MultiHashMap<String, String>) srcMap;
 
+						IIDTypeMapper<String, Integer> mapper = getIDTypeMapper(originValueType, destValueType);
 						for (KeyType key : srcMap.keySet()) {
 							for (String sID : srcMultiMap.getAll(key)) {
-								Set<Integer> resolvedIDs = getIDAsSet(originValueType, destValueType, sID);
+								Set<Integer> resolvedIDs = mapper.apply(sID);
 
 								if (resolvedIDs == null) {
 									continue;

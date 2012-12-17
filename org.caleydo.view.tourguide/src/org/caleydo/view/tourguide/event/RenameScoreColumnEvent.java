@@ -17,40 +17,31 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.event;
+package org.caleydo.view.tourguide.event;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
 
 /**
- * utility class to hold a list of event listeners to register and remove them all in an convinced way
- *
  * @author Samuel Gratzl
  *
  */
-public final class EventListeners {
-	private static final EventPublisher EVENT_PUBLISHER = GeneralManager.get().getEventPublisher();
+public class RenameScoreColumnEvent extends AEvent {
+	private DefaultLabelProvider column;
 
-	private final Collection<AEventListener<?>> listeners = new ArrayList<>();
-
-	public final void register(Class<? extends AEvent> event, AEventListener<?> listener) {
-		listeners.add(listener);
-		EVENT_PUBLISHER.addListener(event, listener);
-	}
-	@SafeVarargs
-	public final void register(AEventListener<?> listener, Class<? extends AEvent>... events) {
-		listeners.add(listener);
-		for (Class<? extends AEvent> event : events)
-			EVENT_PUBLISHER.addListener(event, listener);
+	public RenameScoreColumnEvent(DefaultLabelProvider column, ScoreQueryUI sender) {
+		this.column = column;
+		this.setSender(sender);
 	}
 
-	public final void unregisterAll() {
-		for (AEventListener<?> listener : listeners) {
-			EVENT_PUBLISHER.removeListener(listener);
-		}
-		listeners.clear();
+	public DefaultLabelProvider getColumn() {
+		return column;
 	}
 
+	@Override
+	public boolean checkIntegrity() {
+		return column != null;
+	}
 }
+

@@ -23,27 +23,23 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
+import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.data.ScoringElement;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class CombinedScore implements ICompositeScore {
-	private final String label;
+public class CombinedScore extends DefaultLabelProvider implements ICompositeScore {
 	private final ECombinedOperator operator;
 	private final Collection<IScore> children;
 
 	public CombinedScore(String label, ECombinedOperator op, Collection<IScore> children) {
-		this.label = label;
+		super(label);
 		this.operator = op;
 		this.children = children;
 	}
 
-	@Override
-	public String getProviderName() {
-		return null;
-	}
 	/**
 	 * @return the operator
 	 */
@@ -67,11 +63,6 @@ public class CombinedScore implements ICompositeScore {
 	}
 
 	@Override
-	public String getLabel() {
-		return label;
-	}
-
-	@Override
 	public final EScoreType getScoreType() {
 		return EScoreType.STRATIFICATION_SCORE;
 	}
@@ -85,6 +76,41 @@ public class CombinedScore implements ICompositeScore {
 		return operator.combine(data);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((children == null) ? 0 : children.hashCode());
+		result = prime * result + ((operator == null) ? 0 : operator.hashCode());
+		return result;
+	}
 
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CombinedScore other = (CombinedScore) obj;
+		if (children == null) {
+			if (other.children != null)
+				return false;
+		} else if (!children.equals(other.children))
+			return false;
+		if (operator != other.operator)
+			return false;
+		return true;
+	}
 }

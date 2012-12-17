@@ -48,7 +48,7 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
-import org.caleydo.core.gui.util.ChangeNameDialog;
+import org.caleydo.core.gui.util.RenameNameDialog;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -334,7 +334,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 			@Override
 			public void run() {
-				String r = ChangeNameDialog.show(getParentComposite().getShell(), "Rename '" + getLabel() + "' to",
+				String r = RenameNameDialog.show(getParentComposite().getShell(), "Rename '" + getLabel() + "' to",
 						getLabel());
 				if (r != null) {
 					label = r;

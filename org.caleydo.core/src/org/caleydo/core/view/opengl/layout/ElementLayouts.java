@@ -87,7 +87,7 @@ public final class ElementLayouts {
 	}
 
 	public static ElementLayout scrollAlbe(AGLView view, ElementLayout content) {
-		ScrolledLayoutElement l = new ScrolledLayoutElement(view);
+		ScrolledElementLayout l = new ScrolledElementLayout(view);
 		l.setContent(content);
 		return l;
 	}

@@ -152,11 +152,11 @@ public class CreateAdjustedRandScoreDialog extends TitleAreaDialog {
 			@SuppressWarnings("unchecked")
 			Iterable<TablePerspective> it = (Iterable<TablePerspective>) stratificationUI.getInput();
 			for (TablePerspective g : it) {
-				composite.add(manager.addIfAbsent(new AdjustedRandScore(g)));
+				composite.add(manager.addIfAbsent(new AdjustedRandScore(null, g)));
 			}
 			s = composite;
 		} else { // score single
-			s = Scores.get().addIfAbsent(new AdjustedRandScore(strat));
+			s = Scores.get().addIfAbsent(new AdjustedRandScore(null, strat));
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new AddScoreColumnEvent(s, sender));
 	}

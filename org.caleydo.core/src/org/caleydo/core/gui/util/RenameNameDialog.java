@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * @author Alexander Lex
  */
-public class ChangeNameDialog {
+public class RenameNameDialog {
 	public static String show(Shell shell, String title, String original) {
 		IInputValidator validator = new IInputValidator() {
 			@Override

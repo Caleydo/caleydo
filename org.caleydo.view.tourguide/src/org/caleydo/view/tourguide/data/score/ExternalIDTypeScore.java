@@ -43,12 +43,14 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.view.tourguide.data.ScoringElement;
 import org.caleydo.view.tourguide.data.serialize.IDTypeAdapter;
 import org.caleydo.view.tourguide.data.serialize.ISerializeableScore;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -61,10 +63,9 @@ import com.google.common.primitives.Floats;
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class ExternalIDTypeScore implements ISerializeableScore {
+public final class ExternalIDTypeScore extends DefaultLabelProvider implements ISerializeableScore {
 	private static final Logger log = Logger.create(ExternalIDTypeScore.class);
 
-	private String label;
 	@XmlJavaTypeAdapter(IDTypeAdapter.class)
 	private IDType idType;
 	private ECombinedOperator operator;
@@ -86,14 +87,13 @@ public final class ExternalIDTypeScore implements ISerializeableScore {
 			});
 
 	public ExternalIDTypeScore() {
-
+		super("");
 	}
 
 	public ExternalIDTypeScore(String label, IDType idType, ECombinedOperator operator, boolean isRank,
 			Map<Integer, Float> scores) {
-		this();
+		super(label);
 		this.idType = idType;
-		this.label = label;
 		this.isRank = isRank;
 		this.operator = operator;
 		this.scores.putAll(scores);
@@ -102,11 +102,6 @@ public final class ExternalIDTypeScore implements ISerializeableScore {
 	@Override
 	public final EScoreType getScoreType() {
 		return isRank ? EScoreType.RANK : EScoreType.SCORE;
-	}
-
-	@Override
-	public String getLabel() {
-		return label;
 	}
 
 	@Override
@@ -188,10 +183,7 @@ public final class ExternalIDTypeScore implements ISerializeableScore {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((label == null) ? 0 : label.hashCode());
-		return result;
+		return Objects.hashCode(getLabel(), idType, isRank, operator);
 	}
 
 	@Override
@@ -203,11 +195,16 @@ public final class ExternalIDTypeScore implements ISerializeableScore {
 		if (getClass() != obj.getClass())
 			return false;
 		ExternalIDTypeScore other = (ExternalIDTypeScore) obj;
-		if (label == null) {
-			if (other.label != null)
-				return false;
-		} else if (!label.equals(other.label))
+		if (Objects.equal(idType, other.idType))
+			return false;
+		if (Objects.equal(isRank, other.isRank))
+			return false;
+		if (Objects.equal(operator, other.operator))
+			return false;
+		if (Objects.equal(getLabel(), other.getLabel()))
 			return false;
 		return true;
 	}
+
+
 }
