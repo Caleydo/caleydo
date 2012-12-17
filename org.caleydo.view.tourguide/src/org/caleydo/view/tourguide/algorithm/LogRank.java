@@ -46,9 +46,12 @@ public class LogRank implements IGroupAlgorithm {
 		this.clinicalVariable = clinicalVariable;
 		this.clinical = clinical;
 	}
-
 	@Override
 	public float compute(Set<Integer> a, Set<Integer> b) {
+		return compute((Iterable<Integer>) a, b);
+	}
+
+	public float compute(Iterable<Integer> a, Iterable<Integer> b) {
 		// http://en.wikipedia.org/wiki/Logrank_test and
 		// Survival Analysis: A Self-Learning Text
 		// 1. resolve data
@@ -105,5 +108,30 @@ public class LogRank implements IGroupAlgorithm {
 		}
 		Collections.sort(r);
 		return Pair.make(r, survived);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((clinicalVariable == null) ? 0 : clinicalVariable.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LogRank other = (LogRank) obj;
+		if (clinicalVariable == null) {
+			if (other.clinicalVariable != null)
+				return false;
+		} else if (!clinicalVariable.equals(other.clinicalVariable))
+			return false;
+		return true;
 	}
 }

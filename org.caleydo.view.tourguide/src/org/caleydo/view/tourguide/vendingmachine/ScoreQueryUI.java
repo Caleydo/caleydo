@@ -33,7 +33,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
@@ -57,6 +59,7 @@ import org.caleydo.view.tourguide.data.filter.ECompareOperator;
 import org.caleydo.view.tourguide.data.filter.IScoreFilter;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.IScore;
+import org.caleydo.view.tourguide.data.score.LogRankGroupMetric;
 import org.caleydo.view.tourguide.data.score.SizeMetric;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
@@ -75,6 +78,9 @@ import org.caleydo.view.tourguide.vendingmachine.col.RankColumn;
 import org.caleydo.view.tourguide.vendingmachine.ui.ScoreFilterDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 
 /**
  * @author Samuel Gratzl
@@ -384,7 +390,15 @@ public class ScoreQueryUI extends Row {
 
 		Set<IScore> visible = getVisibleColumns();
 
-		for (IScore simple : Arrays.asList(SizeMetric.get())) {
+		Iterable<IScore> logRankScores = Iterables.transform(DataDomainOracle.getClinicalVariables(),
+				new Function<Pair<Integer, String>, IScore>() {
+					@Override
+					public IScore apply(Pair<Integer, String> p) {
+						return new LogRankGroupMetric("LogRank of " + p.getSecond(), p.getFirst());
+					}
+				});
+
+		for (IScore simple : Iterables.concat(Arrays.asList(SizeMetric.get()), logRankScores)) {
 			if (visible.contains(simple))
 				continue;
 			creator.addContextMenuItem(new GenericContextMenuItem("Add " + simple.getLabel() + " Metric",

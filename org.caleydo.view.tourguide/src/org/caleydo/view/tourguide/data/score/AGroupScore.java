@@ -19,22 +19,16 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.score;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.util.base.DefaultLabelProvider;
-import org.caleydo.view.tourguide.data.ScoringElement;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public abstract class AGroupScore extends DefaultLabelProvider implements IGroupScore {
+public abstract class AGroupScore extends AComputedGroupScore implements IGroupScore {
 	protected TablePerspective stratification;
 	protected Group group;
-	protected Map<Integer, Float> scores = new ConcurrentHashMap<>();
 
 	public AGroupScore() {
 		super("");
@@ -48,14 +42,10 @@ public abstract class AGroupScore extends DefaultLabelProvider implements IGroup
 	}
 
 
+	@Override
 	public boolean contains(TablePerspective perspective, Group elem) {
 		// have the value or it the same stratification
 		return scores.containsKey(elem.getID()) || (perspective.equals(stratification));
-	}
-
-
-	public void put(Group elem, float value) {
-		scores.put(elem.getID(), value);
 	}
 
 	@Override
@@ -79,22 +69,9 @@ public abstract class AGroupScore extends DefaultLabelProvider implements IGroup
 		return group;
 	}
 
-	@Override
-	public final EScoreType getScoreType() {
-		return EScoreType.GROUP_SCORE;
-	}
-
-	@Override
-	public float getScore(ScoringElement elem) {
-		if (elem.getGroup() == null)
-			return Float.NaN;
-		Float f = scores.get(elem.getGroup().getID());
-		return f == null ? Float.NaN : f.floatValue();
-	}
-
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -108,7 +85,7 @@ public abstract class AGroupScore extends DefaultLabelProvider implements IGroup
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

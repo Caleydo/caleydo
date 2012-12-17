@@ -1,9 +1,9 @@
 package org.caleydo.core.id;
 
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
+
+import com.google.common.collect.Sets;
 
 /**
  * simple implementation of an {@link IIDTypeMapper}, where source = target
@@ -38,8 +38,8 @@ final class IdentityIDTypeMapper<K, V> implements IIDTypeMapper<K, V> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Set<V> apply(Collection<K> sourceIds) {
-		return (Set<V>) new HashSet<K>(sourceIds);
+	public Set<V> apply(Iterable<K> sourceIds) {
+		return (Set<V>) Sets.newHashSet(sourceIds);
 	}
 
 	@Override

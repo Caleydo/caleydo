@@ -19,33 +19,49 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.score;
 
-import java.util.Set;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.view.tourguide.data.ScoringElement;
 
 /**
- * declares that the given {@link IScore} must be computed on a group base
- *
  * @author Samuel Gratzl
  *
  */
-public interface IComputedGroupScore {
-	public boolean contains(TablePerspective a, Group ag);
+public abstract class AComputedGroupScore extends DefaultLabelProvider implements IScore {
+	protected Map<Integer, Float> scores = new ConcurrentHashMap<>();
 
-	public void put(Group ag, float value);
+	public AComputedGroupScore() {
+		super("");
+	}
 
-	public IDType getTargetType(TablePerspective as);
+	public AComputedGroupScore(String label) {
+		super(label);
+	}
 
-	/**
-	 * computes the value
-	 *
-	 * @param group
-	 *            the current group under test
-	 * @param reference
-	 *            the reference either given by {@link IGroupScore} or the whole stratification of the group under test
-	 * @return
-	 */
-	public float compute(Set<Integer> group, Set<Integer> reference);
+
+	public boolean contains(TablePerspective perspective, Group elem) {
+		// have the value or it the same stratification
+		return scores.containsKey(elem.getID());
+	}
+
+	public final void put(Group elem, float value) {
+		scores.put(elem.getID(), value);
+	}
+
+	@Override
+	public final EScoreType getScoreType() {
+		return EScoreType.GROUP_SCORE;
+	}
+
+	@Override
+	public float getScore(ScoringElement elem) {
+		if (elem.getGroup() == null)
+			return Float.NaN;
+		Float f = scores.get(elem.getGroup().getID());
+		return f == null ? Float.NaN : f.floatValue();
+	}
 }

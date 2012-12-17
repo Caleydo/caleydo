@@ -32,7 +32,7 @@ import org.caleydo.view.tourguide.algorithm.JaccardIndex;
  * @author Samuel Gratzl
  *
  */
-public class JaccardIndexScore extends AGroupScore implements IComputedGroupScore {
+public class JaccardIndexScore extends AGroupScore implements IComputedReferenceGroupScore {
 	public JaccardIndexScore(TablePerspective stratification, Group group) {
 		this(null, stratification, group);
 	}

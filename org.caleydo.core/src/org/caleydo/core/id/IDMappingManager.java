@@ -39,6 +39,7 @@ import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Sets;
 
 /**
  * <p>
@@ -783,9 +784,9 @@ public class IDMappingManager {
 		 * @see org.caleydo.core.id.IIDTypeMapper#apply(java.util.Set)
 		 */
 		@Override
-		public Set<V> apply(Collection<K> sourceIds) {
-			Set<Object> ping = new HashSet<Object>(sourceIds); // current
-			Set<Object> pong = new HashSet<>(sourceIds.size()); // next
+		public Set<V> apply(Iterable<K> sourceIds) {
+			Set<Object> ping = Sets.<Object> newHashSet(sourceIds); // current
+			Set<Object> pong = new HashSet<>(ping.size()); // next
 			Set<Object> tmp;
 
 			for (MappingType edge : path) {

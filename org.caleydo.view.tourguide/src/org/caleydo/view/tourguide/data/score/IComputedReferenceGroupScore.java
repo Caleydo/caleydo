@@ -19,11 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.score;
 
-import java.util.Set;
-
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.id.IDType;
 
 /**
  * declares that the given {@link IScore} must be computed on a group base
@@ -31,21 +26,6 @@ import org.caleydo.core.id.IDType;
  * @author Samuel Gratzl
  *
  */
-public interface IComputedGroupScore {
-	public boolean contains(TablePerspective a, Group ag);
+public interface IComputedReferenceGroupScore extends IComputedGroupScore, IGroupScore {
 
-	public void put(Group ag, float value);
-
-	public IDType getTargetType(TablePerspective as);
-
-	/**
-	 * computes the value
-	 *
-	 * @param group
-	 *            the current group under test
-	 * @param reference
-	 *            the reference either given by {@link IGroupScore} or the whole stratification of the group under test
-	 * @return
-	 */
-	public float compute(Set<Integer> group, Set<Integer> reference);
 }

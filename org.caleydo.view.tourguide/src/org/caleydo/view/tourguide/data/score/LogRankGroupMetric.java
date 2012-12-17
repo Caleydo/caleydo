@@ -24,39 +24,50 @@ import java.util.Set;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.view.tourguide.algorithm.LogRank;
+
+import com.google.common.collect.Sets;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class LogRankScore extends AGroupScore implements IComputedReferenceGroupScore {
-	private final ATableBasedDataDomain clinical = DataDomainOracle.getClinicalDataDomain();
-	private final Integer clinicalVariable;
-	private final String clinicialVariableLabel;
+public class LogRankGroupMetric extends AComputedGroupScore implements IComputedGroupScore {
+	private final LogRank algorithm;
+	private final ATableBasedDataDomain clinical;
 
-	public LogRankScore(Integer clinicalVariable, TablePerspective stratification, Group group) {
-		this(null, clinicalVariable, stratification, group);
+	public LogRankGroupMetric(String label, Integer clinicalVariable) {
+		super(label);
+		this.clinical = DataDomainOracle.getClinicalDataDomain();
+		this.algorithm = LogRank.get(clinicalVariable, clinical);
 	}
 
-	public LogRankScore(String label, Integer clinicalVariable, TablePerspective stratification, Group group) {
-		super(label, stratification, group);
-		this.clinicalVariable = clinicalVariable;
-		this.clinicialVariableLabel = clinical.getDimensionLabel(clinicalVariable);
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((algorithm == null) ? 0 : algorithm.hashCode());
+		return result;
 	}
 
-	public Integer getClinicalVariable() {
-		return clinicalVariable;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LogRankGroupMetric other = (LogRankGroupMetric) obj;
+		if (algorithm == null) {
+			if (other.algorithm != null)
+				return false;
+		} else if (!algorithm.equals(other.algorithm))
+			return false;
+		return true;
 	}
 
-	/**
-	 * @return the clinicialVariableLabel, see {@link #clinicialVariableLabel}
-	 */
-	public String getClinicialVariableLabel() {
-		return clinicialVariableLabel;
-	}
 
 	@Override
 	public IDType getTargetType(TablePerspective as) {
@@ -64,7 +75,11 @@ public class LogRankScore extends AGroupScore implements IComputedReferenceGroup
 	}
 
 	@Override
-	public float compute(Set<Integer> a, Set<Integer> b) {
-		return LogRank.get(clinicalVariable, clinical).compute(a, b);
+	public float compute(Set<Integer> group, Set<Integer> stratification) {
+		// me versus the rest
+		return algorithm.compute(group, Sets.difference(stratification, group));
 	}
+
+
 }
+

@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.id;
 
-import java.util.Collection;
 import java.util.Set;
 
 import com.google.common.base.Function;
@@ -41,7 +40,7 @@ public interface IIDTypeMapper<K, V> extends Function<K, Set<V>> {
 	 * @param sourceIds
 	 * @return a set with all mapped id, that were able to be mapped, e.g. if empty nothing were able to be mapped
 	 */
-	public Set<V> apply(Collection<K> sourceIds);
+	public Set<V> apply(Iterable<K> sourceIds);
 
 	/**
 	 * predicate whether the current id can be mapped to the target type
