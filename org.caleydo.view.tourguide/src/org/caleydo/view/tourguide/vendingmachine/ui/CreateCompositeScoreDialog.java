@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.CombinedScore;
 import org.caleydo.view.tourguide.data.score.ECollapseOperator;
@@ -18,8 +19,13 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -31,13 +37,15 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
 public class CreateCompositeScoreDialog extends TitleAreaDialog {
 	// the root element to populate the viewer with
-	private final List<IScore> scores;
+	private final List<WeightedScore> scores;
 	private final ScoreQueryUI sender;
 	private final boolean createCollapseScore;
 
@@ -53,10 +61,13 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 	public CreateCompositeScoreDialog(Shell shell, Collection<IScore> scores, ScoreQueryUI sender,
 			boolean createCollapseScore) {
 		super(shell);
-		this.scores = Lists.newArrayList(scores);
+		this.scores = Lists.newArrayList();
+		for (IScore s : scores) {
+			this.scores.add(new WeightedScore(1.0f, s));
+		}
 		for (IScore s : sender.getQuery().getSelection()) {
 			if (!scores.contains(s))
-				this.scores.add(0, s);
+				this.scores.add(0, new WeightedScore(1.0f, s));
 		}
 		this.createCollapseScore = createCollapseScore;
 		this.sender = sender;
@@ -120,21 +131,43 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 		Label l = new Label(c, SWT.NONE);
 		l.setText("Scores: ");
 		l.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-		this.scoresUI = CheckboxTableViewer.newCheckList(c, SWT.BORDER);
-		this.scoresUI.getTable().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		scoresUI.setContentProvider(ArrayContentProvider.getInstance());
-		scoresUI.setLabelProvider(new LabelProvider() {
+		this.scoresUI = CheckboxTableViewer.newCheckList(c, SWT.BORDER | SWT.FULL_SELECTION);
+		Table table = scoresUI.getTable();
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		TableViewerColumn tableColumn;
+		tableColumn = new TableViewerColumn(scoresUI, SWT.LEAD);
+		tableColumn.getColumn().setText("Name");
+		tableColumn.getColumn().setWidth(200);
+		tableColumn.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((org.caleydo.core.util.base.ILabelProvider)element).getLabel();
+				WeightedScore p = (WeightedScore) element;
+				return p.score.getLabel();
 			}
 		});
+		if (!createCollapseScore) {
+			tableColumn = new TableViewerColumn(scoresUI, SWT.LEAD);
+			tableColumn.getColumn().setText("Weight");
+			tableColumn.getColumn().setWidth(50);
+			tableColumn.setEditingSupport(new WeightEditingSupport(scoresUI));
+			tableColumn.setLabelProvider(new ColumnLabelProvider() {
+				@Override
+				public String getText(Object element) {
+					WeightedScore p = (WeightedScore) element;
+					return String.valueOf(p.weight);
+				}
+			});
+		}
+		scoresUI.setContentProvider(ArrayContentProvider.getInstance());
 		scoresUI.setInput(scores);
 		if (!createCollapseScore) {
 			for (IScore s : sender.getQuery().getSelection()) {
 				scoresUI.setChecked(s, true);
 			}
 		}
+
 		this.scoresDeco = new ControlDecoration(this.scoresUI.getControl(), SWT.TOP | SWT.RIGHT);
 		scoresDeco.setDescriptionText("Select at least two elements");
 		scoresDeco.setImage(image);
@@ -146,6 +179,36 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 			}
 		});
 		return c;
+	}
+
+	public class WeightEditingSupport extends EditingSupport {
+		private final TableViewer viewer;
+
+		public WeightEditingSupport(TableViewer viewer) {
+			super(viewer);
+			this.viewer = viewer;
+		}
+
+		@Override
+		protected CellEditor getCellEditor(Object element) {
+			return new TextCellEditor(viewer.getTable());
+		}
+
+		@Override
+		protected boolean canEdit(Object element) {
+			return true;
+		}
+
+		@Override
+		protected Object getValue(Object element) {
+			return String.valueOf(((WeightedScore) element).weight);
+		}
+
+		@Override
+		protected void setValue(Object element, Object value) {
+			((WeightedScore) element).weight = Float.parseFloat(String.valueOf(value));
+			viewer.update(element, null);
+		}
 	}
 
 	private boolean validateOperator() {
@@ -169,14 +232,14 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 		if (!validateLabel() || !validateOperator() || !validateScores())
 			return;
 		String label = labelUI.getText();
-		Collection<IScore> children = new ArrayList<>();
+		Collection<Pair<IScore, Float>> children = new ArrayList<>();
 		for (Object score : scoresUI.getCheckedElements()) {
-			children.add((IScore) score);
+			children.add(((WeightedScore) score).asPair());
 		}
 		ICompositeScore result;
 		if (createCollapseScore) {
 			ECollapseOperator op = ECollapseOperator.values()[operatorUI.getSelectionIndex()];
-			result = new CollapseScore(label, op, children);
+			result = new CollapseScore(label, op, Collections2.transform(children, Pair.<IScore, Float> mapFirst()));
 		} else {
 			ECombinedOperator op = ECombinedOperator.values()[operatorUI.getSelectionIndex()];
 			result = new CombinedScore(label, op, children);
@@ -202,6 +265,21 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 		} else {
 			labelDeco.hide();
 			return true;
+		}
+	}
+
+	private static class WeightedScore {
+		private float weight = 1.0f;
+		private final IScore score;
+
+		public WeightedScore(float weight, IScore score) {
+			super();
+			this.weight = weight;
+			this.score = score;
+		}
+
+		public Pair<IScore, Float> asPair() {
+			return Pair.make(score, weight);
 		}
 	}
 }

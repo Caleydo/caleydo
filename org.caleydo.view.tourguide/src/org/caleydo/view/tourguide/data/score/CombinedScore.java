@@ -20,11 +20,14 @@
 package org.caleydo.view.tourguide.data.score;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 
 import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.data.ScoringElement;
+
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterators;
 
 /**
  * @author Samuel Gratzl
@@ -32,9 +35,10 @@ import org.caleydo.view.tourguide.data.ScoringElement;
  */
 public class CombinedScore extends DefaultLabelProvider implements ICompositeScore {
 	private final ECombinedOperator operator;
-	private final Collection<IScore> children;
+	// score,weight
+	private final Collection<Pair<IScore, Float>> children;
 
-	public CombinedScore(String label, ECombinedOperator op, Collection<IScore> children) {
+	public CombinedScore(String label, ECombinedOperator op, Collection<Pair<IScore, Float>> children) {
 		super(label);
 		this.operator = op;
 		this.children = children;
@@ -49,12 +53,12 @@ public class CombinedScore extends DefaultLabelProvider implements ICompositeSco
 
 	@Override
 	public Iterator<IScore> iterator() {
-		return children.iterator();
+		return Iterators.transform(children.iterator(), Pair.<IScore, Float> mapFirst());
 	}
 
 	@Override
 	public Collection<IScore> getChildren() {
-		return Collections.unmodifiableCollection(children);
+		return Collections2.transform(children, Pair.<IScore, Float> mapFirst());
 	}
 
 	@Override
@@ -71,14 +75,14 @@ public class CombinedScore extends DefaultLabelProvider implements ICompositeSco
 	public float getScore(ScoringElement elem) {
 		float[] data = new float[children.size()];
 		int i = 0;
-		for (IScore child : children)
-			data[i++] = child.getScore(elem);
+		for (Pair<IScore, Float> child : children)
+			data[i++] = child.getFirst().getScore(elem) * child.getSecond();
 		return operator.combine(data);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -92,7 +96,7 @@ public class CombinedScore extends DefaultLabelProvider implements ICompositeSco
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

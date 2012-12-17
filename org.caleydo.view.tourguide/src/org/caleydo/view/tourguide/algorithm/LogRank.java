@@ -54,11 +54,11 @@ public class LogRank implements IGroupAlgorithm {
 		// 1. resolve data
 		Pair<List<Float>, Integer> asp = getValues(a, this.clinicalVariable);
 		List<Float> as = asp.getFirst();
-		int anull = asp.getSecond(); // still there after end
+		int asurvived = asp.getSecond(); // still there after end
 
 		Pair<List<Float>, Integer> bsp = getValues(b, this.clinicalVariable);
 		List<Float> bs = bsp.getFirst();
-		int bnull = bsp.getSecond();
+		int bsurvived = bsp.getSecond();
 		SortedSet<Float> distinct = new TreeSet<>(as);
 		distinct.addAll(bs);
 		int ai = 0, bi = 0;
@@ -72,14 +72,14 @@ public class LogRank implements IGroupAlgorithm {
 				o1j++; // find act
 				ai++;
 			}
-			float n1j = as.size() + anull - ai; // rest
+			float n1j = as.size() + asurvived - ai; // rest
 			// 2
 			float o2j = 0;
 			while (bi < bs.size() && bs.get(bi) == j) {
 				o2j++; // find act
 				bi++;
 			}
-			float n2j = bs.size() + bnull - bi; // rest
+			float n2j = bs.size() + bsurvived - bi; // rest
 
 			float e1j = n1j == 0 ? 0 : (o1j + o2j) * n1j / (n1j + n2j);
 			float vj = (n1j == 0 || n2j == 0) ? 0 : (n1j * n2j * (o1j + o2j) * (n1j + n2j - o1j - o2j))
@@ -93,17 +93,17 @@ public class LogRank implements IGroupAlgorithm {
 	}
 
 	private Pair<List<Float>, Integer> getValues(Iterable<Integer> a, Integer col) {
-		int nulls = 0;
+		int survived = 0;
 		List<Float> r = new ArrayList<>();
 		for (Integer row : a) {
 			Float v = clinical.getTable().getFloat(DataRepresentation.RAW, row, col);
 			if (v == null || v.isNaN()) {
-				nulls++;
+				survived++;
 				continue;
 			}
 			r.add(v);
 		}
 		Collections.sort(r);
-		return Pair.make(r, nulls);
+		return Pair.make(r, survived);
 	}
 }
