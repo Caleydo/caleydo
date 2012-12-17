@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,13 +21,12 @@ package org.caleydo.core.data.virtualarray.similarity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
-import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
+import org.caleydo.core.id.IIDTypeMapper;
 
 /**
  * The similarity of one group in source VA1 to all groups in target VA2. You
@@ -47,7 +46,7 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
  * identical, the similarities however not, since the similarities also consider
  * the size of the group.
  * </p>
- * 
+ *
  * @author Alexander Lex
  */
 public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListType>, GroupListType extends GroupList<GroupListType, VAType, ?>> {
@@ -61,7 +60,7 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 	/**
 	 * Get the number of shared elements between this group and the group of va2
 	 * specified through the groupID
-	 * 
+	 *
 	 * @param groupID
 	 * @return
 	 */
@@ -74,7 +73,7 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 	/**
 	 * Returns the similarity of this group to the group specified via the
 	 * groupID in a rate normalized between 0 and 1
-	 * 
+	 *
 	 * @param groupID
 	 * @return
 	 */
@@ -85,7 +84,7 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 	/**
 	 * Returns the similarity of this group to all other groups, normalized
 	 * between 0 and 1
-	 * 
+	 *
 	 * @param groupID
 	 * @return
 	 */
@@ -101,7 +100,7 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 	 * Returns a new virtual array containing all elements which occur in the
 	 * primary group of this group similarity and an external group specified
 	 * through the foreign group ID.
-	 * 
+	 *
 	 * @param foreignGroupID
 	 *            Returns null if createSimilarity flag is false.
 	 * @return
@@ -147,23 +146,10 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 	}
 
 	void calculateSimilarity() {
-
-		for (int vaIndex = group.getStartIndex(); vaIndex < group.getStartIndex()
-				+ group.getSize(); vaIndex++) {
-
-			Integer id = va1.get(vaIndex);
-			if (va1.getIdType() != va2.getIdType()) {
-				IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
-						.getIDMappingManager(va1.getIdType().getIDCategory());
-				Set<Integer> ids = idMappingManager.getIDAsSet(va1.getIdType(),
-						va2.getIdType(), id);
-				if (ids != null) {
-					id = ids.iterator().next();
-					if (ids.size() > 2) {
-						System.out.println("Multi-Mapping");
-					}
-				}
-			}
+		IIDTypeMapper<Integer, Integer> mapper = IDMappingManagerRegistry.get().getIDMappingManager(va1.getIdType())
+				.getIDTypeMapper(va1.getIdType(), va2.getIdType());
+		// map all at once
+		for (Integer id : mapper.apply(va1.getIDsOfGroup(group.getGroupIndex()))) {
 			List<Group> groups2 = va2.getGroupOf(id);
 
 			if (groups2.size() > 1) {
