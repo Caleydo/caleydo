@@ -80,7 +80,9 @@
                   ID="test"
                   embeddingID="test"
                   icon="resources/icons/parcoords.png"
-                  viewCreator="org.caleydo.view.parcoords.ParCoordsRemoteViewCreator">
+                  isDefaultView="true"
+                  viewCreator="org.caleydo.view.parcoords.ParCoordsRemoteViewCreator"
+                  visInfo="org.caleydo.view.parcoords.ParCoordsVisInfo">
             </Embedding>
          </ParentView>
       </EmbeddingInfo>

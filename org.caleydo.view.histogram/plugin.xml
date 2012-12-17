@@ -47,12 +47,44 @@
       <EmbeddingInfo
             viewID="org.caleydo.view.histogram">
          <ParentView
-               viewID="org.caleydo.view.subgraph">
+               viewID="org.caleydo.view.stratomex">
             <Embedding
                   ID="test"
-                  embeddingID="test"
+                  embeddingID="org.caleydo.view.stratomex.numerical.segment.brick"
                   icon="resources/icons/histogram.png"
-                  viewCreator="org.caleydo.view.histogram.HistogramRemoteViewCreator">
+                  isDefaultView="false"
+                  viewCreator="org.caleydo.view.histogram.HistogramRemoteViewCreator"
+                  visInfo="org.caleydo.view.histogram.HistogramVisInfo">
+            </Embedding>
+         </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.numerical.header.brick"
+                  icon="resources/icons/histogram.png"
+                  isDefaultView="true"
+                  viewCreator="org.caleydo.view.histogram.HistogramRemoteViewCreator"
+                  visInfo="org.caleydo.view.histogram.HistogramVisInfo">
+            </Embedding>
+         </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.categorical.header.brick"
+                  icon="resources/icons/histogram.png"
+                  isDefaultView="true"
+                  viewCreator="org.caleydo.view.histogram.HistogramRemoteViewCreator"
+                  visInfo="org.caleydo.view.histogram.HistogramVisInfo">
+            </Embedding>
+         </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.categorical.segment.brick"
+                  icon="resources/icons/histogram.png"
+                  isDefaultView="false"
+                  viewCreator="org.caleydo.view.histogram.HistogramRemoteViewCreator"
+                  visInfo="org.caleydo.view.histogram.HistogramVisInfo">
             </Embedding>
          </ParentView>
       </EmbeddingInfo>

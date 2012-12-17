@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,17 +8,17 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 /**
- * 
+ *
  */
 package org.caleydo.view.enroute.node;
 
@@ -49,9 +49,9 @@ import org.caleydo.view.enroute.node.layout.BranchNodeLabelRenderer;
 
 /**
  * Node that represents multiple nodes in a branch.
- * 
+ *
  * @author Christian
- * 
+ *
  */
 public class BranchSummaryNode extends ANode {
 
@@ -66,8 +66,8 @@ public class BranchSummaryNode extends ANode {
 	protected LayoutManager layoutManager;
 
 	/**
-	 * Determines whether the node is collapsed and shall be rendered itself, or
-	 * if it is expanded to display the branch nodes.
+	 * Determines whether the node is collapsed and shall be rendered itself, or if it is expanded to display the branch
+	 * nodes.
 	 */
 	private boolean isCollapsed = true;
 
@@ -90,8 +90,7 @@ public class BranchSummaryNode extends ANode {
 	/**
 	 * @param pixelGLConverter
 	 */
-	public BranchSummaryNode(GLEnRoutePathway view, int nodeId,
-			ALinearizableNode associatedLinearizedNode) {
+	public BranchSummaryNode(GLEnRoutePathway view, int nodeId, ALinearizableNode associatedLinearizedNode) {
 		super(view.getPixelGLConverter(), view, nodeId);
 		layoutManager = new LayoutManager(new ViewFrustum(), pixelGLConverter);
 		this.associatedLinearizedNode = associatedLinearizedNode;
@@ -163,8 +162,7 @@ public class BranchSummaryNode extends ANode {
 
 	@Override
 	public void unregisterPickingListeners() {
-		view.removeAllIDPickingListeners(
-				EPickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId);
+		view.removeAllIDPickingListeners(EPickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId);
 	}
 
 	/**
@@ -176,8 +174,7 @@ public class BranchSummaryNode extends ANode {
 	}
 
 	/**
-	 * @return the associatedLinearizedNode, see
-	 *         {@link #associatedLinearizedNode}
+	 * @return the associatedLinearizedNode, see {@link #associatedLinearizedNode}
 	 */
 	public ALinearizableNode getAssociatedLinearizedNode() {
 		return associatedLinearizedNode;
@@ -202,10 +199,9 @@ public class BranchSummaryNode extends ANode {
 		baseRow.setPixelSizeY(LABEL_HEIGHT_PIXELS);
 
 		ElementLayout collapseButtonLayout = new ElementLayout("collapseButton");
-		collapseButton = new Button(
-				EPickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId,
+		collapseButton = new Button(EPickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId,
 				EIconTextures.GROUPER_COLLAPSE_PLUS);
-		ButtonRenderer collapseButtonRenderer = new ButtonRenderer(collapseButton, view);
+		ButtonRenderer collapseButtonRenderer = new ButtonRenderer.Builder(view, collapseButton).build();
 		collapseButtonLayout.setRenderer(collapseButtonRenderer);
 		collapseButtonLayout.setPixelSizeX(COLLAPSE_BUTTON_SIZE_PIXELS);
 		collapseButtonLayout.setPixelSizeY(COLLAPSE_BUTTON_SIZE_PIXELS);
@@ -256,24 +252,19 @@ public class BranchSummaryNode extends ANode {
 		float height = pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
 
 		gl.glPushMatrix();
-		gl.glTranslatef(position.x() - width / 2.0f, position.y() - height / 2.0f,
-				position.z() - (isCollapsed ? 0 : 0.001f));
-		layoutManager.setViewFrustum(new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC,
-				0, width, 0, height, -1, 20));
+		gl.glTranslatef(position.x() - width / 2.0f, position.y() - height / 2.0f, position.z()
+				- (isCollapsed ? 0 : 0.001f));
+		layoutManager.setViewFrustum(new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, width, 0, height, -1, 20));
 
 		layoutManager.render(gl);
 		gl.glPopMatrix();
 
 		if (!isCollapsed) {
 
-			float titleAreaHeight = pixelGLConverter
-					.getGLHeightForPixelHeight(getTitleAreaHeightPixels());
-			float branchAreaSpacing = pixelGLConverter
-					.getGLHeightForPixelHeight(BRANCH_AREA_SPACING);
-			float branchNodeSpacing = pixelGLConverter
-					.getGLHeightForPixelHeight(BRANCH_NODE_SPACING);
-			float currentPositionY = position.y() + height / 2.0f - titleAreaHeight
-					- branchAreaSpacing;
+			float titleAreaHeight = pixelGLConverter.getGLHeightForPixelHeight(getTitleAreaHeightPixels());
+			float branchAreaSpacing = pixelGLConverter.getGLHeightForPixelHeight(BRANCH_AREA_SPACING);
+			float branchNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(BRANCH_NODE_SPACING);
+			float currentPositionY = position.y() + height / 2.0f - titleAreaHeight - branchAreaSpacing;
 
 			for (ANode node : branchNodes) {
 				float nodeHeight = node.getHeight();
@@ -294,8 +285,7 @@ public class BranchSummaryNode extends ANode {
 	}
 
 	/**
-	 * @return Height of the area where the branch nodes are accommodated in
-	 *         pixels.
+	 * @return Height of the area where the branch nodes are accommodated in pixels.
 	 */
 	public int getBranchAreaHeightPixels() {
 
@@ -317,15 +307,14 @@ public class BranchSummaryNode extends ANode {
 
 	@Override
 	public int getHeightPixels() {
-		return getTitleAreaHeightPixels()
-				+ (isCollapsed ? 0 : getBranchAreaHeightPixels());
+		return getTitleAreaHeightPixels() + (isCollapsed ? 0 : getBranchAreaHeightPixels());
 	}
 
 	@Override
 	public int getWidthPixels() {
 		return MIN_NODE_WIDTH_PIXELS;
 	}
-	
+
 	@Override
 	public String getProviderName() {
 		return "Branch Summary Node";

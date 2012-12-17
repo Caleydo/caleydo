@@ -91,6 +91,7 @@ public class ToolBar extends Row {
 	public void destroy(GL2 gl) {
 		brick.getBrickColumn().getStratomexView()
 				.removeTypePickingListener(brickPickingListener, EPickingType.BRICK.name());
+		elements.remove(brick.getViewSwitchingBar());
 		super.destroy(gl);
 	}
 }

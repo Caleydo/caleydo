@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -40,8 +40,7 @@ import org.caleydo.view.dvi.node.IDVINode;
 import org.caleydo.view.dvi.tableperspective.PerspectiveRenderer;
 import org.caleydo.view.dvi.tableperspective.TablePerspectiveRenderer;
 
-class BottomUpTablePerspectiveMatrixRenderingStrategy
-	extends ATablePerspectiveMatrixRenderingStrategy {
+class BottomUpTablePerspectiveMatrixRenderingStrategy extends ATablePerspectiveMatrixRenderingStrategy {
 
 	public BottomUpTablePerspectiveMatrixRenderingStrategy(TablePerspectiveMatrixRenderer matrixRenderer) {
 		super(matrixRenderer);
@@ -131,8 +130,8 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy
 							row.id.hashCode(), row.isCollapsed ? EIconTextures.GROUPER_COLLAPSE_PLUS
 									: EIconTextures.GROUPER_COLLAPSE_MINUS);
 
-					ButtonRenderer collapsePerspectiveButtonRenderer = new ButtonRenderer(collapsePerspectiveButton,
-							view);
+					ButtonRenderer collapsePerspectiveButtonRenderer = new ButtonRenderer.Builder(view,
+							collapsePerspectiveButton).build();
 					collapsePerspectiveButtonRenderer.addPickingIDs(pickingIDsToBePushed);
 					collapsePerspectiveButtonRenderer.addPickingID(
 							PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(), row.id.hashCode());
@@ -147,8 +146,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy
 
 					parentIndent = captionSpacingX * 2 + pixelGLConverter.getGLHeightForPixelHeight(2);
 				}
-			}
-			else {
+			} else {
 				childIndent = captionSpacingY * 2;
 
 				gl.glColor4fv(groupColor, 0);
@@ -241,8 +239,8 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy
 							column.id.hashCode(), column.isCollapsed ? EIconTextures.GROUPER_COLLAPSE_PLUS
 									: EIconTextures.GROUPER_COLLAPSE_MINUS);
 
-					ButtonRenderer collapsePerspectiveButtonRenderer = new ButtonRenderer(collapsePerspectiveButton,
-							view);
+					ButtonRenderer collapsePerspectiveButtonRenderer = new ButtonRenderer.Builder(view,
+							collapsePerspectiveButton).build();
 					collapsePerspectiveButtonRenderer.addPickingIDs(pickingIDsToBePushed);
 					collapsePerspectiveButtonRenderer.addPickingID(
 							PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(), column.id.hashCode());
@@ -258,8 +256,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy
 					parentIndent = captionSpacingY * 2 + pixelGLConverter.getGLHeightForPixelHeight(2);
 
 				}
-			}
-			else {
+			} else {
 
 				childIndent = captionSpacingY * 2;
 
@@ -348,8 +345,7 @@ class BottomUpTablePerspectiveMatrixRenderingStrategy
 							new Pair<Point2D, Point2D>(topPosition1, topPosition2));
 
 					currentDimGroupPositionX += columnWidth;
-				}
-				else {
+				} else {
 
 					pickingID = view.getPickingManager().getPickingID(view.getID(),
 							PickingType.EMPTY_CELL.name() + node.getID(), ((EmptyCellRenderer) cell).getID());

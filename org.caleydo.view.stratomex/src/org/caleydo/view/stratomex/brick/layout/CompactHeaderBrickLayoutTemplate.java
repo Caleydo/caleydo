@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,18 +8,19 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.stratomex.brick.layout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -32,9 +33,9 @@ import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * Layout for central brick that is displayed in the arch.
- * 
+ *
  * @author Partl
- * 
+ *
  */
 public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
@@ -42,10 +43,8 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 	protected static final int FOOTER_BAR_HEIGHT_PIXELS = 12;
 	protected static final int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
 
-	private GLStratomex stratomex;
-
-	protected ArrayList<ElementLayout> headerBarElements;
-	protected ArrayList<ElementLayout> footerBarElements;
+	protected List<ElementLayout> headerBarElements;
+	protected List<ElementLayout> footerBarElements;
 
 	// protected Row headerBar;
 	// protected Row footerBar;
@@ -54,15 +53,11 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 
 	protected int guiElementsHeight = 0;
 
-	public CompactHeaderBrickLayoutTemplate(GLBrick brick, BrickColumn dimensionGroup,
-			GLStratomex stratomex, IBrickConfigurer configurer) {
-		super(brick, dimensionGroup);
-		this.stratomex = stratomex;
+	public CompactHeaderBrickLayoutTemplate(GLBrick brick, BrickColumn brickColumn,
+ GLStratomex stratomex) {
+		super(brick, brickColumn, stratomex);
 		headerBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
-		// headerBar = new Row();
-		// footerBar = new Row();
-		configurer.configure(this);
 		registerPickingListeners();
 	}
 
@@ -110,7 +105,7 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 			guiElementsHeight += SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS;
 		}
 		baseColumn.append(viewLayout);
-		
+
 		baseColumn.append(spacingLayoutY);
 		baseColumn.append(headerBar);
 		baseColumn.append(spacingLayoutY);
@@ -172,8 +167,7 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 
 	@Override
 	public ABrickLayoutConfiguration getExpandedLayoutTemplate() {
-		return new HeaderBrickLayoutTemplate(brick, brickColumn, stratomex,
-				brick.getBrickConfigurer());
+		return new HeaderBrickLayoutTemplate(brick, brickColumn, stratomex);
 	}
 
 	/**
@@ -185,7 +179,7 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 
 	/**
 	 * Specifies whether the footer bar shall be shown.
-	 * 
+	 *
 	 * @param showFooterBar
 	 */
 	public void showFooterBar(boolean showFooterBar) {
@@ -195,21 +189,26 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 	/**
 	 * Sets the elements that should appear in the header bar. The elements will
 	 * placed from left to right using the order of the specified list.
-	 * 
+	 *
 	 * @param headerBarElements
 	 */
-	public void setHeaderBarElements(ArrayList<ElementLayout> headerBarElements) {
+	public void setHeaderBarElements(List<ElementLayout> headerBarElements) {
 		this.headerBarElements = headerBarElements;
 	}
 
 	/**
 	 * Sets the elements that should appear in the footer bar. The elements will
 	 * placed from left to right using the order of the specified list.
-	 * 
+	 *
 	 * @param footerBarElements
 	 */
-	public void setFooterBarElements(ArrayList<ElementLayout> footerBarElements) {
+	public void setFooterBarElements(List<ElementLayout> footerBarElements) {
 		this.footerBarElements = footerBarElements;
+	}
+
+	@Override
+	public void configure(IBrickConfigurer configurer) {
+		configurer.configure(this);
 	}
 
 }

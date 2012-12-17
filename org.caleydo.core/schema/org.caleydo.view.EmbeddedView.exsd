@@ -115,6 +115,23 @@
                </appInfo>
             </annotation>
          </attribute>
+         <attribute name="visInfo" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Provides general information about the embedded visualization such as scaling characteristics.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="isDefaultView" type="boolean" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

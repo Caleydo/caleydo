@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -32,7 +32,7 @@ import org.caleydo.view.enroute.EPickingType;
 
 /**
  * @author alexsb
- * 
+ *
  */
 public class ColumnCaptionLayout extends Column {
 
@@ -40,33 +40,32 @@ public class ColumnCaptionLayout extends Column {
 	MappedDataRenderer parent;
 	Group group;
 
-//	private static final int abstractModePixelWidth = 40;
-//
-//	private float dymanicWidth;
+	// private static final int abstractModePixelWidth = 40;
+	//
+	// private float dymanicWidth;
 
 	/**
-	 * 
+	 *
 	 */
 	public ColumnCaptionLayout(AGLView parentView, MappedDataRenderer parent) {
 		this.parentView = parentView;
 		this.parent = parent;
 		this.isBottomUp = false;
-//		dymanicWidth = ratioSizeX;
+		// dymanicWidth = ratioSizeX;
 
 	}
 
-	public void init(Group group, AVariablePerspective<?, ?, ?, ?> samplePerspective,
-			ATableBasedDataDomain dataDomain) {
+	public void init(Group group, AVariablePerspective<?, ?, ?, ?> samplePerspective, ATableBasedDataDomain dataDomain) {
 		this.group = group;
 		ElementLayout caption = new ElementLayout();
 		this.append(caption);
-		ColumnCaptionRenderer renderer = new ColumnCaptionRenderer(parentView, parent,
-				group, samplePerspective, dataDomain);
+		ColumnCaptionRenderer renderer = new ColumnCaptionRenderer(parentView, parent, group, samplePerspective,
+				dataDomain);
 		caption.setRenderer(renderer);
 
-		Button button = new Button(EPickingType.SAMPLE_GROUP_VIEW_MODE.name(),
-				group.getID(), EIconTextures.ABSTRACT_BAR_ICON);
-		ButtonRenderer buttonRender = new ButtonRenderer(button, parentView);
+		Button button = new Button(EPickingType.SAMPLE_GROUP_VIEW_MODE.name(), group.getID(),
+				EIconTextures.ABSTRACT_BAR_ICON);
+		ButtonRenderer buttonRender = new ButtonRenderer.Builder(parentView, button).build();
 
 		ElementLayout spacing = new ElementLayout();
 		spacing.setPixelSizeY(2);

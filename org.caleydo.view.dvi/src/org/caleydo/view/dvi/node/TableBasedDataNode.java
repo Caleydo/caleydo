@@ -64,9 +64,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
-public class TableBasedDataNode
-	extends ADataNode
-	implements IDropArea {
+public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 	private final static String TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_TYPE = "org.caleydo.view.dvi.toggletableperspectivebutton";
 	private final static int TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_ID = 0;
@@ -86,7 +84,7 @@ public class TableBasedDataNode
 
 	private abstract class ALayoutState {
 		protected AMultiTablePerspectiveRenderer tablePerspectiveRenderer;
-		protected int textureRotation;
+		protected ButtonRenderer.ETextureRotation textureRotation;
 
 		public void apply() {
 			TableBasedDataNode.this.tablePerspectiveRenderer.unregisterPickingListeners();
@@ -104,8 +102,7 @@ public class TableBasedDataNode
 		public abstract ALayoutState getNextState();
 	}
 
-	private class OverviewState
-		extends ALayoutState {
+	private class OverviewState extends ALayoutState {
 
 		public OverviewState() {
 			tablePerspectiveRenderer = new TablePerspectiveListRenderer(TableBasedDataNode.this, view,
@@ -114,7 +111,7 @@ public class TableBasedDataNode
 			pickingIDsToBePushed.add(new Pair<String, Integer>(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
 
 			tablePerspectiveRenderer.setPickingIDsToBePushed(pickingIDsToBePushed);
-			textureRotation = ButtonRenderer.TEXTURE_ROTATION_270;
+			textureRotation = ButtonRenderer.ETextureRotation.TEXTURE_ROTATION_270;
 		}
 
 		@Override
@@ -132,8 +129,7 @@ public class TableBasedDataNode
 		}
 	}
 
-	private class DetailState
-		extends ALayoutState {
+	private class DetailState extends ALayoutState {
 
 		public DetailState() {
 			tablePerspectiveRenderer = new TablePerspectiveMatrixRenderer(dataDomain, view, TableBasedDataNode.this,
@@ -142,7 +138,7 @@ public class TableBasedDataNode
 			pickingIDsToBePushed.add(new Pair<String, Integer>(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
 
 			tablePerspectiveRenderer.setPickingIDsToBePushed(pickingIDsToBePushed);
-			textureRotation = ButtonRenderer.TEXTURE_ROTATION_90;
+			textureRotation = ButtonRenderer.ETextureRotation.TEXTURE_ROTATION_90;
 		}
 
 		@Override
@@ -291,7 +287,7 @@ public class TableBasedDataNode
 		if (dataDomain.getRecordPerspectiveIDs().size() < 1 && dataDomain.getDimensionPerspectiveIDs().size() < 1) {
 			toggleTablePerspectiveButton.setVisible(false);
 		}
-		toggleTablePerspectiveButtonRenderer = new ButtonRenderer(toggleTablePerspectiveButton, view);
+		toggleTablePerspectiveButtonRenderer = new ButtonRenderer.Builder(view, toggleTablePerspectiveButton).build();
 		toggleTablePerspectiveButtonRenderer.addPickingID(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 		toggleTablePerspectiveButtonRenderer.setZCoordinate(1);
 		toggleTablePerspectiveButtonLayout.setRenderer(toggleTablePerspectiveButtonRenderer);

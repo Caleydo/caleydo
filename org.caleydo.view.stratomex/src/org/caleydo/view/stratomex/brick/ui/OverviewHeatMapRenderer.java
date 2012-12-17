@@ -281,7 +281,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
-		return false;
+		return true;
 	}
 
 }

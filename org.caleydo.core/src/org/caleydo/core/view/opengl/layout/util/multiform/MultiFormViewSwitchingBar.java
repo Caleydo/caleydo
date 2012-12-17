@@ -107,15 +107,46 @@ public class MultiFormViewSwitchingBar extends Row implements IMultiFormChangeLi
 		}
 	}
 
-	private void addButton(int rendererID, MultiFormRenderer multiFormRenderer) {
+	/**
+	 * Adds a button for a specified renderer. If a button already exists for this renderer, it will be replaced. Note
+	 * that buttons usually do not have to be added manually, as they are created automatically for all renderers of a
+	 * {@link MultiFormRenderer}.
+	 *
+	 * @param rendererID
+	 *            ID of the renderer a button should be added for.
+	 * @param multiFormRenderer
+	 *            The <code>MultiFormRenderer</code> the renderer belongs to.
+	 */
+	public void addButton(int rendererID, MultiFormRenderer multiFormRenderer) {
+
 		Button button = new Button(buttonPickingType, rendererID, multiFormRenderer.getIconPath(rendererID));
 		ElementLayout buttonLayout = ElementLayouts.createButton(view, button, DEFAULT_HEIGHT_PIXELS,
-				DEFAULT_HEIGHT_PIXELS);
-		add(buttonLayout);
+				DEFAULT_HEIGHT_PIXELS, 0.22f);
+
+		if (buttons.containsKey(rendererID)) {
+			Pair<Button, ElementLayout> buttonPair = buttons.get(rendererID);
+			ElementLayout elementLayout = buttonPair.getSecond();
+
+			int elementIndex = elements.indexOf(elementLayout);
+			add(elementIndex, buttonLayout);
+
+			remove(elementLayout);
+			GL2 gl = view.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2();
+			elementLayout.destroy(gl);
+
+		} else {
+			add(buttonLayout);
+		}
 		buttons.put(rendererID, new Pair<>(button, buttonLayout));
 	}
 
-	private void removeButton(int rendererID) {
+	/**
+	 * Removes the button corresponding to the renderer specified by the provided ID from the toolbar.
+	 *
+	 * @param rendererID
+	 *            ID of the renderer the button corresponds to.
+	 */
+	public void removeButton(int rendererID) {
 
 		Pair<Button, ElementLayout> buttonPair = buttons.get(rendererID);
 		if (buttonPair == null)
@@ -132,7 +163,6 @@ public class MultiFormViewSwitchingBar extends Row implements IMultiFormChangeLi
 			ElementLayout spacing = elements.get(1);
 			elements.remove(1);
 			spacing.destroy(gl);
-
 		}
 		if (elementIndex > 1) {
 			ElementLayout spacing = elements.get(elementIndex - 1);
@@ -146,14 +176,19 @@ public class MultiFormViewSwitchingBar extends Row implements IMultiFormChangeLi
 
 		buttons.remove(rendererID);
 
-		layoutManager.updateLayout();
+		if (layoutManager != null) {
+			layoutManager.updateLayout();
+		} else {
+			updateSpacings();
+		}
+
 	}
 
 	@Override
 	public void destroyed(MultiFormRenderer multiFormRenderer) {
 		this.multiFormRenderer = null;
 
-		destroy(view.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2());
+		// destroy(view.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2());
 	}
 
 	@Override
@@ -186,7 +221,8 @@ public class MultiFormViewSwitchingBar extends Row implements IMultiFormChangeLi
 	@Override
 	public void destroy(GL2 gl) {
 		view.removeAllTypePickingListeners(buttonPickingType);
-		multiFormRenderer.removeChangeListener(this);
+		if (multiFormRenderer != null)
+			multiFormRenderer.removeChangeListener(this);
 		buttons.clear();
 		super.destroy(gl);
 	}

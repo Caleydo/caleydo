@@ -75,11 +75,12 @@ public final class ElementLayouts {
 	}
 
 	public static ElementLayout createButton(AGLView view, Button button) {
-		return createButton(view, button, 16, 16);
+		return createButton(view, button, 16, 16, 0.02f);
 	}
 
-	public static ElementLayout createButton(AGLView view, Button button, int width, int height) {
-		return create().width(width).height(height).render(new ButtonRenderer(button, view)).build();
+	public static ElementLayout createButton(AGLView view, Button button, int width, int height, float z) {
+		return create().width(width).height(height)
+				.render(new ButtonRenderer.Builder(view, button).zCoordinate(z).build()).build();
 	}
 
 	public static ElementLayout wrap(LayoutRenderer renderer, int width) {

@@ -33,14 +33,12 @@ public class BrickColumnManager {
 	private HashMap<Integer, BrickColumnSpacingRenderer> brickColumnSpacers = new HashMap<Integer, BrickColumnSpacingRenderer>();
 
 	/**
-	 * The index of the first column in the center referring to
-	 * {@link #brickColumns}
+	 * The index of the first column in the center referring to {@link #brickColumns}
 	 */
 	private int centerColumnStartIndex = 0;
 
 	/**
-	 * The index of the first column in the right leg of the arc, referring to
-	 * {@link #brickColumns}
+	 * The index of the first column in the right leg of the arc, referring to {@link #brickColumns}
 	 */
 	private int rightColumnStartIndex = 0;
 
@@ -49,8 +47,8 @@ public class BrickColumnManager {
 	}
 
 	/**
-	 * Returns the first brick column that contains the given table perspective.
-	 * If not brick column is found, null is returned.
+	 * Returns the first brick column that contains the given table perspective. If not brick column is found, null is
+	 * returned.
 	 *
 	 * @param tablePerspective
 	 *            for which the brick column will be returned
@@ -115,7 +113,9 @@ public class BrickColumnManager {
 		while (brickColumnIterator.hasNext()) {
 			BrickColumn brickColumn = brickColumnIterator.next();
 			if (brickColumn.getTablePerspective().getID() == tablePerspectiveID) {
-				ViewManager.get().unregisterGLView(brickColumn);
+				// ViewManager.get().unregisterGLView(brickColumn);
+				ViewManager.get().destroyView(brickColumn.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2(),
+						brickColumn);
 				brickColumnIterator.remove();
 				if (count < centerColumnStartIndex) {
 					centerColumnStartIndex--;

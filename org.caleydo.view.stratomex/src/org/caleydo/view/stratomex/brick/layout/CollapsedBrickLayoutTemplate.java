@@ -29,6 +29,7 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
+import org.caleydo.core.view.opengl.util.button.ButtonRenderer.ETextureRotation;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
@@ -52,8 +53,6 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	private static final int EXPAND_BUTTON_ID = 0;
 
-	private GLStratomex stratomex;
-
 	protected ArrayList<ElementLayout> footerBarElements;
 	protected boolean showFooterBar;
 	protected Row footerBar;
@@ -63,13 +62,10 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	// private RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	// private RelationIndicatorRenderer rightRelationIndicatorRenderer;
 
-	public CollapsedBrickLayoutTemplate(GLBrick brick, GLStratomex stratomex,
-			BrickColumn dimensionGroup, IBrickConfigurer configurer) {
-		super(brick, dimensionGroup);
-		this.stratomex = stratomex;
+	public CollapsedBrickLayoutTemplate(GLBrick brick, BrickColumn brickColumn, GLStratomex stratomex) {
+		super(brick, brickColumn, stratomex);
 		footerBarElements = new ArrayList<ElementLayout>();
 		footerBar = new Row();
-		configurer.configure(this);
 		registerPickingListeners();
 		// leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
 		// visBricks, true);
@@ -120,8 +116,8 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		footerBar = createFooterBar();
 
-		baseRow.addForeGroundRenderer(new HandleRenderer(brick, 10, brick
-				.getTextureManager(), HandleRenderer.MOVE_VERTICALLY_HANDLE));
+		baseRow.addForeGroundRenderer(new HandleRenderer(brick, 10, brick.getTextureManager(),
+				HandleRenderer.MOVE_VERTICALLY_HANDLE));
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
@@ -139,8 +135,7 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		if (viewLayout == null) {
 			viewLayout = new ElementLayout("compactViewLayout");
 			viewLayout.setFrameColor(1, 0, 0, 1);
-			viewLayout
-					.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
+			viewLayout.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 		}
 		viewLayout.setRenderer(viewRenderer);
 
@@ -149,10 +144,11 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		expandButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		// expandButtonLayout.setRatioSizeX(0.2f);
 		expandButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		expandButtonLayout.setRenderer(new ButtonRenderer(new Button(
-				EPickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID,
-				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE), brick, brick
-				.getTextureManager(), ButtonRenderer.TEXTURE_ROTATION_180));
+
+		expandButtonLayout.setRenderer(new ButtonRenderer.Builder(brick, new Button(EPickingType.BRICK_EXPAND_BUTTON
+				.name(), EXPAND_BUTTON_ID, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE))
+				.textureManager(brick.getTextureManager()).textureRotation(ETextureRotation.TEXTURE_ROTATION_180)
+				.build());
 
 		viewRow.append(viewLayout);
 		viewRow.append(spacingLayoutX);
@@ -213,21 +209,17 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	public int getMinHeightPixels() {
 		if (viewRenderer == null)
 			return guiElementsHeight + BUTTON_HEIGHT_PIXELS;
-		return guiElementsHeight
-				+ Math.max(viewRenderer.getMinHeightPixels(), BUTTON_HEIGHT_PIXELS);
+		return guiElementsHeight + Math.max(viewRenderer.getMinHeightPixels(), BUTTON_HEIGHT_PIXELS);
 	}
 
 	@Override
 	public int getMinWidthPixels() {
-		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar.getElements())
-				: 0;
+		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar.getElements()) : 0;
 		footerBarWidth += 2 * SPACING_PIXELS;
 
 		if (viewRenderer == null)
 			return Math.max(footerBarWidth, (2 * SPACING_PIXELS) + BUTTON_WIDTH_PIXELS);
-		return Math.max(footerBarWidth,
-				(3 * SPACING_PIXELS) + viewRenderer.getMinWidthPixels()
-						+ BUTTON_WIDTH_PIXELS);
+		return Math.max(footerBarWidth, (3 * SPACING_PIXELS) + viewRenderer.getMinWidthPixels() + BUTTON_WIDTH_PIXELS);
 	}
 
 	// @Override
@@ -258,13 +250,12 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	public ABrickLayoutConfiguration getExpandedLayoutTemplate() {
-		return new DefaultBrickLayoutTemplate(brick, stratomex, brickColumn,
-				brick.getBrickConfigurer());
+		return new DefaultBrickLayoutTemplate(brick, brickColumn, stratomex);
 	}
 
 	/**
-	 * Sets the elements that should appear in the footer bar. The elements will
-	 * placed from left to right using the order of the specified list.
+	 * Sets the elements that should appear in the footer bar. The elements will placed from left to right using the
+	 * order of the specified list.
 	 *
 	 * @param footerBarElements
 	 */
@@ -284,13 +275,12 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	@Override
 	public void destroy() {
 		super.destroy();
-		brick.removeAllIDPickingListeners(EPickingType.BRICK_EXPAND_BUTTON.name(),
-				EXPAND_BUTTON_ID);
+		brick.removeAllIDPickingListeners(EPickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID);
 	}
 
-	// @Override
-	// public void configure(IBrickLayoutConfigurer configurer) {
-	// configurer.configure(this);
-	// }
+	@Override
+	public void configure(IBrickConfigurer configurer) {
+		configurer.configure(this);
+	}
 
 }

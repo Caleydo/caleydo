@@ -20,6 +20,7 @@
 package org.caleydo.view.stratomex.column;
 
 import java.awt.Point;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,10 +33,10 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
-import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -57,7 +58,6 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.brick.EContainedViewType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.GLBrick.EBrickHeightMode;
 import org.caleydo.view.stratomex.brick.GLBrick.EBrickWidthMode;
@@ -140,7 +140,6 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	// private ViewFrustum brickFrustum;
 	// protected DataTable set;
 
-	private EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 	private LayoutSizeCollisionListener layoutSizeCollisionListener;
 
 	/**
@@ -276,7 +275,9 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			headerBrick.collapse();
 		} else {
 			headerBrick.setBrickHeigthMode(EBrickHeightMode.STATIC);
-			headerBrick.expand();
+			if (headerBrick.isInOverviewMode()) {
+				headerBrick.expand();
+			}
 		}
 		initMainColumn();
 	}
@@ -311,18 +312,19 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		headerBrickLayout.append(innerHeaderBrickLayout);
 		headerBrickLayout.append(brickSpacingLayout);
 
-		headerBrick = createBrick(innerHeaderBrickLayout, tablePerspective, true);
+		headerBrick = createBrick(innerHeaderBrickLayout, tablePerspective, true,
+				isCollapsed ? CompactHeaderBrickLayoutTemplate.class : HeaderBrickLayoutTemplate.class);
 
-		ABrickLayoutConfiguration layoutTemplate;
+		// ABrickLayoutConfiguration layoutTemplate;
 
-		if (isCollapsed) {
-			layoutTemplate = new CompactHeaderBrickLayoutTemplate(headerBrick, this, stratomex,
-					headerBrick.getBrickConfigurer());
-		} else {
-			layoutTemplate = new HeaderBrickLayoutTemplate(headerBrick, this, stratomex,
-					headerBrick.getBrickConfigurer());
-		}
-		headerBrick.setBrickLayoutTemplate(layoutTemplate, layoutTemplate.getDefaultViewType());
+		// if (isCollapsed) {
+		// layoutTemplate = new CompactHeaderBrickLayoutTemplate(headerBrick, this, stratomex,
+		// headerBrick.getBrickConfigurer());
+		// } else {
+		// layoutTemplate = new HeaderBrickLayoutTemplate(headerBrick, this, stratomex,
+		// headerBrick.getBrickConfigurer());
+		// }
+		// headerBrick.setBrickLayoutTemplate(layoutTemplate);
 
 		createClusterBricks();
 	}
@@ -342,14 +344,16 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		List<GLBrick> segmentBricks = new ArrayList<GLBrick>();
 
 		for (TablePerspective brickData : brickTablePerspectives) {
-			GLBrick segmentBrick = createBrick(new ElementLayout("brick"), brickData, false);
+
+			GLBrick segmentBrick = createBrick(new ElementLayout("brick"), brickData, false,
+					DefaultBrickLayoutTemplate.class);
 
 			// segmentBrick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
 
-			ABrickLayoutConfiguration layoutTemplate = new DefaultBrickLayoutTemplate(segmentBrick, stratomex, this,
-					segmentBrick.getBrickConfigurer());
-
-			segmentBrick.setBrickLayoutTemplate(layoutTemplate, layoutTemplate.getDefaultViewType());
+			// ABrickLayoutConfiguration layoutTemplate = new DefaultBrickLayoutTemplate(segmentBrick, this, stratomex,
+			// segmentBrick.getBrickConfigurer());
+			//
+			// segmentBrick.setBrickLayoutTemplate(layoutTemplate);
 
 			segmentBricks.add(segmentBrick);
 		}
@@ -441,7 +445,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 * @param wrappingLayout
 	 * @return
 	 */
-	private GLBrick createBrick(ElementLayout wrappingLayout, TablePerspective tablePerspective, boolean isHeaderBrick) {
+	private GLBrick createBrick(ElementLayout wrappingLayout, TablePerspective tablePerspective, boolean isHeaderBrick,
+			Class<? extends ABrickLayoutConfiguration> layoutTemplateClass) {
 		ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4, 4);
 		GLBrick brick = (GLBrick) GeneralManager.get().getViewManager()
 				.createGLView(GLBrick.class, parentGLCanvas, parentComposite, brickFrustum);
@@ -454,6 +459,18 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		brick.setLayout(wrappingLayout);
 		brick.setBrickColumn(this);
 		brick.setHeaderBrick(isHeaderBrick);
+
+		ABrickLayoutConfiguration layoutTemplate = null;
+		try {
+			layoutTemplate = layoutTemplateClass.getConstructor(GLBrick.class, BrickColumn.class, GLStratomex.class)
+					.newInstance(brick, this, stratomex);
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
+
+			e.printStackTrace();
+		}
+		brick.setBrickLayoutTemplate(layoutTemplate);
+
 		brick.initialize();
 
 		uninitializedBricks.add(brick);
@@ -480,8 +497,9 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 */
 	private void destroyOldBricks() {
 		for (GLBrick brick : clusterBricks) {
-			GeneralManager.get().getViewManager().unregisterGLView(brick);
-			brick.unregisterEventListeners();
+			// GeneralManager.get().getViewManager().unregisterGLView(brick);
+			ViewManager.get().destroyView(getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2(), brick);
+			// brick.unregisterEventListeners();
 		}
 	}
 
@@ -616,8 +634,9 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			mainRow.clear();
 			mainRow.append(mainColumn);
 			if (detailBrick != null) {
-				GeneralManager.get().getViewManager().unregisterGLView(detailBrick);
-				detailBrick.unregisterEventListeners();
+				// GeneralManager.get().getViewManager().unregisterGLView(detailBrick);
+				ViewManager.get().destroyView(getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2(), detailBrick);
+				// detailBrick.unregisterEventListeners();
 				detailBrick = null;
 			}
 
@@ -744,14 +763,14 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 *
 	 * @param viewType
 	 */
-	public void switchBrickViews(EContainedViewType viewType) {
+	public void switchBrickViews(int globalRendererID) {
 
 		for (GLBrick brick : clusterBricks) {
-			brick.setBrickViewTypeAndConfigureSize(viewType);
+			brick.setRenderer(brick.getLocalRendererID(globalRendererID));
 		}
-		if (detailBrick != null) {
-			detailBrick.setBrickViewTypeAndConfigureSize(viewType);
-		}
+		// if (detailBrick != null) {
+		// detailBrick.updateBrickSizeAccordingToRenderer(viewType);
+		// }
 		// centerBrick.setRemoteView(viewType);
 		mainRow.updateSubLayout();
 		// groupColumn.updateSubLayout();
@@ -936,8 +955,9 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	public void showDetailedBrick(GLBrick brick, boolean expandLeft) {
 
 		if (detailBrick != null) {
-			GeneralManager.get().getViewManager().unregisterGLView(detailBrick);
-			detailBrick.unregisterEventListeners();
+			// GeneralManager.get().getViewManager().unregisterGLView(detailBrick);
+			ViewManager.get().destroyView(getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2(), detailBrick);
+			// detailBrick.unregisterEventListeners();
 			detailBrick = null;
 			// if we previously had an open detail brick we close it now
 			if (this.expandLeft != expandLeft) {
@@ -950,8 +970,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 
 		detailBrickLayout = new Column("detailBrickWrappingLayout");
 
-		detailBrick = createBrick(detailBrickLayout, brick.getTablePerspective(), false);
-		detailBrick.setHeaderBrick(brick.isHeaderBrick());
+		detailBrick = createBrick(detailBrickLayout, brick.getTablePerspective(), brick.isHeaderBrick(),
+				DetailBrickLayoutTemplate.class);
 		// detailBrick.setBrickData(brick.getBrickData());
 		// detailBrick.setBrickConfigurer(brick.getBrickConfigurer());
 		// detailBrick.setRecordVA(brick.getGroup(), brick.getRecordVA());
@@ -962,9 +982,10 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 		detailBrick.setStaticBrickWidth(detailBrickWidth);
 		detailBrick.setStaticBrickHeight(getDetailBrickHeightPixels());
 
-		detailBrick.setBrickLayoutTemplate(
-				new DetailBrickLayoutTemplate(detailBrick, this, stratomex, detailBrick.getBrickConfigurer()),
-				brick.getCurrentViewType());
+		// detailBrick.setBrickLayoutTemplate(
+		// new DetailBrickLayoutTemplate(detailBrick, this, stratomex, detailBrick.getBrickConfigurer()));
+		int globalRendererID = brick.getGlobalRendererID(brick.getActiveRendererID());
+		detailBrick.setRenderer(detailBrick.getLocalRendererID(globalRendererID));
 
 		overviewDetailGapLayout = new ElementLayout("brickSpacingLayout");
 		overviewDetailGapLayout.setPixelSizeX(OVERVIEW_DETAIL_GAP_PIXEL);
@@ -993,6 +1014,8 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 */
 	public void setDetailBrickWidth(int detailBrickWidth) {
 		detailBrickLayout.setPixelSizeX(detailBrickWidth);
+		if (detailBrick != null)
+			detailBrick.setStaticBrickWidth(detailBrickWidth);
 		showDetailBrick = true;
 	}
 

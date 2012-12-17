@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,18 +8,19 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.stratomex.brick.layout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -31,27 +32,21 @@ import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * Layout for header brick that shows only the title.
- * 
+ *
  * @author Marc Streit
- * 
+ *
  */
 public class TitleOnlyHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	protected static final int HEADER_BAR_HEIGHT_PIXELS = 10;
 
-	private GLStratomex stratomex;
+	protected List<ElementLayout> headerBarElements;
 
-	protected ArrayList<ElementLayout> headerBarElements;
-	
 	protected int guiElementsHeight = 0;
 
-	public TitleOnlyHeaderBrickLayoutTemplate(GLBrick brick, BrickColumn dimensionGroup,
-			GLStratomex stratomex, IBrickConfigurer configurer) {
-		super(brick, dimensionGroup);
-		this.stratomex = stratomex;
+	public TitleOnlyHeaderBrickLayoutTemplate(GLBrick brick, BrickColumn brickColumn, GLStratomex stratomex) {
+		super(brick, brickColumn, stratomex);
 		headerBarElements = new ArrayList<ElementLayout>();
-
-		configurer.configure(this);
 		registerPickingListeners();
 	}
 
@@ -80,11 +75,10 @@ public class TitleOnlyHeaderBrickLayoutTemplate extends ABrickLayoutConfiguratio
 		spacingLayoutY.setPixelSizeX(0);
 
 		Row headerBar = createHeaderBar();
-		
 
 		baseColumn.append(spacingLayoutY);
 		guiElementsHeight += SPACING_PIXELS;
-		
+
 		baseColumn.append(spacingLayoutY);
 		baseColumn.append(headerBar);
 		baseColumn.append(spacingLayoutY);
@@ -122,7 +116,6 @@ public class TitleOnlyHeaderBrickLayoutTemplate extends ABrickLayoutConfiguratio
 		return stratomex.getSideArchWidthPixels();
 	}
 
-
 	@Override
 	public void setLockResizing(boolean lockResizing) {
 
@@ -135,18 +128,22 @@ public class TitleOnlyHeaderBrickLayoutTemplate extends ABrickLayoutConfiguratio
 
 	@Override
 	public ABrickLayoutConfiguration getExpandedLayoutTemplate() {
-		return new HeaderBrickLayoutTemplate(brick, brickColumn, stratomex,
-				brick.getBrickConfigurer());
+		return new HeaderBrickLayoutTemplate(brick, brickColumn, stratomex);
 	}
 
 	/**
-	 * Sets the elements that should appear in the header bar. The elements will
-	 * placed from left to right using the order of the specified list.
-	 * 
+	 * Sets the elements that should appear in the header bar. The elements will placed from left to right using the
+	 * order of the specified list.
+	 *
 	 * @param headerBarElements
 	 */
-	public void setHeaderBarElements(ArrayList<ElementLayout> headerBarElements) {
+	public void setHeaderBarElements(List<ElementLayout> headerBarElements) {
 		this.headerBarElements = headerBarElements;
 	}
-	
+
+	@Override
+	public void configure(IBrickConfigurer configurer) {
+		configurer.configure(this);
+	}
+
 }

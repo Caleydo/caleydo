@@ -26,9 +26,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
-import org.caleydo.core.view.opengl.picking.APickingListener;
-import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
+import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
@@ -40,10 +38,8 @@ import org.caleydo.view.stratomex.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.TitleOnlyHeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.sorting.IBrickSortingStrategy;
 import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
-import org.caleydo.view.stratomex.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.stratomex.brick.ui.DimensionBarRenderer;
 import org.caleydo.view.stratomex.brick.ui.FuelBarRenderer;
-import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * Abstract base class for brick configurers for table based data that provides mainly helper functions.
@@ -172,60 +168,13 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		return headerBarElements;
 	}
 
-	protected void registerViewSwitchingButtons(final ABrickLayoutConfiguration layoutTemplate,
-			final ArrayList<BrickViewSwitchingButton> viewSwitchingButtons, final GLBrick brick,
-			final BrickColumn dimensionGroup) {
-
-		for (final BrickViewSwitchingButton button : viewSwitchingButtons) {
-
-			brick.addIDPickingListener(new APickingListener() {
-
-				@Override
-				public void clicked(Pick pick) {
-					for (BrickViewSwitchingButton button : viewSwitchingButtons) {
-						button.setSelected(false);
-					}
-					button.setSelected(true);
-
-					if (!(layoutTemplate instanceof HeaderBrickLayoutTemplate)
-							&& dimensionGroup.isGlobalViewSwitching()) {
-						dimensionGroup.switchBrickViews(button.getViewType());
-					} else {
-						brick.setBrickViewTypeAndConfigureSize(button.getViewType());
-					}
-					dimensionGroup.updateLayout();
-				}
-			}, button.getPickingType(), button.getButtonID());
-
-			layoutTemplate.registerViewTypeChangeListener(button);
-		}
-	}
-
-	protected ArrayList<ElementLayout> createToolBarElements(HeaderBrickLayoutTemplate layoutTemplate,
-			ArrayList<BrickViewSwitchingButton> viewSwitchingButtons) {
+	protected ArrayList<ElementLayout> createToolBarElements(HeaderBrickLayoutTemplate layoutTemplate) {
 
 		final GLBrick brick = layoutTemplate.getBrick();
-		final BrickColumn dimensionGroup = layoutTemplate.getDimensionGroup();
-
+		MultiFormViewSwitchingBar viewSwitchingBar = brick.getViewSwitchingBar();
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
-		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
-		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
-		spacingLayoutX.setRatioSizeY(0);
-
-		for (int i = 0; i < viewSwitchingButtons.size(); i++) {
-			BrickViewSwitchingButton button = viewSwitchingButtons.get(i);
-			ElementLayout buttonLayout = new ElementLayout();
-			buttonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
-			buttonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-			buttonLayout.setRenderer(new ButtonRenderer(button, brick, brick.getTextureManager(),
-					DefaultBrickLayoutTemplate.BUTTON_Z));
-			toolBarElements.add(buttonLayout);
-			if (i != viewSwitchingButtons.size() - 1) {
-				toolBarElements.add(spacingLayoutX);
-			}
-		}
-		registerViewSwitchingButtons(layoutTemplate, viewSwitchingButtons, brick, dimensionGroup);
+		toolBarElements.add(viewSwitchingBar);
 
 		return toolBarElements;
 	}
@@ -289,40 +238,20 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		return footerBarElements;
 	}
 
-	protected ArrayList<ElementLayout> createToolBarElements(ABrickLayoutConfiguration layoutTemplate,
-			ArrayList<BrickViewSwitchingButton> viewSwitchingButtons) {
+	protected ArrayList<ElementLayout> createToolBarElements(ABrickLayoutConfiguration layoutTemplate) {
 
 		final GLBrick brick = layoutTemplate.getBrick();
-		final BrickColumn dimensionGroup = layoutTemplate.getDimensionGroup();
-
+		MultiFormViewSwitchingBar viewSwitchingBar = brick.getViewSwitchingBar();
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
-		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
-		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
-		spacingLayoutX.setRatioSizeY(0);
-
-		for (int i = 0; i < viewSwitchingButtons.size(); i++) {
-			BrickViewSwitchingButton button = viewSwitchingButtons.get(i);
-			ElementLayout buttonLayout = new ElementLayout();
-			buttonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
-			buttonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-			buttonLayout.setRenderer(new ButtonRenderer(button, brick, brick.getTextureManager(),
-					DefaultBrickLayoutTemplate.BUTTON_Z));
-			toolBarElements.add(buttonLayout);
-			if (i != viewSwitchingButtons.size() - 1) {
-				toolBarElements.add(spacingLayoutX);
-			}
-		}
+		toolBarElements.add(viewSwitchingBar);
 
 		ElementLayout ratioSpacingLayoutX = new ElementLayout("ratioSpacingLayoutX");
 		ratioSpacingLayoutX.setRatioSizeX(1);
+		ratioSpacingLayoutX.setGrabX(true);
 		ratioSpacingLayoutX.setRatioSizeY(0);
 
 		toolBarElements.add(ratioSpacingLayoutX);
-
-		// layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
-
-		registerViewSwitchingButtons(layoutTemplate, viewSwitchingButtons, brick, dimensionGroup);
 
 		return toolBarElements;
 	}

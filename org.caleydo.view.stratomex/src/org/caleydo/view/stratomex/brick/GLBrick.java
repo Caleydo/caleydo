@@ -32,7 +32,6 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.export.DataTableExporter;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -45,7 +44,6 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.gui.util.RenameNameDialog;
@@ -64,7 +62,10 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo.EScalingEntity;
+import org.caleydo.core.view.opengl.layout.util.multiform.IMultiFormChangeListener;
+import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
+import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -128,20 +129,44 @@ import org.eclipse.ui.PlatformUI;
  * @author Alexander Lex
  *
  */
-public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, ILayoutedElement, IDraggable {
+public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, ILayoutedElement, IDraggable,
+		IMultiFormChangeListener {
 
 	public static String VIEW_TYPE = "org.caleydo.view.brick";
 	public static String VIEW_NAME = "Brick";
 
 	private LayoutManager layoutManager;
 	private ElementLayout wrappingLayout;
-	private AGLView currentRemoteView;
-	private Map<EContainedViewType, AGLView> views;
-	private Map<EContainedViewType, LayoutRenderer> containedViewRenderers;
 
 	private int baseDisplayListIndex;
 	private boolean isBaseDisplayListDirty = true;
-	private EContainedViewType currentViewType;
+
+	/**
+	 * Renderer that handles the display of all views and renderers that have been associated with this brick by the
+	 * {@link #brickConfigurer}.
+	 */
+	private MultiFormRenderer multiFormRenderer;
+
+	/**
+	 * Bar of buttons that can be used to switch the views of {@link #multiFormRenderer}.
+	 */
+	private MultiFormViewSwitchingBar viewSwitchingBar;
+
+	/**
+	 * The ID used in {@link #multiFormRenderer} for the renderer that represents the most compact visualization.
+	 */
+	private int compactRendererID = -1;
+
+	/**
+	 * Maps global, i.e., brick-column wide IDs to identify similar renderers for bricks of the same type (segment vs.
+	 * header), to the local renderer IDs used in {@link #multiFormRenderer}.
+	 */
+	private Map<Integer, Integer> globalRendererIDToLocalRendererID = new HashMap<>();
+
+	/**
+	 * Same as {@link #globalRendererIDToLocalRendererID}, just vice versa.
+	 */
+	private Map<Integer, Integer> localRendererIDToGlobalRendererID = new HashMap<>();
 
 	/**
 	 * <p>
@@ -156,7 +181,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	 * defined.
 	 * </p>
 	 */
-	private boolean isHeaderBrick = false;
+	private boolean isHeaderBrick;
 
 	/** Enum listing the options of how the height of a brick is set */
 	public enum EBrickHeightMode {
@@ -249,8 +274,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	public GLBrick(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
-		views = new HashMap<EContainedViewType, AGLView>();
-		containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
 
 		contextMenuFactories = createContextMenuFactories();
 	}
@@ -278,6 +301,21 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		super.initialize();
 		tablePerspectiveSelectionManager = new SelectionManager(TablePerspective.DATA_CONTAINER_IDTYPE);
 		recordGroupSelectionManager = dataDomain.getRecordGroupSelectionManager().clone();
+
+		if (brickLayoutConfiguration == null) {
+			brickLayoutConfiguration = new DefaultBrickLayoutTemplate(this, brickColumn, stratomex);
+		}
+
+		brickConfigurer.setBrickViews(this, brickLayoutConfiguration);
+		brickLayoutConfiguration.configure(brickConfigurer);
+
+		// brickLayoutConfiguration.setViewRenderer(containedViewRenderers.get(currentViewType));
+		if (brickLayoutConfiguration.getViewRenderer() instanceof IMouseWheelHandler) {
+			stratomex.registerMouseWheelListener((IMouseWheelHandler) brickLayoutConfiguration.getViewRenderer());
+		}
+
+		// layoutManager.setStaticLayoutConfiguration(brickLayoutConfiguration);
+
 		registerPickingListeners();
 	}
 
@@ -295,28 +333,18 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 		layoutManager.setUseDisplayLists(true);
 
-		if (brickLayoutConfiguration == null) {
-			brickLayoutConfiguration = new DefaultBrickLayoutTemplate(this, stratomex, brickColumn, brickConfigurer);
+		setBrickLayoutTemplate(brickLayoutConfiguration);
+
+		int rendererID = multiFormRenderer.getActiveRendererID();
+		if (rendererID == -1) {
+			multiFormRenderer.setActive(multiFormRenderer.getDefaultRendererID());
 		}
 
-		brickConfigurer.setBrickViews(this, gl, glMouseListener, brickLayoutConfiguration);
-
-		currentViewType = brickLayoutConfiguration.getDefaultViewType();
-
-		setBrickLayoutTemplate(brickLayoutConfiguration, currentViewType);
-
-		brickLayoutConfiguration.setViewRenderer(containedViewRenderers.get(currentViewType));
-		currentRemoteView = views.get(currentViewType);
-		if (brickLayoutConfiguration.getViewRenderer() instanceof IMouseWheelHandler) {
-			stratomex.registerMouseWheelListener((IMouseWheelHandler) brickLayoutConfiguration.getViewRenderer());
-		}
-
-		// layoutManager.setStaticLayoutConfiguration(brickLayoutConfiguration);
+		updateBrickSizeAccordingToRenderer(multiFormRenderer.getActiveRendererID());
 
 		brickColumn.updateLayout();
 
 		isInitialized = true;
-
 	}
 
 	/**
@@ -393,8 +421,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	@Override
 	public void display(GL2 gl) {
-		if (currentRemoteView != null)
-			currentRemoteView.processEvents();
 		checkForHits(gl);
 		processEvents();
 		handleBrickResize(gl);
@@ -574,17 +600,12 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	}
 
 	/**
-	 * <p>
-	 * Sets the type of view that should be rendered in the brick. The view type is not set, if it is not valid for the
-	 * current brick layout.
-	 * </p>
-	 * <p>
-	 * </p>
-	 *
+	 * Updates the width and height of the brick according to the specified renderer.
 	 *
 	 * @param viewType
+	 *            ID of the renderer in {@link #multiFormRenderer}.
 	 */
-	public void setBrickViewTypeAndConfigureSize(EContainedViewType viewType) {
+	private void updateBrickSizeAccordingToRenderer(int rendererID) {
 		if (brickLayoutConfiguration instanceof CompactHeaderBrickLayoutTemplate) {
 			brickHeigthMode = EBrickHeightMode.VIEW_DEPENDENT;
 			brickWidthMode = EBrickWidthMode.CONTEXT_MODE;
@@ -595,25 +616,23 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			if (brickWidthMode != null && brickWidthMode != EBrickWidthMode.STATIC)
 				brickWidthMode = null;
 		}
-		currentViewType = viewType;
-		LayoutRenderer viewRenderer = containedViewRenderers.get(viewType);
-
-		if (viewRenderer == null)
-			return;
-
-		if (!brickLayoutConfiguration.isViewTypeValid(viewType))
-			return;
-
-		currentRemoteView = views.get(viewType);
-
-		brickLayoutConfiguration.setViewRenderer(viewRenderer);
-
-		brickLayoutConfiguration.viewTypeChanged(viewType);
+		// currentViewType = viewType;
+		// // LayoutRenderer viewRenderer = containedViewRenderers.get(viewType);
+		//
+		// if (viewRenderer == null)
+		// return;
+		//
+		// if (!brickLayoutConfiguration.isViewTypeValid(viewType))
+		// return;
+		//
+		// brickLayoutConfiguration.setViewRenderer(viewRenderer);
+		//
+		// brickLayoutConfiguration.viewTypeChanged(viewType);
 
 		// if no height mode was set we use proportional if available, else
 		// view-dependent
 		if (brickHeigthMode == null) {
-			if (viewType.isUseProportionalHeight())
+			if (multiFormRenderer.getPrimaryHeightScalingEntity() == EScalingEntity.RECORD)
 				brickHeigthMode = EBrickHeightMode.PROPORTIONAL;
 			else
 				brickHeigthMode = EBrickHeightMode.VIEW_DEPENDENT;
@@ -677,10 +696,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	 * @param newBrickLayout
 	 * @param viewType
 	 */
-	public void setBrickLayoutTemplate(ABrickLayoutConfiguration newBrickLayout, EContainedViewType viewType) {
+	public void setBrickLayoutTemplate(ABrickLayoutConfiguration newBrickLayout) {
 		if (brickLayoutConfiguration != null && brickLayoutConfiguration != newBrickLayout)
 			brickLayoutConfiguration.destroy();
 		brickLayoutConfiguration = newBrickLayout;
+		brickLayoutConfiguration.setViewRenderer(multiFormRenderer);
 		if ((brickLayoutConfiguration instanceof CollapsedBrickLayoutTemplate)
 				|| (brickLayoutConfiguration instanceof CompactHeaderBrickLayoutTemplate))
 			isInOverviewMode = true;
@@ -689,19 +709,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 		if (layoutManager != null) {
 			layoutManager.setStaticLayoutConfiguration(brickLayoutConfiguration);
-			if (brickLayoutConfiguration.isViewTypeValid(viewType)) {
-				setBrickViewTypeAndConfigureSize(viewType);
-			} else {
-				setBrickViewTypeAndConfigureSize(brickLayoutConfiguration.getDefaultViewType());
-			}
 		}
-	}
-
-	/**
-	 * @return Type of view that is currently displayed by the brick.
-	 */
-	public EContainedViewType getCurrentViewType() {
-		return currentViewType;
 	}
 
 	@Override
@@ -840,18 +848,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				}
 			}
 
-			// @Override
-			// public void dragged(Pick pick) {
-			// DragAndDropController dragAndDropController = stratomex
-			// .getDragAndDropController();
-			// String draggingMode = dragAndDropController.getDraggingMode();
-			// if (!dragAndDropController.isDragging()
-			// && dragAndDropController.hasDraggables() && draggingMode != null
-			// && draggingMode.equals("BrickDrag" + brickColumn.getID())) {
-			// dragAndDropController.startDragging();
-			// }
-			// }
-
 			@Override
 			public void rightClicked(Pick pick) {
 
@@ -871,12 +867,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 						for (AContextMenuItem item : factory.createStratification(brickColumn))
 							contextMenuCreator.addContextMenuItem(item);
 				} else {
-					// group brick
-					// contextMenuCreator.addContextMenuItem(new
-					// CreatePathwayGroupFromDataItem(
-					// dataDomain, tablePerspective.getRecordPerspective()
-					// .getVirtualArray(), brickColumn.getTablePerspective()
-					// .getDimensionPerspective()));
 
 					for (IContextMenuBrickFactory factory : contextMenuFactories)
 						for (AContextMenuItem item : factory.createGroupEntries(brickColumn, tablePerspective))
@@ -926,7 +916,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	@Override
 	public String toString() {
 		return "Brick: " + tablePerspective;// + table.getLabel();
-
 	}
 
 	/**
@@ -1003,28 +992,17 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	 * @return how much this has affected the height of the brick.
 	 */
 	public void collapse() {
-		// if (isInOverviewMode)
-		// return 0;
 
 		if (!isInOverviewMode && isInitialized) {
-			expandedBrickState = new BrickState(currentViewType, wrappingLayout.getSizeScaledY(),
-					wrappingLayout.getSizeScaledX());
+			expandedBrickState = new BrickState(multiFormRenderer.getActiveRendererID(),
+					wrappingLayout.getSizeScaledY(), wrappingLayout.getSizeScaledX());
 		}
 
 		ABrickLayoutConfiguration layoutTemplate = brickLayoutConfiguration.getCollapsedLayoutTemplate();
-		// isSizeFixed = false;
+		layoutTemplate.configure(brickConfigurer);
 
-		setBrickLayoutTemplate(layoutTemplate, layoutTemplate.getDefaultViewType());
-
-		// float minHeight =
-		// pixelGLConverter.getGLHeightForPixelHeight(layoutTemplate
-		// .getMinHeightPixels());
-		// float minWidth =
-		// pixelGLConverter.getGLHeightForPixelHeight(layoutTemplate
-		// .getMinWidthPixels());
-		// float currentSize = wrappingLayout.getSizeScaledY();
-		// wrappingLayout.setAbsoluteSizeY(minHeight);
-		// wrappingLayout.setAbsoluteSizeX(minWidth);
+		setBrickLayoutTemplate(layoutTemplate);
+		multiFormRenderer.setActive(compactRendererID);
 
 		stratomex.setLayoutDirty();
 		stratomex.updateConnectionLinesBetweenColumns();
@@ -1032,26 +1010,18 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	}
 
 	public void expand() {
-		// if (!isInOverviewMode)
-		// return;
 		ABrickLayoutConfiguration layoutTemplate = brickLayoutConfiguration.getExpandedLayoutTemplate();
+		layoutTemplate.configure(brickConfigurer);
 		if (expandedBrickState != null) {
-			setBrickLayoutTemplate(layoutTemplate, expandedBrickState.getViewType());
-			// wrappingLayout.setAbsoluteSizeX(expandedBrickState.getWidth());
-			// wrappingLayout.setAbsoluteSizeY(expandedBrickState.getHeight());
+			setBrickLayoutTemplate(layoutTemplate);
+			multiFormRenderer.setActive(expandedBrickState.getRendererID());
 		} else {
-			setBrickLayoutTemplate(layoutTemplate, currentViewType);
-			// float defaultHeight = pixelGLConverter
-			// .getGLHeightForPixelHeight(layoutTemplate.getDefaultHeightPixels());
-			// float defaultWidth =
-			// pixelGLConverter.getGLWidthForPixelWidth(layoutTemplate
-			// .getDefaultWidthPixels());
-			// wrappingLayout.setAbsoluteSizeY(defaultHeight);
-			// wrappingLayout.setAbsoluteSizeX(defaultWidth);
+			setBrickLayoutTemplate(layoutTemplate);
+			multiFormRenderer.setActive(multiFormRenderer.getDefaultRendererID());
 		}
 		isInOverviewMode = false;
 		brickLayoutConfiguration.setLockResizing(true);
-		// brickColumn.updateLayout();
+		brickColumn.updateLayout();
 		stratomex.setLayoutDirty();
 		stratomex.updateConnectionLinesBetweenColumns();
 	}
@@ -1067,18 +1037,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	 */
 	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
 		brickLayoutConfiguration.setGlobalViewSwitching(isGlobalViewSwitching);
-	}
-
-	public void setViews(Map<EContainedViewType, AGLView> views) {
-		this.views = views;
-	}
-
-	public void setContainedViewRenderers(Map<EContainedViewType, LayoutRenderer> containedViewRenderers) {
-		this.containedViewRenderers = containedViewRenderers;
-	}
-
-	public void setCurrentViewType(EContainedViewType currentViewType) {
-		this.currentViewType = currentViewType;
 	}
 
 	/**
@@ -1203,14 +1161,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 						AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(kaplanMeierDimensionGroupData);
 
 						ClinicalDataConfigurer dataConfigurer = new ClinicalDataConfigurer();
-						// dataConfigurer
-						// .setMaxTimeValue(calculateMaxTimeValue(kaplanMeierDimensionGroupData));
 						ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
 						sortingStrategy.setExternalBricks(brickColumn.getBricks());
 						sortingStrategy.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(dialog
 								.getHashConvertedRecordPerspectiveToOrginalRecordPerspective());
 						dataConfigurer.setSortingStrategy(sortingStrategy);
-						dataConfigurer.setMaxTimeValue(calculateMaxTimeValue(kaplanMeierDimensionGroupData));
 						event.setDataConfigurer(dataConfigurer);
 						event.setSender(this);
 						event.setReceiver(stratomex);
@@ -1219,37 +1174,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 				}
 			}
 
-			private float calculateMaxTimeValue(TablePerspective tablePerspective) {
-				RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
-
-				DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
-
-				float maxTimeValue = 0;
-				boolean containsNegativeValues = false;
-				boolean containsPositiveValues = false;
-
-				for (Group group : recordVA.getGroupList()) {
-					List<Integer> recordIDs = recordVA.getIDsOfGroup(group.getGroupIndex());
-					for (int recordID = 0; recordID < recordIDs.size(); recordID++) {
-
-						float rawValue = tablePerspective.getDataDomain().getTable()
-								.getFloat(DataRepresentation.RAW, recordIDs.get(recordID), dimensionVA.get(0));
-						if (rawValue > 0)
-							containsPositiveValues = true;
-						if (rawValue < 0)
-							containsNegativeValues = true;
-
-						if (containsPositiveValues && containsNegativeValues) {
-							throw new IllegalStateException(
-									"Data contains positive and negative values. KM plot cannot handle this data.");
-						}
-
-						if (rawValue != Float.NaN && Math.abs(rawValue) > Math.abs(maxTimeValue))
-							maxTimeValue = rawValue;
-					}
-				}
-				return maxTimeValue;
-			}
 		});
 	}
 
@@ -1350,12 +1274,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	@Override
 	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
 
-		// TODO: Get right global position of brick
-		// draggingMousePositionDeltaX = mouseCoordinateX -
-		// wrappingLayout.getTranslateX();
-		// draggingMousePositionDeltaY = mouseCoordinateY -
-		// wrappingLayout.getTranslateY();
-
 		draggingMousePositionDeltaX = wrappingLayout.getSizeScaledX() / 2.0f;
 		draggingMousePositionDeltaY = wrappingLayout.getSizeScaledY() / 2.0f;
 
@@ -1448,5 +1366,123 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 			}
 		});
 
+	}
+
+	/**
+	 * @param multiFormRenderer
+	 *            setter, see {@link multiFormRenderer}
+	 */
+	public void setMultiFormRenderer(MultiFormRenderer multiFormRenderer) {
+		this.multiFormRenderer = multiFormRenderer;
+	}
+
+	/**
+	 * @param viewSwitchingBar
+	 *            setter, see {@link viewSwitchingBar}
+	 */
+	public void setViewSwitchingBar(MultiFormViewSwitchingBar viewSwitchingBar) {
+		this.viewSwitchingBar = viewSwitchingBar;
+	}
+
+	/**
+	 * @return the multiFormRenderer, see {@link #multiFormRenderer}
+	 */
+	public MultiFormRenderer getMultiFormRenderer() {
+		return multiFormRenderer;
+	}
+
+	/**
+	 * @return the viewSwitchingBar, see {@link #viewSwitchingBar}
+	 */
+	public MultiFormViewSwitchingBar getViewSwitchingBar() {
+		return viewSwitchingBar;
+	}
+
+	/**
+	 * @param compactRendererID
+	 *            setter, see {@link compactRendererID}
+	 */
+	public void setCompactRendererID(int compactRendererID) {
+		this.compactRendererID = compactRendererID;
+	}
+
+	/**
+	 * Sets the specified renderer to be displayed.
+	 *
+	 * @param rendererID
+	 *            ID of the renderer in {@link #multiFormRenderer}, i.e., the local renderer ID.
+	 */
+	public void setRenderer(int rendererID) {
+		multiFormRenderer.setActive(rendererID);
+	}
+
+	@Override
+	public void activeRendererChanged(MultiFormRenderer multiFormRenderer, int rendererID, int previousRendererID) {
+		if (isInitialized)
+			updateBrickSizeAccordingToRenderer(rendererID);
+	}
+
+	@Override
+	public void rendererAdded(MultiFormRenderer multiFormRenderer, int rendererID) {
+		// Nothing to do
+	}
+
+	@Override
+	public void rendererRemoved(MultiFormRenderer multiFormRenderer, int rendererID) {
+		// Invalidate id of compact renderer
+		if (rendererID == compactRendererID)
+			compactRendererID = -1;
+	}
+
+	@Override
+	public void destroyed(MultiFormRenderer multiFormRenderer) {
+		this.multiFormRenderer = null;
+	}
+
+	/**
+	 * Associates global, i.e., brick-column wide IDs to identify similar renderers for bricks of the same type (segment
+	 * vs. header), to the local renderer IDs used in {@link #multiFormRenderer}.
+	 *
+	 * @param globalRendererID
+	 *            Global renderer ID.
+	 * @param localRendererID
+	 *            Local renderer ID.
+	 */
+	public void associateIDs(int globalRendererID, int localRendererID) {
+		localRendererIDToGlobalRendererID.put(localRendererID, globalRendererID);
+		globalRendererIDToLocalRendererID.put(globalRendererID, localRendererID);
+	}
+
+	/**
+	 * Gets the local renderer ID used by {@link #multiFormRenderer} for a global ID.
+	 *
+	 * @param globalRendererID
+	 *            Global renderer ID.
+	 * @return The local renderer ID, -1 if no local ID could be found for the specified global ID.
+	 */
+	public int getLocalRendererID(int globalRendererID) {
+		if (!globalRendererIDToLocalRendererID.containsKey(globalRendererID))
+			return -1;
+		return globalRendererIDToLocalRendererID.get(globalRendererID);
+	}
+
+	/**
+	 * Gets the global renderer ID for a local ID.
+	 *
+	 * @param localRendererID
+	 *            Local renderer ID.
+	 * @return The global renderer ID, -1 if no global ID could be found for the specified local ID.
+	 */
+	public int getGlobalRendererID(int localRendererID) {
+		if (!localRendererIDToGlobalRendererID.containsKey(localRendererID))
+			return -1;
+		return localRendererIDToGlobalRendererID.get(localRendererID);
+	}
+
+	/**
+	 * @return The local renderer ID of the renderer that is currently displayed.
+	 */
+	public int getActiveRendererID() {
+		return multiFormRenderer.getActiveRendererID();
 	}
 }

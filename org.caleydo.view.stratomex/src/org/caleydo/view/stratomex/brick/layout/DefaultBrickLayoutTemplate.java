@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,18 +8,19 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.stratomex.brick.layout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -30,10 +31,10 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
+import org.caleydo.core.view.opengl.util.button.ButtonRenderer.ETextureRotation;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.brick.EContainedViewType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.ATableBasedDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
@@ -43,10 +44,10 @@ import org.caleydo.view.stratomex.column.BrickColumn;
 
 /**
  * Default brick layout containing a toolbar, a view and a fuelbar.
- * 
+ *
  * @author Christian Partl
  * @author Alexander Lex
- * 
+ *
  */
 public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
@@ -65,9 +66,9 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	// protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
 	private Row headerRow;
-	protected ArrayList<ElementLayout> headerBarElements;
-	protected ArrayList<ElementLayout> toolBarElements;
-	protected ArrayList<ElementLayout> footerBarElements;
+	protected List<ElementLayout> headerBarElements;
+	protected List<ElementLayout> toolBarElements;
+	protected List<ElementLayout> footerBarElements;
 	protected ToolBar toolBar;
 	protected Row footerBar;
 
@@ -77,31 +78,24 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	protected int yOverhead = 0;
 
 	/**
-	 * Flag telling whether the footer bar should be shown or not. This should
-	 * not be used for dynamically hiding the bar, but as a static flag set by a
-	 * {@link IBrickConfigurer}
+	 * Flag telling whether the footer bar should be shown or not. This should not be used for dynamically hiding the
+	 * bar, but as a static flag set by a {@link IBrickConfigurer}
 	 */
 	protected boolean showToolBar = true;
 
 	/** Same as {@link #showToolBar} for footer bar */
 	protected boolean showFooterBar;
-
-	protected GLStratomex stratomex;
 	protected RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	protected RelationIndicatorRenderer rightRelationIndicatorRenderer;
 
-	public DefaultBrickLayoutTemplate(GLBrick brick, GLStratomex stratomex,
-			BrickColumn dimensionGroup, IBrickConfigurer configurer) {
-		super(brick, dimensionGroup);
-		this.stratomex = stratomex;
+	public DefaultBrickLayoutTemplate(GLBrick brick, BrickColumn brickColumn, GLStratomex stratomex) {
+		super(brick, brickColumn, stratomex);
 		toolBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
 
 		if (!brick.isHeaderBrick()) {
-			leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
-					stratomex, true);
-			rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
-					stratomex, false);
+			leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, stratomex, true);
+			rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, stratomex, false);
 
 			brick.setRightRelationIndicatorRenderer(rightRelationIndicatorRenderer);
 			brick.setLeftRelationIndicatorRenderer(leftRelationIndicatorRenderer);
@@ -109,17 +103,15 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			System.out.println("Shouldn't happen");
 		}
 
-		lockResizingButton = new Button(EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
-				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
+		lockResizingButton = new Button(EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID,
+				EIconTextures.PIN);
 
-		viewSwitchingModeButton = new Button(
-				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
+		viewSwitchingModeButton = new Button(EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 				VIEW_SWITCHING_MODE_BUTTON_ID, EIconTextures.LOCK);
-		viewSwitchingModeButton.setSelected(dimensionGroup.isGlobalViewSwitching());
+		viewSwitchingModeButton.setSelected(brickColumn.isGlobalViewSwitching());
 
-		configurer.configure(this);
 		registerPickingListeners();
-		viewTypeChanged(getDefaultViewType());
+		// viewTypeChanged(getDefaultViewType());
 	}
 
 	@Override
@@ -146,7 +138,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		//
 		// ElementLayout leftRelationIndicatorLayout = new ElementLayout(
 		// "RightRelationIndicatorLayout");
-//		  rightRelationIndicatorLayout.setDebug(true);
+		// rightRelationIndicatorLayout.setDebug(true);
 		// leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
 		// leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
 		// baseRow.append(leftRelationIndicatorLayout);
@@ -158,9 +150,9 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		baseRow.setRenderer(borderedAreaRenderer);
 
-		baseRow.addForeGroundRenderer(new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick
-				.getTextureManager(), HandleRenderer.ALL_RESIZE_HANDLES
-				| HandleRenderer.MOVE_VERTICALLY_HANDLE | HandleRenderer.EXPAND_HANDLE));
+		baseRow.addForeGroundRenderer(new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick.getTextureManager(),
+				HandleRenderer.ALL_RESIZE_HANDLES | HandleRenderer.MOVE_VERTICALLY_HANDLE
+						| HandleRenderer.EXPAND_HANDLE));
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
@@ -173,8 +165,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		if (viewLayout == null) {
 			viewLayout = new ElementLayout("viewLayout");
 			viewLayout.setFrameColor(1, 0, 0, 1);
-			viewLayout
-					.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
+			viewLayout.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 			Zoomer zoomer = new Zoomer(stratomex, viewLayout);
 			viewLayout.setZoomer(zoomer);
 		}
@@ -190,8 +181,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			contentColumn.append(footerBar);
 			contentColumn.append(spacingLayoutY);
 		}
-		contentColumn.append(viewLayout);	contentColumn.append(spacingLayoutY);
-	
+		contentColumn.append(viewLayout);
+		contentColumn.append(spacingLayoutY);
 
 		headerRow = new Row("headerRow");
 		if (brick.isLabelDefault())
@@ -234,21 +225,21 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		// ButtonRenderer(lockResizingButton,
 		// brick, brick.getTextureManager(), BUTTON_Z));
 
-		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout(
-				"viewSwitchtingButtonLayout");
+		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout("viewSwitchtingButtonLayout");
 		toggleViewSwitchingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		toggleViewSwitchingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		toggleViewSwitchingButtonLayout.setRenderer(new ButtonRenderer(
-				viewSwitchingModeButton, brick, brick.getTextureManager(), BUTTON_Z));
+		toggleViewSwitchingButtonLayout.setRenderer(new ButtonRenderer.Builder(brick, viewSwitchingModeButton)
+				.textureManager(brick.getTextureManager()).zCoordinate(BUTTON_Z).build());
 
 		ElementLayout collapseButtonLayout = new ElementLayout("expandButtonLayout");
+		Button collapseButton = new Button(EPickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID,
+				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
 		collapseButtonLayout.setFrameColor(1, 0, 0, 1);
 		collapseButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		collapseButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		collapseButtonLayout.setRenderer(new ButtonRenderer(new Button(
-				EPickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID,
-				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE), brick, brick
-				.getTextureManager(), ButtonRenderer.TEXTURE_ROTATION_90, BUTTON_Z));
+		collapseButtonLayout.setRenderer(new ButtonRenderer.Builder(brick, collapseButton)
+				.textureManager(brick.getTextureManager()).textureRotation(ETextureRotation.TEXTURE_ROTATION_90)
+				.zCoordinate(BUTTON_Z).build());
 
 		ToolBar toolBar = new ToolBar("ToolBarRow", brick);
 		// toolBar.setPixelSizeY(TOOLBAR_HEIGHT_PIXELS);
@@ -301,8 +292,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				brickColumn.setGlobalViewSwitching(isGlobalViewSwitching);
 				viewSwitchingModeButton.setSelected(isGlobalViewSwitching);
 			}
-		}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
-				VIEW_SWITCHING_MODE_BUTTON_ID);
+		}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(), VIEW_SWITCHING_MODE_BUTTON_ID);
 
 		brick.addIDPickingListener(new APickingListener() {
 
@@ -334,23 +324,19 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	public int getMinHeightPixels() {
 		if (viewRenderer == null)
 			return 4 * SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS;
-		return 4 * SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS
-				+ viewRenderer.getMinHeightPixels();
+		return 4 * SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS + viewRenderer.getMinHeightPixels();
 	}
 
 	@Override
 	public int getMinWidthPixels() {
 
 		int toolBarWidth = showToolBar ? calcSumPixelWidth(toolBar.getElements()) : 0;
-		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar.getElements())
-				: 0;
+		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar.getElements()) : 0;
 
-		int guiElementsWidth = Math.max(toolBarWidth, footerBarWidth) + 2
-				* SPACING_PIXELS;
+		int guiElementsWidth = Math.max(toolBarWidth, footerBarWidth) + 2 * SPACING_PIXELS;
 		if (viewRenderer == null)
 			return guiElementsWidth;
-		return Math.max(guiElementsWidth,
-				(2 * SPACING_PIXELS) + viewRenderer.getMinWidthPixels());
+		return Math.max(guiElementsWidth, (2 * SPACING_PIXELS) + viewRenderer.getMinWidthPixels());
 		// return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup
 		// .getMinWidth());
 	}
@@ -362,8 +348,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	public ABrickLayoutConfiguration getCollapsedLayoutTemplate() {
-		return new CollapsedBrickLayoutTemplate(brick, stratomex, brickColumn,
-				brick.getBrickConfigurer());
+		return new CollapsedBrickLayoutTemplate(brick, brickColumn, stratomex);
 	}
 
 	@Override
@@ -380,22 +365,22 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	}
 
 	/**
-	 * Sets the elements that should appear in the toolbar. The elements will
-	 * placed from left to right using the order of the specified list.
-	 * 
+	 * Sets the elements that should appear in the toolbar. The elements will placed from left to right using the order
+	 * of the specified list.
+	 *
 	 * @param toolBarElements
 	 */
-	public void setToolBarElements(ArrayList<ElementLayout> toolBarElements) {
+	public void setToolBarElements(List<ElementLayout> toolBarElements) {
 		this.toolBarElements = toolBarElements;
 	}
 
 	/**
-	 * Sets the elements that should appear in the footer bar. The elements will
-	 * placed from left to right using the order of the specified list.
-	 * 
+	 * Sets the elements that should appear in the footer bar. The elements will placed from left to right using the
+	 * order of the specified list.
+	 *
 	 * @param footerBarElements
 	 */
-	public void setFooterBarElements(ArrayList<ElementLayout> footerBarElements) {
+	public void setFooterBarElements(List<ElementLayout> footerBarElements) {
 		this.footerBarElements = footerBarElements;
 	}
 
@@ -410,47 +395,41 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	/**
 	 * @return The elements displayed in the header bar.
 	 */
-	public ArrayList<ElementLayout> getHeaderBarElements() {
+	public List<ElementLayout> getHeaderBarElements() {
 		return headerBarElements;
 	}
 
 	/**
-	 * Sets the elements that should appear in the header bar. The elements will
-	 * placed from left to right using the order of the specified list.
-	 * 
+	 * Sets the elements that should appear in the header bar. The elements will placed from left to right using the
+	 * order of the specified list.
+	 *
 	 * @param headerBarElements
 	 */
-	public void setHeaderBarElements(ArrayList<ElementLayout> headerBarElements) {
+	public void setHeaderBarElements(List<ElementLayout> headerBarElements) {
 		this.headerBarElements = headerBarElements;
 	}
 
 	@Override
 	public void destroy() {
 		System.out.println("Destroy " + brick.getID());
-		brick.removeAllIDPickingListeners(EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
-				LOCK_RESIZING_BUTTON_ID);
+		brick.removeAllIDPickingListeners(EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
 
-		brick.removeAllIDPickingListeners(
-				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
+		brick.removeAllIDPickingListeners(EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 				VIEW_SWITCHING_MODE_BUTTON_ID);
 
-		brick.removeAllIDPickingListeners(EPickingType.BRICK_COLLAPSE_BUTTON.name(),
-				COLLAPSE_BUTTON_ID);
+		brick.removeAllIDPickingListeners(EPickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID);
 
-		brick.removeAllIDPickingListeners(EPickingType.EXPAND_RIGHT_HANDLE.name(),
-				brick.getID());
+		brick.removeAllIDPickingListeners(EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
 
-		brick.removeAllIDPickingListeners(EPickingType.EXPAND_LEFT_HANDLE.name(),
-				brick.getID());
+		brick.removeAllIDPickingListeners(EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
 		// toolBar.destroy();
 		super.destroy();
 	}
 
 	/**
-	 * Returns the default height of the brick depending on the type of the
-	 * view. If the {@link EContainedViewType#isUseProportionalHeight()} is
-	 * true, a proportional height is set. Otherwise the height of the view and
-	 * the toolbars etc is added and returned.
+	 * Returns the default height of the brick depending on the type of the view. If the
+	 * {@link EContainedViewType#isUseProportionalHeight()} is true, a proportional height is set. Otherwise the height
+	 * of the view and the toolbars etc is added and returned.
 	 */
 	@Override
 	public int getDefaultHeightPixels() {
@@ -464,11 +443,14 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	}
 
 	public int getOverheadHeight() {
-		int pixelHeight = SPACING_PIXELS * 2
-				+ (showFooterBar ? FOOTER_BAR_HEIGHT_PIXELS + SPACING_PIXELS : 0)
-				+ (brick.isLabelDefault() ? 0
-						: ATableBasedDataConfigurer.CAPTION_HEIGHT_PIXELS);
+		int pixelHeight = SPACING_PIXELS * 2 + (showFooterBar ? FOOTER_BAR_HEIGHT_PIXELS + SPACING_PIXELS : 0)
+				+ (brick.isLabelDefault() ? 0 : ATableBasedDataConfigurer.CAPTION_HEIGHT_PIXELS);
 		return pixelHeight;
 
+	}
+
+	@Override
+	public void configure(IBrickConfigurer configurer) {
+		configurer.configure(this);
 	}
 }

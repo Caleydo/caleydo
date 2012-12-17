@@ -20,4 +20,30 @@
             name="Kaplan Meier">
       </command>
    </extension>
+   <extension
+         point="org.caleydo.view.EmbeddedView">
+      <EmbeddingInfo
+            viewID="org.caleydo.view.kaplanmeier">
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.clinical.segment.brick"
+                  icon="resources/icons/icon.png"
+                  isDefaultView="true"
+                  viewCreator="org.caleydo.view.kaplanmeier.KaplanMeierRemoteViewCreator"
+                  visInfo="org.caleydo.view.kaplanmeier.KaplanMeierVisInfo">
+            </Embedding>
+         </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.clinical.header.brick"
+                  icon="resources/icons/icon.png"
+                  isDefaultView="true"
+                  viewCreator="org.caleydo.view.kaplanmeier.KaplanMeierRemoteViewCreator"
+                  visInfo="org.caleydo.view.kaplanmeier.KaplanMeierVisInfo">
+            </Embedding>
+         </ParentView>
+      </EmbeddingInfo>
+   </extension>
 </plugin>

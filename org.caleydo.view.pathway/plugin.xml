@@ -59,4 +59,30 @@
          </view>
       </perspectiveExtension>
    </extension>
+   <extension
+         point="org.caleydo.view.EmbeddedView">
+      <EmbeddingInfo
+            viewID="org.caleydo.view.pathway">
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.pathway.segment.brick"
+                  icon="resources/icons/pathway.png"
+                  isDefaultView="true"
+                  viewCreator="org.caleydo.view.pathway.PathwayRemoteViewCreator"
+                  visInfo="org.caleydo.view.pathway.PathwayVisInfo">
+            </Embedding>
+         </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.pathway.header.brick"
+                  icon="resources/icons/pathway.png"
+                  isDefaultView="true"
+                  viewCreator="org.caleydo.view.pathway.PathwayRemoteViewCreator"
+                  visInfo="org.caleydo.view.pathway.PathwayVisInfo">
+            </Embedding>
+         </ParentView>
+      </EmbeddingInfo>
+   </extension>
 </plugin>

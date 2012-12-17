@@ -30,6 +30,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -137,7 +138,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		displayListIndex = gl.glGenLists(1);
 
 		if (!isMaxAxisTimeSetExternally) {
-			calculateMaxAxisTime();
+			calculateMaxAxisTime(tablePerspective);
 		}
 		createPickingListeners();
 
@@ -175,14 +176,14 @@ public class GLKaplanMeier extends ATableBasedView {
 
 	}
 
-	private void calculateMaxAxisTime() {
+	public static float calculateMaxAxisTime(TablePerspective tablePerspective) {
 		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
 				.getVirtualArray();
 
 		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
 				.getVirtualArray();
 
-		maxAxisTime = 0;
+		float maxAxisTime = 0;
 		boolean containsNegativeValues = false;
 		boolean containsPositiveValues = false;
 
@@ -209,6 +210,8 @@ public class GLKaplanMeier extends ATableBasedView {
 					maxAxisTime = rawValue;
 			}
 		}
+
+		return maxAxisTime;
 	}
 
 	@Override

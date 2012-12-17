@@ -354,7 +354,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 			GL2 gl = drawable.getGL().getGL2();
 
-			ViewManager.get().executePendingRemoteViewDestruction(gl, this);
+			// ViewManager.get().executePendingRemoteViewDestruction(gl, this);
 
 			// load identity matrix
 			gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
@@ -1129,9 +1129,10 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		GL2 gl = drawable.getGL().getGL2();
 		// First, destroy the remote views, then unregister, otherwise the
 		// remote view destruction would not work
-		ViewManager.get().destroyRemoteViews(gl, this);
-		ViewManager.get().unregisterGLView(this);
-		destroy(gl);
+		// ViewManager.get().destroyRemoteViews(gl, this);
+		// ViewManager.get().unregisterGLView(this);
+		ViewManager.get().destroyView(gl, this);
+		// destroy(gl);
 	}
 
 	/**

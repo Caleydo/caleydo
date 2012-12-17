@@ -22,13 +22,14 @@ import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
- * Renderer that allows to switch between different remotely rendered {@link AGLView}s or {@link LayoutRenderer}s and
- * handles remote view creation.
- * 
+ * Renderer that allows to switch between different remotely rendered {@link AGLView}s or {@link LayoutRenderer}s.
+ * Remotely rendered views are integrated into this renderer using plugin mechanism of extension point
+ * <code>org.caleydo.view.EmbeddedView</code>.
+ *
  * @author Christian Partl
- * 
+ *
  */
-public class MultiFormRenderer extends AForwardingRenderer {
+public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedVisualizationInfo {
 
 	/**
 	 * Renderer that is used to render active remote views.
@@ -36,14 +37,15 @@ public class MultiFormRenderer extends AForwardingRenderer {
 	private ViewLayoutRenderer viewRenderer = new ViewLayoutRenderer();
 
 	/**
-	 * The view that displays this renderer in its own canvas.
+	 * The view that displays this renderer. If plugin views are to be displayed in this multiform renderer, this view
+	 * must be the view that offers the plugins.
 	 */
-	private AGLView remoteRenderingView;
+	private final AGLView remoteRenderingView;
 
 	/**
 	 * Determines whether the views added to this renderer are immediately created or not until set used the first time.
 	 */
-	private boolean isLazyViewCreation;
+	private final boolean isLazyViewCreation;
 
 	/**
 	 * Map that stores all {@link ARendererInfo}s and associates it with an identifier.
@@ -61,32 +63,50 @@ public class MultiFormRenderer extends AForwardingRenderer {
 	private ARendererInfo currentRendererInfo;
 
 	/**
+	 * The default {@link ARendererInfo}. The associated renderer is set active by default. If multiple renderers claim
+	 * to be the default renderer, the last of them that was added renderer is default. If no renderer claims to be
+	 * default, the first added renderer is default.
+	 */
+	private ARendererInfo defaultRendererInfo;
+
+	/**
 	 * Set of {@link IMultiFormChangeListener}s that are informed, when this multiform renderer changes.
 	 */
 	private Set<IMultiFormChangeListener> changeListeners = new HashSet<>();
 
 	/**
 	 * Abstract base class for renderer information that is used by {@link MultiFormRenderer}.
-	 * 
+	 *
 	 * @author Christian Partl
-	 * 
+	 *
 	 */
 	private abstract class ARendererInfo {
 
 		/**
 		 * ID used by {@link MultiFormRenderer} to identify the different renderers.
 		 */
-		protected int rendererID;
+		protected final int rendererID;
 
 		/**
 		 * Path to the icon file that is used to represent the renderer.
 		 */
-		protected String iconPath;
+		protected final String iconPath;
 
 		/**
 		 * Determines, whether the associated renderer is active.
 		 */
 		protected boolean isActive = false;
+
+		/**
+		 * Info about different aspects of the embedded visualization.
+		 */
+		protected final IEmbeddedVisualizationInfo visInfo;
+
+		protected ARendererInfo(int rendererID, String iconPath, IEmbeddedVisualizationInfo visInfo) {
+			this.rendererID = rendererID;
+			this.iconPath = iconPath;
+			this.visInfo = visInfo;
+		}
 
 		/**
 		 * Performs all necessary operations to set the associated rendering entity active in {@link MultiFormRenderer}.
@@ -95,7 +115,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 		/**
 		 * Called in every render cycle to prepare the renderer.
-		 * 
+		 *
 		 * @param gl
 		 */
 		abstract void prepareRenderer(GL2 gl);
@@ -104,22 +124,23 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Info that holds necessary information for remote rendered views.
-	 * 
+	 *
 	 * @author Christian Partl
 	 */
 	private class ViewInfo extends ARendererInfo {
+
 		/**
 		 * ID of the view type.
 		 */
-		private String viewID;
+		private final String viewID;
 		/**
 		 * ID that is used to identify the appropriate {@link IRemoteViewCreator} for this view.
 		 */
-		private String embeddingID;
+		private final String embeddingID;
 		/**
 		 * Table perspectives that shall be displayed by the view.
 		 */
-		private List<TablePerspective> tablePerspectives;
+		private final List<TablePerspective> tablePerspectives;
 		/**
 		 * The view.
 		 */
@@ -132,38 +153,81 @@ public class MultiFormRenderer extends AForwardingRenderer {
 		 */
 		private boolean isInitialized = false;
 
+		/**
+		 * @param rendererID
+		 * @param iconPath
+		 * @param visInfo
+		 */
+		protected ViewInfo(int rendererID, String iconPath, IEmbeddedVisualizationInfo visInfo, String viewID,
+				String embeddingID, List<TablePerspective> tablePerspectives) {
+			super(rendererID, iconPath, visInfo);
+			this.viewID = viewID;
+			this.embeddingID = embeddingID;
+			this.tablePerspectives = tablePerspectives;
+
+			// TODO Auto-generated constructor stub
+		}
+
 		@Override
 		void setActive() {
 			if (view == null) {
-				view = createView(this);
+				createView();
 			}
 			viewRenderer.setView(view);
 			currentRenderer = viewRenderer;
+			if (!isInitialized) {
+				view.initRemote(remoteRenderingView.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2(),
+						remoteRenderingView, remoteRenderingView.getGLMouseListener());
+				isInitialized = true;
+			}
 			currentRenderer.setLimits(x, y);
 			MultiFormRenderer.this.isDisplayListDirty = true;
 			currentRenderer.setDisplayListDirty();
 			isActive = true;
 		}
 
+		/**
+		 * Creates a view using the given view info.
+		 *
+		 * @param viewInfo
+		 * @return
+		 */
+		void createView() {
+			view = ViewManager.get()
+					.createRemotePlugInView(viewID, embeddingID, remoteRenderingView, tablePerspectives);
+		}
+
 		@Override
 		void prepareRenderer(GL2 gl) {
-			if (!isInitialized) {
-				view.initRemote(gl, remoteRenderingView, remoteRenderingView.getGLMouseListener());
-				isInitialized = true;
-			}
+			// if (!isInitialized) {
+			// view.initRemote(gl, remoteRenderingView, remoteRenderingView.getGLMouseListener());
+			// isInitialized = true;
+			// }
 		}
 	}
 
 	/**
 	 * Info that holds necessary information for {@link LayoutRenderer}s.
-	 * 
+	 *
 	 * @author Christian Partl
 	 */
 	private class LayoutRendererInfo extends ARendererInfo {
+
 		/**
 		 * The renderer.
 		 */
-		private LayoutRenderer renderer;
+		private final LayoutRenderer renderer;
+
+		/**
+		 * @param rendererID
+		 * @param iconPath
+		 * @param visInfo
+		 */
+		protected LayoutRendererInfo(int rendererID, String iconPath, IEmbeddedVisualizationInfo visInfo,
+				LayoutRenderer renderer) {
+			super(rendererID, iconPath, visInfo);
+			this.renderer = renderer;
+		}
 
 		@Override
 		void setActive() {
@@ -188,34 +252,38 @@ public class MultiFormRenderer extends AForwardingRenderer {
 	/**
 	 * Adds a view to this {@link MultiFormRenderer}. Depending on whether lazy view creation is being used, the view is
 	 * created immediately or the first time it is used.
-	 * 
+	 *
 	 * @param viewID
 	 *            ID specifying the view type.
 	 * @param embeddingID
 	 *            ID that specifies the embedding in the parent view. This ID is used to determine the appropriate
 	 *            {@link IRemoteViewCreator} for the embedded view.
 	 * @param tablePerspectives
-	 *            List of tablePerspectives that shall be displayed in the view.
+	 *            List of tablePerspectives that shall be displayed in the view. If the view only supports a single
+	 *            table perspective, the first of the list is used.
 	 * @return Identifier for the currently added view that can be used to set it active ({@link #setActive(int)}) or
 	 *         remove.
 	 */
 	public int addView(String viewID, String embeddingID, List<TablePerspective> tablePerspectives) {
 
-		ViewInfo info = new ViewInfo();
-		info.viewID = viewID;
-		info.embeddingID = embeddingID;
-		info.tablePerspectives = tablePerspectives;
-		info.iconPath = ViewManager.get().getRemotePlugInViewIcon(viewID, remoteRenderingView.getViewType(),
+		String iconPath = ViewManager.get().getRemotePlugInViewIcon(viewID, remoteRenderingView.getViewType(),
 				embeddingID);
-		if (info.iconPath == null) {
-			info.iconPath = EIconTextures.NO_ICON_AVAILABLE.getFileName();
-		}
-
-		if (!isLazyViewCreation) {
-			info.view = createView(info);
+		if (iconPath == null) {
+			iconPath = EIconTextures.NO_ICON_AVAILABLE.getFileName();
 		}
 		int rendererID = currentMaxRendererID++;
-		info.rendererID = rendererID;
+
+		IEmbeddedVisualizationInfo visInfo = ViewManager.get().getEmbeddedVisualizationInfoOfPluginView(viewID,
+				embeddingID, remoteRenderingView.getViewType());
+		ViewInfo info = new ViewInfo(rendererID, iconPath, visInfo, viewID, embeddingID, tablePerspectives);
+		if (!isLazyViewCreation) {
+			info.createView();
+		}
+
+		if (ViewManager.get().isPlugInViewDefault(viewID, remoteRenderingView.getViewType(), embeddingID)) {
+			defaultRendererInfo = info;
+		}
+
 		rendererInfos.put(rendererID, info);
 
 		notifyAdded(rendererID);
@@ -225,27 +293,31 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Adds a {@link LayoutRenderer} to this {@link MultiFormRenderer}.
-	 * 
+	 *
 	 * @param renderer
 	 *            The renderer to be added.
 	 * @param iconPath
 	 *            Path to the image file that shall be used for an iconic representation of the renderer. If null is
 	 *            specified, a default icon will be used.
+	 * @param visInfo
+	 *            Provides embedding information about the renderer to be added.
+	 * @param isDefaultRenderer
+	 *            Determines whether the renderer should be default. The default renderer is set active automatically,
+	 *            if no renderer was set active explicitly.
 	 * @return Identifier for the currently added renderer that can be used to set it active ({@link #setActive(int)})
 	 *         or remove.
 	 */
-	public int addLayoutRenderer(LayoutRenderer renderer, String iconPath) {
-		LayoutRendererInfo info = new LayoutRendererInfo();
-		info.renderer = renderer;
-		if (iconPath == null) {
-			info.iconPath = EIconTextures.NO_ICON_AVAILABLE.getFileName();
-		} else {
-			info.iconPath = iconPath;
-		}
+	public int addLayoutRenderer(LayoutRenderer renderer, String iconPath, IEmbeddedVisualizationInfo visInfo,
+			boolean isDefaultRenderer) {
 
 		int rendererID = currentMaxRendererID++;
-		info.rendererID = rendererID;
+		LayoutRendererInfo info = new LayoutRendererInfo(rendererID,
+				iconPath == null ? EIconTextures.NO_ICON_AVAILABLE.getFileName() : iconPath, visInfo, renderer);
 		rendererInfos.put(rendererID, info);
+
+		if (isDefaultRenderer) {
+			defaultRendererInfo = info;
+		}
 
 		notifyAdded(rendererID);
 
@@ -254,7 +326,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Removes a renderer specified by its ID.
-	 * 
+	 *
 	 * @param rendererID
 	 *            ID of the renderer.
 	 * @param destroy
@@ -267,18 +339,22 @@ public class MultiFormRenderer extends AForwardingRenderer {
 			return;
 
 		rendererInfos.remove(rendererID);
-
+		GL2 gl = remoteRenderingView.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2();
 		if (info instanceof ViewInfo) {
 			AGLView view = ((ViewInfo) info).view;
 			if (view != null) {
-				GeneralManager.get().getViewManager().unregisterGLView(view);
+				// GeneralManager.get().getViewManager().unregisterGLView(view);
+				GeneralManager.get().getViewManager().destroyView(gl, view);
 			}
 		} else {
-			GL2 gl = remoteRenderingView.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2();
+
 			((LayoutRendererInfo) info).renderer.destroy(gl);
 		}
 		if (info == currentRendererInfo) {
 			currentRendererInfo = null;
+		}
+		if (info == defaultRendererInfo) {
+			defaultRendererInfo = null;
 		}
 
 		notifyRemoved(rendererID);
@@ -287,7 +363,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 	/**
 	 * Gets the file path of the icon that is associated with the {@link AGLView} or {@link LayoutRenderer} specified by
 	 * the provided renderer ID.
-	 * 
+	 *
 	 * @param rendererID
 	 *            ID that specifies the view or renderer.
 	 * @return File path of the associated Icon. Null, if no renderer or view is associated with the specified ID.
@@ -309,16 +385,14 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Ensures,if possible, that there is a valid renderer ready to display content.
-	 * 
+	 *
 	 * @return True, if a valid renderer could be set, false otherwise.
 	 */
 	private boolean ensureValidRenderer() {
 
 		if (currentRendererInfo == null) {
-			List<Integer> idList = new ArrayList<>(rendererInfos.keySet());
-			if (idList.size() > 0) {
-				Collections.sort(idList);
-				currentRendererInfo = rendererInfos.get(idList.get(0));
+			if (determineDefaultRendererInfo()) {
+				currentRendererInfo = defaultRendererInfo;
 			} else {
 				return false;
 			}
@@ -333,9 +407,59 @@ public class MultiFormRenderer extends AForwardingRenderer {
 	}
 
 	/**
+	 * Determines {@link #defaultRendererInfo}.
+	 *
+	 * @return True, if a default could be determined, false otherwise.
+	 */
+	private boolean determineDefaultRendererInfo() {
+		if (defaultRendererInfo != null)
+			return true;
+
+		List<Integer> idList = new ArrayList<>(rendererInfos.keySet());
+		if (idList.size() > 0) {
+			Collections.sort(idList);
+			defaultRendererInfo = rendererInfos.get(idList.get(idList.size() - 1));
+		} else {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Obtains the ID of the current default renderer. The default renderer is set active automatically, if no renderer
+	 * was set active explicitly. The last renderer that was added as default (either via extension point
+	 * <code>org.caleydo.view.EmbeddedView</code> for plugin views, or via
+	 * {@link #addLayoutRenderer(LayoutRenderer, String, IEmbeddedVisualizationInfo, boolean)}) is default. If no
+	 * renderer was added as default, the first added renderer is default. It is possible to change the default renderer
+	 * using {@link #setDefaultRenderer(int)}.
+	 *
+	 * @return The id of the default renderer. -1 if no default renderer could be determined.
+	 */
+	public int getDefaultRendererID() {
+		if (determineDefaultRendererInfo())
+			return defaultRendererInfo.rendererID;
+		return -1;
+	}
+
+	/**
+	 * Sets the default renderer for this multiform renderer.The default renderer is set active automatically, if no
+	 * renderer was set active explicitly.
+	 *
+	 * @param rendererID
+	 *            ID of the renderer to set default.
+	 */
+	public void setDefaultRenderer(int rendererID) {
+		ARendererInfo info = rendererInfos.get(rendererID);
+		if (info != null) {
+			defaultRendererInfo = info;
+		}
+	}
+
+	/**
 	 * Sets a {@link AGLView} or {@link LayoutRenderer} previously added to this {@link MultiFormRenderer} active, so
 	 * that it will be rendered. If the specified identifier is invalid, no operation is performed.
-	 * 
+	 *
 	 * @param rendererID
 	 *            Identifier that specifies a view or layout renderer.
 	 */
@@ -354,19 +478,8 @@ public class MultiFormRenderer extends AForwardingRenderer {
 	}
 
 	/**
-	 * Creates a view using the given view info.
-	 * 
-	 * @param viewInfo
-	 * @return
-	 */
-	private AGLView createView(ViewInfo viewInfo) {
-		return ViewManager.get().createRemotePlugInView(viewInfo.viewID, viewInfo.embeddingID, remoteRenderingView,
-				viewInfo.tablePerspectives);
-	}
-
-	/**
 	 * Gets the {@link AGLView} associated with the provided rendererID.
-	 * 
+	 *
 	 * @param rendererID
 	 *            Identifier that specifies the view.
 	 * @return The view that is associated with the specified ID. Null, if no view corresponds to this ID.
@@ -379,7 +492,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 		if (info instanceof ViewInfo) {
 			ViewInfo viewInfo = (ViewInfo) info;
 			if (viewInfo.view == null) {
-				viewInfo.view = createView(viewInfo);
+				viewInfo.createView();
 			}
 			return viewInfo.view;
 		}
@@ -388,7 +501,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Gets the {@link LayoutRenderer} associated with the provided rendererID.
-	 * 
+	 *
 	 * @param rendererID
 	 *            Identifier that specifies the layout.
 	 * @return The renderer that is associated with the specified ID. Null, if no renderer corresponds to this ID.
@@ -506,16 +619,8 @@ public class MultiFormRenderer extends AForwardingRenderer {
 	}
 
 	/**
-	 * @param isLazyViewCreation
-	 *            setter, see {@link isLazyViewCreation}
-	 */
-	public void setLazyViewCreation(boolean isLazyViewCreation) {
-		this.isLazyViewCreation = isLazyViewCreation;
-	}
-
-	/**
 	 * Adds a {@link IMultiFormChangeListener} to this {@link MultiFormRenderer}, if it is not already added.
-	 * 
+	 *
 	 * @param listener
 	 */
 	public void addChangeListener(IMultiFormChangeListener listener) {
@@ -524,7 +629,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Removes a {@link IMultiFormChangeListener} from this {@link MultiFormRenderer}.
-	 * 
+	 *
 	 * @param listener
 	 */
 	public void removeChangeListener(IMultiFormChangeListener listener) {
@@ -533,7 +638,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Notifies all registered {@link IMultiFormChangeListener}s of the change of the currently active renderer.
-	 * 
+	 *
 	 * @param currentRendererID
 	 *            ID of the renderer that is now set active.
 	 * @param previousRendererID
@@ -547,7 +652,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Notifies all registered {@link IMultiFormChangeListener}s of the added renderer.
-	 * 
+	 *
 	 * @param rendererID
 	 *            ID of the renderer that was added.
 	 */
@@ -559,7 +664,7 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 	/**
 	 * Notifies all registered {@link IMultiFormChangeListener}s of the removed renderer.
-	 * 
+	 *
 	 * @param rendererID
 	 *            ID of the renderer that was removed.
 	 */
@@ -576,7 +681,8 @@ public class MultiFormRenderer extends AForwardingRenderer {
 			if (info instanceof ViewInfo) {
 				AGLView view = ((ViewInfo) info).view;
 				if (view != null) {
-					GeneralManager.get().getViewManager().unregisterGLView(view);
+					GeneralManager.get().getViewManager().destroyView(gl, view);
+
 				}
 			} else {
 				LayoutRenderer renderer = ((LayoutRendererInfo) info).renderer;
@@ -594,7 +700,21 @@ public class MultiFormRenderer extends AForwardingRenderer {
 
 		for (IMultiFormChangeListener listener : changeListeners) {
 			listener.destroyed(this);
-			removeChangeListener(listener);
 		}
+		changeListeners.clear();
+	}
+
+	@Override
+	public EScalingEntity getPrimaryWidthScalingEntity() {
+		if (!ensureValidRenderer())
+			return null;
+		return currentRendererInfo.visInfo.getPrimaryWidthScalingEntity();
+	}
+
+	@Override
+	public EScalingEntity getPrimaryHeightScalingEntity() {
+		if (!ensureValidRenderer())
+			return null;
+		return currentRendererInfo.visInfo.getPrimaryHeightScalingEntity();
 	}
 }

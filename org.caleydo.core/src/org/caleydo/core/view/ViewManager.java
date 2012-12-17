@@ -48,6 +48,7 @@ import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.awt.AWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.newt.NEWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
+import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
@@ -93,7 +94,7 @@ public class ViewManager extends AManager<IView> {
 	 * Map that maps from a top level remote rendering view to remote rendering views that need to be destroyed. These
 	 * views shall be destroyed via {@link #executePendingRemoteViewDestruction(GL2, AGLView)} in a display cycle.
 	 */
-	private Map<AGLView, Set<AGLView>> hashTopLevelView2ViewsToBeDestroyed = new HashMap<AGLView, Set<AGLView>>();
+	// private Map<AGLView, Set<AGLView>> hashTopLevelView2ViewsToBeDestroyed = new HashMap<AGLView, Set<AGLView>>();
 
 	private FPSAnimator fpsAnimator;
 
@@ -242,17 +243,17 @@ public class ViewManager extends AManager<IView> {
 	 * @param gl
 	 * @param topLevelRemoteRenderingView
 	 */
-	public void executePendingRemoteViewDestruction(GL2 gl, AGLView topLevelRemoteRenderingView) {
-
-		Set<AGLView> viewsToBeDestroyed = hashTopLevelView2ViewsToBeDestroyed.get(topLevelRemoteRenderingView);
-
-		if (viewsToBeDestroyed != null) {
-			for (AGLView view : viewsToBeDestroyed) {
-				view.destroy(gl);
-			}
-			viewsToBeDestroyed.clear();
-		}
-	}
+	// public void executePendingRemoteViewDestruction(GL2 gl, AGLView topLevelRemoteRenderingView) {
+	//
+	// Set<AGLView> viewsToBeDestroyed = hashTopLevelView2ViewsToBeDestroyed.get(topLevelRemoteRenderingView);
+	//
+	// if (viewsToBeDestroyed != null) {
+	// for (AGLView view : viewsToBeDestroyed) {
+	// view.destroy(gl);
+	// }
+	// viewsToBeDestroyed.clear();
+	// }
+	// }
 
 	// /**
 	// * Destroys the specified view and all of its remote rendered views.
@@ -273,17 +274,69 @@ public class ViewManager extends AManager<IView> {
 	 * @param gl
 	 * @param remoteRenderingView
 	 */
-	public void destroyRemoteViews(GL2 gl, AGLView remoteRenderingView) {
-		Set<AGLView> remoteRenderedViews = hashRemoteRenderingView2RemoteRenderedViews.get(remoteRenderingView);
+	// public void destroyRemoteViews(GL2 gl, AGLView remoteRenderingView) {
+	// Set<AGLView> remoteRenderedViews = hashRemoteRenderingView2RemoteRenderedViews.get(remoteRenderingView);
+	//
+	// if (remoteRenderedViews != null) {
+	// Set<AGLView> tempRemoteRenderedViews = new HashSet<AGLView>(remoteRenderedViews);
+	// for (AGLView remoteRenderedView : tempRemoteRenderedViews) {
+	// destroyRemoteViews(gl, remoteRenderedView);
+	// unregisterGLView(remoteRenderedView, false);
+	// remoteRenderedView.destroy(gl);
+	// }
+	// }
+	// }
+
+	/**
+	 * Destroys and unregisters a view and all its remote rendered views.
+	 *
+	 * @param gl
+	 * @param view
+	 *            The view to be destroyed.
+	 */
+	public void destroyView(GL2 gl, AGLView view) {
+		if (view == null)
+			return;
+
+		IGLCanvas parentGLCanvas = view.getParentGLCanvas();
+
+		if (parentGLCanvas != null) {
+			parentGLCanvas.removeGLEventListener(view);
+		}
+
+		hashGLViewID2GLView.remove(view.getID());
+
+		AGLView parentView = (AGLView) view.getRemoteRenderingGLView();
+
+		// Remove this view from the parent's remote rendering list
+		if (parentView != null) {
+			Set<AGLView> parentRemoteRenderedViews = hashRemoteRenderingView2RemoteRenderedViews.get(parentView);
+			if (parentRemoteRenderedViews != null)
+				parentRemoteRenderedViews.remove(view);
+		}
+
+		Set<AGLView> remoteRenderedViews = hashRemoteRenderingView2RemoteRenderedViews.get(view);
 
 		if (remoteRenderedViews != null) {
 			Set<AGLView> tempRemoteRenderedViews = new HashSet<AGLView>(remoteRenderedViews);
 			for (AGLView remoteRenderedView : tempRemoteRenderedViews) {
-				destroyRemoteViews(gl, remoteRenderedView);
-				unregisterGLView(remoteRenderedView, false);
-				remoteRenderedView.destroy(gl);
+				destroyView(gl, remoteRenderedView);
+				// unregisterGLView(remoteRenderedView, false);
+				// remoteRenderedView.destroy(gl);
 			}
 		}
+
+		view.destroy(gl);
+
+		AGLView topLevelGLView = view.getTopLevelGLView();
+		if (topLevelGLView == view) {
+			unregisterGLCanvas(view.getParentGLCanvas());
+		}
+
+		hashRemoteRenderingView2RemoteRenderedViews.remove(view);
+		ViewClosedEvent event = new ViewClosedEvent(view);
+		event.setSender(this);
+		generalManager.getEventPublisher().triggerEvent(event);
 	}
 
 	public void registerGLEventListenerByGLCanvas(final IGLCanvas glCanvas, final AGLView glView) {
@@ -347,9 +400,9 @@ public class ViewManager extends AManager<IView> {
 	 *
 	 * @param glView
 	 */
-	public void unregisterGLView(final AGLView glView) {
-		unregisterGLView(glView, glView.getTopLevelGLView() != glView);
-	}
+	// public void unregisterGLView(final AGLView glView) {
+	// unregisterGLView(glView, glView.getTopLevelGLView() != glView);
+	// }
 
 	/**
 	 * Unregisters the specified view from this manager.
@@ -359,63 +412,63 @@ public class ViewManager extends AManager<IView> {
 	 *            Specifies whether the view (if remote rendered) shall be destroyed in the next display cycle of its
 	 *            top level remote rendering view.
 	 */
-	private void unregisterGLView(final AGLView glView, boolean registerAtTopLevelViewForDestruction) {
-		if (glView == null)
-			return;
-
-		IGLCanvas parentGLCanvas = (glView).getParentGLCanvas();
-
-		if (parentGLCanvas != null) {
-			parentGLCanvas.removeGLEventListener(glView);
-		}
-
-		hashGLViewID2GLView.remove(glView.getID());
-
-		AGLView parentView = (AGLView) glView.getRemoteRenderingGLView();
-
-		// Remove this view from the parent's remote rendering list
-		if (parentView != null) {
-			Set<AGLView> parentRemoteRenderedViews = hashRemoteRenderingView2RemoteRenderedViews.get(parentView);
-			if (parentRemoteRenderedViews != null)
-				parentRemoteRenderedViews.remove(glView);
-		}
-
-		AGLView topLevelGLView = glView.getTopLevelGLView();
-		if (topLevelGLView != glView) {
-			Set<AGLView> viewsToBeDestroyed = hashTopLevelView2ViewsToBeDestroyed.get(topLevelGLView);
-
-			if (registerAtTopLevelViewForDestruction) {
-				if (viewsToBeDestroyed == null) {
-					viewsToBeDestroyed = new HashSet<AGLView>();
-					hashTopLevelView2ViewsToBeDestroyed.put(topLevelGLView, viewsToBeDestroyed);
-				}
-				viewsToBeDestroyed.add(glView);
-			}
-			Set<AGLView> remoteRenderedViews = hashRemoteRenderingView2RemoteRenderedViews.get(glView);
-
-			if (remoteRenderedViews != null) {
-				Set<AGLView> tempRemoteRenderedViews = new HashSet<AGLView>(remoteRenderedViews);
-				for (AGLView remoteRenderedView : tempRemoteRenderedViews) {
-					// Unregister remote rendered views of glView
-					unregisterGLView(remoteRenderedView, registerAtTopLevelViewForDestruction);
-					// Register them to be destroyed in the next display cycle
-					// of the top level remote rendering view
-					if (registerAtTopLevelViewForDestruction)
-						viewsToBeDestroyed.add(remoteRenderedView);
-				}
-				remoteRenderedViews.clear();
-			}
-		} else {
-			hashTopLevelView2ViewsToBeDestroyed.remove(glView);
-			unregisterGLCanvas(glView.getParentGLCanvas());
-		}
-
-		hashRemoteRenderingView2RemoteRenderedViews.remove(glView);
-
-		ViewClosedEvent event = new ViewClosedEvent(glView);
-		event.setSender(this);
-		generalManager.getEventPublisher().triggerEvent(event);
-	}
+	// private void unregisterGLView(final AGLView glView, boolean registerAtTopLevelViewForDestruction) {
+	// if (glView == null)
+	// return;
+	//
+	// IGLCanvas parentGLCanvas = (glView).getParentGLCanvas();
+	//
+	// if (parentGLCanvas != null) {
+	// parentGLCanvas.removeGLEventListener(glView);
+	// }
+	//
+	// hashGLViewID2GLView.remove(glView.getID());
+	//
+	// AGLView parentView = (AGLView) glView.getRemoteRenderingGLView();
+	//
+	// // Remove this view from the parent's remote rendering list
+	// if (parentView != null) {
+	// Set<AGLView> parentRemoteRenderedViews = hashRemoteRenderingView2RemoteRenderedViews.get(parentView);
+	// if (parentRemoteRenderedViews != null)
+	// parentRemoteRenderedViews.remove(glView);
+	// }
+	//
+	// AGLView topLevelGLView = glView.getTopLevelGLView();
+	// if (topLevelGLView != glView) {
+	// Set<AGLView> viewsToBeDestroyed = hashTopLevelView2ViewsToBeDestroyed.get(topLevelGLView);
+	//
+	// if (registerAtTopLevelViewForDestruction) {
+	// if (viewsToBeDestroyed == null) {
+	// viewsToBeDestroyed = new HashSet<AGLView>();
+	// hashTopLevelView2ViewsToBeDestroyed.put(topLevelGLView, viewsToBeDestroyed);
+	// }
+	// viewsToBeDestroyed.add(glView);
+	// }
+	// Set<AGLView> remoteRenderedViews = hashRemoteRenderingView2RemoteRenderedViews.get(glView);
+	//
+	// if (remoteRenderedViews != null) {
+	// Set<AGLView> tempRemoteRenderedViews = new HashSet<AGLView>(remoteRenderedViews);
+	// for (AGLView remoteRenderedView : tempRemoteRenderedViews) {
+	// // Unregister remote rendered views of glView
+	// unregisterGLView(remoteRenderedView, registerAtTopLevelViewForDestruction);
+	// // Register them to be destroyed in the next display cycle
+	// // of the top level remote rendering view
+	// if (registerAtTopLevelViewForDestruction)
+	// viewsToBeDestroyed.add(remoteRenderedView);
+	// }
+	// remoteRenderedViews.clear();
+	// }
+	// } else {
+	// hashTopLevelView2ViewsToBeDestroyed.remove(glView);
+	// unregisterGLCanvas(glView.getParentGLCanvas());
+	// }
+	//
+	// hashRemoteRenderingView2RemoteRenderedViews.remove(glView);
+	//
+	// ViewClosedEvent event = new ViewClosedEvent(glView);
+	// event.setSender(this);
+	// generalManager.getEventPublisher().triggerEvent(event);
+	// }
 
 	public Collection<AGLView> getAllGLViews() {
 		return hashGLViewID2GLView.values();
@@ -557,7 +610,8 @@ public class ViewManager extends AManager<IView> {
 	}
 
 	/**
-	 * Creates a new view for remote rendering from a plug-in.
+	 * Creates a new view for remote rendering from a plug-in (extension point
+	 * <code>org.caleydo.view.EmbeddedView</code>).
 	 *
 	 * @param viewID
 	 *            ID of the view to be remotely rendered
@@ -608,16 +662,63 @@ public class ViewManager extends AManager<IView> {
 	}
 
 	/**
-	 * Retrieves IDs of all views that have defined via plug-in mechanism to be remote rendered with the specified
-	 * parameters.
+	 * Gets an {@link IEmbeddedVisualizationInfo} for a specified plugin view (extension point
+	 * <code>org.caleydo.view.EmbeddedView</code>).
 	 *
-	 * @param remoteRenderingViewID
+	 * @param viewID
+	 *            ID of the plugin view that is rendered remotely.
+	 * @param embeddingID
+	 *            ID that specifies the embedding in the parent view.
+	 * @param parentViewID
+	 *            ID of the remote rendering parent view.
+	 * @return Instance of the view type specified by the parameters. NULL, if the view could not be created.
+	 */
+	public IEmbeddedVisualizationInfo getEmbeddedVisualizationInfoOfPluginView(String viewID, String embeddingID,
+			String parentViewID) {
+
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint point = registry.getExtensionPoint("org.caleydo.view.EmbeddedView");
+		IExtension[] extensions = point.getExtensions();
+
+		for (IExtension extension : extensions) {
+			IConfigurationElement[] embeddingInfos = extension.getConfigurationElements();
+			for (IConfigurationElement embeddingInfo : embeddingInfos) {
+				if (embeddingInfo.getAttribute("viewID").equals(viewID)) {
+					IConfigurationElement[] parentViews = embeddingInfo.getChildren("ParentView");
+					for (IConfigurationElement parent : parentViews) {
+						if (parent.getAttribute("viewID").equals(parentViewID)) {
+							IConfigurationElement[] embeddings = parent.getChildren("Embedding");
+							for (IConfigurationElement embedding : embeddings) {
+								if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
+									try {
+										return (IEmbeddedVisualizationInfo) embedding
+												.createExecutableExtension("visInfo");
+									} catch (CoreException e) {
+										Logger.log(new Status(IStatus.WARNING, "ViewManager",
+												"Could not create vis info for " + viewID));
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Retrieves IDs of all views that have defined via plug-in mechanism to be remote rendered with the specified
+	 * parameters (extension point <code>org.caleydo.view.EmbeddedView</code>).
+	 *
+	 * @param parentViewID
 	 *            ID of the remote rendering parent view.
 	 * @param embeddingID
 	 *            ID that specifies the embedding in the parent view.
 	 * @return List of all viewIDs that shall be rendered remote according to the specified parameters.
 	 */
-	public Set<String> getRemotePlugInViewIDs(String remoteRenderingViewID, String embeddingID) {
+	public Set<String> getRemotePlugInViewIDs(String parentViewID, String embeddingID) {
 		Set<String> viewIDs = new HashSet<>();
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
@@ -629,7 +730,7 @@ public class ViewManager extends AManager<IView> {
 			for (IConfigurationElement embeddingInfo : embeddingInfos) {
 				IConfigurationElement[] parentViews = embeddingInfo.getChildren("ParentView");
 				for (IConfigurationElement parent : parentViews) {
-					if (parent.getAttribute("viewID").equals(remoteRenderingViewID)) {
+					if (parent.getAttribute("viewID").equals(parentViewID)) {
 						IConfigurationElement[] embeddings = parent.getChildren("Embedding");
 						for (IConfigurationElement embedding : embeddings) {
 							if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
@@ -644,7 +745,19 @@ public class ViewManager extends AManager<IView> {
 		return viewIDs;
 	}
 
-	public String getRemotePlugInViewIcon(String viewID, String remoteRenderingViewID, String embeddingID) {
+	/**
+	 * Gets the path of the icon that is associated with the specified plugin view (extension point
+	 * <code>org.caleydo.view.EmbeddedView</code>).
+	 *
+	 * @param viewID
+	 *            ID of the view.
+	 * @param parentViewID
+	 *            ID of the remote rendering parent view.
+	 * @param embeddingID
+	 *            ID that specifies the embedding in the parent view.
+	 * @return File path to the icon. Null, if no icon was specified or could be found.
+	 */
+	public String getRemotePlugInViewIcon(String viewID, String parentViewID, String embeddingID) {
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint point = registry.getExtensionPoint("org.caleydo.view.EmbeddedView");
@@ -656,7 +769,7 @@ public class ViewManager extends AManager<IView> {
 				if (embeddingInfo.getAttribute("viewID").equals(viewID)) {
 					IConfigurationElement[] parentViews = embeddingInfo.getChildren("ParentView");
 					for (IConfigurationElement parent : parentViews) {
-						if (parent.getAttribute("viewID").equals(remoteRenderingViewID)) {
+						if (parent.getAttribute("viewID").equals(parentViewID)) {
 							IConfigurationElement[] embeddings = parent.getChildren("Embedding");
 							for (IConfigurationElement embedding : embeddings) {
 								if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
@@ -683,6 +796,46 @@ public class ViewManager extends AManager<IView> {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Determines whether the plugin view is a default view for the specified embedding (extension point
+	 * <code>org.caleydo.view.EmbeddedView</code>).
+	 *
+	 * @param viewID
+	 *            ID of the view.
+	 * @param parentViewID
+	 *            ID of the remote rendering parent view.
+	 * @param embeddingID
+	 *            ID that specifies the embedding in the parent view.
+	 * @return True, if the view was specified as default, false otherwise.
+	 */
+	public boolean isPlugInViewDefault(String viewID, String parentViewID, String embeddingID) {
+
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint point = registry.getExtensionPoint("org.caleydo.view.EmbeddedView");
+		IExtension[] extensions = point.getExtensions();
+
+		for (IExtension extension : extensions) {
+			IConfigurationElement[] embeddingInfos = extension.getConfigurationElements();
+			for (IConfigurationElement embeddingInfo : embeddingInfos) {
+				if (embeddingInfo.getAttribute("viewID").equals(viewID)) {
+					IConfigurationElement[] parentViews = embeddingInfo.getChildren("ParentView");
+					for (IConfigurationElement parent : parentViews) {
+						if (parent.getAttribute("viewID").equals(parentViewID)) {
+							IConfigurationElement[] embeddings = parent.getChildren("Embedding");
+							for (IConfigurationElement embedding : embeddings) {
+								if (embedding.getAttribute("embeddingID").equals(embeddingID)) {
+									return Boolean.valueOf(embedding.getAttribute("isDefaultView"));
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return false;
 	}
 
 	public synchronized void initializeUnserializedViews() {
