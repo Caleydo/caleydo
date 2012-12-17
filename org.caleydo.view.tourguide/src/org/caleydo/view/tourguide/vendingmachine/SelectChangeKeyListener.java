@@ -17,45 +17,36 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.opengl.canvas;
+package org.caleydo.view.tourguide.vendingmachine;
 
+import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IGLKeyListener {
+public class SelectChangeKeyListener implements IGLKeyListener {
+
+	private final ScoreQueryUI scoreQueryUI;
 
 	/**
-	 * @param e
+	 * @param scoreQueryUI
 	 */
-	void keyPressed(IKeyEvent e);
-
-	/**
-	 * @param e
-	 */
-	void keyReleased(IKeyEvent e);
-
-
-	public interface IKeyEvent {
-		boolean isKey(char c);
-
-		boolean isKey(ESpecialKey c);
-
-		int getKeyCode();
-
-		/**
-		 * @return whether the shift key was already down or become down
-		 */
-		boolean isShiftDown();
-
-		/**
-		 * @return whether the control key was already down or become down
-		 */
-		boolean isControlDown();
+	public SelectChangeKeyListener(ScoreQueryUI scoreQueryUI) {
+		this.scoreQueryUI = scoreQueryUI;
 	}
 
-	public enum ESpecialKey {
-		CONTROL, SHIFT, LEFT, RIGHT, UP, DOWN
+	@Override
+	public void keyPressed(IKeyEvent e) {
+
+	}
+
+	@Override
+	public void keyReleased(IKeyEvent e) {
+		if (e.isKey(ESpecialKey.DOWN))
+			scoreQueryUI.selectNext();
+		else if (e.isKey(ESpecialKey.UP))
+			scoreQueryUI.selectPrevious();
 	}
 }
+

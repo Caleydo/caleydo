@@ -192,6 +192,8 @@ public class ScoreQueryUI extends Row {
 	public void setSelected(int row) {
 		if (selectedRow == row)
 			return;
+		if (row < 0 || row >= data.size())
+			return;
 		ScoringElement old = null;
 		if (selectedRow != -1) {
 			old = data.get(selectedRow);
@@ -432,6 +434,15 @@ public class ScoreQueryUI extends Row {
 				new ScoreFilterDialog(new Shell(), getVisibleColumns(), ScoreQueryUI.this).open();
 			}
 		});
+	}
+
+
+	public void selectNext() {
+		setSelected(selectedRow + 1);
+	}
+
+	public void selectPrevious() {
+		setSelected(selectedRow - 1);
 	}
 
 }

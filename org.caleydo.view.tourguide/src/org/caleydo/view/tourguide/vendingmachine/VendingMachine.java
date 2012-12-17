@@ -45,6 +45,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.IGLCanvas;
+import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -126,6 +127,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 	private CaleydoTextRenderer textLargeRenderer;
 
+	private IGLKeyListener keyListener;
+
 	public VendingMachine(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -163,7 +166,10 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		textLargeRenderer = new CaleydoTextRenderer(24);
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 
+
 		initLayouts();
+		keyListener = new SelectChangeKeyListener(this.scoreQueryUI);
+		this.parentGLCanvas.addKeyListener(keyListener);
 	}
 
 	@Override
@@ -318,6 +324,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		this.stratomex.cleanUp();
+
+		this.parentGLCanvas.removeKeyListener(keyListener);
 	}
 
 	@Override

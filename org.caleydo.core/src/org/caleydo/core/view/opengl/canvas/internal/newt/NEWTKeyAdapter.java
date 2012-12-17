@@ -108,6 +108,14 @@ final class NEWTKeyAdapter implements KeyListener {
 				return event.getKeyCode() == KeyEvent.VK_CONTROL;
 			case SHIFT:
 				return event.getKeyCode() == KeyEvent.VK_SHIFT;
+			case DOWN:
+				return event.getKeyCode() == KeyEvent.VK_DOWN;
+			case LEFT:
+				return event.getKeyCode() == KeyEvent.VK_LEFT;
+			case UP:
+				return event.getKeyCode() == KeyEvent.VK_UP;
+			case RIGHT:
+				return event.getKeyCode() == KeyEvent.VK_RIGHT;
 			}
 			throw new IllegalStateException("unknown special key:" + c);
 		}

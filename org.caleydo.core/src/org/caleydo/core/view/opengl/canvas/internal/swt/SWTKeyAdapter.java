@@ -98,6 +98,14 @@ final class SWTKeyAdapter implements KeyListener {
 				return event.keyCode == SWT.CONTROL;
 			case SHIFT:
 				return event.keyCode == SWT.SHIFT;
+			case DOWN:
+				return event.keyCode == SWT.ARROW_DOWN;
+			case LEFT:
+				return event.keyCode == SWT.ARROW_LEFT;
+			case UP:
+				return event.keyCode == SWT.ARROW_UP;
+			case RIGHT:
+				return event.keyCode == SWT.ARROW_RIGHT;
 			}
 			throw new IllegalStateException("unknown special key:" + c);
 		}
