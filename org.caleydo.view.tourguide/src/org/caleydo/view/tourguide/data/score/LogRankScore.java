@@ -65,6 +65,6 @@ public class LogRankScore extends AGroupScore implements IComputedGroupScore {
 
 	@Override
 	public float compute(Set<Integer> a, Set<Integer> b) {
-		return LogRank.get(clinicalVariable, clinical).compute(a, a);
+		return LogRank.get(clinicalVariable, clinical).compute(a, b);
 	}
 }
