@@ -169,7 +169,9 @@ public class StratomexAdapter {
 					currentPreviewGroup = group;
 				}
 			} else { // not same stratification
-				if (!temporaryPreview || contains(strat)) {
+				if (!temporaryPreview || contains(strat)
+						|| !currentPreview.getDataDomain().equals(strat.getDataDomain())) {
+					// if different data domains create new one, see #1017
 					removePreview();
 					createPreview(strat, group);
 				} else {
