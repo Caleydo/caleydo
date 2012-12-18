@@ -320,14 +320,19 @@ public final class ProjectManager {
 	 *            if true, only the data is saved, else also the workbench is saved
 	 */
 	public static void save(String fileName, boolean onlyData, Collection<? extends IDataDomain> dataDomains) {
+		log.info("saving to " + fileName);
 		String tempDir = dir("temp_project" + System.currentTimeMillis());
 		FileOperations.createDirectory(tempDir);
 		try {
 			if (!onlyData) {
 				saveWorkbenchData(tempDir);
 			}
+			log.info("storing plugin data");
 			savePluginData(tempDir);
+			log.info("stored plugin data");
+			log.info("storing data");
 			saveData(tempDir, dataDomains);
+			log.info("stored data");
 
 			ZipUtils.zipDirectory(tempDir, fileName);
 
@@ -500,6 +505,7 @@ public final class ProjectManager {
 	 */
 	@SuppressWarnings("restriction")
 	private static void saveWorkbenchData(String dirName) {
+		log.info("storing workbench data");
 		// see https://bugs.eclipse.org/bugs/show_bug.cgi?id=2369
 		// -> if this is implemented than a much cleaner solution can be used to persist the application model
 
@@ -536,7 +542,7 @@ public final class ProjectManager {
 		resource.getContents().add(local);
 		try {
 			resource.save(Collections.EMPTY_MAP);
-			log.info("stored application.xmi");
+			log.info("stored workbench data");
 		} catch (IOException e) {
 			log.error("can't persist application.xmi", e);
 		}
