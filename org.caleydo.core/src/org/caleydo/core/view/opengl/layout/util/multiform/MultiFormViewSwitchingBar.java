@@ -34,6 +34,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ElementLayouts;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.button.Button;
 
@@ -91,6 +92,19 @@ public class MultiFormViewSwitchingBar extends Row implements IMultiFormChangeLi
 				MultiFormViewSwitchingBar.this.multiFormRenderer.setActive(pick.getObjectID());
 			}
 		}, buttonPickingType);
+	}
+
+	/**
+	 * Adds a specified picking listener for a button identified by the corresponding rendererID, if such a button is
+	 * present in the bar. This listener will be unregistered when the button is removed from the bar or the bar is
+	 * destroyed.
+	 *
+	 * @param pickingListener
+	 * @param rendererID
+	 */
+	public void addButtonPickingListener(IPickingListener pickingListener, int rendererID) {
+		if (buttons.keySet().contains(rendererID))
+			view.addIDPickingListener(pickingListener, buttonPickingType, rendererID);
 	}
 
 	private void createButtonsForMultiformRenderer(MultiFormRenderer multiFormRenderer) {
@@ -175,6 +189,7 @@ public class MultiFormViewSwitchingBar extends Row implements IMultiFormChangeLi
 		elementLayout.destroy(gl);
 
 		buttons.remove(rendererID);
+		view.removeAllIDPickingListeners(buttonPickingType, rendererID);
 
 		if (layoutManager != null) {
 			layoutManager.updateLayout();
@@ -221,10 +236,12 @@ public class MultiFormViewSwitchingBar extends Row implements IMultiFormChangeLi
 	@Override
 	public void destroy(GL2 gl) {
 		view.removeAllTypePickingListeners(buttonPickingType);
+		for (Integer rendererID : buttons.keySet()) {
+			view.removeAllIDPickingListeners(buttonPickingType, rendererID);
+		}
 		if (multiFormRenderer != null)
 			multiFormRenderer.removeChangeListener(this);
 		buttons.clear();
 		super.destroy(gl);
 	}
-
 }

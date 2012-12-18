@@ -33,7 +33,6 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
-import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.view.stratomex.EEmbeddingID;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
@@ -55,7 +54,7 @@ import org.caleydo.view.stratomex.brick.ui.KaplanMeierSummaryRenderer;
  * @author Marc Streit
  *
  */
-public class ClinicalDataConfigurer implements IBrickConfigurer {
+public class ClinicalDataConfigurer extends ABrickConfigurer {
 
 	protected static final int CAPTION_HEIGHT_PIXELS = 16;
 	protected static final int SPACING_PIXELS = 4;
@@ -204,16 +203,18 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		int compactRendererID = multiFormRenderer.addLayoutRenderer(kaplanMeierSummaryRenderer, null, visInfo, false);
 		brick.associateIDs(globalRendererID++, compactRendererID);
 
-		MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer, brick);
+		configureBrick(multiFormRenderer, brick, compactRendererID);
 
-		// There should be no view switching button for the visualization that is used in compact mode, as there is a
-		// dedicated button to switch to this mode.
-		viewSwitchingBar.removeButton(compactRendererID);
-
-		brick.setMultiFormRenderer(multiFormRenderer);
-		brick.setViewSwitchingBar(viewSwitchingBar);
-		brick.setCompactRendererID(compactRendererID);
-		multiFormRenderer.addChangeListener(brick);
+		// MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer, brick);
+		//
+		// // There should be no view switching button for the visualization that is used in compact mode, as there is a
+		// // dedicated button to switch to this mode.
+		// viewSwitchingBar.removeButton(compactRendererID);
+		//
+		// brick.setMultiFormRenderer(multiFormRenderer);
+		// brick.setViewSwitchingBar(viewSwitchingBar);
+		// brick.setCompactRendererID(compactRendererID);
+		// multiFormRenderer.addChangeListener(brick);
 	}
 
 	@Override

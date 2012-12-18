@@ -47,7 +47,7 @@ import org.caleydo.view.stratomex.brick.ui.FuelBarRenderer;
  * @author Partl
  *
  */
-public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
+public abstract class ATableBasedDataConfigurer extends ABrickConfigurer {
 
 	protected static final int FUELBAR_HEIGHT_PIXELS = 4;
 	public static final int CAPTION_HEIGHT_PIXELS = 14;

@@ -30,7 +30,6 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
-import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.stratomex.EEmbeddingID;
 import org.caleydo.view.stratomex.GLStratomex;
@@ -180,16 +179,18 @@ public class CategoricalDataConfigurer extends ATableBasedDataConfigurer {
 				false);
 		brick.associateIDs(globalRendererID++, compactRendererID);
 
-		MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer, brick);
+		configureBrick(multiFormRenderer, brick, compactRendererID);
 
-		// There should be no view switching button for the visualization that is used in compact mode, as there is a
-		// dedicated button to switch to this mode.
-		viewSwitchingBar.removeButton(compactRendererID);
-
-		brick.setMultiFormRenderer(multiFormRenderer);
-		brick.setViewSwitchingBar(viewSwitchingBar);
-		brick.setCompactRendererID(compactRendererID);
-		multiFormRenderer.addChangeListener(brick);
+		// MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer, brick);
+		//
+		// // There should be no view switching button for the visualization that is used in compact mode, as there is a
+		// // dedicated button to switch to this mode.
+		// viewSwitchingBar.removeButton(compactRendererID);
+		//
+		// brick.setMultiFormRenderer(multiFormRenderer);
+		// brick.setViewSwitchingBar(viewSwitchingBar);
+		// brick.setCompactRendererID(compactRendererID);
+		// multiFormRenderer.addChangeListener(brick);
 
 	}
 

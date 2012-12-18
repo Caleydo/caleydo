@@ -1420,6 +1420,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	public void activeRendererChanged(MultiFormRenderer multiFormRenderer, int rendererID, int previousRendererID) {
 		if (isInitialized)
 			updateBrickSizeAccordingToRenderer(rendererID);
+		// if (brickColumn.isGlobalViewSwitching()) {
+		// brickColumn.switchBrickViews(getGlobalRendererID(rendererID));
+		// }
 	}
 
 	@Override

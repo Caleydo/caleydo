@@ -30,7 +30,6 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
-import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.stratomex.EEmbeddingID;
 import org.caleydo.view.stratomex.GLStratomex;
@@ -127,7 +126,7 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 	}
 
 	@Override
-	public void setBrickViews(GLBrick brick, ABrickLayoutConfiguration brickLayout) {
+	public void setBrickViews(final GLBrick brick, ABrickLayoutConfiguration brickLayout) {
 
 		EEmbeddingID embeddingID;
 		if (brick.isHeaderBrick()) {
@@ -179,16 +178,31 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 				false);
 		brick.associateIDs(globalRendererID++, compactRendererID);
 
-		MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer, brick);
+		configureBrick(multiFormRenderer, brick, compactRendererID);
 
-		// There should be no view switching button for the visualization that is used in compact mode, as there is a
-		// dedicated button to switch to this mode.
-		viewSwitchingBar.removeButton(compactRendererID);
-
-		brick.setMultiFormRenderer(multiFormRenderer);
-		brick.setViewSwitchingBar(viewSwitchingBar);
-		brick.setCompactRendererID(compactRendererID);
-		multiFormRenderer.addChangeListener(brick);
+		// MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer, brick);
+		//
+		// // There should be no view switching button for the visualization that is used in compact mode, as there is a
+		// // dedicated button to switch to this mode.
+		// viewSwitchingBar.removeButton(compactRendererID);
+		//
+		// APickingListener pickingListener = new APickingListener() {
+		// @Override
+		// public void clicked(Pick pick) {
+		// if (brick.getBrickColumn().isGlobalViewSwitching()) {
+		// brick.getBrickColumn().switchBrickViews(brick.getGlobalRendererID(pick.getObjectID()));
+		// }
+		// }
+		// };
+		//
+		// for (Integer rendererID : multiFormRenderer.getRendererIDs()) {
+		// viewSwitchingBar.addButtonPickingListener(pickingListener, rendererID);
+		// }
+		//
+		// brick.setMultiFormRenderer(multiFormRenderer);
+		// brick.setViewSwitchingBar(viewSwitchingBar);
+		// brick.setCompactRendererID(compactRendererID);
+		// multiFormRenderer.addChangeListener(brick);
 	}
 
 	@Override

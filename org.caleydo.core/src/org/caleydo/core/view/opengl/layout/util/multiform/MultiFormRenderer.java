@@ -458,14 +458,15 @@ public class MultiFormRenderer extends AForwardingRenderer implements IEmbeddedV
 
 	/**
 	 * Sets a {@link AGLView} or {@link LayoutRenderer} previously added to this {@link MultiFormRenderer} active, so
-	 * that it will be rendered. If the specified identifier is invalid, no operation is performed.
+	 * that it will be rendered. If the specified identifier is invalid, or the renderer is already active, no operation
+	 * is performed.
 	 *
 	 * @param rendererID
 	 *            Identifier that specifies a view or layout renderer.
 	 */
 	public void setActive(int rendererID) {
 		ARendererInfo info = rendererInfos.get(rendererID);
-		if (info != null) {
+		if (info != null && info != currentRendererInfo) {
 			int previousRendererID = currentRendererInfo != null ? currentRendererInfo.rendererID : -1;
 			if (currentRendererInfo != null) {
 				previousRendererID = currentRendererInfo.rendererID;

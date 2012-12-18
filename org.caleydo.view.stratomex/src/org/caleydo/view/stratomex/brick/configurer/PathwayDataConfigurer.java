@@ -33,7 +33,6 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormRenderer;
-import org.caleydo.core.view.opengl.layout.util.multiform.MultiFormViewSwitchingBar;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
@@ -59,7 +58,7 @@ import org.caleydo.view.stratomex.brick.ui.PathwaysSummaryRenderer;
  * @author Christian Partl
  *
  */
-public class PathwayDataConfigurer implements IBrickConfigurer {
+public class PathwayDataConfigurer extends ABrickConfigurer {
 
 	protected static final int CAPTION_HEIGHT_PIXELS = 16;
 	protected static final int SPACING_PIXELS = 4;
@@ -238,16 +237,18 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 
 		brick.associateIDs(globalRendererID++, compactRendererID);
 
-		MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer, brick);
+		configureBrick(multiFormRenderer, brick, compactRendererID);
 
-		// There should be no view switching button for the visualization that is used in compact mode, as there is a
-		// dedicated button to switch to this mode.
-		viewSwitchingBar.removeButton(compactRendererID);
-
-		brick.setMultiFormRenderer(multiFormRenderer);
-		brick.setViewSwitchingBar(viewSwitchingBar);
-		brick.setCompactRendererID(compactRendererID);
-		multiFormRenderer.addChangeListener(brick);
+		// MultiFormViewSwitchingBar viewSwitchingBar = new MultiFormViewSwitchingBar(multiFormRenderer, brick);
+		//
+		// // There should be no view switching button for the visualization that is used in compact mode, as there is a
+		// // dedicated button to switch to this mode.
+		// viewSwitchingBar.removeButton(compactRendererID);
+		//
+		// brick.setMultiFormRenderer(multiFormRenderer);
+		// brick.setViewSwitchingBar(viewSwitchingBar);
+		// brick.setCompactRendererID(compactRendererID);
+		// multiFormRenderer.addChangeListener(brick);
 	}
 
 	@Override
