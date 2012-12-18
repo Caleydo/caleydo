@@ -88,6 +88,8 @@ public class ApplicationWorkbenchAdvisor
 	public boolean preShutdown() {
 		super.preShutdown();
 
+		// stop animating
+		GeneralManager.get().getViewManager().stopAnimator();
 //		GeneralManager.get().getViewManager().getDisplayLoopExecution()
 //				.stopMultipleExecution(autoSaver);
 //		autoSaver = null;
