@@ -68,10 +68,9 @@ public class ApplicationWorkbenchWindowAdvisor
 	}
 
 	@Override
-	public void postWindowCreate() {
-		super.postWindowCreate();
+	public void postWindowOpen() {
 
-		configurer.getWindow().getShell().setMaximized(true);
+		super.postWindowOpen();
 
 		// If the title was not set during startup (e.g. when a project is
 		// loaded), the default title is set
@@ -83,6 +82,8 @@ public class ApplicationWorkbenchWindowAdvisor
 		removeNonCaleydoMenuEntries();
 
 		StartupProcessor.get().getStartupProcedure().postWorkbenchOpen();
+
+		configurer.getWindow().getShell().setMaximized(true);
 	}
 
 	/**
