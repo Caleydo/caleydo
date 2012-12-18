@@ -17,40 +17,30 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.event;
+package org.caleydo.view.tourguide.algorithm;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
+import java.util.List;
+import java.util.Set;
+
+import org.caleydo.core.manager.GeneralManager;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class CreateScoreColumnEvent extends AEvent {
-	private Type type;
+public class AdjustedRandIndex implements IStratificationAlgorithm {
+	private static final AdjustedRandIndex instance = new AdjustedRandIndex();
 
-	public enum Type {
-		COMBINED, COLLAPSED, JACCARD, ADJUSTED_RAND
+	public static AdjustedRandIndex get() {
+		return instance;
 	}
 
-	public CreateScoreColumnEvent() {
+	private AdjustedRandIndex() {
 
 	}
-
-	public CreateScoreColumnEvent(Type type, ScoreQueryUI sender) {
-		this.type = type;
-		this.setSender(sender);
-	}
-
-	/**
-	 * @return the type, see {@link #type}
-	 */
-	public Type getType() {
-		return type;
-	}
-
 	@Override
-	public boolean checkIntegrity() {
-		return true;
+	public float compute(List<Set<Integer>> a, List<Set<Integer>> b) {
+		return GeneralManager.get().getRStatisticsPerformer().adjustedRandIndex(a, b);
 	}
+
 }

@@ -24,6 +24,7 @@ import java.util.Set;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
+import org.caleydo.view.tourguide.algorithm.IGroupAlgorithm;
 
 /**
  * declares that the given {@link IScore} must be computed on a group base
@@ -31,7 +32,7 @@ import org.caleydo.core.id.IDType;
  * @author Samuel Gratzl
  *
  */
-public interface IComputedGroupScore {
+public interface IComputedGroupScore extends IGroupAlgorithm {
 	public boolean contains(TablePerspective a, Group ag);
 
 	public void put(Group ag, float value);
@@ -47,5 +48,7 @@ public interface IComputedGroupScore {
 	 *            the reference either given by {@link IGroupScore} or the whole stratification of the group under test
 	 * @return
 	 */
+
+	@Override
 	public float compute(Set<Integer> group, Set<Integer> reference);
 }

@@ -26,5 +26,12 @@ import java.util.Set;
  *
  */
 public interface IGroupAlgorithm {
+	/**
+	 * computes the score between the two sets identified by a set of integer noted in the same id type
+	 *
+	 * @param a
+	 * @param b
+	 * @return
+	 */
 	float compute(Set<Integer> a, Set<Integer> b);
 }

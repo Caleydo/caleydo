@@ -26,21 +26,19 @@ import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.STRATO
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
@@ -48,12 +46,7 @@ import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.event.HighlightBrickEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.tourguide.data.ScoringElement;
-import org.caleydo.view.tourguide.data.compute.CachedIDTypeMapper;
-import org.caleydo.view.tourguide.data.score.CollapseScore;
-import org.caleydo.view.tourguide.data.score.ICompositeScore;
-import org.caleydo.view.tourguide.data.score.IGroupScore;
 import org.caleydo.view.tourguide.data.score.IScore;
-import org.caleydo.view.tourguide.data.score.IStratificationScore;
 
 import com.google.common.base.Objects;
 
@@ -235,64 +228,15 @@ public class StratomexAdapter {
 	}
 
 	private void hightlightRows(ScoringElement new_, Collection<IScore> visibleColumns) {
-		TablePerspective strat = new_.getStratification();
-		Group group = new_.getGroup();
+		Pair<Collection<Integer>, IDType> intersection = new_.getIntersection(visibleColumns);
 
-		//select nearest score
-		Collection<IStratificationScore> relevant = filterRelevantColumns(new_, visibleColumns);
-
-		IDType target = strat.getRecordPerspective().getIdType();
-		for(IStratificationScore elem : relevant) {
-			IDType type = elem.getStratification().getRecordPerspective().getIdType();
-			if (!target.getIDCategory().equals(type.getIDCategory()))
-				continue;
-			if (!target.equals(type))
-				target = target.getIDCategory().getPrimaryMappingType();
-		}
-
-		CachedIDTypeMapper mapper = new CachedIDTypeMapper();
-
-		//compute the intersection of all
-		IDType source = strat.getRecordPerspective().getIdType();
-
-		RecordVirtualArray va = strat.getRecordPerspective().getVirtualArray();
-		Collection<Integer> ids = (group == null )? va.getIDs(): va.getIDsOfGroup(group.getGroupIndex());
-
-		if (!relevant.isEmpty()) {
-			Collection<Integer> intersection = new ArrayList<>(mapper.get(source, target).apply(ids));
-			for (IStratificationScore score : relevant) {
-				va = score.getStratification().getRecordPerspective().getVirtualArray();
-				Group g = (score instanceof IGroupScore) ? ((IGroupScore) score).getGroup() : null;
-				ids = (g == null) ? va.getIDs() : va.getIDsOfGroup(g.getGroupIndex());
-				Set<Integer> mapped = mapper.get(score.getStratification().getRecordPerspective().getIdType(), target)
-						.apply(ids);
-				for (Iterator<Integer> it = intersection.iterator(); it.hasNext();) {
-					if (!mapped.contains(it.next())) // not part of
-						it.remove();
-				}
-			}
-			ids = intersection;
-		}
-
-		AEvent event = new SelectElementsEvent(ids, target, this.previewSelectionType, receiver, this);
-		event.setDataDomainID(strat.getDataDomain().getDataDomainID());
+		AEvent event = new SelectElementsEvent(intersection.getFirst(), intersection.getSecond(),
+				this.previewSelectionType, receiver, this);
+		event.setDataDomainID(new_.getStratification().getDataDomain().getDataDomainID());
 		triggerEvent(event);
 	}
 
-	private Set<IStratificationScore> filterRelevantColumns(ScoringElement new_,
-			Collection<IScore> columns) {
-		Set<IStratificationScore> relevant = new HashSet<>();
-		for(IScore score : columns) {
-			if (score instanceof CollapseScore)
-				score = new_.getSelected((CollapseScore)score);
-			if (score instanceof IStratificationScore)
-				relevant.add((IStratificationScore)score);
-			if (score instanceof ICompositeScore) {
-				relevant.addAll(filterRelevantColumns(new_, ((ICompositeScore) score).getChildren()));
-			}
-		}
-		return relevant;
-	}
+
 
 	/**
 	 * persists or and table perspective of the given

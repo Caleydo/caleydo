@@ -19,15 +19,18 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.score;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.id.IDType;
+import org.caleydo.view.tourguide.algorithm.AdjustedRandIndex;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AdjustedRandScore extends AStratificationScore implements IComputedStratificationScore {
+public class AdjustedRandScore extends AStratificationScore implements IComputedReferenceStratificationScore {
 
 	public AdjustedRandScore() {
 		super();
@@ -37,12 +40,14 @@ public class AdjustedRandScore extends AStratificationScore implements IComputed
 		super(label, reference);
 	}
 
+
 	@Override
-	public void apply(Collection<TablePerspective> stratifications) {
-		for (TablePerspective strat : stratifications) {
-			if (contains(strat))
-				continue;
-			put(strat, strat.getContainerStatistics().getAdjustedRandIndex().getScore(reference, false));
-		}
+	public IDType getTargetType(TablePerspective as) {
+		return as.getRecordPerspective().getIdType();
+	}
+
+	@Override
+	public float compute(List<Set<Integer>> a, List<Set<Integer>> b) {
+		return AdjustedRandIndex.get().compute(a, b);
 	}
 }

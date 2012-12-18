@@ -21,7 +21,6 @@ package org.caleydo.view.tourguide.vendingmachine;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,7 +29,6 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventListeners;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.gui.util.RenameNameDialog;
@@ -65,17 +63,11 @@ import org.caleydo.view.tourguide.data.filter.CompareScoreFilter;
 import org.caleydo.view.tourguide.data.filter.ECompareOperator;
 import org.caleydo.view.tourguide.data.filter.IScoreFilter;
 import org.caleydo.view.tourguide.data.load.ImportExternalScoreCommand;
-import org.caleydo.view.tourguide.data.score.AdjustedRandScore;
-import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.IScore;
-import org.caleydo.view.tourguide.data.score.JaccardIndexScore;
-import org.caleydo.view.tourguide.data.score.LogRankScore;
-import org.caleydo.view.tourguide.data.score.MutualExclusiveScore;
 import org.caleydo.view.tourguide.data.serialize.ISerializeableScore;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ImportExternalScoreEvent;
-import org.caleydo.view.tourguide.event.LogRankScoreTablePerspectiveEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RenameScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ScoreQueryReadyEvent;
@@ -89,17 +81,10 @@ import org.caleydo.view.tourguide.listener.StratomexTablePerspectiveListener;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateAdjustedRandScoreDialog;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateCompositeScoreDialog;
 import org.caleydo.view.tourguide.vendingmachine.ui.CreateJaccardIndexScoreDialog;
-import org.caleydo.view.tourguide.vendingmachine.ui.CreateLogRankScoreDialog;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
-
-import com.google.common.collect.Iterables;
 
 /**
  * <p>
@@ -254,7 +239,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-		listeners.register(new ScoreTablePerspectiveListener(this), ScoreTablePerspectiveEvent.class, LogRankScoreTablePerspectiveEvent.class);
+		listeners.register(new ScoreTablePerspectiveListener(this), ScoreTablePerspectiveEvent.class);
 		listeners.register(new ScoreColumnListener(this), AddScoreColumnEvent.class, RenameScoreColumnEvent.class,
 				RemoveScoreColumnEvent.class, CreateScoreColumnEvent.class, ToggleNaNFilterScoreColumnEvent.class);
 		listeners.register(ScoreQueryReadyEvent.class, new ScoreQueryReadyListener(this));
@@ -271,53 +256,6 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
 		return null;
-	}
-
-	public void createStratificationScore(TablePerspective stratification) {
-		IScore score = Scores.get().addIfAbsent(new AdjustedRandScore(null, stratification));
-		onAddColumn(score);
-	}
-
-	public void createStratificationGroupScore(TablePerspective strat, Iterable<Group> groups) {
-		Scores manager = Scores.get();
-		if (Iterables.size(groups) == 1) {
-			IScore score = Scores.get().addIfAbsent(new JaccardIndexScore(strat, groups.iterator().next()));
-			onAddColumn(score);
-		} else {
-			CollapseScore composite = new CollapseScore(strat.getLabel());
-			for (Group group : groups) {
-				composite.add(manager.addIfAbsent(new JaccardIndexScore(strat, group)));
-			}
-			onAddColumn(composite);
-		}
-	}
-
-	public void createMutualExclusiveGroupScore(TablePerspective stratification, Group act) {
-		Scores manager = Scores.get();
-		Collection<JaccardIndexScore> scores = new ArrayList<>();
-		JaccardIndexScore actScore = null;
-		for (Group group : stratification.getRecordPerspective().getVirtualArray().getGroupList()) {
-			JaccardIndexScore s = manager.addIfAbsent(new JaccardIndexScore(stratification, group));
-			scores.add(s);
-			if (group.equals(act))
-				actScore = s;
-		}
-		onAddColumn(manager.addIfAbsent(new MutualExclusiveScore(actScore, scores)));
-	}
-
-	public void createLogRankGroupScore(Integer clinicalVariable, TablePerspective strat, Iterable<Group> groups) {
-		Scores manager = Scores.get();
-		if (Iterables.size(groups) == 1) {
-			IScore score = Scores.get()
-					.addIfAbsent(new LogRankScore(clinicalVariable, strat, groups.iterator().next()));
-			onAddColumn(score);
-		} else {
-			CollapseScore composite = new CollapseScore(strat.getLabel());
-			for (Group group : groups) {
-				composite.add(manager.addIfAbsent(new LogRankScore(clinicalVariable, strat, group)));
-			}
-			onAddColumn(composite);
-		}
 	}
 
 
@@ -348,22 +286,10 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	}
 
 	private void recomputeScores() {
-		if (scoreQueryUI.isRunning())
-			return;
-		if (scoreQuery.isBusy()) {
+		if (scoreQuery.isJobRunning()) {
 			scoreQueryUI.setRunning(true);
-			Job job = new Job("Update Tour Guide") {
-				@Override
-				protected IStatus run(IProgressMonitor monitor) {
-					scoreQuery.waitTillComplete();
-					GeneralManager.get().getEventPublisher()
-							.triggerEvent(new ScoreQueryReadyEvent(VendingMachine.this));
-					return Status.OK_STATUS;
-				}
-			};
-			job.schedule();
 		} else {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ScoreQueryReadyEvent(VendingMachine.this));
+			GeneralManager.get().getEventPublisher().triggerEvent(new ScoreQueryReadyEvent(this.scoreQuery));
 		}
 
 	}
@@ -407,9 +333,6 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 					break;
 				case ADJUSTED_RAND:
 					new CreateAdjustedRandScoreDialog(new Shell(), scoreQueryUI).open();
-					break;
-				case LOG_RANK:
-					new CreateLogRankScoreDialog(new Shell(), scoreQueryUI).open();
 					break;
 				}
 			}
@@ -495,6 +418,10 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		}
 		// wasn't there add the filter
 		scoreQuery.addFilter(new CompareScoreFilter(score, ECompareOperator.IS_NOT_NA, 0.5f));
+	}
+
+	public ScoreQuery getScoreQuery() {
+		return scoreQuery;
 	}
 
 }

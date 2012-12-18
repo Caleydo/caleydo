@@ -17,18 +17,22 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data.score;
+package org.caleydo.view.tourguide.algorithm;
 
-import java.util.Collection;
-
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import java.util.List;
+import java.util.Set;
 
 /**
- * declares that the given {@link IScore} must be computed on a stratification base
- *
  * @author Samuel Gratzl
  *
  */
-public interface IComputedStratificationScore extends IScore {
-	void apply(Collection<TablePerspective> perspectives);
+public interface IStratificationAlgorithm {
+	/**
+	 * computes the score between the two stratifications identified by their collection of group sets
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	float compute(List<Set<Integer>> a, List<Set<Integer>> b);
 }

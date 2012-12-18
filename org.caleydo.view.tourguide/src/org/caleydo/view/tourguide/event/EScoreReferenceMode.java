@@ -25,8 +25,3 @@ package org.caleydo.view.tourguide.event;
  * @author Marc Streit
  *
  */
-public enum EScoreReferenceMode {
-	COLUMN,
-	ALL_GROUPS_IN_COLUMN,
- SINGLE_GROUP, MUTUAL_EXCLUSIVE_GROUP;
-}

@@ -19,28 +19,25 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.contextmenu;
 
-import static org.caleydo.view.tourguide.event.EScoreReferenceMode.ALL_GROUPS_IN_COLUMN;
-import static org.caleydo.view.tourguide.event.EScoreReferenceMode.COLUMN;
-import static org.caleydo.view.tourguide.event.EScoreReferenceMode.MUTUAL_EXCLUSIVE_GROUP;
-import static org.caleydo.view.tourguide.event.EScoreReferenceMode.SINGLE_GROUP;
+import static org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent.EScoreType.ADJUSTED_RAND;
+import static org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent.EScoreType.JACCARD;
+import static org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent.EScoreType.JACCARD_ALL;
+import static org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent.EScoreType.JACCARD_ALL_MUTUAL_EXCLUSIVE;
+import static org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent.EScoreType.JACCARD_MUTUAL_EXCLUSIVE;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.gui.util.DisplayUtils;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
-import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
 import org.caleydo.view.stratomex.brick.IContextMenuBrickFactory;
 import org.caleydo.view.stratomex.column.BrickColumn;
-import org.caleydo.view.tourguide.event.EScoreReferenceMode;
-import org.caleydo.view.tourguide.event.LogRankScoreTablePerspectiveEvent;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
+import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent.EScoreType;
 import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -58,9 +55,8 @@ public class ScoreContextMenuBrickFactory implements IContextMenuBrickFactory {
 		if (!isTourGuideVisible()) // show context menu only if the tour guide view is visible
 			return Collections.emptyList();
 		Collection<AContextMenuItem> col = new ArrayList<>();
-		col.add(create("Score group", SINGLE_GROUP, brick, group));
-		col.add(create("Score group (Mutual Exclusive)", MUTUAL_EXCLUSIVE_GROUP, brick, group));
-		col.add(createLogRank(brick, group));
+		col.add(create("Score group", JACCARD, brick, group));
+		col.add(create("Score group (Mutual Exclusive)", JACCARD_MUTUAL_EXCLUSIVE, brick, group));
 		return col;
 	}
 
@@ -70,25 +66,13 @@ public class ScoreContextMenuBrickFactory implements IContextMenuBrickFactory {
 		if (!isTourGuideVisible())
 			return Collections.emptyList();
 		Collection<AContextMenuItem> col = new ArrayList<>();
-		col.add(create("Score column", COLUMN, brick, null));
-		col.add(create("Score all groups in column", ALL_GROUPS_IN_COLUMN, brick, null));
-		col.add(createLogRank(brick, null));
+		col.add(create("Score column", ADJUSTED_RAND, brick, null));
+		col.add(create("Score all groups in column", JACCARD_ALL, brick, null));
+		col.add(create("Score all groups in column (Mutual Exclusive)", JACCARD_ALL_MUTUAL_EXCLUSIVE, brick, null));
 		return col;
 	}
 
-	private AContextMenuItem createLogRank(BrickColumn brick, TablePerspective group) {
-		TablePerspective strat = brick.getTablePerspective();
-		EScoreReferenceMode mode = group == null ? ALL_GROUPS_IN_COLUMN: SINGLE_GROUP;
-		GroupContextMenuItem g = new GroupContextMenuItem("Log Rank Score of ");
-		for(Pair<Integer,String> pair : DataDomainOracle.getClinicalVariables()) {
-			g.add(new GenericContextMenuItem(pair.getSecond(), new LogRankScoreTablePerspectiveEvent(pair.getFirst(),
-					mode, strat, group)));
-		}
-		return g;
-	}
-
-
-	private static AContextMenuItem create(String label, EScoreReferenceMode mode, BrickColumn brick,
+	private static AContextMenuItem create(String label, EScoreType mode, BrickColumn brick,
 			TablePerspective group) {
 		return new GenericContextMenuItem(label, new ScoreTablePerspectiveEvent(mode, brick.getTablePerspective(),
 				group));

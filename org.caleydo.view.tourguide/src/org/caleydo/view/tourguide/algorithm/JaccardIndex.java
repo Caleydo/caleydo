@@ -42,7 +42,7 @@ public class JaccardIndex implements IGroupAlgorithm {
 			if (b.contains(ai))
 				intersection++;
 		}
-		int union = b.size() + a.size();
+		int union = b.size() + a.size() - intersection;
 
 		float score = union == 0 ? 0.f : (float) intersection / union;
 		return score;

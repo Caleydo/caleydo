@@ -23,36 +23,36 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.AEvent;
 
 /**
- * Event for opening the vending machine within Stratomex with a specified
- * reference table perspective and the brick column.
+ * Event for opening the vending machine within Stratomex with a specified reference table perspective and the brick
+ * column.
  *
  * @author Marc Streit
  *
  */
-public class ScoreTablePerspectiveEvent
-	extends AEvent {
+public class ScoreTablePerspectiveEvent extends AEvent {
 
-	/**
-	 * Table perspectives that will be used for the scoring. either a single group or a stratification depending on the
-	 * type
-	 */
-	private TablePerspective group;
-
-	private EScoreReferenceMode scoreReferenceMode;
+	public enum EScoreType {
+		ADJUSTED_RAND, JACCARD_ALL, JACCARD, JACCARD_ALL_MUTUAL_EXCLUSIVE, JACCARD_MUTUAL_EXCLUSIVE;
+	}
 
 	private TablePerspective stratification;
+
+	private TablePerspective group;
+
+	private EScoreType mode;
+
 
 	public ScoreTablePerspectiveEvent() {
 
 	}
 
-	public ScoreTablePerspectiveEvent(EScoreReferenceMode scoreReferenceMode, TablePerspective stratification) {
-		this(scoreReferenceMode, stratification, null);
+	public ScoreTablePerspectiveEvent(EScoreType mode, TablePerspective stratification) {
+		this(mode, stratification, null);
 	}
 
-	public ScoreTablePerspectiveEvent(EScoreReferenceMode scoreReferenceMode, TablePerspective stratification,
+	public ScoreTablePerspectiveEvent(EScoreType mode, TablePerspective stratification,
 			TablePerspective group) {
-		this.scoreReferenceMode = scoreReferenceMode;
+		this.mode = mode;
 		this.group = group;
 		this.stratification = stratification;
 	}
@@ -74,16 +74,9 @@ public class ScoreTablePerspectiveEvent
 	}
 
 	/**
-	 * @param scoreReferenceMode setter, see {@link #scoreReferenceMode}
+	 * @return the mode, see {@link #mode}
 	 */
-	public void setScoreReferenceMode(EScoreReferenceMode scoreReferenceMode) {
-		this.scoreReferenceMode = scoreReferenceMode;
-	}
-
-	/**
-	 * @return the scoreReferenceMode, see {@link #scoreReferenceMode}
-	 */
-	public EScoreReferenceMode getScoreReferenceMode() {
-		return scoreReferenceMode;
+	public EScoreType getMode() {
+		return mode;
 	}
 }

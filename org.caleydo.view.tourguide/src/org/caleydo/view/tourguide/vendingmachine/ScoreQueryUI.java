@@ -192,7 +192,7 @@ public class ScoreQueryUI extends Row {
 	public void setSelected(int row) {
 		if (selectedRow == row)
 			return;
-		if (row < 0 || row >= data.size())
+		if (row < -1 || row >= data.size())
 			return;
 		ScoringElement old = null;
 		if (selectedRow != -1) {
@@ -378,8 +378,6 @@ public class ScoreQueryUI extends Row {
 		ContextMenuCreator creator = view.getContextMenuCreator();
 		creator.addContextMenuItem(new GenericContextMenuItem("Create Jaccard Index Score", new CreateScoreColumnEvent(
 				CreateScoreColumnEvent.Type.JACCARD, this)));
-		creator.addContextMenuItem(new GenericContextMenuItem("Create Log Rank Score", new CreateScoreColumnEvent(
-				CreateScoreColumnEvent.Type.LOG_RANK, this)));
 		creator.addContextMenuItem(new GenericContextMenuItem("Create Adjusted Rand Score", new CreateScoreColumnEvent(
 				CreateScoreColumnEvent.Type.ADJUSTED_RAND, this)));
 		if (scores.size() >= 2 || this.queryColumns.size() >= 2) {

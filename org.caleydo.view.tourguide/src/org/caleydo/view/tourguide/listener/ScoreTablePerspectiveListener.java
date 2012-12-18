@@ -19,13 +19,16 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.listener;
 
-import java.util.Collections;
-
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.view.tourguide.event.LogRankScoreTablePerspectiveEvent;
+import org.caleydo.view.tourguide.data.Scores;
+import org.caleydo.view.tourguide.data.score.AdjustedRandScore;
+import org.caleydo.view.tourguide.data.score.CollapseScore;
+import org.caleydo.view.tourguide.data.score.JaccardIndexScore;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
+import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent.EScoreType;
 import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
 
 /**
@@ -45,35 +48,25 @@ public class ScoreTablePerspectiveListener
 		if (event instanceof ScoreTablePerspectiveEvent) {
 			ScoreTablePerspectiveEvent e = (ScoreTablePerspectiveEvent) event;
 			TablePerspective strat = e.getStratification();
-			switch (e.getScoreReferenceMode()) {
-			case COLUMN:
-				handler.createStratificationScore(strat);
-				break;
-			case SINGLE_GROUP:
-				handler.createStratificationGroupScore(strat, Collections.singleton(e.getGroup().getRecordGroup()));
-				break;
-			case MUTUAL_EXCLUSIVE_GROUP:
-				handler.createMutualExclusiveGroupScore(strat, e.getGroup().getRecordGroup());
-				break;
-			case ALL_GROUPS_IN_COLUMN:
-				handler.createStratificationGroupScore(strat, strat.getRecordPerspective().getVirtualArray()
-						.getGroupList());
-				break;
-			}
-		} else if (event instanceof LogRankScoreTablePerspectiveEvent) {
-			LogRankScoreTablePerspectiveEvent e = (LogRankScoreTablePerspectiveEvent) event;
-			TablePerspective strat = e.getStratification();
 			switch (e.getMode()) {
-			case SINGLE_GROUP:
-				handler.createLogRankGroupScore(e.getClinicalVariable(), strat,
-						Collections.singleton(e.getGroup().getRecordGroup()));
+			case ADJUSTED_RAND:
+				handler.onAddColumn(Scores.get().addIfAbsent(new AdjustedRandScore(null, strat)));
 				break;
-			case ALL_GROUPS_IN_COLUMN:
-				handler.createLogRankGroupScore(e.getClinicalVariable(), strat, strat.getRecordPerspective()
-						.getVirtualArray()
-						.getGroupList());
+			case JACCARD:
+				handler.onAddColumn(Scores.get().addIfAbsent(new JaccardIndexScore(false, strat, e.getGroup().getRecordGroup())));
 				break;
-			default:
+			case JACCARD_MUTUAL_EXCLUSIVE:
+				handler.onAddColumn(Scores.get().addIfAbsent(new JaccardIndexScore(true, strat, e.getGroup().getRecordGroup())));
+				break;
+			case JACCARD_ALL:
+			case JACCARD_ALL_MUTUAL_EXCLUSIVE:
+				boolean mutualExclusive = e.getMode() == EScoreType.JACCARD_ALL_MUTUAL_EXCLUSIVE;
+				Scores manager = Scores.get();
+				CollapseScore composite = new CollapseScore(strat.getLabel());
+				for (Group group : strat.getRecordPerspective().getVirtualArray().getGroupList()) {
+					composite.add(manager.addIfAbsent(new JaccardIndexScore(mutualExclusive, strat, group)));
+				}
+				handler.onAddColumn(composite);
 				break;
 			}
 		}

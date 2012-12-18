@@ -24,7 +24,10 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.data.score.IGroupScore;
 import org.caleydo.view.tourguide.data.score.JaccardIndexScore;
 import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -32,6 +35,8 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class CreateJaccardIndexScoreDialog extends ACreateGroupScoreDialog {
+	private Button mututalExclusiveUI;
+
 	public CreateJaccardIndexScoreDialog(Shell shell, ScoreQueryUI sender) {
 		super(shell, sender);
 	}
@@ -43,11 +48,14 @@ public class CreateJaccardIndexScoreDialog extends ACreateGroupScoreDialog {
 
 	@Override
 	protected void addTypeSpecific(Composite c) {
-
+		Label l = new Label(c, SWT.NONE);
+		l.setText("");
+		mututalExclusiveUI = new Button(c, SWT.CHECK);
+		mututalExclusiveUI.setText("Mutual Exclusive");
 	}
 
 	@Override
 	protected IGroupScore createScore(String label, TablePerspective strat, Group g) {
-		return new JaccardIndexScore(label, strat, g);
+		return new JaccardIndexScore(label, mututalExclusiveUI.getSelection(), strat, g);
 	}
 }

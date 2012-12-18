@@ -20,24 +20,17 @@
 package org.caleydo.view.tourguide.event;
 
 import org.caleydo.core.event.AEvent;
-import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
+import org.caleydo.view.tourguide.data.ScoreQuery;
 
 /**
  * marker event showing that the score query is ready
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class ScoreQueryReadyEvent extends AEvent {
-	private VendingMachine view;
-
-	public ScoreQueryReadyEvent(VendingMachine sender) {
-		this.setSender(null);
-		this.view = sender;
-	}
-
-	public VendingMachine getView() {
-		return view;
+	public ScoreQueryReadyEvent(ScoreQuery sender) {
+		this.setSender(sender);
 	}
 
 	@Override

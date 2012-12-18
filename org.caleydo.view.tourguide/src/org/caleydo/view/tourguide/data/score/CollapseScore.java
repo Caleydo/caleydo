@@ -24,8 +24,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
+import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.view.tourguide.data.Scores;
 import org.caleydo.view.tourguide.data.ScoringElement;
+
+import com.google.common.base.Objects;
 
 /**
  * special kind of composite score, which doesn't combine the scores but triggers that the rows will be multiplied to
@@ -34,17 +38,15 @@ import org.caleydo.view.tourguide.data.ScoringElement;
  * @author Samuel Gratzl
  *
  */
-public class CollapseScore extends DefaultLabelProvider implements ICompositeScore {
-	private final ECollapseOperator op;
+public class CollapseScore extends DefaultLabelProvider implements ICompositeScore, IStratificationScore {
 	private final Collection<IScore> children;
 
 	public CollapseScore(String label) {
-		this(label, ECollapseOperator.NONE, Collections.<IScore> emptyList());
+		this(label, Collections.<IScore> emptyList());
 	}
 
-	public CollapseScore(String label, ECollapseOperator op, Collection<IScore> children) {
+	public CollapseScore(String label, Collection<IScore> children) {
 		super(label);
-		this.op = op;
 		this.children = new ArrayList<>();
 		for (IScore child : children)
 			add(child);
@@ -72,10 +74,6 @@ public class CollapseScore extends DefaultLabelProvider implements ICompositeSco
 		return children.size();
 	}
 
-	public ECollapseOperator getOp() {
-		return op;
-	}
-
 	@Override
 	public final EScoreType getScoreType() {
 		int maxOrdinal = 0;
@@ -87,12 +85,37 @@ public class CollapseScore extends DefaultLabelProvider implements ICompositeSco
 	@Override
 	public float getScore(ScoringElement elem) {
 		IScore current = elem.getSelected(this);
-		return current == null ? Float.NaN : op.apply(elem, current, children);
+		return current == null ? Float.NaN : current.getScore(elem);
+	}
+
+	/**
+	 * returns the stratification, which have all children in common if there is one, otherwise null
+	 *
+	 * @return
+	 */
+	@Override
+	public TablePerspective getStratification() {
+		TablePerspective r = null;
+		for (IScore child : Scores.flatten(this)) {
+			TablePerspective c = null;
+			if (child instanceof IStratificationScore) {
+				c = ((IStratificationScore) child).getStratification();
+			} else { // not a stratifiation score
+				return null; // no common
+			}
+			if (Objects.equal(r, c))
+				continue;
+			if (r == null) // first
+				r = c;
+			else
+				return null; // not a single stratification in the whole list
+		}
+		return r;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -100,13 +123,12 @@ public class CollapseScore extends DefaultLabelProvider implements ICompositeSco
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((children == null) ? 0 : children.hashCode());
-		result = prime * result + ((op == null) ? 0 : op.hashCode());
 		return result;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -122,8 +144,6 @@ public class CollapseScore extends DefaultLabelProvider implements ICompositeSco
 			if (other.children != null)
 				return false;
 		} else if (!children.equals(other.children))
-			return false;
-		if (op != other.op)
 			return false;
 		return true;
 	}

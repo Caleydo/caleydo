@@ -36,7 +36,7 @@ public class ScoreQueryReadyListener extends AEventListener<VendingMachine> {
 	@Override
 	public void handleEvent(AEvent event) {
 		ScoreQueryReadyEvent update = (ScoreQueryReadyEvent) event;
-		if (update.getView() != this.handler)
+		if (update.getSender() != this.handler.getScoreQuery())
 			return;
 		handler.onScoreQueryReady();
 	}

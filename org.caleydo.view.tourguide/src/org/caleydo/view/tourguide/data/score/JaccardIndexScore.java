@@ -33,12 +33,12 @@ import org.caleydo.view.tourguide.algorithm.JaccardIndex;
  *
  */
 public class JaccardIndexScore extends AGroupScore implements IComputedReferenceGroupScore {
-	public JaccardIndexScore(TablePerspective stratification, Group group) {
-		this(null, stratification, group);
+	public JaccardIndexScore(boolean mutualExclusive, TablePerspective stratification, Group group) {
+		this(null, mutualExclusive, stratification, group);
 	}
 
-	public JaccardIndexScore(String label, TablePerspective stratification, Group group) {
-		super(label, stratification, group);
+	public JaccardIndexScore(String label, boolean mutualExclusive, TablePerspective stratification, Group group) {
+		super(label, stratification, group, mutualExclusive);
 	}
 
 	@Override

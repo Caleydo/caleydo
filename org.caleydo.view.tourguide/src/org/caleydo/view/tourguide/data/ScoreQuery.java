@@ -26,31 +26,31 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.view.tourguide.data.RankedListBuilders.IRankedListBuilder;
-import org.caleydo.view.tourguide.data.compute.ComputeGroupScore;
-import org.caleydo.view.tourguide.data.compute.ComputeStratificationScore;
-import org.caleydo.view.tourguide.data.compute.ScoreComputer;
+import org.caleydo.view.tourguide.data.compute.ComputeScoreJob;
+import org.caleydo.view.tourguide.data.compute.ComputeStratificationJob;
 import org.caleydo.view.tourguide.data.filter.CompositeScoreFilter;
 import org.caleydo.view.tourguide.data.filter.IDataDomainFilter;
 import org.caleydo.view.tourguide.data.filter.IScoreFilter;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.IComputedGroupScore;
-import org.caleydo.view.tourguide.data.score.IComputedStratificationScore;
+import org.caleydo.view.tourguide.data.score.IComputedReferenceStratificationScore;
 import org.caleydo.view.tourguide.data.score.IScore;
+import org.caleydo.view.tourguide.event.ScoreQueryReadyEvent;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -93,10 +93,8 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 
 	private final DataDomainQuery query;
 
-	/**
-	 * queue holding the tasks we are submitted to computed but not yet finished
-	 */
-	private final Deque<Future<?>> toCompute = new LinkedList<>();
+	// current compute job
+	private volatile Job job;
 
 	public ScoreQuery(DataDomainQuery query) {
 		this.query = query;
@@ -125,41 +123,6 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	 */
 	public DataDomainQuery getQuery() {
 		return query;
-	}
-
-	/**
-	 * returns whether there are outstanding computations
-	 *
-	 * @return
-	 */
-	public boolean isBusy() {
-		return getNextUndone() != null;
-	}
-
-	private synchronized Future<?> getNextUndone() {
-		for (Iterator<Future<?>> it = toCompute.iterator(); it.hasNext();) {
-			Future<?> f = it.next();
-			if (f.isDone())
-				it.remove();
-			else
-				return f;
-		}
-		return null;
-	}
-
-	/**
-	 * blocks the current thread till all computations are done
-	 */
-	public void waitTillComplete() {
-		Future<?> next;
-		while ((next = getNextUndone()) != null) {
-			try {
-				next.get();
-			} catch (InterruptedException | ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
 
 	/**
@@ -420,6 +383,9 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 		submitComputation(this.selection, query.getStratifications(dataDomain));
 	}
 
+	public boolean isJobRunning() {
+		return this.job != null;
+	}
 	/**
 	 * triggers the computation of one or more scores on one or more stratifications
 	 *
@@ -429,23 +395,39 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	private void submitComputation(Iterable<IScore> score, Collection<TablePerspective> stratifications) {
 		Collection<IScore> scores = Scores.flatten(score);
 
+		Job job = null;
+
 		// submit all stratifications computations
-		Iterable<IComputedStratificationScore> stratScores = Iterables.filter(scores, IComputedStratificationScore.class);
-		if (!Iterables.isEmpty(stratScores)) {
+		List<IComputedReferenceStratificationScore> stratScores = Lists.newArrayList(Iterables.filter(scores,
+				IComputedReferenceStratificationScore.class));
+		List<IComputedGroupScore> groupScores = Lists.newArrayList(Iterables.filter(scores, IComputedGroupScore.class));
+
+		if (!stratScores.isEmpty() && groupScores.isEmpty()) {
+			//just stratifications
 			if (stratifications == null) // if null use the all
 				stratifications = query.call();
-			for (IComputedStratificationScore s : stratScores)
-				toCompute.add(ScoreComputer.submit(new ComputeStratificationScore(s, stratifications)));
-		}
-
-		// submit all group computations
-		Iterable<IComputedGroupScore> groupScores = Iterables.filter(scores, IComputedGroupScore.class);
-		if (!Iterables.isEmpty(groupScores)) {
+			job = new ComputeStratificationJob(stratifications, stratScores);
+		} else if (!groupScores.isEmpty()) {
+			// both or just groups
 			if (stratifications == null)
 				stratifications = query.call();
-			Multimap<TablePerspective, Group> groups = query.apply(stratifications);
-
-			toCompute.add(ScoreComputer.submit(new ComputeGroupScore(groups, Lists.newArrayList(groupScores))));
+			Multimap<TablePerspective, Group> data = query.apply(stratifications);
+			job = new ComputeScoreJob(data, stratScores, groupScores);
+		} else {
+			job = null;
+		}
+		if (job == null)
+			this.job = null;
+		else {
+			job.addJobChangeListener(new JobChangeAdapter() {
+				@Override
+				public void done(IJobChangeEvent event) {
+					ScoreQuery.this.job = null;
+					GeneralManager.get().getEventPublisher().triggerEvent(new ScoreQueryReadyEvent(ScoreQuery.this));
+				}
+			});
+			this.job = job;
+			job.schedule();
 		}
 	}
 }
