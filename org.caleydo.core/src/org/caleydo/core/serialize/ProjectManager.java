@@ -373,14 +373,19 @@ public final class ProjectManager {
 		FileOperations.createDirectory(RECENT_PROJECT_FOLDER);
 
 		try {
+			log.info("saving plugin data");
 			savePluginData(RECENT_PROJECT_FOLDER);
+			log.info("saving data");
 			saveData(RECENT_PROJECT_FOLDER, DataDomainManager.get().getDataDomains());
+			log.info("saving workbench");
 			saveWorkbenchData(RECENT_PROJECT_FOLDER);
+			log.info("saved");
 		} catch (Exception e) {
 			log.error("Faild to auto-save project.", e);
 		}
 
 		FileOperations.deleteDirectory(RECENT_PROJECT_FOLDER_TMP);
+		log.info("saved recent project");
 	}
 
 	/**
