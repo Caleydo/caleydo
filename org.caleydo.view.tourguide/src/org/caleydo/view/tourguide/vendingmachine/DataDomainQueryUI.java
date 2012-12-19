@@ -37,9 +37,8 @@ import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.Padding;
-import org.caleydo.core.view.opengl.layout.Padding.EMode;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -51,6 +50,7 @@ import org.caleydo.view.tourguide.data.score.ExternalGroupLabelScore;
 import org.caleydo.view.tourguide.data.score.ExternalIDTypeScore;
 import org.caleydo.view.tourguide.event.ImportExternalScoreEvent;
 import org.caleydo.view.tourguide.renderer.AdvancedTextureRenderer;
+import org.caleydo.view.tourguide.renderer.DecorationTextureRenderer;
 import org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.vendingmachine.ui.DataDomainFilterDialog;
 import org.eclipse.swt.widgets.Display;
@@ -237,8 +237,8 @@ public class DataDomainQueryUI extends Row {
 			button.setRenderer(new AdvancedTextureRenderer(TourGuideRenderStyle.ICON_ACCEPT_DISABLE, view
 					.getTextureManager()));
 			button.addBackgroundRenderer(new PickingRenderer(TOGGLE_DATA_DOMAIN, i, view));
-			button.addForeGroundRenderer(new AdvancedTextureRenderer(null, view.getTextureManager(), new Padding(
-					EMode.PIXEL, 10, 10, 0, 0)));
+			button.addForeGroundRenderer(new DecorationTextureRenderer(null, view.getTextureManager(), 10, 10,
+					HAlign.BOTTOM, VAlign.RIGHT));
 
 			this.append(button);
 			this.append(colSpacer);
@@ -285,7 +285,7 @@ public class DataDomainQueryUI extends Row {
 		}
 
 		public void setHasFilter(boolean hasFilter) {
-			AdvancedTextureRenderer m = (AdvancedTextureRenderer) button.getForegroundRenderer().get(0);
+			DecorationTextureRenderer m = (DecorationTextureRenderer) button.getForegroundRenderer().get(0);
 			if (hasFilter)
 				m.setImagePath(TourGuideRenderStyle.ICON_FILTER);
 			else

@@ -56,7 +56,7 @@ public class ScoreComparator extends LinkedHashMap<IScore, ESorting> implements 
 	}
 
 	private int compare(float s1, float s2) {
-		if (s1 == s2)
+		if (s1 == s2 || (Float.isNaN(s1) && Float.isNaN(s2)))
 			return 0;
 		if (Float.isNaN(s1))
 			return -1;

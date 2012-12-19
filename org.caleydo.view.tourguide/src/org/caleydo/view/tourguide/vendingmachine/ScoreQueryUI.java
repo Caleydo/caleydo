@@ -73,6 +73,8 @@ import org.caleydo.view.tourguide.vendingmachine.ui.ScoreFilterDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import com.google.common.collect.Sets;
+
 /**
  * @author Samuel Gratzl
  *
@@ -102,6 +104,12 @@ public class ScoreQueryUI extends Row {
 			onOrderByChanged(evt);
 		}
 	};
+	private final PropertyChangeListener filterChanged = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			onFilterChanged(evt);
+		}
+	};
 
 	private final AGLView view;
 	private boolean running;
@@ -125,10 +133,12 @@ public class ScoreQueryUI extends Row {
 		if (this.query != null) {
 			this.query.removePropertyChangeListener(ScoreQuery.PROP_SELECTION, selectionChanged);
 			this.query.removePropertyChangeListener(ScoreQuery.PROP_ORDER_BY, orderByChanged);
+			this.query.removePropertyChangeListener(ScoreQuery.PROP_FILTER, filterChanged);
 		}
 		this.query = query;
 		this.query.addPropertyChangeListener(ScoreQuery.PROP_SELECTION, selectionChanged);
 		this.query.addPropertyChangeListener(ScoreQuery.PROP_ORDER_BY, orderByChanged);
+		this.query.addPropertyChangeListener(ScoreQuery.PROP_FILTER, filterChanged);
 		// initial
 		createColumns(query);
 	}
@@ -329,6 +339,15 @@ public class ScoreQueryUI extends Row {
 			ESorting s = query.getSorting(col.getScore());
 			if (s != null)
 				col.setSort(s);
+		}
+	}
+
+	protected void onFilterChanged(PropertyChangeEvent evt) {
+		Set<IScore> enabled = Sets.newHashSet();
+		for (IScoreFilter f : query.getFilter())
+			enabled.add(f.getReference());
+		for (QueryColumn col : queryColumns) {
+			col.setHasFilter(enabled.contains(col.getScore()));
 		}
 	}
 

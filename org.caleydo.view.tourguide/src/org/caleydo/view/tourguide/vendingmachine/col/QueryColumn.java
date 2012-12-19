@@ -35,6 +35,7 @@ import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.Row.HAlign;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.core.view.opengl.layout.util.TextureRenderer;
 import org.caleydo.view.tourguide.data.ESorting;
@@ -46,7 +47,9 @@ import org.caleydo.view.tourguide.data.score.EScoreType;
 import org.caleydo.view.tourguide.data.score.IGroupScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.IStratificationScore;
+import org.caleydo.view.tourguide.renderer.DecorationTextureRenderer;
 import org.caleydo.view.tourguide.renderer.ScoreBarRenderer;
+import org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle;
 
 /**
  * base class for different score column renderer implementations depending on the type
@@ -131,6 +134,9 @@ public class QueryColumn extends ATableColumn {
 	@Override
 	protected ElementLayout createHeader() {
 		Row r = new Row();
+		r.addBackgroundRenderer(new DecorationTextureRenderer(null, view.getTextureManager(), 10, 10, HAlign.TOP,
+				VAlign.LEFT));
+
 		r.add(createLabel(score.getAbbrevation(), getTextWidth(score.getAbbrevation())));
 		TablePerspective strat = resolveStratification(score);
 
@@ -169,6 +175,14 @@ public class QueryColumn extends ATableColumn {
 			break;
 		}
 		return r;
+	}
+
+	public void setHasFilter(boolean hasFilter) {
+		DecorationTextureRenderer m = (DecorationTextureRenderer) th.getBackgroundRenderer().get(0);
+		if (hasFilter)
+			m.setImagePath(TourGuideRenderStyle.ICON_FILTER);
+		else
+			m.setImagePath(null);
 	}
 
 	private ElementLayout createValue(ScoringElement elem, int id) {
