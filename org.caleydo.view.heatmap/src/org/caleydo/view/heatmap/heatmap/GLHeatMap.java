@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.heatmap.heatmap;
 
@@ -76,9 +73,7 @@ import org.eclipse.swt.widgets.Display;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLHeatMap
-	extends ATableBasedView
-	implements IColorMappingUpdateListener {
+public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateListener {
 
 	public static String VIEW_TYPE = "org.caleydo.view.heatmap";
 
@@ -98,9 +93,8 @@ public class GLHeatMap
 	private boolean showCaptions = false;
 
 	/**
-	 * Determines whether a bigger space between heat map and caption is needed
-	 * or not. If false no cluster info is available and therefore no additional
-	 * space is needed. Set by remote rendering view (HHM).
+	 * Determines whether a bigger space between heat map and caption is needed or not. If false no cluster info is
+	 * available and therefore no additional space is needed. Set by remote rendering view (HHM).
 	 */
 	boolean bClusterVisualizationGenesActive = false;
 
@@ -199,8 +193,7 @@ public class GLHeatMap
 			layoutManager.setStaticLayoutConfiguration(detailedRenderingTemplate);
 			detailedRenderingTemplate.setStaticLayouts();
 			showCaptions = true;
-		}
-		else {
+		} else {
 			layoutManager.setStaticLayoutConfiguration(textureTemplate);
 			showCaptions = false;
 		}
@@ -229,6 +222,7 @@ public class GLHeatMap
 
 	@Override
 	public void display(GL2 gl) {
+		processEvents();
 
 		if (tablePerspective == null)
 			return;
@@ -263,8 +257,7 @@ public class GLHeatMap
 
 		if (tablePerspective.getNrRecords() == 0 || tablePerspective.getNrDimensions() == 0) {
 			renderSymbol(gl, EIconTextures.HEAT_MAP_SYMBOL, 2);
-		}
-		else {
+		} else {
 			layoutManager.render(gl);
 		}
 		gl.glEndList();
@@ -279,111 +272,109 @@ public class GLHeatMap
 		SelectionType selectionType;
 
 		switch (pickingType) {
-			case HEAT_MAP_RECORD_SELECTION:
-				// iCurrentMouseOverElement = pickingID;
-				switch (pickingMode) {
+		case HEAT_MAP_RECORD_SELECTION:
+			// iCurrentMouseOverElement = pickingID;
+			switch (pickingMode) {
 
-					case CLICKED:
-						selectionType = SelectionType.SELECTION;
-						break;
+			case CLICKED:
+				selectionType = SelectionType.SELECTION;
+				break;
 
-					case MOUSE_OVER:
-						selectionType = SelectionType.MOUSE_OVER;
-						break;
+			case MOUSE_OVER:
+				selectionType = SelectionType.MOUSE_OVER;
+				break;
 
-					case RIGHT_CLICKED:
-						selectionType = SelectionType.SELECTION;
+			case RIGHT_CLICKED:
+				selectionType = SelectionType.SELECTION;
 
-						if (dataDomain instanceof GeneticDataDomain && dataDomain.isColumnDimension()) {
+				if (dataDomain instanceof GeneticDataDomain && dataDomain.isColumnDimension()) {
 
-							GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-							contexMenuItemContainer.setDataDomain(dataDomain);
-							contexMenuItemContainer.setData(recordIDType, pickingID);
-							contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
-							contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
-						}
-						else {
-							AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-									+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
-									+ dataDomain.getRecordLabel(recordIDType, pickingID), recordIDType, pickingID,
-									dataDomain.getDataDomainID());
-							contextMenuCreator.addContextMenuItem(menuItem);
-						}
-
-						break;
-
-					default:
-						return;
-
+					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
+					contexMenuItemContainer.setDataDomain(dataDomain);
+					contexMenuItemContainer.setData(recordIDType, pickingID);
+					contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
+					contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
+				} else {
+					AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+							+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
+							+ dataDomain.getRecordLabel(recordIDType, pickingID), recordIDType, pickingID,
+							dataDomain.getDataDomainID());
+					contextMenuCreator.addContextMenuItem(menuItem);
 				}
 
-				createRecordSelection(selectionType, pickingID);
-
 				break;
 
-			case HEAT_MAP_DIMENSION_SELECTION:
+			default:
+				return;
 
-				switch (pickingMode) {
-					case CLICKED:
-						selectionType = SelectionType.SELECTION;
-						break;
-					case MOUSE_OVER:
-						selectionType = SelectionType.MOUSE_OVER;
-						break;
-					case RIGHT_CLICKED:
+			}
 
-						if (dataDomain instanceof GeneticDataDomain && !dataDomain.isColumnDimension()) {
+			createRecordSelection(selectionType, pickingID);
 
-							GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
-							contexMenuItemContainer.setDataDomain(dataDomain);
-							contexMenuItemContainer.setData(dimensionIDType, pickingID);
-							contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
-							contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
-						}
-						else {
+			break;
 
-							AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-									+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
-									+ dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType,
-									pickingID, dataDomain.getDataDomainID());
-							contextMenuCreator.addContextMenuItem(menuItem);
-						}
+		case HEAT_MAP_DIMENSION_SELECTION:
 
-					default:
-						return;
+			switch (pickingMode) {
+			case CLICKED:
+				selectionType = SelectionType.SELECTION;
+				break;
+			case MOUSE_OVER:
+				selectionType = SelectionType.MOUSE_OVER;
+				break;
+			case RIGHT_CLICKED:
+
+				if (dataDomain instanceof GeneticDataDomain && !dataDomain.isColumnDimension()) {
+
+					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
+					contexMenuItemContainer.setDataDomain(dataDomain);
+					contexMenuItemContainer.setData(dimensionIDType, pickingID);
+					contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
+					contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
+				} else {
+
+					AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+							+ recordIDType.getIDCategory().getHumanReadableIDType() + ": "
+							+ dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType, pickingID,
+							dataDomain.getDataDomainID());
+					contextMenuCreator.addContextMenuItem(menuItem);
 				}
 
-				createDimensionSelection(selectionType, pickingID);
+			default:
+				return;
+			}
 
-				break;
+			createDimensionSelection(selectionType, pickingID);
 
-			case HEAT_MAP_HIDE_HIDDEN_ELEMENTS:
-				if (pickingMode == PickingMode.CLICKED)
-					if (hideElements)
-						hideElements = false;
-					else
-						hideElements = true;
+			break;
 
-				HideHeatMapElementsEvent event = new HideHeatMapElementsEvent(hideElements);
-				event.setSender(this);
-				event.setDataDomainID(dataDomain.getDataDomainID());
-				eventPublisher.triggerEvent(event);
+		case HEAT_MAP_HIDE_HIDDEN_ELEMENTS:
+			if (pickingMode == PickingMode.CLICKED)
+				if (hideElements)
+					hideElements = false;
+				else
+					hideElements = true;
 
-				setDisplayListDirty();
+			HideHeatMapElementsEvent event = new HideHeatMapElementsEvent(hideElements);
+			event.setSender(this);
+			event.setDataDomainID(dataDomain.getDataDomainID());
+			eventPublisher.triggerEvent(event);
 
-				break;
-			case HEAT_MAP_SHOW_CAPTIONS:
+			setDisplayListDirty();
 
-				if (pickingMode == PickingMode.CLICKED)
-					if (showCaptions)
-						showCaptions = false;
-					else {
-						showCaptions = true;
-					}
+			break;
+		case HEAT_MAP_SHOW_CAPTIONS:
 
-				detailedRenderingTemplate.setStaticLayouts();
-				setDisplayListDirty();
-				break;
+			if (pickingMode == PickingMode.CLICKED)
+				if (showCaptions)
+					showCaptions = false;
+				else {
+					showCaptions = true;
+				}
+
+			detailedRenderingTemplate.setStaticLayouts();
+			setDisplayListDirty();
+			break;
 		default:
 			break;
 		}
@@ -508,8 +499,7 @@ public class GLHeatMap
 				newIndex = index - 1;
 				if (newIndex < 0)
 					return -1;
-			}
-			else {
+			} else {
 				newIndex = index + 1;
 				if (newIndex == virtualArray.size())
 					return -1;
@@ -547,8 +537,7 @@ public class GLHeatMap
 	}
 
 	/**
-	 * Returns the y coordinate of the element rendered at recordIndex, or null
-	 * if the current element is hidden
+	 * Returns the y coordinate of the element rendered at recordIndex, or null if the current element is hidden
 	 *
 	 * @param recordIndex
 	 * @return
@@ -673,8 +662,7 @@ public class GLHeatMap
 	}
 
 	/**
-	 * returns the overhead which the heat map needs additionally to the
-	 * elements
+	 * returns the overhead which the heat map needs additionally to the elements
 	 *
 	 * @return
 	 */
@@ -691,8 +679,7 @@ public class GLHeatMap
 	}
 
 	/**
-	 * Returns true if a minimum spacing per element is required. This is
-	 * typically the case when captions are rendered.
+	 * Returns true if a minimum spacing per element is required. This is typically the case when captions are rendered.
 	 *
 	 * @return
 	 */
@@ -705,8 +692,8 @@ public class GLHeatMap
 	/**
 	 * Returns the height of a particular element
 	 *
-	 * @param recordID the id of the element - since they can be of different
-	 *            height due to the fish eye
+	 * @param recordID
+	 *            the id of the element - since they can be of different height due to the fish eye
 	 * @return the height of the element
 	 */
 	public float getFieldHeight(int recordID) {
@@ -718,8 +705,8 @@ public class GLHeatMap
 	}
 
 	/**
-	 * Returns the minimal spacing required when {@link #isForceMinSpacing()} is
-	 * true. This is typically the case when captions are rendered.
+	 * Returns the minimal spacing required when {@link #isForceMinSpacing()} is true. This is typically the case when
+	 * captions are rendered.
 	 *
 	 * @return
 	 */

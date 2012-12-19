@@ -37,7 +37,9 @@ import org.caleydo.core.event.view.RedrawViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
+import org.caleydo.core.util.mapping.color.IColorMappingUpdateListener;
 import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
+import org.caleydo.core.util.mapping.color.UpdateColorMappingListener;
 import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -55,7 +57,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @author Alexander Lex
  */
-public class GLHistogram extends AGLView implements ISingleTablePerspectiveBasedView {
+public class GLHistogram extends AGLView implements ISingleTablePerspectiveBasedView, IColorMappingUpdateListener {
 
 	private TablePerspective tablePerspective;
 	private ATableBasedDataDomain dataDomain;
@@ -83,6 +85,9 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 
 	float fRenderWidth;
 	float sideSpacing = 0;
+
+	/** Listener for changes in color mapping */
+	private UpdateColorMappingListener updateColorMappingListener;
 
 	/**
 	 * Constructor.
@@ -171,6 +176,7 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 
 	@Override
 	public void display(GL2 gl) {
+		processEvents();
 		if (bUpdateColorPointPosition || bUpdateLeftSpread || bUpdateRightSpread)
 			updateColorPointPosition(gl);
 
@@ -677,4 +683,28 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 		tablePerspectives.add(tablePerspective);
 		return tablePerspectives;
 	}
+
+	@Override
+	public void updateColorMapping() {
+		setDisplayListDirty();
+	}
+
+	@Override
+	public void registerEventListeners() {
+
+		super.registerEventListeners();
+		updateColorMappingListener = new UpdateColorMappingListener();
+		updateColorMappingListener.setHandler(this);
+		eventPublisher.addListener(UpdateColorMappingEvent.class, updateColorMappingListener);
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
+		if (updateColorMappingListener != null) {
+			eventPublisher.removeListener(updateColorMappingListener);
+			updateColorMappingListener = null;
+		}
+	}
+
 }

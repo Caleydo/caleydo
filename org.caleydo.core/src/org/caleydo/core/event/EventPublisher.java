@@ -110,7 +110,7 @@ public class EventPublisher {
 		if (!event.checkIntegrity()) {
 			throw new IllegalStateException("Event " + event + " has failed integrity check");
 		}
-		String dataDomainID = event.getDataDomainID();
+
 		HashMap<String, Collection<AEventListener<?>>> dataDomainToListenersMap =
 			listenerMap.get(event.getClass());
 		if (dataDomainToListenersMap == null)
@@ -118,6 +118,7 @@ public class EventPublisher {
 		// we also want to notify those listeners that did not register for a dataDomain
 		triggerEvents(event, dataDomainToListenersMap.get(null));
 		// if the data domain is specified in the event we call those listeners now
+		String dataDomainID = event.getDataDomainID();
 		if (dataDomainID != null)
 			triggerEvents(event, dataDomainToListenersMap.get(dataDomainID));
 		// Collection<AEventListener<?>> listeners = listenerMap.get(event.getClass()).get();

@@ -21,6 +21,7 @@ package org.caleydo.view.histogram;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ChooseColorMappingDialog;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
@@ -44,6 +45,12 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 
 	private ArrayList<CLabel> labels;
 	protected UpdateColorMappingListener updateViewListener;
+
+	/**
+	 *
+	 */
+	public RcpGLColorMapperHistogramView() {
+	}
 
 	@Override
 	public void redrawView() {
@@ -124,6 +131,8 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 
 	private void updateColorMappingPreview() {
 
+		if(colorMappingPreview == null)
+			return;
 		if (!dataDomain.getTable().isDataHomogeneous())
 			return;
 		ArrayList<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper().getMarkerPoints();
@@ -184,6 +193,12 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 		// eventPublisher.removeListener(clearSelectionsListener);
 		// clearSelectionsListener = null;
 		// }
+	}
+
+	@Override
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
+		super.setDataDomain(dataDomain);
+		updateColorMappingPreview();
 	}
 
 }
