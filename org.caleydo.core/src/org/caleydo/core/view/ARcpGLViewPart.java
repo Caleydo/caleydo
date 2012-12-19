@@ -69,7 +69,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				// if (!PlatformUI.getWorkbench().isClosing())
-					ViewManager.get().unregisterGLCanvasFromAnimator(glCanvas);
+				ViewManager.get().unregisterGLCanvas(glCanvas);
 			}
 		});
 

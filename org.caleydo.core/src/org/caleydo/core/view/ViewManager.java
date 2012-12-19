@@ -69,6 +69,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Bundle;
 
+import com.google.common.collect.Sets;
 import com.jogamp.opengl.util.FPSAnimator;
 
 /**
@@ -106,6 +107,8 @@ public class ViewManager extends AManager<IView> {
 	private GLInfoAreaManager infoAreaManager = new GLInfoAreaManager();
 
 	private Set<Object> busyRequests = new HashSet<Object>();
+
+	private Set<IGLCanvas> registeredGLCanvas = Sets.newHashSet();
 
 	/**
 	 * Determines whether the views that were deserialized have already been initialized. Views do not get initialized
@@ -165,6 +168,13 @@ public class ViewManager extends AManager<IView> {
 		if (glCanvas == null)
 			return false;
 
+		if (!registeredGLCanvas.contains(glCanvas))
+			return true;
+
+		registeredGLCanvas.remove(glCanvas);
+
+		if (registeredGLCanvas.isEmpty())
+			fpsAnimator.stop();
 		fpsAnimator.remove(glCanvas.asGLAutoDrawAble());
 
 		return true;
@@ -514,13 +524,13 @@ public class ViewManager extends AManager<IView> {
 			startAnimator();
 		}
 
+		if (registeredGLCanvas.contains(glCanvas))
+			return;
+
+		registeredGLCanvas.add(glCanvas);
 		fpsAnimator.add(glCanvas.asGLAutoDrawAble());
 
 		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Add canvas to animator" + glCanvas));
-	}
-
-	public void unregisterGLCanvasFromAnimator(final IGLCanvas glCanvas) {
-		fpsAnimator.remove(glCanvas.asGLAutoDrawAble());
 	}
 
 	/**
