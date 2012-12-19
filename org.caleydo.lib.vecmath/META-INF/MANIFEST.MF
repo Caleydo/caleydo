@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vecmath
+Bundle-SymbolicName: org.caleydo.lib.vecmath
+Bundle-Version: 1.5.2
+Bundle-ClassPath: vecmath-1.5.2.jar
+Export-Package: javax.vecmath;version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

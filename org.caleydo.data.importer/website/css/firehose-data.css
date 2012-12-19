@@ -1,0 +1,25 @@
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #aaa;
+    shape-rendering: crispEdges;
+}
+
+.copyright {
+	margin-top: 20px;
+}
+
+.axis-label {
+	font-weight: normal;
+    font-family: sans-serif;
+    font-size: 11px;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+
+.selection-label {
+	font-weight: bold;	
+}

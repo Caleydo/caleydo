@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
+<!-- Creation date: Oct 1, 2009 10:13:56 +0900 (JST) -->
+<pathway name="path:mmu00785" org="mmu" number="00785"
+         title="Lipoic acid metabolism"
+         image="http://www.genome.jp/kegg/pathway/mmu/mmu00785.png"
+         link="http://www.genome.jp/kegg-bin/show_pathway?mmu00785">
+    <entry id="5" name="mmu:79464" type="gene" reaction="rn:R07768"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:79464">
+        <graphics name="Lias, 2900022L22Rik, 4933425M12Rik, 7a5ex, C77512, MGC7254, mLip1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="180" y="205" width="46" height="17"/>
+    </entry>
+    <entry id="6" name="mmu:67164" type="gene" reaction="rn:R07769"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:67164">
+        <graphics name="Lipt2, 2610209A20Rik" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="180" y="305" width="46" height="17"/>
+    </entry>
+    <entry id="7" name="cpd:C16239" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C16239">
+        <graphics name="C16239" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="179" y="257" width="8" height="8"/>
+    </entry>
+    <entry id="8" name="ko:K03800" type="ortholog" reaction="rn:R07771"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03800">
+        <graphics name="K03800" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="396" y="305" width="46" height="17"/>
+    </entry>
+    <entry id="9" name="path:mmu00785" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu00785">
+        <graphics name="TITLE:Lipoic acid metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="143" y="58" width="206" height="25"/>
+    </entry>
+    <entry id="10" name="path:mmu00061" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu00061">
+        <graphics name="Fatty acid biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="roundrectangle" x="85" y="162" width="86" height="34"/>
+    </entry>
+    <entry id="11" name="mmu:79464" type="gene" reaction="rn:R07767"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:79464">
+        <graphics name="Lias, 2900022L22Rik, 4933425M12Rik, 7a5ex, C77512, MGC7254, mLip1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="280" y="305" width="46" height="17"/>
+    </entry>
+    <entry id="12" name="mmu:67164" type="gene" reaction="rn:R07766"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:67164">
+        <graphics name="Lipt2, 2610209A20Rik" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="280" y="205" width="46" height="17"/>
+    </entry>
+    <entry id="13" name="ko:K03800" type="ortholog" reaction="rn:R07770"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03800">
+        <graphics name="K03800" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="396" y="205" width="46" height="17"/>
+    </entry>
+    <entry id="15" name="mmu:623661" type="gene" reaction="rn:R07771"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:623661">
+        <graphics name="Lipt1, EG623661, MGC28431" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="446" y="305" width="46" height="17"/>
+    </entry>
+    <entry id="16" name="cpd:C05752" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C05752">
+        <graphics name="C05752" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="179" y="162" width="8" height="8"/>
+    </entry>
+    <entry id="17" name="cpd:C00725" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00725">
+        <graphics name="C00725" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="421" y="162" width="8" height="8"/>
+    </entry>
+    <entry id="18" name="cpd:C16238" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C16238">
+        <graphics name="C16238" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="421" y="257" width="8" height="8"/>
+    </entry>
+    <entry id="19" name="cpd:C16236" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C16236">
+        <graphics name="C16236" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="279" y="257" width="8" height="8"/>
+    </entry>
+    <entry id="20" name="cpd:C16237" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C16237">
+        <graphics name="C16237" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="279" y="353" width="8" height="8"/>
+    </entry>
+    <relation entry1="5" entry2="12" type="ECrel">
+        <subtype name="compound" value="16"/>
+    </relation>
+    <relation entry1="5" entry2="6" type="ECrel">
+        <subtype name="compound" value="7"/>
+    </relation>
+    <relation entry1="11" entry2="12" type="ECrel">
+        <subtype name="compound" value="19"/>
+    </relation>
+    <relation entry1="6" entry2="11" type="ECrel">
+        <subtype name="compound" value="20"/>
+    </relation>
+    <relation entry1="6" entry2="15" type="ECrel">
+        <subtype name="compound" value="20"/>
+    </relation>
+    <relation entry1="11" entry2="15" type="ECrel">
+        <subtype name="compound" value="20"/>
+    </relation>
+    <relation entry1="5" entry2="10" type="maplink">
+        <subtype name="compound" value="16"/>
+    </relation>
+    <relation entry1="12" entry2="10" type="maplink">
+        <subtype name="compound" value="16"/>
+    </relation>
+    <reaction id="5" name="rn:R07768" type="irreversible">
+        <substrate id="16" name="cpd:C05752"/>
+        <product id="7" name="cpd:C16239"/>
+    </reaction>
+    <reaction id="6" name="rn:R07769" type="irreversible">
+        <substrate id="7" name="cpd:C16239"/>
+        <product id="20" name="cpd:C16237"/>
+    </reaction>
+    <reaction id="11" name="rn:R07767" type="irreversible">
+        <substrate id="19" name="cpd:C16236"/>
+        <product id="20" name="cpd:C16237"/>
+    </reaction>
+    <reaction id="12" name="rn:R07766" type="irreversible">
+        <substrate id="16" name="cpd:C05752"/>
+        <product id="19" name="cpd:C16236"/>
+    </reaction>
+    <reaction id="15" name="rn:R07771" type="irreversible">
+        <substrate id="18" name="cpd:C16238"/>
+        <product id="20" name="cpd:C16237"/>
+    </reaction>
+</pathway>

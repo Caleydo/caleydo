@@ -1,0 +1,3 @@
+?package(caleydo):needs="X11" section="Applications/Science"\
+  title="caleydo" command="/usr/bin/caleydo"
+  icon="/usr/share/pixmaps/caleydo_256.png" \

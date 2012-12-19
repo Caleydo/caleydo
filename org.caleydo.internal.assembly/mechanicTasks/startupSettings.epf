@@ -1,0 +1,8 @@
+# @title startupSettings
+# @description startupSettings
+# @task_type LASTMOD
+#
+# Created by the Workspace Mechanic Preference Recorder
+#Wed Oct 10 11:12:26 CEST 2012
+file_export_version=3.0
+/instance/org.eclipse.ui.workbench/PLUGINS_NOT_ACTIVATED_ON_STARTUP=org.eclipse.m2e.discovery;org.tigris.subversion.subclipse.tools.usage;

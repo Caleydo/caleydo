@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp 
+    spec="1.0+" 
+    codebase="http://data.icg.tugraz.at/caleydo/download/webstart_2.2/" 
+    href="JNLP_NAME">
+  <information>
+    <title>Caleydo 2.2 Webstart</title>  
+    <vendor>www.caleydo.org</vendor>
+    <description>Caleydo - visualization for molecular biology</description>  
+    <icon href="../caleydo.png"/>
+    <homepage href="http://www.caleydo.org" />
+    <!-- 
+    THIS TELLS THE CLIENT TO PUT A SHORTCUT IN BOTH THE 
+    DESKTOP AND MENU AND TO LAUNCH THE ONLINE VERSION. 
+    HOWEVER, I'M THINKING THAT IF THE ONLINE VERSION IS
+    NOT AVAILABLE THEN THAT IS WHEN THE OFFLINE-ALLOWED
+    KICKS IN -->
+    <shortcut online="true">
+      <desktop/>
+      <menu/>
+    </shortcut>
+  </information>
+ 
+  <security>
+    <all-permissions/>
+  </security>
+ 
+  <resources>
+    <jar href="plugins/org.eclipse.equinox.launcher_1.3.0.v20120522-1813"/>
+    <extension name="Caleydo feature" href="features/org.caleydo.rcp.feature_2.2.jnlp"/>
+    <property name="osgi.instance.area" value="@user.home/.caleydo_2.2"/>
+    <property name="osgi.configuration.area" value="@user.home/.caleydo_2.2/configuration"/>
+    <property name="eclipse.product" value="org.caleydo.core.product"/> 
+    <property name="osgi.splashPath" value="file:/plugins/org.caleydo.core"/>
+    <j2se version="1.7+" java-vm-args="-XstartOnFirstThread"/>
+    <!--property name="sun.java2d.opengl" value="false"/-->
+    <!--property name="sun.java2d.opengl.fbobject" value="false"/-->
+    <property name="osgi.bundles" value="org.eclipse.core.runtime@start,org.eclipse.equinox.ds@start,org.eclipse.equinox.event@start"/>
+    <property name="caleydo.project.location" value="CALEYDO_PROJECT_URL"/>
+  </resources>
+
+  <application-desc main-class="org.eclipse.equinox.launcher.WebStartMain">
+    <argument>-showsplash</argument>
+  </application-desc>
+</jnlp>

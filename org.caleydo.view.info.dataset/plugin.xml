@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            category="org.caleydo.core.views"
+            class="org.caleydo.view.info.dataset.RcpDatasetInfoView"
+            icon="resources/icons/icon.png"
+            id="org.caleydo.view.info.dataset"
+            name="Dataset Info">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.caleydo.menu.view"
+               label="View">
+            <menu
+                  id="org.caleydo.menu.view.tool"
+                  label="Tools">
+               <command
+                     commandId="org.caleydo.view.info.dataset.command.opendatasetinfo"
+                     icon="resources/icons/icon.png"
+                     label="Dataset Info"
+                     style="push">
+               </command>
+            </menu>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.info.dataset.command.handler.OpenDatasetInfoHandler"
+            id="org.caleydo.view.info.dataset.command.opendatasetinfo"
+            name="Dataset Info">
+      </command>
+   </extension>
+</plugin>

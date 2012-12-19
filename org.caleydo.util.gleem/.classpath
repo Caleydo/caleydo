@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry excluding="**/.svn/|*.html|gleem/ExaminerViewer.java|gleem/HandleBoxManip.java|gleem/HitPoint.java|gleem/Manip.java|gleem/ManipManager.java|gleem/ManipMotionListener.java|gleem/ManipPart.java|gleem/ManipPartCube.java|gleem/ManipPartGroup.java|gleem/ManipPartLineSeg.java|gleem/ManipPartSquare.java|gleem/ManipPartTransform.java|gleem/ManipPartTriBased.java|gleem/ManipPartTwoWayArrow.java|gleem/MouseButtonHelper.java|gleem/NormalCalc.java|gleem/RayTriangleIntersection.java|gleem/RightTruncPyrMapping.java|gleem/ScreenToRayMapping.java|gleem/TestExaminerViewer.java|gleem/TestHandleBox.java|gleem/TestMultiWin.java|gleem/TestTranslate1.java|gleem/TestTranslate2.java|gleem/Translate1Manip.java|gleem/Translate2Manip.java|gleem/WindowUpdateListener.java" kind="src" path="src"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

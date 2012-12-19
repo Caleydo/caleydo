@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="org.caleydo.view.selectionbrowser.RcpSelectionBrowserView"
+            id="org.caleydo.view.selectionbrowser"
+            name="Selection Browser">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.caleydo.menu.view"
+               label="View">
+            <menu
+                  id="org.caleydo.menu.view.legacy"
+                  label="Legacy">
+               <command
+                     commandId="org.caleydo.view.selectionbrowser.command.openselectionbrowser"
+                     style="push">
+                  <visibleWhen
+                        checkEnabled="false">
+                     <with
+                           variable="org.caleydo.core.isReleaseState">
+                        <equals
+                              value="releaseVersion">
+                        </equals>
+                     </with>
+                  </visibleWhen>
+               </command>
+            </menu>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.selectionbrowser.command.handler.OpenSelectionBrowserHandler"
+            id="org.caleydo.view.selectionbrowser.command.openselectionbrowser"
+            name="Selection Browser">
+      </command>
+   </extension>
+</plugin>

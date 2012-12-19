@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Gleem Plug-in
+Bundle-SymbolicName: org.caleydo.util.gleem;singleton:=true
+Bundle-Version: 2.2
+Bundle-ClassPath: gleem.jar
+Export-Package: gleem,
+ gleem.linalg,
+ gleem.linalg.open
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.caleydo.lib.jogl;bundle-version="2.0.0"
+Bundle-Vendor: www.caleydo.org
+Bundle-ActivationPolicy: lazy

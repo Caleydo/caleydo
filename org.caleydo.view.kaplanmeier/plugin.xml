@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            category="org.caleydo.core.views"
+            class="org.caleydo.view.kaplanmeier.RcpGLKaplanMeierView"
+            icon="resources/icons/icon.png"
+            id="org.caleydo.view.kaplanmeier"
+            name="Kaplan Meier">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.kaplanmeier.command.handler.OpenKaplanMeierHandler"
+            id="org.caleydo.view.kaplanmeier.command.openkaplanmeier"
+            name="Kaplan Meier">
+      </command>
+   </extension>
+   <extension
+         point="org.caleydo.view.EmbeddedView">
+      <EmbeddingInfo
+            viewID="org.caleydo.view.kaplanmeier">
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.clinical.segment.brick"
+                  icon="resources/icons/icon.png"
+                  isDefaultView="true"
+                  viewCreator="org.caleydo.view.kaplanmeier.KaplanMeierRemoteViewCreator"
+                  visInfo="org.caleydo.view.kaplanmeier.KaplanMeierVisInfo">
+            </Embedding>
+         </ParentView>
+         <ParentView
+               viewID="org.caleydo.view.stratomex">
+            <Embedding
+                  embeddingID="org.caleydo.view.stratomex.clinical.header.brick"
+                  icon="resources/icons/icon.png"
+                  isDefaultView="true"
+                  viewCreator="org.caleydo.view.kaplanmeier.KaplanMeierRemoteViewCreator"
+                  visInfo="org.caleydo.view.kaplanmeier.KaplanMeierVisInfo">
+            </Embedding>
+         </ParentView>
+      </EmbeddingInfo>
+   </extension>
+</plugin>

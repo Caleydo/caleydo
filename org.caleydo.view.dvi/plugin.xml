@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.dvi.command.handler.OpenDVIHandler"
+            id="org.caleydo.view.dvi.opendvi"
+            name="Data-View Integrator">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.caleydo.core.views"
+            class="org.caleydo.view.dvi.RcpGLDVIView"
+            icon="resources/icons/dataviewintegrator.png"
+            id="org.caleydo.view.dvi"
+            name="Data-View Integrator"
+            restorable="true">
+         <description>
+            description body text
+         </description>
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               icon="resources/icons/dataviewintegrator.png"
+               id="org.caleydo.menu.view"
+               label="View">
+            <menu
+                  id="org.caleydo.menu.view.visualization"
+                  label="Visualizations">
+               <command
+                     commandId="org.caleydo.view.dvi.opendvi"
+                     icon="resources/icons/dataviewintegrator.png"
+                     style="push">
+               </command>
+            </menu>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.caleydo.view.ViewCategory">
+      <ViewCategory
+            isDataView="false"
+            isReleaseView="true"
+            viewID="org.caleydo.view.dvi">
+      </ViewCategory>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.caleydo.core.gui.perspective">
+         <view
+               id="org.caleydo.view.dvi"
+               minimized="false"
+               relationship="stack"
+               relative="main"
+               visible="false">
+         </view>
+      </perspectiveExtension>
+   </extension>
+
+</plugin>

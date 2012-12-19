@@ -1,0 +1,6 @@
+[{"label":"mRNA","id":"mRNA","json":"mRNA/mRNA.json"},
+{"label":"mRNAseq","id":"mRNAseq","json":"mRNAseq/mRNAseq.json"},
+{"label":"microRNA","id":"microRNA","json":"microRNA/microRNA.json"},
+{"label":"microRNAseq","id":"microRNAseq","json":"mRNAseq/mRNAseq.json"},
+{"label":"Methylation","id":"Methylation","json":"methylation/methylation.json"},
+{"label":"RPPA","id":"RPPA","json":"RPPA/RPPA.json"}]

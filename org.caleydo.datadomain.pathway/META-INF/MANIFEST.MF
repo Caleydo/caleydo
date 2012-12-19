@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Pathway Data Domain
+Bundle-SymbolicName: org.caleydo.datadomain.pathway;singleton:=true
+Bundle-Version: 2.2
+Bundle-Activator: org.caleydo.datadomain.pathway.Activator
+Bundle-Vendor: www.caleydo.org
+Require-Bundle: org.caleydo.core;bundle-version="2.2",
+ org.caleydo.data;bundle-version="2.2",
+ org.caleydo.datadomain.genetic;bundle-version="2.2"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: org.caleydo.datadomain.pathway,
+ org.caleydo.datadomain.pathway.contextmenu.container,
+ org.caleydo.datadomain.pathway.contextmenu.item,
+ org.caleydo.datadomain.pathway.data,
+ org.caleydo.datadomain.pathway.graph,
+ org.caleydo.datadomain.pathway.graph.item.edge,
+ org.caleydo.datadomain.pathway.graph.item.vertex,
+ org.caleydo.datadomain.pathway.listener,
+ org.caleydo.datadomain.pathway.manager

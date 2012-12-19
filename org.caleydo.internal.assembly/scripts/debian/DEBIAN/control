@@ -1,0 +1,12 @@
+Section: science
+Priority: optional
+Homepage: http://caleydo.org
+Package: caleydo
+Version: VERSION_NUMBER
+Architecture: ARCH_STRING
+Installed-Size: 120000
+Depends: openjdk-7-jre | sun-java6-jre | openjdk-6-jre | oracle-java7-installer
+Maintainer: Alexander Lex <alexander.lex@gmail.com>
+Description: Visualization for Molecular Biology
+ An open source visual analysis framework targeted at biomolecular data. The biggest strength of Caleydo is the visualization of interdependencies between multiple datasets. Caleydo can load tabular data and groupings/clusterings. You can explore relationships between multiple groupings, between different datasets and see how your data maps onto pathways.
+ Caleydo has been successfully used to analyze mRNA, miRNA, methylation, copy number variation, mutation status and clinical data as well as other datset types.
