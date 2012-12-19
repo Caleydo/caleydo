@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.score;
 
+import java.util.Arrays;
 import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -26,6 +27,7 @@ import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
@@ -35,6 +37,7 @@ import org.caleydo.view.tourguide.algorithm.IGroupAlgorithm;
 import org.caleydo.view.tourguide.algorithm.JaccardIndex;
 import org.caleydo.view.tourguide.algorithm.LogRank;
 import org.caleydo.view.tourguide.data.Scores;
+import org.caleydo.view.tourguide.data.ScoringElement;
 import org.caleydo.view.tourguide.data.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.data.compute.IComputeScoreFilter;
 import org.caleydo.view.tourguide.data.ui.CreateAdjustedRandScoreDialog;
@@ -47,6 +50,8 @@ import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Shell;
 
+import weka.core.Statistics;
+
 import com.google.common.base.Function;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
@@ -58,16 +63,17 @@ import com.google.common.collect.Sets;
  */
 public class ScoreRegistry {
 
-	public static IScore createAdjustedRand(String label, TablePerspective reference) {
+	public static IRegisteredScore createAdjustedRand(String label, TablePerspective reference) {
 		return new DefaultComputedStratificationScore(label, reference, AdjustedRandIndex.get(), null);
 	}
 
-	public static IGroupScore createJaccardScore(String label, TablePerspective reference, Group group, boolean mutualExclusive) {
+	public static IRegisteredScore createJaccardScore(String label, TablePerspective reference,
+			Group group, boolean mutualExclusive) {
 		IComputeScoreFilter filter = mutualExclusive ? ComputeScoreFilters.MUTUAL_EXCLUSIVE : null;
 		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(), filter);
 	}
 
-	public static IScore createLogRankGroupMetric(String label, Integer clinicalVariable) {
+	private static IRegisteredScore createLogRankGroupMetric(String label, Integer clinicalVariable) {
 		final ATableBasedDataDomain clinical = DataDomainOracle.getClinicalDataDomain();
 		final IGroupAlgorithm underlying = LogRank.get(clinicalVariable, clinical);
 		final IGroupAlgorithm al = new IGroupAlgorithm() {
@@ -89,8 +95,6 @@ public class ScoreRegistry {
 		};
 		return new DefaultComputedGroupScore(label, al, null);
 	}
-
-
 
 	public static void addCreateScoreItems(ContextMenuCreator creator, Set<IScore> visible, ScoreQueryUI sender) {
 		creator.addContextMenuItem(new GenericContextMenuItem("Create Jaccard Index Score", new CreateScoreColumnEvent(
@@ -130,7 +134,11 @@ public class ScoreRegistry {
 		boolean hasOne = false;
 		for (IScore score : logRankScores) {
 			hasOne = true;
-			logRanks.add(new GenericContextMenuItem(score.getLabel(), new AddScoreColumnEvent(score, sender)));
+			IScore logRankPValue = new LogRankPValue(score.getLabel() + " (P-V)", score);
+			IScore combined = new CombinedScore(score.getLabel() + " Quality", ECombinedOperator.PRODUCT,
+					CombinedScore.wrap(Arrays.asList(score, logRankPValue)));
+			logRanks.add(new GenericContextMenuItem(score.getLabel(), new AddScoreColumnEvent(sender, score,
+					logRankPValue, combined)));
 		}
 		if (hasOne)
 			creator.addContextMenuItem(logRanks);
@@ -157,6 +165,59 @@ public class ScoreRegistry {
 			return new CreateAdjustedRandScoreDialog(shell, scoreQueryUI);
 		default:
 			throw new IllegalStateException();
+		}
+	}
+
+	private static class LogRankPValue extends DefaultLabelProvider implements IScore {
+		private final IScore logRankScore;
+
+		public LogRankPValue(String label, IScore logRankScore) {
+			super(label);
+			this.logRankScore = logRankScore;
+		}
+
+		@Override
+		public String getAbbrevation() {
+			return "LR-P";
+		}
+
+		@Override
+		public EScoreType getScoreType() {
+			return logRankScore.getScoreType();
+		}
+
+		@Override
+		public float getScore(ScoringElement elem) {
+			float f = logRankScore.getScore(elem);
+			if (Float.isNaN(f))
+				return f;
+			double r = Statistics.chiSquaredProbability(f, 1); // see #983
+			return (float) r;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((logRankScore == null) ? 0 : logRankScore.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			LogRankPValue other = (LogRankPValue) obj;
+			if (logRankScore == null) {
+				if (other.logRankScore != null)
+					return false;
+			} else if (!logRankScore.equals(other.logRankScore))
+				return false;
+			return true;
 		}
 	}
 }

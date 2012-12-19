@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
+ * 	Caleydo - visualization for molecular biology - http://caleydo.org
  *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
@@ -45,7 +45,7 @@ public class ScoreColumnListener extends AEventListener<VendingMachine> {
 		if (handler.getScoreQueryUI() != event.getSender())
 			return;
 		if (event instanceof AddScoreColumnEvent) {
-			handler.onAddColumn(((AddScoreColumnEvent) event).getScore());
+			handler.onAddColumn(((AddScoreColumnEvent) event).getScores());
 		} else if (event instanceof CreateScoreColumnEvent) {
 			handler.onCreateNewScore(((CreateScoreColumnEvent) event).getType());
 		} else if (event instanceof RemoveScoreColumnEvent) {

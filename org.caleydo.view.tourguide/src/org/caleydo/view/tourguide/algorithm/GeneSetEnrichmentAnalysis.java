@@ -17,26 +17,34 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data.compute;
+package org.caleydo.view.tourguide.algorithm;
+
+import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.view.tourguide.algorithm.IStratificationAlgorithm;
-import org.caleydo.view.tourguide.data.score.IRegisteredScore;
-import org.caleydo.view.tourguide.data.score.IScore;
-import org.caleydo.view.tourguide.data.score.IStratificationScore;
+import org.caleydo.core.id.IDType;
 
 /**
- * declares that the given {@link IScore} must be computed on a stratification base
- *
  * @author Samuel Gratzl
  *
  */
-public interface IComputedReferenceStratificationScore extends IStratificationScore, IRegisteredScore {
-	public boolean contains(TablePerspective a);
+public class GeneSetEnrichmentAnalysis implements IGroupAlgorithm {
 
-	public void put(TablePerspective a, float value);
+	@Override
+	public IDType getTargetType(TablePerspective a, TablePerspective b) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	public IStratificationAlgorithm getAlgorithm();
+	@Override
+	public float compute(Set<Integer> a, Set<Integer> b) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-	public IComputeScoreFilter getFilter();
+	@Override
+	public String getAbbreviation() {
+		return "GSEA";
+	}
+
 }

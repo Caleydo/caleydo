@@ -21,6 +21,7 @@ package org.caleydo.view.tourguide.vendingmachine;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -63,6 +64,7 @@ import org.caleydo.view.tourguide.data.filter.CompareScoreFilter;
 import org.caleydo.view.tourguide.data.filter.ECompareOperator;
 import org.caleydo.view.tourguide.data.filter.IScoreFilter;
 import org.caleydo.view.tourguide.data.load.ImportExternalScoreCommand;
+import org.caleydo.view.tourguide.data.score.IRegisteredScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.score.ScoreRegistry;
 import org.caleydo.view.tourguide.data.serialize.ISerializeableScore;
@@ -83,6 +85,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 
 /**
  * <p>
@@ -325,8 +330,20 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		});
 	}
 
-	public void onAddColumn(IScore score) {
-		this.scoreQuery.addSelection(score);
+	public void onAddColumn(IScore... scores) {
+		this.onAddColumn(Arrays.asList(scores));
+	}
+
+	public void onAddColumn(Collection<IScore> scores) {
+		this.scoreQuery.addSelection(Collections2.transform(scores, new Function<IScore, IScore>() {
+			@Override
+			public IScore apply(IScore score) {
+				if (score instanceof IRegisteredScore)
+					return Scores.get().addIfAbsent((IRegisteredScore) score);
+				else
+					return score;
+			}
+		}));
 	}
 
 	public void onRemoveColumn(IScore score, boolean removeFromSystem) {

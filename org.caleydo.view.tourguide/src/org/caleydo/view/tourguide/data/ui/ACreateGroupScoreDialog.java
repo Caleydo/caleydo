@@ -29,7 +29,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.tourguide.data.DataDomainQuery;
 import org.caleydo.view.tourguide.data.Scores;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
-import org.caleydo.view.tourguide.data.score.IGroupScore;
+import org.caleydo.view.tourguide.data.score.IRegisteredScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.util.ui.CaleydoLabelProvider;
@@ -180,7 +180,7 @@ public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
 		return valid;
 	}
 
-	protected abstract IGroupScore createScore(String label, TablePerspective strat, Group g);
+	protected abstract IRegisteredScore createScore(String label, TablePerspective strat, Group g);
 
 	private void save() {
 		String label = labelUI.getText();

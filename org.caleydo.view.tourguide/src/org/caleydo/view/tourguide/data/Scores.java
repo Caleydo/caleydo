@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 import org.caleydo.view.tourguide.data.compute.ICompositeScore;
+import org.caleydo.view.tourguide.data.score.IRegisteredScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.serialize.ISerializeableScore;
 
@@ -67,7 +68,7 @@ public final class Scores {
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized <T extends IScore> T addIfAbsent(T score) {
+	public synchronized <T extends IScore & IRegisteredScore> T addIfAbsent(T score) {
 		if (this.scores.add(score))
 			return score;
 		else {

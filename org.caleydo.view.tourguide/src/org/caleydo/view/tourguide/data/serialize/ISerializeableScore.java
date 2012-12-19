@@ -19,14 +19,15 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.serialize;
 
+import org.caleydo.view.tourguide.data.score.IRegisteredScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 
 /**
  * marker interface for a score that is being serializable
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-public interface ISerializeableScore extends IScore {
+public interface ISerializeableScore extends IScore, IRegisteredScore {
 
 }

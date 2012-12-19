@@ -21,7 +21,7 @@ package org.caleydo.view.tourguide.data.ui;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.view.tourguide.data.score.IGroupScore;
+import org.caleydo.view.tourguide.data.score.IRegisteredScore;
 import org.caleydo.view.tourguide.data.score.ScoreRegistry;
 import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
 import org.eclipse.swt.SWT;
@@ -55,7 +55,7 @@ public class CreateJaccardIndexScoreDialog extends ACreateGroupScoreDialog {
 	}
 
 	@Override
-	protected IGroupScore createScore(String label, TablePerspective strat, Group g) {
+	protected IRegisteredScore createScore(String label, TablePerspective strat, Group g) {
 		return ScoreRegistry.createJaccardScore(label, strat, g, mututalExclusiveUI.getSelection());
 	}
 }

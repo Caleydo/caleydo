@@ -28,24 +28,28 @@ import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
  *
  */
 public class AddScoreColumnEvent extends AEvent {
-	private IScore score;
+	private IScore[] scores;
 
 	public AddScoreColumnEvent() {
 
 	}
 
 	public AddScoreColumnEvent(IScore score, ScoreQueryUI sender) {
-		this.score = score;
+		this(sender, score);
+	}
+
+	public AddScoreColumnEvent(ScoreQueryUI sender, IScore... scores) {
+		this.scores = scores;
 		this.setSender(sender);
 	}
 
-	public IScore getScore() {
-		return score;
+	public IScore[] getScores() {
+		return scores;
 	}
 
 	@Override
 	public boolean checkIntegrity() {
-		return score != null;
+		return scores != null;
 	}
 }
 

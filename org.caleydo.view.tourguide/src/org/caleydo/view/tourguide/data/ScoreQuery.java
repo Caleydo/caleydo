@@ -24,6 +24,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -337,13 +338,19 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	 *
 	 * @param score
 	 */
-	public void addSelection(IScore score) {
-		selection.add(score);
-		sortByImpl(score, score.getScoreType().isRank() ? ESorting.ASC : ESorting.DESC);
-		submitComputation(Collections.singleton(score), null);
+	public void addSelection(IScore... scores) {
+		this.addSelection(Arrays.asList(scores));
+	}
 
+	public void addSelection(Collection<IScore> scores) {
+		if (scores.isEmpty())
+			return;
+		this.selection.addAll(scores);
+		IScore last = Iterables.getLast(scores);
+		sortByImpl(last, last.getScoreType().isRank() ? ESorting.ASC : ESorting.DESC);
+		submitComputation(scores, null);
 
-		listeners.fireIndexedPropertyChange(PROP_SELECTION, selection.size() - 1, null, score);
+		listeners.fireIndexedPropertyChange(PROP_SELECTION, selection.size() - 1, null, last);
 	}
 
 	public void removeSelection(IScore score) {

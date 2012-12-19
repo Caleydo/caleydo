@@ -27,6 +27,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.data.ScoringElement;
 import org.caleydo.view.tourguide.data.compute.ICompositeScore;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterators;
 
@@ -43,6 +44,15 @@ public class CombinedScore extends DefaultLabelProvider implements ICompositeSco
 		super(label);
 		this.operator = op;
 		this.children = children;
+	}
+
+	public static Collection<Pair<IScore, Float>> wrap(Collection<IScore> scores) {
+		return Collections2.transform(scores, new Function<IScore, Pair<IScore, Float>>() {
+			@Override
+			public Pair<IScore, Float> apply(IScore s) {
+				return Pair.make(s, 1.0f);
+			}
+		});
 	}
 
 	/**

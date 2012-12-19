@@ -52,15 +52,13 @@ public class ScoreTablePerspectiveListener
 			TablePerspective strat = e.getStratification();
 			switch (e.getMode()) {
 			case ADJUSTED_RAND:
-				handler.onAddColumn(Scores.get().addIfAbsent(createAdjustedRand(null, strat)));
+				handler.onAddColumn(createAdjustedRand(null, strat));
 				break;
 			case JACCARD:
-				handler.onAddColumn(Scores.get().addIfAbsent(
-						createJaccardScore(null, strat, e.getGroup().getRecordGroup(), false)));
+				handler.onAddColumn(createJaccardScore(null, strat, e.getGroup().getRecordGroup(), false));
 				break;
 			case JACCARD_MUTUAL_EXCLUSIVE:
-				handler.onAddColumn(Scores.get().addIfAbsent(
-						createJaccardScore(null, strat, e.getGroup().getRecordGroup(), true)));
+				handler.onAddColumn(createJaccardScore(null, strat, e.getGroup().getRecordGroup(), true));
 				break;
 			case JACCARD_ALL:
 			case JACCARD_ALL_MUTUAL_EXCLUSIVE:

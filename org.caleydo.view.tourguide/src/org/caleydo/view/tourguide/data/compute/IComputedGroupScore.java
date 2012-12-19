@@ -22,6 +22,7 @@ package org.caleydo.view.tourguide.data.compute;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.algorithm.IGroupAlgorithm;
+import org.caleydo.view.tourguide.data.score.IRegisteredScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 
 /**
@@ -30,7 +31,7 @@ import org.caleydo.view.tourguide.data.score.IScore;
  * @author Samuel Gratzl
  *
  */
-public interface IComputedGroupScore {
+public interface IComputedGroupScore extends IRegisteredScore {
 	public boolean contains(TablePerspective a, Group ag);
 
 	public void put(Group ag, float value);
