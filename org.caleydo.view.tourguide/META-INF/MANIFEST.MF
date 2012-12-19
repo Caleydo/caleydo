@@ -5,7 +5,8 @@ Bundle-SymbolicName: org.caleydo.view.tourguide;singleton:=true
 Bundle-Version: 2.2
 Require-Bundle: org.caleydo.core;bundle-version="2.2",
  org.caleydo.view.stratomex;bundle-version="2.2",
- com.google.guava;bundle-version="10.0.1"
+ com.google.guava;bundle-version="10.0.1",
+ org.caleydo.lib.weka;bundle-version="3.6.8"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: gleem.linalg,
  javax.media.opengl,
