@@ -17,6 +17,7 @@
 package org.caleydo.data.importer;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -30,6 +31,7 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectManager;
+import org.eclipse.core.runtime.NullProgressMonitor;
 
 /**
  * This class handles the creation of Caleydo project files. The class takes an XML file as input.
@@ -52,7 +54,12 @@ public class XMLToProjectBuilder {
 				dataDomains.add(dataDomain);
 		}
 
-		ProjectManager.save(projectFileOutputPath, true, dataDomains);
+		try {
+			ProjectManager.save(projectFileOutputPath, true, dataDomains).run(new NullProgressMonitor());
+		} catch (InvocationTargetException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return dataDomains;
 	}

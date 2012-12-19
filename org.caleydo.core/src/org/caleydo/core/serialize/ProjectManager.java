@@ -24,6 +24,7 @@ import static org.caleydo.core.manager.GeneralManager.CALEYDO_HOME_PATH;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -56,6 +57,7 @@ import org.caleydo.core.manager.BasicInformation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.FileOperations;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.emf.common.util.URI;
@@ -64,7 +66,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
@@ -308,8 +312,8 @@ public final class ProjectManager {
 	 * @param fileName
 	 *            name of the file to save the project in.
 	 */
-	public void save(String fileName) {
-		save(fileName, false, DataDomainManager.get().getDataDomains());
+	public static IRunnableWithProgress save(String fileName) {
+		return save(fileName, false, DataDomainManager.get().getDataDomains());
 	}
 
 	/**
@@ -319,73 +323,111 @@ public final class ProjectManager {
 	 * @param onlyData
 	 *            if true, only the data is saved, else also the workbench is saved
 	 */
-	public static void save(String fileName, boolean onlyData, Collection<? extends IDataDomain> dataDomains) {
-		log.info("saving to " + fileName);
-		String tempDir = dir("temp_project" + System.currentTimeMillis());
-		FileOperations.createDirectory(tempDir);
-		try {
-			if (!onlyData) {
-				saveWorkbenchData(tempDir);
+	public static IRunnableWithProgress save(final String fileName, final boolean onlyData,
+			final Collection<? extends IDataDomain> dataDomains) {
+		return new IRunnableWithProgress() {
+			@Override
+			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+				monitor.beginTask("Saving Project to " + fileName, (onlyData ? 0 : 1) + 1 + dataDomains.size() + 1 + 1
+						+ 1);
+				log.info("saving to " + fileName);
+				String tempDir = dir("temp_project" + System.currentTimeMillis());
+				FileOperations.createDirectory(tempDir);
+				int w = 0;
+				try {
+					if (!onlyData) {
+						monitor.subTask("Saving Workbench Data");
+						saveWorkbenchData(tempDir);
+						monitor.worked(w++);
+					}
+					log.info("storing plugin data");
+					monitor.subTask("Saving Plugin Data");
+					savePluginData(tempDir);
+					monitor.worked(w++);
+					log.info("stored plugin data");
+					log.info("storing data");
+					saveData(tempDir, dataDomains, monitor, w);
+					w += dataDomains.size() + 1;
+					log.info("stored data");
+
+					monitor.subTask("packing Project Data");
+					ZipUtils.zipDirectory(tempDir, fileName);
+					monitor.worked(w++);
+
+					monitor.subTask("cleanup temporary data");
+					FileOperations.deleteDirectory(tempDir);
+					monitor.worked(w++);
+					String message = "Caleydo project successfully written to\n" + fileName;
+					log.info(message);
+					monitor.done();
+					showMessageBox("Project Save", message);
+				} catch (Exception e) {
+					String failureMessage = "Faild to save project to " + fileName + ".";
+					log.error(failureMessage, e);
+					showMessageBox("Project Save", failureMessage);
+				}
 			}
-			log.info("storing plugin data");
-			savePluginData(tempDir);
-			log.info("stored plugin data");
-			log.info("storing data");
-			saveData(tempDir, dataDomains);
-			log.info("stored data");
-
-			ZipUtils.zipDirectory(tempDir, fileName);
-
-			FileOperations.deleteDirectory(tempDir);
-
-			String message = "Caleydo project successfully written to\n" + fileName;
-			log.info(message);
-
-			if (PlatformUI.isWorkbenchRunning()) {
-				showMessageBox("Project Save", message);
-			}
-		} catch (Exception e) {
-			String failureMessage = "Faild to save project to " + fileName + ".";
-			log.error(failureMessage, e);
-			if (PlatformUI.isWorkbenchRunning()) {
-				showMessageBox("Project Save", failureMessage);
-				return;
-			}
-		}
+		};
 
 	}
 
-	private static void showMessageBox(String title, String message) {
-		MessageBox messageBox = new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK);
-		messageBox.setText(title);
-		messageBox.setMessage(message);
-		messageBox.open();
+	private static void showMessageBox(final String title, final String message) {
+		if (!PlatformUI.isWorkbenchRunning())
+			return;
+		final IWorkbench workbench = PlatformUI.getWorkbench();
+		final Display d = workbench.getDisplay();
+		d.asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				MessageBox messageBox = new MessageBox(workbench.getActiveWorkbenchWindow().getShell(), SWT.OK);
+				messageBox.setText(title);
+				messageBox.setMessage(message);
+				messageBox.open();
+			}
+		});
+
 	}
 
 	/**
 	 * Saves the project to the directory for the recent project
 	 */
-	public static void saveRecentProject() {
+	public static IRunnableWithProgress saveRecentProject() {
+		return new IRunnableWithProgress() {
+			@Override
+			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+				final Collection<IDataDomain> dataDomains = DataDomainManager.get().getDataDomains();
 
-		if (new File(RECENT_PROJECT_FOLDER).exists())
-			FileOperations.renameDirectory(RECENT_PROJECT_FOLDER, RECENT_PROJECT_FOLDER_TMP);
+				monitor.beginTask("Saving Recent Project", 1 + 1 + dataDomains.size() + 1 + 1 + 1);
+				int w = 0;
+				monitor.subTask("Preparing Data");
+				if (new File(RECENT_PROJECT_FOLDER).exists())
+					FileOperations.renameDirectory(RECENT_PROJECT_FOLDER, RECENT_PROJECT_FOLDER_TMP);
 
-		FileOperations.createDirectory(RECENT_PROJECT_FOLDER);
+				FileOperations.createDirectory(RECENT_PROJECT_FOLDER);
+				monitor.worked(w++);
+				try {
+					log.info("saving plugin data");
+					monitor.subTask("Saving Plugin Data");
+					savePluginData(RECENT_PROJECT_FOLDER);
+					monitor.worked(w++);
+					log.info("saving data");
+					saveData(RECENT_PROJECT_FOLDER, dataDomains, monitor, w);
+					w += dataDomains.size() + 1;
+					log.info("saving workbench");
+					monitor.subTask("packing Project Data");
+					saveWorkbenchData(RECENT_PROJECT_FOLDER);
+					monitor.worked(w++);
+					log.info("saved");
+				} catch (Exception e) {
+					log.error("Faild to auto-save project.", e);
+				}
+				monitor.subTask("Cleanup temporary data");
+				FileOperations.deleteDirectory(RECENT_PROJECT_FOLDER_TMP);
+				log.info("saved recent project");
+				monitor.done();
+			}
+		};
 
-		try {
-			log.info("saving plugin data");
-			savePluginData(RECENT_PROJECT_FOLDER);
-			log.info("saving data");
-			saveData(RECENT_PROJECT_FOLDER, DataDomainManager.get().getDataDomains());
-			log.info("saving workbench");
-			saveWorkbenchData(RECENT_PROJECT_FOLDER);
-			log.info("saved");
-		} catch (Exception e) {
-			log.error("Faild to auto-save project.", e);
-		}
-
-		FileOperations.deleteDirectory(RECENT_PROJECT_FOLDER_TMP);
-		log.info("saved recent project");
 	}
 
 	/**
@@ -414,7 +456,8 @@ public final class ProjectManager {
 
 	}
 
-	private static void saveData(String dirName, Collection<? extends IDataDomain> toSave) throws JAXBException,
+	private static void saveData(String dirName, Collection<? extends IDataDomain> toSave, IProgressMonitor monitor,
+			int w) throws JAXBException,
 			IOException {
 
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
@@ -430,8 +473,11 @@ public final class ProjectManager {
 		List<ADataDomain> dataDomains = new ArrayList<ADataDomain>();
 
 		for (IDataDomain dataDomain : toSave) {
-			if (!dataDomain.isSerializeable())
+			monitor.subTask("Persisting Datadomain: " + dataDomain.getLabel());
+			if (!dataDomain.isSerializeable()) {
+				monitor.worked(w++);
 				continue;
+			}
 
 			dataDomains.add((ADataDomain) dataDomain);
 
@@ -465,17 +511,19 @@ public final class ProjectManager {
 					saveDataPerspective(marshaller, extendedDirName, dimensionPerspectiveID, tableBasedDataDomain
 							.getTable().getDimensionPerspective(dimensionPerspectiveID));
 				}
-
 			}
-
-			String fileName = dirName + BASIC_INFORMATION_FILE;
-			marshaller.marshal(GeneralManager.get().getBasicInfo(), new File(fileName));
+			monitor.worked(w++);
 		}
+
+		monitor.subTask("Persisting General Information");
+		String fileName = dirName + BASIC_INFORMATION_FILE;
+		marshaller.marshal(GeneralManager.get().getBasicInfo(), new File(fileName));
 
 		DataDomainList dataDomainList = new DataDomainList();
 		dataDomainList.setDataDomains(dataDomains);
 
 		marshaller.marshal(dataDomainList, dataDomainFile);
+		monitor.worked(w++);
 
 	}
 

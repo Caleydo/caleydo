@@ -19,11 +19,15 @@
  *******************************************************************************/
 package org.caleydo.core.startup;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.AutoSaver;
 import org.caleydo.core.serialize.ProjectManager;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.PreferenceManager;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
@@ -94,7 +98,14 @@ public class ApplicationWorkbenchAdvisor
 //				.stopMultipleExecution(autoSaver);
 //		autoSaver = null;
 
-		ProjectManager.saveRecentProject();
+		try {
+			new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(true, false,
+					ProjectManager.saveRecentProject());
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
 		return true;
 	}

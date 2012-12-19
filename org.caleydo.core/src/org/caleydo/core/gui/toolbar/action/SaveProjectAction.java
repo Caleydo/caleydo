@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.gui.toolbar.action;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,8 +27,10 @@ import org.caleydo.core.serialize.ProjectManager;
 import org.caleydo.core.startup.ApplicationWorkbenchWindowAdvisor;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -59,13 +62,18 @@ public class SaveProjectAction extends Action {
 		String filePath = "caleydo-project_" + new SimpleDateFormat("yyyy.MM.dd_HH.mm").format(new Date()) + ".cal";
 
 		fileDialog.setFileName(filePath);
-		String fileName = fileDialog.open();
+		final String fileName = fileDialog.open();
 
 		if (fileName == null)
 			return;
 
-		ProjectManager save = new ProjectManager();
-		save.save(fileName);
+		try {
+			new ProgressMonitorDialog(Display.getCurrent().getActiveShell()).run(true, false,
+					ProjectManager.save(fileName));
+		} catch (InvocationTargetException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		ApplicationWorkbenchWindowAdvisor.setWindowTitle("Caleydo - "
 				+ fileName.substring(fileName.lastIndexOf("/") + 1));
