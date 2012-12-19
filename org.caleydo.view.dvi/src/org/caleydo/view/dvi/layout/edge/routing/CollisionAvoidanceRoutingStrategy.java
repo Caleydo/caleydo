@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -25,16 +25,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.view.dvi.GeometryUtil;
 import org.caleydo.view.dvi.Graph;
 import org.caleydo.view.dvi.node.IDVINode;
 
 public class CollisionAvoidanceRoutingStrategy implements IEdgeRoutingStrategy {
 
-	private Graph dataGraph;
+	private final Graph dataGraph;
 
-	public CollisionAvoidanceRoutingStrategy(Graph dataGraph) {
+	private final PixelGLConverter pixelGLConverter;
+
+	public CollisionAvoidanceRoutingStrategy(Graph dataGraph, PixelGLConverter pixelGLConverter) {
 		this.dataGraph = dataGraph;
+		this.pixelGLConverter = pixelGLConverter;
 	}
 
 	@Override
@@ -53,22 +57,18 @@ public class CollisionAvoidanceRoutingStrategy implements IEdgeRoutingStrategy {
 				int code1 = box.outcode(point1);
 				int code2 = box.outcode(point2);
 
-				boolean isPoint1OnBoundingBox = (pointsOnBoundingBoxes
-						.get(point1) == node);
-				boolean isPoint2OnBoundingBox = (pointsOnBoundingBoxes
-						.get(point2) == node);
+				boolean isPoint1OnBoundingBox = (pointsOnBoundingBoxes.get(point1) == node);
+				boolean isPoint2OnBoundingBox = (pointsOnBoundingBoxes.get(point2) == node);
 
-				if (((code1 & code2) != 0)
-						|| (code1 == 0 && !isPoint1OnBoundingBox)
-						|| (code2 == 0 && !isPoint2OnBoundingBox)
-						|| (isPoint1OnBoundingBox && isPoint2OnBoundingBox)) {
+				if (((code1 & code2) != 0) || (code1 == 0 && !isPoint1OnBoundingBox)
+						|| (code2 == 0 && !isPoint2OnBoundingBox) || (isPoint1OnBoundingBox && isPoint2OnBoundingBox)) {
 					continue;
 				}
 
-				Point2D intersection1 = (isPoint1OnBoundingBox) ? (point1)
-						: (GeometryUtil.calcIntersectionPoint(point1, point2, box));
-				Point2D intersection2 = (isPoint2OnBoundingBox) ? (point2)
-						: (GeometryUtil.calcIntersectionPoint(point2, point1, box));
+				Point2D intersection1 = (isPoint1OnBoundingBox) ? (point1) : (GeometryUtil.calcIntersectionPoint(
+						point1, point2, box));
+				Point2D intersection2 = (isPoint2OnBoundingBox) ? (point2) : (GeometryUtil.calcIntersectionPoint(
+						point2, point1, box));
 
 				if (intersection1 != null && intersection2 != null) {
 
@@ -88,28 +88,21 @@ public class CollisionAvoidanceRoutingStrategy implements IEdgeRoutingStrategy {
 					// box.getMaxY() + 0.001);
 					// corners[3] = new Point2D.Double(box.getMinX() - 0.001,
 					// box.getMaxY() + 0.001);
-					corners[0] = new Point2D.Double(box.getMinX(),
-							box.getMinY());
-					corners[1] = new Point2D.Double(box.getMaxX(),
-							box.getMinY());
-					corners[2] = new Point2D.Double(box.getMaxX(),
-							box.getMaxY());
-					corners[3] = new Point2D.Double(box.getMinX(),
-							box.getMaxY());
+					corners[0] = new Point2D.Double(box.getMinX(), box.getMinY());
+					corners[1] = new Point2D.Double(box.getMaxX(), box.getMinY());
+					corners[2] = new Point2D.Double(box.getMaxX(), box.getMaxY());
+					corners[3] = new Point2D.Double(box.getMinX(), box.getMaxY());
 
 					double minDistance = Double.MAX_VALUE;
 					Point2D bendPoint = null;
 
 					for (int j = 0; j < 4; j++) {
-						if ((corners[j].getX() == point1.getX()
-								&& corners[j].getY() == point1.getY() && isPoint1OnBoundingBox)
-								|| (corners[j].getX() == point2.getX() && corners[j]
-										.getY() == point2.getY())
+						if ((corners[j].getX() == point1.getX() && corners[j].getY() == point1.getY() && isPoint1OnBoundingBox)
+								|| (corners[j].getX() == point2.getX() && corners[j].getY() == point2.getY())
 								&& isPoint2OnBoundingBox) {
 							continue;
 						}
-						double currentSummedDistance = intersection1
-								.distanceSq(corners[j])
+						double currentSummedDistance = intersection1.distanceSq(corners[j])
 								+ intersection2.distanceSq(corners[j]);
 						if (currentSummedDistance < minDistance) {
 							minDistance = currentSummedDistance;
@@ -124,8 +117,7 @@ public class CollisionAvoidanceRoutingStrategy implements IEdgeRoutingStrategy {
 					boolean isPointAlreadyAdded = false;
 
 					for (Point2D point : edgePoints) {
-						if (point.getX() == bendPoint.getX()
-								&& point.getY() == bendPoint.getY()) {
+						if (point.getX() == bendPoint.getX() && point.getY() == bendPoint.getY()) {
 							isPointAlreadyAdded = true;
 							break;
 						}
@@ -175,30 +167,26 @@ public class CollisionAvoidanceRoutingStrategy implements IEdgeRoutingStrategy {
 					int code1 = box.outcode(point1);
 					int code2 = box.outcode(point2);
 
-					boolean isPoint1OnBoundingBox = (pointsOnBoundingBoxes
-							.get(point1) == node);
-					boolean isPoint2OnBoundingBox = (pointsOnBoundingBoxes
-							.get(point2) == node);
+					boolean isPoint1OnBoundingBox = (pointsOnBoundingBoxes.get(point1) == node);
+					boolean isPoint2OnBoundingBox = (pointsOnBoundingBoxes.get(point2) == node);
 
 					if ((code1 & code2) != 0) {
 						continue;
 					}
 
-					if ((code1 == 0 && !isPoint1OnBoundingBox
-							&& edgePoints.indexOf(point1) != 0 && edgePoints
+					if ((code1 == 0 && !isPoint1OnBoundingBox && edgePoints.indexOf(point1) != 0 && edgePoints
 							.indexOf(point1) != edgePoints.size() - 1)
-							|| (code2 == 0 && !isPoint2OnBoundingBox
-									&& edgePoints.indexOf(point2) != 0 && edgePoints
+							|| (code2 == 0 && !isPoint2OnBoundingBox && edgePoints.indexOf(point2) != 0 && edgePoints
 									.indexOf(point2) != edgePoints.size() - 1)
 							|| (isPoint1OnBoundingBox && isPoint2OnBoundingBox)) {
 						hasIntersection = true;
 						break;
 					}
 
-					Point2D intersection1 = (isPoint1OnBoundingBox) ? (point1)
-							: (GeometryUtil.calcIntersectionPoint(point1, point2, box));
-					Point2D intersection2 = (isPoint2OnBoundingBox) ? (point2)
-							: (GeometryUtil.calcIntersectionPoint(point2, point1, box));
+					Point2D intersection1 = (isPoint1OnBoundingBox) ? (point1) : (GeometryUtil.calcIntersectionPoint(
+							point1, point2, box));
+					Point2D intersection2 = (isPoint2OnBoundingBox) ? (point2) : (GeometryUtil.calcIntersectionPoint(
+							point2, point1, box));
 
 					if (intersection1 == null || intersection2 == null) {
 						continue;
@@ -228,64 +216,64 @@ public class CollisionAvoidanceRoutingStrategy implements IEdgeRoutingStrategy {
 				Point2D point1 = edgePoints.get(i);
 				Point2D point2 = edgePoints.get(i + 1);
 
-				if (point1.distance(point2) < 0.3) {
+				if (point1.distance(point2) < pixelGLConverter.getGLWidthForPixelWidth(40)) {
 					if (i != edgePoints.size() - 2) {
 						edgePoints.remove(i + 1);
 						i--;
 					} else {
 						edgePoints.remove(i);
 					}
-					
+
 				}
 			}
 		}
 	}
 
-//	private Point2D calcIntersectionPoint(Point2D point1, Point2D point2,
-//			Rectangle2D rect, int code1) {
-//
-//		double k = 0;
-//
-//		if (point1.getX() != point2.getX()) {
-//			k = (point2.getY() - point1.getY())
-//					/ (point2.getX() - point1.getX());
-//		}
-//
-//		if ((code1 & Rectangle2D.OUT_LEFT) != 0) {
-//			double y = point1.getY() + ((rect.getMinX() - point1.getX()) * k);
-//
-//			if (y <= rect.getMaxY() && y >= rect.getMinY())
-//				return new Point2D.Double(rect.getMinX(), y);
-//		}
-//
-//		if ((code1 & Rectangle2D.OUT_RIGHT) != 0) {
-//			double y = point1.getY() + ((rect.getMaxX() - point1.getX()) * k);
-//			if (y <= rect.getMaxY() && y >= rect.getMinY())
-//				return new Point2D.Double(rect.getMaxX(), y);
-//		}
-//
-//		if ((code1 & Rectangle2D.OUT_TOP) != 0) {
-//			double x = point1.getX();
-//			if (k != 0) {
-//				x += (rect.getMinY() - point1.getY()) / k;
-//			}
-//
-//			if (x <= rect.getMaxX() && x >= rect.getMinX())
-//				return new Point2D.Double(x, rect.getMinY());
-//		}
-//
-//		if ((code1 & Rectangle2D.OUT_BOTTOM) != 0) {
-//			double x = point1.getX();
-//			if (k != 0) {
-//				x += (rect.getMaxY() - point1.getY()) / k;
-//			}
-//
-//			if (x <= rect.getMaxX() && x >= rect.getMinX())
-//				return new Point2D.Double(x, rect.getMaxY());
-//		}
-//
-//		return null;
-//	}
+	// private Point2D calcIntersectionPoint(Point2D point1, Point2D point2,
+	// Rectangle2D rect, int code1) {
+	//
+	// double k = 0;
+	//
+	// if (point1.getX() != point2.getX()) {
+	// k = (point2.getY() - point1.getY())
+	// / (point2.getX() - point1.getX());
+	// }
+	//
+	// if ((code1 & Rectangle2D.OUT_LEFT) != 0) {
+	// double y = point1.getY() + ((rect.getMinX() - point1.getX()) * k);
+	//
+	// if (y <= rect.getMaxY() && y >= rect.getMinY())
+	// return new Point2D.Double(rect.getMinX(), y);
+	// }
+	//
+	// if ((code1 & Rectangle2D.OUT_RIGHT) != 0) {
+	// double y = point1.getY() + ((rect.getMaxX() - point1.getX()) * k);
+	// if (y <= rect.getMaxY() && y >= rect.getMinY())
+	// return new Point2D.Double(rect.getMaxX(), y);
+	// }
+	//
+	// if ((code1 & Rectangle2D.OUT_TOP) != 0) {
+	// double x = point1.getX();
+	// if (k != 0) {
+	// x += (rect.getMinY() - point1.getY()) / k;
+	// }
+	//
+	// if (x <= rect.getMaxX() && x >= rect.getMinX())
+	// return new Point2D.Double(x, rect.getMinY());
+	// }
+	//
+	// if ((code1 & Rectangle2D.OUT_BOTTOM) != 0) {
+	// double x = point1.getX();
+	// if (k != 0) {
+	// x += (rect.getMaxY() - point1.getY()) / k;
+	// }
+	//
+	// if (x <= rect.getMaxX() && x >= rect.getMinX())
+	// return new Point2D.Double(x, rect.getMaxY());
+	// }
+	//
+	// return null;
+	// }
 
 	@Override
 	public void setNodes(IDVINode node1, IDVINode node2) {

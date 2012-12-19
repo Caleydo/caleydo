@@ -413,7 +413,7 @@ public class GLEnRoutePathway
 			// TODO: This is only true if the davidID maps to one id of the
 			// genetic
 			for (Integer davidID : node.getPathwayVertexRep().getDavidIDs()) {
-				if (doesDavidMapToData(davidID))
+				// if (doesDavidMapToData(davidID))
 					mappedDavidIds.add(davidID);
 			}
 		}
