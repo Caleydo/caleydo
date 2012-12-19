@@ -83,6 +83,7 @@ public abstract class ATableColumn extends Column {
 
 	protected final void addTd(ElementLayout td, int i) {
 		td.setGrabY(false);
+		td.setGrabX(true);
 		td.setPixelSizeY(ROW_HEIGHT);
 		if (i >= 0)
 			td.addBackgroundRenderer(new PickingRenderer(ScoreQueryUI.SELECT_ROW, i, this.view));

@@ -188,7 +188,7 @@ public class QueryColumn extends ATableColumn {
 	private ElementLayout createValue(ScoringElement elem, int id) {
 		Row row = new Row();
 		row.setGrabY(true);
-		row.setXDynamic(true);
+		row.setXDynamic(false);
 		IScore underlyingScore = this.score;
 		if (underlyingScore instanceof CollapseScore)
 			underlyingScore = elem.getSelected((CollapseScore) underlyingScore);

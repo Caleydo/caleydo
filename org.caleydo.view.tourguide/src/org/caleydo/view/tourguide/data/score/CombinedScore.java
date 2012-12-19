@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.caleydo.core.util.base.DefaultLabelProvider;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.data.ScoringElement;
 import org.caleydo.view.tourguide.data.compute.ICompositeScore;
 
@@ -38,19 +37,19 @@ import com.google.common.collect.Iterators;
 public class CombinedScore extends DefaultLabelProvider implements ICompositeScore {
 	private final ECombinedOperator operator;
 	// score,weight
-	private final Collection<Pair<IScore, Float>> children;
+	private final Collection<TransformedScore> children;
 
-	public CombinedScore(String label, ECombinedOperator op, Collection<Pair<IScore, Float>> children) {
+	public CombinedScore(String label, ECombinedOperator op, Collection<TransformedScore> children) {
 		super(label);
 		this.operator = op;
 		this.children = children;
 	}
 
-	public static Collection<Pair<IScore, Float>> wrap(Collection<IScore> scores) {
-		return Collections2.transform(scores, new Function<IScore, Pair<IScore, Float>>() {
+	public static Collection<TransformedScore> wrap(Collection<IScore> scores) {
+		return Collections2.transform(scores, new Function<IScore, TransformedScore>() {
 			@Override
-			public Pair<IScore, Float> apply(IScore s) {
-				return Pair.make(s, 1.0f);
+			public TransformedScore apply(IScore s) {
+				return new TransformedScore(s);
 			}
 		});
 	}
@@ -62,14 +61,21 @@ public class CombinedScore extends DefaultLabelProvider implements ICompositeSco
 		return operator;
 	}
 
+	public static final Function<TransformedScore, IScore> retrieveScore = new Function<TransformedScore, IScore>() {
+		@Override
+		public IScore apply(TransformedScore tscore) {
+			return tscore.getScore();
+		}
+	};
+
 	@Override
 	public Iterator<IScore> iterator() {
-		return Iterators.transform(children.iterator(), Pair.<IScore, Float> mapFirst());
+		return Iterators.transform(children.iterator(), retrieveScore);
 	}
 
 	@Override
 	public Collection<IScore> getChildren() {
-		return Collections2.transform(children, Pair.<IScore, Float> mapFirst());
+		return Collections2.transform(children, retrieveScore);
 	}
 
 	@Override
@@ -105,16 +111,12 @@ public class CombinedScore extends DefaultLabelProvider implements ICompositeSco
 	public float getScore(ScoringElement elem) {
 		float[] data = new float[children.size()];
 		int i = 0;
-		for (Pair<IScore, Float> child : children)
-			data[i++] = child.getFirst().getScore(elem) * child.getSecond();
+		for (TransformedScore child : children)
+			data[i++] = child.getScore(elem);
 		return operator.combine(data);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#hashCode()
-	 */
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -146,5 +148,121 @@ public class CombinedScore extends DefaultLabelProvider implements ICompositeSco
 		if (operator != other.operator)
 			return false;
 		return true;
+	}
+
+	public static class TransformedScore {
+		private final IScore score;
+		private float factor = 1.0f;
+		private float powerof = 1.0f;
+		private float shift = 0.0f;
+
+		public TransformedScore(IScore score) {
+			this.score = score;
+		}
+
+
+		public float getScore(ScoringElement elem) {
+			float f = score.getScore(elem);
+			if (Float.isNaN(f))
+				return f;
+			return (float) (factor * Math.pow(f, powerof) + shift);
+		}
+
+		/**
+		 * @return the factor, see {@link #factor}
+		 */
+		public float getFactor() {
+			return factor;
+		}
+
+		/**
+		 * @param factor
+		 *            setter, see {@link factor}
+		 */
+		public void setFactor(float factor) {
+			this.factor = factor;
+		}
+
+		/**
+		 * @return the powerof, see {@link #powerof}
+		 */
+		public float getPowerof() {
+			return powerof;
+		}
+
+		/**
+		 * @param powerof
+		 *            setter, see {@link powerof}
+		 */
+		public void setPowerof(float powerof) {
+			this.powerof = powerof;
+		}
+
+		/**
+		 * @return the shift, see {@link #shift}
+		 */
+		public float getShift() {
+			return shift;
+		}
+
+		/**
+		 * @param shift
+		 *            setter, see {@link shift}
+		 */
+		public void setShift(float shift) {
+			this.shift = shift;
+		}
+
+		/**
+		 * @return the score, see {@link #score}
+		 */
+		public IScore getScore() {
+			return score;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 *
+		 * @see java.lang.Object#hashCode()
+		 */
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + Float.floatToIntBits(factor);
+			result = prime * result + Float.floatToIntBits(powerof);
+			result = prime * result + ((score == null) ? 0 : score.hashCode());
+			result = prime * result + Float.floatToIntBits(shift);
+			return result;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 *
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			TransformedScore other = (TransformedScore) obj;
+			if (Float.floatToIntBits(factor) != Float.floatToIntBits(other.factor))
+				return false;
+			if (Float.floatToIntBits(powerof) != Float.floatToIntBits(other.powerof))
+				return false;
+			if (score == null) {
+				if (other.score != null)
+					return false;
+			} else if (!score.equals(other.score))
+				return false;
+			if (Float.floatToIntBits(shift) != Float.floatToIntBits(other.shift))
+				return false;
+			return true;
+		}
+
 	}
 }
