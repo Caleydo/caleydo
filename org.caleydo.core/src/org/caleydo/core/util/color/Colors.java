@@ -43,4 +43,12 @@ public final class Colors {
 	public static float[] rgba(java.awt.Color color) {
 		return of(color).getRGBA();
 	}
+
+	/**
+	 * @param i
+	 * @return
+	 */
+	public static IColor of(int grey) {
+		return new Color(grey / 255.f, grey / 255.f, grey / 255.f);
+	}
 }

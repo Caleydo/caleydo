@@ -1,4 +1,4 @@
-package org.caleydo.view.tourguide.vendingmachine.ui;
+package org.caleydo.view.tourguide.data.ui;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,10 +6,10 @@ import java.util.List;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.view.tourguide.data.compute.ICompositeScore;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.CombinedScore;
 import org.caleydo.view.tourguide.data.score.ECombinedOperator;
-import org.caleydo.view.tourguide.data.score.ICompositeScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.util.EnumUtils;
@@ -160,7 +160,9 @@ public class CreateCompositeScoreDialog extends TitleAreaDialog {
 		scoresUI.setInput(scores);
 		if (!createCollapseScore) {
 			for (IScore s : sender.getQuery().getSelection()) {
-				scoresUI.setChecked(s, true);
+				for (WeightedScore ws : this.scores)
+					if (ws.score == s)
+						scoresUI.setChecked(ws, true);
 			}
 		}
 

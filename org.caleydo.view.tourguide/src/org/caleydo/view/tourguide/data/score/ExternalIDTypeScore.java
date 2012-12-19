@@ -100,6 +100,10 @@ public final class ExternalIDTypeScore extends DefaultLabelProvider implements I
 	}
 
 	@Override
+	public String getAbbrevation() {
+		return "EX";
+	}
+	@Override
 	public final EScoreType getScoreType() {
 		return isRank ? EScoreType.RANK : EScoreType.SCORE;
 	}

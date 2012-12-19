@@ -28,7 +28,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import org.caleydo.view.tourguide.data.score.ICompositeScore;
+import org.caleydo.view.tourguide.data.compute.ICompositeScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.data.serialize.ISerializeableScore;
 

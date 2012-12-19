@@ -53,6 +53,11 @@ public class MatchColumn extends ATableColumn {
 
 	@Override
 	public ElementLayout createHeader() {
+		return createLabel("Match", -1);
+	}
+
+	@Override
+	protected ElementLayout createHeader2() {
 		return new Row();
 	}
 
@@ -105,7 +110,7 @@ public class MatchColumn extends ATableColumn {
 	}
 
 	private void updateHeader(boolean isGroupQuery) {
-		Row header = (Row) th;
+		Row header = (Row) th2;
 		this.wasGroupQuery = isGroupQuery;
 		header.clear();
 		header.add(createLabel("Stratification", DATADOMAIN_TYPE_WIDTH + COL_SPACING + stratWidth));

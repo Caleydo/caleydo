@@ -47,7 +47,7 @@ import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
 public abstract class ATableColumn extends Column {
 	protected final AGLView view;
 
-	protected ElementLayout th;
+	protected ElementLayout th, th2;
 	private final ElementLayout rowSpacing = createYSpacer(ROW_SPACING);
 	protected ElementLayout colSpacing = createXSpacer(COL_SPACING);
 
@@ -57,9 +57,18 @@ public abstract class ATableColumn extends Column {
 
 	protected abstract ElementLayout createHeader();
 
+	protected ElementLayout createHeader2() {
+		ElementLayout l = new ElementLayout();
+		l.setGrabX(true);
+		return l;
+	}
+
 	protected void init() {
+		this.setYDynamic(false);
 		this.th = createHeader();
 		this.th.setPixelSizeY(ROW_HEIGHT);
+		this.th2 = createHeader2();
+		this.th2.setPixelSizeY(ROW_HEIGHT);
 		this.setBottomUp(false);
 		this.clearBody();
 	}
@@ -67,8 +76,9 @@ public abstract class ATableColumn extends Column {
 	protected void clearBody() {
 		this.clear();
 		this.add(th);
+		this.add(th2);
 		this.add(createYSpacer(5));
-		this.setPixelSizeY(th.getPixelSizeX() + 5);
+		this.setPixelSizeY(ROW_HEIGHT * 2 + 5);
 	}
 
 	protected final void addTd(ElementLayout td, int i) {
@@ -83,7 +93,7 @@ public abstract class ATableColumn extends Column {
 
 	public final ElementLayout getTd(int i) {
 		List<ElementLayout> elem = this.getElements();
-		int pos = 2 + i * 2;
+		int pos = 3 + i * 2;
 		if (elem.size() <= pos)
 			return null;
 		return elem.get(pos);
@@ -94,6 +104,8 @@ public abstract class ATableColumn extends Column {
 	}
 
 	protected final ElementLayout createLabel(ILabelProvider label, int width) {
+		if (label == null)
+			return createXSpacer(width);
 		return wrap(Renderers.createLabel(label, view.getTextRenderer()).padding(LABEL_PADDING).build(), width);
 	}
 
@@ -106,6 +118,8 @@ public abstract class ATableColumn extends Column {
 	}
 
 	protected final int getTextWidth(ILabelProvider text) {
+		if (text == null)
+			return 0;
 		return getTextWidth(text.getLabel());
 	}
 

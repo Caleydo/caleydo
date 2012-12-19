@@ -23,13 +23,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.data.Scores;
 import org.caleydo.view.tourguide.data.ScoringElement;
+import org.caleydo.view.tourguide.data.compute.ICompositeScore;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.Sets;
 
 /**
  * special kind of composite score, which doesn't combine the scores but triggers that the rows will be multiplied to
@@ -111,6 +114,16 @@ public class CollapseScore extends DefaultLabelProvider implements ICompositeSco
 				return null; // not a single stratification in the whole list
 		}
 		return r;
+	}
+
+	@Override
+	public String getAbbrevation() {
+		Set<String> abbrs = Sets.newHashSet();
+		for (IScore child : this)
+			abbrs.add(child.getAbbrevation());
+		if (abbrs.size() == 1)
+			return abbrs.iterator().next();
+		return "CL";
 	}
 
 	/*

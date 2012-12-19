@@ -31,12 +31,8 @@ import org.caleydo.view.tourguide.data.ScoringElement;
  *
  */
 public abstract class AStratificationScore extends DefaultLabelProvider implements IStratificationScore {
-	protected TablePerspective reference;
-	protected Map<Integer, Float> scores = new ConcurrentHashMap<>();
-
-	public AStratificationScore() {
-		super("");
-	}
+	protected final TablePerspective reference;
+	protected final Map<Integer, Float> scores = new ConcurrentHashMap<>();
 
 	public AStratificationScore(String label, TablePerspective reference) {
 		super(label == null ? reference.getRecordPerspective().getLabel() : label);
@@ -76,7 +72,7 @@ public abstract class AStratificationScore extends DefaultLabelProvider implemen
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -89,7 +85,7 @@ public abstract class AStratificationScore extends DefaultLabelProvider implemen
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

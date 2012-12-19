@@ -17,22 +17,25 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data.score;
+package org.caleydo.view.tourguide.data.compute;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.id.IDType;
-import org.caleydo.view.tourguide.algorithm.IStratificationAlgorithm;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.view.tourguide.algorithm.IGroupAlgorithm;
+import org.caleydo.view.tourguide.data.score.IScore;
 
 /**
- * declares that the given {@link IScore} must be computed on a stratification base
+ * declares that the given {@link IScore} must be computed on a group base
  *
  * @author Samuel Gratzl
  *
  */
-public interface IComputedReferenceStratificationScore extends IStratificationScore, IStratificationAlgorithm {
-	public boolean contains(TablePerspective a);
+public interface IComputedGroupScore {
+	public boolean contains(TablePerspective a, Group ag);
 
-	public void put(TablePerspective a, float value);
+	public void put(Group ag, float value);
 
-	public IDType getTargetType(TablePerspective as);
+	public IGroupAlgorithm getAlgorithm();
+
+	public IComputeScoreFilter getFilter();
 }

@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.vendingmachine.ui;
+package org.caleydo.view.tourguide.data.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +27,9 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.tourguide.data.DataDomainQuery;
 import org.caleydo.view.tourguide.data.Scores;
-import org.caleydo.view.tourguide.data.score.AdjustedRandScore;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.IScore;
+import org.caleydo.view.tourguide.data.score.ScoreRegistry;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.util.ui.CaleydoLabelProvider;
 import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
@@ -152,11 +152,11 @@ public class CreateAdjustedRandScoreDialog extends TitleAreaDialog {
 			@SuppressWarnings("unchecked")
 			Iterable<TablePerspective> it = (Iterable<TablePerspective>) stratificationUI.getInput();
 			for (TablePerspective g : it) {
-				composite.add(manager.addIfAbsent(new AdjustedRandScore(null, g)));
+				composite.add(manager.addIfAbsent(ScoreRegistry.createAdjustedRand(null, g)));
 			}
 			s = composite;
 		} else { // score single
-			s = Scores.get().addIfAbsent(new AdjustedRandScore(null, strat));
+			s = Scores.get().addIfAbsent(ScoreRegistry.createAdjustedRand(null, strat));
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new AddScoreColumnEvent(s, sender));
 	}

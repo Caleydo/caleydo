@@ -64,6 +64,7 @@ import org.caleydo.view.tourguide.data.filter.ECompareOperator;
 import org.caleydo.view.tourguide.data.filter.IScoreFilter;
 import org.caleydo.view.tourguide.data.load.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.data.score.IScore;
+import org.caleydo.view.tourguide.data.score.ScoreRegistry;
 import org.caleydo.view.tourguide.data.serialize.ISerializeableScore;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
@@ -78,9 +79,6 @@ import org.caleydo.view.tourguide.listener.ScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreQueryReadyListener;
 import org.caleydo.view.tourguide.listener.ScoreTablePerspectiveListener;
 import org.caleydo.view.tourguide.listener.StratomexTablePerspectiveListener;
-import org.caleydo.view.tourguide.vendingmachine.ui.CreateAdjustedRandScoreDialog;
-import org.caleydo.view.tourguide.vendingmachine.ui.CreateCompositeScoreDialog;
-import org.caleydo.view.tourguide.vendingmachine.ui.CreateJaccardIndexScoreDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -196,8 +194,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 		scoreQueryUI = new ScoreQueryUI(this, this.stratomex);
 		scoreQueryUI.setQuery(scoreQuery);
-		// mainColumn.append(ElementLayouts.scrollAlbe(this, scoreQueryUI));
-		mainColumn.append(scoreQueryUI);
+		mainColumn.append(ElementLayouts.scrollAlbe(this, scoreQueryUI));
+		// mainColumn.append(scoreQueryUI);
 
 		layoutManager.updateLayout();
 	}
@@ -263,7 +261,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	protected void destroyViewSpecificContent(GL2 gl) {
 		this.stratomex.cleanUp();
 
-		this.parentGLCanvas.removeKeyListener(keyListener);
+		if (keyListener != null)
+			this.parentGLCanvas.removeKeyListener(keyListener);
 	}
 
 	@Override
@@ -321,20 +320,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				switch (type) {
-				case COMBINED:
-					new CreateCompositeScoreDialog(new Shell(), Scores.get().getScoreIDs(), scoreQueryUI, false).open();
-					break;
-				case COLLAPSED:
-					new CreateCompositeScoreDialog(new Shell(), Scores.get().getScoreIDs(), scoreQueryUI, true).open();
-					break;
-				case JACCARD:
-					new CreateJaccardIndexScoreDialog(new Shell(), scoreQueryUI).open();
-					break;
-				case ADJUSTED_RAND:
-					new CreateAdjustedRandScoreDialog(new Shell(), scoreQueryUI).open();
-					break;
-				}
+				ScoreRegistry.createCreateDialog(type, new Shell(), scoreQueryUI).open();
 			}
 		});
 	}

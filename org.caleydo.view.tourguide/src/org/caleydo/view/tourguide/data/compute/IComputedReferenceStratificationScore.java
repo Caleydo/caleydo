@@ -17,38 +17,25 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data.score;
-
-import java.util.Set;
+package org.caleydo.view.tourguide.data.compute;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.id.IDType;
-import org.caleydo.view.tourguide.algorithm.IGroupAlgorithm;
+import org.caleydo.view.tourguide.algorithm.IStratificationAlgorithm;
+import org.caleydo.view.tourguide.data.score.IScore;
+import org.caleydo.view.tourguide.data.score.IStratificationScore;
 
 /**
- * declares that the given {@link IScore} must be computed on a group base
+ * declares that the given {@link IScore} must be computed on a stratification base
  *
  * @author Samuel Gratzl
  *
  */
-public interface IComputedGroupScore extends IGroupAlgorithm {
-	public boolean contains(TablePerspective a, Group ag);
+public interface IComputedReferenceStratificationScore extends IStratificationScore {
+	public boolean contains(TablePerspective a);
 
-	public void put(Group ag, float value);
+	public void put(TablePerspective a, float value);
 
-	public IDType getTargetType(TablePerspective as);
+	public IStratificationAlgorithm getAlgorithm();
 
-	/**
-	 * computes the value
-	 *
-	 * @param group
-	 *            the current group under test
-	 * @param reference
-	 *            the reference either given by {@link IGroupScore} or the whole stratification of the group under test
-	 * @return
-	 */
-
-	@Override
-	public float compute(Set<Integer> group, Set<Integer> reference);
+	public IComputeScoreFilter getFilter();
 }

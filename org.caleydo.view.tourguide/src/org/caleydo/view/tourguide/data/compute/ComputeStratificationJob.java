@@ -8,7 +8,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.view.tourguide.data.score.IComputedReferenceStratificationScore;
+import org.caleydo.view.tourguide.algorithm.IStratificationAlgorithm;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -43,18 +43,20 @@ public class ComputeStratificationJob extends AScoreJob {
 
 			// all scores
 			for (IComputedReferenceStratificationScore score : this.scores) {
-				IDType target = score.getTargetType(a);
-				if (score.contains(a)) {
+				IStratificationAlgorithm algorithm = score.getAlgorithm();
+				final TablePerspective rs = score.getStratification();
+				IDType target = algorithm.getTargetType(a, rs);
+				if (score.contains(a) || !score.getFilter().doCompute(a, null, rs, null)) {
 					monitor.worked(c++);
 					continue;
 				}
 				List<Set<Integer>> compute = getAll(a, target, target);
-				List<Set<Integer>> reference = getAll(score.getStratification(), target, target);
+				List<Set<Integer>> reference = getAll(rs, target, target);
 
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
 
-				float v = score.compute(compute, reference);
+				float v = algorithm.compute(compute, reference);
 				score.put(a, v);
 				monitor.worked(c++);
 			}

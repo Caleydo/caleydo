@@ -19,14 +19,15 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.listener;
 
+import static org.caleydo.view.tourguide.data.score.ScoreRegistry.createAdjustedRand;
+import static org.caleydo.view.tourguide.data.score.ScoreRegistry.createJaccardScore;
+
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.view.tourguide.data.Scores;
-import org.caleydo.view.tourguide.data.score.AdjustedRandScore;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
-import org.caleydo.view.tourguide.data.score.JaccardIndexScore;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent;
 import org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent.EScoreType;
 import org.caleydo.view.tourguide.vendingmachine.VendingMachine;
@@ -47,24 +48,27 @@ public class ScoreTablePerspectiveListener
 	public void handleEvent(AEvent event) {
 		if (event instanceof ScoreTablePerspectiveEvent) {
 			ScoreTablePerspectiveEvent e = (ScoreTablePerspectiveEvent) event;
+
 			TablePerspective strat = e.getStratification();
 			switch (e.getMode()) {
 			case ADJUSTED_RAND:
-				handler.onAddColumn(Scores.get().addIfAbsent(new AdjustedRandScore(null, strat)));
+				handler.onAddColumn(Scores.get().addIfAbsent(createAdjustedRand(null, strat)));
 				break;
 			case JACCARD:
-				handler.onAddColumn(Scores.get().addIfAbsent(new JaccardIndexScore(false, strat, e.getGroup().getRecordGroup())));
+				handler.onAddColumn(Scores.get().addIfAbsent(
+						createJaccardScore(null, strat, e.getGroup().getRecordGroup(), false)));
 				break;
 			case JACCARD_MUTUAL_EXCLUSIVE:
-				handler.onAddColumn(Scores.get().addIfAbsent(new JaccardIndexScore(true, strat, e.getGroup().getRecordGroup())));
+				handler.onAddColumn(Scores.get().addIfAbsent(
+						createJaccardScore(null, strat, e.getGroup().getRecordGroup(), true)));
 				break;
 			case JACCARD_ALL:
 			case JACCARD_ALL_MUTUAL_EXCLUSIVE:
 				boolean mutualExclusive = e.getMode() == EScoreType.JACCARD_ALL_MUTUAL_EXCLUSIVE;
 				Scores manager = Scores.get();
-				CollapseScore composite = new CollapseScore(strat.getLabel());
+				CollapseScore composite = new CollapseScore(strat.getRecordPerspective().getLabel());
 				for (Group group : strat.getRecordPerspective().getVirtualArray().getGroupList()) {
-					composite.add(manager.addIfAbsent(new JaccardIndexScore(mutualExclusive, strat, group)));
+					composite.add(manager.addIfAbsent(createJaccardScore(null, strat, group, mutualExclusive)));
 				}
 				handler.onAddColumn(composite);
 				break;

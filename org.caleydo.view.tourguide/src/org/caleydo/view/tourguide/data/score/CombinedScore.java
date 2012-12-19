@@ -25,6 +25,7 @@ import java.util.Iterator;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.data.ScoringElement;
+import org.caleydo.view.tourguide.data.compute.ICompositeScore;
 
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterators;
@@ -69,6 +70,25 @@ public class CombinedScore extends DefaultLabelProvider implements ICompositeSco
 	@Override
 	public final EScoreType getScoreType() {
 		return EScoreType.STRATIFICATION_SCORE;
+	}
+
+	@Override
+	public String getAbbrevation() {
+		switch (this.operator) {
+		case GEOMETRIC_MEAN:
+			return "GEO";
+		case MAX:
+			return "MAX";
+		case MEAN:
+			return "AVG";
+		case MEDIAN:
+			return "MED";
+		case MIN:
+			return "MIN";
+		case PRODUCT:
+			return "PRO";
+		}
+		return "CB";
 	}
 
 	@Override

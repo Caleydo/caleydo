@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,6 +21,7 @@ package org.caleydo.core.view.opengl.util.scrollbar;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -31,7 +32,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 /**
  * Renderer for a {@link ScrollBar}. Notifies the {@link IScrollBarUpdateHandler} of the ScrollBar when it is
  * dragged.
- * 
+ *
  * @author Partl
  */
 public class ScrollBarRenderer
@@ -48,10 +49,11 @@ public class ScrollBarRenderer
 	private float positionY;
 	private float scrollBarHeight;
 	private float scrollBarWidth;
+	private final IColor color;
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param scrollBar
 	 *            The ScrollBar this renderer shall be used for.
 	 * @param view
@@ -61,11 +63,12 @@ public class ScrollBarRenderer
 	 * @param dragAndDropController
 	 */
 	public ScrollBarRenderer(ScrollBar scrollBar, AGLView view, boolean isHorizontal,
-		DragAndDropController dragAndDropController) {
+			DragAndDropController dragAndDropController, IColor color) {
 		this.view = view;
 		this.scrollBar = scrollBar;
 		this.isHorizontal = isHorizontal;
 		this.dragAndDropController = dragAndDropController;
+		this.color = color;
 
 		createPickingListener();
 	}
@@ -125,7 +128,7 @@ public class ScrollBarRenderer
 		}
 
 		int scrollBarSize = scrollBar.getMaxValue() - scrollBar.getMinValue();
-		int selection = scrollBar.getMinValue() + (int) (relativeSelection * (float) scrollBarSize);
+		int selection = scrollBar.getMinValue() + (int) (relativeSelection * scrollBarSize);
 
 		if (selection < scrollBar.getMinValue())
 			selection = scrollBar.getMinValue();
@@ -182,7 +185,7 @@ public class ScrollBarRenderer
 		int scrollBarSize = scrollBar.getMaxValue() - scrollBar.getMinValue();
 		float relativePageSize = (float) scrollBar.getPageSize() / (float) scrollBarSize;
 		float relativeSelection =
-			((float) scrollBar.getSelection() - (float) scrollBar.getMinValue()) / (float) scrollBarSize;
+			((float) scrollBar.getSelection() - (float) scrollBar.getMinValue()) / scrollBarSize;
 
 		if (isHorizontal) {
 			scrollBarHeight = y;
@@ -196,11 +199,13 @@ public class ScrollBarRenderer
 			positionX = 0;
 			positionY = relativeSelection * (y - scrollBarHeight);
 		}
+		// System.out.println("relative" + relativePageSize + " " + relativeSelection);
+		//System.out.println("relative2 " + scrollBarWidth + " " + positionX);
 
 		gl.glPushName(view.getPickingManager().getPickingID(view.getID(), scrollBar.getPickingType(),
 			scrollBar.getID()));
 
-		gl.glColor3f(0, 0, 0);
+		gl.glColor4fv(color.getRGBA(), 0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(positionX, positionY, 1);
 		gl.glVertex3f(positionX + scrollBarWidth, positionY, 1);
@@ -210,7 +215,7 @@ public class ScrollBarRenderer
 
 		gl.glPopName();
 
-		
+
 	}
 
 

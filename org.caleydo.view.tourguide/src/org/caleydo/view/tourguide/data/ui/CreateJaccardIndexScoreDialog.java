@@ -17,37 +17,45 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data.score;
-
-import java.util.Set;
+package org.caleydo.view.tourguide.data.ui;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.id.IDType;
-import org.caleydo.view.tourguide.algorithm.JaccardIndex;
+import org.caleydo.view.tourguide.data.score.IGroupScore;
+import org.caleydo.view.tourguide.data.score.ScoreRegistry;
+import org.caleydo.view.tourguide.vendingmachine.ScoreQueryUI;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 
 /**
- * implementation of the jaccard score to compare groups
- *
  * @author Samuel Gratzl
  *
  */
-public class JaccardIndexScore extends AGroupScore implements IComputedReferenceGroupScore {
-	public JaccardIndexScore(boolean mutualExclusive, TablePerspective stratification, Group group) {
-		this(null, mutualExclusive, stratification, group);
-	}
+public class CreateJaccardIndexScoreDialog extends ACreateGroupScoreDialog {
+	private Button mututalExclusiveUI;
 
-	public JaccardIndexScore(String label, boolean mutualExclusive, TablePerspective stratification, Group group) {
-		super(label, stratification, group, mutualExclusive);
-	}
-
-	@Override
-	public IDType getTargetType(TablePerspective as) {
-		return as.getRecordPerspective().getIdType();
+	public CreateJaccardIndexScoreDialog(Shell shell, ScoreQueryUI sender) {
+		super(shell, sender);
 	}
 
 	@Override
-	public float compute(Set<Integer> a, Set<Integer> b) {
-		return JaccardIndex.get().compute(a, b);
+	protected String getLabel() {
+		return "Jaccard Index Score";
+	}
+
+	@Override
+	protected void addTypeSpecific(Composite c) {
+		Label l = new Label(c, SWT.NONE);
+		l.setText("");
+		mututalExclusiveUI = new Button(c, SWT.CHECK);
+		mututalExclusiveUI.setText("Mutual Exclusive");
+	}
+
+	@Override
+	protected IGroupScore createScore(String label, TablePerspective strat, Group g) {
+		return ScoreRegistry.createJaccardScore(label, strat, g, mututalExclusiveUI.getSelection());
 	}
 }

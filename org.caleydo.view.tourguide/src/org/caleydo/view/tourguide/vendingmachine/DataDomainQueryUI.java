@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.io.gui.dataimport.widget.BooleanCallback;
@@ -99,6 +101,16 @@ public class DataDomainQueryUI extends Row {
 		init();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.caleydo.core.view.opengl.layout.ALayoutContainer#render(javax.media.opengl.GL2)
+	 */
+	@Override
+	public void render(GL2 gl) {
+		// System.out.println(getPixelSizeX() + " " + getPixelSizeY());
+		super.render(gl);
+	}
 
 	public void init() {
 		this.setGrabX(true);

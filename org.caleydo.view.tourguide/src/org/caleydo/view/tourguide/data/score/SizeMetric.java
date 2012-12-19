@@ -44,6 +44,11 @@ public class SizeMetric implements IScore {
 	}
 
 	@Override
+	public String getAbbrevation() {
+		return "SI";
+	}
+
+	@Override
 	public String getProviderName() {
 		return null;
 	}

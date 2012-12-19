@@ -40,12 +40,12 @@ import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.view.tourguide.data.RankedListBuilders.IRankedListBuilder;
 import org.caleydo.view.tourguide.data.compute.ComputeScoreJob;
 import org.caleydo.view.tourguide.data.compute.ComputeStratificationJob;
+import org.caleydo.view.tourguide.data.compute.IComputedGroupScore;
+import org.caleydo.view.tourguide.data.compute.IComputedReferenceStratificationScore;
 import org.caleydo.view.tourguide.data.filter.CompositeScoreFilter;
 import org.caleydo.view.tourguide.data.filter.IDataDomainFilter;
 import org.caleydo.view.tourguide.data.filter.IScoreFilter;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
-import org.caleydo.view.tourguide.data.score.IComputedGroupScore;
-import org.caleydo.view.tourguide.data.score.IComputedReferenceStratificationScore;
 import org.caleydo.view.tourguide.data.score.IScore;
 import org.caleydo.view.tourguide.event.ScoreQueryReadyEvent;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
@@ -140,10 +140,12 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 		IRankedListBuilder builder;
 		if (isGroupQuery()) { // we need to show strat,group pairs
 			Multimap<TablePerspective, Group> stratNGroups = query.apply(stratifications);
-			builder = RankedListBuilders.create(top, stratNGroups.size() * factor, filter, orderBy);
+			final int numberOfElements = stratNGroups.size() * factor;
+			builder = RankedListBuilders.create(top, numberOfElements, filter, orderBy);
 			buildAll2(builder, 0, collapseScores, selections, stratNGroups);
 		} else { // just stratifications
-			builder = RankedListBuilders.create(top, stratifications.size() * factor, filter, orderBy);
+			final int numberOfElements = stratifications.size() * factor;
+			builder = RankedListBuilders.create(top, numberOfElements, filter, orderBy);
 			buildAll(builder, 0, collapseScores, selections, stratifications);
 		}
 		return builder.build();

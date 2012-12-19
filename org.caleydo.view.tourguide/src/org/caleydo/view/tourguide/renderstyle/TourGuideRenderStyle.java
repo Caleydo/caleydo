@@ -32,7 +32,6 @@ public class TourGuideRenderStyle extends GeneralRenderStyle {
 		super(viewFrustum);
 	}
 
-	public static final int COLX_SCORE_WIDTH = 70;
 
 	public static final int COL_SPACING = 3;
 	public static final int ROW_SPACING = 5;
@@ -49,6 +48,7 @@ public class TourGuideRenderStyle extends GeneralRenderStyle {
 	public static final int DATADOMAIN_TYPE_WIDTH = 16;
 	public static final int STRATIFACTION_WIDTH = 120;
 	public static final int GROUP_WIDTH = 80;
+	public static final int COLX_SCORE_WIDTH = 70;
 
 	private static final String ICON_PREFIX = "resources/icons/view/tourguide/";
 

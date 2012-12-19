@@ -21,8 +21,6 @@ package org.caleydo.view.tourguide.data.score;
 
 import java.util.Objects;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 
@@ -30,25 +28,19 @@ import org.caleydo.core.data.virtualarray.group.Group;
  * @author Samuel Gratzl
  *
  */
-public abstract class AGroupScore extends AComputedGroupScore implements IGroupScore {
+public abstract class AReferenceGroupScore extends AComputedGroupScore implements IGroupScore {
 	protected TablePerspective stratification;
 	protected Group group;
-	/**
-	 * if true, add another filter that will produce NaN if the referred groups are equal in the the same categorical
-	 * datadomain
-	 */
-	protected boolean mutualExclusive;
 
-	public AGroupScore() {
+	public AReferenceGroupScore() {
 		super("");
 	}
 
-	public AGroupScore(String label, TablePerspective stratification, Group group, boolean mutualExclusive) {
+	public AReferenceGroupScore(String label, TablePerspective stratification, Group group) {
 		super(label == null ? stratification.getRecordPerspective().getLabel() + ": " + group.getLabel() : label);
 		this.stratification = stratification;
 		this.group = group;
 		put(this.group, Float.NaN); // add self
-		this.mutualExclusive = mutualExclusive;
 	}
 
 	@Override
@@ -57,36 +49,7 @@ public abstract class AGroupScore extends AComputedGroupScore implements IGroupS
 			return true;
 		if (Objects.equals(perspective, stratification))
 			return true;
-		if (mutualExclusive && isSameGroup(perspective, elem))
-			return true;
 		return false;
-	}
-
-	/**
-	 * checks whether we the given group refers to the same group within different stratifications within the same
-	 * categorical datadomain. e.g. mutated and mutated in two genes
-	 *
-	 * @param perspective
-	 * @param elem
-	 * @return
-	 */
-	private boolean isSameGroup(TablePerspective perspective, Group elem) {
-		if (elem == null || !Objects.equals(elem.getGroupIndex(), group.getGroupIndex()))
-			return false; // same group, simple/fast tests first
-		ATableBasedDataDomain dataDomain = this.stratification.getDataDomain();
-		if (!DataDomainOracle.isCategoricalDataDomain(dataDomain))
-			return false;
-		ATableBasedDataDomain dataDomain2 = perspective.getDataDomain();
-		if (!dataDomain.equals(dataDomain2))
-			return false;
-		return true;
-	}
-
-	/**
-	 * @return the mutualExclusive, see {@link #mutualExclusive}
-	 */
-	public boolean isMutualExclusive() {
-		return mutualExclusive;
 	}
 
 	@Override
@@ -137,7 +100,7 @@ public abstract class AGroupScore extends AComputedGroupScore implements IGroupS
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AGroupScore other = (AGroupScore) obj;
+		AReferenceGroupScore other = (AReferenceGroupScore) obj;
 		if (group == null) {
 			if (other.group != null)
 				return false;

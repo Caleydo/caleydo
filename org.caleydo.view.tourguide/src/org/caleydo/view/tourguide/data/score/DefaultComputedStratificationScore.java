@@ -19,35 +19,49 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.data.score;
 
-import java.util.Set;
-
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.id.IDType;
-import org.caleydo.view.tourguide.algorithm.LogRank;
-
-import com.google.common.collect.Sets;
+import org.caleydo.view.tourguide.algorithm.IStratificationAlgorithm;
+import org.caleydo.view.tourguide.data.compute.ComputeScoreFilters;
+import org.caleydo.view.tourguide.data.compute.IComputeScoreFilter;
+import org.caleydo.view.tourguide.data.compute.IComputedReferenceStratificationScore;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class LogRankGroupMetric extends AComputedGroupScore implements IComputedGroupScore {
-	private final LogRank algorithm;
-	private final ATableBasedDataDomain clinical;
+public class DefaultComputedStratificationScore extends AStratificationScore implements
+		IComputedReferenceStratificationScore {
+	private final IStratificationAlgorithm algorithm;
+	private final IComputeScoreFilter filter;
 
-	public LogRankGroupMetric(String label, Integer clinicalVariable) {
-		super(label);
-		this.clinical = DataDomainOracle.getClinicalDataDomain();
-		this.algorithm = LogRank.get(clinicalVariable, clinical);
+	public DefaultComputedStratificationScore(String label, TablePerspective reference,
+			IStratificationAlgorithm algorithm, IComputeScoreFilter filter) {
+		super(label, reference);
+		this.algorithm = algorithm;
+		this.filter = filter == null ? ComputeScoreFilters.SELF : filter;
+	}
+
+	@Override
+	public IStratificationAlgorithm getAlgorithm() {
+		return algorithm;
+	}
+
+	@Override
+	public String getAbbrevation() {
+		return algorithm.getAbbreviation();
+	}
+
+	@Override
+	public IComputeScoreFilter getFilter() {
+		return filter;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result + ((algorithm == null) ? 0 : algorithm.hashCode());
+		result = prime * result + ((filter == null) ? 0 : filter.hashCode());
 		return result;
 	}
 
@@ -55,31 +69,22 @@ public class LogRankGroupMetric extends AComputedGroupScore implements IComputed
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		LogRankGroupMetric other = (LogRankGroupMetric) obj;
+		DefaultComputedStratificationScore other = (DefaultComputedStratificationScore) obj;
 		if (algorithm == null) {
 			if (other.algorithm != null)
 				return false;
 		} else if (!algorithm.equals(other.algorithm))
 			return false;
+		if (filter == null) {
+			if (other.filter != null)
+				return false;
+		} else if (!filter.equals(other.filter))
+			return false;
 		return true;
 	}
 
-
-	@Override
-	public IDType getTargetType(TablePerspective as) {
-		return clinical.getRecordIDType();
-	}
-
-	@Override
-	public float compute(Set<Integer> group, Set<Integer> stratification) {
-		// me versus the rest
-		return algorithm.compute(group, Sets.difference(stratification, group));
-	}
-
-
 }
-

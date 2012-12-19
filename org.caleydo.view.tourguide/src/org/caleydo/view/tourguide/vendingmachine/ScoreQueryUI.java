@@ -26,16 +26,13 @@ import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.SELECT
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.util.base.DefaultLabelProvider;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
@@ -59,28 +56,22 @@ import org.caleydo.view.tourguide.data.filter.ECompareOperator;
 import org.caleydo.view.tourguide.data.filter.IScoreFilter;
 import org.caleydo.view.tourguide.data.score.CollapseScore;
 import org.caleydo.view.tourguide.data.score.IScore;
-import org.caleydo.view.tourguide.data.score.LogRankGroupMetric;
-import org.caleydo.view.tourguide.data.score.SizeMetric;
+import org.caleydo.view.tourguide.data.score.ScoreRegistry;
 import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
-import org.caleydo.view.tourguide.event.CreateScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RenameScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ToggleNaNFilterScoreColumnEvent;
 import org.caleydo.view.tourguide.renderer.AdvancedTextureRenderer;
 import org.caleydo.view.tourguide.util.LabelComparator;
-import org.caleydo.view.tourguide.vendingmachine.col.AQueryColumn;
 import org.caleydo.view.tourguide.vendingmachine.col.ATableColumn;
 import org.caleydo.view.tourguide.vendingmachine.col.AddQueryColumn;
 import org.caleydo.view.tourguide.vendingmachine.col.AddToStratomexColumn;
 import org.caleydo.view.tourguide.vendingmachine.col.MatchColumn;
-import org.caleydo.view.tourguide.vendingmachine.col.QueryColumns;
+import org.caleydo.view.tourguide.vendingmachine.col.QueryColumn;
 import org.caleydo.view.tourguide.vendingmachine.col.RankColumn;
 import org.caleydo.view.tourguide.vendingmachine.ui.ScoreFilterDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 
 /**
  * @author Samuel Gratzl
@@ -92,7 +83,7 @@ public class ScoreQueryUI extends Row {
 	public static final String ADD_COLUMN = "ADD_COLUMN";
 	public static final String EDIT_FILTER = "EDIT_FILTER";
 
-	private final List<AQueryColumn> queryColumns = new ArrayList<>();
+	private final List<QueryColumn> queryColumns = new ArrayList<>();
 	private final List<ATableColumn> columns = new ArrayList<>();
 
 	private int selectedRow = -1;
@@ -127,8 +118,7 @@ public class ScoreQueryUI extends Row {
 	private void init() {
 		this.setLeftToRight(true);
 		setXDynamic(true);
-		setGrabY(true);
-
+		setYDynamic(false);
 	}
 
 	public void setQuery(ScoreQuery query) {
@@ -152,7 +142,7 @@ public class ScoreQueryUI extends Row {
 		int i = 0;
 		this.queryColumns.clear();
 		for (IScore column : query.getSelection()) {
-			AQueryColumn col = QueryColumns.create(column, i++, query.getSorting(column), view);
+			QueryColumn col = QueryColumn.create(column, i++, query.getSorting(column), view);
 			this.columns.add(col);
 			this.queryColumns.add(col);
 		}
@@ -165,12 +155,15 @@ public class ScoreQueryUI extends Row {
 		this.add(columns.get(1));
 		this.add(colSpace);
 		this.add(columns.get(2));
-		for (AQueryColumn col : this.queryColumns)
-			this.add(createXSeparator(5)).add(col);
-		this.add(colSpace);
+		for (QueryColumn col : this.queryColumns) {
+			final ElementLayout s = createXSeparator(5);
+			s.setGrabY(true);
+			this.add(s).add(col);
+		}
 		this.add(columns.get(columns.size() - 1));
 
 		invalidate();
+		this.setPixelSizeY(columns.get(1).getPixelSizeY());
 	}
 
 	public void setData(List<ScoringElement> data) {
@@ -178,7 +171,7 @@ public class ScoreQueryUI extends Row {
 		this.data = data;
 		for (ATableColumn col : this.columns)
 			col.setData(data, query);
-
+		this.setPixelSizeY(columns.get(1).getPixelSizeY());
 		invalidate();
 	}
 
@@ -266,7 +259,7 @@ public class ScoreQueryUI extends Row {
 		if (row == null)
 			return null;
 		Collection<IScore> r = new ArrayList<>();
-		for (AQueryColumn column : this.queryColumns) {
+		for (QueryColumn column : this.queryColumns) {
 			IScore s = column.getScore();
 			if (s instanceof CollapseScore)
 				s = row.getSelected((CollapseScore) s);
@@ -288,7 +281,7 @@ public class ScoreQueryUI extends Row {
 			public void rightClicked(Pick pick) {
 				onShowColumnMenu(queryColumns.get(pick.getObjectID()));
 			}
-		}, AQueryColumn.SORT_COLUMN);
+		}, QueryColumn.SORT_COLUMN);
 		view.addTypePickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
@@ -319,7 +312,7 @@ public class ScoreQueryUI extends Row {
 		view.addTypePickingTooltipListener("Edit Score Filters", EDIT_FILTER);
 	}
 
-	protected void onSortBy(AQueryColumn columnHeader) {
+	protected void onSortBy(QueryColumn columnHeader) {
 		if (query == null)
 			return;
 		query.sortBy(columnHeader.getScore(), columnHeader.nextSorting());
@@ -332,14 +325,14 @@ public class ScoreQueryUI extends Row {
 	}
 
 	protected void onOrderByChanged(PropertyChangeEvent evt) {
-		for (AQueryColumn col : queryColumns) {
+		for (QueryColumn col : queryColumns) {
 			ESorting s = query.getSorting(col.getScore());
 			if (s != null)
 				col.setSort(s);
 		}
 	}
 
-	protected void onShowColumnMenu(AQueryColumn column) {
+	protected void onShowColumnMenu(QueryColumn column) {
 		ContextMenuCreator creator = view.getContextMenuCreator();
 		if (column.getScore() instanceof DefaultLabelProvider) {
 			creator.addContextMenuItem(new GenericContextMenuItem("Rename", new RenameScoreColumnEvent(
@@ -374,36 +367,17 @@ public class ScoreQueryUI extends Row {
 	protected void onAddColumn() {
 		List<IScore> scores = new ArrayList<>(Scores.get().getScoreIDs());
 		Collections.sort(scores, new LabelComparator());
+		final Set<IScore> visible = getVisibleColumns();
 
 		ContextMenuCreator creator = view.getContextMenuCreator();
-		creator.addContextMenuItem(new GenericContextMenuItem("Create Jaccard Index Score", new CreateScoreColumnEvent(
-				CreateScoreColumnEvent.Type.JACCARD, this)));
-		creator.addContextMenuItem(new GenericContextMenuItem("Create Adjusted Rand Score", new CreateScoreColumnEvent(
-				CreateScoreColumnEvent.Type.ADJUSTED_RAND, this)));
+		ScoreRegistry.addCreateScoreItems(creator, visible, this);
+		creator.addSeparator();
 		if (scores.size() >= 2 || this.queryColumns.size() >= 2) {
-			creator.addContextMenuItem(new GenericContextMenuItem("Create Combined Score", new CreateScoreColumnEvent(
-					CreateScoreColumnEvent.Type.COMBINED, this)));
-			creator.addContextMenuItem(new GenericContextMenuItem("Create Collapsed Score", new CreateScoreColumnEvent(
-					CreateScoreColumnEvent.Type.COLLAPSED, this)));
+			ScoreRegistry.addCreateCombinedItems(creator, visible, this);
 		}
 		creator.addSeparator();
 
-		Set<IScore> visible = getVisibleColumns();
-
-		Iterable<IScore> logRankScores = Iterables.transform(DataDomainOracle.getClinicalVariables(),
-				new Function<Pair<Integer, String>, IScore>() {
-					@Override
-					public IScore apply(Pair<Integer, String> p) {
-						return new LogRankGroupMetric("LogRank of " + p.getSecond(), p.getFirst());
-					}
-				});
-
-		for (IScore simple : Iterables.concat(Arrays.asList(SizeMetric.get()), logRankScores)) {
-			if (visible.contains(simple))
-				continue;
-			creator.addContextMenuItem(new GenericContextMenuItem("Add " + simple.getLabel() + " Metric",
-					new AddScoreColumnEvent(simple, this)));
-		}
+		ScoreRegistry.addCreateMetricItems(creator, visible, this);
 		creator.addSeparator();
 
 		for (IScore s : scores) {
@@ -416,7 +390,7 @@ public class ScoreQueryUI extends Row {
 
 	private Set<IScore> getVisibleColumns() {
 		Set<IScore> visible = new HashSet<>();
-		for (AQueryColumn c : this.queryColumns)
+		for (QueryColumn c : this.queryColumns)
 			visible.add(c.getScore());
 		return visible;
 	}

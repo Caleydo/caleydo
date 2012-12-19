@@ -64,6 +64,11 @@ public final class ExternalGroupLabelScore extends DefaultLabelProvider implemen
 	}
 
 	@Override
+	public String getAbbrevation() {
+		return "EX";
+	}
+
+	@Override
 	public String getProviderName() {
 		return "External";
 	}

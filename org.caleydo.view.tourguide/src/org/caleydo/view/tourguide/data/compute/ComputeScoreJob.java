@@ -8,9 +8,8 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.view.tourguide.data.score.IComputedGroupScore;
-import org.caleydo.view.tourguide.data.score.IComputedReferenceGroupScore;
-import org.caleydo.view.tourguide.data.score.IComputedReferenceStratificationScore;
+import org.caleydo.view.tourguide.algorithm.IGroupAlgorithm;
+import org.caleydo.view.tourguide.algorithm.IStratificationAlgorithm;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -67,48 +66,53 @@ public class ComputeScoreJob extends AScoreJob {
 
 			// all stratification scores
 			for (IComputedReferenceStratificationScore score : this.stratScores) {
-				IDType target = score.getTargetType(as);
-				if (score.contains(as)) {
+				IStratificationAlgorithm algorithm = score.getAlgorithm();
+				final TablePerspective rs = score.getStratification();
+				IDType target = algorithm.getTargetType(as, rs);
+				if (score.contains(as) || !score.getFilter().doCompute(as, null, rs, null)) {
 					continue;
 				}
 				List<Set<Integer>> compute = getAll(as, target, target);
-				List<Set<Integer>> reference = getAll(score.getStratification(), target, target);
+				List<Set<Integer>> reference = getAll(rs, target, target);
 
 				if (Thread.interrupted() || monitor.isCanceled())
 					return Status.CANCEL_STATUS;
 
-				float v = score.compute(compute, reference);
+				float v = algorithm.compute(compute, reference);
 				score.put(as, v);
 			}
 
 			// all metrics
 			for (IComputedGroupScore metric : this.groupMetrics) {
-				IDType target = metric.getTargetType(as);
+				IGroupAlgorithm algorithm = metric.getAlgorithm();
+				IDType target = algorithm.getTargetType(as, as);
 				for (Group ag : this.data.get(as)) {
 					if (Thread.interrupted() || monitor.isCanceled())
 						return Status.CANCEL_STATUS;
-					if (metric.contains(as, ag))
+					if (metric.contains(as, ag) || !metric.getFilter().doCompute(as, ag, as, null))
 						continue;
 					Set<Integer> reference = get(as, target, target);
 					Set<Integer> tocompute = get(as, ag, target, target);
-					float v = metric.compute(tocompute, reference);
+					float v = algorithm.compute(tocompute, reference);
 					metric.put(ag, v);
 				}
 			}
 
 			// all scores
 			for (IComputedReferenceGroupScore score : this.groupScores) {
-				final IDType sType = score.getStratification().getRecordPerspective().getIdType();
+				final TablePerspective rs = score.getStratification();
+				final IDType sType = rs.getRecordPerspective().getIdType();
 
-				IDType target = score.getTargetType(as);
+				IGroupAlgorithm algorithm = score.getAlgorithm();
+				IDType target = algorithm.getTargetType(as, rs);
 				for (Group ag : this.data.get(as)) {
 					if (Thread.interrupted() || monitor.isCanceled())
 						return Status.CANCEL_STATUS;
-					if (score.contains(as, ag))
+					if (score.contains(as, ag) || !score.getFilter().doCompute(as, ag, rs, score.getGroup()))
 						continue;
 					Set<Integer> tocompute = get(as, ag, target, sType);
-					Set<Integer> reference = get(score.getStratification(), score.getGroup(), target, aType);
-					float v = score.compute(tocompute, reference);
+					Set<Integer> reference = get(rs, score.getGroup(), target, aType);
+					float v = algorithm.compute(tocompute, reference);
 					score.put(ag, v);
 				}
 			}

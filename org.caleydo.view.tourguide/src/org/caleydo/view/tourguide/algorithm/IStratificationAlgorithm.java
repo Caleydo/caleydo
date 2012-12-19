@@ -22,17 +22,31 @@ package org.caleydo.view.tourguide.algorithm;
 import java.util.List;
 import java.util.Set;
 
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.id.IDType;
+
 /**
  * @author Samuel Gratzl
  *
  */
 public interface IStratificationAlgorithm {
+
+	IDType getTargetType(TablePerspective a, TablePerspective b);
+
 	/**
 	 * computes the score between the two stratifications identified by their collection of group sets
-	 * 
+	 *
 	 * @param a
 	 * @param b
 	 * @return
 	 */
 	float compute(List<Set<Integer>> a, List<Set<Integer>> b);
+
+	/**
+	 * returns the abbreviation of this algorithm
+	 * 
+	 * @return
+	 */
+	String getAbbreviation();
+
 }

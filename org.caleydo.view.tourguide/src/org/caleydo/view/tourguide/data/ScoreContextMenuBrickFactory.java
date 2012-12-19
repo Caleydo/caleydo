@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.contextmenu;
+package org.caleydo.view.tourguide.data;
 
 import static org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent.EScoreType.ADJUSTED_RAND;
 import static org.caleydo.view.tourguide.event.ScoreTablePerspectiveEvent.EScoreType.JACCARD;

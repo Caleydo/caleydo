@@ -17,7 +17,10 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.data.score;
+package org.caleydo.view.tourguide.data.compute;
+
+import org.caleydo.view.tourguide.data.score.IGroupScore;
+import org.caleydo.view.tourguide.data.score.IScore;
 
 
 /**
@@ -27,5 +30,4 @@ package org.caleydo.view.tourguide.data.score;
  *
  */
 public interface IComputedReferenceGroupScore extends IComputedGroupScore, IGroupScore {
-
 }

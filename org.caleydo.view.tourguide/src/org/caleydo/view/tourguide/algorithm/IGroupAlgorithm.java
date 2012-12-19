@@ -21,11 +21,16 @@ package org.caleydo.view.tourguide.algorithm;
 
 import java.util.Set;
 
+import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.id.IDType;
+
 /**
  * @author Samuel Gratzl
  *
  */
 public interface IGroupAlgorithm {
+	IDType getTargetType(TablePerspective a, TablePerspective b);
+
 	/**
 	 * computes the score between the two sets identified by a set of integer noted in the same id type
 	 *
@@ -34,4 +39,11 @@ public interface IGroupAlgorithm {
 	 * @return
 	 */
 	float compute(Set<Integer> a, Set<Integer> b);
+
+	/**
+	 * returns the abbreviation of this algorithm
+	 *
+	 * @return
+	 */
+	String getAbbreviation();
 }

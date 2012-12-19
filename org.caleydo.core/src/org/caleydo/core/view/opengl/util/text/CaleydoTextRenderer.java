@@ -186,7 +186,7 @@ public class CaleydoTextRenderer
 			if (truncateFactor < 0)
 				truncateFactor = 0;
 
-			int length = (int) (text.length() * truncateFactor);
+			int length = Math.min((int) (text.length() * truncateFactor), text.length());
 			if (length >= 0)
 				text = text.substring(0, length);
 
