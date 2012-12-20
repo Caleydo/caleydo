@@ -19,16 +19,19 @@
  *******************************************************************************/
 package org.caleydo.core.util.base;
 
-import org.caleydo.core.util.base.ILabelProvider;
 
 /**
  * default implementation of an {@link ILabelProvider}
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class DefaultLabelProvider implements ILabelProvider {
 	private String label;
+
+	public DefaultLabelProvider() {
+		label = "";
+	}
 
 	public DefaultLabelProvider(String label) {
 		this.label = label;
