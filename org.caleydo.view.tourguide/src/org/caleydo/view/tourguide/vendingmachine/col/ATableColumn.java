@@ -24,6 +24,8 @@ import static org.caleydo.core.view.opengl.layout.ElementLayouts.createYSpacer;
 import static org.caleydo.core.view.opengl.layout.ElementLayouts.wrap;
 import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.COL_SPACING;
 import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.LABEL_PADDING;
+import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.LABEL_PADDING_HOR;
+import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.LABEL_PADDING_VER;
 import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.ROW_HEIGHT;
 import static org.caleydo.view.tourguide.renderstyle.TourGuideRenderStyle.ROW_SPACING;
 
@@ -111,10 +113,10 @@ public abstract class ATableColumn extends Column {
 	}
 
 	protected final int getTextWidth(String text) {
-		float height = ROW_HEIGHT - LABEL_PADDING.get(1) - LABEL_PADDING.get(3);
+		float height = ROW_HEIGHT - LABEL_PADDING_VER;
 		int width = Math.round(this.view.getTextRenderer().getRequiredTextWidth(text,
 				height));
-		width += LABEL_PADDING.get(0) + LABEL_PADDING.get(2) + 3;
+		width += LABEL_PADDING_HOR + 3;
 		return width;
 	}
 

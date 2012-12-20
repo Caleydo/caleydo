@@ -47,12 +47,16 @@ import org.caleydo.core.view.opengl.canvas.IGLCanvas;
 import org.caleydo.core.view.opengl.canvas.IGLKeyListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
+import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout.Dims;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ElementLayouts;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout.Row.HAlign;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.tourguide.SerializedTourGuideView;
 import org.caleydo.view.tourguide.data.DataDomainQuery;
@@ -81,6 +85,7 @@ import org.caleydo.view.tourguide.listener.ScoreColumnListener;
 import org.caleydo.view.tourguide.listener.ScoreQueryReadyListener;
 import org.caleydo.view.tourguide.listener.ScoreTablePerspectiveListener;
 import org.caleydo.view.tourguide.listener.StratomexTablePerspectiveListener;
+import org.caleydo.view.tourguide.renderer.DecorationTextureRenderer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -117,6 +122,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 	private IGLKeyListener keyListener;
 
+	private boolean computing = false;
+
 	public VendingMachine(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -136,10 +143,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 			}
 		};
 		dataDomainQuery.addPropertyChangeListener(DataDomainQuery.PROP_FILTER, recomputeListener);
-		scoreQuery.addPropertyChangeListener(ScoreQuery.PROP_ORDER_BY, recomputeListener);
-		scoreQuery.addPropertyChangeListener(ScoreQuery.PROP_SELECTION, recomputeListener);
-		scoreQuery.addPropertyChangeListener(ScoreQuery.PROP_TOP, recomputeListener);
-		scoreQuery.addPropertyChangeListener(ScoreQuery.PROP_FILTER, recomputeListener);
+		scoreQuery.addPropertyChangeListener(recomputeListener);
 	}
 
 
@@ -201,6 +205,10 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		scoreQueryUI.setQuery(scoreQuery);
 		mainColumn.append(ElementLayouts.scrollAlbe(this, scoreQueryUI));
 		// mainColumn.append(scoreQueryUI);
+
+		mainColumn.get(mainColumn.size() - 1).addForeGroundRenderer(
+				new DecorationTextureRenderer(null, this.textureManager, Dims.xpixel(100), Dims.ypixel(100),
+						HAlign.CENTER, VAlign.CENTER));
 
 		layoutManager.updateLayout();
 	}
@@ -291,15 +299,27 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 	private void recomputeScores() {
 		if (scoreQuery.isJobRunning()) {
-			scoreQueryUI.setRunning(true);
+			if (!this.computing) {
+				this.computing = true;
+				getComputeDecoration().setImagePath(EIconTextures.LOADING_CIRCLE.getFileName());
+			}
 		} else {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ScoreQueryReadyEvent(this.scoreQuery));
 		}
 
 	}
 
+	private DecorationTextureRenderer getComputeDecoration() {
+		DecorationTextureRenderer deco = (DecorationTextureRenderer) this.mainColumn.get(this.mainColumn.size() - 1)
+				.getForegroundRenderer().get(0);
+		return deco;
+	}
+
 	public void onScoreQueryReady() {
-		scoreQueryUI.setRunning(false);
+		if (this.computing) {
+			this.computing = false;
+			getComputeDecoration().setImagePath(null);
+		}
 		scoreQueryUI.setData(scoreQuery.call());
 	}
 

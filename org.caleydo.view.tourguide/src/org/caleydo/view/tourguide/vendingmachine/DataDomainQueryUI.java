@@ -38,6 +38,7 @@ import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout.Dims;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
@@ -237,7 +238,8 @@ public class DataDomainQueryUI extends Row {
 			button.setRenderer(new AdvancedTextureRenderer(TourGuideRenderStyle.ICON_ACCEPT_DISABLE, view
 					.getTextureManager()));
 			button.addBackgroundRenderer(new PickingRenderer(TOGGLE_DATA_DOMAIN, i, view));
-			button.addForeGroundRenderer(new DecorationTextureRenderer(null, view.getTextureManager(), 10, 10,
+			button.addForeGroundRenderer(new DecorationTextureRenderer(null, view.getTextureManager(), Dims.xpixel(10),
+					Dims.ypixel(10),
 					HAlign.BOTTOM, VAlign.RIGHT));
 
 			this.append(button);

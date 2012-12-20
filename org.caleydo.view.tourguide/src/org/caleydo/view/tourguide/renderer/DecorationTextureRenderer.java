@@ -25,6 +25,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
+import org.caleydo.core.view.opengl.layout.IDim;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row.HAlign;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -41,10 +42,10 @@ public class DecorationTextureRenderer extends LayoutRenderer {
 
 	private final HAlign hAlign;
 	private final VAlign vAlign;
-	private final int width;
-	private final int height;
+	private final IDim width;
+	private final IDim height;
 
-	public DecorationTextureRenderer(String imagePath, TextureManager textureManager, int width, int height,
+	public DecorationTextureRenderer(String imagePath, TextureManager textureManager, IDim width, IDim height,
 			HAlign hAlign, VAlign vAlign) {
 		this.imagePath = imagePath;
 		this.textureManager = textureManager;
@@ -98,8 +99,8 @@ public class DecorationTextureRenderer extends LayoutRenderer {
 		if (this.imagePath == null)
 			return;
 		PixelGLConverter pixelGLConverter = elementLayout.getLayoutManager().getPixelGLConverter();
-		float w = pixelGLConverter.getGLWidthForPixelWidth(width);
-		float h = pixelGLConverter.getGLHeightForPixelHeight(height);
+		float w = width.resolve(pixelGLConverter, this.x, this.y);
+		float h = height.resolve(pixelGLConverter, this.x, this.y);
 		float x = 0, y = 0;
 		switch (vAlign) {
 		case LEFT:

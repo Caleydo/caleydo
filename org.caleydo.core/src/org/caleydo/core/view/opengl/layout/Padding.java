@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout;
 
-import java.util.Arrays;
-
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 
 /**
@@ -30,54 +28,28 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
  *
  */
 public class Padding {
-	public static final Padding NONE = new Padding(EMode.GL, 0);
+	public static final Padding NONE = new Padding(Dims.zero, Dims.zero);
 
-	private final float[] padding;
-	private final EMode mode;
+	private final IDim west, north, east, south;
 
-	public enum EMode {
-		GL, PIXEL, PROPORTIONAL
+	public Padding(IDim hor, IDim vert) {
+		this(hor, vert, hor, vert);
 	}
 
-	public Padding(EMode mode, float padding) {
-		this(mode, padding, padding);
-	}
-
-	public Padding(EMode mode, float paddingH, float paddingV) {
-		this(mode, paddingH, paddingV, paddingH, paddingV);
-	}
-
-	public Padding(EMode mode, float east, float north, float west, float south) {
-		this.mode = mode;
-		padding = new float[] { east, north, west, south };
+	public Padding(IDim west, IDim north, IDim east, IDim south) {
+		this.west = west;
+		this.north = north;
+		this.east = east;
+		this.south = south;
 	}
 
 	@Override
 	public String toString() {
-		return Arrays.toString(padding);
+		return String.format("Padding(%s,%s,%s,%s)", west, north, east, south);
 	}
 
-	/**
-	 * @param pixelGLConverter
-	 * @return
-	 */
-	public float[] resolve(PixelGLConverter pixelGLConverter, float width, float height) {
-		switch(mode) {
-		case GL:
-			return padding;
-		case PIXEL: {
-			float w = pixelGLConverter.getGLWidthForPixelWidth(1);
-			float h = pixelGLConverter.getGLHeightForPixelHeight(1);
-			return new float[]{ padding[0]*w,padding[1]*h,padding[2]*w,padding[3]*h};
-		}
-		case PROPORTIONAL:
-			return new float[] { padding[0] * width, padding[1] * height, padding[2] * width, padding[3] * height };
-		default:
-			throw new IllegalStateException();
-		}
-	}
-
-	public float get(int direction) {
-		return this.padding[direction];
+	public float[] resolve(PixelGLConverter converter, float w, float h) {
+		return new float[] { west.resolve(converter, w, h), north.resolve(converter, w, h),
+				east.resolve(converter, w, h), south.resolve(converter, w, h) };
 	}
 }

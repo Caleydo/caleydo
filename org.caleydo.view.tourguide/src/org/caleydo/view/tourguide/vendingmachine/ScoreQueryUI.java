@@ -40,13 +40,10 @@ import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.layout.Padding;
-import org.caleydo.core.view.opengl.layout.Padding.EMode;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.tourguide.data.ESorting;
 import org.caleydo.view.tourguide.data.ScoreQuery;
 import org.caleydo.view.tourguide.data.Scores;
@@ -61,7 +58,6 @@ import org.caleydo.view.tourguide.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.event.RenameScoreColumnEvent;
 import org.caleydo.view.tourguide.event.ToggleNaNFilterScoreColumnEvent;
-import org.caleydo.view.tourguide.renderer.AdvancedTextureRenderer;
 import org.caleydo.view.tourguide.util.LabelComparator;
 import org.caleydo.view.tourguide.vendingmachine.col.ATableColumn;
 import org.caleydo.view.tourguide.vendingmachine.col.AddQueryColumn;
@@ -112,7 +108,6 @@ public class ScoreQueryUI extends Row {
 	};
 
 	private final AGLView view;
-	private boolean running;
 	private final StratomexAdapter stratomex;
 
 	public ScoreQueryUI(AGLView view, StratomexAdapter stratomex) {
@@ -242,27 +237,6 @@ public class ScoreQueryUI extends Row {
 		if (selectedRow < 0)
 			return null;
 		return data.get(selectedRow);
-	}
-
-	public void setRunning(boolean running) {
-		if (this.running == running)
-			return;
-		this.running = running;
-		if (!this.running)
-			this.clearForegroundRenderers();
-		else {
-			Padding p = new Padding(EMode.PROPORTIONAL, .3f);
-			this.addForeGroundRenderer(new AdvancedTextureRenderer(EIconTextures.LOADING_CIRCLE.getFileName(), view
-					.getTextureManager(), p).setZ(-.02f));
-		}
-		invalidate();
-	}
-
-	/**
-	 * @return the running, see {@link #running}
-	 */
-	public boolean isRunning() {
-		return running;
 	}
 
 	private Collection<IScore> getVisibleColumns(ScoringElement row) {

@@ -33,6 +33,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.ConstantLabelProvider;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.layout.Dims;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.Row.HAlign;
@@ -134,7 +135,8 @@ public class QueryColumn extends ATableColumn {
 	@Override
 	protected ElementLayout createHeader() {
 		Row r = new Row();
-		r.addBackgroundRenderer(new DecorationTextureRenderer(null, view.getTextureManager(), 10, 10, HAlign.TOP,
+		r.addBackgroundRenderer(new DecorationTextureRenderer(null, view.getTextureManager(), Dims.xpixel(10), Dims
+				.ypixel(10), HAlign.TOP,
 				VAlign.LEFT));
 
 		r.add(createLabel(score.getAbbrevation(), getTextWidth(score.getAbbrevation())));

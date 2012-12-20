@@ -3,9 +3,9 @@ package org.caleydo.core.view.opengl.layout.builder;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.util.color.IColor;
+import org.caleydo.core.view.opengl.layout.Dims;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Padding;
-import org.caleydo.core.view.opengl.layout.Padding.EMode;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer.LabelAlignment;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer2;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -15,7 +15,7 @@ public class LabelRendererBuilder implements ILayoutRendererBuilder {
 	private final ILabelProvider label;
 	private LabelAlignment alignment = LabelAlignment.LEFT;
 	private IColor textColor = Colors.BLACK;
-	private Padding padding = new Padding(EMode.PIXEL, 1);
+	private Padding padding = new Padding(Dims.xpixel(1), Dims.ypixel(1));
 
 	public LabelRendererBuilder(CaleydoTextRenderer textRenderer, ILabelProvider label) {
 		this.textRenderer = textRenderer;

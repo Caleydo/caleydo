@@ -17,37 +17,16 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.util;
+package org.caleydo.core.view.opengl.layout;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.id.IDType;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableListMultimap;
-import com.google.common.collect.Multimaps;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 
 /**
+ * abstract description of a width/height using different modi
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public class Grouper {
-	public static ImmutableListMultimap<IDType, TablePerspective> byIDType(Iterable<TablePerspective> list) {
-		return Multimaps.index(list, new Function<TablePerspective, IDType>() {
-			@Override
-			public IDType apply(TablePerspective s) {
-				return s.getRecordPerspective().getIdType();
-			}
-		});
-	}
-
-	public static ImmutableListMultimap<ATableBasedDataDomain, TablePerspective> byDataDomain(
-			Iterable<TablePerspective> list) {
-		return Multimaps.index(list, new Function<TablePerspective, ATableBasedDataDomain>() {
-			@Override
-			public ATableBasedDataDomain apply(TablePerspective s) {
-				return s.getDataDomain();
-			}
-		});
-	}
+public interface IDim {
+	float resolve(PixelGLConverter converter, float w, float h);
 }
