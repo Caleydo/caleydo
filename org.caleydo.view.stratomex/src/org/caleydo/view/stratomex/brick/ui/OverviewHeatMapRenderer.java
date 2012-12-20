@@ -64,15 +64,15 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 		heatMapValuesMeanMinusStdDev = new ArrayList<Float>();
 		heatMapValuesMeanPlusStdDev = new ArrayList<Float>();
 
-		ArrayList<Average> averageRecords = tablePerspective.getContainerStatistics()
-				.getAverageRecords();
+		ArrayList<Average> averageDimensions = tablePerspective.getContainerStatistics()
+				.getAverageDimensions();
 
-		for (Average averageRecord : averageRecords) {
-			heatMapValuesMean.add((float) averageRecord.getArithmeticMean());
-			heatMapValuesMeanMinusStdDev.add((float) averageRecord.getArithmeticMean()
-					- (float) averageRecord.getStandardDeviation());
-			heatMapValuesMeanPlusStdDev.add((float) averageRecord.getArithmeticMean()
-					+ (float) averageRecord.getStandardDeviation());
+		for (Average averageDimension : averageDimensions) {
+			heatMapValuesMean.add((float) averageDimension.getArithmeticMean());
+			heatMapValuesMeanMinusStdDev.add((float) averageDimension.getArithmeticMean()
+					- (float) averageDimension.getStandardDeviation());
+			heatMapValuesMeanPlusStdDev.add((float) averageDimension.getArithmeticMean()
+					+ (float) averageDimension.getStandardDeviation());
 
 		}
 
