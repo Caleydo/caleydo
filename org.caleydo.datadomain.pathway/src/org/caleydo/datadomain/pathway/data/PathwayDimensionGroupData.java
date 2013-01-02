@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -34,6 +34,7 @@ import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -42,11 +43,11 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
  * Specialization of {@link TablePerspective} for pathway dimension groups. A
  * {@link PathwayDimensionGroupData} can be used to hold small-multiple pathways
  * or multiple different pathways in the same dimension group.
- * 
+ *
  * @author Christian Partl
  * @author Alexander Lex
  * @author Marc Streit
- * 
+ *
  */
 public class PathwayDimensionGroupData
 	extends TablePerspective {
@@ -77,7 +78,7 @@ public class PathwayDimensionGroupData
 
 	/**
 	 * Sets the pathways of this dimension group.
-	 * 
+	 *
 	 * @param pathways
 	 */
 	public void setPathways(ArrayList<PathwayGraph> pathways) {
@@ -88,7 +89,7 @@ public class PathwayDimensionGroupData
 	private void initializeData() {
 
 		ArrayList<Integer> sampleElements = new ArrayList<Integer>();
-		
+
 		IDType geneIDType = null;
 		if (dataDomain.isColumnDimension())
 			geneIDType = dataDomain.getRecordIDType();
@@ -98,16 +99,17 @@ public class PathwayDimensionGroupData
 		IDMappingManager geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(geneIDType);
 		int startIndex = 0;
 
+		IIDTypeMapper<Integer, Integer> mapper = geneIDMappingManager.getIDTypeMapper(PathwayVertexRep.getIdType(),
+				geneIDType);
+
 		for (PathwayGraph pathway : pathways) {
 			List<Integer> idsInPathway = new ArrayList<Integer>();
 
 			int groupSize = 0;
 			for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
-				Set<Integer> geneIDs = geneIDMappingManager.getIDAsSet(vertexRep.getIdType(), geneIDType,
-						vertexRep.getID());
+				Set<Integer> geneIDs = mapper.apply(vertexRep.getID());
 				idsInPathway.addAll(geneIDs);
 				groupSize += geneIDs.size();
-
 			}
 
 			sampleElements.add(startIndex);

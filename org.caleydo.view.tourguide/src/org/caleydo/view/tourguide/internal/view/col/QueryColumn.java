@@ -28,7 +28,7 @@ import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.DATADOMAI
 
 import java.util.List;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.ConstantLabelProvider;
 import org.caleydo.core.util.format.Formatter;
@@ -96,7 +96,7 @@ public class QueryColumn extends ATableColumn {
 	}
 
 	private int computeWidths() {
-		int header1Width = getTextWidth(score.getAbbrevation()) + 16;
+		int header1Width = getTextWidth(score.getAbbreviation()) + 16;
 		if (headerMode == EHeaderMode.STRAT || headerMode == EHeaderMode.STRAT_GROUP) {
 			header1Width += DATADOMAIN_TYPE_WIDTH + COL_SPACING;
 		}
@@ -118,10 +118,10 @@ public class QueryColumn extends ATableColumn {
 			stratWidth = getTextWidth("Stratification") - DATADOMAIN_TYPE_WIDTH;
 			assert this.score instanceof ICompositeScore;
 			for (IScore s : ((ICompositeScore) this.score)) {
-				final TablePerspective st = resolveStratification(s);
+				final ARecordPerspective st = resolveStratification(s);
 				if (st == null)
 					continue;
-				stratWidth = Math.max(stratWidth, getTextWidth(st.getRecordPerspective()));
+				stratWidth = Math.max(stratWidth, getTextWidth(st));
 			}
 			valueWidth += stratWidth;
 		}
@@ -139,8 +139,8 @@ public class QueryColumn extends ATableColumn {
 				.ypixel(10), HAlign.TOP,
 				VAlign.LEFT));
 
-		r.add(createLabel(score.getAbbrevation(), getTextWidth(score.getAbbrevation())));
-		TablePerspective strat = resolveStratification(score);
+		r.add(createLabel(score.getAbbreviation(), getTextWidth(score.getAbbreviation())));
+		ARecordPerspective strat = resolveStratification(score);
 
 		if (headerMode == EHeaderMode.STRAT || headerMode == EHeaderMode.STRAT_GROUP) {
 			r.add(createColor(strat.getDataDomain().getColor(), DATADOMAIN_TYPE_WIDTH));
@@ -194,7 +194,7 @@ public class QueryColumn extends ATableColumn {
 		IScore underlyingScore = this.score;
 		if (underlyingScore instanceof CollapseScore)
 			underlyingScore = elem.getSelected((CollapseScore) underlyingScore);
-		TablePerspective strat = resolveStratification(underlyingScore);
+		ARecordPerspective strat = resolveStratification(underlyingScore);
 
 		if (rank)
 			addRankValue(row, elem);
@@ -259,7 +259,7 @@ public class QueryColumn extends ATableColumn {
 		}
 	}
 
-	private final void addScoreValue(Row row, ScoringElement elem, TablePerspective strat) {
+	private final void addScoreValue(Row row, ScoringElement elem, ARecordPerspective strat) {
 		// render the real value
 		float value = this.score.getScore(elem);
 		if (!Float.isNaN(value)) {
@@ -287,7 +287,7 @@ public class QueryColumn extends ATableColumn {
 		}
 	}
 
-	private static TablePerspective resolveStratification(IScore score) {
+	private static ARecordPerspective resolveStratification(IScore score) {
 		if (score instanceof IStratificationScore)
 			return ((IStratificationScore) score).getStratification();
 		return null;

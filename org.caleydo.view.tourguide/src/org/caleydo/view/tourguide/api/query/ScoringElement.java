@@ -26,8 +26,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
@@ -45,27 +46,23 @@ import org.caleydo.view.tourguide.spi.score.IStratificationScore;
  *
  */
 public final class ScoringElement implements ILabelProvider {
-	private final TablePerspective stratification;
+	private final TablePerspective perspective;
+	private final ARecordPerspective stratification;
 	private final Group group;
 	/**
 	 * collapse scores have different scores depending on the current scoring element, this map stores their selections
 	 */
 	private final Map<IScore, IScore> collapseSelections;
 
-	public ScoringElement(TablePerspective stratification) {
-		this(stratification, null, null);
+	public ScoringElement(ARecordPerspective stratification, TablePerspective perspective,
+			Map<IScore, IScore> collapseSelections) {
+		this(stratification, null, perspective, collapseSelections);
 	}
 
-	public ScoringElement(TablePerspective stratification, Map<IScore, IScore> collapseSelections) {
-		this(stratification, null, collapseSelections);
-	}
-
-	public ScoringElement(TablePerspective stratification, Group group) {
-		this(stratification, group, null);
-	}
-
-	public ScoringElement(TablePerspective stratification, Group group, Map<IScore, IScore> collapseSelections) {
+	public ScoringElement(ARecordPerspective stratification, Group group, TablePerspective perspective,
+			Map<IScore, IScore> collapseSelections) {
 		this.stratification = stratification;
+		this.perspective = perspective;
 		this.group = group;
 		this.collapseSelections = collapseSelections;
 	}
@@ -76,7 +73,7 @@ public final class ScoringElement implements ILabelProvider {
 
 	@Override
 	public String getLabel() {
-		String label = stratification.getRecordPerspective().getLabel();
+		String label = stratification.getLabel();
 		if (group != null)
 			label += ": " + group.getLabel();
 		return label;
@@ -87,12 +84,16 @@ public final class ScoringElement implements ILabelProvider {
 		return stratification.getProviderName();
 	}
 
-	public ATableBasedDataDomain getDataDomain() {
+	public IDataDomain getDataDomain() {
 		return stratification.getDataDomain();
 	}
 
-	public TablePerspective getStratification() {
+	public ARecordPerspective getStratification() {
 		return stratification;
+	}
+
+	public TablePerspective getPerspective() {
+		return perspective;
 	}
 
 	public Group getGroup() {
@@ -111,9 +112,9 @@ public final class ScoringElement implements ILabelProvider {
 		// select nearest score
 		Collection<IStratificationScore> relevant = filterRelevantColumns(visibleColumns);
 
-		IDType target = stratification.getRecordPerspective().getIdType();
+		IDType target = stratification.getIdType();
 		for (IStratificationScore elem : relevant) {
-			IDType type = elem.getStratification().getRecordPerspective().getIdType();
+			IDType type = elem.getStratification().getIdType();
 			if (!target.getIDCategory().equals(type.getIDCategory()))
 				continue;
 			if (!target.equals(type))
@@ -123,18 +124,18 @@ public final class ScoringElement implements ILabelProvider {
 		CachedIDTypeMapper mapper = new CachedIDTypeMapper();
 
 		// compute the intersection of all
-		IDType source = stratification.getRecordPerspective().getIdType();
+		IDType source = stratification.getIdType();
 
-		RecordVirtualArray va = stratification.getRecordPerspective().getVirtualArray();
+		RecordVirtualArray va = stratification.getVirtualArray();
 		Collection<Integer> ids = (group == null) ? va.getIDs() : va.getIDsOfGroup(group.getGroupIndex());
 
 		if (!relevant.isEmpty()) {
 			Collection<Integer> intersection = new ArrayList<>(mapper.get(source, target).apply(ids));
 			for (IStratificationScore score : relevant) {
-				va = score.getStratification().getRecordPerspective().getVirtualArray();
+				va = score.getStratification().getVirtualArray();
 				Group g = (score instanceof IGroupScore) ? ((IGroupScore) score).getGroup() : null;
 				ids = (g == null) ? va.getIDs() : va.getIDsOfGroup(g.getGroupIndex());
-				Set<Integer> mapped = mapper.get(score.getStratification().getRecordPerspective().getIdType(), target)
+				Set<Integer> mapped = mapper.get(score.getStratification().getIdType(), target)
 						.apply(ids);
 				for (Iterator<Integer> it = intersection.iterator(); it.hasNext();) {
 					if (!mapped.contains(it.next())) // not part of

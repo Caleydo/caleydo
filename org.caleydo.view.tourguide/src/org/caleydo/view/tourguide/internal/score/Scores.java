@@ -67,9 +67,10 @@ public final class Scores {
 
 	@SuppressWarnings("unchecked")
 	public synchronized <T extends IRegisteredScore> T addIfAbsent(T score) {
-		if (this.scores.add(score))
+		if (this.scores.add(score)) {
+			score.onRegistered();
 			return score;
-		else {
+		} else {
 			for (IScore s : scores) {
 				if (s.equals(score))
 					return (T) s;

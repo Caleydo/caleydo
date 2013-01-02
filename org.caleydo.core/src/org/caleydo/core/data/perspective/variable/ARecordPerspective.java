@@ -20,10 +20,15 @@
 package org.caleydo.core.data.perspective.variable;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.filter.RecordFilterManager;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 
 /**
  * Implementation of {@link AVariablePerspective} for records.
@@ -31,33 +36,43 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
  * @author Alexander Lex
  */
 @XmlRootElement
-public class RecordPerspective extends ARecordPerspective {
+public abstract class ARecordPerspective extends
+		AVariablePerspective<RecordVirtualArray, RecordGroupList, RecordVADelta, RecordFilterManager> {
 
-	public RecordPerspective() {
+	public ARecordPerspective() {
 	}
 
-	public RecordPerspective(ATableBasedDataDomain dataDomain) {
+	public ARecordPerspective(IDataDomain dataDomain) {
 		super(dataDomain);
 	}
 
 	@Override
 	protected void init() {
-		super.init();
-		idType = getDataDomain().getRecordIDType();
+		// if this perspective is de-serialized the perspectiveID is already set.
+		if (perspectiveID == null)
+			perspectiveID = "RecordPerspective_" + UUID.randomUUID();
+		filterManager = new RecordFilterManager(dataDomain, this);
+
 	}
 
 	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return (ATableBasedDataDomain)super.getDataDomain();
+	protected RecordGroupList createGroupList() {
+		return new RecordGroupList();
 	}
 
 	@Override
-	protected String getElementLabel(Integer id) {
-		return getDataDomain().getRecordLabel(id);
+	protected void createFilterManager() {
+		filterManager = new RecordFilterManager(dataDomain, this);
 	}
 
 	@Override
-	protected List<Integer> getIDList() {
-		return getDataDomain().getTable().getRowIDList();
+	protected RecordVirtualArray newConcreteVirtualArray(List<Integer> indexList) {
+		return new RecordVirtualArray(idType, indexList);
 	}
+
+	@Override
+	public String getProviderName() {
+		return "Row Perspective";
+	}
+
 }

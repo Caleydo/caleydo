@@ -29,6 +29,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventListeners;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
@@ -128,9 +129,9 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getNewValue() == null)
-					onHideDataDomain((ATableBasedDataDomain) evt.getOldValue());
+					onHideDataDomain((IDataDomain) evt.getOldValue());
 				else
-					onShowDataDomain((ATableBasedDataDomain) evt.getNewValue());
+					onShowDataDomain((IDataDomain) evt.getNewValue());
 			}
 		});
 		final PropertyChangeListener recomputeListener = new PropertyChangeListener() {
@@ -320,20 +321,20 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		scoreQueryUI.setData(scoreQuery.call());
 	}
 
-	private void onShowDataDomain(ATableBasedDataDomain dataDomain) {
+	private void onShowDataDomain(IDataDomain dataDomain) {
 		recomputeScores();
 	}
 
-	private void onHideDataDomain(ATableBasedDataDomain dataDomain) {
-		boolean isCurrentlyVisible = false;
-		for (ScoringElement sp : scoreQueryUI.getData()) {
-			if (sp.getStratification().getDataDomain().equals(dataDomain)) {
-				isCurrentlyVisible = true;
-				break;
-			}
-		}
-		if (!isCurrentlyVisible) // if no element is currently visible with this data domain just ignore that change
-			return;
+	private void onHideDataDomain(IDataDomain dataDomain) {
+		// boolean isCurrentlyVisible = false;
+		// for (ScoringElement sp : scoreQueryUI.getData()) {
+		// if (sp.getStratification().getDataDomain().equals(dataDomain)) {
+		// isCurrentlyVisible = true;
+		// break;
+		// }
+		// }
+		// if (!isCurrentlyVisible) // if no element is currently visible with this data domain just ignore that change
+		// return;
 		// we have to update the list
 		recomputeScores();
 	}
@@ -376,7 +377,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 			return;
 		stratomex.removeBrick(tablePerspectiveID);
 		final ScoringElement selected = this.scoreQueryUI.getSelected();
-		if (selected != null && selected.getStratification().getID() == tablePerspectiveID) {
+		if (selected != null && selected.getPerspective() != null
+				&& selected.getPerspective().getID() == tablePerspectiveID) {
 			this.scoreQueryUI.setSelected(-1);
 		}
 	}

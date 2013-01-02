@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.api.score.EScoreType;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
@@ -51,6 +52,16 @@ public final class ExternalGroupLabelScore extends DefaultLabelProvider implemen
 		super("");
 	}
 
+	@Override
+	public void onRegistered() {
+
+	}
+
+	@Override
+	public boolean supports(EDataDomainQueryMode mode) {
+		return mode == EDataDomainQueryMode.TABLE_BASED;
+	}
+
 	public ExternalGroupLabelScore(String label, String perspectiveKey, boolean isRank,
 			Map<String, Float> scores) {
 		super(label);
@@ -65,7 +76,7 @@ public final class ExternalGroupLabelScore extends DefaultLabelProvider implemen
 	}
 
 	@Override
-	public String getAbbrevation() {
+	public String getAbbreviation() {
 		return "EX";
 	}
 
@@ -76,12 +87,13 @@ public final class ExternalGroupLabelScore extends DefaultLabelProvider implemen
 
 	@Override
 	public float getScore(ScoringElement elem) {
-		TablePerspective strat = elem.getStratification();
-		if (!perspectiveKey.equals(strat.getDimensionPerspective().getPerspectiveID())
-				&& !perspectiveKey.equals(strat.getRecordPerspective().getPerspectiveID()))
+		if (elem.getGroup() == null)
 			return Float.NaN;
 
-		if (elem.getGroup() == null)
+		TablePerspective strat = elem.getPerspective();
+
+		if (!perspectiveKey.equals(strat.getDimensionPerspective().getPerspectiveID())
+				&& !perspectiveKey.equals(strat.getRecordPerspective().getPerspectiveID()))
 			return Float.NaN;
 
 		Float v = this.scores.get(elem.getGroup().getLabel());

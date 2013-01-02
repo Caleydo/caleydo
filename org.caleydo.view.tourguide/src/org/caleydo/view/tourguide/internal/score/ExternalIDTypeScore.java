@@ -46,6 +46,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.api.score.ECombinedOperator;
 import org.caleydo.view.tourguide.api.score.EScoreType;
@@ -102,7 +103,17 @@ public final class ExternalIDTypeScore extends DefaultLabelProvider implements I
 	}
 
 	@Override
-	public String getAbbrevation() {
+	public void onRegistered() {
+
+	}
+
+	@Override
+	public boolean supports(EDataDomainQueryMode mode) {
+		return mode == EDataDomainQueryMode.TABLE_BASED;
+	}
+
+	@Override
+	public String getAbbreviation() {
 		return "EX";
 	}
 	@Override
@@ -121,7 +132,7 @@ public final class ExternalIDTypeScore extends DefaultLabelProvider implements I
 
 	@Override
 	public float getScore(ScoringElement elem) {
-		TablePerspective strat = elem.getStratification();
+		TablePerspective strat = elem.getPerspective();
 		Iterator<Integer> it;
 		IDType target;
 

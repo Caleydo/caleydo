@@ -32,8 +32,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
@@ -44,11 +45,11 @@ import org.caleydo.view.tourguide.internal.compute.ComputeScoreJob;
 import org.caleydo.view.tourguide.internal.compute.ComputeStratificationJob;
 import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
 import org.caleydo.view.tourguide.internal.query.RankedListBuilders;
-import org.caleydo.view.tourguide.internal.query.ScoreComparator;
 import org.caleydo.view.tourguide.internal.query.RankedListBuilders.IRankedListBuilder;
+import org.caleydo.view.tourguide.internal.query.ScoreComparator;
 import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.spi.compute.IComputedGroupScore;
-import org.caleydo.view.tourguide.spi.compute.IComputedReferenceStratificationScore;
+import org.caleydo.view.tourguide.spi.compute.IComputedStratificationScore;
 import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
 import org.caleydo.view.tourguide.spi.query.filter.IScoreFilter;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -56,7 +57,9 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -107,7 +110,7 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 			public void propertyChange(PropertyChangeEvent evt) {
 				IndexedPropertyChangeEvent ievt = (IndexedPropertyChangeEvent) evt;
 				if (ievt.getOldValue() == null) { // new value
-					onAddStratification((ATableBasedDataDomain) ievt.getNewValue());
+					onAddStratification((IDataDomain) ievt.getNewValue());
 				}
 			}
 		});
@@ -118,6 +121,21 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 				if (ievt.getNewValue() == null) { // removed filter
 					onRemovedFilter((IDataDomainFilter) ievt.getOldValue());
 				}
+			}
+		});
+		this.query.addPropertyChangeListener(DataDomainQuery.PROP_FILTER, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				IndexedPropertyChangeEvent ievt = (IndexedPropertyChangeEvent) evt;
+				if (ievt.getNewValue() == null) { // removed filter
+					onRemovedFilter((IDataDomainFilter) ievt.getOldValue());
+				}
+			}
+		});
+		this.query.addPropertyChangeListener(DataDomainQuery.PROP_MODE, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				onModeChanged((EDataDomainQueryMode) evt.getNewValue());
 			}
 		});
 	}
@@ -138,15 +156,17 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 		final List<CollapseScore> collapseScores = pair.getFirst();
 		final int factor = pair.getSecond();
 
-		Collection<TablePerspective> stratifications = query.call();
+		Collection<Pair<ARecordPerspective, TablePerspective>> stratifications = query.call();
 
 		Map<IScore, IScore> selections = new HashMap<IScore, IScore>(collapseScores.size());
 		IRankedListBuilder builder;
 		if (isGroupQuery()) { // we need to show strat,group pairs
-			Multimap<TablePerspective, Group> stratNGroups = query.apply(stratifications);
+			Function<Pair<ARecordPerspective, TablePerspective>, ARecordPerspective> mapFirst = Pair.mapFirst();
+			Multimap<ARecordPerspective, Group> stratNGroups = query.apply(Collections2.transform(stratifications,
+					mapFirst));
 			final int numberOfElements = stratNGroups.size() * factor;
 			builder = RankedListBuilders.create(top, numberOfElements, filter, orderBy);
-			buildAll2(builder, 0, collapseScores, selections, stratNGroups);
+			buildAll2(builder, 0, collapseScores, selections, stratNGroups, stratifications);
 		} else { // just stratifications
 			final int numberOfElements = stratifications.size() * factor;
 			builder = RankedListBuilders.create(top, numberOfElements, filter, orderBy);
@@ -186,13 +206,12 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	};
 
 	private static void buildAll(IRankedListBuilder builder, int i, List<CollapseScore> composites,
-			Map<IScore, IScore> selections,
-			Collection<TablePerspective> stratifications) {
+			Map<IScore, IScore> selections, Collection<Pair<ARecordPerspective, TablePerspective>> stratifications) {
 		if (i == composites.size()) {
 			HashMap<IScore, IScore> s = new HashMap<>(selections);
 			// last one trigger
-			for (TablePerspective elem : stratifications) {
-				builder.add(new ScoringElement(elem, s));
+			for (Pair<ARecordPerspective, TablePerspective> elem : stratifications) {
+				builder.add(new ScoringElement(elem.getFirst(), null, elem.getSecond(), s));
 			}
 		} else {
 			for (IScore child : composites.get(i)) {
@@ -204,17 +223,20 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	}
 
 	private static void buildAll2(IRankedListBuilder builder, int i, List<CollapseScore> composites,
-			Map<IScore, IScore> selections, Multimap<TablePerspective, Group> stratNGroups) {
+			Map<IScore, IScore> selections, Multimap<ARecordPerspective, Group> stratNGroups,
+			Collection<Pair<ARecordPerspective, TablePerspective>> stratifications) {
 		if (i == composites.size()) {
 			// last one trigger
 			HashMap<IScore, IScore> s = new HashMap<>(selections);
-			for (Map.Entry<TablePerspective, Group> elem : stratNGroups.entries())
-				builder.add(new ScoringElement(elem.getKey(), elem.getValue(), s));
+			for (Pair<ARecordPerspective, TablePerspective> p : stratifications) {
+				for (Group g : stratNGroups.get(p.getFirst()))
+					builder.add(new ScoringElement(p.getFirst(), g, p.getSecond(), s));
+			}
 		} else {
 			for (IScore child : composites.get(i)) {
 				selections.put(composites.get(i), child); // set actual
 				// trigger rest
-				buildAll2(builder, i + 1, composites, selections, stratNGroups);
+				buildAll2(builder, i + 1, composites, selections, stratNGroups, stratifications);
 			}
 		}
 	}
@@ -346,6 +368,8 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	}
 
 	public void addSelection(Collection<IScore> scores) {
+		// filter out that don't support the current mode
+		scores = Collections2.filter(scores, query.getMode().isSupportedBy());
 		if (scores.isEmpty())
 			return;
 		this.selection.addAll(scores);
@@ -388,11 +412,29 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 
 	protected void onRemovedFilter(IDataDomainFilter oldValue) {
 		// TODO find out what groups have changed
+
 	}
 
-	protected void onAddStratification(ATableBasedDataDomain dataDomain) {
+	protected void onAddStratification(IDataDomain iDataDomain) {
 		// compute all scores on the new stratifications
-		submitComputation(this.selection, query.getStratifications(dataDomain));
+		submitComputation(this.selection, query.getJustStratifications(iDataDomain));
+	}
+
+	protected void onModeChanged(EDataDomainQueryMode mode) {
+		//remove all not valid orders
+		for (IScore s : Lists.newArrayList(orderBy.keySet()))
+			if (!s.supports(mode))
+				sortBy(s, ESorting.NONE);
+
+		//remove all not valid scores
+		for(IScore s : Lists.newArrayList(selection))
+			if (!s.supports(mode))
+				removeSelection(s);
+
+		// remove all not valid filters
+		for (IScoreFilter sf : Lists.newArrayList(this.filter))
+			if (!sf.getReference().supports(mode))
+				removeFilter(sf);
 	}
 
 	public boolean isJobRunning() {
@@ -404,26 +446,29 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 	 * @param score
 	 * @param stratifications
 	 */
-	private void submitComputation(Iterable<IScore> score, Collection<TablePerspective> stratifications) {
+	private void submitComputation(Iterable<IScore> score, Collection<ARecordPerspective> stratifications) {
 		Collection<IScore> scores = Scores.flatten(score);
 
 		Job job = null;
 
 		// submit all stratifications computations
-		List<IComputedReferenceStratificationScore> stratScores = Lists.newArrayList(Iterables.filter(scores,
-				IComputedReferenceStratificationScore.class));
+		List<IComputedStratificationScore> stratScores = Lists.newArrayList(Iterables.filter(scores,
+				IComputedStratificationScore.class));
 		List<IComputedGroupScore> groupScores = Lists.newArrayList(Iterables.filter(scores, IComputedGroupScore.class));
+
+		final Function<Pair<ARecordPerspective, TablePerspective>, ARecordPerspective> mapFirst = Pair.mapFirst();
 
 		if (!stratScores.isEmpty() && groupScores.isEmpty()) {
 			//just stratifications
-			if (stratifications == null) // if null use the all
-				stratifications = query.call();
+			if (stratifications == null) {
+				stratifications = Collections2.transform(query.call(), mapFirst);
+			}
 			job = new ComputeStratificationJob(stratifications, stratScores);
 		} else if (!groupScores.isEmpty()) {
 			// both or just groups
 			if (stratifications == null)
-				stratifications = query.call();
-			Multimap<TablePerspective, Group> data = query.apply(stratifications);
+				stratifications = Collections2.transform(query.call(), mapFirst);
+			Multimap<ARecordPerspective, Group> data = query.apply(stratifications);
 			job = new ComputeScoreJob(data, stratScores, groupScores);
 		} else {
 			job = null;

@@ -24,13 +24,14 @@ import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.api.score.CombinedScore;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
@@ -76,6 +77,11 @@ public class LogRankMetricFactory implements IMetricFactory {
 		if (hasOne)
 			creator.addContextMenuItem(logRanks);
 	}
+
+	@Override
+	public boolean supports(EDataDomainQueryMode mode) {
+		return mode == EDataDomainQueryMode.TABLE_BASED;
+	}
 }
 
 class LogRankMetric extends DefaultComputedGroupScore {
@@ -85,7 +91,7 @@ class LogRankMetric extends DefaultComputedGroupScore {
 			final IGroupAlgorithm underlying = LogRank.get(clinicalVariable, clinical);
 
 			@Override
-			public IDType getTargetType(TablePerspective a, TablePerspective b) {
+			public IDType getTargetType(ARecordPerspective a, ARecordPerspective b) {
 				return underlying.getTargetType(a, b);
 			}
 
@@ -112,8 +118,13 @@ class LogRankPValue extends DefaultLabelProvider implements IScore {
 	}
 
 	@Override
-	public String getAbbrevation() {
+	public String getAbbreviation() {
 		return "LR-P";
+	}
+
+	@Override
+	public boolean supports(EDataDomainQueryMode mode) {
+		return mode == EDataDomainQueryMode.TABLE_BASED;
 	}
 
 	@Override

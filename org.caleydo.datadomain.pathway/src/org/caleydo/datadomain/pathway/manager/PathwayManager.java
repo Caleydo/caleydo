@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.specialized.Organism;
@@ -418,9 +419,12 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 		IDType davidIDType = IDType.getIDType("DAVID");
 		HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
+		IIDTypeMapper<Integer, Integer> mapper = dataDomain.getGeneIDMappingManager().getIDTypeMapper(idType,
+				davidIDType);
+
 		for (Integer gene : geneIDs) {
 
-			Set<Integer> davids = dataDomain.getGeneIDMappingManager().getIDAsSet(idType, davidIDType, gene);
+			Set<Integer> davids = mapper.apply(gene);
 			if (davids == null || davids.size() == 0)
 				continue;
 			for (Integer david : davids) {

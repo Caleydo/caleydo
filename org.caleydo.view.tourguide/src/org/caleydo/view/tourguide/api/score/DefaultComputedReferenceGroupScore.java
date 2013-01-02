@@ -19,9 +19,10 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 import org.caleydo.view.tourguide.spi.compute.IComputeScoreFilter;
 import org.caleydo.view.tourguide.spi.compute.IComputedReferenceGroupScore;
@@ -30,11 +31,21 @@ public class DefaultComputedReferenceGroupScore extends AReferenceGroupScore imp
 	private final IComputeScoreFilter filter;
 	private final IGroupAlgorithm algorithm;
 
-	public DefaultComputedReferenceGroupScore(String label, TablePerspective stratification, Group group,
+	public DefaultComputedReferenceGroupScore(String label, RecordPerspective stratification, Group group,
 			IGroupAlgorithm algorithm, IComputeScoreFilter filter) {
 		super(label, stratification, group);
 		this.filter = filter == null ? ComputeScoreFilters.SELF : filter;
 		this.algorithm = algorithm;
+	}
+
+	@Override
+	public void onRegistered() {
+
+	}
+
+	@Override
+	public boolean supports(EDataDomainQueryMode mode) {
+		return mode == EDataDomainQueryMode.TABLE_BASED;
 	}
 
 	@Override
@@ -48,7 +59,7 @@ public class DefaultComputedReferenceGroupScore extends AReferenceGroupScore imp
 	}
 
 	@Override
-	public String getAbbrevation() {
+	public String getAbbreviation() {
 		return algorithm.getAbbreviation();
 	}
 

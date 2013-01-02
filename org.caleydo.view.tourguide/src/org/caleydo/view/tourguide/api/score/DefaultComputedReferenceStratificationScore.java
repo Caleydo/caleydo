@@ -19,22 +19,27 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 import org.caleydo.view.tourguide.spi.compute.IComputeScoreFilter;
-import org.caleydo.view.tourguide.spi.compute.IComputedStratificationScore;
+import org.caleydo.view.tourguide.spi.compute.IComputedReferenceStratificationScore;
 
-public class DefaultComputedStratificationScore extends AComputedStratificationScore implements
-		IComputedStratificationScore {
-	private final IComputeScoreFilter filter;
+/**
+ * @author Samuel Gratzl
+ *
+ */
+public class DefaultComputedReferenceStratificationScore extends AReferenceStratificationScore implements
+		IComputedReferenceStratificationScore {
 	private final IStratificationAlgorithm algorithm;
+	private final IComputeScoreFilter filter;
 
-	public DefaultComputedStratificationScore(String label, IStratificationAlgorithm algorithm,
-			IComputeScoreFilter filter) {
-		super(label);
-		this.filter = filter == null ? ComputeScoreFilters.SELF : filter;
+	public DefaultComputedReferenceStratificationScore(String label, ARecordPerspective reference,
+			IStratificationAlgorithm algorithm, IComputeScoreFilter filter) {
+		super(label, reference);
 		this.algorithm = algorithm;
+		this.filter = filter == null ? ComputeScoreFilters.SELF : filter;
 	}
 
 	@Override
@@ -65,7 +70,7 @@ public class DefaultComputedStratificationScore extends AComputedStratificationS
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
+		int result = super.hashCode();
 		result = prime * result + ((algorithm == null) ? 0 : algorithm.hashCode());
 		result = prime * result + ((filter == null) ? 0 : filter.hashCode());
 		return result;
@@ -75,11 +80,11 @@ public class DefaultComputedStratificationScore extends AComputedStratificationS
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		DefaultComputedStratificationScore other = (DefaultComputedStratificationScore) obj;
+		DefaultComputedReferenceStratificationScore other = (DefaultComputedReferenceStratificationScore) obj;
 		if (algorithm == null) {
 			if (other.algorithm != null)
 				return false;

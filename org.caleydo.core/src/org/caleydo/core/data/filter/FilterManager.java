@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.UnRegisterListenersOnEvent;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
@@ -60,7 +60,7 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 	// private final IFilterFactory<FilterType> factory;
 	private ArrayList<FilterType> filterPipe;
 	protected PerspectiveType perspective;
-	protected ATableBasedDataDomain dataDomain;
+	protected IDataDomain dataDomain;
 
 	EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 
@@ -73,7 +73,7 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 	 * @param virtualArray
 	 * @param factory
 	 */
-	public FilterManager(ATableBasedDataDomain dataDomain, PerspectiveType perspective) {
+	public FilterManager(IDataDomain dataDomain, PerspectiveType perspective) {
 		this.dataDomain = dataDomain;
 
 		this.perspective = perspective;

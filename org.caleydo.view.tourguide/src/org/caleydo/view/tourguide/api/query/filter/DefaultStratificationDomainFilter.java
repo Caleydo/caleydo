@@ -19,21 +19,21 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.query.filter;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
 
 /**
  * filter out if the table perspective is a default record perspective
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class DefaultStratificationDomainFilter implements IDataDomainFilter {
 
 	@Override
-	public boolean apply(Pair<TablePerspective, Group> pair) {
-		return !pair.getFirst().getRecordPerspective().isDefault();
+	public boolean apply(Pair<? extends ARecordPerspective, Group> pair) {
+		return !pair.getFirst().isDefault();
 	}
 }

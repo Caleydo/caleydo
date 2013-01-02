@@ -23,9 +23,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.CollapseScore;
 import org.caleydo.view.tourguide.api.score.DefaultComputedReferenceGroupScore;
 import org.caleydo.view.tourguide.api.score.ui.ACreateGroupScoreDialog;
@@ -46,37 +47,44 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class JaccardIndexScoreFactory implements IScoreFactory {
-	private IRegisteredScore createJaccard(String label, TablePerspective reference, Group group) {
+	private IRegisteredScore createJaccard(String label, RecordPerspective reference, Group group) {
 		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(), null);
 	}
 
-	private IRegisteredScore createJaccardME(String label, TablePerspective reference, Group group) {
+	private IRegisteredScore createJaccardME(String label, RecordPerspective reference, Group group) {
 		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(),
 				ComputeScoreFilters.MUTUAL_EXCLUSIVE);
 	}
 
 	@Override
-	public Iterable<Pair<String, IScore>> createGroupEntries(TablePerspective strat, Group group) {
-		Collection<Pair<String, IScore>> col = new ArrayList<>();
-		col.add(Pair.make("Score group", (IScore) createJaccard(null, strat, group)));
-		col.add(Pair.make("Score group  (Mutual Exclusive)", (IScore) createJaccardME(null, strat, group)));
+	public Iterable<ScoreEntry> createGroupEntries(TablePerspective strat, Group group) {
+		Collection<ScoreEntry> col = new ArrayList<>();
+		col.add(new ScoreEntry("Score group", (IScore) createJaccard(null, strat.getRecordPerspective(), group)));
+		col.add(new ScoreEntry("Score group  (Mutual Exclusive)", (IScore) createJaccardME(null,
+				strat.getRecordPerspective(), group)));
 		return col;
 	}
 
 	@Override
-	public Iterable<Pair<String, IScore>> createStratEntries(TablePerspective strat) {
-		Collection<Pair<String, IScore>> col = new ArrayList<>();
-		CollapseScore composite = new CollapseScore(strat.getRecordPerspective().getLabel());
-		for (Group group : strat.getRecordPerspective().getVirtualArray().getGroupList()) {
-			composite.add(createJaccard(null, strat, group));
+	public Iterable<ScoreEntry> createStratEntries(TablePerspective strat) {
+		Collection<ScoreEntry> col = new ArrayList<>();
+		final RecordPerspective rs = strat.getRecordPerspective();
+		CollapseScore composite = new CollapseScore(rs.getLabel());
+		for (Group group : rs.getVirtualArray().getGroupList()) {
+			composite.add(createJaccard(null, rs, group));
 		}
-		col.add(Pair.make("Score all groups in column", (IScore) composite));
-		composite = new CollapseScore(strat.getRecordPerspective().getLabel());
-		for (Group group : strat.getRecordPerspective().getVirtualArray().getGroupList()) {
-			composite.add(createJaccardME(null, strat, group));
+		col.add(new ScoreEntry("Score all groups in column", (IScore) composite));
+		composite = new CollapseScore(rs.getLabel());
+		for (Group group : rs.getVirtualArray().getGroupList()) {
+			composite.add(createJaccardME(null, rs, group));
 		}
-		col.add(Pair.make("Score all groups in column (Mutual Exclusive)", (IScore) composite));
+		col.add(new ScoreEntry("Score all groups in column (Mutual Exclusive)", (IScore) composite));
 		return col;
+	}
+
+	@Override
+	public boolean supports(EDataDomainQueryMode mode) {
+		return mode == EDataDomainQueryMode.TABLE_BASED;
 	}
 
 	@Override
@@ -108,9 +116,9 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 		protected IRegisteredScore createScore(String label, TablePerspective strat, Group g) {
 			boolean m = mututalExclusiveUI.getSelection();
 			if (m)
-				return createJaccardME(label, strat, g);
+				return createJaccardME(label, strat.getRecordPerspective(), g);
 			else
-				return createJaccard(label, strat, g);
+				return createJaccard(label, strat.getRecordPerspective(), g);
 		}
 	}
 }

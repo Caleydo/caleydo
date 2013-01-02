@@ -24,16 +24,16 @@ import java.util.Map;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.util.ExtensionUtils;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
 import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
-import org.caleydo.view.tourguide.spi.score.IScore;
+import org.caleydo.view.tourguide.spi.IScoreFactory.ScoreEntry;
 
 import com.google.common.collect.Lists;
 
@@ -48,17 +48,19 @@ public class ScoreFactories {
 			"name",
 			"class", IScoreFactory.class);
 
-	public static void addCreateItems(ContextMenuCreator creator, ScoreQueryUI sender) {
-		for (String name : factories.keySet()) {
-			creator.addContextMenuItem(new GenericContextMenuItem("Create " + name, new CreateScoreEvent(name, sender)));
+	public static void addCreateItems(ContextMenuCreator creator, ScoreQueryUI sender, EDataDomainQueryMode mode) {
+		for (Map.Entry<String, IScoreFactory> entry : factories.entrySet()) {
+			if (entry.getValue().supports(mode))
+				creator.addContextMenuItem(new GenericContextMenuItem("Create " + entry.getKey(), new CreateScoreEvent(
+						entry.getKey(), sender)));
 		}
 	}
 
 	public static Iterable<AContextMenuItem> createGroupEntries(TablePerspective strat, Group group) {
 		Collection<AContextMenuItem> items = Lists.newArrayList();
 		for (IScoreFactory f : factories.values()) {
-			for (Pair<String, IScore> p : f.createGroupEntries(strat, group)) {
-				items.add(new GenericContextMenuItem(p.getFirst(), new AddScoreColumnEvent(p.getSecond(), null)));
+			for (ScoreEntry p : f.createGroupEntries(strat, group)) {
+				items.add(new GenericContextMenuItem(p.getLabel(), new AddScoreColumnEvent(p.getScores(), null)));
 			}
 		}
 		return items;
@@ -67,8 +69,8 @@ public class ScoreFactories {
 	public static Collection<AContextMenuItem> createStratEntries(TablePerspective strat) {
 		Collection<AContextMenuItem> items = Lists.newArrayList();
 		for (IScoreFactory f : factories.values()) {
-			for (Pair<String, IScore> p : f.createStratEntries(strat)) {
-				items.add(new GenericContextMenuItem(p.getFirst(), new AddScoreColumnEvent(p.getSecond(), null)));
+			for (ScoreEntry p : f.createStratEntries(strat)) {
+				items.add(new GenericContextMenuItem(p.getLabel(), new AddScoreColumnEvent(p.getScores(), null)));
 			}
 		}
 		return items;

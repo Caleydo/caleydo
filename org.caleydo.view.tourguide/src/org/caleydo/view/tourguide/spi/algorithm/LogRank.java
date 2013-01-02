@@ -28,7 +28,7 @@ import java.util.TreeSet;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 
@@ -57,7 +57,7 @@ public class LogRank implements IGroupAlgorithm {
 	}
 
 	@Override
-	public IDType getTargetType(TablePerspective a, TablePerspective b) {
+	public IDType getTargetType(ARecordPerspective a, ARecordPerspective b) {
 		return clinical.getRecordIDType();
 	}
 

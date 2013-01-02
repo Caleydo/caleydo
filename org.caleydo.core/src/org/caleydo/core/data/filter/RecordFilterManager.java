@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.data.filter;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.filter.event.CombineRecordFilterEvent;
 import org.caleydo.core.data.filter.event.CombineRecordFilterListener;
 import org.caleydo.core.data.filter.event.MoveRecordFilterListener;
@@ -30,7 +30,7 @@ import org.caleydo.core.data.filter.event.ReEvaluateRecordFilterListEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateRecordFilterListListener;
 import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveRecordFilterListener;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.events.RecordVADeltaEvent;
@@ -41,7 +41,8 @@ import org.caleydo.core.data.virtualarray.events.RecordVADeltaEvent;
  * @author Alexander Lex
  */
 public class RecordFilterManager
-	extends FilterManager<RecordPerspective, RecordVADelta, RecordFilter, RecordVirtualArray> {
+ extends
+		FilterManager<ARecordPerspective, RecordVADelta, RecordFilter, RecordVirtualArray> {
 
 	// private RecordVADeltaListener recordVAUpdateListener;
 	private RemoveRecordFilterListener removeContentFilterListener;
@@ -50,7 +51,7 @@ public class RecordFilterManager
 	private NewRecordFilterListener newContentFilterListener;
 	private ReEvaluateRecordFilterListListener reEvaluateContentFilterListListener;
 
-	public RecordFilterManager(ATableBasedDataDomain dataDomain, RecordPerspective perspective) {
+	public RecordFilterManager(IDataDomain dataDomain, ARecordPerspective perspective) {
 		super(dataDomain, perspective);
 	}
 

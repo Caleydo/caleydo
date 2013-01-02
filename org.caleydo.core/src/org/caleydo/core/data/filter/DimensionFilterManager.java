@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.data.filter;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.filter.event.MoveDimensionFilterEvent;
 import org.caleydo.core.data.filter.event.MoveDimensionFilterListener;
 import org.caleydo.core.data.filter.event.NewDimensionFilterEvent;
@@ -46,7 +46,7 @@ public class DimensionFilterManager
 	private NewDimensionFilterListener newDimensionFilterListener;
 	private ReEvaluateDimensionFilterListListener reEvaluateDimensionFilterListListener;
 
-	public DimensionFilterManager(ATableBasedDataDomain dataDomain, DimensionPerspective perspective) {
+	public DimensionFilterManager(IDataDomain dataDomain, DimensionPerspective perspective) {
 		super(dataDomain, perspective);
 
 	}

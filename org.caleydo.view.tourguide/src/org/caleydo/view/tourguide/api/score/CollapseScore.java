@@ -25,8 +25,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.spi.compute.ICompositeScore;
@@ -58,6 +60,19 @@ public class CollapseScore extends DefaultLabelProvider implements ICompositeSco
 		this.children = new ArrayList<>();
 		for (IScore child : children)
 			add(child);
+	}
+
+	@Override
+	public void onRegistered() {
+
+	}
+
+	@Override
+	public boolean supports(EDataDomainQueryMode mode) {
+		for (IScore child : children)
+			if (!child.supports(mode))
+				return false;
+		return true;
 	}
 
 	public void add(IScore child) {
@@ -109,10 +124,10 @@ public class CollapseScore extends DefaultLabelProvider implements ICompositeSco
 	 * @return
 	 */
 	@Override
-	public TablePerspective getStratification() {
-		TablePerspective r = null;
+	public ARecordPerspective getStratification() {
+		ARecordPerspective r = null;
 		for (IScore child : Scores.flatten(this)) {
-			TablePerspective c = null;
+			ARecordPerspective c = null;
 			if (child instanceof IStratificationScore) {
 				c = ((IStratificationScore) child).getStratification();
 			} else { // not a stratifiation score
@@ -129,10 +144,10 @@ public class CollapseScore extends DefaultLabelProvider implements ICompositeSco
 	}
 
 	@Override
-	public String getAbbrevation() {
+	public String getAbbreviation() {
 		Set<String> abbrs = Sets.newHashSet();
 		for (IScore child : this)
-			abbrs.add(child.getAbbrevation());
+			abbrs.add(child.getAbbreviation());
 		if (abbrs.size() == 1)
 			return abbrs.iterator().next();
 		return "CL";

@@ -20,6 +20,7 @@
 package org.caleydo.datadomain.pathway;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -40,10 +41,14 @@ import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.pathway.data.PathwayRecordPerspective;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+
+import com.google.common.collect.Lists;
 
 /**
  * The data domain for pathways triggers the loading of the pathways from KEGG
@@ -84,6 +89,12 @@ public class PathwayDataDomain
 	 * IDType for metabolites.
 	 */
 	protected IDType metaboliteIDType;
+
+	/**
+	 * a list of special record perspectives holding a pathway and their corresponding david ids
+	 */
+	@XmlTransient
+	private Collection<PathwayRecordPerspective> pathwayRecordPerspectives = Lists.newArrayList();
 
 	/**
 	 * Constructor.
@@ -146,7 +157,21 @@ public class PathwayDataDomain
 
 		PathwayManager.get().notifyPathwayLoadingFinished(true);
 
+		pathwayRecordPerspectives.clear();
+		for (PathwayGraph pathway : PathwayManager.get().getAllItems()) {
+			PathwayRecordPerspective p = new PathwayRecordPerspective(pathway, this);
+			p.reset();
+			pathwayRecordPerspectives.add(p);
+		}
+
 		super.run();
+	}
+
+	/**
+	 * @return the pathwayRecordPerspectives, see {@link #pathwayRecordPerspectives}
+	 */
+	public Collection<PathwayRecordPerspective> getPathwayRecordPerspectives() {
+		return pathwayRecordPerspectives;
 	}
 
 	public IDType getPrimaryIDType() {

@@ -17,26 +17,45 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.spi.score;
+package org.caleydo.view.tourguide.api.score;
 
-import org.caleydo.core.util.base.ILabelProvider;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
-import org.caleydo.view.tourguide.api.score.EScoreType;
+import org.caleydo.view.tourguide.spi.score.IScore;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IScore extends ILabelProvider {
-	public boolean supports(EDataDomainQueryMode mode);
+public abstract class AComputedStratificationScore extends DefaultLabelProvider implements IScore {
+	protected final Map<String, Float> scores = new ConcurrentHashMap<>();
 
-	public EScoreType getScoreType();
+	public AComputedStratificationScore(String label) {
+		super(label);
+	}
 
-	public float getScore(ScoringElement elem);
+	public boolean contains(ARecordPerspective elem) {
+		// have in cache or the same
+		return scores.containsKey(elem.getPerspectiveID());
+	}
 
-	/**
-	 * @return
-	 */
-	public String getAbbreviation();
+	public void put(ARecordPerspective elem, float value) {
+		scores.put(elem.getPerspectiveID(), value);
+	}
+
+	@Override
+	public float getScore(ScoringElement elem) {
+		ARecordPerspective p = elem.getStratification();
+		Float f = scores.get(p.getPerspectiveID());
+		return f == null ? Float.NaN : f.floatValue();
+	}
+
+	@Override
+	public final EScoreType getScoreType() {
+		return EScoreType.STRATIFICATION_SCORE;
+	}
 }

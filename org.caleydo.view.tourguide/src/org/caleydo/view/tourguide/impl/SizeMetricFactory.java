@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.api.score.EScoreType;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
@@ -40,6 +41,11 @@ public class SizeMetricFactory implements IMetricFactory {
 		if (!visible.contains(SizeMetric.get()))
 			creator.addContextMenuItem(new GenericContextMenuItem("Add Size Metric", new AddScoreColumnEvent(SizeMetric
 					.get(), sender)));
+	}
+
+	@Override
+	public boolean supports(EDataDomainQueryMode mode) {
+		return true;
 	}
 }
 
@@ -61,12 +67,17 @@ class SizeMetric implements IScore {
 	}
 
 	@Override
+	public boolean supports(EDataDomainQueryMode mode) {
+		return true;
+	}
+
+	@Override
 	public String getLabel() {
 		return "Size";
 	}
 
 	@Override
-	public String getAbbrevation() {
+	public String getAbbreviation() {
 		return "SI";
 	}
 
@@ -83,7 +94,7 @@ class SizeMetric implements IScore {
 	@Override
 	public float getScore(ScoringElement elem) {
 		if (elem.getGroup() == null) {
-			return elem.getStratification().getNrRecords();
+			return elem.getStratification().getVirtualArray().size();
 		} else
 			return elem.getGroup().getSize();
 	}

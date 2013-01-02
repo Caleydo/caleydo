@@ -64,7 +64,7 @@ public class AddToStratomexColumn extends ATableColumn {
 
 	public ElementLayout createBodyItem(ScoringElement elem, int i) {
 		// button only available if not already part of stratomex
-		if (this.stratomex.contains(elem.getStratification())) {
+		if (this.stratomex.contains(elem.getPerspective())) {
 			return createXSpacer(16);
 		} else {
 			return createButton(view, new Button(ScoreQueryUI.ADD_TO_STRATOMEX, i, EIconTextures.GROUPER_COLLAPSE_PLUS));

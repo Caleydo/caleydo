@@ -20,6 +20,7 @@
 package org.caleydo.view.tourguide.api.score;
 
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 import org.caleydo.view.tourguide.spi.compute.IComputeScoreFilter;
 import org.caleydo.view.tourguide.spi.compute.IComputedGroupScore;
@@ -35,12 +36,22 @@ public class DefaultComputedGroupScore extends AComputedGroupScore implements IC
 	}
 
 	@Override
+	public void onRegistered() {
+
+	}
+
+	@Override
+	public boolean supports(EDataDomainQueryMode mode) {
+		return mode == EDataDomainQueryMode.TABLE_BASED;
+	}
+
+	@Override
 	public IGroupAlgorithm getAlgorithm() {
 		return algorithm;
 	}
 
 	@Override
-	public String getAbbrevation() {
+	public String getAbbreviation() {
 		return algorithm.getAbbreviation();
 	}
 

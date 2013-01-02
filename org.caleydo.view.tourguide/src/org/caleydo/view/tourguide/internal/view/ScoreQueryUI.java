@@ -44,6 +44,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.query.ScoreQuery;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
@@ -363,14 +364,16 @@ public class ScoreQueryUI extends Row {
 		Collections.sort(scores, new LabelComparator());
 		final Set<IScore> visible = getVisibleColumns();
 
+		EDataDomainQueryMode mode = this.query.getQuery().getMode();
+
 		ContextMenuCreator creator = view.getContextMenuCreator();
-		ScoreFactories.addCreateItems(creator, this);
+		ScoreFactories.addCreateItems(creator, this, mode);
 		creator.addSeparator();
-		MetricFactories.addCreateItems(creator, visible, this);
+		MetricFactories.addCreateItems(creator, visible, this, mode);
 		creator.addSeparator();
 
 		for (IScore s : scores) {
-			if (visible.contains(s))
+			if (visible.contains(s) || !s.supports(mode))
 				continue;
 			creator.addContextMenuItem(new GenericContextMenuItem("Add " + s.getLabel(), new AddScoreColumnEvent(s,
 					this)));

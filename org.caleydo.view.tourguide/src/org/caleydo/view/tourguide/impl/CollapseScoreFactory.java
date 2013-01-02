@@ -23,11 +23,10 @@ import java.util.Collections;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.util.collection.Pair;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
-import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Shell;
 
@@ -37,13 +36,18 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class CollapseScoreFactory implements IScoreFactory {
 	@Override
-	public Iterable<Pair<String, IScore>> createGroupEntries(TablePerspective strat, Group group) {
+	public Iterable<ScoreEntry> createGroupEntries(TablePerspective strat, Group group) {
 		return Collections.emptyList();
 	}
 
 	@Override
-	public Iterable<Pair<String, IScore>> createStratEntries(TablePerspective strat) {
+	public Iterable<ScoreEntry> createStratEntries(TablePerspective strat) {
 		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean supports(EDataDomainQueryMode mode) {
+		return true;
 	}
 
 	@Override

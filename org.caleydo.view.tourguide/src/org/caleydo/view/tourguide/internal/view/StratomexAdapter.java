@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -96,7 +97,7 @@ public class StratomexAdapter {
 		if (currentPreview != null) {
 			TablePerspective bak = currentPreview;
 			removePreview();
-			clearHighlightRows(bak);
+			clearHighlightRows(bak.getRecordPerspective());
 		}
 		this.brickColumns.clear();
 	}
@@ -157,7 +158,7 @@ public class StratomexAdapter {
 	public void updatePreview(ScoringElement old, ScoringElement new_, Collection<IScore> visibleColumns) {
 		if (!hasOne())
 			return;
-		TablePerspective strat = new_ == null ? null : new_.getStratification();
+		TablePerspective strat = new_ == null ? null : new_.getPerspective();
 		Group group = new_ == null ? null : new_.getGroup();
 
 		// handle stratification changes
@@ -183,14 +184,14 @@ public class StratomexAdapter {
 			}
 		} else if (currentPreview != null) { // last
 			removePreview();
-		} else if (new_ != null) { // first
+		} else if (strat != null) { // first
 			createPreview(strat, group);
 		}
 
 		// highlight connection band
-		if (new_ != null)
+		if (strat != null)
 			hightlightRows(new_, visibleColumns);
-		else if (old != null) {
+		else if (old != null && old.getPerspective() != null) {
 			clearHighlightRows(old.getStratification());
 		}
 	}
@@ -221,8 +222,8 @@ public class StratomexAdapter {
 		this.currentPreviewGroup = null;
 	}
 
-	private void clearHighlightRows(TablePerspective strat) {
-		AEvent event = new SelectElementsEvent(Collections.<Integer> emptyList(), strat.getRecordPerspective()
+	private void clearHighlightRows(ARecordPerspective strat) {
+		AEvent event = new SelectElementsEvent(Collections.<Integer> emptyList(), strat
 				.getIdType(),
 				this.previewSelectionType, receiver, this);
 		event.setDataDomainID(strat.getDataDomain().getDataDomainID());
@@ -234,7 +235,7 @@ public class StratomexAdapter {
 
 		AEvent event = new SelectElementsEvent(intersection.getFirst(), intersection.getSecond(),
 				this.previewSelectionType, receiver, this);
-		event.setDataDomainID(new_.getStratification().getDataDomain().getDataDomainID());
+		event.setDataDomainID(new_.getDataDomain().getDataDomainID());
 		triggerEvent(event);
 	}
 
@@ -248,7 +249,10 @@ public class StratomexAdapter {
 	public void addToStratomex(ScoringElement elem) {
 		if (!hasOne())
 			return;
-		TablePerspective strat = elem.getStratification();
+		TablePerspective strat = elem.getPerspective();
+		// TODO
+		if (strat == null)
+			return;
 		if (strat.equals(currentPreview)) { // its the preview
 			temporaryPreview = false; // definitely explicit
 			removePreview();

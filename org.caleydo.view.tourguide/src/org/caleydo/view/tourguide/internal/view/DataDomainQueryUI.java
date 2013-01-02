@@ -24,20 +24,20 @@ import static org.caleydo.core.view.opengl.layout.ElementLayouts.createLabel;
 import static org.caleydo.core.view.opengl.layout.ElementLayouts.createXSpacer;
 import static org.caleydo.core.view.opengl.layout.ElementLayouts.createYSpacer;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.io.gui.dataimport.widget.BooleanCallback;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
-import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout.Dims;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -45,6 +45,7 @@ import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.tourguide.api.query.DataDomainQuery;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.query.filter.SpecificDataDomainFilter;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.event.ImportExternalScoreEvent;
@@ -63,7 +64,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Samuel Gratzl
  *
  */
-public class DataDomainQueryUI extends Row {
+public class DataDomainQueryUI extends Column {
 	private static final String TOGGLE_DATA_DOMAIN = "TOGGLE_DATA_DOMAIN";
 	private static final String DATADOMAIN_SELECTION = "DATADOMAIN_SELECTION";
 	private static final int COL0_BUTTON = 20;
@@ -75,6 +76,13 @@ public class DataDomainQueryUI extends Row {
 	private final AGLView view;
 
 	private final ElementLayout colSpacer = createXSpacer(3);
+
+	private PropertyChangeListener selectionListener = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			onSelectionChanged((IDataDomain) evt.getOldValue(), (IDataDomain) evt.getNewValue());
+		}
+	};
 
 	private DataDomainQuery query;
 
@@ -102,28 +110,32 @@ public class DataDomainQueryUI extends Row {
 		init();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.view.opengl.layout.ALayoutContainer#render(javax.media.opengl.GL2)
-	 */
-	@Override
-	public void render(GL2 gl) {
-		// System.out.println(getPixelSizeX() + " " + getPixelSizeY());
-		super.render(gl);
-	}
-
 	public void init() {
 		this.setGrabX(true);
+		this.setBottomUp(false);
 
 		final ElementLayout rowSpace = createYSpacer(3);
+
+		int w = 0;
+
+		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values()) {
+			Row row = new Row();
+			addAll(rowSpace, mode.getAllDataDomains(), row);
+			this.add(row);
+			w += row.getPixelSizeY();
+		}
+		setPixelSizeY(w);
+	}
+
+	private void addAll(final ElementLayout rowSpace, Iterable<? extends IDataDomain> dataDomains, Row row) {
+		row.setGrabX(true);
 
 		Column numerical = new Column();
 		numerical.setBottomUp(false);
 		numerical.setPixelSizeX(COL0_BUTTON + 3 + COL1_DATADOMAIN_TYPE + 3 + COL3_NAME);
 		numerical.setYDynamic(true);
 		numerical.add(createYSpacer(20));
-		this.add(numerical);
+		row.add(numerical);
 		int num = 0;
 
 		Column categorical = new Column();
@@ -132,10 +144,10 @@ public class DataDomainQueryUI extends Row {
 		categorical.setYDynamic(true);
 		categorical.add(createYSpacer(20));
 		int cat = 0;
-		this.add(categorical);
+		row.add(categorical);
 
-		int i = 0;
-		for (ATableBasedDataDomain dataDomain : DataDomainQuery.allDataDomains()) {
+		int i = rows.size();
+		for (IDataDomain dataDomain : dataDomains) {
 			DataDomainRow r = new DataDomainRow(view, dataDomain, i++);
 			rows.add(r);
 			if (DataDomainOracle.isCategoricalDataDomain(dataDomain)) {
@@ -146,12 +158,15 @@ public class DataDomainQueryUI extends Row {
 				num++;
 			}
 		}
-		this.setPixelSizeY(20 + Math.max(cat, num) * (3 + ROW_HEIGHT));
+		row.setPixelSizeY(20 + Math.max(cat, num) * (3 + ROW_HEIGHT));
 	}
 
 	public void setQuery(DataDomainQuery query) {
+		if (this.query != null)
+			this.query.removePropertyChangeListener(DataDomainQuery.PROP_SELECTION, selectionListener);
 		this.query = query;
-		Collection<ATableBasedDataDomain> current = query.getSelection();
+		this.query.addPropertyChangeListener(DataDomainQuery.PROP_SELECTION, selectionListener);
+		Collection<IDataDomain> current = query.getSelection();
 
 		for (DataDomainRow row : rows) {
 			row.setSelected(current.contains(row.dataDomain));
@@ -167,15 +182,28 @@ public class DataDomainQueryUI extends Row {
 			updateSubLayout();
 	}
 
+	protected void onSelectionChanged(IDataDomain oldValue, IDataDomain newValue) {
+		if (oldValue != null)
+			getRow(oldValue).setSelected(false);
+		if (newValue != null)
+			getRow(newValue).setSelected(true);
+	}
+
+	private DataDomainRow getRow(IDataDomain d) {
+		for (DataDomainRow r : rows)
+			if (r.dataDomain.equals(d))
+				return r;
+		return null;
+	}
+
 	public DataDomainQuery getQuery() {
 		return query;
 	}
 
 	protected void toggleSelection(DataDomainRow dataDomainRow) {
-		dataDomainRow.toggleSelected();
 		if (query == null)
 			return;
-		if (dataDomainRow.isSelected())
+		if (!dataDomainRow.isSelected())
 			query.addSelection(dataDomainRow.dataDomain);
 		else
 			query.removeSelection(dataDomainRow.dataDomain);
@@ -207,27 +235,29 @@ public class DataDomainQueryUI extends Row {
 
 	protected void onOpenDataDomainContextMenu(DataDomainRow dataDomainRow) {
 		ContextMenuCreator creator = view.getContextMenuCreator();
-		ATableBasedDataDomain dataDomain = dataDomainRow.dataDomain;
-		creator.addContextMenuItem(new GenericContextMenuItem("Load Scoring for "
-				+ dataDomain.getDimensionIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain, true,
-				ExternalIDTypeScore.class)));
-		creator.addContextMenuItem(new GenericContextMenuItem("Load Scoring for "
-				+ dataDomain.getRecordIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain, false,
-				ExternalIDTypeScore.class)));
-		creator.addContextMenuItem(new GenericContextMenuItem("Load Grouping Scoring for "
-				+ dataDomain.getDimensionIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain, true,
-				ExternalGroupLabelScore.class)));
-		creator.addContextMenuItem(new GenericContextMenuItem("Load Grouping Scoring for "
-				+ dataDomain.getRecordIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain, false,
-				ExternalGroupLabelScore.class)));
+		if (dataDomainRow.dataDomain instanceof ATableBasedDataDomain) {
+			ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) dataDomainRow.dataDomain;
+			creator.addContextMenuItem(new GenericContextMenuItem("Load Scoring for "
+					+ dataDomain.getDimensionIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain,
+					true, ExternalIDTypeScore.class)));
+			creator.addContextMenuItem(new GenericContextMenuItem("Load Scoring for "
+					+ dataDomain.getRecordIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain,
+					false, ExternalIDTypeScore.class)));
+			creator.addContextMenuItem(new GenericContextMenuItem("Load Grouping Scoring for "
+					+ dataDomain.getDimensionIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain,
+					true, ExternalGroupLabelScore.class)));
+			creator.addContextMenuItem(new GenericContextMenuItem("Load Grouping Scoring for "
+					+ dataDomain.getRecordIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain,
+					false, ExternalGroupLabelScore.class)));
+		}
 	}
 
 	private class DataDomainRow extends Row {
-		private final ATableBasedDataDomain dataDomain;
+		private final IDataDomain dataDomain;
 		private final ElementLayout button;
 		private SpecificDataDomainFilter filter;
 
-		public DataDomainRow(AGLView view, ATableBasedDataDomain dataDomain, int i) {
+		public DataDomainRow(AGLView view, IDataDomain dataDomain, int i) {
 			this.dataDomain = dataDomain;
 
 			this.setGrabX(true);
@@ -269,9 +299,6 @@ public class DataDomainQueryUI extends Row {
 
 		public boolean isSelected() {
 			return TourGuideRenderStyle.ICON_ACCEPT.equals(getButtonRenderer().getImagePath());
-		}
-		public void toggleSelected() {
-			setSelected(!isSelected());
 		}
 
 		private AdvancedTextureRenderer getButtonRenderer() {

@@ -26,7 +26,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.view.tourguide.api.query.DataDomainQuery;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.score.CollapseScore;
 import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
@@ -99,7 +99,7 @@ public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
 		this.dataDomainUI.setContentProvider(ArrayContentProvider.getInstance());
 		this.dataDomainUI.setLabelProvider(new CaleydoLabelProvider());
 		this.dataDomainUI.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		this.dataDomainUI.setInput(DataDomainQuery.allDataDomains());
+		this.dataDomainUI.setInput(EDataDomainQueryMode.TABLE_BASED.getAllDataDomains());
 		this.dataDomainUI.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -144,7 +144,7 @@ public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
 			this.stratificationUI.getCombo().setEnabled(false);
 		} else {
 			List<TablePerspective> data = new ArrayList<TablePerspective>(sender.getQuery().getQuery()
-					.getStratifications(dataDomain));
+					.getPerspectives(dataDomain));
 			this.stratificationUI.setInput(data);
 			this.stratificationUI.getCombo().setEnabled(true);
 		}

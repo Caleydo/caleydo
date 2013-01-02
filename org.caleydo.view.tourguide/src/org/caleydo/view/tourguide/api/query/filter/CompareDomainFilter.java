@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.query.filter;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
@@ -77,9 +77,9 @@ public class CompareDomainFilter implements IDataDomainFilter {
 	}
 
 	@Override
-	public boolean apply(Pair<TablePerspective, Group> pair) {
+	public boolean apply(Pair<? extends ARecordPerspective, Group> pair) {
 		if (againstStratification) {
-			return op.apply(pair.getFirst().getRecordPerspective().getLabel(), operand);
+			return op.apply(pair.getFirst().getLabel(), operand);
 		} else {
 			Group group = pair.getSecond();
 			return group == null || op.apply(group.getLabel(), operand);

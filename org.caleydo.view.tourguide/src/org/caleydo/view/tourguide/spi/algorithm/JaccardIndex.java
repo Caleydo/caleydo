@@ -21,7 +21,7 @@ package org.caleydo.view.tourguide.spi.algorithm;
 
 import java.util.Set;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.id.IDType;
 
 /**
@@ -45,8 +45,8 @@ public class JaccardIndex implements IGroupAlgorithm {
 	}
 
 	@Override
-	public IDType getTargetType(TablePerspective a, TablePerspective b) {
-		return a.getRecordPerspective().getIdType();
+	public IDType getTargetType(ARecordPerspective a, ARecordPerspective b) {
+		return a.getIdType();
 	}
 
 	@Override

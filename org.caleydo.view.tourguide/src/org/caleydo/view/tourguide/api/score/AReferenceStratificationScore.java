@@ -19,56 +19,35 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.util.base.DefaultLabelProvider;
-import org.caleydo.view.tourguide.api.query.ScoringElement;
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public abstract class AStratificationScore extends DefaultLabelProvider implements IStratificationScore {
-	protected final TablePerspective reference;
-	protected final Map<Integer, Float> scores = new ConcurrentHashMap<>();
+public abstract class AReferenceStratificationScore extends AComputedStratificationScore implements
+		IStratificationScore {
+	protected final ARecordPerspective reference;
 
-	public AStratificationScore(String label, TablePerspective reference) {
-		super(label == null ? reference.getRecordPerspective().getLabel() : label);
+	public AReferenceStratificationScore(String label, ARecordPerspective reference) {
+		super(label == null ? reference.getLabel() : label);
 		this.reference = reference;
 	}
 
-	public boolean contains(TablePerspective elem) {
-		// have in cache or the same
-		return scores.containsKey(elem.getID()) || reference.equals(elem);
-	}
-
-	public void put(TablePerspective elem, float value) {
-		scores.put(elem.getID(), value);
+	@Override
+	public boolean contains(ARecordPerspective elem) {
+		return super.contains(elem) || elem.equals(getStratification());
 	}
 
 	@Override
-	public TablePerspective getStratification() {
+	public ARecordPerspective getStratification() {
 		return reference;
-	}
-
-	@Override
-	public final EScoreType getScoreType() {
-		return EScoreType.STRATIFICATION_SCORE;
 	}
 
 	@Override
 	public String getProviderName() {
 		return reference.getProviderName();
-	}
-
-	@Override
-	public float getScore(ScoringElement elem) {
-		TablePerspective p = elem.getStratification();
-		Float f = scores.get(p.getID());
-		return f == null ? Float.NaN : f.floatValue();
 	}
 
 	/*
@@ -97,7 +76,7 @@ public abstract class AStratificationScore extends DefaultLabelProvider implemen
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AStratificationScore other = (AStratificationScore) obj;
+		AReferenceStratificationScore other = (AReferenceStratificationScore) obj;
 		if (reference == null) {
 			if (other.reference != null)
 				return false;

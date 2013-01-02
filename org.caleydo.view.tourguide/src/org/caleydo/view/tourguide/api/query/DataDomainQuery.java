@@ -25,21 +25,21 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.execution.SafeCallable;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.view.tourguide.api.query.filter.CompareDomainFilter;
 import org.caleydo.view.tourguide.api.query.filter.CompositeDataDomainFilter;
 import org.caleydo.view.tourguide.api.query.filter.DefaultStratificationDomainFilter;
@@ -50,6 +50,7 @@ import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
@@ -57,17 +58,20 @@ import com.google.common.collect.Multimap;
  * @author Samuel Gratzl
  *
  */
-public class DataDomainQuery implements SafeCallable<Collection<TablePerspective>>,
-		Function<Collection<TablePerspective>, Multimap<TablePerspective, Group>> {
+public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPerspective, TablePerspective>>>,
+		Function<Collection<ARecordPerspective>, Multimap<ARecordPerspective, Group>> {
 	public static final String PROP_FILTER = "filter";
 	public static final String PROP_SELECTION = "selection";
+	public static final String PROP_MODE = "mode";
 
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
-	private Set<ATableBasedDataDomain> selection = new HashSet<>();
+	private Set<IDataDomain> selection = new HashSet<>();
 	private CompositeDataDomainFilter filter = new CompositeDataDomainFilter();
 
-	private WeakReference<Collection<TablePerspective>> cache = null;
+	private EDataDomainQueryMode mode = EDataDomainQueryMode.TABLE_BASED;
+
+	private WeakReference<Collection<Pair<ARecordPerspective, TablePerspective>>> cache = null;
 
 	public DataDomainQuery() {
 		filter.add(new EmptyGroupFilter());
@@ -95,7 +99,7 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 		return filter;
 	}
 
-	public Collection<ATableBasedDataDomain> getSelection() {
+	public Collection<IDataDomain> getSelection() {
 		return Collections.unmodifiableCollection(selection);
 	}
 
@@ -124,11 +128,32 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 		return Collections.unmodifiableSet(filter);
 	}
 
+	/**
+	 * @return the mode, see {@link #mode}
+	 */
+	public EDataDomainQueryMode getMode() {
+		return mode;
+	}
+
+	/**
+	 * @param mode
+	 *            setter, see {@link mode}
+	 */
+	public void setMode(EDataDomainQueryMode mode) {
+		if (this.mode == mode)
+			return;
+		for (IDataDomain sel : Lists.newArrayList(this.selection))
+			if (!mode.isCompatible(sel))
+				removeSelection(sel);
+		cache = null;
+		listeners.firePropertyChange(PROP_MODE, this.mode, this.mode = mode);
+	}
+
 	@Override
-	public Multimap<TablePerspective, Group> apply(Collection<TablePerspective> stratifications) {
-		Multimap<TablePerspective, Group> r = ArrayListMultimap.create();
-		for (TablePerspective strat : stratifications) {
-			for (Group group : strat.getRecordPerspective().getVirtualArray().getGroupList()) {
+	public Multimap<ARecordPerspective, Group> apply(Collection<ARecordPerspective> stratifications) {
+		Multimap<ARecordPerspective, Group> r = ArrayListMultimap.create();
+		for (ARecordPerspective strat : stratifications) {
+			for (Group group : strat.getVirtualArray().getGroupList()) {
 				if (group == null || !filter.apply(Pair.make(strat, group)))
 					continue;
 				r.put(strat, group);
@@ -138,23 +163,80 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 	}
 
 	@Override
-	public Collection<TablePerspective> call() {
-		Collection<TablePerspective> c = cache != null ? cache.get() : null;
+	public Collection<Pair<ARecordPerspective, TablePerspective>> call() {
+		Collection<Pair<ARecordPerspective, TablePerspective>> c = cache != null ? cache.get() : null;
 		if (c != null)
 			return c;
-		Collection<TablePerspective> stratifications = new ArrayList<TablePerspective>();
-		for (ATableBasedDataDomain dataDomain : selection) {
+		Collection<Pair<ARecordPerspective, TablePerspective>> stratifications = new ArrayList<>();
+		for (IDataDomain dataDomain : selection) {
 			stratifications.addAll(getStratifications(dataDomain));
 		}
 		cache = new WeakReference<>(stratifications);
 		return stratifications;
 	}
 
-	public Collection<TablePerspective> getStratifications(ATableBasedDataDomain dataDomain) {
+	public Collection<Pair<ARecordPerspective, TablePerspective>> getStratifications(IDataDomain dataDomain) {
+		if (EDataDomainQueryMode.TABLE_BASED.isCompatible(dataDomain))
+			return Collections2.transform(getTableBasedStratifications((ATableBasedDataDomain) dataDomain), toPair);
+		else if (EDataDomainQueryMode.GENE_SET.isCompatible(dataDomain))
+			return Collections2.transform(getGeneSetStratifications(dataDomain), toDummyPair);
+		else
+			return Collections.emptyList();
+	}
+
+	public Collection<ARecordPerspective> getJustStratifications(IDataDomain dataDomain) {
+		if (EDataDomainQueryMode.TABLE_BASED.isCompatible(dataDomain))
+			return Collections2.transform(getTableBasedStratifications((ATableBasedDataDomain) dataDomain), toRecord);
+		else if (EDataDomainQueryMode.GENE_SET.isCompatible(dataDomain))
+			return getGeneSetStratifications(dataDomain);
+		else
+			return Collections.emptyList();
+	}
+
+	public Collection<TablePerspective> getPerspectives(IDataDomain dataDomain) {
+		if (EDataDomainQueryMode.TABLE_BASED.isCompatible(dataDomain))
+			return getTableBasedStratifications((ATableBasedDataDomain) dataDomain);
+		return Collections.emptyList();
+	}
+
+	private static final Function<TablePerspective, Pair<ARecordPerspective, TablePerspective>> toPair = new Function<TablePerspective, Pair<ARecordPerspective, TablePerspective>>() {
+		@Override
+		public Pair<ARecordPerspective, TablePerspective> apply(TablePerspective in) {
+			return Pair.make((ARecordPerspective) in.getRecordPerspective(), in);
+		}
+	};
+	private static final Function<TablePerspective, ARecordPerspective> toRecord = new Function<TablePerspective, ARecordPerspective>() {
+		@Override
+		public ARecordPerspective apply(TablePerspective in) {
+			return in.getRecordPerspective();
+		}
+	};
+	private static final Function<ARecordPerspective, Pair<ARecordPerspective, TablePerspective>> toDummyPair = new Function<ARecordPerspective, Pair<ARecordPerspective, TablePerspective>>() {
+		@Override
+		public Pair<ARecordPerspective, TablePerspective> apply(ARecordPerspective in) {
+			return Pair.make(in, null);
+		}
+	};
+
+	private Collection<ARecordPerspective> getGeneSetStratifications(IDataDomain dataDomain) {
+		if (dataDomain instanceof PathwayDataDomain) {
+			PathwayDataDomain p = (PathwayDataDomain)dataDomain;
+			List<ARecordPerspective> result = Lists.newArrayList();
+			for (ARecordPerspective per : p.getPathwayRecordPerspectives()) {
+				if (filter.apply(Pair.make(per, (Group) null)))
+					result.add(per);
+			}
+			return result;
+		}
+		return Collections.emptyList();
+	}
+
+	private Collection<TablePerspective> getTableBasedStratifications(
+			ATableBasedDataDomain dataDomain) {
 		if (DataDomainOracle.isCategoricalDataDomain(dataDomain)) {
 			List<TablePerspective> result = Lists.newArrayList();
 			for (TablePerspective per : dataDomain.getAllTablePerspectives()) {
-				if (filter.apply(Pair.make(per, (Group) null)))
+				if (filter.apply(Pair.make(per.getRecordPerspective(), (Group) null)))
 					result.add(per);
 			}
 			return result;
@@ -186,7 +268,7 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 				if (!existsAlready)
 					newTablePerspective.setPrivate(true);
 
-				if (!filter.apply(Pair.make(newTablePerspective, (Group) null)))
+				if (!filter.apply(Pair.make(newTablePerspective.getRecordPerspective(), (Group) null)))
 					continue;
 
 				stratifications.add(newTablePerspective);
@@ -197,24 +279,6 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 
 	private static boolean isUngrouped(DimensionPerspective per) {
 		return per.getLabel().contains("Ungrouped");
-	}
-
-	public static List<ATableBasedDataDomain> allDataDomains() {
-		List<ATableBasedDataDomain> dataDomains = new ArrayList<>(DataDomainManager.get().getDataDomainsByType(
-				ATableBasedDataDomain.class));
-
-		for (Iterator<ATableBasedDataDomain> it = dataDomains.iterator(); it.hasNext();)
-			if (DataDomainOracle.isClinical(it.next()))
-				it.remove();
-
-		// Sort data domains alphabetically
-		Collections.sort(dataDomains, new Comparator<ADataDomain>() {
-			@Override
-			public int compare(ADataDomain dd1, ADataDomain dd2) {
-				return dd1.getLabel().compareTo(dd2.getLabel());
-			}
-		});
-		return dataDomains;
 	}
 
 	/**
@@ -253,15 +317,30 @@ public class DataDomainQuery implements SafeCallable<Collection<TablePerspective
 		listeners.removePropertyChangeListener(propertyName, listener);
 	}
 
-	public void addSelection(ATableBasedDataDomain dataDomain) {
+	public void addSelection(IDataDomain dataDomain) {
 		if (!selection.add(dataDomain))
 			return;
 		cache = null;
-		DataDomainOracle.initDataDomain(dataDomain);
+		initDataDomain(dataDomain);
+		if (!mode.isCompatible(dataDomain)) { // auto switch mode
+			for (EDataDomainQueryMode m : EDataDomainQueryMode.values()) {
+				if (m.isCompatible(dataDomain)) {
+					setMode(m);
+				}
+			}
+		}
 		listeners.fireIndexedPropertyChange(PROP_SELECTION, selection.size() - 1, null, dataDomain);
 	}
 
-	public void removeSelection(ATableBasedDataDomain dataDomain) {
+	private void initDataDomain(IDataDomain dataDomain) {
+		if (dataDomain instanceof ATableBasedDataDomain)
+			DataDomainOracle.initDataDomain((ATableBasedDataDomain) dataDomain);
+		else if (dataDomain instanceof PathwayDataDomain) {
+			// FIXME
+		}
+	}
+
+	public void removeSelection(IDataDomain dataDomain) {
 		cache = null;
 		if (!selection.remove(dataDomain))
 			return;

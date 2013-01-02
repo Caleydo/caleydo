@@ -22,7 +22,7 @@ package org.caleydo.view.tourguide.api.query.filter;
 import java.util.HashSet;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
@@ -50,7 +50,7 @@ public class SpecificDataDomainFilter extends HashSet<IDataDomainFilter> impleme
 	}
 
 	@Override
-	public boolean apply(Pair<TablePerspective, Group> pair) {
+	public boolean apply(Pair<? extends ARecordPerspective, Group> pair) {
 		if (!dataDomain.equals(pair.getFirst().getDataDomain()))
 			return true;
 		for (IDataDomainFilter child : this)

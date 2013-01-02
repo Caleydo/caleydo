@@ -27,7 +27,6 @@ import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.STRATIFAC
 
 import java.util.List;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -74,14 +73,13 @@ public class MatchColumn extends ATableColumn {
 
 		for (int i = 0; i < data.size(); ++i) {
 			ScoringElement elem = data.get(i);
-			TablePerspective strat = elem.getStratification();
 			Group g = elem.getGroup();
 
 			Row r = new Row();
 			r.setXDynamic(true);
-			r.add(createColor(strat.getDataDomain().getColor(), DATADOMAIN_TYPE_WIDTH));
+			r.add(createColor(elem.getDataDomain().getColor(), DATADOMAIN_TYPE_WIDTH));
 			r.add(colSpacing);
-			r.add(createLabel(strat.getRecordPerspective(), stratWidth));
+			r.add(createLabel(elem.getStratification(), stratWidth));
 			if (isGroupQuery) {
 				r.add(colSpacing);
 				r.add(createLabel(g, groupWidth));
@@ -95,9 +93,8 @@ public class MatchColumn extends ATableColumn {
 		int longestGroup = getTextWidth("Group");
 		for (int i = 0; i < data.size(); ++i) {
 			ScoringElement elem = data.get(i);
-			TablePerspective strat = elem.getStratification();
 			Group g = elem.getGroup();
-			longestStrat = Math.max(getTextWidth(strat.getRecordPerspective()), longestStrat);
+			longestStrat = Math.max(getTextWidth(elem.getStratification()), longestStrat);
 			if (g != null)
 				longestGroup = Math.max(getTextWidth(g), longestGroup);
 		}

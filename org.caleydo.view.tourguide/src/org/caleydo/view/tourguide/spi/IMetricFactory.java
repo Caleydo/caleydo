@@ -22,6 +22,7 @@ package org.caleydo.view.tourguide.spi;
 import java.util.Set;
 
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
+import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
@@ -31,4 +32,6 @@ import org.caleydo.view.tourguide.spi.score.IScore;
  */
 public interface IMetricFactory {
 	void addCreateMetricItems(ContextMenuCreator creator, Set<IScore> visible, ScoreQueryUI sender);
+
+	boolean supports(EDataDomainQueryMode mode);
 }

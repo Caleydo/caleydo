@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.query.filter;
 
-import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
@@ -30,7 +30,7 @@ import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
  */
 public class EmptyGroupFilter implements IDataDomainFilter {
 	@Override
-	public boolean apply(Pair<TablePerspective, Group> pair) {
+	public boolean apply(Pair<? extends ARecordPerspective, Group> pair) {
 		return pair.getSecond() == null || pair.getSecond().getSize() > 0;
 	}
 }

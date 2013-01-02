@@ -26,5 +26,5 @@ package org.caleydo.view.tourguide.spi.score;
  *
  */
 public interface IRegisteredScore extends IScore {
-
+	void onRegistered();
 }

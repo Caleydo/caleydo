@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.filter.FilterManager;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
@@ -124,7 +124,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 
 	/** The dataDomain this perspective belongs to */
 	@XmlTransient
-	protected ATableBasedDataDomain dataDomain;
+	protected IDataDomain dataDomain;
 
 	@XmlTransient
 	protected IDType idType;
@@ -152,14 +152,22 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	public AVariablePerspective() {
 	}
 
-	public AVariablePerspective(ATableBasedDataDomain dataDomain) {
+	public AVariablePerspective(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		init();
 	}
 
-	public void setDataDomain(ATableBasedDataDomain dataDomain) {
+	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		init();
+	}
+
+	/**
+	 * @return the dataDomain, see {@link #dataDomain}
+	 */
+	@XmlTransient
+	public IDataDomain getDataDomain() {
+		return dataDomain;
 	}
 
 	/**
