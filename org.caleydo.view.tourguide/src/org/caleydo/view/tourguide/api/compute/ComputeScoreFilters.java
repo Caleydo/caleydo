@@ -9,6 +9,13 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.spi.compute.IComputeScoreFilter;
 
 public final class ComputeScoreFilters {
+	public static IComputeScoreFilter ALL = new IComputeScoreFilter() {
+		@Override
+		public boolean doCompute(TablePerspective a, Group ag, TablePerspective b, Group bg) {
+			return true;
+		}
+	};
+
 	public static IComputeScoreFilter SELF = new IComputeScoreFilter() {
 		@Override
 		public boolean doCompute(TablePerspective a, Group ag, TablePerspective b, Group bg) {
@@ -25,7 +32,7 @@ public final class ComputeScoreFilters {
 	 *
 	 * checks whether we the given group refers to the same group within different stratifications within the same
 	 * categorical datadomain. e.g. mutated and mutated in two genes
-	 * 
+	 *
 	 * @param perspective
 	 * @param elem
 	 * @return
@@ -34,7 +41,7 @@ public final class ComputeScoreFilters {
 		@Override
 		public boolean doCompute(TablePerspective a, Group ag, TablePerspective b, Group bg) {
 			if (ag == null || !Objects.equals(ag.getGroupIndex(), bg.getGroupIndex()))
-				return false; // same group, simple/fast tests first
+				return true;
 			ATableBasedDataDomain dataDomain = b.getDataDomain();
 			if (!DataDomainOracle.isCategoricalDataDomain(dataDomain))
 				return true;
