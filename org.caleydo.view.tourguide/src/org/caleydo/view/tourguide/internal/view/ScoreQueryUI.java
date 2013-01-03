@@ -375,7 +375,8 @@ public class ScoreQueryUI extends Row {
 		for (IScore s : scores) {
 			if (visible.contains(s) || !s.supports(mode))
 				continue;
-			creator.addContextMenuItem(new GenericContextMenuItem("Add " + s.getLabel(), new AddScoreColumnEvent(s,
+			creator.addContextMenuItem(new GenericContextMenuItem("Add " + s.getAbbreviation() + " " + s.getLabel(),
+					new AddScoreColumnEvent(s,
 					this)));
 		}
 	}

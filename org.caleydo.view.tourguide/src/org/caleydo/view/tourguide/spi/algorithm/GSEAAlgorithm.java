@@ -1,7 +1,9 @@
 package org.caleydo.view.tourguide.spi.algorithm;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +16,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -22,7 +25,7 @@ public class GSEAAlgorithm implements IStratificationAlgorithm {
 
 	private final float p; // An exponent p to control the weight of the step.
 	private final Map<Integer, Float> correlation = Maps.newLinkedHashMap();
-	private final List<List<Integer>> permutations = Lists.newArrayListWithExpectedSize(NPERM);
+	private final List<Map<Integer, Float>> permutations = Lists.newArrayListWithExpectedSize(NPERM);
 
 	private final TablePerspective stratification;
 	private final Group group;
@@ -36,36 +39,84 @@ public class GSEAAlgorithm implements IStratificationAlgorithm {
 	private void init() {
 		if (!correlation.isEmpty())
 			return;
-		DataTable table = stratification.getDataDomain().getTable();
-		List<Integer> rowIDs = stratification.getRecordPerspective().getVirtualArray()
+		final List<Integer> inA = stratification.getRecordPerspective().getVirtualArray()
 				.getIDsOfGroup(group.getGroupIndex());
-		List<Integer> colIDs = stratification.getDimensionPerspective().getVirtualArray().getIDs();
+		this.correlation.putAll(rankedSet(inA));
 
-		List<Pair<Integer, Float>> g = new ArrayList<>(colIDs.size());
-		for (Integer colID : colIDs) {
+		int sampleSize = inA.size();
+		List<Integer> base = new ArrayList<>(stratification.getRecordPerspective().getVirtualArray().getIDs());
+
+		// Randomly assign the original phenotype labels to samples,reorder genes, and re-compute ES(S)
+		for (int i = 0; i < NPERM; ++i) {
+			// shuffle randomly the ids
+			Collections.shuffle(base);
+			// select the first sampleSize elements as new class labels
+			Collection<Integer> in = base.subList(0, sampleSize);
+			permutations.add(rankedSet(in));
+		}
+	}
+
+	private Map<Integer, Float> rankedSet(Collection<Integer> inA) {
+		Stopwatch w = new Stopwatch().start();
+		inA = new HashSet<>(inA);
+
+		DataTable table = stratification.getDataDomain().getTable();
+
+		List<Integer> rows = stratification.getRecordPerspective().getVirtualArray().getIDs();
+		List<Integer> cols = stratification.getDimensionPerspective().getVirtualArray().getIDs();
+
+		List<Pair<Integer, Float>> g = new ArrayList<>(cols.size());
+		List<Float> avalues = new ArrayList<>(inA.size());
+		List<Float> bvalues = new ArrayList<>(rows.size() - inA.size());
+		System.out.println(w + " " + inA.size() + " " + rows.size() + " cols " + cols.size());
+
+		for (Integer col : cols) {
 			// mean of the expressions level of the samples for the given gen.
-			float value = 0;
-			int count = 0;
-			for (Integer rowID : rowIDs) {
-				Float v = table.getFloat(DataRepresentation.NORMALIZED, rowID, colID);
-				if (v != null && !v.isNaN() && !v.isInfinite()) {
-					count++;
-					value += v;
-				}
+			avalues.clear();
+			bvalues.clear();
+			for (Integer row : rows) {
+				Float v = table.getFloat(DataRepresentation.NORMALIZED, row, col);
+				if (v == null || v.isNaN() || v.isInfinite())
+					continue;
+				if (inA.contains(row)) {
+					avalues.add(v);
+				} else
+					bvalues.add(v);
 			}
-			g.add(Pair.make(colID, count == 0 ? 0 : value / count));
+			// now some kind of correlation between the two
+			g.add(Pair.make(col, correlationOf(avalues, bvalues)));
 		}
 
-		Collections.sort(g);
+		Map<Integer, Float> correlation = Maps.newLinkedHashMap();
+
+		Collections.sort(g, Collections.reverseOrder());
 		for (Pair<Integer, Float> entry : g)
 			correlation.put(entry.getFirst(), entry.getSecond());
+		System.out.println(w);
+		return correlation;
+	}
 
-		List<Integer> template = new ArrayList<>(correlation.keySet());
-		for (int i = 0; i < NPERM; ++i) {
-			List<Integer> per = new ArrayList<>(template);
-			Collections.shuffle(per);
-			permutations.add(per);
-		}
+	/**
+	 * @param avalues
+	 * @param bvalues
+	 * @return
+	 */
+	private static float correlationOf(List<Float> avalues, List<Float> bvalues) {
+		// current implementation mean diff
+		return mean(avalues) - mean(bvalues);
+	}
+
+	private static float mean(Collection<Float> values) {
+		if (values.isEmpty())
+			return 0;
+		return sum(values) / values.size();
+	}
+
+	private static float sum(Iterable<Float> values) {
+		float s = 0;
+		for (float f : values)
+			s += f;
+		return s;
 	}
 
 	@Override
@@ -75,18 +126,24 @@ public class GSEAAlgorithm implements IStratificationAlgorithm {
 
 	public float compute(Set<Integer> geneSet) {
 		init();
-		float es = (float)enrichmentScore(correlation.keySet(), geneSet);
+		float es = (float) enrichmentScore(correlation, geneSet);
 		return es;
 	}
 
 	public float computePValue(Set<Integer> geneSet) {
 		init();
-		float es = (float)enrichmentScore(correlation.keySet(), geneSet);
+		float es = (float) enrichmentScore(correlation, geneSet);
 		if (Float.isNaN(es))
 			return Float.NaN;
 
 		float others = 0f;
-		for(List<Integer> permutation : this.permutations) {
+		// Randomly assign the original phenotype labels to samples,reorder genes, and re-compute ES(S)
+		// Repeat step 1 for 1,000 permutations, and create a histogram of
+		// the corresponding enrichment scores ES NULL .
+		// 3. Estimate nominal P value for S from ES NULL by using the
+		// positive or negative portion of the distribution corresponding to
+		// the sign of the observed ES(S).
+		for (Map<Integer, Float> permutation : this.permutations) {
 			float phi = (float)enrichmentScore(permutation, geneSet);
 			if (phi >= es)
 				others += phi;
@@ -95,7 +152,7 @@ public class GSEAAlgorithm implements IStratificationAlgorithm {
 		return pValue;
 	}
 
-	private double enrichmentScore(Iterable<Integer> ranking, Set<Integer> geneS) {
+	private double enrichmentScore(Map<Integer, Float> correlation, Set<Integer> geneS) {
 		// tag.indicator <- sign(match(gene.list, gene.set, nomatch=0)) # notice that the sign is 0 (no tag) or 1
 		// (tag)
 		// no.tag.indicator <- 1 - tag.indicator
@@ -142,7 +199,7 @@ public class GSEAAlgorithm implements IStratificationAlgorithm {
 		double es_max = Double.MIN_VALUE;
 		double es_min = Double.MAX_VALUE;
 
-		for (Integer r : ranking) {
+		for (Integer r : correlation.keySet()) {
 			if (geneS.contains(r))
 				p_hit += Math.abs(Math.pow(correlation.get(r), p)) / norm_tag;
 			else
