@@ -93,8 +93,10 @@ import org.caleydo.view.stratomex.column.BrickColumn;
 import org.caleydo.view.stratomex.column.BrickColumnManager;
 import org.caleydo.view.stratomex.column.BrickColumnSpacingRenderer;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
+import org.caleydo.view.stratomex.event.AddKaplanMaiertoStratomexEvent;
 import org.caleydo.view.stratomex.event.ConnectionsModeEvent;
 import org.caleydo.view.stratomex.event.HighlightBrickEvent;
+import org.caleydo.view.stratomex.event.ReplaceKaplanMaierPerspectiveEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.stratomex.event.SplitBrickEvent;
 import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
@@ -951,6 +953,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		addGroupsToStratomexListener.setHandler(this);
 		eventPublisher.addListener(AddGroupsToStratomexEvent.class, addGroupsToStratomexListener);
 		eventPublisher.addListener(AddTablePerspectivesEvent.class, addGroupsToStratomexListener);
+		eventPublisher.addListener(AddKaplanMaiertoStratomexEvent.class, addGroupsToStratomexListener);
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
@@ -971,6 +974,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		replaceTablePerspectiveListener = new ReplaceTablePerspectiveListener();
 		replaceTablePerspectiveListener.setHandler(this);
 		eventPublisher.addListener(ReplaceTablePerspectiveEvent.class, replaceTablePerspectiveListener);
+		eventPublisher.addListener(ReplaceKaplanMaierPerspectiveEvent.class, replaceTablePerspectiveListener);
 
 		listeners.register(HighlightBrickEvent.class, new HighlightBrickEventListener(this));
 		listeners.register(SelectElementsEvent.class, new SelectElementsListener().setHandler(this));
@@ -1126,13 +1130,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 				 * configurer is created by default
 				 **/
 				if (brickConfigurer == null) {
-					// FIXME this is a hack to make tablePerspectives that have
-					// only one dimension categorical data
-					if (tablePerspective.getNrDimensions() == 1) {
-						brickConfigurer = new CategoricalDataConfigurer(tablePerspective);
-					} else {
-						brickConfigurer = new NumericalDataConfigurer(tablePerspective);
-					}
+					brickConfigurer = createDefaultBrickConfigurer(tablePerspective);
 				}
 
 				brickColumn.setDetailLevel(this.getDetailLevel());
@@ -1161,6 +1159,18 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
+	}
+
+	public IBrickConfigurer createDefaultBrickConfigurer(TablePerspective tablePerspective) {
+		IBrickConfigurer brickConfigurer;
+		// FIXME this is a hack to make tablePerspectives that have
+		// only one dimension categorical data
+		if (tablePerspective.getNrDimensions() == 1) {
+			brickConfigurer = new CategoricalDataConfigurer(tablePerspective);
+		} else {
+			brickConfigurer = new NumericalDataConfigurer(tablePerspective);
+		}
+		return brickConfigurer;
 	}
 
 	@Override

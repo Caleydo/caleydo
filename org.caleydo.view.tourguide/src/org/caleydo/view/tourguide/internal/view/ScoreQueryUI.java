@@ -224,7 +224,7 @@ public class ScoreQueryUI extends Row {
 			layoutManager.setRenderingDirty();
 		}
 		invalidate();
-		stratomex.updatePreview(old, new_, getVisibleColumns(new_));
+		stratomex.updatePreview(old, new_, getVisibleColumns(new_), query.getMode());
 	}
 
 	public void updateAddToStratomexState() {
@@ -394,7 +394,7 @@ public class ScoreQueryUI extends Row {
 	}
 
 	protected void onAddToStratomex(int row) {
-		stratomex.addToStratomex(data.get(row));
+		stratomex.addToStratomex(data.get(row), getVisibleColumns(data.get(row)), query.getMode());
 		updateAddToStratomexState();
 	}
 

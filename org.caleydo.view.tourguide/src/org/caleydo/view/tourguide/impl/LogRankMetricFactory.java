@@ -56,17 +56,17 @@ import com.google.common.collect.Sets;
 public class LogRankMetricFactory implements IMetricFactory {
 	@Override
 	public void addCreateMetricItems(ContextMenuCreator creator, Set<IScore> visible, ScoreQueryUI sender) {
-		Iterable<IScore> logRankScores = Iterables.filter(Iterables.transform(DataDomainOracle.getClinicalVariables(),
-				new Function<Pair<Integer, String>, IScore>() {
+		Iterable<LogRankMetric> logRankScores = Iterables.filter(Iterables.transform(
+				DataDomainOracle.getClinicalVariables(), new Function<Pair<Integer, String>, LogRankMetric>() {
 					@Override
-					public IScore apply(Pair<Integer, String> p) {
+					public LogRankMetric apply(Pair<Integer, String> p) {
 						return new LogRankMetric(p.getSecond(), p.getFirst());
 					}
 				}), Predicates.not(Predicates.in(visible)));
 
 		GroupContextMenuItem logRanks = new GroupContextMenuItem("Create LogRank of");
 		boolean hasOne = false;
-		for (IScore score : logRankScores) {
+		for (LogRankMetric score : logRankScores) {
 			hasOne = true;
 			IScore logRankPValue = new LogRankPValue(score.getLabel() + " (P-V)", score);
 			IScore combined = new CombinedScore(score.getLabel() + " Quality", ECombinedOperator.PRODUCT,
@@ -82,83 +82,95 @@ public class LogRankMetricFactory implements IMetricFactory {
 	public boolean supports(EDataDomainQueryMode mode) {
 		return mode == EDataDomainQueryMode.TABLE_BASED;
 	}
-}
 
-class LogRankMetric extends DefaultComputedGroupScore {
-	public LogRankMetric(String label, final Integer clinicalVariable) {
-		super(label, new IGroupAlgorithm() {
-			final ATableBasedDataDomain clinical = DataDomainOracle.getClinicalDataDomain();
-			final IGroupAlgorithm underlying = LogRank.get(clinicalVariable, clinical);
+	public static class LogRankMetric extends DefaultComputedGroupScore {
+		private final Integer clinicalVariable;
 
-			@Override
-			public IDType getTargetType(ARecordPerspective a, ARecordPerspective b) {
-				return underlying.getTargetType(a, b);
-			}
+		public LogRankMetric(String label, final Integer clinicalVariable) {
+			super(label, new IGroupAlgorithm() {
+				final ATableBasedDataDomain clinical = DataDomainOracle.getClinicalDataDomain();
+				final IGroupAlgorithm underlying = LogRank.get(clinicalVariable, clinical);
 
-			@Override
-			public String getAbbreviation() {
-				return underlying.getAbbreviation();
-			}
+				@Override
+				public IDType getTargetType(ARecordPerspective a, ARecordPerspective b) {
+					return underlying.getTargetType(a, b);
+				}
 
-			@Override
-			public float compute(Set<Integer> a, Set<Integer> b) {
-				// me versus the rest
-				return underlying.compute(a, Sets.difference(b, a));
-			}
-		}, null);
-	}
-}
+				@Override
+				public String getAbbreviation() {
+					return underlying.getAbbreviation();
+				}
 
-class LogRankPValue extends DefaultLabelProvider implements IScore {
-	private final IScore logRankScore;
+				@Override
+				public float compute(Set<Integer> a, Set<Integer> b) {
+					// me versus the rest
+					return underlying.compute(a, Sets.difference(b, a));
+				}
+			}, null);
+			this.clinicalVariable = clinicalVariable;
+		}
 
-	public LogRankPValue(String label, IScore logRankScore) {
-		super(label);
-		this.logRankScore = logRankScore;
+		public Integer getClinicalVariable() {
+			return clinicalVariable;
+		}
 	}
 
-	@Override
-	public String getAbbreviation() {
-		return "LR-P";
-	}
+	public static class LogRankPValue extends DefaultLabelProvider implements IScore {
+		private final LogRankMetric logRankScore;
 
-	@Override
-	public boolean supports(EDataDomainQueryMode mode) {
-		return mode == EDataDomainQueryMode.TABLE_BASED;
-	}
+		public LogRankPValue(String label, LogRankMetric logRankScore) {
+			super(label);
+			this.logRankScore = logRankScore;
+		}
 
-	@Override
-	public EScoreType getScoreType() {
-		return logRankScore.getScoreType();
-	}
+		@Override
+		public String getAbbreviation() {
+			return "LR-P";
+		}
 
-	@Override
-	public float getScore(ScoringElement elem) {
-		return LogRank.getPValue(logRankScore.getScore(elem));
-	}
+		@Override
+		public boolean supports(EDataDomainQueryMode mode) {
+			return mode == EDataDomainQueryMode.TABLE_BASED;
+		}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((logRankScore == null) ? 0 : logRankScore.hashCode());
-		return result;
-	}
+		@Override
+		public EScoreType getScoreType() {
+			return logRankScore.getScoreType();
+		}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		LogRankPValue other = (LogRankPValue) obj;
-		if (logRankScore == null) {
-			if (other.logRankScore != null)
+		@Override
+		public float getScore(ScoringElement elem) {
+			return LogRank.getPValue(logRankScore.getScore(elem));
+		}
+
+		public Integer getClinicalVariable() {
+			return logRankScore.getClinicalVariable();
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((logRankScore == null) ? 0 : logRankScore.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
 				return false;
-		} else if (!logRankScore.equals(other.logRankScore))
-			return false;
-		return true;
+			if (getClass() != obj.getClass())
+				return false;
+			LogRankPValue other = (LogRankPValue) obj;
+			if (logRankScore == null) {
+				if (other.logRankScore != null)
+					return false;
+			} else if (!logRankScore.equals(other.logRankScore))
+				return false;
+			return true;
+		}
 	}
 }
+

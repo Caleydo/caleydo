@@ -36,6 +36,20 @@ public class GSEAAlgorithm implements IStratificationAlgorithm {
 		this.group = group;
 	}
 
+	/**
+	 * @return the stratification, see {@link #stratification}
+	 */
+	public TablePerspective getStratification() {
+		return stratification;
+	}
+
+	/**
+	 * @return the group, see {@link #group}
+	 */
+	public Group getGroup() {
+		return group;
+	}
+
 	private void init() {
 		if (!correlation.isEmpty())
 			return;
@@ -228,21 +242,37 @@ public class GSEAAlgorithm implements IStratificationAlgorithm {
 	}
 
 	public IStratificationAlgorithm asPValue() {
-		return new IStratificationAlgorithm() {
-			@Override
-			public IDType getTargetType(ARecordPerspective a, ARecordPerspective b) {
-				return GSEAAlgorithm.this.getTargetType(a, b);
-			}
+		return new GSEAAlgorithmPValue(this);
+	}
 
-			@Override
-			public String getAbbreviation() {
-				return GSEAAlgorithm.this.getAbbreviation();
-			}
+	public static class GSEAAlgorithmPValue implements IStratificationAlgorithm {
+		private final GSEAAlgorithm underlying;
 
-			@Override
-			public float compute(List<Set<Integer>> a, List<Set<Integer>> b) {
-				return computePValue(a.iterator().next());
-			}
-		};
+		private GSEAAlgorithmPValue(GSEAAlgorithm underlying) {
+			this.underlying = underlying;
+		}
+
+		@Override
+		public IDType getTargetType(ARecordPerspective a, ARecordPerspective b) {
+			return underlying.getTargetType(a, b);
+		}
+
+		@Override
+		public String getAbbreviation() {
+			return underlying.getAbbreviation();
+		}
+
+		@Override
+		public float compute(List<Set<Integer>> a, List<Set<Integer>> b) {
+			return underlying.computePValue(a.iterator().next());
+		}
+	}
+
+	public static Pair<TablePerspective, Group> resolve(IStratificationAlgorithm algorithm) {
+		if (algorithm instanceof GSEAAlgorithmPValue)
+			algorithm = ((GSEAAlgorithmPValue) algorithm).underlying;
+		if (algorithm instanceof GSEAAlgorithm)
+			return Pair.make(((GSEAAlgorithm) algorithm).getStratification(), ((GSEAAlgorithm) algorithm).getGroup());
+		return null;
 	}
 }

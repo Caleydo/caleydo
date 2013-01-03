@@ -420,6 +420,10 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>>, Cloneable
 		listeners.firePropertyChange(PROP_TOP, this.top, this.top = top);
 	}
 
+	public EDataDomainQueryMode getMode() {
+		return query.getMode();
+	}
+
 	protected void onRemovedFilter(IDataDomainFilter oldValue) {
 		// TODO find out what groups have changed
 

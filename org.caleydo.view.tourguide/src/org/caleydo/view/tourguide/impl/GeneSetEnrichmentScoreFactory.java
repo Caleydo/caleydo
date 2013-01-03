@@ -103,7 +103,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		}
 	}
 
-	class GeneSetScore extends DefaultComputedStratificationScore {
+	public static class GeneSetScore extends DefaultComputedStratificationScore {
 		public GeneSetScore(String label, IStratificationAlgorithm algorithm) {
 			super(label, algorithm, ComputeScoreFilters.ALL);
 		}
