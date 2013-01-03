@@ -381,12 +381,14 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 				&& selected.getPerspective().getID() == tablePerspectiveID) {
 			this.scoreQueryUI.setSelected(-1);
 		}
+		this.scoreQueryUI.updateAddToStratomexState();
 	}
 
 	public void onStratomexAddBricks(ITablePerspectiveBasedView receiver, Collection<TablePerspective> tablePerspectives) {
 		if (!stratomex.is(receiver))
 			return;
 		stratomex.addBricks(tablePerspectives);
+		this.scoreQueryUI.updateAddToStratomexState();
 	}
 
 	public void onStratomexReplaceBricks(Integer receiver, TablePerspective oldPerspective,

@@ -129,6 +129,10 @@ public class StratomexAdapter {
 		return false;
 	}
 
+	public boolean isTemporaryPreviewed(TablePerspective strat) {
+		return temporaryPreview && currentPreview != null && currentPreview.equals(strat);
+	}
+
 	public void removeBrick(int tablePerspectiveID) {
 		for (Iterator<TablePerspective> it = brickColumns.iterator(); it.hasNext();) {
 			if (it.next().getID() == tablePerspectiveID) {

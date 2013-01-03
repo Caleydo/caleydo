@@ -20,8 +20,6 @@
 package org.caleydo.view.tourguide.internal.view.col;
 
 
-import static org.caleydo.core.view.opengl.layout.ElementLayouts.createButton;
-import static org.caleydo.core.view.opengl.layout.ElementLayouts.createXSpacer;
 import static org.caleydo.core.view.opengl.layout.ElementLayouts.wrap;
 
 import java.util.List;
@@ -31,11 +29,10 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.core.view.opengl.layout.util.TextureRenderer;
-import org.caleydo.core.view.opengl.util.button.Button;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.tourguide.api.query.ScoreQuery;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
+import org.caleydo.view.tourguide.internal.renderer.AdvancedTextureRenderer;
 import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.internal.view.StratomexAdapter;
 
@@ -63,19 +60,36 @@ public class AddToStratomexColumn extends ATableColumn {
 	}
 
 	public ElementLayout createBodyItem(ScoringElement elem, int i) {
-		// button only available if not already part of stratomex
-		if (this.stratomex.contains(elem.getPerspective())) {
-			return createXSpacer(16);
-		} else {
-			return createButton(view, new Button(ScoreQueryUI.ADD_TO_STRATOMEX, i, EIconTextures.GROUPER_COLLAPSE_PLUS));
-		}
+		AdvancedTextureRenderer r = new AdvancedTextureRenderer(null, view.getTextureManager());
+		if (this.stratomex.contains(elem.getPerspective()))
+			r.setImagePath(TourGuideRenderStyle.ICON_ADD_TO_STRATOMEX_DISABLED);
+		else
+			r.setImagePath(TourGuideRenderStyle.ICON_ADD_TO_STRATOMEX);
+
+		ElementLayout l = wrap(r, 16);
+		l.addBackgroundRenderer(new PickingRenderer(ScoreQueryUI.ADD_TO_STRATOMEX, i, view));
+		return l;
 	}
+
 
 	@Override
 	public void setData(List<ScoringElement> data, ScoreQuery query) {
 		this.clearBody();
 		for (int i = 0; i < data.size(); ++i) {
 			this.addTd(createBodyItem(data.get(i), i), -1);
+		}
+	}
+
+	public void updateState(List<ScoringElement> data) {
+		for (int i = 0; i < data.size(); ++i) {
+			ScoringElement elem = data.get(i);
+			ElementLayout td = getTd(i);
+			AdvancedTextureRenderer r = (AdvancedTextureRenderer) td.getRenderer();
+			if (this.stratomex.contains(elem.getPerspective())
+					&& !this.stratomex.isTemporaryPreviewed(elem.getPerspective()))
+				r.setImagePath(TourGuideRenderStyle.ICON_ADD_TO_STRATOMEX_DISABLED);
+			else
+				r.setImagePath(TourGuideRenderStyle.ICON_ADD_TO_STRATOMEX);
 		}
 	}
 }

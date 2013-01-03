@@ -67,6 +67,9 @@ public class TourGuideRenderStyle extends GeneralRenderStyle {
 	public static final String ICON_ACCEPT = ICON_PREFIX + "accept.png";
 	public static final String ICON_ACCEPT_DISABLE = ICON_PREFIX + "accept_disabled.png";
 
+	public static final String ICON_ADD_TO_STRATOMEX = ICON_PREFIX + "add.png";
+	public static final String ICON_ADD_TO_STRATOMEX_DISABLED = ICON_PREFIX + "add_disabled.png";
+
 	public static final IColor STRATOMEX_TEMP_COLUMN = Colors.YELLOW;
 	public static final IColor STRATOMEX_TEMP_GROUP = Colors.YELLOW;
 	public static final IColor STRATOMEX_SELECTED_ELEMENTS = Colors.YELLOW;
