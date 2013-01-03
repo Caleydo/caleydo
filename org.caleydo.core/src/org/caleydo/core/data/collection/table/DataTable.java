@@ -26,11 +26,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataTransformation;
-import org.caleydo.core.data.collection.dimension.AColumn;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.collection.dimension.NominalColumn;
-import org.caleydo.core.data.collection.dimension.NumericalColumn;
-import org.caleydo.core.data.collection.dimension.RawDataType;
+import org.caleydo.core.data.collection.column.AColumn;
+import org.caleydo.core.data.collection.column.DataRepresentation;
+import org.caleydo.core.data.collection.column.NominalColumn;
+import org.caleydo.core.data.collection.column.NumericalColumn;
+import org.caleydo.core.data.collection.column.RawDataType;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;

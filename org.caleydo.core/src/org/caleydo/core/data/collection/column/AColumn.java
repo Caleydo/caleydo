@@ -17,19 +17,19 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.dimension;
+package org.caleydo.core.data.collection.column;
 
 import java.util.EnumMap;
 import java.util.Iterator;
 
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.ICollection;
-import org.caleydo.core.data.collection.container.FloatContainer;
-import org.caleydo.core.data.collection.container.FloatContainerIterator;
-import org.caleydo.core.data.collection.container.IContainer;
-import org.caleydo.core.data.collection.container.IntContainer;
-import org.caleydo.core.data.collection.container.IntContainerIterator;
-import org.caleydo.core.data.collection.container.NumericalContainer;
+import org.caleydo.core.data.collection.column.container.FloatContainer;
+import org.caleydo.core.data.collection.column.container.FloatContainerIterator;
+import org.caleydo.core.data.collection.column.container.IContainer;
+import org.caleydo.core.data.collection.column.container.IntContainer;
+import org.caleydo.core.data.collection.column.container.IntContainerIterator;
+import org.caleydo.core.data.collection.column.container.NumericalContainer;
 import org.caleydo.core.util.base.AUniqueObject;
 
 /**

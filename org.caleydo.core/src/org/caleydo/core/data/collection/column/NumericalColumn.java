@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.dimension;
+package org.caleydo.core.data.collection.column;
 
 import org.caleydo.core.data.collection.EDataTransformation;
-import org.caleydo.core.data.collection.container.FloatContainer;
-import org.caleydo.core.data.collection.container.IContainer;
-import org.caleydo.core.data.collection.container.INumericalContainer;
+import org.caleydo.core.data.collection.column.container.FloatContainer;
+import org.caleydo.core.data.collection.column.container.IContainer;
+import org.caleydo.core.data.collection.column.container.INumericalContainer;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 

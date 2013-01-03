@@ -17,23 +17,23 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.dimension;
+package org.caleydo.core.data.collection.column;
 
 /**
- * Describes of what kind a container is, independent of its data type. Examples are raw data, normalized data
- * etc. Raw data can e.g. be primitive float, int, double or (numerical) objects, or even nominal data.
+ * The datatype of the raw dimension
  * 
  * @author Alexander Lex
  */
-public enum DataRepresentation {
-	RAW,
-	LOG10,
-	LOG2,
-	NORMALIZED,
-
-	FOLD_CHANGE_RAW,
-	FOLD_CHANGE_NORMALIZED,
-
-	UNCERTAINTY_RAW,
-	UNCERTAINTY_NORMALIZED;
+public enum RawDataType {
+	// For generic Nominal Dimensions
+	OBJECT,
+	// For generic Numerical Dimensions
+	NUMBER,
+	// For String Nominal Dimensions
+	STRING,
+	// Primitive Float
+	FLOAT,
+	// Primitive Int
+	INT,
+	UNDEFINED
 }

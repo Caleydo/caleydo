@@ -21,7 +21,7 @@ package org.caleydo.view.treemap.layout;
 
 import java.util.Set;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;

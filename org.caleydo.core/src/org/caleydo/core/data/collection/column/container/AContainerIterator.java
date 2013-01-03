@@ -17,34 +17,42 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.container;
+package org.caleydo.core.data.collection.column.container;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import org.caleydo.core.data.virtualarray.VAIterator;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 
 /**
- * Extension of the ICContainer interface for handling nominal data.
+ * Abstract container iterator for all ICContainers. Supports virtual arrays.
  * 
  * @author Alexander Lex
  */
-public interface INominalContainer<T>
-	extends IContainer {
+public class AContainerIterator
+	implements IContainerIterator {
+	protected VirtualArray<?, ?, ?> virtualArray = null;
+	protected VAIterator vaIterator = null;
+	protected int iIndex = 0;
+	protected int iSize = 0;
 
-	/**
-	 * Provide a list with all possible values on the nominal scale. Useful when the data set does not contain
-	 * all values by itself. Take care that every value in the data set is also in this list, otherwise an
-	 * exception will occur
-	 * 
-	 * @param sAlPossibleValues
-	 *            the List
-	 */
-	public void setPossibleValues(ArrayList<T> tAlPossibleValues);
+	@Override
+	public boolean hasNext() {
+		if (virtualArray == null) {
+			if (iIndex < iSize - 1)
+				return true;
+			else
+				return false;
+		}
+		else
+			return vaIterator.hasNext();
+	}
 
-	/**
-	 * Create a histogram for the values in the container
-	 * 
-	 * @return the
-	 */
-	public HashMap<T, Float> getHistogram();
-
+	@Override
+	public void remove() {
+		if (virtualArray == null)
+			throw new IllegalStateException(
+				"Remove is only defined if a virtual array is enabled, which is currently not the case");
+		else {
+			vaIterator.remove();
+		}
+	}
 }

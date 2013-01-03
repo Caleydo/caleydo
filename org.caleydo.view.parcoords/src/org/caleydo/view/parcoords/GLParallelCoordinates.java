@@ -49,8 +49,8 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.collection.dimension.RawDataType;
+import org.caleydo.core.data.collection.column.DataRepresentation;
+import org.caleydo.core.data.collection.column.RawDataType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.filter.DimensionFilter;

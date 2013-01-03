@@ -22,7 +22,7 @@ package org.caleydo.core.event.view;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.event.AEvent;
 
 /**

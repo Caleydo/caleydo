@@ -19,9 +19,9 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection.table;
 
-import org.caleydo.core.data.collection.dimension.AColumn;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.collection.dimension.NumericalColumn;
+import org.caleydo.core.data.collection.column.AColumn;
+import org.caleydo.core.data.collection.column.DataRepresentation;
+import org.caleydo.core.data.collection.column.NumericalColumn;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 
 /**

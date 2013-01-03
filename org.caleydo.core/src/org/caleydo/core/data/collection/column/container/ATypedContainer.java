@@ -17,61 +17,59 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.container;
+package org.caleydo.core.data.collection.column.container;
 
-import java.util.NoSuchElementException;
+import java.util.ArrayList;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
 
 /**
- * Iterator for IntCContainer. Initialized by passing the container. Provides the common iterator accessors.
+ * Base class for CContainer which can use Generics
  * 
  * @author Alexander Lex
+ * @param <T>
+ *            the Type of the container
  */
-public class IntContainerIterator
-	extends AContainerIterator {
 
-	private int iIndex = 0;
-
-	private IntContainer intCContainer = null;
+public abstract class ATypedContainer<T>
+	implements IContainer {
+	ArrayList<T> alContainer;
 
 	/**
-	 * Constructor
+	 * Returns the element of type T at the index iIndex
 	 * 
-	 * @param intCContainer
-	 *            the container over which to iterate
+	 * @param iIndex
+	 *            the index
+	 * @return the value at iIndex of type T
 	 */
-	public IntContainerIterator(IntContainer intCContainer) {
-		this.intCContainer = intCContainer;
+	public T get(int iIndex) {
+		return alContainer.get(iIndex);
+	}
+
+	@Override
+	public int size() {
+		return alContainer.size();
 	}
 
 	/**
-	 * Constructor
+	 * Returns an iterator on the data Do not use the iterators remove, add or set function, since it will
+	 * cause an UnsupportedOperationException.
 	 * 
-	 * @param intCContainer
-	 * @param uniqueID
+	 * @return the iterator
 	 */
-	public IntContainerIterator(IntContainer intCContainer, VirtualArray<?, ?, ?> virtualArray) {
-		this(intCContainer);
-		this.virtualArray = virtualArray;
-		this.vaIterator = virtualArray.iterator();
+	public ContainerIterator<T> iterator() {
+		return new ContainerIterator<T>(this, alContainer.listIterator());
 	}
 
 	/**
-	 * Returns the next element in the container Throws a NoSuchElementException if no more elements exist
+	 * Returns an iterator on the container which iterates based on a virtual array
 	 * 
-	 * @return the next element
+	 * @param virtualArray
+	 *            the virtual array which the iteration is based on
+	 * @return the iterator
 	 */
-	public int next() {
-		if (virtualArray != null)
-			return intCContainer.get(vaIterator.next());
-		else {
-			try {
-				return intCContainer.get(++iIndex);
-			}
-			catch (IndexOutOfBoundsException e) {
-				throw new NoSuchElementException();
-			}
-		}
+	public ContainerIterator<T> iterator(VirtualArray<?, ?, ?> virtualArray) {
+		return new ContainerIterator<T>(this, virtualArray);
 	}
+
 }

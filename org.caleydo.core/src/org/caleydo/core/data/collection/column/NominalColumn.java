@@ -17,13 +17,13 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.dimension;
+package org.caleydo.core.data.collection.column;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.caleydo.core.data.collection.EDataTransformation;
-import org.caleydo.core.data.collection.container.NominalContainer;
+import org.caleydo.core.data.collection.column.container.NominalContainer;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 

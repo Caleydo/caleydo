@@ -26,7 +26,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.id.IDType;

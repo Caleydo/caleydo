@@ -17,42 +17,26 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.container;
-
-import org.caleydo.core.data.virtualarray.VAIterator;
-import org.caleydo.core.data.virtualarray.VirtualArray;
+package org.caleydo.core.data.collection.column.container;
 
 /**
- * Abstract container iterator for all ICContainers. Supports virtual arrays.
+ * Interface for iterators on CContainers
  * 
  * @author Alexander Lex
  */
-public class AContainerIterator
-	implements IContainerIterator {
-	protected VirtualArray<?, ?, ?> virtualArray = null;
-	protected VAIterator vaIterator = null;
-	protected int iIndex = 0;
-	protected int iSize = 0;
+public interface IContainerIterator {
 
-	@Override
-	public boolean hasNext() {
-		if (virtualArray == null) {
-			if (iIndex < iSize - 1)
-				return true;
-			else
-				return false;
-		}
-		else
-			return vaIterator.hasNext();
-	}
+	/**
+	 * Returns true if another element exists in the container
+	 * 
+	 * @return false if no more elements exist
+	 */
+	public boolean hasNext();
 
-	@Override
-	public void remove() {
-		if (virtualArray == null)
-			throw new IllegalStateException(
-				"Remove is only defined if a virtual array is enabled, which is currently not the case");
-		else {
-			vaIterator.remove();
-		}
-	}
+	/**
+	 * Removes the element last called by next or previous from the virtual array. Works only if virtual
+	 * arrays are enabled, throws exception if called without an enabled virtual array.
+	 */
+	public void remove();
+
 }

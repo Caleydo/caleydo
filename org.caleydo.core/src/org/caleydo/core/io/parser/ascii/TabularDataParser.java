@@ -23,9 +23,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.dimension.AColumn;
-import org.caleydo.core.data.collection.dimension.NominalColumn;
-import org.caleydo.core.data.collection.dimension.NumericalColumn;
+import org.caleydo.core.data.collection.column.AColumn;
+import org.caleydo.core.data.collection.column.NominalColumn;
+import org.caleydo.core.data.collection.column.NumericalColumn;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.id.IDCategory;

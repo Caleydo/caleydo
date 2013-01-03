@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.dimension.AColumn;
+import org.caleydo.core.data.collection.column.AColumn;
 
 /**
  * Abstract class for all kinds of mini views.

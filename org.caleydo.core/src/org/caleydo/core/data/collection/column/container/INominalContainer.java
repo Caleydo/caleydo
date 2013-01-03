@@ -17,26 +17,34 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection.container;
+package org.caleydo.core.data.collection.column.container;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
- * Interface for iterators on CContainers
+ * Extension of the ICContainer interface for handling nominal data.
  * 
  * @author Alexander Lex
  */
-public interface IContainerIterator {
+public interface INominalContainer<T>
+	extends IContainer {
 
 	/**
-	 * Returns true if another element exists in the container
+	 * Provide a list with all possible values on the nominal scale. Useful when the data set does not contain
+	 * all values by itself. Take care that every value in the data set is also in this list, otherwise an
+	 * exception will occur
 	 * 
-	 * @return false if no more elements exist
+	 * @param sAlPossibleValues
+	 *            the List
 	 */
-	public boolean hasNext();
+	public void setPossibleValues(ArrayList<T> tAlPossibleValues);
 
 	/**
-	 * Removes the element last called by next or previous from the virtual array. Works only if virtual
-	 * arrays are enabled, throws exception if called without an enabled virtual array.
+	 * Create a histogram for the values in the container
+	 * 
+	 * @return the
 	 */
-	public void remove();
+	public HashMap<T, Float> getHistogram();
 
 }

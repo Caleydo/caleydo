@@ -23,7 +23,7 @@ import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.mapping.color.ColorMapper;

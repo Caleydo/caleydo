@@ -19,9 +19,9 @@ package org.caleydo.core.data.collection.table;
 import javax.naming.OperationNotSupportedException;
 
 import org.caleydo.core.data.collection.EDataTransformation;
-import org.caleydo.core.data.collection.dimension.AColumn;
-import org.caleydo.core.data.collection.dimension.NominalColumn;
-import org.caleydo.core.data.collection.dimension.NumericalColumn;
+import org.caleydo.core.data.collection.column.AColumn;
+import org.caleydo.core.data.collection.column.NominalColumn;
+import org.caleydo.core.data.collection.column.NumericalColumn;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;

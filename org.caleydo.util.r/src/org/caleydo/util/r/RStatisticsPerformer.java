@@ -26,7 +26,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.perspective.table.Average;
