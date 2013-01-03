@@ -33,9 +33,11 @@ import java.util.List;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.io.gui.dataimport.widget.BooleanCallback;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
+import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.Dims;
@@ -48,15 +50,14 @@ import org.caleydo.view.tourguide.api.query.DataDomainQuery;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.query.filter.SpecificDataDomainFilter;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
+import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
 import org.caleydo.view.tourguide.internal.event.ImportExternalScoreEvent;
+import org.caleydo.view.tourguide.internal.event.SelectDimensionSelectionEvent;
 import org.caleydo.view.tourguide.internal.renderer.AdvancedTextureRenderer;
 import org.caleydo.view.tourguide.internal.renderer.DecorationTextureRenderer;
 import org.caleydo.view.tourguide.internal.score.ExternalGroupLabelScore;
 import org.caleydo.view.tourguide.internal.score.ExternalIDTypeScore;
-import org.caleydo.view.tourguide.internal.view.ui.DataDomainFilterDialog;
 import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * TODO: support filter, ala cutoff or categorical levels
@@ -83,6 +84,12 @@ public class DataDomainQueryUI extends Column {
 			onSelectionChanged((IDataDomain) evt.getOldValue(), (IDataDomain) evt.getNewValue());
 		}
 	};
+	private PropertyChangeListener filterListener = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			onFilterChanged();
+		}
+	};
 
 	private DataDomainQuery query;
 
@@ -96,7 +103,7 @@ public class DataDomainQueryUI extends Column {
 
 			@Override
 			public void rightClicked(Pick pick) {
-				toggleFilteredSelection(rows.get(pick.getObjectID()));
+				onRightClicked(rows.get(pick.getObjectID()));
 			}
 		}, TOGGLE_DATA_DOMAIN);
 		view.addTypePickingTooltipListener("Left-Click: Add/Remove to Query \nRight-Click: Edit Filter",
@@ -162,10 +169,13 @@ public class DataDomainQueryUI extends Column {
 	}
 
 	public void setQuery(DataDomainQuery query) {
-		if (this.query != null)
+		if (this.query != null) {
 			this.query.removePropertyChangeListener(DataDomainQuery.PROP_SELECTION, selectionListener);
+			this.query.removePropertyChangeListener(DataDomainQuery.PROP_FILTER, filterListener);
+		}
 		this.query = query;
 		this.query.addPropertyChangeListener(DataDomainQuery.PROP_SELECTION, selectionListener);
+		this.query.addPropertyChangeListener(DataDomainQuery.PROP_FILTER, filterListener);
 		Collection<IDataDomain> current = query.getSelection();
 
 		for (DataDomainRow row : rows) {
@@ -189,6 +199,18 @@ public class DataDomainQueryUI extends Column {
 			getRow(newValue).setSelected(true);
 	}
 
+	protected void onFilterChanged() {
+		for (DataDomainRow row : this.rows) {
+			for (IDataDomainFilter f : query.getFilter()) {
+				if (f instanceof SpecificDataDomainFilter
+						&& ((SpecificDataDomainFilter) f).getDataDomain().equals(row.dataDomain)) {
+					row.setFilter((SpecificDataDomainFilter) f);
+					break;
+				}
+			}
+		}
+	}
+
 	private DataDomainRow getRow(IDataDomain d) {
 		for (DataDomainRow r : rows)
 			if (r.dataDomain.equals(d))
@@ -209,29 +231,22 @@ public class DataDomainQueryUI extends Column {
 			query.removeSelection(dataDomainRow.dataDomain);
 	}
 
-	protected void toggleFilteredSelection(DataDomainRow dataDomainRow) {
+	protected void onRightClicked(DataDomainRow dataDomainRow) {
+		ContextMenuCreator creator = view.getContextMenuCreator();
 		if (dataDomainRow.getFilter() != null)
-			onEditFilter(dataDomainRow, dataDomainRow.getFilter());
+			creator.addContextMenuItem(new GenericContextMenuItem("Edit Filter", new EditDataDomainFilterEvent(dataDomainRow.getFilter(), this)));
+		Collection<DimensionPerspective> dims = DataDomainQuery
+				.getPossibleDimensionPerspectives(dataDomainRow.dataDomain);
+		if (!dims.isEmpty()) {
+			DimensionPerspective dim = query.getDimensionSelection(dataDomainRow.dataDomain);
+			if (dim == null)
+				dim = dims.iterator().next();
+			GroupContextMenuItem item = new GroupContextMenuItem("Used Dimension Perspective");
+			creator.addContextMenuItem(item);
+			for (DimensionPerspective d : dims)
+				item.add(new GenericContextMenuItem(d.getLabel(), EContextMenuType.CHECK, new SelectDimensionSelectionEvent(d,this)).setState(d == dim));
+		}
 	}
-
-	/**
-	 * @param dataDomainRow
-	 * @param f
-	 */
-	private void onEditFilter(final DataDomainRow dataDomainRow, final SpecificDataDomainFilter f) {
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				new DataDomainFilterDialog(new Shell(), query, f, new BooleanCallback() {
-					@Override
-					public void on(boolean data) {
-						dataDomainRow.setHasFilter(data);
-					}
-				}).open();
-			}
-		});
-	}
-
 
 	protected void onOpenDataDomainContextMenu(DataDomainRow dataDomainRow) {
 		ContextMenuCreator creator = view.getContextMenuCreator();

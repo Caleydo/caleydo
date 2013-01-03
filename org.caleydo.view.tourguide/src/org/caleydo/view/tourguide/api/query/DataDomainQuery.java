@@ -25,8 +25,11 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -45,6 +48,7 @@ import org.caleydo.view.tourguide.api.query.filter.CompositeDataDomainFilter;
 import org.caleydo.view.tourguide.api.query.filter.DataDomainFilters;
 import org.caleydo.view.tourguide.api.query.filter.EStringCompareOperator;
 import org.caleydo.view.tourguide.api.query.filter.SpecificDataDomainFilter;
+import org.caleydo.view.tourguide.api.util.MappedPropertyChangeEvent;
 import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
 
 import com.google.common.base.Function;
@@ -61,16 +65,32 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 		Function<Collection<ARecordPerspective>, Multimap<ARecordPerspective, Group>>, Cloneable {
 	public static final String PROP_FILTER = "filter";
 	public static final String PROP_SELECTION = "selection";
+	public static final String PROP_DIMENSION_SELECTION = "dimensionSelection";
 	public static final String PROP_MODE = "mode";
 
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
+	/**
+	 * the currently selected data domains
+	 */
 	private Set<IDataDomain> selection = new HashSet<>();
+	/**
+	 * filters that select the stratification and groups
+	 */
 	private CompositeDataDomainFilter filter = new CompositeDataDomainFilter();
 
+	/**
+	 * the current mode
+	 */
 	private EDataDomainQueryMode mode = EDataDomainQueryMode.TABLE_BASED;
 
+	// cache
 	private WeakReference<Collection<Pair<ARecordPerspective, TablePerspective>>> cache = null;
+
+	/**
+	 * contains the selected dimension perspective to use for a given datadomain
+	 */
+	private final Map<IDataDomain, DimensionPerspective> dimensionSelection = new HashMap<>();
 
 	public DataDomainQuery() {
 		this(true);
@@ -91,6 +111,7 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 		clone.selection.addAll(this.selection);
 		clone.filter = this.filter.clone();
 		clone.mode = this.mode;
+		clone.dimensionSelection.putAll(this.dimensionSelection);
 
 		return clone;
 	}
@@ -256,14 +277,11 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 			}
 			return result;
 		} else {
-			// Take the first non ungrouped dimension perspective
 			String dimensionPerspectiveID = null;
-			for (String tmpDimensionPerspectiveID : dataDomain.getDimensionPerspectiveIDs()) {
-				DimensionPerspective per = dataDomain.getTable().getDimensionPerspective(tmpDimensionPerspectiveID);
-				if (isUngrouped(per))
-					continue;
-				dimensionPerspectiveID = tmpDimensionPerspectiveID;
-			}
+			if (dimensionSelection.containsKey(dataDomain))
+				dimensionPerspectiveID = dimensionSelection.get(dataDomain).getPerspectiveID();
+			else
+				dimensionPerspectiveID = getDefaultDimensionPerspective(dataDomain);
 
 			Set<String> rowPerspectiveIDs = dataDomain.getRecordPerspectiveIDs();
 
@@ -290,6 +308,35 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 			}
 			return stratifications;
 		}
+	}
+
+	private String getDefaultDimensionPerspective(ATableBasedDataDomain dataDomain) {
+		// Take the first non ungrouped dimension perspective
+		return getPossibleDimensionPerspectives(dataDomain).iterator().next().getPerspectiveID();
+	}
+
+	/**
+	 * returns a list of possible dimension perspectives that the user can choose from
+	 *
+	 * @param dataDomain
+	 * @return
+	 */
+	public static Collection<DimensionPerspective> getPossibleDimensionPerspectives(IDataDomain dataDomain) {
+		if (!(dataDomain instanceof ATableBasedDataDomain))
+			return Collections.emptySet();
+		if (DataDomainOracle.isCategoricalDataDomain(dataDomain))
+			return Collections.emptySet();
+
+		ATableBasedDataDomain dd = (ATableBasedDataDomain) dataDomain;
+
+		List<DimensionPerspective> r = Lists.newArrayList();
+		for (String tmpDimensionPerspectiveID : dd.getDimensionPerspectiveIDs()) {
+			DimensionPerspective per = dd.getTable().getDimensionPerspective(tmpDimensionPerspectiveID);
+			if (isUngrouped(per))
+				continue;
+			r.add(per);
+		}
+		return r;
 	}
 
 	private static boolean isUngrouped(DimensionPerspective per) {
@@ -351,7 +398,7 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 		if (dataDomain instanceof ATableBasedDataDomain)
 			DataDomainOracle.initDataDomain((ATableBasedDataDomain) dataDomain);
 		else if (dataDomain instanceof PathwayDataDomain) {
-			// FIXME
+			// nothing todo
 		}
 	}
 
@@ -362,5 +409,16 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 		listeners.fireIndexedPropertyChange(PROP_SELECTION, selection.size(), dataDomain, null);
 	}
 
+
+	public DimensionPerspective getDimensionSelection(IDataDomain dataDomain) {
+		return dimensionSelection.get(dataDomain);
+	}
+
+	public void setDimensionSelection(IDataDomain dataDomain, DimensionPerspective d) {
+		if (Objects.equals(dimensionSelection.get(dataDomain), d))
+			return;
+		listeners.firePropertyChange(new MappedPropertyChangeEvent(this, PROP_DIMENSION_SELECTION, dataDomain,
+				this.dimensionSelection.put(dataDomain, d), d));
+	}
 
 }

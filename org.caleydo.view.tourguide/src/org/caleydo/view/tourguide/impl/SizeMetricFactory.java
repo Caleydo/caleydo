@@ -24,6 +24,7 @@ import java.util.Set;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.api.score.EScoreType;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
@@ -67,6 +68,11 @@ class SizeMetric implements IScore {
 	}
 
 	@Override
+	public ESorting getDefaultSorting() {
+		return ESorting.DESC;
+	}
+
+	@Override
 	public boolean supports(EDataDomainQueryMode mode) {
 		return true;
 	}
@@ -78,7 +84,7 @@ class SizeMetric implements IScore {
 
 	@Override
 	public String getAbbreviation() {
-		return "SI";
+		return "S";
 	}
 
 	@Override

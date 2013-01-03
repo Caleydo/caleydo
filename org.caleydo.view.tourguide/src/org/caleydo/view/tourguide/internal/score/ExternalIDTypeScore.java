@@ -47,6 +47,7 @@ import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.api.score.ECombinedOperator;
 import org.caleydo.view.tourguide.api.score.EScoreType;
@@ -119,6 +120,11 @@ public final class ExternalIDTypeScore extends DefaultLabelProvider implements I
 	@Override
 	public final EScoreType getScoreType() {
 		return isRank ? EScoreType.RANK : EScoreType.SCORE;
+	}
+
+	@Override
+	public ESorting getDefaultSorting() {
+		return isRank ? ESorting.ASC : ESorting.DESC;
 	}
 
 	@Override

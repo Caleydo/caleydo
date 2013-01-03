@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.api.score.EScoreType;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
@@ -73,6 +74,11 @@ public final class ExternalGroupLabelScore extends DefaultLabelProvider implemen
 	@Override
 	public final EScoreType getScoreType() {
 		return isRank ? EScoreType.GROUP_RANK : EScoreType.GROUP_SCORE;
+	}
+
+	@Override
+	public ESorting getDefaultSorting() {
+		return isRank ? ESorting.ASC : ESorting.DESC;
 	}
 
 	@Override

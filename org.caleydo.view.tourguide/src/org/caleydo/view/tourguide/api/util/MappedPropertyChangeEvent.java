@@ -17,38 +17,28 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.event;
+package org.caleydo.view.tourguide.api.util;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.view.tourguide.internal.view.DataDomainQueryUI;
-import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
+import java.beans.PropertyChangeEvent;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class UpdateFilterColumnEvent extends AEvent {
-	private IDataDomainFilter filter;
+public final class MappedPropertyChangeEvent extends PropertyChangeEvent {
+	private static final long serialVersionUID = 1L;
+	private final Object key;
 
-	public UpdateFilterColumnEvent() {
-
-	}
-
-	public UpdateFilterColumnEvent(IDataDomainFilter filter, DataDomainQueryUI sender) {
-		this.filter = filter;
-		this.setSender(sender);
+	public MappedPropertyChangeEvent(Object source, String propertyName, Object key, Object oldValue, Object newValue) {
+		super(source, propertyName, oldValue, newValue);
+		this.key = key;
 	}
 
 	/**
-	 * @return the filter, see {@link #filter}
+	 * @return the key, see {@link #key}
 	 */
-	public IDataDomainFilter getFilter() {
-		return filter;
+	public Object getKey() {
+		return key;
 	}
 
-	@Override
-	public boolean checkIntegrity() {
-		return filter != null;
-	}
 }
-

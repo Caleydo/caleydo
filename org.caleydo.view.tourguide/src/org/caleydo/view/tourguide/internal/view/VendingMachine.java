@@ -70,13 +70,16 @@ import org.caleydo.view.tourguide.internal.SerializedTourGuideView;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.CreateScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
+import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
 import org.caleydo.view.tourguide.internal.event.ImportExternalScoreEvent;
 import org.caleydo.view.tourguide.internal.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.RenameScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
+import org.caleydo.view.tourguide.internal.event.SelectDimensionSelectionEvent;
 import org.caleydo.view.tourguide.internal.event.ToggleNaNFilterScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.external.ImportExternalScoreCommand;
 import org.caleydo.view.tourguide.internal.listener.CreateScoreListener;
+import org.caleydo.view.tourguide.internal.listener.DataDomainEventListener;
 import org.caleydo.view.tourguide.internal.listener.ImportExternalScoreListener;
 import org.caleydo.view.tourguide.internal.listener.ScoreColumnListener;
 import org.caleydo.view.tourguide.internal.listener.ScoreQueryReadyListener;
@@ -149,6 +152,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		if (this.dataDomainQuery != null) {
 			dataDomainQuery.removePropertyChangeListener(DataDomainQuery.PROP_SELECTION, selectionListener);
 			dataDomainQuery.removePropertyChangeListener(DataDomainQuery.PROP_FILTER, recomputeListener);
+			dataDomainQuery.removePropertyChangeListener(DataDomainQuery.PROP_DIMENSION_SELECTION, recomputeListener);
 		}
 		this.scoreQuery = query;
 		scoreQuery.addPropertyChangeListener(recomputeListener);
@@ -157,6 +161,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 		dataDomainQuery.addPropertyChangeListener(DataDomainQuery.PROP_SELECTION, selectionListener);
 		dataDomainQuery.addPropertyChangeListener(DataDomainQuery.PROP_FILTER, recomputeListener);
+		dataDomainQuery.addPropertyChangeListener(DataDomainQuery.PROP_DIMENSION_SELECTION, recomputeListener);
 
 		if (this.scoreQueryUI != null)
 			this.scoreQueryUI.setQuery(scoreQuery);
@@ -277,6 +282,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		listeners.register(ScoreQueryReadyEvent.class, new ScoreQueryReadyListener(this));
 		listeners.register(ImportExternalScoreEvent.class, new ImportExternalScoreListener(this));
 		listeners.register(new StratomexTablePerspectiveListener(this), AddTablePerspectivesEvent.class, RemoveTablePerspectiveEvent.class, ReplaceTablePerspectiveEvent.class);
+		listeners.register(new DataDomainEventListener(this), EditDataDomainFilterEvent.class,
+				SelectDimensionSelectionEvent.class);
 	}
 
 	@Override
@@ -454,6 +461,10 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		return scoreQuery;
 	}
 
+	public DataDomainQueryUI getDataDomainQueryUI() {
+		return this.dataDomainSelector;
+	}
+
 	/**
 	 * @param view
 	 */
@@ -461,6 +472,10 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		this.setQuery(view.getScoreQuery().clone());
 		this.switchToStratomex(view.stratomex.get());
 		this.recomputeScores();
+	}
+
+	public DataDomainQuery getDataDomainQuery() {
+		return dataDomainQuery;
 	}
 
 }

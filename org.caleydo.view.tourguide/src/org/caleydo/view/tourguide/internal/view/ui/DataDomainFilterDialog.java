@@ -3,7 +3,6 @@ package org.caleydo.view.tourguide.internal.view.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.io.gui.dataimport.widget.BooleanCallback;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.tourguide.api.query.DataDomainQuery;
 import org.caleydo.view.tourguide.api.query.filter.CompareDomainFilter;
@@ -31,18 +30,15 @@ public class DataDomainFilterDialog extends TitleAreaDialog {
 	// the root element to populate the viewer with
 	private final SpecificDataDomainFilter filter;
 	private final DataDomainQuery query;
-	private final BooleanCallback hasFilterAfterwardsCallback;
 
 	private List<DataDomainFilterWidget> filters = new ArrayList<>();
 	private Group filterContainer;
 
-	public DataDomainFilterDialog(Shell shell, DataDomainQuery query, SpecificDataDomainFilter filter,
-			BooleanCallback hasFilterAfterwardsCallback) {
+	public DataDomainFilterDialog(Shell shell, DataDomainQuery query, SpecificDataDomainFilter filter) {
 		super(shell);
 		this.query = query;
 		this.filter = filter;
 		this.filters = new ArrayList<>();
-		this.hasFilterAfterwardsCallback = hasFilterAfterwardsCallback;
 	}
 
 	@Override
@@ -167,6 +163,5 @@ public class DataDomainFilterDialog extends TitleAreaDialog {
 			filter.add(w.save());
 		}
 		query.updateFilter(filter);
-		hasFilterAfterwardsCallback.on(!filter.isEmpty());
 	}
 }

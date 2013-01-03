@@ -24,6 +24,7 @@ import java.util.Iterator;
 
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.spi.compute.ICompositeScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -55,6 +56,11 @@ public class CombinedScore extends DefaultLabelProvider implements ICompositeSco
 				return new TransformedScore(s);
 			}
 		}));
+	}
+
+	@Override
+	public ESorting getDefaultSorting() {
+		return ESorting.DESC;
 	}
 
 	@Override

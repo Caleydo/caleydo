@@ -24,6 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
@@ -36,6 +37,11 @@ public abstract class AComputedStratificationScore extends DefaultLabelProvider 
 
 	public AComputedStratificationScore(String label) {
 		super(label);
+	}
+
+	@Override
+	public ESorting getDefaultSorting() {
+		return ESorting.DESC;
 	}
 
 	public boolean contains(ARecordPerspective elem) {

@@ -17,29 +17,38 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.spi.score;
+package org.caleydo.view.tourguide.internal.event;
 
-import org.caleydo.core.util.base.ILabelProvider;
-import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.query.ESorting;
-import org.caleydo.view.tourguide.api.query.ScoringElement;
-import org.caleydo.view.tourguide.api.score.EScoreType;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.view.tourguide.api.query.filter.SpecificDataDomainFilter;
+import org.caleydo.view.tourguide.internal.view.DataDomainQueryUI;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public interface IScore extends ILabelProvider {
-	public boolean supports(EDataDomainQueryMode mode);
+public class EditDataDomainFilterEvent extends AEvent {
+	private SpecificDataDomainFilter filter;
 
-	public EScoreType getScoreType();
+	public EditDataDomainFilterEvent() {
 
-	public float getScore(ScoringElement elem);
+	}
 
-	public ESorting getDefaultSorting();
+	public EditDataDomainFilterEvent(SpecificDataDomainFilter filter, DataDomainQueryUI sender) {
+		this.filter = filter;
+		this.setSender(sender);
+	}
 
 	/**
-	 * @return
+	 * @return the filter, see {@link #filter}
 	 */
-	public String getAbbreviation();
+	public SpecificDataDomainFilter getFilter() {
+		return filter;
+	}
+
+	@Override
+	public boolean checkIntegrity() {
+		return filter != null;
+	}
 }
+

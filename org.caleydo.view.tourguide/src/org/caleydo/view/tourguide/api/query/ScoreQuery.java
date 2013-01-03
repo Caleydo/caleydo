@@ -384,7 +384,7 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>>, Cloneable
 			return;
 		this.selection.addAll(scores);
 		IScore last = Iterables.getLast(scores);
-		sortByImpl(last, last.getScoreType().isRank() ? ESorting.ASC : ESorting.DESC);
+		sortByImpl(last, last.getDefaultSorting());
 		submitComputation(scores, null);
 
 		listeners.fireIndexedPropertyChange(PROP_SELECTION, selection.size() - 1, null, last);

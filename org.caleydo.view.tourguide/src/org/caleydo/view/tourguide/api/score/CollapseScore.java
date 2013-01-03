@@ -26,9 +26,9 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.caleydo.core.data.perspective.variable.ARecordPerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.spi.compute.ICompositeScore;
@@ -66,6 +66,7 @@ public class CollapseScore extends DefaultLabelProvider implements ICompositeSco
 	public void onRegistered() {
 
 	}
+
 
 	@Override
 	public boolean supports(EDataDomainQueryMode mode) {
@@ -110,6 +111,16 @@ public class CollapseScore extends DefaultLabelProvider implements ICompositeSco
 		for (IScore child : this)
 			maxOrdinal = Math.max(maxOrdinal, child.getScoreType().ordinal());
 		return EScoreType.values()[maxOrdinal];
+	}
+
+	@Override
+	public ESorting getDefaultSorting() {
+		ESorting r = children.iterator().next().getDefaultSorting();
+		for (IScore child : this)
+			// all the same
+			if (r != child.getDefaultSorting())
+				return ESorting.DESC;
+		return r;
 	}
 
 	@Override

@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
@@ -41,6 +42,11 @@ public abstract class AComputedGroupScore extends DefaultLabelProvider implement
 
 	public AComputedGroupScore(String label) {
 		super(label);
+	}
+
+	@Override
+	public ESorting getDefaultSorting() {
+		return ESorting.DESC;
 	}
 
 	public boolean contains(ARecordPerspective perspective, Group elem) {

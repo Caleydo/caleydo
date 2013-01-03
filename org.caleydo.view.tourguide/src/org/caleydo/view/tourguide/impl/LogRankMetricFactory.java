@@ -32,6 +32,7 @@ import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.api.score.CombinedScore;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
@@ -70,6 +71,7 @@ public class LogRankMetricFactory implements IMetricFactory {
 			hasOne = true;
 			IScore logRankPValue = new LogRankPValue(score.getLabel() + " (P-V)", score);
 			IScore combined = new CombinedScore(score.getLabel() + " Quality", ECombinedOperator.PRODUCT,
+
 					CombinedScore.wrap(Arrays.asList(score, logRankPValue)));
 			logRanks.add(new GenericContextMenuItem(score.getLabel(), new AddScoreColumnEvent(sender, score,
 					logRankPValue, combined)));
@@ -121,6 +123,11 @@ public class LogRankMetricFactory implements IMetricFactory {
 		public LogRankPValue(String label, LogRankMetric logRankScore) {
 			super(label);
 			this.logRankScore = logRankScore;
+		}
+
+		@Override
+		public ESorting getDefaultSorting() {
+			return ESorting.ASC;
 		}
 
 		@Override
