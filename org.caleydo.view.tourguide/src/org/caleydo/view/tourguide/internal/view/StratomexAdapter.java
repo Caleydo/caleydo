@@ -338,4 +338,8 @@ public class StratomexAdapter {
 	public boolean is(Integer receiverID) {
 		return this.receiver != null && this.receiver.getID() == receiverID;
 	}
+
+	public GLStratomex get() {
+		return this.receiver;
+	}
 }

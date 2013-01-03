@@ -113,8 +113,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	private final EventListeners listeners = new EventListeners();
 
 	private StratomexAdapter stratomex = new StratomexAdapter();
-	private DataDomainQuery dataDomainQuery = new DataDomainQuery();
-	private ScoreQuery scoreQuery = new ScoreQuery(dataDomainQuery);
+	private DataDomainQuery dataDomainQuery;
+	private ScoreQuery scoreQuery;
 
 	private CaleydoTextRenderer textLargeRenderer;
 
@@ -122,26 +122,46 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 	private boolean computing = false;
 
+	private final PropertyChangeListener recomputeListener = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			recomputeScores();
+		}
+	};
+	private final PropertyChangeListener selectionListener = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			if (evt.getNewValue() == null)
+				onHideDataDomain((IDataDomain) evt.getOldValue());
+			else
+				onShowDataDomain((IDataDomain) evt.getNewValue());
+		}
+	};
+
 	public VendingMachine(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+	}
 
-		dataDomainQuery.addPropertyChangeListener(DataDomainQuery.PROP_SELECTION, new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getNewValue() == null)
-					onHideDataDomain((IDataDomain) evt.getOldValue());
-				else
-					onShowDataDomain((IDataDomain) evt.getNewValue());
-			}
-		});
-		final PropertyChangeListener recomputeListener = new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				recomputeScores();
-			}
-		};
-		dataDomainQuery.addPropertyChangeListener(DataDomainQuery.PROP_FILTER, recomputeListener);
+	public void setQuery(ScoreQuery query) {
+		if (this.scoreQuery != null) {
+			scoreQuery.removePropertyChangeListener(recomputeListener);
+		}
+		if (this.dataDomainQuery != null) {
+			dataDomainQuery.removePropertyChangeListener(DataDomainQuery.PROP_SELECTION, selectionListener);
+			dataDomainQuery.removePropertyChangeListener(DataDomainQuery.PROP_FILTER, recomputeListener);
+		}
+		this.scoreQuery = query;
 		scoreQuery.addPropertyChangeListener(recomputeListener);
+
+		this.dataDomainQuery = this.scoreQuery.getQuery();
+
+		dataDomainQuery.addPropertyChangeListener(DataDomainQuery.PROP_SELECTION, selectionListener);
+		dataDomainQuery.addPropertyChangeListener(DataDomainQuery.PROP_FILTER, recomputeListener);
+
+		if (this.scoreQueryUI != null)
+			this.scoreQueryUI.setQuery(scoreQuery);
+		if (this.dataDomainSelector != null)
+			this.dataDomainSelector.setQuery(dataDomainQuery);
 	}
 
 
@@ -192,6 +212,9 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 		layoutManager.setBaseElementLayout(mainColumn);
 		layoutManager.setUseDisplayLists(true);
+
+		if (scoreQuery == null)
+			setQuery(new ScoreQuery(new DataDomainQuery()));
 
 		dataDomainSelector = new DataDomainQueryUI(this);
 		dataDomainSelector.setQuery(dataDomainQuery);
@@ -429,6 +452,15 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 	public ScoreQuery getScoreQuery() {
 		return scoreQuery;
+	}
+
+	/**
+	 * @param view
+	 */
+	public void cloneFrom(VendingMachine view) {
+		this.setQuery(view.getScoreQuery().clone());
+		this.switchToStratomex(view.stratomex.get());
+		this.recomputeScores();
 	}
 
 }
