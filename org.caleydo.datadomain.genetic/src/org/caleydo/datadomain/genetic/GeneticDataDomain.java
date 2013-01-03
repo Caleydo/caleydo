@@ -24,7 +24,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -395,7 +394,7 @@ public class GeneticDataDomain
 	 * the table based on the ID of the gene and the experiment. Resolves
 	 * dimension/record association for you in doing so.
 	 */
-	public float getGeneValue(DataRepresentation dataRepresentation, Integer geneID,
+	public float getGeneValue(String dataRepresentation, Integer geneID,
 			Integer experimentID) {
 		Integer recordID;
 		Integer dimensionID;

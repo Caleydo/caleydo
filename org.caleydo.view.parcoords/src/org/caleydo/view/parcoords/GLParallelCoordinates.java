@@ -1058,7 +1058,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			if (axisID == -1)
 				continue;
 			for (int recordID : tablePerspective.getRecordPerspective().getVirtualArray()) {
-				DataRepresentation usedDataRepresentation = DataRepresentation.RAW;
+				String usedDataRepresentation = DataRepresentation.RAW;
 				if (!dataDomain.getTable().isDataHomogeneous())
 					usedDataRepresentation = DataRepresentation.NORMALIZED;
 

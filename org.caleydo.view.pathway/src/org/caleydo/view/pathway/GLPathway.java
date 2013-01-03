@@ -47,7 +47,6 @@ import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.events.RecordVADeltaEvent;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
-import org.caleydo.core.event.view.SwitchDataRepresentationEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.event.view.pathway.LoadPathwayEvent;
 import org.caleydo.core.id.IDType;
@@ -101,7 +100,6 @@ import org.caleydo.view.pathway.listener.ClearPathEventListener;
 import org.caleydo.view.pathway.listener.EnRoutePathEventListener;
 import org.caleydo.view.pathway.listener.EnableGeneMappingListener;
 import org.caleydo.view.pathway.listener.SelectPathModeEventListener;
-import org.caleydo.view.pathway.listener.SwitchDataRepresentationListener;
 import org.caleydo.view.pathway.toolbar.actions.SelectPathAction;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -179,7 +177,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 	private Vec3f vecTranslation;
 
 	private EnableGeneMappingListener enableGeneMappingListener;
-	private SwitchDataRepresentationListener switchDataRepresentationListener;
 	private EnRoutePathEventListener enRoutePathEventListener;
 	private SelectPathModeEventListener selectPathModeEventListener;
 	private ClearPathEventListener clearPathEventListener;
@@ -1174,9 +1171,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		enableGeneMappingListener.setHandler(this);
 		eventPublisher.addListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
 
-		switchDataRepresentationListener = new SwitchDataRepresentationListener();
-		switchDataRepresentationListener.setHandler(this);
-		eventPublisher.addListener(SwitchDataRepresentationEvent.class, switchDataRepresentationListener);
 
 		enRoutePathEventListener = new EnRoutePathEventListener();
 		enRoutePathEventListener.setHandler(this);
@@ -1217,10 +1211,6 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			enableGeneMappingListener = null;
 		}
 
-		if (switchDataRepresentationListener != null) {
-			eventPublisher.removeListener(switchDataRepresentationListener);
-			switchDataRepresentationListener = null;
-		}
 
 		if (enRoutePathEventListener != null) {
 			eventPublisher.removeListener(enRoutePathEventListener);
@@ -1301,10 +1291,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		return true;
 	}
 
-	public void switchDataRepresentation() {
-		gLPathwayAugmentationRenderer.switchDataRepresentation();
-		setDisplayListDirty();
-	}
+
 
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {

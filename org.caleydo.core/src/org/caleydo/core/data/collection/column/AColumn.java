@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,18 +8,18 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.data.collection.column;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import org.caleydo.core.data.collection.EDataTransformation;
@@ -41,7 +41,7 @@ import org.caleydo.core.util.base.AUniqueObject;
  * and nominal. This is reflected in the two sub-interfaces INumericalSet and INominalSet. After construction
  * one of the setRawData methods has to be called. Notice, that only one setRawData may be called exactly
  * once, since a set is designed to contain only one raw data set at a time.
- * 
+ *
  * @author Alexander Lex
  */
 
@@ -49,7 +49,7 @@ public abstract class AColumn
 	extends AUniqueObject
 	implements ICollection {
 
-	protected EnumMap<DataRepresentation, IContainer> hashCContainers;
+	protected HashMap<String, IContainer> dataRepToContainerMap;
 
 	protected String label;
 
@@ -57,7 +57,7 @@ public abstract class AColumn
 
 	RawDataType rawDataType = RawDataType.UNDEFINED;
 
-	DataRepresentation dataRep;
+	String dataRep;
 
 	/**
 	 * Constructor Initializes objects
@@ -65,13 +65,13 @@ public abstract class AColumn
 	public AColumn(int uniqueID) {
 		super(uniqueID);
 
-		hashCContainers = new EnumMap<DataRepresentation, IContainer>(DataRepresentation.class);
+		dataRepToContainerMap = new HashMap<String, IContainer>();
 		label = new String("Not specified");
 	}
 
 	/**
 	 * Returns the data type of the raw data
-	 * 
+	 *
 	 * @return a value of ERawDataType
 	 */
 	public RawDataType getRawDataType() {
@@ -90,7 +90,7 @@ public abstract class AColumn
 
 	/**
 	 * Set the raw data with data type float
-	 * 
+	 *
 	 * @param rawData
 	 *            a float array containing the raw data
 	 */
@@ -104,12 +104,12 @@ public abstract class AColumn
 		isRawDataSet = true;
 
 		FloatContainer container = new FloatContainer(rawData);
-		hashCContainers.put(DataRepresentation.RAW, container);
+		dataRepToContainerMap.put(DataRepresentation.RAW, container);
 	}
 
 	/**
 	 * Set the raw data with data type int
-	 * 
+	 *
 	 * @param fArRawData
 	 *            a int array containing the raw data
 	 */
@@ -122,61 +122,61 @@ public abstract class AColumn
 		isRawDataSet = true;
 
 		IntContainer container = new IntContainer(rawData);
-		hashCContainers.put(DataRepresentation.RAW, container);
+		dataRepToContainerMap.put(DataRepresentation.RAW, container);
 	}
 
-	public void setUncertaintyData(float[] uncertaintyData) {
-		if (hashCContainers.containsKey(DataRepresentation.UNCERTAINTY_RAW))
-			throw new IllegalStateException("Certainty data was already set in Dimension " + uniqueID
-				+ " , tried to set again.");
-
-		FloatContainer container = new FloatContainer(uncertaintyData);
-		hashCContainers.put(DataRepresentation.UNCERTAINTY_RAW, container);
-	}
+	// public void setUncertaintyData(float[] uncertaintyData) {
+	// if (dataRepToContainerMap.containsKey(DataRepresentation.UNCERTAINTY_RAW))
+	// throw new IllegalStateException("Certainty data was already set in Dimension " + uniqueID
+	// + " , tried to set again.");
+	//
+	// FloatContainer container = new FloatContainer(uncertaintyData);
+	// dataRepToContainerMap.put(DataRepresentation.UNCERTAINTY_RAW, container);
+	// }
 
 	public boolean containsDataRepresentation(DataRepresentation dataRepresentation) {
-		return hashCContainers.containsKey(dataRepresentation);
+		return dataRepToContainerMap.containsKey(dataRepresentation);
 	}
 
 	/**
 	 * Returns a float value from a dimension of which the kind has to be specified Use iterator when you want
 	 * to iterate over the whole field, it has better performance
-	 * 
+	 *
 	 * @param dimensionKind
 	 *            Specify which kind of dimension (eg: raw, normalized)
 	 * @param iIndex
 	 *            The index of the requested Element
 	 * @return The associated value
 	 */
-	public float getFloat(DataRepresentation dimensionKind, int iIndex) {
-		if (!hashCContainers.containsKey(dimensionKind))
+	public float getFloat(String dimensionKind, int iIndex) {
+		if (!dataRepToContainerMap.containsKey(dimensionKind))
 			throw new IllegalArgumentException("Requested dimension kind " + dimensionKind + " not produced");
-		if (!(hashCContainers.get(dimensionKind) instanceof FloatContainer))
+		if (!(dataRepToContainerMap.get(dimensionKind) instanceof FloatContainer))
 			throw new IllegalArgumentException("Requested dimension kind is not of type float");
 
-		FloatContainer container = (FloatContainer) hashCContainers.get(dimensionKind);
+		FloatContainer container = (FloatContainer) dataRepToContainerMap.get(dimensionKind);
 		return container.get(iIndex);
 	}
 
 	/**
 	 * Returns a iterator to the dimension of which the kind has to be specified Good performance
-	 * 
+	 *
 	 * @param dimensionKind
 	 * @return
 	 */
 	public FloatContainerIterator floatIterator(DataRepresentation dimensionKind) {
 
-		if (!(hashCContainers.get(dimensionKind) instanceof FloatContainer))
+		if (!(dataRepToContainerMap.get(dimensionKind) instanceof FloatContainer))
 			throw new IllegalArgumentException("Requested dimension kind is not of type float");
 
-		FloatContainer container = (FloatContainer) hashCContainers.get(dimensionKind);
+		FloatContainer container = (FloatContainer) dataRepToContainerMap.get(dimensionKind);
 		return container.iterator();
 	}
 
 	/**
 	 * Returns an int value from a dimension of which the kind has to be specified Use iterator when you want
 	 * to iterate over the whole field, it has better performance
-	 * 
+	 *
 	 * @param dimensionKind
 	 *            Specify which kind of dimension (eg: raw, normalized, log)
 	 * @param iIndex
@@ -184,65 +184,65 @@ public abstract class AColumn
 	 * @return The associated value
 	 */
 	public int getInt(DataRepresentation dimensionKind, int iIndex) {
-		if (!(hashCContainers.get(dimensionKind) instanceof IntContainer))
+		if (!(dataRepToContainerMap.get(dimensionKind) instanceof IntContainer))
 			throw new IllegalArgumentException("Requested dimension kind is not of type int");
 
-		IntContainer container = (IntContainer) hashCContainers.get(dimensionKind);
+		IntContainer container = (IntContainer) dataRepToContainerMap.get(dimensionKind);
 		return container.get(iIndex);
 	}
 
 	/**
 	 * Returns a iterator to the dimension of which the kind has to be specified Good performance
-	 * 
+	 *
 	 * @param dimensionKind
 	 * @return
 	 */
 	public IntContainerIterator intIterator(DataRepresentation dimensionKind) {
-		if (!(hashCContainers.get(dimensionKind) instanceof IntContainer))
+		if (!(dataRepToContainerMap.get(dimensionKind) instanceof IntContainer))
 			throw new IllegalArgumentException("Requested dimension kind is not of type int");
 
-		IntContainer container = (IntContainer) hashCContainers.get(dimensionKind);
+		IntContainer container = (IntContainer) dataRepToContainerMap.get(dimensionKind);
 		return container.iterator();
 	}
 
 	/**
 	 * Returns a value of the type Number, from the representation chosen in dimensionKind, at the index
 	 * specified in iIndex
-	 * 
+	 *
 	 * @dimensionKind specifies which kind of dimension (eg: raw, normalized)
 	 * @iIndex the index of the element
 	 * @return the Number
 	 */
 	public Number get(DataRepresentation dimensionKind, int iIndex) {
-		if (!(hashCContainers.get(dimensionKind) instanceof NumericalContainer<?>))
+		if (!(dataRepToContainerMap.get(dimensionKind) instanceof NumericalContainer<?>))
 			throw new IllegalArgumentException("Requested dimension kind is not a subtype of Number");
 
-		NumericalContainer<?> container = (NumericalContainer<?>) hashCContainers.get(dimensionKind);
+		NumericalContainer<?> container = (NumericalContainer<?>) dataRepToContainerMap.get(dimensionKind);
 		return container.get(iIndex);
 	}
 
 	/**
 	 * Returns an iterator on the representation chosen in dimensionKind
-	 * 
+	 *
 	 * @param dimensionKind
 	 *            specifies which kind of dimension (eg: raw, normalized)
 	 * @return the iterator
 	 */
 	public Iterator<? extends Number> iterator(DataRepresentation dimensionKind) {
-		if (!(hashCContainers.get(dimensionKind) instanceof NumericalContainer<?>))
+		if (!(dataRepToContainerMap.get(dimensionKind) instanceof NumericalContainer<?>))
 			throw new IllegalArgumentException("Requested dimension kind is not a subtype of Number");
 
-		NumericalContainer<?> container = (NumericalContainer<?>) hashCContainers.get(dimensionKind);
+		NumericalContainer<?> container = (NumericalContainer<?>) dataRepToContainerMap.get(dimensionKind);
 		return container.iterator();
 	}
 
 	/**
 	 * Returns the number of raw data elements
-	 * 
+	 *
 	 * @return the number of raw data elements
 	 */
 	public int size() {
-		return hashCContainers.get(DataRepresentation.RAW).size();
+		return dataRepToContainerMap.get(DataRepresentation.RAW).size();
 	}
 
 	@Override
@@ -261,7 +261,7 @@ public abstract class AColumn
 	/**
 	 * Switch the representation of the data. When this is called the data in normalized is replaced with data
 	 * calculated from the mode specified.
-	 * 
+	 *
 	 * @param dataRep
 	 */
 	public abstract void setExternalDataRepresentation(EDataTransformation externalDataRep);

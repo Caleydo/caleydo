@@ -44,10 +44,10 @@ public class IntContainer
 	 * Constructor Pass an int array. The length of the array can not be
 	 * modified after initialization
 	 * 
-	 * @param iArContainer the int array
+	 * @param container the int array
 	 */
-	public IntContainer(int[] iArContainer) {
-		this.container = iArContainer;
+	public IntContainer(int[] container) {
+		this.container = container;
 	}
 
 	@Override
@@ -60,11 +60,11 @@ public class IntContainer
 	 * Returns the value associated with the index at the variable
 	 * 
 	 * @throws IndexOutOfBoundsException if index is out of specified range
-	 * @param iIndex the index of the variable
+	 * @param index the index of the variable
 	 * @return the variable associated with the index
 	 */
-	public int get(int iIndex) {
-		return container[iIndex];
+	public int get(int index) {
+		return container[index];
 	}
 
 	@Override

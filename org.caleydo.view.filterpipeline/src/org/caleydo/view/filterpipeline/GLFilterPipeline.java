@@ -34,13 +34,9 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.data.collection.EDataType;
-import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.HistogramCreator;
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.DimensionFilterManager;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.FilterManager;
-import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.RecordFilterManager;
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
@@ -78,7 +74,6 @@ import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 import org.caleydo.view.filterpipeline.representation.Background;
 import org.caleydo.view.filterpipeline.representation.FilterRepresentation;
 import org.caleydo.view.filterpipeline.representation.FilterRepresentationMetaOrAdvanced;
-import org.caleydo.view.filterpipeline.representation.FilterRepresentationSNR;
 import org.eclipse.swt.widgets.Composite;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -677,35 +672,8 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	public void initData() {
 		super.initData();
 
-		performDataUncertaintyFilter();
 	}
 
-	private void performDataUncertaintyFilter() {
-
-		DataTable table = dataDomain.getTable();
-		if (!table.containsUncertaintyData())
-			return;
-
-		if (table.getUncertainty().getNormalizedUncertainty() != null)
-			return;
-
-		RecordFilter contentFilter = new RecordFilter(tablePerspective.getRecordPerspective().getPerspectiveID());
-		contentFilter.setDataDomain(dataDomain);
-		contentFilter.setLabel("Signal-To-Noise Ratio Filter");
-
-		table.getUncertainty().calculateRawAverageUncertainty(
-				tablePerspective.getDimensionPerspective().getPerspectiveID());
-
-		Histogram histogram = HistogramCreator.createHistogram(table.getUncertainty().getRawUncertainty());
-
-		FilterRepresentationSNR filterRep = new FilterRepresentationSNR(tablePerspective.getRecordPerspective()
-				.getPerspectiveID(), tablePerspective.getDimensionPerspective().getPerspectiveID());
-		filterRep.setFilter(contentFilter);
-		filterRep.setTable(table);
-		filterRep.setHistogram(histogram);
-		contentFilter.setFilterRep(filterRep);
-		contentFilter.openRepresentation();
-	}
 
 	public void handleSetFilterTypeEvent(FilterType type) {
 		if (filterType == type)

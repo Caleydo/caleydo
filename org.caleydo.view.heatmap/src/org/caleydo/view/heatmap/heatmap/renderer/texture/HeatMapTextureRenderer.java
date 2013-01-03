@@ -38,7 +38,6 @@ import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.AHeatMapRenderer;
-import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -85,13 +84,6 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		super(heatMap);
 	}
 
-	/**
-	 * Constructor for uncertainty heat map where no GLHeatMap parent exists.
-	 */
-	public HeatMapTextureRenderer(GLUncertaintyHeatMap uncertaintyHeatMap) {
-		super(null);
-		viewID = uncertaintyHeatMap.getID();
-	}
 
 	@Override
 	public void updateSpacing() {
@@ -135,7 +127,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	 * Init textures, build array of textures used for holding the whole samples
 	 */
 	public void initialize(GL2 gl) {
-		DataRepresentation dataRepresentation = heatMap.getRenderingRepresentation();
+		String dataRepresentation = heatMap.getRenderingRepresentation();
 		int textureHeight = numberOfRecords = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray()
 				.size();
 		int textureWidth = numberOfDimensions = heatMap.getTablePerspective().getDimensionPerspective()

@@ -19,10 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection.table;
 
-import java.util.HashMap;
-
 import org.caleydo.core.data.collection.column.AColumn;
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.collection.column.NumericalColumn;
 
 /**
@@ -107,67 +104,5 @@ public class Normalization {
 		}
 	}
 
-	void normalizeUsingFoldChange() {
-		for (AColumn dimension : table.hashColumns.values()) {
-			if (!dimension.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW))
-				calculateFoldChange();
-			break;
-		}
 
-		for (AColumn dimension : table.hashColumns.values()) {
-			if (dimension instanceof NumericalColumn) {
-				NumericalColumn nDimension = (NumericalColumn) dimension;
-				nDimension.normalizeWithExternalExtrema(DataRepresentation.FOLD_CHANGE_RAW,
-					DataRepresentation.FOLD_CHANGE_NORMALIZED, 1, 10);
-			}
-			else
-				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"
-					+ "contains nominal dimensions, currently not supported!");
-		}
-
-	}
-
-	private void calculateFoldChange() {
-		HashMap<Integer, float[]> foldChangePerDimension =
-			new HashMap<Integer, float[]>(table.hashColumns.size());
-
-		for (Integer dimensionKey : table.hashColumns.keySet()) {
-			foldChangePerDimension.put(dimensionKey, new float[metaData.depth()]);
-		}
-
-		for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
-			float minValue = Float.MAX_VALUE;
-			// find out which is the smalles raw value
-			for (Integer dimensionKey : table.hashColumns.keySet()) {
-				NumericalColumn nDimension = (NumericalColumn) table.hashColumns.get(dimensionKey);
-				float rawValue = nDimension.getFloat(DataRepresentation.RAW, contentCount);
-				if (rawValue < minValue)
-					minValue = rawValue;
-			}
-			// set the fold changes
-			for (Integer dimensionKey : table.hashColumns.keySet()) {
-				NumericalColumn nDimension = (NumericalColumn) table.hashColumns.get(dimensionKey);
-				float rawValue = nDimension.getFloat(DataRepresentation.RAW, contentCount);
-				float[] foldChanges = foldChangePerDimension.get(dimensionKey);
-				if (minValue == 0)
-					foldChanges[contentCount] = Float.POSITIVE_INFINITY;
-				else {
-					foldChanges[contentCount] = rawValue / minValue;
-					if (foldChanges[contentCount] < 1)
-						System.out.println("problem");
-				}
-			}
-		}
-
-		// set the float[] to the dimensions
-		for (Integer dimensionKey : table.hashColumns.keySet()) {
-			NumericalColumn nDimension = (NumericalColumn) table.hashColumns.get(dimensionKey);
-			if (!nDimension.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW))
-				nDimension.setNewRepresentation(DataRepresentation.FOLD_CHANGE_RAW,
-					foldChangePerDimension.get(dimensionKey));
-			else
-				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"
-					+ "contains nominal dimensions, currently not supported!");
-		}
-	}
 }

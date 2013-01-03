@@ -76,7 +76,7 @@ public class GLPathwayAugmentationRenderer {
 
 	private PathwayItemManager pathwayItemManager;
 
-	private DataRepresentation dimensionDataRepresentation = DataRepresentation.NORMALIZED;
+	private String dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
 	/**
 	 * The virtual array containing the samples that are currently mapped onto the nodes
@@ -1158,14 +1158,5 @@ public class GLPathwayAugmentationRenderer {
 	}
 
 	public void enableNeighborhood(final boolean bEnableNeighborhood) {
-	}
-
-	public void switchDataRepresentation() {
-		if (dimensionDataRepresentation.equals(DataRepresentation.NORMALIZED)) {
-			if (!glPathwayView.getDataDomain().getTable().containsFoldChangeRepresentation())
-				glPathwayView.getDataDomain().getTable().createFoldChangeRepresentation();
-			dimensionDataRepresentation = DataRepresentation.FOLD_CHANGE_NORMALIZED;
-		} else
-			dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 	}
 }

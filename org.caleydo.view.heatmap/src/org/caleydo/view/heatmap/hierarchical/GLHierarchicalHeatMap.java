@@ -4829,12 +4829,6 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 	}
 
 	@Override
-	public void switchDataRepresentation() {
-		bRedrawTextures = true;
-		super.switchDataRepresentation();
-	}
-
-	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
 		gl.glDeleteLists(displayListIndex, 1);
 	}

@@ -104,10 +104,6 @@ public class DataTable extends AUniqueObject {
 	 */
 	private MetaData metaData;
 
-	/**
-	 * everything related to uncertainty is held in or accessible through this object
-	 */
-	private Uncertainty uncertainty;
 
 	/**
 	 * everything related to normalization of the data is held in or accessible through this object
@@ -168,7 +164,7 @@ public class DataTable extends AUniqueObject {
 		return dataDomain;
 	}
 
-	public Float getFloat(DataRepresentation dataRepresentation, Integer recordID, Integer dimensionID) {
+	public Float getFloat(String dataRepresentation, Integer recordID, Integer dimensionID) {
 		try {
 			if (isColumnDimension) {
 				return hashColumns.get(dimensionID).getFloat(dataRepresentation, recordID);
@@ -548,19 +544,6 @@ public class DataTable extends AUniqueObject {
 		return meanDimension;
 	}
 
-	public void setContainsUncertaintyData(boolean containsUncertaintyData) {
-		this.containsUncertaintyData = containsUncertaintyData;
-		if (containsUncertaintyData == true)
-			uncertainty = new Uncertainty(this);
-	}
-
-	public Uncertainty getUncertainty() {
-		return uncertainty;
-	}
-
-	public boolean containsUncertaintyData() {
-		return containsUncertaintyData;
-	}
 
 	/**
 	 * Add a column by reference. The column has to be fully initialized with data
@@ -652,16 +635,6 @@ public class DataTable extends AUniqueObject {
 		}
 	}
 
-	public void createFoldChangeRepresentation() {
-		normalization.normalizeUsingFoldChange();
-	}
-
-	public boolean containsFoldChangeRepresentation() {
-		for (AColumn dimension : hashColumns.values()) {
-			return dimension.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW);
-		}
-		return false;
-	}
 
 	// ---------------------- helper functions ------------------------------
 

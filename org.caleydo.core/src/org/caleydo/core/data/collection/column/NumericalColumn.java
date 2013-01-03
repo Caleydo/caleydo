@@ -52,17 +52,10 @@ public class NumericalColumn extends AColumn {
 	@Override
 	public void normalize() {
 
-		INumericalContainer iRawContainer = (INumericalContainer) hashCContainers.get(dataRep);
-		hashCContainers.put(DataRepresentation.NORMALIZED, iRawContainer.normalize());
+		INumericalContainer iRawContainer = (INumericalContainer) dataRepToContainerMap.get(dataRep);
+		dataRepToContainerMap.put(DataRepresentation.NORMALIZED, iRawContainer.normalize());
 	}
 
-	public void normalizeUncertainty(float invalidThreshold, float validThreshold) {
-
-		FloatContainer certainties = (FloatContainer) hashCContainers.get(DataRepresentation.UNCERTAINTY_RAW);
-		FloatContainer normalizedCertainties = certainties.normalizeWithExternalExtrema(invalidThreshold,
-				validThreshold);
-		hashCContainers.put(DataRepresentation.UNCERTAINTY_NORMALIZED, normalizedCertainties);
-	}
 
 	/**
 	 * Same as {@link #normalizeWithExternalExtrema(double, double)}, but with an additional parameter letting you
@@ -72,13 +65,13 @@ public class NumericalColumn extends AColumn {
 	 * @param min
 	 * @param max
 	 */
-	public void normalizeWithExternalExtrema(DataRepresentation sourceRep, DataRepresentation targetRep, double dMin,
-			double dMax) {
-		INumericalContainer rawDimension = (INumericalContainer) hashCContainers.get(sourceRep);
+	public void normalizeWithExternalExtrema(String sourceRep, String targetRep, double externalMin,
+			double externalMax) {
+		INumericalContainer rawDimension = (INumericalContainer) dataRepToContainerMap.get(sourceRep);
 
-		INumericalContainer numericalContainer = rawDimension.normalizeWithExternalExtrema(dMin, dMax);
+		INumericalContainer numericalContainer = rawDimension.normalizeWithExternalExtrema(externalMin, externalMax);
 
-		hashCContainers.put(targetRep, numericalContainer);
+		dataRepToContainerMap.put(targetRep, numericalContainer);
 	}
 
 	/**
@@ -114,9 +107,9 @@ public class NumericalColumn extends AColumn {
 	 * @return the minimum - a double since it can contain all values
 	 */
 	public double getMin() {
-		if (!hashCContainers.containsKey(dataRep))
+		if (!dataRepToContainerMap.containsKey(dataRep))
 			throw new IllegalStateException("The requested data representation was not produced.");
-		return ((INumericalContainer) hashCContainers.get(dataRep)).getMin();
+		return ((INumericalContainer) dataRepToContainerMap.get(dataRep)).getMin();
 	}
 
 	/**
@@ -125,7 +118,7 @@ public class NumericalColumn extends AColumn {
 	 * @return the maximum - a double since it can contain all values
 	 */
 	public double getMax() {
-		return ((INumericalContainer) hashCContainers.get(dataRep)).getMax();
+		return ((INumericalContainer) dataRepToContainerMap.get(dataRep)).getMax();
 	}
 
 	/**
@@ -145,8 +138,8 @@ public class NumericalColumn extends AColumn {
 	 * uses the log data instead of the raw data
 	 */
 	public void log10() {
-		hashCContainers.put(DataRepresentation.LOG10,
-				((INumericalContainer) hashCContainers.get(DataRepresentation.RAW)).log(10));
+		dataRepToContainerMap.put(DataRepresentation.LOG10,
+				((INumericalContainer) dataRepToContainerMap.get(DataRepresentation.RAW)).log(10));
 	}
 
 	/**
@@ -155,17 +148,17 @@ public class NumericalColumn extends AColumn {
 	 * uses the log data instead of the raw data
 	 */
 	public void log2() {
-		hashCContainers.put(DataRepresentation.LOG2,
-				((INumericalContainer) hashCContainers.get(DataRepresentation.RAW)).log(2));
+		dataRepToContainerMap.put(DataRepresentation.LOG2,
+				((INumericalContainer) dataRepToContainerMap.get(DataRepresentation.RAW)).log(2));
 	}
 
 	/**
 	 * Remove log and normalized data. Normalize has to be called again.
 	 */
 	public void reset() {
-		hashCContainers.remove(DataRepresentation.LOG2);
-		hashCContainers.remove(DataRepresentation.LOG10);
-		hashCContainers.remove(DataRepresentation.NORMALIZED);
+		dataRepToContainerMap.remove(DataRepresentation.LOG2);
+		dataRepToContainerMap.remove(DataRepresentation.LOG10);
+		dataRepToContainerMap.remove(DataRepresentation.NORMALIZED);
 	}
 
 	@Override
@@ -190,15 +183,15 @@ public class NumericalColumn extends AColumn {
 	 *
 	 * @param dataRepresentation
 	 */
-	public void setNewRepresentation(DataRepresentation dataRepresentation, float[] representation) {
+	public void setNewRepresentation(String dataRepresentation, float[] representation) {
 		if (representation.length != size())
 			throw new IllegalArgumentException("The size of the dimension (" + size()
 					+ ") is not equal the size of the given new representation (" + representation.length + ")");
-		if (hashCContainers.containsKey(dataRepresentation))
+		if (dataRepToContainerMap.containsKey(dataRepresentation))
 			throw new IllegalStateException("The data representation " + dataRepresentation + " already exists in "
 					+ this);
 		IContainer container = new FloatContainer(representation);
-		hashCContainers.put(dataRepresentation, container);
+		dataRepToContainerMap.put(dataRepresentation, container);
 	}
 
 }

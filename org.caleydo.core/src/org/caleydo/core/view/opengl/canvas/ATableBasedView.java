@@ -54,7 +54,6 @@ import org.caleydo.core.event.data.ClearSelectionsEvent;
 import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.RedrawViewEvent;
-import org.caleydo.core.event.view.SwitchDataRepresentationEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
@@ -64,7 +63,6 @@ import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.core.view.opengl.canvas.listener.SwitchDataRepresentationListener;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -115,12 +113,11 @@ public abstract class ATableBasedView extends AGLView implements
 	protected RecordVAUpdateListener recordVAUpdateListener;
 	protected DimensionVAUpdateListener dimensionVAUpdateListener;
 
-	protected SwitchDataRepresentationListener switchDataRepresentationListener;
 
 	protected IDType recordIDType;
 	protected IDType dimensionIDType;
 
-	protected DataRepresentation dimensionDataRepresentation = DataRepresentation.NORMALIZED;
+	protected String dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
 	/**
 	 * Flag that tells the view whether visual linking is used for it's element
@@ -452,11 +449,6 @@ public abstract class ATableBasedView extends AGLView implements
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
-		switchDataRepresentationListener = new SwitchDataRepresentationListener();
-		switchDataRepresentationListener.setHandler(this);
-		eventPublisher.addListener(SwitchDataRepresentationEvent.class,
-				switchDataRepresentationListener);
-
 	}
 
 	@Override
@@ -491,10 +483,6 @@ public abstract class ATableBasedView extends AGLView implements
 			dimensionVAUpdateListener = null;
 		}
 
-		if (switchDataRepresentationListener != null) {
-			eventPublisher.removeListener(switchDataRepresentationListener);
-			switchDataRepresentationListener = null;
-		}
 
 	}
 
@@ -503,18 +491,8 @@ public abstract class ATableBasedView extends AGLView implements
 		return true;
 	}
 
-	public void switchDataRepresentation() {
-		if (dimensionDataRepresentation.equals(DataRepresentation.NORMALIZED)) {
-			if (!dataDomain.getTable().containsFoldChangeRepresentation())
-				dataDomain.getTable().createFoldChangeRepresentation();
-			dimensionDataRepresentation = DataRepresentation.FOLD_CHANGE_NORMALIZED;
-		} else
-			dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
-		setDisplayListDirty();
-	}
-
-	public DataRepresentation getRenderingRepresentation() {
+	public String getRenderingRepresentation() {
 		return dimensionDataRepresentation;
 	}
 
