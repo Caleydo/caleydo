@@ -28,6 +28,8 @@ import com.google.common.base.Predicate;
  * @author Samuel Gratzl
  *
  */
-public interface IScoreFilter extends Predicate<ScoringElement> {
+public interface IScoreFilter extends Predicate<ScoringElement>, Cloneable {
 	public IScore getReference();
+
+	public IScoreFilter clone();
 }

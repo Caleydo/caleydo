@@ -40,4 +40,12 @@ public class CompositeDataDomainFilter extends HashSet<IDataDomainFilter> implem
 				return false;
 		return true;
 	}
+
+	@Override
+	public CompositeDataDomainFilter clone() {
+		CompositeDataDomainFilter clone = new CompositeDataDomainFilter();
+		for (IDataDomainFilter f : this)
+			clone.add(f.clone());
+		return clone;
+	}
 }

@@ -25,15 +25,31 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
 
 /**
- * filter out if the table perspective is a default record perspective
- *
  * @author Samuel Gratzl
  *
  */
-public class DefaultStratificationDomainFilter implements IDataDomainFilter {
+public class DataDomainFilters {
+	public static final IDataDomainFilter EMPTY_GROUP = new IDataDomainFilter() {
+		@Override
+		public boolean apply(Pair<? extends ARecordPerspective, Group> pair) {
+			return pair.getSecond() == null || pair.getSecond().getSize() > 0;
+		}
 
-	@Override
-	public boolean apply(Pair<? extends ARecordPerspective, Group> pair) {
-		return !pair.getFirst().isDefault();
-	}
+		@Override
+		public IDataDomainFilter clone() {
+			return this;
+		}
+	};
+
+	public static final IDataDomainFilter DEFAULT_GROUP = new IDataDomainFilter() {
+		@Override
+		public boolean apply(Pair<? extends ARecordPerspective, Group> pair) {
+			return !pair.getFirst().isDefault();
+		}
+
+		@Override
+		public IDataDomainFilter clone() {
+			return this;
+		}
+	};
 }

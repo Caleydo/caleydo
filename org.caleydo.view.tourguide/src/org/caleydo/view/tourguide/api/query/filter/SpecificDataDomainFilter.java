@@ -42,6 +42,14 @@ public class SpecificDataDomainFilter extends HashSet<IDataDomainFilter> impleme
 		this.dataDomain = dataDomain;
 	}
 
+	@Override
+	public SpecificDataDomainFilter clone() {
+		SpecificDataDomainFilter clone = new SpecificDataDomainFilter(dataDomain);
+		for (IDataDomainFilter f : this)
+			clone.add(f.clone());
+		return clone;
+	}
+
 	/**
 	 * @return the dataDomain, see {@link #dataDomain}
 	 */

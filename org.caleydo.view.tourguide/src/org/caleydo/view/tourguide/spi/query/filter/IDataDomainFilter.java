@@ -31,6 +31,7 @@ import com.google.common.base.Predicate;
  * @author Samuel Gratzl
  *
  */
-public interface IDataDomainFilter extends Predicate<Pair<? extends ARecordPerspective, Group>> {
+public interface IDataDomainFilter extends Predicate<Pair<? extends ARecordPerspective, Group>>, Cloneable {
 
+	IDataDomainFilter clone();
 }

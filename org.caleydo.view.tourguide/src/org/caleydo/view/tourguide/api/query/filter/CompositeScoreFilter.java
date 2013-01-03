@@ -44,4 +44,12 @@ public class CompositeScoreFilter extends HashSet<IScoreFilter> implements IScor
 				return false;
 		return true;
 	}
+
+	@Override
+	public CompositeScoreFilter clone() {
+		CompositeScoreFilter c = new CompositeScoreFilter();
+		for (IScoreFilter f : this)
+			c.add(f.clone());
+		return c;
+	}
 }

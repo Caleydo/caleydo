@@ -39,6 +39,15 @@ public class CompareDomainFilter implements IDataDomainFilter {
 		this.againstStratification = againstStratification;
 	}
 
+	@Override
+	public CompareDomainFilter clone() {
+		try {
+			return (CompareDomainFilter) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
 	/**
 	 * @return the againstStratification, see {@link #againstStratification}
 	 */

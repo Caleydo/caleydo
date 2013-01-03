@@ -70,7 +70,7 @@ import com.google.common.collect.Multimap;
  * @author Samuel Gratzl
  *
  */
-public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
+public class ScoreQuery implements SafeCallable<List<ScoringElement>>, Cloneable {
 	public static final String PROP_ORDER_BY = "orderBy";
 	public static final String PROP_SELECTION = "selection";
 	public static final String PROP_TOP = "top";
@@ -138,6 +138,16 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>> {
 				onModeChanged((EDataDomainQueryMode) evt.getNewValue());
 			}
 		});
+	}
+
+	@Override
+	public ScoreQuery clone() {
+		ScoreQuery clone = new ScoreQuery(query.clone());
+		clone.selection.addAll(this.selection);
+		clone.orderBy.putAll(this.orderBy);
+		clone.top = this.top;
+		clone.filter = this.filter.clone();
+		return clone;
 	}
 
 	/**

@@ -82,6 +82,15 @@ public final class CompareScoreFilter implements IScoreFilter {
 		return op.apply(f, this.against);
 	}
 
+	@Override
+	public CompareScoreFilter clone() {
+		try {
+			return (CompareScoreFilter) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *

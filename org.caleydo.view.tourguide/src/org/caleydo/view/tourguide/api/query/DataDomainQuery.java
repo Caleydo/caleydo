@@ -42,9 +42,8 @@ import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.view.tourguide.api.query.filter.CompareDomainFilter;
 import org.caleydo.view.tourguide.api.query.filter.CompositeDataDomainFilter;
-import org.caleydo.view.tourguide.api.query.filter.DefaultStratificationDomainFilter;
+import org.caleydo.view.tourguide.api.query.filter.DataDomainFilters;
 import org.caleydo.view.tourguide.api.query.filter.EStringCompareOperator;
-import org.caleydo.view.tourguide.api.query.filter.EmptyGroupFilter;
 import org.caleydo.view.tourguide.api.query.filter.SpecificDataDomainFilter;
 import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
 
@@ -59,7 +58,7 @@ import com.google.common.collect.Multimap;
  *
  */
 public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPerspective, TablePerspective>>>,
-		Function<Collection<ARecordPerspective>, Multimap<ARecordPerspective, Group>> {
+		Function<Collection<ARecordPerspective>, Multimap<ARecordPerspective, Group>>, Cloneable {
 	public static final String PROP_FILTER = "filter";
 	public static final String PROP_SELECTION = "selection";
 	public static final String PROP_MODE = "mode";
@@ -74,10 +73,26 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 	private WeakReference<Collection<Pair<ARecordPerspective, TablePerspective>>> cache = null;
 
 	public DataDomainQuery() {
-		filter.add(new EmptyGroupFilter());
-		filter.add(new DefaultStratificationDomainFilter());
-		// create an intelligent default filter
-		filter.addAll(createDefaultFilters());
+		this(true);
+	}
+
+	private DataDomainQuery(boolean initFilter) {
+		if (initFilter) {
+			filter.add(DataDomainFilters.EMPTY_GROUP);
+			filter.add(DataDomainFilters.DEFAULT_GROUP);
+			// create an intelligent default filter
+			filter.addAll(createDefaultFilters());
+		}
+	}
+
+	@Override
+	protected DataDomainQuery clone() {
+		DataDomainQuery clone = new DataDomainQuery(false);
+		clone.selection.addAll(this.selection);
+		clone.filter = this.filter.clone();
+		clone.mode = this.mode;
+
+		return clone;
 	}
 
 	/**
