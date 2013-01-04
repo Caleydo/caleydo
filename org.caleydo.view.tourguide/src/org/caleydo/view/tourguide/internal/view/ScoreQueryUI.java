@@ -61,7 +61,6 @@ import org.caleydo.view.tourguide.internal.score.ScoreFactories;
 import org.caleydo.view.tourguide.internal.score.Scores;
 import org.caleydo.view.tourguide.internal.view.col.ATableColumn;
 import org.caleydo.view.tourguide.internal.view.col.AddQueryColumn;
-import org.caleydo.view.tourguide.internal.view.col.AddToStratomexColumn;
 import org.caleydo.view.tourguide.internal.view.col.MatchColumn;
 import org.caleydo.view.tourguide.internal.view.col.QueryColumn;
 import org.caleydo.view.tourguide.internal.view.col.RankColumn;
@@ -144,8 +143,7 @@ public class ScoreQueryUI extends Row {
 		this.clear();
 		this.columns.clear();
 		this.columns.add(new RankColumn(view));
-		this.columns.add(new AddToStratomexColumn(view, stratomex));
-		this.columns.add(new MatchColumn(view));
+		this.columns.add(new MatchColumn(view, stratomex));
 		int i = 0;
 		this.queryColumns.clear();
 		for (IScore column : query.getSelection()) {
@@ -228,7 +226,7 @@ public class ScoreQueryUI extends Row {
 	}
 
 	public void updateAddToStratomexState() {
-		AddToStratomexColumn col = (AddToStratomexColumn) columns.get(1);
+		MatchColumn col = (MatchColumn) columns.get(1);
 		col.updateState(this.data);
 	}
 

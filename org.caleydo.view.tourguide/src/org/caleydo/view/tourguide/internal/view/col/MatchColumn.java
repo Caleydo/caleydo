@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.col;
 
-import static org.caleydo.core.view.opengl.layout.ElementLayouts.createColor;
+import static org.caleydo.core.view.opengl.layout.ElementLayouts.wrap;
 import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.COL_SPACING;
 import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.DATADOMAIN_TYPE_WIDTH;
 import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.GROUP_WIDTH;
@@ -31,8 +31,13 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.view.tourguide.api.query.ScoreQuery;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
+import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
+import org.caleydo.view.tourguide.internal.renderer.AdvancedTextureRenderer;
+import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
+import org.caleydo.view.tourguide.internal.view.StratomexAdapter;
 
 /**
  * @author Samuel Gratzl
@@ -41,11 +46,15 @@ import org.caleydo.view.tourguide.api.query.ScoringElement;
 public class MatchColumn extends ATableColumn {
 	private boolean wasGroupQuery = false;
 	private boolean invalidWidth = true;
+
 	private int stratWidth = STRATIFACTION_WIDTH;
 	private int groupWidth = GROUP_WIDTH;
 
-	public MatchColumn(AGLView view) {
+	private final StratomexAdapter stratomex;
+
+	public MatchColumn(AGLView view, StratomexAdapter stratomex) {
 		super(view);
+		this.stratomex = stratomex;
 		this.init();
 		updateHeader(false);
 	}
@@ -77,7 +86,19 @@ public class MatchColumn extends ATableColumn {
 
 			Row r = new Row();
 			r.setXDynamic(true);
-			r.add(createColor(elem.getDataDomain().getColor(), DATADOMAIN_TYPE_WIDTH));
+
+			AdvancedTextureRenderer cAdd = new AdvancedTextureRenderer(null, view.getTextureManager());
+			if (this.stratomex.contains(elem.getPerspective()))
+				cAdd.setImagePath(TourGuideRenderStyle.ICON_ADD_TO_STRATOMEX_DISABLED);
+			else
+				cAdd.setImagePath(TourGuideRenderStyle.ICON_ADD_TO_STRATOMEX);
+			ElementLayout l = wrap(cAdd, DATADOMAIN_TYPE_WIDTH);
+			PickingRenderer pick = new PickingRenderer(ScoreQueryUI.ADD_TO_STRATOMEX, i, view);
+			pick.setColor(elem.getDataDomain().getColor());
+			l.addBackgroundRenderer(pick);
+
+			r.add(l);
+
 			r.add(colSpacing);
 			r.add(createLabel(elem.getStratification(), stratWidth));
 			if (isGroupQuery) {
@@ -85,6 +106,19 @@ public class MatchColumn extends ATableColumn {
 				r.add(createLabel(g, groupWidth));
 			}
 			this.addTd(r, i);
+		}
+	}
+
+	public void updateState(List<ScoringElement> data) {
+		for (int i = 0; i < data.size(); ++i) {
+			ScoringElement elem = data.get(i);
+			Row td = (Row) getTd(i);
+			AdvancedTextureRenderer r = (AdvancedTextureRenderer) td.get(0).getRenderer();
+			if (this.stratomex.contains(elem.getPerspective())
+					&& !this.stratomex.isTemporaryPreviewed(elem.getPerspective()))
+				r.setImagePath(TourGuideRenderStyle.ICON_ADD_TO_STRATOMEX_DISABLED);
+			else
+				r.setImagePath(TourGuideRenderStyle.ICON_ADD_TO_STRATOMEX);
 		}
 	}
 

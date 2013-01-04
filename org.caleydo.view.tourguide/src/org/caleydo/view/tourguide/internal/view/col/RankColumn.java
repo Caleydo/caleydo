@@ -20,13 +20,20 @@
 package org.caleydo.view.tourguide.internal.view.col;
 
 
+import static org.caleydo.core.view.opengl.layout.ElementLayouts.wrap;
+
 import java.util.List;
 
 import org.caleydo.core.util.base.ConstantLabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
+import org.caleydo.core.view.opengl.layout.util.TextureRenderer;
 import org.caleydo.view.tourguide.api.query.ScoreQuery;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
+import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
+import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 
 public class RankColumn extends ATableColumn {
 	public RankColumn(AGLView view) {
@@ -37,7 +44,15 @@ public class RankColumn extends ATableColumn {
 
 	@Override
 	protected ElementLayout createHeader() {
-		return new ElementLayout();
+		Row row = new Row();
+		row.setGrabX(true);
+		// row.setLeftToRight(false);
+		ElementLayout b = wrap(new TextureRenderer(TourGuideRenderStyle.ICON_TABLE_FILTER, view.getTextureManager()),
+				16);
+		b.setGrabY(true);
+		b.addBackgroundRenderer(new PickingRenderer(ScoreQueryUI.EDIT_FILTER, 1, view));
+		row.append(b);
+		return row;
 	}
 
 	@Override

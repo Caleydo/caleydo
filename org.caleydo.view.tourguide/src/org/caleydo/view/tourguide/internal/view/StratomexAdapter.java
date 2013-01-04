@@ -155,6 +155,12 @@ public class StratomexAdapter {
 		return false;
 	}
 
+	/**
+	 * returns whether the given {@link TablePerspective} is the currently temporary preview of Stratomex
+	 *
+	 * @param strat
+	 * @return
+	 */
 	public boolean isTemporaryPreviewed(TablePerspective strat) {
 		return temporaryPreview && currentPreview != null && currentPreview.equals(strat);
 	}
@@ -185,6 +191,15 @@ public class StratomexAdapter {
 		}
 	}
 
+	/**
+	 * central point for updating the current preview in Stratomex
+	 * 
+	 * @param old
+	 * @param new_
+	 * @param visibleColumns
+	 *            the currently visible scores of the new_ element
+	 * @param mode
+	 */
 	public void updatePreview(ScoringElement old, ScoringElement new_, Collection<IScore> visibleColumns,
 			EDataDomainQueryMode mode) {
 		if (!hasOne())

@@ -32,10 +32,16 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
  */
 public class PickingRenderer extends APickableLayoutRenderer {
 	private IColor color;
+	private float z = -0.01f;
 
 	public PickingRenderer(String pickingType, int pickingID, AGLView view) {
 		super(view, pickingType, pickingID);
 		this.color = Colors.TRANSPARENT;
+	}
+
+	public PickingRenderer moveBack() {
+		this.z -= 0.01f;
+		return this;
 	}
 
 	/**
@@ -55,10 +61,10 @@ public class PickingRenderer extends APickableLayoutRenderer {
 
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor4fv(this.color.getRGBA(), 0);
-		gl.glVertex3f(0, 0, -0.01f);
-		gl.glVertex3f(x, 0, -0.01f);
-		gl.glVertex3f(x, y, -0.01f);
-		gl.glVertex3f(0, y, -0.01f);
+		gl.glVertex3f(0, 0, z);
+		gl.glVertex3f(x, 0, z);
+		gl.glVertex3f(x, y, z);
+		gl.glVertex3f(0, y, z);
 		gl.glEnd();
 		popNames(gl);
 	}
