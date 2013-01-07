@@ -158,8 +158,6 @@ public class ScoreQueryUI extends Row {
 		this.add(columns.get(0));
 		this.add(colSpace);
 		this.add(columns.get(1));
-		this.add(colSpace);
-		this.add(columns.get(2));
 		for (QueryColumn col : this.queryColumns) {
 			final ElementLayout s = createXSeparator(5);
 			s.setGrabY(true);
