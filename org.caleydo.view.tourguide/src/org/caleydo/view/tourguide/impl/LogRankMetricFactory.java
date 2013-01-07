@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.impl;
 
-import java.util.Arrays;
 import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -34,9 +33,7 @@ import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
-import org.caleydo.view.tourguide.api.score.CombinedScore;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
-import org.caleydo.view.tourguide.api.score.ECombinedOperator;
 import org.caleydo.view.tourguide.api.score.EScoreType;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
@@ -70,11 +67,8 @@ public class LogRankMetricFactory implements IMetricFactory {
 		for (LogRankMetric score : logRankScores) {
 			hasOne = true;
 			IScore logRankPValue = new LogRankPValue(score.getLabel() + " (P-V)", score);
-			IScore combined = new CombinedScore(score.getLabel() + " Quality", ECombinedOperator.PRODUCT,
-
-					CombinedScore.wrap(Arrays.asList(score, logRankPValue)));
 			logRanks.add(new GenericContextMenuItem(score.getLabel(), new AddScoreColumnEvent(sender, score,
-					logRankPValue, combined)));
+					logRankPValue)));
 		}
 		if (hasOne)
 			creator.addContextMenuItem(logRanks);
