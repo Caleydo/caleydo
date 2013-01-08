@@ -80,29 +80,39 @@ public class GSEAAlgorithm implements IStratificationAlgorithm {
 		List<Integer> cols = stratification.getDimensionPerspective().getVirtualArray().getIDs();
 
 		List<Pair<Integer, Float>> g = new ArrayList<>(cols.size());
-		List<Float> avalues = new ArrayList<>(inA.size());
-		List<Float> bvalues = new ArrayList<>(rows.size() - inA.size());
+		// List<Float> avalues = new ArrayList<>(inA.size());
+		// List<Float> bvalues = new ArrayList<>(rows.size() - inA.size());
 		System.out.println(w + " " + inA.size() + " " + rows.size() + " cols " + cols.size());
 
 		for (Integer col : cols) {
 			// mean of the expressions level of the samples for the given gen.
-			avalues.clear();
-			bvalues.clear();
+			float asum = 0;
+			int acount = 0;
+			float bsum = 0;
+			int bcount = 0;
+			// avalues.clear();
+			// bvalues.clear();
 			for (Integer row : rows) {
 				Float v = table.getFloat(DataRepresentation.NORMALIZED, row, col);
 				if (v == null || v.isNaN() || v.isInfinite())
 					continue;
 				if (inA.contains(row)) {
-					avalues.add(v);
-				} else
-					bvalues.add(v);
+					asum += v;
+					acount++;
+					// avalues.add(v);
+				} else {
+					bsum += v;
+					bcount++;
+					// bvalues.add(v);
+				}
+
 			}
 			// now some kind of correlation between the two
-			g.add(Pair.make(col, correlationOf(avalues, bvalues)));
+			g.add(Pair.make(col, (asum / acount) / (bsum / bcount)));// correlationOf(avalues, bvalues)));
 		}
 
+		System.out.println("computed " + w);
 		Map<Integer, Float> correlation = Maps.newLinkedHashMap();
-
 		Collections.sort(g, Collections.reverseOrder());
 		for (Pair<Integer, Float> entry : g)
 			correlation.put(entry.getFirst(), entry.getSecond());
@@ -116,8 +126,8 @@ public class GSEAAlgorithm implements IStratificationAlgorithm {
 	 * @return
 	 */
 	private static float correlationOf(List<Float> avalues, List<Float> bvalues) {
-		// current implementation mean diff
-		return mean(avalues) - mean(bvalues);
+		// current implementation mean ratio
+		return mean(avalues) / mean(bvalues);
 	}
 
 	private static float mean(Collection<Float> values) {
@@ -139,12 +149,16 @@ public class GSEAAlgorithm implements IStratificationAlgorithm {
 	}
 
 	public float compute(Set<Integer> geneSet) {
+		if (geneSet.isEmpty())
+			return Float.NaN;
 		init();
 		float es = (float) enrichmentScore(correlation, geneSet);
 		return es;
 	}
 
 	public float computePValue(Set<Integer> geneSet) {
+		if (geneSet.isEmpty())
+			return Float.NaN;
 		init();
 		float es = (float) enrichmentScore(correlation, geneSet);
 		if (Float.isNaN(es))

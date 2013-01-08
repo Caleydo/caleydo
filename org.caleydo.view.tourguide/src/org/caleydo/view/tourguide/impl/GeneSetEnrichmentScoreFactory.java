@@ -20,7 +20,6 @@
 package org.caleydo.view.tourguide.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -28,9 +27,7 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.score.CombinedScore;
 import org.caleydo.view.tourguide.api.score.DefaultComputedStratificationScore;
-import org.caleydo.view.tourguide.api.score.ECombinedOperator;
 import org.caleydo.view.tourguide.api.score.ui.ACreateGroupScoreDialog;
 import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
@@ -66,9 +63,7 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		GSEAAlgorithm algorithm = new GSEAAlgorithm(strat, group, 1.0f);
 		IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm);
 		IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue());
-		IScore combined = new CombinedScore(gsea.getLabel() + " Quality", ECombinedOperator.PRODUCT,
-				CombinedScore.wrap(Arrays.asList(gsea, pValue)));
-		col.add(new ScoreEntry("Gene Set Enrichment Analysis of Group", gsea, pValue, combined));
+		col.add(new ScoreEntry("Gene Set Enrichment Analysis of Group", gsea, pValue));
 		return col;
 	}
 
