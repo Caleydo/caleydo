@@ -67,7 +67,7 @@ import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
  */
 public class DataDomainQueryUI extends Column {
 	private static final String TOGGLE_DATA_DOMAIN = "TOGGLE_DATA_DOMAIN";
-	private static final String DATADOMAIN_SELECTION = "DATADOMAIN_SELECTION";
+
 	private static final int COL0_BUTTON = 20;
 	private static final int COL1_DATADOMAIN_TYPE = 16;
 	private static final int COL3_NAME = 100;
@@ -106,14 +106,8 @@ public class DataDomainQueryUI extends Column {
 				onRightClicked(rows.get(pick.getObjectID()));
 			}
 		}, TOGGLE_DATA_DOMAIN);
-		view.addTypePickingTooltipListener("Left-Click: Add/Remove to Query \nRight-Click: Edit Filter",
+		view.addTypePickingTooltipListener("Left-Click: Add/Remove to Query \nRight-Click: Open Context Menu",
 				TOGGLE_DATA_DOMAIN);
-		view.addTypePickingListener(new APickingListener() {
-			@Override
-			public void rightClicked(Pick pick) {
-				onOpenDataDomainContextMenu(rows.get(pick.getObjectID()));
-			}
-		}, DATADOMAIN_SELECTION);
 		init();
 	}
 
@@ -246,11 +240,8 @@ public class DataDomainQueryUI extends Column {
 			for (DimensionPerspective d : dims)
 				item.add(new GenericContextMenuItem(d.getLabel(), EContextMenuType.CHECK, new SelectDimensionSelectionEvent(d,this)).setState(d == dim));
 		}
-	}
-
-	protected void onOpenDataDomainContextMenu(DataDomainRow dataDomainRow) {
-		ContextMenuCreator creator = view.getContextMenuCreator();
 		if (dataDomainRow.dataDomain instanceof ATableBasedDataDomain) {
+			creator.addSeparator();
 			ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) dataDomainRow.dataDomain;
 			creator.addContextMenuItem(new GenericContextMenuItem("Load Scoring for "
 					+ dataDomain.getDimensionIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain,
@@ -282,7 +273,6 @@ public class DataDomainQueryUI extends Column {
 			button.setPixelSizeX(COL0_BUTTON);
 			button.setRenderer(new AdvancedTextureRenderer(TourGuideRenderStyle.ICON_ACCEPT_DISABLE, view
 					.getTextureManager()));
-			button.addBackgroundRenderer(new PickingRenderer(TOGGLE_DATA_DOMAIN, i, view));
 			button.addForeGroundRenderer(new DecorationTextureRenderer(null, view.getTextureManager(), Dims.xpixel(10),
 					Dims.ypixel(10),
 					HAlign.BOTTOM, VAlign.RIGHT));
@@ -291,9 +281,8 @@ public class DataDomainQueryUI extends Column {
 			this.append(colSpacer);
 			this.append(createColor(dataDomain.getColor(), COL1_DATADOMAIN_TYPE));
 			this.append(colSpacer);
-			ElementLayout l = createLabel(view, dataDomain, COL3_NAME);
-			l.addBackgroundRenderer(new PickingRenderer(DATADOMAIN_SELECTION, i, view));
-			this.append(l);
+			this.append(createLabel(view, dataDomain, COL3_NAME));
+			this.addBackgroundRenderer(new PickingRenderer(TOGGLE_DATA_DOMAIN, i, view));
 		}
 
 		/**
