@@ -68,7 +68,7 @@ import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory.GeneSetScore;
 import org.caleydo.view.tourguide.impl.LogRankMetricFactory.LogRankMetric;
 import org.caleydo.view.tourguide.impl.LogRankMetricFactory.LogRankPValue;
-import org.caleydo.view.tourguide.spi.algorithm.GSEAAlgorithm;
+import org.caleydo.view.tourguide.impl.algorithm.GSEAAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 import com.google.common.base.Objects;
@@ -144,6 +144,18 @@ public class StratomexAdapter {
 		return true;
 	}
 
+	public void attach() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * detach but not close from stratomex, by cleanup up temporary data but keeping them in min
+	 */
+	public void detach() {
+		cleanupPreview();
+	}
+
 	/**
 	 * @param stratification
 	 * @return
@@ -193,7 +205,7 @@ public class StratomexAdapter {
 
 	/**
 	 * central point for updating the current preview in Stratomex
-	 * 
+	 *
 	 * @param old
 	 * @param new_
 	 * @param visibleColumns

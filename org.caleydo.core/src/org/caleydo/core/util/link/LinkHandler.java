@@ -44,6 +44,16 @@ public class LinkHandler {
 	 *            the link to be opened
 	 */
 	public static void openLink(final String link) {
+		// FIXME what is the difference to
+		// Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+		// if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+		// try {
+		// desktop.browse(uri);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// }
+
 		Thread execThread = new Thread(new Runnable() {
 			@Override
 			public void run() {

@@ -21,12 +21,11 @@ package org.caleydo.core.view.opengl.layout;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.media.opengl.GL2;
-
-import org.caleydo.core.util.collection.Pair;
 
 /**
  * BaseClass for layouts which contain nested {@link ElementLayout}s.
@@ -88,17 +87,15 @@ public abstract class ALayoutContainer extends ElementLayout implements Iterable
 		if (isHidden)
 			return;
 		if (isPriorityRendereing) {
-			List<Pair<Integer, ElementLayout>> sortedList = new ArrayList<Pair<Integer, ElementLayout>>();
-			for (ElementLayout element : elements) {
-				sortedList.add(new Pair<Integer, ElementLayout>(element.getRenderingPriority(), element));
-			}
-
-			Collections.sort(sortedList);
-			Collections.reverse(sortedList);
-
-			for (Pair<Integer, ElementLayout> pair : sortedList) {
-				pair.getSecond().render(gl);
-			}
+			List<ElementLayout> sortedList = new ArrayList<>(elements);
+			Collections.sort(sortedList, new Comparator<ElementLayout>() {
+				@Override
+				public int compare(ElementLayout o1, ElementLayout o2) {
+					return -1 * (o1.getRenderingPriority() - o2.getRenderingPriority());
+				}
+			});
+			for (ElementLayout l : sortedList)
+				l.render(gl);
 		} else {
 			for (ElementLayout element : elements) {
 				element.render(gl);

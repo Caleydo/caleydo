@@ -37,14 +37,7 @@ import java.util.LinkedList;
 public class EventPublisher {
 
 	/** map of events (=key) to the listeners (=value, a collection of listeners) registered to it */
-	private ListenerMap listenerMap;
-
-	/**
-	 * Constructor.
-	 */
-	public EventPublisher() {
-		listenerMap = new ListenerMap();
-	}
+	private final ListenerMap listenerMap = new ListenerMap();
 
 	/**
 	 * adds a receiver to the list of event handlers
@@ -125,23 +118,18 @@ public class EventPublisher {
 
 	}
 
-	public ListenerMap getListenerMap() {
-		return listenerMap;
-	}
-
-	private void triggerEvents(AEvent event, Collection<AEventListener<?>> listeners) {
-		if (listeners != null) {
-			Deque<AEventListener<?>> tmp = new LinkedList<AEventListener<?>>(listeners);
-			// work on a local copy to allow concurrent modifications, + use a list for freeing as fast as possible, if
-			// we had concurrent modifactions
-			while (!tmp.isEmpty()) {
-				AEventListener<?> receiver = tmp.pollFirst();
-				// check if a receiver wants events that are not if his data domain
-				if (event.getDataDomainID() == null && receiver.isExclusiveDataDomain()) {
-				}
-				else
-					receiver.queueEvent(event);
-			}
+	private static void triggerEvents(AEvent event, Collection<AEventListener<?>> listeners) {
+		if (listeners == null)
+			return;
+		Deque<AEventListener<?>> tmp = new LinkedList<AEventListener<?>>(listeners);
+		// work on a local copy to allow concurrent modifications, + use a list for freeing as fast as possible, if
+		// we had concurrent modifications
+		while (!tmp.isEmpty()) {
+			AEventListener<?> receiver = tmp.pollFirst();
+			// check if a receiver wants events that are not if his data domain
+			if (event.getDataDomainID() == null && receiver.isExclusiveDataDomain()) {
+			} else
+				receiver.queueEvent(event);
 		}
 	}
 }

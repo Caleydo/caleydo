@@ -26,7 +26,7 @@ package org.caleydo.core.util.base;
  * @author Samuel Gratzl
  *
  */
-public class DefaultLabelProvider implements ILabelProvider {
+public class DefaultLabelProvider implements ILabelHolder {
 	private String label;
 
 	public DefaultLabelProvider() {
@@ -42,6 +42,7 @@ public class DefaultLabelProvider implements ILabelProvider {
 		return label;
 	}
 
+	@Override
 	public final void setLabel(String label) {
 		this.label = label;
 	}

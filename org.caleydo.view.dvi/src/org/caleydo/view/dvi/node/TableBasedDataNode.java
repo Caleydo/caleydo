@@ -409,7 +409,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 		}
 
-		Collections.sort(parentRecordPerspectives);
+		Collections.sort(parentRecordPerspectives, Pair.<String> compareFirst());
 
 		List<RecordPerspective> sortedRecordPerspectives = new ArrayList<RecordPerspective>();
 
@@ -463,7 +463,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 		}
 
-		Collections.sort(parentDimensionPerspectives);
+		Collections.sort(parentDimensionPerspectives, Pair.<String> compareFirst());
 
 		List<DimensionPerspective> sortedDimensionPerspectives = new ArrayList<DimensionPerspective>();
 

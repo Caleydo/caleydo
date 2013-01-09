@@ -20,8 +20,6 @@
 package org.caleydo.core.util.statistics;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 
@@ -29,10 +27,6 @@ public interface IStatisticsPerformer {
 	public void init();
 
 	public void performTest();
-
-	public float adjustedRandIndex(TablePerspective container1, TablePerspective container2);
-
-	public float adjustedRandIndex(List<Set<Integer>> a, List<Set<Integer>> b);
 
 	public void twoSidedTTest(ArrayList<TablePerspective> setsToCompare);
 

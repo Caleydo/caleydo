@@ -381,7 +381,7 @@ public class TopBundleConnector extends ABundleConnector {
 					.getX(), tablePerspective));
 		}
 
-		Collections.sort(sortedTablePerspectives);
+		Collections.sort(sortedTablePerspectives, Pair.<Double> compareFirst());
 
 		for (int i = 0; i < sortedTablePerspectives.size(); i++) {
 			TablePerspective tablePerspective = sortedTablePerspectives.get(i)

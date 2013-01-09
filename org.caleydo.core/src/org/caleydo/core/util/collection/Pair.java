@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.caleydo.core.util.collection;
 
+import java.util.Comparator;
+import java.util.Objects;
+
 import com.google.common.base.Function;
 
 
@@ -32,7 +35,7 @@ import com.google.common.base.Function;
  * @param <E>
  *            second type
  */
-public class Pair<T, E> implements Comparable<Pair<T, E>> {
+public class Pair<T, E> {
 
 	/** The first element of the pair */
 	private T first;
@@ -70,11 +73,6 @@ public class Pair<T, E> implements Comparable<Pair<T, E>> {
 		return second;
 	}
 
-	public void set(T first, E second) {
-		this.first = first;
-		this.second = second;
-	}
-
 	/**
 	 * @param first
 	 *            setter, see {@link #first}
@@ -91,36 +89,31 @@ public class Pair<T, E> implements Comparable<Pair<T, E>> {
 		this.second = second;
 	}
 
-	// @Override
-	// public int compareTo(Pair<T, E> checkedPair) {
-	// int compareResultFirst = first.compareTo(checkedPair.getFirst());
-	// int compareResultSecond = second.compareTo(checkedPair.getSecond());
-	//
-	// if(compareResultFirst > 0 && compareResultSecond > 0)
-	// return 1;
-	// if(compareResultFirst == 0 && compareResultSecond == 0)
-	// return 0;
-	//
-	// return -1;
-	// }
-
 	@Override
 	public String toString() {
 		return "<" + first + ", " + second + ">";
 	}
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public int compareTo(Pair<T, E> o) {
-		if (o.getFirst() instanceof Comparable<?>) {
-			return ((Comparable<T>) first).compareTo(o.getFirst());
-		} else {
-			throw new IllegalStateException("Tried to compare non-comparable values");
-		}
-	}
-
+	/**
+	 * factory method for a pair
+	 *
+	 * @param first
+	 * @param second
+	 * @return
+	 */
 	public static <T, E> Pair<T, E> make(T first, E second) {
 		return new Pair<T, E>(first, second);
+	}
+
+	/**
+	 * factory method for a pair
+	 *
+	 * @param first
+	 * @param second
+	 * @return
+	 */
+	public static <T extends Comparable<T>, E> ComparablePair<T, E> make(T first, E second) {
+		return new ComparablePair<T, E>(first, second);
 	}
 
 	/*
@@ -130,11 +123,7 @@ public class Pair<T, E> implements Comparable<Pair<T, E>> {
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((first == null) ? 0 : first.hashCode());
-		result = prime * result + ((second == null) ? 0 : second.hashCode());
-		return result;
+		return Objects.hash(first, second);
 	}
 
 	/*
@@ -151,22 +140,12 @@ public class Pair<T, E> implements Comparable<Pair<T, E>> {
 		if (getClass() != obj.getClass())
 			return false;
 		Pair other = (Pair) obj;
-		if (first == null) {
-			if (other.first != null)
-				return false;
-		} else if (!first.equals(other.first))
-			return false;
-		if (second == null) {
-			if (other.second != null)
-				return false;
-		} else if (!second.equals(other.second))
-			return false;
-		return true;
+		return Objects.equals(this.first, other.first) && Objects.equals(this.second, other.second);
 	}
 
 	/**
 	 * returns a {@link Function}, which maps the pair to the first element
-	 * 
+	 *
 	 * @return
 	 */
 	public static final <T1, T2> Function<Pair<T1, T2>, T1> mapFirst() {
@@ -180,7 +159,7 @@ public class Pair<T, E> implements Comparable<Pair<T, E>> {
 
 	/**
 	 * returns a {@link Function}, which maps the pair to the second element
-	 * 
+	 *
 	 * @return
 	 */
 	public static final <T1, T2> Function<Pair<T1, T2>, T2> mapSecond() {
@@ -190,6 +169,47 @@ public class Pair<T, E> implements Comparable<Pair<T, E>> {
 				return arg0 == null ? null : arg0.getSecond();
 			}
 		};
+	}
+
+	/**
+	 * returns a comparator, which compares the first element
+	 *
+	 * @return
+	 */
+	public static <T extends Comparable<T>> Comparator<Pair<T, ?>> compareFirst() {
+		return new Comparator<Pair<T, ?>>() {
+			@Override
+			public int compare(Pair<T, ?> o1, Pair<T, ?> o2) {
+				return o1.first.compareTo(o2.first);
+			}
+		};
+	}
+
+	/**
+	 * returns a comparator, which compares the second element
+	 *
+	 * @return
+	 */
+	public static <T extends Comparable<T>> Comparator<Pair<?, T>> compareSecond() {
+		return new Comparator<Pair<?, T>>() {
+			@Override
+			public int compare(Pair<?, T> o1, Pair<?, T> o2) {
+				return o1.second.compareTo(o2.second);
+			}
+		};
+	}
+
+	public static class ComparablePair<T extends Comparable<T>, E> extends Pair<T, E> implements
+			Comparable<ComparablePair<T, E>> {
+		public ComparablePair(T first, E second) {
+			super(first, second);
+		}
+
+		@Override
+		public int compareTo(ComparablePair<T, E> o) {
+			return this.getFirst().compareTo(o.getFirst());
+		}
+
 	}
 
 }

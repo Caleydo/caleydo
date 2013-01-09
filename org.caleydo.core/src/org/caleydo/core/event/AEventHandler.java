@@ -54,8 +54,7 @@ public abstract class AEventHandler
 	 * The queue which holds the events
 	 */
 	@XmlTransient
-	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue =
-		new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
+	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue = new LinkedBlockingQueue<>();
 
 	@Override
 	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {

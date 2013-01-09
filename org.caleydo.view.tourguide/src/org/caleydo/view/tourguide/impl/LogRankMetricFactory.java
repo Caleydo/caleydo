@@ -35,11 +35,11 @@ import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
 import org.caleydo.view.tourguide.api.score.EScoreType;
+import org.caleydo.view.tourguide.impl.algorithm.LogRank;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.IMetricFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
-import org.caleydo.view.tourguide.spi.algorithm.LogRank;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 import com.google.common.base.Function;

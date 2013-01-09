@@ -20,9 +20,6 @@
 package org.caleydo.util.r;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
@@ -40,8 +37,6 @@ import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.data.StatisticsFoldChangeReductionEvent;
 import org.caleydo.core.event.data.StatisticsPValueReductionEvent;
 import org.caleydo.core.event.data.StatisticsTwoSidedTTestReductionEvent;
-import org.caleydo.core.id.IDMappingManagerRegistry;
-import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.util.r.filter.FilterRepresentationFoldChange;
@@ -54,8 +49,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
-
-import com.google.common.primitives.Ints;
 
 public class RStatisticsPerformer
 	implements IStatisticsPerformer, IListenerOwner {
@@ -143,104 +136,6 @@ public class RStatisticsPerformer
 		// openViewEvent.setViewType("org.caleydo.view.statistics");
 		// openViewEvent.setSender(this);
 		// GeneralManager.get().getEventPublisher().triggerEvent(openViewEvent);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.caleydo.core.util.statistics.IStatisticsPerformer#adjustedRandIndex(java.util.List, java.util.List)
-	 */
-	@Override
-	public float adjustedRandIndex(List<Set<Integer>> a, List<Set<Integer>> b) {
-		List<Integer> alist = new ArrayList<>();
-		List<Integer> blist = new ArrayList<>();
-		int ai = 0;
-		for (Set<Integer> ag : a) {
-			for (Integer id : ag) {
-				// search in which this id is in the other stratification
-				int bi = 0;
-				for (Set<Integer> bg : b) {
-					if (bg.contains(id)) {
-						alist.add(ai);
-						blist.add(bi);
-						break;
-					}
-					bi++;
-				}
-			}
-			ai++;
-		}
-		// we need to cut the array to only include the found matches
-		int[] finalSet1 = Ints.toArray(alist);
-		int[] finalSet2 = Ints.toArray(blist);
-		return adjustedRandIndex(finalSet1, finalSet2);
-	}
-
-	private float adjustedRandIndex(int[] a, int[] b) {
-		try {
-			// System.out.println("Matches found " +globalVAIndex);
-
-			// System.out.println("Array: " + engine.eval("my_array"));
-			// System.out.println("Array 2: " + engine.eval("my_array_2"));
-
-			engine.assign("set1", a);
-			engine.assign("set2", b);
-
-			engine.eval("library(clues)");
-			REXP scores = engine.eval("adjustedRand(set1,set2)");
-			// System.out.println("Adjusted rand index result: " + scores);
-
-			// double[] result = scores.asDoubleArray();
-			// System.out.println(result);
-
-			return (float) (scores.asDoubleArray()[0]);
-
-		} catch (Exception e) {
-			log.error("Could not run R commands", e);
-			return -1;
-		}
-	}
-	@Override
-	public synchronized float adjustedRandIndex(TablePerspective container1, TablePerspective container2) {
-		final RecordVirtualArray va1 = container1.getRecordPerspective().getVirtualArray();
-		final RecordVirtualArray va2 = container2.getRecordPerspective().getVirtualArray();
-		IIDTypeMapper<Integer, Integer> mapper = IDMappingManagerRegistry.get().getIDMappingManager(va1.getIdType())
-				.getIDTypeMapper(va2.getIdType(), va1.getIdType());
-
-		final int va1GroupSize = va1.getGroupList().size();
-		final int va2GroupSize = va2.getGroupList().size();
-
-		// map all of va2 to va1
-		List<Set<Integer>> va2groups = new ArrayList<>(va2GroupSize);
-		for (int i = 0; i < va2GroupSize; ++i) {
-			va2groups.add(mapper.apply(va2.getIDsOfGroup(i)));
-		}
-
-		// we want a list of ids
-		int[] set1 = new int[va1.size()];
-		int[] set2 = new int[va1.size()];
-		int globalVAIndex = 0;
-
-		// System.out.println("Size left table " +va1.size());
-
-		for (int i = 0; i < va1GroupSize; ++i) {
-			for (Integer id : va1.getIDsOfGroup(i)) {
-				// search in which this id is in the other stratification
-				for (int j = 0; j < va2GroupSize; ++j) {
-					if (va2groups.get(j).contains(id)) {
-						// have a match
-						set1[globalVAIndex] = i;
-						set2[globalVAIndex] = j;
-						globalVAIndex++;
-						break;
-					}
-				}
-			}
-		}
-
-		// we need to cut the array to only include the found matches
-		int[] finalSet1 = Arrays.copyOf(set1, globalVAIndex);
-		int[] finalSet2 = Arrays.copyOf(set2, globalVAIndex);
-
-		return adjustedRandIndex(finalSet1, finalSet2);
 	}
 
 	/**

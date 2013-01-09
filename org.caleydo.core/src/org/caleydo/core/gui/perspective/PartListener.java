@@ -19,13 +19,10 @@
  *******************************************************************************/
 package org.caleydo.core.gui.perspective;
 
-import java.util.List;
-
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IDataDomainBasedView;
-import org.caleydo.core.view.IView;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
@@ -39,9 +36,6 @@ import org.eclipse.ui.PlatformUI;
  * @author Marc Streit
  */
 public class PartListener implements IPartListener2 {
-
-	boolean redoActivation = true;
-
 	@Override
 	public void partOpened(IWorkbenchPartReference partRef) {
 		// IWorkbenchPart activePart = partRef.getPart(false);
@@ -123,17 +117,6 @@ public class PartListener implements IPartListener2 {
 
 	}
 
-	private void redoActivation(IWorkbenchPartReference partRef) {
-		partDeactivated(partRef);
-		redoActivation = false;
-		partActivated(partRef);
-		partActivated(partRef);
-		partActivated(partRef);
-		partActivated(partRef);
-		partActivated(partRef);
-		redoActivation = true;
-	}
-
 	@SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
 	private void updateSupportViews(CaleydoRCPViewPart viewPart) {
 		if (viewPart.getView() instanceof IDataDomainBasedView) {
@@ -164,15 +147,5 @@ public class PartListener implements IPartListener2 {
 
 	@Override
 	public void partBroughtToTop(IWorkbenchPartReference partRef) {
-	}
-
-	/**
-	 * Gets the views and all sub-views (if there are any)
-	 * 
-	 * @param viewPart
-	 * @return
-	 */
-	private List<IView> getAllViews(CaleydoRCPViewPart viewPart) {
-		return viewPart.getAllViews();
 	}
 }

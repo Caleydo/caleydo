@@ -59,8 +59,6 @@ public class TablePerspectiveStatistics {
 
 	private TTest tTest;
 
-	private AdjustedRandIndex adjustedRandIndex;
-
 	/**
 	 * Optionally it is possible to specify the number of bins for the histogram manually. This should only be done if
 	 * there really is a reason for it.
@@ -177,15 +175,6 @@ public class TablePerspectiveStatistics {
 		if (foldChange == null)
 			foldChange = new FoldChange();
 		return foldChange;
-	}
-
-	/**
-	 * @return the adjustedRandIndex, see {@link #adjustedRandIndex}
-	 */
-	public AdjustedRandIndex getAdjustedRandIndex() {
-		if (adjustedRandIndex == null)
-			adjustedRandIndex = new AdjustedRandIndex(referenceTablePerspective);
-		return adjustedRandIndex;
 	}
 
 	/**

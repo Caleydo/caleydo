@@ -24,12 +24,12 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.dvi.Edge;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.Graph;
@@ -161,19 +161,14 @@ public class TwoLayeredGraphLayout
 	}
 
 	private <T extends IDVINode> List<T> sortNodesAlphabetically(Set<T> nodes) {
-		List<Pair<String, T>> nodeSortingList = new ArrayList<Pair<String, T>>();
-		for (T node : nodes) {
-			nodeSortingList.add(new Pair<String, T>(node.getLabel().toUpperCase(), node));
-		}
-		Collections.sort(nodeSortingList);
-
-		List<T> sortedNodes = new ArrayList<T>(nodes.size());
-
-		for (Pair<String, T> pair : nodeSortingList) {
-			sortedNodes.add(pair.getSecond());
-		}
-
-		return sortedNodes;
+		List<T> sorted = new ArrayList<>(nodes);
+		Collections.sort(sorted, new Comparator<T>() {
+			@Override
+			public int compare(T o1, T o2) {
+				return String.CASE_INSENSITIVE_ORDER.compare(o1.getLabel(), o2.getLabel());
+			}
+		});
+		return sorted;
 	}
 
 	// @Override

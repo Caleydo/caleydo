@@ -44,9 +44,11 @@ import com.google.common.collect.Lists;
 public class ScoreFactories {
 	private static final String EXTENSION_ID = "org.caleydo.tourguide.scorefactory";
 
-	private final static Map<String, IScoreFactory> factories = ExtensionUtils.findImplementation(EXTENSION_ID,
-			"name",
-			"class", IScoreFactory.class);
+	private final static Map<String, IScoreFactory> factories;
+
+	static {
+		factories = ExtensionUtils.findImplementation(EXTENSION_ID, "name", "class", IScoreFactory.class);
+	}
 
 	public static void addCreateItems(ContextMenuCreator creator, ScoreQueryUI sender, EDataDomainQueryMode mode) {
 		for (Map.Entry<String, IScoreFactory> entry : factories.entrySet()) {

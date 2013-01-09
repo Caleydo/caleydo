@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -33,6 +33,7 @@ import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.collection.Pair.ComparablePair;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
@@ -55,9 +56,9 @@ import org.eclipse.swt.widgets.TableItem;
 /**
  * Dialog where the user can specify the pathway that shall be displayed as a
  * dimension group with small multiples in StratomeX.
- * 
+ *
  * @author Marc Streit
- * 
+ *
  */
 public class CreatePathwaySmallMultiplesGroupDialog
 	extends TitleAreaDialog {
@@ -160,9 +161,9 @@ public class CreatePathwaySmallMultiplesGroupDialog
 						va.getIDs());
 
 		// Create a list that contains pathways sorted by gene occurrences
-		ArrayList<Pair<Integer, PathwayGraph>> sortedPathwayList = new ArrayList<Pair<Integer, PathwayGraph>>();
+		ArrayList<ComparablePair<Integer, PathwayGraph>> sortedPathwayList = new ArrayList<>();
 		for (PathwayGraph pathway : pathwayGraphsWithOccurrences.keySet()) {
-			sortedPathwayList.add(new Pair<Integer, PathwayGraph>(pathwayGraphsWithOccurrences
+			sortedPathwayList.add(Pair.make(pathwayGraphsWithOccurrences
 					.get(pathway), pathway));
 		}
 		Collections.sort(sortedPathwayList);
@@ -288,7 +289,7 @@ public class CreatePathwaySmallMultiplesGroupDialog
 				PathwayTablePerspective pathwayDimensionGroup = new PathwayTablePerspective(
 						tablePerspective.getDataDomain(), pathwayDataDomain,
 						newRecordPerspective, dimensionPerspective, pathway);
-				
+
 				pathwayDataDomain.addTablePerspective(pathwayDimensionGroup);
 
 				pathwayTablePerspective.add(pathwayDimensionGroup);

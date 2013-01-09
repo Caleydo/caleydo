@@ -17,22 +17,21 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.spi.algorithm;
+package org.caleydo.view.tourguide.impl.algorithm;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.statistics.Statistics;
+import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 
-import weka.core.Statistics;
 
 /**
  * @author Samuel Gratzl
@@ -85,38 +84,10 @@ public class LogRank implements IGroupAlgorithm {
 		Pair<List<Float>, Integer> bsp = getValues(b, this.clinicalVariable);
 		List<Float> bs = bsp.getFirst();
 		int bsurvived = bsp.getSecond();
-		SortedSet<Float> distinct = new TreeSet<>(as);
-		distinct.addAll(bs);
-		int ai = 0, bi = 0;
-
-		float nom = 0, denom = 0;
-
-		for (float j : distinct) {
-			// 1
-			float o1j = 0;
-			while (ai < as.size() && as.get(ai) == j) {
-				o1j++; // find act
-				ai++;
-			}
-			float n1j = as.size() + asurvived - ai; // rest
-			// 2
-			float o2j = 0;
-			while (bi < bs.size() && bs.get(bi) == j) {
-				o2j++; // find act
-				bi++;
-			}
-			float n2j = bs.size() + bsurvived - bi; // rest
-
-			float e1j = n1j == 0 ? 0 : (o1j + o2j) * n1j / (n1j + n2j);
-			float vj = (n1j == 0 || n2j == 0) ? 0 : (n1j * n2j * (o1j + o2j) * (n1j + n2j - o1j - o2j))
-					/ ((n1j + n2j) * (n1j + n2j) * (n1j + n2j - 1));
-
-			nom += o1j - e1j;
-			denom += vj;
-		}
-		float z = (nom * nom) / denom;
-		return z;
+		return Statistics.logRank(as, asurvived, bs, bsurvived);
 	}
+
+
 
 	private Pair<List<Float>, Integer> getValues(Iterable<Integer> a, Integer col) {
 		int survived = 0;

@@ -428,8 +428,7 @@ public class IDCategory {
 
 		}
 
-		Collections.sort(probabilityList);
-		Collections.reverse(probabilityList);
+		Collections.sort(probabilityList, Collections.reverseOrder(Pair.<Float> compareFirst()));
 
 		return probabilityList;
 	}

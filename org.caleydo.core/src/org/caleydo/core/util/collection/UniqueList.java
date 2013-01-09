@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -26,18 +26,21 @@ import java.util.Iterator;
 
 /**
  * <p>
- * An ordered and unique list. Most behavior similar to {@link ArrayList}, however every element is contained
- * only once. Therefore no add to a specific index is supported.
+ * An ordered and unique list. Most behavior similar to {@link ArrayList}, however every element is contained only once.
+ * Therefore no add to a specific index is supported.
+ * 
+ * FIXME: what is the difference to a SortedSet, Set?
  * </p>
  * <p>
- * Performance for {@link #contains(Object)} and {@link #containsAll(Collection)} is as fast as for a
- * {@link HashMap}, respectively n lookups in the map for containsAll
+ * Performance for {@link #contains(Object)} and {@link #containsAll(Collection)} is as fast as for a {@link HashMap},
+ * respectively n lookups in the map for containsAll
  * </p>
- * 
+ *
+ *
  * @author Alexander Lex
  * @param <E>
- *            an arbitrary type. Make sure that {@link Object#equals(Object)} and {@link Object#hashCode()}
- *            are correctly implemented
+ *            an arbitrary type. Make sure that {@link Object#equals(Object)} and {@link Object#hashCode()} are
+ *            correctly implemented
  */
 public class UniqueList<E>
 	implements Iterable<E>, Collection<E> {
@@ -69,7 +72,7 @@ public class UniqueList<E>
 
 	/**
 	 * Attempts to add the element to the collection. Adds nothing if the element is already contained.
-	 * 
+	 *
 	 * @return true, if element was added, false if element was already in the collection
 	 */
 	@Override

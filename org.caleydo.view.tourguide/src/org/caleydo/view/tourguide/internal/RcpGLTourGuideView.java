@@ -169,21 +169,31 @@ public class RcpGLTourGuideView extends ARcpGLViewPart {
 			if (partRef == null)
 				return;
 			IWorkbenchPart part = partRef.getPart(false);
+
+			VendingMachine m = getView();
+
 			if (ignorePartChange(part))
 				return;
-			if (part instanceof RcpGLStratomexView) {
-				RcpGLStratomexView strat = (RcpGLStratomexView) part;
-				stratomex = strat.getView();
+			if (part instanceof RcpGLTourGuideView && m != null) {
+				if (part == RcpGLTourGuideView.this) { // I was activated
+					m.attachToStratomex();
+				} else { // another tour guide than me was activated
+					m.detachFromStratomex();
+				}
+			} else {
+				if (part instanceof RcpGLStratomexView) {
+					RcpGLStratomexView strat = (RcpGLStratomexView) part;
+					stratomex = strat.getView();
+				}
+				if (m != null)
+					m.switchToStratomex(stratomex);
 			}
-			VendingMachine m = getView();
-			if (m != null)
-				m.switchToStratomex(stratomex);
 		}
 	};
 
 	private static boolean ignorePartChange(IWorkbenchPart part) {
 		final String canonicalName = part.getClass().getCanonicalName();
-		return part instanceof RcpGLTourGuideView || canonicalName.startsWith("org.caleydo.view.info")
+		return canonicalName.startsWith("org.caleydo.view.info")
 				|| canonicalName.startsWith("org.caleydo.core.gui.toolbar");
 	}
 

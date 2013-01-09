@@ -31,8 +31,6 @@ import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.PreferenceStore;
@@ -187,11 +185,8 @@ public class GeneralManager {
 			// Lazy creation
 			IExtensionRegistry reg = Platform.getExtensionRegistry();
 
-			IExtensionPoint ep = reg
-					.getExtensionPoint("org.caleydo.util.statistics.StatisticsPerformer");
-			IExtension ext = ep.getExtension("org.caleydo.util.r.RStatisticsPerformer");
-			IConfigurationElement[] ce = ext.getConfigurationElements();
-
+			IConfigurationElement[] ce = reg
+					.getConfigurationElementsFor("org.caleydo.util.statistics.StatisticsPerformer");
 			try {
 				rStatisticsPerformer = (IStatisticsPerformer) ce[0]
 						.createExecutableExtension("class");

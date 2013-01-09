@@ -17,31 +17,34 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.spi.algorithm;
+package org.caleydo.view.tourguide.impl.algorithm;
 
+import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.util.statistics.Statistics;
+import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class JaccardIndex implements IGroupAlgorithm {
-	private static final JaccardIndex instance = new JaccardIndex();
+public class AdjustedRandIndex implements IStratificationAlgorithm {
+	private static final AdjustedRandIndex instance = new AdjustedRandIndex();
 
-	public static JaccardIndex get() {
+	public static AdjustedRandIndex get() {
 		return instance;
 	}
 
-	private JaccardIndex() {
+	private AdjustedRandIndex() {
 
 	}
 
 	@Override
 	public String getAbbreviation() {
-		return "JI";
+		return "AR";
 	}
 
 	@Override
@@ -50,15 +53,8 @@ public class JaccardIndex implements IGroupAlgorithm {
 	}
 
 	@Override
-	public float compute(Set<Integer> a, Set<Integer> b) {
-		int intersection = 0;
-		for (Integer ai : a) {
-			if (b.contains(ai))
-				intersection++;
-		}
-		int union = b.size() + a.size() - intersection;
-
-		float score = union == 0 ? 0.f : (float) intersection / union;
-		return score;
+	public float compute(List<Set<Integer>> a, List<Set<Integer>> b) {
+		return Statistics.randIndex(a, b);
 	}
 }
+

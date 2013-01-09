@@ -1,4 +1,4 @@
-package org.caleydo.view.tourguide.spi.algorithm;
+package org.caleydo.view.tourguide.impl.algorithm;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +15,7 @@ import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
@@ -82,7 +83,7 @@ public class GSEAAlgorithm implements IStratificationAlgorithm {
 		List<Pair<Integer, Float>> g = new ArrayList<>(cols.size());
 		// List<Float> avalues = new ArrayList<>(inA.size());
 		// List<Float> bvalues = new ArrayList<>(rows.size() - inA.size());
-		System.out.println(w + " " + inA.size() + " " + rows.size() + " cols " + cols.size());
+		// System.out.println(w + " " + inA.size() + " " + rows.size() + " cols " + cols.size());
 
 		for (Integer col : cols) {
 			// mean of the expressions level of the samples for the given gen.
@@ -111,36 +112,13 @@ public class GSEAAlgorithm implements IStratificationAlgorithm {
 			g.add(Pair.make(col, (asum / acount) / (bsum / bcount)));// correlationOf(avalues, bvalues)));
 		}
 
-		System.out.println("computed " + w);
+		// System.out.println("computed " + w);
 		Map<Integer, Float> correlation = Maps.newLinkedHashMap();
 		Collections.sort(g, Collections.reverseOrder());
 		for (Pair<Integer, Float> entry : g)
 			correlation.put(entry.getFirst(), entry.getSecond());
 		System.out.println(w);
 		return correlation;
-	}
-
-	/**
-	 * @param avalues
-	 * @param bvalues
-	 * @return
-	 */
-	private static float correlationOf(List<Float> avalues, List<Float> bvalues) {
-		// current implementation mean ratio
-		return mean(avalues) / mean(bvalues);
-	}
-
-	private static float mean(Collection<Float> values) {
-		if (values.isEmpty())
-			return 0;
-		return sum(values) / values.size();
-	}
-
-	private static float sum(Iterable<Float> values) {
-		float s = 0;
-		for (float f : values)
-			s += f;
-		return s;
 	}
 
 	@Override
@@ -164,19 +142,48 @@ public class GSEAAlgorithm implements IStratificationAlgorithm {
 		if (Float.isNaN(es))
 			return Float.NaN;
 
-		float others = 0f;
 		// Randomly assign the original phenotype labels to samples,reorder genes, and re-compute ES(S)
 		// Repeat step 1 for 1,000 permutations, and create a histogram of
 		// the corresponding enrichment scores ES NULL .
 		// 3. Estimate nominal P value for S from ES NULL by using the
 		// positive or negative portion of the distribution corresponding to
 		// the sign of the observed ES(S).
+		//
+
+		// pos.phi <- NULL
+		// neg.phi <- NULL
+		// for (j in 1:nperm) {
+		// if (phi[i, j] >= 0) {
+		// pos.phi <- c(pos.phi, phi[i, j])
+		// } else {
+		// neg.phi <- c(neg.phi, phi[i, j])
+		// }
+		// }
+		// ES.value <- Obs.ES[i]
+		// if (ES.value >= 0) {
+		// p.vals[i, 1] <- signif(sum(pos.phi >= ES.value)/length(pos.phi), digits=5)
+		// } else {
+		// p.vals[i, 1] <- signif(sum(neg.phi <= ES.value)/length(neg.phi), digits=5)
+		// }
+		//
+		int phiCount = 0;
+		float phiSum = 0;
 		for (Map<Integer, Float> permutation : this.permutations) {
 			float phi = (float)enrichmentScore(permutation, geneSet);
-			if (phi >= es)
-				others += phi;
+			if (es >= 0) {
+				if (phi >= 0)
+					phiCount++;
+				if (phi >= es)
+					phiSum += phi;
+			} else {
+				if (phi < 0)
+					phiCount++;
+				if (phi <= es)
+					phiSum += phi;
+			}
 		}
-		float pValue = others / NPERM;
+		float pValue = phiSum / phiCount;
+
 		return pValue;
 	}
 

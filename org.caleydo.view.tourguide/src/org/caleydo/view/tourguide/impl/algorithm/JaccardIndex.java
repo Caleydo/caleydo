@@ -17,33 +17,33 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.spi.algorithm;
+package org.caleydo.view.tourguide.impl.algorithm;
 
-import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.statistics.Statistics;
+import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AdjustedRandIndex implements IStratificationAlgorithm {
-	private static final AdjustedRandIndex instance = new AdjustedRandIndex();
+public class JaccardIndex implements IGroupAlgorithm {
+	private static final JaccardIndex instance = new JaccardIndex();
 
-	public static AdjustedRandIndex get() {
+	public static JaccardIndex get() {
 		return instance;
 	}
 
-	private AdjustedRandIndex() {
+	private JaccardIndex() {
 
 	}
 
 	@Override
 	public String getAbbreviation() {
-		return "AR";
+		return "JI";
 	}
 
 	@Override
@@ -52,8 +52,7 @@ public class AdjustedRandIndex implements IStratificationAlgorithm {
 	}
 
 	@Override
-	public float compute(List<Set<Integer>> a, List<Set<Integer>> b) {
-		return GeneralManager.get().getRStatisticsPerformer().adjustedRandIndex(a, b);
+	public float compute(Set<Integer> a, Set<Integer> b) {
+		return Statistics.jaccardIndex(a, b);
 	}
-
 }
