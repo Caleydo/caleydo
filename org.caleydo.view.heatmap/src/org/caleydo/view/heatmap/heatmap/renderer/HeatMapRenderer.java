@@ -95,8 +95,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 
 		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
 
-		float value = heatMap.getDataDomain().getTable()
-				.getFloat(heatMap.getRenderingRepresentation(), recordID, dimensionID);
+		float value = heatMap.getDataDomain().getTable().getNormalizedValue(recordID, dimensionID);
 
 		float fOpacity = 1.0f;
 

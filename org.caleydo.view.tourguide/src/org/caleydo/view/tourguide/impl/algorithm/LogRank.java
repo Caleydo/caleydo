@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.tourguide.impl.algorithm;
 
@@ -24,14 +21,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.statistics.Statistics;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
-
 
 /**
  * @author Samuel Gratzl
@@ -72,7 +67,6 @@ public class LogRank implements IGroupAlgorithm {
 		return compute((Iterable<Integer>) a, b);
 	}
 
-
 	public float compute(Iterable<Integer> a, Iterable<Integer> b) {
 		// http://en.wikipedia.org/wiki/Logrank_test and
 		// Survival Analysis: A Self-Learning Text
@@ -87,13 +81,11 @@ public class LogRank implements IGroupAlgorithm {
 		return Statistics.logRank(as, asurvived, bs, bsurvived);
 	}
 
-
-
 	private Pair<List<Float>, Integer> getValues(Iterable<Integer> a, Integer col) {
 		int survived = 0;
 		List<Float> r = new ArrayList<>();
 		for (Integer row : a) {
-			Float v = clinical.getTable().getFloat(DataRepresentation.RAW, row, col);
+			Float v = clinical.getTable().getRaw(row, col);
 			if (v == null || v.isNaN()) {
 				survived++;
 				continue;

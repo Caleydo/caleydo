@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.data.collection.export;
 
@@ -25,7 +22,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
@@ -98,34 +94,29 @@ public class DataTableExporter {
 	// }
 
 	/**
-	 * Exports the dataset identified through the perspectives to the file
-	 * specified.
+	 * Exports the dataset identified through the perspectives to the file specified.
 	 *
 	 * @param dataDomain
 	 * @param fileName
 	 * @param recordPerspective
 	 * @param dimensionPerspective
 	 * @param targetRecordIDType
-	 *            the id type to be used in the file. If this is null the
-	 *            {@link IDCategory#getHumanReadableIDType()} will be used.
+	 *            the id type to be used in the file. If this is null the {@link IDCategory#getHumanReadableIDType()}
+	 *            will be used.
 	 * @param targetDimensionIDType
 	 *            same as targetRecordIDType for dimensions
 	 * @param includeClusterInfo
-	 *            true if you want to add information about the clustering to
-	 *            the file, else false
+	 *            true if you want to add information about the clustering to the file, else false
 	 */
-	public static void export(ATableBasedDataDomain dataDomain, String fileName,
-			RecordPerspective recordPerspective,
-			DimensionPerspective dimensionPerspective, IDType targetRecordIDType,
-			IDType targetDimensionIDType, boolean includeClusterInfo) {
+	public static void export(ATableBasedDataDomain dataDomain, String fileName, RecordPerspective recordPerspective,
+			DimensionPerspective dimensionPerspective, IDType targetRecordIDType, IDType targetDimensionIDType,
+			boolean includeClusterInfo) {
 
 		if (targetRecordIDType == null)
-			targetRecordIDType = dataDomain.getRecordIDCategory()
-					.getHumanReadableIDType();
+			targetRecordIDType = dataDomain.getRecordIDCategory().getHumanReadableIDType();
 
 		if (targetDimensionIDType == null)
-			targetDimensionIDType = dataDomain.getDimensionIDCategory()
-					.getHumanReadableIDType();
+			targetDimensionIDType = dataDomain.getDimensionIDCategory().getHumanReadableIDType();
 
 		IDType rowTargetIDType;
 		IDType rowSourceIDType;
@@ -158,14 +149,11 @@ public class DataTableExporter {
 		if (rowVA == null || colVA == null)
 			throw new IllegalArgumentException("VAs in perspectives were null");
 
-		IDMappingManager rowIDMappingManager = IDMappingManagerRegistry.get()
-				.getIDMappingManager(rowSourceIDType);
-		IDMappingManager colIDMappingManager = IDMappingManagerRegistry.get()
-				.getIDMappingManager(colSourceIDType);
+		IDMappingManager rowIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(rowSourceIDType);
+		IDMappingManager colIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(colSourceIDType);
 
 		try {
-			PrintWriter out = new PrintWriter(
-					new BufferedWriter(new FileWriter(fileName)));
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
 
 			// Writing dimension labels
 
@@ -173,8 +161,7 @@ public class DataTableExporter {
 			out.print("Identifier \t");
 
 			for (Integer colID : colVA) {
-				Set<Object> colTargetIDs = colIDMappingManager.getIDAsSet(
-						colSourceIDType, colTargetIDType, colID);
+				Set<Object> colTargetIDs = colIDMappingManager.getIDAsSet(colSourceIDType, colTargetIDType, colID);
 				String id = "";
 				for (Object colTargetID : colTargetIDs) {
 					id = colTargetID.toString();
@@ -196,8 +183,7 @@ public class DataTableExporter {
 			String id;
 			for (Integer rowID : rowVA) {
 
-				Set<Object> rowTargetIDs = rowIDMappingManager.getIDAsSet(
-						rowSourceIDType, rowTargetIDType, rowID);
+				Set<Object> rowTargetIDs = rowIDMappingManager.getIDAsSet(rowSourceIDType, rowTargetIDType, rowID);
 				id = "";
 				for (Object rowTargetID : rowTargetIDs) {
 					id = rowTargetID.toString();
@@ -208,11 +194,9 @@ public class DataTableExporter {
 
 				for (Integer colID : colVA) {
 					if (dataDomain.isColumnDimension()) {
-						out.print(dataDomain.getTable().getFloat(DataRepresentation.RAW,
-								rowID, colID));
+						out.print(dataDomain.getTable().getRawAsString(rowID, colID));
 					} else {
-						out.print(dataDomain.getTable().getFloat(DataRepresentation.RAW,
-								colID, rowID));
+						out.print(dataDomain.getTable().getRawAsString(colID, rowID));
 					}
 
 					out.print("\t");
@@ -229,8 +213,7 @@ public class DataTableExporter {
 							cnt++;
 						}
 
-						example = rowVA.getGroupList().get(cluster)
-								.getRepresentativeElementIndex();
+						example = rowVA.getGroupList().get(cluster).getRepresentativeElementIndex();
 
 						out.print(cluster + "\t" + example + "\t");
 					}
@@ -262,8 +245,7 @@ public class DataTableExporter {
 						cnt++;
 					}
 
-					example = colVA.getGroupList().get(cluster)
-							.getRepresentativeElementIndex();
+					example = colVA.getGroupList().get(cluster).getRepresentativeElementIndex();
 
 					clusterNr += cluster + "\t";
 					clusterRep += example + "\t";

@@ -123,7 +123,7 @@ public class IDTypeInitializer {
 		IDType recordIDType = IDType.getIDType(recordIDTypeName);
 		if (recordIDType == null) {
 			recordIDType = IDType.registerType(recordIDTypeName, recodIDCategory,
-					EDataType.STRING);
+					EDataType.TEXT);
 			if (recordIDTypeParsingRules != null  && recordIDTypeParsingRules.isDefault())
 				recordIDType.setIdTypeParsingRules(recordIDTypeParsingRules);
 		}
@@ -131,7 +131,7 @@ public class IDTypeInitializer {
 		IDType dimensionIDType = IDType.getIDType(dimensionIDTypeName);
 		if (dimensionIDType == null) {
 			dimensionIDType = IDType.registerType(dimensionIDTypeName,
-					dimensionIDCategory, EDataType.STRING);
+					dimensionIDCategory, EDataType.TEXT);
 			if (dimensionIDTypeParsingRules != null && dimensionIDTypeParsingRules.isDefault())
 				dimensionIDType.setIdTypeParsingRules(dimensionIDTypeParsingRules);
 		}

@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.parcoords;
 
@@ -49,8 +46,7 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.column.DataRepresentation;
-import org.caleydo.core.data.collection.column.RawDataType;
+import org.caleydo.core.data.collection.column.ERawDataType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.filter.DimensionFilter;
@@ -543,7 +539,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			Integer dimensionID = dimensionVA.get(dimensionCount);
 
 			currentX = axisSpacings.get(dimensionCount);
-			currentY = table.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
+			currentY = table.getNormalizedValue(recordID, dimensionID);
 			if (Float.isNaN(currentY)) {
 				currentY = NAN_Y_OFFSET / renderStyle.getAxisHeight();
 			}
@@ -563,12 +559,12 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 			if (renderCaption) {
 				String sRawValue;
-				RawDataType rawDataType = table.getRawDataType(dimensionID, recordID);
-				if (rawDataType == RawDataType.FLOAT) {
+				ERawDataType eRawDataType = table.getRawDataType(dimensionID, recordID);
+				if (eRawDataType == ERawDataType.FLOAT) {
 
-					sRawValue = Formatter.formatNumber(table.getFloat(DataRepresentation.RAW, recordID, dimensionID));
+					sRawValue = Formatter.formatNumber((float) table.getRaw(recordID, dimensionID));
 
-				} else if (rawDataType == RawDataType.STRING) {
+				} else if (eRawDataType == ERawDataType.STRING) {
 					sRawValue = table.getRaw(dimensionID, recordID);
 				} else
 					throw new IllegalStateException("Unknown Raw Data Type Type");
@@ -1058,11 +1054,13 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			if (axisID == -1)
 				continue;
 			for (int recordID : tablePerspective.getRecordPerspective().getVirtualArray()) {
-				String usedDataRepresentation = DataRepresentation.RAW;
-				if (!dataDomain.getTable().isDataHomogeneous())
-					usedDataRepresentation = DataRepresentation.NORMALIZED;
 
-				currentValue = dataDomain.getTable().getFloat(usedDataRepresentation, recordID, axisID);
+				if (!dataDomain.getTable().isDataHomogeneous()) {
+
+					currentValue = dataDomain.getTable().getNormalizedValue(recordID, axisID);
+				}
+
+				currentValue = dataDomain.getTable().getRaw(recordID, axisID);
 
 				if (Float.isNaN(currentValue)) {
 					continue;
@@ -1083,7 +1081,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			ArrayList<Integer> deselectedLines = new ArrayList<Integer>();
 			for (int polylineIndex : tablePerspective.getRecordPerspective().getVirtualArray()) {
 
-				currentValue = dataDomain.getTable().getFloat(DataRepresentation.NORMALIZED, polylineIndex, axisID);
+				currentValue = dataDomain.getTable().getNormalizedValue(polylineIndex, axisID);
 
 				if (Float.isNaN(currentValue)) {
 					deselectedLines.add(polylineIndex);
@@ -1107,7 +1105,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				boolean bIsBlocking = true;
 				for (int dimensionID : tablePerspective.getDimensionPerspective().getVirtualArray()) {
 
-					currentValue = dataDomain.getTable().getFloat(DataRepresentation.RAW, recordID, dimensionID);
+					currentValue = dataDomain.getTable().getRaw(recordID, dimensionID);
 
 					if (Float.isNaN(currentValue)) {
 						continue;
@@ -1621,7 +1619,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		} else if (idType.equals(recordIDType)) {
 
 			x = viewFrustum.getLeft() + renderStyle.getXSpacing();
-			y = dataDomain.getTable().getFloat(DataRepresentation.NORMALIZED, id, dimensionVA.get(0));
+			y = dataDomain.getTable().getNormalizedValue(id, dimensionVA.get(0));
 
 			// // get the value on the leftmost axis
 			// fYValue =
@@ -1678,10 +1676,8 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		Vec3f vecLeftPoint = new Vec3f(0, 0, 0);
 		Vec3f vecRightPoint = new Vec3f(0, 0, 0);
 
-		vecLeftPoint.setY(table.getFloat(DataRepresentation.NORMALIZED, iSelectedLineID, leftAxisIndex)
-				* renderStyle.getAxisHeight());
-		vecRightPoint.setY(table.getFloat(DataRepresentation.NORMALIZED, iSelectedLineID, rightAxisIndex)
-				* renderStyle.getAxisHeight());
+		vecLeftPoint.setY(table.getNormalizedValue(iSelectedLineID, leftAxisIndex) * renderStyle.getAxisHeight());
+		vecRightPoint.setY(table.getNormalizedValue(iSelectedLineID, rightAxisIndex) * renderStyle.getAxisHeight());
 
 		vecLeftPoint.setX(axisSpacings.get(iPosition));
 		vecRightPoint.setX(axisSpacings.get(iPosition + 1));
@@ -1780,10 +1776,8 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 		for (Integer iCurrent : recordVA) {
 
-			vecLeftPoint.setY(table.getFloat(DataRepresentation.NORMALIZED, iCurrent, leftAxisIndex)
-					* renderStyle.getAxisHeight());
-			vecRightPoint.setY(table.getFloat(DataRepresentation.NORMALIZED, iCurrent, rightAxisIndex)
-					* renderStyle.getAxisHeight());
+			vecLeftPoint.setY(table.getNormalizedValue(iCurrent, leftAxisIndex) * renderStyle.getAxisHeight());
+			vecRightPoint.setY(table.getNormalizedValue(iCurrent, rightAxisIndex) * renderStyle.getAxisHeight());
 
 			vecLeftPoint.setX(axisSpacings.get(iPosition));
 			vecRightPoint.setX(axisSpacings.get(iPosition + 1));

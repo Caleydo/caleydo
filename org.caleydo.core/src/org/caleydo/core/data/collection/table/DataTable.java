@@ -1,42 +1,36 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.data.collection.table;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.column.AColumn;
 import org.caleydo.core.data.collection.column.DataRepresentation;
-import org.caleydo.core.data.collection.column.NominalColumn;
+import org.caleydo.core.data.collection.column.ERawDataType;
 import org.caleydo.core.data.collection.column.NumericalColumn;
-import org.caleydo.core.data.collection.column.RawDataType;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
@@ -89,7 +83,7 @@ public class DataTable extends AUniqueObject {
 	// protected DimensionData defaultDimensionData;
 	// protected RecordPerspective defaultRecordPerspective;
 
-	EDataTransformation externalDataTrans;
+	EDataTransformation dataTransformation;
 
 	boolean isTableHomogeneous = false;
 
@@ -103,7 +97,6 @@ public class DataTable extends AUniqueObject {
 	 * all metaData for this DataTable is held in or accessible through this object
 	 */
 	private MetaData metaData;
-
 
 	/**
 	 * everything related to normalization of the data is held in or accessible through this object
@@ -164,13 +157,13 @@ public class DataTable extends AUniqueObject {
 		return dataDomain;
 	}
 
-	public Float getFloat(String dataRepresentation, Integer recordID, Integer dimensionID) {
+	public Float getNormalizedValue(Integer recordID, Integer dimensionID) {
 		try {
 			if (isColumnDimension) {
-				return hashColumns.get(dimensionID).getFloat(dataRepresentation, recordID);
+				return hashColumns.get(dimensionID).getNormalizedValue(recordID);
 			} else {
-				AColumn column = hashColumns.get(recordID);
-				return column.getFloat(dataRepresentation, dimensionID);
+				AColumn<?, ?> column = hashColumns.get(recordID);
+				return column.getNormalizedValue(dimensionID);
 			}
 		} catch (NullPointerException npe) {
 
@@ -181,18 +174,18 @@ public class DataTable extends AUniqueObject {
 
 	}
 
-	@SuppressWarnings("unchecked")
-	public <RawType> RawType getRaw(Integer dimensionID, Integer recordID) {
-		Integer columnID = dimensionID;
-		Integer rowID = recordID;
-		if (!isColumnDimension) {
-			columnID = recordID;
-			rowID = dimensionID;
-		}
-
-		AColumn dimension = hashColumns.get(columnID);
-		return ((NominalColumn<RawType>) dimension).getRaw(rowID);
-	}
+	// @SuppressWarnings("unchecked")
+	// public <RawType> RawType getRaw(Integer dimensionID, Integer recordID) {
+	// Integer columnID = dimensionID;
+	// Integer rowID = recordID;
+	// if (!isColumnDimension) {
+	// columnID = recordID;
+	// rowID = dimensionID;
+	// }
+	//
+	// AColumn<?, ?> dimension = hashColumns.get(columnID);
+	// return dimension.getRaw(rowID);
+	// }
 
 	public String getRawAsString(Integer dimensionID, Integer recordID) {
 		Integer columnID = dimensionID;
@@ -201,17 +194,18 @@ public class DataTable extends AUniqueObject {
 			columnID = recordID;
 			rowID = dimensionID;
 		}
-		RawDataType rawDataType = hashColumns.get(columnID).getRawDataType();
-		String result;
-		if (rawDataType == RawDataType.FLOAT) {
-			result = Float.toString(getFloat(DataRepresentation.RAW, rowID, columnID));
-		} else if (rawDataType == RawDataType.STRING) {
-			result = getRaw(columnID, rowID);
-		} else {
-			throw new IllegalStateException("DataType " + rawDataType + " not implemented");
-
-		}
-		return result;
+		return hashColumns.get(columnID).getRawAsString(rowID);
+		// ERawDataType eRawDataType = hashColumns.get(columnID).getRawDataType();
+		// String result;
+		// if (eRawDataType == ERawDataType.FLOAT) {
+		// result = Float.toString(getFloat(DataRepresentation.RAW, rowID, columnID));
+		// } else if (eRawDataType == ERawDataType.STRING) {
+		// result = getRaw(columnID, rowID);
+		// } else {
+		// throw new IllegalStateException("DataType " + eRawDataType + " not implemented");
+		//
+		// }
+		// return result;
 	}
 
 	public boolean containsDataRepresentation(DataRepresentation dataRepresentation, Integer dimensionID,
@@ -224,21 +218,23 @@ public class DataTable extends AUniqueObject {
 		return hashColumns.get(columnID).containsDataRepresentation(dataRepresentation);
 	}
 
-	public RawDataType getRawDataType(Integer dimensionID, Integer recordID) {
+	public ERawDataType getRawDataType(Integer dimensionID, Integer recordID) {
 		Integer columnID = dimensionID;
 		if (!isColumnDimension)
 			columnID = recordID;
 		return hashColumns.get(columnID).getRawDataType();
 	}
 
-	/**
-	 * Iterate over the dimensions based on a virtual array
-	 *
-	 * @param type
-	 * @return
-	 */
-	public Iterator<AColumn> iterator(String type) {
-		return new DimensionIterator(hashColumns, hashDimensionPerspectives.get(type).getVirtualArray());
+	@SuppressWarnings("unchecked")
+	public <RawDataType> RawDataType getRaw(Integer dimensionID, Integer recordID) {
+		Integer columnID = dimensionID;
+		Integer rowID = recordID;
+		if (!isColumnDimension) {
+			columnID = recordID;
+			rowID = dimensionID;
+		}
+
+		return (RawDataType) hashColumns.get(columnID).getRaw(rowID);
 	}
 
 	/**
@@ -260,14 +256,15 @@ public class DataTable extends AUniqueObject {
 		// if(getMin() > 0)
 		result = metaData.getMin() + dNormalized * (metaData.getMax() - metaData.getMin());
 		// return (dNormalized) * (getMax() + getMin());
-		if (externalDataTrans == EDataTransformation.NONE) {
+		if (dataTransformation == EDataTransformation.NONE) {
 			return result;
-		} else if (externalDataTrans == EDataTransformation.LOG2) {
+		} else if (dataTransformation == EDataTransformation.LOG2) {
 			return Math.pow(2, result);
-		} else if (externalDataTrans == EDataTransformation.LOG10) {
+		} else if (dataTransformation == EDataTransformation.LOG10) {
 			return Math.pow(10, result);
 		}
-		throw new IllegalStateException("Conversion raw to normalized not implemented for data rep" + externalDataTrans);
+		throw new IllegalStateException("Conversion raw to normalized not implemented for data rep"
+				+ dataTransformation);
 	}
 
 	/**
@@ -284,15 +281,15 @@ public class DataTable extends AUniqueObject {
 
 		double result;
 
-		if (externalDataTrans == EDataTransformation.NONE) {
+		if (dataTransformation == EDataTransformation.NONE) {
 			result = dRaw;
-		} else if (externalDataTrans == EDataTransformation.LOG2) {
+		} else if (dataTransformation == EDataTransformation.LOG2) {
 			result = Math.log(dRaw) / Math.log(2);
-		} else if (externalDataTrans == EDataTransformation.LOG10) {
+		} else if (dataTransformation == EDataTransformation.LOG10) {
 			result = Math.log10(dRaw);
 		} else {
 			throw new IllegalStateException("Conversion raw to normalized not implemented for data rep"
-					+ externalDataTrans);
+					+ dataTransformation);
 		}
 
 		result = (result - metaData.getMin()) / (metaData.getMax() - metaData.getMin());
@@ -327,7 +324,7 @@ public class DataTable extends AUniqueObject {
 	 * @return
 	 */
 	public EDataTransformation getExternalDataRep() {
-		return externalDataTrans;
+		return dataTransformation;
 	}
 
 	/**
@@ -520,30 +517,29 @@ public class DataTable extends AUniqueObject {
 	 *
 	 * @return the dimension containing means for all content elements
 	 */
-	@Deprecated
-	public NumericalColumn getMeanDimension(String dimensionPerspectiveID) {
-		if (!tableType.equals(DataTableDataType.NUMERIC) || !isTableHomogeneous)
-			throw new IllegalStateException("Can not provide a mean dimension if set is not numerical (Set type: "
-					+ tableType + ") or not homgeneous (isHomogeneous: " + isTableHomogeneous + ")");
-		if (meanDimension == null) {
-			meanDimension = new NumericalColumn();
-			meanDimension.setExternalDataRepresentation(EDataTransformation.NONE);
-
-			float[] meanValues = new float[metaData.depth()];
-			DimensionVirtualArray dimensionVA = hashDimensionPerspectives.get(dimensionPerspectiveID).getVirtualArray();
-			for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
-				float sum = 0;
-				for (int dimensionID : dimensionVA) {
-					sum += getFloat(DataRepresentation.RAW, contentCount, dimensionID);
-				}
-				meanValues[contentCount] = sum / metaData.size();
-			}
-			meanDimension.setRawData(meanValues);
-			// meanDimension.normalize();
-		}
-		return meanDimension;
-	}
-
+	// @Deprecated
+	// public NumericalColumn getMeanDimension(String dimensionPerspectiveID) {
+	// if (!tableType.equals(DataTableDataType.NUMERIC) || !isTableHomogeneous)
+	// throw new IllegalStateException("Can not provide a mean dimension if set is not numerical (Set type: "
+	// + tableType + ") or not homgeneous (isHomogeneous: " + isTableHomogeneous + ")");
+	// if (meanDimension == null) {
+	// meanDimension = new NumericalColumn();
+	// meanDimension.setExternalDataRepresentation(EDataTransformation.NONE);
+	//
+	// float[] meanValues = new float[metaData.depth()];
+	// DimensionVirtualArray dimensionVA = hashDimensionPerspectives.get(dimensionPerspectiveID).getVirtualArray();
+	// for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
+	// float sum = 0;
+	// for (int dimensionID : dimensionVA) {
+	// sum += getFloat(DataRepresentation.RAW, contentCount, dimensionID);
+	// }
+	// meanValues[contentCount] = sum / metaData.size();
+	// }
+	// meanDimension.setRawData(new FloatContainer(meanValues));
+	// // meanDimension.normalize();
+	// }
+	// return meanDimension;
+	// }
 
 	/**
 	 * Add a column by reference. The column has to be fully initialized with data
@@ -551,7 +547,7 @@ public class DataTable extends AUniqueObject {
 	 * @param column
 	 *            the column
 	 */
-	public void addColumn(AColumn column) {
+	public void addColumn(AColumn<?, ?> column) {
 		// if (hashDimensions.isEmpty()) {
 		if (column instanceof NumericalColumn) {
 			if (tableType == null)
@@ -583,7 +579,7 @@ public class DataTable extends AUniqueObject {
 	 * Switch the representation of the data. When this is called the data in normalized is replaced with data
 	 * calculated from the mode specified.
 	 *
-	 * @param externalDataRep
+	 * @param dataTransformation
 	 *            Determines how the data is visualized. For options see {@link EDataTransformation}
 	 * @param isTableHomogeneous
 	 *            Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global maximum
@@ -591,21 +587,21 @@ public class DataTable extends AUniqueObject {
 	 *            treated separately, has it's own min and max etc. Sets that contain nominal data MUST be
 	 *            inhomogeneous.
 	 */
-	void setExternalDataRepresentation(EDataTransformation externalDataRep, boolean isTableHomogeneous) {
+	void setDataTransformation(EDataTransformation dataTransformation, boolean isTableHomogeneous) {
 		this.isTableHomogeneous = isTableHomogeneous;
-		if (externalDataRep == this.externalDataTrans)
+		if (dataTransformation == this.dataTransformation)
 			return;
 
-		this.externalDataTrans = externalDataRep;
+		this.dataTransformation = dataTransformation;
 
-		for (AColumn dimension : hashColumns.values()) {
+		for (AColumn<?, ?> dimension : hashColumns.values()) {
 			if (dimension instanceof NumericalColumn) {
-				((NumericalColumn) dimension).setExternalDataRepresentation(externalDataRep);
+				((NumericalColumn<?, ?>) dimension).setDataTransformation(dataTransformation);
 			}
 		}
 
 		if (isTableHomogeneous) {
-			switch (externalDataRep) {
+			switch (dataTransformation) {
 			case NONE:
 				normalization.normalizeGlobally();
 				break;
@@ -619,7 +615,7 @@ public class DataTable extends AUniqueObject {
 				break;
 			}
 		} else {
-			switch (externalDataRep) {
+			switch (dataTransformation) {
 			case NONE:
 				normalization.normalizeLocally();
 				break;
@@ -634,7 +630,6 @@ public class DataTable extends AUniqueObject {
 			}
 		}
 	}
-
 
 	// ---------------------- helper functions ------------------------------
 

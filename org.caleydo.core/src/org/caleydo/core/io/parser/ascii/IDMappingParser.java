@@ -157,14 +157,14 @@ public class IDMappingParser extends ATextParser {
 				if (mappingType.getFromIDType().getColumnType() == EDataType.INT) {
 					if (mappingType.getToIDType().getColumnType() == EDataType.INT) {
 						idMappingManager.addMapping(mappingType, Integer.valueOf(fromID), Integer.valueOf(toID));
-					} else if (mappingType.getToIDType().getColumnType() == EDataType.STRING) {
+					} else if (mappingType.getToIDType().getColumnType() == EDataType.TEXT) {
 						idMappingManager.addMapping(mappingType, Integer.valueOf(fromID), toID);
 					} else
 						throw new IllegalStateException("Unsupported data type!");
-				} else if (mappingType.getFromIDType().getColumnType() == EDataType.STRING) {
+				} else if (mappingType.getFromIDType().getColumnType() == EDataType.TEXT) {
 					if (mappingType.getToIDType().getColumnType() == EDataType.INT) {
 						idMappingManager.addMapping(mappingType, fromID, Integer.valueOf(toID));
-					} else if (mappingType.getToIDType().getColumnType() == EDataType.STRING) {
+					} else if (mappingType.getToIDType().getColumnType() == EDataType.TEXT) {
 						idMappingManager.addMapping(mappingType, fromID, toID);
 					} else
 						throw new IllegalStateException("Unsupported data type!");

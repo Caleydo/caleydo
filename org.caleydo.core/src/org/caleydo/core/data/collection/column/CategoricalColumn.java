@@ -14,29 +14,34 @@
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection;
+package org.caleydo.core.data.collection.column;
+
+import org.caleydo.core.data.collection.column.container.CategoricalContainer;
+import org.caleydo.core.id.object.ManagedObjectType;
+import org.caleydo.core.manager.GeneralManager;
 
 /**
- * The data types supported of different types of dimensions.
- *
- * @author Marc Streit
  * @author Alexander Lex
+ *
  */
-public enum EDataType {
+public class CategoricalColumn<CategoryType> extends AColumn<CategoricalContainer<CategoryType>, CategoryType> {
 
-	/** A natural number */
-	INT(Integer.class),
-	/** Single-precision numerical real value */
-	FLOAT(Float.class),
-	/** Ordered categorical */
-	ORDINAL(Integer.class),
-	/** Unordered categorical */
-	NOMINAL(String.class),
-	/** A unique text */
-	TEXT(String.class);
+	/**
+	 *
+	 */
+	public CategoricalColumn() {
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.COLUMN_NUMERICAL));
+	}
+	/**
+	 *
+	 */
+	public CategoricalColumn(int uniqueID) {
+		super(uniqueID);
+	}
 
-	private <T> EDataType(Class<T> dimensionClass) {
-
+	@Override
+	public void normalize() {
+		normalizedContainer = rawContainer.normalize();
 	}
 
 }

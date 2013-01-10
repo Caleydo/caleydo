@@ -1,24 +1,24 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 /**
- * 
+ *
  */
 package org.caleydo.core.io;
 
@@ -29,9 +29,9 @@ import org.caleydo.core.data.collection.EDataType;
 /**
  * A parsing specification for a single column containing the number of the
  * column and the data type.
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 @XmlType
 public class ColumnDescription {
@@ -47,7 +47,7 @@ public class ColumnDescription {
 	 * The dataType of the column, must be one equivalent to those listed in
 	 * {@link EDataType}. Defaults to float.
 	 */
-	private String dataType = "FLOAT";
+	private EDataType dataType = EDataType.FLOAT;
 
 	/**
 	 * The type of data found in the column. We distinguish between
@@ -73,13 +73,13 @@ public class ColumnDescription {
 
 	/**
 	 * Constructor fully initializing the object.
-	 * 
+	 *
 	 * @param column
 	 *            see {@link #column}
 	 * @param dataType
 	 *            see {@link #dataType}
 	 */
-	public ColumnDescription(int column, String dataType, String columnType) {
+	public ColumnDescription(int column, EDataType dataType, String columnType) {
 		this.column = column;
 		this.dataType = dataType;
 		this.columnType = columnType;
@@ -88,11 +88,11 @@ public class ColumnDescription {
 	/**
 	 * Constructor specifying the types of the column but not the parsing
 	 * information
-	 * 
+	 *
 	 * @param dataType
 	 * @param columnType
 	 */
-	public ColumnDescription(String dataType, String columnType) {
+	public ColumnDescription(EDataType dataType, String columnType) {
 		this.dataType = dataType;
 		this.columnType = columnType;
 	}
@@ -116,14 +116,14 @@ public class ColumnDescription {
 	 * @param dataType
 	 *            setter, see {@link #dataType}
 	 */
-	public void setDataType(String dataType) {
+	public void setDataType(EDataType dataType) {
 		this.dataType = dataType;
 	}
 
 	/**
 	 * @return the dataType, see {@link #dataType}
 	 */
-	public String getDataType() {
+	public EDataType getDataType() {
 		return dataType;
 	}
 

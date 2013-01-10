@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.kaplanmeier;
 
@@ -29,7 +26,6 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -87,8 +83,8 @@ public class GLKaplanMeier extends ATableBasedView {
 	private SelectionManager recordGroupSelectionManager;
 
 	/**
-	 * The maximum time value that is mapped to the x axis. If this value is not
-	 * set externally, it is calculated using the tablePerspective.
+	 * The maximum time value that is mapped to the x axis. If this value is not set externally, it is calculated using
+	 * the tablePerspective.
 	 */
 	private float maxAxisTime = Float.MIN_VALUE;
 
@@ -119,8 +115,7 @@ public class GLKaplanMeier extends ATableBasedView {
 	 * @param viewLabel
 	 * @param viewFrustum
 	 */
-	public GLKaplanMeier(IGLCanvas glCanvas, Composite parentComposite,
-			ViewFrustum viewFrustum) {
+	public GLKaplanMeier(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -147,8 +142,7 @@ public class GLKaplanMeier extends ATableBasedView {
 
 	private void createPickingListeners() {
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		for (Group group : recordVA.getGroupList()) {
 			addIDPickingTooltipListener(group.getLabel(), EPickingType.KM_CURVE.name(), group.getID());
@@ -177,11 +171,9 @@ public class GLKaplanMeier extends ATableBasedView {
 	}
 
 	public static float calculateMaxAxisTime(TablePerspective tablePerspective) {
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
-				.getVirtualArray();
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		float maxAxisTime = 0;
 		boolean containsNegativeValues = false;
@@ -191,11 +183,8 @@ public class GLKaplanMeier extends ATableBasedView {
 			List<Integer> recordIDs = recordVA.getIDsOfGroup(group.getGroupIndex());
 			for (int recordID = 0; recordID < recordIDs.size(); recordID++) {
 
-				float rawValue = tablePerspective
-						.getDataDomain()
-						.getTable()
-						.getFloat(DataRepresentation.RAW, recordIDs.get(recordID),
-								dimensionVA.get(0));
+				float rawValue = tablePerspective.getDataDomain().getTable()
+						.getRaw(recordIDs.get(recordID), dimensionVA.get(0));
 
 				if (rawValue > 0)
 					containsPositiveValues = true;
@@ -220,8 +209,7 @@ public class GLKaplanMeier extends ATableBasedView {
 	}
 
 	@Override
-	public void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener) {
+	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
 		this.glMouseListener = glMouseListener;
 
@@ -258,14 +246,12 @@ public class GLKaplanMeier extends ATableBasedView {
 
 		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
-				.getVirtualArray();
+		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		// do not fill curve if multiple curves are rendered in this plot
 		boolean fillCurve = recordVA.getGroupList().size() > 1 ? false : true;
 
-		List<Color> colors = ColorManager.get().getColorList(
-				ColorManager.QUALITATIVE_COLORS);
+		List<Color> colors = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS);
 		for (Group group : recordVA.getGroupList()) {
 			List<Integer> recordIDs = recordVA.getIDsOfGroup(group.getGroupIndex());
 
@@ -292,8 +278,7 @@ public class GLKaplanMeier extends ATableBasedView {
 
 			gl.glLineWidth(lineWidth);
 
-			renderSingleKaplanMeierCurve(gl, recordIDs, colors.get(colorIndex),
-					fillCurve, group.getID());
+			renderSingleKaplanMeierCurve(gl, recordIDs, colors.get(colorIndex), fillCurve, group.getID());
 		}
 
 		if (detailLevel == EDetailLevel.HIGH) {
@@ -305,35 +290,32 @@ public class GLKaplanMeier extends ATableBasedView {
 
 	private void renderAxes(GL2 gl) {
 
-		float originX = pixelGLConverter
-				.getGLWidthForPixelWidth(LEFT_AXIS_SPACING_PIXELS);
-		float originY = pixelGLConverter
-				.getGLHeightForPixelHeight(BOTTOM_AXIS_SPACING_PIXELS);
+		float originX = pixelGLConverter.getGLWidthForPixelWidth(LEFT_AXIS_SPACING_PIXELS);
+		float originY = pixelGLConverter.getGLHeightForPixelHeight(BOTTOM_AXIS_SPACING_PIXELS);
 
 		float axisLabelWidth = textRenderer.getRequiredTextWidthWithMax(xAxisLabel,
 				pixelGLConverter.getGLHeightForPixelHeight(20), viewFrustum.getWidth());
 
-		textRenderer.renderTextInBounds(gl, xAxisLabel, viewFrustum.getWidth() / 2.0f
-				- axisLabelWidth / 2.0f, pixelGLConverter
-				.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS), 0,
-				viewFrustum.getWidth(), pixelGLConverter
-						.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_HEIGHT_PIXELS));
+		textRenderer.renderTextInBounds(gl, xAxisLabel, viewFrustum.getWidth() / 2.0f - axisLabelWidth / 2.0f,
+				pixelGLConverter.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS), 0,
+				viewFrustum.getWidth(), pixelGLConverter.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_HEIGHT_PIXELS));
 
 		axisLabelWidth = textRenderer.getRequiredTextWidthWithMax(yAxisLabel,
 				pixelGLConverter.getGLHeightForPixelHeight(20), viewFrustum.getWidth());
 
-		textRenderer.renderRotatedTextInBounds(gl, yAxisLabel, pixelGLConverter
-				.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS
-						+ AXIS_LABEL_TEXT_HEIGHT_PIXELS), viewFrustum.getHeight() / 2.0f
-				- axisLabelWidth / 2.0f, 0, viewFrustum.getWidth(), pixelGLConverter
-				.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_HEIGHT_PIXELS), 90);
+		textRenderer.renderRotatedTextInBounds(
+				gl,
+				yAxisLabel,
+				pixelGLConverter.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS
+						+ AXIS_LABEL_TEXT_HEIGHT_PIXELS), viewFrustum.getHeight() / 2.0f - axisLabelWidth / 2.0f, 0,
+				viewFrustum.getWidth(), pixelGLConverter.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_HEIGHT_PIXELS), 90);
 
 		renderSingleAxis(gl, originX, originY, true, 6, maxAxisTime);
 		renderSingleAxis(gl, originX, originY, false, 6, 100);
 	}
 
-	private void renderSingleAxis(GL2 gl, float originX, float originY, boolean isXAxis,
-			int numTicks, float maxTickValue) {
+	private void renderSingleAxis(GL2 gl, float originX, float originY, boolean isXAxis, int numTicks,
+			float maxTickValue) {
 		List<Vec3f> xAxisLinePoints = new ArrayList<Vec3f>();
 		xAxisLinePoints.add(new Vec3f(originX, originY, 0));
 		xAxisLinePoints.add(new Vec3f(originX + ((isXAxis) ? getPlotWidth() : 0), originY
@@ -343,11 +325,9 @@ public class GLKaplanMeier extends ATableBasedView {
 		float step = maxTickValue / (numTicks - 1);
 
 		for (int i = 0; i < numTicks; i++) {
-			LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(
-					i / 5.0f, pixelGLConverter);
-			LineLabelRenderer lineLabelRenderer = new LineLabelRenderer((float) i
-					/ (float) (numTicks - 1), pixelGLConverter, new Integer(i
-					* (int) step).toString(), textRenderer);
+			LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(i / 5.0f, pixelGLConverter);
+			LineLabelRenderer lineLabelRenderer = new LineLabelRenderer((float) i / (float) (numTicks - 1),
+					pixelGLConverter, new Integer(i * (int) step).toString(), textRenderer);
 			if (isXAxis) {
 				lineLabelRenderer.setLineOffsetPixels(-AXIS_TICK_LABEL_SPACING_PIXELS);
 				lineLabelRenderer.setXCentered(true);
@@ -366,35 +346,29 @@ public class GLKaplanMeier extends ATableBasedView {
 	private float getPlotHeight() {
 		return viewFrustum.getHeight()
 				- (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
-						.getGLHeightForPixelHeight(BOTTOM_AXIS_SPACING_PIXELS
-								+ TOP_AXIS_SPACING_PIXELS) : 0);
+						.getGLHeightForPixelHeight(BOTTOM_AXIS_SPACING_PIXELS + TOP_AXIS_SPACING_PIXELS) : 0);
 	}
 
 	private float getPlotWidth() {
 		return viewFrustum.getWidth()
-				- (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
-						.getGLWidthForPixelWidth(LEFT_AXIS_SPACING_PIXELS
-								+ RIGHT_AXIS_SPACING_PIXELS) : 0);
+				- (detailLevel == EDetailLevel.HIGH ? pixelGLConverter.getGLWidthForPixelWidth(LEFT_AXIS_SPACING_PIXELS
+						+ RIGHT_AXIS_SPACING_PIXELS) : 0);
 	}
 
-	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs,
-			Color color, boolean fillCurve, int groupID) {
+	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs, Color color, boolean fillCurve,
+			int groupID) {
 
 		// if (recordIDs.size() == 0)
 		// return;
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective()
-				.getVirtualArray();
+		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		ArrayList<Float> dataVector = new ArrayList<Float>();
 		// Float maxValue = Float.MIN_VALUE;
 		// maxAxisTime = Float.MIN_VALUE;
 
 		for (int recordID = 0; recordID < recordIDs.size(); recordID++) {
-			float normalizedValue = tablePerspective
-					.getDataDomain()
-					.getTable()
-					.getFloat(DataRepresentation.NORMALIZED, recordIDs.get(recordID),
-							dimensionVA.get(0));
+			float normalizedValue = tablePerspective.getDataDomain().getTable()
+					.getRaw(recordIDs.get(recordID), dimensionVA.get(0));
 			dataVector.add(normalizedValue);
 		}
 		Float[] sortedDataVector = new Float[dataVector.size()];
@@ -412,8 +386,7 @@ public class GLKaplanMeier extends ATableBasedView {
 			// need
 			// to brighten the color by multiplying it with a factor
 			// TODO: Use correct brightening of HSV color model in the future.
-			gl.glColor3f(color.r * 1.3f, color.g * 1.3f,
-					color.b * 1.3f);
+			gl.glColor3f(color.r * 1.3f, color.g * 1.3f, color.b * 1.3f);
 			drawFilledCurve(gl, dataVector);
 
 			dataVector.clear();
@@ -425,8 +398,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		}
 
 		if (!fillCurve && detailLevel == EDetailLevel.HIGH) {
-			gl.glPushName(pickingManager.getPickingID(getID(),
-					EPickingType.KM_CURVE.name(), groupID));
+			gl.glPushName(pickingManager.getPickingID(getID(), EPickingType.KM_CURVE.name(), groupID));
 		}
 		gl.glColor3fv(color.getRGB(), 0);
 		drawCurve(gl, dataVector);
@@ -460,15 +432,11 @@ public class GLKaplanMeier extends ATableBasedView {
 
 			float y = remainingItemCount * ySingleSampleSize;
 			gl.glBegin(GL2.GL_QUADS);
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth,
-					bottomAxisSpacing, 0);
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing
-					+ y, 0);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing, 0);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, 0);
 			currentTimeBin += timeBinStepSize;
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing
-					+ y, 0);
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth,
-					bottomAxisSpacing, 0);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, 0);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing, 0);
 			gl.glEnd();
 		}
 
@@ -505,11 +473,9 @@ public class GLKaplanMeier extends ATableBasedView {
 
 			float y = remainingItemCount * ySingleSampleSize;
 
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing
-					+ y, 1);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, 1);
 			currentTimeBin += timeBinStepSize;
-			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing
-					+ y, 1);
+			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing + y, 1);
 		}
 
 		gl.glEnd();
@@ -542,8 +508,8 @@ public class GLKaplanMeier extends ATableBasedView {
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
-			IDType idType, int id) throws InvalidAttributeValueException {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
+			throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
 	}

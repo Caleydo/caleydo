@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.util.r;
 
@@ -23,7 +20,6 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.perspective.table.Average;
@@ -50,8 +46,7 @@ import org.eclipse.core.runtime.Status;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
 
-public class RStatisticsPerformer
-	implements IStatisticsPerformer, IListenerOwner {
+public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwner {
 	private static final Logger log = Logger.create(RStatisticsPerformer.class);
 
 	private Rengine engine;
@@ -127,8 +122,7 @@ public class RStatisticsPerformer
 			test = engine.eval("t.test(my_array,my_array_2)");
 			System.out.println("T-Test result: " + test);
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			Logger.log(new Status(IStatus.ERROR, toString(), "Could not run R commands", e));
 		}
 
@@ -140,18 +134,15 @@ public class RStatisticsPerformer
 
 	/**
 	 * <p>
-	 * Computation of fold change between two data containers. Implemented to
-	 * imitate R behavior:
+	 * Computation of fold change between two data containers. Implemented to imitate R behavior:
 	 * </p>
 	 * <p>
-	 * Fold changes are commonly used in the biological sciences as a mechanism
-	 * for comparing the relative size of two measurements. They are computed
-	 * as: num/denom if num>denom, and as -denom/num otherwise.
+	 * Fold changes are commonly used in the biological sciences as a mechanism for comparing the relative size of two
+	 * measurements. They are computed as: num/denom if num>denom, and as -denom/num otherwise.
 	 * </p>
 	 */
 	@Override
-	public synchronized void foldChange(TablePerspective container1, TablePerspective container2,
-			boolean betweenRecords) {
+	public synchronized void foldChange(TablePerspective container1, TablePerspective container2, boolean betweenRecords) {
 
 		// Do nothing if the operations was already performed earlier
 		// if (set1.getStatisticsResult().getFoldChangeResult(set2) != null
@@ -162,10 +153,8 @@ public class RStatisticsPerformer
 			throw new IllegalArgumentException("The RecordPerspectives have to be the same");
 		}
 
-		ArrayList<Average> averageRecords1 = container1.getContainerStatistics()
-				.getAverageRecords();
-		ArrayList<Average> averageRecords2 = container2.getContainerStatistics()
-				.getAverageRecords();
+		ArrayList<Average> averageRecords1 = container1.getContainerStatistics().getAverageRecords();
+		ArrayList<Average> averageRecords2 = container2.getContainerStatistics().getAverageRecords();
 		double[] resultVec = new double[averageRecords1.size()];
 
 		for (int count = 0; count < container1.getNrRecords(); count++) {
@@ -210,11 +199,9 @@ public class RStatisticsPerformer
 		// DataTable table = table1.getDataDomain().getTable();
 		// table.getStatisticsResult().setResult(table1, resultVec);
 
-		RecordFilter contentFilter = new RecordFilter(container1.getRecordPerspective()
-				.getPerspectiveID());
+		RecordFilter contentFilter = new RecordFilter(container1.getRecordPerspective().getPerspectiveID());
 		contentFilter.setDataDomain(container1.getDataDomain());
-		contentFilter.setLabel("Fold change " + container1.getLabel() + " and "
-				+ container2.getLabel());
+		contentFilter.setLabel("Fold change " + container1.getLabel() + " and " + container2.getLabel());
 
 		Histogram histogram = HistogramCreator.createLogHistogram(resultVec);
 		// Histogram histogram = HistogramCreator.createHistogram(resultVec);
@@ -258,8 +245,7 @@ public class RStatisticsPerformer
 		for (TablePerspective container : tablePerspectives) {
 
 			RecordVirtualArray recordVA = container.getRecordPerspective().getVirtualArray();
-			DimensionVirtualArray dimensionVA1 = container.getDimensionPerspective()
-					.getVirtualArray();
+			DimensionVirtualArray dimensionVA1 = container.getDimensionPerspective().getVirtualArray();
 			DataTable table = container.getDataDomain().getTable();
 			// getContentData(DataTable.CONTENT).getRecordVA();
 
@@ -272,8 +258,7 @@ public class RStatisticsPerformer
 
 				int dimensionCount = 0;
 				for (Integer dimensionIndex : dimensionVA1) {
-					compareVec1[dimensionCount++] = table.getFloat(DataRepresentation.RAW,
-							recordIndex, dimensionIndex);
+					compareVec1[dimensionCount++] = (double) table.getRaw(recordIndex, dimensionIndex);
 				}
 
 				engine.assign("set", compareVec1);
@@ -293,11 +278,9 @@ public class RStatisticsPerformer
 				}
 			}
 
-			container.getContainerStatistics().getTTest()
-					.setOneSiddedTTestResult(pValueVector);
+			container.getContainerStatistics().getTTest().setOneSiddedTTestResult(pValueVector);
 
-			RecordFilter contentFilter = new RecordFilter(container.getRecordPerspective()
-					.getPerspectiveID());
+			RecordFilter contentFilter = new RecordFilter(container.getRecordPerspective().getPerspectiveID());
 			contentFilter.setDataDomain(container.getDataDomain());
 			contentFilter.setLabel("p-Value Reduction of " + container.getLabel());
 
@@ -335,8 +318,7 @@ public class RStatisticsPerformer
 		TablePerspective tablePerspective1 = tablePerspectives.get(0);
 		TablePerspective tablePerspective2 = tablePerspectives.get(1);
 
-		if (!tablePerspective1.getRecordPerspective().equals(
-				tablePerspective2.getRecordPerspective()))
+		if (!tablePerspective1.getRecordPerspective().equals(tablePerspective2.getRecordPerspective()))
 			throw new IllegalStateException("data containers have to share record prespective");
 
 		DataTable table = tablePerspective1.getDataDomain().getTable();
@@ -345,24 +327,20 @@ public class RStatisticsPerformer
 
 		for (int recordIndex = 0; recordIndex < tablePerspective1.getNrRecords(); recordIndex++) {
 
-			DimensionVirtualArray dimensionVA1 = tablePerspective1.getDimensionPerspective()
-					.getVirtualArray();
-			DimensionVirtualArray dimensionVA2 = tablePerspective2.getDimensionPerspective()
-					.getVirtualArray();
+			DimensionVirtualArray dimensionVA1 = tablePerspective1.getDimensionPerspective().getVirtualArray();
+			DimensionVirtualArray dimensionVA2 = tablePerspective2.getDimensionPerspective().getVirtualArray();
 
 			double[] compareVec1 = new double[dimensionVA1.size()];
 			double[] compareVec2 = new double[dimensionVA2.size()];
 
 			int dimensionCount = 0;
 			for (Integer dimensionIndex : dimensionVA1) {
-				compareVec1[dimensionCount++] = table.getFloat(DataRepresentation.RAW,
-						recordIndex, dimensionIndex);
+				compareVec1[dimensionCount++] = table.getRaw(recordIndex, dimensionIndex);
 			}
 
 			dimensionCount = 0;
 			for (Integer dimensionIndex : dimensionVA2) {
-				compareVec2[dimensionCount++] = table.getFloat(DataRepresentation.RAW,
-						recordIndex, dimensionIndex);
+				compareVec2[dimensionCount++] = table.getRaw(recordIndex, dimensionIndex);
 			}
 
 			engine.assign("set_1", compareVec1);
@@ -377,13 +355,10 @@ public class RStatisticsPerformer
 			// System.out.println(pValue.asDouble());
 		}
 
-		tablePerspective1.getContainerStatistics().getTTest()
-				.setTwoSiddedTTestResult(tablePerspective2, pValueVector);
-		tablePerspective2.getContainerStatistics().getTTest()
-				.setTwoSiddedTTestResult(tablePerspective1, pValueVector);
+		tablePerspective1.getContainerStatistics().getTTest().setTwoSiddedTTestResult(tablePerspective2, pValueVector);
+		tablePerspective2.getContainerStatistics().getTTest().setTwoSiddedTTestResult(tablePerspective1, pValueVector);
 
-		RecordFilter contentFilter = new RecordFilter(tablePerspective1.getRecordPerspective()
-				.getPerspectiveID());
+		RecordFilter contentFilter = new RecordFilter(tablePerspective1.getRecordPerspective().getPerspectiveID());
 		contentFilter.setDataDomain(tablePerspective1.getDataDomain());
 		contentFilter.setLabel("Two sided t-test of " + tablePerspective1.getLabel() + " and "
 				+ tablePerspective2.getLabel());
@@ -397,8 +372,7 @@ public class RStatisticsPerformer
 	}
 
 	@Override
-	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener,
-			AEvent event) {
+	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
 		listener.handleEvent(event);
 	}
 }

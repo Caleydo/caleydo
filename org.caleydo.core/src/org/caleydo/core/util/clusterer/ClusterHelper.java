@@ -1,28 +1,24 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.util.clusterer;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
@@ -102,8 +98,8 @@ public class ClusterHelper {
 	// }
 
 	public static float[] calculateClusterAveragesRecursive(Tree<ClusterNode> tree, ClusterNode node,
-		EClustererTarget clustererType, DataTable table, DimensionVirtualArray dimensionVA,
-		RecordVirtualArray recordVA) {
+			EClustererTarget clustererType, DataTable table, DimensionVirtualArray dimensionVA,
+			RecordVirtualArray recordVA) {
 
 		float[] values;
 
@@ -115,8 +111,7 @@ public class ClusterHelper {
 
 			if (clustererType == EClustererTarget.RECORD_CLUSTERING) {
 				numberOfElements = dimensionVA.size();
-			}
-			else {
+			} else {
 				numberOfElements = recordVA.size();
 			}
 
@@ -125,9 +120,8 @@ public class ClusterHelper {
 			int cnt = 0;
 
 			for (ClusterNode currentNode : tree.getChildren(node)) {
-				tempValues[cnt] =
-					calculateClusterAveragesRecursive(tree, currentNode, clustererType, table, dimensionVA,
-						recordVA);
+				tempValues[cnt] = calculateClusterAveragesRecursive(tree, currentNode, clustererType, table,
+						dimensionVA, recordVA);
 				cnt++;
 			}
 
@@ -150,19 +144,16 @@ public class ClusterHelper {
 
 				int isto = 0;
 				for (Integer iDimensionIndex : dimensionVA) {
-					values[isto] =
-						table.getFloat(DataRepresentation.NORMALIZED, node.getLeafID(), iDimensionIndex);
+					values[isto] = table.getNormalizedValue(node.getLeafID(), iDimensionIndex);
 					isto++;
 				}
 
-			}
-			else {
+			} else {
 				values = new float[recordVA.size()];
 
 				int icon = 0;
 				for (Integer recordIndex : recordVA) {
-					values[icon] =
-						table.getFloat(DataRepresentation.NORMALIZED, recordIndex, node.getLeafID());
+					values[icon] = table.getNormalizedValue(recordIndex, node.getLeafID());
 					icon++;
 				}
 			}
@@ -180,12 +171,11 @@ public class ClusterHelper {
 
 	public static void calculateAggregatedUncertainties(RecordPerspective recordData, DataTable table) {
 		RecordVirtualArray recordVA = recordData.getVirtualArray();
-		calculateAggregatedUncertaintiesRecursive(recordData.getTree(), recordData.getTree().getRoot(),
-			table, recordVA);
+		calculateAggregatedUncertaintiesRecursive(recordData.getTree(), recordData.getTree().getRoot(), table, recordVA);
 	}
 
 	private static Pair<Float, Integer> calculateAggregatedUncertaintiesRecursive(Tree<ClusterNode> tree,
-		ClusterNode node, DataTable table, RecordVirtualArray recordVA) {
+			ClusterNode node, DataTable table, RecordVirtualArray recordVA) {
 
 		Pair<Float, Integer> result = new Pair<Float, Integer>();
 
@@ -202,8 +192,7 @@ public class ClusterHelper {
 		int childCount = 0;
 		float uncertaintySum = 0;
 		for (ClusterNode child : node.getChildren()) {
-			Pair<Float, Integer> childResult =
-				calculateAggregatedUncertaintiesRecursive(tree, child, table, recordVA);
+			Pair<Float, Integer> childResult = calculateAggregatedUncertaintiesRecursive(tree, child, table, recordVA);
 			uncertaintySum += childResult.getFirst();
 			childCount += childResult.getSecond();
 
@@ -227,42 +216,37 @@ public class ClusterHelper {
 			List<Integer> examples, EClustererTarget eClustererType) {
 
 		int iNrExamples = examples.size();
-		float[] fColorSum = null;
+		float[] colorSum = null;
 
 		if (eClustererType == EClustererTarget.RECORD_CLUSTERING) {
 
 			int icontent = 0;
-			fColorSum = new float[iNrExamples];
+			colorSum = new float[iNrExamples];
 
 			for (Integer recordIndex : examples) {
 
 				for (Integer dimensionIndex : dimensionVA) {
-					float temp =
-						table.getFloat(DataRepresentation.NORMALIZED, recordVA.get(recordIndex),
-							dimensionIndex);
+					float temp = table.getNormalizedValue(recordVA.get(recordIndex), dimensionIndex);
 					if (Float.isNaN(temp))
-						fColorSum[icontent] += 0;
+						colorSum[icontent] += 0;
 					else
-						fColorSum[icontent] += temp;
+						colorSum[icontent] += temp;
 				}
 				icontent++;
 			}
-		}
-		else if (eClustererType == EClustererTarget.DIMENSION_CLUSTERING) {
+		} else {
 
 			int icontent = 0;
-			fColorSum = new float[iNrExamples];
+			colorSum = new float[iNrExamples];
 
 			for (Integer iDimensionIndex : examples) {
 
 				for (Integer recordIndex : recordVA) {
-					float temp =
-						table.getFloat(DataRepresentation.NORMALIZED, recordIndex,
-							dimensionVA.get(iDimensionIndex));
+					float temp = table.getNormalizedValue(recordIndex, dimensionVA.get(iDimensionIndex));
 					if (Float.isNaN(temp))
-						fColorSum[icontent] += 0;
+						colorSum[icontent] += 0;
 					else
-						fColorSum[icontent] += temp;
+						colorSum[icontent] += temp;
 
 				}
 				icontent++;
@@ -273,17 +257,17 @@ public class ClusterHelper {
 		int i = 0;
 
 		for (int f = 1; f < iNrExamples; f++) {
-			if (fColorSum[f] < fColorSum[f - 1])
+			if (colorSum[f] < colorSum[f - 1])
 				continue;
-			temp = fColorSum[f];
+			temp = colorSum[f];
 			iTemp = examples.get(f);
 			i = f - 1;
-			while ((i >= 0) && (fColorSum[i] < temp)) {
-				fColorSum[i + 1] = fColorSum[i];
+			while ((i >= 0) && (colorSum[i] < temp)) {
+				colorSum[i + 1] = colorSum[i];
 				examples.set(i + 1, examples.get(i));
 				i--;
 			}
-			fColorSum[i + 1] = temp;
+			colorSum[i + 1] = temp;
 			examples.set(i + 1, iTemp);
 		}
 	}
@@ -309,8 +293,7 @@ public class ClusterHelper {
 		Arrays.sort(temp);
 
 		if ((temp.length % 2) == 0)
-			median =
-				(temp[(int) Math.floor(temp.length / 2)] + temp[(int) Math.floor((temp.length + 1) / 2)]) / 2;
+			median = (temp[(int) Math.floor(temp.length / 2)] + temp[(int) Math.floor((temp.length + 1) / 2)]) / 2;
 		else
 			median = temp[(int) Math.floor((temp.length + 1) / 2)];
 

@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.heatmap.heatmap.renderer.texture;
 
@@ -27,7 +24,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -84,7 +80,6 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		super(heatMap);
 	}
 
-
 	@Override
 	public void updateSpacing() {
 
@@ -127,7 +122,6 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	 * Init textures, build array of textures used for holding the whole samples
 	 */
 	public void initialize(GL2 gl) {
-		String dataRepresentation = heatMap.getRenderingRepresentation();
 		int textureHeight = numberOfRecords = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray()
 				.size();
 		int textureWidth = numberOfDimensions = heatMap.getTablePerspective().getDimensionPerspective()
@@ -181,7 +175,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 				// fOpacity = 1.0f;
 				// }
 
-				lookupValue = heatMap.getDataDomain().getTable().getFloat(dataRepresentation, recordID, dimensionID);
+				lookupValue = heatMap.getDataDomain().getTable().getNormalizedValue(recordID, dimensionID);
 
 				float[] mappingColor = colorMapper.getColor(lookupValue);
 
@@ -289,9 +283,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 			for (int i = startRecord; i < endRecord; i++) {
 				// byte[] abgr = new byte[4];
 
-				val = val
-						+ ((table.getFloat(DataRepresentation.NORMALIZED, recordVA.get(i),
-								dimensionVA.get(dimensionCount))));
+				val = val + ((table.getNormalizedValue(recordVA.get(i), dimensionVA.get(dimensionCount))));
 			}
 			// buffer.get(abgr, i * numberOfExpirments * 4 + exps * 4, 4);
 
@@ -300,8 +292,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 			// unc = difference
 			uncertainty = 0;
 			for (int i = startRecord; i < endRecord; i++) {
-				float tempVal = table.getFloat(DataRepresentation.NORMALIZED, recordVA.get(i),
-						dimensionVA.get(dimensionCount));
+				float tempVal = table.getNormalizedValue(recordVA.get(i), dimensionVA.get(dimensionCount));
 				uncertainty = Math.abs(val - tempVal);
 				if (uncertainty > maxUncertainty) {
 					maxUncertainty = uncertainty;

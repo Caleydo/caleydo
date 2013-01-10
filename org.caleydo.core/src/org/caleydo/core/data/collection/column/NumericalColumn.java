@@ -31,7 +31,10 @@ import org.caleydo.core.manager.GeneralManager;
  * @author Alexander Lex
  */
 
-public class NumericalColumn extends AColumn {
+public class NumericalColumn<RawContainerType extends INumericalContainer<DataType>, DataType> extends
+		AColumn<RawContainerType, DataType> {
+
+	EDataTransformation dataTransformation = EDataTransformation.NONE;
 
 	/**
 	 * Constructor
@@ -51,11 +54,8 @@ public class NumericalColumn extends AColumn {
 
 	@Override
 	public void normalize() {
-
-		INumericalContainer iRawContainer = (INumericalContainer) dataRepToContainerMap.get(dataRep);
-		dataRepToContainerMap.put(DataRepresentation.NORMALIZED, iRawContainer.normalize());
+		normalizedContainer = rawContainer.normalize();
 	}
-
 
 	/**
 	 * Same as {@link #normalizeWithExternalExtrema(double, double)}, but with an additional parameter letting you
@@ -65,13 +65,14 @@ public class NumericalColumn extends AColumn {
 	 * @param min
 	 * @param max
 	 */
-	public void normalizeWithExternalExtrema(String sourceRep, String targetRep, double externalMin,
-			double externalMax) {
-		INumericalContainer rawDimension = (INumericalContainer) dataRepToContainerMap.get(sourceRep);
+	public void normalizeWithExternalExtrema(String sourceRep, double externalMin, double externalMax) {
 
-		INumericalContainer numericalContainer = rawDimension.normalizeWithExternalExtrema(externalMin, externalMax);
+		if (sourceRep.equals(DataRepresentation.RAW)) {
+			normalizedContainer = rawContainer.normalizeWithExternalExtrema(externalMin, externalMax);
+		} else {
+			normalizedContainer = dataRepToContainerMap.get(sourceRep).normalize();
+		}
 
-		dataRepToContainerMap.put(targetRep, numericalContainer);
 	}
 
 	/**
@@ -93,12 +94,13 @@ public class NumericalColumn extends AColumn {
 	 *             if min >= max
 	 */
 	public void normalizeWithExternalExtrema(double min, double max) {
-		normalizeWithExternalExtrema(dataRep, DataRepresentation.NORMALIZED, min, max);
+		normalizeWithExternalExtrema(DataRepresentation.RAW, min, max);
 	}
 
 	@Override
-	public RawDataType getRawDataType() {
-		return rawDataType;
+	public ERawDataType getRawDataType() {
+		// TODO Auto-generated method stub
+		return super.getRawDataType();
 	}
 
 	/**
@@ -107,9 +109,7 @@ public class NumericalColumn extends AColumn {
 	 * @return the minimum - a double since it can contain all values
 	 */
 	public double getMin() {
-		if (!dataRepToContainerMap.containsKey(dataRep))
-			throw new IllegalStateException("The requested data representation was not produced.");
-		return ((INumericalContainer) dataRepToContainerMap.get(dataRep)).getMin();
+		return rawContainer.getMin();
 	}
 
 	/**
@@ -118,18 +118,18 @@ public class NumericalColumn extends AColumn {
 	 * @return the maximum - a double since it can contain all values
 	 */
 	public double getMax() {
-		return ((INumericalContainer) dataRepToContainerMap.get(dataRep)).getMax();
+		return rawContainer.getMin();
 	}
 
 	/**
 	 * Calculates a raw value based on min and max from a normalized value.
 	 *
-	 * @param dNormalized
+	 * @param normalized
 	 *            a value between 0 and 1
 	 * @return a value between min and max
 	 */
-	public double getRawForNormalized(double dNormalized) {
-		return dNormalized * (getMax() - getMin());
+	public double getRawForNormalized(double normalized) {
+		return normalized * (getMax() - getMin());
 	}
 
 	/**
@@ -138,8 +138,7 @@ public class NumericalColumn extends AColumn {
 	 * uses the log data instead of the raw data
 	 */
 	public void log10() {
-		dataRepToContainerMap.put(DataRepresentation.LOG10,
-				((INumericalContainer) dataRepToContainerMap.get(DataRepresentation.RAW)).log(10));
+		dataRepToContainerMap.put(DataRepresentation.LOG10, rawContainer.log(10));
 	}
 
 	/**
@@ -148,8 +147,7 @@ public class NumericalColumn extends AColumn {
 	 * uses the log data instead of the raw data
 	 */
 	public void log2() {
-		dataRepToContainerMap.put(DataRepresentation.LOG2,
-				((INumericalContainer) dataRepToContainerMap.get(DataRepresentation.RAW)).log(2));
+		dataRepToContainerMap.put(DataRepresentation.LOG2, rawContainer.log(2));
 	}
 
 	/**
@@ -160,23 +158,6 @@ public class NumericalColumn extends AColumn {
 		dataRepToContainerMap.remove(DataRepresentation.LOG10);
 		dataRepToContainerMap.remove(DataRepresentation.NORMALIZED);
 	}
-
-	@Override
-	public void setExternalDataRepresentation(EDataTransformation externalDataRep) {
-		switch (externalDataRep) {
-		case NONE:
-			dataRep = DataRepresentation.RAW;
-			break;
-		case LOG10:
-			dataRep = DataRepresentation.LOG10;
-			break;
-		case LOG2:
-			dataRep = DataRepresentation.LOG2;
-			break;
-		}
-
-	}
-
 
 	/**
 	 * Creates an empty container for the given {@link DataRepresentation} and stores it
@@ -194,4 +175,13 @@ public class NumericalColumn extends AColumn {
 		dataRepToContainerMap.put(dataRepresentation, container);
 	}
 
+	/**
+	 * Switch the representation of the data. When this is called the data in normalized is replaced with data
+	 * calculated from the mode specified.
+	 *
+	 * @param dataRep
+	 */
+	public void setDataTransformation(EDataTransformation dataTransformation) {
+		this.dataTransformation = dataTransformation;
+	}
 }

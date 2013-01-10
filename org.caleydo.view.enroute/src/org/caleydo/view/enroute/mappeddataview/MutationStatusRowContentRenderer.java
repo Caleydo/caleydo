@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
@@ -65,11 +64,11 @@ public class MutationStatusRowContentRenderer
 
 			float value;
 			if (geneID != null) {
-				value = dataDomain.getGeneValue(DataRepresentation.NORMALIZED, geneID, sampleID);
+				value = dataDomain.getNormalizedGeneValue(geneID, sampleID);
 
 				ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
 						sampleIDType, sampleID);
-				
+
 				float[] mappedColor = dataDomain.getColorMapper().getColor(value);
 				float[] baseColor = new float[] {mappedColor[0], mappedColor[1], mappedColor[2], 1f};
 

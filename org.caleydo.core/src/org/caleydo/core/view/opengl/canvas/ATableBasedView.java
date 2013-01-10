@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
 
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
@@ -116,8 +115,6 @@ public abstract class ATableBasedView extends AGLView implements
 
 	protected IDType recordIDType;
 	protected IDType dimensionIDType;
-
-	protected String dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
 	/**
 	 * Flag that tells the view whether visual linking is used for it's element
@@ -491,10 +488,6 @@ public abstract class ATableBasedView extends AGLView implements
 		return true;
 	}
 
-
-	public String getRenderingRepresentation() {
-		return dimensionDataRepresentation;
-	}
 
 	public RecordSelectionManager getRecordSelectionManager() {
 		return recordSelectionManager;

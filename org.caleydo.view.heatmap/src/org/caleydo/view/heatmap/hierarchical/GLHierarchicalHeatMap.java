@@ -532,7 +532,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 						fOpacity = 1.0f;
 					}
 
-					fLookupValue = dataDomain.getTable().getFloat(dimensionDataRepresentation, recordIndex,
+					fLookupValue = dataDomain.getTable().getNormalizedValue(recordIndex,
 							iDimensionIndex);
 
 					float[] fArMappingColor = dataDomain.getColorMapper().getColor(fLookupValue);
@@ -598,7 +598,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 						fOpacity = 1.0f;
 					}
 
-					fLookupValue = dataDomain.getTable().getFloat(dimensionDataRepresentation, recordID, dimensionID);
+					fLookupValue = dataDomain.getTable().getNormalizedValue(recordID, dimensionID);
 
 					float[] fArMappingColor = dataDomain.getColorMapper().getColor(fLookupValue);
 

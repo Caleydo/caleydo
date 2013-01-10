@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.enroute.mappeddataview;
 
@@ -23,7 +20,6 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
@@ -98,7 +94,7 @@ public class MutationStatusMatrixRowContentRenderer extends ACategoricalRowConte
 		while (vaIndex < experimentPerspective.getVirtualArray().size()) {
 			for (int rowIndex = 0; (rowIndex < NUM_ROWS) && (vaIndex < experimentPerspective.getVirtualArray().size()); rowIndex++) {
 				Integer sampleID = experimentPerspective.getVirtualArray().get(vaIndex);
-				float value = dataDomain.getGeneValue(DataRepresentation.NORMALIZED, geneID, sampleID);
+				float value = dataDomain.getNormalizedGeneValue(geneID, sampleID);
 
 				if (useShading || value > 0.0001f) {
 					renderMatrixCell(gl, rowIndex, columnIndex, matrixRowHeight, matrixColumnWidth, sampleID, value,

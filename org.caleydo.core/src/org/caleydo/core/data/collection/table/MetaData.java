@@ -20,7 +20,6 @@ import javax.naming.OperationNotSupportedException;
 
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.column.AColumn;
-import org.caleydo.core.data.collection.column.NominalColumn;
 import org.caleydo.core.data.collection.column.NumericalColumn;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.util.logging.Logger;
@@ -160,7 +159,7 @@ public class MetaData {
 		if (min == Double.MAX_VALUE) {
 			calculateGlobalExtrema();
 		}
-		if (dataRepresentation == table.externalDataTrans)
+		if (dataRepresentation == table.dataTransformation)
 			return min;
 		double result = getRawFromExternalDataRep(min);
 
@@ -180,7 +179,7 @@ public class MetaData {
 		if (max == Double.MIN_VALUE) {
 			calculateGlobalExtrema();
 		}
-		if (dataRepresentation == table.externalDataTrans)
+		if (dataRepresentation == table.dataTransformation)
 			return max;
 		double result = getRawFromExternalDataRep(max);
 
@@ -217,7 +216,7 @@ public class MetaData {
 	 * @return Raw value converted from the specified value.
 	 */
 	private double getRawFromExternalDataRep(double dNumber) {
-		switch (table.externalDataTrans) {
+		switch (table.dataTransformation) {
 		case NONE:
 			return dNumber;
 		case LOG2:
@@ -225,12 +224,16 @@ public class MetaData {
 		case LOG10:
 			return Math.pow(10, dNumber);
 		default:
-			throw new IllegalStateException("Conversion to raw not implemented for data rep" + table.externalDataTrans);
+			throw new IllegalStateException("Conversion to raw not implemented for data rep" + table.dataTransformation);
 		}
 	}
 
 	private void calculateGlobalExtrema() {
 		double temp = 1.0;
+
+		if (table.hashColumns.get(0) instanceof NumericalColumn<?, ?>) {
+			throw new UnsupportedOperationException("Minimum or maximum can be calculated only on numeric data");
+		}
 
 		if (table.tableType.equals(DataTableDataType.NUMERIC)) {
 			for (AColumn column : table.hashColumns.values()) {
@@ -276,8 +279,6 @@ public class MetaData {
 
 			}
 
-		} else if (table.hashColumns.get(0) instanceof NominalColumn<?>) {
-			throw new UnsupportedOperationException("No minimum or maximum can be calculated " + "on nominal data");
 		}
 	}
 }

@@ -1,54 +1,55 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ *
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.data.collection.column.container;
 
-import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.data.collection.column.ERawDataType;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * A container for floats. Initialized with a float array. The length can not be
- * modified after initialization. Optimized to hold a large amount of data.
- * 
+ * A container for floats. Initialized with a float array. The length can not be modified after initialization.
+ * Optimized to hold a large amount of data.
+ *
  * @author Alexander Lex
  */
-public class FloatContainer implements INumericalContainer {
+public class FloatContainer implements INumericalContainer<Float> {
 
 	private float[] container;
+	/** Keeps track of the next free index for adding data */
+	private int nextIndex = 0;
 
 	private float min = Float.NaN;
 
 	private float max = Float.NaN;
 
 	/**
-	 * Constructor Pass a float array. The length of the array can not be
-	 * modified after initialization
-	 * 
+	 * Constructor Pass a float array. The length of the array can not be modified after initialization
+	 *
 	 * @param container
 	 *            the float array
 	 */
-	public FloatContainer(final float[] container) {
-
+	public FloatContainer(float[] container) {
 		this.container = container;
+	}
+
+	public FloatContainer(int size) {
+		container = new float[size];
 	}
 
 	@Override
@@ -56,9 +57,19 @@ public class FloatContainer implements INumericalContainer {
 		return container.length;
 	}
 
+	@Override
+	public ERawDataType getRawDataType() {
+		return ERawDataType.FLOAT;
+	}
+
+	@Override
+	public Float getValue(int index) {
+		return container[index];
+	}
+
 	/**
 	 * Returns the value associated with the index
-	 * 
+	 *
 	 * @throws IndexOutOfBoundsException
 	 *             if index out of range
 	 * @param index
@@ -66,26 +77,17 @@ public class FloatContainer implements INumericalContainer {
 	 * @return the element at the specified position in this list
 	 */
 	public float get(final int index) {
-
 		return container[index];
 	}
 
-	/**
-	 * Returns an iterator on the container
-	 * 
-	 * @return the iterator for the container
-	 */
-	public FloatContainerIterator iterator() {
-		return new FloatContainerIterator(this);
+	@Override
+	public void addValue(Float value) {
+		container[nextIndex++] = value;
 	}
 
-	/**
-	 * Returns an iterator on the container
-	 * 
-	 * @return the iterator for the container
-	 */
-	public FloatContainerIterator iterator(VirtualArray<?, ?, ?> virtualArray) {
-		return new FloatContainerIterator(this, virtualArray);
+	/** Implementation of {@link #addValue(Float)} with primitive type to avoid auto-boxing */
+	public void addValue(float value) {
+		container[nextIndex++] = value;
 	}
 
 	@Override
@@ -107,19 +109,18 @@ public class FloatContainer implements INumericalContainer {
 	@Override
 	public FloatContainer normalize() {
 
-		return new FloatContainer(ConversionTools.normalize(container, (int) getMin(),
-				(int) getMax()));
+		return new FloatContainer(ConversionTools.normalize(container, (int) getMin(), (int) getMax()));
 	}
 
 	@Override
 	public FloatContainer normalizeWithExternalExtrema(final double min, final double max) {
 		if (min > max)
 			throw new IllegalArgumentException("Minimum was bigger as maximum");
-		if(min == max)
-			Logger.log(new Status(IStatus.WARNING, this.toString(), "Min was the same as max. This is not very interesting to visualize."));
+		if (min == max)
+			Logger.log(new Status(IStatus.WARNING, this.toString(),
+					"Min was the same as max. This is not very interesting to visualize."));
 
-		return new FloatContainer(ConversionTools.normalize(container, (float) min,
-				(float) max));
+		return new FloatContainer(ConversionTools.normalize(container, (float) min, (float) max));
 
 	}
 
@@ -159,8 +160,7 @@ public class FloatContainer implements INumericalContainer {
 	}
 
 	/**
-	 * Calculates the min and max of the container and sets them to the fMin and
-	 * fMax class variables
+	 * Calculates the min and max of the container and sets them to the fMin and fMax class variables
 	 */
 	private void calculateMinMax() {
 		min = Float.MAX_VALUE;
@@ -174,8 +174,7 @@ public class FloatContainer implements INumericalContainer {
 
 			if (Float.isInfinite(current)) {
 				Logger.log(new Status(IStatus.WARNING, this.toString(),
-						"Value for normalization was infinity at index " + counter + ": "
-								+ current));
+						"Value for normalization was infinity at index " + counter + ": " + current));
 				continue;
 			}
 			if (current < min) {

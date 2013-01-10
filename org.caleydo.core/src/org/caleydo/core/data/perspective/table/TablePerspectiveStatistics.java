@@ -22,7 +22,6 @@ package org.caleydo.core.data.perspective.table;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -99,7 +98,7 @@ public class TablePerspectiveStatistics {
 			}
 			for (Integer dimensionID : dimensionVA) {
 				Float value = referenceTablePerspective.getDataDomain().getTable()
-						.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
+						.getNormalizedValue(recordID, dimensionID);
 				if (value != null && !Float.isNaN(value)) {
 					averageValue += value;
 					count++;
@@ -148,7 +147,7 @@ public class TablePerspectiveStatistics {
 		for (Integer dimensionID : dimensionVA) {
 			{
 				for (Integer recordID : recordVA) {
-					float value = dataTable.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
+					float value = dataTable.getNormalizedValue(recordID, dimensionID);
 
 					if (Float.isNaN(value)) {
 						histogram.addNAN(recordID);
@@ -278,7 +277,7 @@ public class TablePerspectiveStatistics {
 						continue;
 				}
 
-				value = table.getFloat(DataRepresentation.NORMALIZED, virtualArrayID, objectID);
+				value = table.getNormalizedValue(virtualArrayID, objectID);
 			} else {
 				if (virtualArray.getIdType() != null
 						&& !virtualArray.getIdType().equals(table.getDataDomain().getDimensionIDType())) {
@@ -290,7 +289,7 @@ public class TablePerspectiveStatistics {
 						continue;
 				}
 
-				value = table.getFloat(DataRepresentation.NORMALIZED, objectID, virtualArrayID);
+				value = table.getNormalizedValue(objectID, virtualArrayID);
 			}
 			if (value != null && !value.isNaN()) {
 				sumOfValues += value;

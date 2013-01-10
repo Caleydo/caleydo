@@ -98,6 +98,7 @@ public class Histogram {
 
 	}
 
+	/** Adds an object to the dedicated NaN bucket. */
 	public void addNAN(Integer objectID) {
 
 		nanCount += 1;

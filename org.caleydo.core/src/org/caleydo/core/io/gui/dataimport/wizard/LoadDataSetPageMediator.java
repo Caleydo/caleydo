@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.ColumnDescription;
@@ -774,13 +775,13 @@ public class LoadDataSetPageMediator {
 				try {
 					if (!testString.isEmpty()) {
 						Float.parseFloat(testString);
-						return new ColumnDescription(columnIndex, "FLOAT", ColumnDescription.CONTINUOUS);
+						return new ColumnDescription(columnIndex, EDataType.FLOAT, ColumnDescription.CONTINUOUS);
 					}
 				} catch (NumberFormatException nfe) {
 				}
 			}
 		}
-		return new ColumnDescription(columnIndex, "STRING", ColumnDescription.CONTINUOUS);
+		return new ColumnDescription(columnIndex, EDataType.NOMINAL, ColumnDescription.CONTINUOUS);
 	}
 
 	/**

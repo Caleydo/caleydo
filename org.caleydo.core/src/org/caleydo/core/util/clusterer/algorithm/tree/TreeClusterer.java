@@ -1,25 +1,24 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.util.clusterer.algorithm.tree;
 
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
@@ -41,7 +40,7 @@ import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 
 /**
  * Tree clusterer
- * 
+ *
  * @author Bernhard Schlegl
  * @author Alexander Lex
  */
@@ -49,7 +48,7 @@ public class TreeClusterer extends AClusterer {
 
 	/**
 	 * Helper class needed in tree cluster algorithm.
-	 * 
+	 *
 	 * @author Bernhard Schlegl
 	 */
 	private class ClosestPair {
@@ -115,7 +114,7 @@ public class TreeClusterer extends AClusterer {
 
 	/**
 	 * Calculates the similarity matrix for a given set and given VAs
-	 * 
+	 *
 	 * @param set
 	 * @param eClustererType
 	 * @return in case of error a negative value will be returned.
@@ -164,8 +163,7 @@ public class TreeClusterer extends AClusterer {
 
 					isto = 0;
 					for (Integer iDimensionIndex1 : dimensionVA) {
-						dArInstance1[isto] = table.getFloat(
-								DataRepresentation.NORMALIZED, recordIndex1,
+						dArInstance1[isto] = table.getNormalizedValue(recordIndex1,
 								iDimensionIndex1);
 						isto++;
 					}
@@ -177,8 +175,7 @@ public class TreeClusterer extends AClusterer {
 
 						if (icnt2 < icnt1) {
 							for (Integer iDimensionIndex2 : dimensionVA) {
-								dArInstance2[isto] = table.getFloat(
-										DataRepresentation.NORMALIZED, recordIndex2,
+								dArInstance2[isto] = table.getNormalizedValue(recordIndex2,
 										iDimensionIndex2);
 								isto++;
 							}
@@ -224,8 +221,7 @@ public class TreeClusterer extends AClusterer {
 
 					isto = 0;
 					for (Integer recordIndex1 : recordVA) {
-						dArInstance1[isto] = table.getFloat(
-								DataRepresentation.NORMALIZED, recordIndex1,
+						dArInstance1[isto] = table.getNormalizedValue(recordIndex1,
 								iDimensionIndex1);
 						isto++;
 					}
@@ -236,8 +232,7 @@ public class TreeClusterer extends AClusterer {
 
 						if (icnt2 < icnt1) {
 							for (Integer recordIndex2 : recordVA) {
-								dArInstance2[isto] = table.getFloat(
-										DataRepresentation.NORMALIZED, recordIndex2,
+								dArInstance2[isto] = table.getNormalizedValue(recordIndex2,
 										iDimensionIndex2);
 								isto++;
 							}
@@ -270,7 +265,7 @@ public class TreeClusterer extends AClusterer {
 
 	/**
 	 * Helper function providing unique node numbers for all nodes in the tree.
-	 * 
+	 *
 	 * @return number of current node
 	 */
 	private int getNodeCounter() {
@@ -300,7 +295,7 @@ public class TreeClusterer extends AClusterer {
 
 	/**
 	 * Function looks for the next closest pair in the distance matrix.
-	 * 
+	 *
 	 * @param n
 	 *            current size of the similarity matrix
 	 * @param distmatrix
@@ -332,7 +327,7 @@ public class TreeClusterer extends AClusterer {
 	/**
 	 * The palcluster routine performs clustering using single linking on the
 	 * given distance matrix.
-	 * 
+	 *
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
@@ -420,7 +415,7 @@ public class TreeClusterer extends AClusterer {
 	/**
 	 * The palcluster routine performs clustering using pairwise average linking
 	 * on the given distance matrix.
-	 * 
+	 *
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
@@ -561,7 +556,7 @@ public class TreeClusterer extends AClusterer {
 	 * The function is responsible for calculating the expression value in each
 	 * node of the tree. To handle this an other recursive function which does
 	 * the whole work is called.
-	 * 
+	 *
 	 * @param eClustererType
 	 */
 	// private void determineExpressionValue(Tree<ClusterNode> clusterTree,
@@ -574,7 +569,7 @@ public class TreeClusterer extends AClusterer {
 	/**
 	 * Recursive function which determines the expression value in each node of
 	 * the tree.
-	 * 
+	 *
 	 * @param tree
 	 * @param node
 	 *            current node
@@ -668,7 +663,7 @@ public class TreeClusterer extends AClusterer {
 	/**
 	 * The pmlcluster routine performs clustering using pairwise maximum-
 	 * (complete-) linking on the given distance matrix.
-	 * 
+	 *
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
@@ -793,7 +788,7 @@ public class TreeClusterer extends AClusterer {
 	 * nodes in the tree must have unique names. Therefore we need to take care
 	 * of two hash maps holding the currently used names and their frequency of
 	 * occurrence.
-	 * 
+	 *
 	 * @param eClustererType
 	 *            either gene or expression clustering
 	 * @param index
@@ -831,7 +826,7 @@ public class TreeClusterer extends AClusterer {
 	/**
 	 * Function returns the number of the current node. Therefore we need an
 	 * index of the gene/experiment in the VA.
-	 * 
+	 *
 	 * @param eClustererType
 	 *            either gene or expression clustering
 	 * @param index
@@ -853,7 +848,7 @@ public class TreeClusterer extends AClusterer {
 
 	/**
 	 * Recursive function responsible for mapping tree structure to a tree
-	 * 
+	 *
 	 * @param node
 	 *            current node
 	 * @param treeStructure

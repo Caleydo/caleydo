@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ *
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.io.parser.ascii;
 
@@ -23,9 +20,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.AColumn;
-import org.caleydo.core.data.collection.column.NominalColumn;
+import org.caleydo.core.data.collection.column.CategoricalColumn;
 import org.caleydo.core.data.collection.column.NumericalColumn;
+import org.caleydo.core.data.collection.column.container.CategoricalContainer;
+import org.caleydo.core.data.collection.column.container.FloatContainer;
+import org.caleydo.core.data.collection.column.container.IContainer;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.id.IDCategory;
@@ -47,21 +48,19 @@ import org.eclipse.core.runtime.Status;
  * Loader for tabular, matrix data from delimited text files.
  * </p>
  * <p>
- * Asides from loading the data from a file as specified in a supplied
- * {@link DataSetDescription} the IDs of columns and rows are parsed and dynamic
- * IDs for columns and rows are created.
+ * Asides from loading the data from a file as specified in a supplied {@link DataSetDescription} the IDs of columns and
+ * rows are parsed and dynamic IDs for columns and rows are created.
  * <p>
- * 
+ *
  * @author Alexander Lex
  * @author Marc Streit
  */
 public class TabularDataParser extends ATextParser {
 
 	/**
-	 * Imports data from file to this table. uses first dimension and overwrites
-	 * first selection.
+	 * Imports data from file to this table. uses first dimension and overwrites first selection.
 	 */
-	protected ArrayList<Object> targetColumns;
+	protected ArrayList<IContainer<?>> targetColumns;
 
 	/** The {@link ATableBasedDataDomain} for which the file is loaded */
 	private ATableBasedDataDomain dataDomain;
@@ -72,24 +71,21 @@ public class TabularDataParser extends ATextParser {
 	/**
 	 * Constructor.
 	 */
-	public TabularDataParser(ATableBasedDataDomain dataDomain,
-			DataSetDescription dataSetDescription) {
+	public TabularDataParser(ATableBasedDataDomain dataDomain, DataSetDescription dataSetDescription) {
 		super(dataSetDescription.getDataSourcePath());
 
 		this.dataDomain = dataDomain;
 		this.dataSetDescription = dataSetDescription;
-		targetColumns = new ArrayList<Object>();
+		targetColumns = new ArrayList<>();
 	}
 
 	/**
 	 * <p>
-	 * Creates the {@link DataTable} and the {@link AColumn}s for the
-	 * {@link DataTable}, as well as the raw data columns to be set into the
-	 * columns, which are also stored in {@link #targetColumns}.
+	 * Creates the {@link DataTable} and the {@link AColumn}s for the {@link DataTable}, as well as the raw data columns
+	 * to be set into the columns, which are also stored in {@link #targetColumns}.
 	 * </p>
 	 * <p>
-	 * Also creates the mapping of columnIDs to column labels in the
-	 * {@link IDMappingManager}
+	 * Also creates the mapping of columnIDs to column labels in the {@link IDMappingManager}
 	 * </p>
 	 */
 	private void initializeTablePerspectives() {
@@ -97,15 +93,13 @@ public class TabularDataParser extends ATextParser {
 		DataTable table = new DataTable(dataDomain);
 		dataDomain.setTable(table);
 
-		ArrayList<ColumnDescription> parsingPattern = dataSetDescription
-				.getParsingPattern();
+		ArrayList<ColumnDescription> parsingPattern = dataSetDescription.getParsingPattern();
 
 		String[] headers = null;
 		if (dataSetDescription.isContainsColumnIDs()) {
 			try {
 
-				BufferedReader reader = GeneralManager.get().getResourceLoader()
-						.getResource(filePath);
+				BufferedReader reader = GeneralManager.get().getResourceLoader().getResource(filePath);
 
 				Integer rowOfColumnIDs = dataSetDescription.getNumberOfHeaderLines() - 1;
 				if (dataSetDescription.getRowOfColumnIDs() != null)
@@ -118,31 +112,25 @@ public class TabularDataParser extends ATextParser {
 				headers = headerLine.split(dataSetDescription.getDelimiter());
 				reader.close();
 			} catch (Exception e) {
-				Logger.log(new Status(IStatus.ERROR, this.toString(),
-						"Could not read data file.", e));
-				throw new IllegalStateException("Could not read data file '" + filePath
-						+ "'", e);
+				Logger.log(new Status(IStatus.ERROR, this.toString(), "Could not read data file.", e));
+				throw new IllegalStateException("Could not read data file '" + filePath + "'", e);
 			}
 		}
 
 		calculateNumberOfLinesInFile();
-		int numberOfDataLines = numberOfLinesInFile
-				- dataSetDescription.getNumberOfHeaderLines();
+		int numberOfDataLines = numberOfLinesInFile - dataSetDescription.getNumberOfHeaderLines();
 
 		// prepare for id setting of column IDs
 		IDMappingManager columnIDMappingManager;
 		IDType targetColumnIDType;
-		IDType sourceColumnIDType = IDType.getIDType(dataSetDescription
-				.getColumnIDSpecification().getIdType());
+		IDType sourceColumnIDType = IDType.getIDType(dataSetDescription.getColumnIDSpecification().getIdType());
 
 		IDTypeParsingRules parsingRules = null;
 		if (dataSetDescription.getColumnIDSpecification().getIdTypeParsingRules() != null)
-			parsingRules = dataSetDescription.getColumnIDSpecification()
-					.getIdTypeParsingRules();
+			parsingRules = dataSetDescription.getColumnIDSpecification().getIdTypeParsingRules();
 		else if (sourceColumnIDType.getIdTypeParsingRules() != null)
 			parsingRules = sourceColumnIDType.getIdTypeParsingRules();
 
-		
 		if (!dataDomain.getDataSetDescription().isTransposeMatrix()) {
 			columnIDMappingManager = dataDomain.getDimensionIDMappingManager();
 			targetColumnIDType = dataDomain.getDimensionIDType();
@@ -151,54 +139,58 @@ public class TabularDataParser extends ATextParser {
 			targetColumnIDType = dataDomain.getRecordIDType();
 		}
 
-		MappingType mappingType = columnIDMappingManager.createMap(targetColumnIDType,
-				sourceColumnIDType, false, true);
+		MappingType mappingType = columnIDMappingManager.createMap(targetColumnIDType, sourceColumnIDType, false, true);
 		// Map<Integer, String> columnIDMap =
 		// columnIDMappingManager.getMap(mappingType);
 
 		int columnCount = 0;
 		for (ColumnDescription parsingDetail : parsingPattern) {
 			int columnID;
-			if (parsingDetail.getDataType().equalsIgnoreCase("float")) {
-				float[] dataColumn = new float[numberOfDataLines];
-				targetColumns.add(dataColumn);
-				NumericalColumn column;
+			switch (parsingDetail.getDataType()) {
+			case FLOAT:
+				FloatContainer container = new FloatContainer(numberOfDataLines);
+				targetColumns.add(container);
+				NumericalColumn<FloatContainer, Float> column;
 				if (parsingDetail.getColumnID() == null) {
-					column = new NumericalColumn();
+					column = new NumericalColumn<>();
 					parsingDetail.setColumnID(column.getID());
 				} else {
-					column = new NumericalColumn(parsingDetail.getColumnID());
+					column = new NumericalColumn<>(parsingDetail.getColumnID());
 				}
-
+				column.setRawData(container);
 				columnID = column.getID();
-				column.setRawData(dataColumn);
 				table.addColumn(column);
-			} else if (parsingDetail.getDataType().equalsIgnoreCase("string")) {
-				ArrayList<String> dataColumn = new ArrayList<String>(numberOfDataLines);
-				targetColumns.add(dataColumn);
-				NominalColumn<String> column;
+				break;
+
+			case NOMINAL:
+			case ORDINAL:
+
+				CategoricalContainer<String> categoricalContainer = new CategoricalContainer<>(numberOfDataLines);
+				targetColumns.add(categoricalContainer);
+				CategoricalColumn<String> categoricalColumn;
 				if (parsingDetail.getColumnID() == null) {
-					column = new NominalColumn<String>();
-					parsingDetail.setColumnID(column.getID());
+					categoricalColumn = new CategoricalColumn<String>();
+					parsingDetail.setColumnID(categoricalColumn.getID());
 				} else {
-					column = new NominalColumn<String>(parsingDetail.getColumnID());
+					categoricalColumn = new CategoricalColumn<String>(parsingDetail.getColumnID());
 
 				}
-				columnID = column.getID();
-				column.setRawNominalData(dataColumn);
-				table.addColumn(column);
-			} else {
-				throw new IllegalStateException("Unknown column data type: "
-						+ parsingDetail + " in " + parsingPattern);
+				columnID = categoricalColumn.getID();
+
+				table.addColumn(categoricalColumn);
+				break;
+			case TEXT:
+			default:
+
+				throw new IllegalStateException("Unknown column data type: " + parsingDetail + " in " + parsingPattern);
+
 			}
-
 			if (headers != null) {
 				String idString = headers[parsingDetail.getColumn()];
 				idString = convertID(idString, parsingRules);
 				columnIDMappingManager.addMapping(mappingType, columnID, idString);
 			} else {
-				columnIDMappingManager.addMapping(mappingType, columnID, "Column "
-						+ columnCount++);
+				columnIDMappingManager.addMapping(mappingType, columnID, "Column " + columnCount++);
 			}
 
 		}
@@ -210,28 +202,23 @@ public class TabularDataParser extends ATextParser {
 		initializeTablePerspectives();
 
 		// Init progress bar
-		swtGuiManager.setProgressBarText("Loading data for: "
-				+ dataSetDescription.getDataSetName());
+		swtGuiManager.setProgressBarText("Loading data for: " + dataSetDescription.getDataSetName());
 		float progressBarFactor = 100f / numberOfLinesInFile;
 
-		for (int countHeaderLines = 0; countHeaderLines < dataSetDescription
-				.getNumberOfHeaderLines(); countHeaderLines++) {
+		for (int countHeaderLines = 0; countHeaderLines < dataSetDescription.getNumberOfHeaderLines(); countHeaderLines++) {
 			reader.readLine();
 		}
 
-		ArrayList<ColumnDescription> parsingPattern = dataSetDescription
-				.getParsingPattern();
+		ArrayList<ColumnDescription> parsingPattern = dataSetDescription.getParsingPattern();
 
 		int lineCounter = 0;
-		String numberParsingErrorMessage = "Could not parse a number in file "
-				+ dataSetDescription.getDataSetName() + " at path " + filePath
-				+ "\n at the following locations: \n";
+		String numberParsingErrorMessage = "Could not parse a number in file " + dataSetDescription.getDataSetName()
+				+ " at path " + filePath + "\n at the following locations: \n";
 		boolean parsingErrorOccured = false;
 
 		// ------------- ID parsing stuff ------------------------------
 		IDSpecification rowIDSpecification = dataSetDescription.getRowIDSpecification();
-		IDCategory rowIDCategory = IDCategory.getIDCategory(rowIDSpecification
-				.getIdCategory());
+		IDCategory rowIDCategory = IDCategory.getIDCategory(rowIDSpecification.getIdCategory());
 		IDType fromIDType = IDType.getIDType(rowIDSpecification.getIdType());
 
 		IDType toIDType;
@@ -240,12 +227,10 @@ public class TabularDataParser extends ATextParser {
 		else
 			toIDType = dataDomain.getDimensionIDType();
 
-		IDMappingManager rowIDMappingManager = IDMappingManagerRegistry.get()
-				.getIDMappingManager(rowIDCategory);
+		IDMappingManager rowIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(rowIDCategory);
 		int columnOfRowIDs = dataSetDescription.getColumnOfRowIds();
 
-		MappingType mappingType = rowIDMappingManager.createMap(fromIDType, toIDType,
-				false, true);
+		MappingType mappingType = rowIDMappingManager.createMap(fromIDType, toIDType, false, true);
 
 		IDTypeParsingRules parsingRules = null;
 		if (rowIDSpecification.getIdTypeParsingRules() != null)
@@ -262,52 +247,44 @@ public class TabularDataParser extends ATextParser {
 			// id mapping
 			String id = splitLine[columnOfRowIDs];
 			id = convertID(id, parsingRules);
-			rowIDMappingManager.addMapping(mappingType, id, lineCounter
-					- startParsingAtLine);
+			rowIDMappingManager.addMapping(mappingType, id, lineCounter - startParsingAtLine);
 
 			for (int count = 0; count < parsingPattern.size(); count++) {
-				ColumnDescription column = parsingPattern.get(count);
 
-				String cellContent = splitLine[column.getColumn()];
-				if (column.getDataType().equalsIgnoreCase("float")) {
-					float[] targetColumn = (float[]) targetColumns.get(count);
-					Float value;
+				ColumnDescription columnDescription = parsingPattern.get(count);
+				String cellContent = splitLine[columnDescription.getColumn()];
+				if (columnDescription.getDataType().equals(EDataType.FLOAT)) {
+					FloatContainer targetColumn = (FloatContainer) targetColumns.get(count);
+					float value;
 					try {
 						value = Float.parseFloat(cellContent);
 					} catch (NumberFormatException nfe) {
 						parsingErrorOccured = true;
-						numberParsingErrorMessage += "column "
-								+ (column.getColumn())
-								+ ", line "
-								+ (lineCounter + dataSetDescription
-										.getNumberOfHeaderLines())
-								+ ". Cell content was: " + cellContent + "\n";
+						numberParsingErrorMessage += "column " + (columnDescription.getColumn()) + ", line "
+								+ (lineCounter + dataSetDescription.getNumberOfHeaderLines()) + ". Cell content was: "
+								+ cellContent + "\n";
 
 						value = Float.NaN;
 					}
-					if (lineCounter < targetColumn.length) {
-						targetColumn[lineCounter] = value;
+					if (lineCounter < targetColumn.size()) {
+						targetColumn.addValue(value);
 					} else {
-						System.out.println("Index out of bounds at line: " + lineCounter
-								+ " for column " + count);
+						System.out.println("Index out of bounds at line: " + lineCounter + " for column " + count);
 					}
-				} else if (column.getDataType().equalsIgnoreCase("string")) {
+				} else if (columnDescription.getDataType().equals(EDataType.NOMINAL)) {
 					@SuppressWarnings("unchecked")
-					ArrayList<String> targetColumn = (ArrayList<String>) targetColumns
-							.get(count);
-					targetColumn.add(splitLine[column.getColumn()]);
-				}				
+					CategoricalContainer<String> targetColumn = (CategoricalContainer<String>) targetColumns.get(count);
+					targetColumn.addValue(splitLine[columnDescription.getColumn()]);
+				}
 			}
 			if (lineCounter % 100 == 0) {
-				swtGuiManager
-						.setProgressBarPercentage((int) (progressBarFactor * lineCounter));
+				swtGuiManager.setProgressBarPercentage((int) (progressBarFactor * lineCounter));
 			}
 			lineCounter++;
 		}
 
 		if (parsingErrorOccured) {
-			Logger.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID,
-					numberParsingErrorMessage));
+			Logger.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID, numberParsingErrorMessage));
 		}
 	}
 }

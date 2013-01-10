@@ -2,7 +2,6 @@ package org.caleydo.core.util.clusterer.algorithm.affinity;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
@@ -31,7 +30,7 @@ import org.eclipse.core.runtime.Status;
  * Affinity propagation clusterer. See <a
  * href="http://www.psi.toronto.edu/affinitypropagation/"> affinity
  * documentation</a>
- * 
+ *
  * @author Bernhard Schlegl
  */
 public class AffinityClusterer extends AClusterer implements IClusterer {
@@ -96,7 +95,7 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 
 	/**
 	 * Calculates the similarity vector for a given set and given VAs
-	 * 
+	 *
 	 * @param table
 	 * @param clusterState
 	 * @return in case of error a negative value will be returned.
@@ -152,8 +151,7 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 
 					isto = 0;
 					for (Integer iDimensionIndex1 : dimensionVA) {
-						dArInstance1[isto] = table.getFloat(
-								DataRepresentation.NORMALIZED, recordIndex1,
+						dArInstance1[isto] = table.getNormalizedValue(recordIndex1,
 								iDimensionIndex1);
 						isto++;
 					}
@@ -163,8 +161,7 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 
 						isto = 0;
 						for (Integer iDimensionIndex2 : dimensionVA) {
-							dArInstance2[isto] = table.getFloat(
-									DataRepresentation.NORMALIZED, recordIndex2,
+							dArInstance2[isto] = table.getNormalizedValue(recordIndex2,
 									iDimensionIndex2);
 							isto++;
 						}
@@ -229,8 +226,7 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 
 					icnt = 0;
 					for (Integer recordIndex1 : recordVA) {
-						dArInstance1[icnt] = table.getFloat(
-								DataRepresentation.NORMALIZED, recordIndex1,
+						dArInstance1[icnt] = table.getNormalizedValue(recordIndex1,
 								iDimensionIndex1);
 						icnt++;
 					}
@@ -240,8 +236,7 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 
 						icnt = 0;
 						for (Integer recordIndex2 : recordVA) {
-							dArInstance2[icnt] = table.getFloat(
-									DataRepresentation.NORMALIZED, recordIndex2,
+							dArInstance2[icnt] = table.getNormalizedValue(recordIndex2,
 									iDimensionIndex2);
 							icnt++;
 						}
@@ -565,7 +560,7 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 	 * Function returns an array list with ordered indexes out of the VA after
 	 * clustering. Additionally the indexes of the examples (cluster
 	 * representatives) will be determined.
-	 * 
+	 *
 	 * @param alExamples
 	 *            array list containing the indexes of the examples (cluster
 	 *            representatives) determined by the cluster algorithm

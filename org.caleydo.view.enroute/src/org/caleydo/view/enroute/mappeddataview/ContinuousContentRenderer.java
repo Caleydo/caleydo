@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
@@ -112,7 +111,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 			float value;
 			if (geneID != null) {
-				value = dataDomain.getGeneValue(DataRepresentation.NORMALIZED, geneID,
+				value = dataDomain.getNormalizedGeneValue(geneID,
 						sampleID);
 
 				ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager

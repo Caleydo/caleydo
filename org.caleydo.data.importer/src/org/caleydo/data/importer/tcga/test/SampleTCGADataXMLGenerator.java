@@ -1,24 +1,25 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.data.importer.tcga.test;
 
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
@@ -35,7 +36,7 @@ import org.caleydo.datadomain.genetic.TCGADefinitions;
 /**
  * Generator class that writes the loading information of a series of TCGA data
  * sets to an XML file.
- * 
+ *
  * @author Alexander Lex
  * @author Marc Streit
  */
@@ -144,7 +145,7 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT,
 				ColumnDescription.CONTINUOUS));
 		mrnaData.addParsingRule(parsingRule);
 		mrnaData.setTransposeMatrix(true);
@@ -190,7 +191,7 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT,
 				ColumnDescription.CONTINUOUS));
 		mirnaData.addParsingRule(parsingRule);
 
@@ -228,7 +229,7 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT,
 				ColumnDescription.CONTINUOUS));
 		methylationData.addParsingRule(parsingRule);
 		methylationData.setTransposeMatrix(true);
@@ -266,7 +267,7 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT,
 				ColumnDescription.ORDINAL));
 		copyNumberData.addParsingRule(parsingRule);
 		copyNumberData.setTransposeMatrix(true);
@@ -329,7 +330,7 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT,
 				ColumnDescription.NOMINAL));
 		mutationDataMetaInfo.addParsingRule(parsingRule);
 		mutationDataMetaInfo.setTransposeMatrix(true);

@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.heatmap.hierarchical;
 
@@ -29,7 +26,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -52,9 +48,8 @@ public class HeatMapUtil {
 
 	public static int MAX_SAMPLES_PER_TEXTURE = 2000;
 
-	public static ArrayList<Texture> createHeatMapTextures(GL2 gl, DataTable table,
-			RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA,
-			RecordSelectionManager contentSelectionManager) {
+	public static ArrayList<Texture> createHeatMapTextures(GL2 gl, DataTable table, RecordVirtualArray recordVA,
+			DimensionVirtualArray dimensionVA, RecordSelectionManager contentSelectionManager) {
 
 		int numSamples = recordVA.size();
 		int numDimensions = dimensionVA.size();
@@ -70,10 +65,8 @@ public class HeatMapUtil {
 		for (Integer recordIndex : recordVA) {
 
 			if (isNewTexture) {
-				numSamplesInTexture = Math.min(MAX_SAMPLES_PER_TEXTURE, numSamples
-						- numSamplesProcessed);
-				textureBuffer = FloatBuffer.allocate(numSamplesInTexture * numDimensions
-						* 4);
+				numSamplesInTexture = Math.min(MAX_SAMPLES_PER_TEXTURE, numSamples - numSamplesProcessed);
+				textureBuffer = FloatBuffer.allocate(numSamplesInTexture * numDimensions * 4);
 				isNewTexture = false;
 			}
 
@@ -82,29 +75,24 @@ public class HeatMapUtil {
 				float fOpacity = 1.0f;
 
 				if (contentSelectionManager != null
-						&& contentSelectionManager.checkStatus(SelectionType.DESELECTED,
-								recordIndex)) {
+						&& contentSelectionManager.checkStatus(SelectionType.DESELECTED, recordIndex)) {
 					fOpacity = 0.3f;
 				}
 				;
-				float fLookupValue = table.getFloat(DataRepresentation.NORMALIZED,
-						recordIndex, dimensionIndex);
+				float fLookupValue = table.getNormalizedValue(recordIndex, dimensionIndex);
 
 				float[] fArMappingColor = colorMapping.getColor(fLookupValue);
 
-				float[] fArRgba = { fArMappingColor[0], fArMappingColor[1],
-						fArMappingColor[2], fOpacity };
+				float[] fArRgba = { fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity };
 
 				textureBuffer.put(fArRgba);
 				if (!textureBuffer.hasRemaining()) {
 					textureBuffer.rewind();
 
-					TextureData texData = new TextureData(GLProfile.getDefault(),
-							GL.GL_RGBA /* internalFormat */, numDimensions /* height */,
-							numSamplesInTexture /* width */, 0 /* border */,
-							GL.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */,
-							false /* mipmap */, false /* dataIsCompressed */,
-							false /* mustFlipVertically */, textureBuffer, null);
+					TextureData texData = new TextureData(GLProfile.getDefault(), GL.GL_RGBA /* internalFormat */,
+							numDimensions /* height */, numSamplesInTexture /* width */, 0 /* border */,
+							GL.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
+							false /* dataIsCompressed */, false /* mustFlipVertically */, textureBuffer, null);
 
 					Texture texture = TextureIO.newTexture(0);
 					texture.updateImage(gl, texData);
@@ -119,8 +107,7 @@ public class HeatMapUtil {
 		return textures;
 	}
 
-	public static void renderHeatmapTextures(GL2 gl, ArrayList<Texture> textures,
-			float height, float width) {
+	public static void renderHeatmapTextures(GL2 gl, ArrayList<Texture> textures, float height, float width) {
 
 		int numElements = 0;
 
@@ -144,10 +131,8 @@ public class HeatMapUtil {
 			gl.glTexEnvi(GL2ES1.GL_TEXTURE_ENV, GL2ES1.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
-			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
-					GL.GL_NEAREST);
-			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
-					GL.GL_NEAREST);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
 			TextureCoords texCoords = texture.getImageTexCoords();
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2d(texCoords.left(), texCoords.top());
@@ -164,9 +149,8 @@ public class HeatMapUtil {
 		}
 	}
 
-	public static void renderGroupBar(GL2 gl, RecordVirtualArray recordVA,
-			float totalHeight, float groupWidth, PickingManager pickingManager,
-			int viewID, PickingType pickingType, TextureManager textureManager) {
+	public static void renderGroupBar(GL2 gl, RecordVirtualArray recordVA, float totalHeight, float groupWidth,
+			PickingManager pickingManager, int viewID, PickingType pickingType, TextureManager textureManager) {
 
 		RecordGroupList contentGroupList = recordVA.getGroupList();
 
@@ -183,18 +167,14 @@ public class HeatMapUtil {
 				EIconTextures iconTextures = (group.getSelectionType() == SelectionType.SELECTION) ? EIconTextures.HEAT_MAP_GROUP_SELECTED
 						: EIconTextures.HEAT_MAP_GROUP_NORMAL;
 
-				gl.glPushName(pickingManager
-						.getPickingID(viewID, pickingType, groupIndex));
-				Vec3f lowerLeftCorner = new Vec3f(0.0f, groupPositionY - groupHeight,
-						0.0f);
-				Vec3f lowerRightCorner = new Vec3f(0.0f + groupWidth, groupPositionY
-						- groupHeight, 0.0f);
-				Vec3f upperRightCorner = new Vec3f(0.0f + groupWidth, groupPositionY,
-						0.0f);
+				gl.glPushName(pickingManager.getPickingID(viewID, pickingType, groupIndex));
+				Vec3f lowerLeftCorner = new Vec3f(0.0f, groupPositionY - groupHeight, 0.0f);
+				Vec3f lowerRightCorner = new Vec3f(0.0f + groupWidth, groupPositionY - groupHeight, 0.0f);
+				Vec3f upperRightCorner = new Vec3f(0.0f + groupWidth, groupPositionY, 0.0f);
 				Vec3f upperLeftCorner = new Vec3f(0.0f, groupPositionY, 0.0f);
 
-				textureManager.renderTexture(gl, iconTextures, lowerLeftCorner,
-						lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+				textureManager.renderTexture(gl, iconTextures, lowerLeftCorner, lowerRightCorner, upperRightCorner,
+						upperLeftCorner, 1, 1, 1, 1);
 
 				gl.glPopName();
 				if (groupIndex < contentGroupList.size() - 1) {

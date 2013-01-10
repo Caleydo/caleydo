@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.datadomain.genetic;
 
@@ -51,16 +48,14 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  */
 @XmlType
 @XmlRootElement
-public class GeneticDataDomain
-	extends ATableBasedDataDomain {
+public class GeneticDataDomain extends ATableBasedDataDomain {
 
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.genetic";
 
 	private static final String CLINICAL_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
 
 	/**
-	 * Counter used for determining the extension that together with the type
-	 * builds the data domain ID.
+	 * Counter used for determining the extension that together with the type builds the data domain ID.
 	 */
 	private static final AtomicInteger extensionID = new AtomicInteger();
 
@@ -90,8 +85,8 @@ public class GeneticDataDomain
 	}
 
 	/**
-	 * Initializes a virtual array with all elements, according to the data
-	 * filters, as defined in {@link EDataFilterLevel}.
+	 * Initializes a virtual array with all elements, according to the data filters, as defined in
+	 * {@link EDataFilterLevel}.
 	 */
 
 	// TODO: Re-write this as a filter
@@ -172,27 +167,23 @@ public class GeneticDataDomain
 		if (DataDomainManager.get().getDataDomainByType(CLINICAL_DATADOMAIN_TYPE) == null)
 			return;
 
-		String clinicalDataDomainID = DataDomainManager.get()
-				.getDataDomainByType(CLINICAL_DATADOMAIN_TYPE).getDataDomainID();
+		String clinicalDataDomainID = DataDomainManager.get().getDataDomainByType(CLINICAL_DATADOMAIN_TYPE)
+				.getDataDomainID();
 
 		clinicalReplaceContentVirtualArrayListener = new ReplaceRecordPerspectiveListener();
 		clinicalReplaceContentVirtualArrayListener.setHandler(this);
-		clinicalReplaceContentVirtualArrayListener
-				.setExclusiveDataDomainID(clinicalDataDomainID);
-		eventPublisher.addListener(ReplaceRecordPerspectiveEvent.class,
-				clinicalReplaceContentVirtualArrayListener);
+		clinicalReplaceContentVirtualArrayListener.setExclusiveDataDomainID(clinicalDataDomainID);
+		eventPublisher.addListener(ReplaceRecordPerspectiveEvent.class, clinicalReplaceContentVirtualArrayListener);
 
 		clinicalSelectionUpdateListener = new ForeignSelectionUpdateListener();
 		clinicalSelectionUpdateListener.setHandler(this);
 		clinicalSelectionUpdateListener.setExclusiveDataDomainID(clinicalDataDomainID);
-		eventPublisher
-				.addListener(SelectionUpdateEvent.class, clinicalSelectionUpdateListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class, clinicalSelectionUpdateListener);
 
 		clinicalSelectionCommandListener = new ForeignSelectionCommandListener();
 		clinicalSelectionCommandListener.setHandler(this);
 		clinicalSelectionCommandListener.setDataDomainID(clinicalDataDomainID);
-		eventPublisher.addListener(SelectionCommandEvent.class,
-				clinicalSelectionCommandListener);
+		eventPublisher.addListener(SelectionCommandEvent.class, clinicalSelectionCommandListener);
 	}
 
 	@Override
@@ -243,14 +234,12 @@ public class GeneticDataDomain
 			resendEvent.setSelectionDelta(convertedDelta);
 
 			eventPublisher.triggerEvent(resendEvent);
-		}
-		else
+		} else
 			return;
 	}
 
 	@Override
-	public void handleForeignRecordVAUpdate(String dataDomainType, String vaType,
-			PerspectiveInitializationData data) {
+	public void handleForeignRecordVAUpdate(String dataDomainType, String vaType, PerspectiveInitializationData data) {
 
 		// FIXME its not clear which dimension va should be updated here
 		// if (dataDomainType.equals(CLINICAL_DATADOMAIN_TYPE)) {
@@ -353,9 +342,8 @@ public class GeneticDataDomain
 	}
 
 	/**
-	 * Returns the idType for the content in the data table, which is either the
-	 * recordIDType or the dimensionIDType depending on the result of
-	 * {@link #isColumnDimension()}
+	 * Returns the idType for the content in the data table, which is either the recordIDType or the dimensionIDType
+	 * depending on the result of {@link #isColumnDimension()}
 	 *
 	 * @return
 	 */
@@ -373,7 +361,6 @@ public class GeneticDataDomain
 			return getRecordIDType();
 	}
 
-
 	public IDType getGeneGroupIDType() {
 		if (isColumnDimension())
 			return getRecordGroupIDType();
@@ -390,23 +377,20 @@ public class GeneticDataDomain
 	}
 
 	/**
-	 * Returns the value of the type specified in the dataRepresentation from
-	 * the table based on the ID of the gene and the experiment. Resolves
-	 * dimension/record association for you in doing so.
+	 * Returns the value of the type specified in the dataRepresentation from the table based on the ID of the gene and
+	 * the experiment. Resolves dimension/record association for you in doing so.
 	 */
-	public float getGeneValue(String dataRepresentation, Integer geneID,
-			Integer experimentID) {
+	public float getNormalizedGeneValue(Integer geneID, Integer experimentID) {
 		Integer recordID;
 		Integer dimensionID;
 		if (isGeneRecord()) {
 			recordID = geneID;
 			dimensionID = experimentID;
-		}
-		else {
+		} else {
 			recordID = experimentID;
 			dimensionID = geneID;
 		}
-		return table.getFloat(dataRepresentation, recordID, dimensionID);
+		return table.getNormalizedValue(recordID, dimensionID);
 	}
 
 	public boolean isGeneRecord() {

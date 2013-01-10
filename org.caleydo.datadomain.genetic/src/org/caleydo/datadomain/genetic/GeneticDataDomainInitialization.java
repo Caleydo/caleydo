@@ -118,13 +118,13 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 		IDCategory sampleIDCategory = IDCategory.registerCategory("SAMPLE");
 
 		IDType sampleID = IDType.registerType("SAMPLE", sampleIDCategory,
-				EDataType.STRING);
+				EDataType.TEXT);
 		sampleIDCategory.setHumanReadableIDType(sampleID);
 
 		IDCategory tcgaSampleIDCategory = IDCategory.registerCategory("TCGA_SAMPLE");
 
 		IDType tcgaSample = IDType.registerType("TCGA_SAMPLE", tcgaSampleIDCategory,
-				EDataType.STRING);
+				EDataType.TEXT);
 		IDTypeParsingRules tcgaIDTypeParsingRules = new IDTypeParsingRules();
 		tcgaIDTypeParsingRules.setReplacementExpression(
 				TCGADefinitions.TCGA_REPLACEMENT_STRING,

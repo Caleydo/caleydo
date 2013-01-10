@@ -83,7 +83,7 @@ public class CreateIDTypeDialogMediator {
 		}
 
 		dataTypeMap.put(0, EDataType.INT);
-		dataTypeMap.put(1, EDataType.STRING);
+		dataTypeMap.put(1, EDataType.TEXT);
 		dialog.dataTypeCombo.add("Number");
 		dialog.dataTypeCombo.add("Text");
 

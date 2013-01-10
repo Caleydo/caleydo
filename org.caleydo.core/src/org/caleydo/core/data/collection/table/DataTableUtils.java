@@ -189,13 +189,13 @@ public class DataTableUtils {
 		boolean isSetHomogeneous = dataSetDescription.isDataHomogeneous();
 
 		if (dataSetDescription.getMathFilterMode().equalsIgnoreCase("None")) {
-			table.setExternalDataRepresentation(EDataTransformation.NONE,
+			table.setDataTransformation(EDataTransformation.NONE,
 					isSetHomogeneous);
 		} else if (dataSetDescription.getMathFilterMode().equalsIgnoreCase("Log10")) {
-			table.setExternalDataRepresentation(EDataTransformation.LOG10,
+			table.setDataTransformation(EDataTransformation.LOG10,
 					isSetHomogeneous);
 		} else if (dataSetDescription.getMathFilterMode().equalsIgnoreCase("Log2")) {
-			table.setExternalDataRepresentation(EDataTransformation.LOG2,
+			table.setDataTransformation(EDataTransformation.LOG2,
 					isSetHomogeneous);
 		} else
 			throw new IllegalStateException("Unknown data representation type");
@@ -217,7 +217,7 @@ public class DataTableUtils {
 	 */
 	public static void setExternalDataRepresentation(DataTable table,
 			EDataTransformation externalDataRep, boolean isSetHomogeneous) {
-		table.setExternalDataRepresentation(externalDataRep, isSetHomogeneous);
+		table.setDataTransformation(externalDataRep, isSetHomogeneous);
 	}
 
 	/**

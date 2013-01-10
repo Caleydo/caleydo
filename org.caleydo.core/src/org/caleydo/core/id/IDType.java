@@ -77,7 +77,7 @@ public class IDType {
 
 	/**
 	 * Specifies the data type of the IDType. Allowed values are
-	 * {@link EDataType#INT} and {@link EDataType#STRING}
+	 * {@link EDataType#INT} and {@link EDataType#TEXT}
 	 */
 	private EDataType dataType;
 
@@ -151,9 +151,9 @@ public class IDType {
 	 */
 	public static IDType registerType(String typeName, IDCategory idCategory,
 			EDataType columnType) {
-		if (!(columnType == EDataType.STRING || columnType == EDataType.INT))
+		if (!(columnType == EDataType.TEXT || columnType == EDataType.INT))
 			throw new IllegalStateException(
-					"IDTypes are allowed to be only either of type STRING or INT, but was: "
+					"IDTypes are allowed to be only either of type TEXT or INT, but was: "
 							+ columnType);
 		synchronized (IDType.class) {
 			IDType idType = registeredTypes.get(typeName);
@@ -285,7 +285,7 @@ public class IDType {
 					}
 				} catch (NumberFormatException e) {
 				}
-			} else if (getColumnType().equals(EDataType.STRING)) {
+			} else if (getColumnType().equals(EDataType.TEXT)) {
 				if (idMappingManager.doesElementExist(this, currentID)) {
 					numMatchedIDs++;
 				} else if (getTypeName().equals("REFSEQ_MRNA")) {

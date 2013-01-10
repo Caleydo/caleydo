@@ -69,8 +69,8 @@ public class HistogramCreator {
 			else if (vector[count] < min)
 				min = vector[count];
 		}
-		histogram.setMax(max);
-		histogram.setMin(min);
+		// histogram.setMax(max);
+		// histogram.setMin(min);
 
 		for (float value : vector) {
 			if (Float.isNaN(value)) {

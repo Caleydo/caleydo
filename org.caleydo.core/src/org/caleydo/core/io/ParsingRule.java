@@ -44,7 +44,7 @@ import org.caleydo.core.data.collection.EDataType;
  * </ol>
  * <p>
  * The {@link #dataType} specified defines the data type for the internal
- * storage. Legal data types are "INT", "STRING" and "FLOAT", as listed in
+ * storage. Legal data types are "INT", "TEXT" and "FLOAT", as listed in
  * {@link EDataType}.
  * </p>
  * <p>

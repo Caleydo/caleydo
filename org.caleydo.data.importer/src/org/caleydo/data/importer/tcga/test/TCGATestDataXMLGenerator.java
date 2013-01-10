@@ -1,24 +1,22 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ *
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.data.importer.tcga.test;
 
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
@@ -33,42 +31,31 @@ import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 
 /**
- * Creates and parameterizes a series of {@link DataSetDescription}s for the
- * TCGA dataset. Writes the result to an xml file, which can then be loaded by
- * the importer plugin, which creates and caleydo project file.
- * 
+ * Creates and parameterizes a series of {@link DataSetDescription}s for the TCGA dataset. Writes the result to an xml
+ * file, which can then be loaded by the importer plugin, which creates and caleydo project file.
+ *
  * @author Alexander Lex
  * @author Marc Streit
  */
 public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 
 	public static final String DROPBOX_GBM_FOLDER = System.getProperty("user.home")
-			+ System.getProperty("file.separator")
-			+ "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/";
+			+ System.getProperty("file.separator") + "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/";
 
-	public static final String MRNA = DROPBOX_GBM_FOLDER
-			+ "mrna_cnmf/outputprefix.expclu.gct";
-	public static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER
-			+ "mrna_cnmf/cnmf.membership.txt";
+	public static final String MRNA = DROPBOX_GBM_FOLDER + "mrna_cnmf/outputprefix.expclu.gct";
+	public static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER + "mrna_cnmf/cnmf.membership.txt";
 
-	public static final String MIRNA = DROPBOX_GBM_FOLDER
-			+ "mir_cnmf/cnmf.normalized.gct";
-	public static final String MIRNA_GROUPING = DROPBOX_GBM_FOLDER
-			+ "mir_cnmf/cnmf.membership.txt";
+	public static final String MIRNA = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.normalized.gct";
+	public static final String MIRNA_GROUPING = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.membership.txt";
 
-	public static final String METHYLATION = DROPBOX_GBM_FOLDER
-			+ "methylation_cnmf/cnmf.normalized.gct";
-	public static final String METHYLATION_GROUPING = DROPBOX_GBM_FOLDER
-			+ "methylation_cnmf/cnmf.membership.txt";
+	public static final String METHYLATION = DROPBOX_GBM_FOLDER + "methylation_cnmf/cnmf.normalized.gct";
+	public static final String METHYLATION_GROUPING = DROPBOX_GBM_FOLDER + "methylation_cnmf/cnmf.membership.txt";
 
-	public static final String COPY_NUMBER = DROPBOX_GBM_FOLDER
-			+ "copy_number/all_thresholded_by_genes.txt";
+	public static final String COPY_NUMBER = DROPBOX_GBM_FOLDER + "copy_number/all_thresholded_by_genes.txt";
 
-	public static final String GROUND_TRUTH_GROUPING = DROPBOX_GBM_FOLDER
-			+ "ground_truth/2011_exp_assignments.txt";
+	public static final String GROUND_TRUTH_GROUPING = DROPBOX_GBM_FOLDER + "ground_truth/2011_exp_assignments.txt";
 
-	public static final String CLINICAL = DROPBOX_GBM_FOLDER
-			+ "clinical/clinical_patient_public_GBM.txt";
+	public static final String CLINICAL = DROPBOX_GBM_FOLDER + "clinical/clinical_patient_public_GBM.txt";
 
 	public static final String MUTATION = DROPBOX_GBM_FOLDER
 			+ "mutation/mut_patient_centric_table_public_transposed_01.txt";
@@ -84,7 +71,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public TCGATestDataXMLGenerator(String[] arguments) {
 		super(arguments);
@@ -122,8 +109,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
-				ColumnDescription.CONTINUOUS));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT, ColumnDescription.CONTINUOUS));
 		mrnaData.addParsingRule(parsingRule);
 		mrnaData.setTransposeMatrix(true);
 		mrnaData.setDataCenter(0d);
@@ -134,8 +120,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		mrnaData.setRowIDSpecification(geneIDSpecification);
 		mrnaData.setColumnIDSpecification(sampleIDSpecification);
 
-		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(
-				MRNA_GROUPING);
+		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(MRNA_GROUPING);
 		firehoseClustering.setContainsColumnIDs(false);
 		firehoseClustering.setGroupingName("hierarchical");
 		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
@@ -178,8 +163,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
-				ColumnDescription.CONTINUOUS));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT, ColumnDescription.CONTINUOUS));
 		mirnaData.addParsingRule(parsingRule);
 
 		// IDSpecification mirnaIDSpecification = new IDSpecification();
@@ -188,8 +172,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		mirnaData.setTransposeMatrix(true);
 		mirnaData.setColumnIDSpecification(sampleIDSpecification);
 
-		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(
-				MIRNA_GROUPING);
+		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(MIRNA_GROUPING);
 		firehoseClustering.setContainsColumnIDs(false);
 		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
 		mirnaData.addColumnGroupingSpecification(firehoseClustering);
@@ -216,8 +199,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
-				ColumnDescription.CONTINUOUS));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT, ColumnDescription.CONTINUOUS));
 		methylationData.addParsingRule(parsingRule);
 		methylationData.setTransposeMatrix(true);
 
@@ -226,8 +208,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		// methylationData.setRowIDSpecification(methylationIDSpecification);
 		methylationData.setColumnIDSpecification(sampleIDSpecification);
 
-		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(
-				METHYLATION_GROUPING);
+		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(METHYLATION_GROUPING);
 		firehoseClustering.setContainsColumnIDs(false);
 		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
 		methylationData.addColumnGroupingSpecification(firehoseClustering);
@@ -254,8 +235,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
-				ColumnDescription.ORDINAL));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT, ColumnDescription.ORDINAL));
 		copyNumberData.addParsingRule(parsingRule);
 		copyNumberData.setTransposeMatrix(true);
 
@@ -316,8 +296,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
-				ColumnDescription.NOMINAL));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT, ColumnDescription.NOMINAL));
 		mutationDataMetaInfo.addParsingRule(parsingRule);
 		mutationDataMetaInfo.setTransposeMatrix(true);
 
