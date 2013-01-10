@@ -776,7 +776,7 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 				});
 
 				MenuItem loadPathwayInBucketMenuItem = new MenuItem(menu, SWT.PUSH);
-				loadPathwayInBucketMenuItem.setText("Load pathway in Bucket");
+				loadPathwayInBucketMenuItem.setText("Show pathway");
 				loadPathwayInBucketMenuItem.setImage(generalManager.getResourceLoader().getImage(
 						pathwayTable.getDisplay(), "resources/icons/view/remote/remote.png"));
 
@@ -787,7 +787,7 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 						// Switch to bucket view
 						try {
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-									.showView("org.caleydo.view.bucket");
+									.showView("org.caleydo.view.pathway");
 						} catch (PartInitException e1) {
 							e1.printStackTrace();
 						}
