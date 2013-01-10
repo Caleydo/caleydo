@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.concurrent.RecursiveTask;
+import java.util.logging.Logger;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -13,8 +14,10 @@ import org.caleydo.data.importer.tcga.utils.IOUtils;
 
 public abstract class ATCGATask extends RecursiveTask<String> {
 	private static final long serialVersionUID = 6349085075502142673L;
+	private static final Logger log = Logger.getLogger(ATCGATask.class.getSimpleName());
 
 	protected static void generateJNLP(File jnlpFile, String projectRemoteOutputURL) {
+		log.info("generating jnlp file: " + jnlpFile.getAbsolutePath());
 		try {
 			// Generate jnlp file from jnlp template
 			String template = IOUtils.readAll(ATCGATask.class.getResourceAsStream("/resources/caleydo.jnlp"));
@@ -34,6 +37,7 @@ public abstract class ATCGATask extends RecursiveTask<String> {
 	}
 
 	protected static void cleanUp(Collection<? extends IDataDomain> dataDomains) {
+		log.info("cleanup " + dataDomains.size() + " data domains");
 		for (IDataDomain dataDomain : dataDomains)
 			DataDomainManager.get().unregister(dataDomain);
 	}

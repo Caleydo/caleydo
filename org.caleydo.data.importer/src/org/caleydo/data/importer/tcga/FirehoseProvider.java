@@ -9,12 +9,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.tools.tar.TarEntry;
 import org.apache.tools.tar.TarInputStream;
 
 public final class FirehoseProvider {
+	private static final Logger log = Logger.getLogger(FirehoseProvider.class.getSimpleName());
 	protected static String FIREHOSE_TAR_NAME_PREFIX = "gdac.broadinstitute.org_";
 
 	protected final String tumorAbbreviation;
@@ -80,6 +82,7 @@ public final class FirehoseProvider {
 	}
 
 	protected File extractFileFromTarGzArchive(URL inUrl, String fileToExtract, File outputDirectory) {
+		log.info("downloading: " + inUrl);
 		File targetFile = new File(outputDirectory, fileToExtract);
 
 		// use cached
@@ -88,8 +91,7 @@ public final class FirehoseProvider {
 
 		File notFound = new File(outputDirectory, fileToExtract + "-notfound");
 		if (notFound.exists() && !settings.isCleanCache()) {
-			System.err.println("Unable to extract " + fileToExtract + " from " + inUrl + ". "
-					+ "file not found in a previous run");
+			log.warning("file not found in a previous run: " + inUrl);
 			return null;
 		}
 
@@ -109,6 +111,7 @@ public final class FirehoseProvider {
 			if (act == null) // no entry found
 				return null;
 
+			log.info("extracting: " + fileToExtract + " from " + inUrl);
 			byte[] buf = new byte[4096];
 			int n;
 			targetFile.getParentFile().mkdirs();
@@ -121,8 +124,7 @@ public final class FirehoseProvider {
 			Files.move(new File(tmpFile).toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			return targetFile;
 		} catch (FileNotFoundException e) {
-			System.err
-.println("Unable to extract " + fileToExtract + " from " + inUrl + ". " + "file not found");
+			log.warning("Unable to extract " + fileToExtract + " from " + inUrl + ". " + "file not found");
 			// file was not found, create a marker to remember this for quicker checks
 			notFound.getParentFile().mkdirs();
 			try {
@@ -133,7 +135,7 @@ public final class FirehoseProvider {
 			}
 			return null;
 		} catch (Exception e) {
-			System.err.println("Unable to extract " + fileToExtract + " from " + inUrl + ". " + e.getMessage());
+			log.warning("Unable to extract " + fileToExtract + " from " + inUrl + ". " + e.getMessage());
 			return null;
 		} finally {
 			if (tarIn != null)

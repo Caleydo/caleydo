@@ -21,6 +21,7 @@ package org.caleydo.data.importer.tcga.regular;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
@@ -37,6 +38,7 @@ import org.caleydo.data.importer.tcga.ETumorType;
  *
  */
 public class TCGATask extends ATCGATask {
+	private static final Logger log = Logger.getLogger(TCGATask.class.getSimpleName());
 	private static final long serialVersionUID = 7378867458430247164L;
 
 	private final String tumorType;
@@ -53,7 +55,7 @@ public class TCGATask extends ATCGATask {
 
 	@Override
 	protected String compute() {
-		System.out.println("Downloading data for tumor type " + tumorType + " for analysis run " + analysisRun);
+		log.info("Downloading data for tumor type " + tumorType + " for analysis run " + analysisRun);
 
 		String runSpecificOutputPath = settings.getDataDirectory(analysisRun);
 
@@ -63,10 +65,11 @@ public class TCGATask extends ATCGATask {
 		if (project.getDataSetDescriptionCollection().isEmpty())
 			return null;
 
-		System.out.println("Building project file for tumor type " + tumorType + " for analysis run " + analysisRun);
+		log.info("Building project file for tumor type " + tumorType + " for analysis run " + analysisRun);
 		String projectOutputPath = runSpecificOutputPath + analysisRun + "_" + tumorType + ".cal";
 		Collection<ATableBasedDataDomain> dataDomains = new XMLToProjectBuilder().buildProject(project,
 				projectOutputPath);
+		log.info("Built project file for tumor type " + tumorType + " for analysis run " + analysisRun);
 
 		project = null;
 

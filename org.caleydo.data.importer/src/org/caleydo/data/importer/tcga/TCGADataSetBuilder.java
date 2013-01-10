@@ -24,6 +24,7 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
+import java.util.logging.Logger;
 
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataProcessingDescription;
@@ -38,6 +39,7 @@ import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.datadomain.genetic.TCGADefinitions;
 
 public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
+	private static final Logger log = Logger.getLogger(TCGADataSetBuilder.class.getSimpleName());
 
 	private static final String CLUSTER_FILE = "outputprefix.expclu.gct";
 	private static final int LEVEL = 4;
@@ -296,6 +298,16 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		dataSet.setRowIDSpecification(rwoIDSpecification);
 		dataSet.setColumnIDSpecification(sampleIDSpecification);
 
+		// File cnmfGroupingFile = fileProvider.extractAnalysisRunFile("cnmf.membership.txt",
+		// "CopyNumber_Clustering_CNMF", LEVEL);
+		// if (cnmfGroupingFile != null) {
+		// GroupingParseSpecification firehoseCnmfClustering = new GroupingParseSpecification(
+		// cnmfGroupingFile.getPath());
+		// firehoseCnmfClustering.setContainsColumnIDs(false);
+		// firehoseCnmfClustering.setRowIDSpecification(sampleIDSpecification);
+		// firehoseCnmfClustering.setGroupingName("CNMF Clustering");
+		// dataSet.addColumnGroupingSpecification(firehoseCnmfClustering);
+		// }
 		return dataSet;
 	}
 
@@ -329,6 +341,7 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 	}
 
 	private static void transposeCSV(String fileName, String fileNameOut) {
+		log.info("tranposing: " + fileName);
 		File in = new File(fileName);
 
 		List<String> data;
