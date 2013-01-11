@@ -63,7 +63,7 @@ public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
 		ALL_GROUP.setLabel("--ALL--");
 	}
 
-	private final ScoreQueryUI sender;
+	private final ScoreQueryUI receiver;
 
 	private Text labelUI;
 	private ComboViewer dataDomainUI;
@@ -72,7 +72,7 @@ public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
 
 	public ACreateGroupScoreDialog(Shell shell, ScoreQueryUI sender) {
 		super(shell);
-		this.sender = sender;
+		this.receiver = sender;
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
 			this.stratificationUI.setInput(null);
 			this.stratificationUI.getCombo().setEnabled(false);
 		} else {
-			List<TablePerspective> data = new ArrayList<TablePerspective>(sender.getQuery().getQuery()
+			List<TablePerspective> data = new ArrayList<TablePerspective>(receiver.getQuery().getQuery()
 					.getPerspectives(dataDomain));
 			this.stratificationUI.setInput(data);
 			this.stratificationUI.getCombo().setEnabled(true);
@@ -197,6 +197,6 @@ public abstract class ACreateGroupScoreDialog extends TitleAreaDialog {
 		} else { // score single
 			s = createScore(label, strat, group);
 		}
-		GeneralManager.get().getEventPublisher().triggerEvent(new AddScoreColumnEvent(s, sender));
+		GeneralManager.get().getEventPublisher().triggerEvent(new AddScoreColumnEvent(s).to(receiver));
 	}
 }

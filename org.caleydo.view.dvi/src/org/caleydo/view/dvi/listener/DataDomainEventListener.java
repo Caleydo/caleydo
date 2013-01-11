@@ -17,11 +17,25 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.event;
+package org.caleydo.view.dvi.listener;
 
-/**
- * Possible modes for scoring against a reference table perspective.
- *
- * @author Marc Streit
- *
- */
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.data.NewDataDomainEvent;
+import org.caleydo.core.event.data.RemoveDataDomainEvent;
+import org.caleydo.view.dvi.GLDataViewIntegrator;
+
+public class DataDomainEventListener extends AEventListener<GLDataViewIntegrator> {
+
+	@Override
+	public void handleEvent(AEvent event) {
+		if (event instanceof NewDataDomainEvent) {
+			NewDataDomainEvent newDataDomainEvent = (NewDataDomainEvent) event;
+			handler.addDataDomain(newDataDomainEvent.getDataDomain());
+		} else if (event instanceof RemoveDataDomainEvent) {
+			handler.removeDataDomain(((RemoveDataDomainEvent) event).getDataDomainID());
+		}
+
+	}
+
+}

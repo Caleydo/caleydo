@@ -25,9 +25,9 @@ import org.caleydo.core.util.base.ILabelProvider;
 
 /**
  * comparator based on labels
- * 
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
 public class LabelComparator implements Comparator<ILabelProvider> {
 	@Override
@@ -38,7 +38,7 @@ public class LabelComparator implements Comparator<ILabelProvider> {
 			return -1;
 		if (o2 == null)
 			return +1;
-		return o1.getLabel().compareTo(o2.getLabel());
+		return String.CASE_INSENSITIVE_ORDER.compare(o1.getLabel(), o2.getLabel());
 	}
 }
 

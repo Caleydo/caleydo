@@ -30,10 +30,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainActions;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.EventListeners.ListenTo;
+import org.caleydo.core.event.data.NewDataDomainEvent;
+import org.caleydo.core.event.data.RemoveDataDomainEvent;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
@@ -51,13 +56,16 @@ import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.query.filter.SpecificDataDomainFilter;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
-import org.caleydo.view.tourguide.internal.event.ImportExternalScoreEvent;
 import org.caleydo.view.tourguide.internal.event.SelectDimensionSelectionEvent;
+import org.caleydo.view.tourguide.internal.external.ExternalScoringDataDomainActionFactory;
 import org.caleydo.view.tourguide.internal.renderer.AdvancedTextureRenderer;
 import org.caleydo.view.tourguide.internal.renderer.DecorationTextureRenderer;
-import org.caleydo.view.tourguide.internal.score.ExternalGroupLabelScore;
-import org.caleydo.view.tourguide.internal.score.ExternalIDTypeScore;
+import org.caleydo.view.tourguide.internal.view.ui.DataDomainFilterDialog;
 import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
+import com.google.common.collect.Lists;
 
 /**
  * TODO: support filter, ala cutoff or categorical levels
@@ -115,10 +123,10 @@ public class DataDomainQueryUI extends Column {
 		this.setGrabX(true);
 		this.setBottomUp(false);
 
+		this.clear();
+		this.rows.clear();
 		final ElementLayout rowSpace = createYSpacer(3);
-
 		int w = 0;
-
 		for (EDataDomainQueryMode mode : EDataDomainQueryMode.values()) {
 			Row row = new Row();
 			addAll(rowSpace, mode.getAllDataDomains(), row);
@@ -182,8 +190,14 @@ public class DataDomainQueryUI extends Column {
 				}
 			}
 		}
-		if (this.layoutManager != null)
+		invalidate();
+	}
+
+	private void invalidate() {
+		if (layoutManager != null) {
+			layoutManager.updateLayout();
 			updateSubLayout();
+		}
 	}
 
 	protected void onSelectionChanged(IDataDomain oldValue, IDataDomain newValue) {
@@ -227,8 +241,11 @@ public class DataDomainQueryUI extends Column {
 
 	protected void onRightClicked(DataDomainRow dataDomainRow) {
 		ContextMenuCreator creator = view.getContextMenuCreator();
-		if (dataDomainRow.getFilter() != null)
-			creator.addContextMenuItem(new GenericContextMenuItem("Edit Filter", new EditDataDomainFilterEvent(dataDomainRow.getFilter(), this)));
+		if (dataDomainRow.getFilter() != null) {
+			creator.addContextMenuItem(new GenericContextMenuItem("Edit Filter", new EditDataDomainFilterEvent(
+					dataDomainRow.getFilter()).to(this)));
+			creator.addSeparator();
+		}
 		Collection<DimensionPerspective> dims = DataDomainQuery
 				.getPossibleDimensionPerspectives(dataDomainRow.dataDomain);
 		if (!dims.isEmpty()) {
@@ -238,24 +255,61 @@ public class DataDomainQueryUI extends Column {
 			GroupContextMenuItem item = new GroupContextMenuItem("Used Dimension Perspective");
 			creator.addContextMenuItem(item);
 			for (DimensionPerspective d : dims)
-				item.add(new GenericContextMenuItem(d.getLabel(), EContextMenuType.CHECK, new SelectDimensionSelectionEvent(d,this)).setState(d == dim));
-		}
-		if (dataDomainRow.dataDomain instanceof ATableBasedDataDomain) {
+				item.add(new GenericContextMenuItem(d.getLabel(), EContextMenuType.CHECK,
+						new SelectDimensionSelectionEvent(d).to(this)).setState(d == dim));
 			creator.addSeparator();
-			ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) dataDomainRow.dataDomain;
-			creator.addContextMenuItem(new GenericContextMenuItem("Load Scoring for "
-					+ dataDomain.getDimensionIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain,
-					true, ExternalIDTypeScore.class)));
-			creator.addContextMenuItem(new GenericContextMenuItem("Load Scoring for "
-					+ dataDomain.getRecordIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain,
-					false, ExternalIDTypeScore.class)));
-			creator.addContextMenuItem(new GenericContextMenuItem("Load Grouping Scoring for "
-					+ dataDomain.getDimensionIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain,
-					true, ExternalGroupLabelScore.class)));
-			creator.addContextMenuItem(new GenericContextMenuItem("Load Grouping Scoring for "
-					+ dataDomain.getRecordIDCategory().getCategoryName(), new ImportExternalScoreEvent(dataDomain,
-					false, ExternalGroupLabelScore.class)));
 		}
+
+		Collection<Pair<String, ? extends AEvent>> collection = ExternalScoringDataDomainActionFactory.create(
+				dataDomainRow.dataDomain, this);
+		if (!collection.isEmpty()) {
+			creator.addAll(collection);
+			creator.addSeparator();
+		}
+
+		DataDomainActions.add(creator, dataDomainRow.dataDomain, this, true);
+	}
+
+	@ListenTo(sendToMe = true)
+	void onEditDataDomainFilter(final EditDataDomainFilterEvent e) {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				new DataDomainFilterDialog(new Shell(), query, e.getFilter()).open();
+			}
+		});
+	}
+
+	@ListenTo(sendToMe = true)
+	void onSelectionDimension(final SelectDimensionSelectionEvent e) {
+		DimensionPerspective d = e.getDim();
+		if (query.getDimensionSelection(d.getDataDomain()) == d)
+			query.setDimensionSelection(d.getDataDomain(), null);
+		else
+			query.setDimensionSelection(d.getDataDomain(), d);
+	}
+
+	@ListenTo
+	void onAddDataDomain(final NewDataDomainEvent event) {
+		init();
+		setQuery(query);
+	}
+
+	@ListenTo
+	void onRemoveDataDomain(final RemoveDataDomainEvent event) {
+		final String id = event.getDataDomainID();
+		// remove selection
+		query.removeSelection(id);
+		// remove filter
+		for (IDataDomainFilter f : Lists.newArrayList(query.getFilter())) {
+			if (f instanceof SpecificDataDomainFilter
+					&& id.equals(((SpecificDataDomainFilter) f).getDataDomain().getDataDomainID())) {
+				query.removeFilter(f);
+				break;
+			}
+		}
+		init();
+		setQuery(query);
 	}
 
 	private class DataDomainRow extends Row {

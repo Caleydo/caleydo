@@ -83,6 +83,10 @@ public class Logger {
 		this.log(IStatus.INFO, msg, args);
 	}
 
+	public void debug(String msg, Object... args) {
+		this.log(IStatus.OK, msg, args);
+	}
+
 	public void log(int level, String msg, Object... args) {
 		log(new Status(level, this.source, String.format(msg, args)));
 	}

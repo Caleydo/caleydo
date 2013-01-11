@@ -34,7 +34,11 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.event.AggregateGroupEvent;
 import org.caleydo.core.data.datadomain.event.AggregateGroupListener;
+import org.caleydo.core.data.datadomain.event.CreateClusteringEvent;
+import org.caleydo.core.data.datadomain.event.LoadGroupingEvent;
 import org.caleydo.core.data.datadomain.event.StartClusteringListener;
+import org.caleydo.core.data.datadomain.listener.CreateClusteringEventListener;
+import org.caleydo.core.data.datadomain.listener.LoadGroupingEventListener;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
@@ -167,17 +171,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 	protected IDMappingManager recordIDMappingManager;
 	protected IDMappingManager dimensionIDMappingManager;
-
-	private SelectionUpdateListener selectionUpdateListener;
-	private SelectionCommandListener selectionCommandListener;
-	private StartClusteringListener startClusteringListener;
-
-	private ReplaceDimensionPerspectiveListener replaceDimensionPerspectiveListener;
-	private DimensionVADeltaListener dimensionVADeltaListener;
-	private ReplaceRecordPerspectiveListener replaceRecordPerspectiveListener;
-	private RecordVADeltaListener recordVADeltaListener;
-
-	private AggregateGroupListener aggregateGroupListener;
 
 	/**
 	 * Constructor that should be used only for serialization
@@ -905,46 +898,49 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-		selectionUpdateListener = new SelectionUpdateListener();
+		SelectionUpdateListener selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		selectionUpdateListener.setExclusiveDataDomainID(dataDomainID);
-		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+		listeners.register(SelectionUpdateEvent.class, selectionUpdateListener);
 
-		selectionCommandListener = new SelectionCommandListener();
+		SelectionCommandListener selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
 		selectionCommandListener.setDataDomainID(dataDomainID);
-		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
+		listeners.register(SelectionCommandEvent.class, selectionCommandListener);
 
-		startClusteringListener = new StartClusteringListener();
+		StartClusteringListener startClusteringListener = new StartClusteringListener();
 		startClusteringListener.setHandler(this);
 		startClusteringListener.setDataDomainID(dataDomainID);
-		eventPublisher.addListener(StartClusteringEvent.class, startClusteringListener);
+		listeners.register(StartClusteringEvent.class, startClusteringListener);
 
-		recordVADeltaListener = new RecordVADeltaListener();
+		RecordVADeltaListener recordVADeltaListener = new RecordVADeltaListener();
 		recordVADeltaListener.setHandler(this);
 		recordVADeltaListener.setDataDomainID(dataDomainID);
-		eventPublisher.addListener(RecordVADeltaEvent.class, recordVADeltaListener);
+		listeners.register(RecordVADeltaEvent.class, recordVADeltaListener);
 
-		replaceRecordPerspectiveListener = new ReplaceRecordPerspectiveListener();
+		ReplaceRecordPerspectiveListener replaceRecordPerspectiveListener = new ReplaceRecordPerspectiveListener();
 		replaceRecordPerspectiveListener.setHandler(this);
 		replaceRecordPerspectiveListener.setDataDomainID(dataDomainID);
-		eventPublisher.addListener(ReplaceRecordPerspectiveEvent.class,
+		listeners.register(ReplaceRecordPerspectiveEvent.class,
 				replaceRecordPerspectiveListener);
 
-		dimensionVADeltaListener = new DimensionVADeltaListener();
+		DimensionVADeltaListener dimensionVADeltaListener = new DimensionVADeltaListener();
 		dimensionVADeltaListener.setHandler(this);
 		dimensionVADeltaListener.setDataDomainID(dataDomainID);
-		eventPublisher.addListener(DimensionVADeltaEvent.class, dimensionVADeltaListener);
+		listeners.register(DimensionVADeltaEvent.class, dimensionVADeltaListener);
 
-		replaceDimensionPerspectiveListener = new ReplaceDimensionPerspectiveListener();
+		ReplaceDimensionPerspectiveListener replaceDimensionPerspectiveListener = new ReplaceDimensionPerspectiveListener();
 		replaceDimensionPerspectiveListener.setHandler(this);
 		replaceDimensionPerspectiveListener.setDataDomainID(dataDomainID);
-		eventPublisher.addListener(ReplaceDimensionPerspectiveEvent.class,
+		listeners.register(ReplaceDimensionPerspectiveEvent.class,
 				replaceDimensionPerspectiveListener);
 
-		aggregateGroupListener = new AggregateGroupListener();
+		AggregateGroupListener aggregateGroupListener = new AggregateGroupListener();
 		aggregateGroupListener.setHandler(this);
-		eventPublisher.addListener(AggregateGroupEvent.class, aggregateGroupListener);
+		listeners.register(AggregateGroupEvent.class, aggregateGroupListener);
+
+		listeners.register(CreateClusteringEvent.class, new CreateClusteringEventListener(this));
+		listeners.register(LoadGroupingEvent.class, new LoadGroupingEventListener(this));
 	}
 
 	// TODO this is never called!
@@ -952,45 +948,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
-		if (selectionUpdateListener != null) {
-			eventPublisher.removeListener(selectionUpdateListener);
-			selectionUpdateListener = null;
-		}
-
-		if (selectionCommandListener != null) {
-			eventPublisher.removeListener(selectionCommandListener);
-			selectionCommandListener = null;
-		}
-
-		if (startClusteringListener != null) {
-			eventPublisher.removeListener(startClusteringListener);
-			startClusteringListener = null;
-		}
-
-		if (replaceRecordPerspectiveListener != null) {
-			eventPublisher.removeListener(replaceRecordPerspectiveListener);
-			replaceRecordPerspectiveListener = null;
-		}
-
-		if (replaceDimensionPerspectiveListener != null) {
-			eventPublisher.removeListener(replaceDimensionPerspectiveListener);
-			replaceDimensionPerspectiveListener = null;
-		}
-
-		if (recordVADeltaListener != null) {
-			eventPublisher.removeListener(recordVADeltaListener);
-			recordVADeltaListener = null;
-		}
-
-		if (dimensionVADeltaListener != null) {
-			eventPublisher.removeListener(dimensionVADeltaListener);
-			dimensionVADeltaListener = null;
-		}
-
-		if (aggregateGroupListener != null) {
-			eventPublisher.removeListener(aggregateGroupListener);
-			aggregateGroupListener = null;
-		}
+		listeners.unregisterAll();
 	}
 
 	/**

@@ -203,6 +203,18 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 	private boolean focusGained = false;
 
+	private IGLFocusListener focusListener = new IGLFocusListener() {
+		@Override
+		public void focusLost() {
+			// focusGained=false;
+		}
+
+		@Override
+		public void focusGained() {
+			focusGained = true;
+		}
+	};
+
 	/**
 	 * Constructor. If the glCanvas object is null - then the view is rendered remote.
 	 *
@@ -225,17 +237,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		// Register mouse listener to GL2 canvas
 		glCanvas.addMouseListener(glMouseListener);
 
-		glCanvas.addFocusListener(new IGLFocusListener() {
-			@Override
-			public void focusLost() {
-				// focusGained=false;
-			}
-
-			@Override
-			public void focusGained() {
-				focusGained = true;
-			}
-		});
+		glCanvas.addFocusListener(focusListener);
 
 		idPickingListeners = new HashMap<String, HashMap<Integer, Set<IPickingListener>>>();
 		typePickingListeners = new HashMap<String, Set<IPickingListener>>();
@@ -1148,6 +1150,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		generalManager.getViewManager().getConnectedElementRepresentationManager().clearAll();
 		unregisterEventListeners();
 		destroyViewSpecificContent(gl);
+		parentGLCanvas.removeFocusListener(focusListener);
 	}
 
 	/**

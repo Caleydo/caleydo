@@ -81,7 +81,7 @@ public class ApplicationWorkbenchWindowAdvisor
 
 		removeNonCaleydoMenuEntries();
 
-		StartupProcessor.get().getStartupProcedure().postWorkbenchOpen();
+		StartupProcessor.get().postWorkbenchOpen();
 
 		configurer.getWindow().getShell().setMaximized(true);
 	}

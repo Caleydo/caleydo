@@ -22,10 +22,9 @@ package org.caleydo.view.tourguide.internal.score;
 import java.util.Map;
 import java.util.Set;
 
+import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.util.ExtensionUtils;
-import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.IMetricFactory;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
@@ -39,11 +38,11 @@ public class MetricFactories {
 	private final static Map<String, IMetricFactory> factories = ExtensionUtils.findImplementation(EXTENSION_ID,
 			"name", "class", IMetricFactory.class);
 
-	public static void addCreateItems(ContextMenuCreator creator, Set<IScore> visible, ScoreQueryUI sender,
+	public static void addCreateItems(ContextMenuCreator creator, Set<IScore> visible, Object receiver,
 			EDataDomainQueryMode mode) {
 		for (IMetricFactory f : factories.values()) {
 			if (f.supports(mode))
-				f.addCreateMetricItems(creator, visible, sender);
+				f.addCreateMetricItems(creator, visible, receiver);
 		}
 	}
 }

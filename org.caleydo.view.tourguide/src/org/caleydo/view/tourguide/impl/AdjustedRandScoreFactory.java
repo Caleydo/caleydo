@@ -87,7 +87,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 
 	class CreateAdjustedRandScoreDialog extends TitleAreaDialog {
 
-		private final ScoreQueryUI sender;
+		private final ScoreQueryUI receiver;
 
 		private Text labelUI;
 		private ComboViewer dataDomainUI;
@@ -95,7 +95,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 
 		public CreateAdjustedRandScoreDialog(Shell shell, ScoreQueryUI sender) {
 			super(shell);
-			this.sender = sender;
+			this.receiver = sender;
 		}
 
 		@Override
@@ -145,7 +145,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 				this.stratificationUI.setInput(null);
 				this.stratificationUI.getCombo().setEnabled(false);
 			} else {
-				List<ARecordPerspective> data = new ArrayList<ARecordPerspective>(sender.getQuery().getQuery()
+				List<ARecordPerspective> data = new ArrayList<ARecordPerspective>(receiver.getQuery().getQuery()
 						.getJustStratifications(dataDomain));
 				this.stratificationUI.setInput(data);
 				this.stratificationUI.getCombo().setEnabled(true);
@@ -185,7 +185,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 			} else { // score single
 				s = AdjustedRandScoreFactory.this.create(null, strat);
 			}
-			GeneralManager.get().getEventPublisher().triggerEvent(new AddScoreColumnEvent(s, sender));
+			GeneralManager.get().getEventPublisher().triggerEvent(new AddScoreColumnEvent(s).to(receiver));
 		}
 	}
 }

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -31,8 +31,6 @@ public class ArcRoutingStrategy implements IEdgeRoutingStrategy {
 	protected static final int BEND_POINT_STEP_PIXELS_PER_SLOT = 20;
 
 	private TwoLayeredGraphLayout graphLayout;
-	private IDVINode node1;
-	private IDVINode node2;
 	private PixelGLConverter pixelGLConverter;
 
 	public ArcRoutingStrategy(TwoLayeredGraphLayout graphLayout,
@@ -42,7 +40,7 @@ public class ArcRoutingStrategy implements IEdgeRoutingStrategy {
 	}
 
 	@Override
-	public void createEdge(List<Point2D> edgePoints) {
+	public void createEdge(IDVINode node1, IDVINode node2, List<Point2D> edgePoints) {
 		if (edgePoints == null || edgePoints.size() < 2)
 			return;
 
@@ -77,12 +75,6 @@ public class ArcRoutingStrategy implements IEdgeRoutingStrategy {
 		edgePoints.add(anchorPoint2);
 		edgePoints.add(rightPoint);
 
-	}
-
-	@Override
-	public void setNodes(IDVINode node1, IDVINode node2) {
-		this.node1 = node1;
-		this.node2 = node2;
 	}
 
 	public int calcEdgeBendPointYOffsetPixels(IDVINode node1, IDVINode node2) {

@@ -45,7 +45,7 @@ import org.eclipse.core.runtime.Status;
  * {@link MappingType}. The IDs have to be separated by a token, which can be specified using
  * {@link #setTokenSeperator(String)}
  * </p>
- * 
+ *
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -59,7 +59,7 @@ public class IDMappingParser extends ATextParser {
 
 	/**
 	 * Creates an ID mapping for the id types specified by parsing the supplied file.
-	 * 
+	 *
 	 * @param filePath
 	 *            the path to the file containing the mapping file
 	 * @param startParsingAtLine
@@ -121,7 +121,7 @@ public class IDMappingParser extends ATextParser {
 
 	/**
 	 * Set the current token separator.
-	 * 
+	 *
 	 * @param tokenSeparator
 	 */
 	public final void setTokenSeperator(final String tokenSeparator) {
@@ -158,14 +158,14 @@ public class IDMappingParser extends ATextParser {
 					if (mappingType.getToIDType().getColumnType() == EDataType.INT) {
 						idMappingManager.addMapping(mappingType, Integer.valueOf(fromID), Integer.valueOf(toID));
 					} else if (mappingType.getToIDType().getColumnType() == EDataType.TEXT) {
-						idMappingManager.addMapping(mappingType, Integer.valueOf(fromID), toID);
+						idMappingManager.addMapping(mappingType, Integer.valueOf(fromID), toID.intern());
 					} else
 						throw new IllegalStateException("Unsupported data type!");
 				} else if (mappingType.getFromIDType().getColumnType() == EDataType.TEXT) {
 					if (mappingType.getToIDType().getColumnType() == EDataType.INT) {
-						idMappingManager.addMapping(mappingType, fromID, Integer.valueOf(toID));
+						idMappingManager.addMapping(mappingType, fromID.intern(), Integer.valueOf(toID));
 					} else if (mappingType.getToIDType().getColumnType() == EDataType.TEXT) {
-						idMappingManager.addMapping(mappingType, fromID, toID);
+						idMappingManager.addMapping(mappingType, fromID.intern(), toID.intern());
 					} else
 						throw new IllegalStateException("Unsupported data type!");
 				} else

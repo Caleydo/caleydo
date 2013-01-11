@@ -749,9 +749,12 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 	@Override
 	public void unregisterEventListeners() {
-		renameListener = new RenameListener();
-		renameListener.setHandler(this);
-		eventPublisher.addListener(RenameEvent.class, renameListener);
+
+		if (renameListener != null) {
+			eventPublisher.removeListener(renameListener);
+			renameListener = null;
+		}
+
 		if (relationsUpdateListener != null) {
 			eventPublisher.removeListener(relationsUpdateListener);
 			relationsUpdateListener = null;

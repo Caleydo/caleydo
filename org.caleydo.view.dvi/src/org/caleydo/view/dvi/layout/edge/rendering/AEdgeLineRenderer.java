@@ -69,8 +69,7 @@ public abstract class AEdgeLineRenderer extends AEdgeRenderer {
 		edgePoints.add(position1);
 		edgePoints.add(position2);
 
-		edgeRoutingStrategy.setNodes(node1, node2);
-		edgeRoutingStrategy.createEdge(edgePoints);
+		edgeRoutingStrategy.createEdge(node1, node2, edgePoints);
 
 		render(gl, edgePoints, connectionBandRenderer, position1, position2, highlight);
 		gl.glPopAttrib();

@@ -48,25 +48,22 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.event.EventListeners;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.MinSizeAppliedEvent;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.NewDataDomainEvent;
+import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.SetMinViewSizeEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.io.gui.dataimport.ImportGroupingCommand;
-import org.caleydo.core.io.gui.dataimport.ImportGroupingDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
 import org.caleydo.core.util.base.ILabelHolder;
-import org.caleydo.core.util.clusterer.gui.ClusterDialog;
-import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
-import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.RCPViewInitializationData;
@@ -81,10 +78,8 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.dvi.event.ApplySpecificGraphLayoutEvent;
-import org.caleydo.view.dvi.event.CreateClusteringEvent;
 import org.caleydo.view.dvi.event.CreateTablePerspectiveEvent;
 import org.caleydo.view.dvi.event.CreateViewFromTablePerspectiveEvent;
-import org.caleydo.view.dvi.event.LoadGroupingEvent;
 import org.caleydo.view.dvi.event.OpenViewEvent;
 import org.caleydo.view.dvi.event.RenameLabelHolderEvent;
 import org.caleydo.view.dvi.event.ShowDataConnectionsEvent;
@@ -93,15 +88,13 @@ import org.caleydo.view.dvi.layout.AGraphLayout;
 import org.caleydo.view.dvi.layout.TwoLayeredGraphLayout;
 import org.caleydo.view.dvi.layout.edge.rendering.AEdgeRenderer;
 import org.caleydo.view.dvi.listener.ApplySpecificGraphLayoutEventListener;
-import org.caleydo.view.dvi.listener.CreateClusteringEventListener;
 import org.caleydo.view.dvi.listener.CreateTablePerspectiveEventListener;
 import org.caleydo.view.dvi.listener.CreateViewFromTablePerspectiveEventListener;
 import org.caleydo.view.dvi.listener.DataDomainChangedListener;
+import org.caleydo.view.dvi.listener.DataDomainEventListener;
 import org.caleydo.view.dvi.listener.DimensionVAUpdateEventListener;
 import org.caleydo.view.dvi.listener.GLDVIKeyListener;
-import org.caleydo.view.dvi.listener.LoadGroupingEventListener;
 import org.caleydo.view.dvi.listener.MinSizeAppliedEventListener;
-import org.caleydo.view.dvi.listener.NewDataDomainEventListener;
 import org.caleydo.view.dvi.listener.NewViewEventListener;
 import org.caleydo.view.dvi.listener.OpenViewEventListener;
 import org.caleydo.view.dvi.listener.RecordVAUpdateEventListener;
@@ -160,23 +153,7 @@ public class GLDataViewIntegrator
 
 	private int maxDataAmount = Integer.MIN_VALUE;
 
-	private NewViewEventListener newViewEventListener;
-	private NewDataDomainEventListener newDataDomainEventListener;
-	private ViewClosedEventListener viewClosedEventListener;
-	private TablePerspectivesCangedListener tablePerspectivesChangedListener;
-	private DataDomainChangedListener dataDomainChangedListener;
-	private CreateTablePerspectiveEventListener addTablePerspectiveEventListener;
-	private OpenViewEventListener openViewEventListener;
-	private CreateViewFromTablePerspectiveEventListener createViewFromTablePerspectiveEventListener;
-	private ApplySpecificGraphLayoutEventListener applySpecificGraphLayoutEventListener;
-	private MinSizeAppliedEventListener minSizeAppliedEventListener;
-	private ShowDataConnectionsEventListener showDataConnectionsEventListener;
-	private RecordVAUpdateEventListener recordVAUpdateEventListener;
-	private DimensionVAUpdateEventListener dimensionVAUpdateEventListener;
-	private ShowViewWithoutDataEventListener showViewWithoutDataEventListener;
-	private LoadGroupingEventListener loadGroupingEventListener;
-	private CreateClusteringEventListener createClusteringEventListener;
-	private RenameLabelHolderEventListener renameLabelHolderEventListener;
+	private final EventListeners listeners = new EventListeners();
 
 	private IDVINode currentMouseOverNode;
 
@@ -476,72 +453,65 @@ public class GLDataViewIntegrator
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		newViewEventListener = new NewViewEventListener();
+		NewViewEventListener newViewEventListener = new NewViewEventListener();
 		newViewEventListener.setHandler(this);
-		eventPublisher.addListener(NewViewEvent.class, newViewEventListener);
+		listeners.register(NewViewEvent.class, newViewEventListener);
 
-		viewClosedEventListener = new ViewClosedEventListener();
+		ViewClosedEventListener viewClosedEventListener = new ViewClosedEventListener();
 		viewClosedEventListener.setHandler(this);
-		eventPublisher.addListener(ViewClosedEvent.class, viewClosedEventListener);
+		listeners.register(ViewClosedEvent.class, viewClosedEventListener);
 
-		tablePerspectivesChangedListener = new TablePerspectivesCangedListener();
+		TablePerspectivesCangedListener tablePerspectivesChangedListener = new TablePerspectivesCangedListener();
 		tablePerspectivesChangedListener.setHandler(this);
-		eventPublisher.addListener(TablePerspectivesChangedEvent.class, tablePerspectivesChangedListener);
+		listeners.register(TablePerspectivesChangedEvent.class, tablePerspectivesChangedListener);
 
-		dataDomainChangedListener = new DataDomainChangedListener();
+		DataDomainChangedListener dataDomainChangedListener = new DataDomainChangedListener();
 		dataDomainChangedListener.setHandler(this);
-		eventPublisher.addListener(DataDomainUpdateEvent.class, dataDomainChangedListener);
+		listeners.register(DataDomainUpdateEvent.class, dataDomainChangedListener);
 
-		newDataDomainEventListener = new NewDataDomainEventListener();
+		DataDomainEventListener newDataDomainEventListener = new DataDomainEventListener();
 		newDataDomainEventListener.setHandler(this);
-		eventPublisher.addListener(NewDataDomainEvent.class, newDataDomainEventListener);
+		listeners.register(NewDataDomainEvent.class, newDataDomainEventListener);
+		listeners.register(RemoveDataDomainEvent.class, newDataDomainEventListener);
 
-		addTablePerspectiveEventListener = new CreateTablePerspectiveEventListener();
+		CreateTablePerspectiveEventListener addTablePerspectiveEventListener = new CreateTablePerspectiveEventListener();
 		addTablePerspectiveEventListener.setHandler(this);
-		eventPublisher.addListener(CreateTablePerspectiveEvent.class, addTablePerspectiveEventListener);
+		listeners.register(CreateTablePerspectiveEvent.class, addTablePerspectiveEventListener);
 
-		openViewEventListener = new OpenViewEventListener();
+		OpenViewEventListener openViewEventListener = new OpenViewEventListener();
 		openViewEventListener.setHandler(this);
-		eventPublisher.addListener(OpenViewEvent.class, openViewEventListener);
+		listeners.register(OpenViewEvent.class, openViewEventListener);
 
-		createViewFromTablePerspectiveEventListener = new CreateViewFromTablePerspectiveEventListener();
+		CreateViewFromTablePerspectiveEventListener createViewFromTablePerspectiveEventListener = new CreateViewFromTablePerspectiveEventListener();
 		createViewFromTablePerspectiveEventListener.setHandler(this);
-		eventPublisher.addListener(CreateViewFromTablePerspectiveEvent.class,
+		listeners.register(CreateViewFromTablePerspectiveEvent.class,
 				createViewFromTablePerspectiveEventListener);
 
-		applySpecificGraphLayoutEventListener = new ApplySpecificGraphLayoutEventListener();
+		ApplySpecificGraphLayoutEventListener applySpecificGraphLayoutEventListener = new ApplySpecificGraphLayoutEventListener();
 		applySpecificGraphLayoutEventListener.setHandler(this);
 		eventPublisher.addListener(ApplySpecificGraphLayoutEvent.class, applySpecificGraphLayoutEventListener);
 
-		minSizeAppliedEventListener = new MinSizeAppliedEventListener();
+		MinSizeAppliedEventListener minSizeAppliedEventListener = new MinSizeAppliedEventListener();
 		minSizeAppliedEventListener.setHandler(this);
 		eventPublisher.addListener(MinSizeAppliedEvent.class, minSizeAppliedEventListener);
 
-		showDataConnectionsEventListener = new ShowDataConnectionsEventListener();
+		ShowDataConnectionsEventListener showDataConnectionsEventListener = new ShowDataConnectionsEventListener();
 		showDataConnectionsEventListener.setHandler(this);
 		eventPublisher.addListener(ShowDataConnectionsEvent.class, showDataConnectionsEventListener);
 
-		recordVAUpdateEventListener = new RecordVAUpdateEventListener();
+		RecordVAUpdateEventListener recordVAUpdateEventListener = new RecordVAUpdateEventListener();
 		recordVAUpdateEventListener.setHandler(this);
 		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateEventListener);
 
-		dimensionVAUpdateEventListener = new DimensionVAUpdateEventListener();
+		DimensionVAUpdateEventListener dimensionVAUpdateEventListener = new DimensionVAUpdateEventListener();
 		dimensionVAUpdateEventListener.setHandler(this);
 		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateEventListener);
 
-		showViewWithoutDataEventListener = new ShowViewWithoutDataEventListener();
+		ShowViewWithoutDataEventListener showViewWithoutDataEventListener = new ShowViewWithoutDataEventListener();
 		showViewWithoutDataEventListener.setHandler(this);
 		eventPublisher.addListener(ShowViewWithoutDataEvent.class, showViewWithoutDataEventListener);
 
-		loadGroupingEventListener = new LoadGroupingEventListener();
-		loadGroupingEventListener.setHandler(this);
-		eventPublisher.addListener(LoadGroupingEvent.class, loadGroupingEventListener);
-
-		createClusteringEventListener = new CreateClusteringEventListener();
-		createClusteringEventListener.setHandler(this);
-		eventPublisher.addListener(CreateClusteringEvent.class, createClusteringEventListener);
-
-		renameLabelHolderEventListener = new RenameLabelHolderEventListener();
+		RenameLabelHolderEventListener renameLabelHolderEventListener = new RenameLabelHolderEventListener();
 		renameLabelHolderEventListener.setHandler(this);
 		eventPublisher.addListener(RenameLabelHolderEvent.class, renameLabelHolderEventListener);
 	}
@@ -550,90 +520,7 @@ public class GLDataViewIntegrator
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
-		if (newViewEventListener != null) {
-			eventPublisher.removeListener(newViewEventListener);
-			newViewEventListener = null;
-		}
-
-		if (viewClosedEventListener != null) {
-			eventPublisher.removeListener(viewClosedEventListener);
-			viewClosedEventListener = null;
-		}
-
-		if (tablePerspectivesChangedListener != null) {
-			eventPublisher.removeListener(tablePerspectivesChangedListener);
-			tablePerspectivesChangedListener = null;
-		}
-
-		if (dataDomainChangedListener != null) {
-			eventPublisher.removeListener(dataDomainChangedListener);
-			dataDomainChangedListener = null;
-		}
-
-		if (newDataDomainEventListener != null) {
-			eventPublisher.removeListener(newDataDomainEventListener);
-			newDataDomainEventListener = null;
-		}
-
-		if (addTablePerspectiveEventListener != null) {
-			eventPublisher.removeListener(addTablePerspectiveEventListener);
-			addTablePerspectiveEventListener = null;
-		}
-
-		if (openViewEventListener != null) {
-			eventPublisher.removeListener(openViewEventListener);
-			openViewEventListener = null;
-		}
-
-		if (createViewFromTablePerspectiveEventListener != null) {
-			eventPublisher.removeListener(createViewFromTablePerspectiveEventListener);
-			createViewFromTablePerspectiveEventListener = null;
-		}
-
-		if (applySpecificGraphLayoutEventListener != null) {
-			eventPublisher.removeListener(applySpecificGraphLayoutEventListener);
-			applySpecificGraphLayoutEventListener = null;
-		}
-
-		if (minSizeAppliedEventListener != null) {
-			eventPublisher.removeListener(minSizeAppliedEventListener);
-			minSizeAppliedEventListener = null;
-		}
-
-		if (showDataConnectionsEventListener != null) {
-			eventPublisher.removeListener(showDataConnectionsEventListener);
-			showDataConnectionsEventListener = null;
-		}
-
-		if (recordVAUpdateEventListener != null) {
-			eventPublisher.removeListener(recordVAUpdateEventListener);
-			recordVAUpdateEventListener = null;
-		}
-
-		if (dimensionVAUpdateEventListener != null) {
-			eventPublisher.removeListener(dimensionVAUpdateEventListener);
-			dimensionVAUpdateEventListener = null;
-		}
-
-		if (showViewWithoutDataEventListener != null) {
-			eventPublisher.removeListener(showViewWithoutDataEventListener);
-			showViewWithoutDataEventListener = null;
-		}
-
-		if (loadGroupingEventListener != null) {
-			eventPublisher.removeListener(loadGroupingEventListener);
-			loadGroupingEventListener = null;
-		}
-
-		if (createClusteringEventListener != null) {
-			eventPublisher.removeListener(createClusteringEventListener);
-			createClusteringEventListener = null;
-		}
-
-		if (renameLabelHolderEventListener != null) {
-			eventPublisher.removeListener(renameLabelHolderEventListener);
-			renameLabelHolderEventListener = null;
-		}
+		listeners.unregisterAll();
 	}
 
 	@Override
@@ -718,6 +605,8 @@ public class GLDataViewIntegrator
 				Set<ViewNode> viewNodes = viewNodesOfDataDomains.get(dataDomain);
 				if (viewNodes != null) {
 					viewNodes.remove(viewNode);
+					if (viewNodes.isEmpty())
+						viewNodesOfDataDomains.remove(dataDomain);
 				}
 			}
 		}
@@ -725,6 +614,10 @@ public class GLDataViewIntegrator
 		dataGraph.removeNode(viewNode);
 		viewNodes.remove(viewNode);
 		viewNode.destroy();
+
+		if (viewNode == currentMouseOverNode)
+			currentMouseOverNode = null;
+
 		// applyAutomaticLayout = true;
 		setDisplayListDirty();
 	}
@@ -774,6 +667,8 @@ public class GLDataViewIntegrator
 			else {
 				if (viewNodes != null) {
 					viewNodes.remove(viewNode);
+					if (viewNodes.isEmpty()) // clean empty
+						viewNodesOfDataDomains.remove(dataDomain);
 				}
 				ADataNode dataNode = dataNodesOfDataDomains.get(dataDomain);
 				if (dataNode != null) {
@@ -838,6 +733,32 @@ public class GLDataViewIntegrator
 				edge.setEdgeRenderer(edgeRenderer);
 			}
 		}
+
+		applyAutomaticLayout = true;
+		setDisplayListDirty();
+	}
+
+	public void removeDataDomain(String dataDomainID) {
+		ADataNode node = null;
+		IDataDomain toremove = null;
+		for (IDataDomain dataDomain : dataNodesOfDataDomains.keySet()) {
+			if (dataDomain.getDataDomainID().equals(dataDomainID)) {
+				toremove = dataDomain;
+				node = dataNodesOfDataDomains.remove(dataDomain);
+				break;
+			}
+		}
+		if (node == null)
+			return;
+		node.destroy();
+
+		if (currentMouseOverNode == node) {
+			currentMouseOverNode = null;
+		}
+
+		dataGraph.removeNode(node);
+		dataNodes.remove(node);
+		viewNodesOfDataDomains.remove(toremove);
 
 		applyAutomaticLayout = true;
 		setDisplayListDirty();
@@ -1141,53 +1062,6 @@ public class GLDataViewIntegrator
 		// TODO: delete layout managers
 	}
 
-	/**
-	 * Triggers group loading by opening the {@link ImportGroupingDialog}.
-	 *
-	 * @param dataDomain The datadomain a grouping shall be loaded for.
-	 * @param idCategory Determines for which {@link IDCategory} the grouping
-	 *            should be loaded, i.e. whether rows or columns should be
-	 *            grouped.
-	 */
-	public void loadGrouping(final ATableBasedDataDomain dataDomain, final IDCategory idCategory) {
-		parentComposite.getDisplay().asyncExec(new ImportGroupingCommand(idCategory, dataDomain));
-	}
-
-	/**
-	 * Creates a new perspective for the specified data domain through
-	 * clustering via the {@link ClusterDialog}. The default perspectives of the
-	 * data domain are used to specify the data to be clustered.
-	 *
-	 * @param dataDomain
-	 * @param isDimensionClustering Specifies whether a
-	 *            {@link DimensionPerspective} or a {@link RecordPerspective}
-	 *            shall be created.
-	 */
-	public void createClustering(final ATableBasedDataDomain dataDomain, final boolean isDimensionClustering) {
-		parentComposite.getDisplay().asyncExec(new Runnable() {
-
-			@Override
-			public void run() {
-
-				ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
-				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getDefaultTablePerspective()
-						.getDimensionPerspective());
-				clusterConfiguration.setSourceRecordPerspective(dataDomain.getDefaultTablePerspective()
-						.getRecordPerspective());
-
-				clusterConfiguration.setModifyExistingPerspective(false);
-				if (isDimensionClustering)
-					clusterConfiguration.setClusterTarget(EClustererTarget.DIMENSION_CLUSTERING);
-				else
-					clusterConfiguration.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
-
-				ClusterDialog dialog = new ClusterDialog(new Shell(), dataDomain, clusterConfiguration);
-
-				dialog.open();
-
-			}
-		});
-	}
 
 	/**
 	 * Opens an input dialog in order to rename the specified

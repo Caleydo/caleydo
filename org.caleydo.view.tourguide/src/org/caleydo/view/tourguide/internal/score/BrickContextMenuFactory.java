@@ -27,9 +27,13 @@ import org.caleydo.core.util.execution.SafeCallable;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.stratomex.brick.IContextMenuBrickFactory;
 import org.caleydo.view.stratomex.column.BrickColumn;
+import org.caleydo.view.tourguide.internal.RcpGLTourGuideView;
 import org.caleydo.view.tourguide.internal.view.VendingMachine;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
@@ -41,29 +45,44 @@ public class BrickContextMenuFactory implements IContextMenuBrickFactory {
 
 	@Override
 	public Iterable<AContextMenuItem> createGroupEntries(BrickColumn brick, TablePerspective group) {
-		if (!isTourGuideVisible()) // show context menu only if the tour guide view is visible
+		VendingMachine firstVisible = getVisibleTourGuide();
+		if (firstVisible == null) // show context menu only if the tour guide view is visible
 			return Collections.emptyList();
-		return ScoreFactories.createGroupEntries(brick.getTablePerspective(), group.getRecordGroup());
+		return ScoreFactories.createGroupEntries(brick.getTablePerspective(), group.getRecordGroup(),
+				firstVisible.getScoreQueryUI());
 	}
 
 
 	@Override
 	public Iterable<AContextMenuItem> createStratification(BrickColumn brick) {
-		if (!isTourGuideVisible())
+		VendingMachine firstVisible = getVisibleTourGuide();
+		if (firstVisible == null) // show context menu only if the tour guide view is visible
 			return Collections.emptyList();
-		return ScoreFactories.createStratEntries(brick.getTablePerspective());
+		return ScoreFactories.createStratEntries(brick.getTablePerspective(), firstVisible.getScoreQueryUI());
 	}
 
-	private static boolean isTourGuideVisible() {
+	private static VendingMachine getVisibleTourGuide() {
 		final IWorkbench wb = PlatformUI.getWorkbench();
-		return DisplayUtils.syncExec(wb.getDisplay(), new SafeCallable<Boolean>() {
+		return DisplayUtils.syncExec(wb.getDisplay(), new SafeCallable<VendingMachine>() {
 			@Override
-			public Boolean call() {
+			public VendingMachine call() {
 				IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
 				IWorkbenchPage page = win.getActivePage();
-				return page.findViewReference(VendingMachine.VIEW_TYPE) != null;
+				for (IViewReference r : page.getViewReferences()) {
+					if (!r.getId().equals(VendingMachine.VIEW_TYPE))
+						continue;
+					IWorkbenchPart p = r.getPart(false);
+					if (p == null || !page.isPartVisible(p))
+						continue;
+					IViewPart v = r.getView(false);
+					if (!(v instanceof RcpGLTourGuideView))
+						continue;
+					RcpGLTourGuideView rv = (RcpGLTourGuideView)v;
+					return rv.getView();
+				}
+				return null;
 			}
-		}).booleanValue();
+		});
 	}
 
 }

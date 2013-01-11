@@ -24,14 +24,13 @@ import java.util.Map;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.ExtensionUtils;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
-import org.caleydo.view.tourguide.api.util.ExtensionUtils;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
-import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.IScoreFactory.ScoreEntry;
 
@@ -50,29 +49,28 @@ public class ScoreFactories {
 		factories = ExtensionUtils.findImplementation(EXTENSION_ID, "name", "class", IScoreFactory.class);
 	}
 
-	public static void addCreateItems(ContextMenuCreator creator, ScoreQueryUI sender, EDataDomainQueryMode mode) {
+	public static void addCreateItems(ContextMenuCreator creator, Object receiver, EDataDomainQueryMode mode) {
 		for (Map.Entry<String, IScoreFactory> entry : factories.entrySet()) {
 			if (entry.getValue().supports(mode))
-				creator.addContextMenuItem(new GenericContextMenuItem("Create " + entry.getKey(), new CreateScoreEvent(
-						entry.getKey(), sender)));
+				creator.add("Create " + entry.getKey(), new CreateScoreEvent(entry.getKey()).to(receiver));
 		}
 	}
 
-	public static Iterable<AContextMenuItem> createGroupEntries(TablePerspective strat, Group group) {
+	public static Iterable<AContextMenuItem> createGroupEntries(TablePerspective strat, Group group, Object receiver) {
 		Collection<AContextMenuItem> items = Lists.newArrayList();
 		for (IScoreFactory f : factories.values()) {
 			for (ScoreEntry p : f.createGroupEntries(strat, group)) {
-				items.add(new GenericContextMenuItem(p.getLabel(), new AddScoreColumnEvent(p.getScores(), null)));
+				items.add(new GenericContextMenuItem(p.getLabel(), new AddScoreColumnEvent(p.getScores()).to(receiver)));
 			}
 		}
 		return items;
 	}
 
-	public static Collection<AContextMenuItem> createStratEntries(TablePerspective strat) {
+	public static Collection<AContextMenuItem> createStratEntries(TablePerspective strat, Object receiver) {
 		Collection<AContextMenuItem> items = Lists.newArrayList();
 		for (IScoreFactory f : factories.values()) {
 			for (ScoreEntry p : f.createStratEntries(strat)) {
-				items.add(new GenericContextMenuItem(p.getLabel(), new AddScoreColumnEvent(p.getScores(), null)));
+				items.add(new GenericContextMenuItem(p.getLabel(), new AddScoreColumnEvent(p.getScores()).to(receiver)));
 			}
 		}
 		return items;

@@ -42,7 +42,7 @@ public class CollisionAvoidanceRoutingStrategy implements IEdgeRoutingStrategy {
 	}
 
 	@Override
-	public void createEdge(List<Point2D> edgePoints) {
+	public void createEdge(IDVINode node1, IDVINode node2, List<Point2D> edgePoints) {
 		if (edgePoints == null || edgePoints.size() < 2)
 			return;
 
@@ -274,10 +274,4 @@ public class CollisionAvoidanceRoutingStrategy implements IEdgeRoutingStrategy {
 	//
 	// return null;
 	// }
-
-	@Override
-	public void setNodes(IDVINode node1, IDVINode node2) {
-		// This strategy does not need concrete nodes
-	}
-
 }

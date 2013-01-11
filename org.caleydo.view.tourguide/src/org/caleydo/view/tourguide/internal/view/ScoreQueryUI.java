@@ -32,7 +32,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.caleydo.core.event.EventListeners.ListenTo;
+import org.caleydo.core.gui.util.RenameNameDialog;
 import org.caleydo.core.util.base.DefaultLabelProvider;
+import org.caleydo.core.util.base.ILabelHolder;
 import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
@@ -53,6 +56,7 @@ import org.caleydo.view.tourguide.api.query.filter.ECompareOperator;
 import org.caleydo.view.tourguide.api.score.CollapseScore;
 import org.caleydo.view.tourguide.api.util.LabelComparator;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
+import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
 import org.caleydo.view.tourguide.internal.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.RenameScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.ToggleNaNFilterScoreColumnEvent;
@@ -65,11 +69,15 @@ import org.caleydo.view.tourguide.internal.view.col.MatchColumn;
 import org.caleydo.view.tourguide.internal.view.col.QueryColumn;
 import org.caleydo.view.tourguide.internal.view.col.RankColumn;
 import org.caleydo.view.tourguide.internal.view.ui.ScoreFilterDialog;
+import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.query.filter.IScoreFilter;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 /**
@@ -332,19 +340,19 @@ public class ScoreQueryUI extends Row {
 		ContextMenuCreator creator = view.getContextMenuCreator();
 		if (column.getScore() instanceof DefaultLabelProvider) {
 			creator.addContextMenuItem(new GenericContextMenuItem("Rename", new RenameScoreColumnEvent(
-					(DefaultLabelProvider) column.getScore(), this)));
+					(DefaultLabelProvider) column.getScore()).to(this)));
 			creator.addSeparator();
 		}
-		creator.addContextMenuItem(new GenericContextMenuItem("Remove", new RemoveScoreColumnEvent(column.getScore(),
-				false, this)));
-		creator.addContextMenuItem(new GenericContextMenuItem("Remove And Forget", new RemoveScoreColumnEvent(column
-				.getScore(), true, this)));
+		creator.addContextMenuItem(new GenericContextMenuItem("Hide", new RemoveScoreColumnEvent(column.getScore(),
+				false).to(this)));
+		creator.addContextMenuItem(new GenericContextMenuItem("Hide And Remove", new RemoveScoreColumnEvent(column
+				.getScore(), true).to(this)));
 		creator.addSeparator();
 
 		{
 			boolean hasNanFilter = hasNaNFilter(column.getScore());
 			creator.addContextMenuItem(new GenericContextMenuItem("Enable NaN Filter", EContextMenuType.CHECK,
-					new ToggleNaNFilterScoreColumnEvent(column.getScore(), this)).setState(hasNanFilter));
+					new ToggleNaNFilterScoreColumnEvent(column.getScore()).to(this)).setState(hasNanFilter));
 		}
 		// creator.addContextMenuItem(new GenericContextMenuItem("Edit Filter", new ))
 	}
@@ -377,9 +385,68 @@ public class ScoreQueryUI extends Row {
 			if (visible.contains(s) || !s.supports(mode))
 				continue;
 			creator.addContextMenuItem(new GenericContextMenuItem("Add " + s.getAbbreviation() + " " + s.getLabel(),
-					new AddScoreColumnEvent(s,
-					this)));
+					new AddScoreColumnEvent(s).to(this)));
 		}
+	}
+
+	@ListenTo(sendToMe = true)
+	void onAddColumn(AddScoreColumnEvent event) {
+		query.addSelection(Lists.newArrayList(Iterables.transform(event.getScores(),
+				Scores.get().registerScores)));
+	}
+
+	@ListenTo(sendToMe = true)
+	void onRemoveColumn(RemoveScoreColumnEvent event) {
+		IScore score = event.getScore();
+		query.sortBy(score, ESorting.NONE);
+		query.removeSelection(score);
+		if (event.isRemove()) {
+			Scores.get().remove(score);
+		}
+	}
+
+	@ListenTo(sendToMe = true)
+	void onRename(RenameScoreColumnEvent event) {
+		final ILabelHolder l = event.getColumn();
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				String r = RenameNameDialog.show(view.getParentComposite().getShell(), "Rename '" + l.getLabel()
+						+ "' to", l.getLabel());
+				if (r != null) {
+					l.setLabel(r);
+					view.setDisplayListDirty();
+				}
+			}
+		});
+	}
+
+	@ListenTo(sendToMe = true)
+	void onToggleNaNFilter(ToggleNaNFilterScoreColumnEvent event) {
+		IScore score = event.getScore();
+		for (IScoreFilter s : query.getFilter()) {
+			if (!(s instanceof CompareScoreFilter))
+				continue;
+			CompareScoreFilter cs = ((CompareScoreFilter) s);
+			if (cs.getReference() == score && cs.getOp() == ECompareOperator.IS_NOT_NA) {
+				// remove the filter
+				query.removeFilter(s);
+				return;
+			}
+		}
+		// wasn't there add the filter
+		query.addFilter(new CompareScoreFilter(score, ECompareOperator.IS_NOT_NA, 0.5f));
+	}
+
+	@ListenTo(sendToMe = true)
+	void onCreateScore(final CreateScoreEvent event) {
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				IScoreFactory f = ScoreFactories.get(event.getScore());
+				f.createCreateDialog(new Shell(), ScoreQueryUI.this).open();
+			}
+		});
 	}
 
 	private Set<IScore> getVisibleColumns() {
@@ -411,7 +478,6 @@ public class ScoreQueryUI extends Row {
 	public void selectPrevious() {
 		setSelected(selectedRow - 1);
 	}
-
 }
 
 interface ISelectionListener {

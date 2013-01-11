@@ -90,8 +90,7 @@ public class AdvancedTextureRenderer extends LayoutRenderer {
 		if (this.imagePath != null && this.imagePath.equals(imagePath))
 			return;
 		this.imagePath = imagePath;
-		if (this.imagePath != null)
-			setDisplayListDirty();
+		setDisplayListDirty();
 	}
 
 	@Override

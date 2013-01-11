@@ -30,6 +30,7 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainActions;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
@@ -38,7 +39,6 @@ import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -52,8 +52,6 @@ import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
-import org.caleydo.view.dvi.contextmenu.CreateClusteringItem;
-import org.caleydo.view.dvi.contextmenu.LoadGroupingItem;
 import org.caleydo.view.dvi.contextmenu.ShowViewWithoutDataItem;
 import org.caleydo.view.dvi.layout.AGraphLayout;
 import org.caleydo.view.dvi.tableperspective.AMultiTablePerspectiveRenderer;
@@ -187,13 +185,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 			@Override
 			public void rightClicked(Pick pick) {
-				ContextMenuCreator contextMenuCreator = view.getContextMenuCreator();
-				contextMenuCreator.addContextMenuItem(new LoadGroupingItem(dataDomain, dataDomain
-						.getDimensionIDCategory()));
-				contextMenuCreator.addContextMenuItem(new LoadGroupingItem(dataDomain, dataDomain.getRecordIDCategory()));
-
-				contextMenuCreator.addContextMenuItem(new CreateClusteringItem(dataDomain, true));
-				contextMenuCreator.addContextMenuItem(new CreateClusteringItem(dataDomain, false));
+				DataDomainActions.add(view.getContextMenuCreator(), dataDomain, this, true);
 			}
 
 		}, DATA_GRAPH_NODE_PICKING_TYPE, id);
@@ -256,6 +248,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 					DATA_GRAPH_NODE_PICKING_TYPE, id);
 		}
 	}
+
 
 	@Override
 	protected ElementLayout setupLayout() {
@@ -336,7 +329,10 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		view.removeAllIDPickingListeners(TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_TYPE + getID(),
 				TOGGLE_TABLE_PERSPECTIVE_BUTTON_PICKING_ID);
 		view.removeAllIDPickingListeners(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
-		tablePerspectiveRenderer.destroy();
+		view.removeAllIDPickingListeners(DATA_GRAPH_NODE_PICKING_TYPE, id);
+		// tablePerspectiveRenderer.destroy();
+		overviewState.tablePerspectiveRenderer.destroy();
+		detailState.tablePerspectiveRenderer.destroy();
 	}
 
 	@Override

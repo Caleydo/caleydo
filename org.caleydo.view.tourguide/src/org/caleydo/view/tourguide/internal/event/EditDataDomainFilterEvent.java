@@ -19,24 +19,22 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.event;
 
-import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.view.tourguide.api.query.filter.SpecificDataDomainFilter;
-import org.caleydo.view.tourguide.internal.view.DataDomainQueryUI;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class EditDataDomainFilterEvent extends AEvent {
+public class EditDataDomainFilterEvent extends ADirectedEvent {
 	private SpecificDataDomainFilter filter;
 
 	public EditDataDomainFilterEvent() {
 
 	}
 
-	public EditDataDomainFilterEvent(SpecificDataDomainFilter filter, DataDomainQueryUI sender) {
+	public EditDataDomainFilterEvent(SpecificDataDomainFilter filter) {
 		this.filter = filter;
-		this.setSender(sender);
 	}
 
 	/**

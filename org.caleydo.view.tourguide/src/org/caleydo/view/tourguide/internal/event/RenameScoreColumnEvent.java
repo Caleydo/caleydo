@@ -19,20 +19,18 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.event;
 
-import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.core.util.base.DefaultLabelProvider;
-import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class RenameScoreColumnEvent extends AEvent {
+public class RenameScoreColumnEvent extends ADirectedEvent {
 	private DefaultLabelProvider column;
 
-	public RenameScoreColumnEvent(DefaultLabelProvider column, ScoreQueryUI sender) {
+	public RenameScoreColumnEvent(DefaultLabelProvider column) {
 		this.column = column;
-		this.setSender(sender);
 	}
 
 	public DefaultLabelProvider getColumn() {

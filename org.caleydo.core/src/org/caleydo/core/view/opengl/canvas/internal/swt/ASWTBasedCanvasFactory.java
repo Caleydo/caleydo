@@ -28,6 +28,8 @@ import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.internal.IGLCanvasFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MenuEvent;
+import org.eclipse.swt.events.MenuListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
@@ -60,18 +62,35 @@ public abstract class ASWTBasedCanvasFactory implements IGLCanvasFactory {
 		parent.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				Menu m = new Menu(parent);
+				final Menu m = new Menu(parent);
 				for (AContextMenuItem menuItem : items) {
-					create(m, menuItem);
+					create(m, m, menuItem);
 				}
 				m.setLocation(parent.getDisplay().getCursorLocation());
+				m.addMenuListener(new MenuListener() {
+					@Override
+					public void menuShown(MenuEvent e) {
+
+					}
+
+					@Override
+					public void menuHidden(MenuEvent e) {
+						// dispose in a later run
+						e.display.asyncExec(new Runnable() {
+							@Override
+							public void run() {
+								m.dispose();
+							}
+						});
+					}
+				});
 				m.setVisible(true);
 			}
 		});
 
 	}
 
-	private void create(Menu parent, final AContextMenuItem item) {
+	private void create(Menu parent, Menu m, final AContextMenuItem item) {
 		if (item instanceof SeparatorMenuItem) {
 			new MenuItem(parent, SWT.SEPARATOR);
 			return;
@@ -84,7 +103,7 @@ public abstract class ASWTBasedCanvasFactory implements IGLCanvasFactory {
 
 			Menu submenu = new Menu(parent);
 			for (AContextMenuItem subMenuItem : subItems) {
-				create(submenu, subMenuItem);
+				create(submenu, m, subMenuItem);
 			}
 			menuItem.setMenu(submenu);
 		} else {

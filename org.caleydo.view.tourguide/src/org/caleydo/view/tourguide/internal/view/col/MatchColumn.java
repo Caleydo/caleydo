@@ -88,9 +88,7 @@ public class MatchColumn extends ATableColumn {
 			r.setXDynamic(true);
 
 			AdvancedTextureRenderer cAdd = new AdvancedTextureRenderer(null, view.getTextureManager());
-			if (this.stratomex.contains(elem.getPerspective()))
-				cAdd.setImagePath(TourGuideRenderStyle.ICON_ADD_TO_STRATOMEX_DISABLED);
-			else
+			if (!this.stratomex.contains(elem.getPerspective()))
 				cAdd.setImagePath(TourGuideRenderStyle.ICON_ADD_TO_STRATOMEX);
 			ElementLayout l = wrap(cAdd, DATADOMAIN_TYPE_WIDTH);
 			PickingRenderer pick = new PickingRenderer(ScoreQueryUI.ADD_TO_STRATOMEX, i, view);
@@ -116,7 +114,7 @@ public class MatchColumn extends ATableColumn {
 			AdvancedTextureRenderer r = (AdvancedTextureRenderer) td.get(0).getRenderer();
 			if (this.stratomex.contains(elem.getPerspective())
 					&& !this.stratomex.isTemporaryPreviewed(elem.getPerspective()))
-				r.setImagePath(TourGuideRenderStyle.ICON_ADD_TO_STRATOMEX_DISABLED);
+				r.setImagePath(null);
 			else
 				r.setImagePath(TourGuideRenderStyle.ICON_ADD_TO_STRATOMEX);
 		}

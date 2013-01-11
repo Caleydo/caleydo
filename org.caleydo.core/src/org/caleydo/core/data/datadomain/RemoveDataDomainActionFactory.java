@@ -17,44 +17,26 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.listener;
+package org.caleydo.core.data.datadomain;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.caleydo.core.data.datadomain.DataDomainActions.IDataDomainActionFactory;
+import org.caleydo.core.data.datadomain.event.AskRemoveDataDomainEvent;
 import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
-import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
-import org.caleydo.view.tourguide.internal.score.ScoreFactories;
-import org.caleydo.view.tourguide.internal.view.VendingMachine;
-import org.caleydo.view.tourguide.spi.IScoreFactory;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
+import org.caleydo.core.util.collection.Pair;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class CreateScoreListener extends AEventListener<VendingMachine> {
-
-	public CreateScoreListener(VendingMachine vendingMachine) {
-		setHandler(vendingMachine);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.event.AEventListener#handleEvent(org.caleydo.core.event.AEvent)
-	 */
+public class RemoveDataDomainActionFactory implements IDataDomainActionFactory {
 	@Override
-	public void handleEvent(AEvent event) {
-		if (event.getSender() != handler.getScoreQueryUI())
-			return;
-		final CreateScoreEvent e = (CreateScoreEvent) event;
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				IScoreFactory f = ScoreFactories.get(e.getScore());
-				f.createCreateDialog(new Shell(), handler.getScoreQueryUI()).open();
-			}
-		});
+	public Collection<Pair<String, ? extends AEvent>> create(IDataDomain dataDomain, Object sender) {
+		Collection<Pair<String, ? extends AEvent>> r = new ArrayList<>(1);
+		if (dataDomain instanceof ATableBasedDataDomain)
+			r.add(Pair.make("Remove Data Set", new AskRemoveDataDomainEvent(dataDomain)));
+		return r;
 	}
-
 }

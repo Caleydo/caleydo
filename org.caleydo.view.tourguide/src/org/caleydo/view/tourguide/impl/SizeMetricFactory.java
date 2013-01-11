@@ -28,7 +28,6 @@ import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.api.score.EScoreType;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
-import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.IMetricFactory;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
@@ -38,10 +37,10 @@ import org.caleydo.view.tourguide.spi.score.IScore;
  */
 public class SizeMetricFactory implements IMetricFactory {
 	@Override
-	public void addCreateMetricItems(ContextMenuCreator creator, Set<IScore> visible, ScoreQueryUI sender) {
+	public void addCreateMetricItems(ContextMenuCreator creator, Set<IScore> visible, Object receiver) {
 		if (!visible.contains(SizeMetric.get()))
 			creator.addContextMenuItem(new GenericContextMenuItem("Add Size Metric", new AddScoreColumnEvent(SizeMetric
-					.get(), sender)));
+					.get()).to(receiver)));
 	}
 
 	@Override

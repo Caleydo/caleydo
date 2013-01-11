@@ -26,6 +26,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.datadomain.event.AskRemoveDataDomainEvent;
+import org.caleydo.core.data.datadomain.listener.AskRemoveDataDomainEventListener;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventHandler;
 import org.caleydo.core.event.AEventListener;
@@ -208,6 +210,7 @@ public abstract class ADataDomain extends AEventHandler implements IDataDomain {
 			}
 		}.setExclusiveDataDomainID(dataDomainID).setHandler(this);
 		listeners.register(RemoveDataDomainEvent.class, removeListener);
+		listeners.register(AskRemoveDataDomainEvent.class, new AskRemoveDataDomainEventListener(this));
 	}
 
 	protected void removeMe() {

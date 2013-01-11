@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Shell;
 public final class ImportExternalScoreCommand implements Runnable {
 	private final ATableBasedDataDomain dataDomain;
 
-	private final ScoreQueryUI sender;
+	private final ScoreQueryUI receiver;
 	private final boolean inDimensionDirection;
 	private final Class<? extends ISerializeableScore> type;
 
@@ -31,7 +31,7 @@ public final class ImportExternalScoreCommand implements Runnable {
 		this.dataDomain = dataDomain;
 		this.inDimensionDirection = dimensionDirection;
 		this.type = type;
-		this.sender = scoreQueryUI;
+		this.receiver = scoreQueryUI;
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public final class ImportExternalScoreCommand implements Runnable {
 			last = scoreManager.addPersistentScoreIfAbsent(score);
 		}
 		if (last != null) // add the last newly created one to the list
-			GeneralManager.get().getEventPublisher().triggerEvent(new AddScoreColumnEvent(last, sender));
+			GeneralManager.get().getEventPublisher().triggerEvent(new AddScoreColumnEvent(last).to(receiver));
 	}
 
 	private Collection<ISerializeableScore> importExternalIDScore() {

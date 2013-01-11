@@ -50,6 +50,14 @@ public abstract class AEventListener<T extends IListenerOwner> {
 	 */
 	protected boolean isExclusiveDataDomain = false;
 
+	public AEventListener() {
+
+	}
+
+	public AEventListener(T handler) {
+		this.handler = handler;
+	}
+
 	/**
 	 * Returns the related handler object to this listener.
 	 *

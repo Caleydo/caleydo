@@ -21,24 +21,17 @@ package org.caleydo.view.tourguide.internal.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.event.EventListeners;
+import org.caleydo.core.event.EventListeners.ListenTo;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
-import org.caleydo.core.gui.util.RenameNameDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.base.DefaultLabelProvider;
-import org.caleydo.core.view.IMultiTablePerspectiveBasedView;
-import org.caleydo.core.view.ITablePerspectiveBasedView;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
 import org.caleydo.core.view.listener.RemoveTablePerspectiveEvent;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -60,40 +53,15 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.tourguide.api.query.DataDomainQuery;
-import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.query.ScoreQuery;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
-import org.caleydo.view.tourguide.api.query.filter.CompareScoreFilter;
-import org.caleydo.view.tourguide.api.query.filter.ECompareOperator;
-import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 import org.caleydo.view.tourguide.internal.SerializedTourGuideView;
-import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
-import org.caleydo.view.tourguide.internal.event.CreateScoreColumnEvent;
-import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
-import org.caleydo.view.tourguide.internal.event.EditDataDomainFilterEvent;
 import org.caleydo.view.tourguide.internal.event.ImportExternalScoreEvent;
-import org.caleydo.view.tourguide.internal.event.RemoveScoreColumnEvent;
-import org.caleydo.view.tourguide.internal.event.RenameScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
-import org.caleydo.view.tourguide.internal.event.SelectDimensionSelectionEvent;
-import org.caleydo.view.tourguide.internal.event.ToggleNaNFilterScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.external.ImportExternalScoreCommand;
-import org.caleydo.view.tourguide.internal.listener.CreateScoreListener;
-import org.caleydo.view.tourguide.internal.listener.DataDomainEventListener;
-import org.caleydo.view.tourguide.internal.listener.ImportExternalScoreListener;
-import org.caleydo.view.tourguide.internal.listener.ScoreColumnListener;
-import org.caleydo.view.tourguide.internal.listener.ScoreQueryReadyListener;
-import org.caleydo.view.tourguide.internal.listener.StratomexTablePerspectiveListener;
 import org.caleydo.view.tourguide.internal.renderer.DecorationTextureRenderer;
-import org.caleydo.view.tourguide.internal.score.Scores;
-import org.caleydo.view.tourguide.spi.query.filter.IScoreFilter;
-import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
-
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
 /**
  * <p>
@@ -111,7 +79,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	private LayoutManager layoutManager;
 	private Column mainColumn;
 	private ScoreQueryUI scoreQueryUI;
-	private DataDomainQueryUI dataDomainSelector;
+	private DataDomainQueryUI dataDomainQueryUI;
 
 	private final EventListeners listeners = new EventListeners();
 
@@ -165,8 +133,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 		if (this.scoreQueryUI != null)
 			this.scoreQueryUI.setQuery(scoreQuery);
-		if (this.dataDomainSelector != null)
-			this.dataDomainSelector.setQuery(dataDomainQuery);
+		if (this.dataDomainQueryUI != null)
+			this.dataDomainQueryUI.setQuery(dataDomainQuery);
 	}
 
 
@@ -221,14 +189,18 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		if (scoreQuery == null)
 			setQuery(new ScoreQuery(new DataDomainQuery()));
 
-		dataDomainSelector = new DataDomainQueryUI(this);
-		dataDomainSelector.setQuery(dataDomainQuery);
-		mainColumn.append(dataDomainSelector);
+		dataDomainQueryUI = new DataDomainQueryUI(this);
+		dataDomainQueryUI.setQuery(dataDomainQuery);
+		listeners.register(this, dataDomainQueryUI);
+
+		mainColumn.append(dataDomainQueryUI);
 
 		mainColumn.append(ElementLayouts.createYSpacer(20));
 
 		scoreQueryUI = new ScoreQueryUI(this, this.stratomex);
 		scoreQueryUI.setQuery(scoreQuery);
+		listeners.register(this, scoreQueryUI);
+
 		mainColumn.append(ElementLayouts.scrollAlbe(this, scoreQueryUI));
 		// mainColumn.append(scoreQueryUI);
 
@@ -276,14 +248,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-		listeners.register(CreateScoreEvent.class, new CreateScoreListener(this));
-		listeners.register(new ScoreColumnListener(this), AddScoreColumnEvent.class, RenameScoreColumnEvent.class,
-				RemoveScoreColumnEvent.class, CreateScoreColumnEvent.class, ToggleNaNFilterScoreColumnEvent.class);
-		listeners.register(ScoreQueryReadyEvent.class, new ScoreQueryReadyListener(this));
-		listeners.register(ImportExternalScoreEvent.class, new ImportExternalScoreListener(this));
-		listeners.register(new StratomexTablePerspectiveListener(this), AddTablePerspectivesEvent.class, RemoveTablePerspectiveEvent.class, ReplaceTablePerspectiveEvent.class);
-		listeners.register(new DataDomainEventListener(this), EditDataDomainFilterEvent.class,
-				SelectDimensionSelectionEvent.class);
+		listeners.register(this);
+		listeners.register(this, stratomex);
 	}
 
 	@Override
@@ -343,7 +309,10 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		return deco;
 	}
 
-	public void onScoreQueryReady() {
+	@ListenTo
+	public void onScoreQueryReady(ScoreQueryReadyEvent event) {
+		if (event.getSender() != getScoreQuery())
+			return;
 		if (this.computing) {
 			this.computing = false;
 			getComputeDecoration().setImagePath(null);
@@ -369,26 +338,15 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		recomputeScores();
 	}
 
-	public void onAddColumn(IScore... scores) {
-		this.onAddColumn(Arrays.asList(scores));
-	}
 
-	public void onAddColumn(Collection<IScore> scores) {
-		this.scoreQuery.addSelection(Lists.newArrayList(Iterables.transform(scores, Scores.get().registerScores)));
-	}
 
-	public void onRemoveColumn(IScore score, boolean removeFromSystem) {
-		scoreQuery.sortBy(score, ESorting.NONE);
-		scoreQuery.removeSelection(score);
-		if (removeFromSystem) {
-			Scores.get().remove(score);
-		}
-	}
-
-	public void onImportExternalScore(final ATableBasedDataDomain dataDomain, boolean dimensionDirection,
-			Class<? extends ISerializeableScore> type) {
+	@ListenTo
+	public void onImportExternalScore(ImportExternalScoreEvent event) {
+		if (event.getSender() != getDataDomainQueryUI())
+			return;
 		Display.getDefault().asyncExec(
-				new ImportExternalScoreCommand(dataDomain, dimensionDirection, type, scoreQueryUI));
+				new ImportExternalScoreCommand(event.getDataDomain(), event.isInDimensionDirection(), event.getType(),
+						scoreQueryUI));
 	}
 
 	/**
@@ -402,67 +360,44 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	 * @param receiver
 	 * @param tablePerspectiveID
 	 */
-	public void onStratomexRemoveBrick(IMultiTablePerspectiveBasedView receiver, int tablePerspectiveID) {
-		if (!stratomex.is(receiver))
+	@ListenTo
+	void onStratomexRemoveBrick(RemoveTablePerspectiveEvent event) {
+		if (!stratomex.is(event.getReceiver()))
 			return;
-		stratomex.removeBrick(tablePerspectiveID);
+		stratomex.removeBrick(event.getTablePerspectiveID());
 		final ScoringElement selected = this.scoreQueryUI.getSelected();
 		if (selected != null && selected.getPerspective() != null
-				&& selected.getPerspective().getID() == tablePerspectiveID) {
+				&& selected.getPerspective().getID() == event.getTablePerspectiveID()) {
 			this.scoreQueryUI.setSelected(-1);
 		}
 		this.scoreQueryUI.updateAddToStratomexState();
 	}
 
-	public void onStratomexAddBricks(ITablePerspectiveBasedView receiver, Collection<TablePerspective> tablePerspectives) {
-		if (!stratomex.is(receiver))
+	@ListenTo
+	void onStratomexAddBricks(AddTablePerspectivesEvent event) {
+		if (!stratomex.is(event.getReceiver()))
 			return;
-		stratomex.addBricks(tablePerspectives);
+		stratomex.addBricks(event.getTablePerspectives());
 		this.scoreQueryUI.updateAddToStratomexState();
 	}
 
-	public void onStratomexReplaceBricks(Integer receiver, TablePerspective oldPerspective,
-			TablePerspective newPerspective) {
-		if (!stratomex.is(receiver))
+	@ListenTo
+	void onStratomexReplaceBricks(ReplaceTablePerspectiveEvent event) {
+		if (!stratomex.is(event.getViewID()))
 			return;
-		stratomex.replaceBricks(oldPerspective, newPerspective);
+		stratomex.replaceBricks(event.getOldPerspective(), event.getNewPerspective());
 	}
 
-	public void onRename(final DefaultLabelProvider l) {
-		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				String r = RenameNameDialog.show(getParentComposite().getShell(), "Rename '" + l.getLabel() + "' to",
-						l.getLabel());
-				if (r != null) {
-					l.setLabel(r);
-					setDisplayListDirty();
-				}
-			}
-		});
-	}
 
-	public void onToggleNaNFilter(IScore score) {
-		for (IScoreFilter s : scoreQuery.getFilter()) {
-			if (!(s instanceof CompareScoreFilter))
-				continue;
-			CompareScoreFilter cs = ((CompareScoreFilter) s);
-			if (cs.getReference() == score && cs.getOp() == ECompareOperator.IS_NOT_NA) {
-				// remove the filter
-				scoreQuery.removeFilter(s);
-				return;
-			}
-		}
-		// wasn't there add the filter
-		scoreQuery.addFilter(new CompareScoreFilter(score, ECompareOperator.IS_NOT_NA, 0.5f));
-	}
+
+
 
 	public ScoreQuery getScoreQuery() {
 		return scoreQuery;
 	}
 
 	public DataDomainQueryUI getDataDomainQueryUI() {
-		return this.dataDomainSelector;
+		return this.dataDomainQueryUI;
 	}
 
 	/**

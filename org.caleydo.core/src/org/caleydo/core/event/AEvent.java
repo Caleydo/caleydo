@@ -92,6 +92,17 @@ public abstract class AEvent {
 	}
 
 	/**
+	 * chaining version of {@link #setSender(Object)}
+	 * 
+	 * @param sender
+	 * @return
+	 */
+	public AEvent from(Object sender) {
+		setSender(sender);
+		return this;
+	}
+
+	/**
 	 * Set a dataDomainID string so that only those receivers which either have the same or no registered
 	 * domain receive the event
 	 *

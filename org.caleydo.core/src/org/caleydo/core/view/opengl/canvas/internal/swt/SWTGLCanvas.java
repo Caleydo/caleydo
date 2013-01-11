@@ -63,6 +63,8 @@ final class SWTGLCanvas implements IGLCanvas {
 					fireDispose(SWTGLCanvas.this.canvas);
 					SWTGLCanvas.this.canvas.getContext().destroy();
 					SWTGLCanvas.this.canvas.setRealized(false);
+					listenerMapping.clear();
+					glEventListeners.clear();
 				}
 			}
 		});
@@ -151,9 +153,13 @@ final class SWTGLCanvas implements IGLCanvas {
 	 */
 	@Override
 	public void addMouseListener(final IGLMouseListener listener) {
+		if (canvas.isDisposed())
+			return;
 		getDisplay().syncExec(new Runnable() {
 			@Override
 			public void run() {
+				if (canvas.isDisposed())
+					return;
 				SWTMouseAdapter a = new SWTMouseAdapter(listener);
 				listenerMapping.put(listener, a);
 				canvas.addMouseListener(a);
@@ -177,6 +183,8 @@ final class SWTGLCanvas implements IGLCanvas {
 				SWTMouseAdapter a = (SWTMouseAdapter) listenerMapping.remove(listener);
 				if (a == null)
 					return;
+				if (canvas.isDisposed())
+					return;
 				canvas.removeMouseListener(a);
 				canvas.removeMouseMoveListener(a);
 				canvas.removeMouseWheelListener(a);
@@ -193,6 +201,8 @@ final class SWTGLCanvas implements IGLCanvas {
 	 */
 	@Override
 	public void addFocusListener(final IGLFocusListener listener) {
+		if (canvas.isDisposed())
+			return;
 		getDisplay().syncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -211,11 +221,15 @@ final class SWTGLCanvas implements IGLCanvas {
 	 */
 	@Override
 	public void removeFocusListener(final IGLFocusListener listener) {
+		if (canvas.isDisposed())
+			return;
 		getDisplay().syncExec(new Runnable() {
 			@Override
 			public void run() {
 				SWTFocusAdapter a = (SWTFocusAdapter) listenerMapping.remove(listener);
 				if (a == null)
+					return;
+				if (canvas.isDisposed())
 					return;
 				canvas.removeFocusListener(a);
 			}
@@ -229,9 +243,13 @@ final class SWTGLCanvas implements IGLCanvas {
 	 */
 	@Override
 	public void requestFocus() {
+		if (canvas.isDisposed())
+			return;
 		getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
+				if (canvas.isDisposed())
+					return;
 				canvas.forceFocus();
 			}
 		});
@@ -249,9 +267,13 @@ final class SWTGLCanvas implements IGLCanvas {
 	 */
 	@Override
 	public void addKeyListener(final IGLKeyListener listener) {
+		if (canvas.isDisposed())
+			return;
 		getDisplay().syncExec(new Runnable() {
 			@Override
 			public void run() {
+				if (canvas.isDisposed())
+					return;
 				SWTKeyAdapter a = new SWTKeyAdapter(listener);
 				listenerMapping.put(listener, a);
 				canvas.addKeyListener(a);
@@ -268,11 +290,15 @@ final class SWTGLCanvas implements IGLCanvas {
 	 */
 	@Override
 	public void removeKeyListener(final IGLKeyListener listener) {
+		if (canvas.isDisposed())
+			return;
 		getDisplay().syncExec(new Runnable() {
 			@Override
 			public void run() {
 				SWTKeyAdapter a = (SWTKeyAdapter) listenerMapping.remove(listener);
 				if (a == null)
+					return;
+				if (canvas.isDisposed())
 					return;
 				canvas.removeKeyListener(a);
 			}

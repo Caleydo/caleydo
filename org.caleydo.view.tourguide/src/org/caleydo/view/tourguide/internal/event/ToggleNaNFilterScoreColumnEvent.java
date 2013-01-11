@@ -19,24 +19,22 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.event;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
+import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class ToggleNaNFilterScoreColumnEvent extends AEvent {
+public class ToggleNaNFilterScoreColumnEvent extends ADirectedEvent {
 	private IScore score;
 
 	public ToggleNaNFilterScoreColumnEvent() {
 
 	}
 
-	public ToggleNaNFilterScoreColumnEvent(IScore score, ScoreQueryUI sender) {
+	public ToggleNaNFilterScoreColumnEvent(IScore score) {
 		this.score = score;
-		this.setSender(sender);
 	}
 
 	public IScore getScore() {

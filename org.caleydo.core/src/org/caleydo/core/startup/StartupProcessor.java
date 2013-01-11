@@ -35,6 +35,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.PlatformUI;
 
 import com.martiansoftware.jsap.FlaggedOption;
@@ -55,7 +56,7 @@ public class StartupProcessor {
 
 	private static StartupProcessor startupProcessor;
 
-	private static AStartupProcedure startupProcedure;
+	private AStartupProcedure startupProcedure;
 
 	private Display display;
 
@@ -268,7 +269,14 @@ public class StartupProcessor {
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Bye bye!"));
 	}
 
-	public AStartupProcedure getStartupProcedure() {
-		return startupProcedure;
+	public void addDefaultStartViews(IFolderLayout layout) {
+
+		layout.addView("org.caleydo.view.dvi");
+		layout.addView("org.caleydo.view.stratomex");
+	}
+
+	public void postWorkbenchOpen() {
+		startupProcedure.postWorkbenchOpen();
+		startupProcedure = null; // cleanup not used any longer
 	}
 }

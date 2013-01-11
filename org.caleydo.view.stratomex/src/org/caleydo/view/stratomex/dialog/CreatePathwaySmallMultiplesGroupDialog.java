@@ -21,7 +21,6 @@ package org.caleydo.view.stratomex.dialog;
 
 import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
@@ -40,7 +39,15 @@ import org.caleydo.datadomain.pathway.data.PathwayTablePerspective;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -66,8 +73,9 @@ public class CreatePathwaySmallMultiplesGroupDialog
 	private TablePerspective tablePerspective;
 	private DimensionPerspective dimensionPerspective;
 
-	private PathwayDataDomain pathwayDataDomain;
 	private PathwayTableSorter pathwayTableSorter = new PathwayTableSorter();
+
+	private CheckboxTableViewer viewer;
 
 	private Table pathwayTable;
 
@@ -75,6 +83,7 @@ public class CreatePathwaySmallMultiplesGroupDialog
 
 	private ArrayList<PathwayTablePerspective> pathwayTablePerspective = new ArrayList<PathwayTablePerspective>();
 	private HashMap<PathwayGraph, Integer> pathwayGraphsWithOccurrences;
+	private PathwayComparator comparator;
 
 	private class PathwayTableSorter
 		implements Listener {
@@ -166,18 +175,7 @@ public class CreatePathwaySmallMultiplesGroupDialog
 			sortedPathwayList.add(Pair.make(pathwayGraphsWithOccurrences
 					.get(pathway), pathway));
 		}
-		Collections.sort(sortedPathwayList);
-
-		Collection<PathwayGraph> dbPathways = new ArrayList<PathwayGraph>();
-
-		for (int count = sortedPathwayList.size() - 1; count >= 0; count--) {
-			Pair<Integer, PathwayGraph> pair = sortedPathwayList.get(count);
-			if (pair.getFirst() > 1) {
-
-				PathwayGraph pathway = pair.getSecond();
-				dbPathways.add(pathway);
-			}
-		}
+		Collections.sort(sortedPathwayList, Collections.reverseOrder());
 
 		// final Combo databaseCombo = new Combo(parent, SWT.DROP_DOWN);
 		// List<String> databaseNames = new
@@ -208,51 +206,124 @@ public class CreatePathwaySmallMultiplesGroupDialog
 		data.grabExcessVerticalSpace = true;
 		data.horizontalAlignment = GridData.FILL;
 		data.verticalAlignment = GridData.FILL;
-		pathwayTable = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 
-		pathwayTable.setHeaderVisible(true);
-		TableColumn column1 = new TableColumn(pathwayTable, SWT.CHECK);
-		column1.setText("Pathway");
-		column1.addListener(SWT.Selection, pathwayTableSorter);
-		TableColumn column2 = new TableColumn(pathwayTable, SWT.NONE);
-		column2.setText("Database");
-		TableColumn column3 = new TableColumn(pathwayTable, SWT.NONE);
-		column3.setText("Gene Occurences");
-		pathwayTable.setLayoutData(data);
-		pathwayTable.setSortColumn(column1);
-		pathwayTable.setSortDirection(SWT.UP);
-		pathwayTable.setEnabled(true);
+		viewer = CheckboxTableViewer.newCheckList(parent, SWT.NONE);
+		TableViewerColumn column1 = newColumn(viewer, "Pathway", 0);
+		column1.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				ComparablePair<Integer, PathwayGraph> p = (ComparablePair<Integer, PathwayGraph>) element;
+				return p.getSecond().getTitle();
+			}
+		});
 
-		// setTableContent(databaseCombo.getText());
-		setTableContent(dbPathways);
+		// Set the sorter for the table
+		comparator = new PathwayComparator();
+		viewer.setComparator(comparator);
+
+		TableViewerColumn column2 = newColumn(viewer, "Database", 1);
+		column2.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				ComparablePair<Integer, PathwayGraph> p = (ComparablePair<Integer, PathwayGraph>) element;
+				return p.getSecond().getType().getName();
+			}
+		});
+
+		TableViewerColumn column3 = newColumn(viewer, "Gene Occurences", 2);
+		column3.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				ComparablePair<Integer, PathwayGraph> p = (ComparablePair<Integer, PathwayGraph>) element;
+				return p.getFirst().toString();
+			}
+		});
+		viewer.getTable().setLayoutData(data);
+		viewer.getTable().setHeaderVisible(true);
+		viewer.getTable().setSortDirection(comparator.getDirection());
+		viewer.getTable().setSortColumn(column3.getColumn());
+		viewer.setContentProvider(ArrayContentProvider.getInstance());
+		viewer.setInput(sortedPathwayList);
+		column1.getColumn().pack();
+		column2.getColumn().pack();
+		column3.getColumn().pack();
 
 		return parent;
 	}
 
-	private void setTableContent(Collection<PathwayGraph> pathways) {
-		// List<PathwayGraph> pathways = pathwayMap.get(pathwayDatabase);
+	public class PathwayComparator extends ViewerComparator {
+		private int propertyIndex;
+		private static final int DESCENDING = 1;
+		private int direction = DESCENDING;
 
-		if (pathways == null)
-			return;
-
-		pathwayTable.removeAll();
-
-		for (PathwayGraph pathway : pathways) {
-			TableItem item = new TableItem(pathwayTable, SWT.NONE);
-			item.setText(0, pathway.getTitle());
-			item.setText(1, pathway.getType().getName());
-			item.setText(2, pathwayGraphsWithOccurrences.get(pathway).toString());
-			item.setData(pathway);
+		public PathwayComparator() {
+			this.propertyIndex = 2;
+			direction = DESCENDING;
 		}
 
-		pathwayTableSorter.sort(0, true);
-
-		for (TableColumn column : pathwayTable.getColumns()) {
-			column.pack();
+		public int getDirection() {
+			return direction == 1 ? SWT.DOWN : SWT.UP;
 		}
 
-		pathwayTable.pack();
-		parent.layout();
+		public void setColumn(int column) {
+			if (column == this.propertyIndex) {
+				// Same column as last sort; toggle the direction
+				direction = 1 - direction;
+			} else {
+				// New column; do an ascending sort
+				this.propertyIndex = column;
+				direction = DESCENDING;
+			}
+		}
+
+		@Override
+		public int compare(Viewer viewer, Object e1, Object e2) {
+			ComparablePair<Integer, PathwayGraph> p1 = (ComparablePair<Integer, PathwayGraph>) e1;
+			ComparablePair<Integer, PathwayGraph> p2 = (ComparablePair<Integer, PathwayGraph>) e2;
+			int rc = 0;
+			switch (propertyIndex) {
+			case 0:
+				rc = p1.getSecond().getTitle().compareTo(p2.getSecond().getTitle());
+				break;
+			case 1:
+				rc = p1.getSecond().getType().getName().compareTo(p2.getSecond().getType().getName());
+				break;
+			case 2:
+				rc = p1.getFirst().compareTo(p2.getFirst());
+				break;
+			default:
+				rc = 0;
+			}
+			// If descending order, flip the direction
+			if (direction == DESCENDING) {
+				rc = -rc;
+			}
+			return rc;
+		}
+
+	}
+
+	private TableViewerColumn newColumn(CheckboxTableViewer viewer, String label, int index) {
+		TableViewerColumn column = new TableViewerColumn(viewer, SWT.NONE);
+		column.getColumn().setText(label);
+		column.getColumn().setResizable(true);
+		column.getColumn().setMoveable(true);
+		column.getColumn().addSelectionListener(getSelectionAdapter(column.getColumn(), index));
+		return column;
+	}
+
+	private SelectionAdapter getSelectionAdapter(final TableColumn column, final int index) {
+		SelectionAdapter selectionAdapter = new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				comparator.setColumn(index);
+				int dir = comparator.getDirection();
+				viewer.getTable().setSortDirection(dir);
+				viewer.getTable().setSortColumn(column);
+				viewer.refresh();
+			}
+		};
+		return selectionAdapter;
 	}
 
 	@Override
@@ -262,24 +333,17 @@ public class CreatePathwaySmallMultiplesGroupDialog
 
 	@Override
 	protected void okPressed() {
-		ArrayList<PathwayGraph> pathways = new ArrayList<PathwayGraph>();
+		Object[] pathways = viewer.getCheckedElements();
 
-		for (TableItem item : pathwayTable.getItems()) {
-			if (item.getChecked()) {
-				pathways.add((PathwayGraph) item.getData());
-			}
-		}
+		if (pathways.length > 0) {
+			PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+					PathwayDataDomain.DATA_DOMAIN_TYPE);
 
-		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
-				PathwayDataDomain.DATA_DOMAIN_TYPE);
-
-		if (!pathways.isEmpty()) {
-
-			for (PathwayGraph pathway : pathways) {
+			for (Object obj : pathways) {
+				ComparablePair<Integer, PathwayGraph> pathway = (ComparablePair<Integer, PathwayGraph>) obj;
 
 				RecordPerspective oldRecordPerspective = tablePerspective.getRecordPerspective();
-				RecordPerspective newRecordPerspective = new RecordPerspective(
-						tablePerspective.getDataDomain());
+				RecordPerspective newRecordPerspective = new RecordPerspective(tablePerspective.getDataDomain());
 
 				PerspectiveInitializationData data = new PerspectiveInitializationData();
 				data.setData(oldRecordPerspective.getVirtualArray());
@@ -287,8 +351,8 @@ public class CreatePathwaySmallMultiplesGroupDialog
 				newRecordPerspective.init(data);
 
 				PathwayTablePerspective pathwayDimensionGroup = new PathwayTablePerspective(
-						tablePerspective.getDataDomain(), pathwayDataDomain,
-						newRecordPerspective, dimensionPerspective, pathway);
+						tablePerspective.getDataDomain(), pathwayDataDomain, newRecordPerspective,
+						dimensionPerspective, pathway.getSecond());
 
 				pathwayDataDomain.addTablePerspective(pathwayDimensionGroup);
 

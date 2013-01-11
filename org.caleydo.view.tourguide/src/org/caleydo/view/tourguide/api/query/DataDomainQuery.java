@@ -409,6 +409,15 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 		listeners.fireIndexedPropertyChange(PROP_SELECTION, selection.size(), dataDomain, null);
 	}
 
+	public void removeSelection(String dataDomainID) {
+		for (IDataDomain dataDomain : selection) {
+			if (dataDomain.getDataDomainID().equals(dataDomainID)) {
+				removeSelection(dataDomain);
+				return;
+			}
+		}
+	}
+
 
 	public DimensionPerspective getDimensionSelection(IDataDomain dataDomain) {
 		return dimensionSelection.get(dataDomain);
@@ -420,5 +429,6 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 		listeners.firePropertyChange(new MappedPropertyChangeEvent(this, PROP_DIMENSION_SELECTION, dataDomain,
 				this.dimensionSelection.put(dataDomain, d), d));
 	}
+
 
 }

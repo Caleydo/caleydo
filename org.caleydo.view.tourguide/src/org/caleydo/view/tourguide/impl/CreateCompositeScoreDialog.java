@@ -45,7 +45,7 @@ import com.google.common.collect.Lists;
 class CreateCompositeScoreDialog extends TitleAreaDialog {
 	// the root element to populate the viewer with
 	private final List<TransformedScore> scores;
-	private final ScoreQueryUI sender;
+	private final ScoreQueryUI receiver;
 	private final boolean createCollapseScore;
 
 	// the visual selection widget group
@@ -69,7 +69,7 @@ class CreateCompositeScoreDialog extends TitleAreaDialog {
 				this.scores.add(0, new TransformedScore(s));
 		}
 		this.createCollapseScore = createCollapseScore;
-		this.sender = sender;
+		this.receiver = sender;
 	}
 
 	@Override
@@ -174,7 +174,7 @@ class CreateCompositeScoreDialog extends TitleAreaDialog {
 		scoresUI.setContentProvider(ArrayContentProvider.getInstance());
 		scoresUI.setInput(scores);
 		if (!createCollapseScore) {
-			for (IScore s : sender.getQuery().getSelection()) {
+			for (IScore s : receiver.getQuery().getSelection()) {
 				for (TransformedScore ws : this.scores)
 					if (ws.getScore() == s)
 						scoresUI.setChecked(ws, true);
@@ -320,7 +320,7 @@ class CreateCompositeScoreDialog extends TitleAreaDialog {
 			ECombinedOperator op = ECombinedOperator.values()[operatorUI.getSelectionIndex()];
 			result = new CombinedScore(label, op, children);
 		}
-		GeneralManager.get().getEventPublisher().triggerEvent(new AddScoreColumnEvent(result, sender));
+		GeneralManager.get().getEventPublisher().triggerEvent(new AddScoreColumnEvent(result).to(receiver));
 		super.okPressed();
 	}
 

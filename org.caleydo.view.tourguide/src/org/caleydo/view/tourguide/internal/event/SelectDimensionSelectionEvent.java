@@ -20,23 +20,21 @@
 package org.caleydo.view.tourguide.internal.event;
 
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
-import org.caleydo.core.event.AEvent;
-import org.caleydo.view.tourguide.internal.view.DataDomainQueryUI;
+import org.caleydo.core.event.ADirectedEvent;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class SelectDimensionSelectionEvent extends AEvent {
+public class SelectDimensionSelectionEvent extends ADirectedEvent {
 	private DimensionPerspective dim;
 
 	public SelectDimensionSelectionEvent() {
 
 	}
 
-	public SelectDimensionSelectionEvent(DimensionPerspective d, DataDomainQueryUI dataDomainQueryUI) {
+	public SelectDimensionSelectionEvent(DimensionPerspective d) {
 		this.dim = d;
-		setSender(dataDomainQueryUI);
 	}
 
 	public DimensionPerspective getDim() {

@@ -10,6 +10,7 @@
    <extension-point id="org.caleydo.datadomain.DataDomainInitialization" name="DataDomainInitialization" schema="schema/org.caleydo.datadomain.DataDomainInitialization.exsd"/>
    <extension-point id="org.caleydo.serialize.addon" name="Serialization Addon" schema="schema/org.caleydo.serialize.addon.exsd"/>
    <extension-point id="org.caleydo.view.EmbeddedView" name="EmbeddedView" schema="schema/org.caleydo.view.EmbeddedView.exsd"/>
+   <extension-point id="org.caleydo.datadomain.DataDomainActions" name="DataDomainActions" schema="schema/org.caleydo.datadomain.DataDomainActions.exsd"/>
 	
    <extension
          id="application"
@@ -309,5 +310,14 @@
                   priorityLevel="workbench">
             </variable>
          </sourceProvider>
+      </extension>
+      <extension
+            point="org.caleydo.datadomain.DataDomainActions">
+         <factory
+               class="org.caleydo.core.data.datadomain.GroupingDataDomainActionFactory">
+         </factory>
+         <factory
+               class="org.caleydo.core.data.datadomain.RemoveDataDomainActionFactory">
+         </factory>
       </extension>
 </plugin>

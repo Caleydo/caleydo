@@ -20,7 +20,6 @@
 package org.caleydo.core.startup;
 
 import org.caleydo.core.view.RCPViewManager;
-import org.eclipse.ui.IFolderLayout;
 
 /**
  * Abstract startup procedure. Handling of view initialization and application
@@ -51,11 +50,5 @@ public abstract class AStartupProcedure {
 
 		// Create RCP view manager
 		RCPViewManager.get();
-	}
-
-	public void addDefaultStartViews(IFolderLayout layout) {
-
-		layout.addView("org.caleydo.view.dvi");
-		layout.addView("org.caleydo.view.stratomex");
 	}
 }

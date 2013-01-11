@@ -66,8 +66,6 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
 	private PickingManager pickingManager = GeneralManager.get().getViewManager().getPickingManager();
 
-	private FloatBuffer[] floatBuffer;
-
 	private int numberOfDimensions;
 
 	private int groupIndex = -1;
@@ -143,7 +141,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
 		float lookupValue = 0;
 
-		floatBuffer = new FloatBuffer[numberOfTextures];
+		FloatBuffer[] floatBuffer = new FloatBuffer[numberOfTextures];
 
 		for (int texture = 0; texture < numberOfTextures; texture++) {
 

@@ -51,6 +51,7 @@ import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.event.EventListeners;
 import org.caleydo.core.event.data.ClearSelectionsEvent;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
+import org.caleydo.core.event.data.RemoveDataDomainEvent;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
@@ -101,6 +102,7 @@ import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.stratomex.event.SplitBrickEvent;
 import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
 import org.caleydo.view.stratomex.listener.ConnectionsModeListener;
+import org.caleydo.view.stratomex.listener.DataDomainEventListener;
 import org.caleydo.view.stratomex.listener.GLStratomexKeyListener;
 import org.caleydo.view.stratomex.listener.HighlightBrickEventListener;
 import org.caleydo.view.stratomex.listener.ReplaceTablePerspectiveListener;
@@ -170,7 +172,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	/** Same as {@link #isLeftDetailShown} for right */
 	private boolean isRightDetailShown = false;
 
-	private Queue<AGLView> uninitializedSubViews = new LinkedList<AGLView>();
+	private Queue<BrickColumn> uninitializedSubViews = new LinkedList<>();
 
 	private DragAndDropController dragAndDropController;
 
@@ -978,6 +980,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 		listeners.register(HighlightBrickEvent.class, new HighlightBrickEventListener(this));
 		listeners.register(SelectElementsEvent.class, new SelectElementsListener().setHandler(this));
+		listeners.register(RemoveDataDomainEvent.class, new DataDomainEventListener().setHandler(this));
 	}
 
 	@Override
@@ -1186,10 +1189,24 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		}
 
 		brickColumnManager.removeBrickColumn(tablePerspectiveID);
+		// remove uninitalized referenced
+		for (Iterator<BrickColumn> it = uninitializedSubViews.iterator(); it.hasNext();) {
+			if (it.next().getTablePerspective().getID() == tablePerspectiveID)
+				it.remove();
+		}
 		initLayouts();
 		TablePerspectivesChangedEvent event = new TablePerspectivesChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
+	}
+
+	public void removeDataDomain(String dataDomainID) {
+		List<TablePerspective> tmp = new ArrayList<>(getTablePerspectives());
+		for (TablePerspective p : tmp) {
+			if (dataDomainID.equals(p.getDataDomain().getDataDomainID()))
+				removeTablePerspective(p.getID());
+		}
+		System.out.println();
 	}
 
 	@Override
@@ -1667,4 +1684,5 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	public IDataSupportDefinition getDataSupportDefinition() {
 		return DataSupportDefinitions.all;
 	}
+
 }

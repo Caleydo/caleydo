@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.event;
 
-import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.view.tourguide.api.query.ScoreQuery;
 
 /**
@@ -28,7 +28,7 @@ import org.caleydo.view.tourguide.api.query.ScoreQuery;
  * @author Samuel Gratzl
  *
  */
-public class ScoreQueryReadyEvent extends AEvent {
+public class ScoreQueryReadyEvent extends ADirectedEvent {
 	public ScoreQueryReadyEvent(ScoreQuery sender) {
 		this.setSender(sender);
 	}

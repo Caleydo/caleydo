@@ -20,14 +20,14 @@
 package org.caleydo.view.tourguide.internal.event;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.view.tourguide.api.score.ISerializeableScore;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class ImportExternalScoreEvent extends AEvent {
+public class ImportExternalScoreEvent extends ADirectedEvent {
 	private ATableBasedDataDomain dataDomain;
 	private boolean inDimensionDirection;
 	private Class<? extends ISerializeableScore> type;
@@ -43,7 +43,6 @@ public class ImportExternalScoreEvent extends AEvent {
 		this.inDimensionDirection = inDimensionDirection;
 		this.type = type;
 	}
-
 
 	/*
 	 * (non-Javadoc)

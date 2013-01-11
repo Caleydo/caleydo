@@ -19,14 +19,14 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.event;
 
-import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class CreateScoreColumnEvent extends AEvent {
+public class CreateScoreColumnEvent extends ADirectedEvent {
 	private Type type;
 
 	public enum Type {

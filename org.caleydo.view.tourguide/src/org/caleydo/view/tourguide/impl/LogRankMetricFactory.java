@@ -37,7 +37,6 @@ import org.caleydo.view.tourguide.api.score.DefaultComputedGroupScore;
 import org.caleydo.view.tourguide.api.score.EScoreType;
 import org.caleydo.view.tourguide.impl.algorithm.LogRank;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
-import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.IMetricFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IGroupAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -53,7 +52,7 @@ import com.google.common.collect.Sets;
  */
 public class LogRankMetricFactory implements IMetricFactory {
 	@Override
-	public void addCreateMetricItems(ContextMenuCreator creator, Set<IScore> visible, ScoreQueryUI sender) {
+	public void addCreateMetricItems(ContextMenuCreator creator, Set<IScore> visible, Object receiver) {
 		Iterable<LogRankMetric> logRankScores = Iterables.filter(Iterables.transform(
 				DataDomainOracle.getClinicalVariables(), new Function<Pair<Integer, String>, LogRankMetric>() {
 					@Override
@@ -67,8 +66,8 @@ public class LogRankMetricFactory implements IMetricFactory {
 		for (LogRankMetric score : logRankScores) {
 			hasOne = true;
 			IScore logRankPValue = new LogRankPValue(score.getLabel() + " (P-V)", score);
-			logRanks.add(new GenericContextMenuItem(score.getLabel(), new AddScoreColumnEvent(sender, score,
-					logRankPValue)));
+			logRanks.add(new GenericContextMenuItem(score.getLabel(), new AddScoreColumnEvent(score, logRankPValue)
+					.to(receiver)));
 		}
 		if (hasOne)
 			creator.addContextMenuItem(logRanks);

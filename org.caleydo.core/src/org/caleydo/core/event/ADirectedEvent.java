@@ -17,36 +17,35 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.tourguide.internal.listener;
-
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
-import org.caleydo.view.tourguide.internal.event.ImportExternalScoreEvent;
-import org.caleydo.view.tourguide.internal.view.VendingMachine;
+package org.caleydo.core.event;
 
 /**
+ * a event that has an dedicated receiver
+ *
  * @author Samuel Gratzl
  *
  */
-public class ImportExternalScoreListener extends AEventListener<VendingMachine> {
+public abstract class ADirectedEvent extends AEvent {
+	private Object receiver;
+
 	/**
-	 * @param vendingMachine
+	 * chaining supporting receiver setter
+	 * 
+	 * @param receiver
+	 * @return
 	 */
-	public ImportExternalScoreListener(VendingMachine vendingMachine) {
-		this.setHandler(vendingMachine);
+	public ADirectedEvent to(Object receiver) {
+		this.receiver = receiver;
+		return this;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * determines whether the reiver is equal to the given object
 	 *
-	 * @see org.caleydo.core.event.AEventListener#handleEvent(org.caleydo.core.event.AEvent)
+	 * @param obj
+	 * @return
 	 */
-	@Override
-	public void handleEvent(AEvent event) {
-		assert event instanceof ImportExternalScoreEvent;
-		ImportExternalScoreEvent e = (ImportExternalScoreEvent) event;
-
-		this.handler.onImportExternalScore(e.getDataDomain(), e.isInDimensionDirection(), e.getType());
+	public boolean sentTo(Object obj) {
+		return receiver == obj;
 	}
 }
-

@@ -19,8 +19,15 @@
  *******************************************************************************/
 package org.caleydo.core.event;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 import org.caleydo.core.manager.GeneralManager;
 
@@ -33,7 +40,7 @@ import org.caleydo.core.manager.GeneralManager;
 public final class EventListeners {
 	private static final EventPublisher EVENT_PUBLISHER = GeneralManager.get().getEventPublisher();
 
-	private final Collection<AEventListener<?>> listeners = new ArrayList<>();
+	private final Set<AEventListener<?>> listeners = new HashSet<>();
 
 	public final void register(Class<? extends AEvent> event, AEventListener<?> listener) {
 		listeners.add(listener);
@@ -46,6 +53,48 @@ public final class EventListeners {
 			EVENT_PUBLISHER.addListener(event, listener);
 	}
 
+	/**
+	 * shortcut for {@link #register(IListenerOwner, Object)}
+	 *
+	 * @param owner
+	 */
+	public final void register(IListenerOwner owner) {
+		register(owner, owner);
+	}
+
+	/**
+	 * filter all methods of the listener object for <code>
+	 * 
+	 * @ListenTo void xxx(<? extends AEvent> event); </code>
+	 * 
+	 *           and register an event listener for calling this method
+	 * 
+	 * @param owner
+	 * @param listener
+	 */
+	public final void register(IListenerOwner owner, Object listener) {
+		Class<?> clazz = listener.getClass();
+		while (clazz != null) {
+			for (Method m : listener.getClass().getDeclaredMethods()) {
+				if (!matches(m))
+					continue;
+				Class<? extends AEvent> event = m.getParameterTypes()[0].asSubclass(AEvent.class);
+				boolean toMe = m.getAnnotation(ListenTo.class).sendToMe()
+						&& ADirectedEvent.class.isAssignableFrom(event);
+				register(event, new AnnotationBasedEventListener(owner, listener, m, toMe));
+			}
+			clazz = clazz.getSuperclass();
+		}
+	}
+
+	private boolean matches(Method m) {
+		return m.isAnnotationPresent(ListenTo.class) && m.getParameterTypes().length == 1
+				&& AEvent.class.isAssignableFrom(m.getParameterTypes()[0]) && m.getReturnType() == void.class;
+	}
+
+	/**
+	 * unregister all registered listeners by this listener container
+	 */
 	public final void unregisterAll() {
 		for (AEventListener<?> listener : listeners) {
 			EVENT_PUBLISHER.removeListener(listener);
@@ -53,4 +102,67 @@ public final class EventListeners {
 		listeners.clear();
 	}
 
+	/**
+	 * marker annotation that the method is an event listener, !no DataDomain specific things are supported
+	 *
+	 * @author Samuel Gratzl
+	 *
+	 */
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.METHOD)
+	public @interface ListenTo {
+		/**
+		 * determines if the {@link ADirectedEvent} has as its receiver our current listener object
+		 *
+		 * @return
+		 */
+		boolean sendToMe() default false;
+	}
+
+	private static class AnnotationBasedEventListener extends AEventListener<IListenerOwner> {
+
+		private final Method method;
+		private final Object listener;
+		private final boolean checkSendToListener;
+
+		public AnnotationBasedEventListener(IListenerOwner handler, Object listener, Method method,
+				boolean checkSendToHandler) {
+			this.method = method;
+			this.listener = listener;
+			this.checkSendToListener = checkSendToHandler;
+			this.setHandler(handler);
+		}
+
+		@Override
+		public void handleEvent(AEvent event) {
+			if (checkSendToListener
+					&& (!(event instanceof ADirectedEvent) || !((ADirectedEvent) event).sentTo(listener)))
+				return;
+			try {
+				method.setAccessible(true);
+				method.invoke(listener, event);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				e.printStackTrace();
+				System.err.println(e);
+			}
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(method, listener);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			AnnotationBasedEventListener other = (AnnotationBasedEventListener) obj;
+			return Objects.equals(listener, other.listener) && Objects.equals(method, other.method);
+		}
+
+	}
 }

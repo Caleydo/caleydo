@@ -41,13 +41,13 @@ import org.eclipse.swt.widgets.Shell;
 public interface IScoreFactory {
 	/**
 	 * creates a dialog for creating a new score of this type
-	 *
+	 * 
 	 * @param shell
-	 * @param sender
-	 *            the sender to use for the {@link AddScoreColumnEvent} event
+	 * @param receiver
+	 *            the receiver to use for the {@link AddScoreColumnEvent} event
 	 * @return
 	 */
-	Dialog createCreateDialog(Shell shell, ScoreQueryUI sender);
+	Dialog createCreateDialog(Shell shell, ScoreQueryUI receiver);
 
 	/**
 	 * returns entries to generate a context menu for the given stratification and group

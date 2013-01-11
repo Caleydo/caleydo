@@ -19,15 +19,14 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.event;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
+import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class RemoveScoreColumnEvent extends AEvent {
+public class RemoveScoreColumnEvent extends ADirectedEvent {
 	private IScore score;
 	private boolean remove;
 
@@ -35,10 +34,9 @@ public class RemoveScoreColumnEvent extends AEvent {
 
 	}
 
-	public RemoveScoreColumnEvent(IScore score, boolean removeFromSystem, ScoreQueryUI sender) {
+	public RemoveScoreColumnEvent(IScore score, boolean removeFromSystem) {
 		this.score = score;
 		this.remove = removeFromSystem;
-		this.setSender(sender);
 	}
 
 	/**

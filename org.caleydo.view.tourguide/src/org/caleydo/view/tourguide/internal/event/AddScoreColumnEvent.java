@@ -22,33 +22,28 @@ package org.caleydo.view.tourguide.internal.event;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
+import org.caleydo.core.event.ADirectedEvent;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public class AddScoreColumnEvent extends AEvent {
+public class AddScoreColumnEvent extends ADirectedEvent {
 	private Collection<IScore> scores;
 
 	public AddScoreColumnEvent() {
 
 	}
 
-	public AddScoreColumnEvent(IScore score, ScoreQueryUI sender) {
-		this(sender, score);
-	}
-
-	public AddScoreColumnEvent(Collection<IScore> scores, ScoreQueryUI sender) {
+	public AddScoreColumnEvent(Collection<IScore> scores) {
 		this.scores = scores;
-		this.setSender(sender);
 	}
 
-	public AddScoreColumnEvent(ScoreQueryUI sender, IScore... scores) {
-		this(Arrays.asList(scores), sender);
+	public AddScoreColumnEvent(IScore... scores) {
+		this(Arrays.asList(scores));
 	}
+
 
 	public Collection<IScore> getScores() {
 		return scores;
