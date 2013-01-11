@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.tourguide.api.query.ScoreQuery;
 import org.caleydo.view.tourguide.api.query.filter.CompareScoreFilter;
 import org.caleydo.view.tourguide.api.query.filter.ECompareOperator;
+import org.caleydo.view.tourguide.internal.Activator;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.query.filter.IScoreFilter;
@@ -109,8 +109,8 @@ public class ScoreFilterDialog extends TitleAreaDialog {
 		final int i = this.filters.size();
 		this.filters.add(new ScoreFilterWidget(filterContainer, ((CompareScoreFilter) f)));
 		Button removeRow = new Button(filterContainer, SWT.PUSH);
-		removeRow.setImage(GeneralManager.get().getResourceLoader()
-				.getImage(filterContainer.getDisplay(), TourGuideRenderStyle.ICON_DELETE_ROW));
+		removeRow.setImage(Activator.getResourceLoader().getImage(filterContainer.getDisplay(),
+				TourGuideRenderStyle.ICON_DELETE_ROW));
 		removeRow.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -133,8 +133,7 @@ public class ScoreFilterDialog extends TitleAreaDialog {
 		for (IScore score : scores)
 			addScoreFilter.add(score.getLabel());
 		Button addRow = new Button(parent, SWT.PUSH);
-		addRow.setImage(GeneralManager.get().getResourceLoader()
-				.getImage(parent.getDisplay(), TourGuideRenderStyle.ICON_ADD_ROW));
+		addRow.setImage(Activator.getResourceLoader().getImage(parent.getDisplay(), TourGuideRenderStyle.ICON_ADD_ROW));
 	    addRow.addSelectionListener(new SelectionAdapter() {
 	    	@Override
 	    	public void widgetSelected(SelectionEvent e) {

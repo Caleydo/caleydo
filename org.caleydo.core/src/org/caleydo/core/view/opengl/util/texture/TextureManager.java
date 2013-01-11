@@ -23,12 +23,14 @@ import gleem.linalg.Vec3f;
 
 import java.nio.IntBuffer;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.data.loader.ITextureLoader;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -42,38 +44,41 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class TextureManager {
+public final class TextureManager {
 
-	private HashMap<String, Texture> mapPathToTexture;
+	private final Map<String, Texture> cache = new HashMap<String, Texture>();
+	private final ITextureLoader loader;
 
 	/**
 	 * Constructor.
 	 */
 	public TextureManager() {
-		mapPathToTexture = new HashMap<String, Texture>();
+		this(GeneralManager.get().getResourceLoader());
+	}
+
+	public TextureManager(ITextureLoader loader) {
+		this.loader = loader;
 	}
 
 	public Texture getIconTexture(final String texturePath) {
-		if (!mapPathToTexture.containsKey(texturePath)) {
-			Texture tmpTexture = GeneralManager.get().getResourceLoader().getTexture(texturePath);
-			mapPathToTexture.put(texturePath, tmpTexture);
+		return get(texturePath);
+	}
+
+	private Texture get(final String texturePath) {
+		if (!cache.containsKey(texturePath)) {
+			Texture tmpTexture = loader.getTexture(texturePath);
+			cache.put(texturePath, tmpTexture);
 		}
-		return mapPathToTexture.get(texturePath);
+		return cache.get(texturePath);
 	}
 
 	public void renewTexture(String texturePath) {
-		Texture tmpTexture = GeneralManager.get().getResourceLoader().getTexture(texturePath);
-		mapPathToTexture.put(texturePath, tmpTexture);
+		Texture tmpTexture = loader.getTexture(texturePath);
+		cache.put(texturePath, tmpTexture);
 	}
 
 	public Texture getIconTexture(final EIconTextures eIconTexture) {
-
-		String texturePath = eIconTexture.getFileName();
-		if (!mapPathToTexture.containsKey(texturePath)) {
-			Texture tmpTexture = GeneralManager.get().getResourceLoader().getTexture(texturePath);
-			mapPathToTexture.put(texturePath, tmpTexture);
-		}
-		return mapPathToTexture.get(texturePath);
+		return getIconTexture(eIconTexture.getFileName());
 	}
 
 	/**

@@ -19,23 +19,17 @@
  *******************************************************************************/
 package org.caleydo.view.radial.actions;
 
+import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.view.radial.event.GoForthInHistoryEvent;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
 
-public class GoForthInHistoryAction extends Action {
+public class GoForthInHistoryAction extends SimpleAction {
 
 	public static final String LABEL = "Forth";
 	public static final String ICON = "resources/icons/view/general/redo.png";
 
 	public GoForthInHistoryAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		super(LABEL, ICON);
 		setChecked(false);
 	}
 

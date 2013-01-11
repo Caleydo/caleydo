@@ -19,32 +19,15 @@
  *******************************************************************************/
 package org.caleydo.view.parcoords.toolbar;
 
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.core.gui.SimpleEventAction;
 import org.caleydo.view.parcoords.listener.ApplyCurrentSelectionToVirtualArrayEvent;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
 
-public class SaveSelectionsAction extends Action {
+public class SaveSelectionsAction extends SimpleEventAction {
 
-	public static final String LABEL = "Save Selections";
-	public static final String ICON = "resources/icons/view/tablebased/parcoords/save_selections.png";
+	private static final String LABEL = "Save Selections";
+	private static final String ICON = "resources/icons/view/tablebased/parcoords/save_selections.png";
 
-	/**
-	 * Constructor.
-	 */
 	public SaveSelectionsAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
-	}
-
-	@Override
-	public void run() {
-		super.run();
-		ApplyCurrentSelectionToVirtualArrayEvent event = new ApplyCurrentSelectionToVirtualArrayEvent();
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		super(LABEL, ICON, new ApplyCurrentSelectionToVirtualArrayEvent());
 	}
 }

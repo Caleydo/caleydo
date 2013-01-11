@@ -19,14 +19,11 @@
  *******************************************************************************/
 package org.caleydo.core.gui.toolbar.action;
 
+import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.util.clusterer.gui.ClusterDialog;
-import org.caleydo.data.loader.ResourceLoader;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 
-public class StartClusteringAction extends Action {
+public class StartClusteringAction extends SimpleAction {
 
 	public static final String LABEL = "Clustering";
 	public static final String ICON = "resources/icons/view/tablebased/clustering.png";
@@ -35,11 +32,7 @@ public class StartClusteringAction extends Action {
 	 * Constructor.
 	 */
 	public StartClusteringAction() {
-
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench()
-				.getDisplay(), ICON)));
+		super(LABEL, ICON);
 	}
 
 	@Override

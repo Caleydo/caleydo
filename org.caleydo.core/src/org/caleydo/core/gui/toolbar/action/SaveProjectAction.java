@@ -23,19 +23,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.serialize.ProjectManager;
 import org.caleydo.core.startup.ApplicationWorkbenchWindowAdvisor;
-import org.caleydo.data.loader.ResourceLoader;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 
-public class SaveProjectAction extends Action {
+public class SaveProjectAction extends SimpleAction {
 
 	public static final String LABEL = "Save Project";
 	public static final String ICON = "resources/icons/general/save.png";
@@ -44,10 +41,7 @@ public class SaveProjectAction extends Action {
 	 * Constructor.
 	 */
 	public SaveProjectAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench()
-				.getDisplay(), ICON)));
+		super(LABEL, ICON);
 	}
 
 	@Override

@@ -20,24 +20,18 @@
 package org.caleydo.core.gui.toolbar.action;
 
 import org.caleydo.core.event.view.UseRandomSamplingEvent;
+import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
 
-public class UseRandomSamplingAction
- extends Action {
+public class UseRandomSamplingAction extends SimpleAction {
 
-	public boolean bFlag = true;
 	public static final String LABEL = "Use random sampling";
 	public static final String ICON = "resources/icons/view/tablebased/random_sampling.png";
 
+	private boolean bFlag = true;
+
 	public UseRandomSamplingAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-			.getWorkbench().getDisplay(), ICON)));
+		super(LABEL, ICON);
 		setChecked(bFlag);
 	}
 

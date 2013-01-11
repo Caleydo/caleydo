@@ -20,31 +20,14 @@
 package org.caleydo.core.gui.toolbar.action;
 
 import org.caleydo.core.event.view.BookmarkButtonEvent;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
+import org.caleydo.core.gui.SimpleEventAction;
 
-public class PropagateSelectionsAction extends Action {
+public class PropagateSelectionsAction extends SimpleEventAction {
 
-	public static final String LABEL = "Bookmark current selection";
-	public static final String ICON = "resources/icons/view/tablebased/parcoords/bookmark.png";
+	private static final String LABEL = "Bookmark current selection";
+	private static final String ICON = "resources/icons/view/tablebased/parcoords/bookmark.png";
 
-	/**
-	 * Constructor.
-	 */
 	public PropagateSelectionsAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench()
-				.getDisplay(), ICON)));
-	}
-
-	@Override
-	public void run() {
-		super.run();
-
-		GeneralManager.get().getEventPublisher().triggerEvent(new BookmarkButtonEvent());
+		super(LABEL, ICON, new BookmarkButtonEvent());
 	}
 }

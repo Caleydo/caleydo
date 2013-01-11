@@ -22,27 +22,18 @@ package org.caleydo.core.gui.toolbar.action;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.data.loader.ResourceLoader;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
+import org.caleydo.core.gui.SimpleAction;
 
-public class RestoreOriginalDataAction
- extends Action {
+public class RestoreOriginalDataAction extends SimpleAction {
 
 	public static final String LABEL = "Restore original data";
 	public static final String ICON = "resources/icons/general/restore.png";
-	String recordPerspectiveID;
 
-	/**
-	 * Constructor.
-	 */
+	private final String recordPerspectiveID;
+
 	public RestoreOriginalDataAction(String recordPerspectiveID) {
+		super(LABEL, ICON);
 		this.recordPerspectiveID = recordPerspectiveID;
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override

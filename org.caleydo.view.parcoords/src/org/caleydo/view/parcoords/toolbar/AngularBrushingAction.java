@@ -20,10 +20,8 @@
 package org.caleydo.view.parcoords.toolbar;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.view.parcoords.listener.AngularBrushingEvent;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class AngularBrushingAction extends Action {
@@ -37,8 +35,8 @@ public class AngularBrushingAction extends Action {
 	public AngularBrushingAction() {
 		setText(LABEL);
 		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(GeneralManager.get().getResourceLoader()
+				.getImageDescriptor(PlatformUI.getWorkbench().getDisplay(), ICON));
 	}
 
 	@Override

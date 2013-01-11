@@ -19,26 +19,15 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui;
 
-import org.caleydo.data.loader.ResourceLoader;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
+import org.caleydo.core.gui.SimpleAction;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 
-public class ExportDataAction
- extends Action {
-
+public class ExportDataAction extends SimpleAction {
 	public static final String LABEL = "Export data";
 	public static final String ICON = "resources/icons/general/export_data.png";
 
-	/**
-	 * Constructor.
-	 */
 	public ExportDataAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-			.getWorkbench().getDisplay(), ICON)));
+		super(LABEL, ICON);
 	}
 
 	@Override

@@ -116,6 +116,8 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner, 
 
 	@Override
 	public void addPathwayView(int pathwayID, String dataDomainID) {
+		if (view == null)
+			return;
 		((GLPathway) view).setPathway(pathwayID);
 
 		PathwayGraph pathway = PathwayManager.get().getItem(pathwayID);

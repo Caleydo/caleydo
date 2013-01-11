@@ -51,10 +51,12 @@ import org.caleydo.core.view.opengl.layout.Row.HAlign;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.tourguide.api.query.DataDomainQuery;
 import org.caleydo.view.tourguide.api.query.ScoreQuery;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
+import org.caleydo.view.tourguide.internal.Activator;
 import org.caleydo.view.tourguide.internal.SerializedTourGuideView;
 import org.caleydo.view.tourguide.internal.event.ImportExternalScoreEvent;
 import org.caleydo.view.tourguide.internal.event.ScoreQueryReadyEvent;
@@ -111,6 +113,9 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 	public VendingMachine(IGLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+
+		// override with a custom texture loader
+		super.textureManager = new TextureManager(Activator.getResourceLoader());
 	}
 
 	public void setQuery(ScoreQuery query) {

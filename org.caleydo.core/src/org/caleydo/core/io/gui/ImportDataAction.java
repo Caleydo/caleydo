@@ -19,15 +19,12 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui;
 
+import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.gui.util.HelpButtonWizardDialog;
 import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.startup.StartupProcessor;
-import org.caleydo.data.loader.ResourceLoader;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
 
-public class ImportDataAction extends Action {
+public class ImportDataAction extends SimpleAction {
 
 	public static final String LABEL = "Load data";
 	public static final String ICON = "resources/icons/general/load_data.png";
@@ -36,10 +33,7 @@ public class ImportDataAction extends Action {
 	 * Constructor.
 	 */
 	public ImportDataAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		super(LABEL, ICON);
 	}
 
 	@Override

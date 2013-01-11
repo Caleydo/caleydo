@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,18 +8,17 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.io.parser.xml;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -38,7 +37,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 /**
  * Administer several XML-SaxHandelers. Switches between several XML-SaxHandeler automatically, based by a
  * registered tag. Acts as proxy for other derived objects from XmlParserManager
- * 
+ *
  * @author Michael Kalkusch
  * @author Marc Streit
  */
@@ -120,14 +119,14 @@ public class XmlParserManager
 		else {
 			currentHandler = null;
 		}
-		
+
 		return true;
 	}
 
 	/**
 	 * Register a SaxHandler by its opening Tag. Calls getXmlActivationTag() and hasOpeningTagOnlyOnce() for
 	 * each handler and registers the handler using this data. Also calls initHandler() on the new Handler.
-	 * 
+	 *
 	 * @see org.caleydo.core.io.parser.xml.IXmlParserHandler#initHandler()
 	 * @see org.caleydo.core.io.parser.xml.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
 	 * @see org.caleydo.core.io.parser.xml.IXmlParserHandler#getXmlActivationTag()
@@ -169,7 +168,7 @@ public class XmlParserManager
 
 	/**
 	 * Unregister a Handler by its String
-	 * 
+	 *
 	 * @param sOpeningAndClosingTag
 	 *            tag to identify handler.
 	 */
@@ -194,7 +193,7 @@ public class XmlParserManager
 
 	/**
 	 * Get the current XmlSaxParser handler or null if no handler ist active.
-	 * 
+	 *
 	 * @return reference to current XmlSaxParser handler
 	 */
 	public final IXmlParserHandler getCurrentXmlParserHandler() {
@@ -255,7 +254,7 @@ public class XmlParserManager
 	/**
 	 * Call this method, if current tag was not handled by startElement(String, String, String,
 	 * org.xml.sax.Attributes) of org.caleydo.core.parser.handler.IXmlParserHandler
-	 * 
+	 *
 	 * @see org.caleydo.core.io.parser.xml.IXmlParserHandler
 	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 */
@@ -313,7 +312,7 @@ public class XmlParserManager
 	/**
 	 * Call this method if the current tag was not handled by endElement(String, String, String) of
 	 * org.caleydo.core.parser.handler.IXmlParserHandler
-	 * 
+	 *
 	 * @see org.caleydo.core.io.parser.xml.IXmlParserHandler
 	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 */
@@ -333,7 +332,7 @@ public class XmlParserManager
 	/**
 	 * Callback called by org.caleydo.core.parser.handler.IXmlParserHandler if closing tag is read in
 	 * endElement()
-	 * 
+	 *
 	 * @see org.caleydo.core.io.parser.xml.IXmlParserHandler
 	 * @see orl.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 * @param handler
@@ -362,7 +361,7 @@ public class XmlParserManager
 
 	/**
 	 * Open a new XML file and start parsing it.
-	 * 
+	 *
 	 * @param filename
 	 *            XML file name.
 	 * @return true if file existed and was parsed successfully
@@ -428,8 +427,7 @@ public class XmlParserManager
 		InputSource inputSource = null;
 		try {
 			inputSource = generalManager.getResourceLoader().getInputSource(fileName);
-		}
-		catch (FileNotFoundException e) {
+		} catch (IllegalStateException e) {
 			throw new IllegalStateException("Cannot load input file " + fileName);
 		}
 		return inputSource;

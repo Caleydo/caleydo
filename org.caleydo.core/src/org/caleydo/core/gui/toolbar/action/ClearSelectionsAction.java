@@ -24,22 +24,16 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.data.ClearSelectionsEvent;
 import org.caleydo.core.event.data.SelectionCommandEvent;
+import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
 
-public class ClearSelectionsAction extends Action {
+public class ClearSelectionsAction extends SimpleAction {
 
 	public static final String LABEL = "Clear all selections";
 	public static final String ICON = "resources/icons/view/tablebased/clear_selections.png";
 
 	public ClearSelectionsAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench()
-				.getDisplay(), ICON)));
+		super(LABEL, ICON);
 	}
 
 	@Override

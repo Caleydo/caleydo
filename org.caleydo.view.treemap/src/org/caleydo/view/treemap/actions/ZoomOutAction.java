@@ -19,12 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.treemap.actions;
 
+import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.view.treemap.listener.ZoomOutEvent;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Action for zoom out function.
@@ -33,15 +30,13 @@ import org.eclipse.ui.PlatformUI;
  *
  */
 
-public class ZoomOutAction extends Action {
+public class ZoomOutAction extends SimpleAction {
 
-	public static final String LABEL = "Zoom Out";
-	public static final String ICON = "resources/icons/view/general/undo.png";
+	private static final String LABEL = "Zoom Out";
+	private static final String ICON = "resources/icons/view/general/undo.png";
 
 	public ZoomOutAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		super(LABEL, ICON);
 		setChecked(false);
 	}
 

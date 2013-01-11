@@ -19,12 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.treemap.actions;
 
+import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.view.treemap.listener.ToggleLabelEvent;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Action for switching labels on/off.
@@ -33,15 +30,13 @@ import org.eclipse.ui.PlatformUI;
  *
  */
 
-public class ToggleLabelAction extends Action {
+public class ToggleLabelAction extends SimpleAction {
 
 	public static final String LABEL = "Toggle Labels";
 	public static final String ICON = "resources/icons/view/hyperbolic/tree_switch_lin.png";
 
 	public ToggleLabelAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		super(LABEL, ICON);
 		setChecked(true);
 	}
 

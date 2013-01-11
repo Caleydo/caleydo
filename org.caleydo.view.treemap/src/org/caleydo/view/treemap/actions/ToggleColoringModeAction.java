@@ -19,12 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.treemap.actions;
 
+import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.view.treemap.listener.ToggleColoringModeEvent;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Action for toggling coloring mode.
@@ -33,15 +30,13 @@ import org.eclipse.ui.PlatformUI;
  *
  */
 
-public class ToggleColoringModeAction extends Action {
+public class ToggleColoringModeAction extends SimpleAction {
 
-	public static final String LABEL = "Toggle ColorMode Average/Selected";
-	public static final String ICON = "resources/icons/view/tablebased/clustering.png";
+	private static final String LABEL = "Toggle ColorMode Average/Selected";
+	private static final String ICON = "resources/icons/view/tablebased/clustering.png";
 
 	public ToggleColoringModeAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		super(LABEL, ICON);
 		setChecked(false);
 	}
 

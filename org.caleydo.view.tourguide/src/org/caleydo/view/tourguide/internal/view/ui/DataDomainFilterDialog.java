@@ -3,11 +3,11 @@ package org.caleydo.view.tourguide.internal.view.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.tourguide.api.query.DataDomainQuery;
 import org.caleydo.view.tourguide.api.query.filter.CompareDomainFilter;
 import org.caleydo.view.tourguide.api.query.filter.EStringCompareOperator;
 import org.caleydo.view.tourguide.api.query.filter.SpecificDataDomainFilter;
+import org.caleydo.view.tourguide.internal.Activator;
 import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
 import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -85,8 +85,8 @@ public class DataDomainFilterDialog extends TitleAreaDialog {
 		final DataDomainFilterWidget w = new DataDomainFilterWidget(filterContainer, f);
 		this.filters.add(w);
 		Button removeRow = new Button(filterContainer, SWT.PUSH);
-		removeRow.setImage(GeneralManager.get().getResourceLoader()
-				.getImage(filterContainer.getDisplay(), TourGuideRenderStyle.ICON_DELETE_ROW));
+		removeRow.setImage(Activator.getResourceLoader().getImage(filterContainer.getDisplay(),
+				TourGuideRenderStyle.ICON_DELETE_ROW));
 		removeRow.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -107,8 +107,7 @@ public class DataDomainFilterDialog extends TitleAreaDialog {
 		new Label(parent, SWT.NONE).setText("Add New Filter: ");
 
 		Button addRow = new Button(parent, SWT.PUSH);
-		addRow.setImage(GeneralManager.get().getResourceLoader()
-				.getImage(parent.getDisplay(), TourGuideRenderStyle.ICON_ADD_ROW));
+		addRow.setImage(Activator.getResourceLoader().getImage(parent.getDisplay(), TourGuideRenderStyle.ICON_ADD_ROW));
 		addRow.setText("Add Stratification Filter");
 		addRow.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -118,8 +117,7 @@ public class DataDomainFilterDialog extends TitleAreaDialog {
 		});
 
 		addRow = new Button(parent, SWT.PUSH);
-		addRow.setImage(GeneralManager.get().getResourceLoader()
-				.getImage(parent.getDisplay(), TourGuideRenderStyle.ICON_ADD_ROW));
+		addRow.setImage(Activator.getResourceLoader().getImage(parent.getDisplay(), TourGuideRenderStyle.ICON_ADD_ROW));
 		addRow.setText("Add Group Filter");
 	    addRow.addSelectionListener(new SelectionAdapter() {
 	    	@Override

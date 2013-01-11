@@ -20,29 +20,13 @@
 package org.caleydo.core.gui.toolbar.action;
 
 import org.caleydo.core.event.view.ResetAllViewsEvent;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
+import org.caleydo.core.gui.SimpleEventAction;
 
-public class ResetViewAction
- extends Action {
-
-	public static final String LABEL = "Reset View";
-	public static final String ICON = "resources/icons/view/general/reset_view.png";
+public class ResetViewAction extends SimpleEventAction {
+	private static final String LABEL = "Reset View";
+	private static final String ICON = "resources/icons/view/general/reset_view.png";
 
 	public ResetViewAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-			.getWorkbench().getDisplay(), ICON)));
-	}
-
-	@Override
-	public void run() {
-		super.run();
-
-		GeneralManager.get().getEventPublisher().triggerEvent(new ResetAllViewsEvent());
+		super(LABEL, ICON, new ResetAllViewsEvent());
 	}
 }

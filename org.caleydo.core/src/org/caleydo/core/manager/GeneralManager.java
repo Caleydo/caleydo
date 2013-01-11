@@ -19,6 +19,11 @@
  *******************************************************************************/
 package org.caleydo.core.manager;
 
+import static org.caleydo.data.loader.ResourceLocators.FILE;
+import static org.caleydo.data.loader.ResourceLocators.DATA_CLASSLOADER;
+import static org.caleydo.data.loader.ResourceLocators.URL;
+import static org.caleydo.data.loader.ResourceLocators.chain;
+
 import java.io.File;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -112,7 +117,7 @@ public class GeneralManager {
 		idCreator = new IDCreator();
 		xmlParserManager.initHandlers();
 		serializationManager = SerializationManager.get();
-		resourceLoader = new ResourceLoader();
+		resourceLoader = new ResourceLoader(chain(DATA_CLASSLOADER, FILE, URL));
 	}
 
 	/**

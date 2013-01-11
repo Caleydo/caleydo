@@ -19,13 +19,11 @@
  *******************************************************************************/
 package org.caleydo.view.search;
 
-import org.caleydo.data.loader.ResourceLoader;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
+import org.caleydo.core.gui.SimpleAction;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-public class OpenSearchViewAction extends Action {
+public class OpenSearchViewAction extends SimpleAction {
 
 	public static final String LABEL = "Search";
 	public static final String ICON = "resources/icons/general/search.png";
@@ -34,10 +32,7 @@ public class OpenSearchViewAction extends Action {
 	 * Constructor.
 	 */
 	public OpenSearchViewAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		super(LABEL, ICON);
 	}
 
 	@Override

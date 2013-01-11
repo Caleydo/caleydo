@@ -16,12 +16,9 @@
  *******************************************************************************/
 package org.caleydo.view.pathway.toolbar.actions;
 
+import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.view.pathway.event.SelectPathModeEvent;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Button for toggling path selection.
@@ -29,20 +26,12 @@ import org.eclipse.ui.PlatformUI;
  * @author Christian Partl
  *
  */
-public class SelectPathAction
- extends Action {
-
+public class SelectPathAction extends SimpleAction {
 	public static final String LABEL = "Toggle path selection (Ctrl + O)";
 	public static final String ICON = "resources/icons/view/pathway/path_selection.png";
 
-	/**
-	 * Constructor.
-	 */
 	public SelectPathAction(boolean isChecked) {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench()
-				.getDisplay(), ICON)));
+		super(LABEL, ICON);
 		setChecked(isChecked);
 	}
 

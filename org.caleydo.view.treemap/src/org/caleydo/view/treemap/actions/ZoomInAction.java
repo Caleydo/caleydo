@@ -19,12 +19,9 @@
  *******************************************************************************/
 package org.caleydo.view.treemap.actions;
 
+import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.view.treemap.listener.ZoomInEvent;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Action for zoom in function.
@@ -33,15 +30,13 @@ import org.eclipse.ui.PlatformUI;
  *
  */
 
-public class ZoomInAction extends Action {
+public class ZoomInAction extends SimpleAction {
 
-	public static final String LABEL = "Zoom";
-	public static final String ICON = "resources/icons/general/search.png";
+	private static final String LABEL = "Zoom";
+	private static final String ICON = "resources/icons/general/search.png";
 
 	public ZoomInAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		super(LABEL, ICON);
 		setChecked(false);
 	}
 

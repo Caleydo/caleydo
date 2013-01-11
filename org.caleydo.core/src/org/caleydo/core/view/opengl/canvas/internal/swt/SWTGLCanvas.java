@@ -118,6 +118,8 @@ final class SWTGLCanvas implements IGLCanvas {
 	 * @param drawable
 	 */
 	void fireDisplay(GLAutoDrawable drawable) {
+		if (canvas.isDisposed())
+			return;
 		for (GLEventListener l : glEventListeners)
 			l.display(drawable);
 	}

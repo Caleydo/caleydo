@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -47,7 +47,7 @@ import org.jgrapht.graph.DefaultEdge;
 
 /**
  * Class responsible for exporting and importing (clustered) {@link Tree}
- * 
+ *
  * @author Bernhard Schlegl
  * @author Alexander Lex
  */
@@ -81,7 +81,7 @@ public class TreePorter {
 
 	/**
 	 * Imports a tree with the aid of {@link JAXBContext}.
-	 * 
+	 *
 	 * @param fileName
 	 *            Full file name of the serialized tree
 	 * @return the imported tree
@@ -101,7 +101,7 @@ public class TreePorter {
 		try {
 			treeFileReader = GeneralManager.get().getResourceLoader()
 					.getResource(fileName);
-		} catch (FileNotFoundException fnfe) {
+		} catch (IllegalStateException fnfe) {
 //			Logger.log(new Status(IStatus.INFO, "TreePorter", "No tree available for "
 //					+ fileName));
 			return null;
@@ -170,7 +170,7 @@ public class TreePorter {
 	/**
 	 * Export function uses {@link JAXBContext} to export a given tree into an
 	 * XML file.
-	 * 
+	 *
 	 * @param fileName
 	 *            name of the file where the exported tree should be saved
 	 * @param tree
@@ -201,7 +201,7 @@ public class TreePorter {
 	/**
 	 * Export function uses {@link JAXBContext} to export a given tree to a
 	 * {@link Writer}
-	 * 
+	 *
 	 * @param writer
 	 *            {@link Writer} to write the serialized tree to.
 	 * @param tree

@@ -23,12 +23,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -42,8 +40,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-public class TakeSnapshotAction
- extends Action {
+public class TakeSnapshotAction extends SimpleAction {
 
 	public static final String LABEL = "Take snapshot";
 	public static final String ICON = "resources/icons/general/snapshot.png";
@@ -54,11 +51,7 @@ public class TakeSnapshotAction
 	 * Constructor without arguments. In this case a snapshot from the whole workbench is made.
 	 */
 	public TakeSnapshotAction() {
-
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-			.getWorkbench().getDisplay(), ICON)));
+		super(LABEL, ICON);
 	}
 
 	/**

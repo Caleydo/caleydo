@@ -19,23 +19,17 @@
  *******************************************************************************/
 package org.caleydo.view.radial.actions;
 
+import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.view.radial.event.GoBackInHistoryEvent;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
 
-public class GoBackInHistoryAction extends Action {
+public class GoBackInHistoryAction extends SimpleAction {
 
 	public static final String LABEL = "Back";
 	public static final String ICON = "resources/icons/view/general/undo.png";
 
 	public GoBackInHistoryAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		super(LABEL, ICON);
 		setChecked(false);
 	}
 

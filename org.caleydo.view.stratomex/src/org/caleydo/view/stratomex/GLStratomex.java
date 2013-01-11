@@ -1489,6 +1489,8 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	}
 
 	public void selectElements(Iterable<Integer> ids, IDType idType, String dataDomainID, SelectionType selectionType) {
+		if (recordSelectionManager == null)
+			return;
 		recordSelectionManager.clearSelection(selectionType);
 
 		for (Integer recordID : ids) {

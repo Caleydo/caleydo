@@ -19,37 +19,19 @@
  *******************************************************************************/
 package org.caleydo.view.parcoords.toolbar;
 
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.core.gui.SimpleEventAction;
 import org.caleydo.view.parcoords.listener.ResetAxisSpacingEvent;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Action that resets the spacing of the axis in the PCs
  *
  * @author Alexander Lex
  */
-public class ResetAxisSpacingAction extends Action {
-	public static final String LABEL = "Reset Axis Spacing";
-	public static final String ICON = "resources/icons/view/tablebased/parcoords/reset_axis_spacing.png";
+public class ResetAxisSpacingAction extends SimpleEventAction {
+	private static final String LABEL = "Reset Axis Spacing";
+	private static final String ICON = "resources/icons/view/tablebased/parcoords/reset_axis_spacing.png";
 
-	/**
-	 * Constructor.
-	 */
 	public ResetAxisSpacingAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
-	}
-
-	@Override
-	public void run() {
-		super.run();
-
-		GeneralManager.get().getEventPublisher()
-				.triggerEvent(new ResetAxisSpacingEvent());
+		super(LABEL, ICON, new ResetAxisSpacingEvent());
 	}
 }

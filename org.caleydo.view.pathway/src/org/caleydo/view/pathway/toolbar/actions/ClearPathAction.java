@@ -16,12 +16,9 @@
  *******************************************************************************/
 package org.caleydo.view.pathway.toolbar.actions;
 
+import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.view.pathway.event.ClearPathEvent;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Button to clear a selected path in the pathway view.
@@ -29,7 +26,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Christian Partl
  *
  */
-public class ClearPathAction extends Action {
+public class ClearPathAction extends SimpleAction {
 
 	public static final String LABEL = "Clear path";
 	public static final String ICON = "resources/icons/view/pathway/clear_path.png";
@@ -38,10 +35,7 @@ public class ClearPathAction extends Action {
 	 * Constructor.
 	 */
 	public ClearPathAction() {
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		super(LABEL, ICON);
 		setChecked(false);
 	}
 

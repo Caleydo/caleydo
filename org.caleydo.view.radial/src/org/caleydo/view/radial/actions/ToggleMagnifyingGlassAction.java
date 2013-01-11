@@ -20,23 +20,16 @@
 package org.caleydo.view.radial.actions;
 
 import org.caleydo.core.event.view.ToggleMagnifyingGlassEvent;
+import org.caleydo.core.gui.SimpleAction;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
 
-public class ToggleMagnifyingGlassAction extends Action {
+public class ToggleMagnifyingGlassAction extends SimpleAction {
 
 	public static final String LABEL = "Magnifying glass";
 	public static final String ICON = "resources/icons/general/search.png";
 
 	public ToggleMagnifyingGlassAction() {
-
-		setText(LABEL);
-		setToolTipText(LABEL);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		super(LABEL, ICON);
 	}
 
 	@Override
