@@ -85,7 +85,7 @@ public class LogRank implements IGroupAlgorithm {
 		int survived = 0;
 		List<Float> r = new ArrayList<>();
 		for (Integer row : a) {
-			Float v = clinical.getTable().getRaw(row, col);
+			Float v = clinical.getTable().getRawDxR(col, row);
 			if (v == null || v.isNaN()) {
 				survived++;
 				continue;

@@ -27,6 +27,7 @@ import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -44,6 +45,11 @@ public abstract class ATextParser {
 
 	/** The path of the file to parse */
 	protected final String filePath;
+
+	/**
+	 * the loader to use for locating the file
+	 */
+	protected final ResourceLoader loader;
 
 	/**
 	 * Contains the number of lines of the number of lines in the file to be
@@ -68,11 +74,17 @@ public abstract class ATextParser {
 	 */
 	protected SWTGUIManager swtGuiManager;
 
+
 	/**
 	 * Constructor.
 	 */
 	public ATextParser(final String fileName) {
+		this(fileName, GeneralManager.get().getResourceLoader());
+	}
+
+	public ATextParser(final String fileName, ResourceLoader loader) {
 		this.filePath = fileName;
+		this.loader = loader;
 		this.swtGuiManager = GeneralManager.get().getSWTGUIManager();
 	}
 
@@ -107,8 +119,7 @@ public abstract class ATextParser {
 	 */
 	protected final int calculateNumberOfLinesInFile() {
 		try {
-			LineNumberReader lnr = new LineNumberReader(GeneralManager.get()
-					.getResourceLoader().getResource(filePath));
+			LineNumberReader lnr = new LineNumberReader(loader.getResource(filePath));
 			lnr.skip(Long.MAX_VALUE);
 			numberOfLinesInFile = lnr.getLineNumber();
 			lnr.close();
@@ -131,8 +142,7 @@ public abstract class ATextParser {
 			Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
 					"Start loading file " + filePath + "..."));
 
-			BufferedReader reader = GeneralManager.get().getResourceLoader()
-					.getResource(filePath);
+			BufferedReader reader = loader.getResource(filePath);
 
 			this.parseFile(reader);
 

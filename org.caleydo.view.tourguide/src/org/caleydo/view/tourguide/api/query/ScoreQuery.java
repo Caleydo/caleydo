@@ -382,7 +382,8 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>>, Cloneable
 		scores = Collections2.filter(scores, query.getMode().isSupportedBy());
 		if (scores.isEmpty())
 			return;
-		this.selection.addAll(scores);
+
+		this.selection.addAll(0, scores);
 		IScore last = Iterables.getLast(scores);
 		sortByImpl(last, last.getDefaultSorting());
 		submitComputation(scores, null);

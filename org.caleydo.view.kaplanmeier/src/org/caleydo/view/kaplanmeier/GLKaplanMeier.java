@@ -26,6 +26,7 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -65,12 +66,11 @@ import org.eclipse.swt.widgets.Composite;
  */
 
 public class GLKaplanMeier extends ATableBasedView {
-	public static String VIEW_TYPE = "org.caleydo.view.kaplanmeier";
+	public static final String VIEW_TYPE = "org.caleydo.view.kaplanmeier";
+	public static final String VIEW_NAME = "Kaplan-Meier Plot";
 
-	public static String VIEW_NAME = "Kaplan-Meier Plot";
-
-	public static String DEFAULT_X_AXIS_LABEL = "Time (Days)";
-	public static String DEFAULT_Y_AXIS_LABEL = "Percentage of Patients";
+	public static final String DEFAULT_X_AXIS_LABEL = "Time (Days)";
+	public static final String DEFAULT_Y_AXIS_LABEL = "Percentage of Patients";
 
 	protected static final int LEFT_AXIS_SPACING_PIXELS = 70;
 	protected static final int BOTTOM_AXIS_SPACING_PIXELS = 50;
@@ -179,25 +179,21 @@ public class GLKaplanMeier extends ATableBasedView {
 		boolean containsNegativeValues = false;
 		boolean containsPositiveValues = false;
 
-		for (Group group : recordVA.getGroupList()) {
-			List<Integer> recordIDs = recordVA.getIDsOfGroup(group.getGroupIndex());
-			for (int recordID = 0; recordID < recordIDs.size(); recordID++) {
+		final DataTable table = tablePerspective.getDataDomain().getTable();
+		final Integer dimensionID = dimensionVA.get(0);
+		for (Integer recordID : recordVA) {
+			float rawValue = table.getRawDxR(dimensionID, recordID);
+			if (rawValue > 0)
+				containsPositiveValues = true;
+			if (rawValue < 0)
+				containsNegativeValues = true;
 
-				float rawValue = tablePerspective.getDataDomain().getTable()
-						.getRaw(recordIDs.get(recordID), dimensionVA.get(0));
-
-				if (rawValue > 0)
-					containsPositiveValues = true;
-				if (rawValue < 0)
-					containsNegativeValues = true;
-
-				if (containsPositiveValues && containsNegativeValues) {
-					throw new IllegalStateException(
-							"Data contains positive and negative values. KM plot cannot handle this data.");
-				}
-				if (rawValue != Float.NaN && Math.abs(rawValue) > Math.abs(maxAxisTime))
-					maxAxisTime = rawValue;
+			if (containsPositiveValues && containsNegativeValues) {
+				throw new IllegalStateException(
+						"Data contains positive and negative values. KM plot cannot handle this data.");
 			}
+			if (rawValue != Float.NaN && Math.abs(rawValue) > Math.abs(maxAxisTime))
+				maxAxisTime = rawValue;
 		}
 
 		return maxAxisTime;
@@ -366,9 +362,10 @@ public class GLKaplanMeier extends ATableBasedView {
 		// Float maxValue = Float.MIN_VALUE;
 		// maxAxisTime = Float.MIN_VALUE;
 
-		for (int recordID = 0; recordID < recordIDs.size(); recordID++) {
-			float normalizedValue = tablePerspective.getDataDomain().getTable()
-					.getRaw(recordIDs.get(recordID), dimensionVA.get(0));
+		final DataTable table = tablePerspective.getDataDomain().getTable();
+		final Integer dimensionID = dimensionVA.get(0);
+		for (Integer recordID : recordIDs) {
+			float normalizedValue = table.getNormalizedValue(recordID, dimensionID);
 			dataVector.add(normalizedValue);
 		}
 		Float[] sortedDataVector = new Float[dataVector.size()];
@@ -490,7 +487,7 @@ public class GLKaplanMeier extends ATableBasedView {
 
 	@Override
 	public String toString() {
-		return "TODO: ADD INFO THAT APPEARS IN THE LOG";
+		return "GLKaplanMeier";
 	}
 
 	@Override
@@ -588,11 +585,6 @@ public class GLKaplanMeier extends ATableBasedView {
 	 */
 	public String getyAxisLabel() {
 		return yAxisLabel;
-	}
-
-	@Override
-	public void registerEventListeners() {
-		super.registerEventListeners();
 	}
 
 	@Override

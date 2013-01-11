@@ -157,6 +157,7 @@ public class DataTable extends AUniqueObject {
 		return dataDomain;
 	}
 
+	// FIXME inconstistent order of parameters : 1. record and 2. dimension or vice versa, see for example #getRaw
 	public Float getNormalizedValue(Integer recordID, Integer dimensionID) {
 		try {
 			if (isColumnDimension) {
@@ -235,6 +236,17 @@ public class DataTable extends AUniqueObject {
 		}
 
 		return (RawDataType) hashColumns.get(columnID).getRaw(rowID);
+	}
+
+	/**
+	 * alias for {@link #getRaw(Integer, Integer)} with dedidacted hint what is first argument and what the second
+	 *
+	 * @param dimensionID
+	 * @param recordID
+	 * @return
+	 */
+	public <RawDataType> RawDataType getRawDxR(Integer dimensionID, Integer recordID) {
+		return getRaw(dimensionID, recordID);
 	}
 
 	/**
