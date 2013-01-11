@@ -64,18 +64,18 @@ public final class EventListeners {
 
 	/**
 	 * filter all methods of the listener object for <code>
-	 * 
+	 *
 	 * @ListenTo void xxx(<? extends AEvent> event); </code>
-	 * 
+	 *
 	 *           and register an event listener for calling this method
-	 * 
+	 *
 	 * @param owner
 	 * @param listener
 	 */
 	public final void register(IListenerOwner owner, Object listener) {
 		Class<?> clazz = listener.getClass();
 		while (clazz != null) {
-			for (Method m : listener.getClass().getDeclaredMethods()) {
+			for (Method m : clazz.getDeclaredMethods()) {
 				if (!matches(m))
 					continue;
 				Class<? extends AEvent> event = m.getParameterTypes()[0].asSubclass(AEvent.class);
