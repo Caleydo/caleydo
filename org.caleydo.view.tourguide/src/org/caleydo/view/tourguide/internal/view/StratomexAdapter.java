@@ -354,7 +354,12 @@ public class StratomexAdapter {
 						updateKaplanMaierBrickColumn(currentDependentPreviews.get(i), to, strat);
 						currentDependentPreviews.set(i, to);
 					}
-					currentDependentPreviews.subList(update, currentDependentPreviews.size()).clear();
+					List<TablePerspective> toremove = currentDependentPreviews.subList(update,
+							currentDependentPreviews.size());
+					for (TablePerspective dependent : toremove)
+						removeBrickColumn(dependent);
+					toremove.clear();
+
 					createDependent(strat, clinicialVariables.subList(update, clinicialVariables.size()));
 
 					this.currentPreview = strat;
@@ -509,7 +514,13 @@ public class StratomexAdapter {
 	}
 
 	private void updateKaplanMaierBrickColumn(TablePerspective from, TablePerspective to, TablePerspective underlying) {
-		triggerEvent(new ReplaceKaplanMaierPerspectiveEvent(receiver.getID(), to, from, underlying));
+		if (from.getRecordPerspective().equals(to.getRecordPerspective())
+				&& from.getDimensionPerspective().equals(to.getDimensionPerspective()))
+			triggerEvent(new ReplaceKaplanMaierPerspectiveEvent(receiver.getID(), to, from, underlying));
+		else {
+			triggerEvent(new RemoveTablePerspectiveEvent(from.getID(), receiver));
+			triggerDelayedEvent(new AddKaplanMaiertoStratomexEvent(to, underlying, receiver));
+		}
 	}
 
 	private void removeBrickColumn(TablePerspective strat) {
