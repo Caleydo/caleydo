@@ -85,7 +85,7 @@ public class MatchColumn extends ATableColumn {
 			Group g = elem.getGroup();
 
 			Row r = new Row();
-			r.setXDynamic(true);
+			r.setXDynamic(false);
 
 			AdvancedTextureRenderer cAdd = new AdvancedTextureRenderer(null, view.getTextureManager());
 			if (!this.stratomex.contains(elem.getPerspective()))
