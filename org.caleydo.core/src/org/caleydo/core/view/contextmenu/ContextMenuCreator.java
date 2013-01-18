@@ -50,6 +50,10 @@ public class ContextMenuCreator {
 		menuItems.add(menuItem);
 	}
 
+	public void add(AContextMenuItem item) {
+		addContextMenuItem(item);
+	}
+
 	public void add(String label, AEvent event) {
 		addContextMenuItem(new GenericContextMenuItem(label, event));
 	}

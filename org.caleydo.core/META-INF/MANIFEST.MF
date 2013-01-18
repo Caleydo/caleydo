@@ -406,15 +406,11 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.8.0";visibility:=reex
  org.caleydo.lib.jgrapht;bundle-version="0.8.3";visibility:=reexport,
  org.caleydo.lib.jsap;bundle-version="2.1.0";visibility:=reexport,
  org.caleydo.lib.tagsoup;bundle-version="1.2.1",
- org.caleydo.lib.vecmath;bundle-version="1.5.2";visibility:=reexport,
  org.caleydo.lib.weka;bundle-version="3.6.8",
  org.caleydo.lib.jogl;bundle-version="2.0.0";visibility:=reexport,
  com.google.guava;bundle-version="10.0.1";visibility:=reexport
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: org.caleydo.core.data.virtualarray.delta,
- org.caleydo.core.manager,
- org.caleydo.core.util.conversion
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: www.caleydo.org
 Bundle-Activator: org.caleydo.core.startup.Activator

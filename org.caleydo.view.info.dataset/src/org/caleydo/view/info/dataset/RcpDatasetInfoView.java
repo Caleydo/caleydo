@@ -22,6 +22,8 @@ import javax.xml.bind.JAXBException;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.event.EventListeners;
+import org.caleydo.core.event.EventListeners.ListenTo;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleTablePerspectiveBasedView;
@@ -46,7 +48,7 @@ import org.eclipse.swt.widgets.Label;
  */
 public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomainBasedView<IDataDomain> {
 
-	public static String VIEW_TYPE = "org.caleydo.view.info.dataset";
+	public static final String VIEW_TYPE = "org.caleydo.view.info.dataset";
 
 	private IDataDomain dataDomain;
 
@@ -62,7 +64,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 	private boolean isGUIInitialized = false;
 
-	protected DataDomainChangedListener dataDomainChangedListener;
+	private final EventListeners listeners = new EventListeners();
 
 	private ExpandBar histogramExpandBar;
 
@@ -219,22 +221,19 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 
 	@Override
 	public void registerEventListeners() {
-
 		super.registerEventListeners();
-
-		dataDomainChangedListener = new DataDomainChangedListener();
-		dataDomainChangedListener.setHandler(this);
-		eventPublisher.addListener(DataDomainUpdateEvent.class, dataDomainChangedListener);
+		listeners.register(this);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
-
 		super.unregisterEventListeners();
-
-		if (dataDomainChangedListener != null) {
-			eventPublisher.removeListener(dataDomainChangedListener);
-			selectionUpdateListener = null;
-		}
+		listeners.unregisterAll();
 	}
+
+	@ListenTo
+	void onDataDomainUpdate(DataDomainUpdateEvent event) {
+		setDataDomain(event.getDataDomain());
+	}
+
 }

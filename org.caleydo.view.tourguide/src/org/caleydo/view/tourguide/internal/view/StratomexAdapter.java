@@ -65,10 +65,11 @@ import org.caleydo.view.stratomex.event.ReplaceKaplanMaierPerspectiveEvent;
 import org.caleydo.view.stratomex.event.SelectElementsEvent;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
+import org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory;
 import org.caleydo.view.tourguide.impl.GeneSetEnrichmentScoreFactory.GeneSetScore;
 import org.caleydo.view.tourguide.impl.LogRankMetricFactory.LogRankMetric;
 import org.caleydo.view.tourguide.impl.LogRankMetricFactory.LogRankPValue;
-import org.caleydo.view.tourguide.impl.algorithm.GSEAAlgorithm;
+import org.caleydo.view.tourguide.spi.compute.IComputedStratificationScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 
 import com.google.common.base.Objects;
@@ -236,8 +237,8 @@ public class StratomexAdapter {
 	 */
 	private static Pair<TablePerspective, Group> findReferencingGSEATablePerspective(Collection<IScore> scores) {
 		for (IScore s : (scores == null ? Collections.<IScore> emptyList() : scores)) {
-			if (s instanceof GeneSetScore) {
-				Pair<TablePerspective, Group> p = GSEAAlgorithm.resolve(((GeneSetScore) s).getAlgorithm());
+			if (s instanceof IComputedStratificationScore) {
+				Pair<TablePerspective, Group> p = GeneSetEnrichmentScoreFactory.resolve(((IComputedStratificationScore) s).getAlgorithm());
 				if (p != null) {
 					return p;
 				}

@@ -295,8 +295,8 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	public int getMinWidthPixels() {
-		int toolBarWidth = calcSumPixelWidth(toolBar.getElements());
-		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar.getElements()) : 0;
+		int toolBarWidth = calcSumPixelWidth(toolBar);
+		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar) : 0;
 
 		int guiElementsWidth = Math.max(toolBarWidth, footerBarWidth) + 2 * SPACING_PIXELS;
 		if (viewRenderer == null)

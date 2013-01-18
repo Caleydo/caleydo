@@ -218,7 +218,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	// viewTypeChangeListeners.add(viewTypeChangeListener);
 	// }
 
-	protected int calcSumPixelWidth(ArrayList<ElementLayout> elementLayouts) {
+	protected int calcSumPixelWidth(Iterable<ElementLayout> elementLayouts) {
 		int sum = 0;
 		for (ElementLayout elementLayout : elementLayouts) {
 			int pixelSize = elementLayout.getPixelSizeX();
@@ -236,7 +236,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 		return sum;
 	}
 
-	protected int calcSumPixelHeight(ArrayList<ElementLayout> elementLayouts) {
+	protected int calcSumPixelHeight(Iterable<ElementLayout> elementLayouts) {
 		int sum = 0;
 		for (ElementLayout elementLayout : elementLayouts) {
 			int pixelSize = elementLayout.getPixelSizeY();

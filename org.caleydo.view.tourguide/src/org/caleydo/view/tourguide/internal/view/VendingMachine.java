@@ -49,6 +49,7 @@ import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row.HAlign;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -82,6 +83,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	private Column mainColumn;
 	private ScoreQueryUI scoreQueryUI;
 	private DataDomainQueryUI dataDomainQueryUI;
+	private final DragAndDropController dndController;
 
 	private final EventListeners listeners = new EventListeners();
 
@@ -116,6 +118,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 		// override with a custom texture loader
 		super.textureManager = new TextureManager(Activator.getResourceLoader());
+
+		dndController = new DragAndDropController(this);
 	}
 
 	public void setQuery(ScoreQuery query) {
@@ -202,7 +206,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 		mainColumn.append(ElementLayouts.createYSpacer(20));
 
-		scoreQueryUI = new ScoreQueryUI(this, this.stratomex);
+		scoreQueryUI = new ScoreQueryUI(this, this.stratomex, dndController);
 		scoreQueryUI.setQuery(scoreQuery);
 		listeners.register(this, scoreQueryUI);
 
@@ -238,6 +242,8 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 		processEvents();
 
 		layoutManager.render(gl);
+
+		dndController.handleDragging(gl, glMouseListener);
 	}
 
 	@Override
@@ -315,7 +321,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 	}
 
 	@ListenTo
-	public void onScoreQueryReady(ScoreQueryReadyEvent event) {
+	void onScoreQueryReady(ScoreQueryReadyEvent event) {
 		if (event.getSender() != getScoreQuery())
 			return;
 		if (this.computing) {
@@ -346,7 +352,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 
 
 	@ListenTo
-	public void onImportExternalScore(ImportExternalScoreEvent event) {
+	void onImportExternalScore(ImportExternalScoreEvent event) {
 		if (event.getSender() != getDataDomainQueryUI())
 			return;
 		Display.getDefault().asyncExec(
@@ -392,6 +398,7 @@ public class VendingMachine extends AGLView implements IGLRemoteRenderingView, I
 			return;
 		stratomex.replaceBricks(event.getOldPerspective(), event.getNewPerspective());
 	}
+
 
 
 

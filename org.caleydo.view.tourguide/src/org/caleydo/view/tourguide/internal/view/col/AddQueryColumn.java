@@ -47,4 +47,9 @@ public class AddQueryColumn extends ATableColumn {
 	public void setData(List<ScoringElement> data, ScoreQuery query) {
 		// nothing todo
 	}
+
+	@Override
+	protected int getMinWidth() {
+		return 16;
+	}
 }

@@ -11,6 +11,7 @@
    <extension-point id="org.caleydo.serialize.addon" name="Serialization Addon" schema="schema/org.caleydo.serialize.addon.exsd"/>
    <extension-point id="org.caleydo.view.EmbeddedView" name="EmbeddedView" schema="schema/org.caleydo.view.EmbeddedView.exsd"/>
    <extension-point id="org.caleydo.datadomain.DataDomainActions" name="DataDomainActions" schema="schema/org.caleydo.datadomain.DataDomainActions.exsd"/>
+   <extension-point id="org.caleydo.core.data.datadomain.ViewDataDomainAssociation" name="ViewDataDomainAssociation" schema="schema/org.caleydo.core.data.datadomain.ViewDataDomainAssociation.exsd"/>
 	
    <extension
          id="application"

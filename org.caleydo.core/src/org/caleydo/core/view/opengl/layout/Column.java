@@ -65,7 +65,7 @@ public class Column extends ALayoutContainer {
 			return super.getUnscalableElementHeight();
 		else {
 			float unscalableHeight = 0;
-			for (ElementLayout element : elements) {
+			for (ElementLayout element : this) {
 				unscalableHeight += element.getUnscalableElementHeight();
 			}
 			return unscalableHeight;
@@ -80,7 +80,7 @@ public class Column extends ALayoutContainer {
 			return super.getUnscalableElementWidth();
 		else {
 			float maxWidth = 0;
-			for (ElementLayout element : elements) {
+			for (ElementLayout element : this) {
 				float elementWidth = element.getUnscalableElementWidth();
 				if (elementWidth > maxWidth)
 					maxWidth = elementWidth;
@@ -122,7 +122,7 @@ public class Column extends ALayoutContainer {
 		else
 			x = right;
 
-		for (ElementLayout element : elements) {
+		for (ElementLayout element : this) {
 			float xTranslate = x;
 			switch (vAlign) {
 			case LEFT:
@@ -179,7 +179,7 @@ public class Column extends ALayoutContainer {
 
 		float widestElement = 0;
 		// float sumUnscalabeElementHeights = 0;
-		for (ElementLayout element : elements) {
+		for (ElementLayout element : this) {
 			float tempWidth = element.getUnscalableElementWidth();
 			if (tempWidth > widestElement)
 				widestElement = tempWidth;
@@ -218,7 +218,7 @@ public class Column extends ALayoutContainer {
 		float dynamicHeight = 0;
 
 		ArrayList<ElementLayout> greedyElements = new ArrayList<ElementLayout>();
-		for (ElementLayout element : elements) {
+		for (ElementLayout element : this) {
 			if (element.grabY) {
 				greedyElements.add(element);
 				continue;
@@ -268,7 +268,7 @@ public class Column extends ALayoutContainer {
 	@Override
 	int getDynamicSizeUnitsX() {
 		int largestDynamicUnit = 0;
-		for (ElementLayout layout : elements) {
+		for (ElementLayout layout : this) {
 			int currentDynamicUnit = layout.getDynamicSizeUnitsX();
 			if(currentDynamicUnit > largestDynamicUnit)
 				largestDynamicUnit = currentDynamicUnit;
@@ -283,7 +283,7 @@ public class Column extends ALayoutContainer {
 	@Override
 	int getDynamicSizeUnitsY() {
 		int sumDynamicUnits = 0;
-		for (ElementLayout layout : elements) {
+		for (ElementLayout layout : this) {
 			sumDynamicUnits += layout.getDynamicSizeUnitsY();
 		}
 		return sumDynamicUnits;

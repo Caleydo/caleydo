@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -27,15 +27,28 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 public class LineSeparatorRenderer extends LayoutRenderer {
 
 	private boolean isVertical;
+	private float lineWidth = 1;
 
 	public LineSeparatorRenderer(boolean isVertical) {
 		this.isVertical = isVertical;
 	}
 
+	/**
+	 * @param lineWidth
+	 *            setter, see {@link lineWidth}
+	 */
+	public void setLineWidth(float lineWidth) {
+		if (lineWidth == this.lineWidth)
+			return;
+		this.lineWidth = lineWidth;
+		setDisplayListDirty();
+	}
+
 	@Override
 	protected void renderContent(GL2 gl) {
 		gl.glColor3f(0.3f, 0.3f, 0.3f);
-		gl.glLineWidth(1);
+		gl.glPushAttrib(GL2.GL_LINE_BIT);
+		gl.glLineWidth(lineWidth);
 		gl.glBegin(GL.GL_LINES);
 
 		if (isVertical) {
@@ -46,8 +59,8 @@ public class LineSeparatorRenderer extends LayoutRenderer {
 			gl.glVertex3f(0, y / 2.0f, 0);
 			gl.glVertex3f(x, y / 2.0f, 0);
 		}
-
 		gl.glEnd();
+		gl.glPopAttrib();
 
 	}
 

@@ -64,7 +64,7 @@ public class Row extends ALayoutContainer {
 			return super.getUnscalableElementWidth();
 		else {
 			float unscalableWidth = 0;
-			for (ElementLayout element : elements) {
+			for (ElementLayout element : this) {
 				unscalableWidth += element.getUnscalableElementWidth();
 			}
 			return unscalableWidth;
@@ -79,7 +79,7 @@ public class Row extends ALayoutContainer {
 			return super.getUnscalableElementHeight();
 		else {
 			float maxHeight = 0;
-			for (ElementLayout element : elements) {
+			for (ElementLayout element : this) {
 				float elementHeight = element.getUnscalableElementHeight();
 				if (elementHeight > maxHeight)
 					maxHeight = elementHeight;
@@ -117,7 +117,7 @@ public class Row extends ALayoutContainer {
 
 		// FIXME this is probably wrong for nested elements look at Column on
 		// how to do it correctly
-		for (ElementLayout element : elements) {
+		for (ElementLayout element : this) {
 			float yTranslate = y;
 			switch (hAlign) {
 			case TOP:
@@ -166,7 +166,7 @@ public class Row extends ALayoutContainer {
 			availableHeight = totalHeight;
 
 		float highestElement = 0;
-		for (ElementLayout element : elements) {
+		for (ElementLayout element : this) {
 			float tempHeight = element.getUnscalableElementHeight();
 			if (tempHeight > highestElement)
 				highestElement = tempHeight;
@@ -189,7 +189,7 @@ public class Row extends ALayoutContainer {
 
 		ArrayList<ElementLayout> greedyElements = new ArrayList<ElementLayout>();
 
-		for (ElementLayout element : elements) {
+		for (ElementLayout element : this) {
 			if (element.grabX) {
 				greedyElements.add(element);
 
@@ -236,7 +236,7 @@ public class Row extends ALayoutContainer {
 	@Override
 	int getDynamicSizeUnitsX() {
 		int sumDynamicUnits = 0;
-		for (ElementLayout layout : elements) {
+		for (ElementLayout layout : this) {
 			sumDynamicUnits += layout.getDynamicSizeUnitsX();
 		}
 		return sumDynamicUnits;
@@ -248,7 +248,7 @@ public class Row extends ALayoutContainer {
 	@Override
 	int getDynamicSizeUnitsY() {
 		int sumDynamicUnits = 0;
-		for (ElementLayout layout : elements) {
+		for (ElementLayout layout : this) {
 			sumDynamicUnits += layout.getDynamicSizeUnitsY();
 		}
 		return sumDynamicUnits;

@@ -98,13 +98,20 @@ public class MatchColumn extends ATableColumn {
 			r.add(l);
 
 			r.add(colSpacing);
-			r.add(createLabel(elem.getStratification(), stratWidth));
 			if (isGroupQuery) {
+				r.add(createLabel(elem.getStratification(), stratWidth));
 				r.add(colSpacing);
-				r.add(createLabel(g, groupWidth));
+				r.add(createLabel(g, -1));
+			} else {
+				r.add(createLabel(elem.getStratification(), -1));
 			}
 			this.addTd(r, i);
 		}
+	}
+
+	@Override
+	protected int getMinWidth() {
+		return DATADOMAIN_TYPE_WIDTH + COL_SPACING;
 	}
 
 	public void updateState(List<ScoringElement> data) {
@@ -142,12 +149,13 @@ public class MatchColumn extends ATableColumn {
 		Row header = (Row) th2;
 		this.wasGroupQuery = isGroupQuery;
 		header.clear();
-		header.add(createLabel("Stratification", DATADOMAIN_TYPE_WIDTH + COL_SPACING + stratWidth));
-		this.setPixelSizeX(DATADOMAIN_TYPE_WIDTH + COL_SPACING + stratWidth);
 		if (isGroupQuery) {
 			header.add(colSpacing);
-			header.add(createLabel("Group", groupWidth));
+			header.add(createLabel("Group", -1));
 			this.setPixelSizeX(DATADOMAIN_TYPE_WIDTH + COL_SPACING + stratWidth + COL_SPACING + groupWidth);
+		} else {
+			header.add(createLabel("Stratification", -1));
+			this.setPixelSizeX(DATADOMAIN_TYPE_WIDTH + COL_SPACING + stratWidth);
 		}
 		header.setXDynamic(true);
 	}

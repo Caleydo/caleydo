@@ -9,7 +9,7 @@ import org.caleydo.view.tourguide.api.score.CollapseScore;
 import org.caleydo.view.tourguide.api.score.CombinedScore;
 import org.caleydo.view.tourguide.api.score.CombinedScore.TransformedScore;
 import org.caleydo.view.tourguide.api.score.ECombinedOperator;
-import org.caleydo.view.tourguide.api.util.EnumUtils;
+import org.caleydo.view.tourguide.api.util.ui.CaleydoLabelProvider;
 import org.caleydo.view.tourguide.api.util.ui.CellEditorValidators;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
@@ -22,14 +22,15 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -51,7 +52,7 @@ class CreateCompositeScoreDialog extends TitleAreaDialog {
 	// the visual selection widget group
 	private Text labelUI;
 	private ControlDecoration labelDeco;
-	private Combo operatorUI;
+	private ComboViewer operatorUI;
 	private ControlDecoration operatorDeco;
 	private CheckboxTableViewer scoresUI;
 	private ControlDecoration scoresDeco;
@@ -105,17 +106,18 @@ class CreateCompositeScoreDialog extends TitleAreaDialog {
 
 		if (!createCollapseScore) {
 			new Label(c, SWT.NONE).setText("Operator: ");
-			this.operatorUI = new Combo(c, SWT.DROP_DOWN | SWT.BORDER);
-			this.operatorUI.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-			String[] items = EnumUtils.getNames(ECombinedOperator.class);
-			this.operatorUI.setItems(items);
-			this.operatorUI.select(ECombinedOperator.MEAN.ordinal());
+			this.operatorUI = new ComboViewer(c, SWT.DROP_DOWN | SWT.BORDER);
+			operatorUI.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+			operatorUI.setLabelProvider(new CaleydoLabelProvider());
+			operatorUI.setContentProvider(ArrayContentProvider.getInstance());
+			operatorUI.setInput(ECombinedOperator.values());
+			operatorUI.setSelection(new StructuredSelection(ECombinedOperator.MEAN));
 
-			this.operatorDeco = new ControlDecoration(this.operatorUI, SWT.TOP | SWT.RIGHT);
+			this.operatorDeco = new ControlDecoration(this.operatorUI.getCombo(), SWT.TOP | SWT.RIGHT);
 			operatorDeco.setDescriptionText("An operator is required");
 			operatorDeco.setImage(image);
 			operatorDeco.show(); // Hide deco if not in focus
-			operatorUI.addListener(SWT.FocusOut, new Listener() {
+			operatorUI.getCombo().addListener(SWT.FocusOut, new Listener() {
 				@Override
 				public void handleEvent(Event event) {
 					validateOperator();
@@ -291,7 +293,7 @@ class CreateCompositeScoreDialog extends TitleAreaDialog {
 	private boolean validateOperator() {
 		if (createCollapseScore)
 			return true;
-		if (operatorUI.getSelectionIndex() == -1) {
+		if (operatorUI.getSelection() == null) {
 			operatorDeco.showHoverText("An operator is required");
 			return false;
 		} else {
@@ -317,7 +319,8 @@ class CreateCompositeScoreDialog extends TitleAreaDialog {
 		if (createCollapseScore) {
 			result = new CollapseScore(label, Collections2.transform(children, CombinedScore.retrieveScore));
 		} else {
-			ECombinedOperator op = ECombinedOperator.values()[operatorUI.getSelectionIndex()];
+			ECombinedOperator op = (ECombinedOperator) ((StructuredSelection) operatorUI.getSelection())
+					.getFirstElement();
 			result = new CombinedScore(label, op, children);
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new AddScoreColumnEvent(result).to(receiver));

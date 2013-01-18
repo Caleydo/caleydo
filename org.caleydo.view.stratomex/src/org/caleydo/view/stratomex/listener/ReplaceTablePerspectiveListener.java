@@ -42,6 +42,7 @@ public class ReplaceTablePerspectiveListener extends AEventListener<GLStratomex>
 				// update normally
 				TablePerspective underlying = e.getUnderlying();
 				BrickColumn brickColumn = handler.getBrickColumnManager().getBrickColumn(e.getOldPerspective());
+				// brickColumn.getTablePerspective()
 				ClinicalDataConfigurer dataConfigurer = AddGroupsToStratomexListener.createKaplanConfigurer(handler,
 						underlying,
 						e.getNewPerspective());

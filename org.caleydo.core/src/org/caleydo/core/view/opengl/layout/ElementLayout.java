@@ -61,16 +61,16 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  *
  * @author Alexander Lex
  */
-public class ElementLayout {
+public class ElementLayout implements Comparable<ElementLayout> {
 
 	/**
 	 * The manager for this layout, this element is, or is a sub-element of {@link LayoutManager#baseElementLayout}
 	 */
 	protected LayoutManager layoutManager;
 
-	protected LayoutRenderer renderer;
-	protected ArrayList<LayoutRenderer> backgroundRenderers;
-	protected ArrayList<LayoutRenderer> foregroundRenderers;
+	private LayoutRenderer renderer;
+	private List<LayoutRenderer> backgroundRenderers = new ArrayList<>(1);
+	private List<LayoutRenderer> foregroundRenderers = new ArrayList<>(1);
 
 	/** specifies how much this element is translated in x absolutely */
 	protected float translateX = 0;
@@ -97,7 +97,7 @@ public class ElementLayout {
 	protected float sizeScaledX = 0;
 	protected float sizeScaledY = 0;
 
-	protected String layoutName;
+	private String layoutName = "";
 
 	protected float[] frameColor = null;
 
@@ -132,18 +132,21 @@ public class ElementLayout {
 
 	/**
 	 * Determines the point in time this element layout is rendered if its {@link ALayoutContainer} uses priority
-	 * rendering.
+	 * rendering. the higher the better
 	 */
 	protected int renderingPriority = 0;
 
 	public ElementLayout() {
-		// renderer = new LayoutRenderer();
-		layoutName = "";
+		this("");
 	}
 
 	public ElementLayout(String layoutName) {
-		// renderer = new LayoutRenderer();
-		this.layoutName = layoutName;
+		this.layoutName = layoutName == null ? "" : layoutName;
+	}
+
+	@Override
+	public int compareTo(ElementLayout o) {
+		return o.renderingPriority - this.renderingPriority;
 	}
 
 	/**
@@ -431,47 +434,36 @@ public class ElementLayout {
 	}
 
 	public void setRenderer(LayoutRenderer renderer) {
-
-		if (renderer != null) {
-			this.renderer = renderer;
-			renderer.setElementLayout(this);
+		this.renderer = renderer;
+		if (this.renderer != null) {
+			this.renderer.setElementLayout(this);
 		}
 	}
 
 	public void addBackgroundRenderer(LayoutRenderer renderer) {
-		if (backgroundRenderers == null)
-			backgroundRenderers = new ArrayList<LayoutRenderer>(3);
 		backgroundRenderers.add(renderer);
 		renderer.setElementLayout(this);
 	}
 
 	public List<LayoutRenderer> getBackgroundRenderer() {
-		if (backgroundRenderers == null)
-			return Collections.emptyList();
 		return Collections.unmodifiableList(backgroundRenderers);
 	}
 
 	public void addForeGroundRenderer(LayoutRenderer renderer) {
-		if (foregroundRenderers == null)
-			foregroundRenderers = new ArrayList<LayoutRenderer>(3);
 		foregroundRenderers.add(renderer);
 		renderer.setElementLayout(this);
 	}
 
 	public List<LayoutRenderer> getForegroundRenderer() {
-		if (foregroundRenderers == null)
-			return Collections.emptyList();
 		return Collections.unmodifiableList(foregroundRenderers);
 	}
 
 	public void clearBackgroundRenderers() {
-		if (backgroundRenderers != null)
-			backgroundRenderers.clear();
+		backgroundRenderers.clear();
 	}
 
 	public void clearForegroundRenderers() {
-		if (foregroundRenderers != null)
-			foregroundRenderers.clear();
+		foregroundRenderers.clear();
 	}
 
 	/**
@@ -484,14 +476,6 @@ public class ElementLayout {
 
 	public void setZoomer(Zoomer zoomer) {
 		this.zoomer = zoomer;
-	}
-
-	/**
-	 * @return The rendering priority, which determines the point in time this element layout is rendered if its
-	 *         {@link ALayoutContainer} uses priority rendering.
-	 */
-	public int getRenderingPriority() {
-		return renderingPriority;
 	}
 
 	/**
@@ -580,17 +564,13 @@ public class ElementLayout {
 		if (zoomer != null)
 			zoomer.beginZoom(gl);
 
-		if (backgroundRenderers != null) {
-			for (LayoutRenderer backgroundRenderer : backgroundRenderers) {
-				backgroundRenderer.render(gl);
-			}
+		for (LayoutRenderer backgroundRenderer : backgroundRenderers) {
+			backgroundRenderer.render(gl);
 		}
 		if (renderer != null)
 			renderer.render(gl);
-		if (foregroundRenderers != null) {
-			for (LayoutRenderer foregroundRenderer : foregroundRenderers) {
-				foregroundRenderer.render(gl);
-			}
+		for (LayoutRenderer foregroundRenderer : foregroundRenderers) {
+			foregroundRenderer.render(gl);
 		}
 		if (zoomer != null)
 			zoomer.endZoom(gl);

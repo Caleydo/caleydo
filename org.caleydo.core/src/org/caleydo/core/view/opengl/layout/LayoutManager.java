@@ -19,14 +19,13 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
  * The LayoutManager is responsible for rendering all the elements specified in
@@ -38,25 +37,17 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 public class LayoutManager {
 
 	private ViewFrustum viewFrustum;
-	private float totalWidth;
-	private float totalHeight;
-
-	LayoutConfiguration layoutConfiguration;
 
 	/** The entry point to the recursively defined layout */
-	protected ElementLayout baseElementLayout;
+	private ElementLayout baseElementLayout;
 
-	protected float fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
-
-	protected boolean isActive;
-
-	protected PixelGLConverter pixelGLConverter;
+	private final PixelGLConverter pixelGLConverter;
 
 	/**
 	 * List of display list indices that refer to display lists of @link
 	 * {@link LayoutRenderer}s that have been destroyed.
 	 */
-	protected List<Integer> displayListsToDelete = new ArrayList<Integer>();
+	private Queue<Integer> displayListsToDelete = new ConcurrentLinkedQueue<Integer>();
 
 	/**
 	 * Determines whether the {@link LayoutRenderer}s called by this
@@ -65,7 +56,7 @@ public class LayoutManager {
 	 * {@link #render(GL2)} method must not be part of any external display
 	 * list, otherwise the GL behavior is not defined.
 	 */
-	protected boolean useDisplayLists = false;
+	private boolean useDisplayLists = false;
 
 	public LayoutManager(ViewFrustum viewFrustum, PixelGLConverter pixelGLConverter) {
 		if (viewFrustum == null || pixelGLConverter == null)
@@ -92,7 +83,6 @@ public class LayoutManager {
 	 * {@link LayoutManager}.
 	 */
 	public void setStaticLayoutConfiguration(LayoutConfiguration layoutConfiguration) {
-		this.layoutConfiguration = layoutConfiguration;
 		layoutConfiguration.setStaticLayouts();
 		setBaseElementLayout(layoutConfiguration.getBaseElementLayout());
 	}
@@ -107,8 +97,8 @@ public class LayoutManager {
 	 */
 	public void updateLayout() {
 
-		totalWidth = viewFrustum.getRight() - viewFrustum.getLeft();
-		totalHeight = viewFrustum.getTop() - viewFrustum.getBottom();
+		float totalWidth = viewFrustum.getRight() - viewFrustum.getLeft();
+		float totalHeight = viewFrustum.getTop() - viewFrustum.getBottom();
 
 		// template.getBaseLayoutElement().destroy();
 
@@ -151,11 +141,10 @@ public class LayoutManager {
 	protected void deleteDisplayListsOfDestroyedRenderers(GL2 gl) {
 
 		// Free display lists
-		for (int displayListIndex : displayListsToDelete) {
-			gl.glDeleteLists(displayListIndex, 1);
+		Integer i = null;
+		while ((i = displayListsToDelete.poll()) != null) {
+			gl.glDeleteLists(i, 1);
 		}
-
-		displayListsToDelete.clear();
 	}
 
 	/**
@@ -182,8 +171,8 @@ public class LayoutManager {
 		baseElementLayout.setTranslateX(left);
 		baseElementLayout.setTranslateY(bottom);
 
-		Integer dynamicSizeUnitsX = baseElementLayout.getDynamicSizeUnitsX();
-		Integer dynamicSizeUnitsY = baseElementLayout.getDynamicSizeUnitsY();
+		int dynamicSizeUnitsX = baseElementLayout.getDynamicSizeUnitsX();
+		int dynamicSizeUnitsY = baseElementLayout.getDynamicSizeUnitsY();
 
 		baseElementLayout.calculateScales(totalWidth, totalHeight, dynamicSizeUnitsX,
 				dynamicSizeUnitsY);

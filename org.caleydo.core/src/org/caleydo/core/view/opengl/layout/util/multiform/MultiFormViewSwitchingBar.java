@@ -141,7 +141,7 @@ public class MultiFormViewSwitchingBar extends Row implements IMultiFormChangeLi
 			Pair<Button, ElementLayout> buttonPair = buttons.get(rendererID);
 			ElementLayout elementLayout = buttonPair.getSecond();
 
-			int elementIndex = elements.indexOf(elementLayout);
+			int elementIndex = indexOf(elementLayout);
 			add(elementIndex, buttonLayout);
 
 			remove(elementLayout);
@@ -168,24 +168,24 @@ public class MultiFormViewSwitchingBar extends Row implements IMultiFormChangeLi
 
 		ElementLayout elementLayout = buttonPair.getSecond();
 
-		int elementIndex = elements.indexOf(elementLayout);
+		int elementIndex = indexOf(elementLayout);
 
 		GL2 gl = view.getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2();
 
 		// remove spacings
-		if (elementIndex == 0 && elements.size() > 1) {
-			ElementLayout spacing = elements.get(1);
-			elements.remove(1);
+		if (elementIndex == 0 && size() > 1) {
+			ElementLayout spacing = get(1);
+			remove(1);
 			spacing.destroy(gl);
 		}
 		if (elementIndex > 1) {
-			ElementLayout spacing = elements.get(elementIndex - 1);
-			elements.remove(elementIndex - 1);
+			ElementLayout spacing = get(elementIndex - 1);
+			remove(elementIndex - 1);
 			spacing.destroy(gl);
 		}
 
-		elementIndex = elements.indexOf(elementLayout);
-		elements.remove(elementIndex);
+		elementIndex = indexOf(elementLayout);
+		remove(elementIndex);
 		elementLayout.destroy(gl);
 
 		buttons.remove(rendererID);
@@ -222,7 +222,7 @@ public class MultiFormViewSwitchingBar extends Row implements IMultiFormChangeLi
 
 	@Override
 	public void rendererAdded(MultiFormRenderer multiFormRenderer, int rendererID) {
-		if (elements.size() > 0) {
+		if (size() > 0) {
 			add(ElementLayouts.createXSpacer(BUTTON_SPACING_PIXELS));
 		}
 		addButton(rendererID, multiFormRenderer);

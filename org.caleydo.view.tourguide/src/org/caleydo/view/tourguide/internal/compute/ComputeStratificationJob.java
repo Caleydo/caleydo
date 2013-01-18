@@ -3,7 +3,6 @@ package org.caleydo.view.tourguide.internal.compute;
 import java.util.Collection;
 
 import org.caleydo.core.data.perspective.variable.ARecordPerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;

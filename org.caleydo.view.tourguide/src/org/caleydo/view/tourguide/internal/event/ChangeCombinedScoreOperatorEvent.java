@@ -17,32 +17,43 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.view.contextmenu;
+package org.caleydo.view.tourguide.internal.event;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.event.ADirectedEvent;
+import org.caleydo.view.tourguide.api.score.CombinedScore;
+import org.caleydo.view.tourguide.api.score.ECombinedOperator;
 
 /**
- * generic implementation of a context menu item
- *
  * @author Samuel Gratzl
  *
  */
-public class GroupContextMenuItem extends AContextMenuItem {
-	public GroupContextMenuItem(String label) {
-		setLabel(label);
+public class ChangeCombinedScoreOperatorEvent extends ADirectedEvent {
+
+	private CombinedScore score;
+	private ECombinedOperator op;
+
+	public ChangeCombinedScoreOperatorEvent(CombinedScore s, ECombinedOperator op) {
+		this.score = s;
+		this.op = op;
 	}
 
-	public void add(AContextMenuItem item) {
-		super.addSubItem(item);
+	/**
+	 * @return the score, see {@link #score}
+	 */
+	public CombinedScore getScore() {
+		return score;
 	}
 
-	public void add(String label, AEvent event) {
-		add(new GenericContextMenuItem(label, event));
+	/**
+	 * @return the op, see {@link #op}
+	 */
+	public ECombinedOperator getOp() {
+		return op;
 	}
 
-	public void addAll(Iterable<Pair<String, ? extends AEvent>> events) {
-		for (Pair<String, ? extends AEvent> event : events)
-			add(event.getFirst(), event.getSecond());
+	@Override
+	public boolean checkIntegrity() {
+		return score != null && op != null;
 	}
+
 }

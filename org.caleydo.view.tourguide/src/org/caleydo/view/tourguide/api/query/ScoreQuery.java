@@ -402,9 +402,31 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>>, Cloneable
 			if (it.next().getReference() == score)
 				it.remove();
 		}
+		orderBy.remove(score);
 
 		listeners.fireIndexedPropertyChange(PROP_SELECTION, i, score, null);
+	}
 
+	public void moveSelection(IScore score, IScore after) {
+		selection.remove(score);
+		int i = selection.indexOf(after);
+		selection.add(i, score);
+		listeners.fireIndexedPropertyChange(PROP_SELECTION, i, score, null);
+	}
+
+	public void replaceSelection(IScore old, IScore new_) {
+		int i = selection.indexOf(old);
+		// remove all related filters
+		for (Iterator<IScoreFilter> it = this.filter.iterator(); it.hasNext();) {
+			if (it.next().getReference() == old)
+				it.remove();
+		}
+		ESorting sorting = orderBy.remove(old);
+		if (sorting != null)
+			orderBy.put(new_, sorting);
+
+		selection.set(i, new_);
+		listeners.fireIndexedPropertyChange(PROP_SELECTION, i, old, new_);
 	}
 
 	public int getTop() {

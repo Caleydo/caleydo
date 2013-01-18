@@ -19,10 +19,10 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view;
 
-import static org.caleydo.core.view.opengl.layout.ElementLayouts.createXSeparator;
 import static org.caleydo.core.view.opengl.layout.ElementLayouts.createXSpacer;
 import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.SELECTED_COLOR;
 
+import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -40,6 +40,7 @@ import org.caleydo.core.util.color.Colors;
 import org.caleydo.core.view.contextmenu.AContextMenuItem.EContextMenuType;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.GenericContextMenuItem;
+import org.caleydo.core.view.contextmenu.GroupContextMenuItem;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -47,6 +48,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.query.ScoreQuery;
@@ -54,8 +56,11 @@ import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.api.query.filter.CompareScoreFilter;
 import org.caleydo.view.tourguide.api.query.filter.ECompareOperator;
 import org.caleydo.view.tourguide.api.score.CollapseScore;
+import org.caleydo.view.tourguide.api.score.CombinedScore;
+import org.caleydo.view.tourguide.api.score.ECombinedOperator;
 import org.caleydo.view.tourguide.api.util.LabelComparator;
 import org.caleydo.view.tourguide.internal.event.AddScoreColumnEvent;
+import org.caleydo.view.tourguide.internal.event.ChangeCombinedScoreOperatorEvent;
 import org.caleydo.view.tourguide.internal.event.CreateScoreEvent;
 import org.caleydo.view.tourguide.internal.event.RemoveScoreColumnEvent;
 import org.caleydo.view.tourguide.internal.event.RenameScoreColumnEvent;
@@ -68,6 +73,7 @@ import org.caleydo.view.tourguide.internal.view.col.AddQueryColumn;
 import org.caleydo.view.tourguide.internal.view.col.MatchColumn;
 import org.caleydo.view.tourguide.internal.view.col.QueryColumn;
 import org.caleydo.view.tourguide.internal.view.col.RankColumn;
+import org.caleydo.view.tourguide.internal.view.col.Separator;
 import org.caleydo.view.tourguide.internal.view.ui.ScoreFilterDialog;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.query.filter.IScoreFilter;
@@ -89,6 +95,7 @@ public class ScoreQueryUI extends Row {
 	public static final String ADD_TO_STRATOMEX = "ADD_TO_STATOMEX";
 	public static final String ADD_COLUMN = "ADD_COLUMN";
 	public static final String EDIT_FILTER = "EDIT_FILTER";
+	public static final String DROP_SEPARATOR = "DROP_SEPARATOR";
 
 	private final List<QueryColumn> queryColumns = new ArrayList<>();
 	private final List<ATableColumn> columns = new ArrayList<>();
@@ -118,10 +125,12 @@ public class ScoreQueryUI extends Row {
 
 	private final AGLView view;
 	private final StratomexAdapter stratomex;
+	private final DragAndDropController dndController;
 
-	public ScoreQueryUI(AGLView view, StratomexAdapter stratomex) {
+	public ScoreQueryUI(AGLView view, StratomexAdapter stratomex, DragAndDropController dndController) {
 		this.view = view;
 		this.stratomex = stratomex;
+		this.dndController = dndController;
 		init();
 		initListeners(view);
 
@@ -167,9 +176,7 @@ public class ScoreQueryUI extends Row {
 		this.add(colSpace);
 		this.add(columns.get(1));
 		for (QueryColumn col : this.queryColumns) {
-			final ElementLayout s = createXSeparator(5);
-			s.setGrabY(true);
-			this.add(s).add(col);
+			this.add(new Separator(size(), view, this)).add(col);
 		}
 		this.add(columns.get(columns.size() - 1));
 
@@ -273,10 +280,21 @@ public class ScoreQueryUI extends Row {
 			}
 
 			@Override
+			public void dragged(Pick pick) {
+				if (!dndController.hasDraggables())
+					onDragStart(queryColumns.get(pick.getObjectID()), pick.getDragStartPoint());
+			}
+
+			@Override
 			public void rightClicked(Pick pick) {
 				onShowColumnMenu(queryColumns.get(pick.getObjectID()));
 			}
-		}, QueryColumn.SORT_COLUMN);
+
+			@Override
+			public void doubleClicked(Pick pick) {
+				onToggleCollapse(queryColumns.get(pick.getObjectID()));
+			}
+		}, QueryColumn.CLICK_COLUMN_HEADER);
 		view.addTypePickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
@@ -305,6 +323,45 @@ public class ScoreQueryUI extends Row {
 			}
 		}, EDIT_FILTER);
 		view.addTypePickingTooltipListener("Edit Score Filters", EDIT_FILTER);
+
+		view.addTypePickingListener(new APickingListener() {
+
+			@Override
+			public void dragged(Pick pick) {
+				onSeparatorDragged(pick);
+			}
+
+			@Override
+			public void mouseOut(Pick pick) {
+				dndController.setDropArea(null);
+			}
+		}, DROP_SEPARATOR);
+	}
+
+
+	/**
+	 * @param pick
+	 */
+	protected void onSeparatorDragged(Pick pick) {
+		if (dndController.isDragging())
+			dndController.setDropArea((Separator) get(pick.getObjectID()));
+		else {
+			// ATableColumn column = (ATableColumn) get(pick.getObjectID() - 1);
+			// dndController.setDraggables(Sets.newHashSet(column.asResize()));
+			// dndController.setDraggingStartPosition(pick.getDragStartPoint());
+		}
+	}
+	protected void onToggleCollapse(QueryColumn column) {
+		column.toggleCollapse();
+	}
+
+	/**
+	 * @param queryColumn
+	 */
+	protected void onDragStart(QueryColumn queryColumn, Point startPosition) {
+		dndController.clearDraggables();
+		dndController.addDraggable(queryColumn);
+		dndController.setDraggingStartPosition(startPosition);
 	}
 
 	protected void onSortBy(QueryColumn columnHeader) {
@@ -339,20 +396,27 @@ public class ScoreQueryUI extends Row {
 	protected void onShowColumnMenu(QueryColumn column) {
 		ContextMenuCreator creator = view.getContextMenuCreator();
 		if (column.getScore() instanceof DefaultLabelProvider) {
-			creator.addContextMenuItem(new GenericContextMenuItem("Rename", new RenameScoreColumnEvent(
-					(DefaultLabelProvider) column.getScore()).to(this)));
+			creator.add("Rename", new RenameScoreColumnEvent((DefaultLabelProvider) column.getScore()).to(this));
 			creator.addSeparator();
 		}
-		creator.addContextMenuItem(new GenericContextMenuItem("Hide", new RemoveScoreColumnEvent(column.getScore(),
-				false).to(this)));
-		creator.addContextMenuItem(new GenericContextMenuItem("Hide And Remove", new RemoveScoreColumnEvent(column
-				.getScore(), true).to(this)));
+		creator.add("Hide", new RemoveScoreColumnEvent(column.getScore(), false).to(this));
+		creator.add("Hide And Remove", new RemoveScoreColumnEvent(column.getScore(), true).to(this));
 		creator.addSeparator();
 
 		{
 			boolean hasNanFilter = hasNaNFilter(column.getScore());
 			creator.addContextMenuItem(new GenericContextMenuItem("Enable NaN Filter", EContextMenuType.CHECK,
 					new ToggleNaNFilterScoreColumnEvent(column.getScore()).to(this)).setState(hasNanFilter));
+		}
+		if (column.getScore() instanceof CombinedScore) {
+			CombinedScore s = (CombinedScore) column.getScore();
+			GroupContextMenuItem group = new GroupContextMenuItem("Operator");
+			creator.addContextMenuItem(group);
+			ECombinedOperator act = (s).getOperator();
+			for (ECombinedOperator op : ECombinedOperator.values()) {
+				group.add(new GenericContextMenuItem(op.getLabel(), EContextMenuType.CHECK,
+						new ChangeCombinedScoreOperatorEvent(s, op).to(this)).setState(op == act));
+			}
 		}
 		// creator.addContextMenuItem(new GenericContextMenuItem("Edit Filter", new ))
 	}
@@ -405,6 +469,13 @@ public class ScoreQueryUI extends Row {
 		}
 	}
 
+	public void moveColumn(QueryColumn column, int id) {
+		ATableColumn after = (ATableColumn) get(id + 1);
+		if (after == column || !(after instanceof QueryColumn))
+			return;
+		query.moveSelection(column.getScore(), ((QueryColumn) after).getScore());
+	}
+
 	@ListenTo(sendToMe = true)
 	void onRename(RenameScoreColumnEvent event) {
 		final ILabelHolder l = event.getColumn();
@@ -436,6 +507,13 @@ public class ScoreQueryUI extends Row {
 		}
 		// wasn't there add the filter
 		query.addFilter(new CompareScoreFilter(score, ECompareOperator.IS_NOT_NA, 0.5f));
+	}
+
+	@ListenTo(sendToMe = true)
+	void onChangeCombinedScore(ChangeCombinedScoreOperatorEvent event) {
+		CombinedScore score = event.getScore();
+		CombinedScore new_ = new CombinedScore(score.getLabel(), event.getOp(), score.getTransformedChildren());
+		query.replaceSelection(score, new_);
 	}
 
 	@ListenTo(sendToMe = true)
@@ -478,9 +556,4 @@ public class ScoreQueryUI extends Row {
 	public void selectPrevious() {
 		setSelected(selectedRow - 1);
 	}
-}
-
-interface ISelectionListener {
-	public void onSelectionChanged(ScoringElement old_, ScoringElement new_, IScore selectedColumn,
-			Collection<IScore> visibleColumns);
 }

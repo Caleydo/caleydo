@@ -25,18 +25,26 @@ import java.util.Collections;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
+import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.score.DefaultComputedStratificationScore;
 import org.caleydo.view.tourguide.api.score.ui.ACreateGroupScoreDialog;
+import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm;
+import org.caleydo.view.tourguide.impl.algorithm.AGSEAAlgorithm.GSEAAlgorithmPValue;
 import org.caleydo.view.tourguide.impl.algorithm.GSEAAlgorithm;
+import org.caleydo.view.tourguide.impl.algorithm.PGSEAAlgorithm;
 import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 import org.caleydo.view.tourguide.spi.IScoreFactory;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -46,6 +54,10 @@ import org.eclipse.swt.widgets.Shell;
 public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	private IRegisteredScore createGSEA(String label, TablePerspective reference, Group group) {
 		return new GeneSetScore(label, new GSEAAlgorithm(reference, group, 1.0f));
+	}
+
+	private IRegisteredScore createPGSEA(String label, TablePerspective reference, Group group) {
+		return new GeneSetScore(label, new PGSEAAlgorithm(reference, group));
 	}
 
 	@Override
@@ -60,10 +72,19 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 			return Collections.emptyList();
 		Collection<ScoreEntry> col = new ArrayList<>();
 
-		GSEAAlgorithm algorithm = new GSEAAlgorithm(strat, group, 1.0f);
-		IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm);
-		IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue());
-		col.add(new ScoreEntry("Gene Set Enrichment Analysis of Group", gsea, pValue));
+		{
+			GSEAAlgorithm algorithm = new GSEAAlgorithm(strat, group, 1.0f);
+			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm);
+			IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue());
+			col.add(new ScoreEntry("Gene Set Enrichment Analysis of Group", gsea, pValue));
+		}
+
+		{
+			PGSEAAlgorithm algorithm = new PGSEAAlgorithm(strat, group);
+			IScore gsea = new GeneSetScore(strat.getRecordPerspective().getLabel(), algorithm);
+			IScore pValue = new GeneSetScore(gsea.getLabel() + " (P-V)", algorithm.asPValue());
+			col.add(new ScoreEntry("Parametric Gene Set Enrichment Analysis of Group", gsea, pValue));
+		}
 		return col;
 	}
 
@@ -78,6 +99,8 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 	}
 
 	class CreateGSEADialog extends ACreateGroupScoreDialog {
+		private Button parametricUI;
+
 		public CreateGSEADialog(Shell shell, ScoreQueryUI sender) {
 			super(shell, sender);
 		}
@@ -89,12 +112,18 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 
 		@Override
 		protected void addTypeSpecific(Composite c) {
-
+			Label l = new Label(c, SWT.NONE);
+			l.setText("");
+			parametricUI = new Button(c, SWT.CHECK);
+			parametricUI.setText("Parametric Gene Set Enrichment Analysis");
 		}
 
 		@Override
 		protected IRegisteredScore createScore(String label, TablePerspective strat, Group g) {
-			return createGSEA(label, strat, g);
+			if (parametricUI.getSelection()) {
+				return createPGSEA(label, strat, g);
+			} else
+				return createGSEA(label, strat, g);
 		}
 	}
 
@@ -104,8 +133,21 @@ public class GeneSetEnrichmentScoreFactory implements IScoreFactory {
 		}
 
 		@Override
+		public ESorting getDefaultSorting() {
+			return (getAlgorithm() instanceof GSEAAlgorithmPValue) ? ESorting.ASC : ESorting.DESC;
+		}
+
+		@Override
 		public boolean supports(EDataDomainQueryMode mode) {
 			return mode == EDataDomainQueryMode.GENE_SET;
 		}
+	}
+
+	public static Pair<TablePerspective, Group> resolve(IStratificationAlgorithm algorithm) {
+		if (algorithm instanceof GSEAAlgorithmPValue)
+			algorithm = ((GSEAAlgorithmPValue) algorithm).getUnderlying();
+		if (algorithm instanceof AGSEAAlgorithm)
+			return Pair.make(((AGSEAAlgorithm) algorithm).getStratification(), ((AGSEAAlgorithm) algorithm).getGroup());
+		return null;
 	}
 }

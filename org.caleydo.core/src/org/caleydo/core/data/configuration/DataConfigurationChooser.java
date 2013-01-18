@@ -22,6 +22,7 @@ package org.caleydo.core.data.configuration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.table.DataTable;
@@ -52,7 +53,7 @@ public class DataConfigurationChooser {
 	 * @return a {@link DataConfiguration} object with all the data set.
 	 */
 
-	public static DataConfiguration determineDataConfiguration(ArrayList<ATableBasedDataDomain> possibleDataDomains,
+	public static DataConfiguration determineDataConfiguration(List<ATableBasedDataDomain> possibleDataDomains,
 			String viewName, boolean letUserChoose) {
 
 		ATableBasedDataDomain chosenDataDomain = null;

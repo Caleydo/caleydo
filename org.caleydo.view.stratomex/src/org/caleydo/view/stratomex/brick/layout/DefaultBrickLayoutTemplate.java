@@ -330,8 +330,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	@Override
 	public int getMinWidthPixels() {
 
-		int toolBarWidth = showToolBar ? calcSumPixelWidth(toolBar.getElements()) : 0;
-		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar.getElements()) : 0;
+		int toolBarWidth = showToolBar ? calcSumPixelWidth(toolBar) : 0;
+		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar) : 0;
 
 		int guiElementsWidth = Math.max(toolBarWidth, footerBarWidth) + 2 * SPACING_PIXELS;
 		if (viewRenderer == null)

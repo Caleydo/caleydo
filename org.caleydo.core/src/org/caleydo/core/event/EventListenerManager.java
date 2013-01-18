@@ -32,34 +32,25 @@ import java.util.Set;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
- * utility to handle events and their registration / deregistration
- * 
+ * utility class to hold a list of event listeners to register and remove them all in an convinced way
+ *
  * @author Samuel Gratzl
- * 
+ *
  */
-public final class EventListeners {
+public class EventListenerManager {
 	private static final EventPublisher EVENT_PUBLISHER = GeneralManager.get().getEventPublisher();
 
 	private final Set<AEventListener<?>> listeners = new HashSet<>();
 
-	public final void register(Class<? extends AEvent> event, AEventListener<?> listener) {
-		listeners.add(listener);
-		EVENT_PUBLISHER.addListener(event, listener);
-	}
-	@SafeVarargs
-	public final void register(AEventListener<?> listener, Class<? extends AEvent>... events) {
-		listeners.add(listener);
-		for (Class<? extends AEvent> event : events)
-			EVENT_PUBLISHER.addListener(event, listener);
+	protected final IListenerOwner owner;
+
+	EventListenerManager(IListenerOwner owner) {
+		this.owner = owner;
 	}
 
-	/**
-	 * shortcut for {@link #register(owner, owner)}
-	 *
-	 * @param owner
-	 */
-	public final void register(IListenerOwner owner) {
-		register(owner, owner);
+	private void register(Class<? extends AEvent> event, AEventListener<?> listener) {
+		listeners.add(listener);
+		EVENT_PUBLISHER.addListener(event, listener);
 	}
 
 	/**
@@ -69,19 +60,45 @@ public final class EventListeners {
 	 *
 	 *           and register an event listener for calling this method
 	 *
-	 * @param owner
 	 * @param listener
 	 */
-	public final void register(IListenerOwner owner, Object listener) {
+	public final void register(Object listener) {
+		register(listener, null);
+	}
+
+	/**
+	 * filter all methods of the listener object for <code>
+	 * 
+	 * @ListenTo void xxx(<? extends AEvent> event); </code>
+	 * 
+	 *           and register an event listener for calling this method
+	 * 
+	 * @param listener
+	 * @param dataDomainID
+	 *            if {@link ListenTo#restrictToDataDomain()} or {@link ListenTo#restrictExclusiveToDataDomain()} is used
+	 *            the dataDomainID to set
+	 */
+	public final void register(Object listener, String dataDomainID) {
 		Class<?> clazz = listener.getClass();
 		while (clazz != null) {
 			for (Method m : clazz.getDeclaredMethods()) {
 				if (!matches(m))
 					continue;
 				Class<? extends AEvent> event = m.getParameterTypes()[0].asSubclass(AEvent.class);
-				boolean toMe = m.getAnnotation(ListenTo.class).sendToMe()
+				final ListenTo a = m.getAnnotation(ListenTo.class);
+				boolean toMe = a.sendToMe()
 						&& ADirectedEvent.class.isAssignableFrom(event);
-				register(event, new AnnotationBasedEventListener(owner, listener, m, toMe));
+
+				final AnnotationBasedEventListener l = new AnnotationBasedEventListener(owner, listener, m, toMe);
+
+				if (dataDomainID != null && (a.restrictExclusiveToDataDomain() || a.restrictToDataDomain())) {
+					if (a.restrictExclusiveToDataDomain())
+						l.setExclusiveDataDomainID(dataDomainID);
+					else
+						l.setDataDomainID(dataDomainID);
+				}
+
+				register(event, l);
 			}
 			clazz = clazz.getSuperclass();
 		}
@@ -117,6 +134,10 @@ public final class EventListeners {
 		 * @return
 		 */
 		boolean sendToMe() default false;
+
+		boolean restrictToDataDomain() default false;
+
+		boolean restrictExclusiveToDataDomain() default false;
 	}
 
 	private static class AnnotationBasedEventListener extends AEventListener<IListenerOwner> {

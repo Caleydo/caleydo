@@ -22,6 +22,7 @@ package org.caleydo.datadomain.pathway.manager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.id.IDCategory;
@@ -48,16 +49,16 @@ public class PathwayItemManager {
 	private volatile static PathwayItemManager pathwayItemManager;
 
 	/** The mapping manager for genes */
-	private IDMappingManager geneIDMappingManager;
+	private final IDMappingManager geneIDMappingManager;
 	/** The davidIDType ID Type */
-	private IDType davidIDType;
-	/** The ID type for the {@link PathwayVertex}s */
-	private IDType pathwayVertexIDType;
+	private final IDType davidIDType;
+	/** The final ID type for the {@link PathwayVertex}s */
+	private final IDType pathwayVertexIDType;
 	/** The id type for the {@link PathwayVertexRep}s */
-	private IDType pathwayVertexRepIDType;
+	private final IDType pathwayVertexRepIDType;
 
-	private HashMap<Integer, PathwayVertexRep> hashPathwayVertexRepIDToPathwayVertexRep;
-	private HashMap<Integer, PathwayVertex> hashVertexIDToVertex;
+	private final Map<Integer, PathwayVertexRep> hashPathwayVertexRepIDToPathwayVertexRep;
+	private final Map<Integer, PathwayVertex> hashVertexIDToVertex;
 
 	private PathwayItemManager() {
 		geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(

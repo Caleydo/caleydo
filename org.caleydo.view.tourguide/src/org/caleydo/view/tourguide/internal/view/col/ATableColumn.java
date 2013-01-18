@@ -31,6 +31,8 @@ import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.ROW_SPACI
 
 import java.util.List;
 
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.util.base.ConstantLabelProvider;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -38,9 +40,12 @@ import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.core.view.opengl.layout.util.Renderers;
+import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.view.tourguide.api.query.ScoreQuery;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
 import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * @author Samuel Gratzl
@@ -95,11 +100,10 @@ public abstract class ATableColumn extends Column {
 
 
 	public final ElementLayout getTd(int i) {
-		List<ElementLayout> elem = this.getElements();
 		int pos = 3 + i * 2;
-		if (elem.size() <= pos)
+		if (this.size() <= pos)
 			return null;
-		return elem.get(pos);
+		return get(pos);
 	}
 
 	protected final ElementLayout createLabel(String label, int width) {
@@ -136,4 +140,70 @@ public abstract class ATableColumn extends Column {
 	 * @param query
 	 */
 	public abstract void setData(List<ScoringElement> data, ScoreQuery query);
+
+	protected abstract int getMinWidth();
+
+	public IDraggable asResize() {
+		return new IDraggable() {
+			@Override
+			public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
+				setResizeDraggingStartPoint(mouseCoordinateX, mouseCoordinateY);
+			}
+
+			@Override
+			public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
+				handleResizeDrop(gl, mouseCoordinateX, mouseCoordinateY);
+			}
+
+			@Override
+			public void handleDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
+				handleResizeDragging(gl, mouseCoordinateX, mouseCoordinateY);
+			}
+		};
+	}
+
+	/**
+	 * @param mouseCoordinateX
+	 * @param mouseCoordinateY
+	 */
+	protected void setResizeDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
+		// TODO Auto-generated method stub
+		System.out.println("start: " + mouseCoordinateX + " ");
+		setCursor(SWT.CURSOR_SIZEWE);
+	}
+
+	/**
+	 * @param gl
+	 * @param mouseCoordinateX
+	 * @param mouseCoordinateY
+	 */
+	protected void handleResizeDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
+		// TODO Auto-generated method stub
+		setCursor(-1);
+		System.out.println("drop: " + mouseCoordinateX + " ");
+	}
+
+	private void setCursor(final int cursor) {
+		final Composite composite = view.getParentComposite();
+		composite.getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				composite.setCursor(cursor == -1 ? null : composite.getDisplay().getSystemCursor(cursor));
+			}
+		});
+	}
+
+	/**
+	 * @param gl
+	 * @param mouseCoordinateX
+	 * @param mouseCoordinateY
+	 */
+	protected void handleResizeDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
+		// TODO Auto-generated method stub
+		System.out.println("drag: " + mouseCoordinateX + " ");
+		if (getPixelSizeX() > getMinWidth()) {
+			setPixelSizeX(getPixelSizeX() - 1);
+			layoutManager.updateLayout();
+		}
+	}
 }

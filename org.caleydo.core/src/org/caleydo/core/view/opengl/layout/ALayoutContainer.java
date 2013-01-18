@@ -21,7 +21,6 @@ package org.caleydo.core.view.opengl.layout;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -49,7 +48,7 @@ public abstract class ALayoutContainer extends ElementLayout implements Iterable
 	protected boolean isBottomUp = true;
 	protected boolean isLeftToRight = true;
 
-	protected ArrayList<ElementLayout> elements = new ArrayList<ElementLayout>();
+	private final List<ElementLayout> elements = new ArrayList<ElementLayout>();
 
 	/**
 	 * The currently available bottom distance for the layout. Use if only this sub-part of the layout is updated
@@ -88,12 +87,7 @@ public abstract class ALayoutContainer extends ElementLayout implements Iterable
 			return;
 		if (isPriorityRendereing) {
 			List<ElementLayout> sortedList = new ArrayList<>(elements);
-			Collections.sort(sortedList, new Comparator<ElementLayout>() {
-				@Override
-				public int compare(ElementLayout o1, ElementLayout o2) {
-					return -1 * (o1.getRenderingPriority() - o2.getRenderingPriority());
-				}
-			});
+			Collections.sort(sortedList);
 			for (ElementLayout l : sortedList)
 				l.render(gl);
 		} else {
@@ -135,6 +129,7 @@ public abstract class ALayoutContainer extends ElementLayout implements Iterable
 	 */
 	public ALayoutContainer add(ElementLayout elementLayout) {
 		elements.add(elementLayout);
+		init(elementLayout);
 		return this;
 	}
 
@@ -146,6 +141,12 @@ public abstract class ALayoutContainer extends ElementLayout implements Iterable
 	 */
 	public void add(int index, ElementLayout elementLayout) {
 		elements.add(index, elementLayout);
+		init(elementLayout);
+	}
+
+	private void init(ElementLayout child) {
+		if (layoutManager != null)
+			child.setLayoutManager(layoutManager);
 	}
 
 	public ElementLayout get(int index) {
@@ -168,17 +169,16 @@ public abstract class ALayoutContainer extends ElementLayout implements Iterable
 
 	@Override
 	public String toString() {
-		String name;
-		if (layoutName == null)
-			name = layoutName;
-		else
-			name = super.toString();
-
-		return ("Container " + name + " with " + elements.size() + " elements. height: " + sizeScaledY + ", widht: " + sizeScaledX);
+		return ("Container " + super.toString() + " with " + elements.size() + " elements. height: " + sizeScaledY
+				+ ", width: " + sizeScaledX);
 	}
 
 	public int size() {
 		return elements.size();
+	}
+
+	public boolean isEmpty() {
+		return elements.isEmpty();
 	}
 
 	public void clear() {
@@ -187,6 +187,14 @@ public abstract class ALayoutContainer extends ElementLayout implements Iterable
 
 	public boolean remove(ElementLayout elementLayout) {
 		return elements.remove(elementLayout);
+	}
+
+	public ElementLayout remove(int index) {
+		return elements.remove(index);
+	}
+
+	public int indexOf(ElementLayout child) {
+		return elements.indexOf(child);
 	}
 
 	// --------------------- End of Public Interface ---------------------
@@ -237,10 +245,6 @@ public abstract class ALayoutContainer extends ElementLayout implements Iterable
 			elementLayout.destroy(gl);
 		}
 		elements.clear();
-	}
-
-	public ArrayList<ElementLayout> getElements() {
-		return elements;
 	}
 
 	/**

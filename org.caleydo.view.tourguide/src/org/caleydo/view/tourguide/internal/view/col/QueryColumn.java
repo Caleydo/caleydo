@@ -28,9 +28,14 @@ import static org.caleydo.view.tourguide.internal.TourGuideRenderStyle.DATADOMAI
 
 import java.util.List;
 
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.ConstantLabelProvider;
+import org.caleydo.core.util.color.Colors;
+import org.caleydo.core.util.color.IColor;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Dims;
@@ -39,6 +44,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.Row.HAlign;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
 import org.caleydo.core.view.opengl.layout.util.TextureRenderer;
+import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.query.ScoreQuery;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
@@ -51,6 +57,7 @@ import org.caleydo.view.tourguide.spi.compute.ICompositeScore;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * base class for different score column renderer implementations depending on the type
@@ -58,8 +65,8 @@ import org.caleydo.view.tourguide.spi.score.IStratificationScore;
  * @author Samuel Gratzl
  *
  */
-public class QueryColumn extends ATableColumn {
-	public static final String SORT_COLUMN = "SORT_COLUMN";
+public class QueryColumn extends ATableColumn implements IDraggable {
+	public static final String CLICK_COLUMN_HEADER = "CLICK_COLUMN_HEADER";
 
 	protected final boolean rank;
 	protected final IScore score;
@@ -148,8 +155,16 @@ public class QueryColumn extends ATableColumn {
 		}
 		r.add(createLabel(this.score, -1));
 		r.add(wrap(new TextureRenderer(sort.getFileName(), view.getTextureManager()), 16));
-		r.addBackgroundRenderer(new PickingRenderer(SORT_COLUMN, index, view));
+		r.addBackgroundRenderer(new PickingRenderer(CLICK_COLUMN_HEADER, index, view));
 		return r;
+	}
+
+	@Override
+	protected int getMinWidth() {
+		int w = COLX_SCORE_WIDTH;
+		if (valueMode != EValueMode.VALUE)
+			w += DATADOMAIN_TYPE_WIDTH + COL_SPACING;
+		return w;
 	}
 
 	@Override
@@ -242,7 +257,7 @@ public class QueryColumn extends ATableColumn {
 			return;
 		this.sort = sort;
 		Row h = (Row) this.th;
-		h.get(h.getElements().size() - 1).setRenderer(
+		h.get(h.size() - 1).setRenderer(
 				new TextureRenderer(this.sort.getFileName(), view.getTextureManager()));
 	}
 
@@ -317,5 +332,48 @@ public class QueryColumn extends ATableColumn {
 		}
 
 		return new QueryColumn(view, score, i, sorting, scoreType.isRank(), headerMode, valueMode);
+	}
+
+	@Override
+	public void handleDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
+		ARecordPerspective strat = resolveStratification(score);
+		IColor color = Colors.of(100);
+		if (headerMode == EHeaderMode.STRAT || headerMode == EHeaderMode.STRAT_GROUP) {
+			color = strat.getDataDomain().getColor();
+		}
+		gl.glColor4fv(color.getRGBA(), 0);
+		gl.glPushAttrib(GL2.GL_LINE_BIT);
+		gl.glLineWidth(5);
+		gl.glBegin(GL.GL_LINES);
+		gl.glVertex3f(mouseCoordinateX, mouseCoordinateY, 2);
+		gl.glVertex3f(mouseCoordinateX + layoutManager.getPixelGLConverter().getGLWidthForPixelWidth(getPixelSizeX()),
+				mouseCoordinateY, 2);
+		gl.glEnd();
+		gl.glPopAttrib();
+	}
+
+	@Override
+	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
+		// setCursor(-1);
+	}
+
+	@Override
+	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
+		// setCursor(SWT.CURSOR_HAND);
+	}
+
+	public void toggleCollapse() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void setCursor(final int cursor) {
+		final Composite composite = view.getParentComposite();
+		composite.getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				composite.setCursor(cursor == -1 ? null : composite.getDisplay().getSystemCursor(cursor));
+			}
+		});
 	}
 }

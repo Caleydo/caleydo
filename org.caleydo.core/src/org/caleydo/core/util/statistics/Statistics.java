@@ -182,6 +182,7 @@ public final class Statistics {
 	// private static transient SoftReference<ChiSquaredDistribution> chiSquare1 = null;
 
 	public static double chiSquaredProbability(double x, int df) {
+
 		return weka.core.Statistics.chiSquaredProbability(x, df);
 		// ChiSquaredDistribution d;
 		// if (df == 1) {
@@ -218,6 +219,13 @@ public final class Statistics {
 	// }
 	// return Float.NaN;
 	// }
+
+	public static float foldChange(float a, float b) {
+		if (a > b)
+			return a / b;
+		else
+			return -b / a;
+	}
 
 	/**
 	 * computes the log rank score between the two given survival curves

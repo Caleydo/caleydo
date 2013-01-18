@@ -501,6 +501,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 			ViewManager.get().destroyView(getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2(), brick);
 			// brick.unregisterEventListeners();
 		}
+		clusterBricks.clear();
 	}
 
 	@Override
@@ -572,7 +573,14 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	 */
 	public void replaceTablePerspective(TablePerspective tablePerspective) {
 		this.tablePerspective = tablePerspective;
-		reactOnGroupingChanges();
+		headerBrickLayout.clear();
+		ViewManager.get().destroyView(getParentGLCanvas().asGLAutoDrawAble().getGL().getGL2(), headerBrick);
+		headerBrick = null;
+
+		clusterBrickColumn.clear();
+		createBricks();
+
+		stratomex.setLayoutDirty();
 	}
 
 	private void reactOnGroupingChanges() {

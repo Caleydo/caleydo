@@ -21,18 +21,66 @@ package org.caleydo.view.tourguide.api.score;
 
 import java.util.Arrays;
 
+import org.caleydo.core.util.base.ILabelProvider;
+
 import com.google.common.base.Function;
 
 /**
  * @author Samuel Gratzl
  *
  */
-public enum ECombinedOperator implements Function<float[], Float> {
-	MAX, MIN, MEAN, MEDIAN, PRODUCT, GEOMETRIC_MEAN;
+public enum ECombinedOperator implements Function<float[], Float>, ILabelProvider {
+	MAX, MIN, MEAN, MEDIAN, PRODUCT, GEOMETRIC_MEAN, SUM;
 
 	@Override
 	public Float apply(float[] data) {
 		return combine(data);
+	}
+
+	public String getAbbreviation() {
+		switch (this) {
+		case GEOMETRIC_MEAN:
+			return "GEO";
+		case MAX:
+			return "MAX";
+		case MEAN:
+			return "AVG";
+		case MEDIAN:
+			return "MED";
+		case MIN:
+			return "MIN";
+		case SUM:
+			return "\u2211";
+		case PRODUCT:
+			return "\u220F";
+		}
+		throw new IllegalStateException("unknown operator: " + this);
+	}
+
+	@Override
+	public String getLabel() {
+		switch (this) {
+		case GEOMETRIC_MEAN:
+			return "Geometric Mean";
+		case MAX:
+			return "Maximum";
+		case MEAN:
+			return "Average";
+		case MEDIAN:
+			return "Median";
+		case MIN:
+			return "Minium";
+		case SUM:
+			return "Sum \u2211";
+		case PRODUCT:
+			return "Product \u220F";
+		}
+		throw new IllegalStateException("unknown operator: " + this);
+	}
+
+	@Override
+	public String getProviderName() {
+		return "ECombinedOperator";
 	}
 
 	public float combine(float[] data) {
@@ -80,6 +128,11 @@ public enum ECombinedOperator implements Function<float[], Float> {
 				return 0.5f * (data[center] + data[center + 1]);
 			else
 				return data[center + 1];
+		case SUM:
+			c = 0;
+			for (int i = 0; i < data.length; ++i)
+				c += data[i];
+			return c;
 		}
 		throw new IllegalStateException("unknown operator: " + this);
 	}

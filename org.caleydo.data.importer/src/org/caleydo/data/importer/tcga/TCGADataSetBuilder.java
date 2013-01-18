@@ -41,11 +41,10 @@ import org.caleydo.datadomain.genetic.TCGADefinitions;
 
 public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 	private static final Logger log = Logger.getLogger(TCGADataSetBuilder.class.getSimpleName());
+	private static final long serialVersionUID = 6468622325177694143L;
 
 	private static final String CLUSTER_FILE = "outputprefix.expclu.gct";
 	private static final int LEVEL = 4;
-
-	private static final long serialVersionUID = 6468622325177694143L;
 
 	private final EDataSetType dataSetType;
 	private final String tumorAbbreviation;

@@ -19,54 +19,55 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.view.col;
 
+import java.util.Set;
 
-import static org.caleydo.core.view.opengl.layout.ElementLayouts.wrap;
+import javax.media.opengl.GL2;
 
-import java.util.List;
-
-import org.caleydo.core.util.base.ConstantLabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.layout.util.PickingRenderer;
-import org.caleydo.core.view.opengl.layout.util.TextureRenderer;
-import org.caleydo.view.tourguide.api.query.ScoreQuery;
-import org.caleydo.view.tourguide.api.query.ScoringElement;
-import org.caleydo.view.tourguide.internal.TourGuideRenderStyle;
+import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
+import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
 import org.caleydo.view.tourguide.internal.view.ScoreQueryUI;
 
-public class RankColumn extends ATableColumn {
-	public RankColumn(AGLView view) {
-		super(view);
-		this.setPixelSizeX(getTextWidth("99."));
-		init();
+/**
+ * @author Samuel Gratzl
+ *
+ */
+public class Separator extends ElementLayout implements IDropArea {
+
+	private final ScoreQueryUI ui;
+	private int id;
+
+	public Separator(int id, AGLView view, ScoreQueryUI ui) {
+		setRenderer(new LineSeparatorRenderer(true));
+		addBackgroundRenderer(new PickingRenderer(ScoreQueryUI.DROP_SEPARATOR, id, view));
+		setPixelSizeX(5);
+		setGrabY(true);
+		this.ui = ui;
+		this.id = id;
 	}
 
 	@Override
-	protected ElementLayout createHeader() {
-		Row row = new Row();
-		row.setGrabX(true);
-		// row.setLeftToRight(false);
-		ElementLayout b = wrap(new TextureRenderer(TourGuideRenderStyle.ICON_TABLE_FILTER, view.getTextureManager()),
-				16);
-		b.setGrabY(true);
-		b.addBackgroundRenderer(new PickingRenderer(ScoreQueryUI.EDIT_FILTER, 1, view));
-		row.append(b);
-		return row;
+	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX, float mouseCoordinateY) {
+		getRenderer().setLineWidth(3);
 	}
 
 	@Override
-	public void setData(List<ScoringElement> data, ScoreQuery query) {
-		this.clearBody();
-		if (!query.isSorted()) {
-			return;
-		}
-		for (int i = 0; i < data.size(); ++i)
-			this.addTd(createRightLabel(new ConstantLabelProvider(String.format("%d.", i + 1)), -1), i);
+	public void handleDropAreaReplaced() {
+		getRenderer().setLineWidth(1);
 	}
 
 	@Override
-	protected int getMinWidth() {
-		return getPixelSizeX();
+	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX, float mouseCoordinateY,
+			DragAndDropController dragAndDropController) {
+		ui.moveColumn((QueryColumn) draggables.iterator().next(), id);
+	}
+
+	@Override
+	public LineSeparatorRenderer getRenderer() {
+		return (LineSeparatorRenderer) super.getRenderer();
 	}
 }

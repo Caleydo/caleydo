@@ -214,7 +214,7 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	public int getMinWidthPixels() {
-		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar.getElements()) : 0;
+		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar) : 0;
 		footerBarWidth += 2 * SPACING_PIXELS;
 
 		if (viewRenderer == null)

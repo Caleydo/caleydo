@@ -20,6 +20,7 @@
 package org.caleydo.view.tourguide.api.score;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.caleydo.core.util.base.DefaultLabelProvider;
@@ -100,6 +101,10 @@ public class CombinedScore extends DefaultLabelProvider implements ICompositeSco
 		return Collections2.transform(children, retrieveScore);
 	}
 
+	public Collection<TransformedScore> getTransformedChildren() {
+		return Collections.unmodifiableCollection(children);
+	}
+
 	@Override
 	public void mapChildren(final Function<IScore, IScore> f) {
 		for (TransformedScore in : this.children)
@@ -118,21 +123,7 @@ public class CombinedScore extends DefaultLabelProvider implements ICompositeSco
 
 	@Override
 	public String getAbbreviation() {
-		switch (this.operator) {
-		case GEOMETRIC_MEAN:
-			return "GEO";
-		case MAX:
-			return "MAX";
-		case MEAN:
-			return "AVG";
-		case MEDIAN:
-			return "MED";
-		case MIN:
-			return "MIN";
-		case PRODUCT:
-			return "PRO";
-		}
-		return "CB";
+		return operator.getAbbreviation();
 	}
 
 	@Override

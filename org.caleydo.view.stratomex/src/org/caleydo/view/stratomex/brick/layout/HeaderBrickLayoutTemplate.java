@@ -388,9 +388,9 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	public int getMinWidthPixels() {
-		int headerBarWidth = calcSumPixelWidth(headerBar.getElements());
-		int toolBarWidth = showToolBar ? calcSumPixelWidth(toolBar.getElements()) : 0;
-		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar.getElements()) : 0;
+		int headerBarWidth = calcSumPixelWidth(headerBar);
+		int toolBarWidth = showToolBar ? calcSumPixelWidth(toolBar) : 0;
+		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar) : 0;
 
 		int minGuiElementWidth = Math.max(headerBarWidth, Math.max(toolBarWidth, footerBarWidth)) + 2 * SPACING_PIXELS;
 		if (viewRenderer == null)

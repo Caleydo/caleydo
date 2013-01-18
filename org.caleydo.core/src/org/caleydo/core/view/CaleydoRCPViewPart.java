@@ -282,10 +282,10 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 
 		// ask the user to choose the data domain ID
 		if (dataDomainID == null) {
-			ArrayList<ATableBasedDataDomain> availableDomains = DataDomainManager.get().getAssociationManager()
+			List<ATableBasedDataDomain> availableDomains = DataDomainManager.get().getAssociationManager()
 					.getTableBasedDataDomainsForView(serializedView.getViewType());
 
-			ArrayList<ATableBasedDataDomain> supportedDataDomains = new ArrayList<ATableBasedDataDomain>(
+			List<ATableBasedDataDomain> supportedDataDomains = new ArrayList<ATableBasedDataDomain>(
 					availableDomains.size());
 
 			IExtensionRegistry registry = Platform.getExtensionRegistry();

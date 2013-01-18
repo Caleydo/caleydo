@@ -801,7 +801,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 						break;
 					}
 					rightIndex += 2;
-					ElementLayout spacing = centerRowLayout.getElements().get(rightIndex);
+					ElementLayout spacing = centerRowLayout.get(rightIndex);
 					if (spacing.getSizeScaledX() - remainingChange > minWidth + 0.001f) {
 						spacing.setAbsoluteSizeX(spacing.getSizeScaledX() - remainingChange);
 						remainingChange = 0;
@@ -839,7 +839,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 						break;
 					}
 					leftIndex -= 2;
-					ElementLayout spacing = centerRowLayout.getElements().get(leftIndex);
+					ElementLayout spacing = centerRowLayout.get(leftIndex);
 					if (spacing.getSizeScaledX() + remainingChange > minWidth + 0.001f) {
 						// the whole change fits in the first spacing left of
 						// the source
@@ -1278,7 +1278,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		boolean insertComplete = false;
 
 		ArrayList<BrickColumn> columns = brickColumnManager.getBrickColumns();
-		for (ElementLayout leftLayout : leftColumnLayout.getElements()) {
+		for (ElementLayout leftLayout : leftColumnLayout) {
 			if (spacer == leftLayout.getRenderer()) {
 
 				brickColumnManager.setCenterColumnStartIndex(brickColumnManager.getCenterColumnStartIndex() + 1);
@@ -1296,7 +1296,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		}
 
 		if (!insertComplete) {
-			for (ElementLayout rightLayout : rightColumnLayout.getElements()) {
+			for (ElementLayout rightLayout : rightColumnLayout) {
 				if (spacer == rightLayout.getRenderer()) {
 
 					brickColumnManager.setRightColumnStartIndex(brickColumnManager.getRightColumnStartIndex() - 1);
@@ -1315,7 +1315,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		}
 
 		if (!insertComplete) {
-			for (ElementLayout centerLayout : centerRowLayout.getElements()) {
+			for (ElementLayout centerLayout : centerRowLayout) {
 				if (spacer == centerLayout.getRenderer()) {
 
 					if (columns.indexOf(movedColumn) < brickColumnManager.getCenterColumnStartIndex())
@@ -1349,17 +1349,17 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	/** FIXME: documentation */
 	public void clearColumnSpacerHighlight() {
 		// Clear previous spacer highlights
-		for (ElementLayout element : centerRowLayout.getElements()) {
+		for (ElementLayout element : centerRowLayout) {
 			if (element.getRenderer() instanceof BrickColumnSpacingRenderer)
 				((BrickColumnSpacingRenderer) element.getRenderer()).setRenderSpacer(false);
 		}
 
-		for (ElementLayout element : leftColumnLayout.getElements()) {
+		for (ElementLayout element : leftColumnLayout) {
 			if (element.getRenderer() instanceof BrickColumnSpacingRenderer)
 				((BrickColumnSpacingRenderer) element.getRenderer()).setRenderSpacer(false);
 		}
 
-		for (ElementLayout element : rightColumnLayout.getElements()) {
+		for (ElementLayout element : rightColumnLayout) {
 			if (element.getRenderer() instanceof BrickColumnSpacingRenderer)
 				((BrickColumnSpacingRenderer) element.getRenderer()).setRenderSpacer(false);
 		}
@@ -1378,7 +1378,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 		connectionBandIDCounter = 0;
 
 		if (centerRowLayout != null) {
-			for (ElementLayout elementLayout : centerRowLayout.getElements()) {
+			for (ElementLayout elementLayout : centerRowLayout) {
 				if (elementLayout.getRenderer() instanceof BrickColumnSpacingRenderer) {
 					((BrickColumnSpacingRenderer) elementLayout.getRenderer()).init();
 				}

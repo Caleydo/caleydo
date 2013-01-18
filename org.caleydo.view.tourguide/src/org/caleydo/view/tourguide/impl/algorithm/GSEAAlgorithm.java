@@ -10,47 +10,29 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-public class GSEAAlgorithm implements IStratificationAlgorithm {
+public class GSEAAlgorithm extends AGSEAAlgorithm {
 	private static final int NPERM = 1000;
 
 	private final float p; // An exponent p to control the weight of the step.
 	private final Map<Integer, Float> correlation = Maps.newLinkedHashMap();
 	private final List<Map<Integer, Float>> permutations = Lists.newArrayListWithExpectedSize(NPERM);
 
-	private final TablePerspective stratification;
-	private final Group group;
 
 	public GSEAAlgorithm(TablePerspective stratification, Group group, float p) {
+		super(stratification, group);
 		this.p = p;
-		this.stratification = stratification;
-		this.group = group;
+
 	}
 
-	/**
-	 * @return the stratification, see {@link #stratification}
-	 */
-	public TablePerspective getStratification() {
-		return stratification;
-	}
-
-	/**
-	 * @return the group, see {@link #group}
-	 */
-	public Group getGroup() {
-		return group;
-	}
-
-	private void init() {
+	@Override
+	protected void init() {
 		if (!correlation.isEmpty())
 			return;
 		final List<Integer> inA = stratification.getRecordPerspective().getVirtualArray()
@@ -121,22 +103,13 @@ public class GSEAAlgorithm implements IStratificationAlgorithm {
 	}
 
 	@Override
-	public IDType getTargetType(ARecordPerspective a, ARecordPerspective b) {
-		return stratification.getDimensionPerspective().getIdType();
-	}
-
-	public float compute(Set<Integer> geneSet) {
-		if (geneSet.isEmpty())
-			return Float.NaN;
-		init();
+	protected float computeImpl(Set<Integer> geneSet) {
 		float es = (float) enrichmentScore(correlation, geneSet);
 		return es;
 	}
 
-	public float computePValue(Set<Integer> geneSet) {
-		if (geneSet.isEmpty())
-			return Float.NaN;
-		init();
+	@Override
+	protected float computePValueImpl(Set<Integer> geneSet) {
 		float es = (float) enrichmentScore(correlation, geneSet);
 		if (Float.isNaN(es))
 			return Float.NaN;
@@ -252,47 +225,7 @@ public class GSEAAlgorithm implements IStratificationAlgorithm {
 	}
 
 	@Override
-	public float compute(List<Set<Integer>> a, List<Set<Integer>> b) {
-		return compute(a.iterator().next());
-	}
-
-	@Override
 	public String getAbbreviation() {
 		return "GSEA";
-	}
-
-	public IStratificationAlgorithm asPValue() {
-		return new GSEAAlgorithmPValue(this);
-	}
-
-	public static class GSEAAlgorithmPValue implements IStratificationAlgorithm {
-		private final GSEAAlgorithm underlying;
-
-		private GSEAAlgorithmPValue(GSEAAlgorithm underlying) {
-			this.underlying = underlying;
-		}
-
-		@Override
-		public IDType getTargetType(ARecordPerspective a, ARecordPerspective b) {
-			return underlying.getTargetType(a, b);
-		}
-
-		@Override
-		public String getAbbreviation() {
-			return underlying.getAbbreviation();
-		}
-
-		@Override
-		public float compute(List<Set<Integer>> a, List<Set<Integer>> b) {
-			return underlying.computePValue(a.iterator().next());
-		}
-	}
-
-	public static Pair<TablePerspective, Group> resolve(IStratificationAlgorithm algorithm) {
-		if (algorithm instanceof GSEAAlgorithmPValue)
-			algorithm = ((GSEAAlgorithmPValue) algorithm).underlying;
-		if (algorithm instanceof GSEAAlgorithm)
-			return Pair.make(((GSEAAlgorithm) algorithm).getStratification(), ((GSEAAlgorithm) algorithm).getGroup());
-		return null;
 	}
 }
