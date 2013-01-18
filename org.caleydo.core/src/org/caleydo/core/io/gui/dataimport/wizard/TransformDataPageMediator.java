@@ -151,7 +151,7 @@ public class TransformDataPageMediator {
 		int totalNumberOfRows = wizard.getTotalNumberOfRows();
 
 		int numColumns = page.swapRowsWithColumnsButton.getSelection() ? totalNumberOfRows
-				: (dataSetDescription.getParsingPattern().size() + 1);
+				: (dataSetDescription.getOrCreateParsingPattern().size() + 1);
 
 		if (page.warningIconLabel1 != null && !page.warningIconLabel1.isDisposed()) {
 			page.warningIconLabel1.dispose();
@@ -177,7 +177,7 @@ public class TransformDataPageMediator {
 			}
 		}
 
-		if (totalNumberOfRows > 50 && dataSetDescription.getParsingPattern().size() > 50) {
+		if (totalNumberOfRows > 50 && dataSetDescription.getOrCreateParsingPattern().size() > 50) {
 			if (page.warningIconLabel2 == null || page.warningIconLabel2.isDisposed()) {
 				page.warningIconLabel2 = page
 						.createWarningIconLabel(page.dataTranspositionGroup);

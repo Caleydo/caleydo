@@ -17,6 +17,7 @@
 package org.caleydo.core.data.collection.column.container;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import org.caleydo.core.data.collection.column.ERawDataType;
@@ -38,7 +39,7 @@ import com.google.common.collect.HashBiMap;
  *
  * @author Alexander Lex
  */
-public class CategoricalContainer<CategoryType> implements IContainer<CategoryType> {
+public class CategoricalContainer<CategoryType extends Comparable<CategoryType>> implements IContainer<CategoryType> {
 
 	/**
 	 * This contains the short that is used for the next available key. This also corresponds to the number of
@@ -59,7 +60,12 @@ public class CategoricalContainer<CategoryType> implements IContainer<CategoryTy
 
 	private HashMap<Short, Float> hashCategoryKeyToNormalizedValue = new HashMap<>();
 
-	ArrayList<CategoryType> categories = new ArrayList<>();
+	/**
+	 * An ordered list of categories for this container. Can either be set using {@link #setPossibleValues(ArrayList)}
+	 * to include categories which are not in the dataset itself, or is set automatically once {@link #normalize()} is
+	 * called.
+	 */
+	private ArrayList<CategoryType> categories;
 
 	public CategoricalContainer(int size) {
 		container = new short[size];
@@ -144,6 +150,13 @@ public class CategoricalContainer<CategoryType> implements IContainer<CategoryTy
 	@Override
 	public FloatContainer normalize() {
 
+		if (categories == null) {
+			// if categories where not set externally we set them now.
+			categories = new ArrayList<>();
+			categories.addAll(hashCategoryToIdentifier.keySet());
+			Collections.sort(categories);
+		}
+
 		if (categories.size() == 0)
 			throw new IllegalStateException("Can't normalize an empty categorical container");
 
@@ -161,7 +174,7 @@ public class CategoricalContainer<CategoryType> implements IContainer<CategoryTy
 		float[] target = new float[container.length];
 
 		for (int count = 0; count < container.length; count++) {
-			target[count] = hashCategoryToIdentifier.get(container[count]);
+			target[count] = hashCategoryKeyToNormalizedValue.get(container[count]);
 		}
 		return new FloatContainer(target);
 	}

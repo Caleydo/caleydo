@@ -16,6 +16,7 @@
  *******************************************************************************/
 package org.caleydo.data.importer.tcga.test;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataProcessingDescription;
@@ -109,7 +110,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT, ColumnDescription.CONTINUOUS));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.REAL_NUMBER));
 		mrnaData.addParsingRule(parsingRule);
 		mrnaData.setTransposeMatrix(true);
 		mrnaData.setDataCenter(0d);
@@ -163,7 +164,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT, ColumnDescription.CONTINUOUS));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.REAL_NUMBER));
 		mirnaData.addParsingRule(parsingRule);
 
 		// IDSpecification mirnaIDSpecification = new IDSpecification();
@@ -199,7 +200,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT, ColumnDescription.CONTINUOUS));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.REAL_NUMBER));
 		methylationData.addParsingRule(parsingRule);
 		methylationData.setTransposeMatrix(true);
 
@@ -235,7 +236,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT, ColumnDescription.ORDINAL));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.ORDINAL, EDataType.INTEGER));
 		copyNumberData.addParsingRule(parsingRule);
 		copyNumberData.setTransposeMatrix(true);
 
@@ -296,7 +297,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT, ColumnDescription.NOMINAL));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.ORDINAL, EDataType.INTEGER));
 		mutationDataMetaInfo.addParsingRule(parsingRule);
 		mutationDataMetaInfo.setTransposeMatrix(true);
 

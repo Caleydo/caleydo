@@ -70,7 +70,7 @@ public class LoadFileWidget {
 		String[] filterExt = { "*.csv;*.txt;*.gct", "*.*" };
 		fileDialog.setFilterExtensions(filterExt);
 
-		String inputFileName = fileDialog.open();
+		String inputFileName = fileDialog.open().trim();
 
 		if (inputFileName == null)
 			return;

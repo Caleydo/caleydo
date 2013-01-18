@@ -22,7 +22,7 @@ package org.caleydo.core.io.parser.ascii;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
@@ -154,17 +154,17 @@ public class IDMappingParser extends ATextParser {
 
 				String fromID = convertID(textTokens[0], mappingType.getFromIDType().getIdTypeParsingRules());
 				String toID = convertID(textTokens[1], mappingType.getToIDType().getIdTypeParsingRules());
-				if (mappingType.getFromIDType().getColumnType() == EDataType.INT) {
-					if (mappingType.getToIDType().getColumnType() == EDataType.INT) {
+				if (mappingType.getFromIDType().getColumnType() == EDataClass.NATURAL_NUMBER) {
+					if (mappingType.getToIDType().getColumnType() == EDataClass.NATURAL_NUMBER) {
 						idMappingManager.addMapping(mappingType, Integer.valueOf(fromID), Integer.valueOf(toID));
-					} else if (mappingType.getToIDType().getColumnType() == EDataType.TEXT) {
+					} else if (mappingType.getToIDType().getColumnType() == EDataClass.UNIQUE_OBJECT) {
 						idMappingManager.addMapping(mappingType, Integer.valueOf(fromID), toID.intern());
 					} else
 						throw new IllegalStateException("Unsupported data type!");
-				} else if (mappingType.getFromIDType().getColumnType() == EDataType.TEXT) {
-					if (mappingType.getToIDType().getColumnType() == EDataType.INT) {
+				} else if (mappingType.getFromIDType().getColumnType() == EDataClass.UNIQUE_OBJECT) {
+					if (mappingType.getToIDType().getColumnType() == EDataClass.NATURAL_NUMBER) {
 						idMappingManager.addMapping(mappingType, fromID.intern(), Integer.valueOf(toID));
-					} else if (mappingType.getToIDType().getColumnType() == EDataType.TEXT) {
+					} else if (mappingType.getToIDType().getColumnType() == EDataClass.UNIQUE_OBJECT) {
 						idMappingManager.addMapping(mappingType, fromID.intern(), toID.intern());
 					} else
 						throw new IllegalStateException("Unsupported data type!");

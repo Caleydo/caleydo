@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -137,7 +137,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 	protected boolean isPrivate;
 
 	public static IDCategory DATA_CONTAINER = IDCategory.registerCategory("DATA_CONTAINER");
-	public static IDType DATA_CONTAINER_IDTYPE = IDType.registerType("DataConatiners", DATA_CONTAINER, EDataType.INT);
+	public static IDType DATA_CONTAINER_IDTYPE = IDType.registerType("DataConatiners", DATA_CONTAINER, EDataClass.NATURAL_NUMBER);
 
 	/**
 	 * A group containing all elements of the {@link #recordPerspective}'s virtual array of this data container. This is

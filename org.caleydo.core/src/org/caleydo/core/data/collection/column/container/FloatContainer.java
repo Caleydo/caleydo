@@ -115,10 +115,10 @@ public class FloatContainer implements INumericalContainer<Float> {
 	@Override
 	public FloatContainer normalizeWithExternalExtrema(final double min, final double max) {
 		if (min > max)
-			throw new IllegalArgumentException("Minimum was bigger as maximum");
+			throw new IllegalArgumentException("Minimum was bigger then maximum");
 		if (min == max)
-			Logger.log(new Status(IStatus.WARNING, this.toString(),
-					"Min was the same as max. This is not very interesting to visualize."));
+			Logger.log(new Status(IStatus.WARNING, this.toString(), "Min (" + min + ") was the same as max (" + max
+					+ "). This is not very interesting to visualize."));
 
 		return new FloatContainer(ConversionTools.normalize(container, (float) min, (float) max));
 
@@ -163,8 +163,8 @@ public class FloatContainer implements INumericalContainer<Float> {
 	 * Calculates the min and max of the container and sets them to the fMin and fMax class variables
 	 */
 	private void calculateMinMax() {
-		min = Float.MAX_VALUE;
-		max = Float.MIN_VALUE;
+		min = Float.POSITIVE_INFINITY;
+		max = Float.NEGATIVE_INFINITY;
 		int counter = -1;
 		for (float current : container) {
 			counter++;

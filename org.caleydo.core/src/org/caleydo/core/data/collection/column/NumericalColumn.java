@@ -118,7 +118,7 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	 * @return the maximum - a double since it can contain all values
 	 */
 	public double getMax() {
-		return rawContainer.getMin();
+		return rawContainer.getMax();
 	}
 
 	/**

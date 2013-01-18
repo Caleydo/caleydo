@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.id;
 
-import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -123,7 +123,7 @@ public class IDTypeInitializer {
 		IDType recordIDType = IDType.getIDType(recordIDTypeName);
 		if (recordIDType == null) {
 			recordIDType = IDType.registerType(recordIDTypeName, recodIDCategory,
-					EDataType.TEXT);
+					EDataClass.UNIQUE_OBJECT);
 			if (recordIDTypeParsingRules != null  && recordIDTypeParsingRules.isDefault())
 				recordIDType.setIdTypeParsingRules(recordIDTypeParsingRules);
 		}
@@ -131,7 +131,7 @@ public class IDTypeInitializer {
 		IDType dimensionIDType = IDType.getIDType(dimensionIDTypeName);
 		if (dimensionIDType == null) {
 			dimensionIDType = IDType.registerType(dimensionIDTypeName,
-					dimensionIDCategory, EDataType.TEXT);
+					dimensionIDCategory, EDataClass.UNIQUE_OBJECT);
 			if (dimensionIDTypeParsingRules != null && dimensionIDTypeParsingRules.isDefault())
 				dimensionIDType.setIdTypeParsingRules(dimensionIDTypeParsingRules);
 		}

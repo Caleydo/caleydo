@@ -24,7 +24,8 @@ import org.caleydo.core.manager.GeneralManager;
  * @author Alexander Lex
  *
  */
-public class CategoricalColumn<CategoryType> extends AColumn<CategoricalContainer<CategoryType>, CategoryType> {
+public class CategoricalColumn<CategoryType extends Comparable<CategoryType>> extends
+		AColumn<CategoricalContainer<CategoryType>, CategoryType> {
 
 	/**
 	 *
@@ -32,6 +33,7 @@ public class CategoricalColumn<CategoryType> extends AColumn<CategoricalContaine
 	public CategoricalColumn() {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.COLUMN_NUMERICAL));
 	}
+
 	/**
 	 *
 	 */

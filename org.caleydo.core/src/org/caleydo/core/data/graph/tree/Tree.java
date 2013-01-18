@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.id.IDType;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
@@ -91,7 +91,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	public void initializeIDTypes(IDType leafIDType) {
 		this.leafIDType = leafIDType;
 		nodeIDType =
-			IDType.registerType("tree_" + this.hashCode(), leafIDType.getIDCategory(), EDataType.INT);
+			IDType.registerType("tree_" + this.hashCode(), leafIDType.getIDCategory(), EDataClass.NATURAL_NUMBER);
 	}
 
 	/**

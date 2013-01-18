@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.datadomain.genetic;
 
-import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomainInitialization;
 import org.caleydo.core.id.IDCategory;
@@ -118,13 +118,13 @@ public class GeneticDataDomainInitialization implements IDataDomainInitializatio
 		IDCategory sampleIDCategory = IDCategory.registerCategory("SAMPLE");
 
 		IDType sampleID = IDType.registerType("SAMPLE", sampleIDCategory,
-				EDataType.TEXT);
+				EDataClass.UNIQUE_OBJECT);
 		sampleIDCategory.setHumanReadableIDType(sampleID);
 
 		IDCategory tcgaSampleIDCategory = IDCategory.registerCategory("TCGA_SAMPLE");
 
 		IDType tcgaSample = IDType.registerType("TCGA_SAMPLE", tcgaSampleIDCategory,
-				EDataType.TEXT);
+				EDataClass.UNIQUE_OBJECT);
 		IDTypeParsingRules tcgaIDTypeParsingRules = new IDTypeParsingRules();
 		tcgaIDTypeParsingRules.setReplacementExpression(
 				TCGADefinitions.TCGA_REPLACEMENT_STRING,

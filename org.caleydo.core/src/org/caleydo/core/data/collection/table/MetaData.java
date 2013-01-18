@@ -38,10 +38,10 @@ public class MetaData {
 	protected int depth = 0;
 
 	private boolean artificialMin = false;
-	double min = Double.MAX_VALUE;
+	double min = Double.POSITIVE_INFINITY;
 
 	private boolean artificialMax = false;
-	double max = Double.MIN_VALUE;
+	double max = Double.NEGATIVE_INFINITY;
 
 	/** same as {@link DataSetDescription#getDataCenter()} */
 	private Double dataCenter = null;
@@ -108,7 +108,7 @@ public class MetaData {
 	 * @return the absolute minimum value in the set
 	 */
 	public double getMin() {
-		if (min == Double.MAX_VALUE) {
+		if (min == Double.POSITIVE_INFINITY) {
 			calculateGlobalExtrema();
 		}
 		return min;
@@ -122,7 +122,7 @@ public class MetaData {
 	 * @return the absolute minimum value in the set
 	 */
 	public double getMax() {
-		if (max == Double.MIN_VALUE) {
+		if (max == Double.NEGATIVE_INFINITY) {
 			calculateGlobalExtrema();
 		}
 		return max;

@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.data.importer.jkubioinfo;
 
-import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.GroupingParseSpecification;
@@ -94,8 +94,7 @@ public class JJDataXMLGeneratorScreenOnco extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT,
-				ColumnDescription.CONTINUOUS));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.REAL_NUMBER));
 		mrnaData.addParsingRule(parsingRule);
 		mrnaData.setTransposeMatrix(true);
 		//mrnaData.setMathFilterMode("LOG2");

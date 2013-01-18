@@ -16,27 +16,19 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection;
 
+import org.caleydo.core.io.parser.ascii.TabularDataParser;
+
 /**
- * The data types supported of different types of dimensions.
+ * The data types currently supported for {@link EDataClass}es trough the {@link TabularDataParser}
  *
- * @author Marc Streit
  * @author Alexander Lex
+ *
  */
 public enum EDataType {
-
-	/** A natural number */
-	INT(Integer.class),
-	/** Single-precision numerical real value */
-	FLOAT(Float.class),
-	/** Ordered categorical */
-	ORDINAL(Integer.class),
-	/** Unordered categorical */
-	NOMINAL(String.class),
-	/** A unique text */
-	TEXT(String.class);
-
-	private <T> EDataType(Class<T> dimensionClass) {
-
-	}
-
+	/** Natural Numbers */
+	INTEGER,
+	/** Single precision real numbers */
+	FLOAT,
+	/** Text */
+	STRING
 }

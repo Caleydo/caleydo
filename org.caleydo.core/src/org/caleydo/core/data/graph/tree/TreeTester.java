@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.data.graph.tree;
 
-import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 
@@ -51,7 +51,7 @@ public class TreeTester {
 
 		tree =
 			new Tree<DefaultNode>(IDType.registerType("test", IDCategory.registerCategory("testcategory"),
-				EDataType.INT), 3);
+				EDataClass.NATURAL_NUMBER), 3);
 		// tree.getRoot();
 		DefaultNode node = new DefaultNode(tree, "Root", 1);
 		tree.setRootNode(node);

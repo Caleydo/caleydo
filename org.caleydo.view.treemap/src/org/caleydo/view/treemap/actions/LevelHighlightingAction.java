@@ -46,8 +46,8 @@ public class LevelHighlightingAction extends ControlContribution {
 
 	public LevelHighlightingAction() {
 		super("");
-		// setText(TEXT);
-		// setToolTipText(TEXT);
+		// setText(UNIQUE_OBJECT);
+		// setToolTipText(UNIQUE_OBJECT);
 		// setImageDescriptor(ImageDescriptor.createFromImage(new
 		// ResourceLoader().getImage(
 		// PlatformUI.getWorkbench().getDisplay(), ICON)));

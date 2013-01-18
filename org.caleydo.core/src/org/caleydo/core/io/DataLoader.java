@@ -61,7 +61,8 @@ public class DataLoader {
 			runDataProcessing(dataDomain, dataSetDescription);
 			return dataDomain;
 		} catch (Exception e) {
-			Logger.log(new Status(IStatus.ERROR, "DataLoader", "Failed to load data.", e));
+			Logger.log(new Status(IStatus.ERROR, "DataLoader", "Failed to load data for dataset "
+					+ dataSetDescription.getDataSetName(), e));
 			return null;
 		}
 	}

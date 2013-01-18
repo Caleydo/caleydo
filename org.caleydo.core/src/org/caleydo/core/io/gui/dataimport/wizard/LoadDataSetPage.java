@@ -170,15 +170,12 @@ public class LoadDataSetPage extends AImportDataPage implements Listener {
 		label = new LabelWidget(parentComposite, "Dataset Name");
 
 		// Row Config
-
 		createRowConfigPart(parentComposite);
 
 		// Column Config
-
 		createColumnConfigPart(parentComposite);
 
 		// Delimiters
-
 		delimiterRadioGroup = new DelimiterWidget(parentComposite, new ICallback<String>() {
 			@Override
 			public void on(String data) {

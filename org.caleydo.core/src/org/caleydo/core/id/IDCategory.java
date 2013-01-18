@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
@@ -349,7 +349,7 @@ public class IDCategory {
 
 		if (primaryMappingType == null) {
 			primaryMappingType = IDType.registerType(categoryName + "_primary", this,
-					EDataType.INT);
+					EDataClass.NATURAL_NUMBER);
 			primaryMappingType.setInternalType(true);
 		}
 

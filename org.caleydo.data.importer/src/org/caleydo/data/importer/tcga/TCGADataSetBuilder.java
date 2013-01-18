@@ -26,6 +26,7 @@ import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
 import java.util.logging.Logger;
 
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataProcessingDescription;
@@ -183,7 +184,7 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT, ColumnDescription.CONTINUOUS));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.REAL_NUMBER));
 		dataSet.addParsingRule(parsingRule);
 		dataSet.setTransposeMatrix(true);
 
@@ -250,7 +251,8 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(8);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT, ColumnDescription.NOMINAL));
+		// TODO: review ordinale/integer
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.ORDINAL, EDataType.INTEGER));
 		dataSet.addParsingRule(parsingRule);
 		dataSet.setTransposeMatrix(true);
 
@@ -291,7 +293,8 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataType.FLOAT, ColumnDescription.ORDINAL));
+		// TODO: review ordinal/integer
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.ORDINAL, EDataType.INTEGER));
 		dataSet.addParsingRule(parsingRule);
 		dataSet.setTransposeMatrix(true);
 

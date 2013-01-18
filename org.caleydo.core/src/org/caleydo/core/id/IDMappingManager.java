@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.collection.MultiHashMap;
@@ -286,7 +286,7 @@ public class IDMappingManager {
 
 		if (originKeyType == destKeyType) {
 			if (originValueType != destValueType) {
-				if (originKeyType.getColumnType() == EDataType.INT && destValueType.getColumnType() == EDataType.INT) {
+				if (originKeyType.getColumnType() == EDataClass.NATURAL_NUMBER && destValueType.getColumnType() == EDataClass.NATURAL_NUMBER) {
 					codeResolvedMap = new HashMap<Integer, Integer>();
 
 					if (!originalMappingType.isMultiMap()) {
@@ -323,20 +323,20 @@ public class IDMappingManager {
 						}
 					}
 				}
-				else if (originKeyType.getColumnType() == EDataType.INT
-						&& destValueType.getColumnType() == EDataType.TEXT) {
+				else if (originKeyType.getColumnType() == EDataClass.NATURAL_NUMBER
+						&& destValueType.getColumnType() == EDataClass.UNIQUE_OBJECT) {
 					codeResolvedMap = new HashMap<Integer, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
-				else if (originKeyType.getColumnType() == EDataType.TEXT
-						&& destValueType.getColumnType() == EDataType.TEXT) {
+				else if (originKeyType.getColumnType() == EDataClass.UNIQUE_OBJECT
+						&& destValueType.getColumnType() == EDataClass.UNIQUE_OBJECT) {
 					codeResolvedMap = new HashMap<String, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
-				else if (originKeyType.getColumnType() == EDataType.TEXT
-						&& destValueType.getColumnType() == EDataType.INT) {
+				else if (originKeyType.getColumnType() == EDataClass.UNIQUE_OBJECT
+						&& destValueType.getColumnType() == EDataClass.NATURAL_NUMBER) {
 
 					if (!originalMappingType.isMultiMap()) {
 						codeResolvedMap = new HashMap<String, Integer>();
@@ -374,7 +374,7 @@ public class IDMappingManager {
 		}
 		else {
 			if (originValueType == destValueType) {
-				if (destKeyType.getColumnType() == EDataType.INT && destValueType.getColumnType() == EDataType.INT) {
+				if (destKeyType.getColumnType() == EDataClass.NATURAL_NUMBER && destValueType.getColumnType() == EDataClass.NATURAL_NUMBER) {
 					codeResolvedMap = new HashMap<Integer, Integer>();
 
 					MappingType conversionType = originalMappingType;// MappingType.valueOf(originKeyType
@@ -413,8 +413,8 @@ public class IDMappingManager {
 						}
 					}
 				}
-				else if (destKeyType.getColumnType() == EDataType.INT
-						&& destValueType.getColumnType() == EDataType.TEXT) {
+				else if (destKeyType.getColumnType() == EDataClass.NATURAL_NUMBER
+						&& destValueType.getColumnType() == EDataClass.UNIQUE_OBJECT) {
 					codeResolvedMap = new HashMap<Integer, String>();
 
 					MappingType conversionType = originalMappingType;
@@ -424,14 +424,14 @@ public class IDMappingManager {
 								srcMap.get(key));
 					}
 				}
-				else if (destKeyType.getColumnType() == EDataType.TEXT
-						&& destValueType.getColumnType() == EDataType.TEXT) {
+				else if (destKeyType.getColumnType() == EDataClass.UNIQUE_OBJECT
+						&& destValueType.getColumnType() == EDataClass.UNIQUE_OBJECT) {
 					codeResolvedMap = new HashMap<String, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
-				else if (destKeyType.getColumnType() == EDataType.TEXT
-						&& destValueType.getColumnType() == EDataType.INT) {
+				else if (destKeyType.getColumnType() == EDataClass.UNIQUE_OBJECT
+						&& destValueType.getColumnType() == EDataClass.NATURAL_NUMBER) {
 					codeResolvedMap = new HashMap<String, Integer>();
 
 					throw new RuntimeException("Not implemented!");

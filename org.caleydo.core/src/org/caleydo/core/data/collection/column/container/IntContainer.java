@@ -124,8 +124,8 @@ public class IntContainer implements INumericalContainer<Integer> {
 		if (min > max)
 			throw new IllegalArgumentException("Minimum was bigger as maximum");
 		if (min == max)
-			Logger.log(new Status(IStatus.WARNING, this.toString(),
-					"Min was the same as max. This is not very interesting to visualize."));
+			Logger.log(new Status(IStatus.WARNING, this.toString(), "Min (" + min + ") was the same as max (" + max
+					+ "). This is not very interesting to visualize."));
 		float[] target = new float[container.length];
 
 		for (int iCount = 0; iCount < container.length; iCount++) {

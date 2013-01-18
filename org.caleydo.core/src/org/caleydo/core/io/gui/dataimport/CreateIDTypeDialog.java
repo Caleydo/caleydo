@@ -3,7 +3,7 @@
  */
 package org.caleydo.core.io.gui.dataimport;
 
-import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Text;
 public class CreateIDTypeDialog extends Dialog {
 
 	/**
-	 * Combo box that allows the specification of the {@link EDataType} the {@link IDType} should be associated with.
+	 * Combo box that allows the specification of the {@link EDataClass} the {@link IDType} should be associated with.
 	 */
 	protected Combo dataTypeCombo;
 

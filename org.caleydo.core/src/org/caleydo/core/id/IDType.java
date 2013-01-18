@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -77,9 +77,9 @@ public class IDType {
 
 	/**
 	 * Specifies the data type of the IDType. Allowed values are
-	 * {@link EDataType#INT} and {@link EDataType#TEXT}
+	 * {@link EDataClass#NATURAL_NUMBER} and {@link EDataClass#UNIQUE_OBJECT}
 	 */
-	private EDataType dataType;
+	private EDataClass dataType;
 
 	/**
 	 * flag determining whether a type is internal only, meaning that it is
@@ -93,7 +93,7 @@ public class IDType {
 	 */
 	private IDTypeParsingRules idTypeParsingRules = null;
 
-	private IDType(String typeName, IDCategory idCategory, EDataType dimensionType) {
+	private IDType(String typeName, IDCategory idCategory, EDataClass dimensionType) {
 		this.typeName = typeName;
 		this.idCategory = idCategory;
 		this.dataType = dimensionType;
@@ -113,7 +113,7 @@ public class IDType {
 	 *
 	 * @param idCategory
 	 */
-	public void setDataType(EDataType dataType) {
+	public void setDataType(EDataClass dataType) {
 		this.dataType = dataType;
 	}
 
@@ -150,10 +150,10 @@ public class IDType {
 	 * @return the created ID Type
 	 */
 	public static IDType registerType(String typeName, IDCategory idCategory,
-			EDataType columnType) {
-		if (!(columnType == EDataType.TEXT || columnType == EDataType.INT))
+			EDataClass columnType) {
+		if (!(columnType == EDataClass.UNIQUE_OBJECT || columnType == EDataClass.NATURAL_NUMBER))
 			throw new IllegalStateException(
-					"IDTypes are allowed to be only either of type TEXT or INT, but was: "
+					"IDTypes are allowed to be only either of type UNIQUE_OBJECT or NATURAL_NUMBER, but was: "
 							+ columnType);
 		synchronized (IDType.class) {
 			IDType idType = registeredTypes.get(typeName);
@@ -225,7 +225,7 @@ public class IDType {
 	/**
 	 * @return the columnType, see {@link #dataType}
 	 */
-	public EDataType getColumnType() {
+	public EDataClass getColumnType() {
 		return dataType;
 	}
 
@@ -277,7 +277,7 @@ public class IDType {
 
 		for (String currentID : idList) {
 
-			if (getColumnType().equals(EDataType.INT)) {
+			if (getColumnType().equals(EDataClass.NATURAL_NUMBER)) {
 				try {
 					Integer idInt = Integer.valueOf(currentID);
 					if (idMappingManager.doesElementExist(this, idInt)) {
@@ -285,7 +285,7 @@ public class IDType {
 					}
 				} catch (NumberFormatException e) {
 				}
-			} else if (getColumnType().equals(EDataType.TEXT)) {
+			} else if (getColumnType().equals(EDataClass.UNIQUE_OBJECT)) {
 				if (idMappingManager.doesElementExist(this, currentID)) {
 					numMatchedIDs++;
 				} else if (getTypeName().equals("REFSEQ_MRNA")) {
