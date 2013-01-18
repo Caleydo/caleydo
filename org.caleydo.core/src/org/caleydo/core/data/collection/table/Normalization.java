@@ -73,10 +73,13 @@ public class Normalization {
 	 * as basis by default, however when a logarithmized representation is in the dimension this is used.
 	 */
 	void normalizeLocally() {
+
+
 		table.isTableHomogeneous = false;
 		for (AColumn dimension : table.hashColumns.values()) {
 			dimension.normalize();
 		}
+
 	}
 
 	/**
@@ -86,14 +89,13 @@ public class Normalization {
 	 * used. Make sure that all dimensions are logarithmized.
 	 */
 	void normalizeGlobally() {
-
 		table.isTableHomogeneous = true;
 		for (AColumn dimension : table.hashColumns.values()) {
 			if (dimension instanceof NumericalColumn) {
 				NumericalColumn nDimension = (NumericalColumn) dimension;
 				nDimension.normalizeWithExternalExtrema(metaData.getMin(), metaData.getMax());
 			} else if (dimension instanceof CategoricalColumn<?>) {
-				normalizeLocally();
+				dimension.normalize();
 			} else
 				throw new UnsupportedOperationException("Tried to normalize globally on a table  wich "
 						+ "contains nominal dimensions, currently not supported!");

@@ -125,8 +125,8 @@ public class ClusterTreeMapNode extends ATreeMapNode {
 			if (dimensionIDs != null && dimensionIDs.size() > 0) {
 				float expressionValue = 0;
 				for (Integer dimensionID : dimensionIDs) {
-					expressionValue += referenzData.dataDomain.getTable().getNormalizedValue(data.getLeafID(),
-							dimensionID);
+					expressionValue += referenzData.dataDomain.getTable().getNormalizedValue(dimensionID,
+							data.getLeafID());
 				}
 				expressionValue /= dimensionIDs.size();
 				return referenzData.colorMapper.getColor(expressionValue);

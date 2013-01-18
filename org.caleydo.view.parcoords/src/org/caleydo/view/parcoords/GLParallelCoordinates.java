@@ -46,7 +46,7 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.column.ERawDataType;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.filter.DimensionFilter;
@@ -539,7 +539,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			Integer dimensionID = dimensionVA.get(dimensionCount);
 
 			currentX = axisSpacings.get(dimensionCount);
-			currentY = table.getNormalizedValue(recordID, dimensionID);
+			currentY = table.getNormalizedValue(dimensionID, recordID);
 			if (Float.isNaN(currentY)) {
 				currentY = NAN_Y_OFFSET / renderStyle.getAxisHeight();
 			}
@@ -558,18 +558,18 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			}
 
 			if (renderCaption) {
-				String sRawValue;
-				ERawDataType eRawDataType = table.getRawDataType(dimensionID, recordID);
-				if (eRawDataType == ERawDataType.FLOAT) {
+				String rawValueString;
+				EDataType rawDataType = table.getRawDataType(dimensionID, recordID);
+				if (rawDataType == EDataType.FLOAT) {
 
-					sRawValue = Formatter.formatNumber((float) table.getRaw(recordID, dimensionID));
+					rawValueString = Formatter.formatNumber((float) table.getRaw(recordID, dimensionID));
 
-				} else if (eRawDataType == ERawDataType.STRING) {
-					sRawValue = table.getRaw(dimensionID, recordID);
+				} else if (rawDataType == EDataType.STRING) {
+					rawValueString = table.getRaw(dimensionID, recordID);
 				} else
 					throw new IllegalStateException("Unknown Raw Data Type Type");
 
-				renderBoxedYValues(gl, currentX, currentY * renderStyle.getAxisHeight(), sRawValue, selectionType);
+				renderBoxedYValues(gl, currentX, currentY * renderStyle.getAxisHeight(), rawValueString, selectionType);
 			}
 
 			previousX = currentX;
@@ -1057,7 +1057,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 				if (!dataDomain.getTable().isDataHomogeneous()) {
 
-					currentValue = dataDomain.getTable().getNormalizedValue(recordID, axisID);
+					currentValue = dataDomain.getTable().getNormalizedValue(axisID, recordID);
 				}
 
 				currentValue = dataDomain.getTable().getRaw(recordID, axisID);
@@ -1081,7 +1081,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			ArrayList<Integer> deselectedLines = new ArrayList<Integer>();
 			for (int polylineIndex : tablePerspective.getRecordPerspective().getVirtualArray()) {
 
-				currentValue = dataDomain.getTable().getNormalizedValue(polylineIndex, axisID);
+				currentValue = dataDomain.getTable().getNormalizedValue(axisID, polylineIndex);
 
 				if (Float.isNaN(currentValue)) {
 					deselectedLines.add(polylineIndex);
@@ -1619,7 +1619,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		} else if (idType.equals(recordIDType)) {
 
 			x = viewFrustum.getLeft() + renderStyle.getXSpacing();
-			y = dataDomain.getTable().getNormalizedValue(id, dimensionVA.get(0));
+			y = dataDomain.getTable().getNormalizedValue(dimensionVA.get(0), id);
 
 			// // get the value on the leftmost axis
 			// fYValue =
@@ -1676,8 +1676,8 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		Vec3f vecLeftPoint = new Vec3f(0, 0, 0);
 		Vec3f vecRightPoint = new Vec3f(0, 0, 0);
 
-		vecLeftPoint.setY(table.getNormalizedValue(iSelectedLineID, leftAxisIndex) * renderStyle.getAxisHeight());
-		vecRightPoint.setY(table.getNormalizedValue(iSelectedLineID, rightAxisIndex) * renderStyle.getAxisHeight());
+		vecLeftPoint.setY(table.getNormalizedValue(leftAxisIndex, iSelectedLineID) * renderStyle.getAxisHeight());
+		vecRightPoint.setY(table.getNormalizedValue(rightAxisIndex, iSelectedLineID) * renderStyle.getAxisHeight());
 
 		vecLeftPoint.setX(axisSpacings.get(iPosition));
 		vecRightPoint.setX(axisSpacings.get(iPosition + 1));
@@ -1776,8 +1776,8 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 		for (Integer iCurrent : recordVA) {
 
-			vecLeftPoint.setY(table.getNormalizedValue(iCurrent, leftAxisIndex) * renderStyle.getAxisHeight());
-			vecRightPoint.setY(table.getNormalizedValue(iCurrent, rightAxisIndex) * renderStyle.getAxisHeight());
+			vecLeftPoint.setY(table.getNormalizedValue(leftAxisIndex, iCurrent) * renderStyle.getAxisHeight());
+			vecRightPoint.setY(table.getNormalizedValue(rightAxisIndex, iCurrent) * renderStyle.getAxisHeight());
 
 			vecLeftPoint.setX(axisSpacings.get(iPosition));
 			vecRightPoint.setX(axisSpacings.get(iPosition + 1));

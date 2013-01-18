@@ -144,7 +144,7 @@ public class ClusterHelper {
 
 				int isto = 0;
 				for (Integer iDimensionIndex : dimensionVA) {
-					values[isto] = table.getNormalizedValue(node.getLeafID(), iDimensionIndex);
+					values[isto] = table.getNormalizedValue(iDimensionIndex, node.getLeafID());
 					isto++;
 				}
 
@@ -153,7 +153,7 @@ public class ClusterHelper {
 
 				int icon = 0;
 				for (Integer recordIndex : recordVA) {
-					values[icon] = table.getNormalizedValue(recordIndex, node.getLeafID());
+					values[icon] = table.getNormalizedValue(node.getLeafID(), recordIndex);
 					icon++;
 				}
 			}
@@ -226,7 +226,7 @@ public class ClusterHelper {
 			for (Integer recordIndex : examples) {
 
 				for (Integer dimensionIndex : dimensionVA) {
-					float temp = table.getNormalizedValue(recordVA.get(recordIndex), dimensionIndex);
+					float temp = table.getNormalizedValue(dimensionIndex, recordVA.get(recordIndex));
 					if (Float.isNaN(temp))
 						colorSum[icontent] += 0;
 					else
@@ -242,7 +242,7 @@ public class ClusterHelper {
 			for (Integer iDimensionIndex : examples) {
 
 				for (Integer recordIndex : recordVA) {
-					float temp = table.getNormalizedValue(recordIndex, dimensionVA.get(iDimensionIndex));
+					float temp = table.getNormalizedValue(dimensionVA.get(iDimensionIndex), recordIndex);
 					if (Float.isNaN(temp))
 						colorSum[icontent] += 0;
 					else

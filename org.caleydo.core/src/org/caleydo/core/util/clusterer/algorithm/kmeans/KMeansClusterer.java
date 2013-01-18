@@ -117,7 +117,7 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 				}
 
 				for (Integer iDimensionIndex : dimensionVA) {
-					buffer.append(table.getNormalizedValue(recordIndex, iDimensionIndex) + ", ");
+					buffer.append(table.getNormalizedValue(iDimensionIndex, recordIndex) + ", ");
 
 				}
 				buffer.append("\n");
@@ -152,7 +152,7 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 				}
 
 				for (Integer recordIndex : recordVA) {
-					buffer.append(table.getNormalizedValue(recordIndex, iDimensionIndex) + ", ");
+					buffer.append(table.getNormalizedValue(iDimensionIndex, recordIndex) + ", ");
 				}
 				buffer.append("\n");
 				isto++;

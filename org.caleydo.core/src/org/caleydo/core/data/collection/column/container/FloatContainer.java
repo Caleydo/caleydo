@@ -16,30 +16,43 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection.column.container;
 
-import org.caleydo.core.data.collection.column.ERawDataType;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * A container for floats. Initialized with a float array. The length can not be modified after initialization.
- * Optimized to hold a large amount of data.
+ * A container for floats. Initialize with a float array or iteratively add data up to {@link #size()} once! The length
+ * can not be modified after initialization.
  *
  * @author Alexander Lex
  */
 public class FloatContainer implements INumericalContainer<Float> {
 
+	/** The actual data */
 	private float[] container;
+
 	/** Keeps track of the next free index for adding data */
 	private int nextIndex = 0;
 
-	private float min = Float.NaN;
+	/** The smallest value in this container */
+	private Float min = Float.NaN;
 
-	private float max = Float.NaN;
+	/** The biggest value in this container */
+	private Float max = Float.NaN;
 
 	/**
-	 * Constructor Pass a float array. The length of the array can not be modified after initialization
+	 * Constructor initializing the container without data. The length can not be changed.
+	 *
+	 * @param size
+	 */
+	public FloatContainer(int size) {
+		container = new float[size];
+	}
+
+	/**
+	 * Constructor setting a pre-filled container. The length can not be changed.
 	 *
 	 * @param container
 	 *            the float array
@@ -48,45 +61,33 @@ public class FloatContainer implements INumericalContainer<Float> {
 		this.container = container;
 	}
 
-	public FloatContainer(int size) {
-		container = new float[size];
-	}
-
 	@Override
 	public int size() {
 		return container.length;
 	}
 
 	@Override
-	public ERawDataType getRawDataType() {
-		return ERawDataType.FLOAT;
+	public EDataType getDataType() {
+		return EDataType.FLOAT;
 	}
 
 	@Override
-	public Float getValue(int index) {
+	public Float get(int index) {
 		return container[index];
 	}
 
-	/**
-	 * Returns the value associated with the index
-	 *
-	 * @throws IndexOutOfBoundsException
-	 *             if index out of range
-	 * @param index
-	 *            index of element to return
-	 * @return the element at the specified position in this list
-	 */
-	public float get(final int index) {
+	/** Equivalent to {@link IContainer#get(int)} using the primitive data type avoiding the boxing */
+	public float getPrimitive(final int index) {
 		return container[index];
 	}
 
 	@Override
-	public void addValue(Float value) {
+	public void add(Float value) {
 		container[nextIndex++] = value;
 	}
 
-	/** Implementation of {@link #addValue(Float)} with primitive type to avoid auto-boxing */
-	public void addValue(float value) {
+	/** Implementation of {@link #add(Float)} with primitive type to avoid auto-boxing */
+	public void add(float value) {
 		container[nextIndex++] = value;
 	}
 
@@ -108,12 +109,13 @@ public class FloatContainer implements INumericalContainer<Float> {
 
 	@Override
 	public FloatContainer normalize() {
-
-		return new FloatContainer(ConversionTools.normalize(container, (int) getMin(), (int) getMax()));
+		if (Float.isNaN(max) || Float.isNaN(min))
+			calculateMinMax();
+		return new FloatContainer(ConversionTools.normalize(container, min, max));
 	}
 
 	@Override
-	public FloatContainer normalizeWithExternalExtrema(final double min, final double max) {
+	public FloatContainer normalizeWithAtrificalExtrema(double min, double max) {
 		if (min > max)
 			throw new IllegalArgumentException("Minimum was bigger then maximum");
 		if (min == max)
@@ -123,23 +125,6 @@ public class FloatContainer implements INumericalContainer<Float> {
 		return new FloatContainer(ConversionTools.normalize(container, (float) min, (float) max));
 
 	}
-
-	// @Override
-	// public FloatCContainer log10()
-	// {
-	// float[] fArTarget = new float[fArContainer.length];
-	//
-	// float fTmp;
-	// for (int index = 0; index < fArContainer.length; index++)
-	// {
-	// fTmp = fArContainer[index];
-	// fArTarget[index] = (float) Math.log10(fTmp);
-	// if (fArTarget[index] == Float.NEGATIVE_INFINITY)
-	// fArTarget[index] = Float.NaN;
-	// }
-	//
-	// return new FloatCContainer(fArTarget);
-	// }
 
 	@Override
 	public FloatContainer log(int base) {
@@ -160,7 +145,7 @@ public class FloatContainer implements INumericalContainer<Float> {
 	}
 
 	/**
-	 * Calculates the min and max of the container and sets them to the fMin and fMax class variables
+	 * Calculates the min and max of the container and sets them to the min and max class variables
 	 */
 	private void calculateMinMax() {
 		min = Float.POSITIVE_INFINITY;
@@ -186,9 +171,9 @@ public class FloatContainer implements INumericalContainer<Float> {
 		}
 
 		// Needed if all values in array are NaN
-		if (min == Float.MAX_VALUE)
+		if (min == Float.POSITIVE_INFINITY)
 			min = Float.NaN;
-		if (max == Float.MIN_VALUE)
+		if (max == Float.NEGATIVE_INFINITY)
 			max = Float.NaN;
 
 		return;
@@ -199,6 +184,6 @@ public class FloatContainer implements INumericalContainer<Float> {
 		String string = "[";
 		for (float value : container)
 			string += value + ", ";
-		return string;
+		return string + "]";
 	}
 }

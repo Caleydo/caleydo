@@ -31,7 +31,7 @@ import org.caleydo.core.manager.GeneralManager;
  * @author Alexander Lex
  */
 
-public class NumericalColumn<RawContainerType extends INumericalContainer<DataType>, DataType> extends
+public class NumericalColumn<RawContainerType extends INumericalContainer<DataType>, DataType extends Number> extends
 		AColumn<RawContainerType, DataType> {
 
 	EDataTransformation dataTransformation = EDataTransformation.NONE;
@@ -68,7 +68,7 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	public void normalizeWithExternalExtrema(String sourceRep, double externalMin, double externalMax) {
 
 		if (sourceRep.equals(DataRepresentation.RAW)) {
-			normalizedContainer = rawContainer.normalizeWithExternalExtrema(externalMin, externalMax);
+			normalizedContainer = rawContainer.normalizeWithAtrificalExtrema(externalMin, externalMax);
 		} else {
 			normalizedContainer = dataRepToContainerMap.get(sourceRep).normalize();
 		}
@@ -97,12 +97,6 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 		normalizeWithExternalExtrema(DataRepresentation.RAW, min, max);
 	}
 
-	@Override
-	public ERawDataType getRawDataType() {
-		// TODO Auto-generated method stub
-		return super.getRawDataType();
-	}
-
 	/**
 	 * Get the minimum of the raw data, respectively the logarithmized data if log was applied
 	 *
@@ -128,9 +122,9 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	 *            a value between 0 and 1
 	 * @return a value between min and max
 	 */
-	public double getRawForNormalized(double normalized) {
-		return normalized * (getMax() - getMin());
-	}
+	// public DataType getRawForNormalized(float normalized) {
+	// return normalized * ((Number) getMax() - (Number) getMin());
+	// }
 
 	/**
 	 * Calculates the log10 of the raw data. Log data can be retrieved by using the get methods with

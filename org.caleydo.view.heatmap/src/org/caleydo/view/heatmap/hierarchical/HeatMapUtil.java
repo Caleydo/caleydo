@@ -79,7 +79,7 @@ public class HeatMapUtil {
 					fOpacity = 0.3f;
 				}
 				;
-				float fLookupValue = table.getNormalizedValue(recordIndex, dimensionIndex);
+				float fLookupValue = table.getNormalizedValue(dimensionIndex, recordIndex);
 
 				float[] fArMappingColor = colorMapping.getColor(fLookupValue);
 

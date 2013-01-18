@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.AColumn;
 import org.caleydo.core.data.collection.column.CategoricalColumn;
 import org.caleydo.core.data.collection.column.NumericalColumn;
@@ -168,7 +169,7 @@ public class TabularDataParser extends ATextParser {
 				case STRING:
 					CategoricalColumn<String> categoricalColumn;
 					CategoricalContainer<String> categoricalContainer;
-					categoricalContainer = new CategoricalContainer<String>(numberOfDataLines);
+					categoricalContainer = new CategoricalContainer<String>(numberOfDataLines, EDataType.STRING);
 					targetColumns.add(categoricalContainer);
 					if (parsingDetail.getColumnID() == null) {
 						categoricalColumn = new CategoricalColumn<String>();
@@ -184,7 +185,7 @@ public class TabularDataParser extends ATextParser {
 				case INTEGER:
 					CategoricalColumn<Integer> categoricalIntColumn;
 					CategoricalContainer<Integer> categoricalIntContainer;
-					categoricalIntContainer = new CategoricalContainer<Integer>(numberOfDataLines);
+					categoricalIntContainer = new CategoricalContainer<Integer>(numberOfDataLines, EDataType.INTEGER);
 					targetColumns.add(categoricalIntContainer);
 					if (parsingDetail.getColumnID() == null) {
 						categoricalIntColumn = new CategoricalColumn<Integer>();
@@ -297,7 +298,7 @@ public class TabularDataParser extends ATextParser {
 					}
 					FloatContainer targetColumn = (FloatContainer) targetColumns.get(count);
 					if (lineCounter < targetColumn.size()) {
-						targetColumn.addValue(floatValue);
+						targetColumn.add(floatValue);
 					} else {
 						Logger.log(new Status(IStatus.ERROR, this.toString(), "Index out of bounds at line: "
 								+ lineCounter + " for column " + count));
@@ -318,7 +319,7 @@ public class TabularDataParser extends ATextParser {
 					@SuppressWarnings("unchecked")
 					IContainer<Integer> targetIntColumn = (IContainer<Integer>) targetColumns.get(count);
 					if (lineCounter < targetIntColumn.size()) {
-						targetIntColumn.addValue(intValue);
+						targetIntColumn.add(intValue);
 					} else {
 						Logger.log(new Status(IStatus.ERROR, this.toString(), "Index out of bounds at line: "
 								+ lineCounter + " for column " + count));
@@ -330,7 +331,7 @@ public class TabularDataParser extends ATextParser {
 					@SuppressWarnings("unchecked")
 					IContainer<String> targetStringColumn = (IContainer<String>) targetColumns.get(count);
 					if (lineCounter < targetStringColumn.size()) {
-						targetStringColumn.addValue(stringValue);
+						targetStringColumn.add(stringValue);
 					} else {
 						Logger.log(new Status(IStatus.ERROR, this.toString(), "Index out of bounds at line: "
 								+ lineCounter + " for column " + count));

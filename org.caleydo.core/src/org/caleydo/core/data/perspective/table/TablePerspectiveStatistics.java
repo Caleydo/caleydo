@@ -98,7 +98,7 @@ public class TablePerspectiveStatistics {
 			}
 			for (Integer dimensionID : dimensionVA) {
 				Float value = referenceTablePerspective.getDataDomain().getTable()
-						.getNormalizedValue(recordID, dimensionID);
+						.getNormalizedValue(dimensionID, recordID);
 				if (value != null && !Float.isNaN(value)) {
 					averageValue += value;
 					count++;
@@ -147,7 +147,7 @@ public class TablePerspectiveStatistics {
 		for (Integer dimensionID : dimensionVA) {
 			{
 				for (Integer recordID : recordVA) {
-					float value = dataTable.getNormalizedValue(recordID, dimensionID);
+					float value = dataTable.getNormalizedValue(dimensionID, recordID);
 
 					if (Float.isNaN(value)) {
 						histogram.addNAN(recordID);
@@ -277,7 +277,7 @@ public class TablePerspectiveStatistics {
 						continue;
 				}
 
-				value = table.getNormalizedValue(virtualArrayID, objectID);
+				value = table.getNormalizedValue(objectID, virtualArrayID);
 			} else {
 				if (virtualArray.getIdType() != null
 						&& !virtualArray.getIdType().equals(table.getDataDomain().getDimensionIDType())) {
@@ -289,7 +289,7 @@ public class TablePerspectiveStatistics {
 						continue;
 				}
 
-				value = table.getNormalizedValue(objectID, virtualArrayID);
+				value = table.getNormalizedValue(virtualArrayID, objectID);
 			}
 			if (value != null && !value.isNaN()) {
 				sumOfValues += value;

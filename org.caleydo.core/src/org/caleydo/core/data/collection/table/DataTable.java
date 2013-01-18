@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataTransformation;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.AColumn;
 import org.caleydo.core.data.collection.column.DataRepresentation;
-import org.caleydo.core.data.collection.column.ERawDataType;
 import org.caleydo.core.data.collection.column.NumericalColumn;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterTree;
@@ -78,11 +78,6 @@ public class DataTable extends AUniqueObject {
 	/** Same as {@link #defaultRecordPerspective} for dimensions */
 	private DimensionPerspective defaultDimensionPerspective;
 
-	private NumericalColumn meanDimension;
-
-	// protected DimensionData defaultDimensionData;
-	// protected RecordPerspective defaultRecordPerspective;
-
 	EDataTransformation dataTransformation;
 
 	boolean isTableHomogeneous = false;
@@ -91,7 +86,6 @@ public class DataTable extends AUniqueObject {
 
 	private ATableBasedDataDomain dataDomain;
 
-	private boolean containsUncertaintyData = false;
 
 	/**
 	 * all metaData for this DataTable is held in or accessible through this object
@@ -113,14 +107,7 @@ public class DataTable extends AUniqueObject {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.DATA_TABLE));
 		this.dataDomain = dataDomain;
 		isColumnDimension = !dataDomain.getDataSetDescription().isTransposeMatrix();
-		// initWithDataDomain();
 	}
-
-	// private void initWithDataDomain() {
-	// ClusterTree tree = new ClusterTree(dataDomain.getDimensionIDType());
-	// ClusterNode root = new ClusterNode(tree, "Root", 1, true, -1);
-	// tree.setRootNode(root);
-	// }
 
 	/**
 	 * Initialization of member variables. Safe to be called by sub-classes.
@@ -157,8 +144,7 @@ public class DataTable extends AUniqueObject {
 		return dataDomain;
 	}
 
-	// FIXME inconstistent order of parameters : 1. record and 2. dimension or vice versa, see for example #getRaw
-	public Float getNormalizedValue(Integer recordID, Integer dimensionID) {
+	public Float getNormalizedValue(Integer dimensionID, Integer recordID) {
 		try {
 			if (isColumnDimension) {
 				return hashColumns.get(dimensionID).getNormalizedValue(recordID);
@@ -167,7 +153,6 @@ public class DataTable extends AUniqueObject {
 				return column.getNormalizedValue(dimensionID);
 			}
 		} catch (NullPointerException npe) {
-
 			Logger.log(new Status(IStatus.ERROR, "DataTable", "Data table does not contain a value for record: "
 					+ recordID + " and dimension " + dimensionID));
 			return null;
@@ -175,18 +160,6 @@ public class DataTable extends AUniqueObject {
 
 	}
 
-	// @SuppressWarnings("unchecked")
-	// public <RawType> RawType getRaw(Integer dimensionID, Integer recordID) {
-	// Integer columnID = dimensionID;
-	// Integer rowID = recordID;
-	// if (!isColumnDimension) {
-	// columnID = recordID;
-	// rowID = dimensionID;
-	// }
-	//
-	// AColumn<?, ?> dimension = hashColumns.get(columnID);
-	// return dimension.getRaw(rowID);
-	// }
 
 	public String getRawAsString(Integer dimensionID, Integer recordID) {
 		Integer columnID = dimensionID;
@@ -196,17 +169,6 @@ public class DataTable extends AUniqueObject {
 			rowID = dimensionID;
 		}
 		return hashColumns.get(columnID).getRawAsString(rowID);
-		// ERawDataType eRawDataType = hashColumns.get(columnID).getRawDataType();
-		// String result;
-		// if (eRawDataType == ERawDataType.FLOAT) {
-		// result = Float.toString(getFloat(DataRepresentation.RAW, rowID, columnID));
-		// } else if (eRawDataType == ERawDataType.STRING) {
-		// result = getRaw(columnID, rowID);
-		// } else {
-		// throw new IllegalStateException("DataType " + eRawDataType + " not implemented");
-		//
-		// }
-		// return result;
 	}
 
 	public boolean containsDataRepresentation(DataRepresentation dataRepresentation, Integer dimensionID,
@@ -219,7 +181,7 @@ public class DataTable extends AUniqueObject {
 		return hashColumns.get(columnID).containsDataRepresentation(dataRepresentation);
 	}
 
-	public ERawDataType getRawDataType(Integer dimensionID, Integer recordID) {
+	public EDataType getRawDataType(Integer dimensionID, Integer recordID) {
 		Integer columnID = dimensionID;
 		if (!isColumnDimension)
 			columnID = recordID;

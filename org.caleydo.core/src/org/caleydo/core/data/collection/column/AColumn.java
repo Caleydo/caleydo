@@ -18,6 +18,7 @@ package org.caleydo.core.data.collection.column;
 
 import java.util.HashMap;
 
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
 import org.caleydo.core.data.collection.column.container.IContainer;
 import org.caleydo.core.util.base.AUniqueObject;
@@ -42,8 +43,6 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 
 	protected HashMap<String, IContainer<?>> dataRepToContainerMap;
 
-	private ERawDataType rawDataType = ERawDataType.UNDEFINED;
-
 	/**
 	 * Constructor Initializes objects
 	 */
@@ -58,8 +57,8 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	 *
 	 * @return a value of ERawDataType
 	 */
-	public ERawDataType getRawDataType() {
-		return rawDataType;
+	public EDataType getRawDataType() {
+		return rawContainer.getDataType();
 	}
 
 	/**
@@ -87,17 +86,16 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	 * @return The associated value
 	 */
 	public float getNormalizedValue(int index) {
-		return normalizedContainer.get(index);
+		return normalizedContainer.getPrimitive(index);
 	}
 
 	public RawType getRaw(int index) {
-		return rawContainer.getValue(index);
+		return rawContainer.get(index);
 	}
 
 	public String getRawAsString(int index) {
-		return rawContainer.getValue(index).toString();
+		return rawContainer.get(index).toString();
 	}
-
 
 	/**
 	 * Returns the number of raw data elements

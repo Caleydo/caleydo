@@ -16,24 +16,26 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection.column.container;
 
-import org.caleydo.core.data.collection.column.ERawDataType;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * CContainer implementation for int A container for ints. Initialized with an int array. The length can not be modified
- * after initialization. Optimized to hold a large amount of data.
+ * A container for ints. Initialize with an int array or iteratively add data up to {@link #size()} once! The length can
+ * not be modified after initialization.
  *
  * @author Alexander Lex
  */
 public class IntContainer implements INumericalContainer<Integer> {
 
+	/** The actual data */
 	private int[] container;
 	/** Keeps track of the next free index for adding data */
 	private int nextIndex = 0;
+	/** The smalles value in the ccontainer */
 	private int min = Integer.MAX_VALUE;
-
+	/** The largest value in the container */
 	private int max = Integer.MIN_VALUE;
 
 	/**
@@ -46,14 +48,9 @@ public class IntContainer implements INumericalContainer<Integer> {
 		this.container = container;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.data.collection.column.container.IContainer#getRawDataType()
-	 */
 	@Override
-	public ERawDataType getRawDataType() {
-		return ERawDataType.INT;
+	public EDataType getDataType() {
+		return EDataType.INTEGER;
 	}
 
 	@Override
@@ -63,20 +60,17 @@ public class IntContainer implements INumericalContainer<Integer> {
 	}
 
 	@Override
-	public void addValue(Integer value) {
+	public void add(Integer value) {
 		container[nextIndex++] = value;
 	}
 
-	/**
-	 * Returns the value associated with the index at the variable
-	 *
-	 * @throws IndexOutOfBoundsException
-	 *             if index is out of specified range
-	 * @param index
-	 *            the index of the variable
-	 * @return the variable associated with the index
-	 */
-	public int get(int index) {
+	/** Implementation of {@link #add(Integer)} with primitive type to avoid auto-boxing */
+	public void add(int value) {
+		container[nextIndex++] = value;
+	}
+
+	/** Equivalent to {@link IContainer#get(int)} using the primitive data type avoiding the boxing */
+	public int getPrimitive(int index) {
 		return container[index];
 	}
 
@@ -98,7 +92,7 @@ public class IntContainer implements INumericalContainer<Integer> {
 	}
 
 	@Override
-	public FloatContainer normalizeWithExternalExtrema(double min, double max) {
+	public FloatContainer normalizeWithAtrificalExtrema(double min, double max) {
 		if (min > getMin() || max < getMax())
 			throw new IllegalArgumentException("Provided external values are more " + "limiting than calculated ones");
 		return normalize((int) min, (int) max);
@@ -106,7 +100,9 @@ public class IntContainer implements INumericalContainer<Integer> {
 
 	@Override
 	public FloatContainer normalize() {
-		return normalize((int) getMin(), (int) getMax());
+		if (Integer.MAX_VALUE == min || Integer.MIN_VALUE == min)
+			calculateMinMax();
+		return normalize(min, max);
 	}
 
 	/**
@@ -118,9 +114,7 @@ public class IntContainer implements INumericalContainer<Integer> {
 	 * @throws IllegalAttributeException
 	 *             when iMin is >= iMax
 	 */
-	private FloatContainer normalize(int min, int max)
-
-	{
+	private FloatContainer normalize(int min, int max) {
 		if (min > max)
 			throw new IllegalArgumentException("Minimum was bigger as maximum");
 		if (min == max)
@@ -136,10 +130,9 @@ public class IntContainer implements INumericalContainer<Integer> {
 	}
 
 	/**
-	 * The actual calculation of min and maxima on the local array
+	 * The actual calculation of min and max on the local array
 	 */
 	private void calculateMinMax() {
-
 		for (int current : container) {
 			// Handle NaN values
 			if (current == Integer.MIN_VALUE) {
@@ -156,26 +149,19 @@ public class IntContainer implements INumericalContainer<Integer> {
 	}
 
 	@Override
-	public FloatContainer log(int iBase) {
-
+	public FloatContainer log(int base) {
 		float[] target = new float[container.length];
 
 		float tmp;
 		for (int index = 0; index < container.length; index++) {
 			tmp = container[index];
-			target[index] = (float) Math.log(tmp) / (float) Math.log(iBase);
+			target[index] = (float) Math.log(tmp) / (float) Math.log(base);
 		}
-
 		return new FloatContainer(target);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see org.caleydo.core.data.collection.column.container.IContainer#getValue(int)
-	 */
 	@Override
-	public Integer getValue(int index) {
+	public Integer get(int index) {
 		return container[index];
 	}
 

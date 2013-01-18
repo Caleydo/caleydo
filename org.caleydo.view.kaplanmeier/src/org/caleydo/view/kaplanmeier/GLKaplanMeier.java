@@ -365,7 +365,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		final DataTable table = tablePerspective.getDataDomain().getTable();
 		final Integer dimensionID = dimensionVA.get(0);
 		for (Integer recordID : recordIDs) {
-			float normalizedValue = table.getNormalizedValue(recordID, dimensionID);
+			float normalizedValue = table.getNormalizedValue(dimensionID, recordID);
 			dataVector.add(normalizedValue);
 		}
 		Float[] sortedDataVector = new Float[dataVector.size()];

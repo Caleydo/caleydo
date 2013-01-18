@@ -173,7 +173,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 				// fOpacity = 1.0f;
 				// }
 
-				lookupValue = heatMap.getDataDomain().getTable().getNormalizedValue(recordID, dimensionID);
+				lookupValue = heatMap.getDataDomain().getTable().getNormalizedValue(dimensionID, recordID);
 
 				float[] mappingColor = colorMapper.getColor(lookupValue);
 
@@ -281,7 +281,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 			for (int i = startRecord; i < endRecord; i++) {
 				// byte[] abgr = new byte[4];
 
-				val = val + ((table.getNormalizedValue(recordVA.get(i), dimensionVA.get(dimensionCount))));
+				val = val + ((table.getNormalizedValue(dimensionVA.get(dimensionCount), recordVA.get(i))));
 			}
 			// buffer.get(abgr, i * numberOfExpirments * 4 + exps * 4, 4);
 
@@ -290,7 +290,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 			// unc = difference
 			uncertainty = 0;
 			for (int i = startRecord; i < endRecord; i++) {
-				float tempVal = table.getNormalizedValue(recordVA.get(i), dimensionVA.get(dimensionCount));
+				float tempVal = table.getNormalizedValue(dimensionVA.get(dimensionCount), recordVA.get(i));
 				uncertainty = Math.abs(val - tempVal);
 				if (uncertainty > maxUncertainty) {
 					maxUncertainty = uncertainty;

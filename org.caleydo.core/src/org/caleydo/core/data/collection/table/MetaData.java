@@ -238,7 +238,7 @@ public class MetaData {
 		if (table.tableType.equals(DataTableDataType.NUMERIC)) {
 			for (AColumn column : table.hashColumns.values()) {
 				NumericalColumn nColumn = (NumericalColumn) column;
-				temp = nColumn.getMin();
+				temp = new Double(nColumn.getMin());
 				if (!artificialMin && temp < min) {
 					min = temp;
 				}

@@ -151,8 +151,8 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 
 					isto = 0;
 					for (Integer iDimensionIndex1 : dimensionVA) {
-						dArInstance1[isto] = table.getNormalizedValue(recordIndex1,
-								iDimensionIndex1);
+						dArInstance1[isto] = table.getNormalizedValue(iDimensionIndex1,
+								recordIndex1);
 						isto++;
 					}
 
@@ -161,8 +161,8 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 
 						isto = 0;
 						for (Integer iDimensionIndex2 : dimensionVA) {
-							dArInstance2[isto] = table.getNormalizedValue(recordIndex2,
-									iDimensionIndex2);
+							dArInstance2[isto] = table.getNormalizedValue(iDimensionIndex2,
+									recordIndex2);
 							isto++;
 						}
 
@@ -226,8 +226,8 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 
 					icnt = 0;
 					for (Integer recordIndex1 : recordVA) {
-						dArInstance1[icnt] = table.getNormalizedValue(recordIndex1,
-								iDimensionIndex1);
+						dArInstance1[icnt] = table.getNormalizedValue(iDimensionIndex1,
+								recordIndex1);
 						icnt++;
 					}
 
@@ -236,8 +236,8 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 
 						icnt = 0;
 						for (Integer recordIndex2 : recordVA) {
-							dArInstance2[icnt] = table.getNormalizedValue(recordIndex2,
-									iDimensionIndex2);
+							dArInstance2[icnt] = table.getNormalizedValue(iDimensionIndex2,
+									recordIndex2);
 							icnt++;
 						}
 

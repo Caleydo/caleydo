@@ -184,7 +184,7 @@ public class CategoricalTablePerspectiveCreator {
 
 		DataTable table = dataDomain.getTable();
 		for (Integer recordID : recordPerspective.getVirtualArray()) {
-			float value = table.getNormalizedValue(recordID, dimensionID);
+			float value = table.getNormalizedValue(dimensionID, recordID);
 
 			// System.out.println(value);
 

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.column.ERawDataType;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -40,6 +40,9 @@ import com.google.common.collect.HashBiMap;
  * @author Alexander Lex
  */
 public class CategoricalContainer<CategoryType extends Comparable<CategoryType>> implements IContainer<CategoryType> {
+
+	/** The data type corresponding to CategoryType */
+	private EDataType dataType;
 
 	/**
 	 * This contains the short that is used for the next available key. This also corresponds to the number of
@@ -67,7 +70,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	 */
 	private ArrayList<CategoryType> categories;
 
-	public CategoricalContainer(int size) {
+	public CategoricalContainer(int size, EDataType dataType) {
 		container = new short[size];
 	}
 
@@ -78,7 +81,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	 * @param categoryName
 	 */
 	@Override
-	public void addValue(CategoryType categoryName) {
+	public void add(CategoryType categoryName) {
 		Short identifier = hashCategoryToIdentifier.get(categoryName);
 		if (identifier == null) {
 			identifier = initCategory(categoryName);
@@ -117,7 +120,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	 * @return the variable associated with the index or null if no such index exists
 	 */
 	@Override
-	public CategoryType getValue(int index) {
+	public CategoryType get(int index) {
 		try {
 			return hashCategoryToIdentifier.inverse().get(container[index]);
 		} catch (NullPointerException npe) {
@@ -126,23 +129,6 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 			return null;
 		}
 	}
-
-	// @Override
-	// public double getMin() {
-	// if (Integer.MAX_VALUE == min) {
-	// calculateMinMax();
-	// }
-	// return min;
-	// }
-
-	// @Override
-	// public double getMax() {
-	//
-	// if (Integer.MIN_VALUE == max) {
-	// calculateMinMax();
-	// }
-	// return max;
-	// }
 
 	/**
 	 * Converting the categories into quantitative space (0-1)
@@ -176,6 +162,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 		for (int count = 0; count < container.length; count++) {
 			target[count] = hashCategoryKeyToNormalizedValue.get(container[count]);
 		}
+		// System.out.println("Elapsed: " + (System.currentTimeMillis() - startTime));
 		return new FloatContainer(target);
 	}
 
@@ -193,7 +180,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	}
 
 	@Override
-	public ERawDataType getRawDataType() {
-		return ERawDataType.OBJECT;
+	public EDataType getDataType() {
+		return dataType;
 	}
 }

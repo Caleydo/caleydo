@@ -390,7 +390,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 			recordID = experimentID;
 			dimensionID = geneID;
 		}
-		return table.getNormalizedValue(recordID, dimensionID);
+		return table.getNormalizedValue(dimensionID, recordID);
 	}
 
 	public boolean isGeneRecord() {
