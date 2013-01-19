@@ -41,9 +41,6 @@ public class CategoricalColumn<CategoryType extends Comparable<CategoryType>> ex
 		super(uniqueID);
 	}
 
-	@Override
-	public void normalize() {
-		normalizedContainer = rawContainer.normalize();
-	}
+
 
 }

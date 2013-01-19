@@ -51,10 +51,6 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 		super(dimensionID);
 	}
 
-	@Override
-	public void normalize() {
-		normalizedContainer = rawContainer.normalize();
-	}
 
 	/**
 	 * Same as {@link #normalizeWithExternalExtrema(double, double)}, but with an additional parameter letting you

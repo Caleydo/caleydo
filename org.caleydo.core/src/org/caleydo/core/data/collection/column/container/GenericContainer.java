@@ -1,174 +1,86 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
+
 package org.caleydo.core.data.collection.column.container;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Set;
+
+import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.column.container.FloatContainer;
+import org.caleydo.core.data.collection.column.container.IContainer;
 
 /**
- * Container for nominal string values. Provides access to the values, can create discrete values for the
- * nominal values You can provide a list of all possible values, otherwise such a list will be constructed
- * when you call normalize, or request a mapping for the first time.
- *
+ * Container for generic, unstructured data, such as Unique Strings, images, etc.
+ * 
  * @author Alexander Lex
  */
 public class GenericContainer<DataType> implements IContainer<DataType> {
 
-	private HashMap<DataType, Float> hashNominalToDiscrete;
-
-	private HashMap<Float, T> hashDiscreteToNominal;
-
-	private boolean areHashMapsInitialized = false;
-
-	private String[] container;
+	ArrayList<DataType> container;
+	EDataType dataType;
 
 	/**
-	 * Constructor
 	 *
-	 * @param sAlContainer
-	 *            The complete list of all Strings in the dataset
 	 */
-	public GenericContainer(ArrayList<T> tAlContainer) {
-		this.alContainer = tAlContainer;
-		hashNominalToDiscrete = new HashMap<T, Float>();
-		hashDiscreteToNominal = new HashMap<Float, T>();
+	public GenericContainer(int size) {
+		container = new ArrayList<>(size);
 	}
 
-
-
-	/**
-	 * Creates a float array of discrete data values for every nominal value. The same string always has the
-	 * same value. If no list of possible values has been specified beforehand, a list is created.
-	 */
 	@Override
-	public FloatContainer normalize() {
-
-		if (!areHashMapsInitialized) {
-			setUpMapping(alContainer);
-		}
-
-		float[] fArNormalized = new float[alContainer.size()];
-
-		int iCount = 0;
-		for (T tContent : alContainer) {
-			Float fTemp = hashNominalToDiscrete.get(tContent);
-			if (fTemp == null)
-				throw new IllegalStateException("Requested string is not in the possible list of strings. "
-					+ "This happens if you have set the possible list with setPossibleValues "
-					+ "but a Value in the data set is not in this list.");
-			fArNormalized[iCount] = fTemp.floatValue();
-			iCount++;
-		}
-
-		return new FloatContainer(fArNormalized);
-	}
-
-	/**
-	 * When providing a float value following the rules of the normalization (0 >= x <= 1) the associated raw
-	 * nominal value is returned
-	 *
-	 * @param fDiscrete
-	 * @return the string associated with the discrete value, or null if no such value exists
-	 */
-	public T getNominalForDiscreteValue(Float fDiscrete) {
-		if (!areHashMapsInitialized) {
-			setUpMapping(alContainer);
-		}
-		return hashDiscreteToNominal.get(fDiscrete);
-	}
-
-	/**
-	 * When providing a nominal value that is in the initially provided list, the assoziated normalized value
-	 * is returned
-	 *
-	 * @param sNominal
-	 * @return
-	 */
-	public Float getDiscreteForNominalValue(T tNominal) {
-		if (!areHashMapsInitialized) {
-			setUpMapping(alContainer);
-		}
-		return hashNominalToDiscrete.get(tNominal);
-	}
-
-	/**
-	 * Initialize the mapping of nominal to discrete values. Call it either with the member sAlDimension, or
-	 * with a list provided externally
-	 *
-	 * @param sAlDimension
-	 */
-	@SuppressWarnings("unchecked")
-	private void setUpMapping(ArrayList<T> tAlDimension) {
-		for (T tContent : tAlDimension) {
-			hashNominalToDiscrete.put(tContent, new Float(0));
-		}
-
-		float fDivisor = 1.0f / (hashNominalToDiscrete.size() - 1);
-
-		// float[] fArNormalized = new float[sAlDimension.size()];
-
-		int iCount = 0;
-
-		Set<T> keySet = hashNominalToDiscrete.keySet();
-		Object[] sortedArray = new Object[keySet.size()];
-		keySet.toArray(sortedArray);
-		Arrays.sort(sortedArray, 0, sortedArray.length - 1);
-
-		for (Object record : sortedArray) {
-			Float fDiscrete = hashNominalToDiscrete.get(record);
-			fDiscrete = fDivisor * iCount;
-			T tContent = (T) record;
-			hashNominalToDiscrete.put(tContent, fDiscrete);
-			hashDiscreteToNominal.put(fDiscrete, tContent);
-
-			iCount++;
-		}
-		areHashMapsInitialized = true;
+	public int size() {
+		return container.size();
 	}
 
 	@Override
-	public HashMap<T, Float> getHistogram() {
-		HashMap<T, Float> hashTypeToCounter = new HashMap<T, Float>();
-		Float fTemp;
+	public FloatContainer normalize() {
+		FloatContainer normalized = new FloatContainer(container.size());
 
-		float fMax = Float.MIN_VALUE;
-
-		for (T tContent : alContainer) {
-			fTemp = hashTypeToCounter.get(tContent);
-			if (fTemp == null) {
-				fTemp = new Float(0);
-			}
-			++fTemp;
-			if (fTemp > fMax) {
-				fMax = fTemp;
-			}
-			hashTypeToCounter.put(tContent, fTemp);
+		float normalizedValue = 0;
+		float increment = 1 / (container.size() - 1);
+		for (int i = 0; i < container.size(); i++) {
+			normalized.add(normalizedValue);
+			normalizedValue += increment;
 		}
 
-		for (T tContent : hashTypeToCounter.keySet()) {
-			fTemp = hashTypeToCounter.get(tContent);
-			fTemp = fTemp / (fMax - 1);
-		}
-		return hashTypeToCounter;
+		return normalized;
+	}
+
+	/**
+	 * @param dataType
+	 *            setter, see {@link dataType}
+	 */
+	public void setDataType(EDataType dataType) {
+		this.dataType = dataType;
+	}
+
+	@Override
+	public EDataType getDataType() {
+		return dataType;
+	}
+
+	@Override
+	public DataType get(int index) {
+		return container.get(index);
+	}
+
+	@Override
+	public void add(DataType value) {
+		container.add(value);
+
 	}
 
 }

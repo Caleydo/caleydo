@@ -21,17 +21,22 @@ import java.util.HashMap;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
 import org.caleydo.core.data.collection.column.container.IContainer;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.util.base.AUniqueObject;
 
 /**
- * Interface for Dimensions A Dimension is a container that holds various representations of a particular data entity,
- * for example a microarray experiment, or a column on illnesses in a clinical data file. It contains all information
- * considering one such entity, for example, the raw, normalized and logarithmized data as well as metadata, such as the
- * label of the experiment. Only the raw data and some metadata can be specified manually, the rest is computed on on
- * demand. One distinguishes between two basic dimension types: numerical and nominal. This is reflected in the two
- * sub-interfaces INumericalSet and INominalSet. After construction one of the setRawData methods has to be called.
- * Notice, that only one setRawData may be called exactly once, since a set is designed to contain only one raw data set
- * at a time.
+ * <p>
+ * Base implementation for columns of data stored in a {@link Table}. A column is a container that holds various
+ * representations of a raw data column as read from a source file. Most importantly it contains the raw data as well as
+ * a normalized version of the raw data, but other representations are supported as well. It uses {@link IContainer}
+ * implementations to store this data.
+ * </p>
+ * <p>
+ * Only the raw data and some metadata can be specified manually, the rest is computed on on demand.
+ * </p>
+ * <p>
+ * This class provides only the base functionality. Data type specific implementations such as {@link NumericalColumn},
+ * {@link CategoricalColumn} and {@link GenericColum} exist.
  *
  * @author Alexander Lex
  */
@@ -116,6 +121,8 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	 * Operates with the raw data as basis by default, however when a logarithmized representation is in the dimension
 	 * this is used (only applies to numerical data). For nominal data the first value is 0, the last value is 1
 	 */
-	public abstract void normalize();
+	public void normalize() {
+		normalizedContainer = rawContainer.normalize();
+	}
 
 }
