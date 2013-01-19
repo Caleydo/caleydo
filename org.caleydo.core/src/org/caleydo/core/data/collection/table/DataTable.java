@@ -60,7 +60,7 @@ import org.eclipse.core.runtime.Status;
  */
 public class DataTable extends AUniqueObject {
 
-	HashMap<Integer, AColumn> hashColumns;
+	HashMap<Integer, AColumn<?,?>> hashColumns;
 
 	/** List of dimension IDs in the order as they have been added */
 	private ArrayList<Integer> defaultColumnIDs;
@@ -113,7 +113,7 @@ public class DataTable extends AUniqueObject {
 	 * Initialization of member variables. Safe to be called by sub-classes.
 	 */
 	{
-		hashColumns = new HashMap<Integer, AColumn>();
+		hashColumns = new HashMap<Integer, AColumn<?, ?>>();
 		hashRecordPerspectives = new HashMap<String, RecordPerspective>(6);
 		hashDimensionPerspectives = new HashMap<String, DimensionPerspective>(3);
 		defaultColumnIDs = new ArrayList<Integer>();

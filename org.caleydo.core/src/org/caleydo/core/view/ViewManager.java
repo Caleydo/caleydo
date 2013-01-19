@@ -50,7 +50,6 @@ import org.caleydo.core.view.opengl.canvas.internal.newt.NEWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.canvas.internal.swt.SWTGLCanvasFactory;
 import org.caleydo.core.view.opengl.layout.util.multiform.IEmbeddedVisualizationInfo;
 import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -104,7 +103,6 @@ public class ViewManager extends AManager<IView> {
 	private ConnectedElementRepresentationManager connectedElementRepManager = ConnectedElementRepresentationManager
 			.get();
 
-	private GLInfoAreaManager infoAreaManager = new GLInfoAreaManager();
 
 	private Set<Object> busyRequests = new HashSet<Object>();
 
@@ -492,9 +490,6 @@ public class ViewManager extends AManager<IView> {
 		return connectedElementRepManager;
 	}
 
-	public GLInfoAreaManager getInfoAreaManager() {
-		return infoAreaManager;
-	}
 
 	public void startAnimator() {
 

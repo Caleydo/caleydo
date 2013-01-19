@@ -42,6 +42,8 @@ public class MinimumSizeComposite
 
 	SetMinViewSizeEventListener setMinSizeEventListener;
 
+	// TODO evaluate whether we can remove this
+	@Deprecated
 	public MinimumSizeComposite(Composite parent, int style) {
 		super(parent, style);
 		registerEventListeners();
