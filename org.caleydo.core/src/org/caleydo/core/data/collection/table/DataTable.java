@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Caleydo - visualization for molecular biology - http://caleydo.org
+ * Caleydo - visualization for molecular biology - http://caleydo.org IContainer
  *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
  * University Linz </p>
@@ -469,9 +469,7 @@ public class DataTable extends AUniqueObject {
 	 * collector can handle it.
 	 */
 	public void destroy() {
-		// clearing the VAs. This should not be necessary since they should be
-		// destroyed automatically.
-		// However, to make sure.
+
 	}
 
 	@Override
@@ -484,36 +482,6 @@ public class DataTable extends AUniqueObject {
 		return "Set for " + dataDomain + " with " + hashColumns.size() + " dimensions.";
 	}
 
-	/**
-	 * Returns a dimension containing the mean values of all the dimensions in the table. The mean dimension contains
-	 * raw and normalized values. The mean is calculated based on the raw data, that means for calculating the means
-	 * possibly specified cut-off values are not considered, since cut-off values are meant for visualization only.
-	 *
-	 * @return the dimension containing means for all content elements
-	 */
-	// @Deprecated
-	// public NumericalColumn getMeanDimension(String dimensionPerspectiveID) {
-	// if (!tableType.equals(DataTableDataType.NUMERIC) || !isTableHomogeneous)
-	// throw new IllegalStateException("Can not provide a mean dimension if set is not numerical (Set type: "
-	// + tableType + ") or not homgeneous (isHomogeneous: " + isTableHomogeneous + ")");
-	// if (meanDimension == null) {
-	// meanDimension = new NumericalColumn();
-	// meanDimension.setExternalDataRepresentation(EDataTransformation.NONE);
-	//
-	// float[] meanValues = new float[metaData.depth()];
-	// DimensionVirtualArray dimensionVA = hashDimensionPerspectives.get(dimensionPerspectiveID).getVirtualArray();
-	// for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
-	// float sum = 0;
-	// for (int dimensionID : dimensionVA) {
-	// sum += getFloat(DataRepresentation.RAW, contentCount, dimensionID);
-	// }
-	// meanValues[contentCount] = sum / metaData.size();
-	// }
-	// meanDimension.setRawData(new FloatContainer(meanValues));
-	// // meanDimension.normalize();
-	// }
-	// return meanDimension;
-	// }
 
 	/**
 	 * Add a column by reference. The column has to be fully initialized with data

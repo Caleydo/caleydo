@@ -18,7 +18,6 @@ package org.caleydo.core.data.collection.column;
 
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
-import org.caleydo.core.data.collection.column.container.IContainer;
 import org.caleydo.core.data.collection.column.container.INumericalContainer;
 import org.caleydo.core.id.object.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
@@ -165,7 +164,7 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 		if (dataRepToContainerMap.containsKey(dataRepresentation))
 			throw new IllegalStateException("The data representation " + dataRepresentation + " already exists in "
 					+ this);
-		IContainer container = new FloatContainer(representation);
+		FloatContainer container = new FloatContainer(representation);
 		dataRepToContainerMap.put(dataRepresentation, container);
 	}
 
