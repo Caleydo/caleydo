@@ -2,7 +2,7 @@ package org.caleydo.core.util.clusterer.algorithm.affinity;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
@@ -100,7 +100,7 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 	 * @param clusterState
 	 * @return in case of error a negative value will be returned.
 	 */
-	private int determineSimilarities(DataTable table, ClusterConfiguration clusterState) {
+	private int determineSimilarities(Table table, ClusterConfiguration clusterState) {
 
 		RecordVirtualArray recordVA = clusterState.getSourceRecordPerspective()
 				.getVirtualArray();

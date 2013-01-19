@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
@@ -56,7 +56,7 @@ public class GSEAAlgorithm extends AGSEAAlgorithm {
 		Stopwatch w = new Stopwatch().start();
 		inA = new HashSet<>(inA);
 
-		DataTable table = stratification.getDataDomain().getTable();
+		Table table = stratification.getDataDomain().getTable();
 
 		List<Integer> rows = stratification.getRecordPerspective().getVirtualArray().getIDs();
 		List<Integer> cols = stratification.getDimensionPerspective().getVirtualArray().getIDs();

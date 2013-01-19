@@ -30,9 +30,9 @@ public abstract class ATCGATask extends RecursiveTask<String> {
 	}
 
 	protected static String getAdditionalInfo(ATableBasedDataDomain dataDomain) {
-		return "{\"gene\":{\"count\":\"" + dataDomain.getTable().getMetaData().size() + "\",\"groupings\":["
+		return "{\"gene\":{\"count\":\"" + dataDomain.getTable().size() + "\",\"groupings\":["
 				+ GroupingListCreator.getDimensionGroupingList(dataDomain) + "]},\"sample\":{\"count\":\""
-				+ dataDomain.getTable().getMetaData().depth() + "\",\"groupings\":["
+				+ dataDomain.getTable().depth() + "\",\"groupings\":["
 				+ GroupingListCreator.getRecordGroupingList(dataDomain) + "]}}";
 	}
 

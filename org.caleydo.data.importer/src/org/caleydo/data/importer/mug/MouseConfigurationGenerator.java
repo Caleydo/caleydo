@@ -22,6 +22,7 @@ package org.caleydo.data.importer.mug;
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -78,12 +79,12 @@ public class MouseConfigurationGenerator extends DataSetDescriptionSerializer {
 	}
 
 	private DataSetDescription setUpMRNAData() {
-		DataSetDescription mrnaData = new DataSetDescription();
+		DataSetDescription mrnaData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 		mrnaData.setDataSetName("mRNA");
 
 		mrnaData.setDataSourcePath(MRNA);
 		mrnaData.setNumberOfHeaderLines(1);
-		mrnaData.setMathFilterMode("LOG2");
+		mrnaData.getNumericalProperties().setMathFilterMode("LOG2");
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);
@@ -111,12 +112,12 @@ public class MouseConfigurationGenerator extends DataSetDescriptionSerializer {
 	}
 
 	private DataSetDescription setUpSequencedMRNAData() {
-		DataSetDescription mrnaData = new DataSetDescription();
+		DataSetDescription mrnaData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 		mrnaData.setDataSetName("mRNA Sequenced");
 
 		mrnaData.setDataSourcePath(SEQUENCED_MRNA);
 		mrnaData.setNumberOfHeaderLines(1);
-		mrnaData.setMathFilterMode("LOG2");
+		mrnaData.getNumericalProperties().setMathFilterMode("LOG2");
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(5);

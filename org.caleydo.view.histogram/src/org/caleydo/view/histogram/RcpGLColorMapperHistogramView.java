@@ -21,6 +21,7 @@ package org.caleydo.view.histogram;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ChooseColorMappingDialog;
@@ -143,7 +144,7 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 
 			float normalizedValue = markerPoints.get(iCount - 1).getMappingValue();
 
-			double correspondingValue = (dataDomain).getTable().getRawForNormalized(normalizedValue);
+			double correspondingValue = ((NumericalTable) dataDomain.getTable()).getRawForNormalized(normalizedValue);
 
 			if (labels != null)
 				labels.get(iCount - 1).setText(Formatter.formatNumber(correspondingValue));

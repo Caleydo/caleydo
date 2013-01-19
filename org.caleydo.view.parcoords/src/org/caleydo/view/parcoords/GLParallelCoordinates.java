@@ -47,7 +47,9 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.EDataType;
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.CategoricalTable;
+import org.caleydo.core.data.collection.table.Table;
+import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.filter.DimensionFilter;
 import org.caleydo.core.data.filter.RecordFilter;
@@ -414,7 +416,8 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 	private void initGates() {
 		hashGates = new HashMap<Integer, AGate>();
 		hashIsGateBlocking = new HashMap<Integer, ArrayList<Integer>>();
-		if (dataDomain != null && dataDomain.getTable().isDataHomogeneous()) {
+		if (dataDomain != null
+				&& (dataDomain.getTable() instanceof NumericalTable || dataDomain.getTable() instanceof CategoricalTable)) {
 			hashMasterGates = new HashMap<Integer, Gate>();
 		}
 		hashExcludeNAN = new HashMap<Integer, Boolean>();
@@ -531,7 +534,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		}
 
 		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
-		DataTable table = dataDomain.getTable();
+		Table table = dataDomain.getTable();
 
 		// this loop executes once per axis
 		for (int dimensionCount = 0; dimensionCount < tablePerspective.getNrDimensions(); dimensionCount++) {
@@ -658,8 +661,9 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				for (int iInnerCount = 1; iInnerCount <= NUMBER_AXIS_MARKERS; iInnerCount++) {
 					float fCurrentHeight = fMarkerSpacing * iInnerCount;
 					if (count == 0) {
-						if (dataDomain.getTable().isDataHomogeneous()) {
-							float fNumber = (float) dataDomain.getTable().getRawForNormalized(
+						if (dataDomain.getTable() instanceof NumericalTable) {
+							float fNumber = (float) ((NumericalTable) dataDomain.getTable())
+									.getRawForNormalized(
 									fCurrentHeight / renderStyle.getAxisHeight());
 
 							Rectangle2D bounds = textRenderer.getScaledBounds(gl, Formatter.formatNumber(fNumber),
@@ -1465,10 +1469,10 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			case CLICKED:
 				hasFilterChanged = true;
 				AGate gate;
-				DataTable table = dataDomain.getTable();
+				Table table = dataDomain.getTable();
 				if (table.isDataHomogeneous()) {
-					gate = new Gate(++iGateCounter, pickingID, (float) table.getRawForNormalized(0),
-							(float) table.getRawForNormalized(0.5f), table, renderStyle);
+					gate = new Gate(++iGateCounter, pickingID, (float) ((NumericalTable) table).getRawForNormalized(0),
+							(float) ((NumericalTable) table).getRawForNormalized(0.5f), table, renderStyle);
 				} else {
 					gate = new NominalGate(++iGateCounter, pickingID, 0, 0.5f, table, renderStyle);
 				}
@@ -1487,9 +1491,9 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			switch (pickingMode) {
 			case CLICKED:
 				hasFilterChanged = true;
-				DataTable table = dataDomain.getTable();
-				Gate gate = new Gate(++iGateCounter, -1, (float) table.getRawForNormalized(0),
-						(float) table.getRawForNormalized(0.5f), table, renderStyle);
+				Table table = dataDomain.getTable();
+				Gate gate = new Gate(++iGateCounter, -1, (float) ((NumericalTable) table).getRawForNormalized(0),
+						(float) ((NumericalTable) table).getRawForNormalized(0.5f), table, renderStyle);
 				gate.setMasterGate(true);
 				hashMasterGates.put(iGateCounter, gate);
 				hashIsGateBlocking.put(iGateCounter, new ArrayList<Integer>());
@@ -1668,7 +1672,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
-		DataTable table = dataDomain.getTable();
+		Table table = dataDomain.getTable();
 
 		leftAxisIndex = dimensionVA.get(iPosition);
 		rightAxisIndex = dimensionVA.get(iPosition + 1);

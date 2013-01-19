@@ -27,7 +27,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GL2GL3;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.table.DataTableDataType;
+import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
@@ -132,21 +132,25 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 	@Override
 	public void initData() {
 		super.initData();
-		if ((tablePerspective != null) && (tablePerspective.getDataDomain().getTable().isDataHomogeneous())) {
-			if (histogram == null) {
-				// FIXME Bad hack
-				if (dataDomain.getLabel().toLowerCase().contains("copy")) {
-					histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
-							.getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
-							.getVirtualArray(), 5);
-				} else if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
-					histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
-							.getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
-							.getVirtualArray(), 2);
-				} else {
-					histogram = tablePerspective.getContainerStatistics().getHistogram();
-				}
+		if (tablePerspective != null && histogram == null)
+		{
+			if(tablePerspective.getDataDomain().getTable() instanceof NumericalTable) {
+				histogram = tablePerspective.getContainerStatistics().getHistogram();
 			}
+//				// FIXME Bad hack
+//				if (dataDomain.getLabel().toLowerCase().contains("copy")) {
+//					histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
+//							.getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
+//							.getVirtualArray(), 5);
+//				} else if (dataDomain.getLabel().toLowerCase().contains("mutation")) {
+//					histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), tablePerspective
+//							.getRecordPerspective().getVirtualArray(), tablePerspective.getDimensionPerspective()
+//							.getVirtualArray(), 2);
+//				} else {
+//
+//				}
+//			}
+//			}
 		}
 
 	}
@@ -423,25 +427,15 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 
 	private void renderCaption(GL2 gl, float normalizedValue) {
 
-		if (detailLevel != EDetailLevel.HIGH || dataDomain.getTable().getTableType() != DataTableDataType.NUMERIC)
+		if (detailLevel != EDetailLevel.HIGH || !(dataDomain.getTable() instanceof NumericalTable))
 			return;
 
-		double correspondingValue = dataDomain.getTable().getRawForNormalized(normalizedValue);
+		double correspondingValue = ((NumericalTable) dataDomain.getTable()).getRawForNormalized(normalizedValue);
 
 		String text = Formatter.formatNumber(correspondingValue);
 		textRenderer.renderTextInBounds(gl, text, sideSpacing + normalizedValue * fRenderWidth
 				+ HistogramRenderStyle.CAPTION_SPACING, 0, 0.01f, pixelGLConverter.getGLWidthForPixelWidth(100),
 				pixelGLConverter.getGLHeightForPixelHeight(HistogramRenderStyle.SIDE_SPACING));
-
-		// textRenderer.begin3DRendering();
-		// textRenderer.setColor(0, 0, 0, 1);
-		// gl.glDisable(GL.GL_DEPTH_TEST);
-
-		// textRenderer.draw3D(text, sideSpacing + normalizedValue * fRenderWidth +
-		// HistogramRenderStyle.CAPTION_SPACING,
-		// HistogramRenderStyle.CAPTION_SPACING, 0.001f, GeneralRenderStyle.HEADING_FONT_SCALING_FACTOR);
-		// // textRenderer.flush();
-		// textRenderer.end3DRendering();
 	}
 
 	/**

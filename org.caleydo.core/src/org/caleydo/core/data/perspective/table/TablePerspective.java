@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.EDataClass;
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
@@ -51,10 +51,10 @@ import org.caleydo.core.util.base.IDefaultLabelHolder;
 
 /**
  * <p>
- * A TablePerspective holds all the "rules" and properties on how the data in the underlying {@link DataTable} should be
+ * A TablePerspective holds all the "rules" and properties on how the data in the underlying {@link Table} should be
  * accessed. It does so by holding references to one {@link DimensionPerspective} and one {@link RecordPerspective}, who
  * define things like order, groups, and hierarchical relationships for either the dimensions or the records of a
- * DataTable.
+ * Table.
  * </p>
  * <p>
  * While the perspectives are only defined for either the records or the dimensions, and thereby cannot reference

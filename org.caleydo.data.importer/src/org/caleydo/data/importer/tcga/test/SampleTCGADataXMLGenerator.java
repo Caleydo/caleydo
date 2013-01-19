@@ -20,9 +20,11 @@
 package org.caleydo.data.importer.tcga.test;
 
 import org.caleydo.core.data.collection.EDataClass;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -136,7 +138,7 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 	}
 
 	private DataSetDescription setUpMRNAData() {
-		DataSetDescription mrnaData = new DataSetDescription();
+		DataSetDescription mrnaData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 		mrnaData.setDataSetName("mRNA");
 
 		mrnaData.setDataSourcePath(MRNA);
@@ -181,7 +183,7 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 	}
 
 	private DataSetDescription setUpMiRNAData() {
-		DataSetDescription mirnaData = new DataSetDescription();
+		DataSetDescription mirnaData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 		mirnaData.setDataSetName("miRNA");
 
 		mirnaData.setDataSourcePath(MIRNA);
@@ -218,7 +220,7 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 	}
 
 	private DataSetDescription setUpMethylationData() {
-		DataSetDescription methylationData = new DataSetDescription();
+		DataSetDescription methylationData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 		methylationData.setDataSetName("Methylation");
 
 		methylationData.setDataSourcePath(METHYLATION);
@@ -255,7 +257,7 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 	}
 
 	private DataSetDescription setUpCopyNumberData() {
-		DataSetDescription copyNumberData = new DataSetDescription();
+		DataSetDescription copyNumberData = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
 		copyNumberData.setDataSetName("Copy number");
 
 		copyNumberData.setDataSourcePath(COPY_NUMBER);
@@ -264,7 +266,7 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.REAL_NUMBER));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.ORDINAL, EDataType.INTEGER));
 		copyNumberData.addParsingRule(parsingRule);
 		copyNumberData.setTransposeMatrix(true);
 
@@ -284,7 +286,6 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 	private DataSetDescription setUpClinicalData() {
 		DataSetDescription clinicalData = new DataSetDescription();
 		clinicalData.setDataSetName("Clinical");
-		clinicalData.setDataHomogeneous(false);
 
 		clinicalData.setDataSourcePath(CLINICAL);
 		clinicalData.setNumberOfHeaderLines(1);
@@ -317,7 +318,7 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 	}
 
 	private DataSetDescription setUpMutationData() {
-		DataSetDescription mutationDataMetaInfo = new DataSetDescription();
+		DataSetDescription mutationDataMetaInfo = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
 		mutationDataMetaInfo.setDataSetName("Mutation Status");
 		mutationDataMetaInfo.setDataSourcePath(MUTATION);
 
@@ -326,7 +327,7 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.REAL_NUMBER));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.ORDINAL, EDataType.INTEGER));
 		mutationDataMetaInfo.addParsingRule(parsingRule);
 		mutationDataMetaInfo.setTransposeMatrix(true);
 

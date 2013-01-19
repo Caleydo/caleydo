@@ -85,7 +85,7 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 
 		// gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);
 
-		// DataTable table =
+		// Table table =
 		// groupRepresentation.getClusterNode().getSubDataTable();
 		// DimensionVirtualArray dimensionVA = table
 		// .getDimensionPerspective(dimensionPrespectiveID).getVirtualArray();

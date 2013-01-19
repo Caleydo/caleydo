@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.data.collection.table.DataTableUtils;
+import org.caleydo.core.data.collection.table.TableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
@@ -125,7 +125,7 @@ public class DataLoader {
 		boolean createDefaultRecordPerspective = true;
 
 		// the place the matrix is stored:
-		DataTableUtils.loadData(dataDomain, dataSetDescription, true, createDefaultRecordPerspective);
+		TableUtils.loadData(dataDomain, dataSetDescription, true, createDefaultRecordPerspective);
 		return dataDomain;
 
 	}

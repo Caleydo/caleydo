@@ -27,7 +27,7 @@ import org.caleydo.core.data.collection.column.NumericalColumn;
 import org.caleydo.core.data.collection.column.container.CategoricalContainer;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
 import org.caleydo.core.data.collection.column.container.IContainer;
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
@@ -81,7 +81,7 @@ public class TabularDataParser extends ATextParser {
 
 	/**
 	 * <p>
-	 * Creates the {@link DataTable} and the {@link AColumn}s for the {@link DataTable}, as well as the raw data columns
+	 * Creates the {@link Table} and the {@link AColumn}s for the {@link Table}, as well as the raw data columns
 	 * to be set into the columns, which are also stored in {@link #targetColumns}.
 	 * </p>
 	 * <p>
@@ -90,8 +90,7 @@ public class TabularDataParser extends ATextParser {
 	 */
 	private void initializeTablePerspectives() {
 
-		DataTable table = new DataTable(dataDomain);
-		dataDomain.setTable(table);
+		Table table = dataDomain.getTable();
 
 		ArrayList<ColumnDescription> parsingPattern = dataSetDescription.getOrCreateParsingPattern();
 

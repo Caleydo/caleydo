@@ -77,7 +77,7 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	/**
 	 * <p>
 	 * If you want to consider extremas for normalization which do not occur in this dimension (e.g., because the global
-	 * extremas for the DataTable are used), use this method instead of normalize().
+	 * extremas for the Table are used), use this method instead of normalize().
 	 * </p>
 	 * Values that are bigger or smaller then the extrema specified are set to 0 (minimum) or 1 (maximum) in the
 	 * normalized data. The raw data is untouched. Therefore elements with values 0 or one can have different raw values

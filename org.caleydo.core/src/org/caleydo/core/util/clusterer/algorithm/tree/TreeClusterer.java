@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.util.clusterer.algorithm.tree;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
@@ -119,7 +119,7 @@ public class TreeClusterer extends AClusterer {
 	 * @param eClustererType
 	 * @return in case of error a negative value will be returned.
 	 */
-	private int determineSimilarities(DataTable table, EClustererTarget eClustererType) {
+	private int determineSimilarities(Table table, EClustererTarget eClustererType) {
 
 		IDistanceMeasure distanceMeasure;
 

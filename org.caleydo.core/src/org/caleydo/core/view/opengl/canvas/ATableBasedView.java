@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
@@ -68,7 +68,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Base class for OpenGL2 views that visualize {@link DataTable}s.
+ * Base class for OpenGL2 views that visualize {@link Table}s.
  *
  * @author Alexander Lex
  * @author Marc Streit

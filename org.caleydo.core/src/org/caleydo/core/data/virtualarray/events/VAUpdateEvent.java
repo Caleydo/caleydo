@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.data.virtualarray.events;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.event.AEvent;
@@ -39,7 +39,7 @@ import org.caleydo.core.event.AEvent;
 public abstract class VAUpdateEvent
 	extends AEvent {
 
-	/** the id of the associated {@link DataTable} */
+	/** the id of the associated {@link Table} */
 	private String perspectiveID = null;
 
 	/**
@@ -52,9 +52,9 @@ public abstract class VAUpdateEvent
 	}
 
 	/**
-	 * Get the ID of the {@link DataTable} the virtual array to be updated is associated with
+	 * Get the ID of the {@link Table} the virtual array to be updated is associated with
 	 * 
-	 * @return the id of the associated {@link DataTable}
+	 * @return the id of the associated {@link Table}
 	 */
 	public String getPerspectiveID() {
 		return perspectiveID;

@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.filter.FilterManager;
 import org.caleydo.core.data.graph.tree.ClusterNode;
@@ -106,7 +106,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 
 	/**
 	 * Flag determining whether this perspective is the default perspective . A
-	 * default perspective is defined for every {@link DataTable}. It should
+	 * default perspective is defined for every {@link Table}. It should
 	 * reflect "the whole dataset". This is used for instance by the support
 	 * views.
 	 */

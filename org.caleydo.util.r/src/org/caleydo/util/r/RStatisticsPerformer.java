@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -196,7 +196,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		//
 		// // FIXME: just for uncertainty paper so that the uncertainty view can
 		// // access it via the main set
-		// DataTable table = table1.getDataDomain().getTable();
+		// Table table = table1.getDataDomain().getTable();
 		// table.getStatisticsResult().setResult(table1, resultVec);
 
 		RecordFilter contentFilter = new RecordFilter(container1.getRecordPerspective().getPerspectiveID());
@@ -221,7 +221,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		// TODO: don't recalculate if pvalue array is already calculated
 		// however, the evaluation must be done using the new pvalue
 		// boolean allCalculated = true;
-		// for (DataTable set : sets) {
+		// for (Table set : sets) {
 		// if (table.getStatisticsResult().getOneSidedTTestResult() == null)
 		// continue;
 		//
@@ -246,11 +246,11 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 			RecordVirtualArray recordVA = container.getRecordPerspective().getVirtualArray();
 			DimensionVirtualArray dimensionVA1 = container.getDimensionPerspective().getVirtualArray();
-			DataTable table = container.getDataDomain().getTable();
-			// getContentData(DataTable.CONTENT).getRecordVA();
+			Table table = container.getDataDomain().getTable();
+			// getContentData(Table.CONTENT).getRecordVA();
 
 			double[] pValueVector = new double[container.getNrRecords()];
-			// table.getContentData(DataTable.CONTENT).getRecordVA().size()];
+			// table.getContentData(Table.CONTENT).getRecordVA().size()];
 
 			for (int recordIndex = 0; recordIndex < recordVA.size(); recordIndex++) {
 
@@ -321,7 +321,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		if (!tablePerspective1.getRecordPerspective().equals(tablePerspective2.getRecordPerspective()))
 			throw new IllegalStateException("data containers have to share record prespective");
 
-		DataTable table = tablePerspective1.getDataDomain().getTable();
+		Table table = tablePerspective1.getDataDomain().getTable();
 
 		ArrayList<Double> pValueVector = new ArrayList<Double>();
 

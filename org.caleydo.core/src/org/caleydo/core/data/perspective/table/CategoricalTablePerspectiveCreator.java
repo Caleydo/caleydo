@@ -24,7 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
@@ -182,7 +182,7 @@ public class CategoricalTablePerspectiveCreator {
 			bins.add(new ArrayList<Integer>());
 		}
 
-		DataTable table = dataDomain.getTable();
+		Table table = dataDomain.getTable();
 		for (Integer recordID : recordPerspective.getVirtualArray()) {
 			float value = table.getNormalizedValue(dimensionID, recordID);
 

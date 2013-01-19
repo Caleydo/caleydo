@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.math.distribution.TDistributionImpl;
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.statistics.Statistics;
@@ -40,7 +40,7 @@ public class PGSEAAlgorithm extends AGSEAAlgorithm {
 
 		final Set<Integer> inA = new HashSet<>(stratification.getRecordPerspective().getVirtualArray()
 				.getIDsOfGroup(group.getGroupIndex()));
-		DataTable table = stratification.getDataDomain().getTable();
+		Table table = stratification.getDataDomain().getTable();
 
 		List<Integer> rows = stratification.getRecordPerspective().getVirtualArray().getIDs();
 		List<Integer> cols = stratification.getDimensionPerspective().getVirtualArray().getIDs();

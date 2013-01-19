@@ -23,6 +23,7 @@ import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -130,7 +131,7 @@ public class GeneDataTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 	}
 
 	private DataSetDescription setUpMRNAData() {
-		DataSetDescription mrnaData = new DataSetDescription();
+		DataSetDescription mrnaData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 		mrnaData.setDataSetName("mRNA");
 
 		mrnaData.setDataSourcePath(MRNA);
@@ -166,7 +167,7 @@ public class GeneDataTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 	}
 
 	private DataSetDescription setUpCopyNumberData() {
-		DataSetDescription copyNumberData = new DataSetDescription();
+		DataSetDescription copyNumberData = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
 		copyNumberData.setDataSetName("Copy number");
 
 		copyNumberData.setDataSourcePath(COPY_NUMBER);

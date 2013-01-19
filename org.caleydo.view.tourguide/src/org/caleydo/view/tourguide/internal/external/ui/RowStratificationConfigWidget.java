@@ -21,7 +21,7 @@ package org.caleydo.view.tourguide.internal.external.ui;
 
 import java.util.List;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.io.gui.dataimport.widget.IntegerCallback;
 import org.caleydo.core.io.gui.dataimport.widget.PreviewTableWidget;
@@ -74,7 +74,7 @@ public class RowStratificationConfigWidget {
 		this.stratifiationCombo = new Combo(leftConfigGroupPart, SWT.DROP_DOWN | SWT.READ_ONLY);
 		stratifiationCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-		DataTable table = dataDomain.getTable();
+		Table table = dataDomain.getTable();
 		if (inDimensionDirection) {
 			this.categoryLabel.setText(dataDomain.getDimensionIDCategory().getCategoryName());
 			for (String key : dataDomain.getDimensionPerspectiveIDs()) {
@@ -146,7 +146,7 @@ public class RowStratificationConfigWidget {
 		if (selection == null || selection.trim().isEmpty())
 			return null;
 
-		DataTable table = dataDomain.getTable();
+		Table table = dataDomain.getTable();
 		if (inDimensionDirection) {
 			for (String key : dataDomain.getDimensionPerspectiveIDs()) {
 				if (selection.equals(table.getDimensionPerspective(key).getLabel()))

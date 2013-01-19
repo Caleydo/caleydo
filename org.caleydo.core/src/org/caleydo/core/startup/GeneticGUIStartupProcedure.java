@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.startup;
 
@@ -23,6 +20,7 @@ import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.util.HelpButtonWizardDialog;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
 import org.caleydo.core.io.gui.dataimport.wizard.DataImportWizard;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectManager;
@@ -37,8 +35,7 @@ import org.eclipse.ui.PlatformUI;
  *
  * @author Marc Streit
  */
-public class GeneticGUIStartupProcedure
-	extends AStartupProcedure {
+public class GeneticGUIStartupProcedure extends AStartupProcedure {
 
 	private boolean loadSampleData = false;
 
@@ -58,8 +55,7 @@ public class GeneticGUIStartupProcedure
 			GeneralManager.get().getBasicInfo().setOrganism(Organism.HOMO_SAPIENS);
 		}
 
-		DataDomainManager.get().initalizeDataDomain(
-				"org.caleydo.datadomain.genetic");
+		DataDomainManager.get().initalizeDataDomain("org.caleydo.datadomain.genetic");
 
 		super.init();
 	}
@@ -71,19 +67,19 @@ public class GeneticGUIStartupProcedure
 		DataImportWizard dataImportWizard;
 
 		if (this.loadSampleData) {
-			DataSetDescription dataSetDescription = new DataSetDescription();
+			DataSetDescription dataSetDescription = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 			dataSetDescription.setDataSourcePath(REAL_DATA_SAMPLE_FILE);
-			dataSetDescription.setMathFilterMode(EDataTransformation.LOG2
-					.getHumanReadableRep());
+
+			dataSetDescription.getNumericalProperties().setMathFilterMode(
+					EDataTransformation.LOG2.getHumanReadableRep());
 			dataImportWizard = new DataImportWizard(dataSetDescription);
-		}
-		else {
+		} else {
 			dataImportWizard = new DataImportWizard();
 		}
 		ProjectManager.deleteWorkbenchSettings();
 
-		HelpButtonWizardDialog dialog = new HelpButtonWizardDialog(StartupProcessor.get()
-				.getDisplay().getActiveShell(), dataImportWizard);
+		HelpButtonWizardDialog dialog = new HelpButtonWizardDialog(
+				StartupProcessor.get().getDisplay().getActiveShell(), dataImportWizard);
 
 		if (Window.CANCEL == dialog.open())
 			StartupProcessor.get().shutdown();
@@ -99,10 +95,8 @@ public class GeneticGUIStartupProcedure
 
 		// Make DVI visible if available
 		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.showView("org.caleydo.view.dvi");
-		}
-		catch (PartInitException e) {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("org.caleydo.view.dvi");
+		} catch (PartInitException e) {
 			// do nothing if DVI does not exist
 		}
 	}

@@ -26,11 +26,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.EDataTransformation;
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.io.parser.ascii.TabularDataParser;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
+
 
 /**
  * <p>
@@ -69,6 +68,14 @@ import org.caleydo.core.util.color.Color;
 @XmlType
 @XmlRootElement
 public class DataSetDescription extends MatrixDefinition {
+
+	/**
+	 * Enum for signalling that either a default {@link NumericalProperties} or a default {@link CategoricalProperties}
+	 * should be created.
+	 */
+	public enum ECreateDefaultProperties {
+		NUMERICAL, CATEGORICAL
+	}
 
 	/** A human readable name of the dataset. Optional. */
 	private String dataSetName;
@@ -112,40 +119,18 @@ public class DataSetDescription extends MatrixDefinition {
 	private boolean transposeMatrix = false;
 
 	/**
-	 * Set whether the data you want to load is homogeneous, i.e. all the columns in the file are of the same semantic
-	 * data type, i.e. they have the same value ranges, etc. If this is true the data scale used is the same for all
-	 * columns. If this is false each column has its own data scale. Defaults to true.
+	 * Set this if your data is homogeneous (i.e. all the columns in the file are of the same semantic data type, i.e.
+	 * they have the same value ranges, etc.) and numerical. If this is set, the data scale used is the same for all
+	 * columns. This member can not be set at the same time as {@link #categoricalProperties}. Defaults to null.
 	 */
-	private boolean isDataHomogeneous = true;
+	private NumericalProperties numericalProperties = null;
 
 	/**
-	 * <p>
-	 * Value that, if set, determines a neutral center point of the data, A common example is that 0 is the neutral
-	 * value, lower values are in the negative and larger values are in the positive range. If this value is set it is
-	 * be assumed that the extend into both, positive and negative direction is the same. Eg, for a dataset [-0.5, 0.7]
-	 * with a center set at 0, the value range will be set to -0.7 to 0.7.
-	 * </p>
-	 * <p>
-	 * Defaults to null, i.e., no external data center is defined.
-	 * </p>
+	 * Set this if your data is homogeneous (i.e. all the columns in the file are of the same semantic data type, i.e.
+	 * they have the same value ranges, etc.) and categorical. If this is set, the data scale used is the same for all
+	 * columns. This member can not be set at the same time as {@link #numericalProperties}. Defaults to null.
 	 */
-	private Double dataCenter = null;
-
-	/**
-	 * An artificial min value used for normalization in the {@link DataTable}. Defaults to null.
-	 */
-	private Float min = null;
-
-	/**
-	 * An artificial max value used for normalization in the {@link DataTable}. Defaults to null.
-	 */
-	private Float max = null;
-
-	/**
-	 * Determines whether and if so which transformation should be applied to the data (e.g. log2 transformation). This
-	 * is mapped to values of {@link EDataTransformation}.
-	 */
-	private String mathFilterMode = "None";
+	private CategoricalProperties categoricalProperties = null;
 
 	/**
 	 * A list of path to grouping files for the columns of the file specified in {@link #dataSourcePath}. Optional.
@@ -167,6 +152,27 @@ public class DataSetDescription extends MatrixDefinition {
 	 *
 	 */
 	public DataSetDescription() {
+	}
+
+	/**
+	 * Creates a {@link DataSetDescription} as a homogeneous dataset. The parameter determines whether a default
+	 * {@link #numericalProperties} or {@link #categoricalProperties} object is created.
+	 *
+	 * @param createDefaultProperties
+	 */
+	public DataSetDescription(ECreateDefaultProperties createDefaultProperties) {
+		switch (createDefaultProperties) {
+		case NUMERICAL:
+			numericalProperties = new NumericalProperties();
+			break;
+		case CATEGORICAL:
+			categoricalProperties = new CategoricalProperties();
+			break;
+
+		default:
+			throw new IllegalStateException("Unknown createDefaultProperty: " + createDefaultProperties);
+		}
+
 	}
 
 	/**
@@ -200,78 +206,39 @@ public class DataSetDescription extends MatrixDefinition {
 	}
 
 	/**
-	 * @param isDataHomogeneous
-	 *            setter, see {@link #isDataHomogeneous}
+	 * @param numericalProperties
+	 *            setter, see {@link numericalProperties}
 	 */
-	public void setDataHomogeneous(boolean isDataHomogeneous) {
-		this.isDataHomogeneous = isDataHomogeneous;
+	public void setNumericalProperties(NumericalProperties numericalProperties) {
+		if (categoricalProperties != null)
+			throw new IllegalStateException(
+					"Cannot set both numerical and categorical data set description at the same time");
+		this.numericalProperties = numericalProperties;
 	}
 
 	/**
-	 * @return the isDataHomogeneous, see {@link #isDataHomogeneous}
+	 * @return the numericalProperties, see {@link #numericalProperties}
 	 */
-	public boolean isDataHomogeneous() {
-		return isDataHomogeneous;
+	public NumericalProperties getNumericalProperties() {
+		return numericalProperties;
 	}
 
 	/**
-	 * @param dataCenter
-	 *            setter, see {@link #dataCenter}
+	 * @param categoricalProperties
+	 *            setter, see {@link categoricalProperties}
 	 */
-	public void setDataCenter(Double dataCenter) {
-		this.dataCenter = dataCenter;
+	public void setCategoricalProperties(CategoricalProperties categoricalProperties) {
+		if (numericalProperties != null)
+			throw new IllegalStateException(
+					"Cannot set both numerical and categorical data set description at the same time");
+		this.categoricalProperties = categoricalProperties;
 	}
 
 	/**
-	 * @return the dataCenter, see {@link #dataCenter}
+	 * @return the categoricalProperties, see {@link #categoricalProperties}
 	 */
-	public Double getDataCenter() {
-		return dataCenter;
-	}
-
-	/**
-	 * @param min
-	 *            setter, see {@link #min}
-	 */
-	public void setMin(Float min) {
-		this.min = min;
-	}
-
-	/**
-	 * @return the min, see {@link #min}
-	 */
-	public Float getMin() {
-		return min;
-	}
-
-	/**
-	 * @param max
-	 *            setter, see {@link #max}
-	 */
-	public void setMax(Float max) {
-		this.max = max;
-	}
-
-	/**
-	 * @return the max, see {@link #max}
-	 */
-	public Float getMax() {
-		return max;
-	}
-
-	/**
-	 * @return the mathFilterMode, see {@link #mathFilterMode}
-	 */
-	public String getMathFilterMode() {
-		return mathFilterMode;
-	}
-
-	/**
-	 * @param mathFilterMode
-	 *            setter, see {@link #mathFilterMode}
-	 */
-	public void setMathFilterMode(String mathFilterMode) {
-		this.mathFilterMode = mathFilterMode;
+	public CategoricalProperties getCategoricalProperties() {
+		return categoricalProperties;
 	}
 
 	/**
@@ -507,9 +474,19 @@ public class DataSetDescription extends MatrixDefinition {
 
 	@Override
 	public String toString() {
+		String data = "";
 		if (dataSetName != null)
-			return dataSetName;
+			data += dataSetName;
 		else
-			return dataSourcePath;
+			data += dataSourcePath;
+
+		if (numericalProperties != null)
+			data += "(numerical)";
+		else if (categoricalProperties != null)
+			data += "(categorical)";
+		else
+			data += "(hybrid/inhomogeneous)";
+
+		return data;
 	}
 }

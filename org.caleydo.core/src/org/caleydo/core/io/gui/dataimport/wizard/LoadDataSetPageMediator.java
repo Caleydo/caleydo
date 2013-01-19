@@ -721,7 +721,8 @@ public class LoadDataSetPageMediator {
 		dataSetDescription.setColumnIDSpecification(columnIDSpecification);
 		dataSetDescription.setRowIDSpecification(rowIDSpecification);
 
-		dataSetDescription.setDataHomogeneous(page.buttonHomogeneous.getSelection());
+		// TODO check buttonHomogeneous
+		// dataSetDescription.setDataHomogeneous(page.buttonHomogeneous.getSelection());
 		dataSetDescription.setDataSetName(page.label.getText());
 
 		readDimensionDefinition();

@@ -19,7 +19,7 @@ package org.caleydo.core.util.clusterer;
 import java.util.Arrays;
 import java.util.List;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.perspective.variable.RecordPerspective;
@@ -98,7 +98,7 @@ public class ClusterHelper {
 	// }
 
 	public static float[] calculateClusterAveragesRecursive(Tree<ClusterNode> tree, ClusterNode node,
-			EClustererTarget clustererType, DataTable table, DimensionVirtualArray dimensionVA,
+			EClustererTarget clustererType, Table table, DimensionVirtualArray dimensionVA,
 			RecordVirtualArray recordVA) {
 
 		float[] values;
@@ -169,13 +169,13 @@ public class ClusterHelper {
 		return values;
 	}
 
-	public static void calculateAggregatedUncertainties(RecordPerspective recordData, DataTable table) {
+	public static void calculateAggregatedUncertainties(RecordPerspective recordData, Table table) {
 		RecordVirtualArray recordVA = recordData.getVirtualArray();
 		calculateAggregatedUncertaintiesRecursive(recordData.getTree(), recordData.getTree().getRoot(), table, recordVA);
 	}
 
 	private static Pair<Float, Integer> calculateAggregatedUncertaintiesRecursive(Tree<ClusterNode> tree,
-			ClusterNode node, DataTable table, RecordVirtualArray recordVA) {
+			ClusterNode node, Table table, RecordVirtualArray recordVA) {
 
 		Pair<Float, Integer> result = new Pair<Float, Integer>();
 
@@ -212,7 +212,7 @@ public class ClusterHelper {
 	 * @param examples
 	 * @param eClustererType
 	 */
-	public static void sortClusters(DataTable table, RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA,
+	public static void sortClusters(Table table, RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA,
 			List<Integer> examples, EClustererTarget eClustererType) {
 
 		int iNrExamples = examples.size();

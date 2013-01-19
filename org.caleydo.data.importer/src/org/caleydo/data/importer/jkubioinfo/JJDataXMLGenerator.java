@@ -22,6 +22,7 @@ package org.caleydo.data.importer.jkubioinfo;
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.ParsingRule;
@@ -84,7 +85,7 @@ public class JJDataXMLGenerator extends DataSetDescriptionSerializer {
 
 	private DataSetDescription setUpXMLGLU2GeneExpressionData() {
 
-		DataSetDescription mrnaData = new DataSetDescription();
+		DataSetDescription mrnaData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 		mrnaData.setDataSetName("mGlu2 Gene Expression Data");
 
 		mrnaData.setDataSourcePath(MGLU2_GENE_EXPRESSION_DATA);

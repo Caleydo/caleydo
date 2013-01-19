@@ -175,7 +175,7 @@ public class TCGATask extends ATCGATask {
 			clinicalParameters = clinicalParameters.substring(0,
 					clinicalParameters.length() - 1);
 
-		return "{\"count\":\"" + dataDomain.getTable().getMetaData().depth()
+		return "{\"count\":\"" + dataDomain.getTable().depth()
 				+ "\",\"parameters\":[" + clinicalParameters + "]}";
 	}
 

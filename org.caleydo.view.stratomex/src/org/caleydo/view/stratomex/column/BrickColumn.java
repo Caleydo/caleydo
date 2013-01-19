@@ -138,7 +138,7 @@ public class BrickColumn extends ATableBasedView implements ILayoutSizeCollision
 	private boolean isGlobalViewSwitching = false;
 
 	// private ViewFrustum brickFrustum;
-	// protected DataTable set;
+	// protected Table set;
 
 	private LayoutSizeCollisionListener layoutSizeCollisionListener;
 

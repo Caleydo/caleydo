@@ -21,6 +21,7 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -101,7 +102,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 	}
 
 	private DataSetDescription setUpMRNAData() {
-		DataSetDescription mrnaData = new DataSetDescription();
+		DataSetDescription mrnaData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 		mrnaData.setDataSetName("mRNA");
 
 		mrnaData.setDataSourcePath(MRNA);
@@ -113,7 +114,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.REAL_NUMBER));
 		mrnaData.addParsingRule(parsingRule);
 		mrnaData.setTransposeMatrix(true);
-		mrnaData.setDataCenter(0d);
+		mrnaData.getNumericalProperties().setDataCenter(0d);
 
 		IDSpecification geneIDSpecification = new IDSpecification();
 		geneIDSpecification.setIDTypeGene(true);
@@ -155,7 +156,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 	}
 
 	private DataSetDescription setUpMiRNAData() {
-		DataSetDescription mirnaData = new DataSetDescription();
+		DataSetDescription mirnaData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 		mirnaData.setDataSetName("miRNA");
 
 		mirnaData.setDataSourcePath(MIRNA);
@@ -191,7 +192,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 	}
 
 	private DataSetDescription setUpMethylationData() {
-		DataSetDescription methylationData = new DataSetDescription();
+		DataSetDescription methylationData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 		methylationData.setDataSetName("Methylation");
 
 		methylationData.setDataSourcePath(METHYLATION);
@@ -227,7 +228,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 	}
 
 	private DataSetDescription setUpCopyNumberData() {
-		DataSetDescription copyNumberData = new DataSetDescription();
+		DataSetDescription copyNumberData = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
 		copyNumberData.setDataSetName("Copy number");
 
 		copyNumberData.setDataSourcePath(COPY_NUMBER);
@@ -256,7 +257,6 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 	private DataSetDescription setUpClinicalData() {
 		DataSetDescription clinicalData = new DataSetDescription();
 		clinicalData.setDataSetName("Clinical");
-		clinicalData.setDataHomogeneous(false);
 
 		clinicalData.setDataSourcePath(CLINICAL);
 		clinicalData.setNumberOfHeaderLines(1);
@@ -288,7 +288,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 	}
 
 	private DataSetDescription setUpMutationData() {
-		DataSetDescription mutationDataMetaInfo = new DataSetDescription();
+		DataSetDescription mutationDataMetaInfo = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
 		mutationDataMetaInfo.setDataSetName("Mutation Status");
 		mutationDataMetaInfo.setDataSourcePath(MUTATION);
 

@@ -22,7 +22,7 @@ package org.caleydo.core.data.perspective.table;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -129,9 +129,9 @@ public class TablePerspectiveStatistics {
 		return histogram;
 	}
 
-	public static Histogram calculateHistogram(DataTable dataTable, RecordVirtualArray recordVA,
+	public static Histogram calculateHistogram(Table table, RecordVirtualArray recordVA,
 			DimensionVirtualArray dimensionVA, int numberOfBucketsForHistogram) {
-		if (!dataTable.isDataHomogeneous()) {
+		if (!table.isDataHomogeneous()) {
 			throw new UnsupportedOperationException(
 					"Tried to calcualte a set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
 		}
@@ -147,7 +147,7 @@ public class TablePerspectiveStatistics {
 		for (Integer dimensionID : dimensionVA) {
 			{
 				for (Integer recordID : recordVA) {
-					float value = dataTable.getNormalizedValue(dimensionID, recordID);
+					float value = table.getNormalizedValue(dimensionID, recordID);
 
 					if (Float.isNaN(value)) {
 						histogram.addNAN(recordID);
@@ -258,7 +258,7 @@ public class TablePerspectiveStatistics {
 	 * @param objectID
 	 * @return
 	 */
-	public static Average calculateAverage(VirtualArray<?, ?, ?> virtualArray, DataTable table, Integer objectID) {
+	public static Average calculateAverage(VirtualArray<?, ?, ?> virtualArray, Table table, Integer objectID) {
 		Average averageDimension = new Average();
 		double sumOfValues = 0;
 		// sum of squares

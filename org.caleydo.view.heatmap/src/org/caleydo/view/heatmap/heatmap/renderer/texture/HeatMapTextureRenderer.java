@@ -24,7 +24,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -271,7 +271,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		startRecord = startRecord < 0 ? 0 : startRecord;
 		endRecord = endRecord > numberOfRecords - 1 ? numberOfRecords - 1 : endRecord;
 
-		DataTable table = heatMap.getDataDomain().getTable();
+		Table table = heatMap.getDataDomain().getTable();
 		RecordVirtualArray recordVA = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray();
 		DimensionVirtualArray dimensionVA = heatMap.getTablePerspective().getDimensionPerspective().getVirtualArray();
 

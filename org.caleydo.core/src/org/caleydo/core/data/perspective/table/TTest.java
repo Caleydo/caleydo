@@ -25,7 +25,7 @@ package org.caleydo.core.data.perspective.table;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 
 /**
  * @author alexsb
@@ -48,7 +48,7 @@ public class TTest {
 		return tablePerspectiveToTwoSidedTTestResult.get(tablePerspective);
 	}
 
-	public Double getTwoSidedTTestResult(DataTable tablePerspective, Integer recordID) {
+	public Double getTwoSidedTTestResult(Table tablePerspective, Integer recordID) {
 
 		return tablePerspectiveToTwoSidedTTestResult.get(tablePerspective).get(recordID);
 	}

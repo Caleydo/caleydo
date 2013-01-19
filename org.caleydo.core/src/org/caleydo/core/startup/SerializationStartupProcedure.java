@@ -19,8 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.startup;
 
-import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.collection.table.DataTableUtils;
+import org.caleydo.core.data.collection.table.Table;
+import org.caleydo.core.data.collection.table.TableUtils;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
@@ -113,8 +113,8 @@ public class SerializationStartupProcedure
 
 				DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
 
-				DataTableUtils.loadData(tDataDomain, dataSetDescription, false, false);
-				DataTable table = tDataDomain.getTable();
+				TableUtils.loadData(tDataDomain, dataSetDescription, false, false);
+				Table table = tDataDomain.getTable();
 				for (RecordPerspective perspective : dataSerializationData
 						.getRecordPerspectiveMap().values()) {
 					table.registerRecordPerspective(perspective);

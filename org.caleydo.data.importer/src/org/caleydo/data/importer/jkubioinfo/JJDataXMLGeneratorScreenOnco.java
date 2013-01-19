@@ -22,8 +22,10 @@ package org.caleydo.data.importer.jkubioinfo;
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.ParsingRule;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 
@@ -85,7 +87,7 @@ public class JJDataXMLGeneratorScreenOnco extends DataSetDescriptionSerializer {
 
 	private DataSetDescription setUpXMLGLU2GeneExpressionData() {
 
-		DataSetDescription mrnaData = new DataSetDescription();
+		DataSetDescription mrnaData = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 		mrnaData.setDataSetName("Screen Onco Data");
 
 		mrnaData.setDataSourcePath(GENE_EXPRESSION_DATA);
@@ -98,8 +100,10 @@ public class JJDataXMLGeneratorScreenOnco extends DataSetDescriptionSerializer {
 		mrnaData.addParsingRule(parsingRule);
 		mrnaData.setTransposeMatrix(true);
 		//mrnaData.setMathFilterMode("LOG2");
-		mrnaData.setMin(-1.5f);
-		mrnaData.setMax(1.5f);
+		NumericalProperties numericalProperties = new NumericalProperties();
+		numericalProperties.setMin(-1.5f);
+		numericalProperties.setMax(1.5f);
+		mrnaData.setNumericalProperties(numericalProperties);
 
 		IDSpecification geneIDSpecification = new IDSpecification();
 		geneIDSpecification.setIDTypeGene(true);

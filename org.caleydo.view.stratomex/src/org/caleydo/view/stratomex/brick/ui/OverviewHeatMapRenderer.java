@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.util.mapping.color.ColorMapper;
@@ -53,7 +53,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 	 * @param set
 	 * @param showStandardDeviation
 	 */
-	public OverviewHeatMapRenderer(TablePerspective tablePerspective, DataTable table, boolean showStandardDeviation) {
+	public OverviewHeatMapRenderer(TablePerspective tablePerspective, Table table, boolean showStandardDeviation) {
 		colorMapper = table.getDataDomain().getColorMapper();
 		this.showStandardDeviation = showStandardDeviation;
 

@@ -26,7 +26,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
@@ -48,7 +48,7 @@ public class HeatMapUtil {
 
 	public static int MAX_SAMPLES_PER_TEXTURE = 2000;
 
-	public static ArrayList<Texture> createHeatMapTextures(GL2 gl, DataTable table, RecordVirtualArray recordVA,
+	public static ArrayList<Texture> createHeatMapTextures(GL2 gl, Table table, RecordVirtualArray recordVA,
 			DimensionVirtualArray dimensionVA, RecordSelectionManager contentSelectionManager) {
 
 		int numSamples = recordVA.size();

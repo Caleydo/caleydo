@@ -578,8 +578,8 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		// return;
 
 		// FIXME clustering for context heat map
-		// if (delta.getVAType().equals(DataTable.RECORD_CONTEXT)
-		// && recordVAType.equals(DataTable.RECORD_CONTEXT)) {
+		// if (delta.getVAType().equals(Table.RECORD_CONTEXT)
+		// && recordVAType.equals(Table.RECORD_CONTEXT)) {
 		// ClusterState state = new
 		// ClusterState(EClustererAlgo.AFFINITY_PROPAGATION,
 		// ClustererType.RECORD_CLUSTERING,

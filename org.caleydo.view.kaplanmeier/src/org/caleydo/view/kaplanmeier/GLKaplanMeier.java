@@ -26,7 +26,7 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -179,7 +179,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		boolean containsNegativeValues = false;
 		boolean containsPositiveValues = false;
 
-		final DataTable table = tablePerspective.getDataDomain().getTable();
+		final Table table = tablePerspective.getDataDomain().getTable();
 		final Integer dimensionID = dimensionVA.get(0);
 		for (Integer recordID : recordVA) {
 			float rawValue = table.getRawDxR(dimensionID, recordID);
@@ -362,7 +362,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		// Float maxValue = Float.MIN_VALUE;
 		// maxAxisTime = Float.MIN_VALUE;
 
-		final DataTable table = tablePerspective.getDataDomain().getTable();
+		final Table table = tablePerspective.getDataDomain().getTable();
 		final Integer dimensionID = dimensionVA.get(0);
 		for (Integer recordID : recordIDs) {
 			float normalizedValue = table.getNormalizedValue(dimensionID, recordID);

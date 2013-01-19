@@ -5,6 +5,7 @@ package org.caleydo.core.io.gui.dataimport.wizard;
 
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.NumericalProperties;
 
 /**
  * Mediator for {@link TransformDataPage}. This class is responsible for setting
@@ -46,7 +47,13 @@ public class TransformDataPageMediator {
 	 */
 	public void guiCreated() {
 
-		String previousMathFiltermode = dataSetDescription.getMathFilterMode();
+		NumericalProperties numericalProperties = dataSetDescription.getNumericalProperties();
+		if (numericalProperties == null) {
+			numericalProperties = new NumericalProperties();
+			dataSetDescription.setNumericalProperties(numericalProperties);
+		}
+
+		String previousMathFiltermode = numericalProperties.getMathFilterMode();
 		String[] scalingOptions = { "None", "Log10", "Log2" };
 		page.scalingCombo.setItems(scalingOptions);
 		page.scalingCombo.setEnabled(true);
@@ -62,19 +69,19 @@ public class TransformDataPageMediator {
 
 		scalingMode = page.scalingCombo.getText();
 
-		boolean maxDefined = dataSetDescription.getMax() != null;
+		boolean maxDefined = numericalProperties.getMax() != null;
 		page.maxButton.setEnabled(true);
 		page.maxButton.setSelection(maxDefined);
 		page.maxTextField.setEnabled(maxDefined);
 		if (maxDefined)
-			page.maxTextField.setText(dataSetDescription.getMax().toString());
+			page.maxTextField.setText(numericalProperties.getMax().toString());
 
-		boolean minDefined = dataSetDescription.getMin() != null;
+		boolean minDefined = numericalProperties.getMin() != null;
 		page.minButton.setEnabled(true);
 		page.minButton.setSelection(minDefined);
 		page.minTextField.setEnabled(minDefined);
 		if (minDefined)
-			page.minTextField.setText(dataSetDescription.getMin().toString());
+			page.minTextField.setText(numericalProperties.getMin().toString());
 
 		page.swapRowsWithColumnsButton.setEnabled(true);
 		page.swapRowsWithColumnsButton.setSelection(dataSetDescription
@@ -196,24 +203,25 @@ public class TransformDataPageMediator {
 	 * Fills the {@link #dataSetDescription} according to the widgets.
 	 */
 	public void fillDataSetDescription() {
+		NumericalProperties numericalProperties = dataSetDescription.getNumericalProperties();
 		if (page.minTextField.getEnabled() && !page.minTextField.getText().isEmpty()) {
 			float min = Float.parseFloat(page.minTextField.getText());
 			if (!Float.isNaN(min)) {
-				dataSetDescription.setMin(min);
+				numericalProperties.setMin(min);
 			}
 		}
 		if (page.maxTextField.getEnabled() && !page.maxTextField.getText().isEmpty()) {
 			float max = Float.parseFloat(page.maxTextField.getText());
 			if (!Float.isNaN(max)) {
-				dataSetDescription.setMax(max);
+				numericalProperties.setMax(max);
 			}
 		}
 		if (page.useDataCenterButton.getSelection()) {
-			dataSetDescription.setDataCenter(Double.parseDouble(page.dataCenterTextField
+			numericalProperties.setDataCenter(Double.parseDouble(page.dataCenterTextField
 					.getText()));
 		}
 
-		dataSetDescription.setMathFilterMode(scalingMode);
+		numericalProperties.setMathFilterMode(scalingMode);
 		dataSetDescription.setTransposeMatrix(page.swapRowsWithColumnsButton
 				.getSelection());
 	}

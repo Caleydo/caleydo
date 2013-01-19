@@ -138,10 +138,10 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements IDataDomai
 			dimensionLabel.setVisible(true);
 
 			recordLabel.setText(tableBasedDD.getRecordDenomination(true, true) + ": "
-					+ tableBasedDD.getTable().getMetaData().depth());
+ + tableBasedDD.getTable().depth());
 
 			dimensionLabel.setText(tableBasedDD.getDimensionDenomination(true, true) + ": "
-					+ tableBasedDD.getTable().getMetaData().size());
+					+ tableBasedDD.getTable().size());
 
 			if (!tableBasedDD.getTable().isDataHomogeneous()) {
 				histogramExpandBar.setVisible(false);

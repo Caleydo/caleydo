@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
@@ -79,7 +79,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void setTable(DataTable set) {
+	public void setTable(Table set) {
 		super.setTable(set);
 
 	}
@@ -153,11 +153,11 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	//
 	// alTempList.add(iCount);
 	// }
-	// RecordVirtualArray recordVA = new RecordVirtualArray(DataTable.RECORD,
+	// RecordVirtualArray recordVA = new RecordVirtualArray(Table.RECORD,
 	// alTempList);
 	// // removeDuplicates(recordVA);
 	// // FIXME make this a filter?
-	// table.setRecordVA(DataTable.RECORD, recordVA);
+	// table.setRecordVA(Table.RECORD, recordVA);
 	// }
 
 	@Override
@@ -254,7 +254,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		//
 		// }
 
-		// replaceDimensionVA(tableID, dataDomainType, DataTable.DIMENSION,
+		// replaceDimensionVA(tableID, dataDomainType, Table.DIMENSION,
 		// newDimensionVirtualArray);
 		// }
 
@@ -267,9 +267,9 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 	//
 	// // FIXME - this is a hack for one special dataset (asslaber)
-	// DataTable clinicalSet = ((ATableBasedDataDomain) DataDomainManager.get()
+	// Table clinicalSet = ((ATableBasedDataDomain) DataDomainManager.get()
 	// .getDataDomainByType(CLINICAL_DATADOMAIN_TYPE)).getTable();
-	// int dimensionID = clinicalSet.getDimensionData(DataTable.DIMENSION)
+	// int dimensionID = clinicalSet.getDimensionData(Table.DIMENSION)
 	// .getDimensionVA().get(1);
 	//
 	// NominalDimension clinicalDimension = (NominalDimension<String>)
@@ -277,7 +277,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	// .get(dimensionID);
 	// DimensionVirtualArray origianlGeneticDimensionVA =
 	// table.getDimensionData(
-	// DataTable.DIMENSION).getDimensionVA();
+	// Table.DIMENSION).getDimensionVA();
 	//
 	// String label = (String) clinicalDimension.getRaw(clinicalContentIndex);
 	//

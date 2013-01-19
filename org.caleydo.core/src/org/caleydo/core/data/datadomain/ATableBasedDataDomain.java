@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.data.datadomain;
 
@@ -31,7 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.EDataClass;
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
+import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.datadomain.event.AggregateGroupEvent;
 import org.caleydo.core.data.datadomain.event.AggregateGroupListener;
 import org.caleydo.core.data.datadomain.event.CreateClusteringEvent;
@@ -93,18 +91,15 @@ import org.caleydo.core.util.mapping.color.ColorMapper;
 
 /**
  * <p>
- * Primary access point to a table data set. Holds the {@link DataTable}, the
- * {@link TablePerspective} which hold the rules on how to access the DataTable
- * and a lot of meta-information such as human-readable labels.
+ * Primary access point to a table data set. Holds the {@link Table}, the {@link TablePerspective} which hold the
+ * rules on how to access the Table and a lot of meta-information such as human-readable labels.
  * </p>
  * <p>
- * Holds the information on the {@link IDCategory} and the {@link IDType}s of
- * the rows and columns in the data set.
+ * Holds the information on the {@link IDCategory} and the {@link IDType}s of the rows and columns in the data set.
  * </p>
  * <p>
- * {@link ATableBasedDataDomain}s are initialized using a
- * {@link DataDomainConfiguration} object, which can be either specified or
- * taken from a default initialization of an implementing sub-class.
+ * {@link ATableBasedDataDomain}s are initialized using a {@link DataDomainConfiguration} object, which can be either
+ * specified or taken from a default initialization of an implementing sub-class.
  * </p>
  *
  * @author Alexander Lex
@@ -112,23 +107,20 @@ import org.caleydo.core.util.mapping.color.ColorMapper;
  */
 @XmlType
 @XmlRootElement
-public abstract class ATableBasedDataDomain extends ADataDomain implements
-		IRecordVADeltaHandler, IDimensionChangeHandler, ISelectionUpdateHandler,
-		ISelectionCommandHandler {
+public abstract class ATableBasedDataDomain extends ADataDomain implements IRecordVADeltaHandler,
+		IDimensionChangeHandler, ISelectionUpdateHandler, ISelectionCommandHandler {
 
 	/** The raw data for this data domain. */
-	protected DataTable table;
+	protected Table table;
 
 	/**
 	 * <p>
-	 * The {@link TablePerspective} registered for this data domain. A
-	 * {@link TablePerspective} is defined by its combination of
-	 * {@link RecordPerspective} and {@link DimensionPerspective}.
+	 * The {@link TablePerspective} registered for this data domain. A {@link TablePerspective} is defined by its
+	 * combination of {@link RecordPerspective} and {@link DimensionPerspective}.
 	 * </p>
 	 * <p>
-	 * The key in this hasMap is created as a concatenation of the
-	 * {@link AVariablePerspective#getPerspectiveID()} s using
-	 * {@link #createKey(String, String)},
+	 * The key in this hasMap is created as a concatenation of the {@link AVariablePerspective#getPerspectiveID()} s
+	 * using {@link #createKey(String, String)},
 	 * </p>
 	 */
 	protected HashMap<String, TablePerspective> tablePerspectives = new HashMap<String, TablePerspective>();
@@ -156,8 +148,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	protected EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 
 	/**
-	 * All recordPerspectiveIDs registered with the DataTable. This variable is
-	 * synchronous with the keys of the hashMap of the DataTable.
+	 * All recordPerspectiveIDs registered with the Table. This variable is synchronous with the keys of the hashMap
+	 * of the Table.
 	 */
 	@XmlElement
 	private Set<String> recordPerspectiveIDs;
@@ -213,43 +205,36 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	public void init() {
 
 		if (dataSetDescription.isTransposeMatrix()) {
-			recordIDCategory = IDCategory.getIDCategory(dataSetDescription
-					.getColumnIDSpecification().getIdCategory());
-			dimensionIDCategory = IDCategory.getIDCategory(dataSetDescription
-					.getRowIDSpecification().getIdCategory());
+			recordIDCategory = IDCategory.getIDCategory(dataSetDescription.getColumnIDSpecification().getIdCategory());
+			dimensionIDCategory = IDCategory.getIDCategory(dataSetDescription.getRowIDSpecification().getIdCategory());
 		} else {
-			recordIDCategory = IDCategory.getIDCategory(dataSetDescription
-					.getRowIDSpecification().getIdCategory());
-			dimensionIDCategory = IDCategory.getIDCategory(dataSetDescription
-					.getColumnIDSpecification().getIdCategory());
+			recordIDCategory = IDCategory.getIDCategory(dataSetDescription.getRowIDSpecification().getIdCategory());
+			dimensionIDCategory = IDCategory.getIDCategory(dataSetDescription.getColumnIDSpecification()
+					.getIdCategory());
 
 		}
 
-		recordIDType = IDType.registerType("record_" + dataDomainID + "_" + hashCode(),
-				recordIDCategory, EDataClass.NATURAL_NUMBER);
+		recordIDType = IDType.registerType("record_" + dataDomainID + "_" + hashCode(), recordIDCategory,
+				EDataClass.NATURAL_NUMBER);
 		recordIDType.setInternalType(true);
-		dimensionIDType = IDType.registerType("dimension_" + dataDomainID + "_"
-				+ hashCode(), dimensionIDCategory, EDataClass.NATURAL_NUMBER);
+		dimensionIDType = IDType.registerType("dimension_" + dataDomainID + "_" + hashCode(), dimensionIDCategory,
+				EDataClass.NATURAL_NUMBER);
 		dimensionIDType.setInternalType(true);
 
-		recordGroupIDCategory = IDCategory.registerCategory(recordIDCategory
-				.getCategoryName() + "_GROUP");
+		recordGroupIDCategory = IDCategory.registerCategory(recordIDCategory.getCategoryName() + "_GROUP");
 		recordGroupIDCategory.setInternalCategory(true);
-		recordGroupIDType = IDType.registerType("group_record_" + dataDomainID + "_"
-				+ hashCode(), recordGroupIDCategory, EDataClass.NATURAL_NUMBER);
+		recordGroupIDType = IDType.registerType("group_record_" + dataDomainID + "_" + hashCode(),
+				recordGroupIDCategory, EDataClass.NATURAL_NUMBER);
 		recordGroupIDType.setInternalType(true);
 
-		dimensionGroupIDCategory = IDCategory.registerCategory(dimensionIDCategory
-				.getCategoryName() + "_GROUP");
+		dimensionGroupIDCategory = IDCategory.registerCategory(dimensionIDCategory.getCategoryName() + "_GROUP");
 		dimensionGroupIDCategory.setInternalCategory(true);
-		dimensionGroupIDType = IDType.registerType("group_dimension_" + dataDomainID
-				+ "_" + hashCode(), dimensionGroupIDCategory, EDataClass.NATURAL_NUMBER);
+		dimensionGroupIDType = IDType.registerType("group_dimension_" + dataDomainID + "_" + hashCode(),
+				dimensionGroupIDCategory, EDataClass.NATURAL_NUMBER);
 		dimensionGroupIDType.setInternalType(true);
 
-		recordIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
-				recordIDCategory);
-		dimensionIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
-				dimensionIDCategory);
+		recordIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(recordIDCategory);
+		dimensionIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(dimensionIDCategory);
 
 		recordSelectionManager = new RecordSelectionManager(recordIDType);
 		dimensionSelectionManager = new DimensionSelectionManager(dimensionIDType);
@@ -263,16 +248,15 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	/**
-	 * Sets the {@link #table} of this dataDomain. The table may not be null.
-	 * Initializes {@link #recordPerspectiveIDs} and
-	 * {@link #dimensionPerspectiveIDs}.
+	 * Sets the {@link #table} of this dataDomain. The table may not be null. Initializes {@link #recordPerspectiveIDs}
+	 * and {@link #dimensionPerspectiveIDs}.
 	 *
 	 * @param table
 	 *            The new set which replaced the currently loaded one.
 	 */
-	public void setTable(DataTable table) {
+	public void setTable(Table table) {
 		if (table == null)
-			throw new IllegalArgumentException("DataTable was null");
+			throw new IllegalArgumentException("Table was null");
 		this.table = table;
 
 		recordPerspectiveIDs = table.getRecordPerspectiveIDs();
@@ -283,16 +267,16 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * @return the table, see {@link #table}
 	 */
 	@XmlTransient
-	public DataTable getTable() {
+	public Table getTable() {
 		return table;
 	}
 
 	/**
-	 * Returns the {@link TablePerspective} for the {@link RecordPerspective}
-	 * and the {@link DimensionPerspective} specified. </p>
+	 * Returns the {@link TablePerspective} for the {@link RecordPerspective} and the {@link DimensionPerspective}
+	 * specified. </p>
 	 * <p>
-	 * If such a container exists already, the existing container is returned.
-	 * If not, a new container is created and the datadomain will be notified.
+	 * If such a container exists already, the existing container is returned. If not, a new container is created and
+	 * the datadomain will be notified.
 	 *
 	 * </p>
 	 *
@@ -300,51 +284,42 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * @param dimensionPerspectiveID
 	 * @return
 	 */
-	public TablePerspective getTablePerspective(String recordPerspectiveID,
-			String dimensionPerspectiveID) {
+	public TablePerspective getTablePerspective(String recordPerspectiveID, String dimensionPerspectiveID) {
 		return getTablePerspective(recordPerspectiveID, dimensionPerspectiveID, true);
 	}
 
 	/**
-	 * Returns the {@link TablePerspective} for the {@link RecordPerspective}
-	 * and the {@link DimensionPerspective} specified. </p>
+	 * Returns the {@link TablePerspective} for the {@link RecordPerspective} and the {@link DimensionPerspective}
+	 * specified. </p>
 	 * <p>
-	 * If such a container exists already, the existing container is returned.
-	 * If not, a new container is created.
+	 * If such a container exists already, the existing container is returned. If not, a new container is created.
 	 * </p>
 	 *
 	 * @param recordPerspectiveID
 	 * @param dimensionPerspectiveID
 	 * @param flag
-	 *            that determines whether a datadomain update event will be sent
-	 *            or not
+	 *            that determines whether a datadomain update event will be sent or not
 	 * @return
 	 */
-	public TablePerspective getTablePerspective(String recordPerspectiveID,
-			String dimensionPerspectiveID, boolean notifyDataDomain) {
+	public TablePerspective getTablePerspective(String recordPerspectiveID, String dimensionPerspectiveID,
+			boolean notifyDataDomain) {
 
-		TablePerspective container = tablePerspectives.get(TablePerspective.createKey(
-				recordPerspectiveID, dimensionPerspectiveID));
+		TablePerspective container = tablePerspectives.get(TablePerspective.createKey(recordPerspectiveID,
+				dimensionPerspectiveID));
 		if (container == null) {
-			RecordPerspective recordPerspective = table
-					.getRecordPerspective(recordPerspectiveID);
+			RecordPerspective recordPerspective = table.getRecordPerspective(recordPerspectiveID);
 			if (recordPerspective == null)
-				throw new IllegalArgumentException(
-						"No record perspective registered with this datadomain for "
-								+ recordPerspectiveID);
+				throw new IllegalArgumentException("No record perspective registered with this datadomain for "
+						+ recordPerspectiveID);
 
-			DimensionPerspective dimensionPerspective = table
-					.getDimensionPerspective(dimensionPerspectiveID);
+			DimensionPerspective dimensionPerspective = table.getDimensionPerspective(dimensionPerspectiveID);
 			if (dimensionPerspective == null)
-				throw new IllegalArgumentException(
-						"No dimension perspective registered with this datadomain for "
-								+ dimensionPerspectiveID);
+				throw new IllegalArgumentException("No dimension perspective registered with this datadomain for "
+						+ dimensionPerspectiveID);
 
-			container = new TablePerspective(this, recordPerspective,
-					dimensionPerspective);
+			container = new TablePerspective(this, recordPerspective, dimensionPerspective);
 
-			tablePerspectives.put(TablePerspective.createKey(recordPerspectiveID,
-					dimensionPerspectiveID), container);
+			tablePerspectives.put(TablePerspective.createKey(recordPerspectiveID, dimensionPerspectiveID), container);
 
 			if (notifyDataDomain) {
 				DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
@@ -368,23 +343,19 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 	/** Returns the data container made up of the default perspectives */
 	public TablePerspective getDefaultTablePerspective() {
-		return getTablePerspective(
-				table.getDefaultRecordPerspective().getPerspectiveID(), table
-						.getDefaultDimensionPerspective().getPerspectiveID());
+		return getTablePerspective(table.getDefaultRecordPerspective().getPerspectiveID(), table
+				.getDefaultDimensionPerspective().getPerspectiveID());
 	}
 
 	/**
-	 * Returns whether a {@link TablePerspective} Object exists in this
-	 * datadomain for the given perspectiveIDs.
+	 * Returns whether a {@link TablePerspective} Object exists in this datadomain for the given perspectiveIDs.
 	 *
 	 * @param recordPerspectiveID
 	 * @param dimensionPerspectiveID
 	 * @return
 	 */
-	public boolean hasTablePerspective(String recordPerspectiveID,
-			String dimensionPerspectiveID) {
-		return tablePerspectives.containsKey(TablePerspective.createKey(
-				recordPerspectiveID, dimensionPerspectiveID));
+	public boolean hasTablePerspective(String recordPerspectiveID, String dimensionPerspectiveID) {
+		return tablePerspectives.containsKey(TablePerspective.createKey(recordPerspectiveID, dimensionPerspectiveID));
 	}
 
 	/**
@@ -402,8 +373,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	/**
-	 * @return the dimensionIDMappingManager, see
-	 *         {@link #dimensionIDMappingManager}
+	 * @return the dimensionIDMappingManager, see {@link #dimensionIDMappingManager}
 	 */
 	public IDMappingManager getDimensionIDMappingManager() {
 		return dimensionIDMappingManager;
@@ -452,8 +422,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	/**
-	 * Returns a clone of the record selection manager. This is the preferred
-	 * way to initialize SelectionManagers.
+	 * Returns a clone of the record selection manager. This is the preferred way to initialize SelectionManagers.
 	 *
 	 * @return a clone of the record selection manager
 	 */
@@ -462,8 +431,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	/**
-	 * Returns a clone of the dimension selection manager. This is the preferred
-	 * way to initialize SelectionManagers.
+	 * Returns a clone of the dimension selection manager. This is the preferred way to initialize SelectionManagers.
 	 *
 	 * @return a clone of the dimension selection manager
 	 */
@@ -472,8 +440,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	/**
-	 * Returns a clone of the record group selection manager. This is the
-	 * preferred way to initialize SelectionManagers. *
+	 * Returns a clone of the record group selection manager. This is the preferred way to initialize SelectionManagers.
+	 * *
 	 *
 	 * @return a clone of the dimension selection manager
 	 */
@@ -489,8 +457,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * @return
 	 */
 	public RecordVirtualArray getRecordVA(String recordPerspectiveID) {
-		RecordVirtualArray va = table.getRecordPerspective(recordPerspectiveID)
-				.getVirtualArray();
+		RecordVirtualArray va = table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
 		return va;
 	}
 
@@ -502,8 +469,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * @return
 	 */
 	public DimensionVirtualArray getDimensionVA(String dimensionPerspectiveID) {
-		DimensionVirtualArray va = table.getDimensionPerspective(dimensionPerspectiveID)
-				.getVirtualArray();
+		DimensionVirtualArray va = table.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
 		return va;
 	}
 
@@ -526,10 +492,10 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 */
 	public ColorMapper getColorMapper() {
 		if (colorMapper == null)
-			if (table.getMetaData().getDataCenter() == null) {
-				colorMapper = ColorMapper.createDefaultTwoColorMapper();
-			} else {
+			if (table instanceof NumericalTable && ((NumericalTable) table).getDataCenter() != null) {
 				colorMapper = ColorMapper.createDefaultThreeColorMapper();
+			} else {
+				colorMapper = ColorMapper.createDefaultTwoColorMapper();
 			}
 		return colorMapper;
 	}
@@ -543,8 +509,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	/**
-	 * Initiates clustering based on the parameters passed. Sends out an event
-	 * to all affected views upon positive completion to replace their VA.
+	 * Initiates clustering based on the parameters passed. Sends out an event to all affected views upon positive
+	 * completion to replace their VA.
 	 *
 	 * @param tableID
 	 *            ID of the set to cluster
@@ -569,8 +535,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 			if (clusterState.isModifyExistingPerspective()) {
 				targetDimensionPerspective = clusterState.getSourceDimensionPerspective();
 			} else {
-				targetDimensionPerspective = clusterState
-						.getOptionalTargetDimensionPerspective();
+				targetDimensionPerspective = clusterState.getOptionalTargetDimensionPerspective();
 				if (targetDimensionPerspective == null) {
 					registerLater = true;
 					targetDimensionPerspective = new DimensionPerspective(this);
@@ -578,16 +543,15 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 				}
 			}
 			targetDimensionPerspective.init(dimensionResult);
-			targetDimensionPerspective.setLabel(clusterState
-					.getClusterAlgorithmConfiguration().getClusterAlgorithmName()
+			targetDimensionPerspective.setLabel(clusterState.getClusterAlgorithmConfiguration()
+					.getClusterAlgorithmName()
 					+ " "
-					+ targetDimensionPerspective.getVirtualArray().getGroupList().size(),
-					false);
+					+ targetDimensionPerspective.getVirtualArray().getGroupList().size(), false);
 			if (registerLater) {
 				table.registerDimensionPerspective(targetDimensionPerspective);
 			}
-			eventPublisher.triggerEvent(new DimensionVAUpdateEvent(dataDomainID,
-					targetDimensionPerspective.getPerspectiveID(), this));
+			eventPublisher.triggerEvent(new DimensionVAUpdateEvent(dataDomainID, targetDimensionPerspective
+					.getPerspectiveID(), this));
 		}
 
 		if (clusterState.getClusterTarget() == EClustererTarget.RECORD_CLUSTERING) {
@@ -597,8 +561,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 			if (clusterState.isModifyExistingPerspective()) {
 				targetRecordPerspective = clusterState.getSourceRecordPerspective();
 			} else {
-				targetRecordPerspective = clusterState
-						.getOptionalTargetRecordPerspective();
+				targetRecordPerspective = clusterState.getOptionalTargetRecordPerspective();
 				if (targetRecordPerspective == null) {
 					registerLater = true;
 					targetRecordPerspective = new RecordPerspective(this);
@@ -606,16 +569,13 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 				}
 			}
 			targetRecordPerspective.init(recordResult);
-			targetRecordPerspective.setLabel(clusterState
-					.getClusterAlgorithmConfiguration().getClusterAlgorithmName()
-					+ " "
-					+ targetRecordPerspective.getVirtualArray().getGroupList().size(),
-					false);
+			targetRecordPerspective.setLabel(clusterState.getClusterAlgorithmConfiguration().getClusterAlgorithmName()
+					+ " " + targetRecordPerspective.getVirtualArray().getGroupList().size(), false);
 			if (registerLater) {
 				table.registerRecordPerspective(targetRecordPerspective);
 			}
-			eventPublisher.triggerEvent(new RecordVAUpdateEvent(dataDomainID,
-					targetRecordPerspective.getPerspectiveID(), this));
+			eventPublisher.triggerEvent(new RecordVAUpdateEvent(dataDomainID, targetRecordPerspective
+					.getPerspectiveID(), this));
 		}
 
 		eventPublisher.triggerEvent(new DataDomainUpdateEvent(this));
@@ -637,13 +597,11 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 			return;
 
 		if (targetCategory == recordIDCategory && vaDelta.getIDType() != recordIDType)
-			vaDelta = DeltaConverter.convertDelta(recordIDMappingManager, recordIDType,
-					vaDelta);
+			vaDelta = DeltaConverter.convertDelta(recordIDMappingManager, recordIDType, vaDelta);
 		RecordPerspective recordData = table.getRecordPerspective(vaDelta.getVAType());
 		recordData.setVADelta(vaDelta);
 
-		RecordVAUpdateEvent event = new RecordVAUpdateEvent(dataDomainID,
-				recordData.getPerspectiveID(), this);
+		RecordVAUpdateEvent event = new RecordVAUpdateEvent(dataDomainID, recordData.getPerspectiveID(), this);
 
 		eventPublisher.triggerEvent(event);
 
@@ -675,8 +633,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	@Override
-	public void replaceDimensionPerspective(String dataDomainID,
-			String dimensionPerspectiveID, PerspectiveInitializationData data) {
+	public void replaceDimensionPerspective(String dataDomainID, String dimensionPerspectiveID,
+			PerspectiveInitializationData data) {
 
 		table.getDimensionPerspective(dimensionPerspectiveID).init(data);
 
@@ -693,8 +651,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		if (recordSelectionManager == null)
 			return;
 
-		if (recordIDMappingManager.hasMapping(selectionDelta.getIDType(),
-				recordSelectionManager.getIDType())) {
+		if (recordIDMappingManager.hasMapping(selectionDelta.getIDType(), recordSelectionManager.getIDType())) {
 			recordSelectionManager.setDelta(selectionDelta);
 		} else if (dimensionIDMappingManager.hasMapping(selectionDelta.getIDType(),
 				dimensionSelectionManager.getIDType())) {
@@ -707,20 +664,17 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	@Override
-	public void handleSelectionCommand(IDCategory idCategory,
-			SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand) {
 		// TODO Auto-generated method stub
 	}
 
 	/**
-	 * This method is called by the {@link ForeignSelectionUpdateListener},
-	 * signaling that a selection form another dataDomain is available. If
-	 * possible, it is converted to be compatible with the local dataDomain and
-	 * then sent out via a {@link SelectionUpdateEvent}.
+	 * This method is called by the {@link ForeignSelectionUpdateListener}, signaling that a selection form another
+	 * dataDomain is available. If possible, it is converted to be compatible with the local dataDomain and then sent
+	 * out via a {@link SelectionUpdateEvent}.
 	 *
 	 * @param dataDomainType
-	 *            the type of the dataDomain for which this selectionUpdate is
-	 *            intended
+	 *            the type of the dataDomain for which this selectionUpdate is intended
 	 * @param delta
 	 * @param scrollToSelection
 	 * @param info
@@ -730,40 +684,35 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	/**
-	 * Interface used by {@link ForeignSelectionCommandListener} to signal
-	 * foreign selection commands. Can be implemented in concrete classes, has
-	 * no functionality in base class.
+	 * Interface used by {@link ForeignSelectionCommandListener} to signal foreign selection commands. Can be
+	 * implemented in concrete classes, has no functionality in base class.
 	 */
-	public void handleForeignSelectionCommand(String dataDomainType,
-			IDCategory idCategory, SelectionCommand selectionCommand) {
+	public void handleForeignSelectionCommand(String dataDomainType, IDCategory idCategory,
+			SelectionCommand selectionCommand) {
 		// may be interesting to implement in sub-class
 	}
 
 	/**
-	 * This method is called if a record VA Update was requested, but the
-	 * dataDomainType specified was not this dataDomains type. Concrete handling
-	 * can only be done in concrete dataDomains.
+	 * This method is called if a record VA Update was requested, but the dataDomainType specified was not this
+	 * dataDomains type. Concrete handling can only be done in concrete dataDomains.
 	 *
 	 * @param tableID
 	 * @param dataDomainType
 	 * @param vaType
 	 * @param data
 	 */
-	public void handleForeignRecordVAUpdate(String dataDomainType, String vaType,
-			PerspectiveInitializationData data) {
+	public void handleForeignRecordVAUpdate(String dataDomainType, String vaType, PerspectiveInitializationData data) {
 		// may be interesting to implement in sub-class
 	}
 
 	/**
-	 * Returns the denomination for the records. For genetic data for example
-	 * this would be "Gene"
+	 * Returns the denomination for the records. For genetic data for example this would be "Gene"
 	 *
 	 * @param capitalized
-	 *            if true, the label is returned capitalized, e.g., "Gene", if
-	 *            false it would be "gene"
+	 *            if true, the label is returned capitalized, e.g., "Gene", if false it would be "gene"
 	 * @param plural
-	 *            if true, the label is returned in the plural form of the word,
-	 *            e.g., "genes" instead of the singular form, e.g., "gene"
+	 *            if true, the label is returned in the plural form of the word, e.g., "genes" instead of the singular
+	 *            form, e.g., "gene"
 	 * @return the denomination formatted according to the parameters passed
 	 */
 	public String getRecordDenomination(boolean capitalized, boolean plural) {
@@ -799,8 +748,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	/**
-	 * Get the human readable record label for the id, which is of the
-	 * {@link #recordIDType}.
+	 * Get the human readable record label for the id, which is of the {@link #recordIDType}.
 	 *
 	 * @param id
 	 *            the id to convert to a human readable label
@@ -811,8 +759,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	/**
-	 * Get the human readable dimension label for the id, which is of the
-	 * {@link #dimensionIDType}.
+	 * Get the human readable dimension label for the id, which is of the {@link #dimensionIDType}.
 	 *
 	 * @param id
 	 *            the id to convert to a human readable label
@@ -823,8 +770,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	/**
-	 * Get the human readable record label for the id, which is of the type
-	 * specified.
+	 * Get the human readable record label for the id, which is of the type specified.
 	 *
 	 * @param idType
 	 *            the IDType of the id passed
@@ -832,8 +778,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * @return the readable label
 	 */
 	public String getRecordLabel(IDType idType, Object id) {
-		Set<String> ids = recordIDMappingManager.getIDAsSet(idType, idType
-				.getIDCategory().getHumanReadableIDType(), id);
+		Set<String> ids = recordIDMappingManager
+				.getIDAsSet(idType, idType.getIDCategory().getHumanReadableIDType(), id);
 		String label = "No Mapping";
 		if (ids != null && ids.size() > 0) {
 			label = ids.iterator().next();
@@ -843,8 +789,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 	/** Same as {@link #getRecordLabel(IDType, Object)} for dimensions */
 	public String getDimensionLabel(IDType idType, Object id) {
-		Set<String> ids = dimensionIDMappingManager.getIDAsSet(idType, idType
-				.getIDCategory().getHumanReadableIDType(), id);
+		Set<String> ids = dimensionIDMappingManager.getIDAsSet(idType, idType.getIDCategory().getHumanReadableIDType(),
+				id);
 		String label = "No Mapping";
 		if (ids != null && ids.size() > 0) {
 			label = ids.iterator().next();
@@ -853,8 +799,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	public void aggregateGroups(java.util.Set<Integer> groups) {
-		System.out
-				.println("Received command to aggregate experiments, not implemented yet");
+		System.out.println("Received command to aggregate experiments, not implemented yet");
 	}
 
 	// FIXME CONTEXT MENU
@@ -889,7 +834,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		if (table == null)
 			return 0;
 		try {
-			return table.getMetaData().size() * table.getMetaData().depth();
+			return table.size() * table.depth();
 		} catch (NoSuchElementException e) {
 			return 0;
 		}
@@ -921,8 +866,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		ReplaceRecordPerspectiveListener replaceRecordPerspectiveListener = new ReplaceRecordPerspectiveListener();
 		replaceRecordPerspectiveListener.setHandler(this);
 		replaceRecordPerspectiveListener.setDataDomainID(dataDomainID);
-		listeners.register(ReplaceRecordPerspectiveEvent.class,
-				replaceRecordPerspectiveListener);
+		listeners.register(ReplaceRecordPerspectiveEvent.class, replaceRecordPerspectiveListener);
 
 		DimensionVADeltaListener dimensionVADeltaListener = new DimensionVADeltaListener();
 		dimensionVADeltaListener.setHandler(this);
@@ -932,8 +876,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		ReplaceDimensionPerspectiveListener replaceDimensionPerspectiveListener = new ReplaceDimensionPerspectiveListener();
 		replaceDimensionPerspectiveListener.setHandler(this);
 		replaceDimensionPerspectiveListener.setDataDomainID(dataDomainID);
-		listeners.register(ReplaceDimensionPerspectiveEvent.class,
-				replaceDimensionPerspectiveListener);
+		listeners.register(ReplaceDimensionPerspectiveEvent.class, replaceDimensionPerspectiveListener);
 
 		AggregateGroupListener aggregateGroupListener = new AggregateGroupListener();
 		aggregateGroupListener.setHandler(this);
@@ -953,19 +896,18 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 	/**
 	 * <p>
-	 * Converts a {@link RecordPerspective} with an IDType that is not the
-	 * {@link #recordIDType} to a new RecordPerspective with the recordIDType.
+	 * Converts a {@link RecordPerspective} with an IDType that is not the {@link #recordIDType} to a new
+	 * RecordPerspective with the recordIDType.
 	 * </p>
 	 * <p>
 	 * Grouping, and naming is preserved, sample elements and trees are not.
 	 * </p>
 	 */
-	public RecordPerspective convertForeignRecordPerspective(
-			RecordPerspective foreignPerspective) {
+	public RecordPerspective convertForeignRecordPerspective(RecordPerspective foreignPerspective) {
 
 		if (foreignPerspective.getIdType().getIDCategory() != recordIDCategory) {
-			throw new IllegalArgumentException("Can not convert from "
-					+ foreignPerspective.getIdType() + " to " + recordIDType);
+			throw new IllegalArgumentException("Can not convert from " + foreignPerspective.getIdType() + " to "
+					+ recordIDType);
 		}
 		if (foreignPerspective.getIdType() == recordIDType)
 			return foreignPerspective;
@@ -999,8 +941,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 				if (localVAID == null)
 					continue;
 				indices.add(localVAID);
-				int groupIndex = recordGroupList.getGroupOfVAIndex(
-						foreignRecordVA.indexOf(foreignVAID)).getGroupIndex();
+				int groupIndex = recordGroupList.getGroupOfVAIndex(foreignRecordVA.indexOf(foreignVAID))
+						.getGroupIndex();
 				groupSizes.set(groupIndex, groupSizes.get(groupIndex) + 1);
 				sampleElements.set(groupIndex, count);
 				count++;
@@ -1013,8 +955,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		RecordPerspective localRecordPerspective = new RecordPerspective(this);
 		localRecordPerspective.setIDType(recordIDType);
 		localRecordPerspective.init(data);
-		localRecordPerspective.setLabel(foreignPerspective.getLabel(),
-				foreignPerspective.isLabelDefault());
+		localRecordPerspective.setLabel(foreignPerspective.getLabel(), foreignPerspective.isLabelDefault());
 		return localRecordPerspective;
 
 	}

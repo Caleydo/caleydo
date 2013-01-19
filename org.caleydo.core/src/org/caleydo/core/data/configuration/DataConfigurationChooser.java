@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.variable.AVariablePerspective;
@@ -106,7 +106,7 @@ public class DataConfigurationChooser {
 
 	/**
 	 * <p>
-	 * Checks if there is only one {@link RecordPerspective} from those registered with the {@link DataTable} a possible
+	 * Checks if there is only one {@link RecordPerspective} from those registered with the {@link Table} a possible
 	 * match considering the parameters. If so, this one match is returned, else null is returned.
 	 * </p>
 	 * <p>
@@ -122,31 +122,31 @@ public class DataConfigurationChooser {
 	 * @return the chosen perspectiveID if a unique ID could be identified, or null
 	 */
 
-	private static Collection<String> getRecordPerspectiveCandidates(DataTable table, boolean considerOnlyPublic) {
+	private static Collection<String> getRecordPerspectiveCandidates(Table table, boolean considerOnlyPublic) {
 		return getPerspectiveCandidates(table, considerOnlyPublic, true);
 	}
 
 	/**
-	 * Same as {@link #getRecordPerspectiveCandidates(DataTable, boolean)} for dimensions.
+	 * Same as {@link #getRecordPerspectiveCandidates(Table, boolean)} for dimensions.
 	 *
 	 * @param table
 	 * @param considerOnlyPublic
 	 * @return
 	 */
-	private static Collection<String> getDimensionPerspectiveCandidates(DataTable table, boolean considerOnlyPublic) {
+	private static Collection<String> getDimensionPerspectiveCandidates(Table table, boolean considerOnlyPublic) {
 		return getPerspectiveCandidates(table, considerOnlyPublic, false);
 	}
 
 	/**
-	 * Generic method for {@link #getRecordPerspectiveCandidates(DataTable, boolean)} and
-	 * {@link #getDimensionPerspectiveCandidates(DataTable, boolean)}
+	 * Generic method for {@link #getRecordPerspectiveCandidates(Table, boolean)} and
+	 * {@link #getDimensionPerspectiveCandidates(Table, boolean)}
 	 *
 	 * @param table
 	 * @param considerOnlyPublic
 	 * @param isRecord
 	 * @return
 	 */
-	private static ArrayList<String> getPerspectiveCandidates(DataTable table, boolean considerOnlyPublic,
+	private static ArrayList<String> getPerspectiveCandidates(Table table, boolean considerOnlyPublic,
 			boolean isRecord) {
 		Set<String> dataPerspectiveIDs;
 		if (isRecord)

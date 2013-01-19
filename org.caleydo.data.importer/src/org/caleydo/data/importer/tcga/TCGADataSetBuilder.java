@@ -31,6 +31,7 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.DataSetDescription.ECreateDefaultProperties;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -166,14 +167,14 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		if (cnmfGroupingFile == null)
 			return null;
 
-		DataSetDescription dataSet = new DataSetDescription();
+		DataSetDescription dataSet = new DataSetDescription(ECreateDefaultProperties.NUMERICAL);
 		dataSet.setDataSetName(dataSetName);
 		dataSet.setColor(dataSetType.getColor());
 		dataSet.setDataSourcePath(matrixFile.getPath());
 		if (loadSampledGenes) {
 			// the gct files have 3 header lines and are centered<
 			dataSet.setNumberOfHeaderLines(3);
-			dataSet.setDataCenter(0d);
+			dataSet.getNumericalProperties().setDataCenter(0d);
 		} else {
 			// the files with all the genes have the ids in the first row, then a row with "signal" and then the data
 			dataSet.setNumberOfHeaderLines(2);
@@ -241,12 +242,11 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 
 		if (mutationFile == null)
 			return null;
-		DataSetDescription dataSet = new DataSetDescription();
+		DataSetDescription dataSet = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
 		dataSet.setDataSetName(dataSetName);
 		dataSet.setColor(dataSetType.getColor());
 		dataSet.setDataSourcePath(mutationFile.getPath());
 		dataSet.setNumberOfHeaderLines(1);
-		dataSet.setMax(1.f);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(8);
@@ -284,7 +284,7 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		if (copyNumberFile == null)
 			return null;
 
-		DataSetDescription dataSet = new DataSetDescription();
+		DataSetDescription dataSet = new DataSetDescription(ECreateDefaultProperties.CATEGORICAL);
 		dataSet.setDataSetName(dataSetName);
 		dataSet.setColor(dataSetType.getColor());
 		dataSet.setDataSourcePath(copyNumberFile.getPath());
@@ -293,7 +293,6 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
 		parsingRule.setParseUntilEnd(true);
-		// TODO: review ordinal/integer
 		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.ORDINAL, EDataType.INTEGER));
 		dataSet.addParsingRule(parsingRule);
 		dataSet.setTransposeMatrix(true);
@@ -327,7 +326,6 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		DataSetDescription dataSet = new DataSetDescription();
 		dataSet.setDataSetName(dataSetName);
 		dataSet.setColor(dataSetType.getColor());
-		dataSet.setDataHomogeneous(false);
 		dataSet.setDataSourcePath(out.getPath());
 		dataSet.setNumberOfHeaderLines(1);
 
