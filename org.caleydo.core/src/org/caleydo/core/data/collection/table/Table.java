@@ -72,7 +72,7 @@ public class Table {
 	private ATableBasedDataDomain dataDomain;
 
 	/** The columns of the table hashed by their column ID */
-	protected HashMap<Integer, AColumn<?, ?>> hashColumns;
+	protected List<AColumn<?, ?>> columns;
 
 	/** List of column IDs in the order as they have been added */
 	private ArrayList<Integer> defaultColumnIDs;
@@ -109,7 +109,7 @@ public class Table {
 	public Table(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		isColumnDimension = !dataDomain.getDataSetDescription().isTransposeMatrix();
-		hashColumns = new HashMap<>();
+		columns = new ArrayList<>();
 		hashRecordPerspectives = new HashMap<String, RecordPerspective>(6);
 		hashDimensionPerspectives = new HashMap<String, DimensionPerspective>(3);
 		defaultColumnIDs = new ArrayList<Integer>();
@@ -150,12 +150,12 @@ public class Table {
 
 	/** Get the number of columns in the table */
 	int getNrColumns() {
-		return hashColumns.size();
+		return columns.size();
 	}
 
 	/** Get the number of rows in the table */
 	int getNrRows() {
-		return hashColumns.values().iterator().next().size();
+		return columns.iterator().next().size();
 	}
 
 	/**
@@ -170,9 +170,9 @@ public class Table {
 	public Float getNormalizedValue(Integer dimensionID, Integer recordID) {
 		try {
 			if (isColumnDimension) {
-				return hashColumns.get(dimensionID).getNormalizedValue(recordID);
+				return columns.get(dimensionID).getNormalizedValue(recordID);
 			} else {
-				AColumn<?, ?> column = hashColumns.get(recordID);
+				AColumn<?, ?> column = columns.get(recordID);
 				return column.getNormalizedValue(dimensionID);
 			}
 		} catch (NullPointerException npe) {
@@ -190,7 +190,7 @@ public class Table {
 			columnID = recordID;
 			rowID = dimensionID;
 		}
-		return hashColumns.get(columnID).getRawAsString(rowID);
+		return columns.get(columnID).getRawAsString(rowID);
 	}
 
 	public boolean containsDataRepresentation(DataRepresentation dataRepresentation, Integer dimensionID,
@@ -200,14 +200,14 @@ public class Table {
 		if (!isColumnDimension)
 			columnID = recordID;
 
-		return hashColumns.get(columnID).containsDataRepresentation(dataRepresentation);
+		return columns.get(columnID).containsDataRepresentation(dataRepresentation);
 	}
 
 	public EDataType getRawDataType(Integer dimensionID, Integer recordID) {
 		Integer columnID = dimensionID;
 		if (!isColumnDimension)
 			columnID = recordID;
-		return hashColumns.get(columnID).getRawDataType();
+		return columns.get(columnID).getRawDataType();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -219,7 +219,7 @@ public class Table {
 			rowID = dimensionID;
 		}
 
-		return (RawDataType) hashColumns.get(columnID).getRaw(rowID);
+		return (RawDataType) columns.get(columnID).getRaw(rowID);
 	}
 
 	/**
@@ -437,9 +437,8 @@ public class Table {
 	 *            the column
 	 */
 	public void addColumn(AColumn<?, ?> column) {
-		hashColumns.put(column.getID(), column);
+		columns.add(column);
 		defaultColumnIDs.add(column.getID());
-
 	}
 
 	// ----------------------------------------------------------------------------
@@ -529,7 +528,7 @@ public class Table {
 	 * as basis by default, however when a logarithmized representation is in the dimension this is used.
 	 */
 	protected void normalize() {
-		for (AColumn<?, ?> dimension : hashColumns.values()) {
+		for (AColumn<?, ?> dimension : columns) {
 			dimension.normalize();
 		}
 

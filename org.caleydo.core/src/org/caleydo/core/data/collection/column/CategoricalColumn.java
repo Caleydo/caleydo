@@ -17,8 +17,6 @@
 package org.caleydo.core.data.collection.column;
 
 import org.caleydo.core.data.collection.column.container.CategoricalContainer;
-import org.caleydo.core.id.object.ManagedObjectType;
-import org.caleydo.core.manager.GeneralManager;
 
 /**
  * @author Alexander Lex
@@ -27,18 +25,13 @@ import org.caleydo.core.manager.GeneralManager;
 public class CategoricalColumn<CategoryType extends Comparable<CategoryType>> extends
 		AColumn<CategoricalContainer<CategoryType>, CategoryType> {
 
-	/**
-	 *
-	 */
-	public CategoricalColumn() {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.COLUMN_NUMERICAL));
-	}
+
 
 	/**
 	 *
 	 */
-	public CategoricalColumn(int uniqueID) {
-		super(uniqueID);
+	public CategoricalColumn(int id) {
+		super(id);
 	}
 
 

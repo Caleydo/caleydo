@@ -53,7 +53,7 @@ public class ColumnDescription {
 	 * An integer ID of the column. For newly loaded data this needs not be set. After serializing the data however,
 	 * this is the way we re-assign the same columnID to the same column again.
 	 */
-	private Integer columnID = null;
+	// private Integer columnID = null;
 
 	/**
 	 * Default Constructor, creates a ColumnDescripton with float dataClass and continuous columnType and no column
@@ -150,20 +150,20 @@ public class ColumnDescription {
 		return dataType;
 	}
 
-	/**
-	 * @param columnID
-	 *            setter, see {@link #columnID}
-	 */
-	public void setColumnID(Integer columnID) {
-		this.columnID = columnID;
-	}
-
-	/**
-	 * @return the columnID, see {@link #columnID}
-	 */
-	public Integer getColumnID() {
-		return columnID;
-	}
+	// /**
+	// * @param columnID
+	// * setter, see {@link #columnID}
+	// */
+	// public void setColumnID(Integer columnID) {
+	// this.columnID = columnID;
+	// }
+	//
+	// /**
+	// * @return the columnID, see {@link #columnID}
+	// */
+	// public Integer getColumnID() {
+	// return columnID;
+	// }
 
 	@Override
 	public String toString() {

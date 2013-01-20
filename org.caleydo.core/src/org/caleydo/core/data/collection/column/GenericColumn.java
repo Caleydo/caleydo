@@ -30,8 +30,8 @@ public class GenericColumn<T> extends AColumn<GenericContainer<T>, T> {
 	/**
 	 * @param uniqueID
 	 */
-	public GenericColumn(int uniqueID) {
-		super(uniqueID);
+	public GenericColumn(int id) {
+		super(id);
 	}
 
 	@Override

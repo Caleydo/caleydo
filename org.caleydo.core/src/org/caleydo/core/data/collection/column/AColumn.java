@@ -22,7 +22,6 @@ import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
 import org.caleydo.core.data.collection.column.container.IContainer;
 import org.caleydo.core.data.collection.table.Table;
-import org.caleydo.core.util.base.AUniqueObject;
 
 /**
  * <p>
@@ -41,7 +40,11 @@ import org.caleydo.core.util.base.AUniqueObject;
  * @author Alexander Lex
  */
 
-public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawType> extends AUniqueObject {
+public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawType> {
+
+
+	/** The unique id of this column */
+	private int id;
 
 	protected RawContainerType rawContainer;
 	protected FloatContainer normalizedContainer;
@@ -51,10 +54,17 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	/**
 	 * Constructor Initializes objects
 	 */
-	public AColumn(int uniqueID) {
-		super(uniqueID);
+	public AColumn(int id) {
 
+		this.id = id;
 		dataRepToContainerMap = new HashMap<String, IContainer<?>>();
+	}
+
+	/**
+	 * @return the id, see {@link #id}
+	 */
+	public int getID() {
+		return id;
 	}
 
 	/**
@@ -74,7 +84,7 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	 */
 	public void setRawData(RawContainerType rawContainer) {
 		if (this.rawContainer != null)
-			throw new IllegalStateException("Raw data was already set in Dimension " + uniqueID
+			throw new IllegalStateException("Raw data was already set in column " + id
 					+ " , tried to set again.");
 		this.rawContainer = rawContainer;
 	}

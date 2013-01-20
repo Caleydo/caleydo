@@ -81,8 +81,8 @@ public class TabularDataParser extends ATextParser {
 
 	/**
 	 * <p>
-	 * Creates the {@link Table} and the {@link AColumn}s for the {@link Table}, as well as the raw data columns
-	 * to be set into the columns, which are also stored in {@link #targetColumns}.
+	 * Creates the {@link Table} and the {@link AColumn}s for the {@link Table}, as well as the raw data columns to be
+	 * set into the columns, which are also stored in {@link #targetColumns}.
 	 * </p>
 	 * <p>
 	 * Also creates the mapping of columnIDs to column labels in the {@link IDMappingManager}
@@ -144,20 +144,16 @@ public class TabularDataParser extends ATextParser {
 
 		int columnCount = 0;
 		for (ColumnDescription parsingDetail : parsingPattern) {
-			int columnID;
 			switch (parsingDetail.getDataClass()) {
 			case REAL_NUMBER:
 				FloatContainer container = new FloatContainer(numberOfDataLines);
 				targetColumns.add(container);
 				NumericalColumn<FloatContainer, Float> column;
-				if (parsingDetail.getColumnID() == null) {
-					column = new NumericalColumn<>();
-					parsingDetail.setColumnID(column.getID());
-				} else {
-					column = new NumericalColumn<>(parsingDetail.getColumnID());
-				}
+
+				column = new NumericalColumn<>(columnCount);
+
 				column.setRawData(container);
-				columnID = column.getID();
+
 				table.addColumn(column);
 				break;
 
@@ -170,15 +166,11 @@ public class TabularDataParser extends ATextParser {
 					CategoricalContainer<String> categoricalContainer;
 					categoricalContainer = new CategoricalContainer<String>(numberOfDataLines, EDataType.STRING);
 					targetColumns.add(categoricalContainer);
-					if (parsingDetail.getColumnID() == null) {
-						categoricalColumn = new CategoricalColumn<String>();
-						parsingDetail.setColumnID(categoricalColumn.getID());
-					} else {
-						categoricalColumn = new CategoricalColumn<String>(parsingDetail.getColumnID());
 
-					}
+					categoricalColumn = new CategoricalColumn<String>(columnCount);
+
 					categoricalColumn.setRawData(categoricalContainer);
-					columnID = categoricalColumn.getID();
+
 					table.addColumn(categoricalColumn);
 					break;
 				case INTEGER:
@@ -186,15 +178,10 @@ public class TabularDataParser extends ATextParser {
 					CategoricalContainer<Integer> categoricalIntContainer;
 					categoricalIntContainer = new CategoricalContainer<Integer>(numberOfDataLines, EDataType.INTEGER);
 					targetColumns.add(categoricalIntContainer);
-					if (parsingDetail.getColumnID() == null) {
-						categoricalIntColumn = new CategoricalColumn<Integer>();
-						parsingDetail.setColumnID(categoricalIntColumn.getID());
-					} else {
-						categoricalIntColumn = new CategoricalColumn<Integer>(parsingDetail.getColumnID());
 
-					}
+					categoricalIntColumn = new CategoricalColumn<Integer>(columnCount);
+
 					categoricalIntColumn.setRawData(categoricalIntContainer);
-					columnID = categoricalIntColumn.getID();
 					table.addColumn(categoricalIntColumn);
 					break;
 				case FLOAT:
@@ -214,10 +201,11 @@ public class TabularDataParser extends ATextParser {
 			if (headers != null) {
 				String idString = headers[parsingDetail.getColumn()];
 				idString = convertID(idString, parsingRules);
-				columnIDMappingManager.addMapping(mappingType, columnID, idString);
+				columnIDMappingManager.addMapping(mappingType, columnCount, idString);
 			} else {
-				columnIDMappingManager.addMapping(mappingType, columnID, "Column " + columnCount++);
+				columnIDMappingManager.addMapping(mappingType, columnCount, "Column " + columnCount);
 			}
+			columnCount++;
 
 		}
 

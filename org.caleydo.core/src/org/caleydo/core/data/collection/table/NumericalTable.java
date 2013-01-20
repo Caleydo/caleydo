@@ -30,7 +30,7 @@ import org.eclipse.core.runtime.Status;
 /**
  * Extension of {@link Table} to add functionality specific to homogeneous numerical tables, such as a joint
  * normalization, a joint maximum, etc.
- * 
+ *
  * @author Alexander Lex
  */
 public class NumericalTable extends Table {
@@ -225,11 +225,11 @@ public class NumericalTable extends Table {
 	private void calculateGlobalExtrema() {
 		double temp = 1.0;
 
-		if (hashColumns.get(0) instanceof NumericalColumn<?, ?>) {
+		if (!(columns.get(0) instanceof NumericalColumn<?, ?>)) {
 			throw new UnsupportedOperationException("Minimum or maximum can be calculated only on numeric data");
 		}
 
-		for (AColumn<?, ?> column : hashColumns.values()) {
+		for (AColumn<?, ?> column : columns) {
 			NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
 			temp = new Double(nColumn.getMin());
 			if (!artificialMin && temp < min) {
@@ -280,7 +280,7 @@ public class NumericalTable extends Table {
 	 * dimensions that support it manually.
 	 */
 	void log10() {
-		for (AColumn<?, ?> dimension : hashColumns.values()) {
+		for (AColumn<?, ?> dimension : columns) {
 			if (dimension instanceof NumericalColumn) {
 				NumericalColumn<?, ?> nDimension = (NumericalColumn<?, ?>) dimension;
 				nDimension.log10();
@@ -296,7 +296,7 @@ public class NumericalTable extends Table {
 	 * dimensions that support it manually.
 	 */
 	void log2() {
-		for (AColumn<?, ?> dimension : hashColumns.values()) {
+		for (AColumn<?, ?> dimension : columns) {
 			if (dimension instanceof NumericalColumn) {
 				NumericalColumn<?, ?> nDimension = (NumericalColumn<?, ?>) dimension;
 				nDimension.log2();
@@ -315,7 +315,7 @@ public class NumericalTable extends Table {
 	@Override
 	protected void normalize() {
 
-		for (AColumn<?, ?> column : hashColumns.values()) {
+		for (AColumn<?, ?> column : columns) {
 			if (column instanceof NumericalColumn) {
 				NumericalColumn<?, ?> nColumn = (NumericalColumn<?, ?>) column;
 				nColumn.normalizeWithExternalExtrema(getMin(), getMax());
@@ -338,7 +338,7 @@ public class NumericalTable extends Table {
 
 		this.dataTransformation = dataTransformation;
 
-		for (AColumn<?, ?> dimension : hashColumns.values()) {
+		for (AColumn<?, ?> dimension : columns) {
 			if (dimension instanceof NumericalColumn) {
 				((NumericalColumn<?, ?>) dimension).setDataTransformation(dataTransformation);
 			}

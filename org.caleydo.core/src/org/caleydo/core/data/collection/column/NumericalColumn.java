@@ -19,8 +19,6 @@ package org.caleydo.core.data.collection.column;
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
 import org.caleydo.core.data.collection.column.container.INumericalContainer;
-import org.caleydo.core.id.object.ManagedObjectType;
-import org.caleydo.core.manager.GeneralManager;
 
 /**
  * INumericalDimension is a specialization of IDimension. It is meant for numerical data of a continuous range,
@@ -38,18 +36,11 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	/**
 	 * Constructor
 	 */
-	public NumericalColumn() {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.COLUMN_NUMERICAL));
+	public NumericalColumn(int id) {
+		super(id);
 	}
 
-	/**
-	 * Constructor that takes a dimension ID. This is needed for de-serialization.
-	 *
-	 * @param dimensionID
-	 */
-	public NumericalColumn(int dimensionID) {
-		super(dimensionID);
-	}
+
 
 
 	/**
