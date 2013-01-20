@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.grouper;
 
@@ -37,7 +34,7 @@ import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -46,7 +43,7 @@ import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.events.ClusterNodeSelectionListener;
-import org.caleydo.core.data.virtualarray.events.ReplaceDimensionPerspectiveEvent;
+import org.caleydo.core.data.virtualarray.events.ReplacePerspectiveEvent;
 import org.caleydo.core.event.data.ClusterNodeSelectionEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.RedrawViewEvent;
@@ -156,8 +153,8 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 		hashGroups = new HashMap<Integer, GroupRepresentation>();
 
 		dragAndDropController = new DragAndDropController(this);
-		selectionTypeClicked = new SelectionType("Clicked", new float[] { 1.0f, 0.0f,
-				1.0f, 0.0f }, 1, true, false, 1.0f);
+		selectionTypeClicked = new SelectionType("Clicked", new float[] { 1.0f, 0.0f, 1.0f, 0.0f }, 1, true, false,
+				1.0f);
 
 		renderStyle = new GrouperRenderStyle(viewFrustum);
 
@@ -191,19 +188,16 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	}
 
 	/**
-	 * Creates a new composite GroupRepresentation tree according to the
-	 * specified cluster node tree.
+	 * Creates a new composite GroupRepresentation tree according to the specified cluster node tree.
 	 *
 	 * @param tree
-	 *            Tree of cluster nodes that should be used to build a composite
-	 *            GroupRepresentation tree.
+	 *            Tree of cluster nodes that should be used to build a composite GroupRepresentation tree.
 	 */
 	private void initHierarchy(Tree<ClusterNode> tree) {
 
 		ClusterNode rootNode = tree.getRoot();
 		rootGroup = new GroupRepresentation(rootNode, renderStyle,
-				drawingStrategyManager
-						.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL),
+				drawingStrategyManager.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL),
 				drawingStrategyManager, this, !tree.hasChildren(rootNode));
 		hashGroups.put(rootGroup.getID(), rootGroup);
 		// selectionManager.initialAdd(rootGroup.getID());
@@ -214,21 +208,18 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	}
 
 	/**
-	 * Recursive method that builds the composite tree of GroupRepresentations.
-	 * Thereby each GroupRepresentation object corresponds to one ClusterNode of
-	 * the specified tree.
+	 * Recursive method that builds the composite tree of GroupRepresentations. Thereby each GroupRepresentation object
+	 * corresponds to one ClusterNode of the specified tree.
 	 *
 	 * @param tree
-	 *            Tree of cluster nodes that should be used to build a composite
-	 *            GroupRepresentation tree.
+	 *            Tree of cluster nodes that should be used to build a composite GroupRepresentation tree.
 	 * @param currentNode
-	 *            Current Cluster node for which a GroupRepresentation will be
-	 *            created.
+	 *            Current Cluster node for which a GroupRepresentation will be created.
 	 * @param parentGroupRep
 	 *            Parent of the GroupRepresentation that will be created.
 	 */
-	private void buildGroupHierarchyFromTree(Tree<ClusterNode> tree,
-			ClusterNode currentNode, GroupRepresentation parentGroupRep) {
+	private void buildGroupHierarchyFromTree(Tree<ClusterNode> tree, ClusterNode currentNode,
+			GroupRepresentation parentGroupRep) {
 
 		ArrayList<ClusterNode> alChildren = tree.getChildren(currentNode);
 		IGroupDrawingStrategy groupDrawingStrategy = drawingStrategyManager
@@ -236,8 +227,8 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 		for (ClusterNode child : alChildren) {
 			boolean bHasChildren = tree.hasChildren(child);
-			GroupRepresentation groupRep = new GroupRepresentation(child, renderStyle,
-					groupDrawingStrategy, drawingStrategyManager, this, !bHasChildren);
+			GroupRepresentation groupRep = new GroupRepresentation(child, renderStyle, groupDrawingStrategy,
+					drawingStrategyManager, this, !bHasChildren);
 			parentGroupRep.add(groupRep);
 
 			hashGroups.put(groupRep.getID(), groupRep);
@@ -252,12 +243,11 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	}
 
 	/**
-	 * This method updates the cluster node tree in the set (from use case)
-	 * according to the structure of the composite GroupRepresentation tree.
+	 * This method updates the cluster node tree in the set (from use case) according to the structure of the composite
+	 * GroupRepresentation tree.
 	 */
 	public void updateClusterTreeAccordingToGroupHierarchy() {
-		tree = new ClusterTree(dataDomain.getDimensionIDType(), rootGroup.getChildren()
-				.size());
+		tree = new ClusterTree(dataDomain.getDimensionIDType(), rootGroup.getChildren().size());
 		ClusterNode rootNode = rootGroup.getClusterNode();
 		rootNode.setTree(tree);
 		tree.setRootNode(rootNode);
@@ -276,19 +266,16 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 		buildTreeFromGroupHierarchy(tree, rootGroup.getClusterNode(), rootGroup);
 
-		ClusterHelper.calculateClusterAveragesRecursive(tree, tree.getRoot(),
-				EClustererTarget.DIMENSION_CLUSTERING, dataDomain.getTable(),
-				tablePerspective.getDimensionPerspective().getVirtualArray(), tablePerspective
+		ClusterHelper.calculateClusterAveragesRecursive(tree, tree.getRoot(), EClustererTarget.DIMENSION_CLUSTERING,
+				dataDomain.getTable(), tablePerspective.getDimensionPerspective().getVirtualArray(), tablePerspective
 						.getRecordPerspective().getVirtualArray());
 
 		tree.setDirty();
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 		data.setData(tree, tree.getRoot());
 
-		eventPublisher
-				.triggerEvent(new ReplaceDimensionPerspectiveEvent(dataDomain
-						.getDataDomainID(), tablePerspective.getDimensionPerspective()
-						.getPerspectiveID(), data));
+		eventPublisher.triggerEvent(new ReplacePerspectiveEvent(dataDomain.getDataDomainID(), tablePerspective
+				.getDimensionPerspective().getPerspectiveID(), data));
 
 		// UpdateViewEvent event = new UpdateViewEvent();
 		// event.setSender(this);
@@ -298,20 +285,18 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	}
 
 	/**
-	 * Recursive method that builds the a tree of ClusterNodes according to the
-	 * composite GroupRepresentation tree. Thereby each GroupRepresentation
-	 * object corresponds to one ClusterNode.
+	 * Recursive method that builds the a tree of ClusterNodes according to the composite GroupRepresentation tree.
+	 * Thereby each GroupRepresentation object corresponds to one ClusterNode.
 	 *
 	 * @param tree
 	 *            Tree of cluster nodes that shall recursively be built.
 	 * @param parentNode
 	 *            Parent of the cluster nodes that will be created in one step.
 	 * @param parentGroupRep
-	 *            Parent of the GroupRepresentation whose children will be used
-	 *            to create cluster nodes.
+	 *            Parent of the GroupRepresentation whose children will be used to create cluster nodes.
 	 */
-	private void buildTreeFromGroupHierarchy(Tree<ClusterNode> tree,
-			ClusterNode parentNode, GroupRepresentation parentGroupRep) {
+	private void buildTreeFromGroupHierarchy(Tree<ClusterNode> tree, ClusterNode parentNode,
+			GroupRepresentation parentGroupRep) {
 		ArrayList<ICompositeGraphic> alChildren = parentGroupRep.getChildren();
 
 		for (ICompositeGraphic child : alChildren) {
@@ -334,8 +319,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	}
 
 	@Override
-	public void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener) {
+	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
 		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
@@ -387,8 +371,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 		}
 		gl.glCallList(displayListIndex);
 
-		if (glMouseListener.wasMouseReleased() && !dragAndDropController.isDragging()
-				&& potentialNewSelection) {
+		if (glMouseListener.wasMouseReleased() && !dragAndDropController.isDragging() && potentialNewSelection) {
 
 			potentialNewSelection = false;
 			dragAndDropController.clearDraggables();
@@ -396,10 +379,8 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 			potentialNewSelectedGroup.addAsDraggable(dragAndDropController);
 
-			potentialNewSelectedGroup.setSelectionTypeRec(SelectionType.SELECTION,
-					selectionManager);
-			selectionManager.addToType(selectionTypeClicked,
-					potentialNewSelectedGroup.getID());
+			potentialNewSelectedGroup.setSelectionTypeRec(SelectionType.SELECTION, selectionManager);
+			selectionManager.addToType(selectionTypeClicked, potentialNewSelectedGroup.getID());
 			rootGroup.updateSelections(selectionManager, drawingStrategyManager);
 			triggerSelectionEvents();
 			setDisplayListDirty();
@@ -411,8 +392,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	}
 
 	/**
-	 * Builds a display list of graphical elements that do not have to be
-	 * updated in every frame.
+	 * Builds a display list of graphical elements that do not have to be updated in every frame.
 	 *
 	 * @param gl
 	 *            GL2 context.
@@ -425,8 +405,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 		// FIXME: on intel graphics card we cannot use Z=0!
 		float Z = 0.0001f;
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.GROUPER_BACKGROUND_SELECTION, 0));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.GROUPER_BACKGROUND_SELECTION, 0));
 
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 		gl.glColor3f(1.0f, 1.0f, 1.0f);
@@ -460,10 +439,8 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 			// System.out.println(fHierarchyHeight);
 			// System.out.println(fHierarchyWidth);
 
-			int minViewportHeight = (int) (parentGLCanvas.getHeight()
-					/ viewFrustum.getHeight() * fHierarchyHeight) + 10;
-			int minViewportWidth = (int) (parentGLCanvas.getWidth()
-					/ viewFrustum.getWidth() * fHierarchyWidth) + 10;
+			int minViewportHeight = (int) (parentGLCanvas.getHeight() / viewFrustum.getHeight() * fHierarchyHeight) + 10;
+			int minViewportWidth = (int) (parentGLCanvas.getWidth() / viewFrustum.getWidth() * fHierarchyWidth) + 10;
 			renderStyle.setMinViewDimensions(minViewportWidth, minViewportHeight, this);
 			hierarchyChanged = false;
 
@@ -479,8 +456,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int externalID, Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
@@ -494,9 +470,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 			case CLICKED:
 				draggedOverCollapseButtonID = -1;
 				if (groupRep != null) {
-					if (!controlPressed
-							&& !selectionManager.checkStatus(SelectionType.SELECTION,
-									groupRep.getID())) {
+					if (!controlPressed && !selectionManager.checkStatus(SelectionType.SELECTION, groupRep.getID())) {
 						dragAndDropController.clearDraggables();
 						selectionManager.clearSelection(SelectionType.SELECTION);
 						selectionManager.clearSelection(selectionTypeClicked);
@@ -508,13 +482,11 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 					dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
 					groupRep.addAsDraggable(dragAndDropController);
 
-					groupRep.setSelectionTypeRec(SelectionType.SELECTION,
-							selectionManager);
+					groupRep.setSelectionTypeRec(SelectionType.SELECTION, selectionManager);
 					selectionManager.addToType(selectionTypeClicked, groupRep.getID());
 
 					if (groupRep.isLeaf())
-						rootGroup.updateSelections(selectionManager,
-								drawingStrategyManager);
+						rootGroup.updateSelections(selectionManager, drawingStrategyManager);
 					triggerSelectionEvents();
 					setDisplayListDirty();
 				}
@@ -530,8 +502,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 					}
 					if (groupRep.isLeaf()) {
-						GroupRepresentation parent = (GroupRepresentation) groupRep
-								.getParent();
+						GroupRepresentation parent = (GroupRepresentation) groupRep.getParent();
 						if (parent != null)
 							dragAndDropController.setDropArea(parent);
 					} else {
@@ -542,15 +513,12 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 			case MOUSE_OVER:
 				draggedOverCollapseButtonID = -1;
 				if (groupRep != null) {
-					if (selectionManager.checkStatus(SelectionType.MOUSE_OVER,
-							groupRep.getID())
-							|| selectionManager.checkStatus(SelectionType.SELECTION,
-									groupRep.getID())) {
+					if (selectionManager.checkStatus(SelectionType.MOUSE_OVER, groupRep.getID())
+							|| selectionManager.checkStatus(SelectionType.SELECTION, groupRep.getID())) {
 						return;
 					}
 					selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-					selectionManager
-							.addToType(SelectionType.MOUSE_OVER, groupRep.getID());
+					selectionManager.addToType(SelectionType.MOUSE_OVER, groupRep.getID());
 					rootGroup.updateSelections(selectionManager, drawingStrategyManager);
 					triggerSelectionEvents();
 					setDisplayListDirty();
@@ -559,8 +527,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 			case RIGHT_CLICKED:
 				if (groupRep != null) {
 					boolean bContextMenueItemsAvailable = false;
-					if (selectionManager.checkStatus(SelectionType.SELECTION,
-							groupRep.getID())
+					if (selectionManager.checkStatus(SelectionType.SELECTION, groupRep.getID())
 							&& groupRep != rootGroup) {
 
 						Set<Integer> selectedGroups = new HashSet<Integer>(
@@ -568,11 +535,10 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 						Set<Integer> setClickedGroups = new HashSet<Integer>(
 								selectionManager.getElements(selectionTypeClicked));
-						ArrayList<ICompositeGraphic> orderedComposites = getOrderedCompositeList(
-								setClickedGroups, false);
+						ArrayList<ICompositeGraphic> orderedComposites = getOrderedCompositeList(setClickedGroups,
+								false);
 
-						RenameGroupItem renameItem = new RenameGroupItem(externalID,
-								dataDomain.getDataDomainID());
+						RenameGroupItem renameItem = new RenameGroupItem(externalID, dataDomain.getDataDomainID());
 						contextMenuCreator.addContextMenuItem(renameItem);
 						// groupRep.addAsDraggable(dragAndDropController);
 						//
@@ -586,24 +552,22 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 						// triggerSelectionEvents();
 						// setDisplayListDirty();
 
-						CreateGroupItem createGroupItem = new CreateGroupItem(
-								selectedGroups, dataDomain.getDataDomainID());
+						CreateGroupItem createGroupItem = new CreateGroupItem(selectedGroups,
+								dataDomain.getDataDomainID());
 						contextMenuCreator.addContextMenuItem(createGroupItem);
 
-						CopyGroupsItem copyGroupsItem = new CopyGroupsItem(
-								selectedGroups, dataDomain.getDataDomainID());
+						CopyGroupsItem copyGroupsItem = new CopyGroupsItem(selectedGroups, dataDomain.getDataDomainID());
 						contextMenuCreator.addContextMenuItem(copyGroupsItem);
 
-						DeleteGroupsItem deleteGroupsItem = new DeleteGroupsItem(
-								selectedGroups, dataDomain.getDataDomainID());
+						DeleteGroupsItem deleteGroupsItem = new DeleteGroupsItem(selectedGroups,
+								dataDomain.getDataDomainID());
 						contextMenuCreator.addContextMenuItem(deleteGroupsItem);
 
-						AggregateGroupItem aggregateGroupItem = new AggregateGroupItem(
-								selectedGroups, dataDomain.getDataDomainID());
+						AggregateGroupItem aggregateGroupItem = new AggregateGroupItem(selectedGroups,
+								dataDomain.getDataDomainID());
 						contextMenuCreator.addContextMenuItem(aggregateGroupItem);
 
-						ArrayList<ClusterNode> selectedNodes = new ArrayList<ClusterNode>(
-								selectedGroups.size());
+						ArrayList<ClusterNode> selectedNodes = new ArrayList<ClusterNode>(selectedGroups.size());
 
 						// here all groups are selected, even the groups with
 						// only one element
@@ -614,8 +578,8 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 						ArrayList<TablePerspective> tablePerspectives = makeTablePerspectives(selectedNodes);
 
-						AddGroupsToStratomexItem addGroupsToStratomexItem = new AddGroupsToStratomexItem(
-								dataDomain, tablePerspective, tablePerspectives);
+						AddGroupsToStratomexItem addGroupsToStratomexItem = new AddGroupsToStratomexItem(dataDomain,
+								tablePerspective, tablePerspectives);
 
 						contextMenuCreator.addContextMenuItem(addGroupsToStratomexItem);
 
@@ -658,11 +622,9 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 						}
 
 					}
-					if (setCopiedGroups != null
-							&& !setCopiedGroups.contains(groupRep.getID())
-							&& !groupRep.isLeaf()) {
-						PasteGroupsItem pasteGroupItem = new PasteGroupsItem(
-								groupRep.getID(), dataDomain.getDataDomainID());
+					if (setCopiedGroups != null && !setCopiedGroups.contains(groupRep.getID()) && !groupRep.isLeaf()) {
+						PasteGroupsItem pasteGroupItem = new PasteGroupsItem(groupRep.getID(),
+								dataDomain.getDataDomainID());
 						contextMenuCreator.addContextMenuItem(pasteGroupItem);
 						bContextMenueItemsAvailable = true;
 					}
@@ -722,18 +684,17 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 		}
 	}
 
-	private ArrayList<TablePerspective> makeTablePerspectives(
-			ArrayList<ClusterNode> selectedNodes) {
+	private ArrayList<TablePerspective> makeTablePerspectives(ArrayList<ClusterNode> selectedNodes) {
 		ArrayList<TablePerspective> tablePerspectives = new ArrayList<TablePerspective>();
 		for (ClusterNode node : selectedNodes) {
 			if (node.isLeaf())
 				continue;
-			DimensionPerspective subDimensionPerspective1 = node.getSubPerspective(
-					DimensionPerspective.class, dataDomain);
+			Perspective subDimensionPerspective1 = node.getSubPerspective(Perspective.class,
+					dataDomain);
 
 			dataDomain.getTable().registerDimensionPerspective(subDimensionPerspective1);
-			TablePerspective tablePerspective1 = dataDomain.getTablePerspective(tablePerspective
-					.getRecordPerspective().getPerspectiveID(), subDimensionPerspective1.getPerspectiveID());
+			TablePerspective tablePerspective1 = dataDomain.getTablePerspective(tablePerspective.getRecordPerspective()
+					.getPerspectiveID(), subDimensionPerspective1.getPerspectiveID());
 			tablePerspectives.add(tablePerspective1);
 
 		}
@@ -764,8 +725,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 			if (groupRep != null && groupRep.isLeaf()) {
 				ClusterNode clusterNode = groupRep.getClusterNode();
 				if (item.isRemove())
-					delta.removeSelection(clusterNode.getLeafID(),
-							item.getSelectionType());
+					delta.removeSelection(clusterNode.getLeafID(), item.getSelectionType());
 				else
 					delta.addSelection(clusterNode.getLeafID(), item.getSelectionType());
 			}
@@ -785,8 +745,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedGrouperView serializedForm = new SerializedGrouperView(
-				this);
+		SerializedGrouperView serializedForm = new SerializedGrouperView(this);
 		return serializedForm;
 	}
 
@@ -819,8 +778,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 		clusterNodeSelectionListener = new ClusterNodeSelectionListener();
 		clusterNodeSelectionListener.setHandler(this);
-		eventPublisher.addListener(ClusterNodeSelectionEvent.class,
-				clusterNodeSelectionListener);
+		eventPublisher.addListener(ClusterNodeSelectionEvent.class, clusterNodeSelectionListener);
 
 		renameGroupListener = new RenameGroupListener();
 		renameGroupListener.setHandler(this);
@@ -885,16 +843,14 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	}
 
 	/**
-	 * @return True if the hierarchy (composite GroupRepresentation tree) has
-	 *         changed, false otherwise.
+	 * @return True if the hierarchy (composite GroupRepresentation tree) has changed, false otherwise.
 	 */
 	public boolean isHierarchyChanged() {
 		return hierarchyChanged;
 	}
 
 	/**
-	 * Sets whether the hierarchy (composite GroupRepresentation tree) was
-	 * changed or not.
+	 * Sets whether the hierarchy (composite GroupRepresentation tree) was changed or not.
 	 *
 	 * @param bHierarchyChanged
 	 *            Specifies if the hierarchy has changed.
@@ -935,24 +891,18 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	// }
 
 	/**
-	 * Returns the ordered list of composites that correspond to the specified
-	 * set of group IDs. The ordering is given by the appearance of the
-	 * composites in the tree, hence their visual appearance from top to bottom
-	 * of this view.
+	 * Returns the ordered list of composites that correspond to the specified set of group IDs. The ordering is given
+	 * by the appearance of the composites in the tree, hence their visual appearance from top to bottom of this view.
 	 *
 	 * @param setGroupIds
 	 *            IDs of the composites that should be retrieved.
 	 * @param topLevelElementsOnly
-	 *            Specifies whether the list should only contain top level
-	 *            composites, i.e. if the specified set of ids contains
-	 *            composites with parent-child relation, this parameter
-	 *            determines if only the parents or parents and children should
-	 *            be added to the list.
-	 * @return The ordered list of composites that correspond to the specified
-	 *         set of group IDs
+	 *            Specifies whether the list should only contain top level composites, i.e. if the specified set of ids
+	 *            contains composites with parent-child relation, this parameter determines if only the parents or
+	 *            parents and children should be added to the list.
+	 * @return The ordered list of composites that correspond to the specified set of group IDs
 	 */
-	private ArrayList<ICompositeGraphic> getOrderedCompositeList(
-			Set<Integer> setGroupIds, boolean topLevelElementsOnly) {
+	private ArrayList<ICompositeGraphic> getOrderedCompositeList(Set<Integer> setGroupIds, boolean topLevelElementsOnly) {
 
 		Set<ICompositeGraphic> setComposites = new HashSet<ICompositeGraphic>();
 		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = new ArrayList<ICompositeGraphic>();
@@ -962,33 +912,28 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 				setComposites.add(hashGroups.get(id));
 		}
 
-		rootGroup.getOrderedCompositeList(setComposites, alOrderedTopLevelComposites,
-				topLevelElementsOnly);
+		rootGroup.getOrderedCompositeList(setComposites, alOrderedTopLevelComposites, topLevelElementsOnly);
 
 		return alOrderedTopLevelComposites;
 	}
 
 	/**
-	 * Creates a new Group as child of the common parent of the specified
-	 * GroupRepresentations. If all of the specified GroupRepresentations have
-	 * the same parent, they will be the children of the newly created group,
-	 * otherwise the newly created group's children are copies of them.
+	 * Creates a new Group as child of the common parent of the specified GroupRepresentations. If all of the specified
+	 * GroupRepresentations have the same parent, they will be the children of the newly created group, otherwise the
+	 * newly created group's children are copies of them.
 	 *
 	 * @param setContainedGroups
-	 *            IDs of the GroupRepresentations a new parent shall be created
-	 *            for.
+	 *            IDs of the GroupRepresentations a new parent shall be created for.
 	 */
 	public void createNewGroup(Set<Integer> setContainedGroups) {
 
 		tree = new ClusterTree(dataDomain.getDimensionIDType(), 3);
-		GroupRepresentation newGroup = new GroupRepresentation(new ClusterNode(tree,
-				"group" + lastUsedGroupID, lastUsedGroupID++, false, -1), renderStyle,
-				drawingStrategyManager
-						.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL),
+		GroupRepresentation newGroup = new GroupRepresentation(new ClusterNode(tree, "group" + lastUsedGroupID,
+				lastUsedGroupID++, false, -1), renderStyle,
+				drawingStrategyManager.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL),
 				drawingStrategyManager, this, false);
 
-		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedCompositeList(
-				setContainedGroups, true);
+		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedCompositeList(setContainedGroups, true);
 
 		String groupName = determineNodeLabel(alOrderedTopLevelComposites);
 		if (groupName != "")
@@ -1019,8 +964,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 			int iTempID[] = { lastUsedGroupID };
 			for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
 				iTempID[0]++;
-				ICompositeGraphic copy = composite
-						.createDeepCopyWithNewIDs(tree, iTempID);
+				ICompositeGraphic copy = composite.createDeepCopyWithNewIDs(tree, iTempID);
 				copy.setParent(newGroup);
 				newGroup.add(copy);
 			}
@@ -1080,8 +1024,8 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	}
 
 	/**
-	 * Finds the common parent of the specified composites, i.e. the first
-	 * composite that all composites have along their parent paths.
+	 * Finds the common parent of the specified composites, i.e. the first composite that all composites have along
+	 * their parent paths.
 	 *
 	 * @param alComposites
 	 *            Composites whose common parent shall be found for.
@@ -1103,8 +1047,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 		int iNumberOfCompositesWithCommonParent = 0;
 
 		while (commonParent == null) {
-			ICompositeGraphic commonParentGuess = compositeWithLowestHierarchyLevel
-					.getParent();
+			ICompositeGraphic commonParentGuess = compositeWithLowestHierarchyLevel.getParent();
 			if (commonParentGuess == null)
 				return null;
 
@@ -1150,8 +1093,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 		if (parent == null || setCopiedGroups == null || parent.isLeaf())
 			return;
 
-		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedCompositeList(
-				setCopiedGroups, true);
+		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedCompositeList(setCopiedGroups, true);
 
 		int iTempID[] = { lastUsedGroupID };
 		for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
@@ -1174,8 +1116,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	 */
 	public void deleteGroups(Set<Integer> setGroupsToDelete) {
 
-		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedCompositeList(
-				setGroupsToDelete, true);
+		ArrayList<ICompositeGraphic> alOrderedTopLevelComposites = getOrderedCompositeList(setGroupsToDelete, true);
 
 		for (ICompositeGraphic composite : alOrderedTopLevelComposites) {
 			ICompositeGraphic parent = composite.getParent();
@@ -1198,16 +1139,14 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 		if (selectionDelta.getIDType() == selectionManager.getIDType()
 				|| selectionDelta.getIDType() == dataDomain.getDimensionIDType()) {
 			Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
-			Tree<ClusterNode> experimentTree = tablePerspective.getDimensionPerspective()
-					.getTree();
+			Tree<ClusterNode> experimentTree = tablePerspective.getDimensionPerspective().getTree();
 
 			if (experimentTree != null) {
 				// selectionManager.clearSelections();
 				dragAndDropController.clearDraggables();
 
 				for (SelectionDeltaItem item : deltaItems) {
-					ArrayList<Integer> alNodeIDs = experimentTree
-							.getNodeIDsFromLeafID(item.getID());
+					ArrayList<Integer> alNodeIDs = experimentTree.getNodeIDsFromLeafID(item.getID());
 
 					for (Integer nodeID : alNodeIDs) {
 						GroupRepresentation groupRep = hashGroups.get(nodeID);
@@ -1215,16 +1154,14 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 						if (groupRep == null)
 							continue;
 						if (item.isRemove()) {
-							groupRep.setSelectionTypeRec(SelectionType.NORMAL,
-									selectionManager);
+							groupRep.setSelectionTypeRec(SelectionType.NORMAL, selectionManager);
 							selectionManager.remove(nodeID);
 						} else {
 							if (item.getSelectionType() == SelectionType.SELECTION) {
 								groupRep.addAsDraggable(dragAndDropController);
 							}
 
-							groupRep.setSelectionTypeRec(item.getSelectionType(),
-									selectionManager);
+							groupRep.setSelectionTypeRec(item.getSelectionType(), selectionManager);
 
 						}
 
@@ -1263,8 +1200,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 			@Override
 			public void run() {
-				ChangeGroupNameDialog.run(PlatformUI.getWorkbench().getDisplay(),
-						groupRep);
+				ChangeGroupNameDialog.run(PlatformUI.getWorkbench().getDisplay(), groupRep);
 				// groupRep.getClusterNode().getSubDataTable()
 				// .setLabel(groupRep.getClusterNode().getLabel());
 				setDisplayListDirty();
@@ -1278,14 +1214,13 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	public void initialize() {
 		super.initialize();
 
-		drawingStrategyManager = new DrawingStrategyManager(tablePerspective
-				.getDimensionPerspective().getPerspectiveID(), pickingManager, uniqueID, renderStyle);
+		drawingStrategyManager = new DrawingStrategyManager(tablePerspective.getDimensionPerspective()
+				.getPerspectiveID(), pickingManager, uniqueID, renderStyle);
 		tree = tablePerspective.getDimensionPerspective().getTree();
 		initHierarchy(tree);
 		selectionManager = new SelectionManager(tree.getNodeIDType());
 
-		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
-				selectionTypeClicked);
+		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(selectionTypeClicked);
 		eventPublisher.triggerEvent(selectionTypeEvent);
 
 		selectionManager.addTypeToDeltaBlacklist(selectionTypeClicked);
@@ -1295,8 +1230,8 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
-			IDType idType, int id) throws InvalidAttributeValueException {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
+			throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
 	}

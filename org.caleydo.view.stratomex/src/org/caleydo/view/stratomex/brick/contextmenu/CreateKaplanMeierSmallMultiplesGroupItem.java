@@ -20,7 +20,7 @@
 package org.caleydo.view.stratomex.brick.contextmenu;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.stratomex.event.OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent;
 
@@ -34,7 +34,7 @@ public class CreateKaplanMeierSmallMultiplesGroupItem extends AContextMenuItem {
 
 	public CreateKaplanMeierSmallMultiplesGroupItem(
 			TablePerspective dimensionGroupTablePerspective,
-			DimensionPerspective dimensionPerspective) {
+			Perspective dimensionPerspective) {
 
 		setLabel("Create Small Multiple Clinical Data Group");
 

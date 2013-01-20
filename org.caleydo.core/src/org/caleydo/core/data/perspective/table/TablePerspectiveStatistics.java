@@ -23,8 +23,6 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.Table;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 
 /**
@@ -90,7 +88,7 @@ public class TablePerspectiveStatistics {
 		int count = 0;
 		for (Integer recordID : referenceTablePerspective.getRecordPerspective().getVirtualArray()) {
 
-			DimensionVirtualArray dimensionVA = referenceTablePerspective.getDimensionPerspective().getVirtualArray();
+			VirtualArray dimensionVA = referenceTablePerspective.getDimensionPerspective().getVirtualArray();
 
 			if (dimensionVA == null) {
 				averageValue = 0;
@@ -129,8 +127,33 @@ public class TablePerspectiveStatistics {
 		return histogram;
 	}
 
-	public static Histogram calculateHistogram(Table table, RecordVirtualArray recordVA,
-			DimensionVirtualArray dimensionVA, int numberOfBucketsForHistogram) {
+	/**
+	 * Calculates a histogram for a given set of virtual arrays. One of the two VA parameters has to be a dimensionVA,
+	 * the other must be a recordVA. The order is irrelevant.
+	 *
+	 * @param table
+	 * @param va1
+	 * @param va2
+	 * @param numberOfBucketsForHistogram
+	 * @return
+	 */
+	public static Histogram calculateHistogram(Table table, VirtualArray va1, VirtualArray va2,
+			int numberOfBucketsForHistogram) {
+
+		VirtualArray recordVA, dimensionVA;
+
+		if (va1.getIdType().equals(table.getDataDomain().getRecordIDType())
+				&& va2.getIdType().equals(table.getDataDomain().getDimensionIDType())) {
+			recordVA = va1;
+			dimensionVA = va2;
+		} else if (va1.getIdType().equals(table.getDataDomain().getDimensionIDType())
+				&& va2.getIdType().equals(table.getDataDomain().getRecordIDType())) {
+			recordVA = va2;
+			dimensionVA = va1;
+		} else {
+			throw new IllegalArgumentException("Virtual arrays don't match table");
+		}
+
 		if (!table.isDataHomogeneous()) {
 			throw new UnsupportedOperationException(
 					"Tried to calcualte a set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
@@ -200,8 +223,8 @@ public class TablePerspectiveStatistics {
 	private void calculateAverageRecords() {
 		averageRecords = new ArrayList<Average>();
 
-		DimensionVirtualArray dimensionVA = referenceTablePerspective.getDimensionPerspective().getVirtualArray();
-		RecordVirtualArray recordVA = referenceTablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray dimensionVA = referenceTablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray recordVA = referenceTablePerspective.getRecordPerspective().getVirtualArray();
 
 		for (Integer recordID : recordVA) {
 
@@ -227,8 +250,8 @@ public class TablePerspectiveStatistics {
 	private void calculateAverageDimensions() {
 		averageDimensions = new ArrayList<Average>();
 
-		DimensionVirtualArray dimensionVA = referenceTablePerspective.getDimensionPerspective().getVirtualArray();
-		RecordVirtualArray recordVA = referenceTablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray dimensionVA = referenceTablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray recordVA = referenceTablePerspective.getRecordPerspective().getVirtualArray();
 
 		for (Integer dimensionID : dimensionVA) {
 			Average averageDimension = calculateAverage(recordVA, referenceTablePerspective.getDataDomain().getTable(),
@@ -243,8 +266,8 @@ public class TablePerspectiveStatistics {
 	 * Whether the average is calculated for the column or row is determined by the type of the {@link VirtualArray}.
 	 * </p>
 	 * <p>
-	 * The objectID has to be of the "opposing" type, i.e., if the virtualArray is of type {@link RecordVirtualArray},
-	 * the id has to be a dimension id.
+	 * The objectID has to be of the "opposing" type, i.e., if the virtualArray is of type {@link VirtualArray}, the id
+	 * has to be a dimension id.
 	 * </p>
 	 * <p>
 	 * The std-dev is calculated in the same loop as the average, according to <a
@@ -258,7 +281,7 @@ public class TablePerspectiveStatistics {
 	 * @param objectID
 	 * @return
 	 */
-	public static Average calculateAverage(VirtualArray<?, ?, ?> virtualArray, Table table, Integer objectID) {
+	public static Average calculateAverage(VirtualArray virtualArray, Table table, Integer objectID) {
 		Average averageDimension = new Average();
 		double sumOfValues = 0;
 		// sum of squares
@@ -268,7 +291,7 @@ public class TablePerspectiveStatistics {
 
 		for (Integer virtualArrayID : virtualArray) {
 			Float value;
-			if (virtualArray instanceof RecordVirtualArray) {
+			if (virtualArray instanceof VirtualArray) {
 				if (virtualArray.getIdType() != null
 						&& !virtualArray.getIdType().equals(table.getDataDomain().getRecordIDType())) {
 					virtualArrayID = table.getDataDomain().getRecordIDMappingManager()

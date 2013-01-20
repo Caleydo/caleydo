@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
@@ -60,7 +60,7 @@ import org.eclipse.swt.widgets.Text;
  *
  */
 public class AdjustedRandScoreFactory implements IScoreFactory {
-	private IRegisteredScore create(String label, ARecordPerspective reference) {
+	private IRegisteredScore create(String label, Perspective reference) {
 		return new DefaultComputedReferenceStratificationScore(label, reference, AdjustedRandIndex.get(), null);
 	}
 
@@ -145,7 +145,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 				this.stratificationUI.setInput(null);
 				this.stratificationUI.getCombo().setEnabled(false);
 			} else {
-				List<ARecordPerspective> data = new ArrayList<ARecordPerspective>(receiver.getQuery().getQuery()
+				List<Perspective> data = new ArrayList<Perspective>(receiver.getQuery().getQuery()
 						.getJustStratifications(dataDomain));
 				this.stratificationUI.setInput(data);
 				this.stratificationUI.getCombo().setEnabled(true);
@@ -168,7 +168,7 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 
 		private void save() {
 			String label = labelUI.getText();
-			ARecordPerspective strat = (ARecordPerspective) ((IStructuredSelection) stratificationUI.getSelection())
+			Perspective strat = (Perspective) ((IStructuredSelection) stratificationUI.getSelection())
 					.getFirstElement();
 			if (label == null || label.trim().isEmpty())
 				label = strat.getLabel();
@@ -177,8 +177,8 @@ public class AdjustedRandScoreFactory implements IScoreFactory {
 			if (strat == null) { // score all
 				CollapseScore composite = new CollapseScore(label);
 				@SuppressWarnings("unchecked")
-				Iterable<ARecordPerspective> it = (Iterable<ARecordPerspective>) stratificationUI.getInput();
-				for (ARecordPerspective g : it) {
+				Iterable<Perspective> it = (Iterable<Perspective>) stratificationUI.getInput();
+				for (Perspective g : it) {
 					composite.add(AdjustedRandScoreFactory.this.create(null, g));
 				}
 				s = composite;

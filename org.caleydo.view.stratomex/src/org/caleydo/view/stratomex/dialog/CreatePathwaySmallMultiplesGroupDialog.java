@@ -27,9 +27,8 @@ import java.util.Locale;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.collection.Pair.ComparablePair;
@@ -71,7 +70,7 @@ public class CreatePathwaySmallMultiplesGroupDialog
 	extends TitleAreaDialog {
 
 	private TablePerspective tablePerspective;
-	private DimensionPerspective dimensionPerspective;
+	private Perspective dimensionPerspective;
 
 	private PathwayTableSorter pathwayTableSorter = new PathwayTableSorter();
 
@@ -128,7 +127,7 @@ public class CreatePathwaySmallMultiplesGroupDialog
 	}
 
 	public CreatePathwaySmallMultiplesGroupDialog(Shell parentShell,
-			TablePerspective tablePerspective, DimensionPerspective dimensionPerspective) {
+			TablePerspective tablePerspective, Perspective dimensionPerspective) {
 
 		super(parentShell);
 		this.dimensionPerspective = dimensionPerspective;
@@ -159,7 +158,7 @@ public class CreatePathwaySmallMultiplesGroupDialog
 		descriptionLabel.setText("Select the pathways for the group.");
 		descriptionLabel.setLayoutData(data);
 
-		VirtualArray<?, ?, ?> va = null;
+		VirtualArray va = null;
 		// if (tablePerspective.getDataDomain().isColumnDimension())
 		va = tablePerspective.getDataDomain().getTable().getDefaultDimensionPerspective()
 				.getVirtualArray();
@@ -342,8 +341,9 @@ public class CreatePathwaySmallMultiplesGroupDialog
 			for (Object obj : pathways) {
 				ComparablePair<Integer, PathwayGraph> pathway = (ComparablePair<Integer, PathwayGraph>) obj;
 
-				RecordPerspective oldRecordPerspective = tablePerspective.getRecordPerspective();
-				RecordPerspective newRecordPerspective = new RecordPerspective(tablePerspective.getDataDomain());
+				Perspective oldRecordPerspective = tablePerspective.getRecordPerspective();
+				Perspective newRecordPerspective = new Perspective(tablePerspective.getDataDomain(),
+						oldRecordPerspective.getIdType());
 
 				PerspectiveInitializationData data = new PerspectiveInitializationData();
 				data.setData(oldRecordPerspective.getVirtualArray());

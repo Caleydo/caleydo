@@ -34,20 +34,15 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
 import org.caleydo.core.data.collection.EDataClass;
-import org.caleydo.core.data.filter.DimensionFilterManager;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.FilterManager;
-import org.caleydo.core.data.filter.RecordFilterManager;
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
-import org.caleydo.core.data.filter.event.ReEvaluateDimensionFilterListEvent;
-import org.caleydo.core.data.filter.event.ReEvaluateRecordFilterListEvent;
+import org.caleydo.core.data.filter.event.ReEvaluateFilterListEvent;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
@@ -93,7 +88,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	private FilterPipelineRenderStyle renderStyle;
 	private DragAndDropController dragAndDropController;
 	private SelectionManager selectionManager;
-	private List<FilterItem<?>> filterList = new LinkedList<FilterItem<?>>();
+	private List<FilterItem> filterList = new LinkedList<FilterItem>();
 
 	private FilterUpdateListener filterUpdateListener;
 	private SetFilterTypeListener setFilterTypeListener;
@@ -262,7 +257,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 			if (firstFilter > 0)
 				displayCollapseArrow(gl, firstFilter - 1, 0.12f);
 
-			for (FilterItem<?> filter : filterList) {
+			for (FilterItem filter : filterList) {
 				if (filter.getId() < firstFilter)
 					// skip hidden filters
 					continue;
@@ -501,7 +496,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		if (externalId >= filterList.size() || externalId < 0)
 			return;
 
-		FilterItem<?> filter = filterList.get(externalId);
+		FilterItem filter = filterList.get(externalId);
 
 		switch (selection) {
 		case 0:
@@ -556,7 +551,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 
 		filterSize.setX(filterSize.x() * 0.945f);
 
-		for (FilterItem<?> filter : filterList) {
+		for (FilterItem filter : filterList) {
 			if (filter.getId() < firstFilter)
 				continue;
 
@@ -589,8 +584,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 
 		reEvaluateFilterListener = new ReEvaluateFilterListener();
 		reEvaluateFilterListener.setHandler(this);
-		eventPublisher.addListener(ReEvaluateRecordFilterListEvent.class, reEvaluateFilterListener);
-		eventPublisher.addListener(ReEvaluateDimensionFilterListEvent.class, reEvaluateFilterListener);
+		eventPublisher.addListener(ReEvaluateFilterListEvent.class, reEvaluateFilterListener);
 
 		setFilterTypeListener = new SetFilterTypeListener();
 		setFilterTypeListener.setHandler(this);
@@ -621,6 +615,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	public void updateFilterPipeline() {
 		pipelineNeedsUpdate = false;
 
+
 		// Logger.log(new Status(IStatus.INFO, this.toString(),
 		// "Filter update: filterType="
 		// + filterType));
@@ -628,15 +623,16 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		filterList.clear();
 		int filterID = 0;
 
-		RecordFilterManager recordFilterManager = tablePerspective.getRecordPerspective().getFilterManager();
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		FilterManager recordFilterManager = tablePerspective.getRecordPerspective().getFilterManager();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
-		DimensionFilterManager dimensionFilterManager = tablePerspective.getDimensionPerspective().getFilterManager();
+		FilterManager dimensionFilterManager = tablePerspective.getDimensionPerspective().getFilterManager();
 
-		VirtualArray<?, ?, ?> currentVA;
-		FilterManager<?, ?, ?, ?> filterManager;
+		VirtualArray currentVA;
+		FilterManager filterManager;
 
+		// TODO this needs to be checked for generic handling
 		if (filterType == FilterType.RECORD) {
 			filterManager = recordFilterManager;
 			currentVA = recordVA;
@@ -645,8 +641,8 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 			currentVA = dimensionVA;
 		}
 
-		for (Filter<?> filter : filterManager.getFilterPipe()) {
-			FilterItem<?> filterItem = new FilterItem(filterID++, filter, pickingManager, uniqueID);
+		for (Filter filter : filterManager.getFilterPipe()) {
+			FilterItem filterItem = new FilterItem(filterID++, filter, pickingManager, uniqueID);
 
 			if (filter instanceof RecordMetaOrFilter)
 				filterItem.setRepresentation(new FilterRepresentationMetaOrAdvanced(renderStyle, pickingManager,
@@ -659,7 +655,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 
 		// TODO move to separate function...
 
-		for (FilterItem<?> filter : filterList) {
+		for (FilterItem filter : filterList) {
 			// filter items
 			filter.setInput(currentVA);
 			currentVA = filter.getOutput();

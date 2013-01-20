@@ -34,11 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.AVariablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
@@ -142,13 +139,13 @@ public final class ExternalIDTypeScore extends DefaultLabelProvider implements I
 		Iterator<Integer> it;
 		IDType target;
 
-		final RecordPerspective recordPerspective = strat.getRecordPerspective();
-		final DimensionPerspective dimensionPerspective = strat.getDimensionPerspective();
+		final Perspective recordPerspective = strat.getRecordPerspective();
+		final Perspective dimensionPerspective = strat.getDimensionPerspective();
 
 
 		if (isCompatible(dimensionPerspective.getIdType())) {
 			target = dimensionPerspective.getIdType();
-			DimensionVirtualArray va = dimensionPerspective.getVirtualArray();
+			VirtualArray va = dimensionPerspective.getVirtualArray();
 			//if we have a group and the group reduces my virtual array use it
 			if (isMyGroup(elem.getGroup(), dimensionPerspective))
 				it = va.getIDsOfGroup(elem.getGroup().getGroupIndex()).iterator();
@@ -156,7 +153,7 @@ public final class ExternalIDTypeScore extends DefaultLabelProvider implements I
 				it = va.iterator();
 		} else if (isCompatible(recordPerspective.getIdType())) {
 			target = recordPerspective.getIdType();
-			RecordVirtualArray va = recordPerspective.getVirtualArray();
+			VirtualArray va = recordPerspective.getVirtualArray();
 			// if we have a group and the group reduces my virtual array use it
 			if (isMyGroup(elem.getGroup(), recordPerspective))
 				it = va.getIDsOfGroup(elem.getGroup().getGroupIndex()).iterator();
@@ -194,7 +191,7 @@ public final class ExternalIDTypeScore extends DefaultLabelProvider implements I
 	 * @param dimensionPerspective
 	 * @return
 	 */
-	private static boolean isMyGroup(Group group, AVariablePerspective<?, ?, ?, ?> perspective) {
+	private static boolean isMyGroup(Group group, Perspective perspective) {
 		if (group == null)
 			return false;
 		for (Group g : perspective.getVirtualArray().getGroupList())

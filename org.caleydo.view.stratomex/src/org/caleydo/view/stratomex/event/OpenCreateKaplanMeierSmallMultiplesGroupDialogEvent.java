@@ -20,7 +20,7 @@
 package org.caleydo.view.stratomex.event;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.AEvent;
 
 /**
@@ -41,7 +41,7 @@ public class OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent extends AEvent 
 	 * The base dimension perspective containing all genes that will be mapped
 	 * to the pathways.
 	 */
-	private DimensionPerspective dimensionPerspective;
+	private Perspective dimensionPerspective;
 
 	/**
 	 * @param tablePerspective
@@ -50,7 +50,7 @@ public class OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent extends AEvent 
 	 */
 	public OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent(
 			TablePerspective dimensionGroupTablePerspective,
-			DimensionPerspective dimensionPerspective) {
+			Perspective dimensionPerspective) {
 
 		this.setDimensionGroupTablePerspective(dimensionGroupTablePerspective);
 		this.setDimensionPerspective(dimensionPerspective);
@@ -80,14 +80,14 @@ public class OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent extends AEvent 
 	 * @param dimensionPerspective
 	 *            setter, see {@link #dimensionPerspective}
 	 */
-	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
+	public void setDimensionPerspective(Perspective dimensionPerspective) {
 		this.dimensionPerspective = dimensionPerspective;
 	}
 
 	/**
 	 * @return the dimensionPerspective, see {@link #dimensionPerspective}
 	 */
-	public DimensionPerspective getDimensionPerspective() {
+	public Perspective getDimensionPerspective() {
 		return dimensionPerspective;
 	}
 }

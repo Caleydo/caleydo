@@ -21,7 +21,7 @@ package org.caleydo.view.stratomex.brick.ui;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.GLStratomex;
@@ -45,13 +45,13 @@ public class FuelBarRenderer extends LayoutRenderer {
 	@Override
 	public void renderContent(GL2 gl) {
 
-		RecordVirtualArray recordVA = brick.getTablePerspective().getRecordPerspective()
+		VirtualArray recordVA = brick.getTablePerspective().getRecordPerspective()
 				.getVirtualArray();
 
 		if (recordVA == null)
 			return;
 
-		RecordVirtualArray setRecordVA = brick.getBrickColumn().getTablePerspective()
+		VirtualArray setRecordVA = brick.getBrickColumn().getTablePerspective()
 				.getRecordPerspective().getVirtualArray();
 
 		if (setRecordVA == null)

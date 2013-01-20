@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -59,11 +59,11 @@ public class PerspectiveInitializationData {
 	 */
 	private ClusterNode rootNode;
 
-	private VirtualArray<?, ?, ?> virtualArray;
+	private VirtualArray virtualArray;
 
 	/**
 	 * Initialize from index list only
-	 * 
+	 *
 	 * @param indices
 	 */
 	public void setData(List<Integer> indices) {
@@ -74,7 +74,7 @@ public class PerspectiveInitializationData {
 
 	/**
 	 * Initialize with index list, grouping and sample elements
-	 * 
+	 *
 	 * @param indices
 	 * @param groupSizes
 	 * @param sampleElements
@@ -94,7 +94,7 @@ public class PerspectiveInitializationData {
 	/**
 	 * Same as {@link #setData(List, List, List)} but with additional
 	 * clusterNames
-	 * 
+	 *
 	 * @param indices
 	 * @param groupSizes
 	 * @param sampleElements
@@ -115,7 +115,7 @@ public class PerspectiveInitializationData {
 
 	/**
 	 * Initialize with tree only
-	 * 
+	 *
 	 * @param tree
 	 */
 	public void setData(ClusterTree tree) {
@@ -127,7 +127,7 @@ public class PerspectiveInitializationData {
 	/**
 	 * Initialize with tree and an artificial root node (i.e., only the sub-tree
 	 * starting at the artificial root will be used.
-	 * 
+	 *
 	 * @param tree
 	 * @param rootNode
 	 */
@@ -142,10 +142,10 @@ public class PerspectiveInitializationData {
 
 	/**
 	 * Initialize with an existing virtual array. The virtual array must have
-	 * 
+	 *
 	 * @param virtualArray
 	 */
-	public void setData(VirtualArray<?, ?, ?> virtualArray) {
+	public void setData(VirtualArray virtualArray) {
 		if (virtualArray == null)
 			throw new IllegalArgumentException("VA was null");
 		if (virtualArray.getGroupList() == null) {
@@ -157,7 +157,7 @@ public class PerspectiveInitializationData {
 	/**
 	 * @return the virtualArray, see {@link #virtualArray}
 	 */
-	public VirtualArray<?, ?, ?> getVirtualArray() {
+	public VirtualArray getVirtualArray() {
 		return virtualArray;
 	}
 

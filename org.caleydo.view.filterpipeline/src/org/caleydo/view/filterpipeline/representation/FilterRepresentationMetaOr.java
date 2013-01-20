@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -26,11 +26,10 @@ import java.util.TreeSet;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.filter.RecordFilter;
+import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -38,7 +37,7 @@ import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 
 /**
  * @author Thomas Geymayer
- * 
+ *
  */
 public class FilterRepresentationMetaOr extends FilterRepresentation {
 	public static boolean renderPassedAll = true;
@@ -113,17 +112,17 @@ public class FilterRepresentationMetaOr extends FilterRepresentation {
 
 		// TODO also handle dimension filter
 		@SuppressWarnings("unchecked")
-		VirtualArray<?, RecordVADelta, ?> input = (VirtualArray<?, RecordVADelta, ?>) filter
+		VirtualArray input = filter
 				.getInput().clone();
-		ArrayList<RecordFilter> filterList = ((RecordMetaOrFilter) filter.getFilter())
+		ArrayList<Filter> filterList = ((RecordMetaOrFilter) filter.getFilter())
 				.getFilterList();
 
 		subFilterSizes = new int[filterList.size()];
 		subFiltersPassedElements = new ArrayList<SortedSet<Integer>>(filterList.size());
 
 		int i = 0;
-		for (RecordFilter subFilter : filterList) {
-			VirtualArray<?, RecordVADelta, ?> tempInput = input.clone();
+		for (Filter subFilter : filterList) {
+			VirtualArray tempInput = input.clone();
 			tempInput.setDelta(subFilter.getVADelta());
 
 			SortedSet<Integer> passedElements = new TreeSet<Integer>();

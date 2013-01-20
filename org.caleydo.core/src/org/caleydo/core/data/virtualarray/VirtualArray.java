@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -49,19 +50,20 @@ import org.eclipse.core.runtime.Status;
  * <p>
  * FIXME: Groups and group interactions are somewhat undefined
  * </p>
- * 
+ *
  * @author Alexander Lex
  * @author Marc Streit
  */
 @XmlType
-public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteType, VADelta, GroupType>, VADelta extends VirtualArrayDelta<?>, GroupType extends GroupList<GroupType, ConcreteType, VADelta>>
+@XmlRootElement
+public class VirtualArray
 	implements Iterable<Integer>, Cloneable {
 
 	private static int VIRTUAL_ARRAY_ID_COUNTER = 0;
-	
-	/** unique ID */	
+
+	/** unique ID */
 	private int id = 0;
-	
+
 	@XmlTransient
 	protected IDType idType;
 
@@ -69,7 +71,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	ArrayList<Integer> virtualArrayList;
 	IDMap idMap;
 
-	GroupType groupList = null;
+	GroupList groupList = null;
 
 	public VirtualArray() {
 	}
@@ -88,7 +90,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * Constructor. Pass the length of the managed collection and a predefined
 	 * array list of indices on the collection. This will serve as the starting
 	 * point for the virtual array.
-	 * 
+	 *
 	 * @param initialList
 	 */
 	public VirtualArray(IDType idType, List<Integer> initialList) {
@@ -116,20 +118,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		idMap.setDirty();
 	}
 
-	/**
-	 * Gets a new instance of the same concrete type as this objects'.
-	 * 
-	 * @return
-	 */
-	public abstract ConcreteType getNewInstance();
 
-	/**
-	 * Get a new instance of a va delta matching this virtual arrays concrete
-	 * type.
-	 * 
-	 * @return
-	 */
-	public abstract VADelta getConcreteVADeltaInstance();
 
 	/**
 	 * Returns an Iterator<Integer> of type VAIterator, which allows to iterate
@@ -142,7 +131,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	/**
 	 * Returns the element at the specified index in the virtual array
-	 * 
+	 *
 	 * @param index the index
 	 * @return the element at the index
 	 */
@@ -152,7 +141,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	/**
 	 * Adds an element to the end of the list.
-	 * 
+	 *
 	 * @param newElementID the id of the new element (which corresponds to the
 	 *            index of the collection)
 	 * @exception IllegalArgumentException if the value of the new element is
@@ -167,7 +156,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	/**
 	 * Adds an element to the end of the list, if the element is not already
 	 * contained.
-	 * 
+	 *
 	 * @param newElement the index to the collection
 	 * @exception IllegalArgumentException if the value of the new element is
 	 *                larger than allowed. The maximum allowed value is the
@@ -188,7 +177,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * Inserts the specified element at the specified position in this list.
 	 * Shifts the element currently at that position (if any) and any subsequent
 	 * elements to the right (adds one to their indices).
-	 * 
+	 *
 	 * @param index the position on which to insert the new element
 	 * @param newElement the id refering to the index of the collection
 	 */
@@ -200,7 +189,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	/**
 	 * Replaces the element at the specified position in this list with the
 	 * specified element.
-	 * 
+	 *
 	 * @param index
 	 * @param newElement
 	 */
@@ -213,7 +202,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * Copies the element at index to the next index. Shifts the element
 	 * currently at that position (if any) and any subsequent elements to the
 	 * right (adds one to their indices).
-	 * 
+	 *
 	 * @param index the index of the element to be copied
 	 */
 	public void copy(int index) {
@@ -224,7 +213,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	/**
 	 * Moves the element at the specified source index to the target index. The
 	 * element formerly at srcIndex is at targetIndex after this operation.
-	 * 
+	 *
 	 * @param srcIndex the src index of the element
 	 * @param targetIndex the target index of the element
 	 */
@@ -237,7 +226,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	/**
 	 * Removes the element at the specified index. Shifts any subsequent
 	 * elements to the left (subtracts one from their indices).
-	 * 
+	 *
 	 * @param iIndex the index of the element to be removed
 	 * @return the Element that was removed from the list
 	 */
@@ -272,7 +261,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * The implementation if based on a hash-table, performance is in constant
 	 * time.
 	 * </p>
-	 * 
+	 *
 	 * @param element the element to be removed
 	 */
 	public void removeByElement(Integer element) {
@@ -283,7 +272,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	/**
 	 * Returns the size of the virtual array
-	 * 
+	 *
 	 * @return the size
 	 */
 	public int size() {
@@ -310,7 +299,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * a change to the VA recently. If, for example, an element has been removed
 	 * prior to this call, the runtime is O(n). Otherwise the runtime is O(1).
 	 * </p>
-	 * 
+	 *
 	 * @param id element to search for
 	 * @return the index of the first occurrence of the specified element in
 	 *         this list, or -1 if this list does not contain the element
@@ -329,7 +318,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * a change to the VA recently. If, for example, an element has been removed
 	 * prior to this call, the runtime is O(n). Otherwise the runtime is O(1).
 	 * </p>
-	 * 
+	 *
 	 * @param id element to search for
 	 * @return a list of all the indices of all occurrences of the element or an
 	 *         empty list if no such elements exist
@@ -340,7 +329,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	/**
 	 * Checks whether element is contained in the virtual array.
-	 * 
+	 *
 	 * @param id the id to be checked
 	 * @return true if element occurs at least once, else false
 	 */
@@ -351,7 +340,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	/**
 	 * Checks the number of occurrences of an id. Returns 0 if it does not
 	 * occur.
-	 * 
+	 *
 	 * @param id the id to be checked
 	 * @return the number of occurrences (0 if none)
 	 */
@@ -362,7 +351,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	/**
 	 * Returns the array list which contains the list of vaIDs. DO NOT EDIT THIS
 	 * LIST
-	 * 
+	 *
 	 * @return the list containing the dimension indices
 	 */
 	public ArrayList<Integer> getIDs() {
@@ -371,10 +360,12 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	/**
 	 * Applies the operations specified in the delta to the virtual array
-	 * 
+	 *
 	 * @param delta
 	 */
-	public void setDelta(VADelta delta) {
+	public void setDelta(VirtualArrayDelta delta) {
+		if (!delta.getIDType().equals(idType))
+			throw new IllegalStateException("Incompatible ID Types");
 		ArrayList<Integer> indicesToBeRemoved = new ArrayList<Integer>();
 		for (VADeltaItem item : delta) {
 			switch (item.getType()) {
@@ -409,10 +400,10 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	/**
 	 * Returns the group list or null if no group list exits
-	 * 
+	 *
 	 * @return the group list
 	 */
-	public GroupType getGroupList() {
+	public GroupList getGroupList() {
 		return groupList;
 	}
 
@@ -438,7 +429,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * Returns a List of all VAIDs of one group. The returned list is backed by
 	 * this list, so non-structural changes in the returned list are reflected
 	 * in this list, and vice-versa.
-	 * 
+	 *
 	 * @param groupIndex the index of the group in the groupList. Can be
 	 *            retrieved using {@link Group#getGroupIndex()}
 	 * @return ArrayList<Integer> containing all IDs that belong to this group,
@@ -463,11 +454,11 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	/**
 	 * Sets group list in VA, used especially by affinity clusterer.
-	 * 
+	 *
 	 * @param groupList new group list
 	 * @return true if operation executed correctly otherwise false
 	 */
-	public boolean setGroupList(GroupType groupList) {
+	public boolean setGroupList(GroupList groupList) {
 
 		this.groupList = groupList;
 
@@ -476,14 +467,9 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public ConcreteType clone() {
-		ConcreteType va;
-		try {
-			va = (ConcreteType) super.clone();
-		}
-		catch (CloneNotSupportedException e) {
-			throw new IllegalStateException("Clone not supportet: " + e.getMessage());
-		}
+	public VirtualArray clone() {
+		VirtualArray va = new VirtualArray(idType);
+
 		// va.iUniqueID =
 		// (GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
 		va.virtualArrayList = (ArrayList<Integer>) virtualArrayList.clone();
@@ -497,7 +483,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	/**
 	 * Replace the internally created ID with the specified. Used when this VA
 	 * replaces another VA
-	 * 
+	 *
 	 * @param id
 	 */
 	public void tableID(int id) {
@@ -517,9 +503,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * group lists used for rendering the clusters assignments in
 	 * {@link GLHierarchicalHeatMap}.
 	 */
-	public GroupList<GroupType, ConcreteType, VADelta> buildNewGroupList(
-			GroupList<GroupType, ConcreteType, VADelta> groupList,
-			ArrayList<ClusterNode> clusterNodes) {
+	public GroupList buildNewGroupList(ArrayList<ClusterNode> clusterNodes) {
 
 		int sampleElementIndex = 0;
 
@@ -530,7 +514,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		}
 		return groupList;
 	}
-	
+
 	/**
 	 * @return the id, see {@link #id}
 	 */

@@ -26,9 +26,7 @@ import java.util.List;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.perspective.variable.AVariablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.io.gui.IDataOKListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -41,7 +39,7 @@ import org.eclipse.swt.widgets.Label;
 
 /**
  * Composite that lets a user determine which instance of
- * {@link ATableBasedDataDomain} and the respective {@link AVariablePerspective}
+ * {@link ATableBasedDataDomain} and the respective {@link Perspective}
  * s to use.
  *
  * @author Alexander Lex
@@ -53,9 +51,9 @@ public class DataChooserComposite extends Composite {
 	/** The data domain chosen by the user */
 	private ATableBasedDataDomain dataDomain;
 	/** The record perspective chosen by the user */
-	private RecordPerspective recordPerspective;
+	private Perspective recordPerspective;
 	/** The dimension perspective chosen by the user */
-	private DimensionPerspective dimensionPerspective;
+	private Perspective dimensionPerspective;
 
 	/**
 	 * All datadomains that can be chosen from.
@@ -290,14 +288,14 @@ public class DataChooserComposite extends Composite {
 	/**
 	 * @return the recordPerspective, see {@link #recordPerspective}
 	 */
-	public RecordPerspective getRecordPerspective() {
+	public Perspective getRecordPerspective() {
 		return recordPerspective;
 	}
 
 	/**
 	 * @return the dimensionPerspective, see {@link #dimensionPerspective}
 	 */
-	public DimensionPerspective getDimensionPerspective() {
+	public Perspective getDimensionPerspective() {
 		return dimensionPerspective;
 	}
 

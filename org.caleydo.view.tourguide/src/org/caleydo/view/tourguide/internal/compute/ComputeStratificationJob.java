@@ -2,7 +2,7 @@ package org.caleydo.view.tourguide.internal.compute;
 
 import java.util.Collection;
 
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
@@ -17,12 +17,13 @@ import com.google.common.base.Stopwatch;
 public class ComputeStratificationJob extends AScoreJob {
 	private static final Logger log = Logger.create(ComputeStratificationJob.class);
 
-	private final Collection<ARecordPerspective> data;
+	private final Collection<Perspective> data;
 
 	private final Collection<IComputedStratificationScore> stratMetrics;
 	private final Collection<IComputedReferenceStratificationScore> stratScores;
 
-	public ComputeStratificationJob(Collection<ARecordPerspective> data, Collection<IComputedStratificationScore> scores) {
+	public ComputeStratificationJob(Collection<Perspective> data,
+			Collection<IComputedStratificationScore> scores) {
 		super("Compute Tour Guide Scores");
 		this.data = data;
 		Pair<Collection<IComputedStratificationScore>, Collection<IComputedReferenceStratificationScore>> strats = partition(
@@ -42,7 +43,7 @@ public class ComputeStratificationJob extends AScoreJob {
 				data.size(), stratScores.size(), stratMetrics.size());
 		Stopwatch w = new Stopwatch().start();
 
-		for (ARecordPerspective a : this.data) {
+		for (Perspective a : this.data) {
 			if (Thread.interrupted() || monitor.isCanceled())
 				return Status.CANCEL_STATUS;
 

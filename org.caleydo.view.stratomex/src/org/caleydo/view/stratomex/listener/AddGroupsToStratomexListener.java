@@ -22,7 +22,7 @@ package org.caleydo.view.stratomex.listener;
 import java.util.HashMap;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.view.listener.AddTablePerspectivesEvent;
@@ -81,7 +81,7 @@ public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 			dataConfigurer = new ClinicalDataConfigurer();
 			ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
 			sortingStrategy.setExternalBricks(brickColumn.getBricks());
-			HashMap<RecordPerspective, RecordPerspective> m = Maps.newHashMap();
+			HashMap<Perspective, Perspective> m = Maps.newHashMap();
 			m.put(kaplan.getRecordPerspective(), underlying.getRecordPerspective());
 			sortingStrategy.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(m);
 			dataConfigurer.setSortingStrategy(sortingStrategy);

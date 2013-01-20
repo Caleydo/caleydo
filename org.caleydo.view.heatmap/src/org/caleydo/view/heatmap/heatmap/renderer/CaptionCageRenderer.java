@@ -22,7 +22,7 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class CaptionCageRenderer extends AHeatMapRenderer {
@@ -43,7 +43,7 @@ public class CaptionCageRenderer extends AHeatMapRenderer {
 
 		// if (!contentSpacing.isUseFishEye()) {
 
-		RecordVirtualArray recordVA = heatMap.getTablePerspective().getRecordPerspective()
+		VirtualArray recordVA = heatMap.getTablePerspective().getRecordPerspective()
 				.getVirtualArray();
 
 		for (Integer recordID : recordVA) {

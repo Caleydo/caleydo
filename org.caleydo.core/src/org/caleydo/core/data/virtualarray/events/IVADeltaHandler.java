@@ -17,47 +17,35 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.perspective.variable;
+package org.caleydo.core.data.virtualarray.events;
 
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
+import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
+import org.caleydo.core.event.IListenerOwner;
 
 /**
- * Implementation of {@link AVariablePerspective} for records.
- *
+ * Handler interface for listeners for {@link VADeltaEvent} and {@link Repl}.
+ * 
  * @author Alexander Lex
  */
-@XmlRootElement
-public class RecordPerspective extends ARecordPerspective {
+public interface IVADeltaHandler
+	extends IListenerOwner {
 
-	public RecordPerspective() {
-	}
+	/**
+	 * Handler method to be called when a virtual array update event is caught by a related {@link VADeltaListener}.
+	 * 
+	 * @param delta
+	 *            difference in the old and new virtual array
+	 * @param info
+	 *            info about the selection (e.g. the name of triggering view to display in the info-box)
+	 */
+	public void handleVADelta(VirtualArrayDelta vaDelta, String info);
 
-	public RecordPerspective(ATableBasedDataDomain dataDomain) {
-		super(dataDomain);
-	}
+	/**
+	 * Handler method to be called by the {@link ReplacePerspectiveListener} when a {@link ReplacePerspectiveEvent} was
+	 * received.
+	 */
+	public void replacePerspective(String dataDomainID, String perspectiveID,
+		PerspectiveInitializationData data);
 
-	@Override
-	protected void init() {
-		super.init();
-		idType = getDataDomain().getRecordIDType();
-	}
-
-	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return (ATableBasedDataDomain)super.getDataDomain();
-	}
-
-	@Override
-	protected String getElementLabel(Integer id) {
-		return getDataDomain().getRecordLabel(id);
-	}
-
-	@Override
-	protected List<Integer> getIDList() {
-		return getDataDomain().getTable().getRowIDList();
-	}
 }

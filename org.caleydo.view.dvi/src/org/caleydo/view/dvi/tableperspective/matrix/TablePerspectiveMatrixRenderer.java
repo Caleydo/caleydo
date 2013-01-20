@@ -32,14 +32,10 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.AVariablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
+import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
@@ -148,14 +144,14 @@ public class TablePerspectiveMatrixRenderer
 					CellContainer row = rowAndColumn.getFirst();
 					String recordPerspectiveID = row.id;
 					Group rowGroup = null;
-					RecordVirtualArray recordVA = null;
+					VirtualArray recordVA = null;
 					boolean createRecordPerspective = false;
 
 					if (!dataDomain.getTable().containsRecordPerspective(recordPerspectiveID)) {
 						// FIXME: Check additionally if the group has a
 						// dimensionperspective
 
-						RecordPerspective perspective = dataDomain.getTable().getRecordPerspective(
+						Perspective perspective = dataDomain.getTable().getRecordPerspective(
 								row.parentContainer.id);
 
 						// This works because the child containers do net get
@@ -164,7 +160,7 @@ public class TablePerspectiveMatrixRenderer
 
 						recordVA = perspective.getVirtualArray();
 
-						RecordGroupList groupList = recordVA.getGroupList();
+						GroupList groupList = recordVA.getGroupList();
 						rowGroup = groupList.get(groupIndex);
 
 						createRecordPerspective = true;
@@ -174,14 +170,14 @@ public class TablePerspectiveMatrixRenderer
 					CellContainer column = rowAndColumn.getSecond();
 					String dimensionPerspectiveID = column.id;
 					Group columnGroup = null;
-					DimensionVirtualArray dimensionVA = null;
+					VirtualArray dimensionVA = null;
 					boolean createDimensionPerspective = false;
 
 					if (!dataDomain.getTable().containsDimensionPerspective(dimensionPerspectiveID)) {
 						// FIXME: Check additionally if the group has a
 						// dimensionperspective
 
-						DimensionPerspective perspective = dataDomain.getTable().getDimensionPerspective(
+						Perspective perspective = dataDomain.getTable().getDimensionPerspective(
 								column.parentContainer.id);
 
 						// This works because the child containers do net get
@@ -190,7 +186,7 @@ public class TablePerspectiveMatrixRenderer
 
 						dimensionVA = perspective.getVirtualArray();
 
-						DimensionGroupList groupList = dimensionVA.getGroupList();
+						GroupList groupList = dimensionVA.getGroupList();
 						columnGroup = groupList.get(groupIndex);
 
 						createDimensionPerspective = true;
@@ -288,7 +284,7 @@ public class TablePerspectiveMatrixRenderer
 				if (perspectiveRenderer == null)
 					return;
 
-				AVariablePerspective<?, ?, ?, ?> perspective = null;
+				Perspective perspective = null;
 				if (perspectiveRenderer.isRecordPerspective()) {
 					perspective = dataDomain.getTable().getRecordPerspective(perspectiveRenderer.getPerspectiveID());
 				}
@@ -363,7 +359,7 @@ public class TablePerspectiveMatrixRenderer
 
 		for (String id : rowIDs) {
 
-			RecordPerspective perspective = dataDomain.getTable().getRecordPerspective(id);
+			Perspective perspective = dataDomain.getTable().getRecordPerspective(id);
 			if (perspective.isPrivate()) {
 				continue;
 			}
@@ -386,7 +382,7 @@ public class TablePerspectiveMatrixRenderer
 			// rows.add(row);
 			parentContainers.add(row);
 
-			RecordGroupList groupList = perspective.getVirtualArray().getGroupList();
+			GroupList groupList = perspective.getVirtualArray().getGroupList();
 
 			if (groupList != null && groupList.size() > 1) {
 				List<CellContainer> childList = new ArrayList<CellContainer>(groupList.size());
@@ -433,7 +429,7 @@ public class TablePerspectiveMatrixRenderer
 
 		for (String id : columnIDs) {
 
-			DimensionPerspective perspective = dataDomain.getTable().getDimensionPerspective(id);
+			Perspective perspective = dataDomain.getTable().getDimensionPerspective(id);
 			if (perspective.isPrivate()) {
 				continue;
 			}
@@ -458,7 +454,7 @@ public class TablePerspectiveMatrixRenderer
 			parentContainers.add(column);
 			// columns.add(column);
 
-			DimensionGroupList groupList = perspective.getVirtualArray().getGroupList();
+			GroupList groupList = perspective.getVirtualArray().getGroupList();
 
 			if (groupList != null && groupList.size() > 1) {
 				List<CellContainer> childList = new ArrayList<CellContainer>(groupList.size());

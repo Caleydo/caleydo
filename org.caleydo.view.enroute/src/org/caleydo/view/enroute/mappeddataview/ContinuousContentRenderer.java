@@ -27,7 +27,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
-import org.caleydo.core.data.perspective.variable.AVariablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Algorithms;
@@ -52,7 +52,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 	public ContinuousContentRenderer(Integer geneID, Integer davidID,
 			GeneticDataDomain dataDomain, TablePerspective tablePerspective,
-			AVariablePerspective<?, ?, ?, ?> experimentPerspective, AGLView parentView,
+ Perspective experimentPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
 		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective,
 				parentView, parent, group, isHighlightMode);

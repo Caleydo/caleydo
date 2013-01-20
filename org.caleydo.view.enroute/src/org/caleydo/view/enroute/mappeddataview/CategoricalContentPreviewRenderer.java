@@ -10,18 +10,15 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.color.Color;
 
 /**
  * @author Christian
  *
  */
-public class CategoricalContentPreviewRenderer
-	extends ContentRenderer {
+public class CategoricalContentPreviewRenderer extends ContentRenderer {
 
 	private Histogram histogram;
 
@@ -37,23 +34,12 @@ public class CategoricalContentPreviewRenderer
 		if (geneID == null)
 			return;
 
-		if (experimentPerspective instanceof RecordPerspective) {
+		VirtualArray geneVA = new VirtualArray(dataDomain.getGeneIDType());
+		geneVA.append(geneID);
+		// FIXME: Bad Hack for determination of bucket count
+		histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), experimentPerspective
+				.getVirtualArray(), geneVA, dataDomain.getLabel().toLowerCase().contains("copy") ? 5 : 2);
 
-			DimensionVirtualArray dimensionVirtualArray = new DimensionVirtualArray();
-			dimensionVirtualArray.append(geneID);
-			// FIXME: Bad Hack for determination of bucket count
-			histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
-					(RecordVirtualArray) experimentPerspective.getVirtualArray(), dimensionVirtualArray, dataDomain
-							.getLabel().toLowerCase().contains("copy") ? 5 : 2);
-		}
-		else {
-			RecordVirtualArray recordVirtualArray = new RecordVirtualArray();
-			recordVirtualArray.append(geneID);
-			// FIXME: Bad Hack for determination of bucket count
-			histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), recordVirtualArray,
-					(DimensionVirtualArray) experimentPerspective.getVirtualArray(), dataDomain.getLabel()
-							.toLowerCase().contains("copy") ? 5 : 2);
-		}
 	}
 
 	@Override

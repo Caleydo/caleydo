@@ -25,7 +25,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.AVariablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
@@ -445,7 +445,7 @@ public class MappedDataRenderer {
 		for (int i = 0; i < usedTablePerspectives.size(); i++) {
 
 			TablePerspective tablePerspective = usedTablePerspectives.get(i);
-			AVariablePerspective<?, ?, ?, ?> experimentPerspective;
+			Perspective experimentPerspective;
 			GeneticDataDomain dataDomain = (GeneticDataDomain) tablePerspective.getDataDomain();
 			Group group = null;
 
@@ -474,7 +474,7 @@ public class MappedDataRenderer {
 			boolean isHighlightLayout) {
 		GeneticDataDomain dataDomain = (GeneticDataDomain) tablePerspective.getDataDomain();
 
-		AVariablePerspective<?, ?, ?, ?> experimentPerspective;
+		Perspective experimentPerspective;
 		if (dataDomain.isGeneRecord()) {
 			experimentPerspective = tablePerspective.getDimensionPerspective();
 		} else {
@@ -552,12 +552,12 @@ public class MappedDataRenderer {
 
 				tablePerspectiveLayout.setDynamicSizeUnitsX((int) Math
 						.ceil((float) experimentPerspective.getVirtualArray().size()
-								/ (float) MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+								/ MutationStatusMatrixRowContentRenderer.NUM_ROWS));
 				bottomCaptionLayout.setDynamicSizeUnitsX((int) Math
 						.ceil((float) experimentPerspective.getVirtualArray().size()
-								/ (float) MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+								/ MutationStatusMatrixRowContentRenderer.NUM_ROWS));
 				topCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil((float) experimentPerspective.getVirtualArray()
-						.size() / (float) MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+						.size() / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
 				// tablePerspectiveLayout
 				// .setRenderer(new MutationStatusRowContentRenderer(
 				// geneID, davidID, dataDomain, tablePerspective,

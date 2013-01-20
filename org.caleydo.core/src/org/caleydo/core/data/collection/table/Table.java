@@ -26,10 +26,8 @@ import org.caleydo.core.data.collection.column.AColumn;
 import org.caleydo.core.data.collection.column.DataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterTree;
-import org.caleydo.core.data.perspective.variable.AVariablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
@@ -56,7 +54,7 @@ import org.eclipse.core.runtime.Status;
  * ({@link CategoricalTable}) exist.
  * </p>
  * <p>
- * The data should be accessed through {@link VirtualArray}s, which are stored in {@link AVariablePerspective}s. The
+ * The data should be accessed through {@link VirtualArray}s, which are stored in {@link Perspective}s. The
  * table creates default instances for both records and dimensions, but modification to these are common.
  * </p>
  * <h2>Table Creation</h2>
@@ -78,17 +76,17 @@ public class Table {
 	private ArrayList<Integer> defaultColumnIDs;
 
 	/** Container holding all the record perspectives registered. The perspectiveIDs are the keys */
-	private HashMap<String, RecordPerspective> hashRecordPerspectives;
+	private HashMap<String, Perspective> hashRecordPerspectives;
 	/** same as {@link #hashRecordPerspectives} for dimensions */
-	private HashMap<String, DimensionPerspective> hashDimensionPerspectives;
+	private HashMap<String, Perspective> hashDimensionPerspectives;
 
 	/**
 	 * Default record perspective. Initially all the data is contained in this perspective. If not otherwise specified,
 	 * filters, clusterings etc. are always applied to this perspective
 	 */
-	private RecordPerspective defaultRecordPerspective;
+	private Perspective defaultRecordPerspective;
 	/** Same as {@link #defaultRecordPerspective} for dimensions */
-	private DimensionPerspective defaultDimensionPerspective;
+	private Perspective defaultDimensionPerspective;
 
 	/**
 	 * Flag telling whether the columns correspond to dimensions (false) or whether the columns correspond to records
@@ -110,8 +108,8 @@ public class Table {
 		this.dataDomain = dataDomain;
 		isColumnDimension = !dataDomain.getDataSetDescription().isTransposeMatrix();
 		columns = new ArrayList<>();
-		hashRecordPerspectives = new HashMap<String, RecordPerspective>(6);
-		hashDimensionPerspectives = new HashMap<String, DimensionPerspective>(3);
+		hashRecordPerspectives = new HashMap<String, Perspective>(6);
+		hashDimensionPerspectives = new HashMap<String, Perspective>(3);
 		defaultColumnIDs = new ArrayList<Integer>();
 	}
 
@@ -255,31 +253,31 @@ public class Table {
 	/**
 	 * @return the defaultRecordPerspective, see {@link #defaultRecordPerspective}
 	 */
-	public RecordPerspective getDefaultRecordPerspective() {
+	public Perspective getDefaultRecordPerspective() {
 		return defaultRecordPerspective;
 	}
 
 	/**
-	 * Returns a {@link RecordPerspective} object for the specified ID. The {@link RecordPerspective} provides access to
+	 * Returns a {@link Perspective} object for the specified ID. The {@link Perspective} provides access to
 	 * all mutable data on how to access the Table, e.g., {@link VirtualArray}, {@link ClusterTree}, {@link GroupList},
 	 * etc.
 	 *
 	 * @param recordPerspectiveID
-	 * @return the associated {@link RecordPerspective} object, or null if no such object is registered.
+	 * @return the associated {@link Perspective} object, or null if no such object is registered.
 	 */
-	public RecordPerspective getRecordPerspective(String recordPerspectiveID) {
+	public Perspective getRecordPerspective(String recordPerspectiveID) {
 		if (recordPerspectiveID == null)
 			throw new IllegalArgumentException("perspectiveID was null");
-		RecordPerspective recordData = hashRecordPerspectives.get(recordPerspectiveID);
+		Perspective recordData = hashRecordPerspectives.get(recordPerspectiveID);
 		if (recordData == null)
-			throw new IllegalStateException("No RecordPerspective registered for " + recordPerspectiveID
+			throw new IllegalStateException("No Perspective registered for " + recordPerspectiveID
 					+ ", registered Perspectives: " + hashRecordPerspectives);
 		return recordData;
 	}
 
 	/**
 	 * @param recordPerspectiveID
-	 * @return True, if a {@link RecordPerspective} with the specified ID is registered, false otherwise.
+	 * @return True, if a {@link Perspective} with the specified ID is registered, false otherwise.
 	 */
 	public boolean containsRecordPerspective(String recordPerspectiveID) {
 		return hashRecordPerspectives.containsKey(recordPerspectiveID);
@@ -294,22 +292,22 @@ public class Table {
 	}
 
 	/**
-	 * Register a new {@link RecordPerspective} with this Table and trigger datadomain update.
+	 * Register a new {@link Perspective} with this Table and trigger datadomain update.
 	 *
 	 * @param recordPerspective
 	 */
-	public void registerRecordPerspective(RecordPerspective recordPerspective) {
+	public void registerRecordPerspective(Perspective recordPerspective) {
 		registerRecordPerspective(recordPerspective, true);
 	}
 
 	/**
-	 * Register a new {@link RecordPerspective} with this Table
+	 * Register a new {@link Perspective} with this Table
 	 *
 	 * @param recordPerspective
 	 * @param flat
 	 *            determines whether a datadomain update event is triggered
 	 */
-	public void registerRecordPerspective(RecordPerspective recordPerspective, boolean triggerUpdate) {
+	public void registerRecordPerspective(Perspective recordPerspective, boolean triggerUpdate) {
 		if (recordPerspective.getPerspectiveID() == null)
 			throw new IllegalStateException("Record perspective not correctly initiaklized: " + recordPerspective);
 		if (!recordPerspective.getIdType().equals(dataDomain.getRecordIDType()))
@@ -332,7 +330,7 @@ public class Table {
 	/**
 	 * @return the defaultDimensionPerspective, see {@link #defaultDimensionPerspective}
 	 */
-	public DimensionPerspective getDefaultDimensionPerspective() {
+	public Perspective getDefaultDimensionPerspective() {
 		return defaultDimensionPerspective;
 	}
 
@@ -344,10 +342,10 @@ public class Table {
 	 * @param dimensionPerspectiveID
 	 * @return the associated {@link DimensionPerspective} object, or null if no such object is registered.
 	 */
-	public DimensionPerspective getDimensionPerspective(String dimensionPerspectiveID) {
+	public Perspective getDimensionPerspective(String dimensionPerspectiveID) {
 		if (dimensionPerspectiveID == null)
 			throw new IllegalArgumentException("perspectiveID was null");
-		DimensionPerspective dimensionPerspective = hashDimensionPerspectives.get(dimensionPerspectiveID);
+		Perspective dimensionPerspective = hashDimensionPerspectives.get(dimensionPerspectiveID);
 		if (dimensionPerspective == null)
 			throw new IllegalStateException("No DimensionPerspective registered for " + dimensionPerspectiveID
 					+ ", registered Perspectives: " + hashDimensionPerspectives);
@@ -359,7 +357,7 @@ public class Table {
 	 *
 	 * @param dimensionPerspective
 	 */
-	public void registerDimensionPerspective(DimensionPerspective dimensionPerspective) {
+	public void registerDimensionPerspective(Perspective dimensionPerspective) {
 		registerDimensionPerspective(dimensionPerspective, true);
 	}
 
@@ -370,7 +368,7 @@ public class Table {
 	 * @param flat
 	 *            determines whether a datadomain update event is triggered
 	 */
-	public void registerDimensionPerspective(DimensionPerspective dimensionPerspective, boolean triggerUpdate) {
+	public void registerDimensionPerspective(Perspective dimensionPerspective, boolean triggerUpdate) {
 		if (dimensionPerspective.getPerspectiveID() == null)
 			throw new IllegalStateException("Dimension perspective not correctly initiaklized: " + dimensionPerspective);
 		hashDimensionPerspectives.put(dimensionPerspective.getPerspectiveID(), dimensionPerspective);
@@ -388,7 +386,7 @@ public class Table {
 	}
 
 	/**
-	 * Return a list of content VA types that have registered {@link RecordPerspective}.
+	 * Return a list of content VA types that have registered {@link Perspective}.
 	 *
 	 * @return
 	 */
@@ -453,7 +451,7 @@ public class Table {
 	// ---------------------- helper functions ------------------------------
 
 	void createDefaultRecordPerspective() {
-		defaultRecordPerspective = new RecordPerspective(dataDomain);
+		defaultRecordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
 		defaultRecordPerspective.setDefault(true);
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 		Integer nrRecordsInSample = null;
@@ -484,7 +482,7 @@ public class Table {
 
 	void createDefaultDimensionPerspective() {
 
-		defaultDimensionPerspective = new DimensionPerspective(dataDomain);
+		defaultDimensionPerspective = new Perspective(dataDomain, dataDomain.getDimensionIDType());
 		defaultDimensionPerspective.setDefault(true);
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 		List<Integer> dimensionIDs;

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,17 +8,17 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 /**
- * 
+ *
  */
 package org.caleydo.view.filterpipeline.representation;
 
@@ -41,10 +41,10 @@ import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 
 /**
  * Represents a filter which can be rendered and dragged around
- * 
+ *
  * @author Thomas Geymayer
  * @uathor Marc Streit
- * 
+ *
  */
 public class FilterRepresentation implements IDraggable, IRenderable, IDropArea {
 	protected FilterPipelineRenderStyle renderStyle;
@@ -58,7 +58,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	protected static final float Z_POS_DRAG = 0.8f;
 	protected static final float Z_POS_DRAG_OVER = 0.9f;
 
-	protected FilterItem<?> filter;
+	protected FilterItem filter;
 	protected int iPickingID = -1;
 	protected SelectionType selectionType = SelectionType.NORMAL;
 
@@ -79,12 +79,12 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 		this.viewId = viewId;
 	}
 
-	public void setFilter(FilterItem<?> filter) {
+	public void setFilter(FilterItem filter) {
 		this.filter = filter;
 		this.iPickingID = filter.getPickingID();
 	}
 
-	public FilterItem<?> getFilter() {
+	public FilterItem getFilter() {
 		return filter;
 	}
 
@@ -190,7 +190,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 
 	/**
 	 * Render the basic filter (background and border)
-	 * 
+	 *
 	 * @param gl
 	 * @param color
 	 */
@@ -233,7 +233,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 
 	/**
 	 * Render a band with a transparent body, bounded by lines at top and bottom
-	 * 
+	 *
 	 * @param gl
 	 * @param bottomLeft
 	 * @param topLeft
@@ -270,7 +270,7 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	/**
 	 * Updates the selection state by gathering the selection state from the
 	 * given {@link SelectionManager}
-	 * 
+	 *
 	 * @param selectionManager
 	 */
 	public void updateSelections(SelectionManager selectionManager) {
@@ -329,6 +329,6 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	public void handleDropAreaReplaced()
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

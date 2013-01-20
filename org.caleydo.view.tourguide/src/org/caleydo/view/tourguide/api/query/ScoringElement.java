@@ -28,8 +28,8 @@ import java.util.Set;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.ILabelProvider;
@@ -47,19 +47,19 @@ import org.caleydo.view.tourguide.spi.score.IStratificationScore;
  */
 public final class ScoringElement implements ILabelProvider {
 	private final TablePerspective perspective;
-	private final ARecordPerspective stratification;
+	private final Perspective stratification;
 	private final Group group;
 	/**
 	 * collapse scores have different scores depending on the current scoring element, this map stores their selections
 	 */
 	private final Map<IScore, IScore> collapseSelections;
 
-	public ScoringElement(ARecordPerspective stratification, TablePerspective perspective,
+	public ScoringElement(Perspective stratification, TablePerspective perspective,
 			Map<IScore, IScore> collapseSelections) {
 		this(stratification, null, perspective, collapseSelections);
 	}
 
-	public ScoringElement(ARecordPerspective stratification, Group group, TablePerspective perspective,
+	public ScoringElement(Perspective stratification, Group group, TablePerspective perspective,
 			Map<IScore, IScore> collapseSelections) {
 		this.stratification = stratification;
 		this.perspective = perspective;
@@ -88,7 +88,7 @@ public final class ScoringElement implements ILabelProvider {
 		return stratification.getDataDomain();
 	}
 
-	public ARecordPerspective getStratification() {
+	public Perspective getStratification() {
 		return stratification;
 	}
 
@@ -126,7 +126,7 @@ public final class ScoringElement implements ILabelProvider {
 		// compute the intersection of all
 		IDType source = stratification.getIdType();
 
-		RecordVirtualArray va = stratification.getVirtualArray();
+		VirtualArray va = stratification.getVirtualArray();
 		Collection<Integer> ids = (group == null) ? va.getIDs() : va.getIDsOfGroup(group.getGroupIndex());
 
 		if (!relevant.isEmpty()) {

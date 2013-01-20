@@ -7,11 +7,9 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
-import org.caleydo.core.data.perspective.variable.AVariablePerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
@@ -19,15 +17,14 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.enroute.EPickingType;
 
-public class CopyNumberRowContentRenderer
-	extends ACategoricalRowContentRenderer {
+public class CopyNumberRowContentRenderer extends ACategoricalRowContentRenderer {
 
 	public CopyNumberRowContentRenderer(IContentRendererInitializor contentRendererInitializor) {
 		super(contentRendererInitializor);
 	}
 
 	public CopyNumberRowContentRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
-			TablePerspective tablePerspective, AVariablePerspective<?, ?, ?, ?> experimentPerspective,
+			TablePerspective tablePerspective, Perspective experimentPerspective,
 			AGLView parentView, MappedDataRenderer parent, Group group, boolean isHighlightMode) {
 
 		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective, parentView, parent, group,
@@ -38,19 +35,12 @@ public class CopyNumberRowContentRenderer
 	public void init() {
 		if (geneID == null)
 			return;
-		if (experimentPerspective instanceof RecordPerspective) {
 
-			DimensionVirtualArray dimensionVirtualArray = new DimensionVirtualArray();
-			dimensionVirtualArray.append(geneID);
-			histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
-					(RecordVirtualArray) experimentPerspective.getVirtualArray(), dimensionVirtualArray, 5);
-		}
-		else {
-			RecordVirtualArray recordVirtualArray = new RecordVirtualArray();
-			recordVirtualArray.append(geneID);
-			histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(), recordVirtualArray,
-					(DimensionVirtualArray) experimentPerspective.getVirtualArray(), 5);
-		}
+		VirtualArray dimensionVirtualArray = new VirtualArray(dataDomain.getGeneIDType());
+		dimensionVirtualArray.append(geneID);
+		histogram = TablePerspectiveStatistics.calculateHistogram(dataDomain.getTable(),
+				experimentPerspective.getVirtualArray(), dimensionVirtualArray, 5);
+
 		registerPickingListener();
 
 	}
@@ -137,8 +127,7 @@ public class CopyNumberRowContentRenderer
 
 				if (useShading) {
 					gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
-				}
-				else {
+				} else {
 					gl.glColor3fv(topBarColor, 0);
 				}
 				gl.glVertex3f(leftEdge + xIncrement, upperEdge, z);

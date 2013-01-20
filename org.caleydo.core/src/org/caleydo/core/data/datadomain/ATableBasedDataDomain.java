@@ -28,8 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.EDataClass;
-import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.collection.table.NumericalTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.event.AggregateGroupEvent;
 import org.caleydo.core.data.datadomain.event.AggregateGroupListener;
 import org.caleydo.core.data.datadomain.event.CreateClusteringEvent;
@@ -38,10 +38,8 @@ import org.caleydo.core.data.datadomain.event.StartClusteringListener;
 import org.caleydo.core.data.datadomain.listener.CreateClusteringEventListener;
 import org.caleydo.core.data.datadomain.listener.LoadGroupingEventListener;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.AVariablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -54,24 +52,17 @@ import org.caleydo.core.data.selection.events.ISelectionCommandHandler;
 import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
 import org.caleydo.core.data.selection.events.SelectionCommandListener;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
-import org.caleydo.core.data.virtualarray.events.DimensionVADeltaEvent;
-import org.caleydo.core.data.virtualarray.events.DimensionVADeltaListener;
+import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateEvent;
-import org.caleydo.core.data.virtualarray.events.IDimensionChangeHandler;
-import org.caleydo.core.data.virtualarray.events.IRecordVADeltaHandler;
-import org.caleydo.core.data.virtualarray.events.RecordVADeltaEvent;
-import org.caleydo.core.data.virtualarray.events.RecordVADeltaListener;
+import org.caleydo.core.data.virtualarray.events.IVADeltaHandler;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
-import org.caleydo.core.data.virtualarray.events.ReplaceDimensionPerspectiveEvent;
-import org.caleydo.core.data.virtualarray.events.ReplaceDimensionPerspectiveListener;
-import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveEvent;
-import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveListener;
+import org.caleydo.core.data.virtualarray.events.ReplacePerspectiveEvent;
+import org.caleydo.core.data.virtualarray.events.ReplacePerspectiveListener;
+import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
+import org.caleydo.core.data.virtualarray.events.VADeltaListener;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.SelectionCommandEvent;
@@ -91,8 +82,8 @@ import org.caleydo.core.util.mapping.color.ColorMapper;
 
 /**
  * <p>
- * Primary access point to a table data set. Holds the {@link Table}, the {@link TablePerspective} which hold the
- * rules on how to access the Table and a lot of meta-information such as human-readable labels.
+ * Primary access point to a table data set. Holds the {@link Table}, the {@link TablePerspective} which hold the rules
+ * on how to access the Table and a lot of meta-information such as human-readable labels.
  * </p>
  * <p>
  * Holds the information on the {@link IDCategory} and the {@link IDType}s of the rows and columns in the data set.
@@ -107,8 +98,8 @@ import org.caleydo.core.util.mapping.color.ColorMapper;
  */
 @XmlType
 @XmlRootElement
-public abstract class ATableBasedDataDomain extends ADataDomain implements IRecordVADeltaHandler,
-		IDimensionChangeHandler, ISelectionUpdateHandler, ISelectionCommandHandler {
+public abstract class ATableBasedDataDomain extends ADataDomain implements IVADeltaHandler, ISelectionUpdateHandler,
+		ISelectionCommandHandler {
 
 	/** The raw data for this data domain. */
 	protected Table table;
@@ -116,10 +107,10 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IReco
 	/**
 	 * <p>
 	 * The {@link TablePerspective} registered for this data domain. A {@link TablePerspective} is defined by its
-	 * combination of {@link RecordPerspective} and {@link DimensionPerspective}.
+	 * combination of {@link Perspective} and {@link DimensionPerspective}.
 	 * </p>
 	 * <p>
-	 * The key in this hasMap is created as a concatenation of the {@link AVariablePerspective#getPerspectiveID()} s
+	 * The key in this hasMap is created as a concatenation of the {@link Perspective#getPerspectiveID()} s
 	 * using {@link #createKey(String, String)},
 	 * </p>
 	 */
@@ -148,8 +139,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IReco
 	protected EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 
 	/**
-	 * All recordPerspectiveIDs registered with the Table. This variable is synchronous with the keys of the hashMap
-	 * of the Table.
+	 * All recordPerspectiveIDs registered with the Table. This variable is synchronous with the keys of the hashMap of
+	 * the Table.
 	 */
 	@XmlElement
 	private Set<String> recordPerspectiveIDs;
@@ -272,7 +263,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IReco
 	}
 
 	/**
-	 * Returns the {@link TablePerspective} for the {@link RecordPerspective} and the {@link DimensionPerspective}
+	 * Returns the {@link TablePerspective} for the {@link Perspective} and the {@link DimensionPerspective}
 	 * specified. </p>
 	 * <p>
 	 * If such a container exists already, the existing container is returned. If not, a new container is created and
@@ -289,7 +280,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IReco
 	}
 
 	/**
-	 * Returns the {@link TablePerspective} for the {@link RecordPerspective} and the {@link DimensionPerspective}
+	 * Returns the {@link TablePerspective} for the {@link Perspective} and the {@link DimensionPerspective}
 	 * specified. </p>
 	 * <p>
 	 * If such a container exists already, the existing container is returned. If not, a new container is created.
@@ -307,12 +298,12 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IReco
 		TablePerspective container = tablePerspectives.get(TablePerspective.createKey(recordPerspectiveID,
 				dimensionPerspectiveID));
 		if (container == null) {
-			RecordPerspective recordPerspective = table.getRecordPerspective(recordPerspectiveID);
+			Perspective recordPerspective = table.getRecordPerspective(recordPerspectiveID);
 			if (recordPerspective == null)
 				throw new IllegalArgumentException("No record perspective registered with this datadomain for "
 						+ recordPerspectiveID);
 
-			DimensionPerspective dimensionPerspective = table.getDimensionPerspective(dimensionPerspectiveID);
+			Perspective dimensionPerspective = table.getDimensionPerspective(dimensionPerspectiveID);
 			if (dimensionPerspective == null)
 				throw new IllegalArgumentException("No dimension perspective registered with this datadomain for "
 						+ dimensionPerspectiveID);
@@ -456,8 +447,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IReco
 	 *            the type of VA requested
 	 * @return
 	 */
-	public RecordVirtualArray getRecordVA(String recordPerspectiveID) {
-		RecordVirtualArray va = table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
+	public VirtualArray getRecordVA(String recordPerspectiveID) {
+		VirtualArray va = table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
 		return va;
 	}
 
@@ -468,8 +459,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IReco
 	 *            the type of VA requested
 	 * @return
 	 */
-	public DimensionVirtualArray getDimensionVA(String dimensionPerspectiveID) {
-		DimensionVirtualArray va = table.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
+	public VirtualArray getDimensionVA(String dimensionPerspectiveID) {
+		VirtualArray va = table.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
 		return va;
 	}
 
@@ -530,7 +521,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IReco
 
 		if (clusterState.getClusterTarget() == EClustererTarget.DIMENSION_CLUSTERING) {
 			PerspectiveInitializationData dimensionResult = result.getDimensionResult();
-			DimensionPerspective targetDimensionPerspective;
+			Perspective targetDimensionPerspective;
 			boolean registerLater = false;
 			if (clusterState.isModifyExistingPerspective()) {
 				targetDimensionPerspective = clusterState.getSourceDimensionPerspective();
@@ -538,7 +529,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IReco
 				targetDimensionPerspective = clusterState.getOptionalTargetDimensionPerspective();
 				if (targetDimensionPerspective == null) {
 					registerLater = true;
-					targetDimensionPerspective = new DimensionPerspective(this);
+					targetDimensionPerspective = new Perspective(this, dimensionIDType);
 
 				}
 			}
@@ -556,7 +547,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IReco
 
 		if (clusterState.getClusterTarget() == EClustererTarget.RECORD_CLUSTERING) {
 			PerspectiveInitializationData recordResult = result.getRecordResult();
-			RecordPerspective targetRecordPerspective;
+			Perspective targetRecordPerspective;
 			boolean registerLater = false;
 			if (clusterState.isModifyExistingPerspective()) {
 				targetRecordPerspective = clusterState.getSourceRecordPerspective();
@@ -564,7 +555,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IReco
 				targetRecordPerspective = clusterState.getOptionalTargetRecordPerspective();
 				if (targetRecordPerspective == null) {
 					registerLater = true;
-					targetRecordPerspective = new RecordPerspective(this);
+					targetRecordPerspective = new Perspective(this, recordIDType);
 
 				}
 			}
@@ -582,67 +573,58 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IReco
 		return result;
 	}
 
-	/**
-	 * Resets the context VA to it's initial state
-	 */
-	@Deprecated
-	public void resetRecordVA(String recordPerspectiveID) {
-		table.getRecordPerspective(recordPerspectiveID).reset();
-	}
 
 	@Override
-	public void handleRecordVADelta(RecordVADelta vaDelta, String info) {
+	public void handleVADelta(VirtualArrayDelta vaDelta, String info) {
+
 		IDCategory targetCategory = vaDelta.getIDType().getIDCategory();
-		if (targetCategory != recordIDCategory)
-			return;
+		if (targetCategory == recordIDCategory) {
+			if (vaDelta.getIDType() != recordIDType)
+				vaDelta = DeltaConverter.convertDelta(recordIDMappingManager, recordIDType, vaDelta);
+			Perspective recordPerspective = table.getRecordPerspective(vaDelta.getPerspectiveID());
+			recordPerspective.setVADelta(vaDelta);
 
-		if (targetCategory == recordIDCategory && vaDelta.getIDType() != recordIDType)
-			vaDelta = DeltaConverter.convertDelta(recordIDMappingManager, recordIDType, vaDelta);
-		RecordPerspective recordData = table.getRecordPerspective(vaDelta.getVAType());
-		recordData.setVADelta(vaDelta);
+			RecordVAUpdateEvent event = new RecordVAUpdateEvent(dataDomainID, recordPerspective.getPerspectiveID(),
+					this);
+			eventPublisher.triggerEvent(event);
+		} else if (targetCategory == dimensionIDCategory) {
+			if (vaDelta.getIDType() != dimensionIDType)
+				vaDelta = DeltaConverter.convertDelta(dimensionIDMappingManager, dimensionIDType, vaDelta);
+			Perspective dimensionPerspective = table.getDimensionPerspective(vaDelta.getPerspectiveID());
+			dimensionPerspective.setVADelta(vaDelta);
 
-		RecordVAUpdateEvent event = new RecordVAUpdateEvent(dataDomainID, recordData.getPerspectiveID(), this);
-
-		eventPublisher.triggerEvent(event);
+			RecordVAUpdateEvent event = new RecordVAUpdateEvent(dataDomainID, dimensionPerspective.getPerspectiveID(),
+					this);
+			eventPublisher.triggerEvent(event);
+		}
 
 	}
 
 	@Override
-	public void handleDimensionVADelta(DimensionVADelta vaDelta, String info) {
-		// FIXME why is here nothing?
-		System.out.println("What?");
-
-	}
-
-	@Override
-	public void replaceRecordPerspective(String dataDomainID, String recordPerspectiveID,
-			PerspectiveInitializationData data) {
+	public void replacePerspective(String dataDomainID, String perspectiveID, PerspectiveInitializationData data) {
 
 		if (dataDomainID != this.dataDomainID) {
-			handleForeignRecordVAUpdate(dataDomainID, recordPerspectiveID, data);
+			handleForeignRecordVAUpdate(dataDomainID, perspectiveID, data);
 			return;
 		}
 
-		table.getRecordPerspective(recordPerspectiveID).init(data);
+		if (table.getRecordPerspective(perspectiveID) != null) {
+			table.getRecordPerspective(perspectiveID).init(data);
 
-		RecordVAUpdateEvent event = new RecordVAUpdateEvent();
-		event.setSender(this);
-		event.setDataDomainID(dataDomainID);
-		event.setPerspectiveID(recordPerspectiveID);
-		eventPublisher.triggerEvent(event);
-	}
+			RecordVAUpdateEvent event = new RecordVAUpdateEvent();
+			event.setSender(this);
+			event.setDataDomainID(dataDomainID);
+			event.setPerspectiveID(perspectiveID);
+			eventPublisher.triggerEvent(event);
+		} else if (table.getDimensionPerspective(perspectiveID) != null) {
+			table.getDimensionPerspective(perspectiveID).init(data);
 
-	@Override
-	public void replaceDimensionPerspective(String dataDomainID, String dimensionPerspectiveID,
-			PerspectiveInitializationData data) {
-
-		table.getDimensionPerspective(dimensionPerspectiveID).init(data);
-
-		DimensionVAUpdateEvent event = new DimensionVAUpdateEvent();
-		event.setDataDomainID(dataDomainID);
-		event.setSender(this);
-		event.setPerspectiveID(dimensionPerspectiveID);
-		eventPublisher.triggerEvent(event);
+			DimensionVAUpdateEvent event = new DimensionVAUpdateEvent();
+			event.setDataDomainID(dataDomainID);
+			event.setSender(this);
+			event.setPerspectiveID(perspectiveID);
+			eventPublisher.triggerEvent(event);
+		}
 	}
 
 	@Override
@@ -858,25 +840,16 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IReco
 		startClusteringListener.setDataDomainID(dataDomainID);
 		listeners.register(StartClusteringEvent.class, startClusteringListener);
 
-		RecordVADeltaListener recordVADeltaListener = new RecordVADeltaListener();
-		recordVADeltaListener.setHandler(this);
-		recordVADeltaListener.setDataDomainID(dataDomainID);
-		listeners.register(RecordVADeltaEvent.class, recordVADeltaListener);
+		VADeltaListener vADeltaListener = new VADeltaListener();
+		vADeltaListener.setHandler(this);
+		vADeltaListener.setDataDomainID(dataDomainID);
+		listeners.register(VADeltaEvent.class, vADeltaListener);
 
-		ReplaceRecordPerspectiveListener replaceRecordPerspectiveListener = new ReplaceRecordPerspectiveListener();
-		replaceRecordPerspectiveListener.setHandler(this);
-		replaceRecordPerspectiveListener.setDataDomainID(dataDomainID);
-		listeners.register(ReplaceRecordPerspectiveEvent.class, replaceRecordPerspectiveListener);
+		ReplacePerspectiveListener replacePerspectiveListener = new ReplacePerspectiveListener();
+		replacePerspectiveListener.setHandler(this);
+		replacePerspectiveListener.setDataDomainID(dataDomainID);
+		listeners.register(ReplacePerspectiveEvent.class, replacePerspectiveListener);
 
-		DimensionVADeltaListener dimensionVADeltaListener = new DimensionVADeltaListener();
-		dimensionVADeltaListener.setHandler(this);
-		dimensionVADeltaListener.setDataDomainID(dataDomainID);
-		listeners.register(DimensionVADeltaEvent.class, dimensionVADeltaListener);
-
-		ReplaceDimensionPerspectiveListener replaceDimensionPerspectiveListener = new ReplaceDimensionPerspectiveListener();
-		replaceDimensionPerspectiveListener.setHandler(this);
-		replaceDimensionPerspectiveListener.setDataDomainID(dataDomainID);
-		listeners.register(ReplaceDimensionPerspectiveEvent.class, replaceDimensionPerspectiveListener);
 
 		AggregateGroupListener aggregateGroupListener = new AggregateGroupListener();
 		aggregateGroupListener.setHandler(this);
@@ -896,14 +869,14 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IReco
 
 	/**
 	 * <p>
-	 * Converts a {@link RecordPerspective} with an IDType that is not the {@link #recordIDType} to a new
-	 * RecordPerspective with the recordIDType.
+	 * Converts a {@link Perspective} with an IDType that is not the {@link #recordIDType} to a new
+	 * Perspective with the recordIDType.
 	 * </p>
 	 * <p>
 	 * Grouping, and naming is preserved, sample elements and trees are not.
 	 * </p>
 	 */
-	public RecordPerspective convertForeignRecordPerspective(RecordPerspective foreignPerspective) {
+	public Perspective convertForeignRecordPerspective(Perspective foreignPerspective) {
 
 		if (foreignPerspective.getIdType().getIDCategory() != recordIDCategory) {
 			throw new IllegalArgumentException("Can not convert from " + foreignPerspective.getIdType() + " to "
@@ -912,9 +885,9 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IReco
 		if (foreignPerspective.getIdType() == recordIDType)
 			return foreignPerspective;
 
-		RecordVirtualArray foreignRecordVA = foreignPerspective.getVirtualArray();
+		VirtualArray foreignRecordVA = foreignPerspective.getVirtualArray();
 
-		RecordGroupList recordGroupList = foreignRecordVA.getGroupList();
+		GroupList recordGroupList = foreignRecordVA.getGroupList();
 
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 		ArrayList<Integer> indices = new ArrayList<Integer>(foreignRecordVA.size());
@@ -952,7 +925,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IReco
 
 		data.setData(indices, groupSizes, sampleElements, groupNames);
 
-		RecordPerspective localRecordPerspective = new RecordPerspective(this);
+		Perspective localRecordPerspective = new Perspective(this, recordIDType);
 		localRecordPerspective.setIDType(recordIDType);
 		localRecordPerspective.init(data);
 		localRecordPerspective.setLabel(foreignPerspective.getLabel(), foreignPerspective.isLabelDefault());

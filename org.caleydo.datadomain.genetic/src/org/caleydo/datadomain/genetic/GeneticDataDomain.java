@@ -31,8 +31,8 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.events.ForeignSelectionCommandListener;
 import org.caleydo.core.data.selection.events.ForeignSelectionUpdateListener;
-import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveEvent;
-import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveListener;
+import org.caleydo.core.data.virtualarray.events.ReplacePerspectiveEvent;
+import org.caleydo.core.data.virtualarray.events.ReplacePerspectiveListener;
 import org.caleydo.core.event.data.SelectionCommandEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.id.IDCategory;
@@ -59,7 +59,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	 */
 	private static final AtomicInteger extensionID = new AtomicInteger();
 
-	private ReplaceRecordPerspectiveListener clinicalReplaceContentVirtualArrayListener;
+	private ReplacePerspectiveListener clinicalReplaceContentVirtualArrayListener;
 	private ForeignSelectionUpdateListener clinicalSelectionUpdateListener;
 	private ForeignSelectionCommandListener clinicalSelectionCommandListener;
 
@@ -153,7 +153,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	//
 	// alTempList.add(iCount);
 	// }
-	// RecordVirtualArray recordVA = new RecordVirtualArray(Table.RECORD,
+	// VirtualArray recordVA = new RecordVirtualArray(Table.RECORD,
 	// alTempList);
 	// // removeDuplicates(recordVA);
 	// // FIXME make this a filter?
@@ -170,10 +170,10 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		String clinicalDataDomainID = DataDomainManager.get().getDataDomainByType(CLINICAL_DATADOMAIN_TYPE)
 				.getDataDomainID();
 
-		clinicalReplaceContentVirtualArrayListener = new ReplaceRecordPerspectiveListener();
+		clinicalReplaceContentVirtualArrayListener = new ReplacePerspectiveListener();
 		clinicalReplaceContentVirtualArrayListener.setHandler(this);
 		clinicalReplaceContentVirtualArrayListener.setExclusiveDataDomainID(clinicalDataDomainID);
-		eventPublisher.addListener(ReplaceRecordPerspectiveEvent.class, clinicalReplaceContentVirtualArrayListener);
+		eventPublisher.addListener(ReplacePerspectiveEvent.class, clinicalReplaceContentVirtualArrayListener);
 
 		clinicalSelectionUpdateListener = new ForeignSelectionUpdateListener();
 		clinicalSelectionUpdateListener.setHandler(this);
@@ -243,7 +243,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 		// FIXME its not clear which dimension va should be updated here
 		// if (dataDomainType.equals(CLINICAL_DATADOMAIN_TYPE)) {
-		// DimensionVirtualArray newDimensionVirtualArray = new
+		// VirtualArray newDimensionVirtualArray = new
 		// DimensionVirtualArray();
 		//
 		// for (Integer clinicalContentIndex : virtualArray) {
@@ -275,7 +275,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	// NominalDimension clinicalDimension = (NominalDimension<String>)
 	// clinicalSet
 	// .get(dimensionID);
-	// DimensionVirtualArray origianlGeneticDimensionVA =
+	// VirtualArray origianlGeneticDimensionVA =
 	// table.getDimensionData(
 	// Table.DIMENSION).getDimensionVA();
 	//

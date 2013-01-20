@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.data.virtualarray.events;
 
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.IListenerOwner;
 
 /**
@@ -35,7 +35,7 @@ public interface IRecordVAUpdateHandler
 	 * {@link RecordVAUpdateListener}.
 	 * 
 	 * @param perspectiveID
-	 *            the id for the {@link RecordPerspective} with which the VA to be updated is associated
+	 *            the id for the {@link Perspective} with which the VA to be updated is associated
 	 */
 	public void handleRecordVAUpdate(String perspectiveID);
 

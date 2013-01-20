@@ -21,7 +21,7 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -43,7 +43,7 @@ public class DimensionCaptionRenderer extends AHeatMapRenderer {
 	@Override
 	public void renderContent(GL2 gl) {
 
-		DimensionVirtualArray dimensionVA = heatMap.getTablePerspective()
+		VirtualArray dimensionVA = heatMap.getTablePerspective()
 				.getDimensionPerspective().getVirtualArray();
 		heatMap.getTextRenderer().setColor(0, 0, 0, 1);
 

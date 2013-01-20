@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.gui.ClusterDialog;
@@ -281,7 +281,8 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 							// which is
 							// intended to be used once the clustering is
 							// complete
-							RecordPerspective newRecordPerspective = new RecordPerspective(dataDomain);
+							Perspective newRecordPerspective = new Perspective(dataDomain, dataDomain
+									.getRecordIDType());
 
 							// we temporarily set the old va to the new
 							// perspective,

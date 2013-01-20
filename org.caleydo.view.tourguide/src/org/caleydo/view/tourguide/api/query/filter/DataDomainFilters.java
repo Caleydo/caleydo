@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.query.filter;
 
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
@@ -31,7 +31,7 @@ import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
 public class DataDomainFilters {
 	public static final IDataDomainFilter EMPTY_GROUP = new IDataDomainFilter() {
 		@Override
-		public boolean apply(Pair<? extends ARecordPerspective, Group> pair) {
+		public boolean apply(Pair<Perspective, Group> pair) {
 			return pair.getSecond() == null || pair.getSecond().getSize() > 0;
 		}
 
@@ -43,7 +43,7 @@ public class DataDomainFilters {
 
 	public static final IDataDomainFilter DEFAULT_GROUP = new IDataDomainFilter() {
 		@Override
-		public boolean apply(Pair<? extends ARecordPerspective, Group> pair) {
+		public boolean apply(Pair<Perspective, Group> pair) {
 			return !pair.getFirst().isDefault();
 		}
 

@@ -28,9 +28,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.collection.Pair.ComparablePair;
@@ -65,9 +63,9 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 
 	private ATableBasedDataDomain sourceDataDomain;
 	private PathwayDataDomain pathwayDataDomain;
-	private RecordVirtualArray sourceVA;
-	private DimensionPerspective dimensionPerspective;
-	private RecordPerspective recordPerspective;
+	private VirtualArray sourceVA;
+	private Perspective dimensionPerspective;
+	private Perspective recordPerspective;
 
 	private Table pathwayTable;
 
@@ -148,7 +146,7 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 		descriptionLabel.setText("Select the pathways for the group.");
 		descriptionLabel.setLayoutData(data);
 
-		VirtualArray<?, ?, ?> va = null;
+		VirtualArray va = null;
 		if (inputTablePerspective.getDataDomain().isColumnDimension())
 			va = inputTablePerspective.getRecordPerspective().getVirtualArray();
 		else
@@ -292,11 +290,11 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 		this.sourceDataDomain = sourceDataDomain;
 	}
 
-	public void setSourceVA(RecordVirtualArray sourceVA) {
+	public void setSourceVA(VirtualArray sourceVA) {
 		this.sourceVA = sourceVA;
 	}
 
-	public RecordVirtualArray getSourceVA() {
+	public VirtualArray getSourceVA() {
 		return sourceVA;
 	}
 
@@ -304,7 +302,7 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 	 * @param dimensionPerspective
 	 *            setter, see {@link #dimensionPerspective}
 	 */
-	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
+	public void setDimensionPerspective(Perspective dimensionPerspective) {
 		this.dimensionPerspective = dimensionPerspective;
 	}
 
@@ -312,7 +310,7 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 	 * @param recordPerspective
 	 *            setter, see {@link #recordPerspective}
 	 */
-	public void setRecordPerspective(RecordPerspective recordPerspective) {
+	public void setRecordPerspective(Perspective recordPerspective) {
 		this.recordPerspective = recordPerspective;
 	}
 

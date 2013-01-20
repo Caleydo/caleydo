@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -32,31 +32,31 @@ import org.caleydo.core.event.AEvent;
  * <p>
  * By specifying one or more filters that have been modified
  * </p>
- * 
+ *
  * @author Alexander Lex
  */
-public abstract class ReEvaluateFilterListEvent<FilterType extends Filter<?>>
+public class ReEvaluateFilterListEvent
 	extends AEvent {
 
-	ArrayList<FilterType> filterList = null;
+	ArrayList<Filter> filterList = null;
 
 	/**
 	 * List of filters that have been modified.
-	 * 
+	 *
 	 * @param filter
 	 */
-	public void addFilter(FilterType filter) {
+	public void addFilter(Filter filter) {
 		if (filterList == null)
-			filterList = new ArrayList<FilterType>(3);
+			filterList = new ArrayList<Filter>(3);
 		filterList.add(filter);
 	}
 
 	/**
 	 * Returns the list of modified filters, or null if none were specified
-	 * 
+	 *
 	 * @return
 	 */
-	public ArrayList<FilterType> getFilterList() {
+	public ArrayList<Filter> getFilterList() {
 		return filterList;
 	}
 

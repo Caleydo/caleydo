@@ -20,8 +20,8 @@
 package org.caleydo.view.stratomex.brick.contextmenu;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.stratomex.event.OpenCreatePathwayGroupDialogEvent;
 
@@ -36,7 +36,7 @@ public class CreatePathwayGroupFromDataItem
 	extends AContextMenuItem {
 
 	public CreatePathwayGroupFromDataItem(ATableBasedDataDomain dataDomain,
-			RecordVirtualArray recordVA, DimensionPerspective dimensionPerspective) {
+			VirtualArray recordVA, Perspective dimensionPerspective) {
 
 		setLabel("Create Pathway Group From Data");
 

@@ -22,7 +22,7 @@ package org.caleydo.view.stratomex.brick.ui;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 /**
@@ -34,8 +34,8 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
  */
 public class DimensionBarRenderer extends LayoutRenderer {
 
-	private DimensionVirtualArray overallDimensionVA;
-	private DimensionVirtualArray dimensionVA;
+	private VirtualArray overallDimensionVA;
+	private VirtualArray dimensionVA;
 
 	/**
 	 * 
@@ -44,8 +44,8 @@ public class DimensionBarRenderer extends LayoutRenderer {
 	 * @param dimensionVA
 	 *            The va for this dimension group
 	 */
-	public DimensionBarRenderer(DimensionVirtualArray overallDimensionVA,
-			DimensionVirtualArray dimensionVA) {
+	public DimensionBarRenderer(VirtualArray overallDimensionVA,
+			VirtualArray dimensionVA) {
 		this.overallDimensionVA = overallDimensionVA;
 		this.dimensionVA = dimensionVA;
 	}
@@ -53,9 +53,9 @@ public class DimensionBarRenderer extends LayoutRenderer {
 	@Override
 	public void renderContent(GL2 gl) {
 
-		// DimensionVirtualArray overallDimensionVA = brick.getDataDomain()
+		// VirtualArray overallDimensionVA = brick.getDataDomain()
 		// .getDimensionVA(Set.STORAGE);
-		// DimensionVirtualArray dimensionVA = brick.getDimensionVA();
+		// VirtualArray dimensionVA = brick.getDimensionVA();
 
 		if (overallDimensionVA == null || dimensionVA == null)
 			return;

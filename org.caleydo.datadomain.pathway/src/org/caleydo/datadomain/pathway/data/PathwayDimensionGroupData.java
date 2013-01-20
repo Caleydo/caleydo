@@ -25,12 +25,11 @@ import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
@@ -58,7 +57,7 @@ public class PathwayDimensionGroupData
 	private List<TablePerspective> recordSubTablePerspectives = new ArrayList<TablePerspective>();
 
 	public PathwayDimensionGroupData(ATableBasedDataDomain dataDomain, PathwayDataDomain pathwayDataDomain,
-			RecordPerspective recordPerspective, DimensionPerspective dimensionPerspective,
+			Perspective recordPerspective, Perspective dimensionPerspective,
 			ArrayList<PathwayGraph> pathways, String label) {
 		this.dataDomain = dataDomain;
 		this.pathwayDataDomain = pathwayDataDomain;
@@ -119,14 +118,16 @@ public class PathwayDimensionGroupData
 			data.setData(idsInPathway);
 			PathwayTablePerspective pathwayTablePerspective;
 			if (dataDomain.isColumnDimension()) {
-				RecordPerspective pathwayRecordPerspective = new RecordPerspective(dataDomain);
+				Perspective pathwayRecordPerspective = new Perspective(dataDomain,
+						dataDomain.getRecordIDType());
 				pathwayRecordPerspective.init(data);
 
 				pathwayTablePerspective = new PathwayTablePerspective(dataDomain, pathwayDataDomain,
 						pathwayRecordPerspective, dimensionPerspective, pathway);
 			}
 			else {
-				DimensionPerspective pathwayDimensionPerspective = new DimensionPerspective(dataDomain);
+				Perspective pathwayDimensionPerspective = new Perspective(dataDomain,
+						dataDomain.getDimensionIDType());
 				pathwayDimensionPerspective.init(data);
 
 				pathwayTablePerspective = new PathwayTablePerspective(dataDomain, pathwayDataDomain, recordPerspective,
@@ -152,18 +153,18 @@ public class PathwayDimensionGroupData
 
 		List<TablePerspective> recordSubTablePerspectives = new ArrayList<TablePerspective>();
 
-		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
+		VirtualArray recordVA = recordPerspective.getVirtualArray();
 
 		if (recordVA.getGroupList() == null)
 			return null;
 
-		RecordGroupList groupList = recordVA.getGroupList();
+		GroupList groupList = recordVA.getGroupList();
 		groupList.updateGroupInfo();
 
 		for (Group group : groupList) {
 
 			List<Integer> indices = recordVA.getIDsOfGroup(group.getGroupIndex());
-			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+			Perspective recordPerspective = new Perspective(dataDomain, recordVA.getIdType());
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(indices);
 			recordPerspective.init(data);

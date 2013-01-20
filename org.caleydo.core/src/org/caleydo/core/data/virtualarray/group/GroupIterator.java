@@ -22,35 +22,36 @@ package org.caleydo.core.data.virtualarray.group;
 import java.util.ListIterator;
 
 /**
- * Iterator implementation for group lists
- *
+ * Iterator implementation for groupList lists
+ * 
  * @author Bernhard Schlegl
+ * @author Alexander Lex
  */
-public class GroupIterator<GroupType extends GroupList<?, ?, ?>>
+public class GroupIterator
 	implements ListIterator<Group> {
 
-	private final GroupType group;
+	private final GroupList groupList;
 	private int index = -1;
 	private boolean lastMoveOperationWasPrevious = false;
 
 	/**
 	 * Constructor
-	 *
+	 * 
 	 * @param groupList
-	 *            the group list on which the iterator is executed
+	 *            the groupList list on which the iterator is executed
 	 */
-	public GroupIterator(GroupType groupList) {
-		this.group = groupList;
+	public GroupIterator(GroupList groupList) {
+		this.groupList = groupList;
 	}
 
 	@Override
 	public void add(Group iNewElement) {
-		group.add(++index, iNewElement);
+		groupList.add(++index, iNewElement);
 	}
 
 	@Override
 	public boolean hasNext() {
-		if (index < group.size() - 1)
+		if (index < groupList.size() - 1)
 			return true;
 
 		return false;
@@ -67,7 +68,7 @@ public class GroupIterator<GroupType extends GroupList<?, ?, ?>>
 	@Override
 	public Group next() {
 		lastMoveOperationWasPrevious = false;
-		return group.get(++index);
+		return groupList.get(++index);
 
 	}
 
@@ -79,7 +80,7 @@ public class GroupIterator<GroupType extends GroupList<?, ?, ?>>
 	@Override
 	public Group previous() {
 		lastMoveOperationWasPrevious = true;
-		return group.get(index--);
+		return groupList.get(index--);
 	}
 
 	@Override
@@ -93,20 +94,20 @@ public class GroupIterator<GroupType extends GroupList<?, ?, ?>>
 	@Override
 	public void remove() {
 		if (lastMoveOperationWasPrevious) {
-			group.remove(index);
+			groupList.remove(index);
 		}
 		else {
-			group.remove(--index);
+			groupList.remove(--index);
 		}
 	}
 
 	@Override
 	public void set(Group iNewElement) {
 		if (lastMoveOperationWasPrevious) {
-			group.set(index, iNewElement);
+			groupList.set(index, iNewElement);
 		}
 		else {
-			group.set(index - 1, iNewElement);
+			groupList.set(index - 1, iNewElement);
 		}
 	}
 }

@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.api.query.ESorting;
@@ -135,10 +135,10 @@ public class CollapseScore extends DefaultLabelProvider implements ICompositeSco
 	 * @return
 	 */
 	@Override
-	public ARecordPerspective getStratification() {
-		ARecordPerspective r = null;
+	public Perspective getStratification() {
+		Perspective r = null;
 		for (IScore child : Scores.flatten(this)) {
-			ARecordPerspective c = null;
+			Perspective c = null;
 			if (child instanceof IStratificationScore) {
 				c = ((IStratificationScore) child).getStratification();
 			} else { // not a stratifiation score

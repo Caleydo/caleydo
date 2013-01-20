@@ -35,16 +35,11 @@ import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.perspective.variable.AVariablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.IDefaultLabelHolder;
@@ -52,7 +47,7 @@ import org.caleydo.core.util.base.IDefaultLabelHolder;
 /**
  * <p>
  * A TablePerspective holds all the "rules" and properties on how the data in the underlying {@link Table} should be
- * accessed. It does so by holding references to one {@link DimensionPerspective} and one {@link RecordPerspective}, who
+ * accessed. It does so by holding references to one {@link Perspective} and one {@link Perspective}, who
  * define things like order, groups, and hierarchical relationships for either the dimensions or the records of a
  * Table.
  * </p>
@@ -77,7 +72,7 @@ import org.caleydo.core.util.base.IDefaultLabelHolder;
  * identifiers of the two perspectives.
  * </p>
  * <p>
- * Data containers can be hierarchically created based on {@link GroupList}s of one of the {@link AVariablePerspective}s
+ * Data containers can be hierarchically created based on {@link GroupList}s of one of the {@link Perspective}s
  * using the {@link #getRecordSubTablePerspectives()} and {@link #getDimensionSubTablePerspectives()}. The resulting
  * <code>TablePerspective</code>s have the {@link #recordGroup}, resp. the #dimensionGroup set, which are otherwise
  * null.
@@ -110,14 +105,14 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 * The recordPerspective defines the properties of the records (occurrence, order, groups, relationships)
 	 */
 	@XmlTransient
-	protected RecordPerspective recordPerspective;
+	protected Perspective recordPerspective;
 
 	@XmlElement
 	private String dimensionPerspectiveID;
 
 	/** Same as {@link #recordPerspective} for dimensions */
 	@XmlTransient
-	protected DimensionPerspective dimensionPerspective;
+	protected Perspective dimensionPerspective;
 
 	/** A human-readable label */
 	protected String label;
@@ -174,8 +169,8 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 * @param recordPerspective
 	 * @param dimensionPerspective
 	 */
-	public TablePerspective(ATableBasedDataDomain dataDomain, RecordPerspective recordPerspective,
-			DimensionPerspective dimensionPerspective) {
+	public TablePerspective(ATableBasedDataDomain dataDomain, Perspective recordPerspective,
+			Perspective dimensionPerspective) {
 		this.dataDomain = dataDomain;
 		this.dataDomainID = dataDomain.getDataDomainID();
 		this.recordPerspective = recordPerspective;
@@ -218,7 +213,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 * @return the recordPerspective, see {@link #recordPerspective}
 	 */
 	@XmlTransient
-	public RecordPerspective getRecordPerspective() {
+	public Perspective getRecordPerspective() {
 		return recordPerspective;
 	}
 
@@ -226,7 +221,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 * @param recordPerspective
 	 *            setter, see {@link #recordPerspective}
 	 */
-	public void setRecordPerspective(RecordPerspective recordPerspective) {
+	public void setRecordPerspective(Perspective recordPerspective) {
 		if (this.recordPerspective != null)
 			throw new IllegalStateException("Illegal to change perspectives of TablePerspectives.");
 		this.recordPerspective = recordPerspective;
@@ -238,7 +233,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 * @return the dimensionPerspective, see {@link #dimensionPerspective}
 	 */
 	@XmlTransient
-	public DimensionPerspective getDimensionPerspective() {
+	public Perspective getDimensionPerspective() {
 		return dimensionPerspective;
 	}
 
@@ -246,7 +241,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 	 * @param dimensionPerspective
 	 *            setter, see {@link #dimensionPerspective}
 	 */
-	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
+	public void setAVariablePerspective(Perspective dimensionPerspective) {
 		if (this.dimensionPerspective != null)
 			throw new IllegalStateException("Illegal to change perspectives of TablePerspectives.");
 		this.dimensionPerspective = dimensionPerspective;
@@ -265,7 +260,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 	}
 
 	/**
-	 * Same as {@link #hasRecordPerspective(String)} for dimensions
+	 * Same as {@link #hasAVariablePerspective(String)} for dimensions
 	 *
 	 * @param dimensionPerspectiveID
 	 * @return true if the specified id equals the id of the perspective in this container
@@ -361,8 +356,8 @@ public class TablePerspective implements IDefaultLabelHolder {
 	}
 
 	/**
-	 * Creates and returns one new {@link TablePerspective} for each group in the {@link RecordPerspective}, where the
-	 * new {@link RecordPerspective} contains the elements of the group. The {@link DimensionPerspective} is the same as
+	 * Creates and returns one new {@link TablePerspective} for each group in the {@link Perspective}, where the
+	 * new {@link Perspective} contains the elements of the group. The {@link Perspective} is the same as
 	 * for this container.
 	 *
 	 * @return a new list of new {@link TablePerspective}s or null if no group list is set.
@@ -371,12 +366,12 @@ public class TablePerspective implements IDefaultLabelHolder {
 
 		List<TablePerspective> recordSubTablePerspectives = new ArrayList<TablePerspective>();
 
-		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
+		VirtualArray recordVA = recordPerspective.getVirtualArray();
 
 		if (recordVA.getGroupList() == null)
 			return null;
 
-		RecordGroupList groupList = recordVA.getGroupList();
+		GroupList groupList = recordVA.getGroupList();
 		groupList.updateGroupInfo();
 
 		for (Group group : groupList) {
@@ -385,7 +380,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 
 			List<Integer> indices = recordVA.getIDsOfGroup(group.getGroupIndex());
 
-			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+			Perspective recordPerspective = new Perspective(dataDomain, recordVA.getIdType());
 			recordPerspective.setLabel(group.getLabel(), group.isLabelDefault());
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(indices);
@@ -404,8 +399,8 @@ public class TablePerspective implements IDefaultLabelHolder {
 	}
 
 	/**
-	 * Creates and returns one new {@link TablePerspective} for each group in the {@link RecordPerspective}, where the
-	 * new {@link RecordPerspective} contains the elements of the group. The {@link DimensionPerspective} is the same as
+	 * Creates and returns one new {@link TablePerspective} for each group in the {@link Perspective}, where the
+	 * new {@link Perspective} contains the elements of the group. The {@link Perspective} is the same as
 	 * for this container.
 	 *
 	 * @return a new list of new {@link TablePerspective}s or null if no group list is set.
@@ -414,12 +409,12 @@ public class TablePerspective implements IDefaultLabelHolder {
 
 		List<TablePerspective> dimensionSubTablePerspectives = new ArrayList<TablePerspective>();
 
-		DimensionVirtualArray dimensionVA = dimensionPerspective.getVirtualArray();
+		VirtualArray dimensionVA = dimensionPerspective.getVirtualArray();
 
 		if (dimensionVA.getGroupList() == null)
 			return null;
 
-		DimensionGroupList groupList = dimensionVA.getGroupList();
+		GroupList groupList = dimensionVA.getGroupList();
 		groupList.updateGroupInfo();
 
 		for (Group group : groupList) {
@@ -427,7 +422,7 @@ public class TablePerspective implements IDefaultLabelHolder {
 				group.setLabel(getLabel(), isLabelDefault());
 			List<Integer> indices = dimensionVA.getIDsOfGroup(group.getGroupIndex());
 
-			DimensionPerspective dimensionPerspective = new DimensionPerspective(dataDomain);
+			Perspective dimensionPerspective = new Perspective(dataDomain, dimensionVA.getIdType());
 			dimensionPerspective.setLabel(group.getLabel(), group.isLabelDefault());
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(indices);

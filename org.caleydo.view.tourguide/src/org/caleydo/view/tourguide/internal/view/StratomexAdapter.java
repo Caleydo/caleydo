@@ -35,13 +35,11 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.data.ReplaceTablePerspectiveEvent;
@@ -429,7 +427,7 @@ public class StratomexAdapter {
 		currentDependentPreviews.clear();
 	}
 
-	private void clearHighlightRows(ARecordPerspective strat) {
+	private void clearHighlightRows(Perspective strat) {
 		AEvent event = new SelectElementsEvent(Collections.<Integer> emptyList(), strat
 				.getIdType(),
 				this.previewSelectionType, receiver, this);
@@ -564,17 +562,17 @@ public class StratomexAdapter {
 	private static TablePerspective asPerspective(TablePerspective underlying, Integer clinicalVariable) {
 		ATableBasedDataDomain dataDomain = DataDomainOracle.getClinicalDataDomain();
 
-		DimensionPerspective dim = null;
+		Perspective dim = null;
 		for(String id : dataDomain.getDimensionPerspectiveIDs()) {
-			DimensionPerspective d = dataDomain.getTable().getDimensionPerspective(id);
-			DimensionVirtualArray va = d.getVirtualArray();
+			Perspective d = dataDomain.getTable().getDimensionPerspective(id);
+			VirtualArray va = d.getVirtualArray();
 			if (va.size() == 1 && va.get(0) == clinicalVariable) {
 				dim = d;
 				break;
 			}
 		}
 		if (dim == null) { //not yet existing create a new one
-			dim = new DimensionPerspective(dataDomain);
+			dim = new Perspective(dataDomain, dataDomain.getDimensionIDType());
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(Lists.newArrayList(clinicalVariable));
 			dim.init(data);
@@ -583,11 +581,11 @@ public class StratomexAdapter {
 			dataDomain.getTable().registerDimensionPerspective(dim);
 		}
 
-		RecordPerspective rec = null;
-		RecordPerspective underlyingRP = underlying.getRecordPerspective();
+		Perspective rec = null;
+		Perspective underlyingRP = underlying.getRecordPerspective();
 
 		for(String id : dataDomain.getRecordPerspectiveIDs()) {
-			RecordPerspective r = dataDomain.getTable().getRecordPerspective(id);
+			Perspective r = dataDomain.getTable().getRecordPerspective(id);
 			if (r.getDataDomain().equals(underlying.getDataDomain()) && r.isLabelDefault() == underlyingRP.isLabelDefault() && r.getLabel().equals(underlyingRP.getLabel())) {
 				rec = r;
 				break;

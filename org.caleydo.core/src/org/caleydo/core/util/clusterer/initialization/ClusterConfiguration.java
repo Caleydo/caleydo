@@ -22,8 +22,7 @@ package org.caleydo.core.util.clusterer.initialization;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClusterConfiguration;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
@@ -71,19 +70,19 @@ public class ClusterConfiguration {
 	 * cluster. If no {@link #optionalTargetRecordPerspective} is set, the
 	 * contents will eventually be overwritten
 	 */
-	private RecordPerspective sourceRecordPerspective;
+	private Perspective sourceRecordPerspective;
 	/**
 	 * The recordPerspective to which the results should eventually be written.
 	 * If this is null, the results will be written to
 	 * {@link #sourceRecordPerspective}.
 	 */
-	private RecordPerspective optionalTargetRecordPerspective;
+	private Perspective optionalTargetRecordPerspective;
 
 	/** same as {@link #sourceRecordPerspective} for dimensions */
-	private DimensionPerspective sourceDimensionPerspective;
+	private Perspective sourceDimensionPerspective;
 
 	/** same as {@link #optionalTargetRecordPerspective} for dimensions */
-	private DimensionPerspective optionalTargetDimensionPerspective;
+	private Perspective optionalTargetDimensionPerspective;
 
 	/**
 	 * Flag determining whether the clustered perspective should be modified
@@ -106,14 +105,14 @@ public class ClusterConfiguration {
 	 * @param recordPerspective
 	 *            setter, see {@link #sourceRecordPerspective}
 	 */
-	public void setSourceRecordPerspective(RecordPerspective recordPerspective) {
+	public void setSourceRecordPerspective(Perspective recordPerspective) {
 		this.sourceRecordPerspective = recordPerspective;
 	}
 
 	/**
 	 * @return the recordPerspective, see {@link #sourceRecordPerspective}
 	 */
-	public RecordPerspective getSourceRecordPerspective() {
+	public Perspective getSourceRecordPerspective() {
 		return sourceRecordPerspective;
 	}
 
@@ -122,7 +121,7 @@ public class ClusterConfiguration {
 	 *            setter, see {@link #optionalTargetRecordPerspective}
 	 */
 	public void setOptionalTargetRecordPerspective(
-			RecordPerspective optionalTargetRecordPerspective) {
+			Perspective optionalTargetRecordPerspective) {
 		this.optionalTargetRecordPerspective = optionalTargetRecordPerspective;
 		modifyExistingPerspective = false;
 	}
@@ -131,7 +130,7 @@ public class ClusterConfiguration {
 	 * @return the optionalTargetRecordPerspective, see
 	 *         {@link #optionalTargetRecordPerspective}
 	 */
-	public RecordPerspective getOptionalTargetRecordPerspective() {
+	public Perspective getOptionalTargetRecordPerspective() {
 		return optionalTargetRecordPerspective;
 	}
 
@@ -139,14 +138,14 @@ public class ClusterConfiguration {
 	 * @param dimensionPerspective
 	 *            setter, see {@link #sourceDimensionPerspective}
 	 */
-	public void setSourceDimensionPerspective(DimensionPerspective dimensionPerspective) {
+	public void setSourceDimensionPerspective(Perspective dimensionPerspective) {
 		this.sourceDimensionPerspective = dimensionPerspective;
 	}
 
 	/**
 	 * @return the dimensionPerspective, see {@link #sourceDimensionPerspective}
 	 */
-	public DimensionPerspective getSourceDimensionPerspective() {
+	public Perspective getSourceDimensionPerspective() {
 		return sourceDimensionPerspective;
 	}
 
@@ -155,7 +154,7 @@ public class ClusterConfiguration {
 	 *            setter, see {@link #optionalTargetDimensionPerspective}
 	 */
 	public void setOptionalTargetDimensionPerspective(
-			DimensionPerspective targetDimensionPerspective) {
+			Perspective targetDimensionPerspective) {
 		this.optionalTargetDimensionPerspective = targetDimensionPerspective;
 		modifyExistingPerspective = false;
 	}
@@ -164,7 +163,7 @@ public class ClusterConfiguration {
 	 * @return the optionalTargetDimensionPerspective, see
 	 *         {@link #optionalTargetDimensionPerspective}
 	 */
-	public DimensionPerspective getOptionalTargetDimensionPerspective() {
+	public Perspective getOptionalTargetDimensionPerspective() {
 		return optionalTargetDimensionPerspective;
 	}
 

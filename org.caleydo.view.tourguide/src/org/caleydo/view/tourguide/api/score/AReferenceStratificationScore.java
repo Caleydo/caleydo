@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.view.tourguide.spi.score.IStratificationScore;
 
 /**
@@ -28,20 +28,20 @@ import org.caleydo.view.tourguide.spi.score.IStratificationScore;
  */
 public abstract class AReferenceStratificationScore extends AComputedStratificationScore implements
 		IStratificationScore {
-	protected final ARecordPerspective reference;
+	protected final Perspective reference;
 
-	public AReferenceStratificationScore(String label, ARecordPerspective reference) {
+	public AReferenceStratificationScore(String label, Perspective reference) {
 		super(label == null ? reference.getLabel() : label);
 		this.reference = reference;
 	}
 
 	@Override
-	public boolean contains(ARecordPerspective elem) {
+	public boolean contains(Perspective elem) {
 		return super.contains(elem) || elem.equals(getStratification());
 	}
 
 	@Override
-	public ARecordPerspective getStratification() {
+	public Perspective getStratification() {
 		return reference;
 	}
 

@@ -22,9 +22,8 @@ import java.util.List;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.collection.Pair;
 
@@ -82,11 +81,11 @@ public class ClusterHelper {
 		return (float) Math.sqrt(standardDeviation / iCnt);
 	}
 
-	// public static void calculateClusterAverages(DimensionPerspective dimensionData,
-	// RecordPerspective recordPerspective, ClustererType eClustererType, ATableBasedDataDomain dataDomain) {
+	// public static void calculateClusterAverages(Perspective dimensionData,
+	// Perspective recordPerspective, ClustererType eClustererType, ATableBasedDataDomain dataDomain) {
 	//
-	// DimensionVirtualArray dimensionVA = dimensionData.getVirtualArray();
-	// RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
+	// VirtualArray dimensionVA = dimensionData.getVirtualArray();
+	// VirtualArray recordVA = recordPerspective.getVirtualArray();
 	// if (eClustererType == ClustererType.RECORD_CLUSTERING) {
 	// calculateClusterAveragesRecursive(recordPerspective.getTree(), recordPerspective.getTree().getRoot(),
 	// eClustererType, dataDomain.getTable(), dimensionVA, recordVA);
@@ -98,8 +97,8 @@ public class ClusterHelper {
 	// }
 
 	public static float[] calculateClusterAveragesRecursive(Tree<ClusterNode> tree, ClusterNode node,
-			EClustererTarget clustererType, Table table, DimensionVirtualArray dimensionVA,
-			RecordVirtualArray recordVA) {
+			EClustererTarget clustererType, Table table, VirtualArray dimensionVA,
+			VirtualArray recordVA) {
 
 		float[] values;
 
@@ -169,13 +168,13 @@ public class ClusterHelper {
 		return values;
 	}
 
-	public static void calculateAggregatedUncertainties(RecordPerspective recordData, Table table) {
-		RecordVirtualArray recordVA = recordData.getVirtualArray();
+	public static void calculateAggregatedUncertainties(Perspective recordData, Table table) {
+		VirtualArray recordVA = recordData.getVirtualArray();
 		calculateAggregatedUncertaintiesRecursive(recordData.getTree(), recordData.getTree().getRoot(), table, recordVA);
 	}
 
 	private static Pair<Float, Integer> calculateAggregatedUncertaintiesRecursive(Tree<ClusterNode> tree,
-			ClusterNode node, Table table, RecordVirtualArray recordVA) {
+			ClusterNode node, Table table, VirtualArray recordVA) {
 
 		Pair<Float, Integer> result = new Pair<Float, Integer>();
 
@@ -212,7 +211,7 @@ public class ClusterHelper {
 	 * @param examples
 	 * @param eClustererType
 	 */
-	public static void sortClusters(Table table, RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA,
+	public static void sortClusters(Table table,VirtualArray recordVA, VirtualArray dimensionVA,
 			List<Integer> examples, EClustererTarget eClustererType) {
 
 		int iNrExamples = examples.size();

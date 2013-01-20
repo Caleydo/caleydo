@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -37,14 +37,14 @@ import org.caleydo.core.id.IDType;
  * <p>
  * Due to the n:m relations of mappings the resulting delta can have a length different from the original.
  * </p>
- * 
+ *
  * @author Alexander Lex
  */
 public class DeltaConverter {
 
 	/**
 	 * Convert method. TODO: only DAVID_2_EXPRESSION_INDEX is supported ATM
-	 * 
+	 *
 	 * @param <T>
 	 *            the type of the delta, an implementation of {@link IDelta}
 	 * @param idMappingManager
@@ -65,9 +65,9 @@ public class DeltaConverter {
 		else if (delta instanceof VirtualArrayDelta) {
 
 			VirtualArrayDelta vaDelta = (VirtualArrayDelta) delta;
-			VirtualArrayDelta newVADelta = vaDelta.getInstance();
-			newVADelta.tableIDType(targetType);
-			newVADelta.setVAType(vaDelta.getVAType());
+			VirtualArrayDelta newVADelta = new VirtualArrayDelta();
+			newVADelta.setIDType(targetType);
+			newVADelta.setPerspectiveID(vaDelta.getPerspectiveID());
 			newDelta = (T) newVADelta;
 
 		}
@@ -82,7 +82,7 @@ public class DeltaConverter {
 				continue;
 			}
 			for (Integer id : tableIDs) {
-				IDeltaItem clonedItem = (IDeltaItem) item.clone();
+				IDeltaItem clonedItem = item.clone();
 				clonedItem.setID(id);
 				newDelta.add(clonedItem);
 			}

@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *  
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.filterpipeline;
 
@@ -23,19 +20,11 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.filter.DimensionFilter;
 import org.caleydo.core.data.filter.Filter;
-import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.event.CombineFilterEvent;
-import org.caleydo.core.data.filter.event.CombineRecordFilterEvent;
-import org.caleydo.core.data.filter.event.MoveDimensionFilterEvent;
 import org.caleydo.core.data.filter.event.MoveFilterEvent;
-import org.caleydo.core.data.filter.event.MoveRecordtFilterEvent;
-import org.caleydo.core.data.filter.event.RemoveDimensionFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveFilterEvent;
-import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
@@ -48,40 +37,37 @@ import org.caleydo.view.filterpipeline.representation.IRenderable;
 
 /**
  * @brief Represents a filter in the GLFilterPipeline view
- * 
+ *
  *        Also renders a context menu if needed
- * 
+ *
  * @author Thomas Geymayer
- * 
+ *
  */
-public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRenderable,
-		IDropArea {
+public class FilterItem implements IRenderable, IDropArea {
 	private int id;
 	private int pickingId;
-	private Filter<DeltaType> filter;
+	private Filter filter;
 	private FilterRepresentation representation = null;
 
-	VirtualArray<?, DeltaType, ?> input = null;
-	VirtualArray<?, DeltaType, ?> output = null;
-	VirtualArray<?, DeltaType, ?> outputUncertainty = null;
+	VirtualArray input = null;
+	VirtualArray output = null;
+	VirtualArray outputUncertainty = null;
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param id
 	 * @param filter
 	 * @param pickingManager
 	 * @param uniqueID
 	 */
-	public FilterItem(int id, Filter<DeltaType> filter, PickingManager pickingManager,
-			int iUniqueID) {
+	public FilterItem(int id, Filter filter, PickingManager pickingManager, int iUniqueID) {
 		this.id = id;
-		pickingId = pickingManager.getPickingID(iUniqueID, PickingType.FILTERPIPE_FILTER,
-				id);
+		pickingId = pickingManager.getPickingID(iUniqueID, PickingType.FILTERPIPE_FILTER, id);
 		this.filter = filter;
 	}
 
-	public Filter<DeltaType> getFilter() {
+	public Filter getFilter() {
 		return filter;
 	}
 
@@ -92,7 +78,7 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 
 	/**
 	 * Set the filter representation
-	 * 
+	 *
 	 * @param representation
 	 */
 	public void setRepresentation(FilterRepresentation representation) {
@@ -105,7 +91,7 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public int getId() {
@@ -113,7 +99,7 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public String getLabel() {
@@ -122,12 +108,12 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 
 	/**
 	 * Set the items this filter should use as input
-	 * 
+	 *
 	 * @param input
 	 */
 	@SuppressWarnings("unchecked")
-	public void setInput(VirtualArray<?, ?, ?> input) {
-		this.input = (VirtualArray<?, DeltaType, ?>) input;
+	public void setInput(VirtualArray input) {
+		this.input = input;
 		output = this.input.clone();
 
 		if (filter.getVADeltaUncertainty() != null)
@@ -141,28 +127,28 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 
 	/**
 	 * Get the items this filter received as input
-	 * 
+	 *
 	 * @return
 	 */
-	public VirtualArray<?, DeltaType, ?> getInput() {
+	public VirtualArray getInput() {
 		return input;
 	}
 
 	/**
 	 * Get the items which passed this filter
-	 * 
+	 *
 	 * @return
 	 */
-	public VirtualArray<?, DeltaType, ?> getOutput() {
+	public VirtualArray getOutput() {
 		return output;
 	}
 
 	/**
 	 * Get the uncertain items which passed this filter
-	 * 
+	 *
 	 * @return
 	 */
-	public VirtualArray<?, DeltaType, ?> getUncertaintyOutput() {
+	public VirtualArray getUncertaintyOutput() {
 		return outputUncertainty;
 	}
 
@@ -175,18 +161,10 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	}
 
 	public void triggerRemove() {
-		RemoveFilterEvent<?> filterEvent = null;
+		RemoveFilterEvent filterEvent = null;
 
-		if (filter instanceof RecordFilter) {
-			filterEvent = new RemoveRecordFilterEvent();
-			((RemoveRecordFilterEvent) filterEvent).setFilter((RecordFilter) filter);
-		} else if (filter instanceof DimensionFilter) {
-			filterEvent = new RemoveDimensionFilterEvent();
-			((RemoveDimensionFilterEvent) filterEvent)
-					.setFilter((DimensionFilter) filter);
-		} else {
-			System.err.println(getClass() + "::triggerRemove(): Unimplemented...");
-		}
+		filterEvent = new RemoveFilterEvent();
+		filterEvent.setFilter(filter);
 
 		if (filterEvent != null) {
 			filterEvent.setDataDomainID(filter.getDataDomain().getDataDomainID());
@@ -195,23 +173,15 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	}
 
 	public void triggerMove(int offset) {
-		MoveFilterEvent<?> filterEvent = null;
+		MoveFilterEvent filterEvent = null;
 
-		if (filter instanceof RecordFilter) {
-			filterEvent = new MoveRecordtFilterEvent();
-			((MoveRecordtFilterEvent) filterEvent).setFilter((RecordFilter) filter);
-		} else if (filter instanceof DimensionFilter) {
-			filterEvent = new MoveDimensionFilterEvent();
-			((MoveDimensionFilterEvent) filterEvent).setFilter((DimensionFilter) filter);
-		} else {
-			System.err.println(getClass() + "::triggerMove(): Unimplemented...");
-		}
+		filterEvent = new MoveFilterEvent();
+		filterEvent.setFilter(filter);
 
-		if (filterEvent != null) {
-			filterEvent.setDataDomainID(filter.getDataDomain().getDataDomainID());
-			((MoveFilterEvent<?>) filterEvent).setOffset(offset);
-			GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
-		}
+		filterEvent.setDataDomainID(filter.getDataDomain().getDataDomainID());
+		filterEvent.setOffset(offset);
+		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
+
 	}
 
 	public int getPickingID() {
@@ -232,8 +202,7 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	}
 
 	@Override
-	public void handleDragOver(GL2 gl, Set<IDraggable> draggables,
-			float mouseCoordinateX, float mouseCoordinateY) {
+	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX, float mouseCoordinateY) {
 		if (getFilterRepresentation(draggables) == representation)
 			return;
 
@@ -241,30 +210,18 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	}
 
 	@Override
-	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
-			float mouseCoordinateY, DragAndDropController dragAndDropController) {
+	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX, float mouseCoordinateY,
+			DragAndDropController dragAndDropController) {
 		if (getFilterRepresentation(draggables) == representation)
 			return;
 
-		representation.handleDrop(gl, draggables, mouseCoordinateX, mouseCoordinateY,
-				dragAndDropController);
+		representation.handleDrop(gl, draggables, mouseCoordinateX, mouseCoordinateY, dragAndDropController);
 
-		CombineFilterEvent<?> filterEvent = null;
+		CombineFilterEvent filterEvent = null;
 
-		if (filter instanceof RecordFilter) {
-			filterEvent = new CombineRecordFilterEvent();
-			((CombineRecordFilterEvent) filterEvent).setFilter((RecordFilter) filter);
-			((CombineRecordFilterEvent) filterEvent)
-					.addCombineFilter((RecordFilter) getFilterRepresentation(draggables)
-							.getFilter().filter);
-		}
-		// else if( filter instanceof DimensionFilter )
-		// {
-		//
-		// }
-		else {
-			System.err.println(getClass() + "::triggerMove(): Unimplemented...");
-		}
+		filterEvent = new CombineFilterEvent();
+		filterEvent.setFilter(filter);
+		filterEvent.addCombineFilter(getFilterRepresentation(draggables).getFilter().filter);
 
 		if (filterEvent != null) {
 			filterEvent.setDataDomainID(filter.getDataDomain().getDataDomainID());
@@ -281,9 +238,8 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	}
 
 	@Override
-	public void handleDropAreaReplaced()
-	{
+	public void handleDropAreaReplaced() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

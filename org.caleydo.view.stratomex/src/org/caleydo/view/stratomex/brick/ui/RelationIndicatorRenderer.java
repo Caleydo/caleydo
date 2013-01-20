@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -25,9 +25,7 @@ import java.util.List;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.similarity.GroupSimilarity;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
@@ -48,9 +46,9 @@ import org.caleydo.view.stratomex.column.BrickColumn;
  * A RelationIndicatorRenderer can be either on the left side or on the right
  * side of a brick. Where it is has to be specified in the constructor. This
  * affects which dimensionGroup it is compared to.
- * 
+ *
  * @author Alexander Lex
- * 
+ *
  */
 public class RelationIndicatorRenderer extends LayoutRenderer {
 
@@ -80,7 +78,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 	 * To be called if the relations in the {@link RelationAnalyzer} have been
 	 * updated. Should typically be triggered via a
 	 * {@link RelationsUpdatedEvent} in the managing view.
-	 * 
+	 *
 	 * TODO: add parameters to check whether an update is actually necessary.
 	 */
 	public synchronized void updateRelations() {
@@ -116,7 +114,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		SimilarityMap map = relationAnalyzer.getSimilarityMap(perspectiveID);
 		if (map == null)
 			return;
-		VASimilarity<RecordVirtualArray, RecordGroupList> vaSimilarity = map
+		VASimilarity vaSimilarity = map
 				.getVASimilarity(neighborPerspectiveID);
 
 		// SimilarityMap map = relationAnalyzer.getSimilarityMap(neighborSetID);
@@ -128,7 +126,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 
 		if (vaSimilarity == null)
 			return;
-		GroupSimilarity<RecordVirtualArray, RecordGroupList> groupSimilarity = vaSimilarity
+		GroupSimilarity groupSimilarity = vaSimilarity
 				.getGroupSimilarity(perspectiveID, groupID);
 
 		similarities = groupSimilarity.getSimilarities();
@@ -189,7 +187,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			}
 		}
 	}
-	
+
 	@Override
 	protected boolean permitsWrappingDisplayLists() {
 		return false;

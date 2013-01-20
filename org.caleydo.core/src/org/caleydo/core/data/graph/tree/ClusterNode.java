@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -28,14 +28,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.variable.AVariablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.SelectionType;
 
 /**
  * Implementation of a node used in the cluster tree. Cluster node contains information needed in the
  * dendrogram and the radial hierarchy view. Additionally cluster node implements {@link Comparable}.
- * 
+ *
  * @author Bernhard Schlegl
  * @author Christian Partl
  * @author Alexander Lex
@@ -62,14 +62,14 @@ public class ClusterNode
 	private boolean isPartOfSubTree = false;
 	private Vec3f vPosSubTree;
 
-	private AVariablePerspective<?, ?, ?, ?> perspective;
+	private Perspective perspective;
 
 	public ClusterNode() {
 	}
 
 	/**
 	 * Constructor for a cluster node.
-	 * 
+	 *
 	 * @param tree
 	 *            The tree the clusternode belongs to
 	 * @param nodeName
@@ -94,7 +94,7 @@ public class ClusterNode
 	}
 
 	@SuppressWarnings("unchecked")
-	public <PerspectiveType extends AVariablePerspective<?, ?, ?, ?>> PerspectiveType getSubPerspective(
+	public <PerspectiveType extends Perspective> PerspectiveType getSubPerspective(
 		Class<PerspectiveType> concreteClass, ATableBasedDataDomain dataDomain) {
 		if (perspective != null)
 			return (PerspectiveType) perspective;

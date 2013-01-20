@@ -1,26 +1,24 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.data.perspective.variable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
@@ -30,13 +28,12 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.table.Table;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.filter.FilterManager;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -49,39 +46,29 @@ import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
- * A {@link AVariablePerspective} holds all relevant meta data for either
- * records through the {@link RecordPerspective} or dimensions through the
- * {@link DimensionPerspective}. For many uses both, a RecordPerspective and a
- * DimsenionPerspective are necessary. {@link TablePerspective} is designed to
- * hold combinations of Record- and DimensionPerspectives.
+ * A {@link Perspective} holds all relevant meta data for either records through the
+ * {@link Perspective} or dimensions through the {@link Perspective}. For many uses both, a
+ * Perspective and a DimsenionPerspective are necessary. {@link TablePerspective} is designed to hold
+ * combinations of Record- and AVariablePerspectives.
  * </p>
  * <p>
  * Among the information the DataPerspectives holds are:
  * <ol>
- * <li>The {@link VirtualArray}, which determines which elements of a Dimension
- * or Record should be accessed in which order.</li>
- * <li>The {@link GroupList} (currently as part of the VirtualArray), which
- * holds information on which elements in the VirtualArray are grouped (e.g.,
- * because of a clustering).</li>
- * <li>The {@link ClusterTree}, which defines a hierarchy on how similar
- * elements are to each other.
- * <li>The {@link FilterManager}, which holds and manages all filters defined on
- * this perspective.
+ * <li>The {@link VirtualArray}, which determines which elements of a Dimension or Record should be accessed in which
+ * order.</li>
+ * <li>The {@link GroupList} (currently as part of the VirtualArray), which holds information on which elements in the
+ * VirtualArray are grouped (e.g., because of a clustering).</li>
+ * <li>The {@link ClusterTree}, which defines a hierarchy on how similar elements are to each other.
+ * <li>The {@link FilterManager}, which holds and manages all filters defined on this perspective.
  * </ol>
  * </p>
  *
  * @author Alexander Lex
- * @param <VA>
- * @param <GroupType>
- * @param <DeltaType>
- * @param <FilterManagerType>
  */
 @XmlType
-@XmlSeeAlso({ RecordPerspective.class, DimensionPerspective.class,
-		RecordVirtualArray.class, DimensionVirtualArray.class })
+@XmlSeeAlso({ VirtualArray.class })
 @XmlRootElement
-public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType, GroupType>, GroupType extends GroupList<GroupType, VA, DeltaType>, DeltaType extends VirtualArrayDelta<DeltaType>, FilterManagerType extends FilterManager<?, DeltaType, ?, VA>>
-		implements IDefaultLabelHolder {
+public class Perspective implements IDefaultLabelHolder {
 
 	/** The unique ID of the perspective */
 	@XmlElement
@@ -91,33 +78,30 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	private String label;
 
 	/**
-	 * Flag telling whether the set label is a default (true) and thereby should
-	 * probably not be displayed or whether the label is worth displaying
+	 * Flag telling whether the set label is a default (true) and thereby should probably not be displayed or whether
+	 * the label is worth displaying
 	 */
 	@XmlElement
 	private boolean isDefaultLabel = true;
 
 	/**
-	 * Flag determining whether this perspective is private to a certain view.
-	 * That means that other views typically should not use this perspective
+	 * Flag determining whether this perspective is private to a certain view. That means that other views typically
+	 * should not use this perspective
 	 */
 	@XmlElement
 	protected boolean isPrivate;
 
 	/**
-	 * Flag determining whether this perspective is the default perspective . A
-	 * default perspective is defined for every {@link Table}. It should
-	 * reflect "the whole dataset". This is used for instance by the support
-	 * views.
+	 * Flag determining whether this perspective is the default perspective . A default perspective is defined for every
+	 * {@link Table}. It should reflect "the whole dataset". This is used for instance by the support views.
 	 */
 	@XmlElement
 	protected boolean isDefault;
 
 	/**
-	 * Flag telling us whether the tree has been automatically generated (i.e.,
-	 * is the default tree), or whether it has been externally set, e.g., using
-	 * clustering or importing. It does not make sense to visualize a default
-	 * tree for example.
+	 * Flag telling us whether the tree has been automatically generated (i.e., is the default tree), or whether it has
+	 * been externally set, e.g., using clustering or importing. It does not make sense to visualize a default tree for
+	 * example.
 	 */
 	@XmlElement
 	boolean isTreeDefaultTree = true;
@@ -130,36 +114,49 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	protected IDType idType;
 
 	/** The {@link VirtualArray} of this DataPerspective. */
-	protected VA virtualArray;
+	protected VirtualArray virtualArray;
 
 	/**
-	 * The root not of the tree from this perspectives view. This enables the
-	 * perspective to use only part of the tree
+	 * The root not of the tree from this perspectives view. This enables the perspective to use only part of the tree
 	 */
 	@XmlElement
 	protected ClusterNode rootNode;
 	/**
-	 * The filter manager that manages and holds all filters applied to this
-	 * prespective.
+	 * The filter manager that manages and holds all filters applied to this prespective.
 	 */
 	@XmlTransient
-	protected FilterManagerType filterManager;
+	protected FilterManager filterManager;
 
 	@XmlTransient
 	private ClusterTree tree;
 
 	/** Only for serialization */
-	public AVariablePerspective() {
+	public Perspective() {
 	}
 
-	public AVariablePerspective(IDataDomain dataDomain) {
+	public Perspective(IDataDomain dataDomain, IDType idType) {
+		this.idType = idType;
 		this.dataDomain = dataDomain;
 		init();
 	}
 
-	public void setDataDomain(IDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		init();
+	}
+
+	// /** Get the human readable label of the element specified by the ID */
+	// protected String getElementLabel(Integer id)
+	// {
+	// dataDomain.getDimensionLabel(id)
+	// }
+
+	private void init() {
+		// if this perspective is de-serialized the perspectiveID is already set.
+		if (perspectiveID == null)
+			perspectiveID = "Perspective_" + UUID.randomUUID();
+		filterManager = new FilterManager(dataDomain, this);
+
 	}
 
 	/**
@@ -183,8 +180,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	}
 
 	/**
-	 * @return the label, see {@link #label}, or if the label is null, the
-	 *         perspectiveID is returned.
+	 * @return the label, see {@link #label}, or if the label is null, the perspectiveID is returned.
 	 */
 	@Override
 	public String getLabel() {
@@ -232,14 +228,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	}
 
 	/**
-	 * Initialization that needs to be called as soon as dataDomain is set. Is
-	 * called by super-class.
-	 */
-	protected abstract void init();
-
-	/**
-	 * Returns the automatically generated globally unique
-	 * {@link #perspectiveID} of this perspective
+	 * Returns the automatically generated globally unique {@link #perspectiveID} of this perspective
 	 *
 	 * @return
 	 */
@@ -265,15 +254,15 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	}
 
 	/**
-	 * Creates a new virtual array for this perspective and resets all other
-	 * associated parameters (clusterSizes, contentTree, etc.)
+	 * Creates a new virtual array for this perspective and resets all other associated parameters (clusterSizes,
+	 * contentTree, etc.)
 	 *
 	 * @param indices
-	 *            can be a filled ArrayList, an empty ArrayList for empty
-	 *            initialization or null for empty initialization
+	 *            can be a filled ArrayList, an empty ArrayList for empty initialization or null for empty
+	 *            initialization
 	 */
-	private void createVA(List<Integer> indices) {
-		virtualArray = newConcreteVirtualArray(indices);
+	private void createVirtualArray(List<Integer> indices) {
+		virtualArray = new VirtualArray(idType, indices);
 	}
 
 	/**
@@ -282,20 +271,18 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	 * @return
 	 */
 	@XmlElementRef
-	public VA getVirtualArray() {
+	public VirtualArray getVirtualArray() {
 		return virtualArray;
 	}
 
 	/**
 	 * <p>
-	 * Returns the cluster tree showing the relations between the elements
-	 * indexed by the virtual array.
+	 * Returns the cluster tree showing the relations between the elements indexed by the virtual array.
 	 * </p>
 	 * <p>
-	 * Depending on whether or not a cluster tree has been set, this method
-	 * either returns a tree with real relations, or a tree with one root and
-	 * all leafs as children of the root (the default tree). You can check
-	 * whether the tree is the default tree using {@link #isTreeDefaultTree()}.
+	 * Depending on whether or not a cluster tree has been set, this method either returns a tree with real relations,
+	 * or a tree with one root and all leafs as children of the root (the default tree). You can check whether the tree
+	 * is the default tree using {@link #isTreeDefaultTree()}.
 	 * </p>
 	 *
 	 * @return
@@ -325,10 +312,9 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	 * @param virtualArray
 	 */
 	@Deprecated
-	public void setVirtualArray(VA virtualArray) {
+	public void setVirtualArray(VirtualArray virtualArray) {
 		if (virtualArray == null) {
-			Logger.log(new Status(IStatus.ERROR, "org.caleydo.core",
-					"Virtual array to be set was null"));
+			Logger.log(new Status(IStatus.ERROR, "org.caleydo.core", "Virtual array to be set was null"));
 			return;
 		}
 		this.virtualArray = virtualArray;
@@ -342,8 +328,8 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	}
 
 	/**
-	 * Returns the {@link #rootNode} of the tree, which can be different from
-	 * {@link ClusterTree#getRoot()} - it can be a sub-tree only.
+	 * Returns the {@link #rootNode} of the tree, which can be different from {@link ClusterTree#getRoot()} - it can be
+	 * a sub-tree only.
 	 *
 	 * @return
 	 */
@@ -357,24 +343,21 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	}
 
 	/**
-	 * Returns the {@link FilterManager} associated with this perspective. Every
-	 * perspective has it's own unique filter manager.
+	 * Returns the {@link FilterManager} associated with this perspective. Every perspective has it's own unique filter
+	 * manager.
 	 *
 	 * @return
 	 */
-	public FilterManagerType getFilterManager() {
-		if (filterManager == null)
-			createFilterManager();
+	public FilterManager getFilterManager() {
 		return filterManager;
 	}
 
 	/**
-	 * Sets the delta to the virtual array and resets other related data
-	 * (groups, trees) accordingly.
+	 * Sets the delta to the virtual array and resets other related data (groups, trees) accordingly.
 	 *
 	 * @param delta
 	 */
-	public void setVADelta(DeltaType delta) {
+	public void setVirtualArrayDelta(VirtualArrayDelta delta) {
 		virtualArray.setDelta(delta);
 		createDefaultGroupList();
 		// virtualArray.setGroupList(null);
@@ -382,9 +365,8 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 
 	/**
 	 * <p>
-	 * {@link AVariablePerspective}s are initialized by providing a
-	 * {@link PerspectiveInitializationData} object, which can contain a number
-	 * of different combinations of information to initialize the perspective.
+	 * {@link Perspective}s are initialized by providing a {@link PerspectiveInitializationData} object, which
+	 * can contain a number of different combinations of information to initialize the perspective.
 	 * </p>
 	 * <p>
 	 * If null is passed, an empty perspective is created.
@@ -401,18 +383,17 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 
 		// Case 1: we want an empty perspective
 		if (data == null) {
-			createVA(null);
+			createVirtualArray(null);
 			return;
 		}
 		// Case 2: we only have a virtual array
-		else if (data.getIndices() != null && data.getGroupSizes() == null
-				&& data.getTree() == null) {
-			createVA(data.getIndices());
+		else if (data.getIndices() != null && data.getGroupSizes() == null && data.getTree() == null) {
+			createVirtualArray(data.getIndices());
 			createDefaultGroupList();
 		}
 		// Case 3: we have a virtual array and grouping
 		else if (data.getIndices() != null && data.getGroupSizes() != null) {
-			createVA(data.getIndices());
+			createVirtualArray(data.getIndices());
 			createGroupListAndDefaultTreeFromClusterSizes(data);
 		}
 		// Case 4: we have a tree and nothing else, with either the default root
@@ -422,7 +403,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 		}
 		// Case 5: we initialize from a given virtual array
 		else if (data.getVirtualArray() != null) {
-			virtualArray = (VA) data.getVirtualArray();
+			virtualArray = data.getVirtualArray();
 			virtualArray.setIdType(idType);
 			createDefaultTreeFromGroupList();
 		} else {
@@ -431,34 +412,12 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 		}
 	}
 
-	public void reset() {
-		tree = null;
-		rootNode = null;
-		PerspectiveInitializationData data = new PerspectiveInitializationData();
-		data.setData(getIDList());
-		init(data);
+
+
+	public void setVADelta(VirtualArrayDelta delta) {
+		virtualArray.setDelta(delta);
 	}
 
-	// ------------------ Abstract Methods that need the concrete data types
-	// ---------------
-
-	/** Get the human readable label of the element specified by the ID */
-	protected abstract String getElementLabel(Integer id);
-
-	/** Create a concrete {@link GroupList} in the derived classes. */
-	protected abstract GroupType createGroupList();
-
-	/** Create a concrete {@link FilterManager} in derived classes */
-	protected abstract void createFilterManager();
-
-	/** Create a concrete {@link VirtualArray} in the derived classes */
-	protected abstract VA newConcreteVirtualArray(List<Integer> indexList);
-
-	/**
-	 * Get a complete list of indices of all elements in the data table for the
-	 * perspective type
-	 */
-	protected abstract List<Integer> getIDList();
 
 	// -------------------------- Initialization Methods
 	// -------------------------------------
@@ -473,16 +432,15 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 		// tree.addChild(root, new ClusterNode(tree, getElementLabel(id), id,
 		// false, id));
 		// }
-		GroupType groupList = createGroupList();
+		GroupList groupList = new GroupList();
 		Group group = new Group(virtualArray.size(), 0);
 		groupList.append(group);
 		virtualArray.setGroupList(groupList);
 
 	}
 
-	private void createGroupListAndDefaultTreeFromClusterSizes(
-			PerspectiveInitializationData data) {
-		GroupType groupList = createGroupList();
+	private void createGroupListAndDefaultTreeFromClusterSizes(PerspectiveInitializationData data) {
+		GroupList groupList = new GroupList();
 		int groupCounter = 0;
 		isTreeDefaultTree = true;
 		// tree = new ClusterTree(idType, data.getIndices().size());
@@ -507,8 +465,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 
 			// node = new ClusterNode(tree, groupName, clusterNr++, false, -1);
 			// node.setDefaultLabel(isDefaultLabel);
-			Group tempGroup = new Group(groupSize, data.getSampleElements().get(
-					groupCounter));
+			Group tempGroup = new Group(groupSize, data.getSampleElements().get(groupCounter));
 			tempGroup.setLabel(groupName, isDefaultLabel);
 			// tree.addChild(root, node);
 			groupList.append(tempGroup);
@@ -537,8 +494,7 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 		int from = 0;
 		int to = 0;
 		for (Group group : virtualArray.getGroupList()) {
-			node = new ClusterNode(tree, "Group: " + group.getGroupIndex(), clusterNr++,
-					false, -1);
+			node = new ClusterNode(tree, "Group: " + group.getGroupIndex(), clusterNr++, false, -1);
 			tree.addChild(root, node);
 			from = group.getStartIndex();
 			to += group.getSize();
@@ -553,9 +509,8 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 	}
 
 	/**
-	 * Creates a virtual array for this perspective by extracting the leaves
-	 * from the tree. Respects the artificial {@link #rootNode}, or uses the
-	 * trees default root if no artificial root is set.
+	 * Creates a virtual array for this perspective by extracting the leaves from the tree. Respects the artificial
+	 * {@link #rootNode}, or uses the trees default root if no artificial root is set.
 	 */
 	private void createEverythingFromTree(PerspectiveInitializationData data) {
 		tree = data.getTree();
@@ -563,9 +518,8 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 		if (tree.getLeaveIDType() == null)
 			tree.initializeIDTypes(idType);
 		if (tree.getLeaveIDType() != idType)
-			throw new IllegalStateException(
-					"IDType of tree and perspective do not match. Tree:  "
-							+ tree.getLeaveIDType() + " perspective: " + idType);
+			throw new IllegalStateException("IDType of tree and perspective do not match. Tree:  "
+					+ tree.getLeaveIDType() + " perspective: " + idType);
 
 		isTreeDefaultTree = false;
 		if (data.getRootNode() == null)
@@ -573,10 +527,10 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 		else
 			rootNode = data.getRootNode();
 
-		virtualArray = newConcreteVirtualArray(rootNode.getLeaveIds());
+		virtualArray = new VirtualArray(idType, rootNode.getLeaveIds());
 		ArrayList<ClusterNode> listOfNodesForGroups = new ArrayList<ClusterNode>(1);
 		listOfNodesForGroups.add(rootNode);
-		virtualArray.buildNewGroupList(createGroupList(), listOfNodesForGroups);
+		virtualArray.buildNewGroupList(listOfNodesForGroups);
 
 	}
 
@@ -590,4 +544,8 @@ public abstract class AVariablePerspective<VA extends VirtualArray<VA, DeltaType
 		this.label = label;
 	}
 
+	@Override
+	public String getProviderName() {
+		return "Perspective";
+	}
 }

@@ -62,7 +62,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 		float fieldHeight = 0;
 		float fieldWidth = recordSpacing.getFieldWidth();
 
-		// DimensionVirtualArray dimensionVA =
+		// VirtualArray dimensionVA =
 
 		for (Integer recordID : heatMap.getTablePerspective().getRecordPerspective().getVirtualArray()) {
 			fieldHeight = recordSpacing.getFieldHeight(recordID);

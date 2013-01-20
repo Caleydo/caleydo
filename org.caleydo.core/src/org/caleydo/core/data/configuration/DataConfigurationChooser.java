@@ -28,9 +28,7 @@ import java.util.Set;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.perspective.variable.AVariablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
@@ -44,7 +42,7 @@ public class DataConfigurationChooser {
 
 	/**
 	 * <p>
-	 * Chooses a {@link IDataDomain}, a {@link RecordPerspective} and a {@link DimensionPerspective} based on the list
+	 * Chooses a {@link IDataDomain}, a {@link Perspective} and a {@link DimensionPerspective} based on the list
 	 * of dataDomains specified. If multiple matches are available a dialog to make the user choose is opened.
 	 * </p>
 	 *
@@ -58,9 +56,9 @@ public class DataConfigurationChooser {
 
 		ATableBasedDataDomain chosenDataDomain = null;
 		String recordPerspectiveID = null;
-		RecordPerspective recordPerspective = null;
+		Perspective recordPerspective = null;
 		String dimensionPerspectiveID = null;
-		DimensionPerspective dimensionPerspective = null;
+		Perspective dimensionPerspective = null;
 
 		if (possibleDataDomains == null || possibleDataDomains.size() == 0)
 			throw new IllegalStateException("No datadomain for this view available");
@@ -106,12 +104,12 @@ public class DataConfigurationChooser {
 
 	/**
 	 * <p>
-	 * Checks if there is only one {@link RecordPerspective} from those registered with the {@link Table} a possible
+	 * Checks if there is only one {@link Perspective} from those registered with the {@link Table} a possible
 	 * match considering the parameters. If so, this one match is returned, else null is returned.
 	 * </p>
 	 * <p>
-	 * As {@link AVariablePerspective}s can be either private or public (see
-	 * {@link AVariablePerspective#setIsPrivate(boolean)}, it is possible to let the chooser only chose from those that
+	 * As {@link Perspective}s can be either private or public (see
+	 * {@link Perspective#setIsPrivate(boolean)}, it is possible to let the chooser only chose from those that
 	 * are public.
 	 * </p>
 	 *
@@ -162,7 +160,7 @@ public class DataConfigurationChooser {
 			Iterator<String> iterator = candidates.iterator();
 			while (iterator.hasNext()) {
 				String tempPerspectiveID = iterator.next();
-				AVariablePerspective<?, ?, ?, ?> perspective;
+				Perspective perspective;
 				if (isRecord)
 					perspective = table.getRecordPerspective(tempPerspectiveID);
 				else

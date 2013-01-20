@@ -25,8 +25,7 @@ import javax.media.opengl.GL2ES1;
 import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.collection.table.Table;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -86,7 +85,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		//
 		// AHeatMapTemplate heatMapTemplate = heatMap.getTemplate();
 		//
-		// RecordVirtualArray recordVA =
+		// VirtualArray recordVA =
 		// heatMap.getTablePerspective().getRecordPerspective()
 		// .getVirtualArray();
 		//
@@ -272,8 +271,8 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		endRecord = endRecord > numberOfRecords - 1 ? numberOfRecords - 1 : endRecord;
 
 		Table table = heatMap.getDataDomain().getTable();
-		RecordVirtualArray recordVA = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray();
-		DimensionVirtualArray dimensionVA = heatMap.getTablePerspective().getDimensionPerspective().getVirtualArray();
+		VirtualArray recordVA = heatMap.getTablePerspective().getRecordPerspective().getVirtualArray();
+		VirtualArray dimensionVA = heatMap.getTablePerspective().getDimensionPerspective().getVirtualArray();
 
 		for (int dimensionCount = 0; dimensionCount < numberOfDimensions; dimensionCount++) {
 			val = 0;

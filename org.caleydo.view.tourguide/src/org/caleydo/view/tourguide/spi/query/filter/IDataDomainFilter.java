@@ -19,19 +19,19 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.spi.query.filter;
 
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 
 import com.google.common.base.Predicate;
 
 /**
- * returns true if the element should resist in the selection
- *
+ * returns true if the element should remain in the selection
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
-public interface IDataDomainFilter extends Predicate<Pair<? extends ARecordPerspective, Group>>, Cloneable {
+public interface IDataDomainFilter extends Predicate<Pair<Perspective, Group>>, Cloneable {
 
 	IDataDomainFilter clone();
 }

@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.spi.compute;
 
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 
 /**
@@ -29,5 +29,5 @@ import org.caleydo.core.data.virtualarray.group.Group;
  *
  */
 public interface IComputeScoreFilter {
-	public boolean doCompute(ARecordPerspective a, Group ag, ARecordPerspective b, Group bg);
+	public boolean doCompute(Perspective a, Group ag, Perspective b, Group bg);
 }

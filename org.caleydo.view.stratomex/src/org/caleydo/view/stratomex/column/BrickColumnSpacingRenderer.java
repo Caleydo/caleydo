@@ -26,12 +26,11 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.similarity.GroupSimilarity;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
@@ -134,7 +133,7 @@ public class BrickColumnSpacingRenderer
 		if (similarityMap == null)
 			return;
 
-		VASimilarity<RecordVirtualArray, RecordGroupList> vaSimilarityMap = similarityMap
+		VASimilarity vaSimilarityMap = similarityMap
 				.getVASimilarity(rightDimGroup.getTablePerspective().getRecordPerspective()
 						.getPerspectiveID());
 		if (vaSimilarityMap == null)
@@ -151,7 +150,7 @@ public class BrickColumnSpacingRenderer
 
 			RectangleCoordinates leftBrickElementLayout = leftBrick.getLayoutForConnections();
 
-			GroupSimilarity<RecordVirtualArray, RecordGroupList> leftGroupSimilarity = vaSimilarityMap
+			GroupSimilarity leftGroupSimilarity = vaSimilarityMap
 					.getGroupSimilarity(leftDimGroup.getTablePerspective()
 							.getRecordPerspective().getPerspectiveID(), leftBrick
 							.getTablePerspective().getRecordGroup().getGroupIndex());
@@ -169,7 +168,7 @@ public class BrickColumnSpacingRenderer
 						stratomex.getNextConnectionBandID(), rightBrick, subGroup);
 				groupMatch.addSubGroupMatch(subGroup.getGroupIndex(), subGroupMatch);
 
-				RecordVirtualArray similarityVA = leftGroupSimilarity
+				VirtualArray similarityVA = leftGroupSimilarity
 						.getSimilarityVAs(rightBrick.getTablePerspective().getRecordGroup()
 								.getGroupIndex());
 
@@ -181,11 +180,11 @@ public class BrickColumnSpacingRenderer
 				stratomex.getHashConnectionBandIDToRecordVA().put(
 						subGroupMatch.getConnectionBandID(), brickConnectionBand);
 
-				RecordPerspective leftRecordPerspective = leftBrick.getTablePerspective()
+				Perspective leftRecordPerspective = leftBrick.getTablePerspective()
 						.getRecordPerspective();
-				RecordPerspective rightRecordPerspective = rightBrick.getTablePerspective()
+				Perspective rightRecordPerspective = rightBrick.getTablePerspective()
 						.getRecordPerspective();
-				HashMap<RecordPerspective, HashMap<RecordPerspective, BrickConnection>> hashRecordPerspectivesToConnectionBandID = stratomex
+				HashMap<Perspective, HashMap<Perspective, BrickConnection>> hashRecordPerspectivesToConnectionBandID = stratomex
 						.getHashTablePerspectivesToConnectionBandID();
 
 				if (hashRecordPerspectivesToConnectionBandID
@@ -194,7 +193,7 @@ public class BrickColumnSpacingRenderer
 							rightRecordPerspective, brickConnectionBand);
 				}
 				else {
-					HashMap<RecordPerspective, BrickConnection> tmp = new HashMap<RecordPerspective, BrickConnection>();
+					HashMap<Perspective, BrickConnection> tmp = new HashMap<Perspective, BrickConnection>();
 					tmp.put(rightRecordPerspective, brickConnectionBand);
 					hashRecordPerspectivesToConnectionBandID.put(leftRecordPerspective, tmp);
 				}
@@ -222,7 +221,7 @@ public class BrickColumnSpacingRenderer
 			RectangleCoordinates rightBrickElementLayout = rightBrick
 					.getLayoutForConnections();
 
-			GroupSimilarity<RecordVirtualArray, RecordGroupList> rightGroupSimilarity = vaSimilarityMap
+			GroupSimilarity rightGroupSimilarity = vaSimilarityMap
 					.getGroupSimilarity(rightDimGroup.getTablePerspective()
 							.getRecordPerspective().getPerspectiveID(), rightBrick
 							.getTablePerspective().getRecordGroup().getGroupIndex());
@@ -257,7 +256,7 @@ public class BrickColumnSpacingRenderer
 	}
 
 	private void calculateSubMatchSelections(SubGroupMatch subGroupMatch,
-			RecordVirtualArray recordVA) {
+			VirtualArray recordVA) {
 
 		if (recordVA.size() == 0)
 			return;

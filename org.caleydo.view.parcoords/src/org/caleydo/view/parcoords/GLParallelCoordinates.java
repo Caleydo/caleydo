@@ -48,23 +48,19 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.table.CategoricalTable;
-import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.collection.table.NumericalTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.filter.DimensionFilter;
-import org.caleydo.core.data.filter.RecordFilter;
-import org.caleydo.core.data.filter.event.NewDimensionFilterEvent;
-import org.caleydo.core.data.filter.event.NewRecordFilterEvent;
+import org.caleydo.core.data.filter.Filter;
+import org.caleydo.core.data.filter.event.NewFilterEvent;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
+import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.BookmarkButtonEvent;
@@ -398,7 +394,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 
 		Set<Integer> removedElements = recordSelectionManager.getElements(SelectionType.DESELECTED);
 
-		RecordVADelta delta = new RecordVADelta(tablePerspective.getRecordPerspective().getPerspectiveID(),
+		VirtualArrayDelta delta = new VirtualArrayDelta(tablePerspective.getRecordPerspective().getPerspectiveID(),
 				recordIDType);
 		for (Integer recordID : removedElements) {
 			delta.add(VADeltaItem.removeElement(recordID));
@@ -533,7 +529,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			gl.glBegin(GL.GL_LINE_STRIP);
 		}
 
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 		Table table = dataDomain.getTable();
 
 		// this loop executes once per axis
@@ -620,7 +616,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		Set<Integer> mouseOverSet = dimensionSelectionManager.getElements(SelectionType.MOUSE_OVER);
 
 		int count = 0;
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		while (count < numberOfAxis) {
 			float fXPosition = axisSpacings.get(count);
@@ -1400,12 +1396,12 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 				iChangeDropOnAxisNumber = pickingID;
 				break;
 			case CLICKED:
-				DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+				VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 				if (dimensionVA.occurencesOf(dimensionVA.get(pickingID)) == 1) {
 					removeGate(dimensionVA.get(pickingID));
 				}
 
-				DimensionVADelta vaDelta = new DimensionVADelta(tablePerspective.getDimensionPerspective()
+				VirtualArrayDelta vaDelta = new VirtualArrayDelta(tablePerspective.getDimensionPerspective()
 						.getPerspectiveID(), dimensionIDType);
 				vaDelta.add(VADeltaItem.remove(pickingID));
 
@@ -1445,7 +1441,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			case CLICKED:
 				if (pickingID >= 0) {
 					// dimensionVA.copy(pickingID);
-					DimensionVADelta vaDelta = new DimensionVADelta(tablePerspective.getDimensionPerspective()
+					VirtualArrayDelta vaDelta = new VirtualArrayDelta(tablePerspective.getDimensionPerspective()
 							.getPerspectiveID(), dimensionIDType);
 					vaDelta.add(VADeltaItem.copy(pickingID));
 					triggerDimensionFilterEvent(
@@ -1567,15 +1563,15 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		}
 	}
 
-	private void triggerDimensionFilterEvent(DimensionVADelta delta, String label) {
+	private void triggerDimensionFilterEvent(VirtualArrayDelta delta, String label) {
 
-		DimensionFilter filter = new DimensionFilter(tablePerspective.getDimensionPerspective().getPerspectiveID());
+		Filter filter = new Filter(tablePerspective.getDimensionPerspective().getPerspectiveID());
 
 		filter.setVADelta(delta);
 		filter.setLabel(label);
 		filter.setDataDomain(dataDomain);
 
-		NewDimensionFilterEvent filterEvent = new NewDimensionFilterEvent();
+		NewFilterEvent filterEvent = new NewFilterEvent();
 		filterEvent.setFilter(filter);
 		filterEvent.setSender(this);
 		filterEvent.setDataDomainID(dataDomain.getDataDomainID());
@@ -1583,14 +1579,14 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		eventPublisher.triggerEvent(filterEvent);
 	}
 
-	private void triggerRecordFilterEvent(RecordVADelta delta, String label) {
+	private void triggerRecordFilterEvent(VirtualArrayDelta delta, String label) {
 
-		RecordFilter filter = new RecordFilter(tablePerspective.getRecordPerspective().getPerspectiveID());
+		Filter filter = new Filter(tablePerspective.getRecordPerspective().getPerspectiveID());
 		filter.setVADelta(delta);
 		filter.setLabel(label);
 		filter.setDataDomain(dataDomain);
 
-		NewRecordFilterEvent filterEvent = new NewRecordFilterEvent();
+		NewFilterEvent filterEvent = new NewFilterEvent();
 		filterEvent.setFilter(filter);
 		filterEvent.setSender(this);
 		filterEvent.setDataDomainID(dataDomain.getDataDomainID());
@@ -1607,7 +1603,7 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		float x = 0;
 		float y = 0;
 
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 		if (idType.equals(dimensionIDType)) {
 
 			int axisCount = dimensionVA.indexOf(id);
@@ -1670,8 +1666,8 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 		int leftAxisIndex;
 		int rightAxisIndex;
 
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 		Table table = dataDomain.getTable();
 
 		leftAxisIndex = dimensionVA.get(iPosition);
@@ -1858,14 +1854,14 @@ public class GLParallelCoordinates extends ATableBasedView implements IGLRemoteR
 			}
 		}
 
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		if (iSwitchAxisWithThis != -1) {
 			dimensionVA.move(iMovedAxisPosition, iSwitchAxisWithThis);
 			axisSpacings.remove(iMovedAxisPosition);
 			axisSpacings.add(iSwitchAxisWithThis, fWidth);
 
-			DimensionVADelta vaDelta = new DimensionVADelta(tablePerspective.getDimensionPerspective()
+			VirtualArrayDelta vaDelta = new VirtualArrayDelta(tablePerspective.getDimensionPerspective()
 					.getPerspectiveID(), dimensionIDType);
 			vaDelta.add(VADeltaItem.move(iMovedAxisPosition, iSwitchAxisWithThis));
 			triggerDimensionFilterEvent(vaDelta,

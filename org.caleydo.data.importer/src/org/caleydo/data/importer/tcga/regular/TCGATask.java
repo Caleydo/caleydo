@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.logging.Logger;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.data.importer.XMLToProjectBuilder;
 import org.caleydo.data.importer.tcga.ATCGATask;
@@ -164,7 +164,7 @@ public class TCGATask extends ATCGATask {
 
 	private String getClinicalInfo(ATableBasedDataDomain dataDomain) {
 		String clinicalParameters = "";
-		DimensionVirtualArray dimensionVA = dataDomain.getTable()
+		VirtualArray dimensionVA = dataDomain.getTable()
 				.getDefaultDimensionPerspective().getVirtualArray();
 		for (int dimensionID : dimensionVA) {
 			clinicalParameters += "\"" + dataDomain.getDimensionLabel(dimensionID) + "\",";

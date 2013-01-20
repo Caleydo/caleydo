@@ -164,7 +164,7 @@ public class SelectionDelta
 	}
 
 	@Override
-	public void tableIDType(IDType idType) {
+	public void setIDType(IDType idType) {
 		this.idType = idType;
 	}
 

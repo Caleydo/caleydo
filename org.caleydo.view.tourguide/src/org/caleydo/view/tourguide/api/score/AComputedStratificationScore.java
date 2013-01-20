@@ -22,7 +22,7 @@ package org.caleydo.view.tourguide.api.score;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.api.query.ESorting;
 import org.caleydo.view.tourguide.api.query.ScoringElement;
@@ -44,18 +44,18 @@ public abstract class AComputedStratificationScore extends DefaultLabelProvider 
 		return ESorting.DESC;
 	}
 
-	public boolean contains(ARecordPerspective elem) {
+	public boolean contains(Perspective elem) {
 		// have in cache or the same
 		return scores.containsKey(elem.getPerspectiveID());
 	}
 
-	public void put(ARecordPerspective elem, float value) {
+	public void put(Perspective elem, float value) {
 		scores.put(elem.getPerspectiveID(), value);
 	}
 
 	@Override
 	public float getScore(ScoringElement elem) {
-		ARecordPerspective p = elem.getStratification();
+		Perspective p = elem.getStratification();
 		Float f = scores.get(p.getPerspectiveID());
 		return f == null ? Float.NaN : f.floatValue();
 	}

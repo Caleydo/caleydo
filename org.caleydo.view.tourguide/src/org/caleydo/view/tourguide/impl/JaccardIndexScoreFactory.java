@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
@@ -47,11 +47,11 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public class JaccardIndexScoreFactory implements IScoreFactory {
-	private IRegisteredScore createJaccard(String label, RecordPerspective reference, Group group) {
+	private IRegisteredScore createJaccard(String label, Perspective reference, Group group) {
 		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(), null);
 	}
 
-	private IRegisteredScore createJaccardME(String label, RecordPerspective reference, Group group) {
+	private IRegisteredScore createJaccardME(String label, Perspective reference, Group group) {
 		return new DefaultComputedReferenceGroupScore(label, reference, group, JaccardIndex.get(),
 				ComputeScoreFilters.MUTUAL_EXCLUSIVE);
 	}
@@ -68,7 +68,7 @@ public class JaccardIndexScoreFactory implements IScoreFactory {
 	@Override
 	public Iterable<ScoreEntry> createStratEntries(TablePerspective strat) {
 		Collection<ScoreEntry> col = new ArrayList<>();
-		final RecordPerspective rs = strat.getRecordPerspective();
+		final Perspective rs = strat.getRecordPerspective();
 		CollapseScore composite = new CollapseScore(rs.getLabel());
 		for (Group group : rs.getVirtualArray().getGroupList()) {
 			composite.add(createJaccard(null, rs, group));

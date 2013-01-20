@@ -37,8 +37,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.execution.SafeCallable;
@@ -61,8 +60,8 @@ import com.google.common.collect.Multimap;
  * @author Samuel Gratzl
  *
  */
-public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPerspective, TablePerspective>>>,
-		Function<Collection<ARecordPerspective>, Multimap<ARecordPerspective, Group>>, Cloneable {
+public class DataDomainQuery implements SafeCallable<Collection<Pair<Perspective, TablePerspective>>>,
+		Function<Collection<Perspective>, Multimap<Perspective, Group>>, Cloneable {
 	public static final String PROP_FILTER = "filter";
 	public static final String PROP_SELECTION = "selection";
 	public static final String PROP_DIMENSION_SELECTION = "dimensionSelection";
@@ -85,12 +84,12 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 	private EDataDomainQueryMode mode = EDataDomainQueryMode.TABLE_BASED;
 
 	// cache
-	private WeakReference<Collection<Pair<ARecordPerspective, TablePerspective>>> cache = null;
+	private WeakReference<Collection<Pair<Perspective, TablePerspective>>> cache = null;
 
 	/**
 	 * contains the selected dimension perspective to use for a given datadomain
 	 */
-	private final Map<IDataDomain, DimensionPerspective> dimensionSelection = new HashMap<>();
+	private final Map<IDataDomain, Perspective> dimensionSelection = new HashMap<>();
 
 	public DataDomainQuery() {
 		this(true);
@@ -186,9 +185,9 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 	}
 
 	@Override
-	public Multimap<ARecordPerspective, Group> apply(Collection<ARecordPerspective> stratifications) {
-		Multimap<ARecordPerspective, Group> r = ArrayListMultimap.create();
-		for (ARecordPerspective strat : stratifications) {
+	public Multimap<Perspective, Group> apply(Collection<Perspective> stratifications) {
+		Multimap<Perspective, Group> r = ArrayListMultimap.create();
+		for (Perspective strat : stratifications) {
 			for (Group group : strat.getVirtualArray().getGroupList()) {
 				if (group == null || !filter.apply(Pair.make(strat, group)))
 					continue;
@@ -199,11 +198,11 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 	}
 
 	@Override
-	public Collection<Pair<ARecordPerspective, TablePerspective>> call() {
-		Collection<Pair<ARecordPerspective, TablePerspective>> c = cache != null ? cache.get() : null;
+	public Collection<Pair<Perspective, TablePerspective>> call() {
+		Collection<Pair<Perspective, TablePerspective>> c = cache != null ? cache.get() : null;
 		if (c != null)
 			return c;
-		Collection<Pair<ARecordPerspective, TablePerspective>> stratifications = new ArrayList<>();
+		Collection<Pair<Perspective, TablePerspective>> stratifications = new ArrayList<>();
 		for (IDataDomain dataDomain : selection) {
 			stratifications.addAll(getStratifications(dataDomain));
 		}
@@ -211,7 +210,7 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 		return stratifications;
 	}
 
-	public Collection<Pair<ARecordPerspective, TablePerspective>> getStratifications(IDataDomain dataDomain) {
+	public Collection<Pair<Perspective, TablePerspective>> getStratifications(IDataDomain dataDomain) {
 		if (EDataDomainQueryMode.TABLE_BASED.isCompatible(dataDomain))
 			return Collections2.transform(getTableBasedStratifications((ATableBasedDataDomain) dataDomain), toPair);
 		else if (EDataDomainQueryMode.GENE_SET.isCompatible(dataDomain))
@@ -220,7 +219,7 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 			return Collections.emptyList();
 	}
 
-	public Collection<ARecordPerspective> getJustStratifications(IDataDomain dataDomain) {
+	public Collection<Perspective> getJustStratifications(IDataDomain dataDomain) {
 		if (EDataDomainQueryMode.TABLE_BASED.isCompatible(dataDomain))
 			return Collections2.transform(getTableBasedStratifications((ATableBasedDataDomain) dataDomain), toRecord);
 		else if (EDataDomainQueryMode.GENE_SET.isCompatible(dataDomain))
@@ -235,30 +234,30 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 		return Collections.emptyList();
 	}
 
-	private static final Function<TablePerspective, Pair<ARecordPerspective, TablePerspective>> toPair = new Function<TablePerspective, Pair<ARecordPerspective, TablePerspective>>() {
+	private static final Function<TablePerspective, Pair<Perspective, TablePerspective>> toPair = new Function<TablePerspective, Pair<Perspective, TablePerspective>>() {
 		@Override
-		public Pair<ARecordPerspective, TablePerspective> apply(TablePerspective in) {
-			return Pair.make((ARecordPerspective) in.getRecordPerspective(), in);
+		public Pair<Perspective, TablePerspective> apply(TablePerspective in) {
+			return Pair.make(in.getRecordPerspective(), in);
 		}
 	};
-	private static final Function<TablePerspective, ARecordPerspective> toRecord = new Function<TablePerspective, ARecordPerspective>() {
+	private static final Function<TablePerspective, Perspective> toRecord = new Function<TablePerspective, Perspective>() {
 		@Override
-		public ARecordPerspective apply(TablePerspective in) {
+		public Perspective apply(TablePerspective in) {
 			return in.getRecordPerspective();
 		}
 	};
-	private static final Function<ARecordPerspective, Pair<ARecordPerspective, TablePerspective>> toDummyPair = new Function<ARecordPerspective, Pair<ARecordPerspective, TablePerspective>>() {
+	private static final Function<Perspective, Pair<Perspective, TablePerspective>> toDummyPair = new Function<Perspective, Pair<Perspective, TablePerspective>>() {
 		@Override
-		public Pair<ARecordPerspective, TablePerspective> apply(ARecordPerspective in) {
+		public Pair<Perspective, TablePerspective> apply(Perspective in) {
 			return Pair.make(in, null);
 		}
 	};
 
-	private Collection<ARecordPerspective> getGeneSetStratifications(IDataDomain dataDomain) {
+	private Collection<Perspective> getGeneSetStratifications(IDataDomain dataDomain) {
 		if (dataDomain instanceof PathwayDataDomain) {
 			PathwayDataDomain p = (PathwayDataDomain)dataDomain;
-			List<ARecordPerspective> result = Lists.newArrayList();
-			for (ARecordPerspective per : p.getPathwayRecordPerspectives()) {
+			List<Perspective> result = Lists.newArrayList();
+			for (Perspective per : p.getPathwayRecordPerspectives()) {
 				if (filter.apply(Pair.make(per, (Group) null)))
 					result.add(per);
 			}
@@ -321,7 +320,7 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 	 * @param dataDomain
 	 * @return
 	 */
-	public static Collection<DimensionPerspective> getPossibleDimensionPerspectives(IDataDomain dataDomain) {
+	public static Collection<Perspective> getPossibleDimensionPerspectives(IDataDomain dataDomain) {
 		if (!(dataDomain instanceof ATableBasedDataDomain))
 			return Collections.emptySet();
 		if (DataDomainOracle.isCategoricalDataDomain(dataDomain))
@@ -329,9 +328,9 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 
 		ATableBasedDataDomain dd = (ATableBasedDataDomain) dataDomain;
 
-		List<DimensionPerspective> r = Lists.newArrayList();
+		List<Perspective> r = Lists.newArrayList();
 		for (String tmpDimensionPerspectiveID : dd.getDimensionPerspectiveIDs()) {
-			DimensionPerspective per = dd.getTable().getDimensionPerspective(tmpDimensionPerspectiveID);
+			Perspective per = dd.getTable().getDimensionPerspective(tmpDimensionPerspectiveID);
 			if (isUngrouped(per))
 				continue;
 			r.add(per);
@@ -339,7 +338,7 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 		return r;
 	}
 
-	private static boolean isUngrouped(DimensionPerspective per) {
+	private static boolean isUngrouped(Perspective per) {
 		return per.getLabel().contains("Ungrouped");
 	}
 
@@ -419,11 +418,11 @@ public class DataDomainQuery implements SafeCallable<Collection<Pair<ARecordPers
 	}
 
 
-	public DimensionPerspective getDimensionSelection(IDataDomain dataDomain) {
+	public Perspective getDimensionSelection(IDataDomain dataDomain) {
 		return dimensionSelection.get(dataDomain);
 	}
 
-	public void setDimensionSelection(IDataDomain dataDomain, DimensionPerspective d) {
+	public void setDimensionSelection(IDataDomain dataDomain, Perspective d) {
 		if (Objects.equals(dimensionSelection.get(dataDomain), d))
 			return;
 		listeners.firePropertyChange(new MappedPropertyChangeEvent(this, PROP_DIMENSION_SELECTION, dataDomain,

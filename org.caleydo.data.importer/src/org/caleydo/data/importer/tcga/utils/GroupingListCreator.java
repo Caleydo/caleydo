@@ -20,8 +20,7 @@
 package org.caleydo.data.importer.tcga.utils;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 
 public class GroupingListCreator {
 
@@ -30,7 +29,7 @@ public class GroupingListCreator {
 		String recordGroupings = "";
 
 		for (String recordPerspectiveID : dataDomain.getRecordPerspectiveIDs()) {
-			RecordPerspective recordPerspective = dataDomain.getTable().getRecordPerspective(
+			Perspective recordPerspective = dataDomain.getTable().getRecordPerspective(
 					recordPerspectiveID);
 
 			if (recordPerspective.isPrivate())
@@ -51,7 +50,7 @@ public class GroupingListCreator {
 	public static String getDimensionGroupingList(ATableBasedDataDomain dataDomain) {
 		String dimensionGroupings = "";
 		for (String dimensionPerspectiveID : dataDomain.getDimensionPerspectiveIDs()) {
-			DimensionPerspective dimensionPerspective = dataDomain.getTable()
+			Perspective dimensionPerspective = dataDomain.getTable()
 					.getDimensionPerspective(dimensionPerspectiveID);
 			if (dimensionPerspective.isPrivate()) {
 				continue;

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,17 +8,17 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 /**
- * 
+ *
  */
 package org.caleydo.view.filterpipeline.representation;
 
@@ -39,18 +39,18 @@ import org.caleydo.view.filterpipeline.renderstyle.FilterPipelineRenderStyle;
 
 /**
  * @author Thomas Geymayer
- * 
+ *
  */
 public class Background implements IRenderable, IDropArea {
 	private FilterPipelineRenderStyle renderStyle;
 	private int pickingId;
 
-	private List<FilterItem<?>> filterList = null;
+	private List<FilterItem> filterList = null;
 	private int firstFilterId = 0;
 	private float[] dropPositions = null;
 
 	/**
-	 * 
+	 *
 	 * @param viewId
 	 * @param pickingManager
 	 * @param renderStyle
@@ -64,10 +64,10 @@ public class Background implements IRenderable, IDropArea {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param filterList
 	 */
-	public void setFilterList(List<FilterItem<?>> filterList, int firstFilterId) {
+	public void setFilterList(List<FilterItem> filterList, int firstFilterId) {
 		this.filterList = filterList;
 		this.firstFilterId = firstFilterId;
 
@@ -84,7 +84,7 @@ public class Background implements IRenderable, IDropArea {
 
 		// before each filter
 		int index = 0;
-		for (FilterItem<?> filterItem : filterList) {
+		for (FilterItem filterItem : filterList) {
 			dropPositions[index++] = filterItem.getRepresentation().getPosition().x()
 					- offset;
 		}
@@ -197,6 +197,6 @@ public class Background implements IRenderable, IDropArea {
 	public void handleDropAreaReplaced()
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

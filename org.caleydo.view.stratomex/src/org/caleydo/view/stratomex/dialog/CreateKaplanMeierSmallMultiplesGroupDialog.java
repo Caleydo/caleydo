@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -26,9 +26,8 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -45,9 +44,9 @@ import org.eclipse.swt.widgets.TableItem;
  * Dialog where the user can specify the data vectors to be visualized as a
  * Kaplan Meier plot. Each data vector will be a dimension group with small
  * multiples in StratomeX.
- * 
+ *
  * @author Marc Streit
- * 
+ *
  */
 public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog {
 
@@ -63,7 +62,7 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog 
 	 * triggered. This information is needed for being able to use the same
 	 * sorting strategy.
 	 */
-	private HashMap<RecordPerspective, RecordPerspective> hashConvertedRecordPerspectiveToOrginalRecordPerspective = new HashMap<RecordPerspective, RecordPerspective>();
+	private HashMap<Perspective, Perspective> hashConvertedRecordPerspectiveToOrginalRecordPerspective = new HashMap<Perspective, Perspective>();
 
 	private Table possibleKaplanMeierDataTable;
 
@@ -148,8 +147,9 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog 
 				TableItem item = new TableItem(possibleKaplanMeierDataTable, SWT.NONE);
 				item.setText(0, dimLabel);
 
-				DimensionPerspective singleDimensionPerspective = new DimensionPerspective(
-						tableBasedDataDomain);
+				Perspective singleDimensionPerspective = new Perspective(
+tableBasedDataDomain,
+						tableBasedDataDomain.getDimensionIDType());
 				singleDimensionPerspective.setDefault(false);
 				PerspectiveInitializationData data = new PerspectiveInitializationData();
 				ArrayList<Integer> dimIDList = new ArrayList<Integer>();
@@ -187,13 +187,13 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog 
 				ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) item
 						.getData("dataDomain");
 
-				RecordPerspective foreignRecordPerspective = tablePerspective
+				Perspective foreignRecordPerspective = tablePerspective
 						.getRecordPerspective();
 
-				RecordPerspective convertedRecordPerspective = dataDomain
+				Perspective convertedRecordPerspective = dataDomain
 						.convertForeignRecordPerspective(foreignRecordPerspective);
 
-				DimensionPerspective singleDimensionPerspective = (DimensionPerspective) item
+				Perspective singleDimensionPerspective = (Perspective) item
 						.getData();
 
 				dataDomain.getTable().registerRecordPerspective(
@@ -221,7 +221,7 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog 
 	 * @return the hashConvertedRecordPerspectiveToOrginalRecordPerspective, see
 	 *         {@link #hashConvertedRecordPerspectiveToOrginalRecordPerspective}
 	 */
-	public HashMap<RecordPerspective, RecordPerspective> getHashConvertedRecordPerspectiveToOrginalRecordPerspective() {
+	public HashMap<Perspective, Perspective> getHashConvertedRecordPerspectiveToOrginalRecordPerspective() {
 		return hashConvertedRecordPerspectiveToOrginalRecordPerspective;
 	}
 }

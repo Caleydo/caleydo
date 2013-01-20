@@ -35,15 +35,14 @@ import javax.media.opengl.GLAutoDrawable;
 import org.caleydo.core.data.collection.table.TableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.gui.util.RenameNameDialog;
@@ -393,7 +392,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 		if (brickColumn.getHeaderBrick() == this)
 			return;
 
-		RecordVirtualArray va = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray va = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		for (Integer recordID : va) {
 			recordSelectionManager.addToType(selectedByGroupSelectionType, va.getIdType(), recordID);// va.getIdType(),
@@ -1107,7 +1106,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	 * @param sourceRecordVA
 	 */
 	public void openCreatePathwaySmallMultiplesGroupDialog(final TablePerspective dimensionGroupTablePerspective,
-			final DimensionPerspective dimensionPerspective) {
+			final Perspective dimensionPerspective) {
 		getParentComposite().getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -1143,7 +1142,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	 * @param sourceRecordVA
 	 */
 	public void openCreateKaplanMeierSmallMultiplesGroupDialog(final TablePerspective dimensionGroupTablePerspective,
-			final DimensionPerspective dimensionPerspective) {
+			final Perspective dimensionPerspective) {
 
 		getParentComposite().getDisplay().asyncExec(new Runnable() {
 			@Override
@@ -1187,7 +1186,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 	 * @param sourceRecordVA
 	 */
 	public void openCreatePathwayGroupDialog(final ATableBasedDataDomain sourceDataDomain,
-			final RecordVirtualArray sourceRecordVA) {
+			final VirtualArray sourceRecordVA) {
 		getParentComposite().getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -1357,8 +1356,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 
 				if (fileName != null) {
 					if (exportIdentifiersOnly) {
-						DimensionPerspective dimensionPerspective = new DimensionPerspective();
-						dimensionPerspective.setVirtualArray(new DimensionVirtualArray());
+						Perspective dimensionPerspective = new Perspective();
+						dimensionPerspective.setVirtualArray(new VirtualArray(dataDomain.getDimensionIDType()));
 						TableUtils.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
 								dimensionPerspective, null, null, false);
 					} else {

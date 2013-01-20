@@ -32,10 +32,10 @@ import java.util.Set;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
- * utility class to hold a list of event listeners to register and remove them all in an convinced way
- *
+ * utility class to hold a list of event listeners to register and remove them all in an convenient way
+ * 
  * @author Samuel Gratzl
- *
+ * 
  */
 public class EventListenerManager {
 	private static final EventPublisher EVENT_PUBLISHER = GeneralManager.get().getEventPublisher();
@@ -68,11 +68,11 @@ public class EventListenerManager {
 
 	/**
 	 * filter all methods of the listener object for <code>
-	 * 
+	 *
 	 * @ListenTo void xxx(<? extends AEvent> event); </code>
-	 * 
+	 *
 	 *           and register an event listener for calling this method
-	 * 
+	 *
 	 * @param listener
 	 * @param dataDomainID
 	 *            if {@link ListenTo#restrictToDataDomain()} or {@link ListenTo#restrictExclusiveToDataDomain()} is used

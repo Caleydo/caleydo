@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.caleydo.core.data.perspective.table.CategoricalTablePerspectiveCreator;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IIDTypeMapper;
@@ -68,7 +68,7 @@ public final class DataDomainOracle {
 		ATableBasedDataDomain clinical = getClinicalDataDomain();
 		if (clinical == null)
 			return Collections.emptyList();
-		DimensionVirtualArray va = clinical.getTable().getDefaultDimensionPerspective().getVirtualArray();
+		VirtualArray va = clinical.getTable().getDefaultDimensionPerspective().getVirtualArray();
 		IDMappingManager manager = IDMappingManagerRegistry.get().getIDMappingManager(va.getIdType());
 		IIDTypeMapper<Integer,String> mapper = manager.getIDTypeMapper(va.getIdType(), va.getIdType().getIDCategory().getHumanReadableIDType());
 

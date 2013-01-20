@@ -87,7 +87,7 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 
 		// Table table =
 		// groupRepresentation.getClusterNode().getSubDataTable();
-		// DimensionVirtualArray dimensionVA = table
+		// VirtualArray dimensionVA = table
 		// .getDimensionPerspective(dimensionPrespectiveID).getVirtualArray();
 
 		// boolean isNominal = false;

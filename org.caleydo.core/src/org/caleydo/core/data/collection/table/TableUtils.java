@@ -24,8 +24,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
@@ -110,7 +109,7 @@ public class TableUtils {
 
 	/**
 	 * Exports the dataset identified through the perspectives to the file specified.
-	 * 
+	 *
 	 * @param dataDomain
 	 * @param fileName
 	 * @param recordPerspective
@@ -122,11 +121,12 @@ public class TableUtils {
 	 *            same as targetRecordIDType for dimensions
 	 * @param includeClusterInfo
 	 *            true if you want to add information about the clustering to the file, else false
-	 * 
+	 *
 	 * @return true if export was successful, else false.
 	 */
 	public static boolean export(ATableBasedDataDomain dataDomain, String fileName,
-			RecordPerspective recordPerspective, DimensionPerspective dimensionPerspective, IDType targetRecordIDType,
+			Perspective recordPerspective, Perspective dimensionPerspective,
+			IDType targetRecordIDType,
 			IDType targetDimensionIDType, boolean includeClusterInfo) {
 
 		if (targetRecordIDType == null)
@@ -141,8 +141,8 @@ public class TableUtils {
 		IDType colTargetIDType;
 		IDType colSourceIDType;
 
-		VirtualArray<?, ?, ?> rowVA;
-		VirtualArray<?, ?, ?> colVA;
+		VirtualArray rowVA;
+		VirtualArray colVA;
 
 		if (dataDomain.isColumnDimension()) {
 			rowVA = recordPerspective.getVirtualArray();

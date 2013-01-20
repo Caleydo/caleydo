@@ -34,7 +34,7 @@ import java.util.Map;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
@@ -166,13 +166,13 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>>, Cloneable
 		final List<CollapseScore> collapseScores = pair.getFirst();
 		final int factor = pair.getSecond();
 
-		Collection<Pair<ARecordPerspective, TablePerspective>> stratifications = query.call();
+		Collection<Pair<Perspective, TablePerspective>> stratifications = query.call();
 
 		Map<IScore, IScore> selections = new HashMap<IScore, IScore>(collapseScores.size());
 		IRankedListBuilder builder;
 		if (isGroupQuery()) { // we need to show strat,group pairs
-			Function<Pair<ARecordPerspective, TablePerspective>, ARecordPerspective> mapFirst = Pair.mapFirst();
-			Multimap<ARecordPerspective, Group> stratNGroups = query.apply(Collections2.transform(stratifications,
+			Function<Pair<Perspective, TablePerspective>, Perspective> mapFirst = Pair.mapFirst();
+			Multimap<Perspective, Group> stratNGroups = query.apply(Collections2.transform(stratifications,
 					mapFirst));
 			final int numberOfElements = stratNGroups.size() * factor;
 			builder = RankedListBuilders.create(top, numberOfElements, filter, orderBy);
@@ -216,11 +216,11 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>>, Cloneable
 	};
 
 	private static void buildAll(IRankedListBuilder builder, int i, List<CollapseScore> composites,
-			Map<IScore, IScore> selections, Collection<Pair<ARecordPerspective, TablePerspective>> stratifications) {
+			Map<IScore, IScore> selections, Collection<Pair<Perspective, TablePerspective>> stratifications) {
 		if (i == composites.size()) {
 			HashMap<IScore, IScore> s = new HashMap<>(selections);
 			// last one trigger
-			for (Pair<ARecordPerspective, TablePerspective> elem : stratifications) {
+			for (Pair<Perspective, TablePerspective> elem : stratifications) {
 				builder.add(new ScoringElement(elem.getFirst(), null, elem.getSecond(), s));
 			}
 		} else {
@@ -233,12 +233,12 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>>, Cloneable
 	}
 
 	private static void buildAll2(IRankedListBuilder builder, int i, List<CollapseScore> composites,
-			Map<IScore, IScore> selections, Multimap<ARecordPerspective, Group> stratNGroups,
-			Collection<Pair<ARecordPerspective, TablePerspective>> stratifications) {
+			Map<IScore, IScore> selections, Multimap<Perspective, Group> stratNGroups,
+			Collection<Pair<Perspective, TablePerspective>> stratifications) {
 		if (i == composites.size()) {
 			// last one trigger
 			HashMap<IScore, IScore> s = new HashMap<>(selections);
-			for (Pair<ARecordPerspective, TablePerspective> p : stratifications) {
+			for (Pair<Perspective, TablePerspective> p : stratifications) {
 				for (Group g : stratNGroups.get(p.getFirst()))
 					builder.add(new ScoringElement(p.getFirst(), g, p.getSecond(), s));
 			}
@@ -483,7 +483,7 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>>, Cloneable
 	 * @param score
 	 * @param stratifications
 	 */
-	private void submitComputation(Iterable<IScore> score, Collection<ARecordPerspective> stratifications) {
+	private void submitComputation(Iterable<IScore> score, Collection<Perspective> stratifications) {
 		Collection<IScore> scores = Scores.flatten(score);
 
 		Job job = null;
@@ -493,7 +493,7 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>>, Cloneable
 				IComputedStratificationScore.class));
 		List<IComputedGroupScore> groupScores = Lists.newArrayList(Iterables.filter(scores, IComputedGroupScore.class));
 
-		final Function<Pair<ARecordPerspective, TablePerspective>, ARecordPerspective> mapFirst = Pair.mapFirst();
+		final Function<Pair<Perspective, TablePerspective>, Perspective> mapFirst = Pair.mapFirst();
 
 		if (!stratScores.isEmpty() && groupScores.isEmpty()) {
 			//just stratifications
@@ -505,7 +505,7 @@ public class ScoreQuery implements SafeCallable<List<ScoringElement>>, Cloneable
 			// both or just groups
 			if (stratifications == null)
 				stratifications = Collections2.transform(query.call(), mapFirst);
-			Multimap<ARecordPerspective, Group> data = query.apply(stratifications);
+			Multimap<Perspective, Group> data = query.apply(stratifications);
 			job = new ComputeScoreJob(data, stratScores, groupScores);
 		} else {
 			job = null;

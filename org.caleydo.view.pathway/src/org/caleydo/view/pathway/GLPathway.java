@@ -42,9 +42,9 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
-import org.caleydo.core.data.virtualarray.events.RecordVADeltaEvent;
+import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
+import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.event.view.TablePerspectivesChangedEvent;
@@ -1128,7 +1128,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 		if (pathway == null)
 			return;
 
-		RecordVADelta delta = new RecordVADelta(tablePerspective.getRecordPerspective().getPerspectiveID(),
+		VirtualArrayDelta delta = new VirtualArrayDelta(tablePerspective.getRecordPerspective().getPerspectiveID(),
 				pathwayDataDomain.getDavidIDType());
 
 		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
@@ -1137,7 +1137,7 @@ public class GLPathway extends AGLView implements ISingleTablePerspectiveBasedVi
 			}
 		}
 
-		RecordVADeltaEvent virtualArrayDeltaEvent = new RecordVADeltaEvent();
+		VADeltaEvent virtualArrayDeltaEvent = new VADeltaEvent();
 		virtualArrayDeltaEvent.setSender(this);
 		virtualArrayDeltaEvent.setDataDomainID(dataDomain.getDataDomainID());
 		virtualArrayDeltaEvent.setVirtualArrayDelta(delta);

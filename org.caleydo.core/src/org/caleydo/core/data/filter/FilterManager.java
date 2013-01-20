@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.data.filter;
 
@@ -26,8 +23,15 @@ import java.util.Iterator;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.UnRegisterListenersOnEvent;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
-import org.caleydo.core.data.perspective.variable.AVariablePerspective;
-import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.data.filter.event.MoveFilterEvent;
+import org.caleydo.core.data.filter.event.MoveFilterListener;
+import org.caleydo.core.data.filter.event.NewFilterEvent;
+import org.caleydo.core.data.filter.event.NewFilterListener;
+import org.caleydo.core.data.filter.event.ReEvaluateFilterListEvent;
+import org.caleydo.core.data.filter.event.ReEvaluateFilterListListener;
+import org.caleydo.core.data.filter.event.RemoveFilterEvent;
+import org.caleydo.core.data.filter.event.RemoveFilterListener;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
 import org.caleydo.core.event.AEvent;
@@ -39,30 +43,29 @@ import org.caleydo.core.manager.GeneralManager;
 
 /**
  * <p>
- * Managing class for {@link Filter}s. A Filter manages changes in virtual arrays, based on virtual array
- * deltas. The FilterManager handles the succession of Filters and thereby allows to remove previous filters,
- * allowing undo functionality.
+ * Managing class for {@link Filter}s. A Filter manages changes in virtual arrays, based on virtual array deltas. The
+ * FilterManager handles the succession of Filters and thereby allows to remove previous filters, allowing undo
+ * functionality.
  * </p>
  * <p>
- * The FilterManager is the base for a statically typed FilterManager sub-class, such as {@link RecordFilter}
- * .
+ * The FilterManager is the base for a statically typed FilterManager sub-class, such as {@link RecordFilter} .
  * </p>
  *
  * @author Alexander Lex
- * @param <VAType>
- * @param <DeltaType>
- * @param <FilterType>
- * @param <VA>
  */
-public abstract class FilterManager<PerspectiveType extends AVariablePerspective<?, ?, ?, ?>, DeltaType extends VirtualArrayDelta<?>, FilterType extends Filter<DeltaType>, VA extends VirtualArray<?, DeltaType, ?>>
-	implements IListenerOwner {
+public class FilterManager implements IListenerOwner {
 
 	// private final IFilterFactory<FilterType> factory;
-	private ArrayList<FilterType> filterPipe;
-	protected PerspectiveType perspective;
+	private ArrayList<Filter> filterPipe;
+	protected Perspective perspective;
 	protected IDataDomain dataDomain;
 
 	EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+
+	private RemoveFilterListener removeDimensionFilterListener;
+	private MoveFilterListener moveDimensionFilterListener;
+	private NewFilterListener newDimensionFilterListener;
+	private ReEvaluateFilterListListener reEvaluateDimensionFilterListListener;
 
 	private UnRegisterListenersOnEvent unregisterListener = null;
 
@@ -73,12 +76,12 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 	 * @param virtualArray
 	 * @param factory
 	 */
-	public FilterManager(IDataDomain dataDomain, PerspectiveType perspective) {
+	public FilterManager(IDataDomain dataDomain, Perspective perspective) {
 		this.dataDomain = dataDomain;
 
 		this.perspective = perspective;
 		// this.factory = factory;
-		filterPipe = new ArrayList<FilterType>();
+		filterPipe = new ArrayList<Filter>();
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
 	}
@@ -89,7 +92,7 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 	 * @param filter
 	 * @return
 	 */
-	public void addFilter(FilterType filter) {
+	public void addFilter(Filter filter) {
 		filterPipe.add(filter);
 		runFilter(filter);
 
@@ -98,13 +101,12 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 	}
 
 	@SuppressWarnings("unchecked")
-	private void runFilter(FilterType filter) {
+	private void runFilter(Filter filter) {
 
 		if (!(filter instanceof MetaFilter)) {
 			triggerVADeltaEvent(filter.getVADelta());
-		}
-		else {
-			for (FilterType subFilter : ((MetaFilter<FilterType>) filter).getFilterList()) {
+		} else {
+			for (Filter subFilter : ((MetaFilter) filter).getFilterList()) {
 				triggerVADeltaEvent(subFilter.getVADelta());
 			}
 		}
@@ -112,8 +114,30 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 
 	@Override
 	public void registerEventListeners() {
+
 		unregisterListener = new UnRegisterListenersOnEvent(this, dataDomain);
 		eventPublisher.addListener(RemoveDataDomainEvent.class, unregisterListener);
+
+		removeDimensionFilterListener = new RemoveFilterListener();
+		removeDimensionFilterListener.setHandler(this);
+		removeDimensionFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		eventPublisher.addListener(RemoveFilterEvent.class, removeDimensionFilterListener);
+
+		moveDimensionFilterListener = new MoveFilterListener();
+		moveDimensionFilterListener.setHandler(this);
+		moveDimensionFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		eventPublisher.addListener(MoveFilterEvent.class, moveDimensionFilterListener);
+
+		newDimensionFilterListener = new NewFilterListener();
+		newDimensionFilterListener.setHandler(this);
+		newDimensionFilterListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		eventPublisher.addListener(NewFilterEvent.class, newDimensionFilterListener);
+
+		reEvaluateDimensionFilterListListener = new ReEvaluateFilterListListener();
+		reEvaluateDimensionFilterListListener.setHandler(this);
+		reEvaluateDimensionFilterListListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		eventPublisher.addListener(ReEvaluateFilterListEvent.class, reEvaluateDimensionFilterListListener);
+
 	}
 
 	@Override
@@ -122,9 +146,9 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 			eventPublisher.removeListener(RemoveDataDomainEvent.class, unregisterListener);
 		unregisterListener = null;
 	}
+
 	/**
-	 * To also support legacy VA update events, this listener creates a filter for every incoming vaDelta
-	 * event.
+	 * To also support legacy VA update events, this listener creates a filter for every incoming vaDelta event.
 	 *
 	 * @param vaDelta
 	 * @param info
@@ -152,13 +176,13 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 	 *
 	 * @return a list of all filters
 	 */
-	public ArrayList<FilterType> getFilterPipe() {
+	public ArrayList<Filter> getFilterPipe() {
 		return filterPipe;
 	}
 
-	public void handleRemoveFilter(Filter<?> filter) {
+	public void handleRemoveFilter(Filter filter) {
 
-		Iterator<FilterType> filterIterator = filterPipe.iterator();
+		Iterator<Filter> filterIterator = filterPipe.iterator();
 		while (filterIterator.hasNext()) {
 			if (filterIterator.next() == filter) {
 
@@ -170,7 +194,7 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 		triggerFilterUpdatedEvent();
 	}
 
-	public void handleMoveFilter(Filter<?> filter, int offset) {
+	public void handleMoveFilter(Filter filter, int offset) {
 		int index = filterPipe.indexOf(filter);
 
 		if (index < 0)
@@ -180,20 +204,19 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 		if (offset < 0) {
 			for (int i = index; i > index + offset; --i)
 				filterPipe.set(i, filterPipe.get(i - 1));
-		}
-		else {
+		} else {
 			for (int i = index; i < index + offset; ++i)
 				filterPipe.set(i, filterPipe.get(i + 1));
 		}
 
 		// place filter on new position
-		filterPipe.set(index + offset, (FilterType) filter);
+		filterPipe.set(index + offset, filter);
 
 		reEvaluateFilters();
 		triggerFilterUpdatedEvent();
 	}
 
-	public void handleCombineFilter(Filter<?> filter, Collection<? extends RecordFilter> combineFilters) {
+	public void handleCombineFilter(Filter filter, Collection<Filter> combineFilters) {
 		int index = filterPipe.indexOf(filter);
 
 		if (index < 0)
@@ -203,17 +226,16 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 
 		if (filter instanceof RecordMetaOrFilter) {
 			metaFilter = (RecordMetaOrFilter) filter;
-		}
-		else {
+		} else {
 			metaFilter = new RecordMetaOrFilter(perspective.getPerspectiveID());
 			metaFilter.setDataDomain(filter.getDataDomain());
-			metaFilter.getFilterList().add((RecordFilter) filter);
+			metaFilter.getFilterList().add(filter);
 		}
 
 		metaFilter.getFilterList().addAll(combineFilters);
 		metaFilter.updateDelta(perspective.getPerspectiveID());
 
-		filterPipe.set(index, (FilterType) metaFilter);
+		filterPipe.set(index, metaFilter);
 		filterPipe.removeAll(combineFilters);
 
 		reEvaluateFilters();
@@ -228,21 +250,25 @@ public abstract class FilterManager<PerspectiveType extends AVariablePerspective
 
 	public void reEvaluateFilters() {
 
-		for (FilterType filter : filterPipe) {
+		for (Filter filter : filterPipe) {
 			runFilter(filter);
 		}
 	}
 
-	protected abstract void resetVA();
 
 	/**
-	 * Triggers event signaling a virtual array update. Has to be implemented in sub-classes, because only
-	 * there the type is known.
+	 * Triggers event signaling a virtual array update. Has to be implemented in sub-classes, because only there the
+	 * type is known.
 	 *
 	 * @param delta
 	 */
-	protected abstract void triggerVADeltaEvent(DeltaType delta);
 
-	// protected abstract void triggerReplaceVAEvent();
+	protected void triggerVADeltaEvent(VirtualArrayDelta delta) {
+		VADeltaEvent event = new VADeltaEvent();
+		event.setSender(this);
+		event.setDataDomainID(dataDomain.getDataDomainID());
+		event.setVirtualArrayDelta(delta);
+		eventPublisher.triggerEvent(event);
+	}
 
 }

@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,16 +21,16 @@ package org.caleydo.util.r.filter;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.filter.RecordFilter;
-import org.caleydo.core.data.filter.RecordMetaFilter;
-import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
+import org.caleydo.core.data.filter.Filter;
+import org.caleydo.core.data.filter.MetaFilter;
+import org.caleydo.core.data.filter.event.RemoveFilterEvent;
 import org.caleydo.core.data.filter.representation.AFilterRepresentation;
 import org.caleydo.core.data.perspective.table.FoldChangeSettings;
 import org.caleydo.core.data.perspective.table.FoldChangeSettings.FoldChangeEvaluator;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
+import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.histogram.RcpGLHistogramView;
@@ -54,7 +54,7 @@ import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Text;
 
 public class FilterRepresentationFoldChange extends
-		AFilterRepresentation<RecordVADelta, RecordFilter> {
+ AFilterRepresentation {
 
 	private final static String TITLE = "Fold Change Filter";
 
@@ -70,7 +70,7 @@ public class FilterRepresentationFoldChange extends
 	private Histogram histogram;
 
 	@Override
-	public boolean create() {
+	public synchronized boolean create() {
 
 		if (!super.create())
 			return false;
@@ -292,22 +292,22 @@ public class FilterRepresentationFoldChange extends
 	@Override
 	protected void createVADelta() {
 
-		if (filter instanceof RecordMetaFilter) {
-			for (RecordFilter subFilter : ((RecordMetaFilter) filter).getFilterList()) {
+		if (filter instanceof MetaFilter) {
+			for (Filter subFilter : ((MetaFilter) filter).getFilterList()) {
 				createVADelta(subFilter);
 			}
 		} else
 			createVADelta(filter);
 	}
 
-	private void createVADelta(RecordFilter subFilter) {
+	private void createVADelta(Filter subFilter) {
 
-		RecordVADelta recordVADelta = new RecordVADelta(subFilter.getPerspectiveID(),
+		VirtualArrayDelta recordVADelta = new VirtualArrayDelta(subFilter.getPerspectiveID(),
 				subFilter.getDataDomain().getRecordIDType());
-		RecordVADelta recordVADeltaUncertainty = new RecordVADelta(
+		VirtualArrayDelta recordVADeltaUncertainty = new VirtualArrayDelta(
 				subFilter.getPerspectiveID(), subFilter.getDataDomain().getRecordIDType());
 
-		RecordVirtualArray recordVA = subFilter.getDataDomain().getTable()
+		VirtualArray recordVA = subFilter.getDataDomain().getTable()
 				.getRecordPerspective(filter.getPerspectiveID()).getVirtualArray();
 
 		double[] resultVector = tablePerspective1.getContainerStatistics().getFoldChange()
@@ -375,7 +375,7 @@ public class FilterRepresentationFoldChange extends
 
 	@Override
 	protected void triggerRemoveFilterEvent() {
-		RemoveRecordFilterEvent filterEvent = new RemoveRecordFilterEvent();
+		RemoveFilterEvent filterEvent = new RemoveFilterEvent();
 		filterEvent.setDataDomainID(filter.getDataDomain().getDataDomainID());
 		filterEvent.setFilter(filter);
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);

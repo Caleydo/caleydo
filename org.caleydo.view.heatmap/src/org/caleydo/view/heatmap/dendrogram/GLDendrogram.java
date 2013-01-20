@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.heatmap.dendrogram;
 
@@ -44,10 +41,8 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.events.ClusterNodeSelectionListener;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.GroupList;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.event.data.ClusterNodeSelectionEvent;
 import org.caleydo.core.event.data.NewDimensionGroupInfoEvent;
 import org.caleydo.core.event.data.NewRecordGroupInfoEvent;
@@ -78,8 +73,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  *
  * @author Bernhard Schlegl
  */
-public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBasedView implements
-		IClusterNodeEventReceiver {
+public class GLDendrogram extends ATableBasedView implements IClusterNodeEventReceiver {
 
 	public static String VIEW_TYPE = "org.caleydo.view.dendrogram";
 	public static String VIEW_NAME = "Dendrogram";
@@ -91,7 +85,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 	// variables used to build a group list
 	private ArrayList<ClusterNode> iAlClusterNodes = new ArrayList<ClusterNode>();
-	private GroupType groupList = null;
+	private GroupList groupList = null;
 
 	/**
 	 * true for gene tree, false for experiment tree
@@ -573,7 +567,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			return isPartOfSubTree;
 		} else {
 
-			RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+			VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 			int index = recordVA.indexOf(currentNode.getLeafID());
 			if (recordVA.indicesOf(currentNode.getLeafID()).size() > 1) {
 				throw new IllegalStateException("duplicate element");
@@ -1161,7 +1155,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			if (bRenderContentTree == true) {
 				if (tablePerspective.getRecordPerspective().getTree() != null) {
 					tree = tablePerspective.getRecordPerspective().getTree();
-					groupList = (GroupType) new RecordGroupList();
+					groupList = new GroupList();
 					rootNode = tree.getRoot();
 				} else
 					renderSymbol(gl);
@@ -1169,7 +1163,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				if (!tablePerspective.getDimensionPerspective().isTreeDefaultTree()
 						&& tablePerspective.getDimensionPerspective().getTree() != null) {
 					tree = tablePerspective.getDimensionPerspective().getTree();
-					groupList = (GroupType) new DimensionGroupList();
+					groupList = new GroupList();
 					rootNode = tree.getRoot();
 				} else
 					renderSymbol(gl);
@@ -1278,10 +1272,10 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		iAlClusterNodes.clear();
 		getNumberOfClustersRec(rootNode);
 		if (bRenderContentTree)
-			groupList = (GroupType) tablePerspective.getRecordPerspective().getVirtualArray()
+			groupList = tablePerspective.getRecordPerspective().getVirtualArray()
 					.buildNewGroupList(iAlClusterNodes);
 		else
-			groupList = (GroupType) tablePerspective.getDimensionPerspective().getVirtualArray()
+			groupList = tablePerspective.getDimensionPerspective().getVirtualArray()
 					.buildNewGroupList(iAlClusterNodes);
 
 		triggerGroupListEvent();
@@ -1293,14 +1287,14 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			NewRecordGroupInfoEvent newGroupInfoEvent = new NewRecordGroupInfoEvent();
 			newGroupInfoEvent.setSender(this);
 			newGroupInfoEvent.setVAType(tablePerspective.getRecordPerspective().getPerspectiveID());
-			newGroupInfoEvent.setGroupList((RecordGroupList) groupList);
+			newGroupInfoEvent.setGroupList(groupList);
 			newGroupInfoEvent.setDeleteTree(false);
 			eventPublisher.triggerEvent(newGroupInfoEvent);
 		} else {
 			NewDimensionGroupInfoEvent newGroupInfoEvent = new NewDimensionGroupInfoEvent();
 			newGroupInfoEvent.setSender(this);
 			newGroupInfoEvent.setVAType(tablePerspective.getDimensionPerspective().getPerspectiveID());
-			newGroupInfoEvent.setGroupList((DimensionGroupList) groupList);
+			newGroupInfoEvent.setGroupList(groupList);
 			newGroupInfoEvent.setDeleteTree(false);
 			eventPublisher.triggerEvent(newGroupInfoEvent);
 		}

@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.api.score;
 
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.view.tourguide.api.compute.ComputeScoreFilters;
 import org.caleydo.view.tourguide.api.query.EDataDomainQueryMode;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
@@ -35,7 +35,7 @@ public class DefaultComputedReferenceStratificationScore extends AReferenceStrat
 	private final IStratificationAlgorithm algorithm;
 	private final IComputeScoreFilter filter;
 
-	public DefaultComputedReferenceStratificationScore(String label, ARecordPerspective reference,
+	public DefaultComputedReferenceStratificationScore(String label, Perspective reference,
 			IStratificationAlgorithm algorithm, IComputeScoreFilter filter) {
 		super(label, reference);
 		this.algorithm = algorithm;

@@ -23,7 +23,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.core.util.collection.Pair;
@@ -88,7 +88,7 @@ public class LogRankMetricFactory implements IMetricFactory {
 				final IGroupAlgorithm underlying = LogRank.get(clinicalVariable, clinical);
 
 				@Override
-				public IDType getTargetType(ARecordPerspective a, ARecordPerspective b) {
+				public IDType getTargetType(Perspective a, Perspective b) {
 					return underlying.getTargetType(a, b);
 				}
 

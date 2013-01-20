@@ -28,8 +28,6 @@ import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.data.SelectionUpdateEvent;
 import org.caleydo.core.id.IDType;
@@ -439,7 +437,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	}
 
 	public void upDownSelect(boolean isUp) {
-		RecordVirtualArray virtualArray = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray virtualArray = tablePerspective.getRecordPerspective().getVirtualArray();
 		if (virtualArray == null)
 			throw new IllegalStateException("Virtual Array is required for selectNext Operation");
 		int selectedElement = cursorSelect(virtualArray, recordSelectionManager, isUp);
@@ -449,7 +447,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	}
 
 	public void leftRightSelect(boolean isLeft) {
-		DimensionVirtualArray virtualArray = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray virtualArray = tablePerspective.getDimensionPerspective().getVirtualArray();
 		if (virtualArray == null)
 			throw new IllegalStateException("Virtual Array is required for selectNext Operation");
 		int selectedElement = cursorSelect(virtualArray, dimensionSelectionManager, isLeft);
@@ -459,7 +457,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	}
 
 	public void enterPressedSelect() {
-		DimensionVirtualArray virtualArray = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray virtualArray = tablePerspective.getDimensionPerspective().getVirtualArray();
 		if (virtualArray == null)
 			throw new IllegalStateException("Virtual Array is required for enterPressed Operation");
 
@@ -470,7 +468,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 			createDimensionSelection(SelectionType.SELECTION, selectedElement);
 		}
 
-		RecordVirtualArray recordVirtualArray = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray recordVirtualArray = tablePerspective.getRecordPerspective().getVirtualArray();
 		if (recordVirtualArray == null)
 			throw new IllegalStateException("Virtual Array is required for enterPressed Operation");
 		elements = recordSelectionManager.getElements(SelectionType.MOUSE_OVER);
@@ -481,8 +479,8 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		}
 	}
 
-	private <VAType extends VirtualArray<?, ?, ?>, SelectionManagerType extends SelectionManager> int cursorSelect(
-			VAType virtualArray, SelectionManagerType selectionManager, boolean isUp) {
+	private int cursorSelect(
+			VirtualArray virtualArray, SelectionManager selectionManager, boolean isUp) {
 
 		java.util.Set<Integer> elements = selectionManager.getElements(SelectionType.MOUSE_OVER);
 		if (elements.size() == 0) {

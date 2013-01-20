@@ -19,8 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.manager;
 
-import static org.caleydo.data.loader.ResourceLocators.FILE;
 import static org.caleydo.data.loader.ResourceLocators.DATA_CLASSLOADER;
+import static org.caleydo.data.loader.ResourceLocators.FILE;
 import static org.caleydo.data.loader.ResourceLocators.URL;
 import static org.caleydo.data.loader.ResourceLocators.chain;
 

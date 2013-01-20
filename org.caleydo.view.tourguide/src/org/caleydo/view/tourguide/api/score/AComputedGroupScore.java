@@ -22,7 +22,7 @@ package org.caleydo.view.tourguide.api.score;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.DefaultLabelProvider;
 import org.caleydo.view.tourguide.api.query.ESorting;
@@ -49,7 +49,7 @@ public abstract class AComputedGroupScore extends DefaultLabelProvider implement
 		return ESorting.DESC;
 	}
 
-	public boolean contains(ARecordPerspective perspective, Group elem) {
+	public boolean contains(Perspective perspective, Group elem) {
 		// have the value or it the same stratification
 		return scores.containsKey(elem.getID());
 	}

@@ -21,8 +21,7 @@ package org.caleydo.view.tourguide.api.score;
 
 import java.util.Objects;
 
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.tourguide.spi.score.IGroupScore;
 
@@ -31,14 +30,14 @@ import org.caleydo.view.tourguide.spi.score.IGroupScore;
  *
  */
 public abstract class AReferenceGroupScore extends AComputedGroupScore implements IGroupScore {
-	protected RecordPerspective stratification;
+	protected Perspective stratification;
 	protected Group group;
 
 	public AReferenceGroupScore() {
 		super("");
 	}
 
-	public AReferenceGroupScore(String label, RecordPerspective stratification, Group group) {
+	public AReferenceGroupScore(String label, Perspective stratification, Group group) {
 		super(label == null ? stratification.getLabel() + ": " + group.getLabel() : label);
 		this.stratification = stratification;
 		this.group = group;
@@ -46,7 +45,7 @@ public abstract class AReferenceGroupScore extends AComputedGroupScore implement
 	}
 
 	@Override
-	public boolean contains(ARecordPerspective perspective, Group elem) {
+	public boolean contains(Perspective perspective, Group elem) {
 		if (super.contains(perspective, elem))
 			return true;
 		if (Objects.equals(perspective, stratification))
@@ -63,7 +62,7 @@ public abstract class AReferenceGroupScore extends AComputedGroupScore implement
 	 * @return the stratification
 	 */
 	@Override
-	public RecordPerspective getStratification() {
+	public Perspective getStratification() {
 		return stratification;
 	}
 

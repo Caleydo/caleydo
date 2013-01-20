@@ -32,8 +32,7 @@ import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.serialize.ASerializedView;
@@ -142,7 +141,7 @@ public class GLKaplanMeier extends ATableBasedView {
 
 	private void createPickingListeners() {
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		for (Group group : recordVA.getGroupList()) {
 			addIDPickingTooltipListener(group.getLabel(), EPickingType.KM_CURVE.name(), group.getID());
@@ -171,9 +170,9 @@ public class GLKaplanMeier extends ATableBasedView {
 	}
 
 	public static float calculateMaxAxisTime(TablePerspective tablePerspective) {
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		float maxAxisTime = 0;
 		boolean containsNegativeValues = false;
@@ -242,7 +241,7 @@ public class GLKaplanMeier extends ATableBasedView {
 
 		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		// do not fill curve if multiple curves are rendered in this plot
 		boolean fillCurve = recordVA.getGroupList().size() > 1 ? false : true;
@@ -356,7 +355,7 @@ public class GLKaplanMeier extends ATableBasedView {
 
 		// if (recordIDs.size() == 0)
 		// return;
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		ArrayList<Float> dataVector = new ArrayList<Float>();
 		// Float maxValue = Float.MIN_VALUE;

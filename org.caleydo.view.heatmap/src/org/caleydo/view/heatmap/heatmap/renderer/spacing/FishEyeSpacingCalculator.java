@@ -21,7 +21,7 @@ package org.caleydo.view.heatmap.heatmap.renderer.spacing;
 
 import java.util.Set;
 
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 public class FishEyeSpacingCalculator extends ASpacingCalculator {
@@ -45,7 +45,7 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 		Set<Integer> zoomedElements = heatMap.getZoomedElements();
 		float baseSize = (y - (zoomedElements.size() * glMinSelectedFieldHeight));
 
-		RecordVirtualArray recordVA = heatMap.getTablePerspective().getRecordPerspective()
+		VirtualArray recordVA = heatMap.getTablePerspective().getRecordPerspective()
 				.getVirtualArray();
 
 		int level1Elements = 0;
@@ -92,7 +92,7 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 		if (heatMap.getZoomedElements().contains(recordID))
 			return heatMap.getPixelGLConverter().getGLHeightForPixelHeight(minSelectedFieldHeight);
 		else {
-			RecordVirtualArray recordVA = heatMap.getTablePerspective()
+			VirtualArray recordVA = heatMap.getTablePerspective()
 					.getRecordPerspective().getVirtualArray();
 			for (int selectedContentID : heatMap.getZoomedElements()) {
 				int selectedContentIndex = recordVA.indexOf(selectedContentID);

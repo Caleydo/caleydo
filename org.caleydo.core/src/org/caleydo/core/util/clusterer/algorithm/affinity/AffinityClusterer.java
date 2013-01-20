@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.data.ClusterProgressEvent;
 import org.caleydo.core.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.GeneralManager;
@@ -102,9 +101,9 @@ public class AffinityClusterer extends AClusterer implements IClusterer {
 	 */
 	private int determineSimilarities(Table table, ClusterConfiguration clusterState) {
 
-		RecordVirtualArray recordVA = clusterState.getSourceRecordPerspective()
+		VirtualArray recordVA = clusterState.getSourceRecordPerspective()
 				.getVirtualArray();
-		DimensionVirtualArray dimensionVA = clusterState.getSourceDimensionPerspective()
+		VirtualArray dimensionVA = clusterState.getSourceDimensionPerspective()
 				.getVirtualArray();
 
 		IDistanceMeasure distanceMeasure;

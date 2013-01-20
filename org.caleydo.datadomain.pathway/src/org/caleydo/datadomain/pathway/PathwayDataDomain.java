@@ -160,7 +160,7 @@ public class PathwayDataDomain
 		pathwayRecordPerspectives.clear();
 		for (PathwayGraph pathway : PathwayManager.get().getAllItems()) {
 			PathwayRecordPerspective p = new PathwayRecordPerspective(pathway, this);
-			p.reset();
+			// p.reset();
 			pathwayRecordPerspectives.add(p);
 		}
 

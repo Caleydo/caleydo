@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.internal.event;
 
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.ADirectedEvent;
 
 /**
@@ -27,17 +27,17 @@ import org.caleydo.core.event.ADirectedEvent;
  *
  */
 public class SelectDimensionSelectionEvent extends ADirectedEvent {
-	private DimensionPerspective dim;
+	private Perspective dim;
 
 	public SelectDimensionSelectionEvent() {
 
 	}
 
-	public SelectDimensionSelectionEvent(DimensionPerspective d) {
+	public SelectDimensionSelectionEvent(Perspective d) {
 		this.dim = d;
 	}
 
-	public DimensionPerspective getDim() {
+	public Perspective getDim() {
 		return dim;
 	}
 

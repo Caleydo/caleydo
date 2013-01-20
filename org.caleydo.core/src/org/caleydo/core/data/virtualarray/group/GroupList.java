@@ -22,7 +22,6 @@ package org.caleydo.core.data.virtualarray.group;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.selection.SelectionType;
@@ -37,8 +36,7 @@ import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
  * @author Alexander Lex
  */
 @XmlType
-@XmlSeeAlso({ RecordGroupList.class, DimensionGroupList.class })
-public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA, VADelta>, VA extends VirtualArray<?, ?, ?>, VADelta extends VirtualArrayDelta<?>>
+public class GroupList
 		implements Iterable<Group>
 // implements IGroupList<ConcreteType, VA, VADelta> {
 {
@@ -51,8 +49,6 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	public GroupList() {
 		this.groups = new ArrayList<Group>();
 	}
-
-	public abstract ConcreteType createInstance();
 
 	/**
 	 * Inserts the specified element at the specified position in this list.
@@ -167,7 +163,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	 */
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public GroupIterator<ConcreteType> iterator() {
+	public GroupIterator iterator() {
 		return new GroupIterator(this);
 	}
 
@@ -268,7 +264,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	 *
 	 * @param delta
 	 */
-	public void setDelta(VADelta delta) {
+	public void setDelta(VirtualArrayDelta delta) {
 		try {
 			throw new Exception("Not implemented yet!");
 		} catch (Exception e) {
@@ -297,7 +293,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	 *            the index of the second element
 	 * @return true if operation executed correctly otherwise false
 	 */
-	public boolean interchange(VA virtualArray, int index1, int index2) {
+	public boolean interchange(VirtualArray virtualArray, int index1, int index2) {
 
 		int iFirstIdxG1 = 0;
 		int iLastIdxG1 = 0;
@@ -373,7 +369,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	 *            the index of the second element
 	 * @return true if operation executed correctly otherwise false
 	 */
-	public boolean merge(VA virtualArray, int index1, int index2) {
+	public boolean merge(VirtualArray virtualArray, int index1, int index2) {
 
 		// int iFirstIdxG1 = 0;
 		int iLastIdxG1 = 0;
@@ -517,7 +513,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	 *            the target index of the element
 	 * @return true if operation executed correctly otherwise false
 	 */
-	public boolean move(VA virtualArray, int srcIndex, int targetIndex) {
+	public boolean move(VirtualArray virtualArray, int srcIndex, int targetIndex) {
 
 		int icurrentIdx = -1;
 
@@ -544,15 +540,8 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 
 	@Override
 	@SuppressWarnings({ "unchecked" })
-	public ConcreteType clone() {
-		ConcreteType groupList = this.createInstance();
-		// try {
-		// groupList = (GroupList) super.clone();
-		// }
-		// catch (CloneNotSupportedException e) {
-		// throw new IllegalStateException("Clone not supportet: " +
-		// e.getMessage());
-		// }
+	public GroupList clone() {
+		GroupList groupList = new GroupList();
 		groupList.setGroups((ArrayList<Group>) groups.clone());
 		return groupList;
 	}

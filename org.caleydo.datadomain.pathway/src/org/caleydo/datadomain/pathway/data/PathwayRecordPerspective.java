@@ -19,35 +19,26 @@
  *******************************************************************************/
 package org.caleydo.datadomain.pathway.data;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
-import org.caleydo.core.id.IDMappingManager;
-import org.caleydo.core.id.IDMappingManagerRegistry;
-import org.caleydo.core.id.IIDTypeMapper;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 
 /**
- * a special kind of a recordperspective for a pathway
+ * a special kind of a record perspective for a pathway
  *
  * @author Samuel Gratzl
  *
  */
-public class PathwayRecordPerspective extends ARecordPerspective {
+public class PathwayRecordPerspective extends Perspective {
 	private final PathwayGraph pathway;
 
 	/**
 	 * @param pathway
 	 */
 	public PathwayRecordPerspective(PathwayGraph pathway, PathwayDataDomain dataDomain) {
-		super(dataDomain);
+		super(dataDomain, dataDomain.getDavidIDType());
 		this.pathway = pathway;
 		setLabel(pathway.getTitle());
-
 	}
 
 	/**
@@ -55,41 +46,37 @@ public class PathwayRecordPerspective extends ARecordPerspective {
 	 */
 	public PathwayGraph getPathway() {
 		return pathway;
+
 	}
 
-	@Override
-	protected void init() {
-		super.init();
-		idType = getDataDomain().getDavidIDType();
-	}
 
 	@Override
 	public PathwayDataDomain getDataDomain() {
 		return (PathwayDataDomain) super.getDataDomain();
 	}
 
-	@Override
-	protected String getElementLabel(Integer id) {
-		Set<String> ids = IDMappingManagerRegistry.get().getIDMappingManager(idType)
-				.getIDAsSet(idType, idType.getIDCategory().getHumanReadableIDType(), id);
-		String label = "No Mapping";
-		if (ids != null && ids.size() > 0) {
-			label = ids.iterator().next();
-		}
-		return label;
-	}
+	// @Override
+	// protected String getElementLabel(Integer id) {
+	// Set<String> ids = IDMappingManagerRegistry.get().getIDMappingManager(idType)
+	// .getIDAsSet(idType, idType.getIDCategory().getHumanReadableIDType(), id);
+	// String label = "No Mapping";
+	// if (ids != null && ids.size() > 0) {
+	// label = ids.iterator().next();
+	// }
+	// return label;
+	// }
 
-	@Override
-	protected List<Integer> getIDList() {
-		IDMappingManager geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idType);
-		IIDTypeMapper<Integer, Integer> mapper = geneIDMappingManager.getIDTypeMapper(PathwayVertexRep.getIdType(),
-				idType);
-		List<Integer> idsInPathway = new ArrayList<Integer>();
-		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
-			Set<Integer> ids = mapper.apply(vertexRep.getID());
-			if (ids != null)
-				idsInPathway.addAll(ids);
-		}
-		return idsInPathway;
-	}
+	// @Override
+	// protected List<Integer> getIDList() {
+	// IDMappingManager geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idType);
+	// IIDTypeMapper<Integer, Integer> mapper = geneIDMappingManager.getIDTypeMapper(PathwayVertexRep.getIdType(),
+	// idType);
+	// List<Integer> idsInPathway = new ArrayList<Integer>();
+	// for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
+	// Set<Integer> ids = mapper.apply(vertexRep.getID());
+	// if (ids != null)
+	// idsInPathway.addAll(ids);
+	// }
+	// return idsInPathway;
+	// }
 }

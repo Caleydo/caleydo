@@ -31,7 +31,7 @@ import java.util.List;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.base.ConstantLabelProvider;
 import org.caleydo.core.util.color.Colors;
@@ -125,7 +125,7 @@ public class QueryColumn extends ATableColumn implements IDraggable {
 			stratWidth = getTextWidth("Stratification") - DATADOMAIN_TYPE_WIDTH;
 			assert this.score instanceof ICompositeScore;
 			for (IScore s : ((ICompositeScore) this.score)) {
-				final ARecordPerspective st = resolveStratification(s);
+				final Perspective st = resolveStratification(s);
 				if (st == null)
 					continue;
 				stratWidth = Math.max(stratWidth, getTextWidth(st));
@@ -147,7 +147,7 @@ public class QueryColumn extends ATableColumn implements IDraggable {
 				VAlign.LEFT));
 
 		r.add(createLabel(score.getAbbreviation(), getTextWidth(score.getAbbreviation())));
-		ARecordPerspective strat = resolveStratification(score);
+		Perspective strat = resolveStratification(score);
 
 		if (headerMode == EHeaderMode.STRAT || headerMode == EHeaderMode.STRAT_GROUP) {
 			r.add(createColor(strat.getDataDomain().getColor(), DATADOMAIN_TYPE_WIDTH));
@@ -209,7 +209,7 @@ public class QueryColumn extends ATableColumn implements IDraggable {
 		IScore underlyingScore = this.score;
 		if (underlyingScore instanceof CollapseScore)
 			underlyingScore = elem.getSelected((CollapseScore) underlyingScore);
-		ARecordPerspective strat = resolveStratification(underlyingScore);
+		Perspective strat = resolveStratification(underlyingScore);
 
 		if (rank)
 			addRankValue(row, elem);
@@ -274,7 +274,7 @@ public class QueryColumn extends ATableColumn implements IDraggable {
 		}
 	}
 
-	private final void addScoreValue(Row row, ScoringElement elem, ARecordPerspective strat) {
+	private final void addScoreValue(Row row, ScoringElement elem, Perspective strat) {
 		// render the real value
 		float value = this.score.getScore(elem);
 		if (!Float.isNaN(value)) {
@@ -302,7 +302,7 @@ public class QueryColumn extends ATableColumn implements IDraggable {
 		}
 	}
 
-	private static ARecordPerspective resolveStratification(IScore score) {
+	private static Perspective resolveStratification(IScore score) {
 		if (score instanceof IStratificationScore)
 			return ((IStratificationScore) score).getStratification();
 		return null;
@@ -336,7 +336,7 @@ public class QueryColumn extends ATableColumn implements IDraggable {
 
 	@Override
 	public void handleDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
-		ARecordPerspective strat = resolveStratification(score);
+		Perspective strat = resolveStratification(score);
 		IColor color = Colors.of(100);
 		if (headerMode == EHeaderMode.STRAT || headerMode == EHeaderMode.STRAT_GROUP) {
 			color = strat.getDataDomain().getColor();

@@ -21,7 +21,7 @@ package org.caleydo.view.heatmap.heatmap.renderer;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
@@ -41,7 +41,7 @@ public class RecordCaptionRenderer extends AHeatMapRenderer {
 		float yPosition = y;
 		float fieldHeight = 0;
 
-		RecordVirtualArray recordVA = heatMap.getTablePerspective().getRecordPerspective()
+		VirtualArray recordVA = heatMap.getTablePerspective().getRecordPerspective()
 				.getVirtualArray();
 
 		for (Integer recordID : recordVA) {

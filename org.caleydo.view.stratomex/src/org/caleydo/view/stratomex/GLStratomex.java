@@ -37,15 +37,15 @@ import org.caleydo.core.data.datadomain.DataSupportDefinitions;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataSupportDefinition;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.ClearSelectionsListener;
 import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.event.EventListeners;
@@ -219,7 +219,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	/** Needed for selecting the elements when a connection band is picked **/
 	private HashMap<Integer, BrickConnection> hashConnectionBandIDToRecordVA = new HashMap<Integer, BrickConnection>();
 
-	private HashMap<RecordPerspective, HashMap<RecordPerspective, BrickConnection>> hashRowPerspectivesToConnectionBandID = new HashMap<RecordPerspective, HashMap<RecordPerspective, BrickConnection>>();
+	private HashMap<Perspective, HashMap<Perspective, BrickConnection>> hashRowPerspectivesToConnectionBandID = new HashMap<Perspective, HashMap<Perspective, BrickConnection>>();
 
 	private int connectionBandIDCounter = 0;
 
@@ -1460,15 +1460,15 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	/**
 	 * @return the hashTablePerspectivesToConnectionBandID, see {@link #hashRowPerspectivesToConnectionBandID}
 	 */
-	public HashMap<RecordPerspective, HashMap<RecordPerspective, BrickConnection>> getHashTablePerspectivesToConnectionBandID() {
+	public HashMap<Perspective, HashMap<Perspective, BrickConnection>> getHashTablePerspectivesToConnectionBandID() {
 		return hashRowPerspectivesToConnectionBandID;
 	}
 
-	public void selectElementsByConnectionBandID(RecordPerspective recordPerspective1,
-			RecordPerspective recordPerspective2) {
+	public void selectElementsByConnectionBandID(Perspective recordPerspective1,
+			Perspective recordPerspective2) {
 
 		BrickConnection connectionBand = null;
-		HashMap<RecordPerspective, BrickConnection> tmp = hashRowPerspectivesToConnectionBandID.get(recordPerspective1);
+		HashMap<Perspective, BrickConnection> tmp = hashRowPerspectivesToConnectionBandID.get(recordPerspective1);
 		if (tmp != null) {
 			connectionBand = tmp.get(recordPerspective2);
 		} else {
@@ -1483,7 +1483,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 
 	public void selectElementsByConnectionBandID(int connectionBandID) {
 		BrickConnection connectionBand = hashConnectionBandIDToRecordVA.get(connectionBandID);
-		RecordVirtualArray recordVA = connectionBand.getSharedRecordVirtualArray();
+		VirtualArray recordVA = connectionBand.getSharedRecordVirtualArray();
 		selectElements(recordVA, recordVA.getIdType(), connectionBand.getLeftBrick().getDataDomain().getDataDomainID(),
 				recordSelectionManager.getSelectionType());
 	}
@@ -1518,10 +1518,10 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 	 */
 	public void splitBrick(Integer connectionBandID, boolean isSplitLeftBrick) {
 		BrickConnection brickConnection = hashConnectionBandIDToRecordVA.get(connectionBandID);
-		RecordVirtualArray sharedRecordVA = brickConnection.getSharedRecordVirtualArray();
+		VirtualArray sharedRecordVA = brickConnection.getSharedRecordVirtualArray();
 
-		RecordPerspective sourcePerspective;
-		RecordVirtualArray sourceVA;
+		Perspective sourcePerspective;
+		VirtualArray sourceVA;
 		Integer sourceGroupIndex;
 		GLBrick sourceBrick;
 		if (isSplitLeftBrick) {
@@ -1553,7 +1553,7 @@ public class GLStratomex extends AGLView implements IMultiTablePerspectiveBasedV
 				sourceVA.getIdType().getIDCategory());
 
 		if (idNeedsConverting) {
-			RecordVirtualArray mappedSharedRecordVA = new RecordVirtualArray(sourceVA.getIdType());
+			VirtualArray mappedSharedRecordVA = new VirtualArray(sourceVA.getIdType());
 			for (Integer recordID : sharedRecordVA) {
 				recordID = idMappingManager.getID(sharedRecordVA.getIdType(), sourceVA.getIdType(), recordID);
 				if (recordID == null || recordID == -1)

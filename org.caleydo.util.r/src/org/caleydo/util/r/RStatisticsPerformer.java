@@ -21,11 +21,10 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
 import org.caleydo.core.data.collection.table.Table;
-import org.caleydo.core.data.filter.RecordFilter;
+import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.perspective.table.Average;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventListeners;
@@ -199,7 +198,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		// Table table = table1.getDataDomain().getTable();
 		// table.getStatisticsResult().setResult(table1, resultVec);
 
-		RecordFilter contentFilter = new RecordFilter(container1.getRecordPerspective().getPerspectiveID());
+		Filter contentFilter = new Filter(container1.getRecordPerspective().getPerspectiveID());
 		contentFilter.setDataDomain(container1.getDataDomain());
 		contentFilter.setLabel("Fold change " + container1.getLabel() + " and " + container2.getLabel());
 
@@ -244,8 +243,8 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 		for (TablePerspective container : tablePerspectives) {
 
-			RecordVirtualArray recordVA = container.getRecordPerspective().getVirtualArray();
-			DimensionVirtualArray dimensionVA1 = container.getDimensionPerspective().getVirtualArray();
+			VirtualArray recordVA = container.getRecordPerspective().getVirtualArray();
+			VirtualArray dimensionVA1 = container.getDimensionPerspective().getVirtualArray();
 			Table table = container.getDataDomain().getTable();
 			// getContentData(Table.CONTENT).getRecordVA();
 
@@ -280,7 +279,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 			container.getContainerStatistics().getTTest().setOneSiddedTTestResult(pValueVector);
 
-			RecordFilter contentFilter = new RecordFilter(container.getRecordPerspective().getPerspectiveID());
+			Filter contentFilter = new Filter(container.getRecordPerspective().getPerspectiveID());
 			contentFilter.setDataDomain(container.getDataDomain());
 			contentFilter.setLabel("p-Value Reduction of " + container.getLabel());
 
@@ -327,8 +326,8 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 		for (int recordIndex = 0; recordIndex < tablePerspective1.getNrRecords(); recordIndex++) {
 
-			DimensionVirtualArray dimensionVA1 = tablePerspective1.getDimensionPerspective().getVirtualArray();
-			DimensionVirtualArray dimensionVA2 = tablePerspective2.getDimensionPerspective().getVirtualArray();
+			VirtualArray dimensionVA1 = tablePerspective1.getDimensionPerspective().getVirtualArray();
+			VirtualArray dimensionVA2 = tablePerspective2.getDimensionPerspective().getVirtualArray();
 
 			double[] compareVec1 = new double[dimensionVA1.size()];
 			double[] compareVec2 = new double[dimensionVA2.size()];
@@ -358,7 +357,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		tablePerspective1.getContainerStatistics().getTTest().setTwoSiddedTTestResult(tablePerspective2, pValueVector);
 		tablePerspective2.getContainerStatistics().getTTest().setTwoSiddedTTestResult(tablePerspective1, pValueVector);
 
-		RecordFilter contentFilter = new RecordFilter(tablePerspective1.getRecordPerspective().getPerspectiveID());
+		Filter contentFilter = new Filter(tablePerspective1.getRecordPerspective().getPerspectiveID());
 		contentFilter.setDataDomain(tablePerspective1.getDataDomain());
 		contentFilter.setLabel("Two sided t-test of " + tablePerspective1.getLabel() + " and "
 				+ tablePerspective2.getLabel());

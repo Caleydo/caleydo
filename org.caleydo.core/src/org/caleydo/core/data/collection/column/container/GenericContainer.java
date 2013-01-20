@@ -20,8 +20,6 @@ package org.caleydo.core.data.collection.column.container;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.EDataType;
-import org.caleydo.core.data.collection.column.container.FloatContainer;
-import org.caleydo.core.data.collection.column.container.IContainer;
 
 /**
  * Container for generic, unstructured data, such as Unique Strings, images, etc.

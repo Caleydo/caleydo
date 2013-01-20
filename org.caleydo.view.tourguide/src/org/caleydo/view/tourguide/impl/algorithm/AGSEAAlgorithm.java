@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDType;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
@@ -35,7 +35,7 @@ public abstract class AGSEAAlgorithm implements IStratificationAlgorithm {
 	protected abstract void init();
 
 	@Override
-	public final IDType getTargetType(ARecordPerspective a, ARecordPerspective b) {
+	public final IDType getTargetType(Perspective a, Perspective b) {
 		return stratification.getDimensionPerspective().getIdType();
 	}
 
@@ -75,7 +75,7 @@ public abstract class AGSEAAlgorithm implements IStratificationAlgorithm {
 		}
 
 		@Override
-		public IDType getTargetType(ARecordPerspective a, ARecordPerspective b) {
+		public IDType getTargetType(Perspective a, Perspective b) {
 			return underlying.getTargetType(a, b);
 		}
 

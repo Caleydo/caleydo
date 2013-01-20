@@ -39,12 +39,10 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.graph.DataDomainGraph;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -815,9 +813,9 @@ public class GLDataViewIntegrator
 	 * @param dimensionGroup
 	 */
 	public void createTablePerspective(final ATableBasedDataDomain dataDomain, final String recordPerspectiveID,
-			final boolean createRecordPerspective, final RecordVirtualArray recordVA, final Group recordGroup,
+			final boolean createRecordPerspective, final VirtualArray recordVA, final Group recordGroup,
 			final String dimensionPerspectiveID, final boolean createDimensionPerspective,
-			final DimensionVirtualArray dimensionVA, final Group dimensionGroup) {
+			final VirtualArray dimensionVA, final Group dimensionGroup) {
 
 		final String recordPerspectiveLabel = (createRecordPerspective) ? (recordGroup.getLabel()) : dataDomain
 				.getTable().getRecordPerspective(recordPerspectiveID).getLabel();
@@ -858,10 +856,10 @@ public class GLDataViewIntegrator
 				String currentDimensionPerspeciveID = dimensionPerspectiveID;
 				String currentRecordPerspeciveID = recordPerspectiveID;
 
-				DimensionPerspective dimensionPerspective = null;
+				Perspective dimensionPerspective = null;
 
 				if (createDimensionPerspective) {
-					dimensionPerspective = new DimensionPerspective(dataDomain);
+					dimensionPerspective = new Perspective(dataDomain, dataDomain.getDimensionIDType());
 					List<Integer> indices = dimensionVA.getIDsOfGroup(dimensionGroup.getGroupIndex());
 					PerspectiveInitializationData data = new PerspectiveInitializationData();
 					data.setData(indices);
@@ -877,10 +875,10 @@ public class GLDataViewIntegrator
 					dimensionPerspective = dataDomain.getTable().getDimensionPerspective(dimensionPerspectiveID);
 				}
 
-				RecordPerspective recordPerspective = null;
+				Perspective recordPerspective = null;
 
 				if (createRecordPerspective) {
-					recordPerspective = new RecordPerspective(dataDomain);
+					recordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
 					List<Integer> indices = recordVA.getIDsOfGroup(recordGroup.getGroupIndex());
 					PerspectiveInitializationData data = new PerspectiveInitializationData();
 					data.setData(indices);

@@ -24,8 +24,8 @@ import gleem.linalg.Vec3f;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.EDataTransformation;
-import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.collection.table.NumericalTable;
+import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;

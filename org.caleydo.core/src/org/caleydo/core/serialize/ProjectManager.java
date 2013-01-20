@@ -46,9 +46,7 @@ import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
-import org.caleydo.core.data.perspective.variable.AVariablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IDTypeInitializer;
@@ -228,7 +226,7 @@ public final class ProjectManager {
 				DataDomainSerializationData dataInitializationData = new DataDomainSerializationData();
 				dataInitializationData.setDataDomain((ATableBasedDataDomain) dataDomain);
 
-				HashMap<String, RecordPerspective> recordPerspectives = new HashMap<String, RecordPerspective>();
+				HashMap<String, Perspective> recordPerspectives = new HashMap<String, Perspective>();
 
 				GeneralManager.get().getSWTGUIManager()
 						.setProgressBarText("Loading groupings for: " + dataDomain.getLabel());
@@ -241,7 +239,8 @@ public final class ProjectManager {
 				int perspectiveCount = 0;
 				for (String recordPerspectiveID : recordPerspectiveIDs) {
 
-					RecordPerspective recordPerspective = (RecordPerspective) unmarshaller.unmarshal(GeneralManager
+					Perspective recordPerspective = (Perspective) unmarshaller
+							.unmarshal(GeneralManager
 							.get().getResourceLoader().getResource(extendedDirName + recordPerspectiveID + ".xml"));
 					recordPerspective.setDataDomain((ATableBasedDataDomain) dataDomain);
 					recordPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getRecordIDType());
@@ -259,11 +258,11 @@ public final class ProjectManager {
 
 				dataInitializationData.setRecordPerspectiveMap(recordPerspectives);
 
-				HashMap<String, DimensionPerspective> dimensionPerspectives = new HashMap<String, DimensionPerspective>();
+				HashMap<String, Perspective> dimensionPerspectives = new HashMap<String, Perspective>();
 
 				for (String dimensionPerspectiveID : dimensionPerspectiveIDs) {
 
-					DimensionPerspective dimensionPerspective = (DimensionPerspective) unmarshaller
+					Perspective dimensionPerspective = (Perspective) unmarshaller
 							.unmarshal(GeneralManager.get().getResourceLoader()
 									.getResource(extendedDirName + dimensionPerspectiveID + ".xml"));
 					dimensionPerspective.setDataDomain((ATableBasedDataDomain) dataDomain);
@@ -538,7 +537,7 @@ public final class ProjectManager {
 	 *            type of the virtual array within the given {@link IDataDomain} .
 	 */
 	private static void saveDataPerspective(Marshaller marshaller, String dir, String perspectiveID,
-			AVariablePerspective<?, ?, ?, ?> perspective) throws JAXBException, IOException {
+			Perspective perspective) throws JAXBException, IOException {
 
 		String fileName = dir + perspectiveID + ".xml";
 		marshaller.marshal(perspective, new File(fileName));

@@ -7,10 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.perspective.variable.Perspective;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IIDTypeMapper;
 import org.caleydo.core.util.collection.Pair;
@@ -33,14 +33,14 @@ import com.google.common.collect.Table;
 
 public abstract class AScoreJob extends Job {
 	private final CachedIDTypeMapper mapper = new CachedIDTypeMapper();
-	private final Table<ARecordPerspective, Pair<IDType, IDType>, Set<Integer>> stratCache = HashBasedTable.create();
+	private final Table<Perspective, Pair<IDType, IDType>, Set<Integer>> stratCache = HashBasedTable.create();
 	private final Table<Group, Pair<IDType, IDType>, Set<Integer>> groupCache = HashBasedTable.create();
 
 	public AScoreJob(String label) {
 		super(label);
 	}
 
-	protected final void clear(ARecordPerspective strat) {
+	protected final void clear(Perspective strat) {
 		stratCache.row(strat).clear();
 	}
 
@@ -48,7 +48,7 @@ public abstract class AScoreJob extends Job {
 		groupCache.row(g).clear();
 	}
 
-	protected final Set<Integer> get(ARecordPerspective strat, Group group, IDType target, IDType occurIn) {
+	protected final Set<Integer> get(Perspective strat, Group group, IDType target, IDType occurIn) {
 		Pair<IDType, IDType> check = Pair.make(target, occurIn);
 		if (groupCache.contains(group, check))
 			return groupCache.get(group, check);
@@ -60,7 +60,7 @@ public abstract class AScoreJob extends Job {
 		if (mapper == null)
 			r = Collections.emptySet();
 		else {
-			RecordVirtualArray va = strat.getVirtualArray();
+			VirtualArray va = strat.getVirtualArray();
 			r = mapper.apply(va.getIDsOfGroup(group.getGroupIndex()));
 			if (!target.equals(occurIn) && !source.equals(occurIn)) { // check against third party
 				Predicate<Integer> in = this.mapper.in(target, occurIn);
@@ -74,15 +74,15 @@ public abstract class AScoreJob extends Job {
 		return r;
 	}
 
-	protected final List<Set<Integer>> getAll(ARecordPerspective strat, IDType target, IDType occurIn) {
-		RecordGroupList groups = strat.getVirtualArray().getGroupList();
+	protected final List<Set<Integer>> getAll(Perspective strat, IDType target, IDType occurIn) {
+		GroupList groups = strat.getVirtualArray().getGroupList();
 		List<Set<Integer>> r = new ArrayList<>(groups.size());
 		for(Group g : groups)
 			r.add(get(strat, g, target, occurIn));
 		return r;
 	}
 
-	protected final Set<Integer> get(ARecordPerspective strat, IDType target, IDType occurIn) {
+	protected final Set<Integer> get(Perspective strat, IDType target, IDType occurIn) {
 		Pair<IDType, IDType> check = Pair.make(target, occurIn);
 		if (stratCache.contains(strat, check))
 			return stratCache.get(strat, check);
@@ -94,7 +94,7 @@ public abstract class AScoreJob extends Job {
 		if (mapper == null)
 			r = Collections.emptySet();
 		else {
-			RecordVirtualArray va = strat.getVirtualArray();
+			VirtualArray va = strat.getVirtualArray();
 			r = mapper.apply(va);
 			if (!target.equals(occurIn) && !source.equals(occurIn)) { // check against third party
 				Predicate<Integer> in = this.mapper.in(target, occurIn);
@@ -121,7 +121,7 @@ public abstract class AScoreJob extends Job {
 		return Pair.make(as, bs);
 	}
 
-	protected final IStatus computeStratificationScores(IProgressMonitor monitor, ARecordPerspective as,
+	protected final IStatus computeStratificationScores(IProgressMonitor monitor, Perspective as,
 			Collection<IComputedStratificationScore> stratMetrics,
 			Collection<IComputedReferenceStratificationScore> stratScores) {
 		for (IComputedStratificationScore score : stratMetrics) {
@@ -142,7 +142,7 @@ public abstract class AScoreJob extends Job {
 		// all stratification scores
 		for (IComputedReferenceStratificationScore score : stratScores) {
 			IStratificationAlgorithm algorithm = score.getAlgorithm();
-			final ARecordPerspective rs = score.getStratification();
+			final Perspective rs = score.getStratification();
 			IDType target = algorithm.getTargetType(as, rs);
 			if (score.contains(as) || !score.getFilter().doCompute(as, null, rs, null)) {
 				continue;

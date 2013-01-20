@@ -24,9 +24,8 @@ import java.util.List;
 import org.caleydo.core.data.collection.table.TableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.IDTypeInitializer;
@@ -175,7 +174,8 @@ public class DataLoader {
 				targetIDType);
 
 		for (PerspectiveInitializationData data : dimensionPerspectivesInitData) {
-			DimensionPerspective dimensionPerspective = new DimensionPerspective(dataDomain);
+			Perspective dimensionPerspective = new Perspective(dataDomain,
+					dataDomain.getDimensionIDType());
 			dimensionPerspective.init(data);
 			dataDomain.getTable().registerDimensionPerspective(dimensionPerspective);
 		}
@@ -193,10 +193,10 @@ public class DataLoader {
 
 		IDType targetIDType = dataDomain.getRecordIDType();
 
-		List<PerspectiveInitializationData> dimensionPerspectivesInitData = parseGrouping(recordGroupings, targetIDType);
+		List<PerspectiveInitializationData> recordPerspectivesInitData = parseGrouping(recordGroupings, targetIDType);
 
-		for (PerspectiveInitializationData data : dimensionPerspectivesInitData) {
-			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+		for (PerspectiveInitializationData data : recordPerspectivesInitData) {
+			Perspective recordPerspective = new Perspective(dataDomain, targetIDType);
 			recordPerspective.init(data);
 			dataDomain.getTable().registerRecordPerspective(recordPerspective);
 		}
@@ -266,7 +266,8 @@ public class DataLoader {
 	private static void setUpRecordClustering(ClusterConfiguration clusterConfiguration,
 			ATableBasedDataDomain dataDomain) {
 		clusterConfiguration.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
-		RecordPerspective targetRecordPerspective = new RecordPerspective(dataDomain);
+		Perspective targetRecordPerspective = new Perspective(dataDomain,
+				dataDomain.getRecordIDType());
 		dataDomain.getTable().registerRecordPerspective(targetRecordPerspective);
 		targetRecordPerspective.setLabel(clusterConfiguration.toString(), false);
 		clusterConfiguration.setOptionalTargetRecordPerspective(targetRecordPerspective);
@@ -275,7 +276,8 @@ public class DataLoader {
 	private static void setUpDimensionClustering(ClusterConfiguration clusterConfiguration,
 			ATableBasedDataDomain dataDomain) {
 		clusterConfiguration.setClusterTarget(EClustererTarget.DIMENSION_CLUSTERING);
-		DimensionPerspective targetDimensionPerspective = new DimensionPerspective(dataDomain);
+		Perspective targetDimensionPerspective = new Perspective(dataDomain,
+				dataDomain.getDimensionIDType());
 		dataDomain.getTable().registerDimensionPerspective(targetDimensionPerspective);
 
 		targetDimensionPerspective.setLabel(clusterConfiguration.toString(), false);

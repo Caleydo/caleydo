@@ -33,7 +33,7 @@ import java.util.List;
 import org.caleydo.core.data.datadomain.DataDomainActions;
 import org.caleydo.core.data.datadomain.DataDomainOracle;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventListeners.ListenTo;
 import org.caleydo.core.event.data.NewDataDomainEvent;
@@ -246,15 +246,15 @@ public class DataDomainQueryUI extends Column {
 					dataDomainRow.getFilter()).to(this)));
 			creator.addSeparator();
 		}
-		Collection<DimensionPerspective> dims = DataDomainQuery
+		Collection<Perspective> dims = DataDomainQuery
 				.getPossibleDimensionPerspectives(dataDomainRow.dataDomain);
 		if (!dims.isEmpty()) {
-			DimensionPerspective dim = query.getDimensionSelection(dataDomainRow.dataDomain);
+			Perspective dim = query.getDimensionSelection(dataDomainRow.dataDomain);
 			if (dim == null)
 				dim = dims.iterator().next();
 			GroupContextMenuItem item = new GroupContextMenuItem("Used Dimension Perspective");
 			creator.addContextMenuItem(item);
-			for (DimensionPerspective d : dims)
+			for (Perspective d : dims)
 				item.add(new GenericContextMenuItem(d.getLabel(), EContextMenuType.CHECK,
 						new SelectDimensionSelectionEvent(d).to(this)).setState(d == dim));
 			creator.addSeparator();
@@ -282,7 +282,7 @@ public class DataDomainQueryUI extends Column {
 
 	@ListenTo(sendToMe = true)
 	void onSelectionDimension(final SelectDimensionSelectionEvent e) {
-		DimensionPerspective d = e.getDim();
+		Perspective d = e.getDim();
 		if (query.getDimensionSelection(d.getDataDomain()) == d)
 			query.setDimensionSelection(d.getDataDomain(), null);
 		else

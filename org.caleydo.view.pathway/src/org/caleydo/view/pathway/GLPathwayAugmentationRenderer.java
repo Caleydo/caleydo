@@ -30,8 +30,6 @@ import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -81,7 +79,7 @@ public class GLPathwayAugmentationRenderer {
 	/**
 	 * The virtual array containing the samples that are currently mapped onto the nodes
 	 */
-	private VirtualArray<?, ?, ?> selectedSamplesVA;
+	private VirtualArray selectedSamplesVA;
 
 	private float stdBarHeight;
 	private float onePxlWidth;
@@ -184,12 +182,9 @@ public class GLPathwayAugmentationRenderer {
 				return;
 			}
 
-			if (!glPathwayView.getDataDomain().isGeneRecord())
-				selectedSamplesVA = new RecordVirtualArray(glPathwayView.getSampleSelectionManager().getIDType(),
+			selectedSamplesVA = new VirtualArray(glPathwayView.getSampleSelectionManager().getIDType(),
 						selectedSamplesArray);
-			else
-				selectedSamplesVA = new DimensionVirtualArray(glPathwayView.getSampleSelectionManager().getIDType(),
-						selectedSamplesArray);
+
 			break;
 		default:
 			throw new IllegalStateException("Unknown state when switching " + glPathwayView.getSampleMappingMode());

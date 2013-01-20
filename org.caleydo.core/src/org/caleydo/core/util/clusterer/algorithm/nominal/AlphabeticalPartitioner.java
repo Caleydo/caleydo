@@ -21,7 +21,7 @@ import java.util.HashMap;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 
@@ -37,7 +37,7 @@ public class AlphabeticalPartitioner extends AClusterer {
 	@Override
 	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain,
 			ClusterConfiguration clusterState, int iProgressBarOffsetValue, int iProgressBarMultiplier) {
-		RecordVirtualArray recordVA = clusterState.getSourceRecordPerspective().getVirtualArray();
+		VirtualArray recordVA = clusterState.getSourceRecordPerspective().getVirtualArray();
 		// NominalDimension<String> dimension =
 		// (NominalDimension<String>)
 		// table.get(clusterState.getSourceDimensionPerspective().getVirtualArray().get(0));

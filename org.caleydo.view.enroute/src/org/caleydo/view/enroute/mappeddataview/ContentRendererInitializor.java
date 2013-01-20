@@ -1,12 +1,12 @@
 /**
- * 
+ *
  */
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.Set;
 
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.AVariablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
@@ -16,9 +16,9 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
 /**
  * Bean that can be used to initialize a {@link ContentRenderer}.
- * 
+ *
  * @author Christian
- * 
+ *
  */
 public class ContentRendererInitializor
 	implements IContentRendererInitializor {
@@ -27,7 +27,7 @@ public class ContentRendererInitializor
 	private Integer davidID;
 	private GeneticDataDomain dataDomain;
 	private TablePerspective tablePerspective;
-	private AVariablePerspective<?, ?, ?, ?> experimentPerspective;
+	private Perspective experimentPerspective;
 	private AGLView view;
 	private MappedDataRenderer mappedDataRenderer;
 	private Group group;
@@ -125,7 +125,7 @@ public class ContentRendererInitializor
 	 * @return the experimentPerspective, see {@link #experimentPerspective}
 	 */
 	@Override
-	public AVariablePerspective<?, ?, ?, ?> getExperimentPerspective() {
+	public Perspective getExperimentPerspective() {
 		return experimentPerspective;
 	}
 

@@ -26,10 +26,8 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.variable.AVariablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
@@ -100,14 +98,14 @@ public class CategoricalTablePerspectiveCreator {
 
 		ids.add(convertedID);
 
-		AVariablePerspective<?, ?, ?, ?> perspective;
+		Perspective perspective;
 
 		if (dataDomain.isColumnDimension()) {
-			perspective = new RecordPerspective(dataDomain);
-			dataDomain.getTable().registerRecordPerspective((RecordPerspective) perspective, false);
+			perspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
+			dataDomain.getTable().registerRecordPerspective(perspective, false);
 		} else {
-			perspective = new DimensionPerspective(dataDomain);
-			dataDomain.getTable().registerDimensionPerspective((DimensionPerspective) perspective, false);
+			perspective = new Perspective(dataDomain, dataDomain.getDimensionIDType());
+			dataDomain.getTable().registerDimensionPerspective(perspective, false);
 		}
 		perspective.setPrivate(isTablePerspectivePrivate);
 
@@ -120,14 +118,15 @@ public class CategoricalTablePerspectiveCreator {
 		data.setData(ids);
 		perspective.init(data);
 
-		RecordPerspective binnedPerspective = null;
+		Perspective binnedPerspective = null;
 
 		// FIXME TCGA Specific hack! Move to some place sane
 		int numberOfBins = 1;
 
 		if (dataDomain.getLabel().contains("Copy")) {
 			for (String recordPerspectiveID : dataDomain.getTable().getRecordPerspectiveIDs()) {
-				RecordPerspective recordPerspective = dataDomain.getTable().getRecordPerspective(recordPerspectiveID);
+				Perspective recordPerspective = dataDomain.getTable()
+						.getRecordPerspective(recordPerspectiveID);
 				ArrayList<String> groupLabels = new ArrayList<String>();
 				groupLabels.add("Homozygous deletion");
 				groupLabels.add("Heterozygous deletion");
@@ -142,7 +141,8 @@ public class CategoricalTablePerspectiveCreator {
 		}
 		if (dataDomain.getLabel().contains("Mutation")) {
 			for (String recordPerspectiveID : dataDomain.getTable().getRecordPerspectiveIDs()) {
-				RecordPerspective recordPerspective = dataDomain.getTable().getRecordPerspective(recordPerspectiveID);
+				Perspective recordPerspective = dataDomain.getTable()
+						.getRecordPerspective(recordPerspectiveID);
 				ArrayList<String> groupLabels = new ArrayList<String>();
 				groupLabels.add("Not Mutated");
 				groupLabels.add("Mutated");
@@ -173,7 +173,7 @@ public class CategoricalTablePerspectiveCreator {
 		}
 	}
 
-	private static RecordPerspective binRecords(int nrBins, Integer dimensionID, RecordPerspective recordPerspective,
+	private static Perspective binRecords(int nrBins, Integer dimensionID, Perspective recordPerspective,
 			ATableBasedDataDomain dataDomain, String label, ArrayList<String> groupLabels,
 			boolean isTablePerspectivePrivate) {
 
@@ -209,7 +209,7 @@ public class CategoricalTablePerspectiveCreator {
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 		data.setData(binnedIDList, clusterSizes, sampleElements, groupLabels);
 
-		RecordPerspective binnedPerspective = new RecordPerspective(dataDomain);
+		Perspective binnedPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
 		binnedPerspective.init(data);
 		binnedPerspective.setLabel(label, false);
 		binnedPerspective.setPrivate(isTablePerspectivePrivate);

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,20 +8,19 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.dvi.event;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 
@@ -33,15 +32,15 @@ public class CreateTablePerspectiveEvent extends AEvent {
 	private boolean createDimensionPerspective;
 	private boolean createRecordPerspective;
 	private Group recordGroup;
-	private RecordVirtualArray recordVA;
+	private VirtualArray recordVA;
 	private Group dimensionGroup;
-	private DimensionVirtualArray dimensionVA;
+	private VirtualArray dimensionVA;
 
 	public CreateTablePerspectiveEvent(ATableBasedDataDomain dataDomain,
 			String recordPerspectiveID, boolean createRecordPerspective,
-			RecordVirtualArray recordVA, Group recordGroup,
+			VirtualArray recordVA, Group recordGroup,
 			String dimensionPerspectiveID, boolean createDimensionPerspective,
-			DimensionVirtualArray dimensionVA, Group dimensionGroup) {
+			VirtualArray dimensionVA, Group dimensionGroup) {
 		this.setDataDomain(dataDomain);
 		this.setRecordPerspectiveID(recordPerspectiveID);
 		this.setDimensionPerspectiveID(dimensionPerspectiveID);
@@ -98,11 +97,11 @@ public class CreateTablePerspectiveEvent extends AEvent {
 		return dimensionGroup;
 	}
 
-	public void setDimensionVA(DimensionVirtualArray dimensionVA) {
+	public void setDimensionVA(VirtualArray dimensionVA) {
 		this.dimensionVA = dimensionVA;
 	}
 
-	public DimensionVirtualArray getDimensionVA() {
+	public VirtualArray getDimensionVA() {
 		return dimensionVA;
 	}
 
@@ -122,11 +121,11 @@ public class CreateTablePerspectiveEvent extends AEvent {
 		this.recordGroup = recordGroup;
 	}
 
-	public RecordVirtualArray getRecordVA() {
+	public VirtualArray getRecordVA() {
 		return recordVA;
 	}
 
-	public void setRecordVA(RecordVirtualArray recordVA) {
+	public void setRecordVA(VirtualArray recordVA) {
 		this.recordVA = recordVA;
 	}
 

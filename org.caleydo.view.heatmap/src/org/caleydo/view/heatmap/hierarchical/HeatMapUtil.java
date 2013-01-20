@@ -29,10 +29,9 @@ import javax.media.opengl.GLProfile;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
@@ -48,8 +47,8 @@ public class HeatMapUtil {
 
 	public static int MAX_SAMPLES_PER_TEXTURE = 2000;
 
-	public static ArrayList<Texture> createHeatMapTextures(GL2 gl, Table table, RecordVirtualArray recordVA,
-			DimensionVirtualArray dimensionVA, RecordSelectionManager contentSelectionManager) {
+	public static ArrayList<Texture> createHeatMapTextures(GL2 gl, Table table,VirtualArray recordVA,
+			VirtualArray dimensionVA, RecordSelectionManager contentSelectionManager) {
 
 		int numSamples = recordVA.size();
 		int numDimensions = dimensionVA.size();
@@ -149,10 +148,10 @@ public class HeatMapUtil {
 		}
 	}
 
-	public static void renderGroupBar(GL2 gl, RecordVirtualArray recordVA, float totalHeight, float groupWidth,
+	public static void renderGroupBar(GL2 gl, VirtualArray recordVA, float totalHeight, float groupWidth,
 			PickingManager pickingManager, int viewID, PickingType pickingType, TextureManager textureManager) {
 
-		RecordGroupList contentGroupList = recordVA.getGroupList();
+		GroupList contentGroupList = recordVA.getGroupList();
 
 		if (contentGroupList != null) {
 			float sampleHeight = totalHeight / (recordVA.size());

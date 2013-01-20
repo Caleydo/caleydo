@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.data.virtualarray.events;
 
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
 import org.caleydo.core.event.IListenerOwner;
 
 public interface IDimensionVAUpdateHandler

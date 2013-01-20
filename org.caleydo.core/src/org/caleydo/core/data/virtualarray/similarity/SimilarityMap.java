@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,55 +22,54 @@ package org.caleydo.core.data.virtualarray.similarity;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 
 /**
  * A map containing similarities from one specific tableID / recordVA pair to all other pairs.
- * 
+ *
  * @author Alexander Lex
  */
 public class SimilarityMap {
 
 	/**
 	 * Get the VASimilarity between this SimilarityMap's VA and the VA associated with the perspectiveID.
-	 * 
+	 *
 	 * @param foreignPerspectiveID
 	 *            the perspectiveID associated with the VA that should be compared to the VA in this
 	 *            SimilarityMap
 	 * @return
 	 */
-	public VASimilarity<RecordVirtualArray, RecordGroupList> getVASimilarity(String foreignPerspectiveID) {
+	public VASimilarity getVASimilarity(String foreignPerspectiveID) {
 		return similarityMap.get(foreignPerspectiveID);
 	}
 
 	// -------------------- END OF PUBLIC INTERFACE ----------------------------------
 
-	HashMap<String, VASimilarity<RecordVirtualArray, RecordGroupList>> similarityMap =
-		new HashMap<String, VASimilarity<RecordVirtualArray, RecordGroupList>>(20);
+	HashMap<String, VASimilarity> similarityMap = new HashMap<String, VASimilarity>(
+			20);
 
 	private String tableID;
-	private RecordVirtualArray recordVA;
+	private VirtualArray recordVA;
 
 	/**
 	 * Constructor with the key pair tableID and recordVA
 	 */
-	SimilarityMap(String tableID, RecordVirtualArray recordVA) {
+	SimilarityMap(String tableID, VirtualArray recordVA) {
 		this.tableID = tableID;
 		this.recordVA = recordVA;
 	}
 
 	/**
 	 * Sets a va that the key va of this object is to be compared to and calculates the similarity.
-	 * 
+	 *
 	 * @param comparedSetID
 	 * @param comparedRecordVA
 	 */
-	VASimilarity<RecordVirtualArray, RecordGroupList> calculateVASimilarity(String comparedSetID,
-		RecordVirtualArray comparedRecordVA) {
-		VASimilarity<RecordVirtualArray, RecordGroupList> vaSimilarity;
+	VASimilarity calculateVASimilarity(String comparedSetID,
+		VirtualArray comparedRecordVA) {
+		VASimilarity vaSimilarity;
 
-		vaSimilarity = new VASimilarity<RecordVirtualArray, RecordGroupList>();
+		vaSimilarity = new VASimilarity();
 		vaSimilarity.addVA(tableID, recordVA);
 
 		vaSimilarity.addVA(comparedSetID, comparedRecordVA);
@@ -81,10 +80,10 @@ public class SimilarityMap {
 
 	/**
 	 * Set a pre-existing similarity between this objects key va and another.
-	 * 
+	 *
 	 * @param vaSimilarity
 	 */
-	void setVaSimilarity(VASimilarity<RecordVirtualArray, RecordGroupList> vaSimilarity) {
+	void setVaSimilarity(VASimilarity vaSimilarity) {
 		Set<String> keys = vaSimilarity.getPerspectiveIDs();
 		boolean ownKeyContained = false;
 		String comparedPerspectiveID = null;

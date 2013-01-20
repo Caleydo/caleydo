@@ -22,7 +22,7 @@ package org.caleydo.view.tourguide.impl.algorithm;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.util.statistics.Statistics;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
@@ -48,7 +48,7 @@ public class AdjustedRandIndex implements IStratificationAlgorithm {
 	}
 
 	@Override
-	public IDType getTargetType(ARecordPerspective a, ARecordPerspective b) {
+	public IDType getTargetType(Perspective a, Perspective b) {
 		return a.getIdType();
 	}
 

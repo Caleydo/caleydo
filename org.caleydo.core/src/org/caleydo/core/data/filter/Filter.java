@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,38 +8,39 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.data.filter;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.filter.event.NewFilterEvent;
+import org.caleydo.core.data.filter.event.ReEvaluateFilterListEvent;
 import org.caleydo.core.data.filter.representation.AFilterRepresentation;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
+import org.caleydo.core.manager.GeneralManager;
 
 /**
- * Generic base class for Filters. A Filter contains changes made to a virtual array. Sub-classes may
- * additionally hold information about the filter operations.
+ * Class for Filters. A Filter contains changes made to a virtual array. Sub-classes may additionally hold information
+ * about the filter operations.
  * 
  * @author Alexander Lex
- * @param <VAType>
- * @param <DeltaType>
  */
-public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
+public class Filter {
 
-	private DeltaType vaDelta;
+	private VirtualArrayDelta vaDelta;
 
-	private DeltaType vaDeltaUncertainty;
+	private VirtualArrayDelta vaDeltaUncertainty;
 
 	private String label = "<unspecified>";
 
-	private AFilterRepresentation<DeltaType, ?> filterRep;
+	private AFilterRepresentation filterRep;
 
 	protected boolean isRegistered = false;
 
@@ -55,7 +56,7 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 	// }
 
 	/**
-	 * 
+	 *
 	 */
 	public Filter(String perspectiveID) {
 		this.perspectiveID = perspectiveID;
@@ -63,7 +64,7 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 
 	/**
 	 * Should only be used for de-serialization
-	 * 
+	 *
 	 * @param perspectiveID
 	 *            setter, see {@link #perspectiveID}
 	 */
@@ -78,27 +79,27 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 		return perspectiveID;
 	}
 
-	public void setVADelta(DeltaType vaDelta) {
+	public void setVADelta(VirtualArrayDelta vaDelta) {
 		this.vaDelta = vaDelta;
 	}
 
-	public DeltaType getVADelta() {
+	public VirtualArrayDelta getVADelta() {
 		return vaDelta;
 	}
 
-	public void setVADeltaUncertainty(DeltaType vaDeltaUncertain) {
+	public void setVADeltaUncertainty(VirtualArrayDelta vaDeltaUncertain) {
 		this.vaDeltaUncertainty = vaDeltaUncertain;
 	}
 
-	public DeltaType getVADeltaUncertainty() {
+	public VirtualArrayDelta getVADeltaUncertainty() {
 		return vaDeltaUncertainty;
 	}
 
-	public void setFilterRep(AFilterRepresentation<DeltaType, ?> filterRep) {
+	public void setFilterRep(AFilterRepresentation filterRep) {
 		this.filterRep = filterRep;
 	}
 
-	public AFilterRepresentation<DeltaType, ?> getFilterRep() {
+	public AFilterRepresentation getFilterRep() {
 		return filterRep;
 	}
 
@@ -132,5 +133,25 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 		return dataDomain;
 	}
 
-	public abstract void updateFilterManager();
+	public void updateFilterManager() {
+
+		if (!isRegistered()) {
+			NewFilterEvent filterEvent = new NewFilterEvent();
+			filterEvent.setFilter(this);
+			filterEvent.setSender(this);
+			filterEvent.setDataDomainID(dataDomain.getDataDomainID());
+
+			GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
+
+			isRegistered = true;
+		} else {
+
+			ReEvaluateFilterListEvent reevaluateEvent = new ReEvaluateFilterListEvent();
+			// reevaluateEvent.addFilter(filter);
+			reevaluateEvent.setSender(this);
+			reevaluateEvent.setDataDomainID(dataDomain.getDataDomainID());
+
+			GeneralManager.get().getEventPublisher().triggerEvent(reevaluateEvent);
+		}
+	}
 }

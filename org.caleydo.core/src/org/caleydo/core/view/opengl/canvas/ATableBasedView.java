@@ -534,7 +534,7 @@ public abstract class ATableBasedView extends AGLView implements
 		default:
 			return 1;
 		}
-		VirtualArray<?, ?, ?> va;
+		VirtualArray va;
 		if (forRecord)
 			va = tablePerspective.getRecordPerspective().getVirtualArray();
 		else

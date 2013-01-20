@@ -46,18 +46,16 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.perspective.table.TablePerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.events.ClusterNodeSelectionListener;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.event.data.ClusterNodeSelectionEvent;
 import org.caleydo.core.event.data.NewRecordGroupInfoEvent;
 import org.caleydo.core.event.view.group.ExportContentGroupsEvent;
@@ -196,11 +194,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 	private boolean bIsHeatmapInFocus = false;
 
 	/** embedded dendrogram */
-	private GLDendrogram<RecordGroupList> glRecordDendrogramView;
+	private GLDendrogram glRecordDendrogramView;
 	private boolean recordDendrogramActive = false;
 	private boolean recordDendrogramRenderCut = false;
 	private boolean bFirstStartGeneDendrogram = true;
-	private GLDendrogram<DimensionGroupList> glDimensionDendrogramView;
+	private GLDendrogram glDimensionDendrogramView;
 	private boolean dimensionDendrogramActive = false;
 	private boolean dimensionDendrogramRenderCut = false;
 	private boolean bFirstStartExperimentDendrogram = true;
@@ -513,8 +511,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 
 			Texture tempTextur;
 
-			RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
-			DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+			VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+			VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 			int iTextureHeight = recordVA.size();
 			int iTextureWidth = dimensionVA.size();
@@ -562,8 +560,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 
 			Texture tempTextur;
 
-			RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
-			DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+			VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+			VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 			int iTextureHeight = recordVA.size();
 			int iTextureWidth = dimensionVA.size();
 
@@ -642,7 +640,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 
 		glHeatMapView.setDataDomain(dataDomain);
 
-		RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+		Perspective recordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
 		recordPerspective.init(null);
 
 		TablePerspective embeddedHMContainer = new TablePerspective(dataDomain, recordPerspective,
@@ -674,7 +672,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, (int) fHeatMapHeight, 0,
 				(int) fHeatMapWidth, -20, 20);
 
-		glRecordDendrogramView = new GLDendrogram<RecordGroupList>(parentGLCanvas, parentComposite, viewFrustum, true);
+		glRecordDendrogramView = new GLDendrogram(parentGLCanvas, parentComposite, viewFrustum, true);
 		glRecordDendrogramView.setRemoteRenderingGLView(this);
 		glRecordDendrogramView.setTablePerspective(tablePerspective);
 		glRecordDendrogramView.setDataDomain(dataDomain);
@@ -682,7 +680,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 		glRecordDendrogramView.initData();
 		glRecordDendrogramView.setRenderUntilCut(recordDendrogramRenderCut);
 
-		glDimensionDendrogramView = new GLDendrogram<DimensionGroupList>(parentGLCanvas, parentComposite, viewFrustum,
+		glDimensionDendrogramView = new GLDendrogram(parentGLCanvas, parentComposite, viewFrustum,
 				false);
 		glDimensionDendrogramView.setRemoteRenderingGLView(this);
 		glDimensionDendrogramView.setTablePerspective(tablePerspective);
@@ -1042,7 +1040,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 	 * @param gl
 	 */
 	private void renderClassAssignmentsExperimentsLevel2(final GL2 gl) {
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 		if (dimensionVA.getGroupList() == null)
 			return;
 
@@ -1057,7 +1055,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 
 		float fHeightClusterVisualization = renderStyle.getWidthClusterVisualization();
 
-		DimensionGroupList groupList = dimensionVA.getGroupList();
+		GroupList groupList = dimensionVA.getGroupList();
 		int iNrClasses = groupList.size();
 
 		gl.glLineWidth(1f);
@@ -1117,7 +1115,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 	 */
 	private void renderClassAssignmentsExperimentsLevel3(final GL2 gl) {
 
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 		if (dimensionVA.getGroupList() == null)
 			return;
 
@@ -1133,7 +1131,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 		else
 			fHeight = viewFrustum.getHeight();
 
-		DimensionGroupList groupList = dimensionVA.getGroupList();
+		GroupList groupList = dimensionVA.getGroupList();
 		int iNrClasses = groupList.size();
 
 		gl.glLineWidth(1f);
@@ -1193,7 +1191,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 	 * @param gl
 	 */
 	private void renderClassAssignmentsGenesLevel1(final GL2 gl) {
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 		if (recordVA.getGroupList() == null)
 			return;
 
@@ -1205,7 +1203,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 		float fWidthLevel1 = renderStyle.getWidthLevel1();
 		float fWidthClusterVisualization = renderStyle.getWidthClusterVisualization();
 
-		RecordGroupList groupList = recordVA.getGroupList();
+		GroupList groupList = recordVA.getGroupList();
 
 		gl.glTranslatef(fWidthLevel1, 0, 0);
 
@@ -1275,7 +1273,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 	 */
 	private void renderClassAssignmentsGenesLevel2(final GL2 gl) {
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		// FIXME: Class assignments could be rendered using HeatMapUtil
 		if (recordVA.getGroupList() == null)
@@ -1399,7 +1397,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 	 * @param gl
 	 */
 	private void renderClassAssignmentsGenesLevel3(final GL2 gl) {
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		if (recordVA.getGroupList() == null)
 			return;
@@ -1632,7 +1630,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 	 */
 	private void renderSelectedElementsLevel1(GL2 gl) {
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		float fHeight = viewFrustum.getHeight();
 		float fWidthLevel1 = renderStyle.getWidthLevel1();
@@ -1894,7 +1892,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 	}
 
 	private void renderSubTreeLevel2(GL2 gl) {
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		if (tablePerspective.getRecordPerspective().getTree() != null) {
 			gl.glTranslatef(renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS / 2, 0, 0);
@@ -1915,7 +1913,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 	}
 
 	private void renderSubTreeLevel3(GL2 gl) {
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 		// render sub tree for level 3
 		if (tablePerspective.getRecordPerspective().getTree() != null) {
 
@@ -2048,8 +2046,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 	 */
 	private void renderSelectedElementsLevel2(GL2 gl) {
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		// float fFieldWith = viewFrustum.getWidth() / 4.0f * fAnimationScale;
 		float fWidthLevel2 = renderStyle.getWidthLevel2() * fScalingLevel2;
@@ -2720,7 +2718,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 			fScalingLevel2 = 1.0f;
 		}
 
-		// RecordVirtualArray recordVA = tablePerspective.getRecordPerspective()
+		// VirtualArray recordVA = tablePerspective.getRecordPerspective()
 		// .getVirtualArray();
 
 		// float fleftOffset = 0;
@@ -2752,7 +2750,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 
 	private void renderViewsLevel_1_2_3_Active(GL2 gl) {
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		renderClassAssignmentsGenesLevel1(gl);
 
@@ -2820,7 +2818,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 
 	private void renderViewsLevel_2_3_Active(GL2 gl) {
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		if (pickingPointLevel2 != null)
 			handleTexturePickingLevel2(gl);
@@ -3110,7 +3108,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		ArrayList<Integer> embeddedRecords = new ArrayList<Integer>();
 
@@ -3222,7 +3220,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 	 */
 	private void handleDragDropGroupExperiments(final GL2 gl) {
 
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		Point currentPoint = glMouseListener.getPickedPoint();
 		float[] fArTargetWorldCoordinates = new float[3];
@@ -3247,7 +3245,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 		fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
 				currentPoint.y);
 
-		DimensionGroupList groupList = dimensionVA.getGroupList();
+		GroupList groupList = dimensionVA.getGroupList();
 
 		if (groupList == null) {
 			System.out.println("No group assignment available!");
@@ -3330,9 +3328,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 		fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
 				currentPoint.y);
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
-		RecordGroupList groupList = recordVA.getGroupList();
+		GroupList groupList = recordVA.getGroupList();
 
 		if (groupList == null) {
 			System.out.println("No group assignment available!");
@@ -3402,7 +3400,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 		fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
 				currentPoint.y);
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		if (glMouseListener.wasMouseReleased()) {
 			// bSplitGroupGene = false;
@@ -3436,7 +3434,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 		float[] fArTargetWorldCoordinates = new float[3];
 		float[] fArDraggedPoint = new float[3];
 
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		fArTargetWorldCoordinates = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
 				currentPoint.y);
@@ -3695,8 +3693,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 			return;
 		}
 
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		switch (pickingType) {
 
@@ -3710,7 +3708,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 				boolean bEnableExport = true;
 				int iNrSelectedGroups = 0;
 
-				RecordGroupList tempGroupList = recordVA.getGroupList();
+				GroupList tempGroupList = recordVA.getGroupList();
 
 				for (Group group : tempGroupList) {
 					if (group.getSelectionType() == SelectionType.SELECTION)
@@ -3818,7 +3816,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 				// boolean bEnableExport = true;
 				int iNrSelectedGroups = 0;
 
-				DimensionGroupList tempGroupList = dimensionVA.getGroupList();
+				GroupList tempGroupList = dimensionVA.getGroupList();
 
 				for (Group group : tempGroupList) {
 					if (group.getSelectionType() == SelectionType.SELECTION)
@@ -4154,7 +4152,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 	// group.setSelectionType(SelectionType.NORMAL);
 	// }
 	// if (recordVA.getGroupList() != null) {
-	// RecordGroupList groupList = recordVA.getGroupList();
+	// GroupList groupList = recordVA.getGroupList();
 	//
 	// for (Group group : groupList)
 	// group.setSelectionType(SelectionType.NORMAL);
@@ -4163,18 +4161,18 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 
 	@SuppressWarnings("unused")
 	private void activateGroupHandling() {
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 
 		if (recordVA.getGroupList() == null) {
-			RecordGroupList groupList = new RecordGroupList();
+			GroupList groupList = new GroupList();
 			Group group = new Group(recordVA.size());
 			groupList.append(group);
 			recordVA.setGroupList(groupList);
 		}
 
 		if (dimensionVA.getGroupList() == null) {
-			DimensionGroupList groupList = new DimensionGroupList();
+			GroupList groupList = new GroupList();
 			Group group = new Group(dimensionVA.size());
 			groupList.append(group);
 			dimensionVA.setGroupList(groupList);
@@ -4235,9 +4233,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 	public void handleInterchangeContentGroups() {
 		Tree<ClusterNode> tree = null;
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
 		tree = tablePerspective.getRecordPerspective().getTree();
-		RecordGroupList groupList = recordVA.getGroupList();
+		GroupList groupList = recordVA.getGroupList();
 
 		ArrayList<Integer> selGroups = new ArrayList<Integer>();
 
@@ -4599,7 +4597,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 	}
 
 	@Override
-	public void handleNewContentGroupInfo(String perspectiveID, RecordGroupList groupList, boolean bDeleteTree) {
+	public void handleNewContentGroupInfo(String perspectiveID, GroupList groupList, boolean bDeleteTree) {
 
 		Tree<ClusterNode> tree = null;
 
@@ -4634,13 +4632,13 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 	@Override
 	public void handleExportContentGroups() {
 
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		ArrayList<Integer> genesToExport = new ArrayList<Integer>();
 		ArrayList<Integer> experimentsToExport = new ArrayList<Integer>();
 
-		RecordGroupList groupList = recordVA.getGroupList();
+		GroupList groupList = recordVA.getGroupList();
 
 		int groupCnt = 0;
 
@@ -4651,7 +4649,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 		}
 
 		if (dimensionVA.getGroupList() != null) {
-			DimensionGroupList dimensionGroupList = dimensionVA.getGroupList();
+			GroupList dimensionGroupList = dimensionVA.getGroupList();
 
 			groupCnt = 0;
 			for (Group iter : dimensionGroupList) {
@@ -4671,13 +4669,13 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 
 	@Override
 	public void handleExportDimensionGroups() {
-		RecordVirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
-		DimensionVirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray recordVA = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray dimensionVA = tablePerspective.getDimensionPerspective().getVirtualArray();
 
 		ArrayList<Integer> genesToExport = new ArrayList<Integer>();
 		ArrayList<Integer> experimentsToExport = new ArrayList<Integer>();
 
-		DimensionGroupList groupList = dimensionVA.getGroupList();
+		GroupList groupList = dimensionVA.getGroupList();
 
 		int groupCnt = 0;
 
@@ -4688,7 +4686,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 		}
 
 		if (recordVA.getGroupList() != null) {
-			RecordGroupList contentGroupList = recordVA.getGroupList();
+			GroupList contentGroupList = recordVA.getGroupList();
 
 			groupCnt = 0;
 			for (Group iter : contentGroupList) {
@@ -4729,10 +4727,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 
 	@Override
 	public void handleMergeContentGroups() {
-		RecordVirtualArray va = tablePerspective.getRecordPerspective().getVirtualArray();
+		VirtualArray va = tablePerspective.getRecordPerspective().getVirtualArray();
 		Tree<ClusterNode> tree = tablePerspective.getRecordPerspective().getTree();
 
-		RecordGroupList groupList = va.getGroupList();
+		GroupList groupList = va.getGroupList();
 
 		ArrayList<Integer> selGroups = new ArrayList<Integer>();
 
@@ -4776,10 +4774,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements IContentGr
 
 	@Override
 	public void handleMergeDimensionGroups() {
-		DimensionVirtualArray va = tablePerspective.getDimensionPerspective().getVirtualArray();
+		VirtualArray va = tablePerspective.getDimensionPerspective().getVirtualArray();
 		Tree<ClusterNode> tree = tablePerspective.getDimensionPerspective().getTree();
 
-		DimensionGroupList groupList = va.getGroupList();
+		GroupList groupList = va.getGroupList();
 
 		ArrayList<Integer> selGroups = new ArrayList<Integer>();
 

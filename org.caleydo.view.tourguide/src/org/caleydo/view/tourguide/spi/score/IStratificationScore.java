@@ -19,12 +19,13 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.spi.score;
 
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
+
 
 /**
  * @author Samuel Gratzl
  *
  */
 public interface IStratificationScore extends IScore {
-	ARecordPerspective getStratification();
+	Perspective getStratification();
 }

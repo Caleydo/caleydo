@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IIDTypeMapper;
 
@@ -49,7 +48,7 @@ import org.caleydo.core.id.IIDTypeMapper;
  *
  * @author Alexander Lex
  */
-public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListType>, GroupListType extends GroupList<GroupListType, VAType, ?>> {
+public class GroupSimilarity {
 
 	/** Get the id of the group for which the similarities are contained */
 
@@ -105,7 +104,7 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 	 *            Returns null if createSimilarity flag is false.
 	 * @return
 	 */
-	public VAType getSimilarityVAs(int foreignGroupID) {
+	public VirtualArray getSimilarityVAs(int foreignGroupID) {
 
 		if (!createSimilarityVAs)
 			return null;
@@ -123,24 +122,24 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 
 	private int[] scores;
 	private Group group;
-	private VAType va1;
-	private VAType va2;
+	private VirtualArray va1;
+	private VirtualArray va2;
 	private float[] similarities;
-	private ArrayList<VAType> similarityVAs;
+	private ArrayList<VirtualArray> similarityVAs;
 	private boolean createSimilarityVAs = true;
 
-	GroupSimilarity(Group group, VAType va1, VAType va2) {
+	GroupSimilarity(Group group, VirtualArray va1, VirtualArray va2) {
 		this.va1 = va1;
 		this.va2 = va2;
 		this.group = group;
 		scores = new int[va2.getGroupList().size()];
 
 		if (createSimilarityVAs) {
-			similarityVAs = new ArrayList<VAType>(va2.getGroupList().size());
+			similarityVAs = new ArrayList<VirtualArray>(va2.getGroupList().size());
 
 			for (int vaCount = 0; vaCount < va2.getGroupList().size(); vaCount++) {
 				// it does not matter which va we use as we only need the object
-				similarityVAs.add(va2.getNewInstance());
+				similarityVAs.add(new VirtualArray(va2.getIdType()));
 			}
 		}
 	}

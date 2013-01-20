@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.tourguide.spi.compute;
 
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.view.tourguide.spi.algorithm.IStratificationAlgorithm;
 import org.caleydo.view.tourguide.spi.score.IRegisteredScore;
 import org.caleydo.view.tourguide.spi.score.IScore;
@@ -31,9 +31,9 @@ import org.caleydo.view.tourguide.spi.score.IScore;
  *
  */
 public interface IComputedStratificationScore extends IRegisteredScore {
-	public boolean contains(ARecordPerspective a);
+	public boolean contains(Perspective a);
 
-	public void put(ARecordPerspective a, float value);
+	public void put(Perspective a, float value);
 
 	public IStratificationAlgorithm getAlgorithm();
 

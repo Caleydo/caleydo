@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,17 +8,17 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 /**
- * 
+ *
  */
 package org.caleydo.core.data.virtualarray;
 
@@ -32,7 +32,7 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 
 /**
  * Util stuff for Virtual Arrays
- * 
+ *
  * @author Alexander Lex
  */
 public class VAUtils {
@@ -40,34 +40,33 @@ public class VAUtils {
 	/**
 	 * Calculates the intersection of the virtual arrays specified and returns a new list with the same order
 	 * of virtual array types, where each va has only the elements all others share
-	 * 
+	 *
 	 * @param sourceVAs
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static <VAType extends VirtualArray<?, VADelta, ?>, VADelta extends VirtualArrayDelta<?>> List<VAType> createIntersectingVAs(
-		List<VAType> sourceVAs) {
+	public static List<VirtualArray> createIntersectingVAs(List<VirtualArray> sourceVAs) {
 		if (sourceVAs == null)
 			return null;
 		if (sourceVAs.size() == 0)
-			return new ArrayList<VAType>();
+			return new ArrayList<VirtualArray>();
 
-		List<VAType> targetVAs = new ArrayList<VAType>();
+		List<VirtualArray> targetVAs = new ArrayList<VirtualArray>();
 
-		for (VAType sourceVA : sourceVAs) {
-			targetVAs.add((VAType) sourceVA.clone());
+		for (VirtualArray sourceVA : sourceVAs) {
+			targetVAs.add((VirtualArray) sourceVA.clone());
 		}
 
 		for (int vaCount = 0; vaCount < sourceVAs.size(); vaCount++) {
-			VAType firstSourceVA = sourceVAs.get(vaCount);
+			VirtualArray firstSourceVA = sourceVAs.get(vaCount);
 
 			IDMappingManager mappingManager =
 				IDMappingManagerRegistry.get().getIDMappingManager(firstSourceVA.getIdType().getIDCategory());
 
-			VADelta delta = firstSourceVA.getConcreteVADeltaInstance();
+			VirtualArrayDelta delta = new VirtualArrayDelta();
 
 			for (Integer id : firstSourceVA) {
-				for (VAType testVA : sourceVAs) {
+				for (VirtualArray testVA : sourceVAs) {
 					if (testVA == firstSourceVA)
 						continue;
 					if (!testVA.contains((Integer) mappingManager.getID(firstSourceVA.getIdType(),

@@ -312,7 +312,7 @@ public class GLTreeMap extends ATableBasedView {
 		eventPublisher.triggerEvent(event);
 
 		SelectionDelta newDelta = new SelectionDelta(treeSelectionManager.getIDType());
-		newDelta.tableIDType(dataDomain.getRecordIDType());
+		newDelta.setIDType(dataDomain.getRecordIDType());
 		for (SelectionDeltaItem item : delta) {
 			ClusterNode node = tree.getNodeByNumber(item.getID());
 			if (node.getLeafID() >= 0) {

@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- * 
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- * 
+ *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -29,12 +29,11 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.perspective.variable.PerspectiveInitializationData;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
@@ -43,10 +42,10 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
 /**
  * Specialization of {@link TablePerspective} for pathways. Adds a
  * {@link PathwayGraph} to the data container.
- * 
+ *
  * @author Christian Partl
  * @author Alexander Lex
- * 
+ *
  */
 @XmlType
 @XmlRootElement
@@ -67,7 +66,7 @@ public class PathwayTablePerspective extends TablePerspective {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param dataDomain
 	 *            the data domain used for the mapping of the expression values
 	 * @param pathwayDataDomain
@@ -77,8 +76,8 @@ public class PathwayTablePerspective extends TablePerspective {
 	 * @param pathway
 	 */
 	public PathwayTablePerspective(ATableBasedDataDomain dataDomain,
-			PathwayDataDomain pathwayDataDomain, RecordPerspective recordPerspective,
-			DimensionPerspective dimensionPerspective, PathwayGraph pathway) {
+			PathwayDataDomain pathwayDataDomain, Perspective recordPerspective,
+ Perspective dimensionPerspective, PathwayGraph pathway) {
 		super(dataDomain, recordPerspective, dimensionPerspective);
 		this.pathwayDataDomain = pathwayDataDomain;
 		this.pathway = pathway;
@@ -114,18 +113,18 @@ public class PathwayTablePerspective extends TablePerspective {
 
 		List<TablePerspective> recordSubTablePerspectives = new ArrayList<TablePerspective>();
 
-		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
+		VirtualArray recordVA = recordPerspective.getVirtualArray();
 
 		if (recordVA.getGroupList() == null)
 			return null;
 
-		RecordGroupList groupList = recordVA.getGroupList();
+		GroupList groupList = recordVA.getGroupList();
 		groupList.updateGroupInfo();
 
 		for (Group group : groupList) {
 
 			List<Integer> indices = recordVA.getIDsOfGroup(group.getGroupIndex());
-			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+			Perspective recordPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(indices);
 			recordPerspective.init(data);

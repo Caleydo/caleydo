@@ -35,7 +35,7 @@ import org.caleydo.core.util.collection.UniqueList;
  * @author Alexander Lex
  */
 @XmlType
-public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<ConcreteType>>
+public class VirtualArrayDelta
 	implements IDelta<VADeltaItem> {
 
 	@XmlElement
@@ -57,28 +57,26 @@ public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<C
 		deltaItems = new UniqueList<VADeltaItem>();
 	}
 
-	public abstract ConcreteType getInstance();
-
 	/**
 	 * Returns the type of the virtual array as specified in {@link VAType}
 	 *
 	 * @return
 	 */
-	public String getVAType() {
+	public String getPerspectiveID() {
 		return perspectiveID;
 	}
 
 	/**
-	 * Set the type of the VA
-	 *
-	 * @param vaType
+	 * Set the perspective ID associated
+	 * 
+	 * @param perspectiveID
 	 */
-	public void setVAType(String vaType) {
-		this.perspectiveID = vaType;
+	public void setPerspectiveID(String perspectiveID) {
+		this.perspectiveID = perspectiveID;
 	}
 
 	@Override
-	public void tableIDType(IDType idType) {
+	public void setIDType(IDType idType) {
 		this.idType = idType;
 	}
 
@@ -107,7 +105,7 @@ public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<C
 		return deltaItems.size();
 	}
 
-	public void append(ConcreteType delta) {
+	public void append(VirtualArrayDelta delta) {
 		deltaItems.addAll(delta.getAllItems());
 	}
 

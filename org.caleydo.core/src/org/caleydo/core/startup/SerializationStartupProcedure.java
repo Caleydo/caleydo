@@ -24,8 +24,7 @@ import org.caleydo.core.data.collection.table.TableUtils;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
-import org.caleydo.core.data.perspective.variable.DimensionPerspective;
-import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.DataDomainSerializationData;
@@ -115,11 +114,11 @@ public class SerializationStartupProcedure
 
 				TableUtils.loadData(tDataDomain, dataSetDescription, false, false);
 				Table table = tDataDomain.getTable();
-				for (RecordPerspective perspective : dataSerializationData
+				for (Perspective perspective : dataSerializationData
 						.getRecordPerspectiveMap().values()) {
 					table.registerRecordPerspective(perspective);
 				}
-				for (DimensionPerspective perspective : dataSerializationData
+				for (Perspective perspective : dataSerializationData
 						.getDimensionPerspectiveMap().values()) {
 					table.registerDimensionPerspective(perspective);
 				}

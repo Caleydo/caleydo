@@ -21,7 +21,7 @@ package org.caleydo.view.tourguide.api.query.filter;
 
 import java.util.HashSet;
 
-import org.caleydo.core.data.perspective.variable.ARecordPerspective;
+import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.tourguide.spi.query.filter.IDataDomainFilter;
@@ -34,7 +34,7 @@ public class CompositeDataDomainFilter extends HashSet<IDataDomainFilter> implem
 	private static final long serialVersionUID = -8763101069844506294L;
 
 	@Override
-	public boolean apply(Pair<? extends ARecordPerspective, Group> pair) {
+	public boolean apply(Pair<Perspective, Group> pair) {
 		for (IDataDomainFilter child : this)
 			if (!child.apply(pair))
 				return false;
