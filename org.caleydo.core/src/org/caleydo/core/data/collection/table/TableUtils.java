@@ -16,22 +16,27 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection.table;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataTransformation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.data.perspective.variable.DimensionPerspective;
+import org.caleydo.core.data.perspective.variable.RecordPerspective;
+import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.io.parser.ascii.TabularDataParser;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Utility class that features creating, loading and saving sets and dimensions.
@@ -40,92 +45,6 @@ import org.caleydo.core.manager.GeneralManager;
  * @author Alexander Lex
  */
 public class TableUtils {
-
-	/** prefix for temporary set-file */
-	public static final String DATA_FILE_PREFIX = "setfile";
-
-	/** prefix for temporary gene-tree--file */
-	public static final String RECORD_TREE_FILE_PREFIX = "recordtree";
-
-	/** prefix for temporary experiment-tree-file */
-	public static final String DIMENSION_TREE_FILE_PREFIX = "dimensiontree";
-
-	/**
-	 * Loads the set-file as specified in the {@link IDataDomain}'s {@link LoadDataParameters} and stores the raw-data
-	 * in the useCase
-	 *
-	 * @param useCase
-	 */
-	public static byte[] loadSetFile(DataSetDescription dataSetDescription) {
-		String dataPath = dataSetDescription.getDataSourcePath();
-		if (dataPath == null) {
-			throw new RuntimeException("No set-file name specified in use case");
-		}
-
-		File file = new File(dataPath);
-		byte[] buffer;
-		try {
-			FileInputStream is = new FileInputStream(file);
-			if (file.length() > Integer.MAX_VALUE) {
-				throw new RuntimeException("set-file is larger than maximum internal file-dimension-size");
-			}
-			buffer = new byte[(int) file.length()];
-			is.read(buffer, 0, buffer.length);
-		} catch (IOException ex) {
-			throw new RuntimeException("Could not read from specified set-file '" + dataPath + "'", ex);
-		}
-		return buffer;
-	}
-
-	/**
-	 * Saves the set-data contained in the useCase in a new created temp-file. The {@link LoadDataParameters} of the
-	 * useCase are set according to the created set-file
-	 *
-	 * @param parameters
-	 *            set-load parameters to store the filename;
-	 * @param data
-	 *            set-data to save
-	 */
-	public static void saveTableFile(DataSetDescription parameters, byte[] data) {
-		File homeDir = new File(GeneralManager.CALEYDO_HOME_PATH);
-		File setFile;
-		try {
-			setFile = File.createTempFile(DATA_FILE_PREFIX, "csv", homeDir);
-			parameters.setDataSourcePath(setFile.getCanonicalPath());
-		} catch (IOException ex) {
-			throw new RuntimeException("Could not create temporary file to store the set file", ex);
-		}
-		saveFile(data, setFile);
-	}
-
-	/**
-	 * Saves the given data in the given file.
-	 *
-	 * @param data
-	 *            data to save.
-	 * @param target
-	 *            file to store the data.
-	 */
-	public static void saveFile(byte[] data, File setFile) {
-		FileOutputStream os = null;
-		try {
-			os = new FileOutputStream(setFile);
-			os.write(data);
-		} catch (FileNotFoundException ex) {
-			throw new RuntimeException("Could not create temporary file to store the set file", ex);
-		} catch (IOException ex) {
-			throw new RuntimeException("Could not write to temportary set file", ex);
-		} finally {
-			if (os != null) {
-				try {
-					os.close();
-				} catch (IOException ex) {
-					// nothing to do here, assuming output stream is already
-					// closed
-				}
-			}
-		}
-	}
 
 	/**
 	 * Creates the {@link Table} from a previously prepared dimension definition.
@@ -187,141 +106,184 @@ public class TableUtils {
 
 		if (createDefaultRecordPerspective)
 			table.createDefaultRecordPerspective();
-		// TODO re-enable this
-		// loadTrees(loadDataParameters, set);
-
 	}
 
 	/**
-	 * Switch the representation of the data. When this is called the data in normalized is replaced with data
-	 * calculated from the mode specified.
-	 *
-	 * @param externalDataRep
-	 *            Determines how the data is visualized. For options see {@link EDataTransformation}
-	 * @param bIsSetHomogeneous
-	 *            Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global maximum
-	 *            and minimum, meaning that all dimensions in the set contain equal data. If false, each dimension is
-	 *            treated separately, has it's own min and max etc. Sets that contain nominal data MUST be
-	 *            inhomogeneous.
+	 * Exports the dataset identified through the perspectives to the file specified.
+	 * 
+	 * @param dataDomain
+	 * @param fileName
+	 * @param recordPerspective
+	 * @param dimensionPerspective
+	 * @param targetRecordIDType
+	 *            the id type to be used in the file. If this is null the {@link IDCategory#getHumanReadableIDType()}
+	 *            will be used.
+	 * @param targetDimensionIDType
+	 *            same as targetRecordIDType for dimensions
+	 * @param includeClusterInfo
+	 *            true if you want to add information about the clustering to the file, else false
+	 * 
+	 * @return true if export was successful, else false.
 	 */
-	// public static void setExternalDataRepresentation(Table table, EDataTransformation externalDataRep,
-	// boolean isSetHomogeneous) {
-	// table.setDataTransformation(externalDataRep, isSetHomogeneous);
-	// }
+	public static boolean export(ATableBasedDataDomain dataDomain, String fileName,
+			RecordPerspective recordPerspective, DimensionPerspective dimensionPerspective, IDType targetRecordIDType,
+			IDType targetDimensionIDType, boolean includeClusterInfo) {
 
-	/**
-	 * Creates a contentGroupList from the group information read from a stored file
-	 *
-	 * @param set
-	 * @param vaType
-	 *            specify for which va type this is valid
-	 * @param groupInfo
-	 *            the array list extracted from the file
-	 */
-	public static void setContentGroupList(Table table, String vaType, int[] groupInfo) {
+		if (targetRecordIDType == null)
+			targetRecordIDType = dataDomain.getRecordIDCategory().getHumanReadableIDType();
 
-		int cluster = 0, cnt = 0;
+		if (targetDimensionIDType == null)
+			targetDimensionIDType = dataDomain.getDimensionIDCategory().getHumanReadableIDType();
 
-		RecordGroupList contentGroupList = table.getRecordPerspective(vaType).getVirtualArray().getGroupList();
-		contentGroupList.clear();
+		IDType rowTargetIDType;
+		IDType rowSourceIDType;
 
-		for (int i = 0; i < groupInfo.length; i++) {
-			Group group = null;
-			if (cluster != groupInfo[i]) {
-				group = new Group(cnt);
-				contentGroupList.append(group);
-				cluster++;
-				cnt = 0;
-			}
-			cnt++;
-			if (i == groupInfo.length - 1) {
-				group = new Group(cnt);
-				contentGroupList.append(group);
-			}
+		IDType colTargetIDType;
+		IDType colSourceIDType;
+
+		VirtualArray<?, ?, ?> rowVA;
+		VirtualArray<?, ?, ?> colVA;
+
+		if (dataDomain.isColumnDimension()) {
+			rowVA = recordPerspective.getVirtualArray();
+			colVA = dimensionPerspective.getVirtualArray();
+			rowTargetIDType = targetRecordIDType;
+			colTargetIDType = targetDimensionIDType;
+
+			rowSourceIDType = dataDomain.getRecordIDType();
+			colSourceIDType = dataDomain.getDimensionIDType();
+
+		} else {
+			rowVA = dimensionPerspective.getVirtualArray();
+			colVA = recordPerspective.getVirtualArray();
+			rowTargetIDType = targetDimensionIDType;
+			colTargetIDType = targetRecordIDType;
+
+			rowSourceIDType = dataDomain.getDimensionIDType();
+			colSourceIDType = dataDomain.getRecordIDType();
 		}
-	}
 
-	/**
-	 * Creates a dimensionGroupList from the group information read from a stored file
-	 *
-	 * @param set
-	 * @param vaType
-	 *            specify for which va type this is valid
-	 * @param groupInfo
-	 *            the array list extracted from the file
-	 */
-	public static void setDimensionGroupList(Table table, String vaType, int[] groupInfo) {
-		int cluster = 0, cnt = 0;
+		if (rowVA == null || colVA == null)
+			throw new IllegalArgumentException("VAs in perspectives were null");
 
-		DimensionGroupList dimensionGroupList = table.getDimensionPerspective(vaType).getVirtualArray().getGroupList();
-		dimensionGroupList.clear();
+		IDMappingManager rowIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(rowSourceIDType);
+		IDMappingManager colIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(colSourceIDType);
 
-		for (int i = 0; i < groupInfo.length; i++) {
-			Group group = null;
-			if (cluster != groupInfo[i]) {
-				group = new Group(cnt, 0);
-				dimensionGroupList.append(group);
-				cluster++;
-				cnt = 0;
+		try {
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
+
+			// Writing dimension labels
+
+			// first cell
+			out.print("Identifier \t");
+
+			for (Integer colID : colVA) {
+				Set<Object> colTargetIDs = colIDMappingManager.getIDAsSet(colSourceIDType, colTargetIDType, colID);
+				String id = "";
+				for (Object colTargetID : colTargetIDs) {
+					id = colTargetID.toString();
+					// here we only use the first id
+					break;
+				}
+				out.print(id + "\t");
 			}
-			cnt++;
-			if (i == groupInfo.length - 1) {
-				group = new Group(cnt, 0);
-				dimensionGroupList.append(group);
+
+			if (includeClusterInfo && rowVA.getGroupList() != null)
+				out.print("Cluster_Number\tCluster_Repr\t");
+
+			out.println();
+
+			int cnt = -1;
+			int cluster = 0;
+			int example = 0;
+			int offset = 0;
+			String id;
+			for (Integer rowID : rowVA) {
+
+				Set<Object> rowTargetIDs = rowIDMappingManager.getIDAsSet(rowSourceIDType, rowTargetIDType, rowID);
+				id = "";
+				for (Object rowTargetID : rowTargetIDs) {
+					id = rowTargetID.toString();
+					// here we only use the first id
+					break;
+				}
+				out.print(id + "\t");
+
+				for (Integer colID : colVA) {
+					if (dataDomain.isColumnDimension()) {
+						out.print(dataDomain.getTable().getRawAsString(rowID, colID));
+					} else {
+						out.print(dataDomain.getTable().getRawAsString(colID, rowID));
+					}
+
+					out.print("\t");
+				}
+
+				if (includeClusterInfo) {
+					// export cluster info for rows
+					if (rowVA.getGroupList() != null) {
+						if (cnt == rowVA.getGroupList().get(cluster).getSize() - 1) {
+							offset = offset + rowVA.getGroupList().get(cluster).getSize();
+							cluster++;
+							cnt = 0;
+						} else {
+							cnt++;
+						}
+
+						example = rowVA.getGroupList().get(cluster).getRepresentativeElementIndex();
+
+						out.print(cluster + "\t" + example + "\t");
+					}
+				}
+				out.println();
 			}
+
+			if (!includeClusterInfo) {
+				out.close();
+				return true;
+			}
+
+			// export cluster info for cols
+			if (colVA.getGroupList() != null) {
+
+				String clusterNr = "Cluster\t";
+				String clusterRep = "Representative Element\t";
+
+				cluster = 0;
+				cnt = -1;
+
+				for (@SuppressWarnings("unused")
+				Integer colIndex : colVA) {
+					if (cnt == colVA.getGroupList().get(cluster).getSize() - 1) {
+						offset = offset + colVA.getGroupList().get(cluster).getSize();
+						cluster++;
+						cnt = 0;
+					} else {
+						cnt++;
+					}
+
+					example = colVA.getGroupList().get(cluster).getRepresentativeElementIndex();
+
+					clusterNr += cluster + "\t";
+					clusterRep += example + "\t";
+				}
+
+				clusterNr += "\n";
+				clusterRep += "\n";
+
+				out.print(clusterNr);
+				out.print(clusterRep);
+
+			}
+
+			out.close();
+
+		} catch (IOException e) {
+			Logger.log(new Status(IStatus.ERROR, "TableUtils", "Failed to export data.", e));
+			return false;
 		}
+		return true;
+
 	}
-
-	/**
-	 * Set representative elements for contentGroupLists read from file
-	 *
-	 * @param set
-	 * @param recordPerspectiveID
-	 * @param groupReps
-	 */
-	public static void setRecordGroupRepresentatives(Table table, String recordPerspectiveID, int[] groupReps) {
-
-		int group = 0;
-
-		RecordGroupList contentGroupList = table.getRecordPerspective(recordPerspectiveID).getVirtualArray()
-				.getGroupList();
-
-		contentGroupList.get(group).setRepresentativeElementIndex(0);
-		group++;
-
-		for (int i = 1; i < groupReps.length; i++) {
-			if (groupReps[i] != groupReps[i - 1]) {
-				contentGroupList.get(group).setRepresentativeElementIndex(i);
-				group++;
-			}
-		}
-	}
-
-	/**
-	 * Set representative elements for dimensionGroupLists read from file
-	 *
-	 * @param set
-	 * @param dimensionPerspectiveID
-	 * @param groupReps
-	 */
-	public static void setDimensionGroupRepresentatives(Table table, String dimensionPerspectiveID, int[] groupReps) {
-
-		int group = 0;
-
-		DimensionGroupList dimensionGroupList = table.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray()
-				.getGroupList();
-
-		dimensionGroupList.get(group).setRepresentativeElementIndex(0);
-		group++;
-
-		for (int i = 1; i < groupReps.length; i++) {
-			if (groupReps[i] != groupReps[i - 1]) {
-				dimensionGroupList.get(group).setRepresentativeElementIndex(i);
-				group++;
-			}
-		}
-	}
-
-
 
 }

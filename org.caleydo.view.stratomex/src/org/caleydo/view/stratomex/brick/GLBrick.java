@@ -32,7 +32,7 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.data.collection.export.DataTableExporter;
+import org.caleydo.core.data.collection.table.TableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.variable.DimensionPerspective;
@@ -1359,10 +1359,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView, 
 					if (exportIdentifiersOnly) {
 						DimensionPerspective dimensionPerspective = new DimensionPerspective();
 						dimensionPerspective.setVirtualArray(new DimensionVirtualArray());
-						DataTableExporter.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
+						TableUtils.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
 								dimensionPerspective, null, null, false);
 					} else {
-						DataTableExporter.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
+						TableUtils.export(dataDomain, fileName, tablePerspective.getRecordPerspective(),
 								tablePerspective.getDimensionPerspective(), null, null, false);
 					}
 				}

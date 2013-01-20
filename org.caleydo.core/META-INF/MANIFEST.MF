@@ -11,7 +11,6 @@ Export-Package:
    org.caleydo.core.data.virtualarray,
    org.caleydo.core.util.base",
  org.caleydo.core.data.collection.column.container;uses:="org.caleydo.core.data.virtualarray",
- org.caleydo.core.data.collection.export;uses:="org.caleydo.core.data.datadomain,org.caleydo.core.id,org.caleydo.core.data.perspective.variable",
  org.caleydo.core.data.collection.table;
   uses:="org.caleydo.core.data.collection,
    org.caleydo.core.data.datadomain,
@@ -20,7 +19,6 @@ Export-Package:
    org.caleydo.core.data.virtualarray,
    org.caleydo.core.io,
    org.caleydo.core.util.base",
- org.caleydo.core.data.collection.table.statistics;uses:="org.caleydo.core.id,org.caleydo.core.data.virtualarray",
  org.caleydo.core.data.datadomain;
   uses:="org.caleydo.core.event,
    org.caleydo.core.util.mapping.color,

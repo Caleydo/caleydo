@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.histogram;
 
@@ -132,7 +129,7 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 
 	private void updateColorMappingPreview() {
 
-		if(colorMappingPreview == null)
+		if (colorMappingPreview == null)
 			return;
 		if (!dataDomain.getTable().isDataHomogeneous())
 			return;
@@ -140,25 +137,27 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 
 		Color[] alColor = new Color[markerPoints.size()];
 		int[] colorMarkerPoints = new int[markerPoints.size() - 1];
-		for (int iCount = 1; iCount <= markerPoints.size(); iCount++) {
+		for (int count = 1; count <= markerPoints.size(); count++) {
 
-			float normalizedValue = markerPoints.get(iCount - 1).getMappingValue();
+			float normalizedValue = markerPoints.get(count - 1).getMappingValue();
 
-			double correspondingValue = ((NumericalTable) dataDomain.getTable()).getRawForNormalized(normalizedValue);
+			if (dataDomain.getTable() instanceof NumericalTable) {
+				double correspondingValue = ((NumericalTable) dataDomain.getTable())
+						.getRawForNormalized(normalizedValue);
 
-			if (labels != null)
-				labels.get(iCount - 1).setText(Formatter.formatNumber(correspondingValue));
-
+				if (labels != null)
+					labels.get(count - 1).setText(Formatter.formatNumber(correspondingValue));
+			}
 			int colorMarkerPoint = (int) (100 * normalizedValue);
 
 			// Gradient label does not need the 0 point
 			if (colorMarkerPoint != 0) {
-				colorMarkerPoints[iCount - 2] = colorMarkerPoint;
+				colorMarkerPoints[count - 2] = colorMarkerPoint;
 			}
 
-			int[] color = markerPoints.get(iCount - 1).getIntColor();
+			int[] color = markerPoints.get(count - 1).getIntColor();
 
-			alColor[iCount - 1] = new Color(PlatformUI.getWorkbench().getDisplay(), color[0], color[1], color[2]);
+			alColor[count - 1] = new Color(PlatformUI.getWorkbench().getDisplay(), color[0], color[1], color[2]);
 		}
 
 		colorMappingPreview.setBackground(alColor, colorMarkerPoints);

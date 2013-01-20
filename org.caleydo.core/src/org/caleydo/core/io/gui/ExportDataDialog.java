@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.caleydo.core.data.collection.export.DataTableExporter;
+import org.caleydo.core.data.collection.table.TableUtils;
 import org.caleydo.core.data.configuration.DataChooserComposite;
 import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.jface.dialogs.Dialog;
@@ -211,7 +211,7 @@ public class ExportDataDialog
 	@Override
 	protected void okPressed() {
 
-		DataTableExporter.export(dataChooserComposite.getDataDomain(), sFileName,
+		TableUtils.export(dataChooserComposite.getDataDomain(), sFileName,
 			dataChooserComposite.getRecordPerspective(), dataChooserComposite.getDimensionPerspective(),
 			null, null, false);
 
