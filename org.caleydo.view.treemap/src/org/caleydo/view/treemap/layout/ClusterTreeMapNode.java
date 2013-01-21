@@ -23,7 +23,7 @@ import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.util.mapping.color.ColorMapper;
+import org.caleydo.core.util.color.mapping.ColorMapper;
 
 /**
  * This class represents a the treemap model filled with a tree of ClusterNode

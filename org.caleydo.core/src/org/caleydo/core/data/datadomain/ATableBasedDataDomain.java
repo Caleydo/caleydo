@@ -78,7 +78,7 @@ import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
-import org.caleydo.core.util.mapping.color.ColorMapper;
+import org.caleydo.core.util.color.mapping.ColorMapper;
 
 /**
  * <p>

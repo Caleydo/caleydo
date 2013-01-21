@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ *
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
@@ -8,12 +8,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ *
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -26,8 +26,9 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
-import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.mapping.ColorMapper;
+import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
@@ -36,7 +37,7 @@ import org.caleydo.core.view.opengl.util.GLPrimitives;
  * PDDrawingStrategyRainbow draws partial discs using rainbow colors. The actual
  * color of a partial disc is determined by using the rainbow color mapping on
  * the start angle of the partial disc's center.
- * 
+ *
  * @author Christian Partl
  */
 public class PDDrawingStrategyRainbow extends APDDrawingStrategyChildIndicator {
@@ -47,7 +48,7 @@ public class PDDrawingStrategyRainbow extends APDDrawingStrategyChildIndicator {
 	 * Constructor. Initialized the rainbow color mapping. The colors generated
 	 * by this color mapping are always combinations of maximum two base colors
 	 * where the sum of the intensities of the base colors is equal to 1.
-	 * 
+	 *
 	 * @param pickingManager
 	 *            The picking manager that should handle the picking of the
 	 *            drawn elements.
@@ -60,10 +61,10 @@ public class PDDrawingStrategyRainbow extends APDDrawingStrategyChildIndicator {
 
 		ArrayList<ColorMarkerPoint> alMarkerPoints = new ArrayList<ColorMarkerPoint>();
 
-		alMarkerPoints.add(new ColorMarkerPoint(0.0f, 1.0f, 0.0f, 0.0f));
-		alMarkerPoints.add(new ColorMarkerPoint((120.0f / 360.0f), 0.0f, 1.0f, 0.0f));
-		alMarkerPoints.add(new ColorMarkerPoint((240.0f / 360.0f), 0.0f, 0.0f, 1.0f));
-		alMarkerPoints.add(new ColorMarkerPoint(1.0f, 1.0f, 0.0f, 0.0f));
+		alMarkerPoints.add(new ColorMarkerPoint(0.0f, new Color( 1.0f, 0.0f, 0.0f)));
+		alMarkerPoints.add(new ColorMarkerPoint(120.0f / 360.0f, new Color(0.0f, 1.0f, 0.0f)));
+		alMarkerPoints.add(new ColorMarkerPoint(240.0f / 360.0f, new Color(0.0f, 0.0f, 1.0f)));
+		alMarkerPoints.add(new ColorMarkerPoint(1.0f, new Color(1.0f, 0.0f, 0.0f)));
 
 		colorMapper = new ColorMapper(alMarkerPoints);
 

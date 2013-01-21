@@ -22,7 +22,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.util.mapping.color.ColorMapper;
+import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapLayoutConfiguration;

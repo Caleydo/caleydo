@@ -20,10 +20,10 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.util.color.mapping.ChooseColorMappingDialog;
+import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
+import org.caleydo.core.util.color.mapping.UpdateColorMappingListener;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.util.mapping.color.ChooseColorMappingDialog;
-import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
-import org.caleydo.core.util.mapping.color.UpdateColorMappingListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -155,7 +155,7 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView implements
 				colorMarkerPoints[count - 2] = colorMarkerPoint;
 			}
 
-			int[] color = markerPoints.get(count - 1).getIntColor();
+			int[] color = markerPoints.get(count - 1).getColor().getIntRGBA();
 
 			alColor[count - 1] = new Color(PlatformUI.getWorkbench().getDisplay(), color[0], color[1], color[2]);
 		}

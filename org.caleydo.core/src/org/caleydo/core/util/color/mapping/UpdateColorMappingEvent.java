@@ -17,24 +17,30 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.treemap.layout;
+package org.caleydo.core.util.color.mapping;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.util.color.mapping.ColorMapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+import org.caleydo.core.event.AEvent;
 
 /**
- * Shared data for a tree of ClusterNodes.
+ * Event that signals a permanent change to the color mapping. Usually, changes (especially interactive
+ * changes when a user drags the color values) in color mapping are propagated by reference in the
+ * {@link ColorMapper} of the dataDomain. This event signals that a new color has been set permanently and
+ * that expensive updates of the color (e.g. recalculating textures) should be done.
  * 
- * @author Michael Lafer
- * 
+ * @author Alexander Lex
  */
-public class ClusterReferenzData {
-	float sizeReferenzValue = 1;
-	float colorReferenzSpace = 1;
-	float colorMin;
-	float colorMax;
-	ColorMapper colorMapper;
+@XmlRootElement
+@XmlType
+public class UpdateColorMappingEvent
+	extends AEvent {
 
-	boolean bUseExpressionValues = false;
-	ATableBasedDataDomain dataDomain;
+	@Override
+	public boolean checkIntegrity() {
+		// nothing to check
+		return true;
+	}
+
 }

@@ -17,24 +17,22 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.util.mapping.color;
+/**
+ * 
+ */
+package org.caleydo.core.util.color.mapping;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.IListenerOwner;
 
 /**
- * Listener for {@link UpdateColorMappingEvent}
+ * Interface
  * 
  * @author Alexander Lex
  */
-public class UpdateColorMappingListener
-	extends AEventListener<IColorMappingUpdateListener> {
+public interface IColorMappingUpdateListener
+	extends IListenerOwner {
 
-	@Override
-	public void handleEvent(AEvent event) {
-		if (event instanceof UpdateColorMappingEvent) {
-			handler.updateColorMapping();
-		}
-	}
+	/** see {@link UpdateColorMappingEvent} S */
+	public void updateColorMapping();
 
 }

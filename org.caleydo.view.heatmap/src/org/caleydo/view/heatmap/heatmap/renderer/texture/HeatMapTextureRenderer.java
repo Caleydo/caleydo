@@ -27,7 +27,7 @@ import javax.media.opengl.GLProfile;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.mapping.color.ColorMapper;
+import org.caleydo.core.util.color.mapping.ColorMapper;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;

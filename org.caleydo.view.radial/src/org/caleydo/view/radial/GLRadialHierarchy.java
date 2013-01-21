@@ -45,7 +45,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
-import org.caleydo.core.util.mapping.color.UpdateColorMappingListener;
+import org.caleydo.core.util.color.mapping.UpdateColorMappingListener;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;

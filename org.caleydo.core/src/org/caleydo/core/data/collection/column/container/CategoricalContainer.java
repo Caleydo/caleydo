@@ -64,7 +64,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	private HashMap<Short, Float> hashCategoryKeyToNormalizedValue = new HashMap<>();
 
 	/**
-	 * An ordered list of categories for this container. Can either be set using {@link #setPossibleValues(ArrayList)}
+	 * An ordered list of categories for this container. Can either be set using {@link #setPossibleCategories(ArrayList)}
 	 * to include categories which are not in the dataset itself, or is set automatically once {@link #normalize()} is
 	 * called.
 	 */
@@ -173,7 +173,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	 * @param possibleCategories
 	 *            the List
 	 */
-	public void setPossibleValues(ArrayList<CategoryType> possibleCategories) {
+	public void setPossibleCategories(ArrayList<CategoryType> possibleCategories) {
 		for (CategoryType category : possibleCategories) {
 			initCategory(category);
 		}

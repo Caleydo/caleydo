@@ -35,6 +35,9 @@ public final class Colors {
 	public static final IColor YELLOW = new Color(1, 1, 0, 1);
 	public static final IColor BLACK = new Color(0, 0, 0, 1);
 
+	public static final Color NEUTRAL_GREY = new Color(220, 220, 220);
+	public static final Color NOT_A_NUMBER_COLOR = new Color(0.3f, 0.3f, 0.3f);
+
 	public static IColor of(java.awt.Color color) {
 		return new Color(color.getRed() / 255.f, color.getGreen() / 255.f, color.getBlue() / 255.f,
 				color.getAlpha() / 255.f);

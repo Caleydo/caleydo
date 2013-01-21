@@ -38,4 +38,10 @@ public class CategoricalTable extends Table {
 		return true;
 	}
 
+	@Override
+	protected void normalize() {
+		// TODO Auto-generated method stub
+		super.normalize();
+	}
+
 }

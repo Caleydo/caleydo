@@ -35,11 +35,12 @@ import org.caleydo.core.data.perspective.table.TablePerspective;
 import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.event.view.RedrawViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
+import org.caleydo.core.util.color.mapping.IColorMappingUpdateListener;
+import org.caleydo.core.util.color.mapping.UpdateColorMappingEvent;
+import org.caleydo.core.util.color.mapping.UpdateColorMappingListener;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
-import org.caleydo.core.util.mapping.color.IColorMappingUpdateListener;
-import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
-import org.caleydo.core.util.mapping.color.UpdateColorMappingListener;
 import org.caleydo.core.view.ISingleTablePerspectiveBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -315,7 +316,8 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 						EPickingType.HISTOGRAM_LEFT_SPREAD_COLOR_LINE.name(), iCount);
 
 				// the left polygon between the central line and the spread
-				gl.glColor4f(markerPoint.getColor()[0], markerPoint.getColor()[1], markerPoint.getColor()[2], 0.3f);
+				Color color = markerPoint.getColor();
+				gl.glColor4f(color.r, color.g, color.b, 0.3f);
 
 				float fLeft = sideSpacing + (markerPoint.getMappingValue() - fLeftSpread) * fRenderWidth;
 				float fRight = sideSpacing + markerPoint.getMappingValue() * fRenderWidth;
@@ -367,7 +369,8 @@ public class GLHistogram extends AGLView implements ISingleTablePerspectiveBased
 
 				// the polygon between the central line and the right spread
 				// the first part which picks the central line
-				gl.glColor4f(markerPoint.getColor()[0], markerPoint.getColor()[1], markerPoint.getColor()[2], 0.3f);
+				Color color = markerPoint.getColor();
+				gl.glColor4f(color.r, color.g, color.b, 0.3f);
 				if (!bIsFirstOrLast)
 					gl.glPushName(iColorLinePickingID);
 				gl.glBegin(GL2.GL_POLYGON);
