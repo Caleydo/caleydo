@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Pathvisio
+Bundle-SymbolicName: org.caleydo.lib.pathvisio
+Bundle-Version: 31
+Bundle-ClassPath: org.bridgedb.jar,
+ org.pathvisio.core.jar,
+ com.springsource.org.jdom-1.1.0.jar,
+ org.bridgedb.bio.jar
+Export-Package: org.bridgedb,
+ org.pathvisio.core.model
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

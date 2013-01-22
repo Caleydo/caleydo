@@ -393,6 +393,23 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		return table.getNormalizedValue(dimensionID, recordID);
 	}
 
+	/**
+	 * Returns the raw value from the table based on the ID of the gene and the experiment. Resolves dimension/record
+	 * association for you in doing so.
+	 */
+	public float getRawGeneValue(Integer geneID, Integer experimentID) {
+		Integer recordID;
+		Integer dimensionID;
+		if (isGeneRecord()) {
+			recordID = geneID;
+			dimensionID = experimentID;
+		} else {
+			recordID = experimentID;
+			dimensionID = geneID;
+		}
+		return table.getRaw(dimensionID, recordID);
+	}
+
 	public boolean isGeneRecord() {
 		return (recordIDCategory == IDCategory.getIDCategory("GENE"));
 	}
