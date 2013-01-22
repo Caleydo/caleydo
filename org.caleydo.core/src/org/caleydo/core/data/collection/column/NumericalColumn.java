@@ -36,8 +36,7 @@ public class NumericalColumn<RawContainerType extends INumericalContainer<DataTy
 	/**
 	 * Constructor
 	 */
-	public NumericalColumn(int id) {
-		super(id);
+	public NumericalColumn() {
 	}
 
 

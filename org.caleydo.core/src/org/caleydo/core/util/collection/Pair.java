@@ -116,21 +116,13 @@ public class Pair<T, E> {
 		return new ComparablePair<T, E>(first, second);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#hashCode()
-	 */
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(first, second);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -139,7 +131,8 @@ public class Pair<T, E> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Pair other = (Pair) obj;
+		@SuppressWarnings("unchecked")
+		Pair<T, E> other = (Pair<T, E>) obj;
 		return Objects.equals(this.first, other.first) && Objects.equals(this.second, other.second);
 	}
 

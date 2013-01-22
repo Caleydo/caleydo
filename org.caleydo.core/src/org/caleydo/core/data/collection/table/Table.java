@@ -54,8 +54,8 @@ import org.eclipse.core.runtime.Status;
  * ({@link CategoricalTable}) exist.
  * </p>
  * <p>
- * The data should be accessed through {@link VirtualArray}s, which are stored in {@link Perspective}s. The
- * table creates default instances for both records and dimensions, but modification to these are common.
+ * The data should be accessed through {@link VirtualArray}s, which are stored in {@link Perspective}s. The table
+ * creates default instances for both records and dimensions, but modification to these are common.
  * </p>
  * <h2>Table Creation</h2>
  * <p>
@@ -258,9 +258,8 @@ public class Table {
 	}
 
 	/**
-	 * Returns a {@link Perspective} object for the specified ID. The {@link Perspective} provides access to
-	 * all mutable data on how to access the Table, e.g., {@link VirtualArray}, {@link ClusterTree}, {@link GroupList},
-	 * etc.
+	 * Returns a {@link Perspective} object for the specified ID. The {@link Perspective} provides access to all mutable
+	 * data on how to access the Table, e.g., {@link VirtualArray}, {@link ClusterTree}, {@link GroupList}, etc.
 	 *
 	 * @param recordPerspectiveID
 	 * @return the associated {@link Perspective} object, or null if no such object is registered.
@@ -429,14 +428,18 @@ public class Table {
 	}
 
 	/**
-	 * Add a column by reference. The column has to be fully initialized with data
+	 * Add a column to the table. An id is assigned to the column.
 	 *
 	 * @param column
 	 *            the column
+	 * @return the ID assigned to the column
 	 */
-	public void addColumn(AColumn<?, ?> column) {
+	public int addColumn(AColumn<?, ?> column) {
+		int id = columns.size();
+		column.setID(id);
 		columns.add(column);
 		defaultColumnIDs.add(column.getID());
+		return id;
 	}
 
 	// ----------------------------------------------------------------------------
@@ -529,6 +532,15 @@ public class Table {
 		for (AColumn<?, ?> dimension : columns) {
 			dimension.normalize();
 		}
+	}
+
+	public <DataClassSpecificDescriptionType> DataClassSpecificDescriptionType getDataClassSpecificDescription(
+			Integer dimensionID, Integer recordID) {
+		Integer columnID = recordID;
+		if (isColumnDimension)
+			columnID = dimensionID;
+
+		return columns.get(columnID).getDataClassSpecificDescription();
 
 	}
 }

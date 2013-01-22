@@ -78,15 +78,7 @@ public class ColorMapper {
 	 * Returns the default two-color color mapper for Caleydo. Default scheme is {@link EDefaultColorSchemes#GREY_RED}
 	 */
 	public static ColorMapper createDefaultTwoColorMapper() {
-
-		ColorMapper mapper = null;
-		try {
-			EDefaultColorSchemes.GREY_RED.getDefaultColorMapper();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return mapper;
+		return EDefaultColorSchemes.GREY_RED.getDefaultColorMapper();
 	}
 
 	/**

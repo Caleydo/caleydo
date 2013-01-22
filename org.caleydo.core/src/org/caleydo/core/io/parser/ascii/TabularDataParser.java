@@ -141,8 +141,8 @@ public class TabularDataParser extends ATextParser {
 		MappingType mappingType = columnIDMappingManager.createMap(targetColumnIDType, sourceColumnIDType, false, true);
 		// Map<Integer, String> columnIDMap =
 		// columnIDMappingManager.getMap(mappingType);
+		int columnID;
 
-		int columnCount = 0;
 		for (ColumnDescription parsingDetail : parsingPattern) {
 			switch (parsingDetail.getDataClass()) {
 			case REAL_NUMBER:
@@ -150,11 +150,11 @@ public class TabularDataParser extends ATextParser {
 				targetColumns.add(container);
 				NumericalColumn<FloatContainer, Float> column;
 
-				column = new NumericalColumn<>(columnCount);
+				column = new NumericalColumn<>();
 
 				column.setRawData(container);
 
-				table.addColumn(column);
+				columnID = table.addColumn(column);
 				break;
 
 			case NOMINAL:
@@ -167,11 +167,11 @@ public class TabularDataParser extends ATextParser {
 					categoricalContainer = new CategoricalContainer<String>(numberOfDataLines, EDataType.STRING);
 					targetColumns.add(categoricalContainer);
 
-					categoricalColumn = new CategoricalColumn<String>(columnCount);
+					categoricalColumn = new CategoricalColumn<String>();
 
 					categoricalColumn.setRawData(categoricalContainer);
 
-					table.addColumn(categoricalColumn);
+					columnID = table.addColumn(categoricalColumn);
 					break;
 				case INTEGER:
 					CategoricalColumn<Integer> categoricalIntColumn;
@@ -179,10 +179,10 @@ public class TabularDataParser extends ATextParser {
 					categoricalIntContainer = new CategoricalContainer<Integer>(numberOfDataLines, EDataType.INTEGER);
 					targetColumns.add(categoricalIntContainer);
 
-					categoricalIntColumn = new CategoricalColumn<Integer>(columnCount);
+					categoricalIntColumn = new CategoricalColumn<Integer>();
 
 					categoricalIntColumn.setRawData(categoricalIntContainer);
-					table.addColumn(categoricalIntColumn);
+					columnID = table.addColumn(categoricalIntColumn);
 					break;
 				case FLOAT:
 				default:
@@ -201,14 +201,11 @@ public class TabularDataParser extends ATextParser {
 			if (headers != null) {
 				String idString = headers[parsingDetail.getColumn()];
 				idString = convertID(idString, parsingRules);
-				columnIDMappingManager.addMapping(mappingType, columnCount, idString);
+				columnIDMappingManager.addMapping(mappingType, columnID, idString);
 			} else {
-				columnIDMappingManager.addMapping(mappingType, columnCount, "Column " + columnCount);
+				columnIDMappingManager.addMapping(mappingType, columnID, "Column " + columnID);
 			}
-			columnCount++;
-
 		}
-
 	}
 
 	@Override

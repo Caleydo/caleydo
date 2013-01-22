@@ -20,10 +20,13 @@ package org.caleydo.core.data.perspective.table;
  * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.caleydo.core.data.collection.column.container.CategoryDescriptions;
+import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
@@ -38,6 +41,7 @@ import org.caleydo.core.manager.GeneralManager;
  * Helper class that generates table perspectives for categorical datasets.
  *
  * @author Marc Streit
+ * @author Alexander Lex
  *
  */
 public class CategoricalTablePerspectiveCreator {
@@ -78,6 +82,14 @@ public class CategoricalTablePerspectiveCreator {
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
+	/**
+	 * Creates a new table perspective with one row, specified by the row ID, and all columns.
+	 *
+	 * @param dataDomain
+	 * @param rowID
+	 * @param sourceRowIDType
+	 * @param isTablePerspectivePrivate
+	 */
 	public void createTablePerspeciveByRowID(ATableBasedDataDomain dataDomain, int rowID, IDType sourceRowIDType,
 			boolean isTablePerspectivePrivate) {
 
@@ -118,41 +130,43 @@ public class CategoricalTablePerspectiveCreator {
 		data.setData(ids);
 		perspective.init(data);
 
-		Perspective binnedPerspective = null;
 
+		// for (String recordPerspectiveID : dataDomain.getTable().getRecordPerspectiveIDs()) {
+		Perspective recordPerspective = dataDomain.getTable().getDefaultRecordPerspective();
+		Perspective binnedPerspective = binCategorical(convertedID, recordPerspective, dataDomain, label,
+				isTablePerspectivePrivate);
+		// }
 		// FIXME TCGA Specific hack! Move to some place sane
-		int numberOfBins = 1;
-
-		if (dataDomain.getLabel().contains("Copy")) {
-			for (String recordPerspectiveID : dataDomain.getTable().getRecordPerspectiveIDs()) {
-				Perspective recordPerspective = dataDomain.getTable()
-						.getRecordPerspective(recordPerspectiveID);
-				ArrayList<String> groupLabels = new ArrayList<String>();
-				groupLabels.add("Homozygous deletion");
-				groupLabels.add("Heterozygous deletion");
-				groupLabels.add("Normal");
-				groupLabels.add("Low level amplification");
-				groupLabels.add("High level amplification");
-				numberOfBins = 5;
-				binnedPerspective = binRecords(numberOfBins, convertedID, recordPerspective, dataDomain, label,
-						groupLabels, isTablePerspectivePrivate);
-				break;
-			}
-		}
-		if (dataDomain.getLabel().contains("Mutation")) {
-			for (String recordPerspectiveID : dataDomain.getTable().getRecordPerspectiveIDs()) {
-				Perspective recordPerspective = dataDomain.getTable()
-						.getRecordPerspective(recordPerspectiveID);
-				ArrayList<String> groupLabels = new ArrayList<String>();
-				groupLabels.add("Not Mutated");
-				groupLabels.add("Mutated");
-				numberOfBins = 2;
-				binnedPerspective = binRecords(numberOfBins, convertedID, recordPerspective, dataDomain, label,
-						groupLabels, isTablePerspectivePrivate);
-				break;
-
-			}
-		}
+		// int numberOfBins = 1;
+		// Perspective binnedPerspective;
+		// if (dataDomain.getLabel().contains("Copy")) {
+		// for (String recordPerspectiveID : dataDomain.getTable().getRecordPerspectiveIDs()) {
+		// Perspective recordPerspective = dataDomain.getTable().getRecordPerspective(recordPerspectiveID);
+		// ArrayList<String> groupLabels = new ArrayList<String>();
+		// groupLabels.add("Homozygous deletion");
+		// groupLabels.add("Heterozygous deletion");
+		// groupLabels.add("Normal");
+		// groupLabels.add("Low level amplification");
+		// groupLabels.add("High level amplification");
+		// numberOfBins = 5;
+		// binnedPerspective = binRecords(numberOfBins, convertedID, recordPerspective, dataDomain, label,
+		// groupLabels, isTablePerspectivePrivate);
+		// break;
+		// }
+		// }
+		// if (dataDomain.getLabel().contains("Mutation")) {
+		// for (String recordPerspectiveID : dataDomain.getTable().getRecordPerspectiveIDs()) {
+		// Perspective recordPerspective = dataDomain.getTable().getRecordPerspective(recordPerspectiveID);
+		// ArrayList<String> groupLabels = new ArrayList<String>();
+		// groupLabels.add("Not Mutated");
+		// groupLabels.add("Mutated");
+		// numberOfBins = 2;
+		// binnedPerspective = binRecords(numberOfBins, convertedID, recordPerspective, dataDomain, label,
+		// groupLabels, isTablePerspectivePrivate);
+		// break;
+		//
+		// }
+		// }
 
 		if (binnedPerspective != null) {
 
@@ -169,10 +183,87 @@ public class CategoricalTablePerspectiveCreator {
 			if (!existsAlready)
 				tablePerspective.setPrivate(isTablePerspectivePrivate);
 
-			tablePerspective.getContainerStatistics().setNumberOfBucketsForHistogram(numberOfBins);
+			tablePerspective.getContainerStatistics().setNumberOfBucketsForHistogram(
+					binnedPerspective.getVirtualArray().getGroupList().size());
 		}
 	}
 
+	private static Perspective binCategorical(Integer dimensionID, Perspective recordPerspective,
+			ATableBasedDataDomain dataDomain, String label, boolean isTablePerspectivePrivate) {
+
+		CategoryDescriptions<?> categoryDescriptions = dataDomain.getTable().getDataClassSpecificDescription(
+				dimensionID, 0);
+		int nrBins = categoryDescriptions.size();
+
+		HashMap<CategoryProperty<?>, ArrayList<Integer>> bins = new HashMap<>(nrBins * 2);
+		for (CategoryProperty<?> property : categoryDescriptions) {
+			bins.put(property, new ArrayList<Integer>());
+		}
+
+		Table table = dataDomain.getTable();
+		for (Integer recordID : recordPerspective.getVirtualArray()) {
+			CategoryProperty<?> property = categoryDescriptions
+					.getCategoryProperty(table.getRaw(dimensionID, recordID));
+			if (property == null) {
+				System.out.println("recordID: " + recordID + " dimensionID " + dimensionID + " raw: "
+						+ table.getRaw(dimensionID, recordID));
+
+			} else {
+				System.out.println(" raw: " + table.getRaw(dimensionID, recordID));
+				ArrayList<Integer> bin = bins.get(property);
+				bin.add(recordID);
+			}
+			// float value = table.getNormalizedValue(dimensionID, recordID);
+			//
+			// // System.out.println(value);
+			//
+			// // this works because value is normalized
+			// int bin = (int) (value * nrBins);
+			// if (bin == nrBins)
+			// bin = nrBins - 1;
+			// bins.get(bin).add(recordID);
+		}
+
+		ArrayList<Integer> binnedIDList = new ArrayList<Integer>();
+		ArrayList<Integer> clusterSizes = new ArrayList<Integer>(nrBins);
+		// TODO: not needed
+		ArrayList<Integer> sampleElements = new ArrayList<Integer>(nrBins);
+
+		ArrayList<String> groupLabels = new ArrayList<String>(nrBins);
+
+		for (CategoryProperty<?> property : categoryDescriptions) {
+			ArrayList<Integer> bin = bins.get(property);
+			groupLabels.add(property.getCategoryName());
+			binnedIDList.addAll(bin);
+			clusterSizes.add(bin.size());
+			sampleElements.add(0);
+		}
+
+		PerspectiveInitializationData data = new PerspectiveInitializationData();
+		data.setData(binnedIDList, clusterSizes, sampleElements, groupLabels);
+
+		Perspective binnedPerspective = new Perspective(dataDomain, dataDomain.getRecordIDType());
+		binnedPerspective.init(data);
+		binnedPerspective.setLabel(label, false);
+		binnedPerspective.setPrivate(isTablePerspectivePrivate);
+		table.registerRecordPerspective(binnedPerspective, false);
+
+		return binnedPerspective;
+
+	}
+
+	/**
+	 * Creates a grouping by dividing the data equidistant based on their normalized score.
+	 *
+	 * @param nrBins
+	 * @param dimensionID
+	 * @param recordPerspective
+	 * @param dataDomain
+	 * @param label
+	 * @param groupLabels
+	 * @param isTablePerspectivePrivate
+	 * @return
+	 */
 	private static Perspective binRecords(int nrBins, Integer dimensionID, Perspective recordPerspective,
 			ATableBasedDataDomain dataDomain, String label, ArrayList<String> groupLabels,
 			boolean isTablePerspectivePrivate) {

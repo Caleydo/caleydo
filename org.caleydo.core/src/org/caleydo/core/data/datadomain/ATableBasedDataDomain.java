@@ -110,8 +110,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	 * combination of {@link Perspective} and {@link DimensionPerspective}.
 	 * </p>
 	 * <p>
-	 * The key in this hasMap is created as a concatenation of the {@link Perspective#getPerspectiveID()} s
-	 * using {@link #createKey(String, String)},
+	 * The key in this hasMap is created as a concatenation of the {@link Perspective#getPerspectiveID()} s using
+	 * {@link #createKey(String, String)},
 	 * </p>
 	 */
 	protected HashMap<String, TablePerspective> tablePerspectives = new HashMap<String, TablePerspective>();
@@ -263,8 +263,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	}
 
 	/**
-	 * Returns the {@link TablePerspective} for the {@link Perspective} and the {@link DimensionPerspective}
-	 * specified. </p>
+	 * Returns the {@link TablePerspective} for the {@link Perspective} and the {@link DimensionPerspective} specified.
+	 * </p>
 	 * <p>
 	 * If such a container exists already, the existing container is returned. If not, a new container is created and
 	 * the datadomain will be notified.
@@ -280,8 +280,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	}
 
 	/**
-	 * Returns the {@link TablePerspective} for the {@link Perspective} and the {@link DimensionPerspective}
-	 * specified. </p>
+	 * Returns the {@link TablePerspective} for the {@link Perspective} and the {@link DimensionPerspective} specified.
+	 * </p>
 	 * <p>
 	 * If such a container exists already, the existing container is returned. If not, a new container is created.
 	 * </p>
@@ -482,12 +482,13 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 	 * @return the colorMapper, see {@link #colorMapper}
 	 */
 	public ColorMapper getColorMapper() {
-		if (colorMapper == null)
+		if (colorMapper == null) {
 			if (table instanceof NumericalTable && ((NumericalTable) table).getDataCenter() != null) {
 				colorMapper = ColorMapper.createDefaultThreeColorMapper();
 			} else {
 				colorMapper = ColorMapper.createDefaultTwoColorMapper();
 			}
+		}
 		return colorMapper;
 	}
 
@@ -572,7 +573,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		eventPublisher.triggerEvent(new DataDomainUpdateEvent(this));
 		return result;
 	}
-
 
 	@Override
 	public void handleVADelta(VirtualArrayDelta vaDelta, String info) {
@@ -850,7 +850,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		replacePerspectiveListener.setDataDomainID(dataDomainID);
 		listeners.register(ReplacePerspectiveEvent.class, replacePerspectiveListener);
 
-
 		AggregateGroupListener aggregateGroupListener = new AggregateGroupListener();
 		aggregateGroupListener.setHandler(this);
 		listeners.register(AggregateGroupEvent.class, aggregateGroupListener);
@@ -869,8 +868,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 
 	/**
 	 * <p>
-	 * Converts a {@link Perspective} with an IDType that is not the {@link #recordIDType} to a new
-	 * Perspective with the recordIDType.
+	 * Converts a {@link Perspective} with an IDType that is not the {@link #recordIDType} to a new Perspective with the
+	 * recordIDType.
 	 * </p>
 	 * <p>
 	 * Grouping, and naming is preserved, sample elements and trees are not.

@@ -42,8 +42,7 @@ import org.caleydo.core.data.collection.table.Table;
 
 public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawType> {
 
-
-	/** The unique id of this column */
+	/** The id of this column, corresponds to the index of the column in the table */
 	private int id;
 
 	protected RawContainerType rawContainer;
@@ -54,10 +53,16 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	/**
 	 * Constructor Initializes objects
 	 */
-	public AColumn(int id) {
-
-		this.id = id;
+	public AColumn() {
 		dataRepToContainerMap = new HashMap<String, IContainer<?>>();
+	}
+
+	/**
+	 * @param id
+	 *            setter, see {@link id}
+	 */
+	public void setID(int id) {
+		this.id = id;
 	}
 
 	/**
@@ -84,8 +89,7 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 	 */
 	public void setRawData(RawContainerType rawContainer) {
 		if (this.rawContainer != null)
-			throw new IllegalStateException("Raw data was already set in column " + id
-					+ " , tried to set again.");
+			throw new IllegalStateException("Raw data was already set in column " + id + " , tried to set again.");
 		this.rawContainer = rawContainer;
 	}
 
@@ -135,4 +139,7 @@ public abstract class AColumn<RawContainerType extends IContainer<RawType>, RawT
 		normalizedContainer = rawContainer.normalize();
 	}
 
+	public <DataClassSpecificDescriptionType> DataClassSpecificDescriptionType getDataClassSpecificDescription() {
+		return null;
+	}
 }

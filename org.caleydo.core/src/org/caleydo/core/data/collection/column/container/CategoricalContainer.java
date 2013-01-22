@@ -17,8 +17,9 @@
 package org.caleydo.core.data.collection.column.container;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.util.logging.Logger;
@@ -64,11 +65,11 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	private HashMap<Short, Float> hashCategoryKeyToNormalizedValue = new HashMap<>();
 
 	/**
-	 * An ordered list of categories for this container. Can either be set using {@link #setPossibleCategories(ArrayList)}
-	 * to include categories which are not in the dataset itself, or is set automatically once {@link #normalize()} is
-	 * called.
+	 * An ordered list of categories for this container. Can either be set using
+	 * {@link #setPossibleCategories(ArrayList)} to include categories which are not in the dataset itself, or is set
+	 * automatically once {@link #normalize()} is called.
 	 */
-	private ArrayList<CategoryType> categories;
+	private CategoryDescriptions<CategoryType> categoryDescriptions;
 
 	public CategoricalContainer(int size, EDataType dataType) {
 		container = new short[size];
@@ -92,12 +93,15 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	}
 
 	/**
-	 * Adds a new category
+	 * Adds a new category - this should only happen if no {@link CategoryDescriptions} exist
 	 *
 	 * @param category
 	 * @return
 	 */
 	private short initCategory(CategoryType category) {
+		if (hashCategoryToIdentifier.containsKey(category))
+			return hashCategoryToIdentifier.get(category);
+
 		short identifier = nextAvailableKey++;
 		hashCategoryToIdentifier.put(category, identifier);
 		// initializing the key
@@ -136,31 +140,33 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	@Override
 	public FloatContainer normalize() {
 
-		if (categories == null) {
-			// if categories where not set externally we set them now.
-			categories = new ArrayList<>();
-			categories.addAll(hashCategoryToIdentifier.keySet());
-			Collections.sort(categories);
+		if (categoryDescriptions == null) {
+			categoryDescriptions = new CategoryDescriptions<>();
+			categoryDescriptions.autoInitialize(hashCategoryToIdentifier.keySet());
 		}
 
-		if (categories.size() == 0)
+		if (categoryDescriptions.size() == 0)
 			throw new IllegalStateException("Can't normalize an empty categorical container");
 
 		float normalizedDistance = 0;
 
-		if (categories.size() > 1) {
-			normalizedDistance = 1 / (categories.size() - 1);
+		if (categoryDescriptions.size() > 1) {
+			normalizedDistance = 1f / (categoryDescriptions.size() - 1);
 		}
 
-		for (int i = 0; i < categories.size(); i++) {
-			hashCategoryKeyToNormalizedValue.put(hashCategoryToIdentifier.get(categories.get(i)), i
-					* normalizedDistance);
+		for (int i = 0; i < categoryDescriptions.size(); i++) {
+			List<CategoryProperty<CategoryType>> c = categoryDescriptions.getCategoryProperties();
+
+			short key = hashCategoryToIdentifier.get(c.get(i).getCategory());
+			hashCategoryKeyToNormalizedValue.put(key, i * normalizedDistance);
 		}
 
 		float[] target = new float[container.length];
 
 		for (int count = 0; count < container.length; count++) {
-			target[count] = hashCategoryKeyToNormalizedValue.get(container[count]);
+			short categoryID = container[count];
+			float normalized = hashCategoryKeyToNormalizedValue.get(categoryID);
+			target[count] = normalized;
 		}
 		// System.out.println("Elapsed: " + (System.currentTimeMillis() - startTime));
 		return new FloatContainer(target);
@@ -173,14 +179,28 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	 * @param possibleCategories
 	 *            the List
 	 */
-	public void setPossibleCategories(ArrayList<CategoryType> possibleCategories) {
-		for (CategoryType category : possibleCategories) {
-			initCategory(category);
+	public void setCategoryDescritions(CategoryDescriptions<CategoryType> categoryDescriptions) {
+		this.categoryDescriptions = categoryDescriptions;
+		for (CategoryProperty<CategoryType> category : categoryDescriptions) {
+			initCategory(category.getCategory());
 		}
+	}
+
+	/**
+	 * @return the categoryDescriptions, see {@link #categoryDescriptions}
+	 */
+	public CategoryDescriptions<CategoryType> getCategoryDescriptions() {
+		return categoryDescriptions;
 	}
 
 	@Override
 	public EDataType getDataType() {
 		return dataType;
 	}
+
+	/** Returns a set of all registered categories */
+	public Set<CategoryType> getCategories() {
+		return hashCategoryToIdentifier.keySet();
+	}
+
 }

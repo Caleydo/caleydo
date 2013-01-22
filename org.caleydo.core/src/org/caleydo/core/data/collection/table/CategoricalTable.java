@@ -16,6 +16,12 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection.table;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.caleydo.core.data.collection.column.AColumn;
+import org.caleydo.core.data.collection.column.CategoricalColumn;
+import org.caleydo.core.data.collection.column.container.CategoryDescriptions;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 
 /**
@@ -24,7 +30,8 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
  *
  * @author Alexander Lex
  */
-public class CategoricalTable extends Table {
+public class CategoricalTable<CategoryType extends Comparable<CategoryType>> extends Table {
+	private CategoryDescriptions<CategoryType> categoryDescriptions;
 
 	/**
 	 * @param dataDomain
@@ -40,8 +47,38 @@ public class CategoricalTable extends Table {
 
 	@Override
 	protected void normalize() {
-		// TODO Auto-generated method stub
+		if (categoryDescriptions == null) {
+			Set<CategoryType> uniqueCategories = new HashSet<>();
+			for (AColumn<?, ?> column : columns) {
+				@SuppressWarnings("unchecked")
+				CategoricalColumn<CategoryType> catCol = (CategoricalColumn<CategoryType>) column;
+				uniqueCategories.addAll(catCol.getCategories());
+			}
+			categoryDescriptions = new CategoryDescriptions<>();
+			categoryDescriptions.autoInitialize(uniqueCategories);
+			for (AColumn<?, ?> column : columns) {
+				@SuppressWarnings("unchecked")
+				CategoricalColumn<CategoryType> catCol = (CategoricalColumn<CategoryType>) column;
+				catCol.setCategoryDescritions(categoryDescriptions);
+			}
+		}
 		super.normalize();
+	}
+
+	public void setCategoryDescritions(CategoryDescriptions<CategoryType> categoryDescriptions) {
+		this.categoryDescriptions = categoryDescriptions;
+		for (AColumn<?, ?> column : columns) {
+			@SuppressWarnings("unchecked")
+			CategoricalColumn<CategoryType> categoricalColum = (CategoricalColumn<CategoryType>) column;
+			categoricalColum.setCategoryDescritions(categoryDescriptions);
+		}
+	}
+
+	/**
+	 * @return the categoryDescriptions, see {@link #categoryDescriptions}
+	 */
+	public CategoryDescriptions<CategoryType> getCategoryDescriptions() {
+		return categoryDescriptions;
 	}
 
 }

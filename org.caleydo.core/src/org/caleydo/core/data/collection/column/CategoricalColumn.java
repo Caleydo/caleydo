@@ -16,7 +16,10 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection.column;
 
+import java.util.Set;
+
 import org.caleydo.core.data.collection.column.container.CategoricalContainer;
+import org.caleydo.core.data.collection.column.container.CategoryDescriptions;
 
 /**
  * @author Alexander Lex
@@ -30,10 +33,27 @@ public class CategoricalColumn<CategoryType extends Comparable<CategoryType>> ex
 	/**
 	 *
 	 */
-	public CategoricalColumn(int id) {
-		super(id);
+	public CategoricalColumn() {
+		super();
 	}
 
+	public void setCategoryDescritions(CategoryDescriptions<CategoryType> categoryDescriptions) {
+		rawContainer.setCategoryDescritions(categoryDescriptions);
+	}
 
+	// @Override
+	// public <DataClassSpecificDescriptionType> DataClassSpecificDescriptionType getDataClassSpecificDescription() {
+	// return rawContainer.getCategoryDescriptions();
+	// }
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public CategoryDescriptions<CategoryType> getDataClassSpecificDescription() {
+		return rawContainer.getCategoryDescriptions();
+	}
+
+	/** Returns a set of all registered categories */
+	public Set<CategoryType> getCategories() {
+		return rawContainer.getCategories();
+	}
 }

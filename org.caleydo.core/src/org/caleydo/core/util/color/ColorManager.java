@@ -45,22 +45,22 @@ public class ColorManager {
 		List<Pair<Color, Boolean>> qualitativeColorList = new ArrayList<>();
 
 		// Colors from colorbrewer qualitative Set3
-		qualitativeColorList.add(make(new Color(141f / 255f, 211f / 255f, 199f / 255f), false));
-		qualitativeColorList.add(make(new Color(179f / 255f, 222f / 255f, 105f / 255f), false));
-		qualitativeColorList.add(make(new Color(128f / 255f, 177f / 255f, 211f / 255f), false));
-		qualitativeColorList.add(make(new Color(190f / 255f, 186f / 255f, 218f / 255f), false));
+		qualitativeColorList.add(make(new Color(141, 211, 199), false));
+		qualitativeColorList.add(make(new Color(179, 222, 105), false));
+		qualitativeColorList.add(make(new Color(128, 177, 211), false));
+		qualitativeColorList.add(make(new Color(190, 186, 218), false));
 
-		qualitativeColorList.add(make(new Color(252f / 255f, 205f / 255f, 229f / 255f), false));
+		qualitativeColorList.add(make(new Color(252, 205, 229), false));
 		// dataDomainColorList.add(make(new Color(217f /
-		// 255f, 217f / 255f, 217f / 255f),
+		// 255f, 217, 217),
 		// false));
-		qualitativeColorList.add(make(new Color(188f / 255f, 128f / 255f, 189f / 255f), false));
-		qualitativeColorList.add(make(new Color(204f / 255f, 235f / 255f, 197f / 255f), false));
-		qualitativeColorList.add(make(new Color(1f, 237f / 255f, 111f / 255f), false));
-		qualitativeColorList.add(make(new Color(251f / 255f, 128f / 255f, 114f / 255f), false));
-		qualitativeColorList.add(make(new Color(253f / 255f, 180f / 255f, 98f / 255f), false));
+		qualitativeColorList.add(make(new Color(188, 128, 189), false));
+		qualitativeColorList.add(make(new Color(204, 235, 197), false));
+		qualitativeColorList.add(make(new Color(255, 237, 111), false));
+		qualitativeColorList.add(make(new Color(251, 128, 114), false));
+		qualitativeColorList.add(make(new Color(253, 180, 98), false));
 		// dataDomainColorList.add(make(new Color(1f, 1f,
-		// 179f / 255f), false));
+		// 179), false));
 		// 141, 211, 199;
 		// 255, 255, 179;
 		// 190, 186, 218;
