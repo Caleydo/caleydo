@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.EDataClass;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.event.AggregateGroupEvent;
@@ -206,22 +206,22 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		}
 
 		recordIDType = IDType.registerType("record_" + dataDomainID + "_" + hashCode(), recordIDCategory,
-				EDataClass.NATURAL_NUMBER);
+				EDataType.INTEGER);
 		recordIDType.setInternalType(true);
 		dimensionIDType = IDType.registerType("dimension_" + dataDomainID + "_" + hashCode(), dimensionIDCategory,
-				EDataClass.NATURAL_NUMBER);
+				EDataType.INTEGER);
 		dimensionIDType.setInternalType(true);
 
 		recordGroupIDCategory = IDCategory.registerCategory(recordIDCategory.getCategoryName() + "_GROUP");
 		recordGroupIDCategory.setInternalCategory(true);
 		recordGroupIDType = IDType.registerType("group_record_" + dataDomainID + "_" + hashCode(),
-				recordGroupIDCategory, EDataClass.NATURAL_NUMBER);
+				recordGroupIDCategory, EDataType.INTEGER);
 		recordGroupIDType.setInternalType(true);
 
 		dimensionGroupIDCategory = IDCategory.registerCategory(dimensionIDCategory.getCategoryName() + "_GROUP");
 		dimensionGroupIDCategory.setInternalCategory(true);
 		dimensionGroupIDType = IDType.registerType("group_dimension_" + dataDomainID + "_" + hashCode(),
-				dimensionGroupIDCategory, EDataClass.NATURAL_NUMBER);
+				dimensionGroupIDCategory, EDataType.INTEGER);
 		dimensionGroupIDType.setInternalType(true);
 
 		recordIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(recordIDCategory);

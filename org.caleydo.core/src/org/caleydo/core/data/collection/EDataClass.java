@@ -31,10 +31,8 @@ public enum EDataClass {
 	NATURAL_NUMBER(EDataType.INTEGER),
 	/** Single-precision numerical real value */
 	REAL_NUMBER(EDataType.FLOAT),
-	/** Ordered categorical */
-	ORDINAL(EDataType.INTEGER, EDataType.STRING),
-	/** Unordered categorical */
-	NOMINAL(EDataType.INTEGER, EDataType.STRING),
+	/** Categorical */
+	CATEGORICAL(EDataType.INTEGER, EDataType.STRING),
 	/**
 	 * A unique object, such as a string, an image. No trivial relationship between objects of this class exist. E.g.,
 	 * there is no order, no numerical size, etc.

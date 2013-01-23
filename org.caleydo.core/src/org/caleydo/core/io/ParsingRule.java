@@ -165,7 +165,7 @@ public class ParsingRule implements Comparable<ParsingRule> {
 
 	@Override
 	public String toString() {
-		String dataDescriptionString = ", " + columnDescripton.getDataClass() + " " + columnDescripton.getDataType()
+		String dataDescriptionString = columnDescripton.getDataClass() + " " + columnDescripton.getDataType()
 				+ "]";
 		if (toColum == -1 && parseUntilEnd == false)
 			return "[" + fromColumn + dataDescriptionString;

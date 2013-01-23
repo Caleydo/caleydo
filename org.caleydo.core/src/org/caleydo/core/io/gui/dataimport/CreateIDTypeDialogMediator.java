@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.caleydo.core.data.collection.EDataClass;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -41,7 +42,7 @@ public class CreateIDTypeDialogMediator {
 	/**
 	 * Maps the index of {@link #dataTypeCombo} to the {@link EDataClass}.
 	 */
-	private Map<Integer, EDataClass> dataTypeMap = new HashMap<Integer, EDataClass>();
+	private Map<Integer, EDataType> dataTypeMap = new HashMap<Integer, EDataType>();
 
 	/**
 	 * The dialog this class serves as mediator for.
@@ -82,8 +83,8 @@ public class CreateIDTypeDialogMediator {
 			dialog.categoryNameTextField.setEnabled(false);
 		}
 
-		dataTypeMap.put(0, EDataClass.NATURAL_NUMBER);
-		dataTypeMap.put(1, EDataClass.UNIQUE_OBJECT);
+		dataTypeMap.put(0, EDataType.INTEGER);
+		dataTypeMap.put(1, EDataType.STRING);
 		dialog.dataTypeCombo.add("Number");
 		dialog.dataTypeCombo.add("Text");
 
@@ -162,7 +163,7 @@ public class CreateIDTypeDialogMediator {
 			idCategory = IDCategory.registerCategory(categoryName);
 
 			// Create primary IDType
-			IDType primaryIDType = IDType.registerType(categoryName + "_INT", idCategory, EDataClass.NATURAL_NUMBER);
+			IDType primaryIDType = IDType.registerType(categoryName + "_INT", idCategory, EDataType.INTEGER);
 			primaryIDType.setInternalType(true);
 			idCategory.setPrimaryMappingType(primaryIDType);
 		}

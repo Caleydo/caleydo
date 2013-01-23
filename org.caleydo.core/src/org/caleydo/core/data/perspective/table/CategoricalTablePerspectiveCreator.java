@@ -25,7 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.column.container.CategoryDescriptions;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -191,7 +191,7 @@ public class CategoricalTablePerspectiveCreator {
 	private static Perspective binCategorical(Integer dimensionID, Perspective recordPerspective,
 			ATableBasedDataDomain dataDomain, String label, boolean isTablePerspectivePrivate) {
 
-		CategoryDescriptions<?> categoryDescriptions = dataDomain.getTable().getDataClassSpecificDescription(
+		CategoricalClassDescription<?> categoryDescriptions = dataDomain.getTable().getDataClassSpecificDescription(
 				dimensionID, 0);
 		int nrBins = categoryDescriptions.size();
 

@@ -783,7 +783,7 @@ public class LoadDataSetPageMediator {
 				}
 			}
 		}
-		return new ColumnDescription(columnIndex, EDataClass.NOMINAL, EDataType.STRING);
+		return new ColumnDescription(columnIndex, EDataClass.CATEGORICAL, EDataType.STRING);
 	}
 
 	/**

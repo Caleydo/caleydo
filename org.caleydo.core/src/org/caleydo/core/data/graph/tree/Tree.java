@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
- *  
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.data.graph.tree;
 
@@ -25,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.EDataClass;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDType;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
@@ -33,7 +30,7 @@ import org.jgrapht.graph.DefaultEdge;
 
 /**
  * A implementation of a sorted tree, based on the JGraphT library.
- * 
+ *
  * @author Alexander Lex
  * @param <NodeType>
  */
@@ -57,17 +54,16 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	private ESortingStrategy sortingStrategy = ESortingStrategy.DEFAULT;
 
 	/**
-	 * Constructor that should only be used for de-serialization or for trees synchronized with a previously
-	 * existing tree. For other cases use {@link #Tree(IDType)} instead.
+	 * Constructor that should only be used for de-serialization or for trees synchronized with a previously existing
+	 * tree. For other cases use {@link #Tree(IDType)} instead.
 	 */
 	public Tree() {
 		init(100);
 	}
 
 	/**
-	 * Constructor for the tree, specifying the ID type, which should be used whenever creating a new,
-	 * independent tree.
-	 * 
+	 * Constructor for the tree, specifying the ID type, which should be used whenever creating a new, independent tree.
+	 *
 	 * @param leaveIDType
 	 * @param expectedSize
 	 *            An estimate for the expected size - good estimates improve performance
@@ -83,22 +79,20 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	}
 
 	/**
-	 * Sets the id type of the leaves and creates a new node id type. This should only be used when the
-	 * constructor without arguments was used.
-	 * 
+	 * Sets the id type of the leaves and creates a new node id type. This should only be used when the constructor
+	 * without arguments was used.
+	 *
 	 * @param leafIDType
 	 */
 	public void initializeIDTypes(IDType leafIDType) {
 		this.leafIDType = leafIDType;
-		nodeIDType =
-			IDType.registerType("tree_" + this.hashCode(), leafIDType.getIDCategory(), EDataClass.NATURAL_NUMBER);
+		nodeIDType = IDType.registerType("tree_" + this.hashCode(), leafIDType.getIDCategory(), EDataType.INTEGER);
 	}
 
 	/**
-	 * Sets a node id type. This should only be done when this tree is a copy of another tree (for example
-	 * with different nodes types), and not for a new tree. For a new tree use
-	 * {@link #initializeIDTypes(IDType)}
-	 * 
+	 * Sets a node id type. This should only be done when this tree is a copy of another tree (for example with
+	 * different nodes types), and not for a new tree. For a new tree use {@link #initializeIDTypes(IDType)}
+	 *
 	 * @param nodeIDType
 	 */
 	public void setNodeIDType(IDType nodeIDType) {
@@ -107,7 +101,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	/**
 	 * Returns the id type of the nodes. The node ID Type is dynamically generated on construction.
-	 * 
+	 *
 	 * @return
 	 */
 	public IDType getNodeIDType() {
@@ -115,10 +109,9 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	}
 
 	/**
-	 * Sets a leaf id type. This should only be done when this tree is a copy of another tree (for example
-	 * with different nodes types), and not for a new tree. For a new tree use
-	 * {@link #initializeIDTypes(IDType)}
-	 * 
+	 * Sets a leaf id type. This should only be done when this tree is a copy of another tree (for example with
+	 * different nodes types), and not for a new tree. For a new tree use {@link #initializeIDTypes(IDType)}
+	 *
 	 * @param leafIDType
 	 */
 	public void setLeafIDType(IDType leafIDType) {
@@ -127,7 +120,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	/**
 	 * Returns the id type of the leaves
-	 * 
+	 *
 	 * @return
 	 */
 	public IDType getLeaveIDType() {
@@ -156,8 +149,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 			if (hashLeafIDToNodeIDs.containsKey(clusterNode.getLeafID())) {
 				ArrayList<Integer> alNodeIDs = hashLeafIDToNodeIDs.get(clusterNode.getLeafID());
 				alNodeIDs.add(clusterNode.getID());
-			}
-			else {
+			} else {
 				ArrayList<Integer> alNodeIDs = new ArrayList<Integer>();
 				alNodeIDs.add(clusterNode.getID());
 				hashLeafIDToNodeIDs.put(clusterNode.getLeafID(), alNodeIDs);
@@ -169,7 +161,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	/**
 	 * Returns the root of the tree or null if there is no root
-	 * 
+	 *
 	 * @return the root node or null
 	 */
 	public NodeType getRoot() {
@@ -177,9 +169,8 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	}
 
 	/**
-	 * Adds a child to the specified parent node. The order of the children is specified by their compare
-	 * method
-	 * 
+	 * Adds a child to the specified parent node. The order of the children is specified by their compare method
+	 *
 	 * @param parentNode
 	 *            the parent where the child will be added
 	 * @param childNode
@@ -196,8 +187,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 			if (hashLeafIDToNodeIDs.containsKey(childNode.getLeafID())) {
 				ArrayList<Integer> alNodeIDs = hashLeafIDToNodeIDs.get(childNode.getLeafID());
 				alNodeIDs.add(childNode.getID());
-			}
-			else {
+			} else {
 				ArrayList<Integer> alNodeIDs = new ArrayList<Integer>();
 				alNodeIDs.add(childNode.getID());
 				hashLeafIDToNodeIDs.put(childNode.getLeafID(), alNodeIDs);
@@ -209,7 +199,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	/**
 	 * Add a list of children to the specified parent node. Uses {@link #addChildren(ANode, List)} internally
-	 * 
+	 *
 	 * @param parentNode
 	 *            the node to which the children are added
 	 * @param children
@@ -223,7 +213,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	/**
 	 * Returns the parent of a specified node. If the node is root, then null is returned.
-	 * 
+	 *
 	 * @param childNode
 	 *            the node of which the parent is of interest
 	 * @return the parent node of childNode or null if childNode is root
@@ -245,9 +235,9 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	}
 
 	/**
-	 * Returns a list of children of parentNode. The returned list is sorted based on the compare method of
-	 * the children.
-	 * 
+	 * Returns a list of children of parentNode. The returned list is sorted based on the compare method of the
+	 * children.
+	 *
 	 * @param parentNode
 	 *            the node of which the children are requested
 	 * @return the sorted list of children
@@ -257,8 +247,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 		try {
 			setEdges = graph.outgoingEdgesOf(parentNode);
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		ArrayList<NodeType> alNodes = new ArrayList<NodeType>();
@@ -276,7 +265,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	/**
 	 * Returns true, when parentNode has children, else false
-	 * 
+	 *
 	 * @param parentNode
 	 *            the node to be checked
 	 * @return true if node has children, else false
@@ -289,9 +278,9 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	}
 
 	/**
-	 * Returns the graph structure on which the implementation of the tree is based, for advanced manual
-	 * manipulations. For example shortest path etc. can be calculated.
-	 * 
+	 * Returns the graph structure on which the implementation of the tree is based, for advanced manual manipulations.
+	 * For example shortest path etc. can be calculated.
+	 *
 	 * @return the complete graph
 	 */
 	public DirectedGraph<NodeType, DefaultEdge> getGraph() {
@@ -316,7 +305,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	/**
 	 * Returns the depth of the tree
-	 * 
+	 *
 	 * @return the depth of the tree
 	 */
 	public int getDepth() {
@@ -335,8 +324,8 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	}
 
 	/**
-	 * The depth flag is a performance tool to avoid the recursive calculating of the getDepth() function when
-	 * depth is unmodified
+	 * The depth flag is a performance tool to avoid the recursive calculating of the getDepth() function when depth is
+	 * unmodified
 	 */
 	public void setDirty() {
 		this.isDirty = true;
@@ -352,9 +341,9 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	}
 
 	/**
-	 * Set the sorting strategy to be used for this tree. The default sorting (based on the cluster ID, which
-	 * is generated on the fly) needs not be table. If a non-default strategy is used the nodes in the tree
-	 * must implement the {@link Comparable#compareTo(Object)} method with options for the sorting strategies
+	 * Set the sorting strategy to be used for this tree. The default sorting (based on the cluster ID, which is
+	 * generated on the fly) needs not be table. If a non-default strategy is used the nodes in the tree must implement
+	 * the {@link Comparable#compareTo(Object)} method with options for the sorting strategies
 	 */
 	public void setSortingStrategy(ESortingStrategy sortingStrategy) {
 		this.sortingStrategy = sortingStrategy;
@@ -363,7 +352,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	/**
 	 * Get the sorting strategy used in this tree.
-	 * 
+	 *
 	 * @return
 	 */
 	public ESortingStrategy getSortingStrategy() {

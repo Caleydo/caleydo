@@ -23,6 +23,7 @@ import java.io.PrintWriter;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataTransformation;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -53,6 +54,7 @@ public class TableUtils {
 	 * @param createDefaultRecordPerspective
 	 * @return
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void loadData(ATableBasedDataDomain dataDomain, DataSetDescription dataSetDescription,
 			boolean createDefaultDimensionPerspectives, boolean createDefaultRecordPerspective) {
 
@@ -63,8 +65,24 @@ public class TableUtils {
 			NumericalTable nTable = new NumericalTable(dataDomain);
 			table = nTable;
 
-		} else if (dataSetDescription.getCategoricalProperties() != null) {
-			CategoricalTable cTable = new CategoricalTable(dataDomain);
+		} else if (dataSetDescription.getCategoricalClassDescription() != null) {
+			CategoricalClassDescription<?> catClassDescr = dataSetDescription.getCategoricalClassDescription();
+
+			CategoricalTable cTable;
+			switch (catClassDescr.getRawDataType()) {
+			case INTEGER:
+				cTable = new CategoricalTable<Integer>(dataDomain);
+				break;
+			case STRING:
+				cTable = new CategoricalTable<String>(dataDomain);
+				break;
+			case FLOAT:
+			default:
+				throw new UnsupportedOperationException("Float not supported for categorical data");
+
+			}
+			cTable.setCategoryDescritions(catClassDescr);
+
 			table = cTable;
 		} else {
 			table = new Table(dataDomain);

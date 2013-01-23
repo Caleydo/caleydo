@@ -252,7 +252,7 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		parsingRule.setFromColumn(8);
 		parsingRule.setParseUntilEnd(true);
 		// TODO: review ordinale/integer
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.ORDINAL, EDataType.INTEGER));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.CATEGORICAL, EDataType.INTEGER));
 		dataSet.addParsingRule(parsingRule);
 		dataSet.setTransposeMatrix(true);
 
@@ -293,7 +293,7 @@ public class TCGADataSetBuilder extends RecursiveTask<DataSetDescription> {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.ORDINAL, EDataType.INTEGER));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.CATEGORICAL, EDataType.INTEGER));
 		dataSet.addParsingRule(parsingRule);
 		dataSet.setTransposeMatrix(true);
 

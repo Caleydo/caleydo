@@ -18,6 +18,8 @@ package org.caleydo.data.importer.tcga.test;
 
 import org.caleydo.core.data.collection.EDataClass;
 import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription.ECategoryType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
@@ -30,6 +32,7 @@ import org.caleydo.core.io.ProjectDescription;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
+import org.caleydo.core.util.color.Colors;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 
 /**
@@ -234,10 +237,29 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		copyNumberData.setDataSourcePath(COPY_NUMBER);
 		copyNumberData.setNumberOfHeaderLines(1);
 
+		CategoricalClassDescription<Integer> categoricalClassDescription = new CategoricalClassDescription<>();
+		categoricalClassDescription.setCategoryType(ECategoryType.ORDINAL);
+		categoricalClassDescription.setRawDataType(EDataType.INTEGER);
+		categoricalClassDescription.addCategoryProperty(-2, "Homozygous deletion", Colors.BLUE);
+		categoricalClassDescription.addCategoryProperty(-1, "Heterozygous deletion",
+				Colors.BLUE.getColorWithSpecificBrighness(0.7f));
+		categoricalClassDescription.addCategoryProperty(0, "NORMAL", Colors.NEUTRAL_GREY);
+		categoricalClassDescription.addCategoryProperty(1, "Low level amplification",
+				Colors.RED.getColorWithSpecificBrighness(0.7f));
+		categoricalClassDescription.addCategoryProperty(2, "High level amplification", Colors.RED);
+
+		copyNumberData.setCategoricalClassDescription(categoricalClassDescription);
+
+		// groupLabels.add("Homozygous deletion");
+		// groupLabels.add("Heterozygous deletion");
+		// groupLabels.add("Normal");
+		// groupLabels.add("Low level amplification");
+		// groupLabels.add("High level amplification")
+
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.ORDINAL, EDataType.INTEGER));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.CATEGORICAL, EDataType.INTEGER));
 		copyNumberData.addParsingRule(parsingRule);
 		copyNumberData.setTransposeMatrix(true);
 
@@ -292,12 +314,17 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		mutationDataMetaInfo.setDataSetName("Mutation Status");
 		mutationDataMetaInfo.setDataSourcePath(MUTATION);
 
+		CategoricalClassDescription<Integer> categoricalClassDescription = new CategoricalClassDescription<>();
+		categoricalClassDescription.addCategoryProperty(0, "Not Mutated", Colors.NEUTRAL_GREY);
+		categoricalClassDescription.addCategoryProperty(1, "Mutated", Colors.RED);
+		mutationDataMetaInfo.setCategoricalClassDescription(categoricalClassDescription);
+
 		mutationDataMetaInfo.setNumberOfHeaderLines(1);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.ORDINAL, EDataType.INTEGER));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.CATEGORICAL, EDataType.INTEGER));
 		mutationDataMetaInfo.addParsingRule(parsingRule);
 		mutationDataMetaInfo.setTransposeMatrix(true);
 

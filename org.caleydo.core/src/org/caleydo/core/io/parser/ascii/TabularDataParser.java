@@ -27,6 +27,7 @@ import org.caleydo.core.data.collection.column.NumericalColumn;
 import org.caleydo.core.data.collection.column.container.CategoricalContainer;
 import org.caleydo.core.data.collection.column.container.FloatContainer;
 import org.caleydo.core.data.collection.column.container.IContainer;
+import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.id.IDCategory;
@@ -88,6 +89,7 @@ public class TabularDataParser extends ATextParser {
 	 * Also creates the mapping of columnIDs to column labels in the {@link IDMappingManager}
 	 * </p>
 	 */
+	@SuppressWarnings("unchecked")
 	private void initializeTablePerspectives() {
 
 		Table table = dataDomain.getTable();
@@ -156,10 +158,7 @@ public class TabularDataParser extends ATextParser {
 
 				columnID = table.addColumn(column);
 				break;
-
-			case NOMINAL:
-			case ORDINAL:
-
+			case CATEGORICAL:
 				switch (parsingDetail.getDataType()) {
 				case STRING:
 					CategoricalColumn<String> categoricalColumn;
@@ -168,9 +167,12 @@ public class TabularDataParser extends ATextParser {
 					targetColumns.add(categoricalContainer);
 
 					categoricalColumn = new CategoricalColumn<String>();
-
 					categoricalColumn.setRawData(categoricalContainer);
 
+					if (table instanceof CategoricalTable<?>) {
+						categoricalColumn.setCategoryDescritions(((CategoricalTable<String>) table)
+								.getCategoryDescriptions());
+					}
 					columnID = table.addColumn(categoricalColumn);
 					break;
 				case INTEGER:
@@ -180,8 +182,12 @@ public class TabularDataParser extends ATextParser {
 					targetColumns.add(categoricalIntContainer);
 
 					categoricalIntColumn = new CategoricalColumn<Integer>();
-
 					categoricalIntColumn.setRawData(categoricalIntContainer);
+
+					if (table instanceof CategoricalTable<?>) {
+						categoricalIntColumn.setCategoryDescritions(((CategoricalTable<Integer>) table)
+								.getCategoryDescriptions());
+					}
 					columnID = table.addColumn(categoricalIntColumn);
 					break;
 				case FLOAT:

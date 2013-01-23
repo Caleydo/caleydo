@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.id;
 
@@ -23,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.caleydo.core.data.collection.EDataClass;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -31,24 +28,20 @@ import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
- * An IDType defines a semantic grouping of a set of IDs. Examples for IDTypes
- * are global id types, such as "RefSeq", or "David" which are internationally
- * recognized IDType for genes, or custom IDTypes, such as for example to
- * identify the columns in a tabular data file.
+ * An IDType defines a semantic grouping of a set of IDs. Examples for IDTypes are global id types, such as "RefSeq", or
+ * "David" which are internationally recognized IDType for genes, or custom IDTypes, such as for example to identify the
+ * columns in a tabular data file.
  * </p>
  * <p>
- * IDTypes are used, among others, to identify that events are to be applied for
- * a component. An example would be a brushing which can only be directly
- * applied if the IDType of the event is the same as the IDType of the receiver.
+ * IDTypes are used, among others, to identify that events are to be applied for a component. An example would be a
+ * brushing which can only be directly applied if the IDType of the event is the same as the IDType of the receiver.
  * </p>
  * <p>
- * IDTypes belong to an {@link IDCategory}. The contract for IDTypes belonging
- * to the same IDCategory is that all elements for the types registered with one
- * category can be mapped to each other using the {@link IDMappingManager}.
+ * IDTypes belong to an {@link IDCategory}. The contract for IDTypes belonging to the same IDCategory is that all
+ * elements for the types registered with one category can be mapped to each other using the {@link IDMappingManager}.
  * </p>
  * <p>
- * IDTypes can also hold rules on how to parse them correctly from a string (see
- * {@link #idTypeParsingRules}).
+ * IDTypes can also hold rules on how to parse them correctly from a string (see {@link #idTypeParsingRules}).
  * </p>
  * <p>
  * This class is also a singleton that manages all IDTypes.
@@ -61,30 +54,25 @@ public class IDType {
 	private static Map<String, IDType> registeredTypes = new HashMap<String, IDType>();
 
 	/**
-	 * The {@link IDCategory} of an {@link IDType} specifies to which category
-	 * an ID belongs. The contract is, that between two IDTypes that share the
-	 * same IDCategory there must exist a mapping in the
-	 * {@link IDMappingManager}.
+	 * The {@link IDCategory} of an {@link IDType} specifies to which category an ID belongs. The contract is, that
+	 * between two IDTypes that share the same IDCategory there must exist a mapping in the {@link IDMappingManager}.
 	 */
 	private IDCategory idCategory;
 
 	/**
-	 * Type name that needs to be a unique value for every new IDType. Besides
-	 * being unique, it should also be human-readable to some extend, to make
-	 * debugging easier.
+	 * Type name that needs to be a unique value for every new IDType. Besides being unique, it should also be
+	 * human-readable to some extend, to make debugging easier.
 	 */
 	private String typeName;
 
 	/**
-	 * Specifies the data type of the IDType. Allowed values are
-	 * {@link EDataClass#NATURAL_NUMBER} and {@link EDataClass#UNIQUE_OBJECT}
+	 * Specifies the data type of the IDType. Allowed values are {@link EDataType#INTEGER} and {@link EDataType#STRING}
 	 */
-	private EDataClass dataType;
+	private EDataType dataType;
 
 	/**
-	 * flag determining whether a type is internal only, meaning that it is
-	 * dynamically generated using, e.g., a running number (true), or an
-	 * externally provided ID (e.g., refseq, false)
+	 * flag determining whether a type is internal only, meaning that it is dynamically generated using, e.g., a running
+	 * number (true), or an externally provided ID (e.g., refseq, false)
 	 */
 	private boolean isInternalType = false;
 
@@ -93,10 +81,10 @@ public class IDType {
 	 */
 	private IDTypeParsingRules idTypeParsingRules = null;
 
-	private IDType(String typeName, IDCategory idCategory, EDataClass dimensionType) {
+	private IDType(String typeName, IDCategory idCategory, EDataType dataType) {
 		this.typeName = typeName;
 		this.idCategory = idCategory;
-		this.dataType = dimensionType;
+		this.dataType = dataType;
 	}
 
 	/**
@@ -113,7 +101,7 @@ public class IDType {
 	 *
 	 * @param idCategory
 	 */
-	public void setDataType(EDataClass dataType) {
+	public void setDataType(EDataType dataType) {
 		this.dataType = dataType;
 	}
 
@@ -136,36 +124,33 @@ public class IDType {
 	}
 
 	/**
-	 * Register a new IDType. Checks whether whether the columnType is legal. If
-	 * the typeName is already registered, a check is conducted whether the
-	 * registered and the new one match, and if they do, the previously
-	 * registered type is returned. Else an exception is thrown.
+	 * Register a new IDType. Checks whether whether the columnType is legal. If the typeName is already registered, a
+	 * check is conducted whether the registered and the new one match, and if they do, the previously registered type
+	 * is returned. Else an exception is thrown.
 	 *
 	 * @param typeName
 	 *            see {@link #typeName}
 	 * @param idCategory
 	 *            see {@link #idCategory}
-	 * @param columnType
+	 * @param dataType
 	 *            see {@link #dataType}
 	 * @return the created ID Type
 	 */
-	public static IDType registerType(String typeName, IDCategory idCategory,
-			EDataClass columnType) {
-		if (!(columnType == EDataClass.UNIQUE_OBJECT || columnType == EDataClass.NATURAL_NUMBER))
+	public static IDType registerType(String typeName, IDCategory idCategory, EDataType dataType) {
+		if (!(dataType == EDataType.INTEGER || dataType == EDataType.STRING))
 			throw new IllegalStateException(
-					"IDTypes are allowed to be only either of type UNIQUE_OBJECT or NATURAL_NUMBER, but was: "
-							+ columnType);
+					"IDTypes are allowed to be only either of type INTEGER or STRING, but was: " + dataType);
 		synchronized (IDType.class) {
 			IDType idType = registeredTypes.get(typeName);
 			if (idType != null) {
-				if (!idType.getIDCategory().equals(idCategory) || !idType.getColumnType().equals(columnType))
+				if (!idType.getIDCategory().equals(idCategory) || !idType.getDataType().equals(dataType))
 					throw new IllegalStateException("Tried to register id type: " + typeName + ", Category: "
-							+ idCategory + ", ColumnType: " + columnType
+							+ idCategory + ", ColumnType: " + dataType
 							+ "\n but was already registered with conflicting parameters. \n"
 							+ "Previously registered type: " + idType + ", Category: " + idType.getIDCategory()
-							+ ", ColumnType: " + idType.getColumnType());
+							+ ", DataType: " + idType.getDataType());
 			} else {
-				idType = new IDType(typeName, idCategory, columnType);
+				idType = new IDType(typeName, idCategory, dataType);
 				registeredTypes.put(typeName, idType);
 				idCategory.addIDType(idType);
 				Logger.log(new Status(IStatus.INFO, "IDType", "Registering IDType " + typeName));
@@ -198,8 +183,7 @@ public class IDType {
 	}
 
 	/**
-	 * Returns the IDType for the typeName specified, or null if no such type is
-	 * registered
+	 * Returns the IDType for the typeName specified, or null if no such type is registered
 	 */
 	public static IDType getIDType(String typeName) {
 		synchronized (IDType.class) {
@@ -223,9 +207,9 @@ public class IDType {
 	}
 
 	/**
-	 * @return the columnType, see {@link #dataType}
+	 * @return the dataType, see {@link #dataType}
 	 */
-	public EDataClass getColumnType() {
+	public EDataType getDataType() {
 		return dataType;
 	}
 
@@ -257,27 +241,24 @@ public class IDType {
 	}
 
 	/**
-	 * Calculates the probability of the specified list of ids to belong to this
-	 * IDType.
+	 * Calculates the probability of the specified list of ids to belong to this IDType.
 	 *
 	 * @param idList
-	 * @return Probability of affiliation as value from 0 to 1. 0 means that
-	 *         none of the specified ids matched this IDType, wheras 1 means
-	 *         that all matched this IDType.
+	 * @return Probability of affiliation as value from 0 to 1. 0 means that none of the specified ids matched this
+	 *         IDType, wheras 1 means that all matched this IDType.
 	 */
 	public float calcProbabilityOfIDTypeAffiliation(List<String> idList) {
 
 		if (idList == null || idList.isEmpty())
 			return 0;
 
-		IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
-				.getIDMappingManager(idCategory);
+		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idCategory);
 
 		int numMatchedIDs = 0;
 
 		for (String currentID : idList) {
 
-			if (getColumnType().equals(EDataClass.NATURAL_NUMBER)) {
+			if (getDataType().equals(EDataType.INTEGER)) {
 				try {
 					Integer idInt = Integer.valueOf(currentID);
 					if (idMappingManager.doesElementExist(this, idInt)) {
@@ -285,13 +266,12 @@ public class IDType {
 					}
 				} catch (NumberFormatException e) {
 				}
-			} else if (getColumnType().equals(EDataClass.UNIQUE_OBJECT)) {
+			} else if (getDataType().equals(EDataType.INTEGER)) {
 				if (idMappingManager.doesElementExist(this, currentID)) {
 					numMatchedIDs++;
 				} else if (getTypeName().equals("REFSEQ_MRNA")) {
 					if (currentID.contains(".")) {
-						if (idMappingManager.doesElementExist(this,
-								currentID.substring(0, currentID.indexOf(".")))) {
+						if (idMappingManager.doesElementExist(this, currentID.substring(0, currentID.indexOf(".")))) {
 							numMatchedIDs++;
 						}
 					}

@@ -21,7 +21,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.column.AColumn;
 import org.caleydo.core.data.collection.column.CategoricalColumn;
-import org.caleydo.core.data.collection.column.container.CategoryDescriptions;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 
 /**
@@ -31,7 +31,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
  * @author Alexander Lex
  */
 public class CategoricalTable<CategoryType extends Comparable<CategoryType>> extends Table {
-	private CategoryDescriptions<CategoryType> categoryDescriptions;
+	private CategoricalClassDescription<CategoryType> categoricalClassDescription;
 
 	/**
 	 * @param dataDomain
@@ -47,38 +47,39 @@ public class CategoricalTable<CategoryType extends Comparable<CategoryType>> ext
 
 	@Override
 	protected void normalize() {
-		if (categoryDescriptions == null) {
+		if (categoricalClassDescription == null) {
 			Set<CategoryType> uniqueCategories = new HashSet<>();
 			for (AColumn<?, ?> column : columns) {
 				@SuppressWarnings("unchecked")
 				CategoricalColumn<CategoryType> catCol = (CategoricalColumn<CategoryType>) column;
 				uniqueCategories.addAll(catCol.getCategories());
 			}
-			categoryDescriptions = new CategoryDescriptions<>();
-			categoryDescriptions.autoInitialize(uniqueCategories);
+			categoricalClassDescription = new CategoricalClassDescription<>();
+			categoricalClassDescription.autoInitialize(uniqueCategories);
 			for (AColumn<?, ?> column : columns) {
 				@SuppressWarnings("unchecked")
 				CategoricalColumn<CategoryType> catCol = (CategoricalColumn<CategoryType>) column;
-				catCol.setCategoryDescritions(categoryDescriptions);
+				catCol.setCategoryDescritions(categoricalClassDescription);
 			}
+
 		}
 		super.normalize();
 	}
 
-	public void setCategoryDescritions(CategoryDescriptions<CategoryType> categoryDescriptions) {
-		this.categoryDescriptions = categoryDescriptions;
-		for (AColumn<?, ?> column : columns) {
-			@SuppressWarnings("unchecked")
-			CategoricalColumn<CategoryType> categoricalColum = (CategoricalColumn<CategoryType>) column;
-			categoricalColum.setCategoryDescritions(categoryDescriptions);
-		}
+	public void setCategoryDescritions(CategoricalClassDescription<CategoryType> categoryDescriptions) {
+		this.categoricalClassDescription = categoryDescriptions;
+		// for (AColumn<?, ?> column : columns) {
+		// @SuppressWarnings("unchecked")
+		// CategoricalColumn<CategoryType> categoricalColum = (CategoricalColumn<CategoryType>) column;
+		// categoricalColum.setCategoryDescritions(categoricalClassDescription);
+		// }
 	}
 
 	/**
-	 * @return the categoryDescriptions, see {@link #categoryDescriptions}
+	 * @return the categoricalClassDescription, see {@link #categoricalClassDescription}
 	 */
-	public CategoryDescriptions<CategoryType> getCategoryDescriptions() {
-		return categoryDescriptions;
+	public CategoricalClassDescription<CategoryType> getCategoryDescriptions() {
+		return categoricalClassDescription;
 	}
 
 }

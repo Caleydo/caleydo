@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 import org.caleydo.core.io.parser.ascii.TabularDataParser;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
@@ -121,7 +122,7 @@ public class DataSetDescription extends MatrixDefinition {
 	/**
 	 * Set this if your data is homogeneous (i.e. all the columns in the file are of the same semantic data type, i.e.
 	 * they have the same value ranges, etc.) and numerical. If this is set, the data scale used is the same for all
-	 * columns. This member can not be set at the same time as {@link #categoricalProperties}. Defaults to null.
+	 * columns. This member can not be set at the same time as {@link #categoricalClassDescription}. Defaults to null.
 	 */
 	private NumericalProperties numericalProperties = null;
 
@@ -130,7 +131,7 @@ public class DataSetDescription extends MatrixDefinition {
 	 * they have the same value ranges, etc.) and categorical. If this is set, the data scale used is the same for all
 	 * columns. This member can not be set at the same time as {@link #numericalProperties}. Defaults to null.
 	 */
-	private CategoricalProperties categoricalProperties = null;
+	private CategoricalClassDescription<?> categoricalClassDescription = null;
 
 	/**
 	 * A list of path to grouping files for the columns of the file specified in {@link #dataSourcePath}. Optional.
@@ -156,7 +157,7 @@ public class DataSetDescription extends MatrixDefinition {
 
 	/**
 	 * Creates a {@link DataSetDescription} as a homogeneous dataset. The parameter determines whether a default
-	 * {@link #numericalProperties} or {@link #categoricalProperties} object is created.
+	 * {@link #numericalProperties} or {@link #categoricalClassDescription} object is created.
 	 *
 	 * @param createDefaultProperties
 	 */
@@ -166,7 +167,7 @@ public class DataSetDescription extends MatrixDefinition {
 			numericalProperties = new NumericalProperties();
 			break;
 		case CATEGORICAL:
-			categoricalProperties = new CategoricalProperties();
+			categoricalClassDescription = new CategoricalClassDescription<Integer>();
 			break;
 
 		default:
@@ -210,7 +211,7 @@ public class DataSetDescription extends MatrixDefinition {
 	 *            setter, see {@link numericalProperties}
 	 */
 	public void setNumericalProperties(NumericalProperties numericalProperties) {
-		if (categoricalProperties != null)
+		if (categoricalClassDescription != null)
 			throw new IllegalStateException(
 					"Cannot set both numerical and categorical data set description at the same time");
 		this.numericalProperties = numericalProperties;
@@ -223,22 +224,23 @@ public class DataSetDescription extends MatrixDefinition {
 		return numericalProperties;
 	}
 
+
 	/**
-	 * @param categoricalProperties
-	 *            setter, see {@link categoricalProperties}
+	 * @param categoricalClassDescription
+	 *            setter, see {@link categoricalClassDescription}
 	 */
-	public void setCategoricalProperties(CategoricalProperties categoricalProperties) {
+	public void setCategoricalClassDescription(CategoricalClassDescription<?> categoricalClassDescription) {
 		if (numericalProperties != null)
 			throw new IllegalStateException(
 					"Cannot set both numerical and categorical data set description at the same time");
-		this.categoricalProperties = categoricalProperties;
+		this.categoricalClassDescription = categoricalClassDescription;
 	}
 
 	/**
-	 * @return the categoricalProperties, see {@link #categoricalProperties}
+	 * @return the categoricalClassDescription, see {@link #categoricalClassDescription}
 	 */
-	public CategoricalProperties getCategoricalProperties() {
-		return categoricalProperties;
+	public CategoricalClassDescription<?> getCategoricalClassDescription() {
+		return categoricalClassDescription;
 	}
 
 	/**
@@ -482,7 +484,7 @@ public class DataSetDescription extends MatrixDefinition {
 
 		if (numericalProperties != null)
 			data += "(numerical)";
-		else if (categoricalProperties != null)
+		else if (categoricalClassDescription != null)
 			data += "(categorical)";
 		else
 			data += "(hybrid/inhomogeneous)";

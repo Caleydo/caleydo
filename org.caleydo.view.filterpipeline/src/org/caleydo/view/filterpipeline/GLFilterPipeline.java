@@ -33,7 +33,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 
-import org.caleydo.core.data.collection.EDataClass;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.FilterManager;
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
@@ -152,7 +152,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new FilterPipelineRenderStyle(viewFrustum);
 		selectionManager = new SelectionManager(IDType.registerType("filter_" + hashCode(),
-				IDCategory.registerCategory("filter"), EDataClass.NATURAL_NUMBER));
+				IDCategory.registerCategory("filter"), EDataType.INTEGER));
 
 		super.renderStyle = renderStyle;
 		detailLevel = EDetailLevel.HIGH;

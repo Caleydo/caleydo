@@ -24,24 +24,55 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.column.CategoricalColumn;
+import org.caleydo.core.data.collection.table.CategoricalTable;
+import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.NumericalProperties;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.color.ColorManager;
 
 /**
- * @author ArrayList
+ * <p>
+ * Description/specification of a "class" of categories (e.g., gender as class, male, female as categories).
+ * </p>
+ * <p>
+ * This class contains an (ordered) list of {@link CategoryProperty}s which in turn contain information on the
+ * individual categories and the type of category (ordinal or nominal).
+ * </p>
+ * <p>
+ * CategoricalClassDescription can be defined either for a whole {@link CategoricalTable} when the data is homogeneous,
+ * or for individual {@link CategoricalColumn}s in case a dataset is inhomogeneous.
+ * </p>
+ * <p>
+ * This class is used at runtime for storing and providing the properties, but is also used for serialization as part of
+ * the {@link DataSetDescription}.
+ * </p>
+ * <p>
+ * See also {@link NumericalProperties}, this classes pendant for numerical data.
+ * </p>
+ *
+ * @author Alexander Lex
  *
  */
-public class CategoryDescriptions<CategoryType extends Comparable<CategoryType>> implements
+@XmlType
+public class CategoricalClassDescription<CategoryType extends Comparable<CategoryType>> implements
 		Iterable<CategoryProperty<CategoryType>> {
 
+	/** The type of the category */
 	public enum ECategoryType {
 		ORDINAL, NOMINAL;
 	}
 
+	private EDataType rawDataType = EDataType.INTEGER;
+
 	private ECategoryType categoryType = ECategoryType.NOMINAL;
 
+	/** The properties of the categories that are part of this class */
 	private List<CategoryProperty<CategoryType>> categoryProperties = new ArrayList<>();
+
 	@XmlTransient
 	private HashMap<CategoryType, CategoryProperty<CategoryType>> hashCategoryToProperties = new HashMap<>();
 
@@ -60,10 +91,36 @@ public class CategoryDescriptions<CategoryType extends Comparable<CategoryType>>
 		return categoryType;
 	}
 
-	public void addCategoryProperties(CategoryProperty<CategoryType> categoryProperty) {
+	/**
+	 * @param rawDataType
+	 *            setter, see {@link rawDataType}
+	 */
+	public void setRawDataType(EDataType rawDataType) {
+		this.rawDataType = rawDataType;
+	}
+
+	/**
+	 * @return the rawDataType, see {@link #rawDataType}
+	 */
+	public EDataType getRawDataType() {
+		return rawDataType;
+	}
+
+	/**
+	 * Add a category to this class
+	 *
+	 * @param categoryProperty
+	 */
+	public void addCategoryProperty(CategoryProperty<CategoryType> categoryProperty) {
 		categoryProperties.add(categoryProperty);
 		hashCategoryToProperties.put(categoryProperty.getCategory(), categoryProperty);
 
+	}
+
+	/** Shorthand for {@link #addCategoryProperty(CategoryProperty)} */
+	public void addCategoryProperty(CategoryType category, String categoryName, Color color) {
+		CategoryProperty<CategoryType> property = new CategoryProperty<>(category, categoryName, color);
+		addCategoryProperty(property);
 	}
 
 	/**
@@ -81,12 +138,12 @@ public class CategoryDescriptions<CategoryType extends Comparable<CategoryType>>
 	 * @return the categoryProperties, see {@link #categoryProperties}
 	 */
 	public List<CategoryProperty<CategoryType>> getCategoryProperties() {
-		return Collections.unmodifiableList(categoryProperties);
+		return categoryProperties;
 	}
 
 	@Override
 	public Iterator<CategoryProperty<CategoryType>> iterator() {
-		return Collections.unmodifiableList(categoryProperties).iterator();
+		return categoryProperties.iterator();
 	}
 
 	public int size() {
@@ -105,7 +162,7 @@ public class CategoryDescriptions<CategoryType extends Comparable<CategoryType>>
 
 		List<Color> colors = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS);
 		for (int i = 0; i < categories.size(); i++) {
-			addCategoryProperties(new CategoryProperty<>(categories.get(i), colors.get(i)));
+			addCategoryProperty(new CategoryProperty<>(categories.get(i), colors.get(i)));
 		}
 	}
 
@@ -121,10 +178,12 @@ public class CategoryDescriptions<CategoryType extends Comparable<CategoryType>>
 
 	@Override
 	public String toString() {
-		String categories = "";
+		String categories = "Description [";
 		for (CategoryProperty<CategoryType> categoryProperty : categoryProperties) {
-			categories += categoryProperty.toString() + " ";
+			categories += categoryProperty.toString() + ",";
 		}
+		categories = categories.substring(0, categories.length() - 1);
+		categories += "]";
 		return categories;
 	}
 

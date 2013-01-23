@@ -1,25 +1,22 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.id;
 
-import org.caleydo.core.data.collection.EDataClass;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.IDTypeParsingRules;
@@ -28,9 +25,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * This class provides a static method to initialize {@link IDType}s and
- * {@link IDCategory} from the Information provided in the
- * {@link DataSetDescription}.
+ * This class provides a static method to initialize {@link IDType}s and {@link IDCategory} from the Information
+ * provided in the {@link DataSetDescription}.
  *
  * @author Alexander Lex
  *
@@ -39,18 +35,16 @@ public class IDTypeInitializer {
 
 	/**
 	 * <p>
-	 * Initializes {@link IDType}s and {@link IDCategory} based on the
-	 * information provides in the {@link DataSetDescription}.
+	 * Initializes {@link IDType}s and {@link IDCategory} based on the information provides in the
+	 * {@link DataSetDescription}.
 	 * </p>
 	 * <p>
-	 * Creates default values as specified in the {@link IDSpecification}, or
-	 * creates default values for <code>IDSpecification</code>s themselves if
-	 * necessary.
+	 * Creates default values as specified in the {@link IDSpecification}, or creates default values for
+	 * <code>IDSpecification</code>s themselves if necessary.
 	 * </p>
 	 *
 	 * @param dataSetDescription
-	 *            the {@link DataSetDescription} containing the externally
-	 *            specified information about IDs
+	 *            the {@link DataSetDescription} containing the externally specified information about IDs
 	 * @return the {@link DataSetDescription} enriched by default values
 	 */
 	public static synchronized DataSetDescription initIDs(DataSetDescription dataSetDescription) {
@@ -64,24 +58,21 @@ public class IDTypeInitializer {
 		IDSpecification rowIDSpecification = dataSetDescription.getRowIDSpecification();
 		if (rowIDSpecification == null) {
 			rowIDSpecification = new IDSpecification();
-			rowIDSpecification.setIDSpecification(dataSetDescription.getDataSetName()
-					+ "_row", dataSetDescription.getDataSetName() + "_row");
+			rowIDSpecification.setIDSpecification(dataSetDescription.getDataSetName() + "_row",
+					dataSetDescription.getDataSetName() + "_row");
 			dataSetDescription.setRowIDSpecification(rowIDSpecification);
-			Logger.log(new Status(IStatus.INFO, "DataLoader",
-					"Automatically creating row ID specification for "
-							+ dataSetDescription.getDataSetName()));
+			Logger.log(new Status(IStatus.INFO, "DataLoader", "Automatically creating row ID specification for "
+					+ dataSetDescription.getDataSetName()));
 
 		}
-		IDSpecification columnIDSpecification = dataSetDescription
-				.getColumnIDSpecification();
+		IDSpecification columnIDSpecification = dataSetDescription.getColumnIDSpecification();
 		if (columnIDSpecification == null) {
 			columnIDSpecification = new IDSpecification();
-			columnIDSpecification.setIDSpecification(dataSetDescription.getDataSetName()
-					+ "_column", dataSetDescription.getDataSetName() + "_column");
+			columnIDSpecification.setIDSpecification(dataSetDescription.getDataSetName() + "_column",
+					dataSetDescription.getDataSetName() + "_column");
 			dataSetDescription.setColumnIDSpecification(columnIDSpecification);
-			Logger.log(new Status(IStatus.INFO, "DataLoader",
-					"Automatically creating column ID specification for "
-							+ dataSetDescription.getDataSetName()));
+			Logger.log(new Status(IStatus.INFO, "DataLoader", "Automatically creating column ID specification for "
+					+ dataSetDescription.getDataSetName()));
 		}
 
 		if (rowIDSpecification.getIdCategory() == null) {
@@ -122,16 +113,14 @@ public class IDTypeInitializer {
 
 		IDType recordIDType = IDType.getIDType(recordIDTypeName);
 		if (recordIDType == null) {
-			recordIDType = IDType.registerType(recordIDTypeName, recodIDCategory,
-					EDataClass.UNIQUE_OBJECT);
-			if (recordIDTypeParsingRules != null  && recordIDTypeParsingRules.isDefault())
+			recordIDType = IDType.registerType(recordIDTypeName, recodIDCategory, EDataType.STRING);
+			if (recordIDTypeParsingRules != null && recordIDTypeParsingRules.isDefault())
 				recordIDType.setIdTypeParsingRules(recordIDTypeParsingRules);
 		}
 
 		IDType dimensionIDType = IDType.getIDType(dimensionIDTypeName);
 		if (dimensionIDType == null) {
-			dimensionIDType = IDType.registerType(dimensionIDTypeName,
-					dimensionIDCategory, EDataClass.UNIQUE_OBJECT);
+			dimensionIDType = IDType.registerType(dimensionIDTypeName, dimensionIDCategory, EDataType.STRING);
 			if (dimensionIDTypeParsingRules != null && dimensionIDTypeParsingRules.isDefault())
 				dimensionIDType.setIdTypeParsingRules(dimensionIDTypeParsingRules);
 		}

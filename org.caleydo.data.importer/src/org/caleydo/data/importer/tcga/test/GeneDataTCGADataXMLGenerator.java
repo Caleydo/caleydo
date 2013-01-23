@@ -176,7 +176,7 @@ public class GeneDataTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.ORDINAL, EDataType.INTEGER));
+		parsingRule.setColumnDescripton(new ColumnDescription(EDataClass.CATEGORICAL, EDataType.INTEGER));
 		copyNumberData.addParsingRule(parsingRule);
 		copyNumberData.setTransposeMatrix(true);
 

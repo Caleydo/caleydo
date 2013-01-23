@@ -19,6 +19,7 @@ package org.caleydo.core.data.collection.column.container;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDataType;
@@ -69,7 +70,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	 * {@link #setPossibleCategories(ArrayList)} to include categories which are not in the dataset itself, or is set
 	 * automatically once {@link #normalize()} is called.
 	 */
-	private CategoryDescriptions<CategoryType> categoryDescriptions;
+	private CategoricalClassDescription<CategoryType> categoricalClassDescription;
 
 	public CategoricalContainer(int size, EDataType dataType) {
 		container = new short[size];
@@ -83,9 +84,21 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	 */
 	@Override
 	public void add(CategoryType categoryName) {
+
 		Short identifier = hashCategoryToIdentifier.get(categoryName);
 		if (identifier == null) {
-			identifier = initCategory(categoryName);
+			if (categoricalClassDescription != null) {
+				// we have encountered a category which is not available in the class description
+				Logger.log(new Status(IStatus.WARNING, this.toString(), "No category for " + categoryName
+						+ " in description " + categoricalClassDescription));
+
+				// FIXME - hack to avoid problem with NAN etc
+				Entry<CategoryType, Short> entry = hashCategoryToIdentifier.entrySet().iterator().next();
+				identifier = entry.getValue();
+				categoryName = entry.getKey();
+			} else {
+				identifier = initCategory(categoryName);
+			}
 		}
 		container[nextIndex++] = identifier;
 		Integer numberOfMatches = hashCategoryToNumberOfMatches.get(categoryName);
@@ -93,7 +106,7 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	}
 
 	/**
-	 * Adds a new category - this should only happen if no {@link CategoryDescriptions} exist
+	 * Adds a new category - this should only happen if no {@link CategoricalClassDescription} exist
 	 *
 	 * @param category
 	 * @return
@@ -140,22 +153,22 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	@Override
 	public FloatContainer normalize() {
 
-		if (categoryDescriptions == null) {
-			categoryDescriptions = new CategoryDescriptions<>();
-			categoryDescriptions.autoInitialize(hashCategoryToIdentifier.keySet());
+		if (categoricalClassDescription == null) {
+			categoricalClassDescription = new CategoricalClassDescription<>();
+			categoricalClassDescription.autoInitialize(hashCategoryToIdentifier.keySet());
 		}
 
-		if (categoryDescriptions.size() == 0)
+		if (categoricalClassDescription.size() == 0)
 			throw new IllegalStateException("Can't normalize an empty categorical container");
 
 		float normalizedDistance = 0;
 
-		if (categoryDescriptions.size() > 1) {
-			normalizedDistance = 1f / (categoryDescriptions.size() - 1);
+		if (categoricalClassDescription.size() > 1) {
+			normalizedDistance = 1f / (categoricalClassDescription.size() - 1);
 		}
 
-		for (int i = 0; i < categoryDescriptions.size(); i++) {
-			List<CategoryProperty<CategoryType>> c = categoryDescriptions.getCategoryProperties();
+		for (int i = 0; i < categoricalClassDescription.size(); i++) {
+			List<CategoryProperty<CategoryType>> c = categoricalClassDescription.getCategoryProperties();
 
 			short key = hashCategoryToIdentifier.get(c.get(i).getCategory());
 			hashCategoryKeyToNormalizedValue.put(key, i * normalizedDistance);
@@ -164,9 +177,13 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 		float[] target = new float[container.length];
 
 		for (int count = 0; count < container.length; count++) {
-			short categoryID = container[count];
-			float normalized = hashCategoryKeyToNormalizedValue.get(categoryID);
-			target[count] = normalized;
+			Short categoryID = container[count];
+			if (hashCategoryKeyToNormalizedValue.containsKey(categoryID)) {
+				float normalized = hashCategoryKeyToNormalizedValue.get(categoryID);
+				target[count] = normalized;
+			} else {
+				throw new IllegalStateException("Unknown category ID: " + categoryID);
+			}
 		}
 		// System.out.println("Elapsed: " + (System.currentTimeMillis() - startTime));
 		return new FloatContainer(target);
@@ -179,18 +196,18 @@ public class CategoricalContainer<CategoryType extends Comparable<CategoryType>>
 	 * @param possibleCategories
 	 *            the List
 	 */
-	public void setCategoryDescritions(CategoryDescriptions<CategoryType> categoryDescriptions) {
-		this.categoryDescriptions = categoryDescriptions;
+	public void setCategoryDescritions(CategoricalClassDescription<CategoryType> categoryDescriptions) {
+		this.categoricalClassDescription = categoryDescriptions;
 		for (CategoryProperty<CategoryType> category : categoryDescriptions) {
 			initCategory(category.getCategory());
 		}
 	}
 
 	/**
-	 * @return the categoryDescriptions, see {@link #categoryDescriptions}
+	 * @return the categoricalClassDescription, see {@link #categoricalClassDescription}
 	 */
-	public CategoryDescriptions<CategoryType> getCategoryDescriptions() {
-		return categoryDescriptions;
+	public CategoricalClassDescription<CategoryType> getCategoryDescriptions() {
+		return categoricalClassDescription;
 	}
 
 	@Override

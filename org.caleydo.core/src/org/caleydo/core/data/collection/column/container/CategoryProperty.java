@@ -22,7 +22,7 @@ import org.caleydo.core.util.color.Color;
  * @author Alexander Lex
  *
  */
-public class CategoryProperty<CategoryType extends Comparable<CategoryType>> implements Comparable<CategoryType> {
+public class CategoryProperty<CategoryType> {
 
 	/** The unique identifier of the category as found in the source data file */
 	CategoryType category;
@@ -51,16 +51,16 @@ public class CategoryProperty<CategoryType extends Comparable<CategoryType>> imp
 		this.categoryName = category.toString();
 	}
 
-	public CategoryProperty(CategoryType category, Color color, String categoryName) {
+	public CategoryProperty(CategoryType category, String categoryName, Color color) {
 		this.category = category;
 		this.color = color;
 		this.categoryName = categoryName;
 	}
 
-	@Override
-	public int compareTo(CategoryType comparedIdentifier) {
-		return category.compareTo(comparedIdentifier);
-	}
+	// @Override
+	// public int compareTo(CategoryType comparedIdentifier) {
+	// return category.compareTo(comparedIdentifier);
+	// }
 
 	/**
 	 * @param category

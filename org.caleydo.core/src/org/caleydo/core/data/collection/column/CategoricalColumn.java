@@ -19,7 +19,7 @@ package org.caleydo.core.data.collection.column;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.column.container.CategoricalContainer;
-import org.caleydo.core.data.collection.column.container.CategoryDescriptions;
+import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
 
 /**
  * @author Alexander Lex
@@ -37,7 +37,7 @@ public class CategoricalColumn<CategoryType extends Comparable<CategoryType>> ex
 		super();
 	}
 
-	public void setCategoryDescritions(CategoryDescriptions<CategoryType> categoryDescriptions) {
+	public void setCategoryDescritions(CategoricalClassDescription<CategoryType> categoryDescriptions) {
 		rawContainer.setCategoryDescritions(categoryDescriptions);
 	}
 
@@ -48,7 +48,7 @@ public class CategoricalColumn<CategoryType extends Comparable<CategoryType>> ex
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public CategoryDescriptions<CategoryType> getDataClassSpecificDescription() {
+	public CategoricalClassDescription<CategoryType> getDataClassSpecificDescription() {
 		return rawContainer.getCategoryDescriptions();
 	}
 

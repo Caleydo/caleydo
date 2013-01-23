@@ -29,9 +29,9 @@ public final class Colors {
 	}
 
 	public static final IColor TRANSPARENT = new Color(1, 1, 1, 0);
-	public static final IColor RED = new Color(1, 0, 0, 1);
+	public static final Color RED = new Color(1, 0, 0, 1);
 	public static final IColor GREEN = new Color(0, 1, 0, 1);
-	public static final IColor BLUE = new Color(0, 0, 1, 1);
+	public static final Color BLUE = new Color(0, 0, 1, 1);
 	public static final IColor YELLOW = new Color(1, 1, 0, 1);
 	public static final IColor BLACK = new Color(0, 0, 0, 1);
 

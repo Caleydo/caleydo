@@ -1,21 +1,18 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
  *
- * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
- * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler
+ * University Linz </p>
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.id;
 
@@ -27,7 +24,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.caleydo.core.data.collection.EDataClass;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
@@ -36,23 +33,19 @@ import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
- * An {@link IDCategory} specifies which kinds of {@link IDType}s belong
- * semantically together. The contract is, that all {@link IDType}s that are of
- * the same {@link IDCategory} have to be mappable using an
- * {@link IDMappingManager}.
+ * An {@link IDCategory} specifies which kinds of {@link IDType}s belong semantically together. The contract is, that
+ * all {@link IDType}s that are of the same {@link IDCategory} have to be mappable using an {@link IDMappingManager}.
  * </p>
  * <p>
- * For every <code>IDCategory</code> a {@link #primaryMappingType} must be
- * defined, of which the associated IDs must be Integers.
+ * For every <code>IDCategory</code> a {@link #primaryMappingType} must be defined, of which the associated IDs must be
+ * Integers.
  * </p>
  * <p>
- * The IDCategory also defines a human-readable ID type (
- * {@link #humanReadableIDType}), which should be used to present IDs of this
- * category to the user.
+ * The IDCategory also defines a human-readable ID type ( {@link #humanReadableIDType}), which should be used to present
+ * IDs of this category to the user.
  * <p>
- * An IDCategory also holds human readable versions of its name (
- * {@link #denomination} and {@link #denominationPlural}) which should be used
- * to identify the <code>IDCategory</code> to the user.
+ * An IDCategory also holds human readable versions of its name ( {@link #denomination} and {@link #denominationPlural})
+ * which should be used to identify the <code>IDCategory</code> to the user.
  * </p>
  * <p>
  * This class is also a singleton that manages all IDCategories
@@ -66,19 +59,16 @@ public class IDCategory {
 
 	/**
 	 * <p>
-	 * Register a new IDCategory with the name categoryName. For every category,
-	 * the name has to be globally unique.
+	 * Register a new IDCategory with the name categoryName. For every category, the name has to be globally unique.
 	 * </p>
 	 * <p>
-	 * It is legal to "try" to register an IDCategory which may be already
-	 * registered. If an IDCategory of this name is already registered, the
-	 * previously registered IDCategory is returned.
+	 * It is legal to "try" to register an IDCategory which may be already registered. If an IDCategory of this name is
+	 * already registered, the previously registered IDCategory is returned.
 	 * </p>
 	 *
 	 * @param categoryName
 	 *            the globally unique name of the category, may not be null
-	 * @return the newly registered IDCategory, or a previously registered
-	 *         category of the same name.
+	 * @return the newly registered IDCategory, or a previously registered category of the same name.
 	 */
 	public static IDCategory registerCategory(String categoryName) {
 
@@ -133,40 +123,34 @@ public class IDCategory {
 	}
 
 	/**
-	 * The name of the category, which should be human-readable and must be
-	 * unique
+	 * The name of the category, which should be human-readable and must be unique
 	 */
 	private String categoryName;
 
 	/**
-	 * For every IDCategory one central mapping type has to be defined, which
-	 * must be mappable to every other IDType of the same IDCategory. The data
-	 * type of this IDType must be Integer, so that it can be used in
+	 * For every IDCategory one central mapping type has to be defined, which must be mappable to every other IDType of
+	 * the same IDCategory. The data type of this IDType must be Integer, so that it can be used in
 	 * {@link SelectionManager}s
 	 */
 	private IDType primaryMappingType;
 
 	/**
-	 * True if a the primary mapping type is created by default, false if it is
-	 * specified externally.
+	 * True if a the primary mapping type is created by default, false if it is specified externally.
 	 */
 	private boolean isPrimaryMappingTypeDefault = true;
 
 	/**
-	 * The id type that should be used if an ID from this category should be
-	 * printed human readable
+	 * The id type that should be used if an ID from this category should be printed human readable
 	 */
 	private IDType humanReadableIDType;
 
 	/**
-	 * The human-readable name of the IDCategory. Defaults to the String of
-	 * {@link #humanReadableIDType}
+	 * The human-readable name of the IDCategory. Defaults to the String of {@link #humanReadableIDType}
 	 */
 	private String denomination;
 
 	/**
-	 * Same as {@link #denomination} but in plural. Defaults to
-	 * <code>denomination</code>+"s".
+	 * Same as {@link #denomination} but in plural. Defaults to <code>denomination</code>+"s".
 	 */
 	private String denominationPlural;
 
@@ -176,9 +160,8 @@ public class IDCategory {
 	private ArrayList<IDType> idTypes = new ArrayList<IDType>();
 
 	/**
-	 * flag determining whether a category is internal only, meaning that it is
-	 * dynamically generated using, e.g., a running number (true), or an
-	 * externally provided ID (e.g., refseq, false)
+	 * flag determining whether a category is internal only, meaning that it is dynamically generated using, e.g., a
+	 * running number (true), or an externally provided ID (e.g., refseq, false)
 	 */
 	private boolean isInternalCategory = false;
 
@@ -199,7 +182,6 @@ public class IDCategory {
 		return categoryName;
 	}
 
-
 	/**
 	 * @param denomination
 	 *            setter, see {@link #denomination}
@@ -217,8 +199,7 @@ public class IDCategory {
 	}
 
 	/**
-	 * Setter. Must be called after {@link #setDenomination(String)}, otherwise
-	 * it is overridden.
+	 * Setter. Must be called after {@link #setDenomination(String)}, otherwise it is overridden.
 	 *
 	 * @param denominationPlural
 	 *            setter, see {@link #denominationPlural}
@@ -241,15 +222,12 @@ public class IDCategory {
 	 *            setter, see {@link #primaryMappingType}
 	 */
 	public void setPrimaryMappingType(IDType primaryMappingType) {
-		if (primaryMappingType == null
-				|| !primaryMappingType.getIDCategory().equals(this))
-			throw new IllegalArgumentException("Cannot set primaryMappingType "
-					+ primaryMappingType);
+		if (primaryMappingType == null || !primaryMappingType.getIDCategory().equals(this))
+			throw new IllegalArgumentException("Cannot set primaryMappingType " + primaryMappingType);
 		if (this.primaryMappingType != null) {
 			if (!this.primaryMappingType.equals(primaryMappingType))
-				throw new IllegalStateException("Primary mapping type of " + categoryName
-						+ " was already set to " + this.primaryMappingType
-						+ ". Cannot set to " + primaryMappingType);
+				throw new IllegalStateException("Primary mapping type of " + categoryName + " was already set to "
+						+ this.primaryMappingType + ". Cannot set to " + primaryMappingType);
 			return;
 		}
 		isPrimaryMappingTypeDefault = false;
@@ -257,8 +235,7 @@ public class IDCategory {
 	}
 
 	/**
-	 * @return the isPrimaryMappingTypeDefault, see
-	 *         {@link #isPrimaryMappingTypeDefault}
+	 * @return the isPrimaryMappingTypeDefault, see {@link #isPrimaryMappingTypeDefault}
 	 */
 	public boolean isPrimaryMappingTypeDefault() {
 		return isPrimaryMappingTypeDefault;
@@ -340,16 +317,15 @@ public class IDCategory {
 	}
 
 	/**
-	 * Initializes the {@link #primaryMappingType} and the
-	 * {@link #humanReadableIDType} with best guesses if they were not set.
+	 * Initializes the {@link #primaryMappingType} and the {@link #humanReadableIDType} with best guesses if they were
+	 * not set.
 	 */
 	public void initialize() {
 		// if (idTypes.size() == 0)
 		// throw new IllegalStateException("No id types specified");
 
 		if (primaryMappingType == null) {
-			primaryMappingType = IDType.registerType(categoryName + "_primary", this,
-					EDataClass.NATURAL_NUMBER);
+			primaryMappingType = IDType.registerType(categoryName + "_primary", this, EDataType.INTEGER);
 			primaryMappingType.setInternalType(true);
 		}
 
@@ -358,9 +334,8 @@ public class IDCategory {
 			for (IDType idType : idTypes) {
 				if (!idType.isInternalType()) {
 					if (candidateHRType != null) {
-						throw new IllegalStateException(
-								"To many candidates for Human Readable Types in "
-										+ this.toString());
+						throw new IllegalStateException("To many candidates for Human Readable Types in "
+								+ this.toString());
 					}
 					candidateHRType = idType;
 				}
@@ -378,36 +353,29 @@ public class IDCategory {
 	}
 
 	/**
-	 * Calculates the probability of the specified id list to belong to every
-	 * {@link IDType} of this category.
+	 * Calculates the probability of the specified id list to belong to every {@link IDType} of this category.
 	 *
 	 * @param idList
 	 *            List of IDs the probabilities should be calculated for.
 	 * @param checkInternalIDTypes
-	 *            Determines whether also internal id types should be
-	 *            considered.
-	 * @return List of {@link Pair}s specifying the probability of the specified
-	 *         id list to belong to the IDtypes of this category. The list is
-	 *         decsendingly ordered according to the probability.
+	 *            Determines whether also internal id types should be considered.
+	 * @return List of {@link Pair}s specifying the probability of the specified id list to belong to the IDtypes of
+	 *         this category. The list is decsendingly ordered according to the probability.
 	 */
-	public List<Pair<Float, IDType>> getListOfIDTypeAffiliationProbabilities(
-			List<String> idList, boolean checkInternalIDTypes) {
+	public List<Pair<Float, IDType>> getListOfIDTypeAffiliationProbabilities(List<String> idList,
+			boolean checkInternalIDTypes) {
 
-		List<Pair<Float, IDType>> probabilityList = new ArrayList<Pair<Float, IDType>>(
-				idTypes.size());
+		List<Pair<Float, IDType>> probabilityList = new ArrayList<Pair<Float, IDType>>(idTypes.size());
 
-		boolean mappingManagerExists = IDMappingManagerRegistry.get()
-				.hasIDMappingManager(this);
+		boolean mappingManagerExists = IDMappingManagerRegistry.get().hasIDMappingManager(this);
 
 		for (IDType idType : idTypes) {
 			if (idType.isInternalType() && !checkInternalIDTypes)
 				continue;
 
 			if (mappingManagerExists) {
-				float affiliationProbability = idType
-						.calcProbabilityOfIDTypeAffiliation(idList);
-				probabilityList.add(new Pair<Float, IDType>(affiliationProbability,
-						idType));
+				float affiliationProbability = idType.calcProbabilityOfIDTypeAffiliation(idList);
+				probabilityList.add(new Pair<Float, IDType>(affiliationProbability, idType));
 			} else {
 				// FIXME: This is a rather hacky solution for TCGA SAMPLES
 				if (idType.getTypeName().equals("TCGA_SAMPLE")) {
@@ -417,10 +385,8 @@ public class IDCategory {
 							numMatchedIDs++;
 						}
 					}
-					float affiliationProbability = (float) numMatchedIDs
-							/ (float) idList.size();
-					probabilityList.add(new Pair<Float, IDType>(affiliationProbability,
-							idType));
+					float affiliationProbability = (float) numMatchedIDs / (float) idList.size();
+					probabilityList.add(new Pair<Float, IDType>(affiliationProbability, idType));
 				} else {
 					probabilityList.add(new Pair<Float, IDType>(0.0f, idType));
 				}
