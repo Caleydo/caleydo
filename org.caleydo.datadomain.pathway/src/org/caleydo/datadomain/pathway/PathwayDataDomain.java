@@ -153,13 +153,12 @@ public class PathwayDataDomain extends ADataDomain {
 
 		PathwayManager pathwayManager = PathwayManager.get();
 
-		// PathwayDatabase pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.KEGG,
-		// "data/xml/",
-		// "data/images/", "");
-		//
-		// pathwayManager.loadPathwaysByType(pathwayDatabase);
+		PathwayDatabase pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.KEGG, "data/xml/",
+				"data/images/", "");
 
-		PathwayDatabase pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.WIKIPATHWAYS,
+		pathwayManager.loadPathwaysByType(pathwayDatabase);
+
+		pathwayDatabase = pathwayManager.createPathwayDatabase(EPathwayDatabaseType.WIKIPATHWAYS,
 				"data/xml/", "data/images/", "");
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();

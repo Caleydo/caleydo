@@ -86,7 +86,6 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.GraphPathImpl;
-
 /**
  * Main view class for the linearized pathway view.
  *
@@ -417,6 +416,7 @@ public class GLEnRoutePathway
 					mappedDavidIds.add(davidID);
 			}
 		}
+
 		node.setDavidIDs(mappedDavidIds);
 
 		return mappedDavidIds;

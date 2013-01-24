@@ -30,6 +30,7 @@ import org.caleydo.core.data.perspective.table.TablePerspectiveStatistics;
 import org.caleydo.core.data.perspective.variable.Perspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -50,12 +51,11 @@ public class ContinuousContentRenderer extends ContentRenderer {
 	boolean useShading = true;
 	private int rendererID;
 
-	public ContinuousContentRenderer(Integer geneID, Integer davidID,
-			GeneticDataDomain dataDomain, TablePerspective tablePerspective,
- Perspective experimentPerspective, AGLView parentView,
+	public ContinuousContentRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
+			TablePerspective tablePerspective, Perspective experimentPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group, boolean isHighlightMode) {
-		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective,
-				parentView, parent, group, isHighlightMode);
+		super(geneID, davidID, dataDomain, tablePerspective, experimentPerspective, parentView, parent, group,
+				isHighlightMode);
 		synchronized (rendererIDCounter) {
 			rendererID = rendererIDCounter++;
 		}
@@ -63,8 +63,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		init();
 	}
 
-	public ContinuousContentRenderer(
-			IContentRendererInitializor contentRendererInitializor) {
+	public ContinuousContentRenderer(IContentRendererInitializor contentRendererInitializor) {
 		super(contentRendererInitializor);
 	}
 
@@ -72,28 +71,25 @@ public class ContinuousContentRenderer extends ContentRenderer {
 	public void init() {
 		if (geneID == null)
 			return;
-		average = TablePerspectiveStatistics.calculateAverage(
-				experimentPerspective.getVirtualArray(), dataDomain.getTable(), geneID);
+		average = TablePerspectiveStatistics.calculateAverage(experimentPerspective.getVirtualArray(),
+				dataDomain.getTable(), geneID);
 
 		registerPickingListener();
 	}
 
 	@Override
 	public void renderContent(GL2 gl) {
-		if (x / experimentPerspective.getVirtualArray().size() < parentView
-				.getPixelGLConverter().getGLWidthForPixelWidth(3)) {
+		if (x / experimentPerspective.getVirtualArray().size() < parentView.getPixelGLConverter()
+				.getGLWidthForPixelWidth(3)) {
 			useShading = false;
 		}
 
 		if (geneID == null)
 			return;
-		ArrayList<SelectionType> geneSelectionTypes = parent.geneSelectionManager
-				.getSelectionTypes(davidID);
+		ArrayList<SelectionType> geneSelectionTypes = parent.geneSelectionManager.getSelectionTypes(davidID);
 
-		ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager
-				.getSelectionTypes(group.getID());
-		if (selectionTypes.size() > 0
-				&& selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
+		ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager.getSelectionTypes(group.getID());
+		if (selectionTypes.size() > 0 && selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
 
 			renderAverageBar(gl, geneSelectionTypes);
 		} else {
@@ -111,18 +107,17 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 			float value;
 			if (geneID != null) {
-				value = dataDomain.getNormalizedGeneValue(geneID,
-						sampleID);
 
-				ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager
-						.getSelectionTypes(sampleIDType, sampleID);
+				value = dataDomain.getNormalizedGeneValue(geneID, sampleID);
+
+				ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
+						sampleIDType, sampleID);
 
 				float[] topBarColor = MappedDataRenderer.BAR_COLOR;
 				float[] bottomBarColor = MappedDataRenderer.BAR_COLOR;
 
-				ArrayList<SelectionType> selectionTypes = Algorithms
-						.mergeListsToUniqueList(experimentSelectionTypes,
-								geneSelectionTypes);
+				ArrayList<SelectionType> selectionTypes = Algorithms.mergeListsToUniqueList(experimentSelectionTypes,
+						geneSelectionTypes);
 
 				if (isHighlightMode
 						&& !(selectionTypes.contains(SelectionType.MOUSE_OVER) || selectionTypes
@@ -146,27 +141,26 @@ public class ContinuousContentRenderer extends ContentRenderer {
 				// gl.glPushName(parentView.getPickingManager().getPickingID(
 				// parentView.getID(), PickingType.GENE.name(), davidID));
 
-				Integer resolvedSampleID = sampleIDMappingManager.getID(
-						dataDomain.getSampleIDType(), parent.sampleIDType, sampleID);
+				Integer resolvedSampleID = sampleIDMappingManager.getID(dataDomain.getSampleIDType(),
+						parent.sampleIDType, sampleID);
 				if (resolvedSampleID != null) {
-					gl.glPushName(parentView.getPickingManager().getPickingID(
-							parentView.getID(), EPickingType.SAMPLE.name(),
-							resolvedSampleID));
+					gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
+							EPickingType.SAMPLE.name(), resolvedSampleID));
 				}
+				gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
+						EPickingType.SAMPLE.name() + hashCode(), sampleID));
 
 				gl.glBegin(GL2.GL_QUADS);
 
 				gl.glColor4fv(bottomBarColor, 0);
 				gl.glVertex3f(leftEdge, 0, z);
 				if (useShading) {
-					gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
-							bottomBarColor[2] * 0.9f);
+					gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f, bottomBarColor[2] * 0.9f);
 
 				}
 				gl.glVertex3f(leftEdge + xIncrement, 0, z);
 				if (useShading) {
-					gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f,
-							topBarColor[2] * 0.9f);
+					gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
 				} else {
 					gl.glColor4fv(topBarColor, 0);
 				}
@@ -179,6 +173,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 				gl.glEnd();
 				if (resolvedSampleID != null)
 					gl.glPopName();
+				gl.glPopName();
 
 				// gl.glPopName();
 				experimentCount++;
@@ -196,17 +191,16 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		ArrayList<ArrayList<SelectionType>> selectionLists = new ArrayList<ArrayList<SelectionType>>();
 		selectionLists.add(geneSelectionTypes);
 
-		for (Integer sampleID : experimentPerspective.getVirtualArray()) {
-			// Integer resolvedSampleID = sampleIDMappingManager.getID(
-			// dataDomain.getSampleIDType(), parent.sampleIDType,
-			// experimentID);
+		// for (Integer sampleID : experimentPerspective.getVirtualArray()) {
+		// // Integer resolvedSampleID = sampleIDMappingManager.getID(
+		// // dataDomain.getSampleIDType(), parent.sampleIDType,
+		// // experimentID);
+		//
+		// selectionLists.add(parent.sampleSelectionManager.getSelectionTypes(
+		// sampleIDType, sampleID));
+		// }
 
-			selectionLists.add(parent.sampleSelectionManager.getSelectionTypes(
-					sampleIDType, sampleID));
-		}
-
-		colorCalculator
-				.calculateColors(Algorithms.mergeListsToUniqueList(selectionLists));
+		colorCalculator.calculateColors(Algorithms.mergeListsToUniqueList(selectionLists));
 		float[] topBarColor = colorCalculator.getPrimaryColor().getRGBA();
 		float[] bottomBarColor = colorCalculator.getSecondaryColor().getRGBA();
 
@@ -215,8 +209,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor4fv(bottomBarColor, 0);
 		gl.glVertex3f(0, y / 3, z);
-		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
-				bottomBarColor[2] * 0.9f);
+		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f, bottomBarColor[2] * 0.9f);
 		gl.glVertex3d(average.getArithmeticMean() * x, y / 3, z);
 		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
 		gl.glVertex3d(average.getArithmeticMean() * x, y / 3 * 2, z);
@@ -240,13 +233,10 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 		gl.glLineWidth(0.8f);
 
-		float xMinusDeviation = (float) (average.getArithmeticMean() - average
-				.getStandardDeviation()) * x;
-		float xPlusDeviation = (float) (average.getArithmeticMean() + average
-				.getStandardDeviation()) * x;
+		float xMinusDeviation = (float) (average.getArithmeticMean() - average.getStandardDeviation()) * x;
+		float xPlusDeviation = (float) (average.getArithmeticMean() + average.getStandardDeviation()) * x;
 
-		float lineTailHeight = parentView.getPixelGLConverter()
-				.getGLHeightForPixelHeight(3);
+		float lineTailHeight = parentView.getPixelGLConverter().getGLHeightForPixelHeight(3);
 
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(xMinusDeviation, y / 2, lineZ);
@@ -273,23 +263,37 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 				parent.sampleSelectionManager.clearSelection(SelectionType.SELECTION);
 
-				parent.sampleSelectionManager.addToType(SelectionType.SELECTION,
-						sampleIDType, experimentPerspective.getVirtualArray().getIDs());
+				parent.sampleSelectionManager.addToType(SelectionType.SELECTION, sampleIDType, experimentPerspective
+						.getVirtualArray().getIDs());
 				parent.sampleSelectionManager.triggerSelectionUpdateEvent();
 
-				parent.sampleGroupSelectionManager
-						.clearSelection(SelectionType.SELECTION);
+				parent.sampleGroupSelectionManager.clearSelection(SelectionType.SELECTION);
 
-				parent.sampleGroupSelectionManager.addToType(SelectionType.SELECTION,
-						group.getID());
+				parent.sampleGroupSelectionManager.addToType(SelectionType.SELECTION, group.getID());
 				parent.sampleGroupSelectionManager.triggerSelectionUpdateEvent();
 				parentView.setDisplayListDirty();
 			}
 
 		};
 
-		parentView.addIDPickingListener(pickingListener,
-				EPickingType.SAMPLE_GROUP_RENDERER.name(), rendererID);
+		parentView.addIDPickingListener(pickingListener, EPickingType.SAMPLE_GROUP_RENDERER.name(), rendererID);
+
+		for (final Integer sampleID : experimentPerspective.getVirtualArray()) {
+
+			parentView.addIDPickingTooltipListener(new ILabelProvider() {
+
+				@Override
+				public String getProviderName() {
+					return "";
+				}
+
+				@Override
+				public String getLabel() {
+					return "" + dataDomain.getRawGeneValue(geneID, sampleID);
+				}
+			}, EPickingType.SAMPLE.name() + hashCode(), sampleID);
+
+		}
 
 	}
 

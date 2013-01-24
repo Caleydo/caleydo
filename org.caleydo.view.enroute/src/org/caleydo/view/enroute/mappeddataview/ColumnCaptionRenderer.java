@@ -47,6 +47,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 
 	public ColumnCaptionRenderer(AGLView parentView, MappedDataRenderer parent, Group group,
 			Perspective samplePerspective, ATableBasedDataDomain dataDomain) {
+
 		super(parentView, parent, dataDomain.getColor());
 		this.textRenderer = parentView.getTextRenderer();
 		this.pixelGLConverter = parentView.getPixelGLConverter();
@@ -161,7 +162,21 @@ public class ColumnCaptionRenderer extends SelectableRenderer implements ILabelP
 
 	@Override
 	public String getLabel() {
-		return group.getLabel() + ", Elements: " + group.getSize();
+		// Set<Integer> selectedElementIDs = parent.sampleGroupSelectionManager.getElements(SelectionType.SELECTION);
+		int numSelectedElementsInGroup = 0;
+		for (Integer id : samplePerspective.getVirtualArray()) {
+			ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager.getSelectionTypes(
+					samplePerspective.getIdType(), id);
+			if (experimentSelectionTypes.contains(SelectionType.SELECTION))
+				numSelectedElementsInGroup++;
+		}
+
+		// for (Integer selectedElementID : selectedElementIDs) {
+		// if (samplePerspective.getVirtualArray().contains(selectedElementID))
+		// numSelectedElementsInGroup++;
+		// }
+
+		return group.getLabel() + ", Elements: " + group.getSize() + ", Selected: " + numSelectedElementsInGroup;
 	}
 
 	@Override

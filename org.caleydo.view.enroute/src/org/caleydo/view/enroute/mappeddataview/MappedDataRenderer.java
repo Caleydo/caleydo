@@ -139,7 +139,10 @@ public class MappedDataRenderer {
 	/** The mapping Type all samples understand */
 	IDType sampleIDType;
 
-	int selectedBucketID = 0;
+	// FIXME: This is pure hack
+	int selectedBucketNumber = 0;
+	int selectedBucketGeneID = 0;
+	Perspective selectedBucketExperimentPerspective;
 
 	/**
 	 * Constructor with parent view as parameter.
@@ -551,13 +554,17 @@ public class MappedDataRenderer {
 								tablePerspective, experimentPerspective, parentView, this, group, isHighlightLayout));
 
 				tablePerspectiveLayout.setDynamicSizeUnitsX((int) Math
-						.ceil((float) experimentPerspective.getVirtualArray().size()
-								/ MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+
+				.ceil(experimentPerspective.getVirtualArray().size() * 2.0f
+						/ MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+
 				bottomCaptionLayout.setDynamicSizeUnitsX((int) Math
-						.ceil((float) experimentPerspective.getVirtualArray().size()
-								/ MutationStatusMatrixRowContentRenderer.NUM_ROWS));
-				topCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil((float) experimentPerspective.getVirtualArray()
-						.size() / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+
+				.ceil(experimentPerspective.getVirtualArray().size() * 2.0f
+						/ MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+				topCaptionLayout.setDynamicSizeUnitsX((int) Math.ceil(experimentPerspective.getVirtualArray().size()
+						* 2.0f / MutationStatusMatrixRowContentRenderer.NUM_ROWS));
+
 				// tablePerspectiveLayout
 				// .setRenderer(new MutationStatusRowContentRenderer(
 				// geneID, davidID, dataDomain, tablePerspective,

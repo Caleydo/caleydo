@@ -22,6 +22,7 @@ import org.caleydo.datadomain.pathway.IPathwayParser;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.IPathwayResourceLoader;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
@@ -122,12 +123,13 @@ public class WikiPathwaysParser implements IPathwayParser {
 		pathwayGraph.setHeight(pixelHeight);
 
 		// Height and width specified in gpml file
-		double boardDimensions[] = pathway.getMBoardSize();
-		int boardWidth = (int) boardDimensions[0];
-		int boardHeight = (int) boardDimensions[1];
+		// double boardDimensions[] = pathway.getMBoardSize();
+		// int boardWidth = (int) boardDimensions[0];
+		// int boardHeight = (int) boardDimensions[1];
 
 		IDMappingManager genomeIdManager = ((PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 				PathwayDataDomain.DATA_DOMAIN_TYPE)).getGeneIDMappingManager();
+		Map<String, PathwayVertexRep> vertexReps = new HashMap<>();
 
 		for (PathwayElement element : pathway.getDataObjects()) {
 			if (element.getObjectType() == ObjectType.DATANODE) {
@@ -164,10 +166,28 @@ public class WikiPathwaysParser implements IPathwayParser {
 							// float xScaling = (float) pixelWidth / (float) boardWidth;
 							// float yScaling = (float) pixelHeight / (float) boardHeight;
 
-							pathwayItemManager.createVertexRep(pathwayGraph, vertices, label, "rectangle",
-									(short) (element.getMCenterX()), (short) (element.getMCenterY()),
-									(short) (element.getMWidth()), (short) (element.getMHeight()));
+							PathwayVertexRep vertexRep = pathwayItemManager.createVertexRep(pathwayGraph, vertices,
+									label, "rectangle", (short) (element.getMCenterX()),
+									(short) (element.getMCenterY()), (short) (element.getMWidth()),
+									(short) (element.getMHeight()));
+							if (element.getGraphId() != null && !element.getGraphId().isEmpty())
+								vertexReps.put(element.getGraphId(), vertexRep);
 						}
+					}
+				}
+			}
+		}
+
+		for (PathwayElement element : pathway.getDataObjects()) {
+			if (element.getObjectType() == ObjectType.LINE) {
+				String startGraphRef = element.getStartGraphRef();
+				String endGraphRef = element.getEndGraphRef();
+
+				if (startGraphRef != null && endGraphRef != null && !startGraphRef.isEmpty() && !endGraphRef.isEmpty()) {
+					PathwayVertexRep startVertexRep = vertexReps.get(startGraphRef);
+					PathwayVertexRep endVertexRep = vertexReps.get(endGraphRef);
+					if (startVertexRep != null && endVertexRep != null) {
+						pathwayGraph.addEdge(startVertexRep, endVertexRep);
 					}
 				}
 			}

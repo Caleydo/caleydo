@@ -38,8 +38,7 @@ import org.caleydo.view.enroute.EPickingType;
  * @author Alexander Lex
  *
  */
-public abstract class ACategoricalRowContentRenderer
-	extends ContentRenderer {
+public abstract class ACategoricalRowContentRenderer extends ContentRenderer {
 
 	protected static final int MAX_HISTOGRAM_BAR_WIDTH_PIXELS = 20;
 
@@ -73,8 +72,7 @@ public abstract class ACategoricalRowContentRenderer
 			// bottomBarColor = topBarColor;
 
 			renderAverageBar(gl, selectionTypes);
-		}
-		else {
+		} else {
 			renderAllBars(gl, geneSelectionTypes);
 		}
 
@@ -96,10 +94,17 @@ public abstract class ACategoricalRowContentRenderer
 
 		for (int bucketNumber = 0; bucketNumber < histogram.size(); bucketNumber++) {
 
-			if (parent.selectedBucketID == histogram.getBucketID(bucketNumber)) {
+			// for (Integer id : histogram.getIDsForBucketFromBucketID(histogram.getBucketID(bucketNumber))) {
+			// if (parent.sampleSelectionManager.checkStatus(SelectionType.SELECTION, id)) {
+			// selectionTypes.add(SelectionType.SELECTION);
+			// break;
+			// }
+			// }
+
+			if (parent.selectedBucketNumber == bucketNumber && parent.selectedBucketGeneID == geneID
+					&& parent.selectedBucketExperimentPerspective == experimentPerspective) {
 				selectionTypes.add(SelectionType.SELECTION);
-			}
-			else {
+			} else {
 				selectionTypes.remove(SelectionType.SELECTION);
 			}
 
@@ -121,7 +126,7 @@ public abstract class ACategoricalRowContentRenderer
 
 			float barHeight = value * renderWith;
 			gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
-					EPickingType.HISTOGRAM_BAR.name(), histogram.getBucketID(bucketNumber)));
+					EPickingType.HISTOGRAM_BAR.name() + hashCode(), bucketNumber));
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glColor3fv(bottomBarColor, 0);
 			gl.glVertex3f(0, lowerEdge, z);
@@ -162,19 +167,20 @@ public abstract class ACategoricalRowContentRenderer
 
 				parent.sampleSelectionManager.clearSelection(SelectionType.SELECTION);
 				parent.sampleSelectionManager.addToType(SelectionType.SELECTION, sampleIDType,
-						histogram.getIDsForBucketFromBucketID(pick.getObjectID()));
+						histogram.getIDsForBucketFromBucketID(histogram.getBucketID(pick.getObjectID())));
 				parent.sampleSelectionManager.triggerSelectionUpdateEvent();
+				parent.selectedBucketNumber = pick.getObjectID();
+				parent.selectedBucketGeneID = geneID;
+				parent.selectedBucketExperimentPerspective = experimentPerspective;
 				parentView.setDisplayListDirty();
-
-				parent.selectedBucketID = pick.getObjectID();
 			}
 
 		};
 
-		for (int bucketCount = 0; bucketCount < histogram.size(); bucketCount++) {
-			parentView.addIDPickingListener(pickingListener, EPickingType.HISTOGRAM_BAR.name(),
-					histogram.getBucketID(bucketCount));
-		}
+		// for (int bucketCount = 0; bucketCount < histogram.size(); bucketCount++) {
+		// //FIXME: HACKY hashcode
+		parentView.addTypePickingListener(pickingListener, EPickingType.HISTOGRAM_BAR.name() + hashCode());
+		// }
 	}
 
 	@Override
