@@ -16,6 +16,7 @@
  *******************************************************************************/
 package org.caleydo.core.util.color;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -26,9 +27,13 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType
 public final class Color implements IColor {
+	@XmlElement
 	public float r = 1;
+	@XmlElement
 	public float g = 1;
+	@XmlElement
 	public float b = 1;
+	@XmlElement
 	public float a = 1;
 
 	private int[] intColor = null;
@@ -127,6 +132,11 @@ public final class Color implements IColor {
 			intColor[3] = Math.round(a * colorDepth);
 		}
 		return intColor;
+	}
+
+	@Override
+	public String toString() {
+		return "Color [" + r + "," + g + "," + b + "," + a + "]";
 	}
 
 }

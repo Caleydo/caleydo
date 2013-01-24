@@ -71,7 +71,7 @@ public class ColorMapper {
 	 *             if values in marker points are not increasing, or if fvalue > 1 || fvalue < 0
 	 */
 	public ColorMapper(ArrayList<ColorMarkerPoint> markerPoints) {
-		init(markerPoints);
+		setMarkerPoints(markerPoints);
 	}
 
 	/**
@@ -129,22 +129,11 @@ public class ColorMapper {
 		this.colorSchemeDescription = colorSchemeDescription;
 	}
 
-	/**
-	 * Reset the color mapping, same principles as constructor {@link ColorMapper#ColorMapping(ArrayList)}
-	 *
-	 * @param alMarkerPoints
-	 */
-	protected void resetColorMapping(ArrayList<ColorMarkerPoint> alMarkerPoints) {
-		init(alMarkerPoints);
-	}
-
-	private void init(ArrayList<ColorMarkerPoint> alMarkerPoints) {
-		this.markerPoints = alMarkerPoints;
+	private void init() {
 		colorList = new ArrayList<Color>(COLOR_DEPTH);
 		for (int iCount = 0; iCount < COLOR_DEPTH; iCount++) {
 			colorList.add(new Color());
 		}
-
 		setUpMapping();
 	}
 
@@ -274,6 +263,7 @@ public class ColorMapper {
 
 	public void setMarkerPoints(ArrayList<ColorMarkerPoint> markerPoints) {
 		this.markerPoints = markerPoints;
+		init();
 	}
 
 	@Override

@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.EDataType;
+import org.caleydo.core.data.collection.table.CategoricalTable;
 import org.caleydo.core.data.collection.table.NumericalTable;
 import org.caleydo.core.data.collection.table.Table;
 import org.caleydo.core.data.datadomain.event.AggregateGroupEvent;
@@ -485,6 +486,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements IVADe
 		if (colorMapper == null) {
 			if (table instanceof NumericalTable && ((NumericalTable) table).getDataCenter() != null) {
 				colorMapper = ColorMapper.createDefaultThreeColorMapper();
+			} else if (table instanceof CategoricalTable<?>) {
+				colorMapper = ((CategoricalTable<?>) table).createColorMapper();
 			} else {
 				colorMapper = ColorMapper.createDefaultTwoColorMapper();
 			}

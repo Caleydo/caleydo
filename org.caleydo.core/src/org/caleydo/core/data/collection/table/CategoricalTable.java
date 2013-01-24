@@ -16,13 +16,17 @@
  *******************************************************************************/
 package org.caleydo.core.data.collection.table;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.column.AColumn;
 import org.caleydo.core.data.collection.column.CategoricalColumn;
 import org.caleydo.core.data.collection.column.container.CategoricalClassDescription;
+import org.caleydo.core.data.collection.column.container.CategoryProperty;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.util.color.mapping.ColorMapper;
+import org.caleydo.core.util.color.mapping.ColorMarkerPoint;
 
 /**
  * Extension of {@link Table} to add functionality specific to homogeneous categorical tables, such as a joint set of
@@ -82,4 +86,26 @@ public class CategoricalTable<CategoryType extends Comparable<CategoryType>> ext
 		return categoricalClassDescription;
 	}
 
+	/**
+	 * Creates a new color map based on the colors and the order of {@link #categoricalClassDescription}.
+	 *
+	 * @return
+	 */
+	public ColorMapper createColorMapper() {
+		ColorMapper mapper = new ColorMapper();
+		float normalizedDistance = 0;
+		if (categoricalClassDescription.size() > 1) {
+			normalizedDistance = 1f / (categoricalClassDescription.size() - 1);
+		}
+		float currentDistance = 0;
+		ArrayList<ColorMarkerPoint> markerPoints = new ArrayList<>(categoricalClassDescription.size());
+		for (CategoryProperty<?> property : categoricalClassDescription) {
+			markerPoints.add(new ColorMarkerPoint(currentDistance, property.getColor()));
+			currentDistance += normalizedDistance;
+		}
+
+		mapper.setMarkerPoints(markerPoints);
+		return mapper;
+
+	}
 }

@@ -242,10 +242,10 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		categoricalClassDescription.setRawDataType(EDataType.INTEGER);
 		categoricalClassDescription.addCategoryProperty(-2, "Homozygous deletion", Colors.BLUE);
 		categoricalClassDescription.addCategoryProperty(-1, "Heterozygous deletion",
-				Colors.BLUE.getColorWithSpecificBrighness(0.7f));
+				Colors.BLUE.getColorWithSpecificBrighness(0.5f));
 		categoricalClassDescription.addCategoryProperty(0, "NORMAL", Colors.NEUTRAL_GREY);
 		categoricalClassDescription.addCategoryProperty(1, "Low level amplification",
-				Colors.RED.getColorWithSpecificBrighness(0.7f));
+				Colors.RED.getColorWithSpecificBrighness(0.5f));
 		categoricalClassDescription.addCategoryProperty(2, "High level amplification", Colors.RED);
 
 		copyNumberData.setCategoricalClassDescription(categoricalClassDescription);
