@@ -123,6 +123,8 @@ public class WikiPathwaysParser implements IPathwayParser {
 
 		// Height and width specified in gpml file
 		double boardDimensions[] = pathway.getMBoardSize();
+		int boardWidth = (int) boardDimensions[0];
+		int boardHeight = (int) boardDimensions[1];
 
 		IDMappingManager genomeIdManager = ((PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
 				PathwayDataDomain.DATA_DOMAIN_TYPE)).getGeneIDMappingManager();
@@ -158,13 +160,18 @@ public class WikiPathwaysParser implements IPathwayParser {
 
 							ArrayList<PathwayVertex> vertices = pathwayItemManager.createGeneVertex(label, xref
 									.getDataSource().getType(), "", davidIDs);
+
+							// float xScaling = (float) pixelWidth / (float) boardWidth;
+							// float yScaling = (float) pixelHeight / (float) boardHeight;
+
 							pathwayItemManager.createVertexRep(pathwayGraph, vertices, label, "rectangle",
-									(short) element.getMHeight(), (short) element.getMWidth(),
-									(short) element.getMCenterX(), (short) element.getMCenterY());
+									(short) (element.getMCenterX()), (short) (element.getMCenterY()),
+									(short) (element.getMWidth()), (short) (element.getMHeight()));
 						}
 					}
 				}
 			}
 		}
 	}
+
 }

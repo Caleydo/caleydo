@@ -173,17 +173,17 @@ public class PathwayItemManager {
 	 *            the vertices this rep is associated with
 	 * @param name
 	 * @param shapeType
-	 * @param height
+	 * @param x
+	 * @param y
 	 * @param width
-	 * @param xPosition
-	 * @param yPosition
+	 * @param height
 	 * @return
 	 */
 	public PathwayVertexRep createVertexRep(final PathwayGraph parentPathway, final ArrayList<PathwayVertex> vertices,
-			final String name, final String shapeType, final short height, final short width, final short xPosition,
-			final short yPosition) {
+			final String name, final String shapeType, final short x, final short y, final short width,
+			final short height) {
 
-		PathwayVertexRep pathwayVertexRep = new PathwayVertexRep(name, shapeType, height, width, xPosition, yPosition);
+		PathwayVertexRep pathwayVertexRep = new PathwayVertexRep(name, shapeType, x, y, width, height);
 
 		// registerItem(pathwayVertexRep);
 

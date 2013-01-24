@@ -8,5 +8,6 @@ Bundle-ClassPath: org.bridgedb.jar,
  com.springsource.org.jdom-1.1.0.jar,
  org.bridgedb.bio.jar
 Export-Package: org.bridgedb,
- org.pathvisio.core.model
+ org.pathvisio.core.model,
+ org.pathvisio.core.preferences
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
